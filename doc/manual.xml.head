@@ -15,8 +15,8 @@ vim: ts=2 sw=2 sts=2 expandtab:
     <releaseinfo>version @VERSION@</releaseinfo>
     <abstract>
       <para>
-        <quote>All mail clients suck. This one just sucks less.</quote> – me,
-        circa 1995
+        <quote>All mail clients suck. This one just sucks less.</quote>
+        &mdash; me, circa 1995
       </para>
     </abstract>
   </bookinfo>
@@ -462,8 +462,8 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
             <para>
               Functions <literal>&lt;sidebar-next&gt;</literal> and
               <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
-              <emphasis role="bold">highlight</emphasis>. They <emphasis
-                role="bold">do not</emphasis> change the open mailbox.
+              <emphasis role="bold">highlight</emphasis>. They
+              <emphasis role="bold">do not</emphasis> change the open mailbox.
             </para>
           </note>
           <para>
@@ -684,7 +684,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               Sidebar display. For an introduction, read
               <link linkend="index-format">format strings</link> including the
               section about
-              <link linkend="formatstrings-conditionals"> conditionals</link>.
+              <link linkend="formatstrings-conditionals">conditionals</link>.
             </para>
             <para>
               The default value is: <literal>%B%* %n</literal>
@@ -842,7 +842,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </para>
 
             <table>
-              <title>sidebar_format</title>
+              <title>sidebar_format examples</title>
               <tgroup cols="2">
                 <thead>
                   <row>
@@ -1212,8 +1212,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       <title>Moving Around in Menus</title>
       <para>
         The most important navigation keys common to line- or entry-based menus
-        are shown in <xref linkend="tab-keys-nav-line" /> and in <xref
-          linkend="tab-keys-nav-page" /> for page-based menus.
+        are shown in <xref linkend="tab-keys-nav-line" /> and in
+        <xref linkend="tab-keys-nav-page" /> for page-based menus.
       </para>
 
       <table id="tab-keys-nav-line">
@@ -3695,7 +3695,7 @@ alternates -group me -group work address3
           <replaceable class="parameter">address</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">address</replaceable>
+          <replaceable class="parameter">, address</replaceable>
         </arg>
         <command>unalias</command>
         <arg choice="opt" rep="repeat">
@@ -3798,6 +3798,9 @@ set alias_file=~/.mail_aliases
         <command>bind</command>
         <arg choice="plain">
           <replaceable class="parameter">map</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">,map</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">key</replaceable>
@@ -4160,7 +4163,7 @@ bind index gg first-entry
       <cmdsynopsis>
         <command>folder-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regex</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -4176,9 +4179,10 @@ bind index gg first-entry
         executed in the order given in the <literal>.neomuttrc</literal>.
       </para>
       <para>
-        The regex parameter has <link linkend="shortcuts">mailbox
-          shortcut</link> expansion performed on the first character. See
-        <xref linkend="mailbox-hook" /> for more details.
+        The regex parameter has
+        <link linkend="shortcuts">mailbox shortcut</link> expansion performed
+        on the first character. See <xref linkend="mailbox-hook" /> for more
+        details.
       </para>
       <note>
         <para>
@@ -4240,6 +4244,9 @@ folder-hook work "set sort=threads"
         <command>macro</command>
         <arg choice="plain">
           <replaceable class="parameter">menu</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">,menu</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">key</replaceable>
@@ -4777,7 +4784,7 @@ export COLORFGBG
         </arg>
         <command>mono</command>
         <arg choice="plain">
-          <option>index</option>
+          <option>index-object</option>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">attribute</replaceable>
@@ -5171,7 +5178,7 @@ unignore posted-to:
       <cmdsynopsis>
         <command>mbox-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regex</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5332,34 +5339,64 @@ my_hdr Organization: A Really Big Company, Anytown, USA
       <screen>unmy_hdr to cc</screen>
     </sect1>
 
-    <sect1 id="save-hook">
-      <title>Specify Default Save Mailbox</title>
+    <sect1 id="default-save-mailbox">
+      <title>Specify Default Fcc: and/or Save Mailbox</title>
+      <anchor id="fcc-save-hook" />
+      <anchor id="fcc-hook" />
+      <anchor id="save-hook" />
       <para>
         Usage:
       </para>
       <cmdsynopsis>
+        <command>fcc-save-hook</command>
+        <arg choice="plain">
+          <replaceable class="parameter">pattern</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">mailbox</replaceable>
+        </arg>
+        <command>fcc-hook</command>
+        <arg choice="plain">
+          <replaceable class="parameter">pattern</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">mailbox</replaceable>
+        </arg>
         <command>save-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
         </arg>
       </cmdsynopsis>
       <para>
-        This command is used to override the default mailbox used when saving
-        messages. <emphasis>mailbox</emphasis> will be used as the default if
-        the message matches <emphasis>pattern</emphasis>, see
-        <xref linkend="pattern-hook" /> for information on the exact format.
+        <command>fcc-save-hook</command> is a shortcut, equivalent to doing
+        both a <link linkend="fcc-hook"><command>fcc-hook</command></link> and
+        a <link linkend="save-hook"><command>save-hook</command></link> with
+        its arguments, including %-expansion on <emphasis>mailbox</emphasis>
+        according to <link linkend="index-format">$index_format</link>.
       </para>
       <para>
-        To provide more flexibility and good defaults, NeoMutt applies the
-        expandos of <link linkend="index-format">$index_format</link> to
-        <emphasis>mailbox</emphasis> after it was expanded.
+        <command>fcc-hook</command> is used to save outgoing mail in a mailbox
+        other than <link linkend="record">$record</link>. NeoMutt searches the
+        initial list of message recipients for the first matching
+        <emphasis>pattern</emphasis> and uses <emphasis>mailbox</emphasis> as
+        the default <quote>Fcc:</quote> mailbox. If no match is found the
+        message will be saved to <link linkend="record">$record</link> mailbox.
+      </para>
+      <screen>fcc-hook [@.]aol\\.com$ +spammers</screen>
+      <para>
+        ...will save a copy of all messages going to the aol.com domain to the
+        <quote>+spammers</quote> mailbox by default.
+      </para>
+      <para>
+        <command>save-hook</command> is used to override the default mailbox
+        used when saving messages. <emphasis>mailbox</emphasis> will be used
+        as the default if the message matches <emphasis>pattern</emphasis>.
       </para>
       <example id="ex-save-hook-exando">
-        <title>Using %-expandos in
-        <command>save-hook</command></title>
+        <title>Using %-expandos in <command>save-hook</command></title>
 
 <screen>
 <emphasis role="comment"># default: save all to ~/Mail/&lt;author name&gt;</emphasis>
@@ -5376,68 +5413,12 @@ save-hook aol\\.com$ +spam
         <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
         command.
       </para>
-    </sect1>
-
-    <sect1 id="fcc-hook">
-      <title>Specify Default Fcc: Mailbox When Composing</title>
-      <para>
-        Usage:
-      </para>
-      <cmdsynopsis>
-        <command>fcc-hook</command>
-        <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">mailbox</replaceable>
-        </arg>
-      </cmdsynopsis>
-      <para>
-        This command is used to save outgoing mail in a mailbox other than
-        <link linkend="record">$record</link>. NeoMutt searches the initial
-        list of message recipients for the first matching
-        <emphasis>pattern</emphasis> and uses <emphasis>mailbox</emphasis> as
-        the default Fcc: mailbox. If no match is found the message will be
-        saved to <link linkend="record">$record</link> mailbox.
-      </para>
       <para>
         To provide more flexibility and good defaults, NeoMutt applies the
         expandos of <link linkend="index-format">$index_format</link> to
-        <emphasis>mailbox</emphasis> after it was expanded.
-      </para>
-      <para>
-        See <xref linkend="pattern-hook" /> for information on the exact format
-        of <emphasis>pattern</emphasis>.
-      </para>
-      <screen>fcc-hook [@.]aol\\.com$ +spammers</screen>
-      <para>
-        ...will save a copy of all messages going to the aol.com domain to the
-        `+spammers' mailbox by default. Also see the
-        <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
-        command.
-      </para>
-    </sect1>
-
-    <sect1 id="fcc-save-hook">
-      <title>Specify Default Save Filename and Default Fcc: Mailbox at Once</title>
-      <para>
-        Usage:
-      </para>
-      <cmdsynopsis>
-        <command>fcc-save-hook</command>
-        <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
-        </arg>
-        <arg choice="plain">
-          <replaceable class="parameter">mailbox</replaceable>
-        </arg>
-      </cmdsynopsis>
-      <para>
-        This command is a shortcut, equivalent to doing both a
-        <link linkend="fcc-hook"><command>fcc-hook</command></link> and a
-        <link linkend="save-hook"><command>save-hook</command></link> with its
-        arguments, including %-expansion on <emphasis>mailbox</emphasis>
-        according to <link linkend="index-format">$index_format</link>.
+        <emphasis>mailbox</emphasis> after it was expanded. See
+        <xref linkend="pattern-hook" /> for information on the exact format of
+        <emphasis>pattern</emphasis>.
       </para>
     </sect1>
 
@@ -5451,21 +5432,21 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>reply-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
         </arg>
         <command>send-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
         </arg>
         <command>send2-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -5550,7 +5531,7 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>message-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -6030,6 +6011,12 @@ set spam_separator=", "
                 <arg choice="plain">
                   <option>inv</option>
                 </arg>
+                <arg choice="plain">
+                  <option>&amp;</option>
+                </arg>
+                <arg choice="plain">
+                  <option>?</option>
+                </arg>
               </group>
               <replaceable class="parameter">variable</replaceable>
             </arg>
@@ -6038,13 +6025,6 @@ set spam_separator=", "
             </arg>
           </group>
           <arg choice="opt" rep="repeat"></arg>
-          <command>toggle</command>
-          <arg choice="plain">
-            <replaceable class="parameter">variable</replaceable>
-          </arg>
-          <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">variable</replaceable>
-          </arg>
           <command>unset</command>
           <arg choice="plain">
             <replaceable class="parameter">variable</replaceable>
@@ -6053,6 +6033,13 @@ set spam_separator=", "
             <replaceable class="parameter">variable</replaceable>
           </arg>
           <command>reset</command>
+          <arg choice="plain">
+            <replaceable class="parameter">variable</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">variable</replaceable>
+          </arg>
+          <command>toggle</command>
           <arg choice="plain">
             <replaceable class="parameter">variable</replaceable>
           </arg>
@@ -6295,8 +6282,8 @@ mailboxes $my_mx +mailbox3
       </para>
       <cmdsynopsis>
         <command>source</command>
-        <arg choice="plain" rep="repeat">
-          <replaceable class="parameter">file</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">filename</replaceable>
         </arg>
       </cmdsynopsis>
       <para>
@@ -8045,7 +8032,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         (Message marking is really just a shortcut for defining a macro that
         returns you to the current message by searching for its Message-ID.
         You can choose a different prefix by setting the
-        <link linkend="mark-macro-prefix"> $mark_macro_prefix</link> variable.)
+        <link linkend="mark-macro-prefix">$mark_macro_prefix</link> variable.)
       </para>
     </sect1>
 
@@ -8105,17 +8092,10 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         </listitem>
         <listitem>
           <para>
-            <link linkend="append-hook"><command>append-hook</command></link>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
             <link linkend="charset-hook"><command>charset-hook</command></link>
           </para>
-        </listitem>
-        <listitem>
           <para>
-            <link linkend="close-hook"><command>close-hook</command></link>
+            <link linkend="iconv-hook"><command>iconv-hook</command></link>
           </para>
         </listitem>
         <listitem>
@@ -8125,22 +8105,18 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         </listitem>
         <listitem>
           <para>
+            <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
+          </para>
+          <para>
             <link linkend="fcc-hook"><command>fcc-hook</command></link>
           </para>
-        </listitem>
-        <listitem>
           <para>
-            <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
+            <link linkend="save-hook"><command>save-hook</command></link>
           </para>
         </listitem>
         <listitem>
           <para>
             <link linkend="folder-hook"><command>folder-hook</command></link>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <link linkend="iconv-hook"><command>iconv-hook</command></link>
           </para>
         </listitem>
         <listitem>
@@ -8157,25 +8133,38 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <para>
             <link linkend="open-hook"><command>open-hook</command></link>
           </para>
+          <para>
+            <link linkend="close-hook"><command>close-hook</command></link>
+          </para>
+          <para>
+            <link linkend="append-hook"><command>append-hook</command></link>
+          </para>
         </listitem>
         <listitem>
           <para>
             <link linkend="reply-hook"><command>reply-hook</command></link>
           </para>
-        </listitem>
-        <listitem>
-          <para>
-            <link linkend="save-hook"><command>save-hook</command></link>
-          </para>
-        </listitem>
-        <listitem>
           <para>
             <link linkend="send-hook"><command>send-hook</command></link>
           </para>
+          <para>
+            <link linkend="send2-hook"><command>send2-hook</command></link>
+          </para>
         </listitem>
         <listitem>
           <para>
-            <link linkend="send2-hook"><command>send2-hook</command></link>
+            <link linkend="global-hooks"><command>timeout-hook</command></link>
+          </para>
+          <para>
+            <link linkend="global-hooks"><command>startup-hook</command></link>
+          </para>
+          <para>
+            <link linkend="global-hooks"><command>shutdown-hook</command></link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="unhook"><command>unhook</command></link>
           </para>
         </listitem>
       </itemizedlist>
@@ -8409,8 +8398,8 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         more robust with concurrent clients writing the mailbox, but still may
         suffer from lost flags; message corruption is less likely to occur than
         with mbox/mmdf. It's usually slower to open compared to mbox/mmdf since
-        many small files have to be read (NeoMutt provides <xref
-          linkend="header-caching" /> to greatly speed this process up).
+        many small files have to be read (NeoMutt provides
+        <xref linkend="header-caching" /> to greatly speed this process up).
         Depending on the environment, MH is not very disk-space efficient.
       </para>
       <para>
@@ -8494,8 +8483,9 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
             <row>
               <entry><emphasis>@alias</emphasis></entry>
               <entry>
-                to the <link linkend="save-hook">default save folder</link> as
-                determined by the address of the alias
+                to the
+                <link linkend="default-save-mailbox">default save folder</link>
+                as determined by the address of the alias
               </entry>
             </row>
           </tbody>
@@ -9122,12 +9112,19 @@ macro pager \cb |urlview\n
         file is called <literal>mime.types</literal>.
       </para>
       <para>
-        When you add an attachment to your mail message, NeoMutt searches your
-        personal <literal>mime.types</literal> file at
-        <literal>$HOME/.mime.types</literal>, and then the system
+        When you add an attachment to your mail message, NeoMutt searches the
+        system <literal>mime.types</literal> file at
+        <literal>/etc/mime.types</literal>,
+        <literal>$SYSCONFDIR/mime.types</literal> or
+        <literal>$PKGDATADIR/mime.types</literal> and then your personal
         <literal>mime.types</literal> file at
-        <literal>/usr/local/share/neomutt/mime.types</literal> or
-        <literal>/etc/mime.types</literal>
+        <literal>$HOME/.mime.types</literal>.
+      </para>
+      <para>
+        Where <literal>$HOME</literal> is your home directory. The
+        <literal>$PKGDATADIR</literal> and the <literal>$SYSCONFDIR</literal>
+        directories depend on where NeoMutt is installed: the former is the
+        default for shared data, the latter for system configuration files.
       </para>
       <para>
         Each line starts with the full MIME type, followed by a space and
@@ -9227,7 +9224,7 @@ audio/x-aiff                    aif aifc aiff
       </table>
       <para>
         MIME types are not arbitrary, they need to be assigned by
-        <ulink url="http://www.iana.org/assignments/media-types/"> IANA</ulink>.
+        <ulink url="http://www.iana.org/assignments/media-types/">IANA</ulink>.
       </para>
     </sect1>
 
@@ -9395,7 +9392,7 @@ text/*; more
           parameters can lead to security problems in general. NeoMutt tries to
           quote parameters in expansion of <literal>%s</literal> syntaxes
           properly, and avoids risky characters by substituting them, see the
-          <link linkend="mailcap-sanitize"> $mailcap_sanitize</link> variable.
+          <link linkend="mailcap-sanitize">$mailcap_sanitize</link> variable.
         </para>
         <para>
           Although NeoMutt's procedures to invoke programs with mailcap seem to
@@ -9784,10 +9781,10 @@ application/ms-excel;   open.pl %s
       <cmdsynopsis>
         <command>auto_view</command>
         <arg choice="plain">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <command>unauto_view</command>
         <group choice="req">
@@ -9795,7 +9792,7 @@ application/ms-excel;   open.pl %s
             <replaceable>*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable>mimetype</replaceable>
+            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -9923,16 +9920,28 @@ alternative_order text/enriched text/plain text \
       </para>
       <cmdsynopsis>
         <command>attachments</command>
-        <arg choice="plain">
-          <replaceable>{ + | - }disposition</replaceable>
-        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>+</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>-</replaceable>
+          </arg>
+        </group>
+        <replaceable>disposition</replaceable>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
         <command>unattachments</command>
-        <arg choice="plain">
-          <replaceable>{ + | - }disposition</replaceable>
-        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>+</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>-</replaceable>
+          </arg>
+        </group>
+        <replaceable>disposition</replaceable>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
@@ -10041,10 +10050,10 @@ attachments  -I message/external-body
       <cmdsynopsis>
         <command>mime_lookup</command>
         <arg choice="plain">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <command>unmime_lookup</command>
         <group choice="req">
@@ -10052,7 +10061,7 @@ attachments  -I message/external-body
             <replaceable>*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable>mimetype</replaceable>
+            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -10234,7 +10243,7 @@ smtp://user@host:587/
         <xref linkend="url-syntax" /> for details) using the
         <literal>imap</literal> or <literal>imaps</literal> protocol.
         Alternatively, a pine-compatible notation is also supported, i.e.
-        <literal> {[username@]imapserver[:port][/ssl]}path/to/folder</literal>
+        <literal>{[username@]imapserver[:port][/ssl]}path/to/folder</literal>
       </para>
       <para>
         Note that not all servers use <quote>/</quote> as the hierarchy
@@ -10245,7 +10254,7 @@ smtp://user@host:587/
         When browsing folders on an IMAP server, you can toggle whether to look
         at only the folders you are subscribed to, or all folders with the
         <emphasis>toggle-subscribed</emphasis> command. See also the
-        <link linkend="imap-list-subscribed"> $imap_list_subscribed</link>
+        <link linkend="imap-list-subscribed">$imap_list_subscribed</link>
         variable.
       </para>
       <para>
@@ -10886,24 +10895,24 @@ bind index,pager @ compose-to-sender
         <cmdsynopsis>
           <command>open-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
           <command>close-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
           <command>append-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
         </cmdsynopsis>
         <para>
@@ -10993,7 +11002,7 @@ bind index,pager @ compose-to-sender
 
         <sect3 id="open-hook">
           <title>Read from compressed mailbox</title>
-          <screen>open-hook regex shell-command</screen>
+          <screen>open-hook regex &quot;shell-command&quot;</screen>
           <para>
             If NeoMutt is unable to open a file, it then looks for
             <literal>open-hook</literal> that matches the filename.
@@ -11036,7 +11045,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
 
         <sect3 id="close-hook">
           <title>Write to a compressed mailbox</title>
-          <screen>close-hook regex shell-command</screen>
+          <screen>close-hook regex &quot;shell-command&quot;</screen>
           <para>
             When NeoMutt has finished with a compressed mail folder, it will
             look for a matching <literal>close-hook</literal> to recompress the
@@ -11091,7 +11100,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
 
         <sect3 id="append-hook">
           <title>Append to a compressed mailbox</title>
-          <screen>append-hook regex shell-command</screen>
+          <screen>append-hook regex &quot;shell-command&quot;</screen>
           <para>
             When NeoMutt wants to append an email to a compressed mail folder,
             it will look for a matching <literal>append-hook</literal>. This
@@ -12169,19 +12178,19 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
         <cmdsynopsis>
           <command>timeout-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
         <cmdsynopsis>
           <command>startup-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
         <cmdsynopsis>
           <command>shutdown-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
       </sect2>
@@ -12273,9 +12282,9 @@ shutdown-hook 'exec sync-mailbox'
         </para>
 
 <screen>
-ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
-ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
-finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
+ifdef  symbol "config-command [args...]"  <emphasis role="comment"># If a symbol is defined</emphasis>
+ifndef symbol "config-command [args...]"  <emphasis role="comment"># If a symbol is not defined</emphasis>
+finish                                    <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
 
         <para>
@@ -12309,16 +12318,16 @@ ifndef sidebar finish
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">"config-command
-            [args]"</replaceable>
+            <replaceable class="parameter">&quot;config-command
+              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
           </arg>
           <command>ifndef</command>
           <arg choice="plain">
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">"config-command
-            [args]"</replaceable>
+            <replaceable class="parameter">&quot;config-command
+              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
           </arg>
           <command>finish</command>
         </cmdsynopsis>
@@ -12334,8 +12343,8 @@ ifndef sidebar finish
 <emphasis role="comment"># one config file between versions of NeoMutt that may have different</emphasis>
 <emphasis role="comment"># features compiled in.</emphasis>
 
-<emphasis role="comment">#   ifdef  symbol config-command [args...]</emphasis>
-<emphasis role="comment">#   ifndef symbol config-command [args...]</emphasis>
+<emphasis role="comment">#   ifdef  symbol "config-command [args...]"</emphasis>
+<emphasis role="comment">#   ifndef symbol "config-command [args...]"</emphasis>
 <emphasis role="comment">#   finish</emphasis>
 <emphasis role="comment"># The 'ifdef' command tests whether NeoMutt understands the name of</emphasis>
 <emphasis role="comment"># a variable, function, command or compile-time symbol.</emphasis>
@@ -14305,7 +14314,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
           </informaltable>
           <para>
             For an explanation of <quote>soft-fill</quote>, see the
-            <link linkend="index-format"> $index_format</link> documentation.
+            <link linkend="index-format">$index_format</link> documentation.
           </para>
           <para>
             * = can be optionally printed if nonzero
@@ -16534,165 +16543,245 @@ folder-hook ^pop 'set read_inc=1'
           </thead>
           <tbody>
             <row>
-              <entry>-A</entry>
+              <entry>-A <literal>alias</literal></entry>
               <entry>
-                expand an alias
+                Print an expanded version of the given <literal>alias</literal>
+                to stdout and exit.
               </entry>
             </row>
             <row>
-              <entry>-a</entry>
+              <entry>-a <literal>file</literal> [<literal>...</literal>]</entry>
               <entry>
-                attach a file to a message
+                Attach one or more <literal>file</literal>s to a message. Must
+                be given at last and separate attachment(s) from address(es)
+                using the &apos;<emphasis role="bold">--</emphasis>&apos;
+                argument, e.g.:
+
+<screen>
+neomutt -a image.jpg -- address1
+neomutt -a image.jpg *.png -- address1 address2
+</screen>
+
               </entry>
             </row>
             <row>
-              <entry>-b</entry>
+              <entry>-B</entry>
               <entry>
-                specify a blind carbon-copy (Bcc) address
+                Run in batch mode (do not start the ncurses UI).
               </entry>
             </row>
             <row>
-              <entry>-c</entry>
+              <entry>-b <literal>address</literal></entry>
               <entry>
-                specify a carbon-copy (Cc) address
+                Specify a blind carbon copy (Bcc) recipient.
               </entry>
             </row>
             <row>
-              <entry>-d</entry>
+              <entry>-c <literal>address</literal></entry>
               <entry>
-                log debugging output to ~/.neomuttdebug0 if NeoMutt was
-                compiled with <literal>+debug</literal>; it can range from 1—5
-                and affects verbosity (a value of 2 is recommended)
+                Specify a carbon copy (Cc) recipient.
               </entry>
             </row>
             <row>
               <entry>-D</entry>
               <entry>
-                print the value of all NeoMutt variables to stdout
+                Dump all configuration variables as
+                &apos;<emphasis role="bold">name=value</emphasis>&apos; pair to
+                stdout.
               </entry>
             </row>
             <row>
               <entry>-D -S</entry>
               <entry>
-                like -D but hide the value of sensitive variables
+                Like <emphasis role="bold">-D</emphasis>, but hide the value of
+                sensitive variables.
+              </entry>
+            </row>
+            <row>
+              <entry>-d <literal>level</literal></entry>
+              <entry>
+                Log debugging output to file (by default to
+                &quot;<literal>~/.neomuttdebug0</literal>&quot;).
+                The <literal>level</literal> can range from 1&ndash;5 and
+                affects verbosity. A value of 2 is recommended. Using this
+                option along with <emphasis role="bold">-l</emphasis> is useful
+                to log the early startup process (before reading any
+                configuration and hence
+                <link linkend="debug-level">$debug_level</link> and
+                <link linkend="debug-file">$debug_file</link>).
               </entry>
             </row>
             <row>
               <entry>-E</entry>
               <entry>
-                edit the draft (-H) or include (-i) file
+                Edit
+                <literal>draft</literal> (<emphasis role="bold">-H</emphasis>) or
+                <literal>include</literal> (<emphasis role="bold">-i</emphasis>)
+                file during message composition.
               </entry>
             </row>
             <row>
-              <entry>-e</entry>
+              <entry>-e <literal>command</literal></entry>
               <entry>
-                specify a config command to be run after initialization files
-                are read
+                Specify a <literal>command</literal> to be run after initial
+                program configuration.
               </entry>
             </row>
             <row>
-              <entry>-f</entry>
+              <entry>-F <literal>config</literal></entry>
               <entry>
-                specify a mailbox to load
+                Specify an alternative initialization file to read. See section
+                <link linkend="configuration-files">Location of Initialization Files</link>
+                for a list of regular configuration files.
               </entry>
             </row>
             <row>
-              <entry>-F</entry>
+              <entry>-f <literal>mailbox</literal></entry>
               <entry>
-                specify an alternate file to read initialization commands
+                Specify a <literal>mailbox</literal> (as defined with
+                <command>mailboxes</command> command) to load.
+              </entry>
+            </row>
+            <row>
+              <entry>-G</entry>
+              <entry>
+                Start NeoMutt with a listing of subscribed newsgroups.
+              </entry>
+            </row>
+            <row>
+              <entry>-g <literal>server</literal></entry>
+              <entry>
+                Like <emphasis role="bold">-G</emphasis>, but start at
+                specified news <literal>server</literal>.
+              </entry>
+            </row>
+            <row>
+              <entry>-H <literal>draft</literal></entry>
+              <entry>
+                Specify a <literal>draft</literal> file with header and body
+                for message composing.
               </entry>
             </row>
             <row>
               <entry>-h</entry>
               <entry>
-                print help on command line options
+                Print this help message and exit.
               </entry>
             </row>
             <row>
-              <entry>-H</entry>
+              <entry>-i <literal>include</literal></entry>
               <entry>
-                specify a draft file from which to read a header and body
+                Specify an <literal>include</literal> file to be embedded in
+                the body of a message.
               </entry>
             </row>
             <row>
-              <entry>-i</entry>
+              <entry>-l <literal>file</literal></entry>
               <entry>
-                specify a file to include in a message composition
+                Specify a <literal>file</literal> for debugging output. This
+                overrules <link linkend="debug-file">$debug_file</link>
+                setting. NeoMutt keeps up to five debug logs ({
+                <literal>file</literal> |
+                <link linkend="debug-file">$debug_file</link> |
+                <literal>~/.neomuttdebug</literal> }[<literal>0-4</literal>])
+                before override the oldest file.
               </entry>
             </row>
             <row>
-              <entry>-m</entry>
+              <entry>-m <literal>type</literal></entry>
               <entry>
-                specify a default mailbox type
+                Specify a default mailbox format <literal>type</literal> for
+                newly created folders. The <literal>type</literal> is either
+                MH, MMDF, Maildir or mbox (case-insensitive).
               </entry>
             </row>
             <row>
               <entry>-n</entry>
               <entry>
-                do not read the system neomuttrc
+                Bypass loading of system-wide configuration file.
               </entry>
             </row>
             <row>
               <entry>-p</entry>
               <entry>
-                recall a postponed message
+                Resume a prior postponed message, if any.
               </entry>
             </row>
             <row>
-              <entry>-Q</entry>
+              <entry>-Q <literal>variable</literal></entry>
               <entry>
-                query a configuration variable
+                Query a configuration <literal>variable</literal> after all
+                configuration files and commands
+                (<emphasis role="bold">-e</emphasis>) have been processed and
+                print its value to stdout.
               </entry>
             </row>
             <row>
               <entry>-R</entry>
               <entry>
-                open mailbox in read-only mode
+                Open mailbox in read-only mode.
               </entry>
             </row>
             <row>
-              <entry>-s</entry>
+              <entry>-s <literal>subject</literal></entry>
               <entry>
-                specify a subject (enclose in quotes if it contains spaces)
+                Specify a <literal>subject</literal> (must be enclosed in
+                quotes if it has spaces).
               </entry>
             </row>
             <row>
               <entry>-v</entry>
               <entry>
-                show version number and compile-time definitions
+                Print the NeoMutt version and compile-time definitions and exit.
+              </entry>
+            </row>
+            <row>
+              <entry>-vv</entry>
+              <entry>
+                Print the NeoMutt license and copyright information and exit.
               </entry>
             </row>
             <row>
               <entry>-x</entry>
               <entry>
-                simulate the mailx(1) compose mode
+                Simulate the <emphasis role="bold">mailx</emphasis>(1) send
+                mode.
               </entry>
             </row>
             <row>
               <entry>-y</entry>
               <entry>
-                show a menu containing the files specified by the
-                <command>mailboxes</command> command
-              </entry>
-            </row>
-            <row>
-              <entry>-z</entry>
-              <entry>
-                exit immediately if there are no messages in the mailbox
+                Start NeoMutt with a listing of all defined mailboxes.
               </entry>
             </row>
             <row>
               <entry>-Z</entry>
               <entry>
-                open the first folder with new message, exit immediately if
-                none
+                Open the first mailbox with new message or exit immediately with
+                exit code 1 if none is found in all defined mailboxes.
+              </entry>
+            </row>
+            <row>
+              <entry>-z</entry>
+              <entry>
+                Open the first or specified
+                (<emphasis role="bold">-f</emphasis>) mailbox if it holds any
+                message or exit immediately with exit code 1 otherwise.
+              </entry>
+            </row>
+            <row>
+              <entry>--</entry>
+              <entry>
+                Special argument forces NeoMutt to stop option parsing and
+                treat remaining arguments as <literal>address</literal> even if
+                they start with a hyphen.
               </entry>
             </row>
           </tbody>
         </tgroup>
       </table>
       <para>
-        To read messages in a mailbox
+        To read messages in a mailbox or exit immediately
       </para>
       <cmdsynopsis>
         <command>neomutt</command>
@@ -16701,15 +16790,15 @@ folder-hook ^pop 'set read_inc=1'
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>neomuttrc</replaceable>
+          <literal>config</literal>
         </arg>
         <arg choice="opt">
           <option>-m</option>
-          <replaceable>type</replaceable>
+          <literal>type</literal>
         </arg>
         <arg choice="opt">
           <option>-f</option>
-          <replaceable>mailbox</replaceable>
+          <literal>mailbox</literal>
         </arg>
       </cmdsynopsis>
       <para>
@@ -16718,31 +16807,41 @@ folder-hook ^pop 'set read_inc=1'
       <cmdsynopsis>
         <command>neomutt</command>
         <arg choice="opt">
-          <option>-En</option>
+          <option>-Enx</option>
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>neomuttrc</replaceable>
+          <literal>config</literal>
+        </arg>
+        <arg choice="opt">
+          <option>-b</option>
+          <literal>address</literal>
         </arg>
         <arg choice="opt">
           <option>-c</option>
-          <replaceable>address</replaceable>
+          <literal>address</literal>
         </arg>
         <arg choice="opt">
-          <option>-Hi</option>
-          <replaceable>filename</replaceable>
+          <option>-H</option>
+          <literal>draft</literal>
+        </arg>
+        <arg choice="opt">
+          <option>-i</option>
+          <literal>include</literal>
         </arg>
         <arg choice="opt">
           <option>-s</option>
-          <replaceable>subject</replaceable>
+          <literal>subject</literal>
         </arg>
         <arg choice="opt">
-        <option>-a</option>
-        <replaceable>file</replaceable>
-        <arg choice="opt" rep="repeat" />--</arg>
-        <group choice="plain" rep="repeat">
+          <option>-a</option>
+          <literal>file</literal>
+          <arg choice="opt" rep="repeat" />
+          <option>--</option>
+        </arg>
+        <group choice="req" rep="repeat">
           <arg choice="plain">
-            <replaceable>address</replaceable>
+            <literal>address</literal>
           </arg>
           <arg choice="plain">
             <replaceable>mailto_url</replaceable>
@@ -16784,8 +16883,8 @@ neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat
       <para>
         All files passed with <literal>-a</literal> <emphasis>file</emphasis>
         will be attached as a MIME part to the message. To attach a single or
-        several files, use <quote>--</quote> to separate files and recipient
-        addresses:
+        several files, use <literal>--</literal> to separate files and
+        recipient addresses:
       </para>
       <screen>neomutt -a image.png -- some@one.org</screen>
       <para>
@@ -16843,7 +16942,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">address</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">address</replaceable>
+              <replaceable class="parameter">, address</replaceable>
             </arg>
             <command>
               <link linkend="alias">unalias</link>
@@ -16900,10 +16999,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="alternative-order">alternative_order</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="alternative-order">unalternative_order</link>
@@ -16913,7 +17012,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -16921,33 +17020,32 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="append-hook">append-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
               <link linkend="attachments">attachments</link>
             </command>
-            <arg choice="plain">
-              <replaceable>{ + | - }disposition</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable>+</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable>-</replaceable>
+              </arg>
+            </group>
+            <replaceable>disposition</replaceable>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
             <command>
               <link linkend="attachments">unattachments</link>
             </command>
-            <arg choice="plain">
-              <replaceable>{ + | - }disposition</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable>+</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable>-</replaceable>
+              </arg>
+            </group>
+            <replaceable>disposition</replaceable>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
@@ -16959,10 +17057,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="auto-view">auto_view</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="auto-view">unauto_view</link>
@@ -16972,7 +17070,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -16984,6 +17082,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <replaceable class="parameter">map</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,map</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
@@ -17004,18 +17105,14 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">charset</replaceable>
             </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
             <command>
-              <link linkend="close-hook">close-hook</link>
+              <link linkend="charset-hook">iconv-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">charset</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
+              <replaceable class="parameter">local-charset</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -17121,23 +17218,28 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="fcc-hook">fcc-hook</link>
+              <link linkend="default-save-mailbox">fcc-save-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
             <command>
-              <link linkend="fcc-save-hook">fcc-save-hook</link>
+              <link linkend="default-save-mailbox">fcc-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">mailbox</replaceable>
+            </arg>
+            <command>
+              <link linkend="default-save-mailbox">save-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17150,7 +17252,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="folder-hook">folder-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regex</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17225,28 +17327,28 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="iconv-hook">iconv-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">charset</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">local-charset</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
               <link linkend="ifdef">ifdef</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">item</replaceable>
+              <replaceable class="parameter">symbol</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">"config-command
-              [args]"</replaceable>
+              <replaceable class="parameter">&quot;config-command
+                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
             </arg>
+            <command>
+              <link linkend="ifdef">ifndef</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">symbol</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">&quot;config-command
+                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+            </arg>
+            <command>
+              <link linkend="ifdef">finish</link>
+            </command>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -17303,6 +17405,34 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>regex</replaceable>
               </arg>
             </group>
+            <command>
+              <link linkend="lists">subscribe</link>
+            </command>
+            <arg choice="opt" rep="repeat">
+              <option>-group</option>
+              <replaceable class="parameter">name</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">regex</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">regex</replaceable>
+            </arg>
+            <command>
+              <link linkend="lists">unsubscribe</link>
+            </command>
+            <arg choice="opt" rep="repeat">
+              <option>-group</option>
+              <replaceable>name</replaceable>
+            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable class="parameter">*</replaceable>
+              </arg>
+              <arg choice="plain" rep="repeat">
+                <replaceable class="parameter">regex</replaceable>
+              </arg>
+            </group>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -17312,6 +17442,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <replaceable class="parameter">menu</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,menu</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
@@ -17380,7 +17513,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mbox-hook">mbox-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regex</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17393,7 +17526,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="message-hook">message-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17406,10 +17539,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mime-lookup">mime_lookup</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="mime-lookup">unmime_lookup</link>
@@ -17419,7 +17552,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -17456,7 +17589,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mono">mono</link>
             </command>
             <arg choice="plain">
-              <option>index</option>
+              <option>index-object</option>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">attribute</replaceable>
@@ -17469,7 +17602,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <group choice="req">
               <arg choice="plain">
-                <option>index</option>
+                <option>index-object</option>
               </arg>
               <arg choice="plain">
                 <option>header</option>
@@ -17515,10 +17648,28 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="open-hook">open-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
+            </arg>
+            <command>
+              <link linkend="close-hook">close-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">regex</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
+            </arg>
+            <command>
+              <link linkend="append-hook">append-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">regex</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -17535,26 +17686,31 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="reply-hook">reply-hook</link>
+              <link linkend="send-hook">reply-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
             </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
             <command>
-              <link linkend="save-hook">save-hook</link>
+              <link linkend="send-hook">send-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">mailbox</replaceable>
+              <replaceable class="parameter">command</replaceable>
+            </arg>
+            <command>
+              <link linkend="send-hook">send2-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -17585,32 +17741,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="send-hook">send-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">command</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
-              <link linkend="send2-hook">send2-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">command</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
               <link linkend="set">set</link>
             </command>
             <group choice="req">
@@ -17622,6 +17752,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                   <arg choice="plain">
                     <option>inv</option>
                   </arg>
+                  <arg choice="plain">
+                    <option>&amp;</option>
+                  </arg>
+                  <arg choice="plain">
+                    <option>?</option>
+                  </arg>
                 </group>
                 <replaceable class="parameter">variable</replaceable>
               </arg>
@@ -17630,15 +17766,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </group>
             <arg choice="opt" rep="repeat"></arg>
-            <command>
-              <link linkend="set">toggle</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">variable</replaceable>
-            </arg>
-            <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">variable</replaceable>
-            </arg>
             <command>
               <link linkend="set">unset</link>
             </command>
@@ -17657,6 +17784,15 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="opt" rep="repeat">
               <replaceable class="parameter">variable</replaceable>
             </arg>
+            <command>
+              <link linkend="set">toggle</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">variable</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">variable</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -17664,12 +17800,14 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="setenv">setenv</link>
             </command>
-            <arg choice="plain">
-              <replaceable class="parameter">[?]variable</replaceable>
-            </arg>
-            <arg choice="opt">
-              <replaceable class="parameter">value</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable class="parameter">?variable</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable class="parameter">variable value</replaceable>
+              </arg>
+            </group>
             <command>
               <link linkend="setenv">unsetenv</link>
             </command>
@@ -17763,33 +17901,23 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="subscribe">subscribe</link>
+              <link linkend="global-hooks">timeout-hook</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable class="parameter">name</replaceable>
-            </arg>
             <arg choice="plain">
-              <replaceable class="parameter">regex</replaceable>
-            </arg>
-            <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">regex</replaceable>
+              <replaceable class="parameter">command</replaceable>
             </arg>
             <command>
-              <link linkend="subscribe">unsubscribe</link>
+              <link linkend="global-hooks">startup-hook</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable>name</replaceable>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
             </arg>
-            <group choice="req">
-              <arg choice="plain">
-                <replaceable class="parameter">*</replaceable>
-              </arg>
-              <arg choice="plain" rep="repeat">
-                <replaceable class="parameter">regex</replaceable>
-              </arg>
-            </group>
+            <command>
+              <link linkend="global-hooks">shutdown-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>

@@ -3,6 +3,7 @@
 
 PACKAGE=	@PACKAGE@
 PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_DATE=	@PACKAGE_DATE@
 
 # Build-time compiler and flags. These are used for building executables that
 # are only used at build-time, e.g., doc/makedoc. These are different from CC /
@@ -43,8 +44,9 @@ datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
 libdir=		@libdir@
-libexecdir=		@libexecdir@
+libexecdir=	@libexecdir@
 sysconfdir=	@SYSCONFDIR@
+textdomaindir=	@MUTTLOCALEDIR@
 
 # targets for specific subdirectories
 ALL_TARGETS=		@ALL_TARGETS@

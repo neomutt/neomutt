@@ -918,16 +918,16 @@ foreach dir $subdirs {
 }
 
 ###############################################################################
+# Define package timestamp (UTC) based on PACKAGE_VERSION for:
+# doc/neomuttrc.5, doc/neomutt.1
+define PACKAGE_DATE \
+  [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
+
+###############################################################################
 # Generate Makefile and config.h
 define PWD [pwd]
 make-template Makefile.autosetup Makefile
 make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
-
-###############################################################################
-# Generate doc/neomutt.1
-define bindir [get-define BINDIR]
-define docdir [get-define PKGDOCDIR]
-make-template doc/neomutt.man doc/neomutt.1
 
 ###############################################################################
 # Generate .clang_complete
