@@ -39,7 +39,7 @@ doc/makedoc
 doc/manual.txt
 doc/manual.xml
 doc/neomuttrc
-doc/neomuttrc.man
+doc/neomuttrc.5
 po/*.gmo
 po/*.mo
 po/POTFILES
