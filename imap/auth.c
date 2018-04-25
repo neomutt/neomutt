@@ -53,8 +53,6 @@ static const struct ImapAuth imap_authenticators[] = {
   { imap_auth_cram_md5, "cram-md5" },
 #endif
   { imap_auth_login, "login" },
-
-  { NULL, NULL },
 };
 
 /**
@@ -67,18 +65,17 @@ static const struct ImapAuth imap_authenticators[] = {
  */
 int imap_authenticate(struct ImapData *idata)
 {
-  const struct ImapAuth *authenticator = NULL;
-  char *methods = NULL;
-  char *method = NULL;
-  char *delim = NULL;
-  int r = IMAP_AUTH_UNAVAIL;
+  int r = IMAP_AUTH_FAILURE;
 
   if (ImapAuthenticators && *ImapAuthenticators)
   {
-    /* Try user-specified list of authentication methods */
-    methods = mutt_str_strdup(ImapAuthenticators);
+    mutt_debug(2, "Trying user-defined imap_authenticators.\n");
 
-    for (method = methods; method; method = delim)
+    /* Try user-specified list of authentication methods */
+    char *methods = mutt_str_strdup(ImapAuthenticators);
+    char *delim = NULL;
+
+    for (const char *method = methods; method; method = delim)
     {
       delim = strchr(method, ':');
       if (delim)
@@ -87,22 +84,19 @@ int imap_authenticate(struct ImapData *idata)
         continue;
 
       mutt_debug(2, "Trying method %s\n", method);
-      authenticator = imap_authenticators;
 
-      while (authenticator->authenticate)
+      for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
       {
-        if (!authenticator->method ||
-            (mutt_str_strcasecmp(authenticator->method, method) == 0))
+        const struct ImapAuth *auth = &imap_authenticators[i];
+        if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
         {
-          r = authenticator->authenticate(idata, method);
-          if (r != IMAP_AUTH_UNAVAIL)
+          r = auth->authenticate(idata, method);
+          if (r == IMAP_AUTH_SUCCESS)
           {
             FREE(&methods);
             return r;
           }
         }
-
-        authenticator++;
       }
     }
 
@@ -111,22 +105,16 @@ int imap_authenticate(struct ImapData *idata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(2, "Using any available method.\n");
-    authenticator = imap_authenticators;
+    mutt_debug(2, "Trying pre-defined imap_authenticators.\n");
 
-    while (authenticator->authenticate)
+    for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
     {
-      r = authenticator->authenticate(idata, NULL);
-      if (r != IMAP_AUTH_UNAVAIL)
+      r = imap_authenticators[i].authenticate(idata, NULL);
+      if (r == IMAP_AUTH_SUCCESS)
         return r;
-      authenticator++;
     }
   }
 
-  if (r == IMAP_AUTH_UNAVAIL)
-  {
-    mutt_error(_("No authenticators available"));
-  }
-
+  mutt_error(_("No authenticators available or wrong credentials"));
   return r;
 }
