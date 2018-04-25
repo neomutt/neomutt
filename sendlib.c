@@ -2042,7 +2042,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 #ifdef USE_NNTP
     if (!OptNewsSend)
 #endif
-      fputs("To: \n", fp);
+      fputs("To:\n", fp);
 
   if (env->cc)
   {
