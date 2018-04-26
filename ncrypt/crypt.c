@@ -353,20 +353,18 @@ int mutt_is_multipart_signed(struct Body *b)
 
 int mutt_is_multipart_encrypted(struct Body *b)
 {
-  if (WithCrypto & APPLICATION_PGP)
-  {
-    char *p = NULL;
+  if ((WithCrypto & APPLICATION_PGP) == 0)
+    return 0;
 
-    if (!b || b->type != TYPEMULTIPART || !b->subtype ||
-        (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
-        !(p = mutt_param_get(&b->parameter, "protocol")) ||
-        (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
-      return 0;
+  char *p = NULL;
 
-    return PGPENCRYPT;
-  }
+  if (!b || b->type != TYPEMULTIPART || !b->subtype ||
+      (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
+      !(p = mutt_param_get(&b->parameter, "protocol")) ||
+      (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
+    return 0;
 
-  return 0;
+  return PGPENCRYPT;
 }
 
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
@@ -499,62 +497,62 @@ int mutt_is_application_smime(struct Body *m)
   if (!m)
     return 0;
 
-  if ((m->type & TYPEAPPLICATION) && m->subtype)
+  if (((m->type & TYPEAPPLICATION) == 0) || !m->subtype)
+    return 0;
+
+  char *t = NULL;
+  bool complain = false;
+  /* S/MIME MIME types don't need x- anymore, see RFC2311 */
+  if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
+      (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
   {
-    char *t = NULL;
-    bool complain = false;
-    /* S/MIME MIME types don't need x- anymore, see RFC2311 */
-    if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
-        (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
+    t = mutt_param_get(&m->parameter, "smime-type");
+    if (t)
     {
-      t = mutt_param_get(&m->parameter, "smime-type");
-      if (t)
-      {
-        if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
-          return SMIMEENCRYPT;
-        else if (mutt_str_strcasecmp(t, "signed-data") == 0)
-          return (SMIMESIGN | SMIMEOPAQUE);
-        else
-          return 0;
-      }
-      /* Netscape 4.7 uses
-       * Content-Description: S/MIME Encrypted Message
-       * instead of Content-Type parameter
-       */
-      if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
+      if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
         return SMIMEENCRYPT;
-      complain = true;
-    }
-    else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
-      return 0;
-
-    t = mutt_param_get(&m->parameter, "name");
-
-    if (!t)
-      t = m->d_filename;
-    if (!t)
-      t = m->filename;
-    if (!t)
-    {
-      if (complain)
-        mutt_message(
-            _("S/MIME messages with no hints on content are unsupported."));
-      return 0;
-    }
-
-    /* no .p7c, .p10 support yet. */
-
-    size_t len = mutt_str_strlen(t) - 4;
-    if (len > 0 && *(t + len) == '.')
-    {
-      len++;
-      if (mutt_str_strcasecmp((t + len), "p7m") == 0)
-        /* Not sure if this is the correct thing to do, but
-         it's required for compatibility with Outlook */
+      else if (mutt_str_strcasecmp(t, "signed-data") == 0)
         return (SMIMESIGN | SMIMEOPAQUE);
-      else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
-        return (SMIMESIGN | SMIMEOPAQUE);
+      else
+        return 0;
     }
+    /* Netscape 4.7 uses
+      * Content-Description: S/MIME Encrypted Message
+      * instead of Content-Type parameter
+      */
+    if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
+      return SMIMEENCRYPT;
+    complain = true;
+  }
+  else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
+    return 0;
+
+  t = mutt_param_get(&m->parameter, "name");
+
+  if (!t)
+    t = m->d_filename;
+  if (!t)
+    t = m->filename;
+  if (!t)
+  {
+    if (complain)
+      mutt_message(
+          _("S/MIME messages with no hints on content are unsupported."));
+    return 0;
+  }
+
+  /* no .p7c, .p10 support yet. */
+
+  size_t len = mutt_str_strlen(t) - 4;
+  if (len > 0 && *(t + len) == '.')
+  {
+    len++;
+    if (mutt_str_strcasecmp((t + len), "p7m") == 0)
+      /* Not sure if this is the correct thing to do, but
+        it's required for compatibility with Outlook */
+      return (SMIMESIGN | SMIMEOPAQUE);
+    else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
+      return (SMIMESIGN | SMIMEOPAQUE);
   }
 
   return 0;

@@ -598,13 +598,13 @@ static notmuch_database_t *get_db(struct NmCtxData *data, bool writable)
 {
   if (!data)
     return NULL;
-  if (!data->db)
-  {
-    const char *db_filename = get_db_filename(data);
+  if (data->db)
+    return data->db;
 
-    if (db_filename)
-      data->db = do_database_open(db_filename, writable, true);
-  }
+  const char *db_filename = get_db_filename(data);
+  if (db_filename)
+    data->db = do_database_open(db_filename, writable, true);
+
   return data->db;
 }
 
@@ -616,20 +616,18 @@ static notmuch_database_t *get_db(struct NmCtxData *data, bool writable)
  */
 static int release_db(struct NmCtxData *data)
 {
-  if (data && data->db)
-  {
-    mutt_debug(1, "nm: db close\n");
-#ifdef NOTMUCH_API_3
-    notmuch_database_destroy(data->db);
-#else
-    notmuch_database_close(data->db);
-#endif
-    data->db = NULL;
-    data->longrun = false;
-    return 0;
-  }
+  if (!data || !data->db)
+    return -1;
 
-  return -1;
+  mutt_debug(1, "nm: db close\n");
+#ifdef NOTMUCH_API_3
+  notmuch_database_destroy(data->db);
+#else
+  notmuch_database_close(data->db);
+#endif
+  data->db = NULL;
+  data->longrun = false;
+  return 0;
 }
 
 /**
@@ -644,16 +642,14 @@ static int db_trans_begin(struct NmCtxData *data)
   if (!data || !data->db)
     return -1;
 
-  if (!data->trans)
-  {
-    mutt_debug(2, "nm: db trans start\n");
-    if (notmuch_database_begin_atomic(data->db))
-      return -1;
-    data->trans = true;
-    return 1;
-  }
+  if (data->trans)
+    return 0;
 
-  return 0;
+  mutt_debug(2, "nm: db trans start\n");
+  if (notmuch_database_begin_atomic(data->db))
+    return -1;
+  data->trans = true;
+  return 1;
 }
 
 /**
@@ -667,13 +663,13 @@ static int db_trans_end(struct NmCtxData *data)
   if (!data || !data->db)
     return -1;
 
-  if (data->trans)
-  {
-    mutt_debug(2, "nm: db trans end\n");
-    data->trans = false;
-    if (notmuch_database_end_atomic(data->db))
-      return -1;
-  }
+  if (!data->trans)
+    return 0;
+
+  mutt_debug(2, "nm: db trans end\n");
+  data->trans = false;
+  if (notmuch_database_end_atomic(data->db))
+    return -1;
 
   return 0;
 }
@@ -1724,24 +1720,25 @@ done:
  */
 static unsigned int count_query(notmuch_database_t *db, const char *qstr)
 {
-  unsigned int res = 0;
   notmuch_query_t *q = notmuch_query_create(db, qstr);
+  if (!q)
+    return 0;
 
-  if (q)
-  {
-    apply_exclude_tags(q);
+  unsigned int res = 0;
+
+  apply_exclude_tags(q);
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-    if (notmuch_query_count_messages(q, &res) != NOTMUCH_STATUS_SUCCESS)
-      res = 0; /* may not be defined on error */
+  if (notmuch_query_count_messages(q, &res) != NOTMUCH_STATUS_SUCCESS)
+    res = 0; /* may not be defined on error */
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-    if (notmuch_query_count_messages_st(q, &res) != NOTMUCH_STATUS_SUCCESS)
-      res = 0; /* may not be defined on error */
+  if (notmuch_query_count_messages_st(q, &res) != NOTMUCH_STATUS_SUCCESS)
+    res = 0; /* may not be defined on error */
 #else
-    res = notmuch_query_count_messages(q);
+  res = notmuch_query_count_messages(q);
 #endif
-    notmuch_query_destroy(q);
-    mutt_debug(1, "nm: count '%s', result=%d\n", qstr, res);
-  }
+  notmuch_query_destroy(q);
+  mutt_debug(1, "nm: count '%s', result=%d\n", qstr, res);
+
   return res;
 }
 

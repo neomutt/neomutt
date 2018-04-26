@@ -3080,16 +3080,16 @@ finish:
 
 static void matches_ensure_morespace(int current)
 {
-  if (current > MatchesListsize - 2)
-  {
-    int base_space = MAX(NUMVARS, NUMCOMMANDS) + 1;
-    int extra_space = MatchesListsize - base_space;
-    extra_space *= 2;
-    const int space = base_space + extra_space;
-    mutt_mem_realloc(&Matches, space * sizeof(char *));
-    memset(&Matches[current + 1], 0, space - current);
-    MatchesListsize = space;
-  }
+  if (current <= (MatchesListsize - 2))
+    return;
+
+  int base_space = MAX(NUMVARS, NUMCOMMANDS) + 1;
+  int extra_space = MatchesListsize - base_space;
+  extra_space *= 2;
+  const int space = base_space + extra_space;
+  mutt_mem_realloc(&Matches, space * sizeof(char *));
+  memset(&Matches[current + 1], 0, space - current);
+  MatchesListsize = space;
 }
 
 /**
@@ -3106,19 +3106,19 @@ static void candidate(char *dest, char *try, const char *src, size_t len)
   if (!dest || !try || !src)
     return;
 
-  if (strstr(src, try) == src)
+  if (strstr(src, try) != src)
+    return;
+
+  matches_ensure_morespace(NumMatched);
+  Matches[NumMatched++] = src;
+  if (dest[0] == 0)
+    mutt_str_strfcpy(dest, src, len);
+  else
   {
-    matches_ensure_morespace(NumMatched);
-    Matches[NumMatched++] = src;
-    if (dest[0] == 0)
-      mutt_str_strfcpy(dest, src, len);
-    else
-    {
-      int l;
-      for (l = 0; src[l] && src[l] == dest[l]; l++)
-        ;
-      dest[l] = '\0';
-    }
+    int l;
+    for (l = 0; src[l] && src[l] == dest[l]; l++)
+      ;
+    dest[l] = '\0';
   }
 }
 

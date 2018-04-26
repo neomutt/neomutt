@@ -107,16 +107,16 @@ static inline struct MhData *mh_data(struct Context *ctx)
 
 static void mhs_alloc(struct MhSequences *mhs, int i)
 {
-  if (i > mhs->max || !mhs->flags)
-  {
-    const int newmax = i + 128;
-    int j = mhs->flags ? mhs->max + 1 : 0;
-    mutt_mem_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
-    while (j <= newmax)
-      mhs->flags[j++] = 0;
+  if ((i <= mhs->max) && mhs->flags)
+    return;
 
-    mhs->max = newmax;
-  }
+  const int newmax = i + 128;
+  int j = mhs->flags ? mhs->max + 1 : 0;
+  mutt_mem_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
+  while (j <= newmax)
+    mhs->flags[j++] = 0;
+
+  mhs->max = newmax;
 }
 
 static void mhs_free_sequences(struct MhSequences *mhs)
@@ -818,13 +818,12 @@ struct Header *maildir_parse_message(int magic, const char *fname, bool is_old,
                                      struct Header *h)
 {
   FILE *f = fopen(fname, "r");
-  if (f)
-  {
-    h = maildir_parse_stream(magic, f, fname, is_old, h);
-    mutt_file_fclose(&f);
-    return h;
-  }
-  return NULL;
+  if (!f)
+    return NULL;
+
+  h = maildir_parse_stream(magic, f, fname, is_old, h);
+  mutt_file_fclose(&f);
+  return h;
 }
 
 static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,

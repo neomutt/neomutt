@@ -527,28 +527,28 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
-  {
-    struct Address *addr = NULL;
-    struct Envelope *env = hdr->env;
-    bool from_me = mutt_addr_is_user(env->from);
+  if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) == 0)
+    return;
 
-    if (!from_me && env->reply_to && env->reply_to->mailbox)
-      addr = env->reply_to;
-    else if (!from_me && env->from && env->from->mailbox)
-      addr = env->from;
-    else if (env->to && env->to->mailbox)
-      addr = env->to;
-    else if (env->cc && env->cc->mailbox)
-      addr = env->cc;
-    else
-      addr = NULL;
-    if (addr)
-    {
-      char tmp[_POSIX_PATH_MAX];
-      mutt_safe_path(tmp, sizeof(tmp), addr);
-      snprintf(path, pathlen, "=%s", tmp);
-    }
+  struct Address *addr = NULL;
+  struct Envelope *env = hdr->env;
+  bool from_me = mutt_addr_is_user(env->from);
+
+  if (!from_me && env->reply_to && env->reply_to->mailbox)
+    addr = env->reply_to;
+  else if (!from_me && env->from && env->from->mailbox)
+    addr = env->from;
+  else if (env->to && env->to->mailbox)
+    addr = env->to;
+  else if (env->cc && env->cc->mailbox)
+    addr = env->cc;
+  else
+    addr = NULL;
+  if (addr)
+  {
+    char tmp[_POSIX_PATH_MAX];
+    mutt_safe_path(tmp, sizeof(tmp), addr);
+    snprintf(path, pathlen, "=%s", tmp);
   }
 }
 

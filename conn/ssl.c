@@ -503,26 +503,27 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
  */
 static bool check_certificate_expiration(X509 *peercert, bool silent)
 {
-  if (SslVerifyDates != MUTT_NO)
+  if (SslVerifyDates == MUTT_NO)
+    return true;
+
+  if (X509_cmp_current_time(X509_get_notBefore(peercert)) >= 0)
   {
-    if (X509_cmp_current_time(X509_get_notBefore(peercert)) >= 0)
+    if (!silent)
     {
-      if (!silent)
-      {
-        mutt_debug(2, "Server certificate is not yet valid\n");
-        mutt_error(_("Server certificate is not yet valid"));
-      }
-      return false;
+      mutt_debug(2, "Server certificate is not yet valid\n");
+      mutt_error(_("Server certificate is not yet valid"));
     }
-    if (X509_cmp_current_time(X509_get_notAfter(peercert)) <= 0)
+    return false;
+  }
+
+  if (X509_cmp_current_time(X509_get_notAfter(peercert)) <= 0)
+  {
+    if (!silent)
     {
-      if (!silent)
-      {
-        mutt_debug(2, "Server certificate has expired\n");
-        mutt_error(_("Server certificate has expired"));
-      }
-      return false;
+      mutt_debug(2, "Server certificate has expired\n");
+      mutt_error(_("Server certificate has expired"));
     }
+    return false;
   }
 
   return true;
@@ -684,18 +685,18 @@ static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len
  */
 static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *conn)
 {
-  if (SslClientCert)
-  {
-    mutt_debug(2, "Using client certificate %s\n", SslClientCert);
-    SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
-    SSL_CTX_set_default_passwd_cb(ssldata->ctx, ssl_passwd_cb);
-    SSL_CTX_use_certificate_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
-    SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+  if (!SslClientCert)
+    return;
 
-    /* if we are using a client cert, SASL may expect an external auth name */
-    if (mutt_account_getuser(&conn->account) < 0)
-      mutt_debug(1, "Couldn't get user info\n");
-  }
+  mutt_debug(2, "Using client certificate %s\n", SslClientCert);
+  SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
+  SSL_CTX_set_default_passwd_cb(ssldata->ctx, ssl_passwd_cb);
+  SSL_CTX_use_certificate_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+  SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+
+  /* if we are using a client cert, SASL may expect an external auth name */
+  if (mutt_account_getuser(&conn->account) < 0)
+    mutt_debug(1, "Couldn't get user info\n");
 }
 
 /**
@@ -706,9 +707,7 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
  */
 static int ssl_socket_close_and_restore(struct Connection *conn)
 {
-  int rc;
-
-  rc = ssl_socket_close(conn);
+  int rc = ssl_socket_close(conn);
   conn->conn_read = raw_socket_read;
   conn->conn_write = raw_socket_write;
   conn->conn_close = raw_socket_close;

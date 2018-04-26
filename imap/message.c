@@ -579,18 +579,18 @@ static void set_changed_flag(struct Context *ctx, struct Header *h,
    * cmd_parse_fetch().  We don't want to count a local modification
    * to the header flag as a "change".
    */
-  if ((old_hd_flag != new_hd_flag) || (!local_changes))
-  {
-    if (new_hd_flag != h_flag)
-    {
-      if (server_changes)
-        *server_changes = 1;
+  if ((old_hd_flag == new_hd_flag) && local_changes)
+    return;
 
-      /* Local changes have priority */
-      if (!local_changes)
-        mutt_set_flag(ctx, h, flag_name, new_hd_flag);
-    }
-  }
+  if (new_hd_flag == h_flag)
+    return;
+
+  if (server_changes)
+    *server_changes = 1;
+
+  /* Local changes have priority */
+  if (!local_changes)
+    mutt_set_flag(ctx, h, flag_name, new_hd_flag);
 }
 
 /**
@@ -1580,13 +1580,13 @@ int imap_cache_clean(struct ImapData *idata)
  */
 void imap_free_header_data(struct ImapHeaderData **data)
 {
-  if (*data)
-  {
-    /* this should be safe even if the list wasn't used */
-    FREE(&((*data)->flags_system));
-    FREE(&((*data)->flags_remote));
-    FREE(data);
-  }
+  if (!data || !*data)
+    return;
+
+  /* this should be safe even if the list wasn't used */
+  FREE(&((*data)->flags_system));
+  FREE(&((*data)->flags_remote));
+  FREE(data);
 }
 
 /**

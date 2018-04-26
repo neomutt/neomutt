@@ -73,18 +73,18 @@ struct ConnectionList *mutt_socket_head(void)
  */
 static int socket_preconnect(void)
 {
-  if (mutt_str_strlen(Preconnect))
-  {
-    mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
-    const int rc = mutt_system(Preconnect);
-    mutt_debug(2, "Preconnect result: %d\n", rc);
-    if (rc != 0)
-    {
-      const int save_errno = errno;
-      mutt_perror(_("Preconnect command failed."));
+  if (!Preconnect)
+    return 0;
 
-      return save_errno;
-    }
+  mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
+  const int rc = mutt_system(Preconnect);
+  mutt_debug(2, "Preconnect result: %d\n", rc);
+  if (rc != 0)
+  {
+    const int save_errno = errno;
+    mutt_perror(_("Preconnect command failed."));
+
+    return save_errno;
   }
 
   return 0;

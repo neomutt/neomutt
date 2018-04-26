@@ -628,24 +628,24 @@ void mutt_shell_escape(void)
   char buf[LONG_STRING];
 
   buf[0] = '\0';
-  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) == 0)
-  {
-    if (!buf[0] && Shell)
-      mutt_str_strfcpy(buf, Shell, sizeof(buf));
-    if (buf[0])
-    {
-      mutt_window_clearline(MuttMessageWindow, 0);
-      mutt_endwin();
-      fflush(stdout);
-      int rc = mutt_system(buf);
-      if (rc == -1)
-        mutt_debug(1, "Error running \"%s\"!", buf);
+  if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) != 0)
+    return;
 
-      if ((rc != 0) || WaitKey)
-        mutt_any_key_to_continue(NULL);
-      mutt_buffy_check(true);
-    }
-  }
+  if (!buf[0] && Shell)
+    mutt_str_strfcpy(buf, Shell, sizeof(buf));
+  if (!buf[0])
+    return;
+
+  mutt_window_clearline(MuttMessageWindow, 0);
+  mutt_endwin();
+  fflush(stdout);
+  int rc = mutt_system(buf);
+  if (rc == -1)
+    mutt_debug(1, "Error running \"%s\"!", buf);
+
+  if ((rc != 0) || WaitKey)
+    mutt_any_key_to_continue(NULL);
+  mutt_buffy_check(true);
 }
 
 /**

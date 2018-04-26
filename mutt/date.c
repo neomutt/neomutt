@@ -160,12 +160,11 @@ static time_t compute_tz(time_t g, struct tm *utc)
  */
 static int is_leap_year_feb(struct tm *tm)
 {
-  if (tm->tm_mon == 1)
-  {
-    int y = tm->tm_year + 1900;
-    return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
-  }
-  return 0;
+  if (tm->tm_mon != 1)
+    return 0;
+
+  int y = tm->tm_year + 1900;
+  return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
 }
 
 /**

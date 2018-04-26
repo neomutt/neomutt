@@ -166,20 +166,20 @@ int mutt_file_fclose(FILE **f)
  */
 int mutt_file_fsync_close(FILE **f)
 {
+  if (!f || !*f)
+    return 0;
+
   int r = 0;
 
-  if (*f)
+  if (fflush(*f) || fsync(fileno(*f)))
   {
-    if (fflush(*f) || fsync(fileno(*f)))
-    {
-      int save_errno = errno;
-      r = -1;
-      mutt_file_fclose(f);
-      errno = save_errno;
-    }
-    else
-      r = mutt_file_fclose(f);
+    int save_errno = errno;
+    r = -1;
+    mutt_file_fclose(f);
+    errno = save_errno;
   }
+  else
+    r = mutt_file_fclose(f);
 
   return r;
 }
