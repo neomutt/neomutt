@@ -1306,11 +1306,11 @@ static void handle_confline(char *s, FILE *out)
       break;
   }
 
-  /* option name or UL &address */
+  /* option name or IP &address */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buf, "UL") == 0)
+  if (strcmp(buf, "IP") == 0)
   {
     s = get_token(buf, sizeof(buf), s);
     if (!s)
@@ -1325,14 +1325,14 @@ static void handle_confline(char *s, FILE *out)
   if (Debug)
     fprintf(stderr, "%s: Expecting default value.\n", Progname);
 
-  /* <default value> or UL <default value> */
+  /* <default value> or IP <default value> */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buf, "UL") == 0)
+  if (strcmp(buf, "IP") == 0)
   {
     if (Debug)
-      fprintf(stderr, "%s: Skipping UL.\n", Progname);
+      fprintf(stderr, "%s: Skipping IP.\n", Progname);
     s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
