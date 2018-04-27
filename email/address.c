@@ -926,22 +926,20 @@ bool mutt_addr_is_local(struct Address *a)
  * @param[out] domain Domain
  * @retval 0  Success
  * @retval -1 Error
+ *
+ * @warning The caller must free user and domain
  */
 int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
 {
-  static char *buf = NULL;
-  char *p = NULL;
+  char *ptr = strchr(mbox, '@');
 
-  mutt_str_replace(&buf, mbox);
-  if (!buf)
+  /* Fail if '@' is missing, at the start, or at the end */
+  if (!ptr || (ptr == mbox) || (ptr[1] == '\0'))
     return -1;
 
-  p = strchr(buf, '@');
-  if (!p || !p[1])
-    return -1;
-  *p = '\0';
-  *user = buf;
-  *domain = p + 1;
+  *user = mutt_str_substr_dup(mbox, ptr);
+  *domain = mutt_str_strdup(ptr + 1);
+
   return 0;
 }
 
@@ -992,11 +990,18 @@ const char *mutt_addr_for_display(struct Address *a)
     return a->mailbox;
 
   local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
+
+  FREE(&user);
+  FREE(&domain);
+
   if (!local_mailbox)
+  {
     return a->mailbox;
+  }
 
   mutt_str_replace(&buf, local_mailbox);
   FREE(&local_mailbox);
+
   return buf;
 }
 
@@ -1212,6 +1217,10 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
       continue;
 
     intl_mailbox = mutt_idna_local_to_intl(user, domain);
+
+    FREE(&user);
+    FREE(&domain);
+
     if (!intl_mailbox)
     {
       rc = -1;
@@ -1245,6 +1254,10 @@ int mutt_addrlist_to_local(struct Address *a)
       continue;
 
     local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
+
+    FREE(&user);
+    FREE(&domain);
+
     if (local_mailbox)
       mutt_addr_set_local(a, local_mailbox);
   }
