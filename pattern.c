@@ -842,6 +842,7 @@ static const struct PatternFlags
   { 'l', MUTT_LIST, 0, NULL },
   { 'L', MUTT_ADDRESS, 0, eat_regex },
   { 'm', MUTT_MESSAGE, 0, eat_message_range },
+  { 'M', MUTT_MIMETYPE, MUTT_FULL_MSG, eat_regex },
   { 'n', MUTT_SCORE, 0, eat_range },
   { 'N', MUTT_NEW, 0, NULL },
   { 'O', MUTT_OLD, 0, NULL },
@@ -1474,6 +1475,29 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
   return 0;
 }
 
+static int match_content_type(const struct Pattern *pat, struct Body *b)
+{
+  char buffer[STRING];
+  if (!b)
+    return 0;
+
+  snprintf(buffer, STRING, "%s/%s", TYPE(b), b->subtype);
+
+  if (patmatch(pat, buffer) == 0)
+    return 1;
+  if (match_content_type(pat, b->parts))
+    return 1;
+  if (match_content_type(pat, b->next))
+    return 1;
+  return 0;
+}
+
+static int match_mime_content_type(const struct Pattern *pat, struct Context *ctx, struct Header *hdr)
+{
+  mutt_parse_mime_message(ctx, hdr);
+  return match_content_type(pat, hdr->content);
+}
+
 /**
  * set_pattern_cache_value - Sets a value in the PatternCache cache entry
  *
@@ -1735,6 +1759,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         return (pat->not ^ (count >= pat->min &&
                             (pat->max == MUTT_MAXRANGE || count <= pat->max)));
       }
+    case MUTT_MIMETYPE:
+      if (!ctx)
+        return 0;
+      return (pat->not ^ match_mime_content_type (pat, ctx, h));
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
     case MUTT_BROKEN:

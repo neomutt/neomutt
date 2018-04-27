@@ -7308,6 +7308,13 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
+                <entry>~M <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain a mime Content-Type matching 
+                  <emphasis>EXPR</emphasis>
+                </entry>
+              </row>
+              <row>
                 <entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
                 <entry>
                   messages with a score in the range <emphasis>MIN</emphasis>
