@@ -117,6 +117,8 @@ static void usage(void)
   /* L10N: Try to limit to 80 columns
            If more space is needed add an indented line */
   puts(_("options:\n"
+         "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
+         "                remaining arguments as addresses even if they start with a dash\n"
          "  -A <alias>    Print an expanded version of the given alias to stdout and exit\n"
          "  -a <file>     Attach one or more files to a message (must be the last option)\n"
          "                Add any addresses after the '--' argument\n"
@@ -136,7 +138,7 @@ static void usage(void)
          "  -H <draft>    Specify a draft file with header and body for message composing\n"
          "  -h            Print this help message and exit\n"
          "  -i <include>  Specify an include file to be embedded in the body of a message\n"
-         "  -l <file>     Specify a file for debugging output (default ~/.neomuttdebug0)\n"
+         "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")\n"
          "  -m <type>     Specify a default mailbox format type for newly created folders\n"
          "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)\n"
          "  -n            Do not read the system-wide configuration file\n"
@@ -152,9 +154,7 @@ static void usage(void)
          "  -Z            Open the first mailbox with new message or exit immediately with\n"
          "                exit code 1 if none is found in all defined mailboxes\n"
          "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
-         "                or exit immediately with exit code 1 otherwise\n"
-         "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
-         "                remaining arguments as addresses even if they start with a dash"));
+         "                or exit immediately with exit code 1 otherwise"));
 }
 // clang-format on
 

@@ -159,13 +159,18 @@ HTML, and/or PDF format.
 .SH OPTIONS
 .\" --------------------------------------------------------------------
 .TP
-.BI \-A " alias"
-Print an expanded version of the given \fIalias\fP to stdout and exit.
+.BI \-\-
+Special argument forces NeoMutt to stop option parsing and treat remaining
+arguments as \fIaddress\fPes even if they start with a dash
 .
 .TP
-.BI \-a " file \fR[\fP.\|.\|.\&\fR]\fP"
-Attach one or more \fIfile\fPs to a message. Must be given at last and separate
-attachment(s) from address(es) using the \(aq\fB\-\-\fP\(aq argument, e.g.:
+.BI \-A " alias"
+Print an expanded version of the given \fIalias\fP to stdout and exit
+.
+.TP
+.BI \-a " file"
+Attach one or more \fIfile\fPs to a message (must be the last option). Add any
+addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RS
 .IP
 .EX
@@ -177,141 +182,137 @@ attachment(s) from address(es) using the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .
 .TP
 .BI \-B
-Run in batch mode (do not start the ncurses UI).
+Run in batch mode (do not start the ncurses UI)
 .
 .TP
 .BI \-b " address"
-Specify a blind carbon copy (Bcc) recipient.
+Specify a blind carbon copy (Bcc) recipient
 .
 .TP
 .BI \-c " address"
-Specify a carbon copy (Cc) recipient.
+Specify a carbon copy (Cc) recipient
 .
 .TP
 .BI \-D
 Dump all configuration variables as
 .RB \(aq name = value \(aq
-pair to stdout.
+pairs to stdout
 .
 .TP
 .BI \-D\ \-S
-Like \fB\-D\fP, but hide the value of sensitive variables.
+Like \fB\-D\fP, but hide the value of sensitive variables
 .
 .TP
 .BI \-d " level"
-Log debugging output to file (by default to \(dq\fI~/.neomuttdebug0\fP\(dq).
-The \fIlevel\fP can range from 1\(en5 and affects verbosity. A value of 2 is
-recommended.
+Log debugging output to a file (default is \(dq\fI~/.neomuttdebug0\fP\(dq).
+The \fIlevel\fP can range from 1\(en5 and affects verbosity (a value of 2 is
+recommended)
 .IP
 Using this option along with \fB\-l\fP is useful to log the early startup
 process (before reading any configuration and hence $debug_level and
-$debug_file).
+$debug_file)
 .
 .TP
 .BI \-E
 Edit \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file during message
-composition.
+composition
 .
 .TP
 .BI \-e " command"
-Specify a \fIcommand\fP to be run after initial program configuration.
+Specify a \fIcommand\fP to be run after reading the config files
 .
 .TP
 .BI \-F " config"
-Specify an alternative initialization file to read.
-.IP
-See \fIFILES\fP section below for a list of regular configuration files.
+Specify an alternative initialization file to read, see \fIFILES\fP section
+below for a list of regular configuration files
 .
 .TP
 .BI \-f " mailbox"
-Specify a \fImailbox\fP (as defined with \fBmailboxes\fP command) to load.
+Specify a \fImailbox\fP (as defined with \fBmailboxes\fP command) to load
 .
 .TP
 .BI \-G
-Start NeoMutt with a listing of subscribed newsgroups.
+Start NeoMutt with a listing of subscribed newsgroups
 .
 .TP
 .BI \-g " server"
-Like \fB\-G\fP, but start at specified news \fIserver\fP.
+Like \fB\-G\fP, but start at specified news \fIserver\fP
 .
 .TP
 .BI \-H " draft"
-Specify a \fIdraft\fP file with header and body for message composing.
+Specify a \fIdraft\fP file with header and body for message composing
 .
 .TP
 .BI \-h
-Print this help message and exit.
+Print this help message and exit
 .
 .TP
 .BI \-i " include"
-Specify an \fIinclude\fP file to be embedded in the body of a message.
+Specify an \fIinclude\fP file to be embedded in the body of a message
 .
 .TP
 .BI \-l " file"
-Specify a \fIfile\fP for debugging output.
+Specify a \fIfile\fP for debugging output (default
+\(dq\fI~/.neomuttdebug0\fP\(dq)
 .IP
-This overrules $debug_file setting. NeoMutt keeps up to five debug logs
+This overrules $debug_file setting and NeoMutt keeps up to five debug logs
 .RI "({ " file " | $debug_file | " ~/.neomuttdebug " }[" 0 - 4 ])
-before override the oldest file.
+before override the oldest file
 .
 .TP
 .BI \-m " type"
-Specify a default mailbox format \fItype\fP for newly created folders. The
-\fItype\fP is either MH, MMDF, Maildir or mbox (case-insensitive).
+Specify a default mailbox format \fItype\fP for newly created folders
+.IP
+The \fItype\fP is either MH, MMDF, Maildir or mbox (case-insensitive)
 .
 .TP
 .BI \-n
-Bypass loading of system-wide configuration file.
+Do not read the system-wide configuration file
 .
 .TP
 .BI \-p
-Resume a prior postponed message, if any.
+Resume a prior postponed message, if any
 .
 .TP
 .BI \-Q " variable"
-Query a configuration \fIvariable\fP after all configuration files and commands
-(\fB\-e\fP) have been processed and print its value to stdout.
+Query a configuration \fIvariable\fP and print its value to stdout (after the
+config has been read and any commands executed)
 .
 .TP
 .BI \-R
-Open mailbox in read-only mode.
+Open mailbox in read-only mode
 .
 .TP
 .BI \-s " subject"
-Specify a \fIsubject\fP (must be enclosed in quotes if it has spaces).
+Specify a \fIsubject\fP (must be enclosed in quotes if it has spaces)
 .
 .TP
 .BI \-v
-Print the NeoMutt version and compile-time definitions and exit.
+Print the NeoMutt version and compile-time definitions and exit
 .
 .TP
 .BI \-vv
-Print the NeoMutt license and copyright information and exit.
+Print the NeoMutt license and copyright information and exit
 .
 .TP
 .BI \-x
 Simulate the
 .BR mailx (1)
-send mode.
+send mode
 .
 .TP
 .BI \-y
-Start NeoMutt with a listing of all defined mailboxes.
+Start NeoMutt with a listing of all defined mailboxes
 .
 .TP
 .BI \-Z
 Open the first mailbox with new message or exit immediately with exit code 1 if
-none is found in all defined mailboxes.
+none is found in all defined mailboxes
 .
 .TP
 .BI \-z
 Open the first or specified (\fB\-f\fP) mailbox if it holds any message or exit
-immediately with exit code 1 otherwise.
-.
-.TP
-.BI \-\-
-Special argument forces NeoMutt to stop option parsing and treat remaining
-arguments as \fIaddress\fP even if they start with a hyphen.
+immediately with exit code 1 otherwise
 .
 .\" --------------------------------------------------------------------
 .SH ENVIRONMENT

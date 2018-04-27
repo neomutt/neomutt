@@ -16557,19 +16557,26 @@ folder-hook ^pop 'set read_inc=1'
           </thead>
           <tbody>
             <row>
-              <entry>-A <literal>alias</literal></entry>
+              <entry>--</entry>
               <entry>
-                Print an expanded version of the given <literal>alias</literal>
-                to stdout and exit.
+                Special argument forces NeoMutt to stop option parsing and
+                treat remaining arguments as <literal>address</literal>es even
+                if they start with a dash
               </entry>
             </row>
             <row>
-              <entry>-a <literal>file</literal> [<literal>...</literal>]</entry>
+              <entry>-A <literal>alias</literal></entry>
               <entry>
-                Attach one or more <literal>file</literal>s to a message. Must
-                be given at last and separate attachment(s) from address(es)
-                using the &apos;<emphasis role="bold">--</emphasis>&apos;
-                argument, e.g.:
+                Print an expanded version of the given <literal>alias</literal>
+                to stdout and exit
+              </entry>
+            </row>
+            <row>
+              <entry>-a <literal>file</literal></entry>
+              <entry>
+                Attach one or more <literal>file</literal>s to a message (must
+                be the last option). Add any addresses after the
+                &apos;<emphasis role="bold">--</emphasis>&apos; argument, e.g.:
 
 <screen>
 neomutt -a image.jpg -- address1
@@ -16581,48 +16588,48 @@ neomutt -a image.jpg *.png -- address1 address2
             <row>
               <entry>-B</entry>
               <entry>
-                Run in batch mode (do not start the ncurses UI).
+                Run in batch mode (do not start the ncurses UI)
               </entry>
             </row>
             <row>
               <entry>-b <literal>address</literal></entry>
               <entry>
-                Specify a blind carbon copy (Bcc) recipient.
+                Specify a blind carbon copy (Bcc) recipient
               </entry>
             </row>
             <row>
               <entry>-c <literal>address</literal></entry>
               <entry>
-                Specify a carbon copy (Cc) recipient.
+                Specify a carbon copy (Cc) recipient
               </entry>
             </row>
             <row>
               <entry>-D</entry>
               <entry>
-                Dump all configuration variables as
-                &apos;<emphasis role="bold">name=value</emphasis>&apos; pair to
-                stdout.
+                Dump all config variables as
+                &apos;<emphasis role="bold">name=value</emphasis>&apos; pairs
+                to stdout
               </entry>
             </row>
             <row>
               <entry>-D -S</entry>
               <entry>
                 Like <emphasis role="bold">-D</emphasis>, but hide the value of
-                sensitive variables.
+                sensitive variables
               </entry>
             </row>
             <row>
               <entry>-d <literal>level</literal></entry>
               <entry>
-                Log debugging output to file (by default to
+                Log debugging output to a file (default is
                 &quot;<literal>~/.neomuttdebug0</literal>&quot;).
                 The <literal>level</literal> can range from 1&ndash;5 and
-                affects verbosity. A value of 2 is recommended. Using this
+                affects verbosity (a value of 2 is recommended). Using this
                 option along with <emphasis role="bold">-l</emphasis> is useful
                 to log the early startup process (before reading any
                 configuration and hence
                 <link linkend="debug-level">$debug_level</link> and
-                <link linkend="debug-file">$debug_file</link>).
+                <link linkend="debug-file">$debug_file</link>)
               </entry>
             </row>
             <row>
@@ -16631,74 +16638,76 @@ neomutt -a image.jpg *.png -- address1 address2
                 Edit
                 <literal>draft</literal> (<emphasis role="bold">-H</emphasis>) or
                 <literal>include</literal> (<emphasis role="bold">-i</emphasis>)
-                file during message composition.
+                file during message composition
               </entry>
             </row>
             <row>
               <entry>-e <literal>command</literal></entry>
               <entry>
-                Specify a <literal>command</literal> to be run after initial
-                program configuration.
+                Specify a <literal>command</literal> to be run after reading
+                the config files
               </entry>
             </row>
             <row>
               <entry>-F <literal>config</literal></entry>
               <entry>
-                Specify an alternative initialization file to read. See section
+                Specify an alternative initialization file to read, see section
                 <link linkend="configuration-files">Location of Initialization Files</link>
-                for a list of regular configuration files.
+                for a list of regular configuration files
               </entry>
             </row>
             <row>
               <entry>-f <literal>mailbox</literal></entry>
               <entry>
                 Specify a <literal>mailbox</literal> (as defined with
-                <command>mailboxes</command> command) to load.
+                <link linkend="mailboxes"><command>mailboxes</command> command</link>)
+                to load
               </entry>
             </row>
             <row>
               <entry>-G</entry>
               <entry>
-                Start NeoMutt with a listing of subscribed newsgroups.
+                Start NeoMutt with a listing of subscribed newsgroups
               </entry>
             </row>
             <row>
               <entry>-g <literal>server</literal></entry>
               <entry>
                 Like <emphasis role="bold">-G</emphasis>, but start at
-                specified news <literal>server</literal>.
+                specified news <literal>server</literal>
               </entry>
             </row>
             <row>
               <entry>-H <literal>draft</literal></entry>
               <entry>
                 Specify a <literal>draft</literal> file with header and body
-                for message composing.
+                for message composing
               </entry>
             </row>
             <row>
               <entry>-h</entry>
               <entry>
-                Print this help message and exit.
+                Print this help message and exit
               </entry>
             </row>
             <row>
               <entry>-i <literal>include</literal></entry>
               <entry>
                 Specify an <literal>include</literal> file to be embedded in
-                the body of a message.
+                the body of a message
               </entry>
             </row>
             <row>
               <entry>-l <literal>file</literal></entry>
               <entry>
-                Specify a <literal>file</literal> for debugging output. This
+                Specify a <literal>file</literal> for debugging output (default
+                &quot;<literal>~/.neomuttdebug0</literal>&quot;). This
                 overrules <link linkend="debug-file">$debug_file</link>
-                setting. NeoMutt keeps up to five debug logs ({
+                setting and NeoMutt keeps up to five debug logs ({
                 <literal>file</literal> |
                 <link linkend="debug-file">$debug_file</link> |
                 <literal>~/.neomuttdebug</literal> }[<literal>0-4</literal>])
-                before override the oldest file.
+                before override the oldest file
               </entry>
             </row>
             <row>
@@ -16706,73 +16715,72 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>
                 Specify a default mailbox format <literal>type</literal> for
                 newly created folders. The <literal>type</literal> is either
-                MH, MMDF, Maildir or mbox (case-insensitive).
+                MH, MMDF, Maildir or mbox (case-insensitive)
               </entry>
             </row>
             <row>
               <entry>-n</entry>
               <entry>
-                Bypass loading of system-wide configuration file.
+                Do not read the system-wide configuration file
               </entry>
             </row>
             <row>
               <entry>-p</entry>
               <entry>
-                Resume a prior postponed message, if any.
+                Resume a prior postponed message, if any
               </entry>
             </row>
             <row>
               <entry>-Q <literal>variable</literal></entry>
               <entry>
-                Query a configuration <literal>variable</literal> after all
-                configuration files and commands
-                (<emphasis role="bold">-e</emphasis>) have been processed and
-                print its value to stdout.
+                Query a configuration <literal>variable</literal> and print its
+                value to stdout (after the config has been read and any
+                commands executed)
               </entry>
             </row>
             <row>
               <entry>-R</entry>
               <entry>
-                Open mailbox in read-only mode.
+                Open mailbox in read-only mode
               </entry>
             </row>
             <row>
               <entry>-s <literal>subject</literal></entry>
               <entry>
                 Specify a <literal>subject</literal> (must be enclosed in
-                quotes if it has spaces).
+                quotes if it has spaces)
               </entry>
             </row>
             <row>
               <entry>-v</entry>
               <entry>
-                Print the NeoMutt version and compile-time definitions and exit.
+                Print the NeoMutt version and compile-time definitions and exit
               </entry>
             </row>
             <row>
               <entry>-vv</entry>
               <entry>
-                Print the NeoMutt license and copyright information and exit.
+                Print the NeoMutt license and copyright information and exit
               </entry>
             </row>
             <row>
               <entry>-x</entry>
               <entry>
                 Simulate the <emphasis role="bold">mailx</emphasis>(1) send
-                mode.
+                mode
               </entry>
             </row>
             <row>
               <entry>-y</entry>
               <entry>
-                Start NeoMutt with a listing of all defined mailboxes.
+                Start NeoMutt with a listing of all defined mailboxes
               </entry>
             </row>
             <row>
               <entry>-Z</entry>
               <entry>
-                Open the first mailbox with new message or exit immediately with
-                exit code 1 if none is found in all defined mailboxes.
+                Open the first mailbox with new message or exit immediately
+                with exit code 1 if none is found in all defined mailboxes
               </entry>
             </row>
             <row>
@@ -16780,15 +16788,7 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>
                 Open the first or specified
                 (<emphasis role="bold">-f</emphasis>) mailbox if it holds any
-                message or exit immediately with exit code 1 otherwise.
-              </entry>
-            </row>
-            <row>
-              <entry>--</entry>
-              <entry>
-                Special argument forces NeoMutt to stop option parsing and
-                treat remaining arguments as <literal>address</literal> even if
-                they start with a hyphen.
+                message or exit immediately with exit code 1 otherwise
               </entry>
             </row>
           </tbody>
