@@ -166,20 +166,20 @@ int mutt_file_fclose(FILE **f)
  */
 int mutt_file_fsync_close(FILE **f)
 {
+  if (!f || !*f)
+    return 0;
+
   int r = 0;
 
-  if (*f)
+  if (fflush(*f) || fsync(fileno(*f)))
   {
-    if (fflush(*f) || fsync(fileno(*f)))
-    {
-      int save_errno = errno;
-      r = -1;
-      mutt_file_fclose(f);
-      errno = save_errno;
-    }
-    else
-      r = mutt_file_fclose(f);
+    int save_errno = errno;
+    r = -1;
+    mutt_file_fclose(f);
+    errno = save_errno;
   }
+  else
+    r = mutt_file_fclose(f);
 
   return r;
 }
@@ -853,10 +853,10 @@ int mutt_file_mkdir(const char *path, mode_t mode)
 
 /**
  * mutt_file_mkstemp_full - Create temporary file safely
- * @param file Temp filename
- * @param line Line number of caller
- * @param func Function name
- * @retval ptr FILE handle
+ * @param file Source file of caller
+ * @param line Source line number of caller
+ * @param func Function name of caller
+ * @retval ptr  FILE handle
  * @retval NULL Error, see errno
  *
  * Create and immediately unlink a temp file using mkstemp().
@@ -875,8 +875,11 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 
   FILE *fp = fdopen(fd, "w+");
 
-  if (unlink(name) && (errno != ENOENT))
+  if ((unlink(name) != 0) && (errno != ENOENT))
+  {
+    mutt_file_fclose(&fp);
     return NULL;
+  }
 
   MuttLogger(0, file, line, func, 1, "created temp file '%s'\n", name);
   return fp;
@@ -1102,7 +1105,6 @@ int mutt_file_lock(int fd, int excl, int timeout)
   int count;
   int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
-  int r = 0;
 
   struct flock lck;
 
@@ -1141,14 +1143,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
     sleep(1);
   }
 
-  /* release any other locks obtained in this routine */
-  if (r != 0)
-  {
-    lck.l_type = F_UNLCK;
-    fcntl(fd, F_SETLK, &lck);
-  }
-
-  return r;
+  return 0;
 }
 
 /**

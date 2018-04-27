@@ -317,19 +317,19 @@ bail:
  */
 void imap_utf_encode(struct ImapData *idata, char **s)
 {
-  if (Charset)
+  if (!Charset || !s)
+    return;
+
+  char *t = mutt_str_strdup(*s);
+  if (t && (mutt_ch_convert_string(&t, Charset, "utf-8", 0) == 0))
   {
-    char *t = mutt_str_strdup(*s);
-    if (t && mutt_ch_convert_string(&t, Charset, "utf-8", 0) == 0)
-    {
-      FREE(s);
-      if (idata->unicode)
-        *s = mutt_str_strdup(t);
-      else
-        *s = utf8_to_utf7(t, strlen(t), NULL, 0);
-    }
-    FREE(&t);
+    FREE(s);
+    if (idata->unicode)
+      *s = mutt_str_strdup(t);
+    else
+      *s = utf8_to_utf7(t, strlen(t), NULL, 0);
   }
+  FREE(&t);
 }
 
 /**
@@ -339,21 +339,21 @@ void imap_utf_encode(struct ImapData *idata, char **s)
  */
 void imap_utf_decode(struct ImapData *idata, char **s)
 {
+  if (!Charset)
+    return;
+
   char *t = NULL;
 
-  if (Charset)
-  {
-    if (idata->unicode)
-      t = mutt_str_strdup(*s);
-    else
-      t = utf7_to_utf8(*s, strlen(*s), 0, 0);
+  if (idata->unicode)
+    t = mutt_str_strdup(*s);
+  else
+    t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-    if (t && mutt_ch_convert_string(&t, "utf-8", Charset, 0) == 0)
-    {
-      FREE(s);
-      *s = t;
-    }
-    else
-      FREE(&t);
+  if (t && mutt_ch_convert_string(&t, "utf-8", Charset, 0) == 0)
+  {
+    FREE(s);
+    *s = t;
   }
+  else
+    FREE(&t);
 }

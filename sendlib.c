@@ -2213,25 +2213,23 @@ static void encode_headers(struct ListHead *h)
 
 const char *mutt_fqdn(short may_hide_host)
 {
-  char *p = NULL;
+  if (!Hostname || (Hostname[0] == '@'))
+    return NULL;
 
-  if (Hostname && Hostname[0] != '@')
+  char *p = Hostname;
+
+  if (may_hide_host && HiddenHost)
   {
-    p = Hostname;
+    p = strchr(Hostname, '.');
+    if (p)
+      p++;
 
-    if (may_hide_host && HiddenHost)
-    {
-      p = strchr(Hostname, '.');
-      if (p)
-        p++;
+    /* sanity check: don't hide the host if
+      * the fqdn is something like detebe.org.
+      */
 
-      /* sanity check: don't hide the host if
-       * the fqdn is something like detebe.org.
-       */
-
-      if (!p || !strchr(p, '.'))
-        p = Hostname;
-    }
+    if (!p || !strchr(p, '.'))
+      p = Hostname;
   }
 
   return p;

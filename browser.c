@@ -2082,7 +2082,10 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           if (buffy)
             examine_mailboxes(menu, &state);
           else
-            examine_directory(menu, &state, NULL, NULL);
+          {
+            if (examine_directory(menu, &state, NULL, NULL) == -1)
+              break;
+          }
           init_menu(&state, menu, title, sizeof(title), buffy);
         }
         break;

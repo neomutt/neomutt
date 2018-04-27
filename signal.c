@@ -173,17 +173,17 @@ void mutt_signal_init(void)
  */
 void mutt_block_signals(void)
 {
-  if (!OptSignalsBlocked)
-  {
-    sigemptyset(&Sigset);
-    sigaddset(&Sigset, SIGTERM);
-    sigaddset(&Sigset, SIGHUP);
-    sigaddset(&Sigset, SIGTSTP);
-    sigaddset(&Sigset, SIGINT);
-    sigaddset(&Sigset, SIGWINCH);
-    sigprocmask(SIG_BLOCK, &Sigset, 0);
-    OptSignalsBlocked = true;
-  }
+  if (OptSignalsBlocked)
+    return;
+
+  sigemptyset(&Sigset);
+  sigaddset(&Sigset, SIGTERM);
+  sigaddset(&Sigset, SIGHUP);
+  sigaddset(&Sigset, SIGTSTP);
+  sigaddset(&Sigset, SIGINT);
+  sigaddset(&Sigset, SIGWINCH);
+  sigprocmask(SIG_BLOCK, &Sigset, 0);
+  OptSignalsBlocked = true;
 }
 
 /**
@@ -191,56 +191,56 @@ void mutt_block_signals(void)
  */
 void mutt_unblock_signals(void)
 {
-  if (OptSignalsBlocked)
-  {
-    sigprocmask(SIG_UNBLOCK, &Sigset, 0);
-    OptSignalsBlocked = false;
-  }
+  if (!OptSignalsBlocked)
+    return;
+
+  sigprocmask(SIG_UNBLOCK, &Sigset, 0);
+  OptSignalsBlocked = false;
 }
 
 void mutt_block_signals_system(void)
 {
   struct sigaction sa;
 
-  if (!OptSysSignalsBlocked)
-  {
-    /* POSIX: ignore SIGINT and SIGQUIT & block SIGCHLD  before exec */
-    sa.sa_handler = SIG_IGN;
-    sa.sa_flags = 0;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGINT, &sa, &SysOldInt);
-    sigaction(SIGQUIT, &sa, &SysOldQuit);
+  if (OptSysSignalsBlocked)
+    return;
 
-    sigemptyset(&SigsetSys);
-    sigaddset(&SigsetSys, SIGCHLD);
-    sigprocmask(SIG_BLOCK, &SigsetSys, 0);
-    OptSysSignalsBlocked = true;
-  }
+  /* POSIX: ignore SIGINT and SIGQUIT & block SIGCHLD  before exec */
+  sa.sa_handler = SIG_IGN;
+  sa.sa_flags = 0;
+  sigemptyset(&sa.sa_mask);
+  sigaction(SIGINT, &sa, &SysOldInt);
+  sigaction(SIGQUIT, &sa, &SysOldQuit);
+
+  sigemptyset(&SigsetSys);
+  sigaddset(&SigsetSys, SIGCHLD);
+  sigprocmask(SIG_BLOCK, &SigsetSys, 0);
+  OptSysSignalsBlocked = true;
 }
 
 void mutt_unblock_signals_system(int catch)
 {
-  if (OptSysSignalsBlocked)
+  if (!OptSysSignalsBlocked)
+    return;
+
+  sigprocmask(SIG_UNBLOCK, &SigsetSys, NULL);
+  if (catch)
   {
-    sigprocmask(SIG_UNBLOCK, &SigsetSys, NULL);
-    if (catch)
-    {
-      sigaction(SIGQUIT, &SysOldQuit, NULL);
-      sigaction(SIGINT, &SysOldInt, NULL);
-    }
-    else
-    {
-      struct sigaction sa;
-
-      sa.sa_handler = SIG_DFL;
-      sigemptyset(&sa.sa_mask);
-      sa.sa_flags = 0;
-      sigaction(SIGQUIT, &sa, NULL);
-      sigaction(SIGINT, &sa, NULL);
-    }
-
-    OptSysSignalsBlocked = false;
+    sigaction(SIGQUIT, &SysOldQuit, NULL);
+    sigaction(SIGINT, &SysOldInt, NULL);
   }
+  else
+  {
+    struct sigaction sa;
+
+    sa.sa_handler = SIG_DFL;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGINT, &sa, NULL);
+  }
+
+  OptSysSignalsBlocked = false;
 }
 
 void mutt_allow_interrupt(int disposition)

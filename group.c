@@ -188,15 +188,14 @@ int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
 
 bool mutt_group_match(struct Group *g, const char *s)
 {
-  struct Address *ap = NULL;
+  if (!g || !s)
+    return false;
 
-  if (s && g)
-  {
-    if (mutt_regexlist_match(g->rs, s))
+  if (mutt_regexlist_match(g->rs, s))
+    return true;
+  for (struct Address *ap = g->as; ap; ap = ap->next)
+    if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
       return true;
-    for (ap = g->as; ap; ap = ap->next)
-      if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
-        return true;
-  }
+
   return false;
 }

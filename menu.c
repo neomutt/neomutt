@@ -472,20 +472,20 @@ void menu_redraw_current(struct Menu *menu)
 
 static void menu_redraw_prompt(struct Menu *menu)
 {
-  if (menu->dialog)
+  if (!menu || !menu->dialog)
+    return;
+
+  if (OptMsgErr)
   {
-    if (OptMsgErr)
-    {
-      mutt_sleep(1);
-      OptMsgErr = false;
-    }
-
-    if (ErrorBufMessage)
-      mutt_clear_error();
-
-    mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
-    mutt_window_clrtoeol(menu->messagewin);
+    mutt_sleep(1);
+    OptMsgErr = false;
   }
+
+  if (ErrorBufMessage)
+    mutt_clear_error();
+
+  mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
+  mutt_window_clrtoeol(menu->messagewin);
 }
 
 void menu_check_recenter(struct Menu *menu)
@@ -667,11 +667,11 @@ void menu_half_up(struct Menu *menu)
 
 void menu_top_page(struct Menu *menu)
 {
-  if (menu->current != menu->top)
-  {
-    menu->current = menu->top;
-    menu->redraw = REDRAW_MOTION;
-  }
+  if (menu->current == menu->top)
+    return;
+
+  menu->current = menu->top;
+  menu->redraw = REDRAW_MOTION;
 }
 
 void menu_bottom_page(struct Menu *menu)
