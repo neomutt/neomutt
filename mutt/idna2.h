@@ -33,5 +33,7 @@ extern bool IdnEncode;
 int   mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
 char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
 char *mutt_idna_local_to_intl(const char *user, const char *domain);
+const char *mutt_idna_print_version(void);
+
 
 #endif /* _MUTT_IDNA_H */

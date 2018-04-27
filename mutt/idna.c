@@ -35,6 +35,11 @@
 #include "logging.h"
 #include "memory.h"
 #include "string2.h"
+#ifdef HAVE_STRINGPREP_H
+#include <stringprep.h>
+#elif defined(HAVE_IDN_STRINGPREP_H)
+#include <idn/stringprep.h>
+#endif
 #ifdef HAVE_IDN2_H
 #include <idn2.h>
 #elif defined(HAVE_IDN_IDN2_H)
@@ -264,4 +269,25 @@ cleanup:
   FREE(&tmp);
 
   return mailbox;
+}
+
+/**
+ * mutt_idna_print_version - Create an IDN version string
+ * @retval str Version string
+ *
+ * @note This is a static string and must not be freed.
+ */
+const char *mutt_idna_print_version(void)
+{
+  static char vstring[STRING];
+
+#ifdef HAVE_IDN2_H
+  snprintf(vstring, sizeof(vstring), "libidn2: %s (compiled with %s)",
+           idn2_check_version(NULL), IDN2_VERSION);
+#elif defined(HAVE_LIBIDN)
+  snprintf(vstring, sizeof(vstring), "libidn: %s (compiled with %s)",
+           stringprep_check_version(NULL), STRINGPREP_VERSION);
+#endif
+
+  return vstring;
 }
