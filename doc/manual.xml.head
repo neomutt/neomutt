@@ -9781,18 +9781,29 @@ application/ms-excel;   open.pl %s
       <cmdsynopsis>
         <command>auto_view</command>
         <arg choice="plain">
-          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <replaceable>mime-type</replaceable>
+        </arg>
+        <arg choice="opt">
+          <replaceable>/mime-subtype</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <arg choice="plain">
+            <replaceable>mime-type</replaceable>
+          </arg>
+          <arg choice="opt">
+            <replaceable>/mime-subtype</replaceable>
+          </arg>
         </arg>
         <command>unauto_view</command>
         <group choice="req">
-          <arg choice="plain">
-            <replaceable>*</replaceable>
-          </arg>
-          <arg choice="plain" rep="repeat">
-            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <arg choice="plain">*</arg>
+          <arg choice="opt" rep="repeat">
+            <arg choice="plain">
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
+            </arg>
           </arg>
         </group>
       </cmdsynopsis>
@@ -9921,34 +9932,28 @@ alternative_order text/enriched text/plain text \
       <cmdsynopsis>
         <command>attachments</command>
         <group choice="req">
-          <arg choice="plain">
-            <replaceable>+</replaceable>
-          </arg>
-          <arg choice="plain">
-            <replaceable>-</replaceable>
-          </arg>
+          <arg choice="plain">+</arg>
+          <arg choice="plain">-</arg>
         </group>
-        <replaceable>disposition</replaceable>
+        <arg choice="plain">
+          <replaceable>disposition</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
         <command>unattachments</command>
         <group choice="req">
-          <arg choice="plain">
-            <replaceable>+</replaceable>
-          </arg>
-          <arg choice="plain">
-            <replaceable>-</replaceable>
-          </arg>
+          <arg choice="plain">+</arg>
+          <arg choice="plain">-</arg>
         </group>
-        <replaceable>disposition</replaceable>
+        <arg choice="plain">
+          <replaceable>disposition</replaceable>
+        </arg>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
         <command>attachments</command>
-        <arg choice="plain">
-          <replaceable>?</replaceable>
-        </arg>
+        <arg choice="plain">?</arg>
       </cmdsynopsis>
       <para>
         <emphasis>disposition</emphasis> is the attachment's
@@ -10050,18 +10055,29 @@ attachments  -I message/external-body
       <cmdsynopsis>
         <command>mime_lookup</command>
         <arg choice="plain">
-          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <replaceable>mime-type</replaceable>
+        </arg>
+        <arg choice="opt">
+          <replaceable>/mime-subtype</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <arg choice="plain">
+            <replaceable>mime-type</replaceable>
+          </arg>
+          <arg choice="opt">
+            <replaceable>/mime-subtype</replaceable>
+          </arg>
         </arg>
         <command>unmime_lookup</command>
         <group choice="req">
-          <arg choice="plain">
-            <replaceable>*</replaceable>
-          </arg>
-          <arg choice="plain" rep="repeat">
-            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+          <arg choice="plain">*</arg>
+          <arg choice="opt" rep="repeat">
+            <arg choice="plain">
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
+            </arg>
           </arg>
         </group>
       </cmdsynopsis>
@@ -12318,16 +12334,14 @@ ifndef sidebar finish
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">&quot;config-command
-              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+            <replaceable class="parameter">&quot;config-command [args...]&quot;</replaceable>
           </arg>
           <command>ifndef</command>
           <arg choice="plain">
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">&quot;config-command
-              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+            <replaceable class="parameter">&quot;config-command [args...]&quot;</replaceable>
           </arg>
           <command>finish</command>
         </cmdsynopsis>
@@ -16790,15 +16804,15 @@ neomutt -a image.jpg *.png -- address1 address2
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <literal>config</literal>
+          <replaceable>config</replaceable>
         </arg>
         <arg choice="opt">
           <option>-m</option>
-          <literal>type</literal>
+          <replaceable>type</replaceable>
         </arg>
         <arg choice="opt">
           <option>-f</option>
-          <literal>mailbox</literal>
+          <replaceable>mailbox</replaceable>
         </arg>
       </cmdsynopsis>
       <para>
@@ -16811,37 +16825,37 @@ neomutt -a image.jpg *.png -- address1 address2
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <literal>config</literal>
+          <replaceable>config</replaceable>
         </arg>
         <arg choice="opt">
           <option>-b</option>
-          <literal>address</literal>
+          <replaceable>address</replaceable>
         </arg>
         <arg choice="opt">
           <option>-c</option>
-          <literal>address</literal>
+          <replaceable>address</replaceable>
         </arg>
         <arg choice="opt">
           <option>-H</option>
-          <literal>draft</literal>
+          <replaceable>draft</replaceable>
         </arg>
         <arg choice="opt">
           <option>-i</option>
-          <literal>include</literal>
+          <replaceable>include</replaceable>
         </arg>
         <arg choice="opt">
           <option>-s</option>
-          <literal>subject</literal>
+          <replaceable>subject</replaceable>
         </arg>
         <arg choice="opt">
           <option>-a</option>
-          <literal>file</literal>
+          <replaceable>file</replaceable>
           <arg choice="opt" rep="repeat" />
           <option>--</option>
         </arg>
         <group choice="req" rep="repeat">
           <arg choice="plain">
-            <literal>address</literal>
+            <replaceable>address</replaceable>
           </arg>
           <arg choice="plain">
             <replaceable>mailto_url</replaceable>
@@ -16999,20 +17013,31 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="alternative-order">alternative_order</link>
             </command>
             <arg choice="plain">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">
+                <replaceable>mime-type</replaceable>
+              </arg>
+              <arg choice="opt">
+                <replaceable>/mime-subtype</replaceable>
+              </arg>
             </arg>
             <command>
               <link linkend="alternative-order">unalternative_order</link>
             </command>
             <group choice="req">
-              <arg choice="plain">
-                <replaceable>*</replaceable>
-              </arg>
-              <arg choice="plain" rep="repeat">
-                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">*</arg>
+              <arg choice="opt" rep="repeat">
+                <arg choice="plain">
+                  <replaceable>mime-type</replaceable>
+                </arg>
+                <arg choice="opt">
+                  <replaceable>/mime-subtype</replaceable>
+                </arg>
               </arg>
             </group>
           </cmdsynopsis>
@@ -17023,14 +17048,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="attachments">attachments</link>
             </command>
             <group choice="req">
-              <arg choice="plain">
-                <replaceable>+</replaceable>
-              </arg>
-              <arg choice="plain">
-                <replaceable>-</replaceable>
-              </arg>
+              <arg choice="plain">+</arg>
+              <arg choice="plain">-</arg>
             </group>
-            <replaceable>disposition</replaceable>
+            <arg choice="plain">
+              <replaceable>disposition</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
@@ -17038,14 +17061,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="attachments">unattachments</link>
             </command>
             <group choice="req">
-              <arg choice="plain">
-                <replaceable>+</replaceable>
-              </arg>
-              <arg choice="plain">
-                <replaceable>-</replaceable>
-              </arg>
+              <arg choice="plain">+</arg>
+              <arg choice="plain">-</arg>
             </group>
-            <replaceable>disposition</replaceable>
+            <arg choice="plain">
+              <replaceable>disposition</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
@@ -17057,20 +17078,31 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="auto-view">auto_view</link>
             </command>
             <arg choice="plain">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">
+                <replaceable>mime-type</replaceable>
+              </arg>
+              <arg choice="opt">
+                <replaceable>/mime-subtype</replaceable>
+              </arg>
             </arg>
             <command>
               <link linkend="auto-view">unauto_view</link>
             </command>
             <group choice="req">
-              <arg choice="plain">
-                <replaceable>*</replaceable>
-              </arg>
-              <arg choice="plain" rep="repeat">
-                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">*</arg>
+              <arg choice="opt" rep="repeat">
+                <arg choice="plain">
+                  <replaceable>mime-type</replaceable>
+                </arg>
+                <arg choice="opt">
+                  <replaceable>/mime-subtype</replaceable>
+                </arg>
               </arg>
             </group>
           </cmdsynopsis>
@@ -17333,8 +17365,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">symbol</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">&quot;config-command
-                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+              <replaceable class="parameter">&quot;config-command [args...]&quot;</replaceable>
             </arg>
             <command>
               <link linkend="ifdef">ifndef</link>
@@ -17343,8 +17374,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">symbol</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">&quot;config-command
-                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+              <replaceable class="parameter">&quot;config-command [args...]&quot;</replaceable>
             </arg>
             <command>
               <link linkend="ifdef">finish</link>
@@ -17539,20 +17569,31 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mime-lookup">mime_lookup</link>
             </command>
             <arg choice="plain">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">
+                <replaceable>mime-type</replaceable>
+              </arg>
+              <arg choice="opt">
+                <replaceable>/mime-subtype</replaceable>
+              </arg>
             </arg>
             <command>
               <link linkend="mime-lookup">unmime_lookup</link>
             </command>
             <group choice="req">
-              <arg choice="plain">
-                <replaceable>*</replaceable>
-              </arg>
-              <arg choice="plain" rep="repeat">
-                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
+              <arg choice="plain">*</arg>
+              <arg choice="opt" rep="repeat">
+                <arg choice="plain">
+                  <replaceable>mime-type</replaceable>
+                </arg>
+                <arg choice="opt">
+                  <replaceable>/mime-subtype</replaceable>
+                </arg>
               </arg>
             </group>
           </cmdsynopsis>

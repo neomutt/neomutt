@@ -774,7 +774,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If they are removed, then PGP and MIME headers will no longer be coloured.
   ** This can be fixed by adding this to your config:
-  ** \fCcolor body magenta default '^\[-- .* --\]$$'\fP.
+  ** \fCcolor body magenta default '^\[-- .* --\]$$$'\fP.
   */
   { "dsn_notify",       DT_STRING,  R_NONE, &DsnNotify, IP "" },
   /*
