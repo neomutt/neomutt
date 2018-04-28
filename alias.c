@@ -40,11 +40,13 @@
 
 struct Address *mutt_alias_lookup(const char *s)
 {
-  struct Alias *t = Aliases;
+  struct Alias *a = NULL;
 
-  for (; t; t = t->next)
-    if (mutt_str_strcasecmp(s, t->name) == 0)
-      return t->addr;
+  TAILQ_FOREACH(a, &Aliases, entries)
+  {
+    if (mutt_str_strcasecmp(s, a->name) == 0)
+      return a->addr;
+  }
   return NULL; /* no such alias */
 }
 
@@ -285,7 +287,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
 
 void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
 {
-  struct Alias *new = NULL, *t = NULL;
+  struct Alias *new = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
@@ -391,15 +393,7 @@ retry_name:
 
   mutt_alias_add_reverse(new);
 
-  t = Aliases;
-  if (t)
-  {
-    while (t->next)
-      t = t->next;
-    t->next = new;
-  }
-  else
-    Aliases = new;
+  TAILQ_INSERT_TAIL(&Aliases, new, entries);
 
   mutt_str_strfcpy(buf, NONULL(AliasFile), sizeof(buf));
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
@@ -509,17 +503,17 @@ void mutt_alias_delete_reverse(struct Alias *t)
  */
 int mutt_alias_complete(char *s, size_t buflen)
 {
-  struct Alias *a = Aliases;
-  struct Alias *a_list = NULL, *a_cur = NULL;
+  struct Alias *a = NULL, *tmp = NULL;
+  struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
   char bestname[HUGE_STRING];
 
   if (s[0] != 0) /* avoid empty string as strstr argument */
   {
     memset(bestname, 0, sizeof(bestname));
 
-    while (a)
+    TAILQ_FOREACH(a, &Aliases, entries)
     {
-      if (a->name && strstr(a->name, s) == a->name)
+      if (a->name && strncmp(a->name, s, strlen(s)) == 0)
       {
         if (!bestname[0]) /* init */
           mutt_str_strfcpy(bestname, a->name,
@@ -532,7 +526,6 @@ int mutt_alias_complete(char *s, size_t buflen)
           bestname[i] = '\0';
         }
       }
-      a = a->next;
     }
 
     if (bestname[0] != 0)
@@ -545,63 +538,37 @@ int mutt_alias_complete(char *s, size_t buflen)
       }
 
       /* build alias list and show it */
-
-      a = Aliases;
-      while (a)
+      TAILQ_FOREACH(a, &Aliases, entries)
       {
-        if (a->name && (strstr(a->name, s) == a->name))
+        if (a->name && strncmp(a->name, s, strlen(s)) == 0)
         {
-          if (!a_list) /* init */
-            a_cur = a_list = mutt_mem_malloc(sizeof(struct Alias));
-          else
-          {
-            a_cur->next = mutt_mem_malloc(sizeof(struct Alias));
-            a_cur = a_cur->next;
-          }
-          memcpy(a_cur, a, sizeof(struct Alias));
-          a_cur->next = NULL;
+          tmp = mutt_mem_calloc(1, sizeof(struct Alias));
+          memcpy(tmp, a, sizeof(struct Alias));
+          TAILQ_INSERT_TAIL(&a_list, tmp, entries);
         }
-        a = a->next;
       }
     }
   }
 
   bestname[0] = '\0';
-  mutt_alias_menu(bestname, sizeof(bestname), a_list ? a_list : Aliases);
+  mutt_alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
   if (bestname[0] != 0)
     mutt_str_strfcpy(s, bestname, buflen);
 
   /* free the alias list */
-  while (a_list)
+  TAILQ_FOREACH_SAFE(a, &a_list, entries, tmp)
   {
-    a_cur = a_list;
-    a_list = a_list->next;
-    FREE(&a_cur);
+    TAILQ_REMOVE(&a_list, a, entries);
+    FREE(&a);
   }
 
   /* remove any aliases marked for deletion */
-  a_list = NULL;
-  for (a_cur = Aliases; a_cur;)
+  TAILQ_FOREACH_SAFE(a, &Aliases, entries, tmp)
   {
-    if (a_cur->del)
+    if (a->del)
     {
-      if (a_list)
-        a_list->next = a_cur->next;
-      else
-        Aliases = a_cur->next;
-
-      a_cur->next = NULL;
-      mutt_alias_free(&a_cur);
-
-      if (a_list)
-        a_cur = a_list;
-      else
-        a_cur = Aliases;
-    }
-    else
-    {
-      a_list = a_cur;
-      a_cur = a_cur->next;
+      TAILQ_REMOVE(&Aliases, a, entries);
+      mutt_alias_free(&a);
     }
   }
 
@@ -683,15 +650,23 @@ bool mutt_addr_is_user(struct Address *addr)
 
 void mutt_alias_free(struct Alias **p)
 {
-  struct Alias *t = NULL;
+  struct Alias *a = NULL;
+  if (!p || !(*p))
+    return;
 
-  while (*p)
+  a = *p;
+  mutt_alias_delete_reverse(a);
+  FREE(&a->name);
+  mutt_addr_free(&a->addr);
+  FREE(&a);
+}
+
+void mutt_aliaslist_free(struct AliasList *a_list) {
+  struct Alias *a = NULL, *tmp = NULL;
+  TAILQ_FOREACH_SAFE(a, a_list, entries, tmp)
   {
-    t = *p;
-    *p = (*p)->next;
-    mutt_alias_delete_reverse(t);
-    FREE(&t->name);
-    mutt_addr_free(&t->addr);
-    FREE(&t);
+    TAILQ_REMOVE(a_list, a, entries);
+    mutt_alias_free(&a);
   }
+  TAILQ_INIT(a_list);
 }

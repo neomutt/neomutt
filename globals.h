@@ -95,7 +95,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 
 WHERE int CurrentMenu;
 
-WHERE struct Alias *Aliases;
+WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases));
 
 /* All the variables below are backing for config items */
 

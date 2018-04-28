@@ -24,6 +24,7 @@
 #define _MUTT_ALIAS_H
 
 #include <stdbool.h>
+#include "mutt/queue.h"
 
 struct Envelope;
 struct Address;
@@ -35,15 +36,19 @@ struct Alias
 {
   char *name;
   struct Address *addr;
-  struct Alias *next;
   bool tagged;
   bool del;
   short num;
+  TAILQ_ENTRY(Alias) entries;
 };
+
+TAILQ_HEAD(AliasList, Alias);
 
 void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
 void            mutt_alias_free(struct Alias **p);
 struct Address *mutt_alias_lookup(const char *s);
+
+void            mutt_aliaslist_free(struct AliasList *a_list);
 
 struct Address *mutt_expand_aliases(struct Address *a);
 void mutt_expand_aliases_env(struct Envelope *env);

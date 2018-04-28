@@ -763,7 +763,7 @@ void mutt_free_opts(void)
 
   FREE(&Matches);
 
-  mutt_alias_free(&Aliases);
+  mutt_aliaslist_free(&Aliases);
 
   mutt_regexlist_free(&Alternates);
   mutt_regexlist_free(&MailLists);
@@ -1795,7 +1795,7 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
 static int parse_unalias(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  struct Alias *tmp = NULL, *last = NULL;
+  struct Alias *a = NULL;
 
   do
   {
@@ -1805,36 +1805,34 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
     {
       if (CurrentMenu == MENU_ALIAS)
       {
-        for (tmp = Aliases; tmp; tmp = tmp->next)
-          tmp->del = true;
+        TAILQ_FOREACH(a, &Aliases, entries)
+        {
+          a->del = true;
+        }
         mutt_menu_set_current_redraw_full();
       }
       else
-        mutt_alias_free(&Aliases);
+        mutt_aliaslist_free(&Aliases);
       break;
     }
     else
     {
-      for (tmp = Aliases; tmp; tmp = tmp->next)
+      TAILQ_FOREACH(a, &Aliases, entries)
       {
-        if (mutt_str_strcasecmp(buf->data, tmp->name) == 0)
+        if (mutt_str_strcasecmp(buf->data, a->name) == 0)
         {
           if (CurrentMenu == MENU_ALIAS)
           {
-            tmp->del = true;
+            a->del = true;
             mutt_menu_set_current_redraw_full();
-            break;
           }
-
-          if (last)
-            last->next = tmp->next;
           else
-            Aliases = tmp->next;
-          tmp->next = NULL;
-          mutt_alias_free(&tmp);
+          {
+            TAILQ_REMOVE(&Aliases, a, entries);
+            mutt_alias_free(&a);
+          }
           break;
         }
-        last = tmp;
       }
     }
   } while (MoreArgs(s));
@@ -1844,8 +1842,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
 static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  struct Alias *tmp = Aliases;
-  struct Alias *last = NULL;
+  struct Alias *tmp = NULL;
   char *estr = NULL;
   struct GroupContext *gc = NULL;
 
@@ -1861,11 +1858,10 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     return -1;
 
   /* check to see if an alias with this name already exists */
-  for (; tmp; tmp = tmp->next)
+  TAILQ_FOREACH(tmp, &Aliases, entries)
   {
     if (mutt_str_strcasecmp(tmp->name, buf->data) == 0)
       break;
-    last = tmp;
   }
 
   if (!tmp)
@@ -1873,6 +1869,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     /* create a new alias */
     tmp = mutt_mem_calloc(1, sizeof(struct Alias));
     tmp->name = mutt_str_strdup(buf->data);
+    TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
       OptMenuCaller = true;
@@ -1891,10 +1888,6 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 
-  if (last)
-    last->next = tmp;
-  else
-    Aliases = tmp;
   if (mutt_addrlist_to_intl(tmp->addr, &estr))
   {
     snprintf(err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),

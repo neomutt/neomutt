@@ -201,20 +201,19 @@ static int alias_sort_address(const void *a, const void *b)
  * @param buflen Length of buffer
  * @param aliases Alias List
  */
-void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
+void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 {
-  struct Alias *aliasp = NULL;
+  struct Alias *a = NULL, *last = NULL;
   struct Menu *menu = NULL;
   struct Alias **AliasTable = NULL;
   int t = -1;
   int i;
   bool done = false;
-  int op;
   char helpstr[LONG_STRING];
 
   int omax;
 
-  if (!aliases)
+  if (TAILQ_EMPTY(aliases))
   {
     mutt_error(_("You have no aliases!"));
     return;
@@ -228,14 +227,13 @@ void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
   mutt_menu_push_current(menu);
 
 new_aliases:
-
   omax = menu->max;
 
   /* count the number of aliases */
-  for (aliasp = aliases; aliasp; aliasp = aliasp->next)
+  TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    aliasp->del = false;
-    aliasp->tagged = false;
+    a->del = false;
+    a->tagged = false;
     menu->max++;
   }
 
@@ -244,30 +242,36 @@ new_aliases:
   if (!AliasTable)
     return;
 
-  for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
+  if (last)
+    a = TAILQ_NEXT(last, entries);
+
+  i = omax;
+  TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    AliasTable[i] = aliasp;
-    aliases = aliasp;
+    AliasTable[i] = a;
+    i++;
   }
 
   if ((SortAlias & SORT_MASK) != SORT_ORDER)
   {
-    qsort(AliasTable, i, sizeof(struct Alias *),
+    qsort(AliasTable, menu->max, sizeof(struct Alias *),
           (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 
   for (i = 0; i < menu->max; i++)
     AliasTable[i]->num = i;
 
+  last = TAILQ_LAST(aliases, AliasList);
+
   while (!done)
   {
-    if (aliases->next)
+    int op;
+    if (TAILQ_NEXT(last, entries))
     {
       menu->redraw |= REDRAW_FULL;
-      aliases = aliases->next;
+      a = TAILQ_NEXT(last, entries);
       goto new_aliases;
     }
-
     switch ((op = mutt_menu_loop(menu)))
     {
       case OP_DELETE:
