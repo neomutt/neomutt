@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -39,7 +39,7 @@ msgid "Select"
 msgstr "Označiť"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -228,87 +228,87 @@ msgstr "Zrušiť odber."
 msgid "Catchup"
 msgstr "Zachytiť"
 
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nie je adresár."
 
-#: browser.c:1048
+#: browser.c:1049
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Odoberať skupinu správ"
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Skupina správ na servri [%s]"
 
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Schránky [%d]"
 
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Adresár [%s], maska súboru: %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "Nemožno prilepiť adresár!"
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "Maske nevyhovujú žiadne súbory"
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Vytváranie je podporovaná len pre IMAP mailboxy."
 
-#: browser.c:1630
+#: browser.c:1631
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Premenovanie je podporovaná len pre IMAP mailboxy."
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Mazanie je podporovaná len pre IMAP mailboxy."
 
-#: browser.c:1661 browser.c:1687
+#: browser.c:1662 browser.c:1688
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Mailbox bol vymazaný."
 
-#: browser.c:1666
+#: browser.c:1667
 msgid "Cannot delete root folder"
 msgstr "Nemožno vymazať koreňový adresár."
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Naozaj zmazať mailbox \"%s\"?"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "Mailbox bol vymazaný."
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "Mailbox nebol vymazaný."
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "Zmeň adresár na: "
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "Chyba pri čítaní adresára."
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "Maska súborov: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -318,7 +318,7 @@ msgstr ""
 "(n)etriediť? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -327,34 +327,34 @@ msgstr ""
 "Triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 #, fuzzy
 msgid "dazecwn"
 msgstr "dazecwn"
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "Nové meno súboru: "
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "Nemožno prezerať adresár"
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Chyba pri prezeraní súboru"
 
-#: browser.c:2112
+#: browser.c:2116
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Odoberať: "
 
-#: browser.c:2114
+#: browser.c:2118
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Neodoberať: "
 
-#: browser.c:2133
+#: browser.c:2137
 msgid "No newsgroups match the mask"
 msgstr "Žiadne diskusné skupiny nezodpovedajú maske."
 
@@ -394,7 +394,7 @@ msgstr "%s: príliš málo parametrov"
 msgid "%s: no such attribute"
 msgstr "%s: vlastnosť nenájdená"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -1034,7 +1034,7 @@ msgstr ""
 msgid "Error setting SASL external user name"
 msgstr ""
 
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr ""
 
@@ -1072,67 +1072,67 @@ msgstr "%s: súbor nemožno pripojiť"
 msgid "[invalid date]"
 msgstr "%s: neplatná hodnota"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr ""
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 #, fuzzy
 msgid "cannot get certificate subject"
 msgstr "nemožno určiť domáci adresár"
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 #, fuzzy
 msgid "cannot get certificate common name"
 msgstr "nemožno určiť domáci adresár"
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr ""
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr ""
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr ""
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr ""
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
@@ -1143,40 +1143,40 @@ msgstr ""
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1027
+#: conn/ssl.c:1026
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr ""
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: conn/ssl.c:1034
+#: conn/ssl.c:1033
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr ""
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "Koniec  "
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr ""
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Chyba v príkazovom riadku: %s\n"
@@ -1184,19 +1184,19 @@ msgstr "Chyba v príkazovom riadku: %s\n"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr ""
 
-#: conn/ssl.c:1286 curs_lib.c:406 mutt_logging.c:178
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
 msgstr "neznáma chyba"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1288
 #, fuzzy, c-format
 msgid "SSL failed: %s"
 msgstr "Prihlasovanie zlyhalo."
@@ -1204,12 +1204,12 @@ msgstr "Prihlasovanie zlyhalo."
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1317
+#: conn/ssl.c:1316
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "[-- Chyba: nemožno vytvoriť podproces OpenSSL! --]\n"
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2117,7 +2117,7 @@ msgstr "[-- Príloha %s/%s --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s nie je podporovaný --]\n"
 
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Nemožno vytvoriť súbor %s"
@@ -2348,12 +2348,12 @@ msgstr "Kopírujem do %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Spájam sa s %s..."
 
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Kopírujem do %s..."
 
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Spájam sa s %s..."
@@ -2674,26 +2674,26 @@ msgstr "Chyba v príkazovom riadku: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "nemožno určiť meno používateľa"
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4113
+#: init.c:4117
 #, fuzzy
 msgid "out of arguments"
 msgstr "príliš málo argumentov"
 
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Kopírujem do %s..."
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "Nebol uvedený predmet."
 
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Spájam sa s %s..."
@@ -2761,184 +2761,150 @@ msgstr "Zadajte ID kľúča pre %s: "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
 
-#: main.c:97
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"použitie: neomutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
-"<súb> ]\n"
-"       neomutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] "
-"[ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
-"       neomutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"prepínače:\n"
-"  -a <súbor>    pripojiť súbor do správy\n"
-"  -b <adresa>   uviesť adresy pre slepé kópie (BCC)\n"
-"  -c <adresa>   uviesť adresy pre kópie (CC)\n"
-"  -e <príkaz>   uviesť príkaz, ktorý sa vykoná po inicializácii\n"
-"  -f <súbor>    uviesť, ktorá schránka sa bude čítať\n"
-"  -F <súbor>    uviesť alternatívny súbor neomuttrc\n"
-"  -H <súbor>    uviesť súbor s návrhom, z ktorého sa prečíta hlavička\n"
-"  -i <súbor>    uviesť súbor, ktorý má NeoMutt vložiť do odpovede\n"
-"  -m <typ>      uviesť štandardný typ schránky\n"
-"  -n            spôsobuje, že NeoMutt nečíta systémový súbor neomuttrc\n"
-"  -p            vyvolať a odloženú správu\n"
-"  -R            otvoriť schránku len na čítanie\n"
-"  -s <predm>    uviesť predmet (musí byť v úvodzovkách, ak obsahuje "
-"medzery)\n"
-"  -v            zobraziť verziu a definície z času kompilácie\n"
-"  -x            simulovať mód posielania typický pre mailx\n"
-"  -y            vybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
-"  -z            ukončiť okamžite, ak v schránke nie sú žiadne správy\n"
-"  -Z            otvoriť prvú zložku s novými správami, okamžite skončiť, ak "
-"žiadne nie sú\n"
-"  -h            táto pomoc\n"
-"použitie: neomutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
-"<súb> ]\n"
-"       neomutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] "
-"[ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
-"       neomutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"prepínače:\n"
-"  -a <súbor>    pripojiť súbor do správy\n"
-"  -b <adresa>   uviesť adresy pre slepé kópie (BCC)\n"
-"  -c <adresa>   uviesť adresy pre kópie (CC)\n"
-"  -e <príkaz>   uviesť príkaz, ktorý sa vykoná po inicializácii\n"
-"  -f <súbor>    uviesť, ktorá schránka sa bude čítať\n"
-"  -F <súbor>    uviesť alternatívny súbor neomuttrc\n"
-"  -H <súbor>    uviesť súbor s návrhom, z ktorého sa prečíta hlavička\n"
-"  -i <súbor>    uviesť súbor, ktorý má NeoMutt vložiť do odpovede\n"
-"  -m <typ>      uviesť štandardný typ schránky\n"
-"  -n            spôsobuje, že NeoMutt nečíta systémový súbor neomuttrc\n"
-"  -p            vyvolať a odloženú správu\n"
-"  -R            otvoriť schránku len na čítanie\n"
-"  -s <predm>    uviesť predmet (musí byť v úvodzovkách, ak obsahuje "
-"medzery)\n"
-"  -v            zobraziť verziu a definície z času kompilácie\n"
-"  -x            simulovať mód posielania typický pre mailx\n"
-"  -y            vybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
-"  -z            ukončiť okamžite, ak v schránke nie sú žiadne správy\n"
-"  -Z            otvoriť prvú zložku s novými správami, okamžite skončiť, ak "
-"žiadne nie sú\n"
-"  -h            táto pomoc"
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "Chyba pri inicializácii terminálu."
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "nemožno určiť meno používateľa"
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "nemožno určiť domáci adresár"
 
-#: main.c:472
+#: main.c:493
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr ""
 
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "Neboli uvedení žiadni príjemcovia."
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr ""
 
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "Nemožno vytvoriť súbor %s"
 
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s: neschopný pripojiť súbor."
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "Žiadna schránka s novými správami."
 
-#: main.c:985
+#: main.c:1006
 #, fuzzy
 msgid "No incoming mailboxes defined."
 msgstr "cykluj medzi schránkami s príchodzími správami"
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdna."
 
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "Čítam %s..."
@@ -2974,7 +2940,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: schránka zmenená, ale žiadne zmenené správy! (oznámte túto chybu)"
 
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "Zapisujem %s..."
@@ -3059,34 +3025,34 @@ msgstr "Hľadanie nie je implementované pre toto menu."
 msgid "Tagging is not supported."
 msgstr "Označovanie nie je podporované."
 
-#: mh.c:1261
+#: mh.c:1260
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Vyberám %s..."
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Nemožno poslať správu."
 
-#: mh.c:1621
+#: mh.c:1620
 msgid "md_commit_message(): unable to set time on file"
 msgstr ""
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Vypršal čas na uzamknutie pomocou fcntl!"
 
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Čakám na zámok od fcntl... %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Vypršal čas na uzamknutie celého súboru!"
 
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Čakám na uzamknutie súboru... %d"
@@ -3215,7 +3181,7 @@ msgstr "Užívateľské meno na %s: "
 msgid "Password for %s@%s: "
 msgstr "Heslo pre %s@%s: "
 
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr ""
@@ -3251,17 +3217,17 @@ msgstr ""
 msgid "unknown reason"
 msgstr "neznáma chyba"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Posielam správu..."
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Táto správa nie je viditeľná."
 
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Nemožno vytvoriť súbor %s"
@@ -3384,33 +3350,33 @@ msgstr "Správa nemožno poslať vloženú do textu. Použiť PGP/MIME?"
 msgid "Mail not sent."
 msgstr "Pošta nebola odoslaná."
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "Pokúšam sa extrahovať PGP kľúče ...\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Pokúšam sa extrahovať S/MIME certifikáty ...\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
 msgstr "[--Chyba: neznámy multipart/signet protokol %s! --].\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr "[--Chyba: Nekonzistentná multipart/signet štruktúra! --].\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3419,7 +3385,7 @@ msgstr ""
 "[-- Upozornenie: Nemôžeme overiť %s/%s podpisy. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3427,7 +3393,7 @@ msgstr ""
 "[-- Nasledujúce udaje sú podpísané --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3435,7 +3401,7 @@ msgstr ""
 "[-- Upozornenie: Nemôžem nájsť žiadne podpisy. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -6083,7 +6049,7 @@ msgstr "Vytlačiť označené prílohy?"
 msgid "Print attachment?"
 msgstr "Vytlačiť prílohu?"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
@@ -6413,20 +6379,20 @@ msgstr "Nemožno poslať správu."
 msgid "Could not open %s"
 msgstr "Nemožno otvoriť %s"
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr ""
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr ""
@@ -6503,13 +6469,13 @@ msgstr "Táto správa nie je viditeľná."
 msgid "Parent message is not visible in this limited view."
 msgstr "Táto správa nie je viditeľná."
 
-#: version.c:78
+#: version.c:64
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
 
-#: version.c:82
+#: version.c:68
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6527,7 +6493,7 @@ msgid ""
 "02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6535,7 +6501,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:105
+#: version.c:91
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -6548,12 +6514,117 @@ msgstr ""
 "NeoMutt je voľný program, a ste vítaný šíriť ho\n"
 "za určitých podmienok; napíšte 'neomutt -vv' pre detaily.\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "Nastavenia kompilácie:"
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "Nastavenia kompilácie:"
 
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "použitie: neomutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
+#~ "<súb> ]\n"
+#~ "       neomutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H "
+#~ "<súb> ] [ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> "
+#~ "[ ... ]\n"
+#~ "       neomutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
+#~ "       neomutt -v[v]\n"
+#~ "\n"
+#~ "prepínače:\n"
+#~ "  -a <súbor>    pripojiť súbor do správy\n"
+#~ "  -b <adresa>   uviesť adresy pre slepé kópie (BCC)\n"
+#~ "  -c <adresa>   uviesť adresy pre kópie (CC)\n"
+#~ "  -e <príkaz>   uviesť príkaz, ktorý sa vykoná po inicializácii\n"
+#~ "  -f <súbor>    uviesť, ktorá schránka sa bude čítať\n"
+#~ "  -F <súbor>    uviesť alternatívny súbor neomuttrc\n"
+#~ "  -H <súbor>    uviesť súbor s návrhom, z ktorého sa prečíta hlavička\n"
+#~ "  -i <súbor>    uviesť súbor, ktorý má NeoMutt vložiť do odpovede\n"
+#~ "  -m <typ>      uviesť štandardný typ schránky\n"
+#~ "  -n            spôsobuje, že NeoMutt nečíta systémový súbor neomuttrc\n"
+#~ "  -p            vyvolať a odloženú správu\n"
+#~ "  -R            otvoriť schránku len na čítanie\n"
+#~ "  -s <predm>    uviesť predmet (musí byť v úvodzovkách, ak obsahuje "
+#~ "medzery)\n"
+#~ "  -v            zobraziť verziu a definície z času kompilácie\n"
+#~ "  -x            simulovať mód posielania typický pre mailx\n"
+#~ "  -y            vybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
+#~ "  -z            ukončiť okamžite, ak v schránke nie sú žiadne správy\n"
+#~ "  -Z            otvoriť prvú zložku s novými správami, okamžite skončiť, "
+#~ "ak žiadne nie sú\n"
+#~ "  -h            táto pomoc\n"
+#~ "použitie: neomutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
+#~ "<súb> ]\n"
+#~ "       neomutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H "
+#~ "<súb> ] [ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> "
+#~ "[ ... ]\n"
+#~ "       neomutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
+#~ "       neomutt -v[v]\n"
+#~ "\n"
+#~ "prepínače:\n"
+#~ "  -a <súbor>    pripojiť súbor do správy\n"
+#~ "  -b <adresa>   uviesť adresy pre slepé kópie (BCC)\n"
+#~ "  -c <adresa>   uviesť adresy pre kópie (CC)\n"
+#~ "  -e <príkaz>   uviesť príkaz, ktorý sa vykoná po inicializácii\n"
+#~ "  -f <súbor>    uviesť, ktorá schránka sa bude čítať\n"
+#~ "  -F <súbor>    uviesť alternatívny súbor neomuttrc\n"
+#~ "  -H <súbor>    uviesť súbor s návrhom, z ktorého sa prečíta hlavička\n"
+#~ "  -i <súbor>    uviesť súbor, ktorý má NeoMutt vložiť do odpovede\n"
+#~ "  -m <typ>      uviesť štandardný typ schránky\n"
+#~ "  -n            spôsobuje, že NeoMutt nečíta systémový súbor neomuttrc\n"
+#~ "  -p            vyvolať a odloženú správu\n"
+#~ "  -R            otvoriť schránku len na čítanie\n"
+#~ "  -s <predm>    uviesť predmet (musí byť v úvodzovkách, ak obsahuje "
+#~ "medzery)\n"
+#~ "  -v            zobraziť verziu a definície z času kompilácie\n"
+#~ "  -x            simulovať mód posielania typický pre mailx\n"
+#~ "  -y            vybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
+#~ "  -z            ukončiť okamžite, ak v schránke nie sú žiadne správy\n"
+#~ "  -Z            otvoriť prvú zložku s novými správami, okamžite skončiť, "
+#~ "ak žiadne nie sú\n"
+#~ "  -h            táto pomoc"

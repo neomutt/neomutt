@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -83,7 +83,7 @@ msgid "Select"
 msgstr "Selecciona"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -281,129 +281,129 @@ msgstr "S’ha dessubscrit de «%s»."
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "«%s» no és un directori."
 
-#: browser.c:1048
+#: browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "S’ha subscrit a «%s»."
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Bústies d’entrada [%d]"
 
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directori [%s], màscara de fitxers: %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "No es pot adjuntar un directori."
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Només es poden crear bústies amb IMAP."
 
-#: browser.c:1630
+#: browser.c:1631
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Només es poden reanomenar bústies amb IMAP."
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Només es poden esborrar bústies amb IMAP."
 
-#: browser.c:1661 browser.c:1687
+#: browser.c:1662 browser.c:1688
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "S’ha esborrat la bústia."
 
-#: browser.c:1666
+#: browser.c:1667
 msgid "Cannot delete root folder"
 msgstr "No es pot esborrar la carpeta arrel."
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Voleu realment esborrar la bústia «%s»?"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "S’ha esborrat la bústia."
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "No s’ha esborrat la bústia."
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "Canvia al directori: "
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "Error en llegir el directori."
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "Màscara de fitxers: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
 "count, or do(n)'t sort? "
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
 "do(n)'t sort? "
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "Nom del nou fitxer: "
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "No es pot veure un directori."
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Error en intentar veure el fitxer."
 
-#: browser.c:2112
+#: browser.c:2116
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "S’ha subscrit a «%s»."
 
-#: browser.c:2114
+#: browser.c:2118
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "S’ha dessubscrit de «%s»."
 
-#: browser.c:2133
+#: browser.c:2137
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
@@ -448,7 +448,7 @@ msgstr "%s: L’atribut no existeix."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -1089,7 +1089,7 @@ msgid "Error setting SASL external user name"
 msgstr "Error en establir el nom d’usuari extern de SASL."
 
 # «preconnect» és una ordre de configuració.  ivb
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "preconnect: L’ordre de preconnexió ha fallat."
 
@@ -1128,68 +1128,68 @@ msgstr "[no s’ha pogut calcular]"
 msgid "[invalid date]"
 msgstr "[la data no és vàlida]"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr "El certificat del servidor encara no és vàlid."
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr "El certificat del servidor ha expirat."
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr "No s’ha pogut extraure l’entropia suficient del vostre sistema."
 
 # Sí, «subjecte» del certificat X.509, no «assumpte».  ivb
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 msgid "cannot get certificate subject"
 msgstr "No s’ha pogut obtenir el subjecte del certificat."
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 msgid "cannot get certificate common name"
 msgstr "No s’ha pogut obtenir el nom comú del certificat."
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "El propietari del certificat no concorda amb l’amfitrió «%s»."
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr "Aquest certificat pertany a:"
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr "Aquest certificat ha estat lliurat per:"
 
 # ivb (2001/12/08)
 # ivb  A continuació ve el rang de validesa.
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr "Aquest certificat té validesa"
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr "   des de %s"
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr "     fins a %s"
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Empremta digital SHA1: %s"
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Empremta digital MD5: %s"
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, fuzzy, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Comprovació del certificat SSL (%d de %d en la cadena)"
@@ -1200,40 +1200,40 @@ msgstr "Comprovació del certificat SSL (%d de %d en la cadena)"
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1027
+#: conn/ssl.c:1026
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre, sal(t)a"
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
 
-#: conn/ssl.c:1034
+#: conn/ssl.c:1033
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(r)ebutja, accepta (u)na sola volta, sal(t)a"
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ebutja, accepta (u)na sola volta"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "Ix  "
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr "Avís: No s’ha pogut desar el certificat."
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "S’ha desat el certificat."
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "La comprovació de l’amfitrió del certificat ha fallat: %s"
@@ -1241,22 +1241,22 @@ msgstr "La comprovació de l’amfitrió del certificat ha fallat: %s"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Avís: No s’ha pogut establir el nom d’estació per a SNI de TLS."
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "Error d’E/S."
 
 # ivb (2001/12/08)
 # ivb  Apareix amb més coses al darrere (curs_lib) o entre parèntesis
 # ivb  (mutt_socket) -> sense punt.
-#: conn/ssl.c:1286 curs_lib.c:406 mutt_logging.c:178
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
 msgstr "Error desconegut"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "La negociació d’SSL ha fallat: %s"
@@ -1264,11 +1264,11 @@ msgstr "La negociació d’SSL ha fallat: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1317
+#: conn/ssl.c:1316
 msgid "Unable to create SSL context"
 msgstr "No s’ha pogut crear el context SSL."
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Avís: Error en habilitar «ssl_verify_partial_chains»."
 
@@ -2200,7 +2200,7 @@ msgstr "[-- Açò és una adjunció. --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- No es pot mostrar «%s/%s». --]\n"
 
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "No s’ha pogut crear «%s»: %s"
@@ -2428,12 +2428,12 @@ msgstr "S’està subscrivint a «%s»…"
 msgid "Unsubscribing from %s..."
 msgstr "S’està dessubscrivint de «%s»…"
 
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, c-format
 msgid "Subscribed to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "S’ha dessubscrit de «%s»."
@@ -2752,25 +2752,25 @@ msgstr "Error a la línia d’ordres: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr "-group: No s’ha indicat el nom del grup."
 
-#: init.c:4113
+#: init.c:4117
 msgid "out of arguments"
 msgstr "Manquen arguments."
 
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "No s’ha indicat l’assumpte."
 
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "S’ha dessubscrit de «%s»."
@@ -2836,165 +2836,152 @@ msgstr "Premeu les tecles («^G» avorta): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caràcter = %s, Octal = %o, Decimal = %d"
 
-#: main.c:97
-#, fuzzy
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
-"Forma d’ús: neomutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
-"            neomutt [OPCIÓ]… [-Ex] [-Hi FITXER] [-s ASSUMPTE] [-bc ADREÇA]\n"
-"                 [-a FITXER… --] ADREÇA…\n"
-"            neomutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER… "
-"--]\n"
-"                 ADREÇA… < MISSATGE\n"
-"            neomutt [OPCIÓ]… -p\n"
-"            neomutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
-"            neomutt [OPCIÓ]… -Q VAR [-Q VAR]…\n"
-"            neomutt [OPCIÓ]… -D\n"
-"            neomutt -v[v]\n"
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"Opcions:\n"
-"  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
-"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de "
-"fitxers\n"
-"                       ha d’acabar amb l’argument «--».\n"
-"  -b ADREÇA            Indica una ADREÇA per a la còpia oculta (Bcc).\n"
-"  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
-"  -D                   Mostra el valor de totes les variables a l’eixida\n"
-"                       estàndard.\n"
-"  -d NIVELL            Escriu els missatges de depuració a «~/."
-"neomuttdebug0».\n"
-"  -E                   Edita el fitxer esborrany (vegeu l’opció «-H») o el\n"
-"                       fitxer a incloure (opció «-i»).\n"
-"  -e ORDRE             Indica una ORDRE a executar abans de la "
-"inicialització.\n"
-"  -f FITXER            Indica quina bústia llegir.\n"
-"  -F FITXER            Indica un FITXER «neomuttrc» alternatiu.\n"
-"  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i "
-"el\n"
-"                       cos.\n"
-"  -i FITXER            Indica un FITXER que NeoMutt inclourà al cos.\n"
-"  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"
-"  -n                   Fa que NeoMutt no llija el fitxer «neomuttrc» del "
-"sistema.\n"
-"  -p                   Recupera un missatge posposat.\n"
-"  -Q VARIABLE          Consulta el valor d’una VARIABLE de configuració.\n"
-"  -R                   Obri la bústia en mode de només lectura.\n"
-"  -s ASSUMPTE          Indica l’ASSUMPTE (entre cometes si porta espais).\n"
-"  -v                   Mostra la versió i les definicions de compilació.\n"
-"  -x                   Simula el mode d’enviament de «mailx».\n"
-"  -y                   Selecciona una bústia de la vostra llista "
-"«mailboxes».\n"
-"  -z                   Ix immediatament si no hi ha missatges a la bústia.\n"
-"  -Z                   Obri la primera bústia amb missatges nous, eixint\n"
-"                       immediatament si no n’hi ha cap.\n"
-"  -h                   Mostra aquest missatge d’ajuda."
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "Error en inicialitzar el terminal."
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "No s’ha pogut determinar el nom de l’usuari."
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "No s’ha pogut determinar el directori de l’usuari."
 
-#: main.c:472
+#: main.c:493
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 
 # ivb (2001/11/27)
 # ivb  Es refereix al directori «Maildir» -> masculí.
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear-lo?"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:»."
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "No s’ha indicat cap destinatari."
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard."
 
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "No hi ha cap bústia amb correu nou."
 
-#: main.c:985
+#: main.c:1006
 msgid "No incoming mailboxes defined."
 msgstr "No s’ha definit cap bústia d’entrada."
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "La bústia és buida."
 
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "S’està llegint «%s»…"
@@ -3032,7 +3019,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: La bústia és modificada però els missatges no (informeu de l’error)."
 
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "S’està escrivint «%s»…"
@@ -3119,34 +3106,34 @@ msgid "Tagging is not supported."
 msgstr "No es pot marcar."
 
 # NeoMutt usa «scan» quan es refereix a llegir una bústia Maildir.  ivb
-#: mh.c:1261
+#: mh.c:1260
 #, c-format
 msgid "Scanning %s..."
 msgstr "S’està llegint «%s»…"
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 msgid "Could not flush message to disk"
 msgstr "No s’ha pogut escriure el missatge a disc."
 
-#: mh.c:1621
+#: mh.c:1620
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "S’ha excedit el temps d’espera en intentar blocar amb fcntl()."
 
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "S’està esperant el blocatge amb fcntl()… %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "S’ha excedit el temps d’espera en intentar blocar amb flock()."
 
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "S’està esperant el blocatge amb flock()… %d"
@@ -3285,7 +3272,7 @@ msgid "Password for %s@%s: "
 msgstr "Contrasenya per a «%s@%s»: "
 
 # Es refereix a l’esquema d’URL.  ivb
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
@@ -3325,18 +3312,18 @@ msgstr ""
 msgid "unknown reason"
 msgstr "Error desconegut"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "S’està enviant el missatge…"
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "No hi ha cap missatge nou en aquesta vista limitada."
 
 # Condició d’error.  ivb
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "No s’ha pogut obrir la carpeta paperera."
@@ -3481,19 +3468,19 @@ msgstr "No s’ha pogut enviar el missatge en línia.  Emprar PGP/MIME?"
 msgid "Mail not sent."
 msgstr "No s’ha enviat el missatge."
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "No es permeten els misatges S/MIME sense pistes sobre el contingut."
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "S’està provant d’extreure les claus PGP…\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "S’està provant d’extreure els certificats S/MIME…\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3502,7 +3489,7 @@ msgstr ""
 "[-- Error: El protocol «%s» de «multipart/signed» no és conegut. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
@@ -3511,7 +3498,7 @@ msgstr ""
 "[-- Error: L’estructura «multipart/signed» no és consistent. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3520,7 +3507,7 @@ msgstr ""
 "[-- Avís: No es poden verificar les signatures «%s/%s». --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3528,7 +3515,7 @@ msgstr ""
 "[-- Les dades següents es troben signades: --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3536,7 +3523,7 @@ msgstr ""
 "[-- Avís: No s’ha trobat cap signatura. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -6223,7 +6210,7 @@ msgstr "Voleu imprimir les adjuncions seleccionades?"
 msgid "Print attachment?"
 msgstr "Voleu imprimir l’adjunció?"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "No es permeten els canvis estructurals als adjunts desxifrats."
 
@@ -6554,23 +6541,23 @@ msgstr "No s’ha pogut enviar el missatge."
 msgid "Could not open %s"
 msgstr "No s’ha pogut obrir «%s»."
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr "$sendmail ha d’estar establerta per a poder enviar correu."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Error en enviar el missatge, el procés fill ha exit amb codi %d (%s).
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Error en enviament, el fill isqué amb codi %d (%s)."
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "En preparar «Resent-From»: L’IDN no és vàlid: %s"
@@ -6643,7 +6630,7 @@ msgstr "El missatge arrel no és visible en aquesta vista limitada."
 msgid "Parent message is not visible in this limited view."
 msgstr "El missatge pare no és visible en aquesta vista limitada."
 
-#: version.c:78
+#: version.c:64
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -6652,7 +6639,7 @@ msgstr ""
 "Moltes altres persones que no s’hi mencionen han contribuït amb codi,\n"
 "solucions i suggeriments.\n"
 
-#: version.c:82
+#: version.c:68
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6687,7 +6674,7 @@ msgstr ""
 "    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,\n"
 "    MA  02110-1301, USA.\n"
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6695,7 +6682,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:105
+#: version.c:91
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6709,12 +6696,112 @@ msgstr ""
 "sota\n"
 "certes condicions; useu «neomutt -vv» per a obtenir-ne més detalls.\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "Opcions de compilació:"
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
 
+#, fuzzy
+#~ msgid ""
+#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-"
+#~ "a <file> [...] --] <addr> [...]\n"
+#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+#~ "--] <addr> [...] < message\n"
+#~ "       neomutt [<options>] -p\n"
+#~ "       neomutt [<options>] -A <alias> [...]\n"
+#~ "       neomutt [<options>] -Q <query> [...]\n"
+#~ "       neomutt [<options>] -B\n"
+#~ "       neomutt [<options>] -D [-S]\n"
+#~ "       neomutt -v[v]\n"
+#~ msgstr ""
+#~ "Forma d’ús: neomutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
+#~ "            neomutt [OPCIÓ]… [-Ex] [-Hi FITXER] [-s ASSUMPTE] [-bc "
+#~ "ADREÇA]\n"
+#~ "                 [-a FITXER… --] ADREÇA…\n"
+#~ "            neomutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER… "
+#~ "--]\n"
+#~ "                 ADREÇA… < MISSATGE\n"
+#~ "            neomutt [OPCIÓ]… -p\n"
+#~ "            neomutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
+#~ "            neomutt [OPCIÓ]… -Q VAR [-Q VAR]…\n"
+#~ "            neomutt [OPCIÓ]… -D\n"
+#~ "            neomutt -v[v]\n"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "Opcions:\n"
+#~ "  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
+#~ "  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de "
+#~ "fitxers\n"
+#~ "                       ha d’acabar amb l’argument «--».\n"
+#~ "  -b ADREÇA            Indica una ADREÇA per a la còpia oculta (Bcc).\n"
+#~ "  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
+#~ "  -D                   Mostra el valor de totes les variables a l’eixida\n"
+#~ "                       estàndard.\n"
+#~ "  -d NIVELL            Escriu els missatges de depuració a «~/."
+#~ "neomuttdebug0».\n"
+#~ "  -E                   Edita el fitxer esborrany (vegeu l’opció «-H») o "
+#~ "el\n"
+#~ "                       fitxer a incloure (opció «-i»).\n"
+#~ "  -e ORDRE             Indica una ORDRE a executar abans de la "
+#~ "inicialització.\n"
+#~ "  -f FITXER            Indica quina bústia llegir.\n"
+#~ "  -F FITXER            Indica un FITXER «neomuttrc» alternatiu.\n"
+#~ "  -H FITXER            Indica un FITXER esborrany d’on llegir la "
+#~ "capçalera i el\n"
+#~ "                       cos.\n"
+#~ "  -i FITXER            Indica un FITXER que NeoMutt inclourà al cos.\n"
+#~ "  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"
+#~ "  -n                   Fa que NeoMutt no llija el fitxer «neomuttrc» del "
+#~ "sistema.\n"
+#~ "  -p                   Recupera un missatge posposat.\n"
+#~ "  -Q VARIABLE          Consulta el valor d’una VARIABLE de configuració.\n"
+#~ "  -R                   Obri la bústia en mode de només lectura.\n"
+#~ "  -s ASSUMPTE          Indica l’ASSUMPTE (entre cometes si porta "
+#~ "espais).\n"
+#~ "  -v                   Mostra la versió i les definicions de compilació.\n"
+#~ "  -x                   Simula el mode d’enviament de «mailx».\n"
+#~ "  -y                   Selecciona una bústia de la vostra llista "
+#~ "«mailboxes».\n"
+#~ "  -z                   Ix immediatament si no hi ha missatges a la "
+#~ "bústia.\n"
+#~ "  -Z                   Obri la primera bústia amb missatges nous, eixint\n"
+#~ "                       immediatament si no n’hi ha cap.\n"
+#~ "  -h                   Mostra aquest missatge d’ajuda."

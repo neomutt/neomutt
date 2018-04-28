@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2017-02-10 12:46+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -52,7 +52,7 @@ msgid "Select"
 msgstr "Sélectionner"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -251,89 +251,89 @@ msgid "Catchup"
 msgstr ""
 
 # , c-format
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
 
 # , c-format
-#: browser.c:1048
+#: browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Abonné à %s"
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
 # , c-format
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Boîtes aux lettres [%d]"
 
 # , c-format
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Répertoire [%s], masque de fichier : %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "Impossible d'attacher un répertoire !"
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "Aucun fichier ne correspond au masque"
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "La création n'est supportée que pour les boîtes aux lettres IMAP"
 
-#: browser.c:1630
+#: browser.c:1631
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Le renommage n'est supporté que pour les boîtes aux lettres IMAP"
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "La suppression n'est supportée que pour les boîtes aux lettres IMAP"
 
-#: browser.c:1661 browser.c:1687
+#: browser.c:1662 browser.c:1688
 msgid "Mailbox deletion failed."
 msgstr "La suppression de la boîte aux lettres a échoué."
 
-#: browser.c:1666
+#: browser.c:1667
 msgid "Cannot delete root folder"
 msgstr "Impossible de supprimer le dossier racine"
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "Boîte aux lettres supprimée."
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "Boîte aux lettres non supprimée."
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "Changement de répertoire vers : "
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "Erreur de lecture du répertoire."
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -341,7 +341,7 @@ msgid ""
 msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -349,35 +349,35 @@ msgid ""
 msgstr "Tri par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
 # , c-format
-#: browser.c:2112
+#: browser.c:2116
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Abonné à %s"
 
 # , c-format
-#: browser.c:2114
+#: browser.c:2118
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Désabonné de %s"
 
-#: browser.c:2133
+#: browser.c:2137
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Aucun fichier ne correspond au masque"
@@ -425,7 +425,7 @@ msgstr "%s : pas assez d'arguments"
 msgid "%s: no such attribute"
 msgstr "%s : cet attribut n'existe pas"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -1064,7 +1064,7 @@ msgstr "Erreur lors de la mise en place de la force de sécurité externe"
 msgid "Error setting SASL external user name"
 msgstr "Erreur lors de la mise en place du nom d'utilisateur externe"
 
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "La commande Preconnect a échoué."
 
@@ -1103,65 +1103,65 @@ msgstr "[impossible de calculer]"
 msgid "[invalid date]"
 msgstr "[date invalide]"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr "Le certificat du serveur n'est pas encore valide"
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr "Le certificat du serveur a expiré"
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr "Impossible de trouver assez d'entropie sur votre système"
 
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 msgid "cannot get certificate subject"
 msgstr "impossible d'obtenir le détenteur du certificat (subject)"
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 msgid "cannot get certificate common name"
 msgstr "impossible d'obtenir le nom du détenteur du certificat (CN)"
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "le propriétaire du certificat ne correspond pas au nom %s"
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr "Ce certificat appartient à :"
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ce certificat est valide"
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr "      à %s"
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Empreinte SHA1 : %s"
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Empreinte MD5 : %s"
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, fuzzy, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Vérification du certificat SSL (certificat %d sur %d dans la chaîne)"
@@ -1172,42 +1172,42 @@ msgstr "Vérification du certificat SSL (certificat %d sur %d dans la chaîne)"
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1027
+#: conn/ssl.c:1026
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: conn/ssl.c:1034
+#: conn/ssl.c:1033
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "Quitter  "
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr "Attention : le certificat n'a pas pu être sauvé"
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "Certificat sauvé"
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Échec de vérification de machine : %s"
@@ -1215,19 +1215,19 @@ msgstr "Échec de vérification de machine : %s"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "erreur d'E/S"
 
-#: conn/ssl.c:1286 curs_lib.c:406 mutt_logging.c:178
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
 msgstr "erreur inconnue"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL a échoué : %s"
@@ -1235,11 +1235,11 @@ msgstr "SSL a échoué : %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1317
+#: conn/ssl.c:1316
 msgid "Unable to create SSL context"
 msgstr "Impossible de créer le contexte SSL"
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2166,7 +2166,7 @@ msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s n'est pas disponible --]\n"
 
 # , c-format
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
@@ -2398,13 +2398,13 @@ msgid "Unsubscribing from %s..."
 msgstr "Désabonnement de %s..."
 
 # , c-format
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonné à %s"
 
 # , c-format
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Désabonné de %s"
@@ -2740,27 +2740,27 @@ msgstr "Erreur dans la ligne de commande : %s"
 msgid "unable to determine nodename via uname()"
 msgstr "impossible de déterminer nodename via uname()"
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr "-group: pas de nom de groupe"
 
-#: init.c:4113
+#: init.c:4117
 msgid "out of arguments"
 msgstr "pas assez d'arguments"
 
 # , c-format
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Abonné à %s"
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "Pas d'objet (Subject) spécifié."
 
 # , c-format
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Désabonné de %s"
@@ -2830,158 +2830,152 @@ msgstr "Entrez des touches (^G pour abandonner) : "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caractère = %s, Octal = %o, Decimal = %d"
 
-#: main.c:97
-#, fuzzy
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
-"usage : neomutt [<options>] [-z] [-f <fichier> | -yZ]\n"
-"        neomutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc "
-"<adresse>] [-a <fichier> [...] --] <adresse> [...]\n"
-"        neomutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> "
-"[...] --] <adresse> [...] < message\n"
-"        neomutt [<options>] -p\n"
-"        neomutt [<options>] -A <alias> [...]\n"
-"        neomutt [<options>] -Q <requête> [...]\n"
-"        neomutt [<options>] -D\n"
-"        neomutt -v[v]\n"
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"options :\n"
-"  -A <alias>    développe l'alias mentionné\n"
-"  -a <fich> [...] --    attache un ou plusieurs fichiers à ce message\n"
-"                la liste des fichiers doit se terminer par la séquence \"--"
-"\"\n"
-"  -b <adresse>  spécifie une adresse à mettre en copie aveugle (BCC)\n"
-"  -c <adresse>  spécifie une adresse à mettre en copie (CC)\n"
-"  -D            écrit la valeur de toutes les variables sur stdout\n"
-"  -d <niveau>   écrit les infos de débuggage dans ~/.neomuttdebug0\n"
-"  -E            éditer le fichier brouillon (-H) ou d'inclusion (-i)\n"
-"  -e <commande> spécifier une commande à exécuter après l'initialisation\n"
-"  -f <fich>     spécifier quelle boîte aux lettres lire\n"
-"  -F <fich>     spécifier un fichier neomuttrc alternatif\n"
-"  -H <fich>     spécifier un fichier de brouillon d'où lire en-têtes et "
-"corps\n"
-"  -i <fich>     spécifier un fichier que NeoMutt doit inclure dans le corps\n"
-"  -m <type>     spécifier un type de boîte aux lettres par défaut\n"
-"  -n            fait que NeoMutt ne lit pas le fichier neomuttrc système\n"
-"  -p            rappeler un message ajourné\n"
-"  -Q <variable> demande la valeur d'une variable de configuration\n"
-"  -R            ouvre la boîte aux lettres en mode lecture seule\n"
-"  -s <obj>      spécifie un objet (entre guillemets s'il contient des "
-"espaces)\n"
-"  -v            affiche la version et les définitions de compilation\n"
-"  -x            simule le mode d'envoi mailx\n"
-"  -y            sélectionne une BAL spécifiée dans votre liste 'mailboxes'\n"
-"  -z            quitte immédiatement si pas de nouveau message dans la BAL\n"
-"  -Z            ouvre le premier dossier ayant un nouveau message, quitte "
-"sinon\n"
-"  -h            ce message d'aide"
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: main.c:472
+#: main.c:493
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr "Erreur : la valeur '%s' est invalide pour -d."
 
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer ?"
 
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr "Impossible d'analyser le lien mailto:"
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "Pas de destinataire spécifié."
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
 # , c-format
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s : impossible d'attacher le fichier."
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:985
+#: main.c:1006
 msgid "No incoming mailboxes defined."
 msgstr "Pas de boîtes aux lettres recevant du courrier définies."
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
 # , c-format
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "Lecture de %s..."
@@ -3017,7 +3011,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync : BAL modifiée, mais pas de message modifié ! (signalez ce bug)"
 
 # , c-format
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "Écriture de %s..."
@@ -3102,36 +3096,36 @@ msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
 # , c-format
-#: mh.c:1261
+#: mh.c:1260
 #, c-format
 msgid "Scanning %s..."
 msgstr "Lecture de %s..."
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 msgid "Could not flush message to disk"
 msgstr "Impossible de recopier le message physiquement sur le disque (flush)"
 
-#: mh.c:1621
+#: mh.c:1620
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message() : impossible de fixer l'heure du fichier"
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Délai dépassé lors de la tentative de verrouillage fcntl !"
 
 # , c-format
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Attente du verrouillage fcntl... %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Délai dépassé lors de la tentative de verrouillage flock !"
 
 # , c-format
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Attente de la tentative de flock... %d"
@@ -3268,7 +3262,7 @@ msgstr "Nom d'utilisateur sur %s : "
 msgid "Password for %s@%s: "
 msgstr "Mot de passe pour %s@%s : "
 
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Impossible d'analyser le lien mailto:\n"
@@ -3305,18 +3299,18 @@ msgstr ""
 msgid "unknown reason"
 msgstr "erreur inconnue"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Envoi du message..."
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Pas de nouveaux messages dans cette vue limitée."
 
 # , c-format
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Impossible d'ouvrir la corbeille"
@@ -3444,20 +3438,20 @@ msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME ?"
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 "Les messages S/MIME sans indication sur le contenu ne sont pas supportés."
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "Tentative d'extraction de clés PGP...\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Tentative d'extraction de certificats S/MIME...\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3466,7 +3460,7 @@ msgstr ""
 "[-- Erreur : Protocole multipart/signed %s inconnu ! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
@@ -3474,7 +3468,7 @@ msgstr ""
 "[-- Erreur : Signature multipart/signed manquante ou mauvais format ! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3483,7 +3477,7 @@ msgstr ""
 "[-- Attention : les signatures %s/%s ne peuvent pas être vérifiées. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3491,7 +3485,7 @@ msgstr ""
 "[-- Les données suivantes sont signées --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3499,7 +3493,7 @@ msgstr ""
 "[-- Attention : Impossible de trouver des signatures. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -6106,7 +6100,7 @@ msgstr "Imprimer l(es) attachement(s) marqué(s) ?"
 msgid "Print attachment?"
 msgstr "Imprimer l'attachement ?"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
@@ -6434,21 +6428,21 @@ msgstr "Impossible d'envoyer le message."
 msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr "$sendmail doit avoir une valeur pour pouvoir envoyer du courrier."
 
 # , c-format
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Mauvais IDN %s lors de la préparation du resent-from."
@@ -6522,7 +6516,7 @@ msgstr "Le message racine n'est pas visible dans cette vue limitée."
 msgid "Parent message is not visible in this limited view."
 msgstr "Le message père n'est pas visible dans cette vue limitée."
 
-#: version.c:78
+#: version.c:64
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -6531,7 +6525,7 @@ msgstr ""
 "De nombreuses autres personnes non mentionnées ici ont fourni\n"
 "du code, des corrections et des suggestions.\n"
 
-#: version.c:82
+#: version.c:68
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6564,7 +6558,7 @@ msgstr ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
 "02110-1301, USA.\n"
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6572,7 +6566,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:105
+#: version.c:91
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6585,12 +6579,104 @@ msgstr ""
 "NeoMutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
 "sous certaines conditions ; tapez 'neomutt -vv' pour les détails.\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "Options de compilation :"
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "Options de compilation :"
 
+#, fuzzy
+#~ msgid ""
+#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-"
+#~ "a <file> [...] --] <addr> [...]\n"
+#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+#~ "--] <addr> [...] < message\n"
+#~ "       neomutt [<options>] -p\n"
+#~ "       neomutt [<options>] -A <alias> [...]\n"
+#~ "       neomutt [<options>] -Q <query> [...]\n"
+#~ "       neomutt [<options>] -B\n"
+#~ "       neomutt [<options>] -D [-S]\n"
+#~ "       neomutt -v[v]\n"
+#~ msgstr ""
+#~ "usage : neomutt [<options>] [-z] [-f <fichier> | -yZ]\n"
+#~ "        neomutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc "
+#~ "<adresse>] [-a <fichier> [...] --] <adresse> [...]\n"
+#~ "        neomutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a "
+#~ "<fichier> [...] --] <adresse> [...] < message\n"
+#~ "        neomutt [<options>] -p\n"
+#~ "        neomutt [<options>] -A <alias> [...]\n"
+#~ "        neomutt [<options>] -Q <requête> [...]\n"
+#~ "        neomutt [<options>] -D\n"
+#~ "        neomutt -v[v]\n"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "options :\n"
+#~ "  -A <alias>    développe l'alias mentionné\n"
+#~ "  -a <fich> [...] --    attache un ou plusieurs fichiers à ce message\n"
+#~ "                la liste des fichiers doit se terminer par la séquence "
+#~ "\"--\"\n"
+#~ "  -b <adresse>  spécifie une adresse à mettre en copie aveugle (BCC)\n"
+#~ "  -c <adresse>  spécifie une adresse à mettre en copie (CC)\n"
+#~ "  -D            écrit la valeur de toutes les variables sur stdout\n"
+#~ "  -d <niveau>   écrit les infos de débuggage dans ~/.neomuttdebug0\n"
+#~ "  -E            éditer le fichier brouillon (-H) ou d'inclusion (-i)\n"
+#~ "  -e <commande> spécifier une commande à exécuter après l'initialisation\n"
+#~ "  -f <fich>     spécifier quelle boîte aux lettres lire\n"
+#~ "  -F <fich>     spécifier un fichier neomuttrc alternatif\n"
+#~ "  -H <fich>     spécifier un fichier de brouillon d'où lire en-têtes et "
+#~ "corps\n"
+#~ "  -i <fich>     spécifier un fichier que NeoMutt doit inclure dans le "
+#~ "corps\n"
+#~ "  -m <type>     spécifier un type de boîte aux lettres par défaut\n"
+#~ "  -n            fait que NeoMutt ne lit pas le fichier neomuttrc système\n"
+#~ "  -p            rappeler un message ajourné\n"
+#~ "  -Q <variable> demande la valeur d'une variable de configuration\n"
+#~ "  -R            ouvre la boîte aux lettres en mode lecture seule\n"
+#~ "  -s <obj>      spécifie un objet (entre guillemets s'il contient des "
+#~ "espaces)\n"
+#~ "  -v            affiche la version et les définitions de compilation\n"
+#~ "  -x            simule le mode d'envoi mailx\n"
+#~ "  -y            sélectionne une BAL spécifiée dans votre liste "
+#~ "'mailboxes'\n"
+#~ "  -z            quitte immédiatement si pas de nouveau message dans la "
+#~ "BAL\n"
+#~ "  -Z            ouvre le premier dossier ayant un nouveau message, quitte "
+#~ "sinon\n"
+#~ "  -h            ce message d'aide"

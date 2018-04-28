@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -42,7 +42,7 @@ msgid "Select"
 msgstr "Избор"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -238,89 +238,89 @@ msgstr "Отписване от %s..."
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не е директория."
 
-#: browser.c:1048
+#: browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Абониране за %s..."
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Пощенски кутии [%d]"
 
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Директория [%s], Файлова маска: %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "Не може да прилагате директория!"
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "Няма файлове, отговарящи на маската"
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Само IMAP пощенски кутии могат да бъдат създавани"
 
-#: browser.c:1630
+#: browser.c:1631
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Само IMAP пощенски кутии могат да бъдат създавани"
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Само IMAP пощенски кутии могат да бъдат изтривани"
 
-#: browser.c:1661 browser.c:1687
+#: browser.c:1662 browser.c:1688
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Пощенската кутия е изтрита."
 
-#: browser.c:1666
+#: browser.c:1667
 #, fuzzy
 msgid "Cannot delete root folder"
 msgstr "Филтърът не може да бъде създаден"
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Действително ли желаете да изтриете пощенската кутия \"%s\"?"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "Пощенската кутия е изтрита."
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "Пощенската кутия не е изтрита."
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "Смяна на директорията: "
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "Грешка при четене на директорията."
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "Файлова маска: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -330,7 +330,7 @@ msgstr ""
 "подреждане(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -339,33 +339,33 @@ msgstr ""
 "Подреждане по дата(d), азбучен ред(a), размер(z) или без подреждане(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "Ново име за файла: "
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "Директорията не може да бъде показана"
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Грешка при показването на файла"
 
-#: browser.c:2112
+#: browser.c:2116
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Абониране за %s..."
 
-#: browser.c:2114
+#: browser.c:2118
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Отписване от %s..."
 
-#: browser.c:2133
+#: browser.c:2137
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Няма файлове, отговарящи на маската"
@@ -406,7 +406,7 @@ msgstr "%s: недостатъчно аргументи"
 msgid "%s: no such attribute"
 msgstr "%s: няма такъв атрибут"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -1034,7 +1034,7 @@ msgstr ""
 msgid "Error setting SASL external user name"
 msgstr ""
 
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "Грешка при изпълнение на командата \"preconnect\""
 
@@ -1071,67 +1071,67 @@ msgstr "[грешка при пресмятане]"
 msgid "[invalid date]"
 msgstr "[невалидна дата]"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr "Сертификатът на сървъра все още не е валиден"
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr "Сертификатът на сървъра е изтекъл"
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr "Недостатъчно ентропия в системата"
 
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 #, fuzzy
 msgid "cannot get certificate subject"
 msgstr "От сървъра не може да бъде получен сертификат"
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 #, fuzzy
 msgid "cannot get certificate common name"
 msgstr "От сървъра не може да бъде получен сертификат"
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "Притежателят на S/MIME сертификата не съвпада с подателя на писмото."
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr "Този сертификат принадлежи на:"
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr "Този сертификат е издаден от:"
 
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr "Този сертификат е валиден"
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr "   от %s"
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr "    до %s"
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, fuzzy, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
@@ -1142,42 +1142,42 @@ msgstr ""
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1027
+#: conn/ssl.c:1026
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
 
-#: conn/ssl.c:1034
+#: conn/ssl.c:1033
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o)"
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr "отхвърляне(r), еднократно приемане(o)"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "Изход"
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: Сертификатът не може да бъде запазен"
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "Сертификатът е записан"
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Сертификатът е записан"
@@ -1185,19 +1185,19 @@ msgstr "Сертификатът е записан"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "входно-изходна грешка"
 
-#: conn/ssl.c:1286 curs_lib.c:406 mutt_logging.c:178
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
 msgstr "непозната грешка"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Неуспешен SSL: %s"
@@ -1205,12 +1205,12 @@ msgstr "Неуспешен SSL: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1317
+#: conn/ssl.c:1316
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес!"
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2146,7 +2146,7 @@ msgstr "[-- Това %s/%s приложение --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s не се поддържа --]\n"
 
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Грешка при създаване на %s: %s."
@@ -2372,12 +2372,12 @@ msgstr "Абониране за %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Отписване от %s..."
 
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Абониране за %s..."
 
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отписване от %s..."
@@ -2694,26 +2694,26 @@ msgstr "Грешка в командния ред: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4113
+#: init.c:4117
 #, fuzzy
 msgid "out of arguments"
 msgstr "недостатъчно аргументи"
 
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Абониране за %s..."
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "Липсва тема."
 
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Отписване от %s..."
@@ -2779,199 +2779,149 @@ msgstr "Въведете ключове (^G за прекъсване): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Символ = %s, Осмично = %o, Десетично = %d"
 
-#: main.c:97
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"Стартиране: neomutt [ -nRyzZ ] [ -e <команда> ] [ -F <файл> ] [ -m <тип> ] "
-"[ -f <файл> ]\n"
-"       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -Q <запитване> [ -Q "
-"<запитване> ] [...]\n"
-"       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -A <псевдоним> [ -A "
-"<псевдоним> ] [...]\n"
-"       neomutt [ -nx ] [ -e <команда> ] [ -a <файл> ] [ -F <файл> ] [ -H "
-"<файл> ] [ -i <файл> ] [ -s <тема> ] [ -b <адрес> ] [ -c <адрес> ] <адрес> "
-"[ ... ]\n"
-"       neomutt [ -n ] [ -e <команда> ] [ -F <файл> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"Параметри:\n"
-"  -A <псевдоним>        разгръща указания псевдоним\n"
-"  -a <име на файл>      прилага файл към писмото\n"
-"  -b <адрес>    изпраща сляпо копие (BCC) към този адрес\n"
-"  -c <адрес>    изпраща копие (CC) към този адрес\n"
-"  -e <команда>  команда, която да бъде изпълнена след инициализация\n"
-"  -f <име на файл>      пощенска кутия, която да бъде заредена\n"
-"  -F <име на файл>      алтернативен neomuttrc файл\n"
-"  -H <име на файл>      файл със заглавна информация\n"
-"  -i <име на файл>      файл, който да бъде включен в отговора\n"
-"  -m <тип>      тип на пощенската кутия по подразбиране\n"
-"  -n            игнорира системния neomuttrc\n"
-"  -p            редактира чернова\n"
-"  -Q <variable> запитване за конфигурационна променлива\n"
-"  -R            отваря пощенската кутия само за четене\n"
-"  -s <тема>     тема на писмото (трябва да е в кавички, ако съдържа "
-"интервали)\n"
-"  -v            показва версията и дефинициите, използвани при компилация\n"
-"  -x            симулира mailx изпращане\n"
-"  -y            избор на файл от листа 'mailboxes'\n"
-"  -z            незабавен изход от програмата, ако в пощенската кутия няма "
-"писма\n"
-"  -Z            отваряне на първата пощенска кутия с нови писма или "
-"незабавен изход от програмата ако няма такава\n"
-"  -h            показва този текст\n"
-"Стартиране: neomutt [ -nRyzZ ] [ -e <команда> ] [ -F <файл> ] [ -m <тип> ] "
-"[ -f <файл> ]\n"
-"       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -Q <запитване> [ -Q "
-"<запитване> ] [...]\n"
-"       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -A <псевдоним> [ -A "
-"<псевдоним> ] [...]\n"
-"       neomutt [ -nx ] [ -e <команда> ] [ -a <файл> ] [ -F <файл> ] [ -H "
-"<файл> ] [ -i <файл> ] [ -s <тема> ] [ -b <адрес> ] [ -c <адрес> ] <адрес> "
-"[ ... ]\n"
-"       neomutt [ -n ] [ -e <команда> ] [ -F <файл> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"Параметри:\n"
-"  -A <псевдоним>        разгръща указания псевдоним\n"
-"  -a <име на файл>      прилага файл към писмото\n"
-"  -b <адрес>    изпраща сляпо копие (BCC) към този адрес\n"
-"  -c <адрес>    изпраща копие (CC) към този адрес\n"
-"  -e <команда>  команда, която да бъде изпълнена след инициализация\n"
-"  -f <име на файл>      пощенска кутия, която да бъде заредена\n"
-"  -F <име на файл>      алтернативен neomuttrc файл\n"
-"  -H <име на файл>      файл със заглавна информация\n"
-"  -i <име на файл>      файл, който да бъде включен в отговора\n"
-"  -m <тип>      тип на пощенската кутия по подразбиране\n"
-"  -n            игнорира системния neomuttrc\n"
-"  -p            редактира чернова\n"
-"  -Q <variable> запитване за конфигурационна променлива\n"
-"  -R            отваря пощенската кутия само за четене\n"
-"  -s <тема>     тема на писмото (трябва да е в кавички, ако съдържа "
-"интервали)\n"
-"  -v            показва версията и дефинициите, използвани при компилация\n"
-"  -x            симулира mailx изпращане\n"
-"  -y            избор на файл от листа 'mailboxes'\n"
-"  -z            незабавен изход от програмата, ако в пощенската кутия няма "
-"писма\n"
-"  -Z            отваряне на първата пощенска кутия с нови писма или "
-"незабавен изход от програмата ако няма такава\n"
-"  -h            показва този текст"
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "Грешка при инициализация на терминала."
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "личната Ви директория не може да бъде намерена"
 
-#: main.c:472
+#: main.c:493
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr "Грешка: '%s' е невалиден IDN."
 
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не съществува. Да бъде ли създаден?"
 
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "Не са указани получатели."
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr ""
 
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "Грешка при отваряне на файла: %s"
 
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s: грешка при прилагане на файла."
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "Няма пощенска кутия с нови писма."
 
-#: main.c:985
+#: main.c:1006
 msgid "No incoming mailboxes defined."
 msgstr "Не са дефинирани входни пощенски кутии."
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "Пощенската кутия е празна."
 
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "Зареждане на %s..."
@@ -3008,7 +2958,7 @@ msgstr ""
 "sync: пощенската кутия е променена, но няма променени писма! (моля, съобщете "
 "за тази грешка)"
 
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис на %s..."
@@ -3091,36 +3041,36 @@ msgstr "Скоковете не са имплементирани за диал�
 msgid "Tagging is not supported."
 msgstr "Маркирането не се поддържа."
 
-#: mh.c:1261
+#: mh.c:1260
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Избиране на %s..."
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Писмото не може да бъде изпратено."
 
-#: mh.c:1621
+#: mh.c:1620
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr ""
 "maildir_commit_message(): грешка при поставянето на марка за време на файла"
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl заключване не е получено в определеното време (timeout)!"
 
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Чакане за fcntl заключване... %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "flock заключване не е получено в определеното време (timeout)!"
 
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Чакане за flock заключване... %d"
@@ -3250,7 +3200,7 @@ msgstr "Потребителско име на %s: "
 msgid "Password for %s@%s: "
 msgstr "Парола за %s@%s: "
 
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr ""
@@ -3286,17 +3236,17 @@ msgstr ""
 msgid "unknown reason"
 msgstr "непозната грешка"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Изпращане на писмото..."
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Грешка при добавянето на писмо към пощенската кутия: %s"
@@ -3417,19 +3367,19 @@ msgstr ""
 msgid "Mail not sent."
 msgstr "Писмото не е изпратено."
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "S/MIME писма без указание за съдържанието им не се поддържат."
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "Опит за извличане на PGP ключове...\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Опит за извличане на S/MIME сертификати...\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3438,7 +3388,7 @@ msgstr ""
 "[-- Грешка: Непознат multipart/signed протокол %s! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
@@ -3447,7 +3397,7 @@ msgstr ""
 "[-- Грешка: Противоречива multipart/signed структура! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3456,7 +3406,7 @@ msgstr ""
 "[-- Предупреждение: %s/%s-подписи не могат да бъдат проверявани. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3464,7 +3414,7 @@ msgstr ""
 "[-- Следните данни са подписани --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3472,7 +3422,7 @@ msgstr ""
 "[-- Предупреждение: не могат да бъдат намерени подписи. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -6106,7 +6056,7 @@ msgstr "Желаете ли да отпечатате маркираните п�
 msgid "Print attachment?"
 msgstr "Желаете ли да отпечатате приложението?"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
@@ -6428,20 +6378,20 @@ msgstr "Писмото не може да бъде изпратено."
 msgid "Could not open %s"
 msgstr "Грешка при отваряне на %s"
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Грешка %d (%s) при изпращане на писмото."
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr "Изпращащ процес:"
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Лош IDN %s докато формата за повторно изпращане беше подготвяна."
@@ -6518,13 +6468,13 @@ msgstr "Родителското писмо не е видимо в този о�
 msgid "Parent message is not visible in this limited view."
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: version.c:78
+#: version.c:64
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
 
-#: version.c:82
+#: version.c:68
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6542,7 +6492,7 @@ msgid ""
 "02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6550,7 +6500,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:105
+#: version.c:91
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -6564,12 +6514,133 @@ msgstr ""
 "NeoMutt е свободен софтуер и може да бъде разпространяван\n"
 "при определени условия; напишете 'neomutt -vv' за повече подробности.\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "Опции при компилация:"
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "Опции при компилация:"
 
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "Стартиране: neomutt [ -nRyzZ ] [ -e <команда> ] [ -F <файл> ] [ -m "
+#~ "<тип> ] [ -f <файл> ]\n"
+#~ "       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -Q <запитване> [ -Q "
+#~ "<запитване> ] [...]\n"
+#~ "       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -A <псевдоним> [ -A "
+#~ "<псевдоним> ] [...]\n"
+#~ "       neomutt [ -nx ] [ -e <команда> ] [ -a <файл> ] [ -F <файл> ] [ -H "
+#~ "<файл> ] [ -i <файл> ] [ -s <тема> ] [ -b <адрес> ] [ -c <адрес> ] "
+#~ "<адрес> [ ... ]\n"
+#~ "       neomutt [ -n ] [ -e <команда> ] [ -F <файл> ] -p\n"
+#~ "       neomutt -v[v]\n"
+#~ "\n"
+#~ "Параметри:\n"
+#~ "  -A <псевдоним>        разгръща указания псевдоним\n"
+#~ "  -a <име на файл>      прилага файл към писмото\n"
+#~ "  -b <адрес>    изпраща сляпо копие (BCC) към този адрес\n"
+#~ "  -c <адрес>    изпраща копие (CC) към този адрес\n"
+#~ "  -e <команда>  команда, която да бъде изпълнена след инициализация\n"
+#~ "  -f <име на файл>      пощенска кутия, която да бъде заредена\n"
+#~ "  -F <име на файл>      алтернативен neomuttrc файл\n"
+#~ "  -H <име на файл>      файл със заглавна информация\n"
+#~ "  -i <име на файл>      файл, който да бъде включен в отговора\n"
+#~ "  -m <тип>      тип на пощенската кутия по подразбиране\n"
+#~ "  -n            игнорира системния neomuttrc\n"
+#~ "  -p            редактира чернова\n"
+#~ "  -Q <variable> запитване за конфигурационна променлива\n"
+#~ "  -R            отваря пощенската кутия само за четене\n"
+#~ "  -s <тема>     тема на писмото (трябва да е в кавички, ако съдържа "
+#~ "интервали)\n"
+#~ "  -v            показва версията и дефинициите, използвани при "
+#~ "компилация\n"
+#~ "  -x            симулира mailx изпращане\n"
+#~ "  -y            избор на файл от листа 'mailboxes'\n"
+#~ "  -z            незабавен изход от програмата, ако в пощенската кутия "
+#~ "няма писма\n"
+#~ "  -Z            отваряне на първата пощенска кутия с нови писма или "
+#~ "незабавен изход от програмата ако няма такава\n"
+#~ "  -h            показва този текст\n"
+#~ "Стартиране: neomutt [ -nRyzZ ] [ -e <команда> ] [ -F <файл> ] [ -m "
+#~ "<тип> ] [ -f <файл> ]\n"
+#~ "       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -Q <запитване> [ -Q "
+#~ "<запитване> ] [...]\n"
+#~ "       neomutt [ -nR ] [ -e <команда> ] [ -F <файл> ] -A <псевдоним> [ -A "
+#~ "<псевдоним> ] [...]\n"
+#~ "       neomutt [ -nx ] [ -e <команда> ] [ -a <файл> ] [ -F <файл> ] [ -H "
+#~ "<файл> ] [ -i <файл> ] [ -s <тема> ] [ -b <адрес> ] [ -c <адрес> ] "
+#~ "<адрес> [ ... ]\n"
+#~ "       neomutt [ -n ] [ -e <команда> ] [ -F <файл> ] -p\n"
+#~ "       neomutt -v[v]\n"
+#~ "\n"
+#~ "Параметри:\n"
+#~ "  -A <псевдоним>        разгръща указания псевдоним\n"
+#~ "  -a <име на файл>      прилага файл към писмото\n"
+#~ "  -b <адрес>    изпраща сляпо копие (BCC) към този адрес\n"
+#~ "  -c <адрес>    изпраща копие (CC) към този адрес\n"
+#~ "  -e <команда>  команда, която да бъде изпълнена след инициализация\n"
+#~ "  -f <име на файл>      пощенска кутия, която да бъде заредена\n"
+#~ "  -F <име на файл>      алтернативен neomuttrc файл\n"
+#~ "  -H <име на файл>      файл със заглавна информация\n"
+#~ "  -i <име на файл>      файл, който да бъде включен в отговора\n"
+#~ "  -m <тип>      тип на пощенската кутия по подразбиране\n"
+#~ "  -n            игнорира системния neomuttrc\n"
+#~ "  -p            редактира чернова\n"
+#~ "  -Q <variable> запитване за конфигурационна променлива\n"
+#~ "  -R            отваря пощенската кутия само за четене\n"
+#~ "  -s <тема>     тема на писмото (трябва да е в кавички, ако съдържа "
+#~ "интервали)\n"
+#~ "  -v            показва версията и дефинициите, използвани при "
+#~ "компилация\n"
+#~ "  -x            симулира mailx изпращане\n"
+#~ "  -y            избор на файл от листа 'mailboxes'\n"
+#~ "  -z            незабавен изход от програмата, ако в пощенската кутия "
+#~ "няма писма\n"
+#~ "  -Z            отваряне на първата пощенска кутия с нови писма или "
+#~ "незабавен изход от програмата ако няма такава\n"
+#~ "  -h            показва този текст"
