@@ -57,7 +57,7 @@ function html_header()
 	echo ""
 	echo "<p>"
 	echo "  Read more about what would be involved in"
-	echo "  <a href=\"/dev/translate-strings\">translating NeoMutt</a>."
+	echo "  <a href=\"/dev/translate\">translating NeoMutt</a>."
 	echo "</p>"
 	echo ""
 	echo "<table class=\"lang\" summary=\"list of languages\">"
