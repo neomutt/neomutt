@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2009-06-28 14:30+0800\n"
 "Last-Translator: Bo Yu <tsu.yubo@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -42,7 +42,7 @@ msgid "Select"
 msgstr "选择"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -194,12 +194,12 @@ msgid "Path too long: %s%s%s"
 msgstr ""
 
 #: bcache.c:168
-#,  c-format
+#, c-format
 msgid "Message cache isn't a directory: %s."
 msgstr "消息缓存不是一个目录: %s."
 
 #: bcache.c:176
-#,  c-format
+#, c-format
 msgid "Can't create %s %s"
 msgstr "无法创建 %s %s."
 
@@ -219,13 +219,11 @@ msgstr "掩码"
 msgid "List"
 msgstr "列表"
 
-#: browser.c:82
-#,
+#: browser.c:83
 msgid "Subscribe"
 msgstr "已订阅 "
 
-#: browser.c:83
-#,
+#: browser.c:84
 msgid "Unsubscribe"
 msgstr "已取消订阅 "
 
@@ -233,87 +231,86 @@ msgstr "已取消订阅 "
 msgid "Catchup"
 msgstr "捕捉"
 
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s 不是目录"
 
 #: browser.c:1049
-#,  c-format
+#, c-format
 msgid "Subscribed newsgroups"
 msgstr "已订阅新闻组"
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "新闻组服务器[%s]"
 
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "信箱 [%d]"
 
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "目录 [%s], 文件掩码: %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "无法附加目录！"
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "没有文件与文件掩码相符"
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持创建"
 
-#: browser.c:1630
+#: browser.c:1631
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持改名"
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持删除"
 
-#: browser.c:1661 browser.c:1687
-#,
+#: browser.c:1662 browser.c:1688
 msgid "Mailbox deletion failed."
 msgstr "信箱删除失败"
 
-#: browser.c:1666
+#: browser.c:1667
 msgid "Cannot delete root folder"
 msgstr "无法删除根文件夹"
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "真的要删除 \"%s\" 信箱吗？"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "信箱已删除。"
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "信箱未删除。"
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "改变目录到："
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "扫描目录出错。"
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "文件掩码："
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -321,7 +318,7 @@ msgid ""
 msgstr "按日期(d)，字母表(a)，大小(z)反向排序或不排序(n)? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -329,34 +326,33 @@ msgid ""
 msgstr "按日期(d)，字母表(a)，大小(z)排序或不排序(n)? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 msgid "dazecwn"
 msgstr "dazecwn"
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "新文件名："
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "无法显示目录"
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "尝试显示文件出错"
 
-#: browser.c:2113
-#,  c-format
+#: browser.c:2116
+#, c-format
 msgid "Subscribe pattern: "
 msgstr "订阅模式"
 
-#: browser.c:2115
-#,  c-format
+#: browser.c:2118
+#, c-format
 msgid "Unsubscribe pattern: "
 msgstr "取消订阅模式"
 
-#: browser.c:2134
-#,
+#: browser.c:2137
 msgid "No newsgroups match the mask"
 msgstr "没有新闻组与文件掩码相符"
 
@@ -396,7 +392,7 @@ msgstr "%s：参数太少"
 msgid "%s: no such attribute"
 msgstr "%s：没有这个属性"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -538,8 +534,7 @@ msgstr ""
 "序?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:544
-#,
+#: commands.c:568
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzcpl"
 
@@ -638,8 +633,7 @@ msgid "Subject: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:119
-#,
+#: compose.c:120
 msgid "Reply-To: "
 msgstr "回复给:"
 
@@ -673,20 +667,17 @@ msgid "Sign as: "
 msgstr "选择身份签署："
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:140
-#,
+#: compose.c:141
 msgid "Newsgroups: "
 msgstr "新闻组"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:142
-#,
+#: compose.c:143
 msgid "Followup-To: "
 msgstr "发送后续信件到: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:144
-#,
+#: compose.c:145
 msgid "X-Comment-To: "
 msgstr "编辑评论 栏位"
 
@@ -721,13 +712,11 @@ msgstr "附加文件"
 msgid "Descrip"
 msgstr "描述"
 
-#: compose.c:167
-#,
+#: compose.c:168
 msgid "Newsgroups"
 msgstr "新闻组"
 
-#: compose.c:244
-#,
+#: compose.c:245
 msgid "Not supported"
 msgstr "不支持"
 
@@ -747,8 +736,7 @@ msgstr "签名"
 msgid "None"
 msgstr "无操作"
 
-#: compose.c:276
-#,
+#: compose.c:277
 msgid " (inline PGP)"
 msgstr " (嵌入PGP)"
 
@@ -756,8 +744,7 @@ msgstr " (嵌入PGP)"
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:281
-#,
+#: compose.c:282
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
@@ -820,13 +807,12 @@ msgstr "无法附加 %s！"
 msgid "Open mailbox to attach message from"
 msgstr "打开信箱并从中附加信件"
 
-#: compose.c:1082
-#,
+#: compose.c:1084
 msgid "Open newsgroup to attach message from"
 msgstr "从附件中打开新闻组"
 
-#: compose.c:1126
-#,  c-format
+#: compose.c:1128
+#, c-format
 msgid "Unable to open mailbox %s"
 msgstr "无法打开信箱 %s"
 
@@ -862,8 +848,7 @@ msgstr "无效的编码。"
 msgid "Save a copy of this message?"
 msgstr "保存这封信件的副本吗？"
 
-#: compose.c:1369
-#,
+#: compose.c:1371
 msgid "Send attachment with name: "
 msgstr "使用什么名字发送附件:"
 
@@ -965,13 +950,13 @@ msgstr "压缩命令失败: %s"
 msgid "Unsupported mailbox type for appending."
 msgstr "不支持的信箱类型追加操作"
 
-#: compress.c:633
-#,  c-format
+#: compress.c:640
+#, c-format
 msgid "Compressed-appending to %s..."
 msgstr "正在压缩到 %s..."
 
-#: compress.c:638
-#,  c-format
+#: compress.c:645
+#, c-format
 msgid "Compressing %s..."
 msgstr "正在压缩中 %s..."
 
@@ -984,8 +969,8 @@ msgstr "错误。保留临时文件：%s"
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "没有一个close-hook不能够同步一件压缩文件"
 
-#: compress.c:879
-#,  c-format
+#: compress.c:904
+#, c-format
 msgid "Compressing %s"
 msgstr "正在压缩中 %s"
 
@@ -1009,7 +994,7 @@ msgstr "设置 SASL 外部安全强度时出错"
 msgid "Error setting SASL external user name"
 msgstr "设置 SASL 外部用户名时出错"
 
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "预连接命令失败。"
 
@@ -1017,45 +1002,6 @@ msgstr "预连接命令失败。"
 #, c-format
 msgid "Connection to %s closed"
 msgstr "到 %s 的连接已关闭"
-
-#: conn/socket.c:352 conn/socket.c:383
-#, c-format
-msgid "Error talking to %s (%s)"
-msgstr "与 %s 通话出错(%s)"
-
-#: conn/socket.c:359 conn/socket.c:390
-#,  c-format
-msgid "Connection to %s has been aborted"
-msgstr "到 %s 的连接已关闭"
-
-#: conn/socket.c:479 conn/socket.c:537
-#, c-format
-msgid "Bad IDN \"%s\"."
-msgstr "错误的 IDN \"%s\"。"
-
-#: conn/socket.c:487 conn/socket.c:545
-#, c-format
-msgid "Looking up %s..."
-msgstr "正在查找 %s..."
-
-#: conn/socket.c:497 conn/socket.c:555
-#, c-format
-msgid "Could not find the host \"%s\""
-msgstr "无法找到主机\"%s\""
-
-#: conn/socket.c:502 conn/socket.c:561
-#, c-format
-msgid "Connecting to %s..."
-msgstr "正在连接到 %s..."
-
-#: conn/socket.c:586
-#, c-format
-msgid "Could not connect to %s (%s)."
-msgstr "无法连接到 %s (%s)"
-
-#: conn/socket.c:587 conn/ssl.c:1285 curs_lib.c:769 mutt_logging.c:177
-msgid "unknown error"
-msgstr "未知错误"
 
 #: conn/ssl.c:216
 #, c-format
@@ -1068,7 +1014,6 @@ msgid "%s has insecure permissions!"
 msgstr "%s 有不安全的访问许可！"
 
 #: conn/ssl.c:368
-#,
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL 因缺少足够的熵而禁用"
 
@@ -1085,65 +1030,65 @@ msgstr "[无法计算]"
 msgid "[invalid date]"
 msgstr "[无效日期]"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr "服务器证书尚未有效"
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr "服务器证书已过期"
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr "在您的系统上查找足够的熵时失败"
 
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 msgid "cannot get certificate subject"
 msgstr "无法获取证书标题"
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 msgid "cannot get certificate common name"
 msgstr "无法获取证书通用名称"
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "证书所有者与主机名称 %s 不匹配"
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr "此证书属于："
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr "此证书发布自："
 
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr "此证书有效"
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr "   来自 %s"
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr "   发往 %s"
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 指纹：%s"
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 指纹：%s"
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, fuzzy, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL 证书检查 (检查链中有 %d 个证书，共 %d 个)"
@@ -1154,42 +1099,40 @@ msgstr "SSL 证书检查 (检查链中有 %d 个证书，共 %d 个)"
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr "roas"
 
 #: conn/ssl.c:1026
-#,
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "拒绝(r)，接受一次(o)，总是接受(a),跳过(s)"
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "拒绝(r)，接受一次(o)，总是接受(a)"
 
 #: conn/ssl.c:1033
-#,
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "拒绝(r)，接受一次(o),跳过(s)"
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr "拒绝(r)，接受一次(o)"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "退出  "
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr "警告：无法保存证书"
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "证书已保存"
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "证书主机检查失败：%s"
@@ -1197,15 +1140,19 @@ msgstr "证书主机检查失败：%s"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "警告： 无法设置 TLS SNI 主机名"
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "输入输出(I/O)出错"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
+msgid "unknown error"
+msgstr "未知错误"
+
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL 失败：%s"
@@ -1213,12 +1160,11 @@ msgstr "SSL 失败：%s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1319
-#,
+#: conn/ssl.c:1316
 msgid "Unable to create SSL context"
 msgstr "无法创建 SSL 上下文"
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "警告： 错误导致ssl_verify_partial_chains"
 
@@ -1371,8 +1317,8 @@ msgid "No visible messages."
 msgstr "无可见信件"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: curs_main.c:129 pager.c:108
-#,  c-format
+#: curs_main.c:125 pager.c:110
+#, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "无法 %s: 操作不被访问控制列表(ACL)所允许"
 
@@ -1417,8 +1363,7 @@ msgstr "群组"
 msgid "Post"
 msgstr "发表"
 
-#: curs_main.c:839 pager.c:1714
-#,
+#: curs_main.c:759 pager.c:1714
 msgid "Followup"
 msgstr "发送后续信件到"
 
@@ -1442,8 +1387,7 @@ msgstr "没有已标记的信件。"
 msgid "Nothing to do."
 msgstr "无事可做。"
 
-#: curs_main.c:1248
-#,
+#: curs_main.c:1167
 msgid "Enter Message-Id: "
 msgstr "请输入信件 ID："
 
@@ -1451,8 +1395,7 @@ msgstr "请输入信件 ID："
 msgid "Article has no parent reference."
 msgstr "文本没有父索引"
 
-#: curs_main.c:1282
-#,
+#: curs_main.c:1201
 msgid "Message is not visible in limited view."
 msgstr "信件在此限制视图中不可见。"
 
@@ -1474,8 +1417,7 @@ msgstr "没有信件 Id。不能够执行操作"
 msgid "Fetching message headers..."
 msgstr "正在取回信件标头..."
 
-#: curs_main.c:1395
-#,
+#: curs_main.c:1314
 msgid "No deleted messages found in the thread."
 msgstr "在该线程中没有发现被删除的信件"
 
@@ -1496,8 +1438,7 @@ msgid "Invalid message number."
 msgstr "无效的信件编号。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1476 curs_main.c:2871 pager.c:2820
-#,
+#: curs_main.c:1395 curs_main.c:2790 pager.c:2818
 msgid "Cannot delete message(s)"
 msgstr "不能够删除信件"
 
@@ -1532,8 +1473,7 @@ msgid "Tag messages matching: "
 msgstr "标记符合此样式的信件："
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1705 curs_main.c:3302 pager.c:3139
-#,
+#: curs_main.c:1624 curs_main.c:3221 pager.c:3137
 msgid "Cannot undelete message(s)"
 msgstr "不能够反删除信件"
 
@@ -1545,13 +1485,11 @@ msgstr "反删除符合此样式的信件："
 msgid "Untag messages matching: "
 msgstr "反标记符合此样式的信件："
 
-#: curs_main.c:1752
-#,
+#: curs_main.c:1671
 msgid "Logged out of IMAP servers."
 msgstr "正在退出 IMAP 服务器."
 
-#: curs_main.c:1852
-#,
+#: curs_main.c:1771
 msgid "No virtual folder, aborting."
 msgstr "没有虚拟文件夹，正在中止。"
 
@@ -1559,28 +1497,24 @@ msgstr "没有虚拟文件夹，正在中止。"
 msgid "Failed to read thread, aborting."
 msgstr "不能够读取thread，中止"
 
-#: curs_main.c:1892 mx.c:1386 mx.c:1398
-#,
+#: curs_main.c:1811 mx.c:1458 mx.c:1475
 msgid "Folder doesn't support tagging, aborting."
 msgstr "文件件不支持标签，正在终止"
 
-#: curs_main.c:1907
-#,
+#: curs_main.c:1826
 msgid "No tag specified, aborting."
 msgstr "没有特殊标签，正在中止。"
 
-#: curs_main.c:1919
-#,  c-format
+#: curs_main.c:1838
+#, c-format
 msgid "Update tags..."
 msgstr "更新标签中..."
 
-#: curs_main.c:1956
-#,
+#: curs_main.c:1875
 msgid "Failed to modify tags, aborting."
 msgstr "不能够修改标签。正在中止"
 
-#: curs_main.c:1997
-#,
+#: curs_main.c:1916
 msgid "No query, aborting."
 msgstr "没有查询，正在中止。"
 
@@ -1600,8 +1534,7 @@ msgstr "现在没有加载notmuch vfolder"
 msgid "Open mailbox in read-only mode"
 msgstr "用只读模式打开信箱"
 
-#: curs_main.c:2075
-#,
+#: curs_main.c:1994
 msgid "Open virtual folder"
 msgstr "打开虚拟文件夹"
 
@@ -1613,8 +1546,7 @@ msgstr "打开信箱"
 msgid "No mailboxes have new mail"
 msgstr "没有信箱有新信件"
 
-#: curs_main.c:2135
-#,
+#: curs_main.c:2054
 msgid "Open newsgroup in read-only mode"
 msgstr "用只读模式打开新闻组"
 
@@ -1622,13 +1554,11 @@ msgstr "用只读模式打开新闻组"
 msgid "Open newsgroup"
 msgstr "打开新闻组"
 
-#: curs_main.c:2240
-#,
+#: curs_main.c:2159
 msgid "Exit NeoMutt without saving?"
 msgstr "不保存便退出 NeoMutt 吗？"
 
-#: curs_main.c:2256
-#,
+#: curs_main.c:2175
 msgid "Cannot break thread"
 msgstr "不能中断线索"
 
@@ -1646,8 +1576,7 @@ msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "线索不能够打破，信件不是该线索的一部分"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2294
-#,
+#: curs_main.c:2213
 msgid "Cannot link threads"
 msgstr "不能够链接线索"
 
@@ -1687,35 +1616,29 @@ msgstr "搜寻从开头重新开始。"
 msgid "Search wrapped to bottom."
 msgstr "搜寻从结尾重新开始。"
 
-#: curs_main.c:2546
-#,
+#: curs_main.c:2465
 msgid "No new messages in this limited view."
 msgstr "没有新的信件在此限制视图中。"
 
-#: curs_main.c:2548
-#,
+#: curs_main.c:2467
 msgid "No new messages."
 msgstr "没有新信件"
 
-#: curs_main.c:2553
-#,
+#: curs_main.c:2472
 msgid "No unread messages in this limited view."
 msgstr "在此限制视图中没有未读信件。"
 
-#: curs_main.c:2555
-#,
+#: curs_main.c:2474
 msgid "No unread messages."
 msgstr "没有尚未读取的信件"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2573
-#,
+#: curs_main.c:2492
 msgid "Cannot flag message"
 msgstr "不能够标记信件"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2612 pager.c:3102
-#,
+#: curs_main.c:2531 pager.c:3100
 msgid "Cannot toggle new"
 msgstr "不能够处理新的"
 
@@ -1727,26 +1650,23 @@ msgstr "没有更多的线索。"
 msgid "You are on the first thread."
 msgstr "您在第一个线索上。"
 
-#: curs_main.c:2775
-#,
+#: curs_main.c:2694
 msgid "Thread contains unread or flagged messages."
 msgstr "线索中有尚未读取或者被标记的信件。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2825 pager.c:2786
-#,
+#: curs_main.c:2744 pager.c:2784
 msgid "Cannot delete message"
 msgstr "不能够删除信件"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2937
-#,
+#: curs_main.c:2856
 msgid "Cannot edit message"
 msgstr "无法编辑信件"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2999 pager.c:3202
+#: curs_main.c:2918 pager.c:3200
 #, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
@@ -1755,29 +1675,25 @@ msgstr[0] "%d 标签改变。"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:3006 pager.c:3206
-#,
+#: curs_main.c:2925 pager.c:3204
 msgid "No labels changed."
 msgstr "没有标签改变。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3105
-#,
+#: curs_main.c:3024
 msgid "Cannot mark message(s) as read"
 msgstr "不能够标记信件为已读"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3141
-#,
+#: curs_main.c:3060
 msgid "Enter macro stroke: "
 msgstr "请输入密钥 ID："
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3149
-#,
+#: curs_main.c:3068
 msgid "message hotkey"
 msgstr "信件热键"
 
@@ -1791,7 +1707,7 @@ msgstr "信件已回退 %s"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3162
+#: curs_main.c:3081
 msgid "No message ID to macro."
 msgstr "没有信件Id对应的宏。"
 
@@ -1804,13 +1720,11 @@ msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "不能够在这个组里发文，也许可以修改，继续？"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3272 pager.c:3122
-#,
+#: curs_main.c:3191 pager.c:3120
 msgid "Cannot undelete message"
 msgstr "不能反删除信件"
 
-#: edit.c:49
-#,
+#: edit.c:50
 msgid ""
 "~~              insert a line beginning with a single ~\n"
 "~b users        add users to the Bcc: field\n"
@@ -2116,7 +2030,7 @@ msgstr "[-- 这是一个附件 --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s 尚未支持 --]\n"
 
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "无法创建 %s: %s."
@@ -2341,12 +2255,12 @@ msgstr "正在订阅 %s..."
 msgid "Unsubscribing from %s..."
 msgstr "正在取消订阅 %s..."
 
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, c-format
 msgid "Subscribed to %s"
 msgstr "已订阅 %s..."
 
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "已取消订阅 %s..."
@@ -2650,25 +2564,25 @@ msgstr "命令行有错：%s"
 msgid "unable to determine nodename via uname()"
 msgstr "无法确定用户名"
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr "-group: 无组名称"
 
-#: init.c:4113
+#: init.c:4117
 msgid "out of arguments"
 msgstr "参数不够用"
 
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "已订阅 %s..."
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "没有指定标题。"
 
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "已取消订阅 %s..."
@@ -2736,149 +2650,149 @@ msgstr "请按键(按 ^G 中止)："
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "字符 = %s, 八进制 = %o, 十进制 = %d"
 
-#: main.c:97
-#, fuzzy
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
-"用法: neomutt [<选项>] [-z] [-f <文件> | -yZ]\n"
-"      neomutt [<选项>] [-x] [-Hi <文件>] [-s <标题>] [-bc <地址>] [-a <文件> "
-"[...]] [--] <地址> [...]\n"
-"      neomutt [<选项>] [-x] [-s <标题>] [-bc <地址>] [-a <文件> [...]] [--] <"
-"地址> [...] < message\n"
-"      neomutt [<选项>] -p\n"
-"      neomutt [<选项>] -A <别名> [...]\n"
-"      neomutt [<选项>] -Q <查询> [...]\n"
-"      neomutt [<选项>] -D\n"
-"      neomutt -v[v]\n"
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"选项:\n"
-"  -A <alias>    扩展给出的别名\n"
-"  -a <file>     附加一个文件到本信件作为附件\n"
-"  -b <address>  指定一个密件抄送(BCC)地址\n"
-"  -c <address>  指定一个抄送(CC)地址\n"
-"  -D            打印所有变量的值到标准输出\n"
-"  -d <级别>     将调试输出记录到 ~/.neomuttdebug0\n"
-"  -e <命令>     指定一个初始化后要被执行的命令\n"
-"  -f <文件>     指定要阅读那一个信箱\n"
-"  -F <文件>     指定一个替代的 neomuttrc 文件\n"
-"  -H <文件>     指定一个模板文件以读取标题和正文来源\n"
-"  -i <文件>     指定一个 NeoMutt 需要包含在正文中的文件\n"
-"  -m <类型>     指定一个预设的信箱类型\n"
-"  -n            使 NeoMutt 不去读取系统的 neomuttrc\n"
-"  -p            叫回一个延后寄送的信件\n"
-"  -Q <变量>     查询一个配置变量\n"
-"  -R            以只读模式打开信箱\n"
-"  -s <主题>     指定一个标题 (如果有空白的话必须被包括在引号中)\n"
-"  -v            显示版本和编译时的定义\n"
-"  -x            模拟 mailx 寄送模式\n"
-"  -y            选择一个被指定在您'mailboxes'清单中的信箱\n"
-"  -z            如果在信箱中没有信件的话，立即退出\n"
-"  -Z            打开第一个附有新信件的资料夹，如果没有的话立即离开\n"
-"  -h            本帮助消息"
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "初始化终端时出错。"
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "无法确定用户名"
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "无法确定 home 目录"
 
-#: main.c:472
+#: main.c:493
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr "错误：变量'%s'对于 -d 来说无效。"
 
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "没有指定接收者。"
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr "不能够使用 -E 选项在stdin情况下"
 
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "无法打开信件文件：%s"
 
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s：无法附加文件。"
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "没有信箱有新信件。"
 
-#: main.c:985
+#: main.c:1006
 msgid "No incoming mailboxes defined."
 msgstr "未定义收信信箱"
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "信箱是空的。"
 
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "正在读取 %s..."
@@ -2912,7 +2826,7 @@ msgstr "严重错误！无法重新打开信箱！"
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "同步：信箱已被修改，但没有被修改过的信件！(请报告这个错误)"
 
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "正在写入 %s..."
@@ -2995,34 +2909,34 @@ msgstr "对话模式中未实现跳跃。"
 msgid "Tagging is not supported."
 msgstr "不支持标记。"
 
-#: mh.c:1261
+#: mh.c:1260
 #, c-format
 msgid "Scanning %s..."
 msgstr "正在扫描 %s..."
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 msgid "Could not flush message to disk"
 msgstr "无法将信件导出到硬盘。"
 
-#: mh.c:1621
+#: mh.c:1620
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 无法给文件设置时间"
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "尝试 fcntl 加锁时超时！"
 
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "正在等待 fcntl 加锁... %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "尝试 flock 加锁时超时！"
 
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "正在等待尝试 flock... %d"
@@ -3150,7 +3064,7 @@ msgstr "在 %s 的用户名："
 msgid "Password for %s@%s: "
 msgstr "%s@%s 的密码："
 
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "解析 mailto: 链接失败\n"
@@ -3186,17 +3100,17 @@ msgstr "不能够打开 notmuch 数据库: %s: %s"
 msgid "unknown reason"
 msgstr "未知原因"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "正在发送信件..."
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "父信件在此限制视图中不可见。"
 
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "无法添加到文件夹末尾：%s"
@@ -3319,19 +3233,19 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "不支持没有内容提示的 S/MIME 消息。"
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "正在尝试提取 PGP 密钥...\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "正在尝试提取 S/MIME 证书...\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3340,7 +3254,7 @@ msgstr ""
 "[-- 错误：未知的 multipart/signed 协议 %s！ --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
@@ -3349,7 +3263,7 @@ msgstr ""
 "[-- 错误：不一致的 multipart/signed 结构！ --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3358,7 +3272,7 @@ msgstr ""
 "[-- 警告：我们不能证实 %s/%s 签名。 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3366,7 +3280,7 @@ msgstr ""
 "[-- 以下数据已签署 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3374,7 +3288,7 @@ msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -5950,7 +5864,7 @@ msgstr "打印已标记的附件？"
 msgid "Print attachment?"
 msgstr "打印附件？"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
@@ -6263,20 +6177,20 @@ msgstr "无法发送此信件。"
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr "$sendmail 必须配置为了发送邮件"
 
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "发送信件出错，子进程已退出 %d (%s)。"
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr "Delivery process 的输出"
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "当准备 resent-from 时发生错误的 IDN %s。"
@@ -6350,14 +6264,14 @@ msgstr "父信件在此限制视图中不可见。"
 msgid "Parent message is not visible in this limited view."
 msgstr "父信件在此限制视图中不可见。"
 
-#: version.c:78
+#: version.c:64
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr "许多这里没有提到的人也贡献了代码，修正以及建议。\n"
 
-#: version.c:82
+#: version.c:68
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6386,7 +6300,7 @@ msgstr ""
 "    至自由软件基金会，51 Franklin Street, Fifth Floor, Boston, MA "
 "02110-1301, USA.\n"
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6398,7 +6312,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "或者发送一封邮件到 : <neomutt-devel@neomutt.org>\n"
 
-#: version.c:105
+#: version.c:91
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -6411,12 +6325,116 @@ msgstr ""
 "NeoMutt 是自由软件, 欢迎您在某些条件下\n"
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "编译选项："
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "编译选项："
 
+#~ msgid "Error talking to %s (%s)"
+#~ msgstr "与 %s 通话出错(%s)"
+
+#~ msgid "Connection to %s has been aborted"
+#~ msgstr "到 %s 的连接已关闭"
+
+#~ msgid "Bad IDN \"%s\"."
+#~ msgstr "错误的 IDN \"%s\"。"
+
+#~ msgid "Looking up %s..."
+#~ msgstr "正在查找 %s..."
+
+#~ msgid "Could not find the host \"%s\""
+#~ msgstr "无法找到主机\"%s\""
+
+#~ msgid "Connecting to %s..."
+#~ msgstr "正在连接到 %s..."
+
+#~ msgid "Could not connect to %s (%s)."
+#~ msgstr "无法连接到 %s (%s)"
+
+#, fuzzy
+#~ msgid ""
+#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-"
+#~ "a <file> [...] --] <addr> [...]\n"
+#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+#~ "--] <addr> [...] < message\n"
+#~ "       neomutt [<options>] -p\n"
+#~ "       neomutt [<options>] -A <alias> [...]\n"
+#~ "       neomutt [<options>] -Q <query> [...]\n"
+#~ "       neomutt [<options>] -B\n"
+#~ "       neomutt [<options>] -D [-S]\n"
+#~ "       neomutt -v[v]\n"
+#~ msgstr ""
+#~ "用法: neomutt [<选项>] [-z] [-f <文件> | -yZ]\n"
+#~ "      neomutt [<选项>] [-x] [-Hi <文件>] [-s <标题>] [-bc <地址>] [-a <文"
+#~ "件> [...]] [--] <地址> [...]\n"
+#~ "      neomutt [<选项>] [-x] [-s <标题>] [-bc <地址>] [-a <文件> [...]] "
+#~ "[--] <地址> [...] < message\n"
+#~ "      neomutt [<选项>] -p\n"
+#~ "      neomutt [<选项>] -A <别名> [...]\n"
+#~ "      neomutt [<选项>] -Q <查询> [...]\n"
+#~ "      neomutt [<选项>] -D\n"
+#~ "      neomutt -v[v]\n"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "选项:\n"
+#~ "  -A <alias>    扩展给出的别名\n"
+#~ "  -a <file>     附加一个文件到本信件作为附件\n"
+#~ "  -b <address>  指定一个密件抄送(BCC)地址\n"
+#~ "  -c <address>  指定一个抄送(CC)地址\n"
+#~ "  -D            打印所有变量的值到标准输出\n"
+#~ "  -d <级别>     将调试输出记录到 ~/.neomuttdebug0\n"
+#~ "  -e <命令>     指定一个初始化后要被执行的命令\n"
+#~ "  -f <文件>     指定要阅读那一个信箱\n"
+#~ "  -F <文件>     指定一个替代的 neomuttrc 文件\n"
+#~ "  -H <文件>     指定一个模板文件以读取标题和正文来源\n"
+#~ "  -i <文件>     指定一个 NeoMutt 需要包含在正文中的文件\n"
+#~ "  -m <类型>     指定一个预设的信箱类型\n"
+#~ "  -n            使 NeoMutt 不去读取系统的 neomuttrc\n"
+#~ "  -p            叫回一个延后寄送的信件\n"
+#~ "  -Q <变量>     查询一个配置变量\n"
+#~ "  -R            以只读模式打开信箱\n"
+#~ "  -s <主题>     指定一个标题 (如果有空白的话必须被包括在引号中)\n"
+#~ "  -v            显示版本和编译时的定义\n"
+#~ "  -x            模拟 mailx 寄送模式\n"
+#~ "  -y            选择一个被指定在您'mailboxes'清单中的信箱\n"
+#~ "  -z            如果在信箱中没有信件的话，立即退出\n"
+#~ "  -Z            打开第一个附有新信件的资料夹，如果没有的话立即离开\n"
+#~ "  -h            本帮助消息"

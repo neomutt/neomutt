@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-04-24 21:52+0100\n"
+"POT-Creation-Date: 2018-04-28 13:22+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -37,7 +37,7 @@ msgid "Select"
 msgstr "Välj"
 
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
-#: conn/ssl.c:1042 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4217 ncrypt/pgpkey.c:547
 #: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
@@ -230,87 +230,87 @@ msgstr "Avslutar prenumeration på %s"
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:767 browser.c:1780
+#: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s är inte en katalog."
 
-#: browser.c:1048
+#: browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Prenumererar på %s..."
 
-#: browser.c:1050
+#: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser.c:1059
+#: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Brevlådor [%d]"
 
-#: browser.c:1067
+#: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], filmask: %s"
 
-#: browser.c:1121
+#: browser.c:1122
 msgid "Can't attach a directory!"
 msgstr "Kan inte bifoga en katalog!"
 
-#: browser.c:1405 browser.c:1854 browser.c:1993
+#: browser.c:1406 browser.c:1855 browser.c:1994
 msgid "No files match the file mask"
 msgstr "Inga filer matchar filmasken"
 
-#: browser.c:1608
+#: browser.c:1609
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan skapas"
 
-#: browser.c:1630
+#: browser.c:1631
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan döpas om"
 
-#: browser.c:1651
+#: browser.c:1652
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan tas bort"
 
-#: browser.c:1661 browser.c:1687
+#: browser.c:1662 browser.c:1688
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:1666
+#: browser.c:1667
 msgid "Cannot delete root folder"
 msgstr "Kan inte ta bort rotfolder"
 
-#: browser.c:1669
+#: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Ta bort brevlådan \"%s\"?"
 
-#: browser.c:1683
+#: browser.c:1684
 msgid "Mailbox deleted."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:1690
+#: browser.c:1691
 msgid "Mailbox not deleted."
 msgstr "Brevlådan togs inte bort."
 
-#: browser.c:1720
+#: browser.c:1721
 msgid "Chdir to: "
 msgstr "Ändra katalog till: "
 
-#: browser.c:1770 browser.c:1848
+#: browser.c:1771 browser.c:1849
 msgid "Error scanning directory."
 msgstr "Fel vid läsning av katalog."
 
-#: browser.c:1791
+#: browser.c:1792
 msgid "File Mask: "
 msgstr "Filmask: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1871
+#: browser.c:1872
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -318,7 +318,7 @@ msgid ""
 msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1874
+#: browser.c:1875
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -326,33 +326,33 @@ msgid ""
 msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1877
+#: browser.c:1878
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1982
+#: browser.c:1983
 msgid "New file name: "
 msgstr "Nytt filnamn: "
 
-#: browser.c:2010
+#: browser.c:2011
 msgid "Can't view a directory"
 msgstr "Kan inte visa en katalog"
 
-#: browser.c:2027
+#: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Fel vid försök att visa fil"
 
-#: browser.c:2112
+#: browser.c:2116
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Prenumererar på %s..."
 
-#: browser.c:2114
+#: browser.c:2118
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Avslutar prenumeration på %s"
 
-#: browser.c:2133
+#: browser.c:2137
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Inga filer matchar filmasken"
@@ -393,7 +393,7 @@ msgstr "%s: för få parametrar"
 msgid "%s: no such attribute"
 msgstr "%s: attributet finns inte"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4227 init.c:4281
+#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4231 init.c:4285
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:424 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -1019,7 +1019,7 @@ msgstr "Fel vid sättning av SASL:s externa säkerhetsstyrka"
 msgid "Error setting SASL external user name"
 msgstr "Fel vid sättning av SASL:s externa användarnamn"
 
-#: conn/socket.c:84
+#: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "\"Preconnect\"-kommandot misslyckades."
 
@@ -1056,67 +1056,67 @@ msgstr "[kan inte beräkna]"
 msgid "[invalid date]"
 msgstr "[ogiltigt datum]"
 
-#: conn/ssl.c:513
+#: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
 msgstr "Servercertifikat är inte giltigt än"
 
-#: conn/ssl.c:522
+#: conn/ssl.c:524
 msgid "Server certificate has expired"
 msgstr "Servercertifikat har utgått"
 
-#: conn/ssl.c:614
+#: conn/ssl.c:615
 msgid "Failed to find enough entropy on your system"
 msgstr "Misslyckades med att hitta tillräckligt med slumptal på ditt system"
 
-#: conn/ssl.c:860
+#: conn/ssl.c:859
 #, fuzzy
 msgid "cannot get certificate subject"
 msgstr "Kunde inte hämta certifikat från \"peer\""
 
-#: conn/ssl.c:869 conn/ssl.c:877
+#: conn/ssl.c:868 conn/ssl.c:876
 #, fuzzy
 msgid "cannot get certificate common name"
 msgstr "Kunde inte hämta certifikat från \"peer\""
 
-#: conn/ssl.c:892
+#: conn/ssl.c:891
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "Ägarens S/MIME-certifikat matchar inte avsändarens."
 
-#: conn/ssl.c:969 conn/ssl_gnutls.c:610
+#: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
 msgstr "Det här certifikatet tillhör:"
 
-#: conn/ssl.c:977 conn/ssl_gnutls.c:660
+#: conn/ssl.c:976 conn/ssl_gnutls.c:660
 msgid "This certificate was issued by:"
 msgstr "Det här certifikatet utfärdades av:"
 
-#: conn/ssl.c:985 conn/ssl_gnutls.c:713
+#: conn/ssl.c:984 conn/ssl_gnutls.c:713
 #, c-format
 msgid "This certificate is valid"
 msgstr "Det här certifikatet är giltigt"
 
-#: conn/ssl.c:986 conn/ssl_gnutls.c:717
+#: conn/ssl.c:985 conn/ssl_gnutls.c:717
 #, c-format
 msgid "   from %s"
 msgstr "   från %s"
 
-#: conn/ssl.c:988 conn/ssl_gnutls.c:721
+#: conn/ssl.c:987 conn/ssl_gnutls.c:721
 #, c-format
 msgid "     to %s"
 msgstr "     till %s"
 
-#: conn/ssl.c:994 conn/ssl_gnutls.c:725
+#: conn/ssl.c:993 conn/ssl_gnutls.c:725
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 Fingeravtryck: %s"
 
-#: conn/ssl.c:997 conn/ssl_gnutls.c:728
+#: conn/ssl.c:996 conn/ssl_gnutls.c:728
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 Fingeravtryck: %s"
 
-#: conn/ssl.c:1000
+#: conn/ssl.c:999
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
@@ -1127,42 +1127,42 @@ msgstr ""
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1023
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1027
+#: conn/ssl.c:1026
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: conn/ssl.c:1029 conn/ssl_gnutls.c:769
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: conn/ssl.c:1034
+#: conn/ssl.c:1033
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: conn/ssl.c:1036 conn/ssl_gnutls.c:780
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:791 ncrypt/crypt_gpgme.c:4211
 #: ncrypt/pgpkey.c:541 ncrypt/smime.c:473
 msgid "Exit  "
 msgstr "Avsluta "
 
-#: conn/ssl.c:1070 conn/ssl_gnutls.c:836
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
 msgstr "Varning: kunde inte spara certifikat"
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:840
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "Certifikat sparat"
 
-#: conn/ssl.c:1190
+#: conn/ssl.c:1189
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Certifikat sparat"
@@ -1170,19 +1170,19 @@ msgstr "Certifikat sparat"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1269 conn/ssl_gnutls.c:1161
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1280
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "I/O-fel"
 
-#: conn/ssl.c:1286 curs_lib.c:406 mutt_logging.c:178
+#: conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
 msgstr "okänt fel"
 
-#: conn/ssl.c:1289
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL misslyckades: %s"
@@ -1190,12 +1190,12 @@ msgstr "SSL misslyckades: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1317
+#: conn/ssl.c:1316
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Fel: kunde inte skapa OpenSSL-underprocess!"
 
-#: conn/ssl.c:1365
+#: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -2097,7 +2097,7 @@ msgstr "[-- Den här %s/%s bilagan --]\n"
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s stöds inte --]\n"
 
-#: hcache/hcache.c:693 main.c:655 newsrc.c:1102
+#: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
@@ -2322,12 +2322,12 @@ msgstr "Prenumererar på %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Avslutar prenumeration på %s..."
 
-#: imap/imap.c:1753 init.c:4241
+#: imap/imap.c:1753 init.c:4245
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:1755 init.c:4295
+#: imap/imap.c:1755 init.c:4299
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Avslutar prenumeration på %s"
@@ -2634,25 +2634,25 @@ msgstr "Fel i kommandorad: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:4103
+#: init.c:4107
 msgid "-group: no group name"
 msgstr "-group: inget gruppnamn"
 
-#: init.c:4113
+#: init.c:4117
 msgid "out of arguments"
 msgstr "slut på parametrar"
 
-#: init.c:4236
+#: init.c:4240
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Prenumererar på %s..."
 
-#: init.c:4252 init.c:4306
+#: init.c:4256 init.c:4310
 #, fuzzy
 msgid "No folder specified"
 msgstr "Inget ärende angivet."
 
-#: init.c:4290
+#: init.c:4294
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Avslutar prenumeration på %s"
@@ -2718,150 +2718,149 @@ msgstr "Ange nycklar (^G för att avbryta): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Tecken = %s, Oktal = %o, Decimal = %d"
 
-#: main.c:97
-#, fuzzy
+#. L10N: Try to limit to 80 columns
+#: main.c:98
 msgid ""
-"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
-"--] <addr> [...] < message\n"
-"       neomutt [<options>] -p\n"
-"       neomutt [<options>] -A <alias> [...]\n"
-"       neomutt [<options>] -Q <query> [...]\n"
-"       neomutt [<options>] -B\n"
-"       neomutt [<options>] -D [-S]\n"
-"       neomutt -v[v]\n"
+"usage:\n"
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]\n"
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message\n"
+"  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -A <alias>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -B\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -D [-S]\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -G\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -g <server>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -p\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Q <variable>\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -Z\n"
+"  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
+"  neomutt -v[v]\n"
 msgstr ""
-"användning: neomutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
-"       neomutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a "
-"<file> [...]] [--] <adress> [...]\n"
-"       neomutt [<flaggor>] -p\n"
-"       neomutt [<flaggor>] -A <alias> [...]\n"
-"       neomutt [<flaggor>] -Q <förfrågan> [...]\n"
-"       neomutt [<flaggor>] -D\n"
-"       neomutt -v[v]\n"
 
-#: main.c:107
+#. L10N: Try to limit to 80 columns
+#. If more space is needed add an indented line
+#: main.c:119
 msgid ""
 "options:\n"
-"  -A <alias>    expand the given alias\n"
-"  -a <file> [...] --    attach file(s) to the message\n"
-"                the list of files must be terminated with the \"--\" "
-"sequence\n"
-"  -b <address>  specify a blind carbon-copy (BCC) address\n"
-"  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout\n"
-"  -D -S         like -D, but hide the value of sensitive variables\n"
-"  -B            run in batch mode (do not start the ncurses UI)\n"
-"  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-"  -E            edit the draft (-H) or include (-i) file\n"
-"  -e <command>  specify a command to be executed after initialization\n"
-"  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate neomuttrc file\n"
-"  -g <server>   specify a news server (if compiled with NNTP)\n"
-"  -G            select a newsgroup (if compiled with NNTP)\n"
-"  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which NeoMutt should include in the body\n"
-"  -m <type>     specify a default mailbox type\n"
-"  -n            causes NeoMutt not to read the system neomuttrc\n"
-"  -p            recall a postponed message\n"
-"  -Q <variable> query a configuration variable\n"
-"  -R            open mailbox in read-only mode\n"
-"  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-"  -v            show version and compile-time definitions\n"
-"  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your 'mailboxes' list\n"
-"  -z            exit immediately if there are no messages in the mailbox\n"
-"  -Z            open the first folder with new message, exit immediately if "
-"none\n"
-"  -h            this help message"
+"  --            Special argument forces NeoMutt to stop option parsing and "
+"treat\n"
+"                remaining arguments as addresses even if they start with a "
+"dash\n"
+"  -A <alias>    Print an expanded version of the given alias to stdout and "
+"exit\n"
+"  -a <file>     Attach one or more files to a message (must be the last "
+"option)\n"
+"                Add any addresses after the '--' argument\n"
+"  -B            Run in batch mode (do not start the ncurses UI)\n"
+"  -b <address>  Specify a blind carbon copy (Bcc) recipient\n"
+"  -c <address>  Specify a carbon copy (Cc) recipient\n"
+"  -D            Dump all config variables as 'name=value' pairs to stdout\n"
+"  -D -S         Like -D, but hide the value of sensitive variables\n"
+"  -d <level>    Log debugging output to a file (default is \"~/."
+"neomuttdebug0\")\n"
+"                The level can range from 1-5 and affects verbosity\n"
+"  -E            Edit draft (-H) or include (-i) file during message "
+"composition\n"
+"  -e <command>  Specify a command to be run after reading the config files\n"
+"  -F <config>   Specify an alternative initialization file to read\n"
+"  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to "
+"load\n"
+"  -G            Start NeoMutt with a listing of subscribed newsgroups\n"
+"  -g <server>   Like -G, but start at specified news server\n"
+"  -H <draft>    Specify a draft file with header and body for message "
+"composing\n"
+"  -h            Print this help message and exit\n"
+"  -i <include>  Specify an include file to be embedded in the body of a "
+"message\n"
+"  -l <file>     Specify a file for debugging output (default \"~/."
+"neomuttdebug0\")\n"
+"  -m <type>     Specify a default mailbox format type for newly created "
+"folders\n"
+"                The type is either MH, MMDF, Maildir or mbox (case-"
+"insensitive)\n"
+"  -n            Do not read the system-wide configuration file\n"
+"  -p            Resume a prior postponed message, if any\n"
+"  -Q <variable> Query a configuration variable and print its value to "
+"stdout\n"
+"                (after the config has been read and any commands executed)\n"
+"  -R            Open mailbox in read-only mode\n"
+"  -s <subject>  Specify a subject (must be enclosed in quotes if it has "
+"spaces)\n"
+"  -v            Print the NeoMutt version and compile-time definitions and "
+"exit\n"
+"  -vv           Print the NeoMutt license and copyright information and "
+"exit\n"
+"  -x            Simulate the mailx(1) send mode\n"
+"  -y            Start NeoMutt with a listing of all defined mailboxes\n"
+"  -Z            Open the first mailbox with new message or exit immediately "
+"with\n"
+"                exit code 1 if none is found in all defined mailboxes\n"
+"  -z            Open the first or specified (-f) mailbox if it holds any "
+"message\n"
+"                or exit immediately with exit code 1 otherwise"
 msgstr ""
-"flaggor:\n"
-"  -A <alias>    expandera det givna aliaset\n"
-"  -a <fil>      bifoga en fil till meddelandet\n"
-"  -b <adress>   ange en \"blind carbon-copy\" (BCC) adress\n"
-"  -c <adress>   ange en \"carbon-copy\" (CC) adress\n"
-"  -D            skriv ut värdet på alla variabler på stdout\n"
-"  -d <nivå>     logga debug-utskrifter till ~/.neomuttdebug0\n"
-"  -e <kommando> ange ett kommando som ska köras efter initiering\n"
-"  -f <fil>      ange vilken brevlåda som ska läsas\n"
-"  -F <fil>      ange en alternativ neomuttrc-fil\n"
-"  -H <fil>      ange en filmall att läsa huvud från\n"
-"  -i <fil>      ange en fil som NeoMutt ska inkludera i svaret\n"
-"  -m <typ>      ange standardtyp för brevlådan\n"
-"  -n            gör så att NeoMutt inte läser systemets neomuttrc\n"
-"  -p            återkalla ett uppskjutet meddelande\n"
-"  -Q <variabel> undersök värdet på en konfigurationsvariabel\n"
-"  -R            öppna brevlåda i skrivskyddat läge\n"
-"  -s <ämne>     ange ett ämne (måste vara inom citationstecken om det "
-"innehåller blanksteg)\n"
-"  -v            visa version och definitioner vid kompileringen\n"
-"  -x            simulera mailx's sändläge\n"
-"  -y            välj en brevlåda specifierad i din \"mailboxes\"-lista\n"
-"  -z            avsluta omedelbart om det inte finns några meddelanden i "
-"brevlådan\n"
-"  -Z            öppna den första foldern med ett nytt meddelande, avsluta "
-"omedelbart om inget finns\n"
-"  -h            den här hjälptexten"
 
-#: main.c:158
+#: main.c:179
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:219
+#: main.c:240
 msgid "unable to determine username"
 msgstr "kunde inte avgöra användarnamn"
 
-#: main.c:225
+#: main.c:246
 msgid "unable to determine home directory"
 msgstr "kunde inte avgöra hemkatalog"
 
-#: main.c:472
+#: main.c:493
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d."
 msgstr "Fel: '%s' är ett dåligt IDN."
 
-#: main.c:651
+#: main.c:672
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Skapa den?"
 
-#: main.c:701
+#: main.c:722
 msgid "Failed to parse mailto: link"
 msgstr "Misslyckades att tolka mailto:-länk"
 
-#: main.c:711 send.c:1903 send.c:1908
+#: main.c:732 send.c:1903 send.c:1908
 msgid "No recipients specified."
 msgstr "Inga mottagare angivna."
 
-#: main.c:737
+#: main.c:758
 msgid "Cannot use -E flag with stdin"
 msgstr ""
 
-#: main.c:823
+#: main.c:844
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "Kan inte öppna meddelandefil: %s"
 
-#: main.c:888
+#: main.c:909
 #, c-format
 msgid "%s: unable to attach file."
 msgstr "%s: kunde inte bifoga fil."
 
-#: main.c:965
+#: main.c:986
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda med nya brev."
 
-#: main.c:985
+#: main.c:1006
 msgid "No incoming mailboxes defined."
 msgstr "Inga inkommande brevlådor definierade."
 
-#: main.c:1027
+#: main.c:1048
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
-#: mbox.c:124 mbox.c:281 mh.c:1281 mx.c:509
+#: mbox.c:124 mbox.c:281 mh.c:1280 mx.c:509
 #, c-format
 msgid "Reading %s..."
 msgstr "Läser %s..."
@@ -2897,7 +2896,7 @@ msgstr ""
 "sync: mbox modifierad, men inga modifierade meddelanden! (rapportera det här "
 "felet)"
 
-#: mbox.c:1054 mh.c:2317 mutt_notmuch.c:2646 mx.c:598
+#: mbox.c:1054 mh.c:2316 mutt_notmuch.c:2643 mx.c:598
 #, c-format
 msgid "Writing %s..."
 msgstr "Skriver %s..."
@@ -2980,35 +2979,35 @@ msgstr "Hoppning är inte implementerad för dialoger."
 msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
-#: mh.c:1261
+#: mh.c:1260
 #, c-format
 msgid "Scanning %s..."
 msgstr "Scannar %s..."
 
-#: mh.c:1581 mh.c:1669
+#: mh.c:1580 mh.c:1668
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Kunde inte skicka meddelandet."
 
-#: mh.c:1621
+#: mh.c:1620
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kunde inte sätta tid på fil"
 
-#: mutt/file.c:1134
+#: mutt/file.c:1136
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Maxtiden överskreds när \"fcntl\"-låsning försöktes!"
 
-#: mutt/file.c:1140
+#: mutt/file.c:1142
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Väntar på fcntl-låsning... %d"
 
-#: mutt/file.c:1211
+#: mutt/file.c:1206
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Maxtiden överskreds när \"flock\"-låsning försöktes!"
 
-#: mutt/file.c:1218
+#: mutt/file.c:1213
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Väntar på \"flock\"-försök... %d"
@@ -3136,7 +3135,7 @@ msgstr "Användarnamn på %s: "
 msgid "Password for %s@%s: "
 msgstr "Lösenord för %s@%s: "
 
-#: mutt_notmuch.c:205 mutt_notmuch.c:1972 mutt_notmuch.c:2191
+#: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Misslyckades att tolka mailto:-länk\n"
@@ -3172,17 +3171,17 @@ msgstr ""
 msgid "unknown reason"
 msgstr "okänt fel"
 
-#: mutt_notmuch.c:1039
+#: mutt_notmuch.c:1035
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Skickar meddelande..."
 
-#: mutt_notmuch.c:1855
+#: mutt_notmuch.c:1852
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: mutt_notmuch.c:2761
+#: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Kan inte lägga till folder: %s"
@@ -3305,19 +3304,19 @@ msgstr "Meddelande kan inte skickas infogat. Återgå till att använda PGP/MIME
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
-#: ncrypt/crypt.c:541
+#: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "S/MIME-meddelanden utan ledtrådar till innehållet stöds ej."
 
-#: ncrypt/crypt.c:756 ncrypt/crypt.c:797
+#: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
 msgstr "Försöker att extrahera PGP-nycklar...\n"
 
-#: ncrypt/crypt.c:778 ncrypt/crypt.c:818
+#: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Försöker att extrahera S/MIME-certifikat...\n"
 
-#: ncrypt/crypt.c:978
+#: ncrypt/crypt.c:976
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3326,7 +3325,7 @@ msgstr ""
 "[-- Fel: Okänt \"multipart/signed\" protokoll %s! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
+#: ncrypt/crypt.c:1016
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
@@ -3335,7 +3334,7 @@ msgstr ""
 "[-- Fel: Inkonsekvent \"multipart/signed\" struktur! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1060
+#: ncrypt/crypt.c:1058
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3344,7 +3343,7 @@ msgstr ""
 "[-- Varning: Vi kan inte verifiera %s/%s signaturer. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1072
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3352,7 +3351,7 @@ msgstr ""
 "[-- Följande data är signerat --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1077
+#: ncrypt/crypt.c:1075
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3360,7 +3359,7 @@ msgstr ""
 "[-- Varning: Kan inte hitta några signaturer. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1083
+#: ncrypt/crypt.c:1081
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -5965,7 +5964,7 @@ msgstr "Skriv ut märkta bilagor?"
 msgid "Print attachment?"
 msgstr "Skriv ut bilaga?"
 
-#: recvattach.c:899
+#: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
@@ -6282,20 +6281,20 @@ msgstr "Kunde inte skicka meddelandet."
 msgid "Could not open %s"
 msgstr "Kunde inte öppna %s"
 
-#: sendlib.c:2498
+#: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
-#: sendlib.c:2605
+#: sendlib.c:2603
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fel vid sändning av meddelande, barn returnerade %d (%s)."
 
-#: sendlib.c:2611
+#: sendlib.c:2609
 msgid "Output of the delivery process"
 msgstr "Utdata från sändprocessen"
 
-#: sendlib.c:2795
+#: sendlib.c:2793
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Felaktigt IDN %s vid förberedning av \"resent-from\"."
@@ -6369,14 +6368,14 @@ msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 msgid "Parent message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: version.c:78
+#: version.c:64
 #, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr "Många ej nämnda personer har bidragit med kod, fixar och förslag.\n"
 
-#: version.c:82
+#: version.c:68
 #, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
@@ -6413,7 +6412,7 @@ msgstr ""
 "    Foundation,Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
 "02110-1301, USA.\n"
 
-#: version.c:98
+#: version.c:84
 msgid ""
 "To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -6421,7 +6420,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:105
+#: version.c:91
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -6434,12 +6433,96 @@ msgstr ""
 "NeoMutt är fri mjukvara, och du är välkommen att sprida det vidare\n"
 "under vissa villkor; kör 'neomutt -vv' för detaljer.\n"
 
-#: version.c:417
+#: version.c:401
 #, fuzzy
 msgid "Default options:"
 msgstr "Kompileringsval:"
 
-#: version.c:420
+#: version.c:404
 msgid "Compile options:"
 msgstr "Kompileringsval:"
 
+#, fuzzy
+#~ msgid ""
+#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-"
+#~ "a <file> [...] --] <addr> [...]\n"
+#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+#~ "--] <addr> [...] < message\n"
+#~ "       neomutt [<options>] -p\n"
+#~ "       neomutt [<options>] -A <alias> [...]\n"
+#~ "       neomutt [<options>] -Q <query> [...]\n"
+#~ "       neomutt [<options>] -B\n"
+#~ "       neomutt [<options>] -D [-S]\n"
+#~ "       neomutt -v[v]\n"
+#~ msgstr ""
+#~ "användning: neomutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
+#~ "       neomutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-"
+#~ "a <file> [...]] [--] <adress> [...]\n"
+#~ "       neomutt [<flaggor>] -p\n"
+#~ "       neomutt [<flaggor>] -A <alias> [...]\n"
+#~ "       neomutt [<flaggor>] -Q <förfrågan> [...]\n"
+#~ "       neomutt [<flaggor>] -D\n"
+#~ "       neomutt -v[v]\n"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>    expand the given alias\n"
+#~ "  -a <file> [...] --    attach file(s) to the message\n"
+#~ "                the list of files must be terminated with the \"--\" "
+#~ "sequence\n"
+#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>  specify a carbon-copy (CC) address\n"
+#~ "  -D            print the value of all variables to stdout\n"
+#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
+#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
+#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
+#~ "  -E            edit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>  specify a command to be executed after initialization\n"
+#~ "  -f <file>     specify which mailbox to read\n"
+#~ "  -F <file>     specify an alternate neomuttrc file\n"
+#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
+#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
+#~ "  -H <file>     specify a draft file to read header and body from\n"
+#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
+#~ "  -m <type>     specify a default mailbox type\n"
+#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
+#~ "  -p            recall a postponed message\n"
+#~ "  -Q <variable> query a configuration variable\n"
+#~ "  -R            open mailbox in read-only mode\n"
+#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v            show version and compile-time definitions\n"
+#~ "  -x            simulate the mailx send mode\n"
+#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
+#~ "  -z            exit immediately if there are no messages in the mailbox\n"
+#~ "  -Z            open the first folder with new message, exit immediately "
+#~ "if none\n"
+#~ "  -h            this help message"
+#~ msgstr ""
+#~ "flaggor:\n"
+#~ "  -A <alias>    expandera det givna aliaset\n"
+#~ "  -a <fil>      bifoga en fil till meddelandet\n"
+#~ "  -b <adress>   ange en \"blind carbon-copy\" (BCC) adress\n"
+#~ "  -c <adress>   ange en \"carbon-copy\" (CC) adress\n"
+#~ "  -D            skriv ut värdet på alla variabler på stdout\n"
+#~ "  -d <nivå>     logga debug-utskrifter till ~/.neomuttdebug0\n"
+#~ "  -e <kommando> ange ett kommando som ska köras efter initiering\n"
+#~ "  -f <fil>      ange vilken brevlåda som ska läsas\n"
+#~ "  -F <fil>      ange en alternativ neomuttrc-fil\n"
+#~ "  -H <fil>      ange en filmall att läsa huvud från\n"
+#~ "  -i <fil>      ange en fil som NeoMutt ska inkludera i svaret\n"
+#~ "  -m <typ>      ange standardtyp för brevlådan\n"
+#~ "  -n            gör så att NeoMutt inte läser systemets neomuttrc\n"
+#~ "  -p            återkalla ett uppskjutet meddelande\n"
+#~ "  -Q <variabel> undersök värdet på en konfigurationsvariabel\n"
+#~ "  -R            öppna brevlåda i skrivskyddat läge\n"
+#~ "  -s <ämne>     ange ett ämne (måste vara inom citationstecken om det "
+#~ "innehåller blanksteg)\n"
+#~ "  -v            visa version och definitioner vid kompileringen\n"
+#~ "  -x            simulera mailx's sändläge\n"
+#~ "  -y            välj en brevlåda specifierad i din \"mailboxes\"-lista\n"
+#~ "  -z            avsluta omedelbart om det inte finns några meddelanden i "
+#~ "brevlådan\n"
+#~ "  -Z            öppna den första foldern med ett nytt meddelande, avsluta "
+#~ "omedelbart om inget finns\n"
+#~ "  -h            den här hjälptexten"
