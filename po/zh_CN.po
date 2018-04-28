@@ -974,7 +974,7 @@ msgstr "没有append-hook或者close-hook不能够追加 : %s"
 #: compress.c:547
 #,  c-format
 msgid "Compress command failed: %s"
-msgstr "压缩命令失败。"
+msgstr "压缩命令失败: %s"
 
 #: compress.c:558
 msgid "Unsupported mailbox type for appending."
@@ -1474,7 +1474,7 @@ msgstr "信件在此限制视图中不可见。"
 #: curs_main.c:1288
 #,  c-format
 msgid "Fetching %s from server..."
-msgstr "正在服务器上执行信件更新..."
+msgstr "正在从服务器上更新 %s"
 
 #: curs_main.c:1298
 #, c-format
