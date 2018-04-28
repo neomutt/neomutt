@@ -1360,12 +1360,15 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (ret == 0)
       {
         /* create dir recursively */
-        if (mutt_file_mkdir(mutt_file_dirname(s), S_IRWXU) == -1)
+        char *tmp_path = mutt_file_dirname(s);
+        if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
         {
           /* report failure & abort */
           mutt_perror(s);
+          FREE(&tmp_path);
           return 1;
         }
+        FREE(&tmp_path);
       }
     }
     else

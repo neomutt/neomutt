@@ -927,12 +927,10 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
  * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
- *
- * @warning mutt_file_dirname() returns a static string which must not be free()'d.
  */
-const char *mutt_file_dirname(const char *p)
+char *mutt_file_dirname(const char *p)
 {
-  static char buf[_POSIX_PATH_MAX];
+  char *buf = mutt_mem_malloc(_POSIX_PATH_MAX);
   mutt_str_strfcpy(buf, p, sizeof(buf));
   return dirname(buf);
 }
@@ -1312,7 +1310,6 @@ int mutt_file_rename(char *oldfile, char *newfile)
  */
 int mutt_file_to_absolute_path(char *path, const char *reference)
 {
-  const char *dirpath = NULL;
   char abs_path[PATH_MAX];
   int path_len;
 
@@ -1322,8 +1319,9 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
     return true;
   }
 
-  dirpath = mutt_file_dirname(reference);
+  char *dirpath = mutt_file_dirname(reference);
   mutt_str_strfcpy(abs_path, dirpath, PATH_MAX);
+  FREE(&dirpath);
   mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   path_len = PATH_MAX - strlen(path);
