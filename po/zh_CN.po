@@ -194,12 +194,12 @@ msgid "Path too long: %s%s%s"
 msgstr ""
 
 #: bcache.c:168
-#, fuzzy, c-format
+#,  c-format
 msgid "Message cache isn't a directory: %s."
 msgstr "消息缓存不是一个目录: %s."
 
 #: bcache.c:176
-#, fuzzy, c-format
+#,  c-format
 msgid "Can't create %s %s"
 msgstr "无法创建 %s %s."
 
@@ -220,12 +220,12 @@ msgid "List"
 msgstr "列表"
 
 #: browser.c:82
-#, fuzzy
+#,
 msgid "Subscribe"
 msgstr "已订阅 "
 
 #: browser.c:83
-#, fuzzy
+#,
 msgid "Unsubscribe"
 msgstr "已取消订阅 "
 
@@ -239,7 +239,7 @@ msgid "%s is not a directory."
 msgstr "%s 不是目录"
 
 #: browser.c:1049
-#, fuzzy, c-format
+#,  c-format
 msgid "Subscribed newsgroups"
 msgstr "已订阅新闻组"
 
@@ -279,7 +279,7 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持删除"
 
 #: browser.c:1661 browser.c:1687
-#, fuzzy
+#,
 msgid "Mailbox deletion failed."
 msgstr "信箱删除失败"
 
@@ -346,17 +346,17 @@ msgid "Error trying to view file"
 msgstr "尝试显示文件出错"
 
 #: browser.c:2113
-#, fuzzy, c-format
+#,  c-format
 msgid "Subscribe pattern: "
 msgstr "订阅模式"
 
 #: browser.c:2115
-#, fuzzy, c-format
+#,  c-format
 msgid "Unsubscribe pattern: "
 msgstr "取消订阅模式"
 
 #: browser.c:2134
-#, fuzzy
+#,
 msgid "No newsgroups match the mask"
 msgstr "没有新闻组与文件掩码相符"
 
@@ -555,7 +555,7 @@ msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:544
-#, fuzzy
+#,
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzcpl"
 
@@ -656,7 +656,7 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
-#, fuzzy
+#,
 msgid "Reply-To: "
 msgstr "回复给:"
 
@@ -691,19 +691,19 @@ msgstr "选择身份签署："
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:140
-#, fuzzy
+#,
 msgid "Newsgroups: "
 msgstr "新闻组"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142
-#, fuzzy
+#,
 msgid "Followup-To: "
 msgstr "发送后续信件到: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
-#, fuzzy
+#,
 msgid "X-Comment-To: "
 msgstr "编辑评论 栏位"
 
@@ -739,12 +739,12 @@ msgid "Descrip"
 msgstr "描述"
 
 #: compose.c:167
-#, fuzzy
+#,
 msgid "Newsgroups"
 msgstr "新闻组"
 
 #: compose.c:244
-#, fuzzy
+#,
 msgid "Not supported"
 msgstr "不支持"
 
@@ -765,7 +765,7 @@ msgid "None"
 msgstr "无操作"
 
 #: compose.c:276
-#, fuzzy
+#,
 msgid " (inline PGP)"
 msgstr " (嵌入PGP)"
 
@@ -774,7 +774,7 @@ msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
 #: compose.c:281
-#, fuzzy
+#,
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
@@ -836,12 +836,12 @@ msgid "Open mailbox to attach message from"
 msgstr "打开信箱并从中附加信件"
 
 #: compose.c:1082
-#, fuzzy
+#,
 msgid "Open newsgroup to attach message from"
 msgstr "从附件中打开新闻组"
 
 #: compose.c:1126
-#, fuzzy, c-format
+#,  c-format
 msgid "Unable to open mailbox %s"
 msgstr "无法打开信箱 %s"
 
@@ -878,7 +878,7 @@ msgid "Save a copy of this message?"
 msgstr "保存这封信件的副本吗？"
 
 #: compose.c:1369
-#, fuzzy
+#,
 msgid "Send attachment with name: "
 msgstr "使用什么名字发送附件:"
 
@@ -934,7 +934,7 @@ msgstr "信件已写入。"
 
 #: compose.c:1601
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "没有PGP后台配置文件"
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
@@ -942,7 +942,7 @@ msgstr "已经选择了 S/MIME 。清除并继续？"
 
 #: compose.c:1635
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "没有S/MIME 后台配置文件"
 
 #: compose.c:1643
 msgid "PGP already selected. Clear and continue ? "
@@ -972,7 +972,7 @@ msgid "Cannot append without an append-hook or close-hook : %s"
 msgstr "没有append-hook或者close-hook不能够追加 : %s"
 
 #: compress.c:547
-#, fuzzy, c-format
+#,  c-format
 msgid "Compress command failed: %s"
 msgstr "压缩命令失败。"
 
@@ -981,12 +981,12 @@ msgid "Unsupported mailbox type for appending."
 msgstr "不支持的信箱类型追加操作"
 
 #: compress.c:633
-#, fuzzy, c-format
+#,  c-format
 msgid "Compressed-appending to %s..."
 msgstr "正在压缩到 %s..."
 
 #: compress.c:638
-#, fuzzy, c-format
+#,  c-format
 msgid "Compressing %s..."
 msgstr "正在压缩中 %s..."
 
@@ -1000,7 +1000,7 @@ msgid "Can't sync a compressed file without a close-hook"
 msgstr "没有一个close-hook不能够同步一件压缩文件"
 
 #: compress.c:879
-#, fuzzy, c-format
+#,  c-format
 msgid "Compressing %s"
 msgstr "正在压缩中 %s"
 
@@ -1039,7 +1039,7 @@ msgid "Error talking to %s (%s)"
 msgstr "与 %s 通话出错(%s)"
 
 #: conn/socket.c:359 conn/socket.c:390
-#, fuzzy, c-format
+#,  c-format
 msgid "Connection to %s has been aborted"
 msgstr "到 %s 的连接已关闭"
 
@@ -1083,7 +1083,7 @@ msgid "%s has insecure permissions!"
 msgstr "%s 有不安全的访问许可！"
 
 #: conn/ssl.c:368
-#, fuzzy
+#,
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL 因缺少足够的熵而禁用"
 
@@ -1174,18 +1174,18 @@ msgid "roas"
 msgstr "roas"
 
 #: conn/ssl.c:1026
-#, fuzzy
+#,
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "拒绝(r)，接受一次(o)，总是接受(a)"
+msgstr "拒绝(r)，接受一次(o)，总是接受(a),跳过(s)"
 
 #: conn/ssl.c:1028 conn/ssl_gnutls.c:770
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "拒绝(r)，接受一次(o)，总是接受(a)"
 
 #: conn/ssl.c:1033
-#, fuzzy
+#,
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "拒绝(r)，接受一次(o)"
+msgstr "拒绝(r)，接受一次(o),跳过(s)"
 
 #: conn/ssl.c:1035 conn/ssl_gnutls.c:781
 msgid "(r)eject, accept (o)nce"
@@ -1229,7 +1229,7 @@ msgstr "SSL 失败：%s"
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
 #: conn/ssl.c:1319
-#, fuzzy
+#,
 msgid "Unable to create SSL context"
 msgstr "无法创建 SSL 上下文"
 
@@ -1387,7 +1387,7 @@ msgstr "无可见信件"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: curs_main.c:129 pager.c:108
-#, fuzzy, c-format
+#,  c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "无法 %s: 操作不被访问控制列表(ACL)所允许"
 
@@ -1433,7 +1433,7 @@ msgid "Post"
 msgstr "发表"
 
 #: curs_main.c:839 pager.c:1714
-#, fuzzy
+#,
 msgid "Followup"
 msgstr "发送后续信件到"
 
@@ -1458,7 +1458,7 @@ msgid "Nothing to do."
 msgstr "无事可做。"
 
 #: curs_main.c:1248
-#, fuzzy
+#,
 msgid "Enter Message-Id: "
 msgstr "请输入信件 ID："
 
@@ -1467,12 +1467,12 @@ msgid "Article has no parent reference."
 msgstr "文本没有父索引"
 
 #: curs_main.c:1282
-#, fuzzy
+#,
 msgid "Message is not visible in limited view."
 msgstr "信件在此限制视图中不可见。"
 
 #: curs_main.c:1288
-#, fuzzy, c-format
+#,  c-format
 msgid "Fetching %s from server..."
 msgstr "正在服务器上执行信件更新..."
 
@@ -1490,7 +1490,7 @@ msgid "Fetching message headers..."
 msgstr "正在取回信件标头..."
 
 #: curs_main.c:1395
-#, fuzzy
+#,
 msgid "No deleted messages found in the thread."
 msgstr "在该线程中没有发现被删除的信件"
 
@@ -1512,7 +1512,7 @@ msgstr "无效的信件编号。"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1476 curs_main.c:2871 pager.c:2820
-#, fuzzy
+#,
 msgid "Cannot delete message(s)"
 msgstr "不能够删除信件"
 
@@ -1548,9 +1548,9 @@ msgstr "标记符合此样式的信件："
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1705 curs_main.c:3302 pager.c:3139
-#, fuzzy
+#,
 msgid "Cannot undelete message(s)"
-msgstr "删除信件"
+msgstr "不能够反删除信件"
 
 #: curs_main.c:1708
 msgid "Undelete messages matching: "
@@ -1561,12 +1561,12 @@ msgid "Untag messages matching: "
 msgstr "反标记符合此样式的信件："
 
 #: curs_main.c:1752
-#, fuzzy
+#,
 msgid "Logged out of IMAP servers."
 msgstr "正在退出 IMAP 服务器."
 
 #: curs_main.c:1852
-#, fuzzy
+#,
 msgid "No virtual folder, aborting."
 msgstr "没有虚拟文件夹，正在中止。"
 
@@ -1575,27 +1575,27 @@ msgid "Failed to read thread, aborting."
 msgstr "不能够读取thread，中止"
 
 #: curs_main.c:1892 mx.c:1386 mx.c:1398
-#, fuzzy
+#,
 msgid "Folder doesn't support tagging, aborting."
 msgstr "文件件不支持标签，正在终止"
 
 #: curs_main.c:1907
-#, fuzzy
+#,
 msgid "No tag specified, aborting."
 msgstr "没有特殊标签，正在中止。"
 
 #: curs_main.c:1919
-#, fuzzy, c-format
+#,  c-format
 msgid "Update tags..."
 msgstr "更新标签中..."
 
 #: curs_main.c:1956
-#, fuzzy
+#,
 msgid "Failed to modify tags, aborting."
 msgstr "不能够修改标签。正在中止"
 
 #: curs_main.c:1997
-#, fuzzy
+#,
 msgid "No query, aborting."
 msgstr "没有查询，正在中止。"
 
@@ -1616,7 +1616,7 @@ msgid "Open mailbox in read-only mode"
 msgstr "用只读模式打开信箱"
 
 #: curs_main.c:2075
-#, fuzzy
+#,
 msgid "Open virtual folder"
 msgstr "打开虚拟文件夹"
 
@@ -1629,7 +1629,7 @@ msgid "No mailboxes have new mail"
 msgstr "没有信箱有新信件"
 
 #: curs_main.c:2135
-#, fuzzy
+#,
 msgid "Open newsgroup in read-only mode"
 msgstr "用只读模式打开新闻组"
 
@@ -1638,12 +1638,12 @@ msgid "Open newsgroup"
 msgstr "打开新闻组"
 
 #: curs_main.c:2240
-#, fuzzy
+#,
 msgid "Exit NeoMutt without saving?"
 msgstr "不保存便退出 NeoMutt 吗？"
 
 #: curs_main.c:2256
-#, fuzzy
+#,
 msgid "Cannot break thread"
 msgstr "不能中断线索"
 
@@ -1662,7 +1662,7 @@ msgstr "线索不能够打破，信件不是该线索的一部分"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2294
-#, fuzzy
+#,
 msgid "Cannot link threads"
 msgstr "不能够链接线索"
 
@@ -1703,36 +1703,36 @@ msgid "Search wrapped to bottom."
 msgstr "搜寻从结尾重新开始。"
 
 #: curs_main.c:2546
-#, fuzzy
+#,
 msgid "No new messages in this limited view."
 msgstr "没有新的信件在此限制视图中。"
 
 #: curs_main.c:2548
-#, fuzzy
+#,
 msgid "No new messages."
 msgstr "没有新信件"
 
 #: curs_main.c:2553
-#, fuzzy
+#,
 msgid "No unread messages in this limited view."
-msgstr "父信件在此限制视图中不可见。"
+msgstr "在此限制视图中没有未读信件。"
 
 #: curs_main.c:2555
-#, fuzzy
+#,
 msgid "No unread messages."
 msgstr "没有尚未读取的信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2573
-#, fuzzy
+#,
 msgid "Cannot flag message"
 msgstr "不能够标记信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2612 pager.c:3102
-#, fuzzy
+#,
 msgid "Cannot toggle new"
-msgstr "切换新信件标记"
+msgstr "不能够处理新的"
 
 #: curs_main.c:2689
 msgid "No more threads."
@@ -1743,26 +1743,26 @@ msgid "You are on the first thread."
 msgstr "您在第一个线索上。"
 
 #: curs_main.c:2775
-#, fuzzy
+#,
 msgid "Thread contains unread or flagged messages."
-msgstr "线索中有尚未读取的信件。"
+msgstr "线索中有尚未读取或者被标记的信件。"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2825 pager.c:2786
-#, fuzzy
+#,
 msgid "Cannot delete message"
-msgstr "反删除信件"
+msgstr "不能够删除信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2937
-#, fuzzy
+#,
 msgid "Cannot edit message"
 msgstr "无法编辑信件"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2999 pager.c:3202
-#, fuzzy, c-format
+#,  c-format
 msgid "%d labels changed."
 msgstr "%d 标签改变。"
 
@@ -1770,13 +1770,13 @@ msgstr "%d 标签改变。"
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
 #: curs_main.c:3006 pager.c:3206
-#, fuzzy
+#,
 msgid "No labels changed."
 msgstr "没有标签改变。"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3105
-#, fuzzy
+#,
 msgid "Cannot mark message(s) as read"
 msgstr "不能够标记信件为已读"
 
@@ -1784,14 +1784,14 @@ msgstr "不能够标记信件为已读"
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
 #: curs_main.c:3141
-#, fuzzy
+#,
 msgid "Enter macro stroke: "
 msgstr "请输入密钥 ID："
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
 #: curs_main.c:3149
-#, fuzzy
+#,
 msgid "message hotkey"
 msgstr "信件热键"
 
@@ -1806,7 +1806,7 @@ msgstr "信件已回退 %s"
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3162
-#, fuzzy
+#,
 msgid "No message ID to macro."
 msgstr "没有信件Id对应的宏。"
 
@@ -1820,12 +1820,12 @@ msgstr "不能够在这个组里发文，也许可以修改，继续？"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3272 pager.c:3122
-#, fuzzy
+#,
 msgid "Cannot undelete message"
 msgstr "不能反删除信件"
 
 #: edit.c:49
-#, fuzzy
+#,
 msgid ""
 "~~              insert a line beginning with a single ~\n"
 "~b users        add users to the Bcc: field\n"
