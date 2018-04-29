@@ -892,6 +892,15 @@ FILE *mutt_file_mkstemp_full(char *name, size_t namelen,
   return fp;
 }
 
+int mutt_file_mkstemp_finish(FILE *fp, const char *name) {
+  if (name != NULL) {
+    if (unlink(name) && (errno != ENOENT))
+      return -1;
+  }
+
+  return mutt_file_fclose(&fp);
+}
+
 /**
  * mutt_file_decrease_mtime - Decrease a file's modification time by 1 second
  * @param f  Filename
