@@ -4543,6 +4543,7 @@ static int finish_source         (struct Buffer *buf, struct Buffer *s, unsigned
 static int parse_alias           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_alternates      (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_attachments     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static int parse_echo            (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_group           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_ifdef           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_ignore          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -4603,6 +4604,7 @@ const struct Command Commands[] = {
   { "color",               mutt_parse_color,       0 },
 #endif
   { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPTHOOK },
+  { "echo",                parse_echo,             0 },
   { "exec",                mutt_parse_exec,        0 },
   { "fcc-hook",            mutt_parse_hook,        MUTT_FCCHOOK },
   { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCCHOOK | MUTT_SAVEHOOK },

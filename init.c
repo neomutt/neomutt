@@ -1040,6 +1040,23 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err)
+{
+  if (!MoreArgs(s))
+  {
+    mutt_str_strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token(buf, s, 0);
+  OptForceRefresh = true;
+  mutt_message("%s", buf->data);
+  OptForceRefresh = false;
+  mutt_sleep(0);
+
+  return 0;
+}
+
 static void alternates_clean(void)
 {
   if (!Context)

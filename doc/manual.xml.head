@@ -8885,6 +8885,28 @@ macro pager \cb |urlview\n
 
     </sect1>
 
+    <sect1 id="echo">
+      <title>Echoing Text</title>
+      <para>Usage:</para>
+      <cmdsynopsis>
+        <command>echo</command>
+        <arg choice="plain">
+          <replaceable class="parameter">message</replaceable>
+        </arg>
+      </cmdsynopsis>
+      <para>
+        You can print messages to the message window using the "echo" command.
+        This might be useful after a macro finishes executing. After printing
+        the message, echo will pause for the number of seconds specified by 
+        <link linkend="sleep-time">$sleep_time</link>.
+      </para>
+
+<screen>
+echo "Sourcing muttrc file" unset confirmappend macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
+</screen>
+
+    </sect1>
+
     <sect1 id="misc-topics">
       <title>Miscellany</title>
       <para>
