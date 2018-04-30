@@ -451,11 +451,10 @@ msgid "Warning: message contains no From: header"
 msgstr "Aviso: mensagem não contém cabeçalho 'From: ' (remetente)."
 
 #: commands.c:293 recvcmd.c:162
-#, fuzzy
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Repetir mensagem para: "
-msgstr[1] "Repetir mensagens marcadas para: "
+msgstr[0] "Replicar mensagem para: "
+msgstr[1] "Replicar mensagens marcadas para: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -467,21 +466,19 @@ msgid "Bad IDN: '%s'"
 msgstr "IDN inválido: '%s'"
 
 #: commands.c:322 recvcmd.c:194
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Replicar mensagem para %s"
 msgstr[1] "Replicar mensagens para %s"
 
 #: commands.c:337 recvcmd.c:209
-#, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
-msgstr[0] "Mensagem réplica não enviada."
+msgstr[0] "Mensagem não replicada."
 msgstr[1] "Mensagens não replicadas."
 
 #: commands.c:347 recvcmd.c:228
-#, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Mensagem replicada."
@@ -500,21 +497,18 @@ msgid "No printing command has been defined."
 msgstr "Nenhum commando para impressão foi definido."
 
 #: commands.c:541
-#, fuzzy
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Imprimir mensagem?"
 msgstr[1] "Imprimir mensagens marcadas?"
 
 #: commands.c:548
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Mensagem impressa"
 msgstr[1] "Mensagens impressas"
 
 #: commands.c:550
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Mensagem não pôde ser impressa"
@@ -548,46 +542,40 @@ msgid "Shell command: "
 msgstr "Comando do shell: "
 
 #: commands.c:801
-#, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decodificar-salvar para caixa de mensagens"
-msgstr[1] "Decodificar-salvar marcada para caixa de mensagens"
+msgstr[0] "Decodificar-salvar mensagem na caixa"
+msgstr[1] "Decodificar-salvar mensagens marcadas para caixa"
 
 #: commands.c:803
-#, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Desencriptar-salvar para caixa de mensagens"
-msgstr[1] "Desencriptar-salvar marcada para caixa de mensagens"
+msgstr[0] "Desencriptar-salvar mensagem na caixa"
+msgstr[1] "Desencriptar-salvar mensagens marcadas na caixa"
 
 #: commands.c:805
-#, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salvar na caixa de mensagens"
-msgstr[1] "Salvar marcada na caixa de mensagens"
+msgstr[0] "Salvar na caixa"
+msgstr[1] "Salvar mensagens marcadas na caixa"
 
 #: commands.c:810
-#, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decodificar-copiar para caixa de mensagens"
-msgstr[1] "Decodificar-copiar marcada para caixa de mensagens"
+msgstr[0] "Decodificar-copiar mensagem para caixa"
+msgstr[1] "Decodificar-copiar mensagens marcadas para caixa"
 
 #: commands.c:812
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Desencriptar-copiar para caixa de mensagens"
-msgstr[1] "Desencriptar-copiar marcada para caixa de mensagens"
+msgstr[0] "Desencriptar-copiar mensagem para caixa"
+msgstr[1] "Desencriptar-copiar mensagens marcadas para caixa"
 
 #: commands.c:814
-#, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copiar na caixa de mensagens"
-msgstr[1] "Copiar marcada na caixa de mensagens"
+msgstr[0] "Copiar para caixa"
+msgstr[1] "Copiar mensagens marcadas para caixa"
 
 #: commands.c:882
 #, c-format
@@ -605,12 +593,12 @@ msgid "Content-Type changed to %s."
 msgstr "Tipo de conteúdo (Content-Type) alterado para %s."
 
 #: commands.c:1060
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Conjunto de caracteres alterado para %s; não convertendo."
+msgstr "Conjunto de caracteres alterado para %s; conversão interrompida."
 
 #: commands.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "Conjunto de caracteres alterado para %s; convertendo."
 
@@ -804,10 +792,9 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN inválida em \"%s\": '%s'"
 
 #: compose.c:1040
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Anexando os arquivos escolhidos..."
+msgstr[0] "Anexando o arquivo escolhido..."
 msgstr[1] "Anexando os arquivos escolhidos..."
 
 #: compose.c:1053
@@ -1680,10 +1667,10 @@ msgstr "Não é possível editar mensagem"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2918 pager.c:3200
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "%d rótulos alterados."
+msgstr[0] "%d rótulo alterado."
 msgstr[1] "%d rótulos alterados."
 
 #. L10N: This is displayed when editing an x-label, but no messages
@@ -1874,30 +1861,29 @@ msgid "Clear flag"
 msgstr "Remove sinalização"
 
 #: handler.c:66
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr ""
 "[-- Tipo alternativo #%d: %s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
 
 #: handler.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipo: %s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
-"[-- Erro: Não foi possível exibir nenhuma parte de Multipart/Aternative! "
-"--]\n"
+"[-- Erro: Não foi possível exibir nenhuma parte de Multipart/Aternative! --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1295
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Anexo #%d: %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Anexo #%d --]\n"
 
@@ -1931,12 +1917,12 @@ msgstr ""
 "[-- Erro: message/external-body não tem parâmetro de tipo de accesso --]\n"
 
 #: handler.c:1514
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr ""
-"[-- Este anexo %s/%s (tamanho %s bytes) foi apagado --]\n"
+"[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
 "[-- em %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -1944,9 +1930,9 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1523
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Este anexo %s/%s (tamanho %s bytes) foi apagado --]\n"
+msgstr "[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1957,12 +1943,11 @@ msgstr "[-- Este anexo %s/%s (tamanho %s bytes) foi apagado --]\n"
 #. in this translation!
 #.
 #: handler.c:1540
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[-- Este anexo %s/%s foi apagado --]\n"
+"[-- O anexo %s/%s foi removido --]\n"
 "[-- em %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -1970,9 +1955,9 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1549
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Este anexo %s/%s foi apagado --]\n"
+msgstr "[-- O anexo %s/%s foi removido --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -1980,23 +1965,23 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- nome: %s --]\n"
 
 #: handler.c:1575
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Este anexo %s/%s não está incluso, --]\n"
-"[-- e a fonte externa indicada já --]\n"
+"[-- O anexo %s/%s não foi incluído, --]\n"
+"[-- e a fonte externa indicada --]\n"
 "[-- expirou. --]\n"
 
 #: handler.c:1596
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Este anexo %s/%s não está incluso, --]\n"
+"[-- O anexo %s/%s não foi incluído, --]\n"
 "[-- e o tipo de acesso %s não é suportado --]\n"
 
 #: handler.c:1725
@@ -2016,38 +2001,33 @@ msgid "Error: multipart/signed has no protocol."
 msgstr "Erro: multipart/signed não tem protocolo."
 
 #: handler.c:1974
-#, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Este é um anexo (use '%3$s' para exibir esta parte) --]\n"
+msgstr "[-- Isto é um anexo (use '%3$s' para exibi-lo) --]\n"
 
 #: handler.c:1980
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "[-- %s/%s não é suportado (use '%s' para exibir esta parte) --]\n"
+msgstr "[-- %s/%s não é suportado (use '%s' para exibi-lo) --]\n"
 
 #: handler.c:1985
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 msgstr ""
-"[-- Este é um anexo ('view-attachments' precisa estar associado a uma "
-"tecla!) --]\n"
+"[-- Este é um anexo ('view-attachments' deve estar associado a uma tecla!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr ""
-"[-- %s/%s não é suportado ('view-attachments' precisa estar associado a uma "
-"tecla!) --]\n"
+"[-- %s/%s não é suportado ('view-attachments' deve ser associado a uma tecla!) --]\n"
 
 #: handler.c:1996
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Este é um anexo --]\n"
+msgstr "[-- Isto é um anexo --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s não é suportado --]\n"
 
@@ -2308,18 +2288,18 @@ msgid "Expunge failed"
 msgstr "Expurgo falhou."
 
 #: imap/imap.c:2406
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Marcando %d mensagens como removidas..."
-msgstr[1] "Marcando %d mensagens como removidas..."
+msgstr[0] "Marcando %d mensagem como apagada..."
+msgstr[1] "Marcando %d mensagens como apagadas..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2441
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Salvando mensagens alteradas... [%d/%d]"
+msgstr[0] "Salvando mensagem alterada... [%d/%d]"
 msgstr[1] "Salvando mensagens alteradas... [%d/%d]"
 
 #: imap/imap.c:2497
@@ -2378,10 +2358,10 @@ msgid "Uploading message..."
 msgstr "Subindo mensagem..."
 
 #: imap/message.c:1452
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Copiando %d mensagens para %s..."
+msgstr[0] "Copiando %d mensagem para %s..."
 msgstr[1] "Copiando %d mensagens para %s..."
 
 #: imap/message.c:1457
@@ -2553,10 +2533,10 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "fonte: leitura interrompida devido ao excesso de erros em %s"
 
 #: init.c:2977
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "fonte: %d avisos em %s"
+msgstr[0] "fonte: %d aviso em %s"
 msgstr[1] "fonte: %d avisos em %s"
 
 #: init.c:3003 mutt_lua.c:419
@@ -2994,14 +2974,14 @@ msgstr "Sub-expressões insuficientes para modelo"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Sinal %d (%s) recebido... Saindo.\n"
+msgstr "Sinal %d (%s) interceptado... Saindo.\n"
 
 #: mutt/signal.c:73 signal.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Sinal %d recebido... Saindo.\n"
+msgstr "Sinal %d interceptado... Saindo.\n"
 
 #: muttlib.c:407
 #, c-format
@@ -3159,7 +3139,7 @@ msgid "Move %d read messages to %s?"
 msgstr "Mover %d mensagens lidas para %s?"
 
 #: mx.c:771 mx.c:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Remover %d mensagem apagada?"
@@ -3831,23 +3811,19 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Esta chave não pode ser usada: expirada/desabilitada/revogada."
 
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr ""
 "ID expirada/desabilitada/revogada. Você realmente quer usar esta chave?"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "ID inválida. Você realmente quer usar esta chave?"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "ID é valida apenas marginalmente. Você realmente quer usar esta chave?"
+msgstr "ID apenas marginalmente válida. Você realmente quer usar esta chave?"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID tem validade indefinida. Você realmente quer usar esta chave?"
 
@@ -4221,9 +4197,8 @@ msgid "S/MIME certificates matching \"%s\"."
 msgstr "Certificados S/MIME que coincidem com \"%s\"."
 
 #: ncrypt/smime.c:511
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "Este ID não é confiável. Você realmente quer usar esta chave?"
+msgstr "ID não é confiável. Você realmente quer usar esta chave?"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "
@@ -5239,9 +5214,8 @@ msgid "invoke a command in a subshell"
 msgstr "executa um comando em um subshell"
 
 #: opcodes.h:221
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "exibe mensagens"
+msgstr "exibe mensagens de log (e debug)"
 
 #: opcodes.h:222
 msgid "sort messages"
@@ -5635,11 +5609,11 @@ msgid "Command UIDL is not supported by server."
 msgstr "Não há suporte para o comando UIDL neste servidor"
 
 #: pop.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] ""
-"%d mensagens foram perdidas. Tente abrir a caixa de mensagens novamente."
+"%d mensagem foi perdida. Tente abrir a caixa de mensagens novamente."
 msgstr[1] ""
 "%d mensagens foram perdidas. Tente abrir a caixa de mensagens novamente."
 
@@ -5684,10 +5658,10 @@ msgstr "Erro ao gravar a caixa!"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [%d de %d mensagens lidas]"
+msgstr[0] "%s [%d de %d mensagem lida]"
 msgstr[1] "%s [%d de %d mensagens lidas]"
 
 #: pop_auth.c:99
@@ -5877,7 +5851,6 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Você só pode repetir partes message/rfc822"
 
 #: recvcmd.c:230
-#, fuzzy
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Erro ao replicar mensagem!"
@@ -6249,7 +6222,6 @@ msgstr ""
 "e sugestões.\n"
 
 #: version.c:68
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
