@@ -2601,12 +2601,12 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidų"
 
 #: init.c:2977
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: %d įspėjimai %s"
+msgstr[0] "source: %d įspėjimas %s"
 msgstr[1] "source: %d įspėjimai %s"
-msgstr[2] "source: %d įspėjimai %s"
+msgstr[2] "source: %d įspėjimų %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -2614,9 +2614,9 @@ msgid "source: error at %s"
 msgstr "source: klaida %s"
 
 #: init.c:3011
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced."
-msgstr "Laiškai negalėjo būti atspausdinti"
+msgstr "source: byla %s negalėjo būti įtraukta"
 
 #: init.c:3070
 #, c-format
@@ -5326,9 +5326,8 @@ msgid "{internal}"
 msgstr "{vidinė}"
 
 #: opcodes.h:211
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "ištrinti esamą dėžutę (tik IMAP)"
+msgstr "pervadinti esamą dėžutę (tik IMAP)"
 
 #: opcodes.h:212
 msgid "reply to a message"
@@ -5339,9 +5338,8 @@ msgid "use the current message as a template for a new one"
 msgstr "naudoti esamą laišką kaip šabloną naujam"
 
 #: opcodes.h:214
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "išsaugoti laišką/priedą į bylą"
+msgstr "išsaugoti laišką/priedą į dėžutę/bylą"
 
 #: opcodes.h:215
 msgid "search for a regular expression"
@@ -5368,9 +5366,8 @@ msgid "invoke a command in a subshell"
 msgstr "kviesti komandą subshell'e"
 
 #: opcodes.h:221
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "rikiuoti laiškus"
+msgstr "rodyti žurnalo (ir derinimo) pranešimus"
 
 #: opcodes.h:222
 msgid "sort messages"
@@ -5394,9 +5391,8 @@ msgid "apply next function to tagged messages"
 msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
 
 #: opcodes.h:227
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
+msgstr "pritaikyti kitą funkciją TIK pažymėtiems laiškams"
 
 #: opcodes.h:228
 msgid "tag the current subthread"
@@ -5461,9 +5457,8 @@ msgid "show MIME attachments"
 msgstr "rodyti MIME priedus"
 
 #: opcodes.h:243
-#, fuzzy
 msgid "show the raw message"
-msgstr "taisyti gryną laišką"
+msgstr "rodyti gryną laišką"
 
 #: opcodes.h:244
 msgid "display the keycode for a key press"
@@ -5478,48 +5473,40 @@ msgid "make decrypted copy and delete"
 msgstr "padaryti iššifruotą kopiją ir ištrinti"
 
 #: opcodes.h:249
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "ištraukti PGP viešus raktus"
+msgstr "ištraukti palaikomus viešus raktus"
 
 #: opcodes.h:250
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "užmiršti PGP slaptą frazę"
+msgstr "užmiršti slaptą frazę"
 
 #: opcodes.h:254
 msgid "send the message through a mixmaster remailer chain"
 msgstr "pasiųsti pranešimą per mixmaster persiuntėjų grandinę"
 
 #: opcodes.h:255
-#, fuzzy
 msgid "append a remailer to the chain"
-msgstr "Pridėti persiuntėją į grandinę"
+msgstr "pridėti persiuntėją prie grandinės"
 
 #: opcodes.h:256
-#, fuzzy
 msgid "select the next element of the chain"
-msgstr "Pasirinkti tolesnį elementą grandinėje"
+msgstr "pasirinkti tolesnį elementą grandinėje"
 
 #: opcodes.h:257
-#, fuzzy
 msgid "select the previous element of the chain"
-msgstr "Pasirinkti ankstesnį elementą grandinėje"
+msgstr "pasirinkti ankstesnį elementą grandinėje"
 
 #: opcodes.h:258
-#, fuzzy
 msgid "delete a remailer from the chain"
-msgstr "Pašalinti persiuntėją iš grandinės"
+msgstr "pašalinti persiuntėją iš grandinės"
 
 #: opcodes.h:259
-#, fuzzy
 msgid "insert a remailer into the chain"
-msgstr "Įterpti persiuntėją į grandinę"
+msgstr "įterpti persiuntėją į grandinę"
 
 #: opcodes.h:260
-#, fuzzy
 msgid "accept the chain constructed"
-msgstr "Priimti sukonstruotą grandinę"
+msgstr "priimti sukonstruotą grandinę"
 
 #: opcodes.h:267
 #, fuzzy
@@ -5610,7 +5597,6 @@ msgid "make the sidebar (in)visible"
 msgstr ""
 
 #: opcodes.h:296
-#, fuzzy
 msgid "show S/MIME options"
 msgstr "rodyti S/MIME parinktis"
 
@@ -5660,9 +5646,8 @@ msgid "Error in expression: %s"
 msgstr "Klaida išraiškoje: %s"
 
 #: pattern.c:91 pattern.c:411
-#, fuzzy
 msgid "Empty expression"
-msgstr "klaida išraiškoje"
+msgstr "Tuščia išraiška"
 
 #: pattern.c:170
 #, c-format
@@ -5699,9 +5684,8 @@ msgid "Error re-opening memstream"
 msgstr "Klaida rašant į pašto dėžutę!"
 
 #: pattern.c:974
-#, fuzzy
 msgid "Error opening /dev/null"
-msgstr "Negaliu atidaryti /dev/null"
+msgstr "Klaida atidarant /dev/null"
 
 #: pattern.c:1134 pattern.c:1305
 #, c-format
@@ -5763,9 +5747,8 @@ msgid "No messages matched criteria."
 msgstr "Jokie laiškai netenkina kriterijaus."
 
 #: pattern.c:2070
-#, fuzzy
 msgid "Searching..."
-msgstr "Išsaugau..."
+msgstr "Ieškau..."
 
 #: pattern.c:2084
 msgid "Search hit bottom without finding match"
@@ -5813,9 +5796,8 @@ msgid "Can't write message to temporary file!"
 msgstr "Negaliu įrašyti laiško į laikiną bylą!"
 
 #: pop.c:766
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "Pažymiu %d laiškus ištrintais..."
+msgstr "Pažymiu laiškus ištrintais..."
 
 #: pop.c:881
 msgid "POP host is not defined."
@@ -5841,12 +5823,12 @@ msgstr "Klaida rašant į pašto dėžutę!"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [%d iš %d laiškų perskaityti]"
-msgstr[1] "%s [%d iš %d laiškų perskaityti]"
-msgstr[2] "%s [%d iš %d laiškų perskaityti]"
+msgstr[0] "%s [%d iš %d laiško perskaityta]"
+msgstr[1] "%s [%d iš %d laiškų perskaityta]"
+msgstr[2] "%s [%d iš %d laiškų perskaityta]"
 
 #: pop_auth.c:99
 msgid "Authenticating (SASL)..."
@@ -5869,9 +5851,9 @@ msgid "Command USER is not supported by server."
 msgstr "Serveris nepalaiko komandos USER."
 
 #: pop_lib.c:72
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "Blogas mėnuo: %s"
+msgstr "Blogas POP URL: %s\n"
 
 #: pop_lib.c:238
 msgid "Unable to leave messages on server."
@@ -5903,24 +5885,20 @@ msgid "No postponed messages."
 msgstr "Nėra atidėtų laiškų."
 
 #: postpone.c:451
-#, fuzzy
 msgid "Illegal S/MIME header"
 msgstr "Neleistina S/MIME antraštė"
 
 #: postpone.c:482 postpone.c:506 postpone.c:515
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "Neleistina PGP antraštė"
+msgstr "Neleistina šifro antraštė"
 
 #: postpone.c:602 postpone.c:699 postpone.c:722
-#, fuzzy
 msgid "Decrypting message..."
-msgstr "Paimu laišką..."
+msgstr "Iššifruoju laišką..."
 
 #: postpone.c:704 postpone.c:727
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Nepavyko pasisveikinti."
+msgstr "Nepavyko iššifruoti."
 
 #: query.c:69
 msgid "New Query"
@@ -5985,7 +5963,7 @@ msgstr "Pipe į: "
 #. application/octet-stream.
 #.
 #: recvattach.c:766
-#, fuzzy, c-format
+#, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Aš nežinau kaip spausdinti %s priedus!"
 
@@ -6002,9 +5980,8 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1046
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Negaliu rasti nė vieno pažymėto laiško."
+msgstr "Negaliu iššifruoti užšifruoti laiško!"
 
 #: recvattach.c:1172
 msgid "Attachments"
@@ -6020,20 +5997,17 @@ msgid "Can't delete attachment from POP server."
 msgstr "Negaliu ištrinti priedo iš POP serverio."
 
 #: recvattach.c:1274
-#, fuzzy
 msgid "Can't delete attachment from news server."
-msgstr "Negaliu ištrinti priedo iš POP serverio."
+msgstr "Negaliu ištrinti priedo iš naujienų serverio."
 
 #: recvattach.c:1281
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "PGP laiškų priedų ištrynimas nepalaikomas."
+msgstr "Užšifruotų laiškų priedų ištrynimas nepalaikomas."
 
 #: recvattach.c:1287
-#, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "PGP laiškų priedų ištrynimas nepalaikomas."
+msgstr "Pasirašytų laiškų priedų ištrynimas gali sugadinti parašą."
 
 #: recvattach.c:1305 recvattach.c:1320
 msgid "Only deletion of multipart attachments is supported."
@@ -6044,12 +6018,11 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Tu gali nukreipti tik message/rfc822 priedus."
 
 #: recvcmd.c:230
-#, fuzzy
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Klaida siunčiant laišką."
-msgstr[1] "Klaida siunčiant laišką."
-msgstr[2] "Klaida siunčiant laišką."
+msgstr[1] "Klaida siunčiant laiškus."
+msgstr[2] "Klaida siunčiant laiškus."
 
 #: recvcmd.c:412
 #, c-format
@@ -6057,9 +6030,8 @@ msgid "Can't open temporary file %s."
 msgstr "Negaliu atidaryti laikinos bylos %s."
 
 #: recvcmd.c:441
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "rodyti MIME priedus"
+msgstr "Persiųsti kaip priedus?"
 
 #: recvcmd.c:459
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -6212,9 +6184,8 @@ msgid "Could not include all requested messages!"
 msgstr "Negalėjau įtraukti visų prašytų laiškų!"
 
 #: send.c:863
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Spausdinti priedą?"
+msgstr "Persiųsti kaip priedą?"
 
 #: send.c:868
 msgid "Preparing forwarded message..."
@@ -6225,9 +6196,8 @@ msgid "Recall postponed message?"
 msgstr "Tęsti atidėtą laišką?"
 
 #: send.c:1617
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Paruošiu persiunčiamą laišką..."
+msgstr "Redaguoti persiunčiamą laišką?"
 
 #: send.c:1667
 msgid "Abort unmodified message?"
@@ -6396,14 +6366,12 @@ msgid "Parent message is not available."
 msgstr "Nėra prieinamo tėvinio laiško."
 
 #: thread.c:1161
-#, fuzzy
 msgid "Root message is not visible in this limited view."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Šakninis laiškas nematomas šiame ribotame vaizde"
 
 #: thread.c:1163
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Tėvinis laiškas nematomas šiame ribotame vaizde"
 
 #: version.c:64
 msgid ""
