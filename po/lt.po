@@ -1596,9 +1596,8 @@ msgid "Exit NeoMutt without saving?"
 msgstr "Išeiti iš NeoMutt neišsaugojus pakeitimų?"
 
 #: curs_main.c:2175
-#, fuzzy
 msgid "Cannot break thread"
-msgstr "Negaliu sukurti filtro"
+msgstr "Negaliu perskelti gijos"
 
 #: curs_main.c:2178 curs_main.c:2216 curs_main.c:2676 curs_main.c:2708
 #: flags.c:376 thread.c:1078 thread.c:1134 thread.c:1202
@@ -1607,33 +1606,32 @@ msgstr "Skirstymas gijomis neleidžiamas."
 
 #: curs_main.c:2191
 msgid "Thread broken"
-msgstr ""
+msgstr "Gija perskelta"
 
 #: curs_main.c:2203
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "Gija negali būti perskelta: laiškas nėra gijoje"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2213
 msgid "Cannot link threads"
-msgstr ""
+msgstr "Negaliu sujungti gijų"
 
 #: curs_main.c:2218
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Nėra Message-ID: antraštės, pagal kurią būtų galima sujungti gijas"
 
 #: curs_main.c:2220
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "išsaugoti šį laišką vėlesniam siuntimui"
+msgstr "Pirmiausia pažymėk laišką, kurį reikia prijungti čia"
 
 #: curs_main.c:2231
 msgid "Threads linked"
-msgstr ""
+msgstr "Gijos sujungtos"
 
 #: curs_main.c:2234
 msgid "No thread linked"
-msgstr ""
+msgstr "Gijos nesujungtos"
 
 #: curs_main.c:2270 curs_main.c:2296
 msgid "You are on the last message."
@@ -4637,7 +4635,7 @@ msgstr "žiūrėti bylą"
 
 #: opcodes.h:43
 msgid "list mailboxes with new mail"
-msgstr "rodydi dėžutės su nauju paštu"
+msgstr "rodyti dėžutės su nauju paštu"
 
 #: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
@@ -4936,11 +4934,11 @@ msgstr "perrašyti žodį didžiosiomis raidėmis"
 
 #: opcodes.h:117
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "pridėti, pakeisti ar išmesti laiško etiketę"
 
 #: opcodes.h:118
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "keisti gryną laišką jei pašto dėžutė nėra tik skaitoma, kitaip rodyti jį"
 
 #: opcodes.h:119
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
@@ -4968,11 +4966,11 @@ msgstr "išeiti iš šio meniu"
 
 #: opcodes.h:125
 msgid "filter attachment through a shell command"
-msgstr "filtruoti priedą per shell komandą"
+msgstr "filtruoti priedą per aplinkos komandą"
 
 #: opcodes.h:126
 msgid "move to the first entry"
-msgstr "eiti į pirmą užrašą"
+msgstr "eiti į pirmą įrašą"
 
 #: opcodes.h:127
 msgid "toggle a message's 'important' flag"
@@ -4993,7 +4991,7 @@ msgstr ""
 
 #: opcodes.h:131
 msgid "select the current entry"
-msgstr "pažymėti esamą įrašą"
+msgstr "pasirinkti esamą įrašą"
 
 #: opcodes.h:132
 #, fuzzy
@@ -5062,7 +5060,7 @@ msgstr "sukurti naują laišką"
 
 #: opcodes.h:147
 msgid "break the thread in two"
-msgstr ""
+msgstr "perskelti giją į dvi"
 
 #: opcodes.h:148
 msgid "open a different folder"
@@ -5116,9 +5114,8 @@ msgid "show only messages matching a pattern"
 msgstr "rodyti tik laiškus, tenkinančius pattern'ą"
 
 #: opcodes.h:160
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Nukreipti pažymėtus laiškus kam: "
+msgstr "prijungti pažymėtą laišką po dabartiniu"
 
 #: opcodes.h:161
 msgid "modify (notmuch/imap) tags"
@@ -5531,7 +5528,7 @@ msgstr ""
 
 #: opcodes.h:277
 msgid "check for classic PGP"
-msgstr ""
+msgstr "ieškoti klasikinio PGP"
 
 #: opcodes.h:278
 msgid "attach a PGP public key"
@@ -5555,17 +5552,15 @@ msgstr "žiūrėti rakto vartotojo id"
 
 #: opcodes.h:285
 msgid "move the highlight to next mailbox"
-msgstr ""
+msgstr "pasirinkti kitą pašto dėžutę"
 
 #: opcodes.h:286
-#, fuzzy
 msgid "move the highlight to next mailbox with new mail"
-msgstr "Nėra dėžutės su nauju paštu."
+msgstr "pasirinkti kitą pašto dėžutę su nauju paštu"
 
 #: opcodes.h:287
-#, fuzzy
 msgid "open highlighted mailbox"
-msgstr "Vėl atidarau dėžutę..."
+msgstr "atidaryti pasirinktą pašto dėžutę"
 
 #: opcodes.h:288
 #, fuzzy
@@ -5578,14 +5573,12 @@ msgid "scroll the sidebar up 1 page"
 msgstr "slinktis aukštyn per 1/2 puslapio"
 
 #: opcodes.h:290
-#, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "eiti į praeitą puslapį"
+msgstr "pasirinkti ankstesnę pašto dėžutę"
 
 #: opcodes.h:291
-#, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "Nėra dėžutės su nauju paštu."
+msgstr "pasirinkti ankstesnę pašto dėžutę su nauju paštu"
 
 #: opcodes.h:292
 #, fuzzy
@@ -5594,7 +5587,7 @@ msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
 
 #: opcodes.h:293
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "rodyti/slėpti šoninę juostą"
 
 #: opcodes.h:296
 msgid "show S/MIME options"
