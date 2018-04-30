@@ -2653,8 +2653,10 @@ msgstr "source: az olvasás megszakadt, a %s fájlban túl sok a hiba"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: hiba a %s fájlban"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: hiba a %s fájlban"
+msgstr[1] "source: hiba a %s fájlban"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

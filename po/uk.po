@@ -2592,8 +2592,11 @@ msgstr "source: читання припинено, дуже багато пом�
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: помилки в %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: помилки в %s"
+msgstr[1] "source: помилки в %s"
+msgstr[2] "source: помилки в %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

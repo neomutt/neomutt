@@ -2710,8 +2710,10 @@ msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 # , c-format
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source : erreurs dans %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source : erreurs dans %s"
+msgstr[1] "source : erreurs dans %s"
 
 # , c-format
 #: init.c:3003 mutt_lua.c:419

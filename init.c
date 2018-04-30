@@ -2974,7 +2974,9 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     /* Don't alias errors with warnings */
     if (warnings > 0)
     {
-      snprintf(err->data, err->dsize, _("source: %d warnings in %s"), warnings, rcfile);
+      snprintf(err->data, err->dsize,
+               ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
+               warnings, rcfile);
       rc = -2;
     }
   }

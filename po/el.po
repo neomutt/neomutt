@@ -2660,8 +2660,10 @@ msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφ
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: λάθη στο %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: λάθη στο %s"
+msgstr[1] "source: λάθη στο %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

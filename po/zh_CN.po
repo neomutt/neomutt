@@ -2536,8 +2536,9 @@ msgstr "source: 读取因 %s 中错误过多而中止"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source：%s 中有错误"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source：%s 中有错误"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

@@ -2553,9 +2553,11 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "fonte: leitura interrompida devido ao excesso de erros em %s"
 
 #: init.c:2977
-#, c-format
-msgid "source: %d warnings in %s"
-msgstr "fonte: %d avisos em %s"
+#, fuzzy, c-format
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "fonte: %d avisos em %s"
+msgstr[1] "fonte: %d avisos em %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

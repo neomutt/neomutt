@@ -2584,8 +2584,10 @@ msgstr "source: inlezen is gestaakt vanwege te veel fouten in %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: fouten in %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: fouten in %s"
+msgstr[1] "source: fouten in %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
