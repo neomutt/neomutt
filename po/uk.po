@@ -6019,6 +6019,7 @@ msgstr "Веберіть ланцюжок remailer."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Помилка: %s неможливо використати як останній remailer ланцюжку."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

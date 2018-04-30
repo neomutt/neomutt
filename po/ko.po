@@ -6099,6 +6099,7 @@ msgstr "리메일러 체인 선택."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

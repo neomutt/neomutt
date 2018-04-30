@@ -6179,6 +6179,7 @@ msgstr "zmazať všetky znaky v riadku"
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
