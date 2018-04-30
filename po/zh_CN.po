@@ -5981,6 +5981,7 @@ msgstr "选择一个转发者链。"
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "错误：%s 不能用作链的最终转发者。"
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

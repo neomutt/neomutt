@@ -1930,7 +1930,10 @@ int imap_fast_trash(struct Context *ctx, char *dest)
       goto out;
     }
     else
-      mutt_message(_("Copying %d messages to %s..."), rc, mbox);
+    {
+      mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
+                   rc, mbox);
+    }
 
     /* let's get it on */
     rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);

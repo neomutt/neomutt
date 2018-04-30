@@ -6224,6 +6224,7 @@ msgstr "Sélectionner une chaîne de redistributeurs de courrier."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Erreur : %s ne peut pas être utilisé comme redistributeur final."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

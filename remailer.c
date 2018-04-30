@@ -618,7 +618,10 @@ void mix_make_chain(struct ListHead *chainhead)
           c_redraw = true;
         }
         else
+        {
+          /* L10N The '%d' here hard-coded to 19 */
           mutt_error(_("Mixmaster chains are limited to %d elements."), MAXMIXES);
+        }
 
         break;
       }

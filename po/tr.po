@@ -6064,6 +6064,7 @@ msgstr "Bir postacı (remailer) zinciri seçin."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Hata: %s, zincirdeki son postacı olarak kullanılamaz."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

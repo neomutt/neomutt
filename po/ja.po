@@ -6001,6 +6001,7 @@ msgstr "remailer チェーンを選択。"
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "エラー: %s は最後の remailer チェーンには使えない。"
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
