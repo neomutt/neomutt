@@ -452,7 +452,6 @@ msgid "Warning: message contains no From: header"
 msgstr ""
 
 #: commands.c:293 recvcmd.c:162
-#, fuzzy
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Nukreipti laišką kam: "
@@ -469,7 +468,7 @@ msgid "Bad IDN: '%s'"
 msgstr ""
 
 #: commands.c:322 recvcmd.c:194
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Nukreipti laišką į %s"
@@ -477,7 +476,6 @@ msgstr[1] "Nukreipti laiškus į %s"
 msgstr[2] "Nukreipti laiškus į %s"
 
 #: commands.c:337 recvcmd.c:209
-#, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Laiškas nenukreiptas."
@@ -485,7 +483,6 @@ msgstr[1] "Laiškai nenukreipti."
 msgstr[2] "Laiškai nenukreipti."
 
 #: commands.c:347 recvcmd.c:228
-#, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Laiškas nukreiptas."
@@ -505,7 +502,6 @@ msgid "No printing command has been defined."
 msgstr "Spausdinimo komanda nebuvo apibrėžta."
 
 #: commands.c:541
-#, fuzzy
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Spausdinti laišką?"
@@ -513,7 +509,6 @@ msgstr[1] "Spausdinti pažymėtus laiškus?"
 msgstr[2] "Spausdinti pažymėtus laiškus?"
 
 #: commands.c:548
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Laiškas atspausdintas"
@@ -521,7 +516,6 @@ msgstr[1] "Laiškai atspausdinti"
 msgstr[2] "Laiškai atspausdinti"
 
 #: commands.c:550
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Laiškas negalėjo būti atspausdintas"
@@ -619,12 +613,12 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type pakeistas į %s."
 
 #: commands.c:1060
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
 msgstr "Koduotė pakeista į %s neperkoduojant."
 
 #: commands.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "Koduotė pakeista į %s perkoduojant."
 
@@ -818,10 +812,9 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr ""
 
 #: compose.c:1040
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Prisegu parinktas bylas..."
+msgstr[0] "Prisegu parinktą bylą..."
 msgstr[1] "Prisegu parinktas bylas..."
 msgstr[2] "Prisegu parinktas bylas..."
 
@@ -1042,9 +1035,8 @@ msgid "%s has insecure permissions!"
 msgstr "%s teisės nesaugios!"
 
 #: conn/ssl.c:368
-#, fuzzy
 msgid "SSL disabled due to the lack of entropy"
-msgstr "SSL uždraustas dėl entropijos trūkumo"
+msgstr "SSL išjungtas dėl entropijos trūkumo"
 
 #: conn/ssl.c:410
 msgid "Unknown"
@@ -1435,9 +1427,8 @@ msgid "Article has no parent reference."
 msgstr ""
 
 #: curs_main.c:1201
-#, fuzzy
 msgid "Message is not visible in limited view."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Laiškas nematomas ribotame vaizde."
 
 #: curs_main.c:1207
 #, fuzzy, c-format
@@ -1588,9 +1579,8 @@ msgid "Open mailbox"
 msgstr "Atidaryti dėžutę"
 
 #: curs_main.c:2007
-#, fuzzy
 msgid "No mailboxes have new mail"
-msgstr "Nėra dėžutės su nauju paštu."
+msgstr "Nėra dėžučių su nauju paštu."
 
 #: curs_main.c:2054
 #, fuzzy
@@ -1602,7 +1592,6 @@ msgid "Open newsgroup"
 msgstr ""
 
 #: curs_main.c:2159
-#, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Išeiti iš NeoMutt neišsaugojus pakeitimų?"
 
@@ -1667,18 +1656,16 @@ msgid "Search wrapped to bottom."
 msgstr "Paieška peršoko į apačią."
 
 #: curs_main.c:2465
-#, fuzzy
 msgid "No new messages in this limited view."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Nėra naujų laiškų ribotame vaizde."
 
 #: curs_main.c:2467
 msgid "No new messages."
 msgstr "Nėra naujų laiškų."
 
 #: curs_main.c:2472
-#, fuzzy
 msgid "No unread messages in this limited view."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Nėra neskaitytų laiškų ribotame vaizde."
 
 #: curs_main.c:2474
 msgid "No unread messages."
@@ -1715,9 +1702,8 @@ msgstr "Negaliu ištrinti laiško"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2856
-#, fuzzy
 msgid "Cannot edit message"
-msgstr "Negaliu įrašyti laiško"
+msgstr "Negaliu redaguoti laiško"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
@@ -1788,7 +1774,6 @@ msgid "Cannot undelete message"
 msgstr "Nėra ištrintų laiškų."
 
 #: edit.c:50
-#, fuzzy
 msgid ""
 "~~              insert a line beginning with a single ~\n"
 "~b users        add users to the Bcc: field\n"
@@ -1809,18 +1794,8 @@ msgstr ""
 "~m laiškai      įtraukti ir cituoti laiškus\n"
 "~M laiškai      tas pats kas ~m, be to, įtraukti antraštes\n"
 "~p              spausdinti laišką\n"
-"~q              įrašyti bylą ir išeiti iš redaktoriaus\n"
-"~r byla perskaityti bylą į redaktorių\n"
-"~t vartotojai   pridėti vartotojus prie To: lauko\n"
-"~u              atkurti praeitą eilutę\n"
-"~v              taisyti laišką su $visual redaktoriumi\n"
-"~w byla įrašyti laišką į bylą\n"
-"~x              atsisakyti pakeitimų ir išeiti iš redaktoriaus\n"
-"~?              ši žinutė\n"
-".               vienas eilutėje baigia įvedimą\n"
 
 #: edit.c:61
-#, fuzzy
 msgid ""
 "~q              write file and quit editor\n"
 "~r file         read a file into the editor\n"
@@ -1832,21 +1807,12 @@ msgid ""
 "~?              this message\n"
 ".               on a line by itself ends input\n"
 msgstr ""
-"~~              įterpti eilutę, prasidedančią vienu ~\n"
-"~b vartotojai   pridėti vartotojus prie Bcc: lauko\n"
-"~c vartotojai   pridėti vartotojus prie Cc: lauko\n"
-"~f laiškai      įtraukti laiškus\n"
-"~F laiškai      tas pats kas ~f, be to, įtraukti antraštes\n"
-"~h              taisyti laiško antraštę\n"
-"~m laiškai      įtraukti ir cituoti laiškus\n"
-"~M laiškai      tas pats kas ~m, be to, įtraukti antraštes\n"
-"~p              spausdinti laišką\n"
 "~q              įrašyti bylą ir išeiti iš redaktoriaus\n"
-"~r byla perskaityti bylą į redaktorių\n"
+"~r byla         perskaityti bylą į redaktorių\n"
 "~t vartotojai   pridėti vartotojus prie To: lauko\n"
 "~u              atkurti praeitą eilutę\n"
 "~v              taisyti laišką su $visual redaktoriumi\n"
-"~w byla įrašyti laišką į bylą\n"
+"~w byla         įrašyti laišką į bylą\n"
 "~x              atsisakyti pakeitimų ir išeiti iš redaktoriaus\n"
 "~?              ši žinutė\n"
 ".               vienas eilutėje baigia įvedimą\n"
@@ -2258,18 +2224,16 @@ msgid "Create mailbox: "
 msgstr "Sukurti dėžutę: "
 
 #: imap/browse.c:398 imap/browse.c:458
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Dėžutė yra nepakeista."
+msgstr "Dėžutė turi turėti vardą."
 
 #: imap/browse.c:405
 msgid "Mailbox created."
 msgstr "Dėžutė sukurta."
 
 #: imap/browse.c:446
-#, fuzzy
 msgid "Cannot rename root folder"
-msgstr "Negaliu sukurti filtro"
+msgstr "Negaliu pervadinti pagrindinio katalogo"
 
 #: imap/browse.c:450
 #, c-format
@@ -2286,9 +2250,8 @@ msgid "Mailbox renamed."
 msgstr "Pašto dėžutė pervadinta."
 
 #: imap/command.c:158
-#, fuzzy, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Pašto dėžutė uždaryta."
+msgstr "Pašto dėžutė %s@%s uždaryta"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, fuzzy, c-format
@@ -2380,19 +2343,19 @@ msgid "Expunge failed"
 msgstr "Nepavyko pasisveikinti."
 
 #: imap/imap.c:2406
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Pažymiu %d laiškus ištrintais..."
+msgstr[0] "Pažymiu %d laišką ištrinu..."
 msgstr[1] "Pažymiu %d laiškus ištrintais..."
-msgstr[2] "Pažymiu %d laiškus ištrintais..."
+msgstr[2] "Pažymiu %d laiškų ištrintais..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2441
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Išsaugau pasikeitusius laiškus... [%d/%d]"
+msgstr[0] "Išsaugau pasikeitusį laišką... [%d/%d]"
 msgstr[1] "Išsaugau pasikeitusius laiškus... [%d/%d]"
 msgstr[2] "Išsaugau pasikeitusius laiškus... [%d/%d]"
 
@@ -2456,12 +2419,12 @@ msgid "Uploading message..."
 msgstr "Nusiunčiu laišką..."
 
 #: imap/message.c:1452
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Kopijuoju %d laiškus į %s..."
+msgstr[0] "Kopijuoju %d laišką į %s..."
 msgstr[1] "Kopijuoju %d laiškus į %s..."
-msgstr[2] "Kopijuoju %d laiškus į %s..."
+msgstr[2] "Kopijuoju %d laiškų į %s..."
 
 #: imap/message.c:1457
 #, c-format
@@ -2623,9 +2586,9 @@ msgid "Error in %s, line %d: %s"
 msgstr "Klaida %s, eilutė %d: %s"
 
 #: init.c:2942
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Klaida %s, eilutė %d: %s"
+msgstr "Įspėjimas %s, eilutė %d: %s"
 
 #: init.c:2967
 #, c-format
@@ -2633,14 +2596,14 @@ msgid "source: errors in %s"
 msgstr "source: klaidos %s"
 
 #: init.c:2968
-#, fuzzy, c-format
+#, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidų."
+msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidų"
 
 #: init.c:2977
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warnings in %s"
-msgstr "source: klaidos %s"
+msgstr "source: %d įspėjimai %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -2735,14 +2698,12 @@ msgid "macro: empty key sequence"
 msgstr "macro: tuščia klavišų seka"
 
 #: keymap.c:1209
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: per mažai argumentų"
+msgstr "exec: nėra argumentų"
 
 #: keymap.c:1229
-#, fuzzy, c-format
 msgid "%s: no such function"
-msgstr "%s: čia nėra tokios funkcijos"
+msgstr "%s: nėra tokios funkcijos"
 
 #: keymap.c:1250
 #, fuzzy
@@ -3201,14 +3162,13 @@ msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
 #: mutt_notmuch.c:580
-#, fuzzy
 msgid "unknown reason"
-msgstr "nežinoma klaida"
+msgstr "nežinoma priežastis"
 
 #: mutt_notmuch.c:1035
-#, fuzzy, c-format
+#, c-format
 msgid "Reading messages..."
-msgstr "Siunčiu laišką..."
+msgstr "Skaitau laiškus..."
 
 #: mutt_notmuch.c:1852
 #, fuzzy
@@ -3250,12 +3210,12 @@ msgid "Move %d read messages to %s?"
 msgstr "Perkelti skaitytus laiškus į %s?"
 
 #: mx.c:771 mx.c:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Sunaikinti %d ištrintą laišką?"
 msgstr[1] "Sunaikinti %d ištrintus laiškus?"
-msgstr[2] "Sunaikinti %d ištrintus laiškus?"
+msgstr[2] "Sunaikinti %d ištrintų laiškų?"
 
 #: mx.c:793
 #, c-format
@@ -4005,9 +3965,9 @@ msgstr "klaida pattern'e: %s"
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
 #: ncrypt/crypt_gpgme.c:4780
-#, fuzzy, c-format
+#, c-format
 msgid "PGP Key 0x%s."
-msgstr "PGP raktas %s."
+msgstr "PGP raktas 0x%s."
 
 #: ncrypt/crypt_gpgme.c:4823
 msgid "GPGME: OpenPGP protocol not available"
@@ -4127,9 +4087,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:893 ncrypt/pgp.c:918
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Nepavyko pasisveikinti."
+msgstr "Nepavyko iššifruoti."
 
 #: ncrypt/pgp.c:1134
 msgid "Can't open PGP subprocess!"
@@ -4257,7 +4216,6 @@ msgid "PGP Key %s."
 msgstr "PGP raktas %s."
 
 #: ncrypt/smime.c:144
-#, fuzzy
 msgid "Enter S/MIME passphrase:"
 msgstr "Įvesk slaptą S/MIME frazę:"
 
@@ -4655,9 +4613,8 @@ msgid "select a new file in this directory"
 msgstr "pasirink naują bylą šiame kataloge"
 
 #: opcodes.h:38
-#, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "užsakyti esamą aplanką (tik IMAP)"
+msgstr "užsakyti esamą aplanką (tik IMAP/NNTP)"
 
 #: opcodes.h:39
 msgid "display the currently selected file's name"
@@ -4668,18 +4625,16 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "perjungti visų/užsakytų dėžučių rodymą (tik IMAP)"
 
 #: opcodes.h:41
-#, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "atsisakyti esamo aplanko (tik IMAP)"
+msgstr "atsisakyti esamo aplanko (tik IMAP/NNTP)"
 
 #: opcodes.h:42
 msgid "view file"
 msgstr "žiūrėti bylą"
 
 #: opcodes.h:43
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Nėra dėžutės su nauju paštu."
+msgstr "rodydi dėžutės su nauju paštu"
 
 #: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
@@ -4694,13 +4649,12 @@ msgid "check mailboxes for new mail"
 msgstr "tikrinti, ar dėžutėse yra naujo pašto"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach file(s) to this message"
 msgstr "prisegti bylą(as) prie šio laiško"
 
 #: opcodes.h:48
 msgid "attach message(s) to this message"
-msgstr "prisegti bylą(as) prie šio laiško"
+msgstr "prisegti laišką(as) prie šio laiško"
 
 #: opcodes.h:49
 #, fuzzy
@@ -4732,9 +4686,8 @@ msgid "edit the file to be attached"
 msgstr "taisyti bylą, skirtą prisegimui"
 
 #: opcodes.h:56
-#, fuzzy
 msgid "edit the Followup-To field"
-msgstr "taisyti Reply-To lauką"
+msgstr "taisyti Followup-To lauką"
 
 #: opcodes.h:57
 msgid "edit the from field"
@@ -4770,9 +4723,8 @@ msgid "edit the TO list"
 msgstr "taisyti To sąrašą"
 
 #: opcodes.h:65
-#, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "taisyti Reply-To lauką"
+msgstr "taisyti X-Comment-To lauką"
 
 #: opcodes.h:66
 msgid "get a temporary copy of an attachment"
@@ -4791,9 +4743,8 @@ msgid "save this message to send later"
 msgstr "išsaugoti šį laišką vėlesniam siuntimui"
 
 #: opcodes.h:70
-#, fuzzy
 msgid "send attachment with a different name"
-msgstr "taisyti priedo Transfer-Encoding"
+msgstr "siųsti priedą kitu vardu"
 
 #: opcodes.h:71
 msgid "rename/move an attached file"
@@ -4816,9 +4767,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "perjungti, ar ištrinti bylą, ją išsiuntus"
 
 #: opcodes.h:76
-#, fuzzy
 msgid "compose a new message to the sender"
-msgstr "sukurti naują laišką"
+msgstr "sukurti naują laišką siuntėjui"
 
 #: opcodes.h:77
 msgid "update an attachment's encoding info"
@@ -4941,14 +4891,13 @@ msgid "move the cursor to the end of the word"
 msgstr "perkelti žymeklį į žodžio pabaigą"
 
 #: opcodes.h:107
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "slinktis aukštyn istorijos sąraše"
+msgstr "slinktis žemyn istorijos sąraše"
 
 #: opcodes.h:108
 #, fuzzy
 msgid "search through the history list"
-msgstr "slinktis aukštyn istorijos sąraše"
+msgstr "ieškoti istorijos sąraše"
 
 #: opcodes.h:109
 msgid "scroll up through the history list"
@@ -5182,9 +5131,8 @@ msgid "jump to the next new message"
 msgstr "šokti į kitą naują laišką"
 
 #: opcodes.h:164
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "šokti į kitą neskaitytą laišką"
+msgstr "šokti į kitą naują ar neskaitytą laišką"
 
 #: opcodes.h:165
 msgid "jump to the next subthread"
@@ -5203,9 +5151,8 @@ msgid "jump to the next unread message"
 msgstr "šokti į kitą neskaitytą laišką"
 
 #: opcodes.h:169
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Nėra dėžutės su nauju paštu."
+msgstr "atidaryti kitą dėžutę su nauju paštu"
 
 #: opcodes.h:170
 msgid "jump to parent message in thread"
@@ -5216,9 +5163,8 @@ msgid "jump to the previous new message"
 msgstr "šokti į praeitą naują laišką"
 
 #: opcodes.h:172
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "šokti į praeitą neskaitytą laišką"
+msgstr "šokti į praeitą naują ar neskaitytą laišką"
 
 #: opcodes.h:173
 msgid "jump to previous subthread"
