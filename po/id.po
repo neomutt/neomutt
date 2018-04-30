@@ -2596,8 +2596,9 @@ msgstr "source: pembacaan dibatalkan sebab terlalu banyak error di %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: errors di %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: errors di %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

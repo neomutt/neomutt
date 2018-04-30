@@ -2606,8 +2606,10 @@ msgstr "source: läsningen avbruten pga för många fel i %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: fel i %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: fel i %s"
+msgstr[1] "source: fel i %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

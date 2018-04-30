@@ -2567,9 +2567,11 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: Lesevorgang abgebrochen, zu viele Fehler in %s"
 
 #: init.c:2977
-#, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: %d Warnungen in %s"
+#, fuzzy, c-format
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: %d Warnungen in %s"
+msgstr[1] "source: %d Warnungen in %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

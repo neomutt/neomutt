@@ -2570,8 +2570,10 @@ msgstr "source: legado ĉesis pro tro da eraroj en %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: eraroj en %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: eraroj en %s"
+msgstr[1] "source: eraroj en %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format

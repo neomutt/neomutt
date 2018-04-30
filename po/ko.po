@@ -2617,8 +2617,9 @@ msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: %s에 오류"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: %s에 오류"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
