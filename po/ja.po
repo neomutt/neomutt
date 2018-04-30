@@ -2306,11 +2306,6 @@ msgstr "%s を購読を開始した"
 msgid "Unsubscribed from %s"
 msgstr "%s の購読を取り消した"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "%d メッセージを %s にコピー中..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
