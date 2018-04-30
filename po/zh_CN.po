@@ -2265,11 +2265,6 @@ msgstr "已订阅 %s..."
 msgid "Unsubscribed from %s"
 msgstr "已取消订阅 %s..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "正在复制 %d 个信件到 %s ..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"

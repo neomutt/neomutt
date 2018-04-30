@@ -2410,12 +2410,6 @@ msgid "Unsubscribed from %s"
 msgstr "Désabonné de %s"
 
 # , c-format
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Copie de %d messages dans %s..."
-
-# , c-format
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"

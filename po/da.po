@@ -2299,11 +2299,6 @@ msgstr "Abonnerer på %s"
 msgid "Unsubscribed from %s"
 msgstr "Afmeldt fra %s"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Kopierer %d breve til %s ..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
