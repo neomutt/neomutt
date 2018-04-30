@@ -4503,6 +4503,7 @@ const struct Mapping SortBrowserMethods[] = {
   { "date",     SORT_DATE },
   { "desc",     SORT_DESC },
   { "new",      SORT_UNREAD },
+  { "unread",   SORT_UNREAD },
   { "size",     SORT_SIZE },
   { "unsorted", SORT_ORDER },
   { NULL,       0 },
