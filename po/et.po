@@ -2358,11 +2358,6 @@ msgstr "Tellin %s..."
 msgid "Unsubscribed from %s"
 msgstr "Loobun kaustast %s..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Kopeerin %d teadet kausta %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2639,8 +2634,10 @@ msgstr "source: lugemine katkestati, kuna %s on liialt vigane"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: vead failis %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: vead failis %s"
+msgstr[1] "source: vead failis %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6130,6 +6127,7 @@ msgstr "Valige vahendajate ahel."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Viga: %s ei saa ahela viimase vahendajana kasutada."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

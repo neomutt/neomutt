@@ -2325,11 +2325,6 @@ msgstr "Berlangganan ke %s..."
 msgid "Unsubscribed from %s"
 msgstr "Berhenti langganan dari %s"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Menyalin %d surat ke %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2596,8 +2591,9 @@ msgstr "source: pembacaan dibatalkan sebab terlalu banyak error di %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: errors di %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: errors di %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6086,6 +6082,7 @@ msgstr "Pilih rangkaian remailer."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Error: %s tidak dapat digunakan sebagai akhir rangkaian remailer."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

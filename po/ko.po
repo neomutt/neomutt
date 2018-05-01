@@ -2339,11 +2339,6 @@ msgstr "%s에 가입 중..."
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "%d개의 메세지를 %s로 복사 중..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2617,8 +2612,9 @@ msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: %s에 오류"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: %s에 오류"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6098,6 +6094,7 @@ msgstr "리메일러 체인 선택."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

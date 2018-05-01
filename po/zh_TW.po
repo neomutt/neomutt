@@ -2357,11 +2357,6 @@ msgstr "訂閱 %s…"
 msgid "Unsubscribed from %s"
 msgstr "取消訂閱 %s…"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "正在複制 %d 封信件到 %s …"
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2635,8 +2630,9 @@ msgstr "source: 因 %s 發生太多錯誤，因此閱讀終止。"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source：錯誤發生在 %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source：錯誤發生在 %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6157,6 +6153,7 @@ msgstr "選擇一個郵件轉接器的鏈結"
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "錯誤：%s 不能用作鏈結的最後一個郵件轉接器"
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

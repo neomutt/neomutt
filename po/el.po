@@ -2379,11 +2379,6 @@ msgstr "Εγγραφή στο %s..."
 msgid "Unsubscribed from %s"
 msgstr "Διαγραφή στο %s..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Αντιγραφή %d μηνυμάτων στο %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2660,8 +2655,10 @@ msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφ
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: λάθη στο %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: λάθη στο %s"
+msgstr[1] "source: λάθη στο %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6166,6 +6163,7 @@ msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 "Σφάλμα: το %s δεν μπορεί να είναι ο τελικός επαναποστολέας της αλυσίδας."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

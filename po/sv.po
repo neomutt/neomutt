@@ -2332,11 +2332,6 @@ msgstr "Prenumererar på %s..."
 msgid "Unsubscribed from %s"
 msgstr "Avslutar prenumeration på %s"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Kopierar %d meddelanden till %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2606,8 +2601,10 @@ msgstr "source: läsningen avbruten pga för många fel i %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: fel i %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: fel i %s"
+msgstr[1] "source: fel i %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6081,6 +6078,7 @@ msgstr "Välj en återpostarkedja."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Fel: %s kan inte användas som den sista återpostaren i en kedja."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

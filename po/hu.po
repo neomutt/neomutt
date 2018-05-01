@@ -2371,11 +2371,6 @@ msgstr "%s felírása..."
 msgid "Unsubscribed from %s"
 msgstr "%s leírása..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "%d levél másolása a %s postafiókba..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2653,8 +2648,10 @@ msgstr "source: az olvasás megszakadt, a %s fájlban túl sok a hiba"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: hiba a %s fájlban"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: hiba a %s fájlban"
+msgstr[1] "source: hiba a %s fájlban"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6163,6 +6160,7 @@ msgstr "Válaszd ki az újraküldő láncot."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Hiba: %s-t nem lehet használni a lánc utolsó újraküldőjeként."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

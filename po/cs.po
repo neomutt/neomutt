@@ -454,7 +454,6 @@ msgid "Warning: message contains no From: header"
 msgstr "Pozor: zpráva neobsahuje hlavičku From:"
 
 #: commands.c:293 recvcmd.c:162
-#, fuzzy
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Zaslat kopii zprávy na: "
@@ -471,7 +470,7 @@ msgid "Bad IDN: '%s'"
 msgstr "Chybné IDN: „%s“"
 
 #: commands.c:322 recvcmd.c:194
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Zaslat kopii zprávy na %s"
@@ -507,7 +506,6 @@ msgid "No printing command has been defined."
 msgstr "Není definován žádný příkaz pro tisk."
 
 #: commands.c:541
-#, fuzzy
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Vytisknout zprávu?"
@@ -515,7 +513,6 @@ msgstr[1] "Vytisknout označené zprávy?"
 msgstr[2] "Vytisknout označené zprávy?"
 
 #: commands.c:548
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Zpráva byla vytisknuta"
@@ -523,7 +520,6 @@ msgstr[1] "Zprávy byly vytisknuty"
 msgstr[2] "Zprávy byly vytisknuty"
 
 #: commands.c:550
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Zprávu nelze vytisknout"
@@ -558,7 +554,6 @@ msgid "Shell command: "
 msgstr "Příkaz pro shell: "
 
 #: commands.c:801
-#, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
 msgstr[0] "Dekódovat - uložit  do schránky"
@@ -566,7 +561,6 @@ msgstr[1] "Dekódovat - uložit  označené do schránky"
 msgstr[2] "Dekódovat - uložit  označené do schránky"
 
 #: commands.c:803
-#, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
 msgstr[0] "Dešifrovat - uložit  do schránky"
@@ -575,7 +569,6 @@ msgstr[2] "Dešifrovat - uložit  označené do schránky"
 
 # XXX: Missing space before %s is not a typo
 #: commands.c:805
-#, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
 msgstr[0] "Uložit do schránky"
@@ -583,7 +576,6 @@ msgstr[1] "Uložit označené do schránky"
 msgstr[2] "Uložit označené do schránky"
 
 #: commands.c:810
-#, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
 msgstr[0] "Dekódovat - zkopírovat  do schránky"
@@ -591,7 +583,6 @@ msgstr[1] "Dekódovat - zkopírovat  označené do schránky"
 msgstr[2] "Dekódovat - zkopírovat  označené do schránky"
 
 #: commands.c:812
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
 msgstr[0] "Dešifrovat - zkopírovat  do schránky"
@@ -599,7 +590,6 @@ msgstr[1] "Dešifrovat - zkopírovat  označené do schránky"
 msgstr[2] "Dešifrovat - zkopírovat  označené do schránky"
 
 #: commands.c:814
-#, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
 msgstr[0] "Zkopírovat  do schránky"
@@ -622,12 +612,12 @@ msgid "Content-Type changed to %s."
 msgstr "Položka „Content-Type“ změněna na %s."
 
 #: commands.c:1060
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
 msgstr "Znaková sada změněna na %s; nepřevádím."
 
 #: commands.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "Znaková sada změněna na %s; převádím."
 
@@ -822,10 +812,9 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Neplatné IDN v \"%s\": „%s“"
 
 #: compose.c:1040
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Připojuji zvolené soubory…"
+msgstr[0] "Připojuji zvolený soubor…"
 msgstr[1] "Připojuji zvolené soubory…"
 msgstr[2] "Připojuji zvolené soubory…"
 
@@ -943,7 +932,7 @@ msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1637
 msgid "No S/MIME backend configured"
-msgstr "Není nakonfigurováno a přeložčno s podporou S/MIME"
+msgstr "Není nakonfigurováno a přeloženo s podporou S/MIME"
 
 #: compose.c:1645
 msgid "PGP already selected. Clear and continue ? "
@@ -1290,7 +1279,7 @@ msgstr "SSL/TLS spojení pomocí %s (%s/%s/%s)"
 #: conn/tunnel.c:69
 #, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Připojuji se s „%s“…"
+msgstr "Připojuji se k „%s“…"
 
 #: conn/tunnel.c:154
 #, c-format
@@ -1304,7 +1293,7 @@ msgstr "Chyba při komunikaci tunelem s %s (%s)"
 
 #: copy.c:722
 msgid "No decryption engine available for message"
-msgstr "Pro zprávu není k dispozici Žádný dešifrovací nástroj"
+msgstr "Pro zprávu není k dispozici žádný dešifrovací nástroj"
 
 #: curs_lib.c:224
 msgid "yes"
@@ -1415,7 +1404,7 @@ msgstr "Žádné zprávy nejsou označeny."
 
 #: curs_main.c:1068 menu.c:1155
 msgid "Nothing to do."
-msgstr "Není co dělat"
+msgstr "Není co dělat."
 
 #: curs_main.c:1167
 msgid "Enter Message-Id: "
@@ -1449,7 +1438,7 @@ msgstr "Stahuji hlavičky zpráv…"
 
 #: curs_main.c:1314
 msgid "No deleted messages found in the thread."
-msgstr "Nebyly nalezeny žádné smazané zprávy ve vláknu"
+msgstr "Nebyly nalezeny žádné smazané zprávy ve vláknu."
 
 #: curs_main.c:1334
 msgid "Jump to message: "
@@ -1698,10 +1687,10 @@ msgstr "Zprávu nelze upravit"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2918 pager.c:3200
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "%d štítků změněno."
+msgstr[0] "%d štítek změněn."
 msgstr[1] "%d štítků změněno."
 msgstr[2] "%d štítků změněno."
 
@@ -1894,12 +1883,12 @@ msgid "Clear flag"
 msgstr "Vypnout příznak"
 
 #: handler.c:66
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Alternativní typ #%d: %s/%s%s%s, Kódování: %s, Velikost: %s --]\n"
 
 #: handler.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s%s%s, Kódování: %s, Velikost: %s --]\n"
 
@@ -1910,12 +1899,12 @@ msgstr ""
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1295
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Příloha #%d: %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Příloha #%d --]\n"
 
@@ -1949,7 +1938,7 @@ msgstr ""
 "[-- Chyba: typ „message/external-body“ nemá parametr „access-type“ --]\n"
 
 #: handler.c:1514
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -1962,7 +1951,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1523
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr ""
 "[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
@@ -1976,7 +1965,6 @@ msgstr ""
 #. in this translation!
 #.
 #: handler.c:1540
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -1989,7 +1977,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1549
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Tato příloha typu „%s/%s“ byla smazána --]\n"
 
@@ -1999,22 +1987,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- jméno: %s --]\n"
 
 #: handler.c:1575
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Tato příloha typu '%s/%s' není přítomna, --]\n"
+"[-- Tato příloha typu „%s/%s“ není přítomna, --]\n"
 "[-- a udaný externí zdroj již není platný --]\n"
 
 #: handler.c:1596
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Tato příloha typu '%s/%s' není přítomna, --]\n"
+"[-- Tato příloha typu „%s/%s“ není přítomna, --]\n"
 "[-- a udaná hodnota parametru 'access-type %s' --]\n"
 "[-- není podporována --]\n"
 
@@ -2035,19 +2023,17 @@ msgid "Error: multipart/signed has no protocol."
 msgstr "Chyba: typ 'multipart/signed' bez informace o protokolu"
 
 #: handler.c:1974
-#, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[-- Toto je příloha (pro zobrazení této části použijte „%3$s“) --]\n"
 
 #: handler.c:1980
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr ""
-"[-- typ '%s/%s' není podporován (pro zobrazení této části použijte „%s“) "
+"[-- Typ „%s/%s“ není podporován (pro zobrazení této části použijte „%s“) "
 "--]\n"
 
 #: handler.c:1985
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 msgstr ""
 "[-- Toto je příloha (je třeba svázat funkci „view-attachments“ s nějakou "
@@ -2055,22 +2041,21 @@ msgstr ""
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr ""
-"[-- typ '%s/%s' není podporován (je třeba svázat funkci „view-attachments“ s "
+"[-- Typ „%s/%s“ není podporován (je třeba svázat funkci „view-attachments“ s "
 "nějakou klávesou!) --]\n"
 
 #: handler.c:1996
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- Toto je příloha --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- typ '%s/%s' není podporován --]\n"
+msgstr "[-- Typ „%s/%s“ není podporován --]\n"
 
 #: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
@@ -2305,11 +2290,6 @@ msgstr "%s přihlášeno"
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Kopíruji zprávy (%d) do %s…"
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2401,10 +2381,10 @@ msgid "Uploading message..."
 msgstr "Nahrávám zprávu na server…"
 
 #: imap/message.c:1452
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Kopíruji zprávy (%d) do %s…"
+msgstr[0] "Kopíruji zprávu (%d) do %s…"
 msgstr[1] "Kopíruji zprávy (%d) do %s…"
 msgstr[2] "Kopíruji zprávy (%d) do %s…"
 
@@ -2580,8 +2560,11 @@ msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
 #: init.c:2977
 #, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: %d varování v %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: %d varování v %s"
+msgstr[1] "source: %d varování v %s"
+msgstr[2] "source: %d varování v %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -3017,12 +3000,12 @@ msgstr "Na šablonu není dost podvýrazů"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
 msgstr "Zachycen signál %d (%s)… Končím.\n"
 
 #: mutt/signal.c:73 signal.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "Zachycen signál %d… Končím.\n"
 
@@ -3182,7 +3165,7 @@ msgid "Move %d read messages to %s?"
 msgstr "Přesunout %d přečtených zpráv do %s?"
 
 #: mx.c:771 mx.c:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Zahodit smazané zprávy (%d)?"
@@ -3291,7 +3274,6 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1016
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
@@ -3851,25 +3833,21 @@ msgstr ""
 "Klíč nelze použít: vypršela jeho platnost, nebo byl zakázán či odvolán."
 
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr ""
 "Tomuto ID vypršela platnost, nebo bylo zakázáno či odvoláno. Opravdu chcete "
 "tento klíč použít?"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "Toto ID není platné. Opravdu chcete tento klíč použít?"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr ""
 "Důvěryhodnost tohoto ID je pouze částečná. Opravdu chcete tento klíč použít?"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID nemá definovanou důvěryhodnost. Opravdu chcete tento klíč použít?"
 
@@ -4237,7 +4215,6 @@ msgid "S/MIME certificates matching \"%s\"."
 msgstr "S/MIME klíče vyhovující \"%s\"."
 
 #: ncrypt/smime.c:511
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID není důvěryhodné. Opravdu chcete tento klíč použít?"
 
@@ -4522,7 +4499,7 @@ msgstr "zvolit jiný soubor v tomto adresáři"
 
 #: opcodes.h:38
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "přihlásit aktuální schránku (pouze IMAP)"
+msgstr "přihlásit aktuální schránku (pouze IMAP/NNTP)"
 
 #: opcodes.h:39
 msgid "display the currently selected file's name"
@@ -4534,7 +4511,7 @@ msgstr "přepnout zobrazení všech/přihlášených schránkek (IMAP)"
 
 #: opcodes.h:41
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "odhlásit aktuální schránku (pouze IMAP)"
+msgstr "odhlásit aktuální schránku (pouze IMAP/NNTP)"
 
 #: opcodes.h:42
 msgid "view file"
@@ -4618,7 +4595,7 @@ msgstr "editovat seznam diskusních skupin"
 
 #: opcodes.h:62
 msgid "edit the Reply-To field"
-msgstr "editovat položku 'Reply-To'"
+msgstr "editovat položku „Reply-To“"
 
 #: opcodes.h:63
 msgid "edit the subject of this message"
@@ -4626,11 +4603,11 @@ msgstr "editovat věc této zprávy"
 
 #: opcodes.h:64
 msgid "edit the TO list"
-msgstr "editovat seznam 'TO'"
+msgstr "editovat seznam „TO“"
 
 #: opcodes.h:65
 msgid "edit the X-Comment-To field"
-msgstr "editovat položku 'X-Comment-To'"
+msgstr "editovat položku „X-Comment-To“"
 
 #: opcodes.h:66
 msgid "get a temporary copy of an attachment"
@@ -4710,11 +4687,11 @@ msgstr "přesunout položku na začátek obrazovky"
 
 #: opcodes.h:85
 msgid "make decoded (text/plain) copy"
-msgstr "vytvořit kopii ve formátu 'text/plain'"
+msgstr "vytvořit kopii ve formátu „text/plain“"
 
 #: opcodes.h:86
 msgid "make decoded copy (text/plain) and delete"
-msgstr "vytvořit kopii ve formátu 'text/plain' a smazat"
+msgstr "vytvořit kopii ve formátu „text/plain“ a smazat"
 
 #: opcodes.h:87
 msgid "delete the current entry"
@@ -4843,7 +4820,7 @@ msgstr "přidat, změnit nebo smazat štítek zprávy"
 #: opcodes.h:118
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
-"upravit celou zprávu pokud není schránka v režimu pouze pro čtení,jinak "
+"upravit celou zprávu pokud není schránka v režimu pouze pro čtení, jinak "
 "pouze zobrazit"
 
 #: opcodes.h:119
@@ -5255,9 +5232,8 @@ msgid "invoke a command in a subshell"
 msgstr "spustit příkaz v podshellu"
 
 #: opcodes.h:221
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "zobrazit zprávy"
+msgstr "zobrazit zaznamenané ladící zprávy"
 
 #: opcodes.h:222
 msgid "sort messages"
@@ -5297,7 +5273,7 @@ msgstr "přepnout, zda procházet schránky nebo všechny soubory"
 
 #: opcodes.h:231
 msgid "toggle a message's 'new' flag"
-msgstr "přepnout zprávě příznak 'nová'"
+msgstr "přepnout zprávě příznak „nová“"
 
 #: opcodes.h:232
 msgid "toggle view of read messages"
@@ -5652,10 +5628,10 @@ msgstr "Server nepodporuje příkaz UIDL."
 
 # TODO: plurals
 #: pop.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
+msgstr[0] "%d zpráva byla ztracena. Zkuste schránku znovu otevřít."
 msgstr[1] "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
 msgstr[2] "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
 
@@ -5700,7 +5676,7 @@ msgstr "Chyba při zápisu do schránky!"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [počet přečtených zpráv: %d/%d]"
@@ -5894,7 +5870,6 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rfc822“."
 
 #: recvcmd.c:230
-#, fuzzy
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Chyba při přeposílání zprávy!"
@@ -5958,7 +5933,7 @@ msgstr "OK"
 
 #: remailer.c:503
 msgid "Can't get mixmaster's type2.list!"
-msgstr "'type2.list' pro mixmaster nelze získat."
+msgstr "„type2.list“ pro mixmaster nelze získat."
 
 #: remailer.c:529
 msgid "Select a remailer chain."
@@ -5969,6 +5944,7 @@ msgstr "Vyberte řetěz remailerů."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Chyba: %s nelze použít jako poslední článek řetězu remailerů."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
@@ -6257,7 +6233,6 @@ msgid ""
 msgstr "Mnoho dalších zde nezmíněných přispělo kódem, opravami a nápady.\n"
 
 #: version.c:68
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"

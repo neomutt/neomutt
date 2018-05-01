@@ -2379,11 +2379,6 @@ msgstr "Subscribindo a %s..."
 msgid "Unsubscribed from %s"
 msgstr "Borrando a subscripción con %s..."
 
-#: imap/imap.c:1933
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Copiando %d mensaxes a %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2663,8 +2658,10 @@ msgstr "source: a lectura foi abortada por haber demasiados erros in %s"
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "source: erros en %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "source: erros en %s"
+msgstr[1] "source: erros en %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6193,6 +6190,7 @@ msgstr "Seleccionar unha cadea de remailers."
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Erro: %s non pode ser usado como remailer final dunha cadea."
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."

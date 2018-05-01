@@ -2358,11 +2358,6 @@ msgstr "Kopírujem do %s..."
 msgid "Unsubscribed from %s"
 msgstr "Spájam sa s %s..."
 
-#: imap/imap.c:1933
-#, fuzzy, c-format
-msgid "Copying %d messages to %s..."
-msgstr "Presúvam prečítané správy do %s..."
-
 #: imap/imap.c:1948 imap/imap.c:2241 imap/message.c:1490 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
@@ -2646,8 +2641,11 @@ msgstr ""
 
 #: init.c:2977
 #, fuzzy, c-format
-msgid "source: %d warnings in %s"
-msgstr "zdroj: chyby v %s"
+msgid "source: %d warning in %s"
+msgid_plural "source: %d warnings in %s"
+msgstr[0] "zdroj: chyby v %s"
+msgstr[1] "zdroj: chyby v %s"
+msgstr[2] "zdroj: chyby v %s"
 
 #: init.c:3003 mutt_lua.c:419
 #, c-format
@@ -6176,6 +6174,7 @@ msgstr "zmazať všetky znaky v riadku"
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 
+#. L10N The '%d' here hard-coded to 19
 #: remailer.c:621
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
