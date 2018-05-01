@@ -1412,11 +1412,14 @@ int mutt_index_menu(void)
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
         buf[0] = 0;
-        if (mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0 || !buf[0])
+        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0) ||
+            (buf[0] == '\0'))
+        {
           mutt_error(_("Nothing to do."));
+        }
         else if (mutt_str_atoi(buf, &i) < 0)
           mutt_error(_("Argument must be a message number."));
-        else if (i < 1 || Context->msgcount < i)
+        else if ((i < 1) || (i >= Context->msgcount))
           mutt_error(_("Invalid message number."));
         else if (!message_is_visible(Context, i - 1))
           mutt_error(_("That message is not visible."));
