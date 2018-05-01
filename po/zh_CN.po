@@ -191,7 +191,7 @@ msgstr "我不知道要如何打印它！"
 #: bcache.c:160
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr "路径太长:$s$s$s"
+msgstr "路径太长:%s%s%s"
 
 #: bcache.c:168
 #, c-format
@@ -459,7 +459,6 @@ msgstr "警告：信件未包含 From: 标头"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "回退信件至："
-msgstr[1] "回退信件至："
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
