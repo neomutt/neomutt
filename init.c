@@ -1045,7 +1045,7 @@ static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("not enough arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "echo");
     return -1;
   }
   mutt_extract_token(buf, s, 0);
@@ -1128,7 +1128,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("not enough arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return -1;
   }
   mutt_extract_token(buf, s, 0);
@@ -1136,7 +1136,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
   /* Second token is a replacement template */
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("not enough arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "subjectrx");
     return -1;
   }
   mutt_extract_token(&templ, s, 0);
@@ -1159,7 +1159,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("not enough arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "unsubjectrx");
     return -1;
   }
 
