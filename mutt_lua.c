@@ -363,7 +363,9 @@ static void luaopen_mutt(lua_State *l)
 
 static bool lua_init(lua_State **l)
 {
-  if (l && *l)
+  if (!l)
+    return false;
+  if (*l)
     return true;
 
   mutt_debug(2, " * lua_init()\n");
