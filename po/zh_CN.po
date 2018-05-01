@@ -191,7 +191,7 @@ msgstr "我不知道要如何打印它！"
 #: bcache.c:160
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "路径太长:$s$s$s"
 
 #: bcache.c:168
 #, c-format
@@ -311,19 +311,23 @@ msgstr "文件掩码："
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1872
-#, fuzzy
+#,
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
 "count, or do(n)'t sort? "
-msgstr "按日期(d)，字母表(a)，大小(z)反向排序或不排序(n)? "
+msgstr ""
+"按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)"
+"反向排序或不反向排序(n)? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1875
-#, fuzzy
+#,
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
 "do(n)'t sort? "
-msgstr "按日期(d)，字母表(a)，大小(z)排序或不排序(n)? "
+msgstr ""
+"按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)"
+"排序或不排序(n)? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1878
@@ -451,10 +455,11 @@ msgid "Warning: message contains no From: header"
 msgstr "警告：信件未包含 From: 标头"
 
 #: commands.c:293 recvcmd.c:162
-#, fuzzy
+#,
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "回退信件至："
+msgstr[1] "回退信件至："
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -515,23 +520,23 @@ msgstr[0] "信件无法打印"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560
-#, fuzzy
+#,
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
 "s(p)am/(l)abel?: "
 msgstr ""
-"按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p反向"
-"排序?: "
+"按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/"
+"垃圾邮件(p)/标签()l反向排序?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:564
-#, fuzzy
+#,
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/"
 "(l)abel?: "
 msgstr ""
-"按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p排"
-"序?: "
+"按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/"
+"垃圾邮件(p)/标签()l反向排序?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:568
@@ -1091,7 +1096,7 @@ msgstr "MD5 指纹：%s"
 #: conn/ssl.c:999
 #, fuzzy, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "SSL 证书检查 (检查链中有 %d 个证书，共 %d 个)"
+msgstr "SSL 证书检查 (检查链中有 %zu 个证书，共 %zu 个)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1713,7 +1718,7 @@ msgstr "没有信件Id对应的宏。"
 
 #: curs_main.c:3123 pager.c:2961 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "将信件优先发送给发送者"
 
 #: curs_main.c:3126 pager.c:2927 pager.c:2939 pager.c:2964
 msgid "Posting to this group not allowed, may be moderated. Continue?"
@@ -1837,7 +1842,7 @@ msgstr "信件未改动！"
 
 #: editmsg.c:167
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "只读模式信箱中的信件已被修改!忽略这些变动."
 
 #: editmsg.c:183
 #, c-format
@@ -1859,14 +1864,14 @@ msgid "Clear flag"
 msgstr "清除标记"
 
 #: handler.c:66
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入另一种 #%d: [-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入另一种 #%d: %s/%s%s%s, 编码: %s, 大小: %s --]\n"
 
 #: handler.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入：[-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入：%s/%s%s%s, 编码: %s, 大小: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -1874,12 +1879,12 @@ msgstr "[-- 错误： 无法显示 Multipart/Alternative 的任何部分！ --]\
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1295
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- 附件 #%d: %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- 附件 #%d --]\n"
 
@@ -1912,7 +1917,7 @@ msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 错误: message/external-body 没有访问类型参数 --]\n"
 
 #: handler.c:1514
-#, fuzzy, c-format
+#,  c-format
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -1925,7 +1930,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1523
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr "[-- 此 %s/%s 附件 (大小 %s 字节) 已经被删除 --]\n"
 
@@ -1938,7 +1943,7 @@ msgstr "[-- 此 %s/%s 附件 (大小 %s 字节) 已经被删除 --]\n"
 #. in this translation!
 #.
 #: handler.c:1540
-#, fuzzy
+#,
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -1951,7 +1956,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1549
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- 此 %s/%s 附件 已经被删除 --]\n"
 
@@ -1961,7 +1966,7 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- 名称：%s --]\n"
 
 #: handler.c:1575
-#, fuzzy, c-format
+#,  c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -1972,7 +1977,7 @@ msgstr ""
 "[-- 过期。 --]\n"
 
 #: handler.c:1596
-#, fuzzy, c-format
+#,  c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -1981,52 +1986,52 @@ msgstr ""
 "[-- 并且其标明的访问类型 %s 不被支持 --]\n"
 
 #: handler.c:1725
-#, fuzzy
+#,
 msgid "Unable to open memory stream!"
-msgstr "无法打开临时文件！"
+msgstr "无法打开内存文件！"
 
 #: handler.c:1734
 msgid "Unable to open temporary file!"
 msgstr "无法打开临时文件！"
 
 #: handler.c:1784
-#, fuzzy
+#,
 msgid "failed to re-open memstream!"
-msgstr "无法打开临时文件！"
+msgstr "无法重新打开临时内存流文件！"
 
 #: handler.c:1911
 msgid "Error: multipart/signed has no protocol."
 msgstr "错误：multipart/signed 没有协议。"
 
 #: handler.c:1974
-#, fuzzy
+#,
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[-- 这是一个附件 (使用 '%3$s' 来显示这部份) --]\n"
 
 #: handler.c:1980
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s 尚未支持 (使用 '%s' 来显示这部份) --]\n"
 
 #: handler.c:1985
-#, fuzzy
+#,
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- 这是一个附件 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- %s/%s 尚未支持 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #: handler.c:1996
-#, fuzzy
+#,
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- 这是一个附件 --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s 尚未支持 --]\n"
 
@@ -2071,9 +2076,9 @@ msgid "Bad history file format (line %d)"
 msgstr "错误的历史文件格式 (第 %d 行)"
 
 #: history.c:477
-#, fuzzy, c-format
+#,  c-format
 msgid "History '%s'"
-msgstr "查询 '%s'"
+msgstr "记录 '%s'"
 
 #: hook.c:132
 msgid "current mailbox shortcut '^' is unset"
@@ -2176,9 +2181,9 @@ msgid "Mailbox created."
 msgstr "信箱已创建。"
 
 #: imap/browse.c:446
-#, fuzzy
+#,
 msgid "Cannot rename root folder"
-msgstr "无法删除根文件夹"
+msgstr "无法重命名根文件夹"
 
 #: imap/browse.c:450
 #, c-format
@@ -2195,17 +2200,17 @@ msgid "Mailbox renamed."
 msgstr "信箱已改名。"
 
 #: imap/command.c:158
-#, fuzzy, c-format
+#,  c-format
 msgid "Mailbox %s@%s closed"
-msgstr "信箱已关闭。"
+msgstr "信箱%s@%s已关闭。"
 
 #: imap/command.c:1111 imap/command.c:1205
-#, fuzzy, c-format
+#,  c-format
 msgid "Connection to %s timed out"
 msgstr "到 %s 的连接已关闭"
 
 #: imap/imap.c:90
-#, fuzzy
+#,
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "这个 IMAP 服务器已过时，NeoMutt 无法与之工作。"
 
@@ -2217,7 +2222,7 @@ msgstr "无标头名称的标头搜索：%s"
 #: imap/imap.c:494
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "服务器端的自定义搜索不被支持： %s"
 
 #: imap/imap.c:672
 #, c-format
@@ -3983,7 +3988,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:795
 msgid "Internal error.  Please submit a bug report."
-msgstr ""
+msgstr "内部错误。请提交一个bug报告"
 
 #: ncrypt/pgp.c:862
 msgid ""
