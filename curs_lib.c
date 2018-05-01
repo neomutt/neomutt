@@ -524,6 +524,19 @@ void mutt_perror_debug(const char *s)
 }
 
 /**
+ * mutt_flush_stdin - remove characters from stdin until '\n' or EOF is encountered
+ */
+void mutt_flush_stdin(void)
+{
+  int c;
+  do 
+  {
+    c = fgetc(stdin);
+  } while ((c != '\n') && (c != EOF));
+}
+
+
+/**
  * mutt_any_key_to_continue - Prompt the user to 'press any key' and wait
  * @param s Message prompt
  * @retval num Key pressed
@@ -550,7 +563,7 @@ int mutt_any_key_to_continue(const char *s)
     fputs(_("Press any key to continue..."), stdout);
   fflush(stdout);
   int ch = fgetc(stdin);
-  fflush(stdin);
+  mutt_flush_stdin();
   tcsetattr(fd, TCSADRAIN, &old);
   close(fd);
   fputs("\r\n", stdout);
