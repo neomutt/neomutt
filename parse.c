@@ -383,6 +383,20 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   }
 }
 
+/**
+ * mutt_parse_content_language - Read the content's language
+ * @param s  Language string
+ * @param ct Body of the email
+ */
+static void mutt_parse_content_language(char *s, struct Body *ct)
+{
+  if (!s || !ct)
+    return;
+
+  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
+  ct->language = mutt_str_strdup(s);
+}
+
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
   struct ParameterList parms;
@@ -453,6 +467,8 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
     {
       if (mutt_str_strcasecmp("type", line + 8) == 0)
         mutt_parse_content_type(c, p);
+      else if (mutt_str_strcasecmp("language", line + 8) == 0)
+        mutt_parse_content_language(c, p);
       else if (mutt_str_strcasecmp("transfer-encoding", line + 8) == 0)
         p->encoding = mutt_check_encoding(c);
       else if (mutt_str_strcasecmp("disposition", line + 8) == 0)
@@ -796,6 +812,12 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
         {
           if (hdr)
             mutt_parse_content_type(p, hdr->content);
+          matched = 1;
+        }
+        else if (mutt_str_strcasecmp(line + 8, "language") == 0)
+        {
+          if (hdr)
+            mutt_parse_content_language(p, hdr->content);
           matched = 1;
         }
         else if (mutt_str_strcasecmp(line + 8, "transfer-encoding") == 0)

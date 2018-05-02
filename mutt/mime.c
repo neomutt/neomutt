@@ -27,7 +27,10 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "mime.h"
+#include "memory.h"
+#include "string2.h"
 
 // clang-format off
 /**

@@ -9879,54 +9879,225 @@ application/postscript; ps2ascii %s; copiousoutput
 
     <sect1 id="alternative-order">
       <title>MIME Multipart/Alternative</title>
+
       <para>
-        The <literal>multipart/alternative</literal> container type only has
-        child MIME parts which represent the same content in an alternative
-        way. This is often used to send HTML messages which contain an
-        alternative plain text representation.
+        A <literal>multipart/alternative</literal> email has several
+        parts that represent the same content in different formats, such as
+        <literal>text/plain</literal> and <literal>text/html</literal>. This
+        kind of email is heavily used by many modern mail user agents to send
+        HTML messages which contain an alternative plain text representation.
+        You can read and write <literal>multipart/alternative</literal> emails
+        in NeoMutt. 
       </para>
-      <para>
-        NeoMutt has some heuristics for determining which attachment of
-        a <literal>multipart/alternative</literal> type to display:
-      </para>
-      <orderedlist>
-        <listitem>
-          <para>
-            First, NeoMutt will check the <command>alternative_order</command>
-            list to determine if one of the available types is preferred. It
-            consists of a number of MIME types in order, including support for
-            implicit and explicit wildcards. For example:
-          </para>
+
+      <sect2 id="read-alternative-order">
+        <title>Reading Multipart/Alternative Emails</title>
+        <para>
+          NeoMutt has some heuristics for determining which attachment of
+          a <literal>multipart/alternative</literal> type to display:
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>
+              First, NeoMutt will check the <command>alternative_order</command>
+              list to determine if one of the available types is preferred. It
+              consists of a number of MIME types in order, including support for
+              implicit and explicit wildcards. For example:
+            </para>
 
 <screen>
-alternative_order text/enriched text/plain text \
-  application/postscript image/*
+alternative_order text/enriched text/plain text application/postscript image/*
 </screen>
 
-        </listitem>
-        <listitem>
-          <para>
-            Next, NeoMutt will check if any of the types have a defined
-            <link linkend="auto-view"><command>auto_view</command></link>, and
-            use that.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Failing that, NeoMutt will look for any text type.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            As a last attempt, NeoMutt will look for any type it knows how to
-            handle.
-          </para>
-        </listitem>
-      </orderedlist>
+          </listitem>
+          <listitem>
+            <para>
+              Next, NeoMutt will check if any of the types have a defined
+              <link linkend="auto-view"><command>auto_view</command></link>, and
+              use that.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Failing that, NeoMutt will look for any text type.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              As a last attempt, NeoMutt will look for any type it knows how to
+              handle.
+            </para>
+          </listitem>
+        </orderedlist>
+        <para>
+          To remove a MIME type from the <command>alternative_order</command>
+          list, use the <command>unalternative_order</command> command.
+        </para>
+      </sect2>
+
+      <sect2 id="compose-alternative-order">
+        <title>Composing Multipart/Alternative Emails</title>
+
+        <para>
+          Noemutt includes some primitive ability to compose multipart/alternative
+          emails:
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>
+              In the Compose menu, attach the two (or more) alternatives as
+              usual. For example, attach "invitation.html" and then "invitation.txt".
+              (You can reorder them using the <literal>&lt;move-up&gt;</literal> (-)
+              and <literal>&lt;move-down&gt;</literal> (+) bindings, and edit the
+              descriptions).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Tag the attachments that are alternatives, and press the
+              <command>&lt;group-alternatives&gt;</command> (&amp;) binding to group
+              them together. After this, the separate parts will be replaced by a single
+              new part with the <literal>multipart/alternative</literal> type and the
+              alternatives must be manipulated or deleted as a group.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Send the email as usual.
+            </para>
+          </listitem>
+        </orderedlist>
+        <para>
+          If all the attachments have been grouped and form a single
+          <literal>multipart/alternative</literal>, part then this message will be sent
+          as a <literal>multipart/alternative</literal> email, otherwise it will be sent
+          as a <literal>multipart/mixed</literal> email.
+        </para>
+        <para>
+          Note that after grouping, you can't view, edit or break the
+          <literal>multipart/alternative</literal> bundle, because it is in a temporary
+          form. But you can view and edit its primitive part using the
+          <command>&lt;edit&gt;</command> command. When postponing emails or on error
+          (e.g., no recipients address when sending emails) this
+          <literal>multipart/alternative</literal> will be broken apart and need to
+          be tagged and group together again as described above.
+        </para>
+
+        <para>
+          Be aware that when sending a <literal>multipart/alternative</literal> email,
+          you have to manually prepare the alternative parts and attach them. However,
+          you can use Neomutt's macro to perform all the operations needed, such that
+          you can compose a plain text email as usual and turn that into a
+          <literal>multipart/alternative</literal> email in one single command, with
+          one part being <literal>text/plain</literal> and the other
+          <literal>text/html</literal>. An example macro will be the following:
+
+<screen>
+macro compose K "| pandoc -o /tmp/neomutt-alternative.html&lt;enter&gt; \
+    &lt;attach-file&gt;/tmp/neomutt-alternative.html&lt;enter&gt; \
+    &lt;tag-entry&gt;&lt;previous-entry&gt;&lt;tag-entry&gt;&lt;group-alternatives&gt;"
+</screen>
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="multipart-multilingual">
+      <title>MIME Multipart/Multilingual</title>
+
       <para>
-        To remove a MIME type from the <command>alternative_order</command>
-        list, use the <command>unalternative_order</command> command.
+        Neomutt includes supports for reading and writing <literal>multipart/multilingual</literal>
+        emails. A <literal>multipart/multilingual</literal> email is like a
+        <literal>multipart/alternative</literal> email, except that it comes with parts of
+        different versions of languages instead of appearances. Its format is described by
+        <ulink url="https://tools.ietf.org/html/rfc8255">RFC8255</ulink>.
       </para>
+
+      <sect2 id="read-multipart-multilingual">
+        <title>Reading Multipart/Multilingual Emails</title>
+        <para>
+          Neomutt uses the <literal>$preferred_languages</literal> variable to determine which
+          languages to display when displaying a <literal>multipart/multilingual</literal> email.
+          You can have several preferred languages, separated by <literal>,</literal>
+<screen>
+set preferred_languages="fr,en,de"
+</screen>
+          Neomutt will try to match these strings again the multilingual header in the received
+          emails "by prefix", e.g., <literal>en</literal> will match both <literal>en</literal>
+          and <literal>en_US</literal>.
+        </para>
+
+        <para>
+          If <literal>$preferred_languages</literal> is not set, it default to None, and the
+          first part of the received <literal>multipart/multilingual</literal> email will be
+          displayed.
+        </para>
+      </sect2>
+
+      <sect2 id="compose-multipart-alternative">
+        <title>Composing Multipart/Multilingual Emails</title>
+        <para>
+          The procedures of composing a <literal>multipart/multilingual</literal> email is similar
+          to those in <link linkend="compose-alternative-order">Composing Multipart/Alternative</link>.
+          You have to prepare every part manually or using some scripts, and then tag and group them
+          together into a <literal>multipart/multilingual</literal> bundle before sending it:
+        </para>
+
+        <orderedlist>
+          <listitem>
+            <para>
+              Prepare parts of the multilingual emails.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              Attach them as attachments.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              Tag them with <command>&lt;tag-entry&gt;</command>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              Edit the <literal>Content-Language</literal> header of every attachment with command
+              <command>&lt;edit-language&gt;</command> (default to <literal>Ctrl-L</literal>). This
+              is important, otherwise the recipient of this email will not know the corresponding
+              languages. You can set arbitrary string as <literal>Content-Language</literal>, but it
+              is recommended to set it as some common prefixes such as "en", "zh" and "fr".
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Group all the tag messages together by <command>&lt;group-multilingual&gt;</command>
+              (default to <literal>^</literal>).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Send the email as usual.
+            </para>
+          </listitem>
+
+        </orderedlist>
+
+        <para>
+          As in <link linkend="compose-alternative-order">Composing Multipart/Alternative</link>, you can
+          also use Neomutt's macro and some external scripts to combine these procedure into one.
+        </para>
+
+        <para>
+          Note that after grouping, you can't view, edit or break the
+          <literal>multipart/multilingual</literal> email bundle, because it is in a temporary form.
+          But you can view and edit its primitive part using the <command>&lt;edit&gt;</command>
+          command. When postponing emails or on error (e.g., no recipients address when sending
+          emails) this <literal>multipart/multilingual</literal> will be broken apart and need to
+          be tagged and group together again as described above.
+        </para>
+      </sect2>
     </sect1>
 
     <sect1 id="attachments">
