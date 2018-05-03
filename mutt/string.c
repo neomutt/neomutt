@@ -636,8 +636,13 @@ void mutt_str_remove_trailing_ws(char *s)
  */
 size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 {
-  if (dsize == 0)
+  if (!dest || (dsize == 0))
     return 0;
+  if (!src)
+  {
+    dest[0] = '\0';
+    return 0;
+  }
 
   char *dest0 = dest;
   while ((--dsize > 0) && (*src != '\0'))

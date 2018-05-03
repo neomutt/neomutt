@@ -46,7 +46,7 @@ char *      mutt_file_concat_path(char *d, const char *dir, const char *fname, s
 int         mutt_file_copy_bytes(FILE *in, FILE *out, size_t size);
 int         mutt_file_copy_stream(FILE *fin, FILE *fout);
 time_t      mutt_file_decrease_mtime(const char *f, struct stat *st);
-char *      mutt_file_dirname(const char *p);
+char *      mutt_file_dirname(const char *path);
 int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
