@@ -57,8 +57,8 @@ static const char *Copyright =
     "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
     "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
     "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
-    "Copyright (C) 2014-2017 Kevin J. McCarthy <kevin@8t8.us>\n"
-    "Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n";
+    "Copyright (C) 2014-2018 Kevin J. McCarthy <kevin@8t8.us>\n"
+    "Copyright (C) 2015-2018 Richard Russon <rich@flatcap.org>\n";
 
 static const char *Thanks =
     N_("Many others not mentioned here contributed code, fixes,\n"
