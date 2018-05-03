@@ -21,7 +21,7 @@ For further NeoMutt information:
 .TP
 .RI "\(bu the full manual, " "@MAN_DOCDIR@/manual." { html , pdf , txt }
 .TQ
-\(bu the home page, <https://www.neomutt.org>
+\(bu the home page, <https://neomutt.org>
 .RE
 .
 .\" --------------------------------------------------------------------

@@ -35,7 +35,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       <title>NeoMutt Home Page</title>
       <para>
         The homepage can be found at
-        <ulink url="https://www.neomutt.org">https://www.neomutt.org</ulink>.
+        <ulink url="https://neomutt.org">https://neomutt.org</ulink>.
       </para>
     </sect1>
 
@@ -104,7 +104,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       <para>
         For contributing code patches for new features and bug fixes,
         please refer to the developer pages at
-        <ulink url="https://www.neomutt.org/dev.html">https://www.neomutt.org/dev.html</ulink>
+        <ulink url="https://neomutt.org/dev.html">https://neomutt.org/dev.html</ulink>
         for more details.
       </para>
     </sect1>
@@ -211,7 +211,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       There are many other features which are described elsewhere in the
       manual. There is even more information available in the NeoMutt FAQ and
       various web pages. See the
-      <ulink url="https://www.neomutt.org">NeoMutt homepage</ulink> for more
+      <ulink url="https://neomutt.org">NeoMutt homepage</ulink> for more
       details.
     </para>
     <para>

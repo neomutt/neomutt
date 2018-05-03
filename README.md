@@ -68,12 +68,12 @@ sorted through them, fixed them up and documented them.
 - Source Code:     https://github.com/neomutt/neomutt
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
-- Website:         https://www.neomutt.org
+- Website:         https://neomutt.org
 - IRC:             irc://irc.freenode.net/neomutt - please be patient.
   We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
-- Development:     https://www.neomutt.org/dev.html
+- Development:     https://neomutt.org/dev.html
 
 ## Contributors
 
@@ -218,10 +218,10 @@ Collecting, sorting out and polishing patches to be incorporated upstream (into 
 as well as being a place to gather and encourage further collaboration while reducing
 redundant work, are among the main goals of NeoMutt. NeoMutt merges all changes from Mutt.
 
-More information is available on the [About](https://www.neomutt.org/about.html) page on
+More information is available on the [About](https://neomutt.org/about.html) page on
 the NeoMutt website.
 
 Mutt was created by **Michael Elkins** and is now maintained by **Kevin McCarthy**.
 
-https://www.neomutt.org/guide/miscellany.html#acknowledgements
+https://neomutt.org/guide/miscellany.html#acknowledgements
 

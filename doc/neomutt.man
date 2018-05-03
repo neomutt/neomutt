@@ -560,7 +560,7 @@ For further NeoMutt information:
 .TP
 \(bu the full manual, see \fIFILES\fP section above
 .TQ
-\(bu the home page, <https://www.neomutt.org>
+\(bu the home page, <https://neomutt.org>
 .RE
 .
 .\" --------------------------------------------------------------------

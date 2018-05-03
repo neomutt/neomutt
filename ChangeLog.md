@@ -37,9 +37,9 @@
 * Features
   - browser: `<goto-parent>` function bound to "p"
   - editor: `<history-search>` function bound to "Ctrl-r"
-  - Cygwin support: https://www.neomutt.org/distro/cygwin
-  - openSUSE support: https://www.neomutt.org/distro/suse
-  - Upstream Homebrew support: Very soon - https://www.neomutt.org/distro/homebrew
+  - Cygwin support: https://neomutt.org/distro/cygwin
+  - openSUSE support: https://neomutt.org/distro/suse
+  - Upstream Homebrew support: Very soon - https://neomutt.org/distro/homebrew
 * Bug Fixes
   - gmail server-size search
   - nested-if: correctly handle "<" and ">" with %?
