@@ -540,7 +540,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
+static int parse_group_context(struct GroupContextHead *ctx, struct Buffer *buf,
                                struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   while (mutt_str_strcasecmp(buf->data, "-group") == 0)
@@ -567,7 +567,6 @@ static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
   return 0;
 
 bail:
-  mutt_group_context_destroy(ctx);
   return -1;
 }
 
@@ -894,7 +893,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   struct Alias *tmp = NULL;
   char *estr = NULL;
-  struct GroupContext *gc = NULL;
+  struct GroupContextHead gc = STAILQ_HEAD_INITIALIZER(gc);
 
   if (!MoreArgs(s))
   {
@@ -945,7 +944,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     goto bail;
   }
 
-  mutt_group_context_add_addrlist(gc, tmp->addr);
+  mutt_group_context_add_addrlist(&gc, tmp->addr);
   mutt_alias_add_reverse(tmp);
 
   if (DebugLevel > 2)
@@ -973,7 +972,7 @@ bail:
 static int parse_alternates(struct Buffer *buf, struct Buffer *s,
                             unsigned long data, struct Buffer *err)
 {
-  struct GroupContext *gc = NULL;
+  struct GroupContextHead gc = STAILQ_HEAD_INITIALIZER(gc);
 
   alternates_clean();
 
@@ -989,7 +988,7 @@ static int parse_alternates(struct Buffer *buf, struct Buffer *s,
     if (mutt_regexlist_add(&Alternates, buf->data, REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(&gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
@@ -1106,7 +1105,7 @@ static int parse_finish(struct Buffer *buf, struct Buffer *s,
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  struct GroupContext *gc = NULL;
+  struct GroupContextHead gc = STAILQ_HEAD_INITIALIZER(gc);
   enum GroupState state = GS_NONE;
   struct Address *addr = NULL;
   char *estr = NULL;
@@ -1139,12 +1138,12 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
         case GS_RX:
           if (data == MUTT_GROUP &&
-              mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
+              mutt_group_context_add_regex(&gc, buf->data, REG_ICASE, err) != 0)
           {
             goto bail;
           }
           else if (data == MUTT_UNGROUP &&
-                   mutt_group_context_remove_regex(gc, buf->data) < 0)
+                   mutt_group_context_remove_regex(&gc, buf->data) < 0)
           {
             goto bail;
           }
@@ -1163,9 +1162,9 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           }
           if (data == MUTT_GROUP)
-            mutt_group_context_add_addrlist(gc, addr);
+            mutt_group_context_add_addrlist(&gc, addr);
           else if (data == MUTT_UNGROUP)
-            mutt_group_context_remove_addrlist(gc, addr);
+            mutt_group_context_remove_addrlist(&gc, addr);
           mutt_addr_free(&addr);
           break;
       }
@@ -1295,7 +1294,7 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
 static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  struct GroupContext *gc = NULL;
+  struct GroupContextHead gc = STAILQ_HEAD_INITIALIZER(gc);
 
   do
   {
@@ -1309,7 +1308,7 @@ static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (mutt_regexlist_add(&MailLists, buf->data, REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(&gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
@@ -1970,7 +1969,7 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
 static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
-  struct GroupContext *gc = NULL;
+  struct GroupContextHead gc = STAILQ_HEAD_INITIALIZER(gc);
 
   do
   {
@@ -1986,7 +1985,7 @@ static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
       goto bail;
     if (mutt_regexlist_add(&SubscribedLists, buf->data, REG_ICASE, err) != 0)
       goto bail;
-    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(&gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 

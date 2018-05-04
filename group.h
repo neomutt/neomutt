@@ -48,19 +48,22 @@ struct Group
 struct GroupContext
 {
   struct Group *g;
-  struct GroupContext *next;
+  STAILQ_ENTRY(GroupContext) entries;
 };
 
-void mutt_group_context_add(struct GroupContext **ctx, struct Group *group);
-void mutt_group_context_destroy(struct GroupContext **ctx);
-void mutt_group_context_add_addrlist(struct GroupContext *ctx, struct Address *a);
-int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err);
+STAILQ_HEAD(GroupContextHead, GroupContext);
+
+void mutt_group_context_add(struct GroupContextHead *head, struct Group *group);
+void mutt_group_context_destroy(struct GroupContextHead *head);
+void mutt_group_context_add_addrlist(struct GroupContextHead *head, struct Address *a);
+int mutt_group_context_add_regex(struct GroupContextHead *head, const char *s,
+                                 int flags, struct Buffer *err);
 
 bool mutt_group_match(struct Group *g, const char *s);
 
-int mutt_group_context_clear(struct GroupContext **ctx);
-int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s);
-int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address *a);
+int mutt_group_context_clear(struct GroupContextHead *head);
+int mutt_group_context_remove_regex(struct GroupContextHead *head, const char *s);
+int mutt_group_context_remove_addrlist(struct GroupContextHead *head, struct Address *a);
 
 struct Group *mutt_pattern_group(const char *k);
 

@@ -79,18 +79,20 @@ static void group_remove(struct Group *g)
 
 /**
  * mutt_group_context_clear - Empty a Group List
- * @param ctx Group List to modify
+ * @param head Group List to modify
  * @retval 0 Always
  */
-int mutt_group_context_clear(struct GroupContext **ctx)
+int mutt_group_context_clear(struct GroupContextHead *head)
 {
-  struct GroupContext *t = NULL;
-  for (; ctx && *ctx; (*ctx) = t)
+  struct GroupContext *np = STAILQ_FIRST(head), *next = NULL;
+  while (np)
   {
-    group_remove((*ctx)->g);
-    t = (*ctx)->next;
-    FREE(ctx);
+    group_remove(np->g);
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
   }
+  STAILQ_INIT(head);
   return 0;
 }
 
@@ -108,33 +110,36 @@ static bool empty_group(struct Group *g)
 
 /**
  * mutt_group_context_add - Add a Group to a List
- * @param ctx   Group List
+ * @param head  Group List
  * @param group Group to add
  */
-void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
+void mutt_group_context_add(struct GroupContextHead *head, struct Group *group)
 {
-  for (; *ctx; ctx = &((*ctx)->next))
+  struct GroupContext *np = NULL;
+  STAILQ_FOREACH(np, head, entries)
   {
-    if ((*ctx)->g == group)
+    if (np->g == group)
       return;
   }
-
-  *ctx = mutt_mem_calloc(1, sizeof(struct GroupContext));
-  (*ctx)->g = group;
+  np = mutt_mem_calloc(1, sizeof(struct GroupContext));
+  np->g = group;
+  STAILQ_INSERT_TAIL(head, np, entries);
 }
 
 /**
  * mutt_group_context_destroy - Destroy a Group List
- * @param ctx Group List to destroy
+ * @param head Group List to destroy
  */
-void mutt_group_context_destroy(struct GroupContext **ctx)
+void mutt_group_context_destroy(struct GroupContextHead *head)
 {
-  struct GroupContext *p = NULL;
-  for (; *ctx; *ctx = p)
+  struct GroupContext *np = STAILQ_FIRST(head), *next = NULL;
+  while (np)
   {
-    p = (*ctx)->next;
-    FREE(ctx);
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
   }
+  STAILQ_INIT(head);
 }
 
 /**
@@ -209,74 +214,84 @@ static int group_remove_regex(struct Group *g, const char *s)
 
 /**
  * mutt_group_context_add_addrlist - Add an Address List to a Group List
- * @param ctx Group List to add to
- * @param a   Address List to add
+ * @param head Group List to add to
+ * @param a    Address List to add
  */
-void mutt_group_context_add_addrlist(struct GroupContext *ctx, struct Address *a)
+void mutt_group_context_add_addrlist(struct GroupContextHead *head, struct Address *a)
 {
-  for (; ctx; ctx = ctx->next)
-    group_add_addrlist(ctx->g, a);
+  struct GroupContext *np = NULL;
+  STAILQ_FOREACH(np, head, entries)
+  {
+    group_add_addrlist(np->g, a);
+  }
 }
 
 /**
  * mutt_group_context_remove_addrlist - Remove an Address List from a Group List
- * @param ctx Group List to modify
+ * @param head Group List to modify
  * @param a   Address List to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address *a)
+int mutt_group_context_remove_addrlist(struct GroupContextHead *head, struct Address *a)
 {
   int rc = 0;
+  struct GroupContext *np = NULL;
 
-  for (; (!rc) && ctx; ctx = ctx->next)
+  STAILQ_FOREACH(np, head, entries)
   {
-    rc = group_remove_addrlist(ctx->g, a);
-    if (empty_group(ctx->g))
-      group_remove(ctx->g);
+    rc = group_remove_addrlist(np->g, a);
+    if (empty_group(np->g))
+      group_remove(np->g);
+    if (rc)
+      return rc;
   }
-
   return rc;
 }
 
 /**
  * mutt_group_context_add_regex - Add a Regex to a Group List
- * @param ctx   Group List to add to
+ * @param head  Group List to add to
  * @param s     Regex string to add
  * @param flags Flags, e.g. REG_ICASE
  * @param err   Buffer for error message
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
+int mutt_group_context_add_regex(struct GroupContextHead *head, const char *s,
                                  int flags, struct Buffer *err)
 {
   int rc = 0;
 
-  for (; (!rc) && ctx; ctx = ctx->next)
-    rc = group_add_regex(ctx->g, s, flags, err);
-
+  struct GroupContext *np = NULL;
+  STAILQ_FOREACH(np, head, entries)
+  {
+    rc = group_add_regex(np->g, s, flags, err);
+    if (rc)
+      return rc;
+  }
   return rc;
 }
 
 /**
  * mutt_group_context_remove_regex - Remove a Regex from a Group List
- * @param ctx Group List to modify
- * @param s   Regex string to remove
+ * @param head Group List to modify
+ * @param s    Regex string to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
+int mutt_group_context_remove_regex(struct GroupContextHead *head, const char *s)
 {
   int rc = 0;
-
-  for (; (!rc) && ctx; ctx = ctx->next)
+  struct GroupContext *np = NULL;
+  STAILQ_FOREACH(np, head, entries)
   {
-    rc = group_remove_regex(ctx->g, s);
-    if (empty_group(ctx->g))
-      group_remove(ctx->g);
+    rc = group_remove_regex(np->g, s);
+    if (empty_group(np->g))
+      group_remove(np->g);
+    if (rc)
+      return rc;
   }
-
   return rc;
 }
 

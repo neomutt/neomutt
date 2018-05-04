@@ -4709,7 +4709,7 @@ static int parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, unsigned
 static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
 /* Parse -group arguments */
-static int parse_group_context   (struct GroupContext **ctx,
+static int parse_group_context   (struct GroupContextHead *ctx,
                                   struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 const struct Command Commands[] = {
