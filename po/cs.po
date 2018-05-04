@@ -478,7 +478,6 @@ msgstr[1] "Zaslat kopii zpráv na %s"
 msgstr[2] "Zaslat kopii zpráv na %s"
 
 #: commands.c:337 recvcmd.c:209
-#, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Kopie zprávy nebyla odeslána."
@@ -486,7 +485,6 @@ msgstr[1] "Kopie zpráv nebyly odeslány."
 msgstr[2] "Kopie zpráv nebyly odeslány."
 
 #: commands.c:347 recvcmd.c:228
-#, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Kopie zprávy byla odeslána."
@@ -1313,7 +1311,7 @@ msgstr "Stiskněte libovolnou klávesu…"
 
 #: curs_lib.c:471
 msgid " ('?' for list): "
-msgstr " ('?' pro seznam): "
+msgstr " („?“ pro seznam): "
 
 #: curs_main.c:75 curs_main.c:1057
 msgid "No mailbox is open."
@@ -1799,7 +1797,7 @@ msgstr "Číslo zprávy (%d) je neplatné.\n"
 
 #: edit.c:342
 msgid "(End message with a . on a line by itself)\n"
-msgstr "(Zprávu ukončíte zapsáním samotného znaku '.' na novou řádku)\n"
+msgstr "(Zprávu ukončíte zapsáním samotného znaku „.“ na novou řádku)\n"
 
 #: edit.c:400
 msgid "No mailbox.\n"
@@ -2020,7 +2018,7 @@ msgstr "chyba pří opakovaném otevření memstreamu!"
 
 #: handler.c:1911
 msgid "Error: multipart/signed has no protocol."
-msgstr "Chyba: typ 'multipart/signed' bez informace o protokolu"
+msgstr "Chyba: typ „multipart/signed“ bez informace o protokolu"
 
 #: handler.c:1974
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
@@ -2309,19 +2307,21 @@ msgid "Expunge failed"
 msgstr "Příkaz EXPUNGE se nezdařil."
 
 #: imap/imap.c:2406
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Mažu zprávy (počet: %d)…"
-msgstr[1] "Mažu zprávy (počet: %d)…"
-msgstr[2] "Mažu zprávy (počet: %d)…"
+msgstr[0] "Označuji %d zprávu ke smazání…"
+msgstr[1] "Označuji %d zpráv ke smazání…"
+msgstr[2] "Označuji %d zpráv ke smazání…"
+
+# Označuji %d zprávu ke smazání…
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2441
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Ukládám změněné zprávy… [%d/%d]"
+msgstr[0] "Ukládám změněnou zprávu… [%d/%d]"
 msgstr[1] "Ukládám změněné zprávy… [%d/%d]"
 msgstr[2] "Ukládám změněné zprávy… [%d/%d]"
 
@@ -3198,7 +3198,7 @@ msgstr " Stiskněte „%s“ pro zapnutí zápisu"
 
 #: mx.c:1054
 msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Použijte 'toggle-write' pro zapnutí zápisu!"
+msgstr "Použijte „toggle-write“ pro zapnutí zápisu!"
 
 #: mx.c:1056
 #, c-format
