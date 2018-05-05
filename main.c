@@ -207,6 +207,32 @@ static int start_curses(void)
 #endif
 
 /**
+ * init_locale - Initialise the Locale/NLS settings
+ */
+void init_locale(void)
+{
+  setlocale(LC_ALL, "");
+
+#ifdef ENABLE_NLS
+  const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
+  if (domdir)
+    bindtextdomain(PACKAGE, domdir);
+  else
+    bindtextdomain(PACKAGE, MUTTLOCALEDIR);
+  textdomain(PACKAGE);
+#endif
+#ifndef LOCALES_HACK
+  const char *p = NULL;
+  /* Do we have a locale definition? */
+  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
+      (p = mutt_str_getenv("LC_CTYPE")))
+  {
+    OptLocales = true;
+  }
+#endif
+}
+
+/**
  * get_user_info - Find the user's name, home and shell
  * @retval 0 Success
  * @retval 1 Error
@@ -304,19 +330,7 @@ int main(int argc, char *argv[], char *envp[])
     goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 
-  setlocale(LC_ALL, "");
-
-#ifdef ENABLE_NLS
-  /* FIXME what about the LOCALES_HACK in mutt_init() [init.c] ? */
-  {
-    const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
-    if (domdir)
-      bindtextdomain(PACKAGE, domdir);
-    else
-      bindtextdomain(PACKAGE, MUTTLOCALEDIR);
-    textdomain(PACKAGE);
-  }
-#endif
+  init_locale();
 
   int out = 0;
   if (mutt_randbuf(&out, sizeof(out)) < 0)

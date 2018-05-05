@@ -3955,15 +3955,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   CurrentMenu = MENU_MAIN;
 
-#ifndef LOCALES_HACK
-  /* Do we have a locale definition? */
-  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
-      (p = mutt_str_getenv("LC_CTYPE")))
-  {
-    OptLocales = true;
-  }
-#endif
-
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
