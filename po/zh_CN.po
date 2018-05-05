@@ -5850,7 +5850,7 @@ msgstr "打印附件？"
 
 #: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "不支持对已解密附件的结构性更改"
 
 #: recvattach.c:1046
 msgid "Can't decrypt encrypted message!"
@@ -6081,7 +6081,7 @@ msgstr "已中止未修改过的信件。"
 
 #: send.c:1784
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "没有配置加密后端。邮件安全设置已禁用。"
 
 #: send.c:1822
 #, fuzzy
