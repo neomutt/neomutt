@@ -279,7 +279,7 @@ msgstr "Sletning er kun understøttet for IMAP-brevbakker"
 #: browser.c:1662 browser.c:1688
 #, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "Brevbakke slettet."
+msgstr "Sletning af brevbakke mislykkedes."
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -406,7 +406,7 @@ msgstr "standard-farver er ikke understøttet"
 
 #: commands.c:100
 msgid "Verify signature?"
-msgstr "Kontrollér underskrift?"
+msgstr "Verificér underskrift?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"
@@ -923,7 +923,7 @@ msgstr "Brevet skrevet."
 
 #: compose.c:1603
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Ingen PGP-ressource er konfigureret"
 
 #: compose.c:1611
 msgid "S/MIME already selected. Clear and continue ? "
@@ -931,7 +931,7 @@ msgstr "S/MIME allerede valgt. Ryd & fortsæt ? "
 
 #: compose.c:1637
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Ingen S/MIME-ressource er konfigureret"
 
 #: compose.c:1645
 msgid "PGP already selected. Clear and continue ? "
@@ -2229,9 +2229,9 @@ msgid "Mailbox renamed."
 msgstr "Brevbakke omdøbt."
 
 #: imap/command.c:158
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Brevbakke lukket"
+msgstr "Brevbakke %s@%s lukket"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, c-format
@@ -3167,9 +3167,9 @@ msgid "Mark all articles read?"
 msgstr ""
 
 #: mx.c:754
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read messages to %s?"
-msgstr "Flyt læste breve til %s?"
+msgstr "Flyt %d læste breve til %s?"
 
 #: mx.c:771 mx.c:1077
 #, fuzzy, c-format
@@ -3241,13 +3241,12 @@ msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med bilag."
 #: ncrypt/crypt.c:166
 #, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr ""
-"Integreret PGP kan ikke bruges sammen med bilag. Brug PGP/MIME i stedet?"
+msgstr "Integreret PGP kan ikke bruges sammen med format=flowed. Brug PGP/MIME i stedet?"
 
 #: ncrypt/crypt.c:170
 #, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med bilag."
+msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med format=flowed."
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:778
@@ -4808,9 +4807,8 @@ msgid "scroll down through the history list"
 msgstr "gå ned igennem historik-listen"
 
 #: opcodes.h:108
-#, fuzzy
 msgid "search through the history list"
-msgstr "gå op igennem historik-listen"
+msgstr "gennemsøg historik-listen"
 
 #: opcodes.h:109
 msgid "scroll up through the history list"
@@ -5196,7 +5194,7 @@ msgstr "udskriv den aktuelle listning"
 
 #: opcodes.h:202
 msgid "delete the current entry, bypassing the trash folder"
-msgstr "Om det aktuelle brev virkelig skal slettes, uden om papirkurven"
+msgstr "slet det aktuelle brev uden om papirkurven"
 
 #: opcodes.h:203
 #, fuzzy
@@ -5457,7 +5455,7 @@ msgstr "send en offentlig PGP-nøgle"
 
 #: opcodes.h:281
 msgid "verify a PGP public key"
-msgstr "kontrollér en offentlig PGP-nøgle"
+msgstr "verificér en offentlig PGP-nøgle"
 
 #: opcodes.h:282
 msgid "view the key's user id"
@@ -6112,7 +6110,7 @@ msgstr "Annullerede uændret brev."
 
 #: send.c:1784
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Ingen krypteringsressource er konfigureret. Deaktiverer brevets sikkerhedsindstilling."
 
 #: send.c:1822
 #, fuzzy
