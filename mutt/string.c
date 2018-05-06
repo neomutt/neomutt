@@ -102,6 +102,7 @@ static const struct SysExits
 /**
  * mutt_str_sysexit - Return a string matching an error code
  * @param e Error code, e.g. EX_NOPERM
+ * @retval ptr string representing the error code
  */
 const char *mutt_str_sysexit(int e)
 {

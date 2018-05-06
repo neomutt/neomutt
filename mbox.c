@@ -67,6 +67,8 @@ struct MUpdate
  * @param ctx   Context to lock
  * @param excl  Exclusive lock?
  * @param retry Should retry if unable to lock?
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {

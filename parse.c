@@ -429,6 +429,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
  * mutt_read_mime_header - Parse a MIME header
  * @param fp      stream to read from
  * @param digest  1 if reading subparts of a multipart/digest, 0 otherwise
+ * @retval ptr New Body containing parsed structure
  */
 struct Body *mutt_read_mime_header(FILE *fp, int digest)
 {
@@ -555,6 +556,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
  * mutt_rfc822_parse_message - parse a Message/RFC822 body
  * @param fp     stream to read from
  * @param parent info about the message/rfc822 body part
+ * @retval ptr New Body containing parsed message
  *
  * NOTE: this assumes that `parent->length' has been set!
  */
@@ -585,6 +587,7 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
  * @param end_off  length of the multipart body (used when the final
  *                 boundary is missing to avoid reading too far)
  * @param digest   1 if reading a multipart/digest, 0 otherwise
+ * @retval ptr New Body containing parsed structure
  */
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {

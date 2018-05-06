@@ -3041,6 +3041,8 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * Caller should free token->data when finished.  the reason for this variable
  * is to avoid having to allocate and deallocate a lot of memory if we are

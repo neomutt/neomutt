@@ -427,6 +427,13 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  * @param[in]  else_str Otherwise, display this string
  * @param[in]  data     Pointer to the mailbox Context
  * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * history_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------
+ * | \%s     | History match
  */
 static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,
@@ -442,7 +449,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
       break;
   }
 
-  return (src);
+  return src;
 }
 
 /**

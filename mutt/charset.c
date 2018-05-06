@@ -234,6 +234,7 @@ const struct MimeNames PreferredMimeNames[] =
  * lookup_charset - Look for a preferred character set name
  * @param type Type, e.g. #MUTT_LOOKUP_CHARSET
  * @param cs   Character set
+ * @retval ptr Charset string
  *
  * If the character set matches one of the regexes,
  * then return the replacement name.

@@ -461,6 +461,7 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
 /**
  * create_gpgme_context - Create a new GPGME context
  * @param for_smime If set, protocol of the context is set to CMS
+ * @retval ptr New GPGME context
  */
 static gpgme_ctx_t create_gpgme_context(int for_smime)
 {
