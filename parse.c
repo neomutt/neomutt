@@ -428,10 +428,10 @@ static void parse_content_disposition(const char *s, struct Body *ct)
 /**
  * mutt_read_mime_header - Parse a MIME header
  * @param fp      stream to read from
- * @param digest  1 if reading subparts of a multipart/digest, 0 otherwise
+ * @param digest  true if reading subparts of a multipart/digest
  * @retval ptr New Body containing parsed structure
  */
-struct Body *mutt_read_mime_header(FILE *fp, int digest)
+struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 {
   struct Body *p = mutt_body_new();
   char *c = NULL;
@@ -586,10 +586,10 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
  * @param boundary body separator
  * @param end_off  length of the multipart body (used when the final
  *                 boundary is missing to avoid reading too far)
- * @param digest   1 if reading a multipart/digest, 0 otherwise
+ * @param digest   true if reading a multipart/digest
  * @retval ptr New Body containing parsed structure
  */
-struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
+struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
 {
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
