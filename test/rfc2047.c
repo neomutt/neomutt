@@ -47,6 +47,14 @@ static const struct
       "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
     , "聪明的    聪明的"
     , "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
+  },
+  {
+    /* Let's accept spaces within encoded-text (issue #1189). In this
+     * particular case, NeoMutt choses to encode only the initial part of the
+     * string, as the remaining part only contains ASCII characters. */
+      "=?UTF-8?Q?Sicherheitsl=C3=BCcke in praktisch allen IT-Systemen?="
+    , "Sicherheitslücke in praktisch allen IT-Systemen"
+    , "=?utf-8?Q?Sicherheitsl=C3=BCcke?= in praktisch allen IT-Systemen"
   }
 };
 /* clang-format on */
