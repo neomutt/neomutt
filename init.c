@@ -620,7 +620,15 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       struct Buffer cmd;
       mutt_buffer_init(&cmd);
       *pc = '\0';
-      mutt_extract_token(&cmd, tok, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE);
+      if (flags & MUTT_TOKEN_BACKTICK_VARS)
+      {
+          /* recursively extract tokens to interpolate variables */
+          mutt_extract_token(&cmd, tok, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE);
+      }
+      else
+      {
+          cmd.data = mutt_str_strdup(tok->dptr);
+      }
       *pc = '`';
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
@@ -2492,7 +2500,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           myvar = mutt_str_strdup(myvar);
         }
 
-        mutt_extract_token(buf, s, 0);
+        mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
 
         if (myvar)
         {
