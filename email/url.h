@@ -43,6 +43,7 @@ enum UrlScheme
   U_SMTPS,   ///< Url is smtps://
   U_MAILTO,  ///< Url is mailto://
   U_NOTMUCH, ///< Url is notmuch://
+  U_HELP,    ///< Url is help://
 };
 
 #define U_PATH          (1 << 1)
