@@ -53,6 +53,7 @@ enum MailboxType
   MUTT_NOTMUCH,            ///< 'Notmuch' (virtual) Mailbox type
   MUTT_POP,                ///< 'POP3' Mailbox type
   MUTT_COMPRESSED,         ///< Compressed file Mailbox type
+  MUTT_HELP,               ///< Help/documentation Mailbox type
 };
 
 /**

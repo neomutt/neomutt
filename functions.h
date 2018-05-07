@@ -72,6 +72,9 @@ const struct Binding OpGeneric[] = { /* map: generic */
   { "half-down",       OP_HALF_DOWN,            "]" },
   { "half-up",         OP_HALF_UP,              "[" },
   { "help",            OP_HELP,                 "?" },
+#ifdef USE_DEVEL_HELP
+  { "help-box",        OP_HELP_BOX,             "\033H" },
+#endif
   { "jump",            OP_JUMP,                 NULL },
   { "last-entry",      OP_LAST_ENTRY,           "*" },
   { "middle-page",     OP_MIDDLE_PAGE,          "M" },

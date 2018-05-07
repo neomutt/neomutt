@@ -207,6 +207,9 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "hcache", 0 },
 #endif
+#ifdef USE_DEVEL_HELP
+  { "help", 2 },
+#endif
 #ifdef HOMESPOOL
   { "homespool", 1 },
 #else

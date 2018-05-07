@@ -77,6 +77,9 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+#ifdef USE_DEVEL_HELP
+#include "help/help.h"
+#endif
 
 /* These Config Variables are only used in mx.c */
 unsigned char C_CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
@@ -117,6 +120,9 @@ static const struct MxOps *mx_ops[] = {
 #endif
 #ifdef USE_NNTP
   &MxNntpOps,
+#endif
+#ifdef USE_DEVEL_HELP
+  &MxHelpOps,
 #endif
 
   /* Local mailboxes */
@@ -1153,6 +1159,9 @@ int mx_check_empty(const char *path)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
+#ifdef USE_DEVEL_HELP
+    case MUTT_HELP:
+#endif
       return mutt_file_check_empty(path);
     case MUTT_MH:
       return mh_check_empty(path);
@@ -1252,6 +1261,9 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 #endif
 #ifdef USE_NNTP
     &MxNntpOps,
+#endif
+#ifdef USE_DEVEL_HELP
+    &MxHelpOps,
 #endif
   };
 
