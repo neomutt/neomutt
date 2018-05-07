@@ -153,7 +153,8 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
                             "\\?"
                             "([qQbB])" /* encoding */
                             "\\?"
-                            "([^? ]+)" /* encoded text */
+                            "([^?]+)" /* encoded text - we accept whitespace 
+                                         as some mailers do that, see #1189. */
                             "\\?=",
                             REG_EXTENDED);
     assert(re && "Something is wrong with your RE engine.");
