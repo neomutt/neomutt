@@ -1350,7 +1350,7 @@ msgstr "信件"
 
 #: curs_main.c:746 pager.c:1706
 msgid "Reply"
-msgstr "回覆"
+msgstr "回复"
 
 #: curs_main.c:747
 msgid "Group"
@@ -4887,7 +4887,7 @@ msgstr "%s 不是目录"
 
 #: opcodes.h:136
 msgid "reply to all recipients"
-msgstr "回覆给所有收件人"
+msgstr "回复给所有收件人"
 
 #: opcodes.h:137
 msgid "scroll down 1/2 page"
@@ -4916,7 +4916,7 @@ msgstr "标记当前线索"
 
 #: opcodes.h:143
 msgid "reply to specified mailing list"
-msgstr "回覆给指定的邮件列表"
+msgstr "回复给指定的邮件列表"
 
 #: opcodes.h:144
 msgid "load list of all newsgroups from NNTP server"
@@ -5199,7 +5199,7 @@ msgstr "将当前信箱改名 (只适用于 IMAP)"
 
 #: opcodes.h:212
 msgid "reply to a message"
-msgstr "回覆一封信件"
+msgstr "回复一封信件"
 
 #: opcodes.h:213
 msgid "use the current message as a template for a new one"
@@ -6045,7 +6045,7 @@ msgstr "无可见的已标记信件！"
 
 #: send.c:835
 msgid "Include message in reply?"
-msgstr "回信使包含原信件吗？"
+msgstr "回信时包含原信件吗？"
 
 #: send.c:841
 msgid "Including quoted message..."
