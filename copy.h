@@ -67,12 +67,14 @@ struct Context;
 #define CH_VIRTUAL        (1 << 20) /**< write virtual header lines too */
 
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
-                  int flags, const char *prefix);
+                  int flags, const char *prefix, FILE *out_autocrypt);
 
-int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix);
+int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix, FILE *out_autocrypt);
 
 int mutt_copy_message_fp (FILE *fpout, FILE *fpin,          struct Header *hdr, int flags, int chflags);
+int mutt_copy_message_fp_autocrypt (FILE *fpout, FILE *fpin,          struct Header *hdr, int flags, int chflags, FILE *out_autocrypt);
 int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
+int mutt_copy_message_ctx_autocrypt(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags, FILE *out_autocrypt);
 
 int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags);
 

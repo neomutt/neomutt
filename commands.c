@@ -161,7 +161,26 @@ int mutt_display_message(struct Header *cur)
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
+
+  FILE *fpout_autocrypt = NULL;
+  pid_t autocryptpid = -1;
+  if (AutocryptCmd && *AutocryptCmd)
+  {
+    autocryptpid = mutt_create_filter(AutocryptCmd, &fpout_autocrypt, NULL, NULL);
+    if (autocryptpid < 0)
+    {
+      mutt_perror(_("Can't create Autocrypt cmd process"));
+      return 0;
+    }
+  }
+
+  res = mutt_copy_message_ctx_autocrypt(fpout, Context, cur, cmflags, chflags, fpout_autocrypt);
+
+  if (fpout_autocrypt)
+  {
+    mutt_file_fclose(&fpout_autocrypt);
+    mutt_wait_filter(autocryptpid);
+  }
 
   if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {

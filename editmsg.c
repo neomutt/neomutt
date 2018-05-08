@@ -220,7 +220,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL);
+  rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL, NULL);
   if (rc == 0)
   {
     fputc('\n', msg->fp);

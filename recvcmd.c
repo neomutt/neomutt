@@ -345,7 +345,7 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix2 : NULL);
+  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix2 : NULL, NULL);
 }
 
 /**

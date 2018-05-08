@@ -931,7 +931,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 #endif
 
     if (pat->op != MUTT_BODY)
-      mutt_copy_header(msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
+      mutt_copy_header(msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL, NULL);
 
     if (pat->op != MUTT_HEADER)
     {

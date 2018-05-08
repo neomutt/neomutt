@@ -776,6 +776,7 @@ struct Option MuttVars[] = {
   ** This can be fixed by adding this to your config:
   ** \fCcolor body magenta default '^\[-- .* --\]$$$'\fP.
   */
+  { "autocrypt_cmd",   DT_PATH, R_NONE, &AutocryptCmd, IP "" },
   { "dsn_notify",       DT_STRING,  R_NONE, &DsnNotify, IP "" },
   /*
   ** .pp

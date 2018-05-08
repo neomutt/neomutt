@@ -115,6 +115,7 @@ WHERE char *ContentType;
 WHERE char *DefaultHook;
 WHERE char *DateFormat;
 WHERE char *DisplayFilter;
+WHERE char *AutocryptCmd;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;

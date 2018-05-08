@@ -72,11 +72,12 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  * wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
-                  int flags, const char *prefix)
+                  int flags, const char *prefix, FILE *out_autocrypt)
 {
   bool from = false;
   bool this_is_from = false;
   bool ignore = false;
+  bool is_autocrypt = false;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   char **headers = NULL;
@@ -215,6 +216,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       }
 
       ignore = true;
+      is_autocrypt = false;
       this_is_from = false;
       if (!from && (mutt_str_strncmp("From ", buf, 5) == 0))
       {
@@ -225,10 +227,23 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
         break; /* end of header */
 
+      if (out_autocrypt &&
+          ((mutt_str_strncasecmp("Autocrypt:", buf, 10) == 0) ||
+            (mutt_str_strncasecmp("From:", buf, 5) == 0) ||
+            (mutt_str_strncasecmp("Date:", buf, 5) == 0) ||
+            (mutt_str_strncasecmp("To:", buf, 3) == 0) ||
+            (mutt_str_strncasecmp("Cc:", buf, 3) == 0))) {
+        is_autocrypt = true;
+      }
+
       /* note: CH_FROM takes precedence over header weeding. */
       if (!((flags & CH_FROM) && (flags & CH_FORCE_FROM) && this_is_from) &&
           (flags & CH_WEED) && mutt_matches_ignore(buf))
       {
+        if (is_autocrypt)
+        {
+            fputs(buf, out_autocrypt);
+        }
         continue;
       }
       if ((flags & CH_WEED_DELIVERED) &&
@@ -279,6 +294,11 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
       ignore = false;
     } /* If beginning of header */
+
+    if (is_autocrypt)
+    {
+      fputs(buf, out_autocrypt);
+    }
 
     if (!ignore)
     {
@@ -396,13 +416,13 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * prefix
  * * string to use if CH_PREFIX is set
  */
-int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix, FILE *out_autocrypt)
 {
   if (h->env)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0) |
              (h->env->refs_changed ? CH_UPDATE_REFS : 0);
 
-  if (mutt_copy_hdr(in, out, h->offset, h->content->offset, flags, prefix) == -1)
+  if (mutt_copy_hdr(in, out, h->offset, h->content->offset, flags, prefix, out_autocrypt) == -1)
     return -1;
 
   if (flags & CH_TXTPLAIN)
@@ -555,11 +575,30 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 
 /**
  * mutt_copy_message_fp - make a copy of a message from a FILE pointer
+ *
+ * @param fpout   FILE pointer to write to
+ * @param src     Source mailbox
+ * @param hdr     Email Header
+ * @param flags   Flags, see: mutt_copy_message_fp()
+ * @param chflags Header flags, see: mutt_copy_header()
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * see mutt_copy_message_fp_autocrypt
+ */
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags)
+{
+  return mutt_copy_message_fp_autocrypt(fpout, fpin, hdr, flags, chflags, NULL);
+}
+
+/**
+ * mutt_copy_message_fp_autocrypt - make a copy of a message from a FILE pointer
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param hdr     Header of message being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
+ * @param out_autocrypt Where to write autocrypt related headers
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -572,7 +611,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
  * * #MUTT_CM_CHARCONV   perform character set conversion
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags)
+int mutt_copy_message_fp_autocrypt(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags, FILE *out_autocrypt)
 {
   struct Body *body = hdr->content;
   char prefix[SHORT_STRING];
@@ -615,7 +654,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       new_lines = hdr->lines - count_delete_lines(fpin, body, &new_length, dlen);
 
       /* Copy the headers */
-      if (mutt_copy_header(fpin, hdr, fpout, chflags | CH_NOLEN | CH_NONEWLINE, NULL))
+      if (mutt_copy_header(fpin, hdr, fpout, chflags | CH_NOLEN | CH_NONEWLINE, NULL, NULL))
         return -1;
       fprintf(fpout, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
@@ -660,12 +699,11 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
         body->length = new_length;
         mutt_body_free(&body->parts);
       }
-
       return 0;
     }
 
     if (mutt_copy_header(fpin, hdr, fpout, chflags,
-                         (chflags & CH_PREFIX) ? prefix : NULL) == -1)
+                         (chflags & CH_PREFIX) ? prefix : NULL, out_autocrypt) == -1)
     {
       return -1;
     }
@@ -770,6 +808,12 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
   return rc;
 }
 
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
+                          int flags, int chflags)
+{
+  return mutt_copy_message_ctx_autocrypt(fpout, src, hdr, flags, chflags, NULL);
+}
+
 /**
  * mutt_copy_message_ctx - Copy a message from a Context
  * @param fpout   FILE pointer to write to
@@ -783,15 +827,15 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
-                          int flags, int chflags)
+int mutt_copy_message_ctx_autocrypt(FILE *fpout, struct Context *src, struct Header *hdr,
+                          int flags, int chflags, FILE *out_autocrypt)
 {
   struct Message *msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
   if (!hdr->content)
     return -1;
-  int r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  int r = mutt_copy_message_fp_autocrypt(fpout, msg->fp, hdr, flags, chflags, out_autocrypt);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "failed to detect EOF!\n");

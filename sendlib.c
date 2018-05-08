@@ -1201,7 +1201,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
   transform_to_7bit(a->parts, fpin);
 
   mutt_copy_hdr(fpin, fpout, a->offset, a->offset + a->length,
-                CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
+                CH_MIME | CH_NONEWLINE | CH_XMIT, NULL, NULL);
 
   fputs("MIME-Version: 1.0\n", fpout);
   mutt_write_mime_header(a->parts, fpout);
@@ -2746,7 +2746,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
     fputs("Resent-To: ", f);
     mutt_write_address_list(to, f, 11, 0);
-    mutt_copy_header(fp, h, f, ch_flags, NULL);
+    mutt_copy_header(fp, h, f, ch_flags, NULL, NULL);
     fputc('\n', f);
     mutt_file_copy_bytes(fp, f, h->content->length);
     FREE(&msgid_str);
