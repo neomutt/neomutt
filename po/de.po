@@ -4301,7 +4301,6 @@ msgid "S/MIME certificates matching \"%s\"."
 msgstr "S/MIME-Zertifikate, die zu \"%s\" passen."
 
 #: ncrypt/smime.c:511
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr ""
 "Diese ID ist nicht vertrauenswürdig. Soll dieser Schlüssel wirklich benutzt "
@@ -5325,9 +5324,8 @@ msgid "invoke a command in a subshell"
 msgstr "Rufe Kommando in Shell auf"
 
 #: opcodes.h:221
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "Sortiere Nachrichten"
+msgstr "Zeige Log- und Fehler-Protokoll"
 
 #: opcodes.h:222
 msgid "sort messages"
@@ -6340,7 +6338,6 @@ msgstr ""
 "Fehlerkorrekturen und Hinweise beigesteuert.\n"
 
 #: version.c:68
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6357,20 +6354,18 @@ msgid ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
 "02110-1301, USA.\n"
 msgstr ""
-"    Dieses Programm ist freie Software. Sie dürfen es weitergeben\n"
-"    und/oder verändern, gemäß der Bestimmungen der GNU General\n"
-"    Public License wie von der Free Software Foundation\n"
-"    veröffentlicht; entweder nach Version 2 dieser Lizenz\n"
-"    oder, so wie Sie es wünschen, jeder späteren Version.\n"
+"    Dieses Programm ist freie Software. Sie können es unter den Bedingungen\n"
+"    der GNU General Public License, wie von der Free Software Foundation\n"
+"    veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß\n"
+"    Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version.\n"
 "\n"
-"    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass\n"
-"    es von Nutzen sein wird, aber OHNE JEGLICHE GEWÄHRLEISTUNG,\n"
-"    nicht einmal die Garantie der MARKTREIFE oder EIGNUNG FÜR EINEN\n"
-"    BESTIMMTEN ZWECK. Entnehmen Sie alle weiteren Details der\n"
-"    GNU General Public License.\n"
+"    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es\n"
+"    Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne\n"
+"    die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN\n"
+"    BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.\n"
 "\n"
-"    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
-"    diesem Programm erhalten haben; falls nicht, schreiben sie an die\n"
+"    Sie sollten ein Exemplar der GNU General Public License zusammen mit\n"
+"    diesem Programm erhalten haben. Falls nicht, schreiben sie an die\n"
 "    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
 "    Boston, MA 02110-1301, USA.\n"
 
