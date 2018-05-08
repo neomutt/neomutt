@@ -525,7 +525,7 @@ msgid ""
 "s(p)am/(l)abel?: "
 msgstr ""
 "按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/"
-"垃圾邮件(p)/标签()l反向排序?: "
+"垃圾邮件(p)/标签(l)反向排序?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:564
@@ -535,7 +535,7 @@ msgid ""
 "(l)abel?: "
 msgstr ""
 "按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/"
-"垃圾邮件(p)/标签()l反向排序?: "
+"垃圾邮件(p)/标签(l)反向排序?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:568
@@ -4631,7 +4631,7 @@ msgstr "储存信件以便稍后寄出"
 #: opcodes.h:70
 #, fuzzy
 msgid "send attachment with a different name"
-msgstr "编辑附件的传输编码"
+msgstr "使用另一名字发送附件"
 
 #: opcodes.h:71
 msgid "rename/move an attached file"
@@ -5082,9 +5082,8 @@ msgid "mark the current thread as read"
 msgstr "标记当前线索为已读取"
 
 #: opcodes.h:180
-#, fuzzy
 msgid "jump to root message in thread"
-msgstr "跳到本线索中的父信件"
+msgstr "跳到本线索中的根信件"
 
 #: opcodes.h:181
 msgid "set a status flag on a message"
@@ -5897,7 +5896,7 @@ msgstr "不支持从加密信件中删除附件。"
 #, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "不支持从加密信件中删除附件。"
+msgstr "从签名信件中删除附件可能导致签名失效。"
 
 #: recvattach.c:1305 recvattach.c:1320
 msgid "Only deletion of multipart attachments is supported."
@@ -6117,14 +6116,12 @@ msgid "No subject specified."
 msgstr "没有指定标题。"
 
 #: send.c:1940
-#, fuzzy
 msgid "No newsgroup specified."
-msgstr "没有指定标题。"
+msgstr "没有指定新闻组。"
 
 #: send.c:1949
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "编辑附件的传输编码"
+msgstr "没有附件，取消发送？"
 
 #: send.c:1954
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
@@ -6259,7 +6256,7 @@ msgstr "父信件不可用。"
 #: thread.c:1161
 #, fuzzy
 msgid "Root message is not visible in this limited view."
-msgstr "父信件在此限制视图中不可见。"
+msgstr "根信件在此限制视图中不可见。"
 
 #: thread.c:1163
 msgid "Parent message is not visible in this limited view."
@@ -6327,9 +6324,8 @@ msgstr ""
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
 #: version.c:401
-#, fuzzy
 msgid "Default options:"
-msgstr "编译选项："
+msgstr "默认选项："
 
 #: version.c:404
 msgid "Compile options:"
