@@ -717,6 +717,7 @@ int mutt_copy_message_fp_autocrypt(FILE *fpout, FILE *fpin, struct Header *hdr, 
     memset(&s, 0, sizeof(struct State));
     s.fpin = fpin;
     s.fpout = fpout;
+    s.fpout_gossip = out_autocrypt;
     if (flags & MUTT_CM_PREFIX)
       s.prefix = prefix;
     if (flags & MUTT_CM_DISPLAY)

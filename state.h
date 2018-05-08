@@ -35,6 +35,7 @@ struct State
   FILE *fpout;
   char *prefix;
   int flags;
+  FILE *fpout_gossip;
 };
 
 /* flags for the State struct */

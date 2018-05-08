@@ -110,7 +110,8 @@ struct Body *mutt_remove_multipart(struct Body *b);
 struct Body *mutt_make_multipart(struct Body *b);
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
 struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
-struct Body *mutt_read_mime_header(FILE *fp, bool digest);
+struct Body *mutt_read_mime_header(FILE *fp, int digest);
+struct Body *mutt_read_mime_header_gossip(FILE *fp, bool digest, FILE *out_gossip);
 
 struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 

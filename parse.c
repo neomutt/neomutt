@@ -429,9 +429,10 @@ static void parse_content_disposition(const char *s, struct Body *ct)
  * mutt_read_mime_header - Parse a MIME header
  * @param fp      stream to read from
  * @param digest  true if reading subparts of a multipart/digest
+ * @param out_gossip  stream to write autocrypt-gossip headers to
  * @retval ptr New Body containing parsed structure
  */
-struct Body *mutt_read_mime_header(FILE *fp, bool digest)
+struct Body *mutt_read_mime_header_gossip(FILE *fp, bool digest, FILE *out_gossip)
 {
   struct Body *p = mutt_body_new();
   char *c = NULL;
@@ -464,7 +465,14 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       break;
     }
 
-    if (mutt_str_strncasecmp("content-", line, 8) == 0)
+    if (out_gossip && mutt_str_strncasecmp("Autocrypt-Gossip", line, 16) == 0)
+    {
+      fputs(line, out_gossip);
+      fputs(": ", out_gossip);
+      fputs(c, out_gossip);
+      fputs("\n", out_gossip);
+    }
+    else if (mutt_str_strncasecmp("content-", line, 8) == 0)
     {
       if (mutt_str_strcasecmp("type", line + 8) == 0)
         mutt_parse_content_type(c, p);
@@ -506,6 +514,11 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   FREE(&line);
 
   return p;
+}
+
+struct Body *mutt_read_mime_header(FILE *fp, int digest)
+{
+  return mutt_read_mime_header_gossip(fp, digest, NULL);
 }
 
 void mutt_parse_part(FILE *fp, struct Body *b)

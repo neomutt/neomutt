@@ -922,7 +922,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
   rewind(fpout);
 
-  tattach = mutt_read_mime_header(fpout, 0);
+  tattach = mutt_read_mime_header_gossip(fpout, 0, p->goodsig ? s->fpout_gossip : NULL);
   if (tattach)
   {
     /*
