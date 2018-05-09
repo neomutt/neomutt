@@ -455,10 +455,11 @@ msgstr "Pozor: zpráva neobsahuje hlavičku From:"
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Zaslat kopii zprávy na: "
-msgstr[1] "Zaslat kopii označených zpráv na: "
-msgstr[2] "Zaslat kopii označených zpráv na: "
+msgstr "Zaslat kopii zprávy na: "
+
+#: commands.c:293 recvcmd.c:162
+msgid "Bounce tagged messages to: "
+msgstr "Zaslat kopii označených zpráv na: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -505,10 +506,11 @@ msgstr "Není definován žádný příkaz pro tisk."
 
 #: commands.c:541
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Vytisknout zprávu?"
-msgstr[1] "Vytisknout označené zprávy?"
-msgstr[2] "Vytisknout označené zprávy?"
+msgstr "Vytisknout zprávu?"
+
+#: commands.c:541
+msgid "Print tagged messages?"
+msgstr "Vytisknout označené zprávy?"
 
 #: commands.c:548
 msgid "Message printed"
@@ -553,46 +555,52 @@ msgstr "Příkaz pro shell: "
 
 #: commands.c:801
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekódovat - uložit  do schránky"
-msgstr[1] "Dekódovat - uložit  označené do schránky"
-msgstr[2] "Dekódovat - uložit  označené do schránky"
+msgstr "Dekódovat - uložit  do schránky"
+
+#: commands.c:801
+msgid "Decode-save tagged to mailbox"
+msgstr "Dekódovat - uložit  označené do schránky"
 
 #: commands.c:803
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dešifrovat - uložit  do schránky"
-msgstr[1] "Dešifrovat - uložit  označené do schránky"
-msgstr[2] "Dešifrovat - uložit  označené do schránky"
+msgstr "Dešifrovat - uložit  do schránky"
+
+#: commands.c:803
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Dešifrovat - uložit  označené do schránky"
 
 # XXX: Missing space before %s is not a typo
 #: commands.c:805
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Uložit do schránky"
-msgstr[1] "Uložit označené do schránky"
-msgstr[2] "Uložit označené do schránky"
+msgstr "Uložit do schránky"
+
+#: commands.c:805
+msgid "Save tagged to mailbox"
+msgstr "Uložit označené do schránky"
 
 #: commands.c:810
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekódovat - zkopírovat  do schránky"
-msgstr[1] "Dekódovat - zkopírovat  označené do schránky"
-msgstr[2] "Dekódovat - zkopírovat  označené do schránky"
+msgstr "Dekódovat - zkopírovat  do schránky"
+
+#: commands.c:810
+msgid "Decode-copy tagged to mailbox"
+msgstr "Dekódovat - zkopírovat  označené do schránky"
 
 #: commands.c:812
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dešifrovat - zkopírovat  do schránky"
-msgstr[1] "Dešifrovat - zkopírovat  označené do schránky"
-msgstr[2] "Dešifrovat - zkopírovat  označené do schránky"
+msgstr "Dešifrovat - zkopírovat  do schránky"
+
+#: commands.c:812
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Dešifrovat - zkopírovat  označené do schránky"
 
 #: commands.c:814
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Zkopírovat  do schránky"
-msgstr[1] "Zkopírovat  označené do schránky"
-msgstr[2] "Zkopírovat  označené do schránky"
+msgstr "Zkopírovat  do schránky"
+
+#: commands.c:814
+msgid "Copy tagged to mailbox"
+msgstr "Zkopírovat  označené do schránky"
 
 #: commands.c:882
 #, c-format

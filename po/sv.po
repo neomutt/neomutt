@@ -454,9 +454,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Återsänd meddelandet till: "
-msgstr[1] "Återsänd märkta meddelanden till: "
+msgstr "Återsänd meddelandet till: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Återsänd märkta meddelanden till: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -503,9 +505,11 @@ msgstr "Inget utskriftskommando har definierats."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Skriv ut meddelande?"
-msgstr[1] "Skriv ut märkta meddelanden?"
+msgstr "Skriv ut meddelande?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Skriv ut märkta meddelanden?"
 
 #: commands.c:548
 #, fuzzy
@@ -554,44 +558,56 @@ msgstr "Skalkommando: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Avkoda-spara till brevlåda"
-msgstr[1] "Avkoda-spara märkt till brevlåda"
+msgstr "Avkoda-spara till brevlåda"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Avkoda-spara märkt till brevlåda"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekryptera-spara till brevlåda"
-msgstr[1] "Dekryptera-spara märkt till brevlåda"
+msgstr "Dekryptera-spara till brevlåda"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Dekryptera-spara märkt till brevlåda"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Spara till brevlåda"
-msgstr[1] "Spara märkt till brevlåda"
+msgstr "Spara till brevlåda"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Spara märkt till brevlåda"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Avkoda-kopiera till brevlåda"
-msgstr[1] "Avkoda-kopiera märkt till brevlåda"
+msgstr "Avkoda-kopiera till brevlåda"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Avkoda-kopiera märkt till brevlåda"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekryptera-kopiera till brevlåda"
-msgstr[1] "Dekryptera-kopiera märkt till brevlåda"
+msgstr "Dekryptera-kopiera till brevlåda"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Dekryptera-kopiera märkt till brevlåda"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiera till brevlåda"
-msgstr[1] "Kopiera märkt till brevlåda"
+msgstr "Kopiera till brevlåda"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Kopiera märkt till brevlåda"
 
 #: commands.c:882
 #, c-format

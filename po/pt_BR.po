@@ -452,9 +452,11 @@ msgstr "Aviso: mensagem não contém cabeçalho 'From: ' (remetente)."
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Replicar mensagem para: "
-msgstr[1] "Replicar mensagens marcadas para: "
+msgstr "Replicar mensagem para: "
+
+#: commands.c:293 recvcmd.c:162
+msgid "Bounce tagged messages to: "
+msgstr "Replicar mensagens marcadas para: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -498,9 +500,11 @@ msgstr "Nenhum commando para impressão foi definido."
 
 #: commands.c:541
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Imprimir mensagem?"
-msgstr[1] "Imprimir mensagens marcadas?"
+msgstr "Imprimir mensagem?"
+
+#: commands.c:541
+msgid "Print tagged messages?"
+msgstr "Imprimir mensagens marcadas?"
 
 #: commands.c:548
 msgid "Message printed"
@@ -543,39 +547,51 @@ msgstr "Comando do shell: "
 
 #: commands.c:801
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decodificar-salvar mensagem na caixa"
-msgstr[1] "Decodificar-salvar mensagens marcadas para caixa"
+msgstr "Decodificar-salvar mensagem na caixa"
+
+#: commands.c:801
+msgid "Decode-save tagged to mailbox"
+msgstr "Decodificar-salvar mensagens marcadas para caixa"
 
 #: commands.c:803
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Desencriptar-salvar mensagem na caixa"
-msgstr[1] "Desencriptar-salvar mensagens marcadas na caixa"
+msgstr "Desencriptar-salvar mensagem na caixa"
+
+#: commands.c:803
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Desencriptar-salvar mensagens marcadas na caixa"
 
 #: commands.c:805
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salvar na caixa"
-msgstr[1] "Salvar mensagens marcadas na caixa"
+msgstr "Salvar na caixa"
+
+#: commands.c:805
+msgid "Save tagged to mailbox"
+msgstr "Salvar mensagens marcadas na caixa"
 
 #: commands.c:810
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decodificar-copiar mensagem para caixa"
-msgstr[1] "Decodificar-copiar mensagens marcadas para caixa"
+msgstr "Decodificar-copiar mensagem para caixa"
+
+#: commands.c:810
+msgid "Decode-copy tagged to mailbox"
+msgstr "Decodificar-copiar mensagens marcadas para caixa"
 
 #: commands.c:812
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Desencriptar-copiar mensagem para caixa"
-msgstr[1] "Desencriptar-copiar mensagens marcadas para caixa"
+msgstr "Desencriptar-copiar mensagem para caixa"
+
+#: commands.c:812
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Desencriptar-copiar mensagens marcadas para caixa"
 
 #: commands.c:814
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copiar para caixa"
-msgstr[1] "Copiar mensagens marcadas para caixa"
+msgstr "Copiar para caixa"
+
+#: commands.c:814
+msgid "Copy tagged to mailbox"
+msgstr "Copiar mensagens marcadas para caixa"
 
 #: commands.c:882
 #, c-format

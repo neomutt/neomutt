@@ -463,9 +463,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Διαβίβαση μηνύματος στον: "
-msgstr[1] "Διαβίβαση σημειωμένων μηνυμάτων στον: "
+msgstr "Διαβίβαση μηνύματος στον: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -512,9 +514,11 @@ msgstr "Δεν έχει οριστεί εντολή εκτυπώσεως."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Εκτύπωση μηνύματος;"
-msgstr[1] "Εκτύπωση των σημειωμένων μηνυμάτων;"
+msgstr "Εκτύπωση μηνύματος;"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Εκτύπωση των σημειωμένων μηνυμάτων;"
 
 #: commands.c:548
 #, fuzzy
@@ -563,44 +567,56 @@ msgstr "Εντολή φλοιού: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Αποκωδικοποίηση-αποθήκευση στο γραμματοκιβώτιο"
-msgstr[1] "Αποκωδικοποίηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αποκωδικοποίηση-αποθήκευση στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Αποκωδικοποίηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Αποκρυπτογράφηση-αποθήκευση στο γραμματοκιβώτιο"
-msgstr[1] "Αποκρυπτογράφηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αποκρυπτογράφηση-αποθήκευση στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Αποκρυπτογράφηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Αποθήκευση στο γραμματοκιβώτιο"
-msgstr[1] "Αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αποθήκευση στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Αποκωδικοποίηση-αντιγραφή στο γραμματοκιβώτιο"
-msgstr[1] "Αποκωδικοποίηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αποκωδικοποίηση-αντιγραφή στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Αποκωδικοποίηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Αποκρυπτογράφηση-αντιγραφή στο γραμματοκιβώτιο"
-msgstr[1] "Αποκρυπτογράφηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αποκρυπτογράφηση-αντιγραφή στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Αποκρυπτογράφηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Αντιγραφή στο γραμματοκιβώτιο"
-msgstr[1] "Αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
+msgstr "Αντιγραφή στο γραμματοκιβώτιο"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:882
 #, c-format

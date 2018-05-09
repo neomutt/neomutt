@@ -277,7 +277,7 @@ void ci_bounce_message(struct Header *h)
     msgcount = 0; // count the precise number of messages.
     for (rc = 0; rc < Context->msgcount; rc++)
     {
-      if (message_is_tagged(Context, rc))
+      if (message_is_tagged(Context, rc) && !Context->hdrs[rc]->env->from)
       {
         msgcount++;
         if (!Context->hdrs[rc]->env->from)
@@ -291,8 +291,10 @@ void ci_bounce_message(struct Header *h)
   else
     msgcount = 0;
 
-  mutt_str_strfcpy(prompt, ngettext("Bounce message to: ", "Bounce tagged messages to: ", msgcount),
-                   sizeof(prompt));
+  if (h)
+    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+  else
+    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || !buf[0])
@@ -539,8 +541,7 @@ void mutt_print_message(struct Header *h)
     return;
   }
 
-  if (query_quadoption(Print, ngettext("Print message?", "Print tagged messages?",
-                                       msgcount)) != MUTT_YES)
+  if (query_quadoption(Print, h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
   {
     return;
   }
@@ -782,37 +783,24 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   const char *prompt = NULL;
   struct Context ctx;
   struct stat st;
-  int msgcount; // for L10N with ngettext
-
-  if (h)
-    msgcount = 1;
-  else if (Context)
-  {
-    msgcount = 0; // count the precise number of messages.
-    for (int i = 0; i < Context->msgcount; i++)
-      if (message_is_tagged(Context, i))
-        msgcount++;
-  }
-  else
-    msgcount = 0;
 
   if (delete)
   {
     if (decode)
-      prompt = ngettext("Decode-save to mailbox", "Decode-save tagged to mailbox", msgcount);
+      prompt = h ? _("Decode-save to mailbox") : _("Decode-save tagged to mailbox");
     else if (decrypt)
-      prompt = ngettext("Decrypt-save to mailbox", "Decrypt-save tagged to mailbox", msgcount);
+      prompt = h ? _("Decrypt-save to mailbox") : _("Decrypt-save tagged to mailbox");
     else
-      prompt = ngettext("Save to mailbox", "Save tagged to mailbox", msgcount);
+      prompt = h ? _("Save to mailbox") : _("Save tagged to mailbox");
   }
   else
   {
     if (decode)
-      prompt = ngettext("Decode-copy to mailbox", "Decode-copy tagged to mailbox", msgcount);
+      prompt = h ? _("Decode-copy to mailbox") : _("Decode-copy tagged to mailbox");
     else if (decrypt)
-      prompt = ngettext("Decrypt-copy to mailbox", "Decrypt-copy tagged to mailbox", msgcount);
+      prompt = h ? _("Decrypt-copy to mailbox") : _("Decrypt-copy tagged to mailbox");
     else
-      prompt = ngettext("Copy to mailbox", "Copy tagged to mailbox", msgcount);
+      prompt = h ? _("Copy to mailbox") : _("Copy tagged to mailbox");
   }
 
   if (h)

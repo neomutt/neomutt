@@ -459,9 +459,11 @@ msgstr "Attenzione: il messaggio non contiene alcun header From:"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Rimbalza il messaggio a: "
-msgstr[1] "Rimbalza i messaggi segnati a: "
+msgstr "Rimbalza il messaggio a: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Rimbalza i messaggi segnati a: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -508,9 +510,11 @@ msgstr "Non è stato definito un comando di stampa."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Stampare il messaggio?"
-msgstr[1] "Stampare i messaggi segnati?"
+msgstr "Stampare il messaggio?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Stampare i messaggi segnati?"
 
 #: commands.c:548
 #, fuzzy
@@ -552,44 +556,56 @@ msgstr "Comando della shell: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decodifica e salva nella mailbox"
-msgstr[1] "Decodifica e salva nella mailbox i messaggi segnati"
+msgstr "Decodifica e salva nella mailbox"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Decodifica e salva nella mailbox i messaggi segnati"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Decifra e salva nella mailbox"
-msgstr[1] "Decifra e salva nella mailbox i messaggi segnati"
+msgstr "Decifra e salva nella mailbox"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Decifra e salva nella mailbox i messaggi segnati"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salva nella mailbox"
-msgstr[1] "Salva nella mailbox i messaggi segnati"
+msgstr "Salva nella mailbox"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Salva nella mailbox i messaggi segnati"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decodifica e copia nella mailbox"
-msgstr[1] "Decodifica e copia nella mailbox i messaggi segnati"
+msgstr "Decodifica e copia nella mailbox"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Decodifica e copia nella mailbox i messaggi segnati"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Decifra e copia nella mailbox"
-msgstr[1] "Decifra e copia nella mailbox i messaggi segnati"
+msgstr "Decifra e copia nella mailbox"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Decifra e copia nella mailbox i messaggi segnati"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copia nella mailbox"
-msgstr[1] "Copia nella mailbox i messaggi segnati"
+msgstr "Copia nella mailbox"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Copia nella mailbox i messaggi segnati"
 
 #: commands.c:882
 #, c-format

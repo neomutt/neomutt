@@ -456,9 +456,11 @@ msgstr "Averto: mesaĝo malhavas 'From:'-ĉapaĵon"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Redirekti mesaĝon al: "
-msgstr[1] "Redirekti markitajn mesaĝojn al: "
+msgstr "Redirekti mesaĝon al: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Redirekti markitajn mesaĝojn al: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -505,9 +507,11 @@ msgstr "Neniu pres-komando estas difinita."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Ĉu presi mesaĝon?"
-msgstr[1] "Ĉu presi markitajn mesaĝojn?"
+msgstr "Ĉu presi mesaĝon?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Ĉu presi markitajn mesaĝojn?"
 
 #: commands.c:548
 #, fuzzy
@@ -553,44 +557,56 @@ msgstr "Ŝelkomando: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Malkodita skribi al poŝtfako"
-msgstr[1] "Malkodita skribi markitajn al poŝtfako"
+msgstr "Malkodita skribi al poŝtfako"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Malkodita skribi markitajn al poŝtfako"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Malĉifrita skribi al poŝtfako"
-msgstr[1] "Malĉifrita skribi markitajn al poŝtfako"
+msgstr "Malĉifrita skribi al poŝtfako"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Malĉifrita skribi markitajn al poŝtfako"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Skribi al poŝtfako"
-msgstr[1] "Skribi markitajn al poŝtfako"
+msgstr "Skribi al poŝtfako"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Skribi markitajn al poŝtfako"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Malkodita kopii al poŝtfako"
-msgstr[1] "Malkodita kopii markitajn al poŝtfako"
+msgstr "Malkodita kopii al poŝtfako"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Malkodita kopii markitajn al poŝtfako"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Malĉifrita kopii al poŝtfako"
-msgstr[1] "Malĉifrita kopii markitajn al poŝtfako"
+msgstr "Malĉifrita kopii al poŝtfako"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Malĉifrita kopii markitajn al poŝtfako"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopii al poŝtfako"
-msgstr[1] "Kopii markitajn al poŝtfako"
+msgstr "Kopii al poŝtfako"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Kopii markitajn al poŝtfako"
 
 #: commands.c:882
 #, c-format

@@ -459,8 +459,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Bounce surat ke: "
+msgstr "Bounce surat ke: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Bounce surat ke: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -504,8 +507,11 @@ msgstr "Perintah untuk mencetak belum didefinisikan."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Cetak surat?"
+msgstr "Cetak surat?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Cetak surat?"
 
 #: commands.c:548
 #, fuzzy
@@ -552,38 +558,56 @@ msgstr "Perintah shell: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Urai-simpan ke kotak surat"
+msgstr "Urai-simpan ke kotak surat"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Urai-simpan ke kotak surat"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekripsi-simpan ke kotak surat"
+msgstr "Dekripsi-simpan ke kotak surat"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Dekripsi-simpan ke kotak surat"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Simpan ke kotak surat"
+msgstr "Simpan ke kotak surat"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Simpan ke kotak surat"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Urai-salin ke kotak surat"
+msgstr "Urai-salin ke kotak surat"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Urai-salin ke kotak surat"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekripsi-salin ke kotak surat"
+msgstr "Dekripsi-salin ke kotak surat"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Dekripsi-salin ke kotak surat"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Salin ke kotak surat"
+msgstr "Salin ke kotak surat"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Salin ke kotak surat"
 
 #: commands.c:882
 #, c-format

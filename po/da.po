@@ -455,9 +455,11 @@ msgstr "Advarsel: brevet har ingen From:-header"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Gensend brev til: "
-msgstr[1] "Gensend udvalgte breve til: "
+msgstr "Gensend brev til: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Gensend udvalgte breve til: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -504,9 +506,11 @@ msgstr "Ingen udskrivningskommando er defineret."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Udskriv brev?"
-msgstr[1] "Udskriv udvalgte breve?"
+msgstr "Udskriv brev?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Udskriv udvalgte breve?"
 
 #: commands.c:548
 #, fuzzy
@@ -552,44 +556,56 @@ msgstr "Skalkommando: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Afkod-gem i brevbakke"
-msgstr[1] "Afkod-gem udvalgte i brevbakke"
+msgstr "Afkod-gem i brevbakke"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Afkod-gem udvalgte i brevbakke"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekryptér-gem i brevbakke"
-msgstr[1] "Dekryptér-gem udvalgte i brevbakke"
+msgstr "Dekryptér-gem i brevbakke"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Dekryptér-gem udvalgte i brevbakke"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Gem i brevbakke"
-msgstr[1] "Gem udvalgte i brevbakke"
+msgstr "Gem i brevbakke"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Gem udvalgte i brevbakke"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Afkod-kopiér til brevbakke"
-msgstr[1] "Afkod-kopiér udvalgte til brevbakke"
+msgstr "Afkod-kopiér til brevbakke"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Afkod-kopiér udvalgte til brevbakke"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekryptér-kopiér til brevbakke"
-msgstr[1] "Dekryptér-kopiér udvalgte til brevbakke"
+msgstr "Dekryptér-kopiér til brevbakke"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Dekryptér-kopiér udvalgte til brevbakke"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiér til brevbakke"
-msgstr[1] "Kopiér udvalgte til brevbakke"
+msgstr "Kopiér til brevbakke"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Kopiér udvalgte til brevbakke"
 
 #: commands.c:882
 #, c-format

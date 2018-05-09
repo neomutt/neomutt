@@ -460,9 +460,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Levél visszaküldése. Címzett: "
-msgstr[1] "Kijelölt levelek visszaküldése. Címzett: "
+msgstr "Levél visszaküldése. Címzett: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Kijelölt levelek visszaküldése. Címzett: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -509,9 +511,11 @@ msgstr "Nincs nyomtatási parancs megadva."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Kinyomtatod a levelet?"
-msgstr[1] "Kinyomtatod a kijelölt leveleket?"
+msgstr "Kinyomtatod a levelet?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Kinyomtatod a kijelölt leveleket?"
 
 #: commands.c:548
 #, fuzzy
@@ -560,44 +564,56 @@ msgstr "Shell parancs: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekódolás-mentés postafiókba"
-msgstr[1] "Dekódolás-mentés kijelölt postafiókba"
+msgstr "Dekódolás-mentés postafiókba"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Dekódolás-mentés kijelölt postafiókba"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Visszafejtés-mentés postafiókba"
-msgstr[1] "Visszafejtés-mentés kijelölt postafiókba"
+msgstr "Visszafejtés-mentés postafiókba"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Visszafejtés-mentés kijelölt postafiókba"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Mentés postafiókba"
-msgstr[1] "Mentés kijelölt postafiókba"
+msgstr "Mentés postafiókba"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Mentés kijelölt postafiókba"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekódolás-másolás postafiókba"
-msgstr[1] "Dekódolás-másolás kijelölt postafiókba"
+msgstr "Dekódolás-másolás postafiókba"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Dekódolás-másolás kijelölt postafiókba"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Visszafejtés-másolás postafiókba"
-msgstr[1] "Visszafejtés-másolás kijelölt postafiókba"
+msgstr "Visszafejtés-másolás postafiókba"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Visszafejtés-másolás kijelölt postafiókba"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Másolás postafiókba"
-msgstr[1] "Másolás kijelölt postafiókba"
+msgstr "Másolás postafiókba"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Másolás kijelölt postafiókba"
 
 #: commands.c:882
 #, c-format

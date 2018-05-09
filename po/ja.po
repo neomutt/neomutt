@@ -453,9 +453,11 @@ msgstr "警告: メッセージに From: ヘッダがない"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "メッセージの再送先: "
-msgstr[1] "タグ付きメッセージの再送先: "
+msgstr "メッセージの再送先: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "タグ付きメッセージの再送先: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -502,9 +504,11 @@ msgstr "印刷コマンドが未定義。"
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "メッセージを印刷?"
-msgstr[1] "タグ付きメッセージを印刷?"
+msgstr "メッセージを印刷?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "タグ付きメッセージを印刷?"
 
 #: commands.c:548
 #, fuzzy
@@ -548,44 +552,56 @@ msgstr "シェルコマンド: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "メールボックスにデコードして保存"
-msgstr[1] "タグ付きメッセージをメールボックスにデコードして保存"
+msgstr "メールボックスにデコードして保存"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスにデコードして保存"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "メールボックスに復号化して保存"
-msgstr[1] "タグ付きメッセージをメールボックスに復号化して保存"
+msgstr "メールボックスに復号化して保存"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスに復号化して保存"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "メールボックスに保存"
-msgstr[1] "タグ付きメッセージをメールボックスに保存"
+msgstr "メールボックスに保存"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスに保存"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "メールボックスにデコードしてコピー"
-msgstr[1] "タグ付きメッセージをメールボックスにデコードしてコピー"
+msgstr "メールボックスにデコードしてコピー"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスにデコードしてコピー"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "メールボックスに復号化してコピー"
-msgstr[1] "タグ付きメッセージをメールボックスに復号化してコピー"
+msgstr "メールボックスに復号化してコピー"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスに復号化してコピー"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "メールボックスにコピー"
-msgstr[1] "タグ付きメッセージをメールボックスにコピー"
+msgstr "メールボックスにコピー"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "タグ付きメッセージをメールボックスにコピー"
 
 #: commands.c:882
 #, c-format

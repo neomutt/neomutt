@@ -459,9 +459,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Peegelda teade aadressile: "
-msgstr[1] "Peegelda märgitud teated aadressile: "
+msgstr "Peegelda teade aadressile: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Peegelda märgitud teated aadressile: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -508,9 +510,11 @@ msgstr "Trükkimise käsklust ei ole defineeritud."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Trükin teate?"
-msgstr[1] "Trükin märgitud teated?"
+msgstr "Trükin teate?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Trükin märgitud teated?"
 
 #: commands.c:548
 #, fuzzy
@@ -557,44 +561,56 @@ msgstr "Käsurea käsk: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekodeeri-salvesta postkasti"
-msgstr[1] "Dekodeeri-salvesta märgitud postkasti"
+msgstr "Dekodeeri-salvesta postkasti"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Dekodeeri-salvesta märgitud postkasti"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekrüpti-salvesta postkasti"
-msgstr[1] "Dekrüpti-salvesta märgitud postkasti"
+msgstr "Dekrüpti-salvesta postkasti"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Dekrüpti-salvesta märgitud postkasti"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salvesta postkasti"
-msgstr[1] "Salvesta märgitud postkasti"
+msgstr "Salvesta postkasti"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Salvesta märgitud postkasti"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekodeeri-kopeeri postkasti"
-msgstr[1] "Dekodeeri-kopeeri märgitud postkasti"
+msgstr "Dekodeeri-kopeeri postkasti"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Dekodeeri-kopeeri märgitud postkasti"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekrüpti-kopeeri postkasti"
-msgstr[1] "Dekrüpti-kopeeri märgitud postkasti"
+msgstr "Dekrüpti-kopeeri postkasti"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Dekrüpti-kopeeri märgitud postkasti"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopeeri postkasti"
-msgstr[1] "Kopeeri märgitud postkasti"
+msgstr "Kopeeri postkasti"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Kopeeri märgitud postkasti"
 
 #: commands.c:882
 #, c-format

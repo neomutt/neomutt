@@ -457,10 +457,11 @@ msgstr "Попередження: лист не має заголовку From:"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Надіслати копію листа: "
-msgstr[1] "Надіслати копії виділених листів: "
-msgstr[2] "Надіслати копії виділених листів: "
+msgstr "Надіслати копію листа: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Надіслати копії виділених листів: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -510,10 +511,11 @@ msgstr "Команду для друку не визначено."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Друкувати повідомлення?"
-msgstr[1] "Друкувати виділені повідомлення?"
-msgstr[2] "Друкувати виділені повідомлення?"
+msgstr "Друкувати повідомлення?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Друкувати виділені повідомлення?"
 
 #: commands.c:548
 #, fuzzy
@@ -561,50 +563,56 @@ msgstr "Команда системи: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Розкодувати і перенести до скриньки"
-msgstr[1] "Розкодувати і перенести виділені до скриньки"
-msgstr[2] "Розкодувати і перенести виділені до скриньки"
+msgstr "Розкодувати і перенести до скриньки"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Розкодувати і перенести виділені до скриньки"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Розшифрувати і перенести до скриньки"
-msgstr[1] "Розшифрувати і перенести виділені до скриньки"
-msgstr[2] "Розшифрувати і перенести виділені до скриньки"
+msgstr "Розшифрувати і перенести до скриньки"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Розшифрувати і перенести виділені до скриньки"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Перенести до скриньки"
-msgstr[1] "Перенести виділені до скриньки"
-msgstr[2] "Перенести виділені до скриньки"
+msgstr "Перенести до скриньки"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Перенести виділені до скриньки"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Розкодувати і копіювати до скриньки"
-msgstr[1] "Розкодувати і копіювати виділені до скриньки"
-msgstr[2] "Розкодувати і копіювати виділені до скриньки"
+msgstr "Розкодувати і копіювати до скриньки"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Розкодувати і копіювати виділені до скриньки"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Розшифрувати і копіювати до скриньки"
-msgstr[1] "Розшифрувати і копіювати виділені до скриньки"
-msgstr[2] "Розшифрувати і копіювати виділені до скриньки"
+msgstr "Розшифрувати і копіювати до скриньки"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Розшифрувати і копіювати виділені до скриньки"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Копіювати до скриньки"
-msgstr[1] "Копіювати виділені до скриньки"
-msgstr[2] "Копіювати виділені до скриньки"
+msgstr "Копіювати до скриньки"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Копіювати виділені до скриньки"
 
 #: commands.c:882
 #, c-format

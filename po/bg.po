@@ -467,9 +467,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Препращане на писмото към: "
-msgstr[1] "Препращане на маркираните писма към: "
+msgstr "Препращане на писмото към: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Препращане на маркираните писма към: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -516,9 +518,11 @@ msgstr "Не е дефинирана команда за отпечатване"
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Желаете ли да отпечатате писмото?"
-msgstr[1] "Желаете ли да отпечатате маркираните писма?"
+msgstr "Желаете ли да отпечатате писмото?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Желаете ли да отпечатате маркираните писма?"
 
 #: commands.c:548
 #, fuzzy
@@ -567,44 +571,56 @@ msgstr "Шел команда: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Декодиране и запис на в пощенска кутия"
-msgstr[1] "Декодиране и запис на маркиран в пощенска кутия"
+msgstr "Декодиране и запис на в пощенска кутия"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Декодиране и запис на маркиран в пощенска кутия"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Дешифриране и запис на в пощенска кутия"
-msgstr[1] "Дешифриране и запис на маркиран в пощенска кутия"
+msgstr "Дешифриране и запис на в пощенска кутия"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Дешифриране и запис на маркиран в пощенска кутия"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Запис на в пощенска кутия"
-msgstr[1] "Запис на маркиран в пощенска кутия"
+msgstr "Запис на в пощенска кутия"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Запис на маркиран в пощенска кутия"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Декодиране и копиране на в пощенска кутия"
-msgstr[1] "Декодиране и копиране на маркиран в пощенска кутия"
+msgstr "Декодиране и копиране на в пощенска кутия"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Декодиране и копиране на маркиран в пощенска кутия"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Дешифриране и запис на в пощенска кутия"
-msgstr[1] "Дешифриране и запис на маркиран в пощенска кутия"
+msgstr "Дешифриране и запис на в пощенска кутия"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Дешифриране и запис на маркиран в пощенска кутия"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Копиране на в пощенска кутия"
-msgstr[1] "Копиране на маркиран в пощенска кутия"
+msgstr "Копиране на в пощенска кутия"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Копиране на маркиран в пощенска кутия"
 
 #: commands.c:882
 #, c-format

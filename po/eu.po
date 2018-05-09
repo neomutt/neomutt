@@ -454,9 +454,11 @@ msgstr ""
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Mezuak hona errebotatu: "
-msgstr[1] "Markatutako mezuak hona errebotatu: "
+msgstr "Mezuak hona errebotatu: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Markatutako mezuak hona errebotatu: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -503,9 +505,11 @@ msgstr "Ez da inprimatze komandorik ezarri."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Mezua inprimatu?"
-msgstr[1] "Markatutako mezuak inprimatu?"
+msgstr "Mezua inprimatu?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Markatutako mezuak inprimatu?"
 
 #: commands.c:548
 #, fuzzy
@@ -554,44 +558,56 @@ msgstr "Shell komandoa: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Deskodifikatu-gorde postakutxan"
-msgstr[1] "Deskodifikatu-gorde markatua postakutxan"
+msgstr "Deskodifikatu-gorde postakutxan"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Deskodifikatu-gorde markatua postakutxan"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Desenkriptatu-gorde postakutxan"
-msgstr[1] "Desenkriptatu-gorde markatua postakutxan"
+msgstr "Desenkriptatu-gorde postakutxan"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Desenkriptatu-gorde markatua postakutxan"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] " posta-kutxan gorde"
-msgstr[1] " markatua posta-kutxan gorde"
+msgstr " posta-kutxan gorde"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr " markatua posta-kutxan gorde"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Deskodifikatu-kopiatu postakutxan"
-msgstr[1] "Deskodifikatu-kopiatu markatua postakutxan"
+msgstr "Deskodifikatu-kopiatu postakutxan"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Deskodifikatu-kopiatu markatua postakutxan"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Desenkriptatu-kopiatu postakutxan"
-msgstr[1] "Desenkriptatu-kopiatu markatua postakutxan"
+msgstr "Desenkriptatu-kopiatu postakutxan"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Desenkriptatu-kopiatu markatua postakutxan"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] " posta-kutxan kopiatu"
-msgstr[1] " markatua posta-kutxan kopiatu"
+msgstr " posta-kutxan kopiatu"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr " markatua posta-kutxan kopiatu"
 
 #: commands.c:882
 #, c-format

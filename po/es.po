@@ -465,9 +465,11 @@ msgstr "Aviso: El mensaje no contiene una cabecera From:"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Rebotar mensaje a: "
-msgstr[1] "Rebotar mensajes marcados a: "
+msgstr "Rebotar mensaje a: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Rebotar mensajes marcados a: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -514,9 +516,11 @@ msgstr "No ha sido definida la órden de impresión."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "¿Impimir mensaje?"
-msgstr[1] "¿Imprimir mensajes marcados?"
+msgstr "¿Impimir mensaje?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "¿Imprimir mensajes marcados?"
 
 #: commands.c:548
 #, fuzzy
@@ -563,44 +567,56 @@ msgstr "Comando de shell: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "%s en buzón"
-msgstr[1] " marcado%s en buzón"
+msgstr "%s en buzón"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr " marcado%s en buzón"
 
 #: commands.c:882
 #, c-format

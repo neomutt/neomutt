@@ -452,8 +452,12 @@ msgstr "警告：信件未包含 From: 标头"
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "回退信件至："
+msgstr "回退信件至："
+
+#: commands.c:293 recvcmd.c:162
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "回退信件至："
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -497,8 +501,11 @@ msgstr "未定义打印命令"
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "打印信件？"
+msgstr "打印信件？"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "打印信件？"
 
 #: commands.c:548
 #, fuzzy
@@ -542,38 +549,56 @@ msgstr "Shell 指令："
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "解码保存 到信箱"
+msgstr "解码保存 到信箱"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "解码保存 到信箱"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "解密保存 到信箱"
+msgstr "解密保存 到信箱"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "解密保存 到信箱"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "保存 到信箱"
+msgstr "保存 到信箱"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "保存 到信箱"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "解码复制 到信箱"
+msgstr "解码复制 到信箱"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "解码复制 到信箱"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "解密复制 到信箱"
+msgstr "解密复制 到信箱"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "解密复制 到信箱"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "复制 到信箱"
+msgstr "复制 到信箱"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "复制 到信箱"
 
 #: commands.c:882
 #, c-format

@@ -453,10 +453,11 @@ msgstr ""
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Nukreipti laišką kam: "
-msgstr[1] "Nukreipti pažymėtus laiškus kam: "
-msgstr[2] "Nukreipti pažymėtus laiškus kam: "
+msgstr "Nukreipti laišką kam: "
+
+#: commands.c:293 recvcmd.c:162
+msgid "Bounce tagged messages to: "
+msgstr "Nukreipti pažymėtus laiškus kam: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -503,10 +504,11 @@ msgstr "Spausdinimo komanda nebuvo apibrėžta."
 
 #: commands.c:541
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Spausdinti laišką?"
-msgstr[1] "Spausdinti pažymėtus laiškus?"
-msgstr[2] "Spausdinti pažymėtus laiškus?"
+msgstr "Spausdinti laišką?"
+
+#: commands.c:541
+msgid "Print tagged messages?"
+msgstr "Spausdinti pažymėtus laiškus?"
 
 #: commands.c:548
 msgid "Message printed"
@@ -552,50 +554,56 @@ msgstr "Shell komanda: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "%s į dėžutę"
-msgstr[1] " pažymėtus%s į dėžutę"
-msgstr[2] " pažymėtus%s į dėžutę"
+msgstr "%s į dėžutę"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr " pažymėtus%s į dėžutę"
 
 #: commands.c:882
 #, c-format

@@ -455,9 +455,11 @@ msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
 #: commands.c:293 recvcmd.c:162
 #, fuzzy
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Bericht doorsturen naar: "
-msgstr[1] "Gemarkeerde berichten doorsturen naar: "
+msgstr "Bericht doorsturen naar: "
+
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Gemarkeerde berichten doorsturen naar: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -504,9 +506,11 @@ msgstr "Er is geen printcommando gedefinieerd."
 #: commands.c:541
 #, fuzzy
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Bericht afdrukken?"
-msgstr[1] "Geselecteerde berichten afdrukken?"
+msgstr "Bericht afdrukken?"
+
+#, fuzzy
+msgid "Print tagged messages?"
+msgstr "Geselecteerde berichten afdrukken?"
 
 #: commands.c:548
 #, fuzzy
@@ -552,44 +556,56 @@ msgstr "Shell-commando: "
 #: commands.c:801
 #, fuzzy
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decoderen-opslaan in postvak"
-msgstr[1] "Decoderen-opslaan gemarkeerd in postvak"
+msgstr "Decoderen-opslaan in postvak"
+
+#, fuzzy
+msgid "Decode-save tagged to mailbox"
+msgstr "Decoderen-opslaan gemarkeerd in postvak"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Ontsleutelen-opslaan in postvak"
-msgstr[1] "Ontsleutelen-opslaan gemarkeerd in postvak"
+msgstr "Ontsleutelen-opslaan in postvak"
+
+#, fuzzy
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Ontsleutelen-opslaan gemarkeerd in postvak"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Opslaan in postvak"
-msgstr[1] "Opslaan gemarkeerd in postvak"
+msgstr "Opslaan in postvak"
+
+#, fuzzy
+msgid "Save tagged to mailbox"
+msgstr "Opslaan gemarkeerd in postvak"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decoderen-kopiëren naar postvak"
-msgstr[1] "Decoderen-kopiëren gemarkeerd naar postvak"
+msgstr "Decoderen-kopiëren naar postvak"
+
+#, fuzzy
+msgid "Decode-copy tagged to mailbox"
+msgstr "Decoderen-kopiëren gemarkeerd naar postvak"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Ontsleutelen-kopiëren naar postvak"
-msgstr[1] "Ontsleutelen-kopiëren gemarkeerd naar postvak"
+msgstr "Ontsleutelen-kopiëren naar postvak"
+
+#, fuzzy
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Ontsleutelen-kopiëren gemarkeerd naar postvak"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiëren naar postvak"
-msgstr[1] "Kopiëren gemarkeerd naar postvak"
+msgstr "Kopiëren naar postvak"
+
+#, fuzzy
+msgid "Copy tagged to mailbox"
+msgstr "Kopiëren gemarkeerd naar postvak"
 
 #: commands.c:882
 #, c-format

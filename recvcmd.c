@@ -159,8 +159,10 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     }
   }
 
-  mutt_str_strfcpy(prompt, ngettext("Bounce message to: ", "Bounce tagged messages to: ", p),
-                   sizeof(prompt));
+  if (p)
+    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+  else
+    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   buf[0] = '\0';
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')

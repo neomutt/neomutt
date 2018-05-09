@@ -450,9 +450,11 @@ msgstr "Warning: message contains no From: header"
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Bounce message to: "
-msgstr[1] "Bounce tagged messages to: "
+msgstr "Bounce message to: "
+
+#: commands.c:293 recvcmd.c:162
+msgid "Bounce tagged messages to: "
+msgstr "Bounce tagged messages to: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -496,9 +498,11 @@ msgstr "No printing command has been defined."
 
 #: commands.c:541
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Print message?"
-msgstr[1] "Print tagged messages?"
+msgstr "Print message?"
+
+#: commands.c:541
+msgid "Print tagged messages?"
+msgstr "Print tagged messages?"
 
 #: commands.c:548
 msgid "Message printed"
@@ -541,39 +545,51 @@ msgstr "Shell command: "
 
 #: commands.c:801
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decode-save to mailbox"
-msgstr[1] "Decode-save tagged to mailbox"
+msgstr "Decode-save to mailbox"
+
+#: commands.c:801
+msgid "Decode-save tagged to mailbox"
+msgstr "Decode-save tagged to mailbox"
 
 #: commands.c:803
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Decrypt-save to mailbox"
-msgstr[1] "Decrypt-save tagged to mailbox"
+msgstr "Decrypt-save to mailbox"
+
+#: commands.c:803
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Decrypt-save tagged to mailbox"
 
 #: commands.c:805
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Save to mailbox"
-msgstr[1] "Save tagged to mailbox"
+msgstr "Save to mailbox"
+
+#: commands.c:805
+msgid "Save tagged to mailbox"
+msgstr "Save tagged to mailbox"
 
 #: commands.c:810
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decode-copy to mailbox"
-msgstr[1] "Decode-copy tagged to mailbox"
+msgstr "Decode-copy to mailbox"
+
+#: commands.c:810
+msgid "Decode-copy tagged to mailbox"
+msgstr "Decode-copy tagged to mailbox"
 
 #: commands.c:812
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Decrypt-copy to mailbox"
-msgstr[1] "Decrypt-copy tagged to mailbox"
+msgstr "Decrypt-copy to mailbox"
+
+#: commands.c:812
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Decrypt-copy tagged to mailbox"
 
 #: commands.c:814
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copy to mailbox"
-msgstr[1] "Copy tagged to mailbox"
+msgstr "Copy to mailbox"
+
+#: commands.c:814
+msgid "Copy tagged to mailbox"
+msgstr "Copy tagged to mailbox"
 
 #: commands.c:882
 #, c-format

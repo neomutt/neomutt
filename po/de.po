@@ -457,9 +457,11 @@ msgstr "Warnung: Nachricht enthält keine From: Kopfzeile"
 
 #: commands.c:293 recvcmd.c:162
 msgid "Bounce message to: "
-msgid_plural "Bounce tagged messages to: "
-msgstr[0] "Nachricht neu versenden an: "
-msgstr[1] "Markierte Nachrichten neu versenden an: "
+msgstr "Nachricht neu versenden an: "
+
+#: commands.c:293 recvcmd.c:162
+msgid "Bounce tagged messages to: "
+msgstr "Markierte Nachrichten neu versenden an: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -503,9 +505,11 @@ msgstr "Kein Druck-Kommando definiert."
 
 #: commands.c:541
 msgid "Print message?"
-msgid_plural "Print tagged messages?"
-msgstr[0] "Nachricht drucken?"
-msgstr[1] "Ausgewählte Nachrichten drucken?"
+msgstr "Nachricht drucken?"
+
+#: commands.c:541
+msgid "Print tagged messages?"
+msgstr "Ausgewählte Nachrichten drucken?"
 
 #: commands.c:548
 msgid "Message printed"
@@ -548,39 +552,51 @@ msgstr "Shell-Kommando: "
 
 #: commands.c:801
 msgid "Decode-save to mailbox"
-msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Speichere dekodiert in Mailbox"
-msgstr[1] "Speichere ausgewählte dekodiert in Mailbox"
+msgstr "Speichere dekodiert in Mailbox"
+
+#: commands.c:801
+msgid "Decode-save tagged to mailbox"
+msgstr "Speichere ausgewählte dekodiert in Mailbox"
 
 #: commands.c:803
 msgid "Decrypt-save to mailbox"
-msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Speichere entschlüsselt in Mailbox"
-msgstr[1] "Speichere ausgewählte entschlüsselt in Mailbox"
+msgstr "Speichere entschlüsselt in Mailbox"
+
+#: commands.c:803
+msgid "Decrypt-save tagged to mailbox"
+msgstr "Speichere ausgewählte entschlüsselt in Mailbox"
 
 #: commands.c:805
 msgid "Save to mailbox"
-msgid_plural "Save tagged to mailbox"
-msgstr[0] "Speichere in Mailbox"
-msgstr[1] "Speichere ausgewählte in Mailbox"
+msgstr "Speichere in Mailbox"
+
+#: commands.c:805
+msgid "Save tagged to mailbox"
+msgstr "Speichere ausgewählte in Mailbox"
 
 #: commands.c:810
 msgid "Decode-copy to mailbox"
-msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Kopiere dekodiert in Mailbox"
-msgstr[1] "Kopiere ausgewählte dekodiert in Mailbox"
+msgstr "Kopiere dekodiert in Mailbox"
+
+#: commands.c:810
+msgid "Decode-copy tagged to mailbox"
+msgstr "Kopiere ausgewählte dekodiert in Mailbox"
 
 #: commands.c:812
 msgid "Decrypt-copy to mailbox"
-msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Kopiere entschlüsselt in Mailbox"
-msgstr[1] "Kopiere ausgewählte entschlüsselt in Mailbox"
+msgstr "Kopiere entschlüsselt in Mailbox"
+
+#: commands.c:812
+msgid "Decrypt-copy tagged to mailbox"
+msgstr "Kopiere ausgewählte entschlüsselt in Mailbox"
 
 #: commands.c:814
 msgid "Copy to mailbox"
-msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiere in Mailbox"
-msgstr[1] "Kopiere ausgewählte in Mailbox"
+msgstr "Kopiere in Mailbox"
+
+#: commands.c:814
+msgid "Copy tagged to mailbox"
+msgstr "Kopiere ausgewählte in Mailbox"
 
 #: commands.c:882
 #, c-format
