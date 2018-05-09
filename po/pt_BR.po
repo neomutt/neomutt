@@ -792,36 +792,32 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN inválida em \"%s\": '%s'"
 
 #: compose.c:1064
-#, fuzzy
 msgid "Attachment is already at top."
-msgstr "Anexo salvo."
+msgstr "Anexo já é o primeiro da lista."
 
 #: compose.c:1069 compose.c:1085
-#, fuzzy
 msgid "The fundamental part cannot be moved."
-msgstr "O anexo atual não será convertido."
+msgstr "Item fundamental não pode ser rearranjado."
 
 #: compose.c:1080
-#, fuzzy
 msgid "Attachment is already at bottom."
-msgstr "Anexo filtrado."
+msgstr "Anexo já é o último da lista."
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
-msgstr ""
+msgstr "Alternativas de agrupamento requerem ao menos 2 mensagens rotuladas."
 
 #: compose.c:1179
 msgid "Grouping multilingual requires at least 2 tagged messages."
-msgstr ""
+msgstr "Multilíngue de grupo requer ao menos 2 mensagens rotuladas."
 
 #: compose.c:1193
 msgid "Not all parts have Content-Language: set, continue?"
-msgstr ""
+msgstr "Nem todos os ítens possuem 'Content-Language:' configurado. Continuar? "
 
 #: compose.c:1195
-#, fuzzy
 msgid "Not sending this message."
-msgstr "Erro ao enviar mensagem."
+msgstr "Mensagem não enviada."
 
 #: compose.c:1286
 msgid "Attaching selected file..."
@@ -873,7 +869,7 @@ msgstr "O anexo atual será convertido"
 
 #: compose.c:1536
 msgid "Empty Content-Language"
-msgstr ""
+msgstr "'Content-Language' vazio"
 
 #: compose.c:1553
 msgid "Invalid encoding."
@@ -2130,9 +2126,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: não é possível apagar %s de dentro de %s."
 
 #: imap/auth.c:118
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Nenum autenticador disponível."
+msgstr "Autenticador indisponível ou credenciais incorretas."
 
 #: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
@@ -4559,9 +4554,8 @@ msgid "edit the message with headers"
 msgstr "edita a mensagem e seus cabeçalhos"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "edita o arquivo a ser anexado"
+msgstr "edita valor de 'Content-Language:' do anexo"
 
 #: opcodes.h:60
 msgid "edit the message"
@@ -4597,25 +4591,23 @@ msgstr "obtém uma cópia temporária do anexo"
 
 #: opcodes.h:68
 msgid "group tagged attachments as multipart/alternative"
-msgstr ""
+msgstr "agrupamento de anexos rotulado como 'multipart/alternative'"
 
 #: opcodes.h:69
 msgid "group tagged attachments as multipart/multilingual"
-msgstr ""
+msgstr "agrupamento de anexos rotulado como 'multipart/multilingual'"
 
 #: opcodes.h:70
 msgid "run ispell on the message"
 msgstr "executa o ispell na mensagem"
 
 #: opcodes.h:71
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Enviar anexo com o nome: "
+msgstr "move anexo para baixo na lista de anexos"
 
 #: opcodes.h:72
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Enviar anexo com o nome: "
+msgstr "Move anexo para cima na lista de anexos"
 
 #: opcodes.h:73
 msgid "compose new attachment using mailcap entry"
