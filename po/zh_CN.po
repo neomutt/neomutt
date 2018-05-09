@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180323\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-09 05:48+0100\n"
-"PO-Revision-Date: 2009-06-28 14:30+0800\n"
+"PO-Revision-Date: 2018-05-09 14:50+0000\n"
 "Last-Translator: Bo Yu <tsu.yubo@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -2259,7 +2259,7 @@ msgstr "无标头名称的标头搜索：%s"
 #: imap/imap.c:494
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr "服务器端的自定义搜索不被支持： %s"
+msgstr "服务器端的自定义搜索不被支持：%s"
 
 #: imap/imap.c:672
 #, c-format
@@ -3848,7 +3848,7 @@ msgstr "正寻找匹配 \"%s\" 的密钥..."
 #: ncrypt/crypt_gpgme.c:4587 ncrypt/pgpkey.c:728 ncrypt/smime.c:809
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "未找到匹配 \"%s\" 的密钥"
 
 #: ncrypt/crypt_gpgme.c:4638 ncrypt/pgp.c:1263
 #, c-format
@@ -4337,7 +4337,7 @@ msgstr "1: AES128, 2: AES192, 3: AES256 "
 
 #: newsrc.c:644
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "正在从缓存中加载新闻组列表..."
 
 #: newsrc.c:1026
 msgid "No news server defined!"
@@ -4421,14 +4421,13 @@ msgid "Checking for new messages..."
 msgstr "正在检查新邮件..."
 
 #: nntp.c:2265
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "正在服务器上执行信件删除..."
+msgstr "正在从服务器 %s 加载新闻组列表..."
 
 #: nntp.c:2307 nntp.c:2407
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "登入中..."
+msgstr "加载描述中..."
 
 #: nntp.c:2329
 #, fuzzy
@@ -4597,11 +4596,11 @@ msgstr "取得附件的临时副本"
 
 #: opcodes.h:68
 msgid "group tagged attachments as multipart/alternative"
-msgstr ""
+msgstr "将已标记的附件组为 multipart/alternative"
 
 #: opcodes.h:69
 msgid "group tagged attachments as multipart/multilingual"
-msgstr ""
+msgstr "将已标记的附件组为 multipart/multilingual"
 
 #: opcodes.h:70
 msgid "run ispell on the message"
@@ -5608,8 +5607,9 @@ msgid "empty pattern"
 msgstr "空模式"
 
 #: pattern.c:1606 pattern.c:1609
+#, fuzzy
 msgid "error: server custom search only supported with IMAP."
-msgstr ""
+msgstr "错误：服务器端的自定义搜索仅支持 IMAP。"
 
 #: pattern.c:1777
 #, c-format
