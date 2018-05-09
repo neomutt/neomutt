@@ -174,12 +174,12 @@ msgstr "---命令：%-30.30s 描述：%s"
 #: attach.c:595
 #, c-format
 msgid "---Attachment: %s: %s"
-msgstr "---附件: %s: %s"
+msgstr "---附件：%s：%s"
 
 #: attach.c:597
 #, c-format
 msgid "---Attachment: %s"
-msgstr "---附件: %s"
+msgstr "---附件：%s"
 
 #: attach.c:861 attach.c:869
 msgid "Write fault!"
@@ -192,12 +192,12 @@ msgstr "我不知道要如何打印它！"
 #: bcache.c:160
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr "路径太长:%s%s%s"
+msgstr "路径太长：%s%s%s"
 
 #: bcache.c:168
 #, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "消息缓存不是一个目录: %s."
+msgstr "消息缓存不是一个目录：%s."
 
 #: bcache.c:176
 #, c-format
@@ -255,7 +255,7 @@ msgstr "信箱 [%d]"
 #: browser.c:1068
 #, c-format
 msgid "Directory [%s], File mask: %s"
-msgstr "目录 [%s], 文件掩码: %s"
+msgstr "目录 [%s], 文件掩码：%s"
 
 #: browser.c:1122
 msgid "Can't attach a directory!"
@@ -391,7 +391,7 @@ msgstr "%s：没有这个属性"
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
-msgstr "%s: 参数太多"
+msgstr "%s：参数太多"
 
 #: color.c:899
 msgid "default colors not supported"
@@ -462,7 +462,7 @@ msgstr "解析地址出错！"
 #: commands.c:314 recvcmd.c:182
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr "错误的 IDN: '%s'"
+msgstr "错误的 IDN：'%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, fuzzy, c-format
@@ -650,7 +650,7 @@ msgstr ""
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120
 msgid "Reply-To: "
-msgstr "回复给:"
+msgstr "回复给: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:987
@@ -805,7 +805,7 @@ msgstr "您不可以删除唯一的附件。"
 #: compose.c:1016 send.c:1915
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr "在\"%s\"中有错误的 IDN: '%s'"
+msgstr "在\"%s\"中有错误的 IDN：'%s'"
 
 #: compose.c:1064
 msgid "Attachment is already at top."
@@ -899,7 +899,7 @@ msgstr "保存这封信件的副本吗？"
 
 #: compose.c:1633
 msgid "Send attachment with name: "
-msgstr "使用什么名字发送附件:"
+msgstr "使用什么名字发送附件："
 
 #: compose.c:1650
 msgid "Rename to: "
@@ -993,7 +993,7 @@ msgstr "没有append-hook或者close-hook不能够追加 : %s"
 #: compress.c:554
 #, c-format
 msgid "Compress command failed: %s"
-msgstr "压缩命令失败: %s"
+msgstr "压缩命令失败：%s"
 
 #: compress.c:565
 msgid "Unsupported mailbox type for appending."
@@ -1191,7 +1191,7 @@ msgstr "证书主机检查失败：%s"
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
-msgstr "警告： 无法设置 TLS SNI 主机名"
+msgstr "警告：无法设置 TLS SNI 主机名"
 
 #: conn/ssl.c:1279
 msgid "I/O error"
@@ -1215,7 +1215,7 @@ msgstr "无法创建 SSL 上下文"
 
 #: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr "警告： 错误导致ssl_verify_partial_chains"
+msgstr "警告：错误导致ssl_verify_partial_chains"
 
 #: conn/ssl_gnutls.c:112 conn/ssl_gnutls.c:144
 msgid "Error: no TLS socket open"
@@ -1256,7 +1256,7 @@ msgstr "警告：服务器证书已过期"
 
 #: conn/ssl_gnutls.c:746
 msgid "WARNING: Server certificate has been revoked"
-msgstr "警告服务器证书已吊销"
+msgstr "警告：服务器证书已吊销"
 
 #: conn/ssl_gnutls.c:752
 msgid "WARNING: Server hostname does not match certificate"
@@ -1369,7 +1369,7 @@ msgstr "无可见信件。"
 #: curs_main.c:125 pager.c:110
 #, c-format
 msgid "%s: Operation not permitted by ACL"
-msgstr "无法 %s: 操作不被访问控制列表(ACL)所允许"
+msgstr "无法 %s：操作不被访问控制列表(ACL)所允许"
 
 #: curs_main.c:278
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -1503,7 +1503,7 @@ msgstr "当前没有限制样式起作用。"
 #: curs_main.c:1426
 #, c-format
 msgid "Limit: %s"
-msgstr "限制: %s"
+msgstr "限制：%s"
 
 #: curs_main.c:1464
 msgid "Limit to messages matching: "
@@ -1910,22 +1910,22 @@ msgstr "清除标记"
 #: handler.c:66
 #, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入另一种 #%d: %s/%s%s%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入另一种 #%d: %s/%s%s%s, 编码：%s, 大小：%s --]\n"
 
 #: handler.c:70
 #, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入：%s/%s%s%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入：%s/%s%s%s, 编码：%s, 大小：%s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- 错误： 无法显示 Multipart/Alternative 的任何部分！ --]\n"
+msgstr "[-- 错误：无法显示 Multipart/Alternative 的任何部分！ --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1391
 #, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- 附件 #%d: %s --]\n"
+msgstr "[-- 附件 #%d：%s --]\n"
 
 #: handler.c:1396
 #, c-format
@@ -1958,7 +1958,7 @@ msgstr "[-- 自动显示的 %s 输出到标准错误(stderr)的内容 --]\n"
 
 #: handler.c:1575
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- 错误: message/external-body 没有访问类型参数 --]\n"
+msgstr "[-- 错误：message/external-body 没有访问类型参数 --]\n"
 
 #: handler.c:1610
 #, c-format
@@ -2076,7 +2076,7 @@ msgstr "[-- %s/%s 尚未支持 --]\n"
 #: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
-msgstr "无法创建 %s: %s."
+msgstr "无法创建 %s：%s."
 
 #: header.c:201
 #, c-format
@@ -2358,7 +2358,7 @@ msgstr "正在服务器上执行信件删除..."
 
 #: imap/imap.c:2536
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr "imap_sync_mailbox: EXPUNGE(执行删除)失败"
+msgstr "imap_sync_mailbox：EXPUNGE(执行删除)失败"
 
 #: imap/imap.c:2582
 msgid "IMAP server doesn't support custom flags"
@@ -2597,7 +2597,7 @@ msgstr "无法通过 uname() 确定节点名称"
 
 #: init.c:4126
 msgid "-group: no group name"
-msgstr "-group: 无组名称"
+msgstr "-group：无组名称"
 
 #: init.c:4136
 msgid "out of arguments"
@@ -2620,7 +2620,7 @@ msgstr "已取消订阅 %s..."
 #: keymap.c:281 keymap.c:289
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "绑定 '%s' 将会为'%s'设置别名，在这之前，请尝试: 'bind %s %s noop'https://neomutt.org/guide/configuration.html#bind-warnings"
+msgstr "绑定 '%s' 将会为'%s'设置别名，在这之前，请尝试：'bind %s %s noop'https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:591
 msgid "Macros are currently disabled."
@@ -2647,7 +2647,7 @@ msgstr "%s：没有这个选单"
 #: keymap.c:1013
 #, c-format
 msgid "%s: null key sequence"
-msgstr "%s: 空的键值序列"
+msgstr "%s：空的键值序列"
 
 #: keymap.c:1039
 #, c-format
@@ -3001,12 +3001,12 @@ msgstr "mutt_randbuf len=%zu"
 #: muttlib.c:427
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr "打开 /dev/urandom: %s"
+msgstr "打开 /dev/urandom：%s"
 
 #: muttlib.c:434
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr "读取 /dev/urandom: %s"
+msgstr "读取 /dev/urandom：%s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3079,7 +3079,7 @@ msgstr "解析 mailto: 链接失败\n"
 #: mutt_notmuch.c:287
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr "无法解析 notmuch 查询类型: %s"
+msgstr "无法解析 notmuch 查询类型：%s"
 
 #: mutt_notmuch.c:398
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
@@ -3098,7 +3098,7 @@ msgstr "正在等待 notmuch 数据库...（已等待 %d 秒）"
 #: mutt_notmuch.c:579
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr "不能够打开 notmuch 数据库: %s: %s"
+msgstr "不能够打开 notmuch 数据库：%s：%s"
 
 #: mutt_notmuch.c:580
 msgid "unknown reason"
@@ -3881,11 +3881,11 @@ msgstr "PGP 钥匙 0x%s。"
 
 #: ncrypt/crypt_gpgme.c:4823
 msgid "GPGME: OpenPGP protocol not available"
-msgstr "GPGME: OpenPGP协议不可用"
+msgstr "GPGME：OpenPGP协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4831
 msgid "GPGME: CMS protocol not available"
-msgstr "GPGME: CMS协议不可用"
+msgstr "GPGME：CMS协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4869
 #, fuzzy
@@ -5822,7 +5822,7 @@ msgstr "附件已保存。"
 #: recvattach.c:633
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "警告! 您正在覆盖 %s, 是否要继续?"
+msgstr "警告！您正在覆盖 %s，是否要继续？"
 
 #: recvattach.c:651
 msgid "Attachment filtered."
