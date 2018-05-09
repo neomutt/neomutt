@@ -222,11 +222,11 @@ msgstr "列表"
 
 #: browser.c:83
 msgid "Subscribe"
-msgstr "已订阅 "
+msgstr "已订阅"
 
 #: browser.c:84
 msgid "Unsubscribe"
-msgstr "已取消订阅 "
+msgstr "已取消订阅"
 
 #: browser.c:85 curs_main.c:760
 msgid "Catchup"
@@ -400,7 +400,7 @@ msgstr "不支持默认的颜色"
 #. L10N: Used for the $crypt_verify_sig prompt
 #: commands.c:101
 msgid "Verify signature?"
-msgstr "验证 签名?"
+msgstr "验证签名?"
 
 #: commands.c:126 mbox.c:1013
 msgid "Could not create temporary file!"
@@ -667,7 +667,7 @@ msgstr "混合模式："
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:128
 msgid "Security: "
-msgstr "安全"
+msgstr "安全："
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -810,9 +810,8 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "在\"%s\"中有错误的 IDN: '%s'"
 
 #: compose.c:1064
-#, fuzzy
 msgid "Attachment is already at top."
-msgstr "附件已保存。"
+msgstr "附件已在顶部。"
 
 #: compose.c:1069 compose.c:1085
 #, fuzzy
@@ -1742,7 +1741,7 @@ msgstr "不能够标记信件为已读"
 #. a macro hotkey to jump to the currently selected message.
 #: curs_main.c:3042
 msgid "Enter macro stroke: "
-msgstr "请输入密钥 ID："
+msgstr "请输入宏按键："
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
@@ -1890,7 +1889,7 @@ msgstr "信件未改动！"
 
 #: editmsg.c:167
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr "只读模式信箱中的信件已被修改!忽略这些变动."
+msgstr "只读模式信箱中的信件已被修改！忽略这些变动。"
 
 #: editmsg.c:183
 #, c-format
@@ -3099,9 +3098,9 @@ msgid "failed to parse notmuch limit: %s"
 msgstr "解析 mailto: 链接失败\n"
 
 #: mutt_notmuch.c:561
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "正在等待 fcntl 加锁... %d"
+msgstr "正在等待 notmuch 数据库...（已等待 %d 秒）"
 
 #: mutt_notmuch.c:579
 #, c-format
@@ -3144,9 +3143,8 @@ msgid "message(s) not deleted"
 msgstr "正在标记邮件为已删除..."
 
 #: mx.c:671
-#, fuzzy
 msgid "Can't open trash folder"
-msgstr "无法添加到文件夹末尾：%s"
+msgstr "无法打开回收站"
 
 #: mx.c:710
 msgid "Mark all articles read?"
@@ -4374,9 +4372,9 @@ msgid "No authenticators available"
 msgstr "无可用认证"
 
 #: nntp.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed."
-msgstr "SASL 认证失败。"
+msgstr "%s 认证失败。"
 
 #: nntp.c:676 nntp.c:764
 #, fuzzy
@@ -4490,7 +4488,7 @@ msgstr "请选择本目录中一个新的文件"
 #: opcodes.h:38
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "订阅当前信箱 (只适用于 IMAP)"
+msgstr "订阅当前信箱 (只适用于 IMAP/NNTP)"
 
 #: opcodes.h:39
 msgid "display the currently selected file's name"
@@ -4503,7 +4501,7 @@ msgstr "切换查看 全部/已订阅 的信箱 (只适用于 IMAP)"
 #: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "取消订阅当前信箱 (只适用于 IMAP)"
+msgstr "取消订阅当前信箱 (只适用于 IMAP/NNTP)"
 
 #: opcodes.h:42
 msgid "view file"
@@ -5189,11 +5187,11 @@ msgstr "打印当前条目"
 
 #: opcodes.h:207
 msgid "delete the current entry, bypassing the trash folder"
-msgstr "真的删除了目前的项，没有归到回收站"
+msgstr "彻底删除目前的项，不归到回收站"
 
 #: opcodes.h:208
 msgid "delete the current thread, bypassing the trash folder"
-msgstr "真的产出目前的线索， 没有归到回收站"
+msgstr "彻底删除目前的线索，不归到回收站"
 
 #: opcodes.h:209
 msgid "query external program for addresses"
@@ -5278,9 +5276,8 @@ msgid "sort messages in reverse order"
 msgstr "反向排序信件"
 
 #: opcodes.h:229
-#, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "反标记符合某个模式的信件"
+msgstr "订阅符合某个模式的新闻组"
 
 #: opcodes.h:230
 msgid "tag the current entry"
@@ -5340,9 +5337,8 @@ msgid "undelete all messages in thread"
 msgstr "反删除线索中的所有信件"
 
 #: opcodes.h:244
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "反标记符合某个模式的信件"
+msgstr "取消订阅符合某个模式的新闻组"
 
 #: opcodes.h:245
 msgid "show the NeoMutt version number and date"
@@ -5497,7 +5493,7 @@ msgstr "打开下一个有新邮件的信箱"
 #: opcodes.h:297
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "切换是否浏览信箱或所有文件"
+msgstr "在信箱和虚拟信箱之间切换"
 
 #: opcodes.h:298
 msgid "make the sidebar (in)visible"
@@ -6182,7 +6178,7 @@ msgstr "%s 不是常规文件。"
 #: sendlib.c:1093
 #, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "无法发送此信件。"
+msgstr "找不到任何 mime.types 文件。"
 
 #: sendlib.c:1173
 #, c-format
@@ -6320,7 +6316,7 @@ msgstr ""
 "为了更多的了解有关NeoMutt的事务，请访问: https://neomutt.org\n"
 "在使用NeoMutt中，你如果发现了一个bug，请发起一个issue在：\n"
 "    https://github.com/neomutt/neomutt/issues\n"
-"或者发送一封邮件到 : <neomutt-devel@neomutt.org>\n"
+"或者发送一封邮件到：<neomutt-devel@neomutt.org>\n"
 
 #: version.c:91
 #, fuzzy
