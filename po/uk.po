@@ -5,7 +5,7 @@
 #
 # Andrej N. Gritsenko <andrej@lucky.net>, 1998-2001
 # Maxim Krasilnikov <pseudo@avalon.org.ua>, 2013
-# Vsevolod Volkov <vvv@mutt.org.ua>, 2016-2017
+# Vsevolod Volkov <vvv@mutt.org.ua>, 2016-2018
 #
 msgid ""
 msgstr ""
@@ -285,9 +285,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Видалення підтримується лише для скриньок IMAP"
 
 #: browser.c:1662 browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "Поштову скриньку видалено."
+msgstr "Помилка видалення поштової скриньки."
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -980,7 +979,7 @@ msgstr "Лист записано."
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Підтримку PGP не налаштовано"
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -988,7 +987,7 @@ msgstr "S/MIME вже вибрано. Очистити і продовжити? 
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Підтримку S/MIME не налаштовано"
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -2371,9 +2370,9 @@ msgid "Mailbox renamed."
 msgstr "Поштову скриньку переіменовано."
 
 #: imap/command.c:158
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Поштову скриньку закрито"
+msgstr "Поштову скриньку %s@%s закрито"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, c-format
@@ -3299,9 +3298,9 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Перенести прочитані листи до %s?"
-msgstr[1] "Перенести прочитані листи до %s?"
-msgstr[2] "Перенести прочитані листи до %s?"
+msgstr[0] "Перенести прочитані листи (кількість: %d) до %s?"
+msgstr[1] "Перенести прочитані листи (кількість: %d) до %s?"
+msgstr[2] "Перенести прочитані листи (кількість: %d) до %s?"
 
 #: mx.c:780 mx.c:1086
 #, fuzzy, c-format
@@ -3376,9 +3375,8 @@ msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr "Лист не відправлено: неможливо використовувати PGP/текст з додатками."
 
 #: ncrypt/crypt.c:172
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "Неможливо використовувати PGP/текст з додатками. Використати PGP/MIME?"
+msgstr "Неможливо використовувати PGP/текст з format=flowed. Використати PGP/MIME?"
 
 #: ncrypt/crypt.c:176
 #, fuzzy
