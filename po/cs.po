@@ -820,15 +820,15 @@ msgstr "Příloha je již na konci."
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
-msgstr ""
+msgstr "Seskupování alternativ vyžaduje alespoň 2 označené zprávy."
 
 #: compose.c:1179
 msgid "Grouping multilingual requires at least 2 tagged messages."
-msgstr ""
+msgstr "Seskupování vícejazyčných vyžaduje alespoň 2 označené zprávy."
 
 #: compose.c:1193
 msgid "Not all parts have Content-Language: set, continue?"
-msgstr ""
+msgstr "Ne všechny části mají nastaveno „Content-Language“, pokračovat?"
 
 #: compose.c:1195
 msgid "Not sending this message."
@@ -885,7 +885,7 @@ msgstr "Aktuální příloha bude převedena."
 
 #: compose.c:1536
 msgid "Empty Content-Language"
-msgstr ""
+msgstr "Prázdný „Content-Language“"
 
 #: compose.c:1553
 msgid "Invalid encoding."
@@ -4625,11 +4625,11 @@ msgstr "pracovat s dočasnou kopií přílohy"
 
 #: opcodes.h:68
 msgid "group tagged attachments as multipart/alternative"
-msgstr ""
+msgstr "seskupit označené přílohy jako alternativy, „multipart/alternative“"
 
 #: opcodes.h:69
 msgid "group tagged attachments as multipart/multilingual"
-msgstr ""
+msgstr "seskupit označené přílohy jako vícejazyčné, „multipart/multilingual“"
 
 #: opcodes.h:70
 msgid "run ispell on the message"
