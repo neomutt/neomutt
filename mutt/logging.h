@@ -62,6 +62,14 @@ struct LogLine
   STAILQ_ENTRY(LogLine) entries;
 };
 
+/**
+ * struct LogList - A list of log lines
+ *
+ * The Log is stored as a STAILQ.
+ * This means that insertions are quick at the head and tail of the list.
+ */
+STAILQ_HEAD(LogList, LogLine);
+
 #define mutt_debug(LEVEL, ...) MuttLogger(0, __FILE__, __LINE__, __func__, LEVEL,      __VA_ARGS__)
 #define mutt_warning(...)      MuttLogger(0, __FILE__, __LINE__, __func__, LL_WARNING, __VA_ARGS__)
 #define mutt_message(...)      MuttLogger(0, __FILE__, __LINE__, __func__, LL_MESSAGE, __VA_ARGS__)

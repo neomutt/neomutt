@@ -1243,6 +1243,8 @@ static int mh_close_mailbox(struct Context *ctx)
  * @param ctx    Current mailbox
  * @param subdir NULL for MH mailboxes,
  *               otherwise the subdir of the maildir mailbox to read from
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int mh_read_dir(struct Context *ctx, const char *subdir)
 {

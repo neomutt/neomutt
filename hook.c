@@ -295,9 +295,9 @@ static void delete_hook(struct Hook *h)
 
 /**
  * mutt_delete_hooks - Delete matching hooks
- * @param type
- * * Hook type to delete, e.g. #MUTT_SENDHOOK
- * * Or, 0 to delete all hooks
+ * @param type Hook type to delete, e.g. #MUTT_SENDHOOK
+ *
+ * If 0 is passed, all the hooks will be deleted.
  */
 void mutt_delete_hooks(int type)
 {

@@ -3041,6 +3041,8 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * Caller should free token->data when finished.  the reason for this variable
  * is to avoid having to allocate and deallocate a lot of memory if we are
@@ -3952,15 +3954,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
 
   CurrentMenu = MENU_MAIN;
-
-#ifndef LOCALES_HACK
-  /* Do we have a locale definition? */
-  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
-      (p = mutt_str_getenv("LC_CTYPE")))
-  {
-    OptLocales = true;
-  }
-#endif
 
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */

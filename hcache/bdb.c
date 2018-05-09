@@ -55,10 +55,10 @@ struct HcacheDbCtx
 };
 
 /**
- * dbt_init
- * @param dbt
- * @param data
- * @param len
+ * dbt_init - Initialise a BDB context
+ * @param dbt  Context to initialise
+ * @param data ID string to associate
+ * @param len  Length of ID string
  */
 static void dbt_init(DBT *dbt, void *data, size_t len)
 {
@@ -69,8 +69,8 @@ static void dbt_init(DBT *dbt, void *data, size_t len)
 }
 
 /**
- * dbt_empty_init
- * @param dbt
+ * dbt_empty_init - Initialise an empty BDB context
+ * @param dbt  Context to initialise
  */
 static void dbt_empty_init(DBT *dbt)
 {
@@ -79,6 +79,9 @@ static void dbt_empty_init(DBT *dbt)
   dbt->flags = 0;
 }
 
+/**
+ * hcache_bdb_open - Implements #hcache_open_t
+ */
 static void *hcache_bdb_open(const char *path)
 {
   struct stat sb;
@@ -142,6 +145,9 @@ fail_close:
   return NULL;
 }
 
+/**
+ * hcache_bdb_fetch - Implements #hcache_fetch_t
+ */
 static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
@@ -161,11 +167,17 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.data;
 }
 
+/**
+ * hcache_bdb_free - Implements #hcache_free_t
+ */
 static void hcache_bdb_free(void *vctx, void **data)
 {
   FREE(data);
 }
 
+/**
+ * hcache_bdb_store - Implements #hcache_store_t
+ */
 static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   DBT dkey;
@@ -186,6 +198,9 @@ static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *da
   return ctx->db->put(ctx->db, NULL, &dkey, &databuf, 0);
 }
 
+/**
+ * hcache_bdb_delete - Implements #hcache_delete_t
+ */
 static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
@@ -199,6 +214,9 @@ static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
 }
 
+/**
+ * hcache_bdb_close - Implements #hcache_close_t
+ */
 static void hcache_bdb_close(void **vctx)
 {
   if (!vctx || !*vctx)
@@ -214,6 +232,9 @@ static void hcache_bdb_close(void **vctx)
   FREE(vctx);
 }
 
+/**
+ * hcache_bdb_backend - Implements #hcache_backend_t
+ */
 static const char *hcache_bdb_backend(void)
 {
   return DB_VERSION_STRING;

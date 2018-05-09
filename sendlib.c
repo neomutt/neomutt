@@ -2271,6 +2271,8 @@ static void alarm_handler(int sig)
  *                      to the temporary file containing the stdout of the
  *                      child process. If it is NULL, stderr and stdout
  *                      are not redirected.
+ * @retval  0 Success
+ * @retval >0 Failure, return code from sendmail
  */
 static int send_msg(const char *path, char **args, const char *msg, char **tempfile)
 {
@@ -2463,6 +2465,8 @@ static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
  * @param bcc      Recipients
  * @param msg      File containing message
  * @param eightbit Message contains 8bit chars
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Address *cc,
                          struct Address *bcc, const char *msg, int eightbit)

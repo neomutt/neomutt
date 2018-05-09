@@ -42,9 +42,9 @@
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the string
  */
-static unsigned int gen_string_hash(union HashKey key, unsigned int n)
+static size_t gen_string_hash(union HashKey key, size_t n)
 {
-  unsigned int h = 0;
+  size_t h = 0;
   unsigned char *s = (unsigned char *) key.strkey;
 
   while (*s)
@@ -73,9 +73,9 @@ static int cmp_string_key(union HashKey a, union HashKey b)
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the string
  */
-static unsigned int gen_case_string_hash(union HashKey key, unsigned int n)
+static size_t gen_case_string_hash(union HashKey key, size_t n)
 {
-  unsigned int h = 0;
+  size_t h = 0;
   unsigned char *s = (unsigned char *) key.strkey;
 
   while (*s)
@@ -104,7 +104,7 @@ static int cmp_case_string_key(union HashKey a, union HashKey b)
  * @param n   Number of elements in the Hash table
  * @retval num Cryptographic hash of the integer
  */
-static unsigned int gen_int_hash(union HashKey key, unsigned int n)
+static size_t gen_int_hash(union HashKey key, size_t n)
 {
   return key.intkey % n;
 }
@@ -134,7 +134,7 @@ static int cmp_int_key(union HashKey a, union HashKey b)
  * The Hash table can contain more elements than nelem, but they will be
  * chained together.
  */
-static struct Hash *new_hash(int nelem)
+static struct Hash *new_hash(size_t nelem)
 {
   struct Hash *table = mutt_mem_calloc(1, sizeof(struct Hash));
   if (nelem == 0)
@@ -274,7 +274,7 @@ static void union_hash_delete(struct Hash *table, union HashKey key, const void 
  * @param flags Flags, e.g. #MUTT_HASH_STRCASECMP
  * @retval ptr New Hash table
  */
-struct Hash *mutt_hash_create(int nelem, int flags)
+struct Hash *mutt_hash_create(size_t nelem, int flags)
 {
   struct Hash *table = new_hash(nelem);
   if (flags & MUTT_HASH_STRCASECMP)
@@ -300,7 +300,7 @@ struct Hash *mutt_hash_create(int nelem, int flags)
  * @param flags Flags, e.g. #MUTT_HASH_ALLOW_DUPS
  * @retval ptr New Hash table
  */
-struct Hash *mutt_hash_int_create(int nelem, int flags)
+struct Hash *mutt_hash_int_create(size_t nelem, int flags)
 {
   struct Hash *table = new_hash(nelem);
   table->gen_hash = gen_int_hash;
@@ -463,7 +463,7 @@ void mutt_hash_destroy(struct Hash **ptr)
     return;
 
   pptr = *ptr;
-  for (int i = 0; i < pptr->nelem; i++)
+  for (size_t i = 0; i < pptr->nelem; i++)
   {
     for (elem = pptr->table[i]; elem;)
     {

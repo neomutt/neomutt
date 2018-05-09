@@ -126,6 +126,7 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
  * @param a          List of addresses
  * @param leave_only If set, don't remove the user's address if it it the only
  *                   one in the list
+ * @retval ptr Head of the remaining Address List
  */
 static struct Address *remove_user(struct Address *a, int leave_only)
 {

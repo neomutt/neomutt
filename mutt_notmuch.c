@@ -2622,6 +2622,8 @@ done:
  * nm_sync_mailbox - Sync a notmuch mailbox
  * @param ctx        Mailbox
  * @param index_hint Remember our place in the index
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 {

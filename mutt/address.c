@@ -1136,6 +1136,7 @@ done:
  * @param buflen  Length of the buffer
  * @param addr    Address to display
  * @param display This address will be displayed to the user
+ * @retval num Bytes written to the buffer
  *
  * If 'display' is set, then it doesn't matter if the transformation isn't
  * reversible.

@@ -37,6 +37,9 @@
 #include "backend.h"
 #include "options.h"
 
+/**
+ * hcache_kyotocabinet_open - Implements #hcache_open_t
+ */
 static void *hcache_kyotocabinet_open(const char *path)
 {
   char kcdbpath[_POSIX_PATH_MAX];
@@ -64,6 +67,9 @@ static void *hcache_kyotocabinet_open(const char *path)
   }
 }
 
+/**
+ * hcache_kyotocabinet_fetch - Implements #hcache_fetch_t
+ */
 static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   size_t sp;
@@ -75,12 +81,18 @@ static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen
   return kcdbget(db, key, keylen, &sp);
 }
 
+/**
+ * hcache_kyotocabinet_free - Implements #hcache_free_t
+ */
 static void hcache_kyotocabinet_free(void *vctx, void **data)
 {
   kcfree(*data);
   *data = NULL;
 }
 
+/**
+ * hcache_kyotocabinet_store - Implements #hcache_store_t
+ */
 static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
                                      void *data, size_t dlen)
 {
@@ -96,6 +108,9 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
   return 0;
 }
 
+/**
+ * hcache_kyotocabinet_delete - Implements #hcache_delete_t
+ */
 static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
@@ -110,6 +125,9 @@ static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
   return 0;
 }
 
+/**
+ * hcache_kyotocabinet_close - Implements #hcache_close_t
+ */
 static void hcache_kyotocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
@@ -124,6 +142,9 @@ static void hcache_kyotocabinet_close(void **ctx)
   kcdbdel(db);
 }
 
+/**
+ * hcache_kyotocabinet_backend - Implements #hcache_backend_t
+ */
 static const char *hcache_kyotocabinet_backend(void)
 {
   /* SHORT_STRING(128) should be more than enough for KCVERSION */
