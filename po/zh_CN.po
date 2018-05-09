@@ -202,7 +202,7 @@ msgstr "消息缓存不是一个目录: %s."
 #: bcache.c:176
 #, c-format
 msgid "Can't create %s %s"
-msgstr "无法创建 %s %s."
+msgstr "无法创建 %s %s"
 
 #: browser.c:72
 msgid "Chdir"
@@ -235,7 +235,7 @@ msgstr "捕捉"
 #: browser.c:767 browser.c:1781
 #, c-format
 msgid "%s is not a directory."
-msgstr "%s 不是目录"
+msgstr "%s 不是目录。"
 
 #: browser.c:1049
 #, c-format
@@ -279,7 +279,7 @@ msgstr "只有 IMAP 信箱才支持删除"
 
 #: browser.c:1662 browser.c:1688
 msgid "Mailbox deletion failed."
-msgstr "信箱删除失败"
+msgstr "信箱删除失败。"
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -345,7 +345,7 @@ msgstr "订阅模式"
 #: browser.c:2118
 #, c-format
 msgid "Unsubscribe pattern: "
-msgstr "取消订阅模式"
+msgstr "取消订阅模式："
 
 #: browser.c:2137
 msgid "No newsgroups match the mask"
@@ -492,7 +492,7 @@ msgstr "用管道输出至命令："
 
 #: commands.c:540
 msgid "No printing command has been defined."
-msgstr "未定义打印命令"
+msgstr "未定义打印命令。"
 
 #: commands.c:544
 msgid "Print message?"
@@ -684,7 +684,7 @@ msgstr "选择身份签署："
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:141
 msgid "Newsgroups: "
-msgstr "新闻组"
+msgstr "新闻组："
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:143
@@ -1363,7 +1363,7 @@ msgstr "功能在附加信件(attach-message)模式下不被支持。"
 
 #: curs_main.c:80
 msgid "No visible messages."
-msgstr "无可见信件"
+msgstr "无可见信件。"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: curs_main.c:125 pager.c:110
@@ -1468,7 +1468,7 @@ msgstr "正在取回信件标头..."
 
 #: curs_main.c:1314
 msgid "No deleted messages found in the thread."
-msgstr "在该线程中没有发现被删除的信件"
+msgstr "在该线程中没有发现被删除的信件。"
 
 #: curs_main.c:1334
 msgid "Jump to message: "
@@ -1671,7 +1671,7 @@ msgstr "没有新的信件在此限制视图中。"
 
 #: curs_main.c:2449
 msgid "No new messages."
-msgstr "没有新信件"
+msgstr "没有新信件。"
 
 #: curs_main.c:2454
 msgid "No unread messages in this limited view."
@@ -1679,7 +1679,7 @@ msgstr "在此限制视图中没有未读信件。"
 
 #: curs_main.c:2456
 msgid "No unread messages."
-msgstr "没有尚未读取的信件"
+msgstr "没有尚未读取的信件。"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2474
@@ -2624,7 +2624,7 @@ msgstr "绑定 '%s' 将会为'%s'设置别名，在这之前，请尝试: 'bind 
 
 #: keymap.c:591
 msgid "Macros are currently disabled."
-msgstr "宏目前被禁用"
+msgstr "宏目前被禁用。"
 
 #: keymap.c:598
 msgid "Macro loop detected."
@@ -2794,7 +2794,7 @@ msgstr "没有信箱有新信件。"
 
 #: main.c:1006
 msgid "No incoming mailboxes defined."
-msgstr "未定义收信信箱"
+msgstr "未定义收信信箱。"
 
 #: main.c:1048
 msgid "Mailbox is empty."
@@ -3976,7 +3976,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:795
 msgid "Internal error.  Please submit a bug report."
-msgstr "内部错误。请提交一个bug报告"
+msgstr "内部错误。请提交一个bug报告。"
 
 #: ncrypt/pgp.c:862
 msgid ""
@@ -4403,12 +4403,12 @@ msgstr "%s 是无效的 POP 路径"
 #: nntp.c:1521
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr "新闻组 %s 没有在服务器上找到"
+msgstr "新闻组 %s 没有在服务器上找到。"
 
 #: nntp.c:1541
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr "新闻组 %s 已经从服务器上被移除"
+msgstr "新闻组 %s 已经从服务器上被移除。"
 
 #: nntp.c:1697
 #, c-format
@@ -4441,7 +4441,7 @@ msgstr "正在检查新邮件..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
-msgstr "不能够找到子贴因为服务器不支持XPAT命令"
+msgstr "不能够找到子贴因为服务器不支持XPAT命令。"
 
 #: opcodes.h:30
 msgid "null operation"
@@ -5690,7 +5690,7 @@ msgstr "未定义 POP 主机。"
 
 #: pop.c:945
 msgid "No new mail in POP mailbox."
-msgstr "POP 信箱中没有新信件"
+msgstr "POP 信箱中没有新信件。"
 
 #: pop.c:952
 msgid "Delete messages from server?"
@@ -5988,11 +5988,11 @@ msgstr "您已经选择了第一个链元素。"
 
 #: remailer.c:666
 msgid "You already have the last chain element selected."
-msgstr "您已经选择了最后的链元素"
+msgstr "您已经选择了最后的链元素。"
 
 #: remailer.c:707
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)标头"
+msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)标头。"
 
 #: remailer.c:731
 msgid "Please set the hostname variable to a proper value when using mixmaster!"
@@ -6117,7 +6117,7 @@ msgstr "没有附件，取消发送？"
 
 #: send.c:1954
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr "信件内容匹配 \"$abort_noattach_regex\". 没有发送"
+msgstr "信件内容匹配 \"$abort_noattach_regex\"。没有发送。"
 
 #: send.c:2016 smtp.c:189
 msgid "Sending message..."
