@@ -807,19 +807,16 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Neplatné IDN v \"%s\": „%s“"
 
 #: compose.c:1064
-#, fuzzy
 msgid "Attachment is already at top."
-msgstr "Příloha uložena."
+msgstr "Příloha je již na začátku."
 
 #: compose.c:1069 compose.c:1085
-#, fuzzy
 msgid "The fundamental part cannot be moved."
-msgstr "Aktuální příloha nebude převedena."
+msgstr "Tato základní součást nemůže být přesunuta."
 
 #: compose.c:1080
-#, fuzzy
 msgid "Attachment is already at bottom."
-msgstr "Příloha byla filtrována."
+msgstr "Příloha je již na konci."
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
@@ -834,9 +831,8 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1195
-#, fuzzy
 msgid "Not sending this message."
-msgstr "Chyba při zasílání zprávy."
+msgstr "Neodesílám tuto zprávu."
 
 #: compose.c:1286
 msgid "Attaching selected file..."
@@ -1788,7 +1784,7 @@ msgid ""
 "~M messages     same as ~m, except include headers\n"
 "~p              print the message\n"
 msgstr ""
-"~~              vloží řádku začínající znakem ~\n"
+"~~              vloží řádku začínající znakem „~“\n"
 "~b uživatelé    přidá uživatele do položky Bcc:\n"
 "~c uživatelé    přidá uživatele do položky Cc:\n"
 "~f zprávy       vloží zprávy\n"
@@ -2148,9 +2144,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: %s nelze z %s smazat."
 
 #: imap/auth.c:118
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Nejsou k dispozici žádné autentizační metody"
+msgstr "Nejsou k dispozici žádné autentizační metody nebo byly zadány neplatné přihlašovací údaje"
 
 #: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
@@ -4593,9 +4588,8 @@ msgid "edit the message with headers"
 msgstr "editovat zprávu i s hlavičkami"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "editovat soubor, který bude připojen"
+msgstr "editovat „Content-Language“ u souboru, který bude připojen"
 
 #: opcodes.h:60
 msgid "edit the message"
@@ -4642,14 +4636,12 @@ msgid "run ispell on the message"
 msgstr "zkontrolovat pravopis zprávy programem ispell"
 
 #: opcodes.h:71
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Poslat přílohu pod názvem: "
+msgstr "posunout přílohu v seznamu dolů"
 
 #: opcodes.h:72
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Poslat přílohu pod názvem: "
+msgstr "posunout přílohu v seznamu nahoru"
 
 #: opcodes.h:73
 msgid "compose new attachment using mailcap entry"
