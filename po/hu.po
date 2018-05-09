@@ -410,8 +410,8 @@ msgid "default colors not supported"
 msgstr "az alapértelmezett színek nem támogatottak"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Ellenőrizzük a PGP aláírást?"
+msgid "Verify signature?"
+msgstr "Ellenőrizzük a aláírást?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

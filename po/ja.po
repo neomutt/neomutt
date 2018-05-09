@@ -403,8 +403,8 @@ msgid "default colors not supported"
 msgstr "既定値の色がサポートされていない"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "PGP 署名を検証?"
+msgid "Verify signature?"
+msgstr "署名を検証?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

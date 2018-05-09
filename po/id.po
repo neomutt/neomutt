@@ -409,8 +409,8 @@ msgid "default colors not supported"
 msgstr "warna default tidak didukung"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Periksa tandatangan PGP?"
+msgid "Verify signature?"
+msgstr "Periksa tandatangan?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

@@ -404,8 +404,8 @@ msgid "default colors not supported"
 msgstr "lehenetsitako kolorea ez da onartzen"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "PGP sinadura egiaztatu?"
+msgid "Verify signature?"
+msgstr "Sinadura egiaztatu?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

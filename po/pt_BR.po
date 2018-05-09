@@ -403,8 +403,8 @@ msgid "default colors not supported"
 msgstr "cores pré-definidas não suportadas"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Verificar assinatura de PGP?"
+msgid "Verify signature?"
+msgstr "Verificar assinatura?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

@@ -403,8 +403,8 @@ msgid "default colors not supported"
 msgstr "不支持默认的颜色"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "验证 PGP 签名?"
+msgid "Verify signature?"
+msgstr "验证 签名?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

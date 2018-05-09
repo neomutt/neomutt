@@ -405,8 +405,8 @@ msgid "default colors not supported"
 msgstr "štandardné farby nepodporované"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Overiť PGP podpis?"
+msgid "Verify signature?"
+msgstr "Overiť podpis?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

@@ -409,8 +409,8 @@ msgid "default colors not supported"
 msgstr "níl na dathanna réamhshocraithe ar fáil"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Fíoraigh síniú PGP?"
+msgid "Verify signature?"
+msgstr "Fíoraigh síniú?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

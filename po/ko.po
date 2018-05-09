@@ -410,8 +410,8 @@ msgid "default colors not supported"
 msgstr "기본 색상들이 지원되지 않음"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "PGP 서명을 확인할까요?"
+msgid "Verify signature?"
+msgstr "서명을 확인할까요?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

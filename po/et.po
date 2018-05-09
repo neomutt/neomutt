@@ -409,8 +409,8 @@ msgid "default colors not supported"
 msgstr "vaikimisi värve ei toetata"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Kontrollin PGP allkirja?"
+msgid "Verify signature?"
+msgstr "Kontrollin allkirja?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

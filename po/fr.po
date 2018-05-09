@@ -436,8 +436,8 @@ msgid "default colors not supported"
 msgstr "La couleur default n'est pas disponible"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Vérifier la signature PGP ?"
+msgid "Verify signature?"
+msgstr "Vérifier la signature?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

@@ -411,8 +411,8 @@ msgid "default colors not supported"
 msgstr "不支援預設的色彩"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "檢查 PGP 簽名?"
+msgid "Verify signature?"
+msgstr "檢查 簽名?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"

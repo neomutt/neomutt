@@ -417,8 +417,8 @@ msgid "default colors not supported"
 msgstr "стандартните цветове не се поддържат"
 
 #: commands.c:100
-msgid "Verify PGP signature?"
-msgstr "Желаете ли да потвърдите истинността на PGP-подписа?"
+msgid "Verify signature?"
+msgstr "Желаете ли да потвърдите истинността на подписа?"
 
 #: commands.c:125 mbox.c:1013
 msgid "Could not create temporary file!"
