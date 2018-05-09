@@ -448,12 +448,12 @@ msgstr "警告：信件未包含 From: 标头"
 
 #: commands.c:295 recvcmd.c:163
 msgid "Bounce message to: "
-msgstr "回退信件至："
+msgstr "退回信件至："
 
 #: commands.c:297 recvcmd.c:165
 #, fuzzy
 msgid "Bounce tagged messages to: "
-msgstr "回退信件至："
+msgstr "退回信件至："
 
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
@@ -468,19 +468,19 @@ msgstr "错误的 IDN: '%s'"
 #, fuzzy, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
-msgstr[0] "回退信件至 %s"
+msgstr[0] "退回信件至 %s"
 
 #: commands.c:340 recvcmd.c:211
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
-msgstr[0] "信件未回退。"
+msgstr[0] "信件未退回。"
 
 #: commands.c:350 recvcmd.c:230
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
-msgstr[0] "信件已回退。"
+msgstr[0] "信件已退回。"
 
 #: commands.c:418 commands.c:460 commands.c:480
 msgid "Can't create filter process"
@@ -1755,7 +1755,7 @@ msgstr "信件热键"
 #: curs_main.c:3055
 #, fuzzy, c-format
 msgid "Message bound to %s."
-msgstr "信件已回退 %s"
+msgstr "信件已退回 %s"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
@@ -5167,7 +5167,7 @@ msgstr "将 讯息/附件 通过管道传递给 shell 命令"
 #: opcodes.h:202
 #, fuzzy
 msgid "post message to newsgroup"
-msgstr "回退信件至 %s"
+msgstr "退回信件至 %s"
 
 #: opcodes.h:203
 msgid "move to the previous entry"
