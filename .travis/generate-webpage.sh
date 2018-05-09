@@ -148,7 +148,7 @@ function html_footer()
 	echo "  </tbody>"
 	echo "</table>"
 	echo "<br>"
-	echo "Last updated: $(date '+%F %R')"
+	echo "Last updated: $(date --utc '+%F %R') UTC"
 }
 
 

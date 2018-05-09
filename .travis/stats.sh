@@ -1,13 +1,18 @@
 #!/bin/bash
 
-[ $# = 0 ] && ARGS="*.po" || ARGS="$*"
+if [ $# = 0 ]; then
+	[ -d po ] && ARGS="po/*.po" || ARGS="*.po"
+else
+	ARGS="$*"
+fi
 
 ERROR=0
 
 TMP_FILE=$(mktemp)
 
 for i in $ARGS; do
-	echo -ne "${i%.po}:\t"
+	L=${i##*/}
+	echo -ne "${L%.po}:\\t"
 	msgfmt --statistics -c -o /dev/null "$i" 2>&1
 	[ $? = 1 ] && ERROR=1
 done > "$TMP_FILE"
