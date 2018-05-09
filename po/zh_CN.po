@@ -340,7 +340,7 @@ msgstr "尝试显示文件出错"
 #: browser.c:2116
 #, c-format
 msgid "Subscribe pattern: "
-msgstr "订阅模式"
+msgstr "订阅模式："
 
 #: browser.c:2118
 #, c-format
@@ -1573,7 +1573,7 @@ msgstr "无法创建查询，正在中止。"
 
 #: curs_main.c:1911 curs_main.c:1930
 msgid "Windowed queries disabled."
-msgstr "禁用窗口查询"
+msgstr "窗口查询已禁用。"
 
 #: curs_main.c:1916 curs_main.c:1935
 msgid "No notmuch vfolder currently loaded."
@@ -1752,7 +1752,7 @@ msgstr "信件热键"
 #: curs_main.c:3055
 #, c-format
 msgid "Message bound to %s."
-msgstr "信件已退回给 %s 。"
+msgstr "信件已退回给 %s。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
@@ -2132,7 +2132,7 @@ msgstr "坏的格式化命令字符串"
 
 #: hook.c:337
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: 无法在一个钩子里进行 unhook * 操作"
+msgstr "unhook：无法在一个钩子里进行 unhook * 操作。"
 
 #: hook.c:349
 #, c-format
@@ -2142,7 +2142,7 @@ msgstr "unhook：未知钩子类型：%s"
 #: hook.c:359
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr "unhook: 无法从 %2$s 中删除 %1$s"
+msgstr "unhook：无法从 %2$s 中删除 %1$s。"
 
 #: imap/auth.c:118
 #, fuzzy
@@ -3687,7 +3687,7 @@ msgstr "发放者 .: "
 #: ncrypt/crypt_gpgme.c:3574
 #, fuzzy
 msgid "Subkey: "
-msgstr "子钥 ...: 0x%s"
+msgstr "子钥："
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -4084,7 +4084,7 @@ msgstr "正在取回 PGP 密钥..."
 
 #: ncrypt/pgpkey.c:518
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "所有匹配的迷药已过期，吊销或禁用。"
+msgstr "所有匹配的密钥已过期，吊销或禁用。"
 
 #: ncrypt/pgpkey.c:558
 #, c-format
@@ -4344,9 +4344,9 @@ msgid "No news server defined!"
 msgstr "未定义新闻服务器！"
 
 #: newsrc.c:1040
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid news server specification!"
-msgstr "%s 是无效的 POP 路径"
+msgstr "%s 是无效的新闻服务器 URL！"
 
 #: nntp.c:75 nntp.c:612 pop.c:1028 pop_lib.c:405
 msgid "Server closed connection!"
@@ -4372,7 +4372,7 @@ msgstr "无法切换到阅读模式。"
 #: nntp.c:689
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
-msgstr "正在连接到 %s..."
+msgstr "连接到 %s。%s"
 
 #: nntp.c:690
 msgid "Posting is ok."
@@ -4392,9 +4392,9 @@ msgid "Fetching list of articles..."
 msgstr "正在取回帖子列表..."
 
 #: nntp.c:1503
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid newsgroup specification!"
-msgstr "%s 是无效的 POP 路径"
+msgstr "%s 是无效的新闻组 URL！"
 
 #: nntp.c:1521
 #, c-format
