@@ -36,6 +36,9 @@
 #include "backend.h"
 #include "globals.h"
 
+/**
+ * hcache_gdbm_open - Implements #hcache_open_t
+ */
 static void *hcache_gdbm_open(const char *path)
 {
   int pagesize;
@@ -51,6 +54,9 @@ static void *hcache_gdbm_open(const char *path)
   return gdbm_open((char *) path, pagesize, GDBM_READER, 00600, NULL);
 }
 
+/**
+ * hcache_gdbm_fetch - Implements #hcache_fetch_t
+ */
 static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
   datum dkey;
@@ -67,11 +73,17 @@ static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
   return data.dptr;
 }
 
+/**
+ * hcache_gdbm_free - Implements #hcache_free_t
+ */
 static void hcache_gdbm_free(void *vctx, void **data)
 {
   FREE(data);
 }
 
+/**
+ * hcache_gdbm_store - Implements #hcache_store_t
+ */
 static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   datum dkey;
@@ -91,6 +103,9 @@ static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *da
   return gdbm_store(db, dkey, databuf, GDBM_REPLACE);
 }
 
+/**
+ * hcache_gdbm_delete - Implements #hcache_delete_t
+ */
 static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
 {
   datum dkey;
@@ -106,6 +121,9 @@ static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
   return gdbm_delete(db, dkey);
 }
 
+/**
+ * hcache_gdbm_close - Implements #hcache_close_t
+ */
 static void hcache_gdbm_close(void **ctx)
 {
   if (!ctx)
@@ -115,6 +133,9 @@ static void hcache_gdbm_close(void **ctx)
   gdbm_close(db);
 }
 
+/**
+ * hcache_gdbm_backend - Implements #hcache_backend_t
+ */
 static const char *hcache_gdbm_backend(void)
 {
   return gdbm_version;

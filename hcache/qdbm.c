@@ -37,6 +37,9 @@
 #include "backend.h"
 #include "options.h"
 
+/**
+ * hcache_qdbm_open - Implements #hcache_open_t
+ */
 static void *hcache_qdbm_open(const char *path)
 {
   int flags = VL_OWRITER | VL_OCREAT;
@@ -47,6 +50,9 @@ static void *hcache_qdbm_open(const char *path)
   return vlopen(path, flags, VL_CMPLEX);
 }
 
+/**
+ * hcache_qdbm_fetch - Implements #hcache_fetch_t
+ */
 static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
@@ -56,11 +62,17 @@ static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
   return vlget(db, key, keylen, NULL);
 }
 
+/**
+ * hcache_qdbm_free - Implements #hcache_free_t
+ */
 static void hcache_qdbm_free(void *ctx, void **data)
 {
   FREE(data);
 }
 
+/**
+ * hcache_qdbm_store - Implements #hcache_store_t
+ */
 static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   if (!ctx)
@@ -73,6 +85,9 @@ static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *da
   return success ? 0 : dpecode ? dpecode : -1;
 }
 
+/**
+ * hcache_qdbm_delete - Implements #hcache_delete_t
+ */
 static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
@@ -85,6 +100,9 @@ static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
   return success ? 0 : dpecode ? dpecode : -1;
 }
 
+/**
+ * hcache_qdbm_close - Implements #hcache_close_t
+ */
 static void hcache_qdbm_close(void **ctx)
 {
   if (!ctx || !*ctx)
@@ -94,6 +112,9 @@ static void hcache_qdbm_close(void **ctx)
   vlclose(db);
 }
 
+/**
+ * hcache_qdbm_backend - Implements #hcache_backend_t
+ */
 static const char *hcache_qdbm_backend(void)
 {
   return "qdbm " _QDBM_VERSION;

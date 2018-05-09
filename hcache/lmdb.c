@@ -61,9 +61,9 @@ struct HcacheLmdbCtx
 };
 
 /**
- * mdb_get_r_txn
- * @retval num
- * @param ctx
+ * mdb_get_r_txn - Get an LMDB read transaction
+ * @param ctx LMDB context
+ * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
 static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
 {
@@ -87,9 +87,9 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
 }
 
 /**
- * mdb_get_w_txn
- * @retval num
- * @param ctx
+ * mdb_get_w_txn - Get an LMDB write transaction
+ * @param ctx LMDB context
+ * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
 static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
 {
@@ -113,6 +113,9 @@ static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
   return rc;
 }
 
+/**
+ * hcache_lmdb_open - Implements #hcache_open_t
+ */
 static void *hcache_lmdb_open(const char *path)
 {
   int rc;
@@ -165,6 +168,9 @@ fail_env:
   return NULL;
 }
 
+/**
+ * hcache_lmdb_fetch - Implements #hcache_fetch_t
+ */
 static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
 {
   MDB_val dkey;
@@ -201,11 +207,17 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.mv_data;
 }
 
+/**
+ * hcache_lmdb_free - Implements #hcache_free_t
+ */
 static void hcache_lmdb_free(void *vctx, void **data)
 {
   /* LMDB data is owned by the database */
 }
 
+/**
+ * hcache_lmdb_store - Implements #hcache_store_t
+ */
 static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   MDB_val dkey;
@@ -238,6 +250,9 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
   return rc;
 }
 
+/**
+ * hcache_lmdb_delete - Implements #hcache_delete_t
+ */
 static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
 {
   MDB_val dkey;
@@ -268,6 +283,9 @@ static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   return rc;
 }
 
+/**
+ * hcache_lmdb_close - Implements #hcache_close_t
+ */
 static void hcache_lmdb_close(void **vctx)
 {
   if (!vctx || !*vctx)
@@ -286,6 +304,9 @@ static void hcache_lmdb_close(void **vctx)
   FREE(vctx);
 }
 
+/**
+ * hcache_lmdb_backend - Implements #hcache_backend_t
+ */
 static const char *hcache_lmdb_backend(void)
 {
   return "lmdb " MDB_VERSION_STRING;
