@@ -1451,7 +1451,7 @@ msgstr "信件在此限制视图中不可见。"
 #: curs_main.c:1207
 #, c-format
 msgid "Fetching %s from server..."
-msgstr "正在从服务器上更新 %s"
+msgstr "正在从服务器上取回 %s..."
 
 #: curs_main.c:1217
 #, c-format
@@ -2300,12 +2300,12 @@ msgstr "正在取消订阅 %s..."
 #: imap/imap.c:1753 init.c:4264
 #, c-format
 msgid "Subscribed to %s"
-msgstr "已订阅 %s..."
+msgstr "已订阅 %s"
 
 #: imap/imap.c:1755 init.c:4318
 #, c-format
 msgid "Unsubscribed from %s"
-msgstr "已取消订阅 %s..."
+msgstr "已取消订阅 %s"
 
 #: imap/imap.c:1934 imap/message.c:1461
 #, fuzzy, c-format
@@ -2604,18 +2604,18 @@ msgid "out of arguments"
 msgstr "参数不够用"
 
 #: init.c:4259
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "已订阅 %s..."
+msgstr "无法订阅 %s"
 
 #: init.c:4275 init.c:4329
 msgid "No folder specified"
 msgstr "没有指定文件夹"
 
 #: init.c:4313
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "已取消订阅 %s..."
+msgstr "无法取消订阅 %s"
 
 #: keymap.c:281 keymap.c:289
 #, c-format
@@ -5447,7 +5447,7 @@ msgstr "打开下一个有新邮件的信箱"
 #: opcodes.h:292
 #, fuzzy
 msgid "open highlighted mailbox"
-msgstr "正在重新打开信箱..."
+msgstr "打开选中的信箱"
 
 #: opcodes.h:293
 #, fuzzy
