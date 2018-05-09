@@ -451,9 +451,8 @@ msgid "Bounce message to: "
 msgstr "退回信件至："
 
 #: commands.c:297 recvcmd.c:165
-#, fuzzy
 msgid "Bounce tagged messages to: "
-msgstr "退回信件至："
+msgstr "退回已标记的信件至："
 
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
@@ -2957,7 +2956,7 @@ msgstr "无法打开信件文件：%s"
 #: mutt/logging.c:137
 #, fuzzy, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "正在使用级别 %d 进行调试。\n"
+msgstr "正在使用级别 %d 进行调试，输出到文件 '%s'"
 
 #: mutt/logging.c:188
 #, fuzzy, c-format
@@ -5265,11 +5264,11 @@ msgstr "标记当前条目"
 
 #: opcodes.h:231
 msgid "apply next function to tagged messages"
-msgstr "对已标记信息应用下一功能"
+msgstr "对已标记的信件应用下一功能"
 
 #: opcodes.h:232
 msgid "apply next function ONLY to tagged messages"
-msgstr "“仅”对已标记信息应用下一功能"
+msgstr "“仅”对已标记的信件应用下一功能"
 
 #: opcodes.h:233
 msgid "tag the current subthread"
@@ -5924,7 +5923,7 @@ msgstr "无法建立 %s。"
 
 #: recvcmd.c:711
 msgid "Can't find any tagged messages."
-msgstr "无法找到任何已标记信件。"
+msgstr "无法找到任何已标记的信件。"
 
 #: recvcmd.c:747 send.c:800
 msgid "No mailing lists found!"
