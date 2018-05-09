@@ -7,11 +7,12 @@
 # Weichung Chau <weichung@mail.cynix.com.tw>, 2001
 # Anthony Wong <ypwong@debian.org>, 2001
 # Deng Xiyue <manphiz@gmail.com>, 2009
-# Bo Yu <tsu.yubo@gmail.com>, 2017
+# Bo Yu <tsu.yubo@gmail.com>, 2017-2018
+# Zero King <l2dy@macports.org>, 2018
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20180223\n"
+"Project-Id-Version: neomutt-20180323\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-09 05:48+0100\n"
 "PO-Revision-Date: 2009-06-28 14:30+0800\n"

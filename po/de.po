@@ -8,10 +8,11 @@
 # Rocco Rutte <pdmef@gmx.net>, 2008-2009
 # Antonio Radici <antonio@dyne.org>, 2010, 2016
 # André Berger <andre.berger@web.de>, 2016-2018
+# Floyd Anderson <f.a@31c0.net>, 2018
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20180223\n"
+"Project-Id-Version: neomutt-20180323\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-09 05:48+0100\n"
 "PO-Revision-Date: 2018-03-02 23:31+0100\n"
