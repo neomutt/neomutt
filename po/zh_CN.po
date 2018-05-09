@@ -495,14 +495,12 @@ msgid "No printing command has been defined."
 msgstr "未定义打印命令"
 
 #: commands.c:544
-#, fuzzy
 msgid "Print message?"
 msgstr "打印信件？"
 
 #: commands.c:544
-#, fuzzy
 msgid "Print tagged messages?"
-msgstr "打印信件？"
+msgstr "打印已标记的信件？"
 
 #: commands.c:550
 #, fuzzy
@@ -836,9 +834,8 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1195
-#, fuzzy
 msgid "Not sending this message."
-msgstr "发送信件出错。"
+msgstr "未发送此信件。"
 
 #: compose.c:1286
 #, fuzzy
@@ -2539,9 +2536,9 @@ msgid "%s: invalid value"
 msgstr "%s：无效的值"
 
 #: init.c:2822
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid backend"
-msgstr "%s：无效的值"
+msgstr "%s：无效的后端"
 
 #: init.c:2830
 #, c-format
@@ -2595,9 +2592,8 @@ msgid "Error in command line: %s"
 msgstr "命令行有错：%s"
 
 #: init.c:3806
-#, fuzzy
 msgid "unable to determine nodename via uname()"
-msgstr "无法确定用户名"
+msgstr "无法通过 uname() 确定节点名称"
 
 #: init.c:4126
 msgid "-group: no group name"
@@ -3048,7 +3044,7 @@ msgstr "oac"
 
 #: muttlib.c:1307
 msgid "Can't save message to POP mailbox."
-msgstr "无法将新建保存到 POP 信箱。"
+msgstr "无法将信件保存到 POP 信箱。"
 
 #: muttlib.c:1316
 #, c-format
@@ -3056,9 +3052,8 @@ msgid "Append messages to %s?"
 msgstr "附加信件到 %s 末尾?"
 
 #: muttlib.c:1328
-#, fuzzy
 msgid "Can't save message to news server."
-msgstr "正在删除伺服器上的信件..."
+msgstr "无法将信件保存到新闻服务器。"
 
 #: muttlib.c:1337
 #, c-format
@@ -3106,14 +3101,13 @@ msgid "Cannot open notmuch database: %s: %s"
 msgstr "不能够打开 notmuch 数据库: %s: %s"
 
 #: mutt_notmuch.c:580
-#, fuzzy
 msgid "unknown reason"
 msgstr "未知原因"
 
 #: mutt_notmuch.c:1035
-#, fuzzy, c-format
+#, c-format
 msgid "Reading messages..."
-msgstr "正在发送信件..."
+msgstr "正在读取信件..."
 
 #: mutt_notmuch.c:1852
 #, fuzzy
@@ -3884,7 +3878,7 @@ msgstr "导出密钥时出错：%s\n"
 #: ncrypt/crypt_gpgme.c:4780
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
-msgstr "PGP 钥匙 %s。"
+msgstr "PGP 钥匙 0x%s。"
 
 #: ncrypt/crypt_gpgme.c:4823
 msgid "GPGME: OpenPGP protocol not available"
@@ -4347,9 +4341,8 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: newsrc.c:1026
-#, fuzzy
 msgid "No news server defined!"
-msgstr "没有被定义的 POP 使用者名称。"
+msgstr "未定义新闻服务器！"
 
 #: newsrc.c:1040
 #, fuzzy, c-format
@@ -4967,14 +4960,12 @@ msgid "open a different folder in read only mode"
 msgstr "用只读模式打开另一个文件夹"
 
 #: opcodes.h:155
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "打开另一个文件夹"
+msgstr "打开另一个新闻组"
 
 #: opcodes.h:156
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "用只读模式打开另一个文件夹"
+msgstr "用只读模式打开另一个新闻组"
 
 #: opcodes.h:157
 msgid "clear a status flag from a message"
@@ -5207,7 +5198,7 @@ msgstr "重新叫出一封被延迟寄出的信件"
 #: opcodes.h:213
 #, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "线索中有尚未读取的信件。"
+msgstr "重新构建包含当前信件的线索。"
 
 #: opcodes.h:214
 msgid "clear and redraw the screen"
@@ -5350,7 +5341,7 @@ msgstr "显示 MIME 附件"
 #: opcodes.h:248
 #, fuzzy
 msgid "show the raw message"
-msgstr "编辑原始信件"
+msgstr "显示原始信件"
 
 #: opcodes.h:249
 msgid "display the keycode for a key press"
@@ -5402,14 +5393,12 @@ msgid "insert a remailer into the chain"
 msgstr "插入转发者到链"
 
 #: opcodes.h:265
-#, fuzzy
 msgid "accept the chain constructed"
-msgstr "接受创建的链"
+msgstr "接受构建的链"
 
 #: opcodes.h:272
-#, fuzzy
 msgid "open a different virtual folder"
-msgstr "打开另一个文件夹"
+msgstr "打开另一个虚拟文件夹"
 
 #: opcodes.h:273
 msgid "read entire thread of the current message"
@@ -5887,12 +5876,11 @@ msgstr "无子部分可显示！"
 
 #: recvattach.c:1265
 msgid "Can't delete attachment from POP server."
-msgstr "无法从 POP 服务器上删除附件"
+msgstr "无法从 POP 服务器上删除附件。"
 
 #: recvattach.c:1274
-#, fuzzy
 msgid "Can't delete attachment from news server."
-msgstr "无法从 POP 服务器上删除附件"
+msgstr "无法从新闻服务器上删除附件。"
 
 #: recvattach.c:1281
 msgid "Deletion of attachments from encrypted messages is unsupported."
