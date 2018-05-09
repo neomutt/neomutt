@@ -7,10 +7,7 @@
 # Michael Sobolev <mss@transas.com>, 1999
 # Andrew W. Nosenko <awn@bcs.zp.ua>, 2000
 # Alexey Vyskubov <alexey@pepper.spb.ru>, 2001-2010,2012,2014,2016
-# Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2017
-#
-# To contact translators, please use neomutt-ru mailing list:
-#   http://woe.spb.ru/mailman/listinfo/neomutt-ru
+# Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2018
 #
 msgid ""
 msgstr ""
@@ -290,9 +287,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:1662 browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "Почтовый ящик удален."
+msgstr "Не удалось удалить почтовый ящик."
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -985,7 +981,7 @@ msgstr "Сообщение записано."
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Поддержка PGP не настроена"
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -993,7 +989,7 @@ msgstr "S/MIME уже используется. Очистить и продол
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Поддержка S/MIME не настроена"
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -2377,9 +2373,9 @@ msgid "Mailbox renamed."
 msgstr "Почтовый ящик переименован."
 
 #: imap/command.c:158
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Почтовый ящик закрыт"
+msgstr "Почтовый ящик %s@%s закрыт"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, c-format
@@ -3385,14 +3381,12 @@ msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr "Письмо не отправлено: невозможно использовать PGP/текст с вложениями."
 
 #: ncrypt/crypt.c:172
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "Невозможно использовать PGP/текст с вложениями. Применить PGP/MIME?"
+msgstr "Невозможно использовать PGP/текст с format=flowed. Применить PGP/MIME?"
 
 #: ncrypt/crypt.c:176
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "Письмо не отправлено: невозможно использовать PGP/текст с вложениями."
+msgstr "Письмо не отправлено: невозможно использовать PGP/текст с format=flowed."
 
 #: ncrypt/crypt.c:186 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:782
@@ -3434,7 +3428,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Ошибка: нарушена структура multipart/signed-сообщения! --]\n"
+"[-- Ошибка: отсутствует или нарушена структура multipart/signed-сообщения! "
 "\n"
 
 #: ncrypt/crypt.c:1064
