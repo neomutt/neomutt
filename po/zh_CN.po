@@ -2364,14 +2364,13 @@ msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE(执行删除)失败"
 
 #: imap/imap.c:2582
-#, fuzzy
 msgid "IMAP server doesn't support custom flags"
-msgstr "SMTP 服务器不支持认证"
+msgstr "IMAP 服务器不支持自定义标记"
 
 #: imap/imap.c:2626
 #, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "无效  "
+msgstr "无效的 IMAP 标记"
 
 #: imap/message.c:477 mx.c:1326
 msgid "Integer overflow -- can't allocate memory."
@@ -2583,7 +2582,7 @@ msgstr "source：%s 有错误"
 #: init.c:3030
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
-msgstr "信件无法打印"
+msgstr "source：文件 %s 无法被加载。"
 
 #: init.c:3089
 #, c-format
@@ -2614,9 +2613,8 @@ msgid "Could not subscribe to %s"
 msgstr "已订阅 %s..."
 
 #: init.c:4275 init.c:4329
-#, fuzzy
 msgid "No folder specified"
-msgstr "没有指定标题。"
+msgstr "没有指定文件夹。"
 
 #: init.c:4313
 #, fuzzy, c-format
@@ -3128,9 +3126,9 @@ msgid "Can't write to virtual folder."
 msgstr "无法添加到文件夹末尾：%s"
 
 #: mutt_socket.c:89
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL 不可用。"
+msgstr "SSL 不可用，无法连接到 %s"
 
 #: mx.c:526
 #, fuzzy, c-format
@@ -3875,9 +3873,9 @@ msgid "Please enter the key ID: "
 msgstr "请输入密钥 ID："
 
 #: ncrypt/crypt_gpgme.c:4761
-#, fuzzy, c-format
+#, c-format
 msgid "Error exporting key: %s\n"
-msgstr "取出密钥数据出错！\n"
+msgstr "导出密钥时出错：%s\n"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -4387,18 +4385,17 @@ msgid "Connected to %s. %s"
 msgstr "正在连接到 %s..."
 
 #: nntp.c:690
-#, fuzzy
 msgid "Posting is ok."
-msgstr "无事可做。"
+msgstr "允许发帖。"
 
 #: nntp.c:690
 msgid "Posting is NOT ok."
-msgstr "发帖不成功"
+msgstr "不允许发帖。"
 
 #: nntp.c:819
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "到 %s 的连接已关闭"
+msgstr "到 %s 的连接已关闭。重新连接吗？"
 
 #: nntp.c:1293
 #, fuzzy
@@ -4587,9 +4584,8 @@ msgid "edit attachment using mailcap entry"
 msgstr "使用 mailcap 条目编辑附件"
 
 #: opcodes.h:62
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "编辑抄送(CC)列表"
+msgstr "编辑新闻组列表"
 
 #: opcodes.h:63
 msgid "edit the Reply-To field"
@@ -4604,9 +4600,8 @@ msgid "edit the TO list"
 msgstr "编辑 TO 列表"
 
 #: opcodes.h:66
-#, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "编辑 Reply-To 栏位"
+msgstr "编辑 X-Comment-To 栏位"
 
 #: opcodes.h:67
 msgid "get a temporary copy of an attachment"
@@ -5430,7 +5425,7 @@ msgstr "向后移动虚拟文件夹时间窗口"
 
 #: opcodes.h:276
 msgid "shifts virtual folder time window forwards"
-msgstr "转发虚拟文件时间窗口"
+msgstr "向前移动虚拟文件夹时间窗口"
 
 #: opcodes.h:282
 msgid "check for classic PGP"
@@ -5587,9 +5582,8 @@ msgid "Error re-opening memstream"
 msgstr "打开信箱时出错"
 
 #: pattern.c:975
-#, fuzzy
 msgid "Error opening /dev/null"
-msgstr "无法打开 /dev/null"
+msgstr "打开 /dev/null 时出错"
 
 #: pattern.c:1135 pattern.c:1306
 #, c-format
