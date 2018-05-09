@@ -1236,7 +1236,7 @@ msgstr "证书不是 X.509"
 
 #: conn/ssl_gnutls.c:435 conn/ssl_gnutls.c:591
 msgid "Error initialising gnutls certificate data"
-msgstr "无法初始化 gnutls 证书数据。"
+msgstr "无法初始化 gnutls 证书数据"
 
 #: conn/ssl_gnutls.c:441 conn/ssl_gnutls.c:597
 msgid "Error processing certificate data"
@@ -1442,7 +1442,7 @@ msgstr "请输入信件 ID："
 
 #: curs_main.c:1177
 msgid "Article has no parent reference."
-msgstr "文本没有父索引"
+msgstr "帖子没有父索引。"
 
 #: curs_main.c:1201
 msgid "Message is not visible in limited view."
@@ -1456,11 +1456,11 @@ msgstr "正在从服务器上更新 %s"
 #: curs_main.c:1217
 #, c-format
 msgid "Article %s not found on the server."
-msgstr "文本 %s 没有在服务器上找到"
+msgstr "帖子 %s 没有在服务器上找到。"
 
 #: curs_main.c:1236
 msgid "No Message-Id. Unable to perform operation."
-msgstr "没有信件 Id。不能够执行操作"
+msgstr "没有信件 Id。无法执行操作。"
 
 #: curs_main.c:1240 imap/message.c:788 nntp.c:1333 pop.c:330
 msgid "Fetching message headers..."
@@ -1544,11 +1544,11 @@ msgstr "没有虚拟文件夹，正在中止。"
 
 #: curs_main.c:1761
 msgid "Failed to read thread, aborting."
-msgstr "不能够读取thread，中止"
+msgstr "无法读取线索，正在中止。"
 
 #: curs_main.c:1793 mx.c:1458 mx.c:1475
 msgid "Folder doesn't support tagging, aborting."
-msgstr "文件件不支持标签，正在终止"
+msgstr "文件夹不支持标签，正在终止。"
 
 #: curs_main.c:1808
 msgid "No tag specified, aborting."
@@ -1561,7 +1561,7 @@ msgstr "更新标签中..."
 
 #: curs_main.c:1857
 msgid "Failed to modify tags, aborting."
-msgstr "不能够修改标签。正在中止"
+msgstr "无法修改标签，正在中止。"
 
 #: curs_main.c:1898
 msgid "No query, aborting."
@@ -1569,7 +1569,7 @@ msgstr "没有查询，正在中止。"
 
 #: curs_main.c:1902 curs_main.c:1922 curs_main.c:1941
 msgid "Failed to create query, aborting."
-msgstr "不能查，正在中止"
+msgstr "无法创建查询，正在中止。"
 
 #: curs_main.c:1911 curs_main.c:1930
 msgid "Windowed queries disabled."
@@ -1750,9 +1750,9 @@ msgstr "信件热键"
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
 #: curs_main.c:3055
-#, fuzzy, c-format
+#, c-format
 msgid "Message bound to %s."
-msgstr "信件已退回 %s"
+msgstr "信件已退回给 %s 。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
@@ -2240,7 +2240,7 @@ msgstr "信箱已改名。"
 #: imap/command.c:158
 #, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "信箱%s@%s已关闭。"
+msgstr "信箱%s@%s已关闭"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, c-format
@@ -2610,7 +2610,7 @@ msgstr "已订阅 %s..."
 
 #: init.c:4275 init.c:4329
 msgid "No folder specified"
-msgstr "没有指定文件夹。"
+msgstr "没有指定文件夹"
 
 #: init.c:4313
 #, fuzzy, c-format
@@ -2924,7 +2924,7 @@ msgstr "正在扫描 %s..."
 
 #: mh.c:1580 mh.c:1668
 msgid "Could not flush message to disk"
-msgstr "无法将信件导出到硬盘。"
+msgstr "无法将信件导出到硬盘"
 
 #: mh.c:1620
 #, fuzzy
@@ -3117,7 +3117,7 @@ msgstr "父信件在此限制视图中不可见。"
 #: mutt_notmuch.c:2758
 #, fuzzy
 msgid "Can't write to virtual folder."
-msgstr "无法添加到文件夹末尾：%s"
+msgstr "无法向虚拟文件夹写入。"
 
 #: mutt_socket.c:89
 #, c-format
@@ -3130,9 +3130,8 @@ msgid "Reading from %s interrupted..."
 msgstr "搜寻已中断。"
 
 #: mx.c:634
-#, fuzzy
 msgid "message(s) not deleted"
-msgstr "正在标记邮件为已删除..."
+msgstr "信件未被删除"
 
 #: mx.c:671
 msgid "Can't open trash folder"
@@ -3211,7 +3210,7 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "信件无法发送：内置PGP不能用于附件"
+msgstr "信件无法发送：内置PGP不能用于附件。"
 
 #: ncrypt/crypt.c:166
 #, fuzzy
@@ -3988,7 +3987,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:893 ncrypt/pgp.c:918
 msgid "Decryption failed"
-msgstr "解密失败。"
+msgstr "解密失败"
 
 #: ncrypt/pgp.c:1134
 msgid "Can't open PGP subprocess!"
@@ -4354,9 +4353,8 @@ msgid "Server closed connection!"
 msgstr "服务器关闭了连接！"
 
 #: nntp.c:178
-#, fuzzy
 msgid "Server doesn't support reader mode."
-msgstr "SMTP 服务器不支持认证"
+msgstr "服务器不支持阅读模式。"
 
 #: nntp.c:383 pop_auth.c:455 smtp.c:504 smtp.c:559
 msgid "No authenticators available"
@@ -4368,9 +4366,8 @@ msgid "%s authentication failed."
 msgstr "%s 认证失败。"
 
 #: nntp.c:676 nntp.c:764
-#, fuzzy
 msgid "Could not switch to reader mode."
-msgstr "无法建立临时邮件夹：%s"
+msgstr "无法切换到阅读模式。"
 
 #: nntp.c:689
 #, fuzzy, c-format
@@ -4391,9 +4388,8 @@ msgid "Connection to %s lost. Reconnect?"
 msgstr "到 %s 的连接已关闭。重新连接吗？"
 
 #: nntp.c:1293
-#, fuzzy
 msgid "Fetching list of articles..."
-msgstr "正在取回信件列表..."
+msgstr "正在取回帖子列表..."
 
 #: nntp.c:1503
 #, fuzzy, c-format
@@ -4413,12 +4409,12 @@ msgstr "新闻组 %s 已经从服务器上被移除。"
 #: nntp.c:1697
 #, c-format
 msgid "Article %d not found on the server."
-msgstr "帖子 %d 没有在服务器上找到"
+msgstr "帖子 %d 没有在服务器上找到。"
 
 #: nntp.c:1796 nntp.c:1829
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "无法读取：%s"
+msgstr "无法发帖：%s"
 
 #: nntp.c:1902 nntp.c:2339 pop.c:850 pop.c:917
 msgid "Checking for new messages..."
@@ -4522,9 +4518,8 @@ msgid "attach message(s) to this message"
 msgstr "将信件附加到此信件作为附件"
 
 #: opcodes.h:49
-#, fuzzy
 msgid "attach news article(s) to this message"
-msgstr "将文件附加到此信件作为附件"
+msgstr "将帖子附加到此信件作为附件"
 
 #: opcodes.h:50
 msgid "edit the BCC list"
@@ -5198,7 +5193,7 @@ msgstr "重新叫出一封被延迟寄出的信件"
 #: opcodes.h:213
 #, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "重新构建包含当前信件的线索。"
+msgstr "重新构建包含当前信件的线索"
 
 #: opcodes.h:214
 msgid "clear and redraw the screen"
@@ -6093,7 +6088,7 @@ msgstr "没有配置加密后端。邮件安全设置已禁用。"
 #: send.c:1822
 #, fuzzy
 msgid "Article not posted."
-msgstr "信件没有寄出。"
+msgstr "帖子没有发表。"
 
 #: send.c:1888
 msgid "Message postponed."
@@ -6137,7 +6132,7 @@ msgstr "正在后台发送。"
 
 #: send.c:2162
 msgid "Article posted."
-msgstr "信件发送"
+msgstr "帖子已发表。"
 
 #: send.c:2163
 msgid "Mail sent."
@@ -6169,7 +6164,7 @@ msgstr "无法打开 %s"
 
 #: sendlib.c:2499
 msgid "$sendmail must be set in order to send mail."
-msgstr "$sendmail 必须配置为了发送邮件"
+msgstr "为了发送邮件必须配置 $sendmail。"
 
 #: sendlib.c:2606
 #, c-format
@@ -6207,7 +6202,7 @@ msgstr "%s 认证失败，正在尝试下一个方法"
 
 #: smtp.c:500 smtp.c:518
 msgid "SASL authentication failed"
-msgstr "SASL 认证失败。"
+msgstr "SASL 认证失败"
 
 #: smtp.c:618
 msgid "SMTP server does not support authentication"
