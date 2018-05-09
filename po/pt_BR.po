@@ -805,11 +805,11 @@ msgstr "Anexo já é o último da lista."
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
-msgstr "Alternativas de agrupamento requerem ao menos 2 mensagens rotuladas."
+msgstr "Alternativas para grupo requerem ao menos 2 mensagens rotuladas."
 
 #: compose.c:1179
 msgid "Grouping multilingual requires at least 2 tagged messages."
-msgstr "Multilíngue de grupo requer ao menos 2 mensagens rotuladas."
+msgstr "Multilíngue para grupo requer ao menos 2 mensagens rotuladas."
 
 #: compose.c:1193
 msgid "Not all parts have Content-Language: set, continue?"
