@@ -457,14 +457,38 @@ command.
 .TS
 allbox tab(|);
 cb cb cb
-r li li .
+r lxi lxi .
 \0#N|system-wide|user-specific
-1|$XDG_CONFIG_DIRS/neomutt/neomuttrc|$XDG_CONFIG_HOME/neomutt/neomuttrc
-2|$XDG_CONFIG_DIRS/neomutt/Muttrc \fB*\fP\fR)\fP|$XDG_CONFIG_HOME/neomutt/muttrc
-3|@MAN_SYSCONFDIR@/neomuttrc|$XDG_CONFIG_HOME/mutt/neomuttrc
-4|@MAN_SYSCONFDIR@/Muttrc \fB*\fP\fR)\fP|$XDG_CONFIG_HOME/mutt/muttrc
-5|@MAN_DATADIR@/neomuttrc|~/.neomutt/neomuttrc
-6|@MAN_DATADIR@/Muttrc \fB*\fP\fR)\fP|~/.neomutt/muttrc
+1|T{
+\%$XDG_CONFIG_DIRS/\:neomutt/\:neomuttrc
+T}|T{
+\%$XDG_CONFIG_HOME/\:neomutt/\:neomuttrc
+T}
+2|T{
+\%$XDG_CONFIG_DIRS/\:neomutt/\:Muttrc \fB*\fP\fR)\fP
+T}|T{
+\%$XDG_CONFIG_HOME/\:neomutt/\:muttrc
+T}
+3|T{
+\%@MAN_SYSCONFDIR@/\:neomuttrc
+T}|T{
+\%$XDG_CONFIG_HOME/\:mutt/\:neomuttrc
+T}
+4|T{
+\%@MAN_SYSCONFDIR@/\:Muttrc \fB*\fP\fR)\fP
+T}|T{
+\%$XDG_CONFIG_HOME/\:mutt/\:muttrc
+T}
+5|T{
+\%@MAN_DATADIR@/\:neomuttrc
+T}|T{
+\%~/\:.neomutt/\:neomuttrc
+T}
+6|T{
+\%@MAN_DATADIR@/\:Muttrc \fB*\fP\fR)\fP
+T}|T{
+\%~/\:.neomutt/\:muttrc
+T}
 .T&
 r c li .
 7|\(em|~/.mutt/neomuttrc

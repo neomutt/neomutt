@@ -311,7 +311,7 @@ void *mutt_md5(const char *string, void *resbuf)
 }
 
 /**
- * mutt_md5_buf - Calculate the MD5 hash of a buffer
+ * mutt_md5_bytes - Calculate the MD5 hash of a buffer
  * @param buffer  Buffer to hash
  * @param len     Length of buffer
  * @param resbuf  Buffer for result
