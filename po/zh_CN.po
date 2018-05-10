@@ -5417,7 +5417,7 @@ msgstr "下一页"
 
 #: pager.c:1704
 msgid "View Attachm."
-msgstr "显示附件。"
+msgstr "显示附件"
 
 #: pager.c:1707 pager.c:1716
 msgid "Next"
