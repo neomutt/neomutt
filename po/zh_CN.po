@@ -470,13 +470,11 @@ msgid_plural "Bounce messages to %s"
 msgstr[0] "退回信件至 %s"
 
 #: commands.c:340 recvcmd.c:211
-#, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "信件未退回。"
 
 #: commands.c:350 recvcmd.c:230
-#, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "信件已退回。"
@@ -502,13 +500,11 @@ msgid "Print tagged messages?"
 msgstr "打印已标记的信件？"
 
 #: commands.c:550
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "信件已打印"
 
 #: commands.c:552
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "信件无法打印"
@@ -816,9 +812,8 @@ msgid "The fundamental part cannot be moved."
 msgstr "不能移动基本部分。"
 
 #: compose.c:1080
-#, fuzzy
 msgid "Attachment is already at bottom."
-msgstr "附件已被过滤。"
+msgstr "附件已在底部。"
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
@@ -2146,7 +2141,7 @@ msgstr "unhook：无法从 %2$s 中删除 %1$s。"
 #: imap/auth.c:118
 #, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "无可用认证"
+msgstr "无可用认证或错误的凭据"
 
 #: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
@@ -2331,10 +2326,10 @@ msgid "Expunge failed"
 msgstr "执行删除失败"
 
 #: imap/imap.c:2409
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "已标记的 %d 封信件已删除..."
+msgstr[0] "正在标记 %d 封邮件为已删除..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2444
@@ -2364,7 +2359,6 @@ msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP 服务器不支持自定义标记"
 
 #: imap/imap.c:2626
-#, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "无效的 IMAP 标记"
 
@@ -2507,9 +2501,9 @@ msgid "Invalid value for option %s: \"%s\""
 msgstr "选项 %s 的值无效：\"%s\""
 
 #: init.c:2538
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for name %s: \"%s\""
-msgstr "选项 %s 的值无效：\"%s\""
+msgstr "名称 %s 的值无效：\"%s\""
 
 #: init.c:2636
 #, c-format
@@ -2926,9 +2920,8 @@ msgid "Could not flush message to disk"
 msgstr "无法将信件导出到硬盘"
 
 #: mh.c:1620
-#, fuzzy
 msgid "md_commit_message(): unable to set time on file"
-msgstr "maildir_commit_message(): 无法给文件设置时间"
+msgstr "md_commit_message()：无法给文件设置时间"
 
 #: mutt/file.c:1134
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -3109,9 +3102,8 @@ msgid "Reading messages..."
 msgstr "正在读取信件..."
 
 #: mutt_notmuch.c:1852
-#, fuzzy
 msgid "No more messages in the thread."
-msgstr "父信件在此限制视图中不可见。"
+msgstr "此线索中没有更多信件。"
 
 #: mutt_notmuch.c:2758
 #, fuzzy
@@ -3141,12 +3133,12 @@ msgid "Mark all articles read?"
 msgstr "标记所有的帖子已经阅读？"
 
 #: mx.c:754
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read messages to %s?"
-msgstr "移动已读取的信件到 %s？"
+msgstr "移动 %d 封已读取的信件到 %s？"
 
 #: mx.c:771 mx.c:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "清除 %d 封已经被删除的信件？"
@@ -4598,14 +4590,12 @@ msgid "run ispell on the message"
 msgstr "对这封信件运行 ispell"
 
 #: opcodes.h:71
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "使用什么名字发送附件:"
+msgstr "在附件列表中向下移动附件"
 
 #: opcodes.h:72
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "使用什么名字发送附件:"
+msgstr "在附件列表中向上移动附件"
 
 #: opcodes.h:73
 msgid "compose new attachment using mailcap entry"
@@ -4772,7 +4762,7 @@ msgstr "向下卷动历史列表"
 #: opcodes.h:113
 #, fuzzy
 msgid "search through the history list"
-msgstr "向上卷动历史列表"
+msgstr "搜索历史列表"
 
 #: opcodes.h:114
 msgid "scroll up through the history list"
@@ -4883,9 +4873,8 @@ msgid "get parent of the current message"
 msgstr "您已经在第一封信了。"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s 不是目录"
+msgstr "转到父目录"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -4912,9 +4901,8 @@ msgid "move to the last entry"
 msgstr "移动到最后一项"
 
 #: opcodes.h:147
-#, fuzzy
 msgid "limit view to current thread"
-msgstr "标记当前线索"
+msgstr "将视图限制在当前线索中"
 
 #: opcodes.h:148
 msgid "reply to specified mailing list"
@@ -4991,12 +4979,12 @@ msgstr "连接已标记的信件到当前信件"
 #: opcodes.h:166
 #, fuzzy
 msgid "modify (notmuch/imap) tags"
-msgstr "修改 (notmuch) 标签"
+msgstr "修改 (notmuch/imap) 标签"
 
 #: opcodes.h:167
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "您已经在第一封信了。"
+msgstr "修改 (notmuch/imap) 标签并隐藏信件"
 
 #: opcodes.h:168
 msgid "jump to the next new message"
@@ -5448,7 +5436,7 @@ msgstr "将侧边栏向上滚动一页"
 #: opcodes.h:295
 #, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "移动到上一页"
+msgstr "移动到上一个信箱"
 
 #: opcodes.h:296
 #, fuzzy
@@ -5561,9 +5549,9 @@ msgid "error in pattern at: %s"
 msgstr "模式有错误：%s"
 
 #: pattern.c:1162
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "缺少参数"
+msgstr "缺少模式：%s"
 
 #: pattern.c:1181
 #, c-format
@@ -5875,7 +5863,7 @@ msgstr "从签名信件中删除附件可能导致签名失效。"
 
 #: recvattach.c:1305 recvattach.c:1320
 msgid "Only deletion of multipart attachments is supported."
-msgstr "只支持删除多段附件"
+msgstr "只支持删除多段附件。"
 
 #: recvcmd.c:54
 msgid "You may only bounce message/rfc822 parts."
@@ -6237,7 +6225,6 @@ msgid "Parent message is not visible in this limited view."
 msgstr "父信件在此限制视图中不可见。"
 
 #: version.c:64
-#, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
