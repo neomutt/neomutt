@@ -624,27 +624,27 @@ msgstr "没有附件。"
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:110
 msgid "From: "
-msgstr ""
+msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:112 send.c:255
 msgid "To: "
-msgstr ""
+msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:114 send.c:257
 msgid "Cc: "
-msgstr ""
+msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116 send.c:259
 msgid "Bcc: "
-msgstr ""
+msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 compose.c:970 send.c:291
 msgid "Subject: "
-msgstr ""
+msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120
@@ -654,7 +654,7 @@ msgstr "回复给: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:987
 msgid "Fcc: "
-msgstr ""
+msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:125
@@ -693,7 +693,7 @@ msgstr "发送后续信件到: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:145
 msgid "X-Comment-To: "
-msgstr "编辑评论 栏位"
+msgstr "X-Comment-To: "
 
 #: compose.c:150 compose.c:166
 msgid "Send"
@@ -2949,9 +2949,9 @@ msgid "Waiting for flock attempt... %d"
 msgstr "正在等待尝试 flock... %d"
 
 #: mutt/logging.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "无法打开信件文件：%s"
+msgstr "已关闭日志文件：%s"
 
 #: mutt/logging.c:137
 #, fuzzy, c-format
@@ -3649,24 +3649,20 @@ msgstr "[无法显示用户 ID (无效 DN)]"
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3572
-#, fuzzy
 msgid "Name: "
-msgstr "名称 ...: "
+msgstr "名称："
 
 #: ncrypt/crypt_gpgme.c:3572
-#, fuzzy
 msgid "Valid From: "
-msgstr "从此有效: %s\n"
+msgstr "从此有效："
 
 #: ncrypt/crypt_gpgme.c:3572
-#, fuzzy
 msgid "Valid To: "
-msgstr "有效至 .: %s\n"
+msgstr "有效至："
 
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Key Type: "
-msgstr "[-- 输入："
+msgstr "密钥类型："
 
 #: ncrypt/crypt_gpgme.c:3573
 #, fuzzy
@@ -3674,14 +3670,12 @@ msgid "Key Usage: "
 msgstr "密钥用法: "
 
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Serial-No: "
-msgstr "序列号 .: 0x%s\n"
+msgstr "序列号："
 
 #: ncrypt/crypt_gpgme.c:3574
-#, fuzzy
 msgid "Issued By: "
-msgstr "发放者 .: "
+msgstr "发放者："
 
 #: ncrypt/crypt_gpgme.c:3574
 #, fuzzy
@@ -4210,9 +4204,8 @@ msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "错误：无法创建 OpenSSL 子进程！"
 
 #: ncrypt/smime.c:1250
-#, fuzzy
 msgid "Label for certificate: "
-msgstr "无法从节点获得证书"
+msgstr "证书标签："
 
 #: ncrypt/smime.c:1344
 msgid "no certfile"
@@ -4544,9 +4537,8 @@ msgid "edit the file to be attached"
 msgstr "编辑附件文件"
 
 #: opcodes.h:56
-#, fuzzy
 msgid "edit the Followup-To field"
-msgstr "编辑 Reply-To 栏位"
+msgstr "编辑 Followup-To 栏位"
 
 #: opcodes.h:57
 msgid "edit the from field"
