@@ -880,8 +880,9 @@ msgid "The current attachment will be converted."
 msgstr "当前附件将被转换。"
 
 #: compose.c:1536
+#, fuzzy
 msgid "Empty Content-Language"
-msgstr ""
+msgstr "空 Content-Language"
 
 #: compose.c:1553
 msgid "Invalid encoding."
@@ -1629,7 +1630,7 @@ msgstr "无 Message-ID: 标头可用于链接线索"
 
 #: curs_main.c:2202
 msgid "First, please tag a message to be linked here"
-msgstr "首先，请标记一个信件以链接于此"
+msgstr "首先，请标记一封信件以链接于此"
 
 #: curs_main.c:2213
 msgid "Threads linked"
@@ -2302,10 +2303,10 @@ msgid "Unsubscribed from %s"
 msgstr "已取消订阅 %s"
 
 #: imap/imap.c:1934 imap/message.c:1461
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "正在复制 %d 个信件到 %s ..."
+msgstr[0] "正在复制 %d 封信件到 %s ..."
 
 #: imap/imap.c:1951 imap/imap.c:2244 imap/message.c:1499 muttlib.c:1351
 #, c-format
@@ -2425,14 +2426,14 @@ msgid "nospam: no matching pattern"
 msgstr "去掉垃圾邮件：无匹配的模板"
 
 #: init.c:1396
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr "缺少 -rx 或 -addr。"
+msgstr "%sgroup：缺少 -rx 或 -addr。"
 
 #: init.c:1419
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "警告：错误的 IDN '%s'.\n"
+msgstr "%sgroup：警告：错误的 IDN '%s'。\n"
 
 #: init.c:1624
 msgid "attachments: no disposition"
@@ -4543,7 +4544,7 @@ msgstr "编辑有标头的信件"
 #: opcodes.h:59
 #, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "编辑附件文件"
+msgstr "编辑附件 Content-Language"
 
 #: opcodes.h:60
 msgid "edit the message"
@@ -4798,7 +4799,7 @@ msgstr "将单词转换为大写"
 
 #: opcodes.h:122
 msgid "add, change, or delete a message's label"
-msgstr "增加，改变，或者删除一个信件的标签"
+msgstr "增加，改变，或者删除一封信件的标签"
 
 #: opcodes.h:123
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
@@ -5632,10 +5633,10 @@ msgid "Command UIDL is not supported by server."
 msgstr "服务器不支持 UIDL 命令。"
 
 #: pop.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d 个信件已丢失。请尝试重新打开信箱。"
+msgstr[0] "%d 封信件已丢失。请尝试重新打开信箱。"
 
 #: pop.c:469 pop.c:897
 #, c-format
@@ -5678,7 +5679,7 @@ msgstr "写入信箱时出错！"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [已读取 %d 封信件，共 %d 封]"
@@ -5857,9 +5858,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "不支持从加密信件中删除附件。"
 
 #: recvattach.c:1287
-#, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "从签名信件中删除附件可能导致签名失效。"
+msgstr "从已签名的信件中删除附件可能导致签名失效。"
 
 #: recvattach.c:1305 recvattach.c:1320
 msgid "Only deletion of multipart attachments is supported."
@@ -5870,7 +5870,6 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "您只能退回 message/rfc822 的部分。"
 
 #: recvcmd.c:232
-#, fuzzy
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "退回信件出错！"
@@ -6128,7 +6127,6 @@ msgid "%s isn't a regular file."
 msgstr "%s 不是常规文件。"
 
 #: sendlib.c:1093
-#, fuzzy
 msgid "Could not find any mime.types file."
 msgstr "找不到任何 mime.types 文件。"
 
