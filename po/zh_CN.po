@@ -748,7 +748,7 @@ msgstr "无操作"
 
 #: compose.c:277
 msgid " (inline PGP)"
-msgstr " (嵌入PGP)"
+msgstr " (嵌入 PGP)"
 
 #: compose.c:279
 msgid " (PGP/MIME)"
@@ -948,7 +948,7 @@ msgstr "信件已写入。"
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr "没有PGP后台配置文件"
+msgstr "未配置 PGP 后端"
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -956,7 +956,7 @@ msgstr "已经选择了 S/MIME 。清除并继续？"
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr "没有S/MIME 后台配置文件"
+msgstr "未配置 S/MIME 后端"
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -1455,7 +1455,7 @@ msgstr "帖子 %s 没有在服务器上找到。"
 
 #: curs_main.c:1236
 msgid "No Message-Id. Unable to perform operation."
-msgstr "没有信件 Id。无法执行操作。"
+msgstr "没有信件 ID。无法执行操作。"
 
 #: curs_main.c:1240 imap/message.c:788 nntp.c:1333 pop.c:330
 msgid "Fetching message headers..."
@@ -1752,8 +1752,9 @@ msgstr "信件已退回给 %s。"
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3063
+#, fuzzy
 msgid "No message ID to macro."
-msgstr "没有信件Id对应的宏。"
+msgstr "没有可标记的信件 ID。"
 
 #: curs_main.c:3105 pager.c:2961 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
@@ -3202,7 +3203,7 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "信件无法发送：内置PGP不能用于附件。"
+msgstr "信件无法发送：内置 PGP 不能用于附件。"
 
 #: ncrypt/crypt.c:166
 #, fuzzy
@@ -3212,7 +3213,7 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 #: ncrypt/crypt.c:170
 #, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "信件无法发送：内置PGP不能用于附件"
+msgstr "信件无法发送：内置 PGP 不能用于 format=flowed。"
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:778
@@ -3658,9 +3659,8 @@ msgid "Key Type: "
 msgstr "密钥类型："
 
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Key Usage: "
-msgstr "密钥用法: "
+msgstr "密钥用法："
 
 #: ncrypt/crypt_gpgme.c:3573
 msgid "Serial-No: "
@@ -3866,11 +3866,11 @@ msgstr "PGP 钥匙 0x%s。"
 
 #: ncrypt/crypt_gpgme.c:4823
 msgid "GPGME: OpenPGP protocol not available"
-msgstr "GPGME：OpenPGP协议不可用"
+msgstr "GPGME：OpenPGP 协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4831
 msgid "GPGME: CMS protocol not available"
-msgstr "GPGME：CMS协议不可用"
+msgstr "GPGME：CMS 协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4869
 #, fuzzy
@@ -4862,9 +4862,8 @@ msgid "get all children of the current message"
 msgstr "获取当前信件的所有子信件"
 
 #: opcodes.h:138
-#, fuzzy
 msgid "get message with Message-Id"
-msgstr "编辑有标头的信件"
+msgstr "通过信件 ID 获取信件"
 
 #: opcodes.h:139
 msgid "get parent of the current message"
@@ -5813,9 +5812,9 @@ msgstr "通过管道传给："
 #. application/octet-stream.
 #.
 #: recvattach.c:766
-#, fuzzy, c-format
+#, c-format
 msgid "I don't know how to print %s attachments!"
-msgstr "我不知道要怎么打印附件 %s！"
+msgstr "我不知道要如何打印 %s 类型的附件！"
 
 #: recvattach.c:841
 msgid "Print tagged attachment(s)?"
