@@ -813,7 +813,7 @@ msgstr "附件已在顶部。"
 #: compose.c:1069 compose.c:1085
 #, fuzzy
 msgid "The fundamental part cannot be moved."
-msgstr "当前附件不会被转换。"
+msgstr "不能移动基本部分。"
 
 #: compose.c:1080
 #, fuzzy
@@ -2550,9 +2550,9 @@ msgid "Error in %s, line %d: %s"
 msgstr "%s 发生错误，第 %d 行：%s"
 
 #: init.c:2959
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "%s 发生错误，第 %d 行：%s"
+msgstr "%s 出现警告，第 %d 行：%s"
 
 #: init.c:2984
 #, c-format
@@ -2565,10 +2565,10 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: 读取因 %s 中错误过多而中止"
 
 #: init.c:2995
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source：%s 中有错误"
+msgstr[0] "source：%2$s 中出现 %1$d 个警告"
 
 #: init.c:3022 mutt_lua.c:421
 #, c-format
@@ -3126,7 +3126,7 @@ msgstr "SSL 不可用，无法连接到 %s"
 #: mx.c:526
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
-msgstr "搜寻已中断。"
+msgstr "读取 %s 已中断..."
 
 #: mx.c:634
 msgid "message(s) not deleted"
@@ -4428,7 +4428,7 @@ msgstr "正在检查新邮件..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
-msgstr "不能够找到子贴因为服务器不支持XPAT命令。"
+msgstr "不能够找到子帖因为服务器不支持XPAT命令。"
 
 #: opcodes.h:30
 msgid "null operation"
@@ -5136,9 +5136,8 @@ msgid "pipe message/attachment to a shell command"
 msgstr "将 讯息/附件 通过管道传递给 shell 命令"
 
 #: opcodes.h:202
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "退回信件至 %s"
+msgstr "发帖至新闻组"
 
 #: opcodes.h:203
 msgid "move to the previous entry"
@@ -5234,9 +5233,8 @@ msgid "invoke a command in a subshell"
 msgstr "在 subshell 中调用命令"
 
 #: opcodes.h:226
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "排序信件"
+msgstr "显示日志（和调试）信息"
 
 #: opcodes.h:227
 msgid "sort messages"
@@ -5440,14 +5438,12 @@ msgid "open highlighted mailbox"
 msgstr "打开选中的信箱"
 
 #: opcodes.h:293
-#, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "向下卷动半页"
+msgstr "将侧边栏向下滚动一页"
 
 #: opcodes.h:294
-#, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "向上卷动半页"
+msgstr "将侧边栏向上滚动一页"
 
 #: opcodes.h:295
 #, fuzzy
