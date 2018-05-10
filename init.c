@@ -2827,7 +2827,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
 #endif
     else
     {
-      snprintf(err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].name);
+      snprintf(err->data, err->dsize, _("%s: unknown type"), (idx >= 0) ? MuttVars[idx].name : "unknown");
       r = -1;
       break;
     }

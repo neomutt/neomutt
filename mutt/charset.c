@@ -289,6 +289,7 @@ int mutt_ch_convert_nonmime_string(char **ps)
     s = mutt_str_substr_dup(u, u + ulen);
     int m = mutt_ch_convert_string(&s, fromcode, Charset, 0);
     FREE(&fromcode);
+    FREE(&s);
     if (m == 0)
     {
       return 0;

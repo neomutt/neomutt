@@ -1270,6 +1270,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
   if (mustfree)
     mutt_body_free(&a);
 
+  FREE(&preferred_languages);
   return rc;
 }
 
