@@ -3254,7 +3254,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- 错误：不一致的 multipart/signed 结构！ --]\n"
+"[-- 错误：缺失或格式错误的 multipart/signed 签名！ --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1058
@@ -3671,9 +3671,8 @@ msgid "Issued By: "
 msgstr "发放者："
 
 #: ncrypt/crypt_gpgme.c:3574
-#, fuzzy
 msgid "Subkey: "
-msgstr "子钥："
+msgstr "子密钥："
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -3684,9 +3683,9 @@ msgstr "[无效]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3669 ncrypt/crypt_gpgme.c:3807
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "密钥类型: %s, %lu 位 %s\n"
+msgstr "%s，%lu 位 %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3677 ncrypt/crypt_gpgme.c:3814
@@ -4859,9 +4858,8 @@ msgid "select the current entry"
 msgstr "选择当前条目"
 
 #: opcodes.h:137
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "您已经在第一封信了。"
+msgstr "获取当前信件的所有子信件"
 
 #: opcodes.h:138
 #, fuzzy
@@ -4869,9 +4867,8 @@ msgid "get message with Message-Id"
 msgstr "编辑有标头的信件"
 
 #: opcodes.h:139
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "您已经在第一封信了。"
+msgstr "获取当前信件的父信件"
 
 #: opcodes.h:140
 msgid "go to parent directory"
@@ -5084,9 +5081,8 @@ msgid "untag messages matching a pattern"
 msgstr "反标记符合某个模式的信件"
 
 #: opcodes.h:192
-#, fuzzy
 msgid "create a hotkey macro for the current message"
-msgstr "您已经在第一封信了。"
+msgstr "为当前信件创建一个热键宏"
 
 #: opcodes.h:193
 msgid "move to the middle of the page"
