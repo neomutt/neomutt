@@ -816,16 +816,19 @@ msgid "Attachment is already at bottom."
 msgstr "附件已在底部。"
 
 #: compose.c:1098
+#, fuzzy
 msgid "Grouping alternatives requires at least 2 tagged messages."
-msgstr ""
+msgstr "组合备选部分需要至少标记两个信件。"
 
 #: compose.c:1179
+#, fuzzy
 msgid "Grouping multilingual requires at least 2 tagged messages."
-msgstr ""
+msgstr "组合多语言部分需要至少标记两个信件。"
 
 #: compose.c:1193
+#, fuzzy
 msgid "Not all parts have Content-Language: set, continue?"
-msgstr ""
+msgstr "有些部分没有设置 Content-Language: ，是否继续？"
 
 #: compose.c:1195
 msgid "Not sending this message."
@@ -1762,7 +1765,7 @@ msgstr "将信件优先发送给发送者"
 
 #: curs_main.c:3108 pager.c:2927 pager.c:2939 pager.c:2964
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr "不能够在这个组里发文，也许可以修改，继续？"
+msgstr "不允许在这个组里发帖，帖子可能会被审核，继续？"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3173 pager.c:3120
@@ -6141,7 +6144,7 @@ msgstr "发送信件出错，子进程已退出 %d (%s)。"
 
 #: sendlib.c:2612
 msgid "Output of the delivery process"
-msgstr "Delivery process 的输出"
+msgstr "投递进程的输出"
 
 #: sendlib.c:2796
 #, c-format
