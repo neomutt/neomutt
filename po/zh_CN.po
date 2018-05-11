@@ -3177,18 +3177,16 @@ msgid "Passphrase(s) forgotten."
 msgstr "已忘记通行密码。"
 
 #: ncrypt/crypt.c:155
-#, fuzzy
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
+msgstr "嵌入 PGP 不支持附件。回到使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr "信件无法发送：嵌入 PGP 不能用于附件。"
 
 #: ncrypt/crypt.c:166
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
+msgstr "嵌入 PGP 不支持 format=flowed。回到使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:170
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
@@ -3354,7 +3352,7 @@ msgstr "签署数据时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:1038
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr "$pgp_sign_as 没有设置并且没有默认的特别钥匙在 ~/.gnupg/pgp.conf"
+msgstr "$pgp_sign_as 没有设置并且 ~/.gnupg/gpg.conf 没有指定默认密钥"
 
 #: ncrypt/crypt_gpgme.c:1238
 msgid "Warning: One of the keys has been revoked\n"
@@ -3513,7 +3511,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2638 ncrypt/pgp.c:521
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- PGP 公共钥匙区段开始 --]\n"
+msgstr "[-- PGP 公钥块开始 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2640 ncrypt/pgp.c:523
 msgid ""
@@ -3529,7 +3527,7 @@ msgstr "[-- PGP 消息结束 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2667 ncrypt/pgp.c:572
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- PGP 公共钥匙区段结束 --]\n"
+msgstr "[-- PGP 公钥块结束 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2669 ncrypt/pgp.c:574
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
@@ -3716,7 +3714,7 @@ msgstr "错误：证书链过长 - 就此打住\n"
 #: ncrypt/crypt_gpgme.c:3894 ncrypt/pgpkey.c:608
 #, c-format
 msgid "Key ID: 0x%s"
-msgstr "钥匙 ID：0x%s"
+msgstr "密钥 ID：0x%s"
 
 #: ncrypt/crypt_gpgme.c:3989
 #, c-format
@@ -3743,7 +3741,7 @@ msgstr "选择  "
 
 #: ncrypt/crypt_gpgme.c:4215 ncrypt/pgpkey.c:545
 msgid "Check key  "
-msgstr "检查钥匙  "
+msgstr "检查密钥  "
 
 #: ncrypt/crypt_gpgme.c:4231
 msgid "PGP and S/MIME keys matching"
@@ -3779,27 +3777,23 @@ msgstr "%s \"%s\"."
 
 #: ncrypt/crypt_gpgme.c:4275 ncrypt/pgpkey.c:628
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr "这个钥匙不能使用：过期/无效/已取消。"
+msgstr "无法使用这个密钥：已过期/已禁用/已吊销。"
 
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "ID 已经过期/无效/已取消。您真的要使用此密钥吗？"
+msgstr "ID 已过期/已禁用/已吊销。您真的要使用此密钥吗？"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "ID 无效。您真的要使用此密钥吗？"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "ID 仅勉强有效。您真的要使用此密钥吗？"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "ID 正确性未定义。您真的要使用此密钥吗？"
+msgstr "ID 有效性未定义。您真的要使用此密钥吗？"
 
 #: ncrypt/crypt_gpgme.c:4364 ncrypt/crypt_gpgme.c:4473 ncrypt/pgpkey.c:867
 #: ncrypt/pgpkey.c:990
@@ -3839,7 +3833,7 @@ msgstr "导出密钥时出错：%s\n"
 #: ncrypt/crypt_gpgme.c:4780
 #, c-format
 msgid "PGP Key 0x%s."
-msgstr "PGP 钥匙 0x%s。"
+msgstr "PGP 密钥 0x%s。"
 
 #: ncrypt/crypt_gpgme.c:4823
 msgid "GPGME: OpenPGP protocol not available"
@@ -4056,7 +4050,7 @@ msgstr "无法打开 /dev/null"
 #: ncrypt/pgpkey.c:801
 #, c-format
 msgid "PGP Key %s."
-msgstr "PGP 钥匙 %s。"
+msgstr "PGP 密钥 %s。"
 
 #: ncrypt/smime.c:144
 msgid "Enter S/MIME passphrase:"
@@ -4145,9 +4139,8 @@ msgid "S/MIME certificates matching \"%s\"."
 msgstr "S/MIME 证书匹配 \"%s\"。"
 
 #: ncrypt/smime.c:511
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "ID 无效。您真的要使用此密钥吗？"
+msgstr "ID 不可信。您真的要使用此密钥吗？"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "
