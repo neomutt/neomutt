@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180323\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-09 05:48+0100\n"
-"PO-Revision-Date: 2018-05-09 14:50+0000\n"
+"PO-Revision-Date: 2018-05-11 14:00+0000\n"
 "Last-Translator: Bo Yu <tsu.yubo@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -512,12 +512,12 @@ msgstr[0] "信件无法打印"
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:562
 msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
-msgstr "按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?: "
+msgstr "按日期(d)/发信人(f)/收信时间(r)/主题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:566
 msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
-msgstr "按日期(d)/发信人(f)/收信时间(r)/标题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?: "
+msgstr "按日期(d)/发信人(f)/收信时间(r)/主题(s)/收信人(o)/线索(t)/不排(u)/大小(z)/分数(c)/垃圾邮件(p)/标签(l)反向排序?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:570
@@ -1044,7 +1044,7 @@ msgstr "%s 有不安全的访问许可！"
 
 #: conn/ssl.c:368
 msgid "SSL disabled due to the lack of entropy"
-msgstr "SSL 因缺少足够的熵而禁用"
+msgstr "SSL 因缺少足够的熵而被禁用"
 
 #: conn/ssl.c:410
 msgid "Unknown"
@@ -1073,7 +1073,7 @@ msgstr "在您的系统上查找足够的熵时失败"
 
 #: conn/ssl.c:859
 msgid "cannot get certificate subject"
-msgstr "无法获取证书标题"
+msgstr "无法获取证书主题"
 
 #: conn/ssl.c:868 conn/ssl.c:876
 msgid "cannot get certificate common name"
@@ -2314,7 +2314,7 @@ msgstr "执行删除失败"
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "正在标记 %d 封邮件为已删除..."
+msgstr[0] "正在标记 %d 封信件为已删除..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2444
@@ -2372,7 +2372,7 @@ msgstr "正在取回信件..."
 
 #: imap/message.c:1085 pop.c:637
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr "信件索引不正确。请尝试重新打开邮件箱。"
+msgstr "信件索引不正确。请尝试重新打开信箱。"
 
 #: imap/message.c:1287
 msgid "Uploading message..."
@@ -2655,7 +2655,6 @@ msgstr "字符 = %s, 八进制 = %o, 十进制 = %d"
 
 #. L10N: Try to limit to 80 columns
 #: main.c:98
-#, fuzzy
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -2677,22 +2676,22 @@ msgid ""
 "  neomutt -v[v]\n"
 msgstr ""
 "用法：\n"
-"  neomutt [-Enx] [-e <命令>] [-F <文件>] [-H <文件>] [-i <文件>]\n"
+"  neomutt [-Enx] [-e <命令>] [-F <配置>] [-H <草稿>] [-i <文件>]\n"
 "          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
 "          <地址> [...]\n"
-"  neomutt [-nx] [-e <命令>] [-F <文件>] [-b <地址>] [-c <地址>]\n"
+"  neomutt [-nx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
 "          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件\n"
-"  neomutt [-nRy] [-e <命令>] [-F <文件>] [-f <文件>] [-m <类型>]\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -A <别名>\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -B\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -D [-S]\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -d <级别> -l <文件>\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -G\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -g <服务器>\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -p\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -Q <变量>\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -Z\n"
-"  neomutt [-n] [-e <命令>] [-F <文件>] -z [-f <文件>]\n"
+"  neomutt [-nRy] [-e <命令>] [-F <配置>] [-f <信箱>] [-m <类型>]\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -A <别名>\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -B\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -D [-S]\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -d <级别> -l <文件>\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -G\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -g <服务器>\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -p\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -Q <变量>\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -Z\n"
+"  neomutt [-n] [-e <命令>] [-F <配置>] -z [-f <信箱>]\n"
 "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns
@@ -2739,6 +2738,42 @@ msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
+"选项：\n"
+"  --            特殊参数使 NeoMutt 停止选项解析并将剩余参数当作地址，\n"
+"                即使它们以短划线开头\n"
+"  -A <别名>     扩展给出的别名并退出\n"
+"  -a <文件>     给信件添加一个或多个附件（必须是最后一个参数）\n"
+"                在 '--' 参数后添加地址\n"
+"  -B            以批处理模式运行（不启动 ncurses 用户界面）\n"
+"  -b <地址>     指定一个密送(BCC)收件人\n"
+"  -c <地址>     指定一个抄送(CC)收件人\n"
+"  -D            以 '键=值' 对的格式显示所有配置变量\n"
+"  -D -S         类似 -D，但隐藏敏感变量的值\n"
+"  -d <级别>     将调试输出记录到一个文件（默认 \"~/.neomuttdebug0\"）\n"
+"                级别的范围为1-5并影响复杂度\n"
+"  -E            撰写信件时编辑草稿 (-H) 或包含文件 (-i)\n"
+"  -e <命令>     指定初始化后要执行的命令\n"
+"  -F <配置>     指定替代的初始化文件\n"
+"  -f <信箱>     指定要读取的信箱\n"
+"  -G            以已订阅新闻组列表开始 NeoMutt\n"
+"  -g <服务器>   类似 -G，但从指定的新闻服务器开始\n"
+"  -H <草稿>     指定草稿文件以读取信件头和正文\n"
+"  -h            显示此帮助消息并退出\n"
+"  -i <文件>     指定要嵌入正文的文件\n"
+"  -l <文件>     指定调试输出的文件（默认 \"~/.neomuttdebug0\"）\n"
+"  -m <类型>     指定新创建信箱默认使用的信箱类型\n"
+"                类型可以是 MH, MMDF, Maildir 或 mbox（大小写不敏感）\n"
+"  -n            不读取系统范围的配置文件\n"
+"  -p            继续一个之前延迟寄送的信件，如果有\n"
+"  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）\n"
+"  -R            以只读模式打开信箱\n"
+"  -s <主题>     指定一个主题（如果有空格的话必须使用引号引起来）\n"
+"  -v            显示 NeoMutt 版本和编译时定义并退出\n"
+"  -vv           显示 NeoMutt 协议和版权信息并退出\n"
+"  -x            模拟 mailx(1) 发送模式\n"
+"  -y            以已定义信箱列表开始 NeoMutt\n"
+"  -Z            打开第一个有新信件的信箱，如果一个也没有的话立即退出并返回 1\n"
+"  -z            打开非空的第一个或 (-f) 指定的信箱否则立即退出并返回 1"
 
 #: main.c:179
 msgid "Error initializing terminal."
@@ -4380,7 +4415,7 @@ msgstr "无法发帖：%s"
 
 #: nntp.c:1902 nntp.c:2339 pop.c:850 pop.c:917
 msgid "Checking for new messages..."
-msgstr "正在检查新邮件..."
+msgstr "正在检查新信件..."
 
 #: nntp.c:2265
 #, c-format
@@ -4537,7 +4572,7 @@ msgstr "编辑 Reply-To 栏位"
 
 #: opcodes.h:64
 msgid "edit the subject of this message"
-msgstr "编辑此信件的标题"
+msgstr "编辑此信件的主题"
 
 #: opcodes.h:65
 msgid "edit the TO list"
@@ -5225,7 +5260,7 @@ msgstr "切换是否浏览信箱或所有文件"
 
 #: opcodes.h:236
 msgid "toggle a message's 'new' flag"
-msgstr "切换信件的'新邮件'标记"
+msgstr "切换信件的'新信件'标记"
 
 #: opcodes.h:237
 msgid "toggle view of read messages"
@@ -5599,7 +5634,7 @@ msgstr "无法将新建写入临时文件！"
 
 #: pop.c:766
 msgid "Marking messages deleted..."
-msgstr "正在标记邮件为已删除..."
+msgstr "正在标记信件为已删除..."
 
 #: pop.c:881
 msgid "POP host is not defined."
@@ -5942,11 +5977,11 @@ msgstr "错误：分数：无效数字"
 
 #: send.c:292
 msgid "No subject, abort?"
-msgstr "没有标题，中止吗？"
+msgstr "没有主题，中止吗？"
 
 #: send.c:294
 msgid "No subject, aborting."
-msgstr "没有标题，正在中止。"
+msgstr "没有主题，正在中止。"
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
@@ -6003,7 +6038,7 @@ msgstr "已中止未修改过的信件。"
 
 #: send.c:1784
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr "没有配置加密后端。邮件安全设置已禁用。"
+msgstr "没有配置加密后端。已禁用信件安全设置。"
 
 #: send.c:1822
 msgid "Article not posted."
@@ -6015,11 +6050,11 @@ msgstr "信件被延迟寄出。"
 
 #: send.c:1924
 msgid "No subject, abort sending?"
-msgstr "没有信件标题，要中止发送吗?"
+msgstr "没有主题，要中止发送吗?"
 
 #: send.c:1928 send.c:1934
 msgid "No subject specified."
-msgstr "没有指定标题。"
+msgstr "没有指定主题。"
 
 #: send.c:1940
 msgid "No newsgroup specified."
