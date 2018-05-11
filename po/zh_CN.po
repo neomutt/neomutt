@@ -2655,6 +2655,7 @@ msgstr "字符 = %s, 八进制 = %o, 十进制 = %d"
 
 #. L10N: Try to limit to 80 columns
 #: main.c:98
+#, fuzzy
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -2675,6 +2676,24 @@ msgid ""
 "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
 "  neomutt -v[v]\n"
 msgstr ""
+"用法：\n"
+"  neomutt [-Enx] [-e <命令>] [-F <文件>] [-H <文件>] [-i <文件>]\n"
+"          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
+"          <地址> [...]\n"
+"  neomutt [-nx] [-e <命令>] [-F <文件>] [-b <地址>] [-c <地址>]\n"
+"          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件\n"
+"  neomutt [-nRy] [-e <命令>] [-F <文件>] [-f <文件>] [-m <类型>]\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -A <别名>\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -B\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -D [-S]\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -d <级别> -l <文件>\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -G\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -g <服务器>\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -p\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -Q <变量>\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -Z\n"
+"  neomutt [-n] [-e <命令>] [-F <文件>] -z [-f <文件>]\n"
+"  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns
 #. If more space is needed add an indented line
