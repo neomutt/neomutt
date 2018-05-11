@@ -6154,7 +6154,6 @@ msgid ""
 msgstr "许多这里没有提到的人也贡献了代码，修正以及建议。\n"
 
 #: version.c:68
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -6193,7 +6192,6 @@ msgstr ""
 "或者发送一封邮件到：<neomutt-devel@neomutt.org>\n"
 
 #: version.c:91
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6201,8 +6199,8 @@ msgid ""
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins 与其他人。\n"
-"NeoMutt 不提供任何保证：请键入 'neomutt -vv' 以获取详细信息。\n"
-"NeoMutt 是自由软件, 欢迎您在某些条件下\n"
+"NeoMutt 不提供任何保证；请键入 'neomutt -vv' 以获取详细信息。\n"
+"NeoMutt 是自由软件，欢迎您在某些条件下\n"
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
 #: version.c:401
