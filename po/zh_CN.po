@@ -2957,9 +2957,9 @@ msgid "Debugging at level %d to file '%s'"
 msgstr "正在使用级别 %d 进行调试，输出到文件 '%s'"
 
 #: mutt/logging.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "正在使用级别 %d 进行调试。\n"
+msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -3069,9 +3069,9 @@ msgid "Password for %s@%s: "
 msgstr "%s@%s 的密码："
 
 #: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr "解析 mailto: 链接失败\n"
+msgstr "无法解析 notmuch 查询 URI：%s"
 
 #: mutt_notmuch.c:287
 #, c-format
@@ -3083,9 +3083,9 @@ msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week
 msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或者年)"
 
 #: mutt_notmuch.c:453
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "解析 mailto: 链接失败\n"
+msgstr "无法解析 notmuch 查询结果条数限制：%s"
 
 #: mutt_notmuch.c:561
 #, c-format
@@ -3448,16 +3448,16 @@ msgstr "亦即："
 
 #: ncrypt/crypt_gpgme.c:1472
 msgid "KeyID "
-msgstr "KeyID"
+msgstr "KeyID "
 
 #: ncrypt/crypt_gpgme.c:1481 ncrypt/crypt_gpgme.c:1486
 msgid "created: "
 msgstr "已建立："
 
 #: ncrypt/crypt_gpgme.c:1560
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr "获取密钥信息出错："
+msgstr "获取密钥 ID %s 的密钥信息出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:1567 ncrypt/crypt_gpgme.c:1582
 msgid "Good signature from:"
@@ -3876,49 +3876,44 @@ msgid "GPGME: CMS protocol not available"
 msgstr "GPGME：CMS 协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4869
-#, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
+msgstr "S/MIME 签署(s)，选择身份签署(a)，(p)gp，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:4871
 msgid "sapco"
-msgstr "esabpc"
+msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:4878
-#, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgstr "PGP 签署(s)，选择身份签署(a)，s/(m)ime，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:4880
 msgid "samco"
-msgstr "esabmc"
+msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4893
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
+msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4896
 msgid "esabpco"
-msgstr "esabpc"
+msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4902
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4905
 msgid "esabmco"
-msgstr "esabmc"
+msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:4918
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
@@ -3928,9 +3923,8 @@ msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:4927
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime 或清除(c)？"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:4929
@@ -3999,67 +3993,64 @@ msgstr "嵌入(i)"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1700
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 签署(s)，选择身份签署(a)，%s 格式，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1706
 msgid "saico"
-msgstr "esabc"
+msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1712
-#, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 签署(s)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1714
 msgid "saco"
-msgstr "esabc"
+msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1731
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1737
 msgid "esabico"
-msgstr "esabc"
+msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1743
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1746
 msgid "esabco"
-msgstr "esabc"
+msgstr "esabco"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1759
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，或清除(c)？"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1765
 msgid "esabic"
-msgstr "esabc"
+msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1771
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1773
@@ -4260,35 +4251,33 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2086
-#, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgstr "S/MIME 签署(s)，选择身份加密(w)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2089
 msgid "swaco"
-msgstr "eswsbc"
+msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2099
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2102
 msgid "eswabco"
-msgstr "eswsbc"
+msgstr "eswabco"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2111
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2114
 msgid "eswabc"
-msgstr "eswsbc"
+msgstr "eswabc"
 
 #: ncrypt/smime.c:2178
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
