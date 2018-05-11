@@ -549,9 +549,8 @@ msgid "Save to mailbox"
 msgstr "保存到信箱"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save tagged to mailbox"
-msgstr "保存 到信箱"
+msgstr "保存已标记的信件到信箱"
 
 #: commands.c:799
 msgid "Decode-copy to mailbox"
@@ -796,26 +795,22 @@ msgid "Attachment is already at top."
 msgstr "附件已在顶部。"
 
 #: compose.c:1069 compose.c:1085
-#, fuzzy
 msgid "The fundamental part cannot be moved."
-msgstr "不能移动基本部分。"
+msgstr "不能移动基础部分。"
 
 #: compose.c:1080
 msgid "Attachment is already at bottom."
 msgstr "附件已在底部。"
 
 #: compose.c:1098
-#, fuzzy
 msgid "Grouping alternatives requires at least 2 tagged messages."
 msgstr "组合备选部分需要至少标记两个信件。"
 
 #: compose.c:1179
-#, fuzzy
 msgid "Grouping multilingual requires at least 2 tagged messages."
 msgstr "组合多语言部分需要至少标记两个信件。"
 
 #: compose.c:1193
-#, fuzzy
 msgid "Not all parts have Content-Language: set, continue?"
 msgstr "有些部分没有设置 Content-Language: ，是否继续？"
 
@@ -1742,7 +1737,6 @@ msgstr "信件已退回给 %s。"
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3063
-#, fuzzy
 msgid "No message ID to macro."
 msgstr "没有可标记的信件 ID。"
 
@@ -2131,9 +2125,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook：无法从 %2$s 中删除 %1$s。"
 
 #: imap/auth.c:118
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "无可用认证或错误的凭据"
+msgstr "无可用认证方式或错误的凭据"
 
 #: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
@@ -2414,7 +2407,7 @@ msgstr "垃圾邮件：无匹配的模式"
 
 #: init.c:1223
 msgid "nospam: no matching pattern"
-msgstr "去掉垃圾邮件：无匹配的模板"
+msgstr "去掉垃圾邮件：无匹配的模式"
 
 #: init.c:1396
 #, c-format
@@ -2961,9 +2954,8 @@ msgid "Bad regex: %s"
 msgstr "错误的正则表达式：%s"
 
 #: mutt/regex.c:353
-#, fuzzy
 msgid "Not enough subexpressions for template"
-msgstr "没有足够的子表达式来用于垃圾邮件模板"
+msgstr "没有足够的子表达式来对应模板"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
@@ -3106,7 +3098,7 @@ msgid "SSL is unavailable, cannot connect to %s"
 msgstr "SSL 不可用，无法连接到 %s"
 
 #: mx.c:526
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
 msgstr "读取 %s 已中断..."
 
@@ -3191,7 +3183,7 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "信件无法发送：内置 PGP 不能用于附件。"
+msgstr "信件无法发送：嵌入 PGP 不能用于附件。"
 
 #: ncrypt/crypt.c:166
 #, fuzzy
@@ -3199,9 +3191,8 @@ msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:170
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "信件无法发送：内置 PGP 不能用于 format=flowed。"
+msgstr "信件无法发送：嵌入 PGP 不能用于 format=flowed。"
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:778
@@ -3846,7 +3837,7 @@ msgstr "导出密钥时出错：%s\n"
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
 #: ncrypt/crypt_gpgme.c:4780
-#, fuzzy, c-format
+#, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP 钥匙 0x%s。"
 
@@ -4317,7 +4308,7 @@ msgstr "服务器不支持阅读模式。"
 
 #: nntp.c:383 pop_auth.c:455 smtp.c:504 smtp.c:559
 msgid "No authenticators available"
-msgstr "无可用认证"
+msgstr "无可用认证方式"
 
 #: nntp.c:601
 #, c-format
@@ -4422,14 +4413,13 @@ msgstr "将信件转发给另一用户"
 
 #: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
-msgstr "交换目前所在文件夹位置在$folder存在的情况下"
+msgstr "在 $folder 存在的情况下交换目前所在文件夹位置"
 
 #: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "请选择本目录中一个新的文件"
 
 #: opcodes.h:38
-#, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "订阅当前信箱 (只适用于 IMAP/NNTP)"
 
@@ -4442,7 +4432,6 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "切换查看 全部/已订阅 的信箱 (只适用于 IMAP)"
 
 #: opcodes.h:41
-#, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "取消订阅当前信箱 (只适用于 IMAP/NNTP)"
 
@@ -4731,7 +4720,6 @@ msgid "scroll down through the history list"
 msgstr "向下卷动历史列表"
 
 #: opcodes.h:113
-#, fuzzy
 msgid "search through the history list"
 msgstr "搜索历史列表"
 
@@ -4773,11 +4761,11 @@ msgstr "增加，改变，或者删除一封信件的标签"
 
 #: opcodes.h:123
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "如果邮箱只读则浏览信件原文，否则修改信件原文"
 
 #: opcodes.h:124
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "修改信件原文（edit 和 edit-raw-message 同义）"
 
 #: opcodes.h:125
 msgid "edit attachment content type"
@@ -4944,12 +4932,10 @@ msgid "link tagged message to the current one"
 msgstr "连接已标记的信件到当前信件"
 
 #: opcodes.h:166
-#, fuzzy
 msgid "modify (notmuch/imap) tags"
 msgstr "修改 (notmuch/imap) 标签"
 
 #: opcodes.h:167
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "修改 (notmuch/imap) 标签并隐藏信件"
 
@@ -5134,7 +5120,6 @@ msgid "recall a postponed message"
 msgstr "重新叫出一封被延迟寄出的信件"
 
 #: opcodes.h:213
-#, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "重新构建包含当前信件的线索"
 
@@ -5303,27 +5288,22 @@ msgid "send the message through a mixmaster remailer chain"
 msgstr "通过 mixmaster 转发者链发送信件"
 
 #: opcodes.h:260
-#, fuzzy
 msgid "append a remailer to the chain"
 msgstr "附加转发者到链"
 
 #: opcodes.h:261
-#, fuzzy
 msgid "select the next element of the chain"
 msgstr "选择链中的下一个元素"
 
 #: opcodes.h:262
-#, fuzzy
 msgid "select the previous element of the chain"
 msgstr "选择链中的前一个元素"
 
 #: opcodes.h:263
-#, fuzzy
 msgid "delete a remailer from the chain"
-msgstr "删除转发者到链"
+msgstr "从链中删除转发者"
 
 #: opcodes.h:264
-#, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "插入转发者到链"
 
@@ -5377,17 +5357,15 @@ msgstr "查看密钥的用户 id"
 
 #: opcodes.h:290
 msgid "move the highlight to next mailbox"
-msgstr "移动光标到下一个信箱"
+msgstr "移动高亮到下一个信箱"
 
 #: opcodes.h:291
-#, fuzzy
 msgid "move the highlight to next mailbox with new mail"
-msgstr "打开下一个有新邮件的信箱"
+msgstr "移动高亮到下一个有新邮件的信箱"
 
 #: opcodes.h:292
-#, fuzzy
 msgid "open highlighted mailbox"
-msgstr "打开选中的信箱"
+msgstr "打开高亮的信箱"
 
 #: opcodes.h:293
 msgid "scroll the sidebar down 1 page"
@@ -5398,19 +5376,16 @@ msgid "scroll the sidebar up 1 page"
 msgstr "将侧边栏向上滚动一页"
 
 #: opcodes.h:295
-#, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "移动到上一个信箱"
+msgstr "移动高亮到上一个信箱"
 
 #: opcodes.h:296
-#, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "打开下一个有新邮件的信箱"
+msgstr "移动高亮到上一个有新邮件的信箱"
 
 #: opcodes.h:297
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "在信箱和虚拟信箱之间切换"
+msgstr "在信箱和虚拟信箱列表之间切换"
 
 #: opcodes.h:298
 msgid "make the sidebar (in)visible"
@@ -5485,9 +5460,8 @@ msgid "Invalid relative date: %s"
 msgstr "无效的相对日期：%s"
 
 #: pattern.c:652 pattern.c:759
-#, fuzzy
 msgid "No current message"
-msgstr "没有尚未读取的信件"
+msgstr "没有当前信件"
 
 #: pattern.c:780
 msgid "No Context"
@@ -6173,7 +6147,6 @@ msgid "Parent message is not available."
 msgstr "父信件不可用。"
 
 #: thread.c:1161
-#, fuzzy
 msgid "Root message is not visible in this limited view."
 msgstr "根信件在此限制视图中不可见。"
 
