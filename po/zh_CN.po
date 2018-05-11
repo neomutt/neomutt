@@ -748,7 +748,7 @@ msgstr " (S/MIME)"
 
 #: compose.c:286
 msgid " (OppEnc mode)"
-msgstr "OppEnc 模式"
+msgstr "（OppEnc 模式）"
 
 #: compose.c:298 compose.c:307
 msgid "<default>"
@@ -977,7 +977,7 @@ msgstr "压缩命令失败：%s"
 
 #: compress.c:565
 msgid "Unsupported mailbox type for appending."
-msgstr "不支持的信箱类型追加操作"
+msgstr "追加操作不支持的信箱类型。"
 
 #: compress.c:640
 #, c-format
@@ -1742,7 +1742,7 @@ msgstr "没有可标记的信件 ID。"
 
 #: curs_main.c:3105 pager.c:2961 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
-msgstr "将信件优先发送给发送者"
+msgstr "按发帖人的偏好通过邮件回复？"
 
 #: curs_main.c:3108 pager.c:2927 pager.c:2939 pager.c:2964
 msgid "Posting to this group not allowed, may be moderated. Continue?"
