@@ -77,7 +77,7 @@ msgstr "地址："
 #: alias.c:366 send.c:206
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr "错误：'%s'是错误的 IDN。"
+msgstr "错误：'%s' 是错误的 IDN。"
 
 #: alias.c:376
 msgid "Personal name: "
@@ -779,7 +779,7 @@ msgstr "-- 附件"
 #: compose.c:482
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr "警告：'%s'是错误的 IDN。"
+msgstr "警告：'%s' 是错误的 IDN。"
 
 #: compose.c:501
 msgid "You may not delete the only attachment."
@@ -788,7 +788,7 @@ msgstr "您不可以删除唯一的附件。"
 #: compose.c:1016 send.c:1915
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr "在\"%s\"中有错误的 IDN：'%s'"
+msgstr "在 \"%s\" 中有错误的 IDN：'%s'"
 
 #: compose.c:1064
 msgid "Attachment is already at top."
@@ -908,7 +908,7 @@ msgstr "未知的内容类型(Content-Type)%s"
 #: compose.c:1713
 #, c-format
 msgid "Can't create file %s"
-msgstr "无法建立文件 %s"
+msgstr "无法创建文件 %s"
 
 #: compose.c:1722
 msgid "What we have here is a failure to make an attachment"
@@ -968,7 +968,7 @@ msgstr "没有找到对应信箱类型的操作 %d"
 #: compress.c:533 compress.c:836
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr "没有append-hook或者close-hook不能够追加 : %s"
+msgstr "没有 append-hook 或者 close-hook 不能够追加 : %s"
 
 #: compress.c:554
 #, c-format
@@ -996,7 +996,7 @@ msgstr "错误。保留临时文件：%s"
 
 #: compress.c:882
 msgid "Can't sync a compressed file without a close-hook"
-msgstr "没有一个close-hook不能够同步一件压缩文件"
+msgstr "没有一个 close-hook 不能够同步一件压缩文件"
 
 #: compress.c:904
 #, c-format
@@ -1195,7 +1195,7 @@ msgstr "无法创建 SSL 上下文"
 
 #: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr "警告：错误导致ssl_verify_partial_chains"
+msgstr "警告：启用 ssl_verify_partial_chains 出错"
 
 #: conn/ssl_gnutls.c:112 conn/ssl_gnutls.c:144
 msgid "Error: no TLS socket open"
@@ -1203,7 +1203,7 @@ msgstr "错误：没有打开 TLS 套接字"
 
 #: conn/ssl_gnutls.c:232 conn/ssl_gnutls.c:875 conn/ssl_gnutls.c:884
 msgid "Unable to get certificate from peer"
-msgstr "无法从节点获得证书"
+msgstr "无法从对端获得证书"
 
 #: conn/ssl_gnutls.c:237
 #, c-format
@@ -1557,7 +1557,7 @@ msgstr "窗口查询已禁用。"
 
 #: curs_main.c:1916 curs_main.c:1935
 msgid "No notmuch vfolder currently loaded."
-msgstr "现在没有加载notmuch vfolder"
+msgstr "现在没有加载 notmuch 虚拟文件夹。"
 
 #: curs_main.c:1973
 msgid "Open mailbox in read-only mode"
@@ -1834,7 +1834,7 @@ msgstr "信件中一行也没有。\n"
 #: edit.c:463
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr "%s 中有错误的 IDN: '%s'\n"
+msgstr "%s 中有错误的 IDN：'%s'\n"
 
 #: edit.c:483
 #, c-format
@@ -1890,12 +1890,12 @@ msgstr "清除标记"
 #: handler.c:66
 #, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入另一种 #%d: %s/%s%s%s, 编码：%s, 大小：%s --]\n"
+msgstr "[-- 备选类型 #%d：%s/%s%s%s, 编码：%s, 大小：%s --]\n"
 
 #: handler.c:70
 #, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 输入：%s/%s%s%s, 编码：%s, 大小：%s --]\n"
+msgstr "[-- 类型：%s/%s%s%s, 编码：%s, 大小：%s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -2056,7 +2056,7 @@ msgstr "[-- %s/%s 尚未支持 --]\n"
 #: hcache/hcache.c:693 main.c:676 newsrc.c:1102
 #, c-format
 msgid "Can't create %s: %s."
-msgstr "无法创建 %s：%s."
+msgstr "无法创建 %s：%s。"
 
 #: header.c:201
 #, c-format
@@ -2104,7 +2104,7 @@ msgstr "目前信箱快捷键 '^' 没有设置"
 
 #: hook.c:143
 msgid "mailbox shortcut expanded to empty regex"
-msgstr "信箱快捷键扩展到空白的regex"
+msgstr "信箱快捷键扩展到空白的正则表达式"
 
 #: hook.c:156
 msgid "badly formatted command string"
@@ -2219,7 +2219,7 @@ msgstr "信箱已改名。"
 #: imap/command.c:158
 #, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "信箱%s@%s已关闭"
+msgstr "信箱 %s@%s 已关闭"
 
 #: imap/command.c:1111 imap/command.c:1205
 #, c-format
@@ -2446,7 +2446,7 @@ msgstr "别名：没有邮件地址"
 #: init.c:1888
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "警告：错误的 IDN '%s'在别名'%s'中。\n"
+msgstr "警告：错误的 IDN '%s' 在别名 '%s' 中。\n"
 
 #: init.c:1958
 msgid "invalid header field"
@@ -2540,7 +2540,7 @@ msgstr "source：%s 中有错误"
 #: init.c:2985
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr "source: 读取因 %s 中错误过多而中止"
+msgstr "source：读取因 %s 中错误过多而中止"
 
 #: init.c:2995
 #, c-format
@@ -2597,7 +2597,7 @@ msgstr "无法取消订阅 %s"
 #: keymap.c:281 keymap.c:289
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "绑定 '%s' 将会为'%s'设置别名，在这之前，请尝试：'bind %s %s noop'https://neomutt.org/guide/configuration.html#bind-warnings"
+msgstr "绑定 '%s' 将会为 '%s' 设置别名，在这之前，请尝试：'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:591
 msgid "Macros are currently disabled."
@@ -2646,7 +2646,7 @@ msgstr "%s：没有这样的函数"
 
 #: keymap.c:1250
 msgid "Enter keys (^G to abort): "
-msgstr "请按键(按 ^G 中止)："
+msgstr "请按键 (按 ^G 中止)："
 
 #: keymap.c:1256
 #, c-format
@@ -3218,7 +3218,7 @@ msgstr "正在调用 PGP..."
 
 #: ncrypt/crypt.c:192
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
+msgstr "无法将信件嵌入发送。回到使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:194 send.c:1825
 msgid "Mail not sent."
@@ -3288,7 +3288,7 @@ msgstr ""
 
 #: ncrypt/cryptglue.c:100
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "设置了\"crypt_use_gpgme\"但没有编译 GPGME 支持。"
+msgstr "设置了 \"crypt_use_gpgme\" 但没有编译 GPGME 支持。"
 
 #: ncrypt/cryptglue.c:127
 msgid "Invoking S/MIME..."
@@ -3337,7 +3337,7 @@ msgstr "无法建立暂存档"
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
 msgid "error adding recipient '%s': %s\n"
-msgstr "添加接收方'%s'时出错：%s\n"
+msgstr "添加接收方 '%s' 时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
@@ -3347,7 +3347,7 @@ msgstr "未找到密钥'%s'：%s\n"
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr "密钥'%s'的说明有歧义\n"
+msgstr "密钥 '%s' 的说明有歧义\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
@@ -4397,7 +4397,7 @@ msgstr "正在检查新新闻组..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
-msgstr "不能够找到子帖因为服务器不支持XPAT命令。"
+msgstr "不能够找到子帖因为服务器不支持 XPAT 命令。"
 
 #: opcodes.h:30
 msgid "null operation"
@@ -4877,7 +4877,7 @@ msgstr "回复给指定的邮件列表"
 
 #: opcodes.h:149
 msgid "load list of all newsgroups from NNTP server"
-msgstr "加载所有的新闻组列表从NNTP服务器"
+msgstr "从 NNTP 服务器加载所有的新闻组列表"
 
 #: opcodes.h:150
 msgid "execute a macro"
@@ -4933,7 +4933,7 @@ msgstr "强制从 IMAP 服务器取回邮件"
 
 #: opcodes.h:163
 msgid "logout from all IMAP servers"
-msgstr "从所有的IMAP服务器中退出"
+msgstr "从所有的 IMAP 服务器中退出"
 
 #: opcodes.h:164
 msgid "show only messages matching a pattern"
@@ -5009,7 +5009,7 @@ msgstr "跳到上一个未读取的信件"
 
 #: opcodes.h:182
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr "从neomutt中删除，不在磁盘上创建"
+msgstr "从 NeoMutt 中删除，不在磁盘上创建"
 
 #: opcodes.h:183
 msgid "mark the current subthread as read"
@@ -5632,7 +5632,7 @@ msgstr[0] "%s [已读取 %d 封信件，共 %d 封]"
 
 #: pop_auth.c:99
 msgid "Authenticating (SASL)..."
-msgstr "正在验证(SASL)..."
+msgstr "正在验证 (SASL)..."
 
 #: pop_auth.c:240
 msgid "POP timestamp is invalid!"
@@ -5640,7 +5640,7 @@ msgstr "POP 时间戳无效！"
 
 #: pop_auth.c:244
 msgid "Authenticating (APOP)..."
-msgstr "正在验证(APOP)..."
+msgstr "正在验证 (APOP)..."
 
 #: pop_auth.c:264
 msgid "APOP authentication failed."
@@ -5840,7 +5840,7 @@ msgstr "用 MIME 封装并转发？"
 #: recvcmd.c:590 recvcmd.c:858
 #, c-format
 msgid "Can't create %s."
-msgstr "无法建立 %s。"
+msgstr "无法创建 %s。"
 
 #: recvcmd.c:711
 msgid "Can't find any tagged messages."
@@ -5911,7 +5911,7 @@ msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)标头。"
 
 #: remailer.c:731
 msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "使用 mixmaster 时请给 hostname(主机名)变量设置合适的值！"
+msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值！"
 
 #: remailer.c:775
 #, c-format
