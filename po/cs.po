@@ -123,7 +123,7 @@ msgstr "Položka mailcapu „compose“ vyžaduje %%s"
 #: sendlib.c:1450
 #, c-format
 msgid "Error running \"%s\"!"
-msgstr "Chyba při běhu programu \"%s\"!"
+msgstr "Chyba při běhu programu „%s“!"
 
 #: attach.c:149
 msgid "Failure to open file to parse headers."
@@ -292,7 +292,7 @@ msgstr "Kořenovou složku nelze smazat"
 #: browser.c:1670
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
-msgstr "Skutečně chcete smazat schránku \"%s\"?"
+msgstr "Skutečně chcete smazat schránku „%s“?"
 
 #: browser.c:1684
 msgid "Mailbox deleted."
@@ -804,7 +804,7 @@ msgstr "Nemůžete smazat jedinou přílohu."
 #: compose.c:1016 send.c:1915
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr "Neplatné IDN v \"%s\": „%s“"
+msgstr "Neplatné IDN v „%s“: „%s“"
 
 #: compose.c:1064
 msgid "Attachment is already at top."
@@ -3274,11 +3274,11 @@ msgstr "E-mail neodeslán: PGP v textu nelze použít s přílohami."
 
 #: ncrypt/crypt.c:166
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "PGP v textu nelze použít s format=flowed. Použít PGP/MIME?"
+msgstr "PGP v textu nelze použít s „format=flowed“. Použít PGP/MIME?"
 
 #: ncrypt/crypt.c:170
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "E-mail neodeslán: PGP v textu nelze použít s format=flowed."
+msgstr "E-mail neodeslán: PGP v textu nelze použít s „format=flowed“."
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:778
@@ -3311,7 +3311,7 @@ msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
 msgstr ""
-"[-- Chyba: 'multipart/signed' protokol %s není znám! --]\n"
+"[-- Chyba: „multipart/signed“ protokol %s není znám! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1016
@@ -3319,7 +3319,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Chyba: Chybná struktura zprávy typu multipart/signed! --]\n"
+"[-- Chyba: Chybná struktura zprávy typu „multipart/signed“! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1058
@@ -3440,7 +3440,7 @@ msgstr "chyba při podepisování dat: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1038
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr "$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
+msgstr "„$pgp_sign_as“ není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
 
 #: ncrypt/crypt_gpgme.c:1238
 msgid "Warning: One of the keys has been revoked\n"
@@ -3861,7 +3861,7 @@ msgstr "%s <%s>."
 #: ncrypt/crypt_gpgme.c:4248
 #, c-format
 msgid "%s \"%s\"."
-msgstr "%s \"%s\"."
+msgstr "%s „%s“."
 
 #: ncrypt/crypt_gpgme.c:4275 ncrypt/pgpkey.c:628
 msgid "This key can't be used: expired/disabled/revoked."
@@ -3887,7 +3887,7 @@ msgstr "ID nemá definovanou důvěryhodnost. Opravdu chcete tento klíč použ�
 #: ncrypt/pgpkey.c:990
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr "Hledám klíče vyhovující \"%s\"…"
+msgstr "Hledám klíče vyhovující „%s“…"
 
 #: ncrypt/crypt_gpgme.c:4587 ncrypt/pgpkey.c:728 ncrypt/smime.c:809
 #, c-format
@@ -3897,7 +3897,7 @@ msgstr "Nenalezeny vyhovující klíče pro „%s“"
 #: ncrypt/crypt_gpgme.c:4638 ncrypt/pgp.c:1263
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
-msgstr "Použít ID klíče = \"%s\" pro %s?"
+msgstr "Použít ID klíče „%s“ pro %s?"
 
 #: ncrypt/crypt_gpgme.c:4689 ncrypt/pgp.c:1312 ncrypt/smime.c:828
 #: ncrypt/smime.c:936
@@ -4132,7 +4132,7 @@ msgstr "klíče PGP vyhovující <%s>."
 #: ncrypt/pgpkey.c:560
 #, c-format
 msgid "PGP keys matching \"%s\"."
-msgstr "klíče PGP vyhovující \"%s\"."
+msgstr "klíče PGP vyhovující „%s“."
 
 #: ncrypt/pgpkey.c:578 ncrypt/pgpkey.c:771
 msgid "Can't open /dev/null"
@@ -4227,7 +4227,7 @@ msgstr "Neznámý   "
 #: ncrypt/smime.c:469
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "S/MIME klíče vyhovující \"%s\"."
+msgstr "S/MIME klíče vyhovující „%s“."
 
 #: ncrypt/smime.c:511
 msgid "ID is not trusted. Do you really want to use the key?"
@@ -4949,7 +4949,7 @@ msgstr "odepsat na specifikovanou poštovní konferenci"
 
 #: opcodes.h:149
 msgid "load list of all newsgroups from NNTP server"
-msgstr "načíst seznam všech diskusních skupin ze serveru"
+msgstr "načíst seznam všech diskusních skupin z NNTP serveru"
 
 #: opcodes.h:150
 msgid "execute a macro"
