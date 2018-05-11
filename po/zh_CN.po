@@ -112,7 +112,7 @@ msgstr "无法匹配名称模板，继续？"
 #: attach.c:130
 #, c-format
 msgid "Mailcap compose entry requires %%s"
-msgstr "Mailcap 编写项目需要 %%s"
+msgstr "Mailcap 撰写条目需要 %%s"
 
 #: attach.c:139 attach.c:272 commands.c:237 compose.c:1826 compress.c:439
 #: curs_lib.c:213 curs_lib.c:453 curs_main.c:936 curs_main.c:979 pager.c:2264
@@ -464,7 +464,7 @@ msgid "Bad IDN: '%s'"
 msgstr "错误的 IDN：'%s'"
 
 #: commands.c:325 recvcmd.c:196
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "退回信件至 %s"
@@ -529,29 +529,24 @@ msgid "Shell command: "
 msgstr "Shell 指令："
 
 #: commands.c:790
-#, fuzzy
 msgid "Decode-save to mailbox"
-msgstr "解码保存 到信箱"
+msgstr "解码保存到信箱"
 
 #: commands.c:790
-#, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr "解码保存 到信箱"
+msgstr "解码保存已标记的信件到信箱"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save to mailbox"
-msgstr "解密保存 到信箱"
+msgstr "解密保存到信箱"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr "解密保存 到信箱"
+msgstr "解密保存已标记的信件到信箱"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save to mailbox"
-msgstr "保存 到信箱"
+msgstr "保存到信箱"
 
 #: commands.c:794
 #, fuzzy
@@ -559,34 +554,28 @@ msgid "Save tagged to mailbox"
 msgstr "保存 到信箱"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "解码复制 到信箱"
+msgstr "解码复制到信箱"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr "解码复制 到信箱"
+msgstr "解码复制已标记的信件到信箱"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgstr "解密复制 到信箱"
+msgstr "解密复制到信箱"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr "解密复制 到信箱"
+msgstr "解密复制已标记的信件到信箱"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy to mailbox"
-msgstr "复制 到信箱"
+msgstr "复制到信箱"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr "复制 到信箱"
+msgstr "复制已标记的信件到信箱"
 
 #: commands.c:871
 #, c-format
@@ -604,12 +593,12 @@ msgid "Content-Type changed to %s."
 msgstr "内容类型(Content-Type)改变为 %s。"
 
 #: commands.c:1049
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
 msgstr "字符集改变为 %s；不进行转换。"
 
 #: commands.c:1050
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "字符集改变为 %s；正在转换。"
 
@@ -684,7 +673,7 @@ msgstr "新闻组："
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:143
 msgid "Followup-To: "
-msgstr "发送后续信件到: "
+msgstr "Followup-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:145
@@ -835,7 +824,6 @@ msgid "Not sending this message."
 msgstr "未发送此信件。"
 
 #: compose.c:1286
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "正在附加已选择的文件..."
@@ -883,9 +871,8 @@ msgid "The current attachment will be converted."
 msgstr "当前附件将被转换。"
 
 #: compose.c:1536
-#, fuzzy
 msgid "Empty Content-Language"
-msgstr "空 Content-Language"
+msgstr "空的 Content-Language"
 
 #: compose.c:1553
 msgid "Invalid encoding."
@@ -1136,7 +1123,7 @@ msgid "MD5 Fingerprint: %s"
 msgstr "MD5 指纹：%s"
 
 #: conn/ssl.c:999
-#, fuzzy, c-format
+#, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL 证书检查 (检查链中有 %zu 个证书，共 %zu 个)"
 
@@ -1392,7 +1379,7 @@ msgstr "离开"
 
 #: curs_main.c:744 curs_main.c:757 recvattach.c:69
 msgid "Save"
-msgstr "储存"
+msgstr "保存"
 
 #: curs_main.c:745 query.c:68
 msgid "Mail"
@@ -1412,7 +1399,7 @@ msgstr "发表"
 
 #: curs_main.c:759 pager.c:1714
 msgid "Followup"
-msgstr "发送后续信件到"
+msgstr "回帖"
 
 #: curs_main.c:921
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -2338,10 +2325,10 @@ msgstr[0] "正在标记 %d 封邮件为已删除..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2444
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "正在储存已改变的信件... [%d/%d]"
+msgstr[0] "正在保存已改变的信件... [%d/%d]"
 
 #: imap/imap.c:2500
 msgid "Error saving flags. Close anyway?"
@@ -2444,9 +2431,8 @@ msgid "attachments: no disposition"
 msgstr "附件：无处理方式"
 
 #: init.c:1635
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "编辑附件说明"
+msgstr "当前附件设置："
 
 #: init.c:1665
 msgid "attachments: invalid disposition"
@@ -2559,7 +2545,7 @@ msgid "source: errors in %s"
 msgstr "source：%s 中有错误"
 
 #: init.c:2985
-#, fuzzy, c-format
+#, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: 读取因 %s 中错误过多而中止"
 
@@ -2575,7 +2561,7 @@ msgid "source: error at %s"
 msgstr "source：%s 有错误"
 
 #: init.c:3030
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced."
 msgstr "source：文件 %s 无法被加载。"
 
@@ -2777,9 +2763,9 @@ msgid "Cannot use -E flag with stdin"
 msgstr "不能够使用 -E 选项在stdin情况下"
 
 #: main.c:844
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse message template: %s"
-msgstr "无法打开信件文件：%s"
+msgstr "无法解析信件模板：%s"
 
 #: main.c:909
 #, c-format
@@ -2844,7 +2830,7 @@ msgstr "正在提交修改..."
 #: mbox.c:1219
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "写入失败！已把部分的信箱储存至 %s"
+msgstr "写入失败！已把部分的信箱保存至 %s"
 
 #: mbox.c:1293
 msgid "Could not reopen mailbox!"
@@ -2952,7 +2938,7 @@ msgid "Closed log file: %s"
 msgstr "已关闭日志文件：%s"
 
 #: mutt/logging.c:137
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
 msgstr "正在使用级别 %d 进行调试，输出到文件 '%s'"
 
@@ -2981,12 +2967,12 @@ msgstr "没有足够的子表达式来用于垃圾邮件模板"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
 msgstr "捕捉到信号 %d (%s) ...  正在退出。\n"
 
 #: mutt/signal.c:73 signal.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "捕捉到信号 %d ...  正在退出。\n"
 
@@ -3111,7 +3097,6 @@ msgid "No more messages in the thread."
 msgstr "此线索中没有更多信件。"
 
 #: mutt_notmuch.c:2758
-#, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "无法向虚拟文件夹写入。"
 
@@ -3253,7 +3238,6 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1016
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
@@ -3735,7 +3719,6 @@ msgid "Error finding issuer key: %s\n"
 msgstr "查找发放者密钥出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:3884
-#, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "错误：证书链过长 - 就此打住\n"
 
@@ -4346,9 +4329,9 @@ msgid "Could not switch to reader mode."
 msgstr "无法切换到阅读模式。"
 
 #: nntp.c:689
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "连接到 %s。%s"
+msgstr "已连接到 %s。%s"
 
 #: nntp.c:690
 msgid "Posting is ok."
@@ -4406,9 +4389,8 @@ msgid "Loading descriptions..."
 msgstr "加载描述中..."
 
 #: nntp.c:2329
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "正在检查新邮件..."
+msgstr "正在检查新新闻组..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
@@ -4514,7 +4496,7 @@ msgstr "编辑附件的传输编码"
 
 #: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
-msgstr "请输入用来储存这封信件副本的文件名称"
+msgstr "请输入用来保存这封信件副本的文件名称"
 
 #: opcodes.h:55
 msgid "edit the file to be attached"
@@ -4533,9 +4515,8 @@ msgid "edit the message with headers"
 msgstr "编辑有标头的信件"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "编辑附件 Content-Language"
+msgstr "编辑附件的 Content-Language"
 
 #: opcodes.h:60
 msgid "edit the message"
@@ -4595,12 +4576,11 @@ msgstr "使用 mailcap 条目来编写新附件"
 
 #: opcodes.h:74
 msgid "save this message to send later"
-msgstr "储存信件以便稍后寄出"
+msgstr "保存信件以便稍后寄出"
 
 #: opcodes.h:75
-#, fuzzy
 msgid "send attachment with a different name"
-msgstr "使用另一名字发送附件"
+msgstr "重命名附件"
 
 #: opcodes.h:76
 msgid "rename/move an attached file"
@@ -4623,9 +4603,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "切换发送后是否删除文件"
 
 #: opcodes.h:81
-#, fuzzy
 msgid "compose a new message to the sender"
-msgstr "撰写新邮件信息"
+msgstr "撰写新信件发给发件人"
 
 #: opcodes.h:82
 msgid "update an attachment's encoding info"
@@ -4833,9 +4812,8 @@ msgid "toggle a message's 'important' flag"
 msgstr "切换信件的'重要'标记"
 
 #: opcodes.h:133
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "发送后续信件到 %s%s？"
+msgstr "回帖到新闻组"
 
 #: opcodes.h:134
 msgid "forward a message with comments"
@@ -4907,7 +4885,7 @@ msgstr "执行宏"
 
 #: opcodes.h:151
 msgid "compose a new mail message"
-msgstr "撰写新邮件信息"
+msgstr "撰写新邮件"
 
 #: opcodes.h:152
 msgid "break the thread in two"
@@ -5253,9 +5231,8 @@ msgid "toggle a message's 'new' flag"
 msgstr "切换信件的'新邮件'标记"
 
 #: opcodes.h:237
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "跳到上一个新的或未读取的信件"
+msgstr "切换已读信件的显示"
 
 #: opcodes.h:238
 msgid "toggle whether the mailbox will be rewritten"
@@ -5298,9 +5275,8 @@ msgid "show MIME attachments"
 msgstr "显示 MIME 附件"
 
 #: opcodes.h:248
-#, fuzzy
 msgid "show the raw message"
-msgstr "显示原始信件"
+msgstr "显示信件原文"
 
 #: opcodes.h:249
 msgid "display the keycode for a key press"
@@ -5518,14 +5494,12 @@ msgid "No Context"
 msgstr "没有内容"
 
 #: pattern.c:921
-#, fuzzy
 msgid "Error opening memstream"
-msgstr "打开信箱时出错"
+msgstr "打开 memstream 时出错"
 
 #: pattern.c:966
-#, fuzzy
 msgid "Error re-opening memstream"
-msgstr "打开信箱时出错"
+msgstr "重新打开 memstream 时出错"
 
 #: pattern.c:975
 msgid "Error opening /dev/null"
@@ -5570,9 +5544,8 @@ msgid "empty pattern"
 msgstr "空模式"
 
 #: pattern.c:1606 pattern.c:1609
-#, fuzzy
 msgid "error: server custom search only supported with IMAP."
-msgstr "错误：服务器端的自定义搜索仅支持 IMAP。"
+msgstr "错误：仅 IMAP 支持服务器端的自定义搜索。"
 
 #: pattern.c:1777
 #, c-format
@@ -6047,7 +6020,6 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "没有配置加密后端。邮件安全设置已禁用。"
 
 #: send.c:1822
-#, fuzzy
 msgid "Article not posted."
 msgstr "帖子没有发表。"
 
