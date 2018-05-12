@@ -171,7 +171,8 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
     goto out;
 
   /* refresh if size > inc */
-  if ((progress->flags & MUTT_PROGRESS_SIZE) && (pos >= (progress->pos + (progress->inc << 10))))
+  if ((progress->flags & MUTT_PROGRESS_SIZE) &&
+      (pos >= (progress->pos + (progress->inc << 10))))
     update = true;
   else if (pos >= (progress->pos + progress->inc))
     update = true;
@@ -226,4 +227,3 @@ out:
   if (pos >= progress->size)
     mutt_clear_error();
 }
-

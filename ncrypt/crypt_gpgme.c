@@ -4129,7 +4129,8 @@ static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
   if (!scratch)
     return;
 
-  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
+  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t;
+       t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
       mutt_list_insert_tail(hints, mutt_str_strdup(t));
@@ -4280,30 +4281,34 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
         }
 
         if (OptPgpCheckTrust && (!crypt_id_is_valid(key_table[menu->current]) ||
-                                    !crypt_id_is_strong(key_table[menu->current])))
+                                 !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
           char buf2[LONG_STRING];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
-            warn_s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
+            warn_s = _("ID is expired/disabled/revoked. Do you really want to "
+                       "use the key?");
           else
           {
             warn_s = "??";
             switch (key_table[menu->current]->validity)
             {
               case GPGME_VALIDITY_NEVER:
-                warn_s = _("ID is not valid. Do you really want to use the key?");
+                warn_s =
+                    _("ID is not valid. Do you really want to use the key?");
                 break;
               case GPGME_VALIDITY_MARGINAL:
-                warn_s = _("ID is only marginally valid. Do you really want to use the key?");
+                warn_s = _("ID is only marginally valid. Do you really want to "
+                           "use the key?");
                 break;
               case GPGME_VALIDITY_FULL:
               case GPGME_VALIDITY_ULTIMATE:
                 break;
               case GPGME_VALIDITY_UNKNOWN:
               case GPGME_VALIDITY_UNDEFINED:
-                warn_s = _("ID has undefined validity. Do you really want to use the key?");
+                warn_s = _("ID has undefined validity. Do you really want to "
+                           "use the key?");
                 break;
             }
           }
@@ -4747,7 +4752,8 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
 
   OptPgpCheckTrust = false;
 
-  struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "), NULL, 0, APPLICATION_PGP, NULL);
+  struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "),
+                                               NULL, 0, APPLICATION_PGP, NULL);
   if (!key)
     goto bail;
   export_keys[0] = key->kobj;

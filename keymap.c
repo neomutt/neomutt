@@ -1284,4 +1284,3 @@ void mutt_free_keys(void)
     Keymaps[i] = NULL;
   }
 }
-

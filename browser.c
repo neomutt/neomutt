@@ -1390,7 +1390,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #ifdef USE_NNTP
                                  OptNews ? FolderNewsHelp :
 #endif
-                                            FolderHelp);
+                                           FolderHelp);
   mutt_menu_push_current(menu);
 
   init_menu(&state, menu, title, sizeof(title), buffy);

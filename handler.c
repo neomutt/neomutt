@@ -396,7 +396,7 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-  /* ----------------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
    * A (not so) minimal implementation of RFC1563.
    */
 

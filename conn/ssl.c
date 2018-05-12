@@ -1318,7 +1318,7 @@ static int ssl_setup(struct Connection *conn)
     goto free_sasldata;
   }
 
-    /* disable SSL protocols as needed */
+  /* disable SSL protocols as needed */
 #ifdef SSL_OP_NO_TLSv1_2
   if (!SslUseTlsv12)
     SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_2);

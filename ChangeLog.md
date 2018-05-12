@@ -1,3 +1,55 @@
+2018-05-12  Richard Russon  <rich@flatcap.org>
+* Features
+  - echo command
+  - Add $browser_abbreviate_mailboxes
+  - Add ~M pattern to match mime Content-Types
+  - Add support for multipart/multilingual emails
+  - Jump to a collapsed email
+  - Add support for idn2 (IDNA2008)
+* Bug Fixes
+  - Let mutt_ch_choose report conversion failure
+  - minor IMAP string handling fixes
+* Translations
+  - Chinese (Simplified) (100%)
+  - Czech (100%)
+  - German (100%)
+  - Lithuanian (62%)
+  - Portuguese (Brazil) (100%)
+* Coverity defects
+  - match prototypes to their functions
+  - make logic clearer
+  - reduce scope of variables
+  - fix coverity defects
+* Docs
+  - development: analysis
+  - development: easy tasks
+  - development: roadmap
+* Code
+  - start refactoring libconn
+  - split out progress functions
+  - split out window functions
+  - split out terminal setting
+  - convert MyVars to use TAILQ
+  - split mutt_file_{lock,unlock}
+  - Move IDN version string to mutt/idna.c
+  - refactor: init_locale()
+  - Eliminate static variable in mutt_file_dirname
+* Tidy
+  - test int functions against 0
+  - rename lots of constants
+  - rename lots of functions
+  - sort lots of fields/definitions
+* Upstream
+  - Increase account.user/login size to 128
+  - Fix comparison of flags with multiple bits set
+  - Change mutt_error call in mutt_gpgme_set_sender() to dprint
+  - Improve the error message when a signature is missing
+  - pager specific "show incoming mailboxes list" macro
+  - Improve gss debug printing of status_string
+  - Remove trailing null count from gss_buffer_desc.length field
+  - Add a comment in auth_gss about RFCs and null-termination
+  - Change prompt string for $crypt_verify_sig
+
 2018-03-23  Richard Russon  <rich@flatcap.org>
 * Features
   - unify logging/messaging

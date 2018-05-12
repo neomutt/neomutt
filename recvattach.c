@@ -1145,7 +1145,7 @@ static const char *Function_not_permitted =
     N_("Function not permitted in attach-message mode.");
 
 #define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                          \
+  if (OptAttachMsg)                                                            \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted));                                     \

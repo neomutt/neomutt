@@ -598,7 +598,8 @@ int main(int argc, char *argv[], char *envp[])
   if (!NewsServer)
   {
     char buffer[1024];
-    char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
+    char *server =
+        mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
     NewsServer = mutt_str_strdup(server);
   }
   if (NewsServer)

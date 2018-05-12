@@ -32,7 +32,7 @@
 #include "mutt/mutt.h"
 #include "tags.h"
 
-char *HiddenTags;           /**< Config: Private tags which should not be displayed */
+char *HiddenTags; /**< Config: Private tags which should not be displayed */
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
 /**

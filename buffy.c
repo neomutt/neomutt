@@ -353,7 +353,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
   int orig_count, orig_unread, orig_flagged;
 #endif
 
-  memset(&sb, 0, sizeof (sb));
+  memset(&sb, 0, sizeof(sb));
 
 #ifdef USE_SIDEBAR
   orig_new = tmp->new;

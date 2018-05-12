@@ -371,7 +371,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -381,7 +381,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -391,7 +391,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -401,7 +401,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -411,7 +411,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -421,7 +421,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -431,7 +431,7 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       /* L10N: Describes the trust state of a S/MIME key.
          This translation must be padded with spaces to the right such that it
          has the same length as the other translations.
-        
+
          The translation strings which need to be padded are:
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
        */
@@ -502,10 +502,12 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
             case 'e':
             case 'i':
             case 'r':
-              s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
+              s = _("ID is expired/disabled/revoked. Do you really want to use "
+                    "the key?");
               break;
             case 'u':
-              s = _("ID has undefined validity. Do you really want to use the key?");
+              s = _("ID has undefined validity. Do you really want to use the "
+                    "key?");
               break;
             case 'v':
               s = _("ID is not trusted. Do you really want to use the key?");
@@ -1262,8 +1264,9 @@ void smime_invoke_import(char *infile, char *mailbox)
   {
     mutt_endwin();
 
-    pid_t thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout), fileno(fperr), certfile,
-                          NULL, NULL, NULL, NULL, NULL, NULL, SmimeImportCertCommand);
+    pid_t thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout),
+                                fileno(fperr), certfile, NULL, NULL, NULL, NULL,
+                                NULL, NULL, SmimeImportCertCommand);
     if (thepid == -1)
     {
       mutt_message(_("Error: unable to create OpenSSL subprocess!"));

@@ -127,7 +127,7 @@ static const char *NoVisible = N_("No visible messages.");
   }
 
 #define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                          \
+  if (OptAttachMsg)                                                            \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \

@@ -631,24 +631,27 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         }
 
         if (OptPgpCheckTrust && (!pgp_id_is_valid(KeyTable[menu->current]) ||
-                                    !pgp_id_is_strong(KeyTable[menu->current])))
+                                 !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
           char buf2[LONG_STRING];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
-            str = _("ID is expired/disabled/revoked. Do you really want to use the key?");
+            str = _("ID is expired/disabled/revoked. Do you really want to use "
+                    "the key?");
           else
             switch (KeyTable[menu->current]->trust & 0x03)
             {
               case 0:
-                str = _("ID has undefined validity. Do you really want to use the key?");
+                str = _("ID has undefined validity. Do you really want to use "
+                        "the key?");
                 break;
               case 1:
                 str = _("ID is not valid. Do you really want to use the key?");
                 break;
               case 2:
-                str = _("ID is only marginally valid. Do you really want to use the key?");
+                str = _("ID is only marginally valid. Do you really want to "
+                        "use the key?");
                 break;
             }
 
@@ -744,7 +747,8 @@ struct Body *pgp_make_key_attachment(char *tempf)
   pid_t thepid;
   OptPgpCheckTrust = false;
 
-  struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
+  struct PgpKeyInfo *key =
+      pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
   if (!key)
     return NULL;
@@ -822,7 +826,8 @@ static void pgp_add_string_to_hints(const char *str, struct ListHead *hints)
   if (!scratch)
     return;
 
-  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
+  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t;
+       t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
       mutt_list_insert_tail(hints, mutt_str_strdup(t));

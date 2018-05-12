@@ -1492,7 +1492,8 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
   return 0;
 }
 
-static int match_mime_content_type(const struct Pattern *pat, struct Context *ctx, struct Header *hdr)
+static int match_mime_content_type(const struct Pattern *pat,
+                                   struct Context *ctx, struct Header *hdr)
 {
   mutt_parse_mime_message(ctx, hdr);
   return match_content_type(pat, hdr->content);
@@ -1762,7 +1763,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_MIMETYPE:
       if (!ctx)
         return 0;
-      return (pat->not ^ match_mime_content_type (pat, ctx, h));
+      return (pat->not ^ match_mime_content_type(pat, ctx, h));
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
     case MUTT_BROKEN:
