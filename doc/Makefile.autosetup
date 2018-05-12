@@ -29,8 +29,8 @@ srcdir_DOCFILES = $(SRCDIR)/doc/PGP-Notes.txt \
 		  $(SRCDIR)/doc/smime-notes.txt \
 		  $(SRCDIR)/ChangeLog.md \
 		  $(SRCDIR)/CODE_OF_CONDUCT.md \
-		  $(SRCDIR)/COPYRIGHT \
-		  $(SRCDIR)/INSTALL \
+		  $(SRCDIR)/COPYRIGHT.md \
+		  $(SRCDIR)/INSTALL.md \
 		  $(SRCDIR)/LICENSE.md \
 		  $(SRCDIR)/README.md
 
