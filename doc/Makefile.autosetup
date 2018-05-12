@@ -32,8 +32,7 @@ srcdir_DOCFILES = $(SRCDIR)/doc/PGP-Notes.txt \
 		  $(SRCDIR)/COPYRIGHT \
 		  $(SRCDIR)/INSTALL \
 		  $(SRCDIR)/LICENSE.md \
-		  $(SRCDIR)/README.md \
-		  $(SRCDIR)/README.SSL
+		  $(SRCDIR)/README.md
 
 all-doc:	$(CHUNKED_DOCFILES) \
 		doc/index.html \

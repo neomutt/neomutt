@@ -11,6 +11,7 @@ complete.c
 compose.c
 compress.c
 conn/conn_globals.c
+conn/conn_raw.c
 conn/getdomain.c
 conn/sasl.c
 conn/sasl_plain.c
@@ -67,6 +68,7 @@ mutt/base64.c
 mutt/buffer.c
 mutt/charset.c
 mutt/date.c
+mutt/envlist.c
 mutt/exit.c
 mutt/file.c
 mutt/hash.c
@@ -91,6 +93,7 @@ mutt_lua.c
 mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
+mutt_window.c
 mx.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
@@ -120,6 +123,7 @@ pop.c
 pop_auth.c
 pop_lib.c
 postpone.c
+progress.c
 query.c
 recvattach.c
 recvcmd.c
@@ -141,6 +145,7 @@ state.c
 status.c
 system.c
 tags.c
+terminal.c
 thread.c
 url.c
 version.c
