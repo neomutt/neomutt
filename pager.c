@@ -95,7 +95,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                          \
+  if (OptAttachMsg)                                                            \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \

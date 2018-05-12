@@ -784,4 +784,3 @@ void mutt_enter_state_free(struct EnterState **esp)
   FREE(&(*esp)->wbuf);
   FREE(esp);
 }
-

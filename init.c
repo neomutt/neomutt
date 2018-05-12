@@ -2564,8 +2564,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         break;
       }
 
-      if (OptAttachMsg &&
-          (mutt_str_strcmp(MuttVars[idx].name, "reply_regex") == 0))
+      if (OptAttachMsg && (mutt_str_strcmp(MuttVars[idx].name, "reply_regex") == 0))
       {
         snprintf(err->data, err->dsize, "Operation not permitted when in attach-message mode.");
         r = -1;
@@ -2827,7 +2826,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
 #endif
     else
     {
-      snprintf(err->data, err->dsize, _("%s: unknown type"), (idx >= 0) ? MuttVars[idx].name : "unknown");
+      snprintf(err->data, err->dsize, _("%s: unknown type"),
+               (idx >= 0) ? MuttVars[idx].name : "unknown");
       r = -1;
       break;
     }
@@ -3824,7 +3824,8 @@ static bool get_hostname(void)
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for Hostname */
-    Hostname = mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
+    Hostname =
+        mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
     sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
     Hostname = getmailname();
@@ -3833,7 +3834,8 @@ static bool get_hostname(void)
       char buffer[LONG_STRING];
       if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
       {
-        Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) + mutt_str_strlen(ShortHostname) + 2);
+        Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) +
+                                   mutt_str_strlen(ShortHostname) + 2);
         sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), buffer);
       }
       else

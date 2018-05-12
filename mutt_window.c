@@ -27,14 +27,14 @@
  */
 
 #include "config.h"
-#include "globals.h"
-#include "mutt/logging.h"
-#include "mutt/mutt.h"
-#include "mutt_menu.h"
-#include "mutt_window.h"
-#include "options.h"
 #include <stdarg.h>
 #include <string.h>
+#include "mutt/logging.h"
+#include "mutt/mutt.h"
+#include "mutt_window.h"
+#include "globals.h"
+#include "mutt_menu.h"
+#include "options.h"
 
 struct MuttWindow *MuttHelpWindow = NULL;    /**< Help Window */
 struct MuttWindow *MuttIndexWindow = NULL;   /**< Index Window */

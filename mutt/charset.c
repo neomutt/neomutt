@@ -366,7 +366,7 @@ out:
  * @param cs1 First character set
  * @param cs2 Second character set
  * @retval 1 Names are equivalent
- * @retval 0 Names differ 
+ * @retval 0 Names differ
  *
  * Charsets may have extensions that mutt_ch_canonical_charset() leaves intact;
  * we expect 'cs2' to originate from neomutt code, not user input (i.e. 'cs2'
@@ -578,9 +578,9 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
  */
-size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
-                     size_t *outbytesleft, const char **inrepls, const char *outrepl,
-                     int *iconverrno)
+size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft,
+                     char **outbuf, size_t *outbytesleft, const char **inrepls,
+                     const char *outrepl, int *iconverrno)
 {
   size_t rc = 0;
   const char *ib = *inbuf;
@@ -865,7 +865,8 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
   if (fc->ibl)
   {
     size_t obl = sizeof(fc->bufo);
-    mutt_ch_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0, NULL);
+    mutt_ch_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl,
+                  fc->inrepls, 0, NULL);
     if (fc->p < fc->ob)
       return (unsigned char) *(fc->p)++;
   }
