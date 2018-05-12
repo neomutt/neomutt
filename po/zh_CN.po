@@ -197,7 +197,7 @@ msgstr "路径太长：%s%s%s"
 #: bcache.c:168
 #, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "消息缓存不是一个目录：%s."
+msgstr "信件缓存不是一个目录：%s."
 
 #: bcache.c:176
 #, c-format
