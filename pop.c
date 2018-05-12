@@ -1031,7 +1031,7 @@ fail:
 }
 
 /**
- * mx_comp_ops - Mailbox callback functions
+ * mx_pop_ops - Mailbox callback functions
  */
 struct MxOps mx_pop_ops = {
   .open = pop_open_mailbox,

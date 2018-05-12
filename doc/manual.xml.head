@@ -7217,18 +7217,18 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               <row>
                 <entry>~h <emphasis>EXPR</emphasis></entry>
                 <entry>
-                   messages which contain <emphasis>EXPR</emphasis>in the
-                   message header ***)
+                  messages which contain <emphasis>EXPR</emphasis>in the
+                  message header ***)
                 </entry>
               </row>
               <row>
                 <entry>=h <emphasis>STRING</emphasis></entry>
                 <entry>
-                   If IMAP is enabled, like ~h but searches for
-                   <emphasis>STRING</emphasis>on the server, rather than
-                   downloading each message and searching it locally;
-                   <emphasis>STRING</emphasis>must be of the form
-                   <quote>header: substring</quote>(see below).
+                  If IMAP is enabled, like ~h but searches for
+                  <emphasis>STRING</emphasis>on the server, rather than
+                  downloading each message and searching it locally;
+                  <emphasis>STRING</emphasis>must be of the form
+                  <quote>header: substring</quote>(see below).
                 </entry>
               </row>
               <row>
@@ -7420,8 +7420,8 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               <row>
                 <entry>~X [ <emphasis>MIN</emphasis>]-[ <emphasis>MAX</emphasis>]</entry>
                 <entry>
-                   messages with <emphasis>MIN</emphasis>to
-                   <emphasis>MAX</emphasis>attachments *) ****)
+                  messages with <emphasis>MIN</emphasis>to
+                  <emphasis>MAX</emphasis>attachments *) ****)
                 </entry>
               </row>
               <row>

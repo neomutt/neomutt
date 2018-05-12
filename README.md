@@ -6,7 +6,7 @@
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/COPYRIGHT.md "Copyright Statement")
 [![Code build](https://img.shields.io/travis/neomutt/neomutt.svg?label=code)](https://travis-ci.org/neomutt/neomutt "Latest Automatic Code Build")
-[![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt "Latest Code Static Analysis)
+[![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt "Latest Code Static Analysis")
 [![Website build](https://img.shields.io/travis/neomutt/neomutt.github.io.svg?label=website)](https://travis-ci.org/neomutt/neomutt.github.io "Latest Website Test")
 
 ## What is NeoMutt?
@@ -69,7 +69,7 @@ sorted through them, fixed them up and documented them.
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         https://neomutt.org
-- IRC:             irc://irc.freenode.net/neomutt - please be patient.
+- IRC:             [irc://irc.freenode.net/neomutt](https://webchat.freenode.net/ "IRC Web Client") - please be patient.
   We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)

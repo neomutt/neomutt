@@ -1091,7 +1091,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
 }
 
 /**
- * append_message - Associcate a message
+ * append_message - Associate a message
  * @param ctx   Mailbox
  * @param q     Notmuch query
  * @param msg   Notmuch message

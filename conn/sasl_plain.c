@@ -31,15 +31,20 @@
 #include "mutt/mutt.h"
 
 /**
- * mutt_sasl_plain_msg - Create an SASL command
- * @param buf    Buffer to store the command
- * @param buflen Length of the buffer
- * @param cmd    SASL command
- * @param authz  Authorisation
- * @param user   Username
+ * mutt_sasl_plain_msg - Construct a base64 encoded SASL PLAIN message
+ * @param buf    Destination buffer
+ * @param buflen Available space in the destination buffer
+ * @param cmd    Protocol-specific string the prepend to the PLAIN message
+ * @param authz  Authorization identity
+ * @param user   Authentication identity (username)
  * @param pass   Password
  * @retval >0 Success, number of chars in the command string
  * @retval  0 Error
+ *
+ * This function can be used to build a protocol-specific SASL Response message
+ * using the PLAIN mechanism. The protocol specific command is given in the cmd
+ * parameter. The function appends a space, encodes the string derived from
+ * authz\0user\0pass using base64 encoding, and stores the result in buf.
  *
  * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
  * string. Add the two NULL bytes in between plus one at the end and we get
