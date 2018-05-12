@@ -215,6 +215,9 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         this_one = NULL;
       }
 
+      if (is_autocrypt)
+        fputs("\n", out_autocrypt);
+
       ignore = true;
       is_autocrypt = false;
       this_is_from = false;
@@ -242,8 +245,12 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         if (is_autocrypt)
         {
-            fputs(buf, out_autocrypt);
+          size_t blen = mutt_str_strlen(buf);
+          while (buf[blen -1] == '\n' || buf[blen -1] == '\r')
+            blen--;
+          fwrite(buf, sizeof(char), blen, out_autocrypt);
         }
+
         continue;
       }
       if ((flags & CH_WEED_DELIVERED) &&
@@ -297,7 +304,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
     if (is_autocrypt)
     {
-      fputs(buf, out_autocrypt);
+      size_t blen = mutt_str_strlen(buf);
+      while (buf[blen -1] == '\n' || buf[blen -1] == '\r')
+        blen--;
+      fwrite(buf, sizeof(char), blen, out_autocrypt);
     }
 
     if (!ignore)
@@ -342,6 +352,9 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
     this_one = NULL;
   }
+
+  if (is_autocrypt)
+    fputs("\n", out_autocrypt);
 
   /* Now output the headers in order */
   for (x = 0; x < hdr_count; x++)
