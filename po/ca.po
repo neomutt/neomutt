@@ -1118,9 +1118,9 @@ msgid "Compressing %s"
 msgstr "S’està comprimint «%s»…"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Error al túnel establert amb «%s»: %s"
+msgstr "Error en parlar amb «%s» (%s)."
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1128,29 +1128,29 @@ msgid "Connection to %s has been aborted"
 msgstr "S’ha tancat la connexió amb «%s»."
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "L’IDN no és vàlid: %s"
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "S’està copiant a «%s»…"
+msgstr "S’està cercant «%s»…"
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "No s’ha pogut enviar el missatge."
+msgstr "No s’ha pogut trobar l’estació «%s»."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "S’està connectant amb «%s»…"
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "S’ha subscrit a «%s»."
+msgstr "No s’ha pogut connectar amb «%s» (%s)."
 
 # ivb (2001/12/08)
 # ivb  Apareix amb més coses al darrere (curs_lib) o entre parèntesis
@@ -6727,91 +6727,3 @@ msgstr "Opcions de compilació:"
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "Manquen arguments."
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "Forma d’ús: neomutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
-#~ "            neomutt [OPCIÓ]… [-Ex] [-Hi FITXER] [-s ASSUMPTE] [-bc ADREÇA]\n"
-#~ "                 [-a FITXER… --] ADREÇA…\n"
-#~ "            neomutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER… --]\n"
-#~ "                 ADREÇA… < MISSATGE\n"
-#~ "            neomutt [OPCIÓ]… -p\n"
-#~ "            neomutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
-#~ "            neomutt [OPCIÓ]… -Q VAR [-Q VAR]…\n"
-#~ "            neomutt [OPCIÓ]… -D\n"
-#~ "            neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "Opcions:\n"
-#~ "  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
-#~ "  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de fitxers\n"
-#~ "                       ha d’acabar amb l’argument «--».\n"
-#~ "  -b ADREÇA            Indica una ADREÇA per a la còpia oculta (Bcc).\n"
-#~ "  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
-#~ "  -D                   Mostra el valor de totes les variables a l’eixida\n"
-#~ "                       estàndard.\n"
-#~ "  -d NIVELL            Escriu els missatges de depuració a «~/.neomuttdebug0».\n"
-#~ "  -E                   Edita el fitxer esborrany (vegeu l’opció «-H») o el\n"
-#~ "                       fitxer a incloure (opció «-i»).\n"
-#~ "  -e ORDRE             Indica una ORDRE a executar abans de la inicialització.\n"
-#~ "  -f FITXER            Indica quina bústia llegir.\n"
-#~ "  -F FITXER            Indica un FITXER «neomuttrc» alternatiu.\n"
-#~ "  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i el\n"
-#~ "                       cos.\n"
-#~ "  -i FITXER            Indica un FITXER que NeoMutt inclourà al cos.\n"
-#~ "  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"
-#~ "  -n                   Fa que NeoMutt no llija el fitxer «neomuttrc» del sistema.\n"
-#~ "  -p                   Recupera un missatge posposat.\n"
-#~ "  -Q VARIABLE          Consulta el valor d’una VARIABLE de configuració.\n"
-#~ "  -R                   Obri la bústia en mode de només lectura.\n"
-#~ "  -s ASSUMPTE          Indica l’ASSUMPTE (entre cometes si porta espais).\n"
-#~ "  -v                   Mostra la versió i les definicions de compilació.\n"
-#~ "  -x                   Simula el mode d’enviament de «mailx».\n"
-#~ "  -y                   Selecciona una bústia de la vostra llista «mailboxes».\n"
-#~ "  -z                   Ix immediatament si no hi ha missatges a la bústia.\n"
-#~ "  -Z                   Obri la primera bústia amb missatges nous, eixint\n"
-#~ "                       immediatament si no n’hi ha cap.\n"
-#~ "  -h                   Mostra aquest missatge d’ajuda."

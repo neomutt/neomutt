@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-12 03:44+0100\n"
 "PO-Revision-Date: 2018-03-06 15:18+0100\n"
-"Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
+"Last-Translator: David Sterba <dsterba@suse.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -1022,39 +1022,39 @@ msgid "Compressing %s"
 msgstr "Komprimuje se %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Chyba při komunikaci tunelem s %s (%s)"
+msgstr "Chyba při komunikaci s %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Spojení s %s uzavřeno"
+msgstr "Spojení s %s přerušeno"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Chybné IDN: „%s“"
+msgstr "Chybné IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopíruji do %s…"
+msgstr "Vyhledávám %s…"
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Zprávu nelze odeslat."
+msgstr "Počítač \"%s\" nelze nalézt."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Připojuji se k „%s“…"
+msgstr "Připojuji se k %s…"
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Nelze přihlásit do %s"
+msgstr "Spojení s %s nelze navázat (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6349,5 +6349,3 @@ msgstr "Výchzí volby:"
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "příliš málo argumentů"

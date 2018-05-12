@@ -1052,7 +1052,7 @@ msgid "Compressing %s"
 msgstr "拷貝到 %s…"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
 msgstr "連線到 %s (%s) 時失敗"
 
@@ -1062,29 +1062,29 @@ msgid "Connection to %s has been aborted"
 msgstr "到 %s 的連線中斷了"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "無效的 IDN：「%s」"
+msgstr "無效的 IDN「%s」。"
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "拷貝到 %s…"
+msgstr "正在尋找 %s…"
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "無法寄出信件。"
+msgstr "找不到主機 \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "正連接到 %s…"
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "訂閱 %s…"
+msgstr "無法連線到 %s (%s)。"
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6568,103 +6568,3 @@ msgstr "編譯選項："
 msgid "Compile options:"
 msgstr "編譯選項："
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "太少參數"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "用法: neomutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
-#~ "        neomutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-#~ "        neomutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
-#~ "        neomutt -v[v]\n"
-#~ "\n"
-#~ "參數：\n"
-#~ "  -a <檔案>     將檔案附在信件中\n"
-#~ "  -b <地址>     指定一個 秘密複製 (BCC) 的地址\n"
-#~ "  -c <地址>     指定一個 複製 (CC) 的地址\n"
-#~ "  -e <命令>     指定一個初始化後要被執行的命令\n"
-#~ "  -f <檔案>     指定要閱讀那一個郵筒\n"
-#~ "  -F <檔案>     指定另一個 neomuttrc 檔案\n"
-#~ "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
-#~ "  -i <檔案>     指定一個包括在回覆中的檔案\n"
-#~ "  -m <類型>     指定一個預設的郵筒類型\n"
-#~ "  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
-#~ "  -p            叫回一個延後寄送的信件\n"
-#~ "  -R            以唯讀模式開啟郵筒\n"
-#~ "  -s <主題>     指定一個主題 (如果有空白的話必須被包括在引言中)\n"
-#~ "  -v            顯示版本和編譯時所定義的參數\n"
-#~ "  -x            模擬 mailx 寄送模式\n"
-#~ "  -y            選擇一個被指定在您郵筒清單中的郵筒\n"
-#~ "  -z            如果沒有訊息在郵筒中的話，立即離開\n"
-#~ "  -Z            開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
-#~ "  -h            這個說明訊息\n"
-#~ "用法: neomutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
-#~ "       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] [...]\n"
-#~ "       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] [...]\n"
-#~ "       neomutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-#~ "       neomutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
-#~ "       neomutt -v[v]\n"
-#~ "\n"
-#~ "參數：\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <檔案>     將檔案附在信件中\n"
-#~ "  -b <地址>     指定一個 秘密複製 (BCC) 的地址\n"
-#~ "  -c <地址>     指定一個 複製 (CC) 的地址\n"
-#~ "  -e <命令>     指定一個初始化後要被執行的命令\n"
-#~ "  -f <檔案>     指定要閱讀那一個郵筒\n"
-#~ "  -F <檔案>     指定另一個 neomuttrc 檔案\n"
-#~ "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
-#~ "  -i <檔案>     指定一個包括在回覆中的檔案\n"
-#~ "  -m <類型>     指定一個預設的郵筒類型\n"
-#~ "  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
-#~ "  -p            叫回一個延後寄送的信件\n"
-#~ "  -Q <變數>     查詢一個設定變數\n"
-#~ "  -R            以唯讀模式開啟郵筒\n"
-#~ "  -s <主題>     指定一個主題 (如果有空白的話必須被包括在引言中)\n"
-#~ "  -v            顯示版本和編譯時所定義的參數\n"
-#~ "  -x            模擬 mailx 寄送模式\n"
-#~ "  -y            選擇一個被指定在您郵筒清單中的郵筒\n"
-#~ "  -z            如果沒有訊息在郵筒中的話，立即離開\n"
-#~ "  -Z            開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
-#~ "  -h            這個說明訊息"

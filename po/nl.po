@@ -1042,9 +1042,9 @@ msgid "Compressing %s"
 msgstr "Comprimeren van %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Fout in tunnel in communicatie met %s: %s"
+msgstr "Verbinding met %s is mislukt (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1052,29 +1052,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Verbinding met %s beëindigd"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Ongeldig IDN: '%s'"
+msgstr "Ongeldige IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopiëren naar %s..."
+msgstr "%s aan het opzoeken..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Bericht kon niet verstuurd worden."
+msgstr "Kan adres van server \"%s\" niet achterhalen"
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Bezig met verbinden met \"%s\"..."
+msgstr "Bezig met verbinden met %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Geabonneerd op %s"
+msgstr "Kan niet verbinden met %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6406,87 +6406,3 @@ msgstr "Opties tijdens compileren:"
 msgid "Compile options:"
 msgstr "Opties tijdens compileren:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "te weinig argumenten"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "Gebruik:  neomutt [<opties>] [-z] [-f <bestand> | -yZ]\n"
-#~ "          neomutt [<opties>] [-Ex] [-Hi <bestand>] [-s <onderwerp>]\n"
-#~ "               [-bc <adres>] [-a <bestand> [...] --] <adres> [...]\n"
-#~ "          neomutt [<opties>] [-x] [-s <onderwerp>] [-bc <adres>]\n"
-#~ "               [-a <bestand> [...] --] <adres> [...] < bericht\n"
-#~ "          neomutt [<opties>] -p\n"
-#~ "          neomutt [<opties>] -A <afkorting> [...]\n"
-#~ "          neomutt [<opties>] -Q <vraag> [...]\n"
-#~ "          neomutt [<opties>] -D\n"
-#~ "          neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "Opties:\n"
-#~ "  -A <afkorting>        gebruik een afkorting\n"
-#~ "  -a <bestand> [...] -- voeg een bestand bij het bericht;\n"
-#~ "                de lijst met bestanden dient afgesloten te worden met '--'\n"
-#~ "  -b <adres>    specificeer een blind carbon-copy (BCC) adres\n"
-#~ "  -c <adres>    specificeer een carbon-copy (CC) adres\n"
-#~ "  -D            druk de waardes van alle variabelen af op stdout\n"
-#~ "  -d <niveau>   log debug-uitvoer naar ~/.neomuttdebug0\n"
-#~ "  -E            het concept (-H) of het ingevoegde bestand (-i) bewerken\n"
-#~ "  -e <opdracht> specificeer een uit te voeren opdracht na initialisatie\n"
-#~ "  -F <file>     specificeer een alternatieve neomuttrc\n"
-#~ "  -f <file>     specificeer het te lezen postvak\n"
-#~ "  -H <file>     specificeer een bestand om de headers uit te lezen\n"
-#~ "  -i <file>     specificeer een bestand dat NeoMutt moet invoegen in het bericht\n"
-#~ "  -m <type>     specificeer een standaard postvaktype\n"
-#~ "  -n            zorgt dat NeoMutt de systeem neomuttrc niet inleest\n"
-#~ "  -p            roept een uitgesteld bericht op\n"
-#~ "  -Q <variabele>        vraagt de waarde van een configuratievariabele op\n"
-#~ "  -R            opent het postvak met alleen-lezen-rechten\n"
-#~ "  -s <ond>      specificeer een onderwerp (tussen aanhalingstekens i.g.v. spaties)\n"
-#~ "  -v            toont het versienummer en opties tijdens het compileren\n"
-#~ "  -x            simuleert de mailx verzendmodus\n"
-#~ "  -y            selecteert een postvak gespecificeerd in de 'mailboxes'-lijst\n"
-#~ "  -z            sluit meteen af als er geen berichten in het postvak staan\n"
-#~ "  -Z            opent het eerste postvak met nieuwe berichten, sluit af indien geen\n"
-#~ "  -h            deze hulptekst"

@@ -1049,9 +1049,9 @@ msgid "Compressing %s"
 msgstr "Hona kopiatzen %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Tunel errorea %s-rekiko konexioan: %s"
+msgstr "Errorea %s (%s) komunikatzerakoan"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1059,29 +1059,29 @@ msgid "Connection to %s has been aborted"
 msgstr "%s-rekiko konexioa itxia"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN Okerra: '%s'"
+msgstr "IDN okerra \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Hona kopiatzen %s..."
+msgstr "%s Bilatzen..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Ezin da mezua bidali."
+msgstr "Ezin da \"%s\" ostalaria aurkitu"
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "\"%s\"-rekin konektatzen..."
+msgstr "%s-ra konektatzen..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s-ra harpideturik"
+msgstr "Ezin da %s (%s)-ra konektatu."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6456,83 +6456,3 @@ msgstr "Konpilazio aukerak:"
 msgid "Compile options:"
 msgstr "Konpilazio aukerak:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "argumentu gehiegi"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "erabilera: neomutt [<aukerak>] [-z] [-f <fitx> | -yZ]\n"
-#~ "       neomutt [<aukerak>] [-x] [-Hi <fitx>] [-s <gaia>] [-bc <helb>] [-a <fitx> [...]] [--] <helb> [...]\n"
-#~ "       neomutt [<aukerak>] -p\n"
-#~ "       neomutt [<aukerak>] -A <ezizena> [...]\n"
-#~ "       neomutt [<aukerak>] -Q <query> [...]\n"
-#~ "       neomutt [<aukerak>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "aukerak:\n"
-#~ "  -A <ezizena>  zabaldu emandako ezizena\n"
-#~ "  -a <fitx>     erantsi fitxategi bat mezura\n"
-#~ "  -b <helbidea> zehaztu ezkutuko kopiarako (BCC) helbide bat\n"
-#~ "  -c <helbidea> zehaztu kopiarako (CC) helbide bat\n"
-#~ "  -D            inprimatu aldagai guztien balioa irteera estandarrean\n"
-#~ "  -d <maila>    inprimatu arazpen irteera hemen: ~/.neomuttdebug0\n"
-#~ "  -e <komandoa> zehaztu abiarazi ondoren exekutatuko den komando bat\n"
-#~ "  -f <fitx>     zein posta-kutxa irakurri zehaztu\n"
-#~ "  -F <fitx>     beste neomuttrc fitxategi bat zehaztu\n"
-#~ "  -H <fitx>     zehaztu zirriborro fitxategi bat burua eta gorputza bertatik kopiatzeko\n"
-#~ "  -i <fitx>     zehaztu neomutt-ek gorputzean txertatu behar duen fitxategi bat\n"
-#~ "  -m <type>     zehaztu lehenetsiriko postakutxa mota\n"
-#~ "  -n            NeoMutt-ek sistema neomuttrc ez irakurtzea eragiten du\n"
-#~ "  -p            atzeratutako mezu bat berreskuratzen du\n"
-#~ "  -Q <aldagaia> galdezkatu konfigurazio aldagai bat\n"
-#~ "  -R            ireki postakutxa irakurketa-soileko moduan\n"
-#~ "  -s <gaia>     zehaztu gai bat (komatxo artean zuriunerik badu)\n"
-#~ "  -v            ikusi bertsio eta konpilazio-une definizioak\n"
-#~ "  -x            simulatu mailx bidalketa modua\n"
-#~ "  -y            zehaztu postakutxa zehatz zure 'postakutxa' zerrendan\n"
-#~ "  -z            irten berehala postakutxan mezurik ez badago\n"
-#~ "  -Z            ireki mezu berri bat duen lehen karpeta, irten batez ez balego\n"
-#~ "  -h            laguntza testu hau"
