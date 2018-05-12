@@ -1932,14 +1932,14 @@ msgid "Clear flag"
 msgstr "Išvalyti vėliavėlę"
 
 #: handler.c:66
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tipas: %s/%s, Koduotė: %s, Dydis: %s --]\n"
+msgstr "[-- Alternatyus tipas #%d: %s/%s%s%s, Koduotė: %s, Dydis: %s --]\n"
 
 #: handler.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tipas: %s/%s, Koduotė: %s, Dydis: %s --]\n"
+msgstr "[-- Tipas: %s/%s%s%s, Koduotė: %s, Dydis: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -1947,18 +1947,18 @@ msgstr "[-- Klaida:  Nepavyko parodyti nė vienos Multipart/Alternative dalies! 
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1392
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Priedas #%d: %s --]\n"
 
 #: handler.c:1397
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Priedas #%d --]\n"
 
 #: handler.c:1413
 msgid "One or more parts of this message could not be displayed"
-msgstr ""
+msgstr "Viena ar daugiau laiško dalių negalėjo būti parodyta"
 
 #: handler.c:1466
 #, c-format
@@ -1971,9 +1971,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Kviečiu autom. peržiūros komandą: %s"
 
 #: handler.c:1499
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- Nepavyko paleisti %s. --]\n"
 
 #: handler.c:1518 handler.c:1539
 #, c-format
@@ -1985,7 +1985,7 @@ msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Klaida: message/external-body dalis neturi access-type parametro --]\n"
 
 #: handler.c:1611
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -1998,7 +1998,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1620
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
 
@@ -2011,7 +2011,6 @@ msgstr "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
 #. in this translation!
 #.
 #: handler.c:1637
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -2024,7 +2023,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1646
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Šis %s/%s priedas buvo ištrintas --]\n"
 
@@ -2034,7 +2033,7 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- vardas: %s --]\n"
 
 #: handler.c:1672
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -2044,7 +2043,7 @@ msgstr ""
 "[-- o nurodytas išorinis šaltinis išseko. --]\n"
 
 #: handler.c:1693
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -2053,52 +2052,47 @@ msgstr ""
 "[-- o nurodytas pasiekimo tipas %s yra nepalaikomas. --]\n"
 
 #: handler.c:1822
-#, fuzzy
 msgid "Unable to open memory stream!"
-msgstr "Negaliu atidaryti laikinos bylos!"
+msgstr "Negaliu atidaryti atminties srauto!"
 
 #: handler.c:1831
 msgid "Unable to open temporary file!"
 msgstr "Negaliu atidaryti laikinos bylos!"
 
 #: handler.c:1881
-#, fuzzy
 msgid "failed to re-open memstream!"
-msgstr "Negaliu atidaryti laikinos bylos!"
+msgstr "nepavyko iš naujo atidaryti atminties srauto!"
 
 #: handler.c:2013
 msgid "Error: multipart/signed has no protocol."
 msgstr "Klaida: multipart/signed neturi protokolo."
 
 #: handler.c:2076
-#, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Šis %s/%s priedas (naudok '%3$s' šiai daliai peržiūrėti) --]\n"
+msgstr "[-- Čia yra priedas (naudok '%3$s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:2082
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s yra nepalaikomas (naudok '%s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:2087
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Šis %s/%s priedas ('view-attachments' turi būti susietas su klavišu!) --]\n"
+msgstr "[-- Čia yra priedas ('view-attachments' turi būti susietas su klavišu!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:2091
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- %s/%s yra nepalaikomas ('view-attachments' turi būti susietas su klavišu!) --]\n"
 
 #: handler.c:2098
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Šis %s/%s priedas --]\n"
+msgstr "[-- Čia yra priedas --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:2101
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s yra nepalaikomas --]\n"
 
@@ -2143,9 +2137,9 @@ msgid "Bad history file format (line %d)"
 msgstr ""
 
 #: history.c:484
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Užklausa '%s''"
+msgstr "Istorija '%s''"
 
 #: hook.c:132
 msgid "current mailbox shortcut '^' is unset"
@@ -2174,13 +2168,12 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr ""
 
 #: imap/auth.c:118
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "SASL autentikacija nepavyko."
+msgstr "Nėra autentikatorių arba neteisingas naudotojo vardas/slaptažodis."
 
 #: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
-msgstr "Autentikuojuosi (anoniminė)..."
+msgstr "Autentikuojuosi (anonimiškai)..."
 
 #: imap/auth_anon.c:91
 msgid "Anonymous authentication failed."
@@ -2233,9 +2226,8 @@ msgid "Getting folder list..."
 msgstr "Gaunu aplankų sąrašą..."
 
 #: imap/browse.c:336
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: nėra tokios spalvos"
+msgstr "Nėra tokio aplanko"
 
 #: imap/browse.c:393
 msgid "Create mailbox: "
@@ -2273,9 +2265,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Pašto dėžutė %s@%s uždaryta"
 
 #: imap/command.c:1111 imap/command.c:1205
-#, fuzzy, c-format
+#, , c-format
 msgid "Connection to %s timed out"
-msgstr "Jungiuosi prie %s..."
+msgstr "Prisijungimui prie %s pasibaigė laikas"
 
 #: imap/imap.c:90
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -2292,9 +2284,9 @@ msgid "Server-side custom search not supported: %s"
 msgstr ""
 
 #: imap/imap.c:672
-#, fuzzy, c-format
+#, c-format
 msgid "CREATE failed: %s"
-msgstr "Nepavyko pasisveikinti."
+msgstr "CREATE komanda nepavyko: %s"
 
 #: imap/imap.c:753
 #, c-format
@@ -2360,9 +2352,8 @@ msgid "Error opening mailbox"
 msgstr "Klaida atidarant pašto dėžutę"
 
 #: imap/imap.c:2398
-#, fuzzy
 msgid "Expunge failed"
-msgstr "Nepavyko pasisveikinti."
+msgstr "Ištrynimas nepavyko"
 
 #: imap/imap.c:2409
 #, c-format
@@ -2421,9 +2412,8 @@ msgstr "Negaliu sukurti laikinos bylos %s"
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
 #: imap/message.c:693
-#, fuzzy
 msgid "Evaluating cache..."
-msgstr "Paimu laiškų antraštes... [%d/%d]"
+msgstr "Tikrinu podėlį..."
 
 #: imap/message.c:1034 imap/message.c:1098 nntp.c:1663 pop.c:641
 msgid "Fetching message..."
@@ -2434,7 +2424,6 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Laiškų indeksas yra neteisingas. Bandyk iš naujo atidaryti dėžutę."
 
 #: imap/message.c:1287
-#, fuzzy
 msgid "Uploading message..."
 msgstr "Nusiunčiu laišką..."
 
@@ -2462,14 +2451,12 @@ msgid "%s: Unknown type."
 msgstr "%s: nežinomas tipas."
 
 #: init.c:1221
-#, fuzzy
 msgid "spam: no matching pattern"
-msgstr "pažymėti laiškus, tenkinančius pattern'ą"
+msgstr "spam: trūksta šablono"
 
 #: init.c:1223
-#, fuzzy
 msgid "nospam: no matching pattern"
-msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+msgstr "nospam: trūksta šablono"
 
 #: init.c:1396
 #, c-format
@@ -2482,28 +2469,24 @@ msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr ""
 
 #: init.c:1624
-#, fuzzy
 msgid "attachments: no disposition"
-msgstr "taisyti priedo aprašymą"
+msgstr "attachments: trūksta dispozicijos"
 
 #: init.c:1635
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "taisyti priedo aprašymą"
+msgstr "Dabartiniai priedų nustatymai:"
 
 #: init.c:1665
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "taisyti priedo aprašymą"
+msgstr "attachments: neteisinga dispozicija"
 
 #: init.c:1681
-#, fuzzy
 msgid "unattachments: no disposition"
-msgstr "taisyti priedo aprašymą"
+msgstr "unattachments: trūksta dispozicijos"
 
 #: init.c:1708
 msgid "unattachments: invalid disposition"
-msgstr ""
+msgstr "unattachments: neteisinga dispozicija"
 
 #: init.c:1842
 msgid "alias: no address"
@@ -2512,7 +2495,7 @@ msgstr "alias: nėra adreso"
 #: init.c:1888
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'.\n"
 
 #: init.c:1958
 msgid "invalid header field"
@@ -2538,7 +2521,7 @@ msgstr "reikšmė neleistina reset komandoje"
 
 #: init.c:2383 init.c:2395
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Naudojimas: set kintamasis=yes|no"
 
 #: init.c:2403
 #, c-format
@@ -2546,14 +2529,14 @@ msgid "%s is set"
 msgstr "%s yra įjungtas"
 
 #: init.c:2524
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "Bloga mėnesio diena: %s"
+msgstr "Bloga parametro %s reikšmė: \"%s\""
 
 #: init.c:2538
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for name %s: \"%s\""
-msgstr "Bloga mėnesio diena: %s"
+msgstr "Bloga vardo %s reikšmė: \"%s\""
 
 #: init.c:2635
 #, c-format
@@ -2561,13 +2544,13 @@ msgid "%s: invalid mailbox type"
 msgstr "%s: blogas pašto dėžutės tipas"
 
 #: init.c:2666
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: bloga reikšmė"
+msgstr "%s: bloga reikšmė (%s)"
 
 #: init.c:2667
 msgid "format error"
-msgstr ""
+msgstr "formato klaida"
 
 #: init.c:2667
 msgid "number overflow"
@@ -2579,7 +2562,7 @@ msgid "%s: invalid value"
 msgstr "%s: bloga reikšmė"
 
 #: init.c:2821
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid backend"
 msgstr "%s: bloga reikšmė"
 
@@ -2637,16 +2620,14 @@ msgid "Error in command line: %s"
 msgstr "Klaida komandinėje eilutėje: %s"
 
 #: init.c:3808
-#, fuzzy
 msgid "unable to determine nodename via uname()"
-msgstr "negaliu nustatyti vartotojo vardo"
+msgstr "negaliu nustatyti kompiuterio vardo per uname()"
 
 #: init.c:4121
 msgid "-group: no group name"
-msgstr ""
+msgstr "-group: trūksta grupės vardo"
 
 #: init.c:4131
-#, fuzzy
 msgid "out of arguments"
 msgstr "per mažai argumentų"
 
