@@ -1049,9 +1049,9 @@ msgid "Compressing %s"
 msgstr "Kopierar till %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Tunnelfel vid förbindelsen till %s: %s"
+msgstr "Fel uppstod vid förbindelsen till %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1059,29 +1059,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Anslutning till %s stängd"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Felaktigt IDN: \"%s\""
+msgstr "Felaktigt IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopierar till %s..."
+msgstr "Slår upp %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Kunde inte skicka meddelandet."
+msgstr "Kunde inte hitta värden \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Ansluter med \"%s\"..."
+msgstr "Ansluter till %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Prenumererar på %s..."
+msgstr "Kunde inte ansluta till %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6480,83 +6480,3 @@ msgstr "Kompileringsval:"
 msgid "Compile options:"
 msgstr "Kompileringsval:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "slut på parametrar"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "användning: neomutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
-#~ "       neomutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a <file> [...]] [--] <adress> [...]\n"
-#~ "       neomutt [<flaggor>] -p\n"
-#~ "       neomutt [<flaggor>] -A <alias> [...]\n"
-#~ "       neomutt [<flaggor>] -Q <förfrågan> [...]\n"
-#~ "       neomutt [<flaggor>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "flaggor:\n"
-#~ "  -A <alias>    expandera det givna aliaset\n"
-#~ "  -a <fil>      bifoga en fil till meddelandet\n"
-#~ "  -b <adress>   ange en \"blind carbon-copy\" (BCC) adress\n"
-#~ "  -c <adress>   ange en \"carbon-copy\" (CC) adress\n"
-#~ "  -D            skriv ut värdet på alla variabler på stdout\n"
-#~ "  -d <nivå>     logga debug-utskrifter till ~/.neomuttdebug0\n"
-#~ "  -e <kommando> ange ett kommando som ska köras efter initiering\n"
-#~ "  -f <fil>      ange vilken brevlåda som ska läsas\n"
-#~ "  -F <fil>      ange en alternativ neomuttrc-fil\n"
-#~ "  -H <fil>      ange en filmall att läsa huvud från\n"
-#~ "  -i <fil>      ange en fil som NeoMutt ska inkludera i svaret\n"
-#~ "  -m <typ>      ange standardtyp för brevlådan\n"
-#~ "  -n            gör så att NeoMutt inte läser systemets neomuttrc\n"
-#~ "  -p            återkalla ett uppskjutet meddelande\n"
-#~ "  -Q <variabel> undersök värdet på en konfigurationsvariabel\n"
-#~ "  -R            öppna brevlåda i skrivskyddat läge\n"
-#~ "  -s <ämne>     ange ett ämne (måste vara inom citationstecken om det innehåller blanksteg)\n"
-#~ "  -v            visa version och definitioner vid kompileringen\n"
-#~ "  -x            simulera mailx's sändläge\n"
-#~ "  -y            välj en brevlåda specifierad i din \"mailboxes\"-lista\n"
-#~ "  -z            avsluta omedelbart om det inte finns några meddelanden i brevlådan\n"
-#~ "  -Z            öppna den första foldern med ett nytt meddelande, avsluta omedelbart om inget finns\n"
-#~ "  -h            den här hjälptexten"

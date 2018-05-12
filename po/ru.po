@@ -1053,9 +1053,9 @@ msgid "Compressing %s"
 msgstr "Упаковывается %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Ошибка туннеля при взаимодействии с %s: %s"
+msgstr "Ошибка при взаимодействии с %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1063,29 +1063,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Соединение с %s закрыто"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Некорректный IDN: %s"
+msgstr "Некорректный IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Копируется в %s..."
+msgstr "Определяется адрес сервера %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Сообщение отправить не удалось."
+msgstr "Не удалось определить адрес сервера \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Устанавливается соединение с \"%s\"..."
+msgstr "Устанавливается соединение с %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Подключено к %s"
+msgstr "Не удалось установить соединение с %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6415,85 +6415,3 @@ msgstr "Параметры компиляции:"
 msgid "Compile options:"
 msgstr "Параметры компиляции:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "слишком мало аргументов"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "запуск: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "        neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "        neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "        neomutt [<options>] -p\n"
-#~ "        neomutt [<options>] -A <alias> [...]\n"
-#~ "        neomutt [<options>] -Q <query> [...]\n"
-#~ "        neomutt [<options>] -D\n"
-#~ "        neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "параметры:\n"
-#~ "  -A <alias>    раскрыть данный псевдоним\n"
-#~ "  -a <file> [...] --    вложить файл(ы) в сообщение\n"
-#~ "                список файлов должен заканчиваться строкой \"--\"\n"
-#~ "  -b <address>  указать blind carbon-copy (BCC) адрес\n"
-#~ "  -c <address>  указать carbon-copy (CC) адрес\n"
-#~ "  -D            вывести значения всех переменных на stdout\n"
-#~ "  -d <level>    запись отладочной информации в ~/.neomuttdebug0\n"
-#~ "  -E            редактировать шаблон (-H) или вставляемый файл (-i)\n"
-#~ "  -e <command>  указать команду, которая будет выполнена после инициализации\n"
-#~ "  -f <file>     указать почтовый ящик для работы\n"
-#~ "  -F <file>     указать альтернативный neomuttrc\n"
-#~ "  -H <file>     указать файл, содержащий шаблон заголовка и тела письма\n"
-#~ "  -i <file>     указать файл для вставки в тело письма\n"
-#~ "  -m <тип>      указать тип почтового ящика по умолчанию\n"
-#~ "  -n            запретить чтение системного neomuttrc\n"
-#~ "  -p            продолжить отложенное сообщение\n"
-#~ "  -Q <имя>      вывести значение переменной конфигурации\n"
-#~ "  -R            открыть почтовый ящик в режиме \"только для чтения\"\n"
-#~ "  -s <тема>     указать тему сообщения (должна быть в кавычках, если присутствуют пробелы)\n"
-#~ "  -v            вывести номер версии и параметры компиляции\n"
-#~ "  -x            эмулировать режим посылки команды mailx\n"
-#~ "  -y            выбрать почтовый ящик из списка mailboxes\n"
-#~ "  -z            выйти немедленно если в почтовом ящике отсутствует новая почта\n"
-#~ "  -Z            открыть первый почтовый ящик с новой почтой, выйти немедленно если таковая отсутствует\n"
-#~ "  -h            текст этой подсказки"

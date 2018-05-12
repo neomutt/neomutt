@@ -1046,9 +1046,9 @@ msgid "Compressing %s"
 msgstr "Copio in %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Errore del tunnel nella comunicazione con %s: %s"
+msgstr "Errore di comunicazione con %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1056,29 +1056,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Connessione a %s chiusa."
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN non valido: '%s'"
+msgstr "IDN \"%s\" non valido."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copio in %s..."
+msgstr "Ricerca di %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Impossibile spedire il messaggio."
+msgstr "Impossibile trovare l'host \"%s\"."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Connessione a \"%s\"..."
+msgstr "Connessione a %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Iscritto a %s"
+msgstr "Impossibile connettersi a %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6436,85 +6436,3 @@ msgstr "Opzioni di compilazione:"
 msgid "Compile options:"
 msgstr "Opzioni di compilazione:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "troppo pochi argomenti"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "usage: neomutt [<opzioni>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<opzioni>] [-x] [-Hi <file>] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <indir> [...]\n"
-#~ "       neomutt [<opzioni>] [-x] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <addr> [...] < messaggio\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "opzioni:\n"
-#~ "  -A <alias>    espande l'alias indicato\n"
-#~ "  -a <file>[...]  --    allega uno o più file al messaggio\n"
-#~ "                la lista di file va terminata con la sequenza \"--\"\n"
-#~ "  -b <indir>    indirizzo in blind carbon copy (BCC)\n"
-#~ "  -c <indir>    indirizzo in carbon copy (CC)\n"
-#~ "  -D            stampa il valore di tutte le variabile sullo standard output\n"
-#~ "  -d <livello>  registra l'output di debug in ~/.neomuttdebug0\n"
-#~ "  -e <comando>  comando da eseguire dopo l'inizializzazione\n"
-#~ "  -f <file>     specificaquale mailbox leggere\n"
-#~ "  -F <file>     specifica un file neomuttrc alternativo\n"
-#~ "  -H <file>     specifica un file di esempio da cui leggere header e body\n"
-#~ "  -i <file>     specifica un file che neomutt dovrebbe includere nella risposta\n"
-#~ "  -m <tipo>     specifica il tipo di mailbox predefinita\n"
-#~ "  -n            disabilita la lettura del neomuttrc di sistema\n"
-#~ "  -p            richiama un messaggio rimandato\n"
-#~ "  -Q <variabile>        interroga una variabile di configurazione\n"
-#~ "  -R            apre la mailbox in sola lettura\n"
-#~ "  -s <sogg>     specifica il Subject (deve essere tra apici se ha spazi)\n"
-#~ "  -v            mostra la versione e le definizioni della compilazione\n"
-#~ "  -x            simula la modalità invio di mailx\n"
-#~ "  -y            seleziona una mailbox specificata nella lista 'mailboxes'\n"
-#~ "  -z            esce immediatamente se non ci sono messaggi nella mailbox\n"
-#~ "  -Z            apre il primo folder con un nuovo messaggio, esce se non ce ne sono\n"
-#~ "  -h            questo messaggio di aiuto"

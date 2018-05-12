@@ -1043,39 +1043,39 @@ msgid "Compressing %s"
 msgstr "%s を圧縮中"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "%s へのトンネル交信エラー: %s"
+msgstr "%s への交信エラー (%s)。"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
 msgstr "%s への接続を終了した"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "不正な IDN: '%s'"
+msgstr "不正な IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "%s にコピー中..."
+msgstr "%s 検索中..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "メッセージを送信できなかった。"
+msgstr "ホスト \"%s\" が見つからなかった"
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "\"%s\" で接続中..."
+msgstr "%s に接続中..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s を購読を開始した"
+msgstr "%s に接続できなかった (%s)。"
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6397,85 +6397,3 @@ msgstr "コンパイル時オプション:"
 msgid "Compile options:"
 msgstr "コンパイル時オプション:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "引数が足りない"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "使用法: neomutt [<オプション>] [-z] [-f <ファイル> | -yZ]\n"
-#~ "        neomutt [<オプション>] [-Ex] [-Hi <ファイル>] [-s <題名>] [-bc <アドレス>] [-a <ファイル> [...] --] <アドレス> [...]\n"
-#~ "        neomutt [<オプション>] [-x] [-s <題名>] [-bc <アドレス>] [-a <ファイル> [...] --] <アドレス> [...] < メッセージファイル\n"
-#~ "        neomutt [<オプション>] -p\n"
-#~ "        neomutt [<オプション>] -A <別名> [...]\n"
-#~ "        neomutt [<オプション>] -Q <問い合わせ> [...]\n"
-#~ "        neomutt [<オプション>] -D\n"
-#~ "        neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "オプション:\n"
-#~ "  -A <別名>     指定した別名の展開\n"
-#~ "  -a <ファイル> [...] --        メッセージにファイルを添付\n"
-#~ "                最後のファイルの次に \"--\" が必要\n"
-#~ "  -b <アドレス> blind carbon-copy (BCC) アドレスの指定\n"
-#~ "  -c <アドレス> carbon-copy (CC) アドレスの指定\n"
-#~ "  -D            変数をすべて標準出力へ表示\n"
-#~ "  -d <レベル>    デバグ出力を ~/.neomuttdebug0 に記録\n"
-#~ "  -E            下書 (-H) や挿入 (-i) ファイルを編集することの指定\n"
-#~ "  -e <コマンド> 初期化後に実行するコマンドの指定\n"
-#~ "  -f <ファイル> 読み出しメールボックスの指定\n"
-#~ "  -F <ファイル> 代替 neomuttrc ファイルの指定\n"
-#~ "  -H <ファイル> へッダを読むために下書ファイルを指定\n"
-#~ "  -i <ファイル> 返信時に NeoMutt が挿入するファイルの指定\n"
-#~ "  -m <タイプ>   メールボックス形式の指定\n"
-#~ "  -n            システム既定の neomuttrc を読まないことの指定\n"
-#~ "  -p            保存されている (書きかけ) メッセージの再読み出しの指定\n"
-#~ "  -Q <変数>     設定変数の問い合わせ\n"
-#~ "  -R            メールボックスを読み出し専用モードでオープンすることの指定\n"
-#~ "  -s <題名>     題名の指定 (空白がある場合には引用符でくくること)\n"
-#~ "  -v            バージョンとコンパイル時指定の表示\n"
-#~ "  -x            mailx 送信モードのシミュレート\n"
-#~ "  -y            指定された 'mailboxes' リストの中からのメールボックスの選択\n"
-#~ "  -z            メールボックス中にメッセージが無ければすぐに終了\n"
-#~ "  -Z            新着メッセージが無ければすぐに終了\n"
-#~ "  -h            このヘルプメッセージ"

@@ -1093,43 +1093,43 @@ msgstr "Compression de %s"
 
 # , c-format
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Erreur de tunnel en parlant à %s : %s"
+msgstr "Erreur en parlant à %s (%s)"
 
 # , c-format
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Connexion à %s fermée"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Mauvais IDN : '%s'"
+msgstr "Mauvais IDN « %s »."
 
 # , c-format
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copie vers %s..."
+msgstr "Recherche de %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Impossible d'envoyer le message."
+msgstr "Impossible de trouver la machine \"%s\""
 
 # , c-format
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Connexion avec \"%s\"..."
+msgstr "Connexion à %s..."
 
 # , c-format
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Abonné à %s"
+msgstr "Impossible de se connecter à %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6603,85 +6603,3 @@ msgstr "Options de compilation :"
 msgid "Compile options:"
 msgstr "Options de compilation :"
 
-#~ msgid "not enough arguments"
-#~ msgstr "pas assez d'arguments"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "usage : neomutt [<options>] [-z] [-f <fichier> | -yZ]\n"
-#~ "        neomutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] [-a <fichier> [...] --] <adresse> [...]\n"
-#~ "        neomutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> [...] --] <adresse> [...] < message\n"
-#~ "        neomutt [<options>] -p\n"
-#~ "        neomutt [<options>] -A <alias> [...]\n"
-#~ "        neomutt [<options>] -Q <requête> [...]\n"
-#~ "        neomutt [<options>] -D\n"
-#~ "        neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options :\n"
-#~ "  -A <alias>    développe l'alias mentionné\n"
-#~ "  -a <fich> [...] --    attache un ou plusieurs fichiers à ce message\n"
-#~ "                la liste des fichiers doit se terminer par la séquence \"--\"\n"
-#~ "  -b <adresse>  spécifie une adresse à mettre en copie aveugle (BCC)\n"
-#~ "  -c <adresse>  spécifie une adresse à mettre en copie (CC)\n"
-#~ "  -D            écrit la valeur de toutes les variables sur stdout\n"
-#~ "  -d <niveau>   écrit les infos de débuggage dans ~/.neomuttdebug0\n"
-#~ "  -E            éditer le fichier brouillon (-H) ou d'inclusion (-i)\n"
-#~ "  -e <commande> spécifier une commande à exécuter après l'initialisation\n"
-#~ "  -f <fich>     spécifier quelle boîte aux lettres lire\n"
-#~ "  -F <fich>     spécifier un fichier neomuttrc alternatif\n"
-#~ "  -H <fich>     spécifier un fichier de brouillon d'où lire en-têtes et corps\n"
-#~ "  -i <fich>     spécifier un fichier que NeoMutt doit inclure dans le corps\n"
-#~ "  -m <type>     spécifier un type de boîte aux lettres par défaut\n"
-#~ "  -n            fait que NeoMutt ne lit pas le fichier neomuttrc système\n"
-#~ "  -p            rappeler un message ajourné\n"
-#~ "  -Q <variable> demande la valeur d'une variable de configuration\n"
-#~ "  -R            ouvre la boîte aux lettres en mode lecture seule\n"
-#~ "  -s <obj>      spécifie un objet (entre guillemets s'il contient des espaces)\n"
-#~ "  -v            affiche la version et les définitions de compilation\n"
-#~ "  -x            simule le mode d'envoi mailx\n"
-#~ "  -y            sélectionne une BAL spécifiée dans votre liste 'mailboxes'\n"
-#~ "  -z            quitte immédiatement si pas de nouveau message dans la BAL\n"
-#~ "  -Z            ouvre le premier dossier ayant un nouveau message, quitte sinon\n"
-#~ "  -h            ce message d'aide"

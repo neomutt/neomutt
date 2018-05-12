@@ -1048,9 +1048,9 @@ msgid "Compressing %s"
 msgstr "Стиснення %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Помилка тунелю у з’єднанні з сервером %s: %s"
+msgstr "Помилка у з’єднанні з сервером %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1058,29 +1058,29 @@ msgid "Connection to %s has been aborted"
 msgstr "З’єднання з %s закрито"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Некоректний IDN: %s"
+msgstr "Погане IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Копіювання до %s..."
+msgstr "Пошук %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Не вийшло відправити лист."
+msgstr "Не вийшло знайти адресу \"%s\"."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "З’єднання з \"%s\"..."
+msgstr "З’єднання з %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Підписано на %s..."
+msgstr "Не вийшло з’єднатися з %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6398,85 +6398,3 @@ msgstr "Параметри компіляції:"
 msgid "Compile options:"
 msgstr "Параметри компіляції:"
 
-#~ msgid "not enough arguments"
-#~ msgstr "замало аргументів"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "Використання:\n"
-#~ "       neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "  -A <alias>    розкрити псевдонім\n"
-#~ "  -a <file> [...] --    додати файл(и) до листа\n"
-#~ "                список файлів має закінчуватись на \"--\"\n"
-#~ "  -b <address>  вказати BCC, адресу прихованої копії\n"
-#~ "  -c <address>  вказати адресу копії (CC)\n"
-#~ "  -D            показати значення всіх змінних\n"
-#~ "  -d <level>    записати інформацію для налагодження в ~/.neomuttdebug0\n"
-#~ "  -E            редагувари шаблон (-H) або файл включення (-i)\n"
-#~ "  -e <command>  вказати команду, що її виконати після ініціалізації\n"
-#~ "  -f <file>     вказати, яку поштову скриньку читати\n"
-#~ "  -F <file>     вказати альтернативний файл neomuttrc\n"
-#~ "  -H <file>     вказати файл, що містить шаблон заголовку та тіла\n"
-#~ "  -i <file>     вказати файл, що його треба включити у відповідь\n"
-#~ "  -m <type>     вказати тип поштової скриньки\n"
-#~ "  -n            вказує NeoMutt не читати системний neomuttrc\n"
-#~ "  -p            викликати залишений лист\n"
-#~ "  -Q <variable> показати змінну конфігурації\n"
-#~ "  -R            відкрити поштову скриньку тільки для читання\n"
-#~ "  -s <subj>     вказати тему (в подвійних лапках, якщо містить пробіли)\n"
-#~ "  -v            показати версію та параметри компіляції\n"
-#~ "  -x            симулювати відправку mailx\n"
-#~ "  -y            вибрати поштову скриньку з-поміж вказаних у mailboxes\n"
-#~ "  -z            одразу вийти, якщо в поштовій скриньці немає жодного листа\n"
-#~ "  -Z            відкрити першу скриньку з новим листом, якщо немає - одразу вийти\n"
-#~ "  -h            ця підказка"

@@ -1069,9 +1069,9 @@ msgid "Compressing %s"
 msgstr "Á chóipeáil go %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Earráid tolláin i rith déanamh teagmháil le %s: %s"
+msgstr "Earráid i rith déanamh teagmháil le %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1079,29 +1079,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Nasc le %s dúnta"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "DrochIDN: '%s'"
+msgstr "DrochIDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Á chóipeáil go %s..."
+msgstr "%s á chuardach..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Níorbh fhéidir an teachtaireacht a sheoladh."
+msgstr "Níorbh fhéidir dul i dteagmháil leis an óstríomhaire \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Ag dul i dteagmháil le \"%s\"..."
+msgstr "Ag dul i dteagmháil le %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Liostáilte le %s"
+msgstr "Níorbh fhéidir dul i dteagmháil le %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6527,63 +6527,3 @@ msgstr "Roghanna tiomsaithe:"
 msgid "Compile options:"
 msgstr "Roghanna tiomsaithe:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "níl go leor argóintí ann"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "roghanna:\n"
-#~ "  -A <ailias>   leathnaigh an t-ailias sonraithe\n"
-#~ "  -a <comhad>   cuir iatán leis an teachtaireacht\n"
-#~ "  -b <seoladh>  sonraigh seoladh BCC\n"
-#~ "  -c <seoladh>  sonraigh seoladh CC\n"
-#~ "  -D            priontáil luach de gach athróg go stdout\n"
-#~ "  -d <leibhéal> scríobh aschur dífhabhtaithe i ~/.neomuttdebug0\n"
-#~ "  -e <ordú>     sonraigh ordú le rith i ndiaidh an túsaithe\n"
-#~ "  -f <comhad>   sonraigh an bosca poist le léamh\n"
-#~ "  -F <comhad>   sonraigh comhad neomuttrc mar mhalairt\n"
-#~ "  -H <comhad>   sonraigh comhad dréachta óna léitear an ceanntásc\n"
-#~ "  -i <comhad>   sonraigh comhad le cur sa phríomhthéacs\n"
-#~ "  -m <cineál>   réamhshocraigh cineál bosca poist\n"
-#~ "  -n            ná léigh neomuttrc an chórais\n"
-#~ "  -p            athghair teachtaireacht atá ar athlá\n"
-#~ "  -Q <athróg>   iarratas ar athróg chumraíochta\n"
-#~ "  -R            oscail bosca poist sa mhód inléite amháin\n"
-#~ "  -s <ábhar>    sonraigh an t-ábhar (le comharthaí athfhriotail má tá spás ann)\n"
-#~ "  -v            taispeáin an leagan agus athróga ag am tiomsaithe\n"
-#~ "  -x            insamhail an mód seolta mailx\n"
-#~ "  -y            roghnaigh bosca poist as do liosta\n"
-#~ "  -z            scoir lom láithreach mura bhfuil aon teachtaireacht sa bhosca\n"
-#~ "  -Z            oscail an chéad fhillteán le tcht nua, scoir mura bhfuil ceann ann\n"
-#~ "  -h            an chabhair seo"

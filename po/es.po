@@ -1057,7 +1057,7 @@ msgid "Compressing %s"
 msgstr "Copiando a %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Error al hablar con %s (%s)"
 
@@ -1067,29 +1067,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Conexión a %s cerrada"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN incorrecto: '%s'"
+msgstr "IDN inválido \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copiando a %s..."
+msgstr "Buscando %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "No se pudo enviar el mensaje."
+msgstr "No se encontró la dirección del servidor %s"
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Conectando a %s..."
+msgstr "No se pudo conectar a %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6574,99 +6574,3 @@ msgstr "Opciones especificadas al compilar:"
 msgid "Compile options:"
 msgstr "Opciones especificadas al compilar:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "Faltan parámetros"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "uso: neomutt [ -nRyzZ ] [ -e <cmd> ] [ -F <arch> ] [ -m <tipo> ] [ -f <arch> ]\n"
-#~ "     neomutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
-#~ "     neomutt [ -n ] [ -e <cmd> ] [ -F <archivo> ] -p\n"
-#~ "     neomutt -v[v]\n"
-#~ "\n"
-#~ "opciones:\n"
-#~ "  -a <archivo>  añadir un archivo al mensaje\n"
-#~ "  -b <dirección>        especifica una dirección para enviar copia ciega (BCC)\n"
-#~ "  -c <dirección>        especifica una dirección para enviar copia (CC)\n"
-#~ "  -e <comando>  especifica un comando a ser ejecutado al empezar\n"
-#~ "  -f <archivo>  especifica un buzón a leer\n"
-#~ "  -F <archivo>  especifica un archivo neomuttrc alterno\n"
-#~ "  -H <archivo>  especifica un archivo para obtener una cabecera\n"
-#~ "  -i <archivo>  especifica un archivo a incluir en la respuesta\n"
-#~ "  -m <tipo>     especifica un tipo de buzón\n"
-#~ "  -n            produce que NeoMutt no lea el archivo neomuttrc del sistema\n"
-#~ "  -p            continuar un mensaje pospuesto\n"
-#~ "  -R            abrir un buzón en modo de solo-lectura\n"
-#~ "  -s <asunto>   especifica el asunto (necesita comillas si contiene espacios)\n"
-#~ "  -v            muestra versión y opciones definidas al compilar\n"
-#~ "  -x            simula el modo de envío mailx\n"
-#~ "  -y            selecciona un buzón especificado en su lista 'mailboxes'\n"
-#~ "  -z            salir inmediatamente si no hay mensajes en el buzón\n"
-#~ "  -Z            abrir la primera carpeta con mensajes nuevos, salir si no hay\n"
-#~ "  -h            este mensaje de ayuda\n"
-#~ "uso: neomutt [ -nRyzZ ] [ -e <cmd> ] [ -F <arch> ] [ -m <tipo> ] [ -f <arch> ]\n"
-#~ "     neomutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
-#~ "     neomutt [ -n ] [ -e <cmd> ] [ -F <archivo> ] -p\n"
-#~ "     neomutt -v[v]\n"
-#~ "\n"
-#~ "opciones:\n"
-#~ "  -a <archivo>  añadir un archivo al mensaje\n"
-#~ "  -b <dirección>        especifica una dirección para enviar copia ciega (BCC)\n"
-#~ "  -c <dirección>        especifica una dirección para enviar copia (CC)\n"
-#~ "  -e <comando>  especifica un comando a ser ejecutado al empezar\n"
-#~ "  -f <archivo>  especifica un buzón a leer\n"
-#~ "  -F <archivo>  especifica un archivo neomuttrc alterno\n"
-#~ "  -H <archivo>  especifica un archivo para obtener una cabecera\n"
-#~ "  -i <archivo>  especifica un archivo a incluir en la respuesta\n"
-#~ "  -m <tipo>     especifica un tipo de buzón\n"
-#~ "  -n            produce que NeoMutt no lea el archivo NeoMuttrc del sistema\n"
-#~ "  -p            continuar un mensaje pospuesto\n"
-#~ "  -R            abrir un buzón en modo de solo-lectura\n"
-#~ "  -s <asunto>   especifica el asunto (necesita comillas si contiene espacios)\n"
-#~ "  -v            muestra versión y opciones definidas al compilar\n"
-#~ "  -x            simula el modo de envío mailx\n"
-#~ "  -y            selecciona un buzón especificado en su lista 'mailboxes'\n"
-#~ "  -z            salir inmediatamente si no hay mensajes en el buzón\n"
-#~ "  -Z            abrir la primera carpeta con mensajes nuevos, salir si no hay\n"
-#~ "  -h            este mensaje de ayuda"

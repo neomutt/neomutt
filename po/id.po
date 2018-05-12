@@ -1046,9 +1046,9 @@ msgid "Compressing %s"
 msgstr "Sedang menyalin ke %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Kesalahan tunnel saat berbicara dg %s: %s"
+msgstr "Kesalahan waktu menghubungi ke server %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1056,29 +1056,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Hubungan ke %s ditutup."
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN salah: '%s'"
+msgstr "IDN \"%s\" tidak benar."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Sedang menyalin ke %s..."
+msgstr "Mencari %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Tidak bisa mengirim surat."
+msgstr "Tidak dapat menemukan host \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Menghubungi \"%s\"..."
+msgstr "Menghubungi %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Berlangganan ke %s..."
+msgstr "Tidak bisa berhubungan ke %s (%s)"
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -6448,63 +6448,3 @@ msgstr "Opsi2 saat kompilasi:"
 msgid "Compile options:"
 msgstr "Opsi2 saat kompilasi:"
 
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "parameternya kurang"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "opsi:\n"
-#~ "  -A <alias>    ekspansi alias\n"
-#~ "  -a <file>     lampirkan file ke surat\n"
-#~ "  -b <alamat>   alamat blind carbon-copy (BCC)\n"
-#~ "  -c <alamat>   alamat carbon-copy (CC)\n"
-#~ "  -D            tampilkan semua nilai variabel ke stdout\n"
-#~ " -d <level>     catat keluaran debugging ke ~/.neomuttdebug0\n"
-#~ "  -e <perintah> perintah yang dijalankan setelah inisialisasi\n"
-#~ "  -f <file>     kotak surat yang dibaca\n"
-#~ "  -F <file>     file neomuttrc alternatif\n"
-#~ "  -H <file>     file draft sebagai sumber header dan badan\n"
-#~ "  -i <file>     file yang disertakan dalam badan surat\n"
-#~ "  -m <jenis>    jenis kotak surat yang digunakan\n"
-#~ "  -n            menyuruh NeoMutt untuk tidak membaca neomuttrc dari sistem\n"
-#~ "  -p            lanjutkan surat yang ditunda\n"
-#~ "  -Q <variabel> melakukan query thd suatu variabel konfigurasi\n"
-#~ "  -R            buka kotak surat dengan modus baca-saja\n"
-#~ "  -s <subj>     subjek surat (harus dikutip jika mengandung spasi)\n"
-#~ "  -v            tunjukkan versi dan definisi saat compile\n"
-#~ "  -x            simulasi mailx untuk mengirim surat\n"
-#~ "  -y            pilih kotak surat yg ada di daftar 'mailboxes'\n"
-#~ "  -z            langsung keluar jika tidak ada surat di kotak surat\n"
-#~ "  -Z            buka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
-#~ "  -h            pesan bantuan ini"
