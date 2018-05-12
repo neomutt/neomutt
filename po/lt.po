@@ -536,64 +536,52 @@ msgid "Shell command: "
 msgstr "Shell komanda: "
 
 #: commands.c:790
-#, fuzzy
 msgid "Decode-save to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Dekoduoti ir išsaugoti į dėžutę"
 
 #: commands.c:790
-#, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Dekoduoti ir išsaugoti pažymėtus į dėžutę"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Iššifruoti ir išsaugoti į dėžutę"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Iššifruoti ir išsaugoti pažymėtus į dėžutę"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Išsaugoti į dėžutę"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Išsaugoti pažymėtus į dėžutę"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Dekoduoti ir kopijuoti į dėžutę"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Dekoduoti ir kopijuoti pažymėtus į dėžutę"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Iššifruoti ir kopijuoti į dėžutę"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Iššifruoti ir kopijuoti pažymėtus į dėžutę"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy to mailbox"
-msgstr "%s į dėžutę"
+msgstr "Kopijuoti į dėžutę"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr " pažymėtus%s į dėžutę"
+msgstr "Kopijuoti pažymėtus į dėžutę"
 
 #: commands.c:871
 #, c-format
@@ -810,23 +798,20 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr ""
 
 #: compose.c:1064
-#, fuzzy
 msgid "Attachment is already at top."
-msgstr "Priedas išsaugotas."
+msgstr "Priedas jau yra viršuje."
 
 #: compose.c:1069 compose.c:1085
-#, fuzzy
 msgid "The fundamental part cannot be moved."
-msgstr "Esamas priedas nebus konvertuotas."
+msgstr "Esminė dalis negali būti perkelta."
 
 #: compose.c:1080
-#, fuzzy
 msgid "Attachment is already at bottom."
-msgstr "Priedas perfiltruotas."
+msgstr "Priedas jau yra apačioje."
 
 #: compose.c:1098
 msgid "Grouping alternatives requires at least 2 tagged messages."
-msgstr ""
+msgstr "Alternatyvų grupavimui reikia bent dviejų pažymėtų laiškų."
 
 #: compose.c:1179
 msgid "Grouping multilingual requires at least 2 tagged messages."
@@ -837,9 +822,8 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1195
-#, fuzzy
 msgid "Not sending this message."
-msgstr "Klaida siunčiant laišką."
+msgstr "Nesiunčiu šito laiško."
 
 #: compose.c:1286
 msgid "Attaching selected file..."
@@ -996,23 +980,23 @@ msgid "Cannot append without an append-hook or close-hook : %s"
 msgstr ""
 
 #: compress.c:554
-#, fuzzy, c-format
+#, c-format
 msgid "Compress command failed: %s"
-msgstr "Nepavyko komanda prieš jungimąsi"
+msgstr "Suspaudimo komanda nepavyko: %s"
 
 #: compress.c:565
 msgid "Unsupported mailbox type for appending."
 msgstr ""
 
 #: compress.c:640
-#, fuzzy, c-format
+#, c-format
 msgid "Compressed-appending to %s..."
-msgstr "Kopijuoju į %s..."
+msgstr "Papildau suspaustą %s..."
 
 #: compress.c:645
-#, fuzzy, c-format
+#, c-format
 msgid "Compressing %s..."
-msgstr "Kopijuoju į %s..."
+msgstr "Suspaudžiu %s..."
 
 #: compress.c:652 editmsg.c:252
 #, c-format
@@ -1021,47 +1005,47 @@ msgstr "Klaida. Išsaugau laikiną bylą: %s"
 
 #: compress.c:882
 msgid "Can't sync a compressed file without a close-hook"
-msgstr ""
+msgstr "Negaliu išsaugoti suspaustos bylos be close-hook"
 
 #: compress.c:904
-#, fuzzy, c-format
+#, c-format
 msgid "Compressing %s"
-msgstr "Kopijuoju į %s..."
+msgstr "Suspaudžiu %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Klaida jungiantis prie IMAP serverio: %s"
+msgstr "Klaida kalbant su %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Jungiuosi prie %s..."
+msgstr "Prisijungimas prie %s buvo nutrauktas"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "Blogas IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopijuoju į %s..."
+msgstr "Ieškau %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Negalėjau išsiųsti laiško."
+msgstr "Neradau serverio \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "Jungiuosi prie %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Užsakau %s..."
+msgstr "Nepavyko prisijungti prie %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -1069,33 +1053,32 @@ msgstr "nežinoma klaida"
 
 #: conn/sasl.c:557
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Nežinomas SASL profilis"
 
 #: conn/sasl.c:590
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "klaida pattern'e: %s"
+msgstr "Klaida išskiriant SASL prisijungimą"
 
 #: conn/sasl.c:600
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Klaida nustatant SASL saugumo nuostatas"
 
 #: conn/sasl.c:610
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Klaida nustatant SASL išorinio saugumo stiprumą"
 
 #: conn/sasl.c:619
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Klaida nustatant SASL išorinį naudotojo vardą"
 
 #: conn/socket.c:85
 msgid "Preconnect command failed."
 msgstr "Nepavyko komanda prieš jungimąsi"
 
 #: conn/socket.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Jungiuosi prie %s..."
+msgstr "Prisijungimas prie %s uždarytas"
 
 #: conn/ssl.c:216
 #, c-format
@@ -1137,19 +1120,17 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Nepavyko rasti pakankamai entropijos tavo sistemoje"
 
 #: conn/ssl.c:859
-#, fuzzy
 msgid "cannot get certificate subject"
-msgstr "Nepavyko gauti sertifikato iš peer'o"
+msgstr "nepavyko gauti sertifikato objekto"
 
 #: conn/ssl.c:868 conn/ssl.c:876
-#, fuzzy
 msgid "cannot get certificate common name"
-msgstr "Nepavyko gauti sertifikato iš peer'o"
+msgstr "nepavyko gauti sertifikato bendrojo vardo"
 
 #: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr ""
+msgstr "sertifikato savininkas neatitinka serverio vardo %s"
 
 #: conn/ssl.c:968 conn/ssl_gnutls.c:610
 msgid "This certificate belongs to:"
@@ -1175,19 +1156,19 @@ msgid "     to %s"
 msgstr "    iki %s"
 
 #: conn/ssl.c:993 conn/ssl_gnutls.c:725
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Pirštų antspaudas: %s"
+msgstr "SHA1 pirštų antspaudas: %s"
 
 #: conn/ssl.c:996 conn/ssl_gnutls.c:728
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Pirštų antspaudas: %s"
+msgstr "MD5 pirštų antspaudas: %s"
 
 #: conn/ssl.c:999
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr ""
+msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %zu iš %zu grandinėje)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1197,21 +1178,19 @@ msgstr ""
 #.
 #: conn/ssl.c:1022
 msgid "roas"
-msgstr ""
+msgstr "apvr"
 
 #: conn/ssl.c:1026
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(a)tmesti, (p)riimti šįkart, (v)isada priimti"
+msgstr "(a)tmesti, (p)riimti šįkart, (v)isada priimti, p(r)aleisti"
 
 #: conn/ssl.c:1028 conn/ssl_gnutls.c:769
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(a)tmesti, (p)riimti šįkart, (v)isada priimti"
 
 #: conn/ssl.c:1033
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(a)tmesti, (p)riimti šįkart"
+msgstr "(a)tmesti, (p)riimti šįkart, p(r)aleisti"
 
 #: conn/ssl.c:1035 conn/ssl_gnutls.c:780
 msgid "(r)eject, accept (o)nce"
@@ -1224,104 +1203,97 @@ msgstr "Išeiti  "
 
 #: conn/ssl.c:1069 conn/ssl_gnutls.c:836
 msgid "Warning: Couldn't save certificate"
-msgstr "Įspėju: Negalėjau išsaugoti sertifikato"
+msgstr "Įspėjimas: Negalėjau išsaugoti sertifikato"
 
 #: conn/ssl.c:1073 conn/ssl_gnutls.c:840
 msgid "Certificate saved"
 msgstr "Sertifikatas išsaugotas"
 
 #: conn/ssl.c:1189
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Sertifikatas išsaugotas"
+msgstr "Sertifikato patikrinimas nepavyko: %s"
 
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1268 conn/ssl_gnutls.c:1161
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Įspėjimas: negaliu nustatyti TLS SNI serverio vardo"
 
 #: conn/ssl.c:1279
 msgid "I/O error"
-msgstr ""
+msgstr "Įvedimo/išvedimo klaida"
 
 #: conn/ssl.c:1288
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "Nepavyko pasisveikinti."
+msgstr "SSL nepavyko: %s"
 
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
 #: conn/ssl.c:1316
-#, fuzzy
 msgid "Unable to create SSL context"
-msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
+msgstr "Negaliu sukurti SSL konteksto"
 
 #: conn/ssl.c:1364
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Įspėjimas: nepavyko įjungti ssl_verify_partial_chains"
 
 #: conn/ssl_gnutls.c:112 conn/ssl_gnutls.c:144
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Klaida: TLS jungtis neatidaryta"
 
 #: conn/ssl_gnutls.c:232 conn/ssl_gnutls.c:875 conn/ssl_gnutls.c:884
 msgid "Unable to get certificate from peer"
-msgstr "Nepavyko gauti sertifikato iš peer'o"
+msgstr "Nepavyko gauti sertifikato iš serverio"
 
 #: conn/ssl_gnutls.c:237
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Sertifikato patikrinimo klaida (%s)"
 
 #: conn/ssl_gnutls.c:244
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Sertifikatas išsaugotas"
+msgstr "Sertifikatas nėra X.509"
 
 #: conn/ssl_gnutls.c:435 conn/ssl_gnutls.c:591
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Klaida inicializuojant terminalą."
+msgstr "Klaida inicializuojant gnutls sertifikato duomenis"
 
 #: conn/ssl_gnutls.c:441 conn/ssl_gnutls.c:597
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Klaida apdorojant sertifikato duomenis"
 
 #: conn/ssl_gnutls.c:582
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
+msgstr "Įspėjimas: Serverio sertifikatas pasirašytas nesaugiu algoritmu"
 
 #: conn/ssl_gnutls.c:734
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Serverio sertifikatas dar negalioja"
+msgstr "ĮSPĖJIMAS: Serverio sertifikatas dar negalioja"
 
 #: conn/ssl_gnutls.c:740
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Serverio sertifikatas paseno"
+msgstr "ĮSPĖJIMAS: Serverio sertifikatas paseno"
 
 #: conn/ssl_gnutls.c:746
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Serverio sertifikatas paseno"
+msgstr "ĮSPĖJIMAS: Serverio sertifikatas buvo atšauktas"
 
 #: conn/ssl_gnutls.c:752
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "ĮSPĖJIMAS: Serverio vardas neatitinka sertifikato"
 
 #: conn/ssl_gnutls.c:758
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Serverio sertifikatas dar negalioja"
+msgstr "ĮSPĖJIMAS: Serverio sertifikatas pasirašytas ne sertifikatų tarnybos"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %d iš %d grandinėje)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:
@@ -1352,24 +1324,24 @@ msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
 #: conn/ssl_gnutls.c:1209
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "SSL jungtis, naudojant %s"
+msgstr "SSL/TLS jungtis, naudojant %s (%s/%s/%s)"
 
 #: conn/tunnel.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Jungiuosi prie %s..."
+msgstr "Jungiuosi prie \"%s\"..."
 
 #: conn/tunnel.c:154
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Tunelis į %s grąžino klaidą %d (%s)"
 
 #: conn/tunnel.c:178 conn/tunnel.c:200
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Klaida jungiantis prie IMAP serverio: %s"
+msgstr "Tunkelio klaida kalbant su %s: %s"
 
 #: copy.c:722
 msgid "No decryption engine available for message"
@@ -1419,7 +1391,7 @@ msgstr "Nėra matomų laiškų."
 #: curs_main.c:125 pager.c:110
 #, c-format
 msgid "%s: Operation not permitted by ACL"
-msgstr ""
+msgstr "%s: veiksmas neleidžiamas pagal ACL"
 
 #: curs_main.c:278
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -1463,9 +1435,8 @@ msgid "Post"
 msgstr ""
 
 #: curs_main.c:759 pager.c:1714
-#, fuzzy
 msgid "Followup"
-msgstr "Pratęsti-į %s%s?"
+msgstr "Pratęsti"
 
 #: curs_main.c:921
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1500,9 +1471,9 @@ msgid "Message is not visible in limited view."
 msgstr "Laiškas nematomas ribotame vaizde."
 
 #: curs_main.c:1207
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Ištuštinu laiškus iš serverio..."
+msgstr "Siunčiu %s iš serverio..."
 
 #: curs_main.c:1217
 #, c-format
@@ -1586,14 +1557,12 @@ msgid "Untag messages matching: "
 msgstr "Atžymėti laiškus, tenkinančius: "
 
 #: curs_main.c:1653
-#, fuzzy
 msgid "Logged out of IMAP servers."
-msgstr "Uždarau jungtį su IMAP serveriu..."
+msgstr "Atsijungiau nuo IMAP serverių."
 
 #: curs_main.c:1753
-#, fuzzy
 msgid "No virtual folder, aborting."
-msgstr "Nėra temos, nutraukiu."
+msgstr "Nėra virtualaus aplanko, nutraukiu."
 
 #: curs_main.c:1761
 msgid "Failed to read thread, aborting."
@@ -1604,9 +1573,8 @@ msgid "Folder doesn't support tagging, aborting."
 msgstr ""
 
 #: curs_main.c:1808
-#, fuzzy
 msgid "No tag specified, aborting."
-msgstr "Nėra temos, nutraukiu."
+msgstr "Nėra etiketės, nutraukiu."
 
 #: curs_main.c:1820
 #, c-format
@@ -1618,9 +1586,8 @@ msgid "Failed to modify tags, aborting."
 msgstr ""
 
 #: curs_main.c:1898
-#, fuzzy
 msgid "No query, aborting."
-msgstr "Nėra temos, nutraukiu."
+msgstr "Nėra užklausos, nutraukiu."
 
 #: curs_main.c:1902 curs_main.c:1922 curs_main.c:1941
 msgid "Failed to create query, aborting."
@@ -1636,12 +1603,11 @@ msgstr ""
 
 #: curs_main.c:1973
 msgid "Open mailbox in read-only mode"
-msgstr "Atidaryti dėžutę tik skaitymo režimu."
+msgstr "Atidaryti dėžutę tik skaitymo režimu"
 
 #: curs_main.c:1976
-#, fuzzy
 msgid "Open virtual folder"
-msgstr "atidaryti kitą aplanką"
+msgstr "Atidaryti virtualų aplanką"
 
 #: curs_main.c:1979
 msgid "Open mailbox"
@@ -1649,16 +1615,15 @@ msgstr "Atidaryti dėžutę"
 
 #: curs_main.c:1989
 msgid "No mailboxes have new mail"
-msgstr "Nėra dėžučių su nauju paštu."
+msgstr "Nėra dėžučių su nauju paštu"
 
 #: curs_main.c:2036
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Atidaryti dėžutę tik skaitymo režimu."
+msgstr "Atidaryti naujienų grupę tik skaitymo režimu"
 
 #: curs_main.c:2038
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Atidaryti naujienų grupę"
 
 #: curs_main.c:2141
 msgid "Exit NeoMutt without saving?"
@@ -1740,14 +1705,13 @@ msgstr "Nėra neskaitytų laiškų."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2474
-#, fuzzy
 msgid "Cannot flag message"
-msgstr "rodyti laišką"
+msgstr "Negaliu pakeisti pakeisti laiško vėliavėlių"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2513 pager.c:3100
 msgid "Cannot toggle new"
-msgstr ""
+msgstr "Negaliu pakeisti naujumo"
 
 #: curs_main.c:2590
 msgid "No more threads."
@@ -1758,9 +1722,8 @@ msgid "You are on the first thread."
 msgstr "Tu esi ties pirma gija."
 
 #: curs_main.c:2676
-#, fuzzy
 msgid "Thread contains unread or flagged messages."
-msgstr "Gijoje yra neskaitytų laiškų."
+msgstr "Gijoje yra neskaitytų ar vėliavėle pažymėtų laiškų."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2726 pager.c:2784
@@ -1775,56 +1738,51 @@ msgstr "Negaliu redaguoti laiško"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2900 pager.c:3200
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "Dėžutė yra nepakeista."
-msgstr[1] "Dėžutė yra nepakeista."
-msgstr[2] "Dėžutė yra nepakeista."
+msgstr[0] "%d etiketė pakeista."
+msgstr[1] "%d etiketės pakeistos."
+msgstr[2] "%d etikečių pakeista."
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
 #: curs_main.c:2907 pager.c:3204
-#, fuzzy
 msgid "No labels changed."
-msgstr "Dėžutė yra nepakeista."
+msgstr "Etiketės nepakeistos."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3006
-#, fuzzy
 msgid "Cannot mark message(s) as read"
-msgstr "šokti į tėvinį laišką gijoje"
+msgstr "Negaliu pažymėti laiškų kaip skaitytų"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
 #: curs_main.c:3042
-#, fuzzy
 msgid "Enter macro stroke: "
-msgstr "Įvesk rakto ID, skirtą %s: "
+msgstr "Įvesk makrokomandą: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
 #: curs_main.c:3050
-#, fuzzy
 msgid "message hotkey"
-msgstr "Laiškas atidėtas."
+msgstr "šokti į pažymėtą laišką"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
 #: curs_main.c:3055
-#, fuzzy, c-format
+#, c-format
 msgid "Message bound to %s."
-msgstr "Laiškas nukreiptas."
+msgstr "Laiško makrokomanda %s sukurta."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3063
-#, fuzzy
 msgid "No message ID to macro."
-msgstr "Nėra laiškų tame aplanke."
+msgstr "Laiškas neturi ID."
 
 #: curs_main.c:3105 pager.c:2961 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
@@ -1836,9 +1794,8 @@ msgstr ""
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3173 pager.c:3120
-#, fuzzy
 msgid "Cannot undelete message"
-msgstr "Nėra ištrintų laiškų."
+msgstr "Negaliu atstatyti ištrinto laiško"
 
 #: edit.c:50
 msgid ""
@@ -1939,9 +1896,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "negalėjau įrašyti laikino pašto aplanko: %s"
 
 #: editmsg.c:123
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "negalėjau įrašyti laikino pašto aplanko: %s"
+msgstr "negalėjau sutrumpinti laikino pašto aplanko: %s"
 
 #: editmsg.c:153
 msgid "Message file is empty!"
@@ -1968,11 +1925,11 @@ msgstr "Negaliu pridurti laiško prie aplanko: %s"
 
 #: flags.c:432
 msgid "Set flag"
-msgstr "Uždėti flagą"
+msgstr "Uždėti vėliavėlę"
 
 #: flags.c:432
 msgid "Clear flag"
-msgstr "Išvalyti flagą"
+msgstr "Išvalyti vėliavėlę"
 
 #: handler.c:66
 #, fuzzy, c-format
@@ -2426,12 +2383,11 @@ msgstr[2] "Išsaugau pasikeitusius laiškus... [%d/%d]"
 
 #: imap/imap.c:2500
 msgid "Error saving flags. Close anyway?"
-msgstr ""
+msgstr "Nepavyko išsaugoti vėliavėlių.  Vis tiek uždaryti?"
 
 #: imap/imap.c:2508
-#, fuzzy
 msgid "Error saving flags"
-msgstr "Klaida nagrinėjant adresą!"
+msgstr "Klaida išsaugant vėliavėles"
 
 #: imap/imap.c:2530
 msgid "Expunging messages from server..."
@@ -2443,12 +2399,11 @@ msgstr ""
 
 #: imap/imap.c:2582
 msgid "IMAP server doesn't support custom flags"
-msgstr ""
+msgstr "IMAP serveris nepalaiko savadarbių vėliavėlių"
 
 #: imap/imap.c:2626
-#, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "Blogas mėnuo: %s"
+msgstr "Blogos IMAP vėliavėlės"
 
 #: imap/message.c:477 mx.c:1326
 msgid "Integer overflow -- can't allocate memory."
@@ -2870,7 +2825,7 @@ msgstr "Nenurodyti jokie gavėjai."
 
 #: main.c:773
 msgid "Cannot use -E flag with stdin"
-msgstr ""
+msgstr "Negalima naudoti -E rakto su standartine įvestimi"
 
 #: main.c:859
 #, fuzzy, c-format
@@ -3216,19 +3171,18 @@ msgid "Can't write to virtual folder."
 msgstr "Negaliu pridurti laiško prie aplanko: %s"
 
 #: mutt_socket.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL nepasiekiamas."
+msgstr "SSL nepasiekiamas, negaliu prisijungti prie %s"
 
 #: mx.c:526
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Paieška pertraukta."
+msgstr "Skaitymas iš %s pertrauktas..."
 
 #: mx.c:634
-#, fuzzy
 msgid "message(s) not deleted"
-msgstr "Pažymiu %d laiškus ištrintais..."
+msgstr "laiškas/ai neištrinti"
 
 #: mx.c:671
 #, fuzzy
