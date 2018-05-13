@@ -1461,6 +1461,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     {
       msg->env->from = mutt_addr_copy_list(cur->env->x_original_to, false);
       /* Not more than one from address */
+      mutt_addr_free(&msg->env->from->next);
       msg->env->from->next = NULL;
       mutt_debug(5, "msg->env->from extracted from X-Original-To: header: %s\n",
                  msg->env->from->mailbox);
