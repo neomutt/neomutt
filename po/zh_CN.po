@@ -1508,11 +1508,11 @@ msgstr "不能够删除信件"
 
 #: curs_main.c:1380
 msgid "Delete messages matching: "
-msgstr "删除符合此样式的信件："
+msgstr "删除符合此模式的信件："
 
 #: curs_main.c:1421
 msgid "No limit pattern is in effect."
-msgstr "当前没有限制样式起作用。"
+msgstr "当前没有限制模式起作用。"
 
 #. L10N: ask for a limit to apply
 #: curs_main.c:1426
@@ -1522,7 +1522,7 @@ msgstr "限制：%s"
 
 #: curs_main.c:1464
 msgid "Limit to messages matching: "
-msgstr "限制符合此样式的信件："
+msgstr "限制符合此模式的信件："
 
 #: curs_main.c:1488
 msgid "To view all messages, limit to \"all\"."
@@ -1534,7 +1534,7 @@ msgstr "离开 NeoMutt？"
 
 #: curs_main.c:1596
 msgid "Tag messages matching: "
-msgstr "标记符合此样式的信件："
+msgstr "标记符合此模式的信件："
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1606 curs_main.c:3203 pager.c:3137
@@ -1543,11 +1543,11 @@ msgstr "不能够反删除信件"
 
 #: curs_main.c:1609
 msgid "Undelete messages matching: "
-msgstr "反删除符合此样式的信件："
+msgstr "反删除符合此模式的信件："
 
 #: curs_main.c:1619
 msgid "Untag messages matching: "
-msgstr "反标记符合此样式的信件："
+msgstr "反标记符合此模式的信件："
 
 #: curs_main.c:1653
 msgid "Logged out of IMAP servers."
