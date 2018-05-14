@@ -2632,19 +2632,18 @@ msgid "out of arguments"
 msgstr "per mažai argumentų"
 
 #: init.c:4254
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "Užsakau %s..."
+msgstr "Nepavyko užsakyti %s"
 
 #: init.c:4270 init.c:4324
-#, fuzzy
 msgid "No folder specified"
-msgstr "Nenurodyta jokia tema."
+msgstr "Nenurodytas aplankas."
 
 #: init.c:4308
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Atsisakau %s..."
+msgstr "Nepavyko atsisakyti %s"
 
 #: keymap.c:281 keymap.c:289
 #, c-format
@@ -2653,7 +2652,7 @@ msgstr ""
 
 #: keymap.c:591
 msgid "Macros are currently disabled."
-msgstr ""
+msgstr "Makrokomandos šiuo metu yra išjungtos."
 
 #: keymap.c:598
 msgid "Macro loop detected."
@@ -2697,14 +2696,13 @@ msgid "%s: no such function"
 msgstr "%s: nėra tokios funkcijos"
 
 #: keymap.c:1250
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "Įvesk rakto ID, skirtą %s: "
+msgstr "Paspausk klavišus (^G nutraukia): "
 
 #: keymap.c:1256
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Simbolis = %s, aštuonetaine sistema = %o, dešimtaine = %d"
 
 #. L10N: Try to limit to 80 columns
 #: main.c:98
@@ -2809,9 +2807,9 @@ msgid "Cannot use -E flag with stdin"
 msgstr "Negalima naudoti -E rakto su standartine įvestimi"
 
 #: main.c:859
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse message template: %s"
-msgstr "Negaliu atidaryti laiško bylos: %s"
+msgstr "Nepavyko išanalizuoti laiško šablono: %s"
 
 #: main.c:924
 #, c-format
@@ -2870,9 +2868,8 @@ msgid "Writing %s..."
 msgstr "Rašau %s..."
 
 #: mbox.c:1186
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Kompiliuoju paieškos pattern'ą..."
+msgstr "Fiksuoju pakeitimus..."
 
 #: mbox.c:1221
 #, c-format
@@ -2949,18 +2946,17 @@ msgid "Tagging is not supported."
 msgstr "Žymėjimas nepalaikomas."
 
 #: mh.c:1262
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Parenku %s..."
+msgstr "Skaitau %s..."
 
 #: mh.c:1582 mh.c:1670
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "Negalėjau išsiųsti laiško."
+msgstr "Negalėjau įrašyti laiško į diską."
 
 #: mh.c:1622
 msgid "md_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "md_commit_message(): nepavyko nustatyti bylos laiko"
 
 #: mutt/file.c:1134
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2981,19 +2977,19 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Laukiu fcntl užrakto... %d"
 
 #: mutt/logging.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Negaliu atidaryti laiško bylos: %s"
+msgstr "Uždariau žurnalo bylą: %s"
 
 #: mutt/logging.c:137
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Derinimo lygis %d.\n"
+msgstr "Derinimo lygis %d į bylą '%s'"
 
 #: mutt/logging.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Derinimo lygis %d.\n"
+msgstr "Žurnalo lygis %d į bylą '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -3014,29 +3010,29 @@ msgstr ""
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
 msgstr "Sugavau signalą %d (%s) ...  Išeinu.\n"
 
 #: mutt/signal.c:73 signal.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "Sugavau signalą %d ...  Išeinu.\n"
 
 #: muttlib.c:407
 #, c-format
 msgid "mutt_randbuf len=%zu"
-msgstr ""
+msgstr "mutt_randbuf len=%zu"
 
 #: muttlib.c:427
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "/dev/urandom atidarymas: %s"
 
 #: muttlib.c:434
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "/dev/urandom skaitymas: %s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3045,13 +3041,12 @@ msgstr ""
 #. These three letters correspond to the choices in the string.
 #.
 #: muttlib.c:651
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Byla yra katalogas, saugoti joje?"
+msgstr "Byla yra katalogas, saugoti joje? [(t)aip, (n)e, (v)isiems]"
 
 #: muttlib.c:651
 msgid "yna"
-msgstr ""
+msgstr "tnv"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3083,9 +3078,8 @@ msgid "Append messages to %s?"
 msgstr "Pridurti laiškus prie %s?"
 
 #: muttlib.c:1328
-#, fuzzy
 msgid "Can't save message to news server."
-msgstr "Negaliu taisyti laiško POP serveryje."
+msgstr "Negaliu išsaugoti laiško naujienų serveryje."
 
 #: muttlib.c:1337
 #, c-format
@@ -3123,14 +3117,14 @@ msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
 #: mutt_notmuch.c:561
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Laukiu fcntl užrakto... %d"
+msgstr "Laukiu notmuch DB... (%d sek.)"
 
 #: mutt_notmuch.c:579
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Nepavyko atidaryti nottmuch duomenų bazės: %s: %s"
 
 #: mutt_notmuch.c:580
 msgid "unknown reason"
@@ -3142,14 +3136,12 @@ msgid "Reading messages..."
 msgstr "Skaitau laiškus..."
 
 #: mutt_notmuch.c:1852
-#, fuzzy
 msgid "No more messages in the thread."
-msgstr "Tėvinis laiškas nematomas ribotame vaizde"
+msgstr "Gijoje daugiau nėra laiškų."
 
 #: mutt_notmuch.c:2760
-#, fuzzy
 msgid "Can't write to virtual folder."
-msgstr "Negaliu pridurti laiško prie aplanko: %s"
+msgstr "Negaliu rašyti į virtualų aplanką."
 
 #: mutt_socket.c:90
 #, c-format
@@ -3166,18 +3158,17 @@ msgid "message(s) not deleted"
 msgstr "laiškas/ai neištrinti"
 
 #: mx.c:671
-#, fuzzy
 msgid "Can't open trash folder"
-msgstr "Negaliu pridurti laiško prie aplanko: %s"
+msgstr "Negaliu atidaryti šiukšlių aplanko"
 
 #: mx.c:710
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "Pažymėti visus straipsnius skaitytais?"
 
 #: mx.c:754
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read messages to %s?"
-msgstr "Perkelti skaitytus laiškus į %s?"
+msgstr "Perkelti %d skaitytų laiškų į %s?"
 
 #: mx.c:771 mx.c:1077
 #, c-format
@@ -3227,12 +3218,12 @@ msgstr "Dėžutė sutikrinta."
 #: ncrypt/crypt.c:74
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (dabartinis laikas: %c)"
 
 #: ncrypt/crypt.c:79
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Toliau PGP išvestis (esamas laikas: %c) --]\n"
+msgstr "[-- Toliau %s išvestis%s --]\n"
 
 #: ncrypt/crypt.c:95
 msgid "Passphrase(s) forgotten."
@@ -3289,12 +3280,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1016
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Klaida: Neteisinga multipart/signed struktūra! --]\n"
+"[-- Klaida: Trūksta multipart/signed parašo arba jis blogo formato! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1058
