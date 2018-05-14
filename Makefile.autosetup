@@ -294,11 +294,11 @@ install: all $(INSTALL_TARGETS)
 	# Install binaries
 	$(MKDIR_P) $(DESTDIR)$(bindir)
 	for f in $(BINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f` || exit 1; \
 	done
 	$(MKDIR_P) $(DESTDIR)$(libexecdir)/$(PACKAGE)
 	for f in $(LIBBINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f` || exit 1; \
 	done
 
 # uninstall

@@ -32,7 +32,7 @@ install-po: all-po
 	  lang=`echo $$cat | sed -e 's/\.mo$$//' -e 's|^po/||'`; \
 	  dir=$(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
 	  $(MKDIR_P) $$dir; \
-	  $(INSTALL_DATA) $$cat $$dir/$(PACKAGE).mo; \
+	  $(INSTALL_DATA) $$cat $$dir/$(PACKAGE).mo || exit 1; \
 	  echo "installing $$dir/$(PACKAGE).mo"; \
 	done
 
