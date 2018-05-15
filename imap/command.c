@@ -67,23 +67,12 @@ bool ImapServernoise; ///< Config: (imap) Display server warnings as error messa
  * @note Gmail documents one string but use another, so we support both.
  */
 static const char *const Capabilities[] = {
-  "IMAP4",
-  "IMAP4rev1",
-  "STATUS",
-  "ACL",
-  "NAMESPACE",
-  "AUTH=CRAM-MD5",
-  "AUTH=GSSAPI",
-  "AUTH=ANONYMOUS",
-  "AUTH=OAUTHBEARER",
-  "STARTTLS",
-  "LOGINDISABLED",
-  "IDLE",
-  "SASL-IR",
-  "ENABLE",
-  "X-GM-EXT-1",
-  "X-GM-EXT1",
-  NULL,
+  "IMAP4",       "IMAP4rev1",      "STATUS",
+  "ACL",         "NAMESPACE",      "AUTH=CRAM-MD5",
+  "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
+  "STARTTLS",    "LOGINDISABLED",  "IDLE",
+  "SASL-IR",     "ENABLE",         "CONDSTORE",
+  "X-GM-EXT-1",  "X-GM-EXT1",      NULL,
 };
 
 /**
@@ -381,6 +370,26 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
       if (flags)
         break;
       s = imap_next_word(s);
+    }
+    else if (mutt_str_strncasecmp("MODSEQ", s, 6) == 0)
+    {
+      s += 6;
+      SKIPWS(s);
+      if (*s != '(')
+      {
+        mutt_debug(1, "cmd_parse_fetch: bogus MODSEQ response: %s\n", s);
+        return;
+      }
+      s++;
+      while (*s && *s != ')')
+        s++;
+      if (*s == ')')
+        s++;
+      else
+      {
+        mutt_debug(1, "cmd_parse_fetch: Unterminated MODSEQ response: %s\n", s);
+        return;
+      }
     }
     else if (*s == ')')
       break; /* end of request */

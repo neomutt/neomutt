@@ -1421,6 +1421,14 @@ struct ConfigDef MuttVars[] = {
   ** of mailboxes it polls for new mail just as if you had issued individual
   ** ``$mailboxes'' commands.
   */
+  { "imap_condstore",  DT_BOOL, R_NONE, &ImapCondStore, 0 },
+  /*
+   ** .pp
+   **
+   ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
+   ** if advertised by the server.  Mutt's current implementation is basic,
+   ** used only for initial message fetching and flag updates.
+   */
   { "imap_delim_chars",         DT_STRING, R_NONE, &ImapDelimChars, IP "/." },
   /*
   ** .pp

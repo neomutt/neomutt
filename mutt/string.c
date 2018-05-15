@@ -277,6 +277,34 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
   return 0;
 }
 
+/* NOTE: this function's return value is different from mutt_atol.
+ *
+ * returns: 1 - successful conversion, with trailing characters
+ *          0 - successful conversion
+ *         -1 - invalid input
+ */
+int mutt_str_atoull(const char *str, unsigned long long *dst)
+{
+  unsigned long long r;
+  unsigned long long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoull(str, &e, 10);
+  if (*res == ULLONG_MAX && errno == ERANGE)
+    return -1;
+  if (e && *e != '\0')
+    return 1;
+  return 0;
+}
+
 /**
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy

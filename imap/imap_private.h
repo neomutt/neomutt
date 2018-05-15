@@ -135,6 +135,7 @@ enum ImapCaps
   IDLE,                  /**< RFC2177: IDLE */
   SASL_IR,               /**< SASL initial response draft */
   ENABLE,                /**< RFC5161 */
+  CONDSTORE,             /**< RFC7162 */
   X_GM_EXT1,             /**< https://developers.google.com/gmail/imap/imap-extensions */
   X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
 
@@ -166,6 +167,7 @@ struct ImapStatus
   unsigned int uidnext;
   unsigned int uidvalidity;
   unsigned int unseen;
+  unsigned long long modseq;  /* Used by CONDSTORE. 1 <= modseq < 2^63 */
 };
 
 /**
@@ -254,6 +256,7 @@ struct ImapData
   struct Hash *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;
+  unsigned long long modseq;
   struct Header **msn_index;   /**< look up headers by (MSN-1) */
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */

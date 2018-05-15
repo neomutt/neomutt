@@ -1594,6 +1594,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   header_cache_t *hc = NULL;
   void *uidvalidity = NULL;
   void *uidnext = NULL;
+  unsigned long long *modseq = NULL;
 #endif
 
   struct ListNode *np = NULL;
@@ -1622,22 +1623,26 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   {
     uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
     uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
+    modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
     if (uidvalidity)
     {
       if (!status)
       {
         mutt_hcache_free(hc, &uidvalidity);
         mutt_hcache_free(hc, &uidnext);
+        mutt_hcache_free(hc, (void **) &modseq);
         mutt_hcache_close(hc);
         return imap_mboxcache_get(idata, mbox, 1);
       }
       status->uidvalidity = *(unsigned int *) uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
-      mutt_debug(3, "hcache uidvalidity %u, uidnext %u\n", status->uidvalidity,
-                 status->uidnext);
+      status->modseq = modseq ? *modseq : 0;
+      mutt_debug(3, "mboxcache: hcache uidvalidity %u, uidnext %u, modseq %llu\n",
+          status->uidvalidity, status->uidnext, status->modseq);
     }
     mutt_hcache_free(hc, &uidvalidity);
     mutt_hcache_free(hc, &uidnext);
+    mutt_hcache_free(hc, (void **) &modseq);
     mutt_hcache_close(hc);
   }
 #endif
@@ -2060,7 +2065,15 @@ static int imap_mbox_open(struct Context *ctx)
 
   if (ImapCheckSubscribed)
     imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
-  snprintf(bufout, sizeof(bufout), "%s %s", ctx->readonly ? "EXAMINE" : "SELECT", buf);
+
+  snprintf(bufout, sizeof(bufout), "%s %s%s", ctx->readonly ? "EXAMINE" : "SELECT", buf,
+#if USE_HCACHE
+           mutt_bit_isset(idata->capabilities, CONDSTORE) && ImapCondStore ?
+               " (CONDSTORE)" :
+               "");
+#else
+           "");
+#endif
 
   idata->state = IMAP_SELECTED;
 
@@ -2121,6 +2134,20 @@ static int imap_mbox_open(struct Context *ctx)
       if (mutt_str_atoui(pc, &idata->uidnext) < 0)
         goto fail;
       status->uidnext = idata->uidnext;
+    }
+    else if (mutt_str_strncasecmp("OK [HIGHESTMODSEQ", pc, 17) == 0)
+    {
+      mutt_debug(3, "Getting mailbox HIGHESTMODSEQ\n");
+      pc += 3;
+      pc = imap_next_word(pc);
+      if (mutt_str_atoull(pc, &idata->modseq) < 0)
+        goto fail;
+      status->modseq = idata->modseq;
+    }
+    else if (mutt_str_strncasecmp("OK [NOMODSEQ", pc, 12) == 0)
+    {
+      mutt_debug(3, "Mailbox has NOMODSEQ set\n");
+      status->modseq = idata->modseq = 0;
     }
     else
     {

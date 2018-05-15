@@ -361,6 +361,26 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       /* handle above, in msg_fetch_header */
       return -2;
     }
+    else if (mutt_str_strncasecmp("MODSEQ", s, 6) == 0)
+    {
+      s += 6;
+      SKIPWS(s);
+      if (*s != '(')
+      {
+        mutt_debug(1, "msg_parse_flags: bogus MODSEQ response: %s\n", s);
+        return -1;
+      }
+      s++;
+      while (*s && *s != ')')
+        s++;
+      if (*s == ')')
+        s++;
+      else
+      {
+        mutt_debug(1, "msg_parse_flags: Unterminated MODSEQ response: %s\n", s);
+        return -1;
+      }
+    }
     else if (*s == ')')
       s++; /* end of request */
     else if (*s)
@@ -630,6 +650,11 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   void *uid_validity = NULL;
   void *puidnext = NULL;
   unsigned int uidnext = 0;
+  int save_modseq = 0;
+  int has_condstore = 0;
+  int eval_condstore = 0;
+  unsigned long long *pmodseq = NULL;
+  unsigned long long hc_modseq = 0;
 #endif /* USE_HCACHE */
 
   struct Context *ctx = idata->ctx;
@@ -681,8 +706,30 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
       uidnext = *(unsigned int *) puidnext;
       mutt_hcache_free(idata->hcache, &puidnext);
     }
+    /* Always save the MODSEQ, even if the server sent NOMODSEQ. */
+    if (mutt_bit_isset(idata->capabilities, CONDSTORE) && ImapCondStore)
+    {
+      save_modseq = 1;
+      if (idata->modseq)
+        has_condstore = 1;
+    }
     if (uid_validity && uidnext && *(unsigned int *) uid_validity == idata->uid_validity)
+    {
       evalhc = true;
+      if (has_condstore)
+      {
+        pmodseq = mutt_hcache_fetch_raw(idata->hcache, "/MODSEQ", 7);
+        if (pmodseq)
+        {
+          hc_modseq = *pmodseq;
+          mutt_hcache_free(idata->hcache, (void **) &pmodseq);
+        }
+        /* The RFC doesn't allow a 0 value for CHANGEDSINCE, so we only
+         * do the CONDSTORE FETCH if we have a modseq to compare against. */
+        if (hc_modseq)
+          eval_condstore = 1;
+      }
+    }
     mutt_hcache_free(idata->hcache, &uid_validity);
   }
   if (evalhc)
@@ -692,7 +739,11 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG,
                        ReadInc, msn_end);
 
-    snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID FLAGS)", uidnext - 1);
+    /* If we are using CONDSTORE's "FETCH CHANGEDSINCE", then we keep
+     * the flags in the header cache, and update them further below.
+     * Otherwise, we fetch the current state of the flags here. */
+    snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID%s)", uidnext - 1,
+             eval_condstore ? "" : " FLAGS");
 
     imap_cmd_start(idata, buf);
 
@@ -746,12 +797,24 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           /* messages which have not been expunged are ACTIVE (borrowed from mh
            * folders) */
           ctx->hdrs[idx]->active = true;
-          ctx->hdrs[idx]->read = h.data->read;
-          ctx->hdrs[idx]->old = h.data->old;
-          ctx->hdrs[idx]->deleted = h.data->deleted;
-          ctx->hdrs[idx]->flagged = h.data->flagged;
-          ctx->hdrs[idx]->replied = h.data->replied;
-          ctx->hdrs[idx]->changed = h.data->changed;
+          ctx->hdrs[idx]->changed = 0;
+          if (!eval_condstore)
+          {
+            ctx->hdrs[idx]->read = h.data->read;
+            ctx->hdrs[idx]->old = h.data->old;
+            ctx->hdrs[idx]->deleted = h.data->deleted;
+            ctx->hdrs[idx]->flagged = h.data->flagged;
+            ctx->hdrs[idx]->replied = h.data->replied;
+          }
+          else
+          {
+            h.data->read = ctx->hdrs[idx]->read;
+            h.data->old = ctx->hdrs[idx]->old;
+            h.data->deleted = ctx->hdrs[idx]->deleted;
+            h.data->flagged = ctx->hdrs[idx]->flagged;
+            h.data->replied = ctx->hdrs[idx]->replied;
+          }
+
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[idx]->data = (void *) (h.data);
           STAILQ_INIT(&ctx->hdrs[idx]->tags);
@@ -759,6 +822,11 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
           ctx->msgcount++;
           ctx->size += ctx->hdrs[idx]->content->length;
+
+          /* If this is the first time we are fetching, we need to
+           * store the current state of flags back into the header cache */
+          if (has_condstore && !eval_condstore)
+            imap_hcache_put(idata, ctx->hdrs[idx]);
 
           h.data = NULL;
           idx++;
@@ -772,6 +840,57 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         imap_hcache_close(idata);
         goto error_out_1;
       }
+    }
+
+    if (eval_condstore && (hc_modseq != idata->modseq))
+    {
+      unsigned int header_msn;
+      char *fetch_buf;
+
+      /* L10N:
+         Fetching IMAP flag changes, using the CONDSTORE extension */
+      mutt_progress_init(&progress, _("Fetching flag updates..."),
+                         MUTT_PROGRESS_MSG, ReadInc, msn_end);
+
+      snprintf(buf, sizeof(buf), "UID FETCH 1:%u (FLAGS) (CHANGEDSINCE %llu)",
+               uidnext - 1, hc_modseq);
+
+      imap_cmd_start(idata, buf);
+
+      rc = IMAP_CMD_CONTINUE;
+      for (msgno = 1; rc == IMAP_CMD_CONTINUE; msgno++)
+      {
+        mutt_progress_update(&progress, msgno, -1);
+
+        /* cmd_parse_fetch will update the flags */
+        rc = imap_cmd_step(idata);
+        if (rc != IMAP_CMD_CONTINUE)
+          break;
+
+        /* so we just need to grab the header and persist it back into
+         * the header cache */
+        fetch_buf = idata->buf;
+        if (fetch_buf[0] != '*')
+          continue;
+
+        fetch_buf = imap_next_word(fetch_buf);
+        if (mutt_str_atoui(fetch_buf, &header_msn) < 0)
+          continue;
+
+        if (header_msn < 1 || header_msn > msn_end || !idata->msn_index[header_msn - 1])
+        {
+          mutt_debug(1, "imap_read_headers: skipping CONDSTORE flag update for unknown message number %u\n",
+              header_msn);
+          continue;
+        }
+
+        imap_hcache_put(idata, idata->msn_index[header_msn - 1]);
+      }
+
+      /* The IMAP flag setting as part of cmd_parse_fetch() ends up
+       * flipping these on. */
+      idata->check_status &= ~IMAP_FLAGS_PENDING;
+      ctx->changed = 0;
     }
 
     /* Look for the first empty MSN and start there */
@@ -863,12 +982,12 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         /* messages which have not been expunged are ACTIVE (borrowed from mh
          * folders) */
         ctx->hdrs[idx]->active = true;
+        ctx->hdrs[idx]->changed = 0;
         ctx->hdrs[idx]->read = h.data->read;
         ctx->hdrs[idx]->old = h.data->old;
         ctx->hdrs[idx]->deleted = h.data->deleted;
         ctx->hdrs[idx]->flagged = h.data->flagged;
         ctx->hdrs[idx]->replied = h.data->replied;
-        ctx->hdrs[idx]->changed = h.data->changed;
         ctx->hdrs[idx]->received = h.received;
         ctx->hdrs[idx]->data = (void *) (h.data);
         STAILQ_INIT(&ctx->hdrs[idx]->tags);
@@ -944,6 +1063,11 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   {
     mutt_hcache_store_raw(idata->hcache, "/UIDNEXT", 8, &idata->uidnext,
                           sizeof(idata->uidnext));
+  }
+  if (save_modseq)
+  {
+    mutt_hcache_store_raw(idata->hcache, "/MODSEQ", 7, &idata->modseq,
+                          sizeof(idata->modseq));
   }
 
   imap_hcache_close(idata);
