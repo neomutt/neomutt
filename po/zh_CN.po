@@ -1026,7 +1026,7 @@ msgstr "正在查找 %s..."
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
 #, c-format
 msgid "Could not find the host \"%s\""
-msgstr "无法找到主机\"%s\""
+msgstr "无法找到主机 \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
 #, c-format
@@ -1322,7 +1322,7 @@ msgstr "使用 %s 的 SSL/TLS 连接 (%s/%s/%s)"
 #: conn/tunnel.c:69
 #, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "正在通过\"%s\"连接..."
+msgstr "正在通过 \"%s\" 连接..."
 
 #: conn/tunnel.c:154
 #, c-format
@@ -1526,7 +1526,7 @@ msgstr "限制符合此模式的信件："
 
 #: curs_main.c:1488
 msgid "To view all messages, limit to \"all\"."
-msgstr "要查看所有信件，请将限制设为\"all\"。"
+msgstr "要查看所有信件，请将限制设为 \"all\"。"
 
 #: curs_main.c:1500 pager.c:2318
 msgid "Quit NeoMutt?"
@@ -6299,4 +6299,3 @@ msgstr "默认选项："
 #: version.c:404
 msgid "Compile options:"
 msgstr "编译选项："
-
