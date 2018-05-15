@@ -32,7 +32,6 @@ WHERE bool OptAttachMsg;           /**< (pseudo) used by attach-message */
 WHERE bool OptAuxSort;             /**< (pseudo) using auxiliary sort function */
 WHERE bool OptDontHandlePgpKeys; /**< (pseudo) used to extract PGP keys */
 WHERE bool OptForceRefresh;        /**< (pseudo) refresh even during macros */
-WHERE bool OptHideRead;            /**< (pseudo) whether or not hide read messages */
 WHERE bool OptIgnoreMacroEvents;  /**< (pseudo) don't process macro/push/exec events while set */
 WHERE bool OptKeepQuiet;           /**< (pseudo) shut up the message and refresh functions while we are executing an external program.  */
 WHERE bool OptMenuCaller;          /**< (pseudo) tell menu to give caller a take */
