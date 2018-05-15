@@ -2040,7 +2040,7 @@ msgid ""
 "[-- expired. --]\n"
 msgstr ""
 "[-- Šis %s/%s priedas neįtrauktas, --]\n"
-"[-- o nurodytas išorinis šaltinis išseko. --]\n"
+"[-- o nurodytas išorinis šaltinis paseno. --]\n"
 
 #: handler.c:1693
 #, c-format
@@ -3329,39 +3329,39 @@ msgid "Invoking S/MIME..."
 msgstr "Kviečiu S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:474
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida kuriant gpgme kontekstą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:483
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "klaida įjungiant CMS protokolą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:504
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida kuriant gpgme duomenų objektą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:571 ncrypt/crypt_gpgme.c:592 ncrypt/crypt_gpgme.c:1639
 #: ncrypt/crypt_gpgme.c:2382
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida išskiriant atmintį duomenų objektui: %s\n"
 
 #: ncrypt/crypt_gpgme.c:611
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida atsukant duomenų objektą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:627
 msgid "[tempfile]"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:633 ncrypt/crypt_gpgme.c:688
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida skaitant duomenų objektą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:662 ncrypt/crypt_gpgme.c:3848 ncrypt/pgpkey.c:585
 #: ncrypt/pgpkey.c:768
@@ -3369,73 +3369,71 @@ msgid "Can't create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
 
 #: ncrypt/crypt_gpgme.c:770
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida pridedant gavėją '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
 msgid "secret key '%s' not found: %s\n"
-msgstr ""
+msgstr "slaptas raktas '%s' nerastas: %s\n"
 
 #: ncrypt/crypt_gpgme.c:820
 #, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr ""
+msgstr "nevienprasmė slapto rakto specifikacija '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:831
 #, c-format
 msgid "error setting secret key '%s': %s\n"
-msgstr ""
+msgstr "klaida nustatant slaptą raktą '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:845
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida nustatant PKA parašo notaciją: %s\n"
 
 #: ncrypt/crypt_gpgme.c:900
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida užšifruojant duomenis: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1028
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "klaida pasirašant duomenis: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1039
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
+msgstr "$pgp_sign_as nenustatytas ir ~/.gnupg/gpg.conf nenurodytas nutylėtas raktas"
 
 #: ncrypt/crypt_gpgme.c:1239
 msgid "Warning: One of the keys has been revoked\n"
-msgstr ""
+msgstr "Įspėjimas: vienas iš raktų buvo atšauktas\n"
 
 #: ncrypt/crypt_gpgme.c:1248
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Įspėjimas: pasirašymo rakto galiojimas baigėsi "
 
 #: ncrypt/crypt_gpgme.c:1255
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Serverio sertifikatas paseno"
+msgstr "Įspėjimas: baigįsi bent vieno sertifikavimo rakto galiojimas\n"
 
 #: ncrypt/crypt_gpgme.c:1271
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Įspėjimas: parašo galiojimas baigėsi "
 
 #: ncrypt/crypt_gpgme.c:1277
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "Negaliu patikrinti nes trūksta rakto arba sertifikato\n"
 
 #: ncrypt/crypt_gpgme.c:1283
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL nepasiekiamas."
+msgstr "CRL nepasiekiamas\n"
 
 #: ncrypt/crypt_gpgme.c:1289
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "Pasiekiamas CRL per senas\n"
 
 #: ncrypt/crypt_gpgme.c:1294
 msgid "A policy requirement was not met\n"
@@ -3443,15 +3441,15 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1303
 msgid "A system error occurred"
-msgstr ""
+msgstr "Įvyko sistemos klaida"
 
 #: ncrypt/crypt_gpgme.c:1334
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr ""
+msgstr "ĮSPĖJIMAS: PKA įrašas neatitinka pasirašiusiojo adreso: "
 
 #: ncrypt/crypt_gpgme.c:1342
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "PKA patikrinto pasirašiusiojo adresas yra "
 
 #: ncrypt/crypt_gpgme.c:1356 ncrypt/crypt_gpgme.c:3574
 msgid "Fingerprint: "
@@ -3459,24 +3457,24 @@ msgstr "Pirštų antspaudas: "
 
 #: ncrypt/crypt_gpgme.c:1418
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
-msgstr ""
+msgstr "ĮSPĖJIMAS: NEŽINOME ar raktas tikrai priklauso aukščiau paminėtam asmeniui\n"
 
 #: ncrypt/crypt_gpgme.c:1425
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "ĮSPĖJIMAS: raktas NEPRIKLAUSO aukščiau paminėtam asmeniui\n"
 
 #: ncrypt/crypt_gpgme.c:1429
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
-msgstr ""
+msgstr "ĮSPĖJIMAS: NESAME tikri, kad raktas priklauso aukščiau paminėtam asmeniui\n"
 
 #: ncrypt/crypt_gpgme.c:1458 ncrypt/crypt_gpgme.c:1463
 #: ncrypt/crypt_gpgme.c:3573
 msgid "aka: "
-msgstr ""
+msgstr "taip pat: "
 
 #: ncrypt/crypt_gpgme.c:1473
 msgid "KeyID "
-msgstr ""
+msgstr "Rakto ID "
 
 #: ncrypt/crypt_gpgme.c:1482 ncrypt/crypt_gpgme.c:1487
 msgid "created: "
@@ -3485,76 +3483,76 @@ msgstr "sukurtas: "
 #: ncrypt/crypt_gpgme.c:1561
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr ""
+msgstr "Klaida gaunant rakto informaciją raktui %s: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1568 ncrypt/crypt_gpgme.c:1583
 msgid "Good signature from:"
-msgstr ""
+msgstr "Geras parašas:"
 
 #: ncrypt/crypt_gpgme.c:1575
 msgid "*BAD* signature from:"
-msgstr ""
+msgstr "*BLOGAS* parašas:"
 
 #: ncrypt/crypt_gpgme.c:1591
 msgid "Problem signature from:"
-msgstr ""
+msgstr "Įtartinas parašas:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
 #: ncrypt/crypt_gpgme.c:1598
 msgid "               expires: "
-msgstr ""
+msgstr "      galioja iki: "
 
 #: ncrypt/crypt_gpgme.c:1647 ncrypt/crypt_gpgme.c:1872
 #: ncrypt/crypt_gpgme.c:2595
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Parašo informacija --]\n"
 
 #: ncrypt/crypt_gpgme.c:1658
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Klaida komandinėje eilutėje: %s\n"
+msgstr "Klaida: patikrinimas nepavyko: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1709
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Notacija (%s parašas) ***\n"
 
 #: ncrypt/crypt_gpgme.c:1728
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Notacijos pabaiga ***\n"
 
 #: ncrypt/crypt_gpgme.c:1736 ncrypt/crypt_gpgme.c:1886
 #: ncrypt/crypt_gpgme.c:2607
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- Parašo informacijos pabaiga --]\n"
 "\n"
-"[-- Pasirašytų duomenų pabaiga --]\n"
 
 #: ncrypt/crypt_gpgme.c:1841
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Klaida: negalėjau sukurti laikinos bylos! --]\n"
+msgstr ""
+"[-- Klaida: iššifravimas nepavyko: %s --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:2388
-#, fuzzy
 msgid "Error extracting key data!\n"
-msgstr "klaida pattern'e: %s"
+msgstr "Klaida išgaunant rakto duomenis!\n"
 
 #: ncrypt/crypt_gpgme.c:2571
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Klaida: iššifravimas/verifikavimas nepavyko: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2616
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Klaida: duomenų kopijavimas nepavyko\n"
 
 #: ncrypt/crypt_gpgme.c:2637 ncrypt/pgp.c:519
 msgid ""
@@ -3577,22 +3575,16 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2666 ncrypt/pgp.c:565
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP LAIŠKO PABAIGA --]\n"
+msgstr "[-- PGP LAIŠKO PABAIGA --]\n"
 
 #: ncrypt/crypt_gpgme.c:2668 ncrypt/pgp.c:572
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP VIEŠO RAKTO BLOKO PABAIGA --]\n"
 
 #: ncrypt/crypt_gpgme.c:2670 ncrypt/pgp.c:574
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP PASIRAŠYTO LAIŠKO PABAIGA --]\n"
+msgstr "[-- PGP PASIRAŠYTO LAIŠKO PABAIGA --]\n"
 
 #: ncrypt/crypt_gpgme.c:2693 ncrypt/pgp.c:608
 msgid ""
@@ -3607,12 +3599,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Klaida: negalėjau sukurti laikinos bylos! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2739
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Toliau einantys duomenys yra užšifruoti su PGP/MIME --]\n"
+"[-- Toliau einantys duomenys yra užšifruoti ir pasirašyti su PGP/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2741 ncrypt/pgp.c:1052
@@ -3624,41 +3615,31 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2763
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- PGP/MIME užšifruotų duomenų pabaiga --]\n"
+msgstr "[-- PGP/MIME užšifruotų ir pasirašytų duomenų pabaiga --]\n"
 
 #: ncrypt/crypt_gpgme.c:2764 ncrypt/pgp.c:1072
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- PGP/MIME užšifruotų duomenų pabaiga --]\n"
+msgstr "[-- PGP/MIME užšifruotų duomenų pabaiga --]\n"
 
 #: ncrypt/crypt_gpgme.c:2769 ncrypt/pgp.c:569 ncrypt/pgp.c:1077
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "PGP parašas patikrintas sėkmingai."
+msgstr "PGP laiškas sėkmingai iššifruotas."
 
 #: ncrypt/crypt_gpgme.c:2773 ncrypt/pgp.c:506 ncrypt/pgp.c:567
 #: ncrypt/pgp.c:1081
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Negalėjau kopijuoti laiško"
+msgstr "Negalėjau iššifruoti PGP laiško"
 
 #: ncrypt/crypt_gpgme.c:2814
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Toliau einantys duomenys yra pasirašyti --]\n"
+"[-- Toliau einantys duomenys yra pasirašyti su S/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2815
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -3667,30 +3648,24 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2845
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Pasirašytų duomenų pabaiga --]\n"
+msgstr "[-- S/MIME pasirašytų duomenų pabaiga --]\n"
 
 #: ncrypt/crypt_gpgme.c:2846
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME užšifruotų duomenų pabaiga --]\n"
+msgstr "[-- S/MIME užšifruotų duomenų pabaiga --]\n"
 
 #: ncrypt/crypt_gpgme.c:3471
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Negaliu parodyti naudotojo ID (nežinoma koduotė)]"
 
 #: ncrypt/crypt_gpgme.c:3473
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Negaliu parodyti naudotojo ID (neteisinga koduotė)]"
 
 #: ncrypt/crypt_gpgme.c:3478
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Negaliu parodyti naudotojo ID (neteisingas DN)]"
 
 #. L10N:
 #. * The following are the headers for the "verify key" output from the
@@ -3698,7 +3673,7 @@ msgstr ""
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3573
 msgid "Name: "
-msgstr ""
+msgstr "Vardas: "
 
 #: ncrypt/crypt_gpgme.c:3573
 msgid "Valid From: "
@@ -3710,19 +3685,19 @@ msgstr "Galioja iki: "
 
 #: ncrypt/crypt_gpgme.c:3574
 msgid "Key Type: "
-msgstr ""
+msgstr "Rakto tipas: "
 
 #: ncrypt/crypt_gpgme.c:3574
 msgid "Key Usage: "
-msgstr ""
+msgstr "Rakto naudojimas: "
 
 #: ncrypt/crypt_gpgme.c:3574
 msgid "Serial-No: "
-msgstr ""
+msgstr "Serijinis nr.: "
 
 #: ncrypt/crypt_gpgme.c:3575
 msgid "Issued By: "
-msgstr ""
+msgstr "Išduotas: "
 
 #: ncrypt/crypt_gpgme.c:3575
 msgid "Subkey: "
@@ -3739,85 +3714,79 @@ msgstr "[Blogas]"
 #: ncrypt/crypt_gpgme.c:3670 ncrypt/crypt_gpgme.c:3808
 #, c-format
 msgid "%s, %lu bit %s\n"
-msgstr ""
+msgstr "%s, %lu bitų %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3678 ncrypt/crypt_gpgme.c:3815
-#, fuzzy
 msgid "encryption"
-msgstr "Užšifruoti"
+msgstr "šifravimui"
 
 #: ncrypt/crypt_gpgme.c:3679 ncrypt/crypt_gpgme.c:3685
 #: ncrypt/crypt_gpgme.c:3816 ncrypt/crypt_gpgme.c:3821
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3684 ncrypt/crypt_gpgme.c:3820
 msgid "signing"
-msgstr ""
+msgstr "pasirašymui"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3690 ncrypt/crypt_gpgme.c:3825
-#, fuzzy
 msgid "certification"
-msgstr "Sertifikatas išsaugotas"
+msgstr "sertifikavimui"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3761
 msgid "[Revoked]"
-msgstr ""
+msgstr "[Atšauktas]"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3773
-#, fuzzy
 msgid "[Expired]"
-msgstr "Išeiti  "
+msgstr "[Pasenęs]"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3779
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Uždraustas]"
 
 #: ncrypt/crypt_gpgme.c:3851
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Jungiuosi prie %s..."
+msgstr "Renku duomenis..."
 
 #: ncrypt/crypt_gpgme.c:3876
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Klaida jungiantis prie IMAP serverio: %s"
+msgstr "Klaida ieškant išdavėjo rakto: %s\n"
 
 #: ncrypt/crypt_gpgme.c:3885
-#, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Klaida komandinėje eilutėje: %s\n"
+msgstr "Klaida: sertifikavimo grandinė per ilga - stoju čia\n"
 
 #: ncrypt/crypt_gpgme.c:3895 ncrypt/pgpkey.c:608
 #, c-format
 msgid "Key ID: 0x%s"
-msgstr "Rakto ID: ox%s"
+msgstr "Rakto ID: 0x%s"
 
 #: ncrypt/crypt_gpgme.c:3990
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Nepavyko pasisveikinti."
+msgstr "gpgme_new nepavyko: %s"
 
 #: ncrypt/crypt_gpgme.c:4028 ncrypt/crypt_gpgme.c:4079
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start nepavyko: %s"
 
 #: ncrypt/crypt_gpgme.c:4067 ncrypt/crypt_gpgme.c:4109
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next nepavyko: %s"
 
 #: ncrypt/crypt_gpgme.c:4185
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Šis raktas negali būti naudojamas: jis pasenęs/uždraustas/atšauktas."
+msgstr "Visi rasti raktai pažymėti kaip pasenę arba atšaukti."
 
 #: ncrypt/crypt_gpgme.c:4215 ncrypt/pgpkey.c:543 ncrypt/smime.c:475
 msgid "Select  "
@@ -3828,40 +3797,36 @@ msgid "Check key  "
 msgstr "Tikrinti raktą  "
 
 #: ncrypt/crypt_gpgme.c:4233
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP raktai, tenkinantys \"%s\"."
+msgstr "PGP ir S/MIME raktai, tenkinantys"
 
 #: ncrypt/crypt_gpgme.c:4235
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "PGP raktai, tenkinantys \"%s\"."
+msgstr "PGP raktai, tenkinantys"
 
 #: ncrypt/crypt_gpgme.c:4237
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "S/MIME raktai, tenkinantys \"%s\"."
+msgstr "S/MIME raktai, tenkinantys"
 
 #: ncrypt/crypt_gpgme.c:4239
-#, fuzzy
 msgid "keys matching"
-msgstr "PGP raktai, tenkinantys \"%s\"."
+msgstr "raktai, tenkinantys"
 
 #. L10N:
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
 #: ncrypt/crypt_gpgme.c:4246
-#, fuzzy, c-format
+#, c-format
 msgid "%s <%s>."
-msgstr "%s [%s]\n"
+msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
 #: ncrypt/crypt_gpgme.c:4250
-#, fuzzy, c-format
+#, c-format
 msgid "%s \"%s\"."
-msgstr "%s [%s]\n"
+msgstr "%s \"%s\"."
 
 #: ncrypt/crypt_gpgme.c:4277 ncrypt/pgpkey.c:628
 msgid "This key can't be used: expired/disabled/revoked."
@@ -3869,21 +3834,19 @@ msgstr "Šis raktas negali būti naudojamas: jis pasenęs/uždraustas/atšauktas
 
 #: ncrypt/crypt_gpgme.c:4290 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr ""
+msgstr "ID pasenęs/uždraustas/atšauktas. Ar tikrai nori naudoti šį raktą?"
 
 #: ncrypt/crypt_gpgme.c:4299 ncrypt/pgpkey.c:650
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "Šis ID yra nepatikimas. Ar tikrai nori jį naudoti?"
+msgstr "ID yra nepatikimas. Ar tikrai nori naudoti šį raktą?"
 
 #: ncrypt/crypt_gpgme.c:4302 ncrypt/pgpkey.c:653
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "Šis ID yra tik vos vos patikimas. Ar tikrai nori jį naudoti?"
+msgstr "ID yra tik vos vos patikimas. Ar tikrai nori naudoti šį raktą?"
 
 #: ncrypt/crypt_gpgme.c:4310 ncrypt/pgpkey.c:646 ncrypt/smime.c:509
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr ""
+msgstr "ID patikimumas nežinomas. Ar tikrai nori naudoti šį raktą?"
 
 #: ncrypt/crypt_gpgme.c:4370 ncrypt/crypt_gpgme.c:4479 ncrypt/pgpkey.c:872
 #: ncrypt/pgpkey.c:995
@@ -3894,12 +3857,12 @@ msgstr "Ieškau raktų, tenkinančių \"%s\"..."
 #: ncrypt/crypt_gpgme.c:4593 ncrypt/pgpkey.c:731 ncrypt/smime.c:811
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "Neradau raktų, tenkinančių \"%s\""
 
 #: ncrypt/crypt_gpgme.c:4644 ncrypt/pgp.c:1263
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
-msgstr "Naudoti rakto ID = \"%s\", skirtą %s?"
+msgstr "Naudoti raktą ID = \"%s\", skirtą %s?"
 
 #: ncrypt/crypt_gpgme.c:4695 ncrypt/pgp.c:1312 ncrypt/smime.c:830
 #: ncrypt/smime.c:938
@@ -3912,9 +3875,9 @@ msgid "Please enter the key ID: "
 msgstr "Prašau, įvesk rakto ID: "
 
 #: ncrypt/crypt_gpgme.c:4768
-#, fuzzy, c-format
+#, c-format
 msgid "Error exporting key: %s\n"
-msgstr "klaida pattern'e: %s"
+msgstr "Klaida eksportuojant raktą: %s\n"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
