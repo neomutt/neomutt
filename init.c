@@ -2397,7 +2397,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         }
 
         s->dptr++;
-        mutt_extract_token(buf, s, 0);
+        mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
         if (mutt_str_strcasecmp("yes", buf->data) == 0)
           unset = inv = 0;
         else if (mutt_str_strcasecmp("no", buf->data) == 0)
@@ -2586,7 +2586,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
 
       if (parse_regex(idx, buf, err))
       {
@@ -2640,7 +2640,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
       if (mx_set_magic(buf->data))
       {
         snprintf(err->data, err->dsize, _("%s: invalid mailbox type"), buf->data);
@@ -2669,7 +2669,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       CHECK_PAGER;
       s->dptr++;
 
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
       rc = mutt_str_atos(buf->data, (short *) &val);
 
       if (rc < 0 || !*buf->data)
@@ -2727,7 +2727,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       if (*s->dptr == '=')
       {
         s->dptr++;
-        mutt_extract_token(buf, s, 0);
+        mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
         if (mutt_str_strcasecmp("yes", buf->data) == 0)
           *(unsigned char *) MuttVars[idx].var = MUTT_YES;
         else if (mutt_str_strcasecmp("no", buf->data) == 0)
@@ -2799,7 +2799,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
       CHECK_PAGER;
       s->dptr++;
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
 
       if (parse_sort((short *) MuttVars[idx].var, buf->data, map, err) == -1)
       {
@@ -2821,7 +2821,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(buf, s, 0);
+      mutt_extract_token(buf, s, MUTT_TOKEN_BACKTICK_VARS);
       if (mutt_hcache_is_valid_backend(buf->data))
       {
         FREE((void *) MuttVars[idx].var);
