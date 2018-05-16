@@ -861,17 +861,11 @@ int mutt_file_mkdir(const char *path, mode_t mode)
  *
  * Create and immediately unlink a temp file using mkstemp().
  */
-FILE *mutt_file_mkstemp_full(char *name, size_t namelen,
-    const char *file, int line, const char *func)
+FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 {
-  char noname[PATH_MAX];
+  char name[PATH_MAX];
 
-  if (name == NULL) {
-    name = noname;
-    namelen = PATH_MAX;
-  }
-
-  int n = snprintf(name, namelen, "%s/neomutt-XXXXXX", NONULL(Tmpdir));
+  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(Tmpdir));
   if (n < 0)
     return NULL;
 
@@ -880,25 +874,15 @@ FILE *mutt_file_mkstemp_full(char *name, size_t namelen,
     return NULL;
 
   FILE *fp = fdopen(fd, "w+");
+
+  if ((unlink(name) != 0) && (errno != ENOENT))
+  {
+    mutt_file_fclose(&fp);
+    return NULL;
+  }
+
   MuttLogger(0, file, line, func, 1, "created temp file '%s'\n", name);
-
-  if (name == noname) {
-    if ((unlink(name) != 0) && (errno != ENOENT))
-      return NULL;
-
-    MuttLogger(0, file, line, func, 1, "unlinked temp file '%s'\n", name);
-  }
-
   return fp;
-}
-
-int mutt_file_mkstemp_finish(FILE *fp, const char *name) {
-  if (name != NULL) {
-    if (unlink(name) && (errno != ENOENT))
-      return -1;
-  }
-
-  return mutt_file_fclose(&fp);
 }
 
 /**

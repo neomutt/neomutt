@@ -176,7 +176,8 @@ int mutt_compose_attachment(struct Body *a)
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
             mutt_body_free(&b);
-	    FILE *tfp = mutt_file_mkstemp_name(tempfile, sizeof(tempfile));
+            mutt_mktemp(tempfile, sizeof(tempfile));
+            FILE *tfp = mutt_file_fopen(tempfile, "w");
             if (!tfp)
             {
               mutt_perror(_("Failure to open file to strip headers."));

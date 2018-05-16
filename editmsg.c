@@ -73,13 +73,11 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   struct Message *msg = NULL;
 
   FILE *fp = NULL;
-  FILE *tfp = NULL;
 
   struct stat sb;
   time_t mtime = 0;
 
-  tfp = mutt_file_mkstemp_name(tmp, sizeof(tmp));
-  mutt_file_mkstemp_finish(tfp, tmp);
+  mutt_mktemp(tmp, sizeof(tmp));
 
   omagic = MboxType;
   MboxType = MUTT_MBOX;
