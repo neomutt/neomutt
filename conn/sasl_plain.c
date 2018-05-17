@@ -44,7 +44,8 @@
  * This function can be used to build a protocol-specific SASL Response message
  * using the PLAIN mechanism. The protocol specific command is given in the cmd
  * parameter. The function appends a space, encodes the string derived from
- * authz\0user\0pass using base64 encoding, and stores the result in buf.
+ * authz\0user\0pass using base64 encoding, and stores the result in buf. If
+ * cmd is either NULL or the empty string, the initial space is skipped.
  *
  * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
  * string. Add the two NULL bytes in between plus one at the end and we get
