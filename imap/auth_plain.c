@@ -56,10 +56,29 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 
   mutt_message(_("Logging in..."));
 
-  mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN", idata->conn->account.user,
-                      idata->conn->account.user, idata->conn->account.pass);
+  if (mutt_bit_isset(idata->capabilities, SASL_IR))
+  {
+    mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN",
+        idata->conn->account.user, idata->conn->account.user,
+        idata->conn->account.pass);
+    imap_cmd_start(idata, buf);
+  }
+  else
+  {
+    imap_cmd_start(idata, "AUTHENTICATE PLAIN");
+    do
+      rc = imap_cmd_step(idata);
+    while (rc == IMAP_CMD_CONTINUE);
+    if (rc == IMAP_CMD_RESPOND)
+    {
+      mutt_sasl_plain_msg(buf, STRING, NULL, 
+          idata->conn->account.user, idata->conn->account.user,
+          idata->conn->account.pass);
+      mutt_socket_send(idata->conn, buf);
+      mutt_socket_send(idata->conn, "\r\n");
+    }
+  }
 
-  imap_cmd_start(idata, buf);
   do
     rc = imap_cmd_step(idata);
   while (rc == IMAP_CMD_CONTINUE);
