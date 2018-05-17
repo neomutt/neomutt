@@ -4,7 +4,7 @@
 # This file is distributed under the same license as the NeoMutt package.
 #
 # OOTA Toshiya <ribbon@users.sourceforge.net>, 2002, 2008, 2011
-# TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>, 2002-2005, 2007-2009, 2011, 2013, 2015-2017
+# TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>, 2002-2005, 2007-2009, 2011, 2013, 2015-2018
 #
 msgid ""
 msgstr ""
@@ -283,9 +283,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "削除機能は IMAP メールボックスのみのサポート"
 
 #: browser.c:1662 browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "メールボックスは削除された。"
+msgstr "メールボックス削除が失敗した。"
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -975,7 +974,7 @@ msgstr "メッセージは書き込まれた。"
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "PGP バックエンドが設定されていない"
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -983,7 +982,7 @@ msgstr "S/MIME が既に選択されている。解除して継続?"
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "S/MIME バックエンドが設定されていない"
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -3299,8 +3298,8 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "%s に既読メッセージを移動?"
-msgstr[1] "%s に既読メッセージを移動?"
+msgstr[0] "既読の %d メッセージを %s に移動?"
+msgstr[1] "既読の %d メッセージを %s に移動?"
 
 #: mx.c:780 mx.c:1086
 #, fuzzy, c-format
@@ -3371,17 +3370,17 @@ msgstr "添付ファイルがあるとインライン PGP にできない。PGP/
 
 #: ncrypt/crypt.c:165
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
+msgstr "メールは未送信: 添付ファイルがあるとインライン PGP にできない。"
 
 #: ncrypt/crypt.c:172
 #, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "添付ファイルがあるとインライン PGP にできない。PGP/MIME を使う?"
+msgstr "format=flowed にインライン PGP は使えない。PGP/MIME に戻す?"
 
 #: ncrypt/crypt.c:176
 #, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
+msgstr "メールは未送信: format=flowed にインライン PGP は使えない。"
 
 #: ncrypt/crypt.c:186 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:782
@@ -3394,7 +3393,7 @@ msgstr "メッセージをインラインで送信できない。PGP/MIME を使
 
 #: ncrypt/crypt.c:200 send.c:1824
 msgid "Mail not sent."
-msgstr "メールは送信されなかった。"
+msgstr "メールは未送信。"
 
 #: ncrypt/crypt.c:546
 msgid "S/MIME messages with no hints on content are unsupported."
@@ -3423,7 +3422,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- エラー: multipart/signed 構造が矛盾している! --]\n"
+"[-- エラー: multipart/signed 署名が欠落または不正! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1064
