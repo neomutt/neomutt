@@ -3,7 +3,7 @@
 # Copyright (c) 2001-2004, 2006-2009, 2013-2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013-2017
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013-2018
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.22:
 #
@@ -338,9 +338,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Només es poden esborrar bústies amb IMAP."
 
 #: browser.c:1662 browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "S’ha esborrat la bústia."
+msgstr "L’esborrat la bústia ha fallat."
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -1051,7 +1050,7 @@ msgstr "S’ha escrit el missatge."
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "No heu configurat cap implementació de PGP."
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -1059,7 +1058,7 @@ msgstr "El missatge ja empra S/MIME.  Voleu posar-lo en clar i continuar? "
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "No heu configurat cap implementació de S/MIME."
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -3464,8 +3463,8 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Voleu moure els missatges a «%s»?"
-msgstr[1] "Voleu moure els missatges a «%s»?"
+msgstr[0] "Voleu moure %d missatges llegits a «%s»?"
+msgstr[1] "Voleu moure %d missatges llegits a «%s»?"
 
 # ivb (2001/12/08)
 # ivb  Ací «%d» sempre és 1.
@@ -3557,14 +3556,13 @@ msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjunci
 # ABREUJAT!  ivb
 # No es pot emprar PGP en línia amb adjuncions.  Voleu recórrer a emprar PGP/MIME?
 #: ncrypt/crypt.c:172
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "No es pot emprar PGP en línia amb adjuncions.  Emprar PGP/MIME?"
+msgstr "No es pot emprar PGP en línia amb «format=flowed».  Emprar PGP/MIME?"
 
 #: ncrypt/crypt.c:176
 #, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions."
+msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb «format=flowed»."
 
 #: ncrypt/crypt.c:186 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:782
