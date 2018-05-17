@@ -4063,6 +4063,9 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     }
   }
 
+  if (!get_hostname())
+    return 1;
+
   /* Read the user's initialization file.  */
   struct ListNode *np;
   STAILQ_FOREACH(np, &Muttrc, entries)
@@ -4079,9 +4082,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (execute_commands(commands) != 0)
     need_pause = 1; // TEST13: neomutt -e broken
-
-  if (!get_hostname())
-    return 1;
 
   if (need_pause && !OptNoCurses)
   {
