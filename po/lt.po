@@ -4117,9 +4117,8 @@ msgstr "Įvesk slaptą S/MIME frazę:"
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
 #: ncrypt/smime.c:378
-#, fuzzy
 msgid "Expired   "
-msgstr "Išeiti  "
+msgstr "Pasenęs    "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4129,9 +4128,8 @@ msgstr "Išeiti  "
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
 #: ncrypt/smime.c:388
-#, fuzzy
 msgid "Invalid   "
-msgstr "Blogas mėnuo: %s"
+msgstr "Blogas     "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4142,7 +4140,7 @@ msgstr "Blogas mėnuo: %s"
 #.
 #: ncrypt/smime.c:398
 msgid "Revoked   "
-msgstr ""
+msgstr "Atšauktas  "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4153,7 +4151,7 @@ msgstr ""
 #.
 #: ncrypt/smime.c:408
 msgid "Trusted   "
-msgstr ""
+msgstr "Patikimas  "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4164,7 +4162,7 @@ msgstr ""
 #.
 #: ncrypt/smime.c:418
 msgid "Unverified"
-msgstr ""
+msgstr "Netikrintas"
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4175,7 +4173,7 @@ msgstr ""
 #.
 #: ncrypt/smime.c:428
 msgid "Verified  "
-msgstr ""
+msgstr "Patikrintas"
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -4185,9 +4183,8 @@ msgstr ""
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
 #: ncrypt/smime.c:438
-#, fuzzy
 msgid "Unknown   "
-msgstr "Nežinoma"
+msgstr "Nežinomas  "
 
 #: ncrypt/smime.c:469
 #, c-format
@@ -4356,43 +4353,39 @@ msgid "Server doesn't support reader mode."
 msgstr ""
 
 #: nntp.c:383 pop_auth.c:455 smtp.c:504 smtp.c:559
-#, fuzzy
 msgid "No authenticators available"
-msgstr "SASL autentikacija nepavyko."
+msgstr "Nėra autentikatorių."
 
 #: nntp.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed."
-msgstr "SASL autentikacija nepavyko."
+msgstr "%s autentikacija nepavyko."
 
 #: nntp.c:676 nntp.c:764
-#, fuzzy
 msgid "Could not switch to reader mode."
-msgstr "negalėjau įrašyti laikino pašto aplanko: %s"
+msgstr "Negalėjau persijungti į skaitymo režimą."
 
 #: nntp.c:689
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "Jungiuosi prie %s..."
+msgstr "Prisijungiau prie %s. %s"
 
 #: nntp.c:690
-#, fuzzy
 msgid "Posting is ok."
-msgstr "Jungiuosi prie %s..."
+msgstr "Siuntimas leidžiamas."
 
 #: nntp.c:690
 msgid "Posting is NOT ok."
-msgstr ""
+msgstr "Siuntimas NELEIDŽIAMAS."
 
 #: nntp.c:819
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "Jungiuosi prie %s..."
+msgstr "Prisijungimas prie %s nutrūko. Prisijungti iš naujo?"
 
 #: nntp.c:1293
-#, fuzzy
 msgid "Fetching list of articles..."
-msgstr "Paimu laiškų sąrašą..."
+msgstr "Paimu straipsnių sąrašą..."
 
 #: nntp.c:1503
 #, c-format
@@ -4415,28 +4408,26 @@ msgid "Article %d not found on the server."
 msgstr ""
 
 #: nntp.c:1796 nntp.c:1829
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "Negalėjau stat'inti: %s"
+msgstr "Negaliu išsiųsti straipsnio: %s"
 
 #: nntp.c:1902 nntp.c:2339 pop.c:850 pop.c:917
 msgid "Checking for new messages..."
 msgstr "Tikrinu, ar yra naujų laiškų..."
 
 #: nntp.c:2265
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Ištuštinu laiškus iš serverio..."
+msgstr "Siunčiuosi grupių sąrašą iš serverio %s..."
 
 #: nntp.c:2307 nntp.c:2407
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Pasisveikinu..."
+msgstr "Užkraunu aprašus..."
 
 #: nntp.c:2329
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Tikrinu, ar yra naujų laiškų..."
+msgstr "Tikrinu, ar yra naujų naujienų grupių..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
@@ -4447,9 +4438,8 @@ msgid "null operation"
 msgstr "nulinė operacija"
 
 #: opcodes.h:31
-#, fuzzy
 msgid "toggle display of subparts"
-msgstr "perjungti cituojamo teksto rodymą"
+msgstr "perjungti vidinių dalių rodymą"
 
 #: opcodes.h:32
 msgid "force viewing of attachment using mailcap"
@@ -4520,9 +4510,8 @@ msgid "attach message(s) to this message"
 msgstr "prisegti laišką(as) prie šio laiško"
 
 #: opcodes.h:49
-#, fuzzy
 msgid "attach news article(s) to this message"
-msgstr "prisegti bylą(as) prie šio laiško"
+msgstr "prisegti naujienų straipsnį(us) prie šio laiško"
 
 #: opcodes.h:50
 msgid "edit the BCC list"
@@ -4561,9 +4550,8 @@ msgid "edit the message with headers"
 msgstr "taisyti laišką su antraštėmis"
 
 #: opcodes.h:59
-#, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "taisyti bylą, skirtą prisegimui"
+msgstr "taisyti priedo Content-Language antraštę"
 
 #: opcodes.h:60
 msgid "edit the message"
@@ -4574,9 +4562,8 @@ msgid "edit attachment using mailcap entry"
 msgstr "taisyti priedą naudojant mailcap įrašą"
 
 #: opcodes.h:62
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "taisyti CC sąrašą"
+msgstr "taisyti naujienų grupių sąrašą"
 
 #: opcodes.h:63
 msgid "edit the Reply-To field"
@@ -4611,14 +4598,12 @@ msgid "run ispell on the message"
 msgstr "paleisti ispell laiškui"
 
 #: opcodes.h:71
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Siųsti priedą vardu: "
+msgstr "perkelti priedą žemiau sąraše"
 
 #: opcodes.h:72
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Siųsti priedą vardu: "
+msgstr "perkelti priedą aukščiau sąraše"
 
 #: opcodes.h:73
 msgid "compose new attachment using mailcap entry"
@@ -4781,7 +4766,6 @@ msgid "scroll down through the history list"
 msgstr "slinktis žemyn istorijos sąraše"
 
 #: opcodes.h:113
-#, fuzzy
 msgid "search through the history list"
 msgstr "ieškoti istorijos sąraše"
 
@@ -4862,9 +4846,8 @@ msgid "toggle a message's 'important' flag"
 msgstr "perjungti laiško 'svarbumo' flagą"
 
 #: opcodes.h:133
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "Pratęsti-į %s%s?"
+msgstr "pratęsti į naujienų grupę"
 
 #: opcodes.h:134
 msgid "forward a message with comments"
@@ -4879,24 +4862,20 @@ msgid "select the current entry"
 msgstr "pasirinkti esamą įrašą"
 
 #: opcodes.h:137
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "Tu esi ties pirmu laišku."
+msgstr "gauti visus atsakymus į dabartinį laišką"
 
 #: opcodes.h:138
-#, fuzzy
 msgid "get message with Message-Id"
-msgstr "taisyti laišką su antraštėmis"
+msgstr "gauti laišką pagal ID"
 
 #: opcodes.h:139
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "Tu esi ties pirmu laišku."
+msgstr "gauti tėvinį laišką"
 
 #: opcodes.h:140
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s nėra katalogas."
+msgstr "eiti į tėvinį katalogą"
 
 #: opcodes.h:141
 msgid "reply to all recipients"
@@ -4923,9 +4902,8 @@ msgid "move to the last entry"
 msgstr "eiti į paskutinį įrašą"
 
 #: opcodes.h:147
-#, fuzzy
 msgid "limit view to current thread"
-msgstr "pažymėti esamą giją"
+msgstr "apriboti vaizdą esama gija"
 
 #: opcodes.h:148
 msgid "reply to specified mailing list"
@@ -4956,14 +4934,12 @@ msgid "open a different folder in read only mode"
 msgstr "atidaryti kitą aplanką tik skaitymo režimu"
 
 #: opcodes.h:155
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "atidaryti kitą aplanką"
+msgstr "atidaryti kitą naujienų grupę"
 
 #: opcodes.h:156
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "atidaryti kitą aplanką tik skaitymo režimu"
+msgstr "atidaryti kitą naujienų grupę tik skaitymo režimu"
 
 #: opcodes.h:157
 msgid "clear a status flag from a message"
@@ -4986,9 +4962,8 @@ msgid "retrieve mail from POP server"
 msgstr "parsiųsti paštą iš POP serverio"
 
 #: opcodes.h:162
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "parsiųsti paštą iš POP serverio"
+msgstr "parsiųsti paštą iš IMAP serverio"
 
 #: opcodes.h:163
 msgid "logout from all IMAP servers"
@@ -5007,9 +4982,8 @@ msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #: opcodes.h:167
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Tu esi ties pirmu laišku."
+msgstr "keisti (notmuch/imap) etiketes ir paslėpti laišką"
 
 #: opcodes.h:168
 msgid "jump to the next new message"
