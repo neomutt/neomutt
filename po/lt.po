@@ -5054,9 +5054,8 @@ msgid "mark the current thread as read"
 msgstr "pažymėti esamą giją skaityta"
 
 #: opcodes.h:185
-#, fuzzy
 msgid "jump to root message in thread"
-msgstr "šokti į tėvinį laišką gijoje"
+msgstr "šokti į pradinį laišką gijoje"
 
 #: opcodes.h:186
 msgid "set a status flag on a message"
@@ -5083,9 +5082,8 @@ msgid "untag messages matching a pattern"
 msgstr "atžymėti laiškus, tenkinančius pattern'ą"
 
 #: opcodes.h:192
-#, fuzzy
 msgid "create a hotkey macro for the current message"
-msgstr "Tu esi ties pirmu laišku."
+msgstr "sukurti makrokomandą grįžimui prie dabartinio laiško"
 
 #: opcodes.h:193
 msgid "move to the middle of the page"
@@ -5124,9 +5122,8 @@ msgid "pipe message/attachment to a shell command"
 msgstr "filtruoti laišką/priedą per shell komandą"
 
 #: opcodes.h:202
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "Nukreipti laišką į %s"
+msgstr "siųsti laišką į naujienų grupę"
 
 #: opcodes.h:203
 msgid "move to the previous entry"
@@ -5169,9 +5166,8 @@ msgid "recall a postponed message"
 msgstr "tęsti atidėtą laišką"
 
 #: opcodes.h:213
-#, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Gijoje yra neskaitytų laiškų."
+msgstr "rekonstruoti dabartinio laiško giją"
 
 #: opcodes.h:214
 msgid "clear and redraw the screen"
@@ -5234,9 +5230,8 @@ msgid "sort messages in reverse order"
 msgstr "rikiuoti laiškus atvirkščia tvarka"
 
 #: opcodes.h:229
-#, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+msgstr "prenumeruoti naujienų grupes pagal šabloną"
 
 #: opcodes.h:230
 msgid "tag the current entry"
@@ -5267,9 +5262,8 @@ msgid "toggle a message's 'new' flag"
 msgstr "perjungti laiško 'naujumo' flagą"
 
 #: opcodes.h:237
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "šokti į praeitą neskaitytą laišką"
+msgstr "rodyti arba slėpti skaitytus laiškus"
 
 #: opcodes.h:238
 msgid "toggle whether the mailbox will be rewritten"
@@ -5296,9 +5290,8 @@ msgid "undelete all messages in thread"
 msgstr "sugrąžinti visus laiškus gijoje"
 
 #: opcodes.h:244
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+msgstr "atsisakyti naujienų grupių pagal šabloną"
 
 #: opcodes.h:245
 msgid "show the NeoMutt version number and date"
@@ -5365,9 +5358,8 @@ msgid "accept the chain constructed"
 msgstr "priimti sukonstruotą grandinę"
 
 #: opcodes.h:272
-#, fuzzy
 msgid "open a different virtual folder"
-msgstr "atidaryti kitą aplanką"
+msgstr "atidaryti kitą virtualų aplanką"
 
 #: opcodes.h:273
 msgid "read entire thread of the current message"
@@ -5422,14 +5414,12 @@ msgid "open highlighted mailbox"
 msgstr "atidaryti pasirinktą pašto dėžutę"
 
 #: opcodes.h:293
-#, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "slinktis žemyn per 1/2 puslapio"
+msgstr "slinkti šoninę juostą žemyn per 1 puslapį"
 
 #: opcodes.h:294
-#, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "slinktis aukštyn per 1/2 puslapio"
+msgstr "slinkti šoninę juostą aukštyn per 1 puslapį"
 
 #: opcodes.h:295
 msgid "move the highlight to previous mailbox"
@@ -5440,9 +5430,8 @@ msgid "move the highlight to previous mailbox with new mail"
 msgstr "pasirinkti ankstesnę pašto dėžutę su nauju paštu"
 
 #: opcodes.h:297
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
+msgstr "perjungti, ar naršyti tikras, ar virtualias pašto dėžutes"
 
 #: opcodes.h:298
 msgid "make the sidebar (in)visible"
@@ -5512,28 +5501,25 @@ msgid "Invalid month: %s"
 msgstr "Blogas mėnuo: %s"
 
 #: pattern.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Blogas mėnuo: %s"
+msgstr "Bloga data: %s"
 
 #: pattern.c:652 pattern.c:759
-#, fuzzy
 msgid "No current message"
-msgstr "Nėra neskaitytų laiškų"
+msgstr "Nėra dabartinio laiško"
 
 #: pattern.c:780
 msgid "No Context"
-msgstr ""
+msgstr "Nėra konteksto"
 
 #: pattern.c:921
-#, fuzzy
 msgid "Error opening memstream"
-msgstr "Klaida rašant į pašto dėžutę!"
+msgstr "Klaida atidarant atminties srautą"
 
 #: pattern.c:966
-#, fuzzy
 msgid "Error re-opening memstream"
-msgstr "Klaida rašant į pašto dėžutę!"
+msgstr "Klaida atidarant atminties srautą iš naujo"
 
 #: pattern.c:975
 msgid "Error opening /dev/null"
@@ -5545,19 +5531,19 @@ msgid "error in pattern at: %s"
 msgstr "klaida pattern'e: %s"
 
 #: pattern.c:1162
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "trūksta parametro"
+msgstr "trūksta šablono: %s"
 
 #: pattern.c:1181
-#, fuzzy, c-format
+#, c-format
 msgid "mismatched brackets: %s"
-msgstr "trūkstami skliausteliai: %s"
+msgstr "neatitinka skliausteliai: %s"
 
 #: pattern.c:1243
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: bloga komanda"
+msgstr "%c: blogas šablono modifikatorius"
 
 #: pattern.c:1249
 #, c-format
@@ -5627,12 +5613,12 @@ msgid "Command UIDL is not supported by server."
 msgstr "Serveris nepalaiko komandos UIDL."
 
 #: pop.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "Laiškų indeksas yra neteisingas. Bandyk iš naujo atidaryti dėžutę."
-msgstr[1] "Laiškų indeksas yra neteisingas. Bandyk iš naujo atidaryti dėžutę."
-msgstr[2] "Laiškų indeksas yra neteisingas. Bandyk iš naujo atidaryti dėžutę."
+msgstr[0] "%d laiškas pradingo. Bandyk iš naujo atidaryti dėžutę."
+msgstr[1] "%d laiškai pradingo. Bandyk iš naujo atidaryti dėžutę."
+msgstr[2] "%d laiškų pradingo. Bandyk iš naujo atidaryti dėžutę."
 
 #: pop.c:469 pop.c:897
 #, c-format
