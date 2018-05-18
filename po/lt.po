@@ -5826,9 +5826,8 @@ msgid "Attachments"
 msgstr "Priedai"
 
 #: recvattach.c:1210
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Nėra jokių priedų."
+msgstr "Nėra vidinių dalių!"
 
 #: recvattach.c:1265
 msgid "Can't delete attachment from POP server."
@@ -6047,9 +6046,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:1823
-#, fuzzy
 msgid "Article not posted."
-msgstr "Laiškas neišsiųstas."
+msgstr "Straipsnis neišsiųstas."
 
 #: send.c:1889
 msgid "Message postponed."
