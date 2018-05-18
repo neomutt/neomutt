@@ -946,7 +946,7 @@ msgstr ""
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
-msgstr ""
+msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti? "
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
@@ -954,7 +954,7 @@ msgstr ""
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
-msgstr ""
+msgstr "PGP jau pasirinktas. Išjungti ir tęsti? "
 
 #: compress.c:477 compress.c:544 compress.c:699 compress.c:892 mbox.c:986
 msgid "Unable to lock mailbox!"
@@ -3798,19 +3798,19 @@ msgstr "Tikrinti raktą  "
 
 #: ncrypt/crypt_gpgme.c:4233
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP ir S/MIME raktai, tenkinantys"
+msgstr "PGP ir S/MIME raktai, atitinkantys"
 
 #: ncrypt/crypt_gpgme.c:4235
 msgid "PGP keys matching"
-msgstr "PGP raktai, tenkinantys"
+msgstr "PGP raktai, atitinkantys"
 
 #: ncrypt/crypt_gpgme.c:4237
 msgid "S/MIME keys matching"
-msgstr "S/MIME raktai, tenkinantys"
+msgstr "S/MIME raktai, atitinkantys"
 
 #: ncrypt/crypt_gpgme.c:4239
 msgid "keys matching"
-msgstr "raktai, tenkinantys"
+msgstr "raktai, atitinkantys"
 
 #. L10N:
 #. %1$s is one of the previous four entries.
@@ -3898,59 +3898,59 @@ msgstr "GPGME: CMS protokolas nepasiekiamas"
 
 #: ncrypt/crypt_gpgme.c:4876
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: pa(s)irašyt, pasirašyt k(a)ip, (p)gp, (i)šjunt ar išjungt (o)ppenc? "
+msgstr "S/MIME: pa(s)irašyti, pasirašyt k(a)ip, (p)gp, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:4878
 msgid "sapco"
-msgstr "sapio"
+msgstr "sapno"
 
 #: ncrypt/crypt_gpgme.c:4885
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyt, pasirašyt k(a)ip, s/(m)ime, (i)šjungt ar išjungt (o)ppenc? "
+msgstr "PGP: pa(s)irašyti, pasirašyt k(a)ip, s/(m)ime, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/crypt_gpgme.c:4887
 msgid "samco"
-msgstr "samio"
+msgstr "samno"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4900
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME: (š)ifruot, pa(s)irašyt, k(a)ip, a(b)u, (p)gp, (i)šjungt ar (o)ppenc? "
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4903
 msgid "esabpco"
-msgstr "šsabpio"
+msgstr "šsabpno"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4909
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (š)ifruot, pa(s)irašyt, k(a)ip, a(b)u, s/(m)ime, (i)šjungt ar (o)ppenc? "
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4912
 msgid "esabmco"
-msgstr "šsabmio"
+msgstr "šsabmno"
 
 #: ncrypt/crypt_gpgme.c:4925
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME: (š)ifruot, pa(s)irašyt, k(a)ip, a(b)u, (p)gp ar (i)šjungt? "
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (p)gp ar (n)ereikia? "
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:4927
 msgid "esabpc"
-msgstr "šsabpi"
+msgstr "šsabpn"
 
 #: ncrypt/crypt_gpgme.c:4934
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP: (š)ifruot, pa(s)irašyt, k(a)ip, a(b)u, s/(m)ime ar (i)šjungt? "
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, s/(m)ime ar (n)ereikia? "
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:4936
 msgid "esabmc"
-msgstr "šsabmi"
+msgstr "šsabmn"
 
 #: ncrypt/crypt_gpgme.c:5087
 msgid "Failed to verify sender"
@@ -4014,82 +4014,77 @@ msgstr "(i)nline"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1700
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyt, k(a)ip, %s, išjungt ar išjungt (o)ppenc? "
+msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, %s formatu, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1706
-#, fuzzy
 msgid "saico"
-msgstr "šsaiio"
+msgstr "saino"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1712
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP: pa(s)irašyt, k(a)ip, (i)šjungt ar išjungt (o)ppenc? "
+msgstr "PGP: pa(s)irašyti, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1714
 msgid "saco"
-msgstr "saio"
+msgstr "sano"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1731
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (š)ifruot, pa(s)irašyt, k(a)ip, a(b)u, %s, išjungt ar (o)ppenc? "
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1737
-#, fuzzy
 msgid "esabico"
-msgstr "šsabiio"
+msgstr "šsabino"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1743
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, (n)ereikia, ar įjungti (o)portunistinį šifravimą? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1746
 msgid "esabco"
-msgstr "usablp"
+msgstr "šsabno"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1759
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u, %s formatu ar (n)ereikia? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1765
 msgid "esabic"
-msgstr "usablp"
+msgstr "šsabin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1771
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "PGP: (š)ifruoti, pa(s)irašyti, pasirašyti k(a)ip, a(b)u ar (n)ereikia? "
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1773
 msgid "esabc"
-msgstr "usablp"
+msgstr "šsabn"
 
 #: ncrypt/pgpinvoke.c:293
 msgid "Fetching PGP key..."
 msgstr "Paimu PGP raktą..."
 
 #: ncrypt/pgpkey.c:518
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Šis raktas negali būti naudojamas: jis pasenęs/uždraustas/atšauktas."
+msgstr "Visi rasti raktai yra pasenę, atšaukti ar uždrausti."
 
 #: ncrypt/pgpkey.c:558
 #, c-format
@@ -4195,42 +4190,37 @@ msgid "Unknown   "
 msgstr "Nežinoma"
 
 #: ncrypt/smime.c:469
-#, fuzzy, c-format
+#, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "S/MIME raktai, tenkinantys \"%s\"."
+msgstr "S/MIME sertifikatai, atitinkantys \"%s\"."
 
 #: ncrypt/smime.c:513
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "Šis ID yra nepatikimas. Ar tikrai nori jį naudoti?"
+msgstr "Šis ID yra nepatikimas. Ar tikrai nori naudoti šį raktą?"
 
 #: ncrypt/smime.c:797
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "Įvesk rakto ID, skirtą %s: "
+msgstr "Įvesk rakto ID: "
 
 #: ncrypt/smime.c:944
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Neradau (galiojančio) %s sertifikato."
 
 #: ncrypt/smime.c:992 ncrypt/smime.c:1021 ncrypt/smime.c:1087
 #: ncrypt/smime.c:1128 ncrypt/smime.c:1191 ncrypt/smime.c:1272
-#, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
+msgstr "Klaida: negaliu sukurti OpenSSL subproceso!"
 
 #: ncrypt/smime.c:1252
 msgid "Label for certificate: "
 msgstr "Sertifikato etiketė: "
 
 #: ncrypt/smime.c:1347
-#, fuzzy
 msgid "no certfile"
-msgstr "Negaliu sukurti filtro"
+msgstr "nėra sertifikato bylos"
 
 #: ncrypt/smime.c:1350
-#, fuzzy
 msgid "no mbox"
 msgstr "(nėra dėžutės)"
 
@@ -4255,108 +4245,94 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:1850 ncrypt/smime.c:1862
-#, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
 
 #: ncrypt/smime.c:1896
-#, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Toliau einantys duomenys yra užšifruoti su PGP/MIME --]\n"
-"\n"
+msgstr "[-- Toliau einantys duomenys yra užšifruoti su S/MIME --]\n"
 
 #: ncrypt/smime.c:1900
-#, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Toliau einantys duomenys yra pasirašyti --]\n"
-"\n"
+msgstr "[-- Toliau einantys duomenys yra pasirašyti su S/MIME --]\n"
 
 #: ncrypt/smime.c:1968
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- S/MIME užšifruotų duomenų pabaiga --]\n"
+"[-- S/MIME užšifruotų duomenų pabaiga. --]\n"
 
 #: ncrypt/smime.c:1970
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
 msgstr ""
 "\n"
-"[-- Pasirašytų duomenų pabaiga --]\n"
+"[-- S/MIME pasirašytų duomenų pabaiga. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2089
-#, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
+msgstr "S/MIME: pa(s)irašyti, šifruo(t)i su, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2092
 msgid "swaco"
-msgstr "ustabp"
+msgstr "stano"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2102
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, šifruo(t)i su, pasirašyt k(a)ip, a(b)u, (n)ereikia ar įjungti (o)portunistinį šifravimą? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2105
-#, fuzzy
 msgid "eswabco"
-msgstr "ustabp"
+msgstr "šstabno"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2114
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
+msgstr "S/MIME: (š)ifruoti, pa(s)irašyti, užšifruo(t)i su, pasirašyt k(a)ip, a(b)u ar (n)ereikia? "
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2117
-#, fuzzy
 msgid "eswabc"
-msgstr "ustabp"
+msgstr "šstabn"
 
 #: ncrypt/smime.c:2181
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
+msgstr "Pasirinkite algoritmą: (1) DES, (2) RC2, (3) AES ar (n)ereikia? "
 
 #. L10N: Options for: Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear?
 #: ncrypt/smime.c:2184
 msgid "123c"
-msgstr ""
+msgstr "123n"
 
 #: ncrypt/smime.c:2187
 msgid "1: DES, 2: Triple-DES "
-msgstr ""
+msgstr "(1) DES, (2) 3DES "
 
 #. L10N: Options for: 1: DES, 2: Triple-DES
 #: ncrypt/smime.c:2189
 msgid "12"
-msgstr ""
+msgstr "12"
 
 #: ncrypt/smime.c:2202
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
-msgstr ""
+msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128 "
 
 #. L10N: Options for: 1: RC2-40, 2: RC2-64, 3: RC2-128
 #. L10N: Options for: 1: AES128, 2: AES192, 3: AES256
 #: ncrypt/smime.c:2204 ncrypt/smime.c:2222
 msgid "123"
-msgstr ""
+msgstr "123"
 
 #: ncrypt/smime.c:2220
 msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr ""
+msgstr "(1) AES128, (2) AES192, (3) AES256 "
 
 #: newsrc.c:644
 msgid "Loading list of groups from cache..."
