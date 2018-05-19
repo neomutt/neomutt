@@ -645,7 +645,7 @@ msgstr "Atsakyti: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:987
 msgid "Fcc: "
-msgstr "Kopija į failą: "
+msgstr "Kopija į bylą: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:125
@@ -1878,7 +1878,7 @@ msgstr "Laiške nėra eilučių.\n"
 #: edit.c:463
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "Blogas IDN %s: antraštėje: '%s'\n"
 
 #: edit.c:483
 #, c-format
@@ -2134,7 +2134,7 @@ msgstr "Ieškoti"
 #: history.c:240 history.c:283 history.c:710
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Blogas istorijos bylos formatas (eilutė %d)"
 
 #: history.c:484
 #, c-format
@@ -2219,7 +2219,7 @@ msgstr "SASL autentikacija nepavyko."
 #: imap/browse.c:207 imap/imap.c:1996
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s yra blogas IMAP kelias"
 
 #: imap/browse.c:219
 msgid "Getting folder list..."
@@ -2276,7 +2276,7 @@ msgstr "Šis IMAP serveris yra senoviškas. NeoMutt su juo neveikia."
 #: imap/imap.c:464
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Antraščių paieška be antraštės pavadinimo: %s"
 
 #: imap/imap.c:494
 #, c-format
@@ -2295,11 +2295,11 @@ msgstr "Uždarau jungtį su %s..."
 
 #: imap/imap.c:1041 nntp.c:700 pop_lib.c:326 smtp.c:590
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Apsaugoti jungtį su TLS?"
 
 #: imap/imap.c:1054 nntp.c:720 pop_lib.c:345 smtp.c:603
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Nepavyko sukurti TLS jungties"
 
 #: imap/imap.c:1069 pop_lib.c:365
 msgid "Encrypted connection unavailable"
@@ -2386,7 +2386,7 @@ msgstr "Ištuštinu laiškus iš serverio..."
 
 #: imap/imap.c:2536
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE komanda nepavyko"
 
 #: imap/imap.c:2582
 msgid "IMAP server doesn't support custom flags"
@@ -2398,7 +2398,7 @@ msgstr "Blogos IMAP vėliavėlės"
 
 #: imap/message.c:477 mx.c:1326
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Sveikųjų skaičių perpildymas - negaliu išskirti atminties."
 
 #: imap/message.c:648
 msgid "Unable to fetch headers from this IMAP server version."
@@ -2461,12 +2461,12 @@ msgstr "nospam: trūksta šablono"
 #: init.c:1396
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr ""
+msgstr "%sgroup: trūksta -rx arba -addr"
 
 #: init.c:1419
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr ""
+msgstr "%sgroup: įspėjimas: blogas IDN '%s'.\n"
 
 #: init.c:1624
 msgid "attachments: no disposition"
@@ -2554,7 +2554,7 @@ msgstr "formato klaida"
 
 #: init.c:2667
 msgid "number overflow"
-msgstr ""
+msgstr "skaičių perpildymas"
 
 #: init.c:2730
 #, c-format
@@ -2680,7 +2680,7 @@ msgstr "%s: nulinė klavišų seka"
 #: keymap.c:1039
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Funkcija '%s' neprieinama iš '%s' meniu"
 
 #: keymap.c:1161
 msgid "macro: empty key sequence"
@@ -2726,6 +2726,24 @@ msgid ""
 "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]\n"
 "  neomutt -v[v]\n"
 msgstr ""
+"usage:\n"
+"  neomutt [-Enx] [-e <komanda>] [-F <konf>] [-H <juodr>] [-i <įtraukti>]\n"
+"          [-b <adresas>] [-c <adresas>] [-s <tema>] [-a <priedas> [...] --]\n"
+"          <adresas> [...]\n"
+"  neomutt [-nx] [-e <komanda>] [-F <konf>] [-b <adresas>] [-c <adresas>]\n"
+"          [-s <tema>] [-a <priedas> [...] --] <adresas> [...] < žinutė\n"
+"  neomutt [-nRy] [-e <komanda>] [-F <konf>] [-f <dėžutė>] [-m <tipas>]\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -A <aliasas>\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -B\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -D [-S]\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -d <lygis> -l <byla>\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -G\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -g <serveris>\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -p\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -Q <kintamasis>\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -Z\n"
+"  neomutt [-n] [-e <komanda>] [-F <konf>] -z [-f <dėžutė>]\n"
+"  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns
 #. If more space is needed add an indented line
@@ -2771,6 +2789,47 @@ msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
+"parametrai:\n"
+"  --            Specialus argumentas po kurio NeoMutt nebeieško parametrų ir\n"
+"                priima visus argumentus kaip adresus net jei jie prasideda '-'\n"
+"  -A <aliasas>  Išvesti aliaso reikšmę ir išeiti\n"
+"  -a <priedas>  Prikabinti vieną ar daugiau bylų prie laiško (turi būti\n"
+"                paskutinis parametras).  Gavėjus nurodykite po '--'\n"
+"  -B            Veikti automatiniame režime (be ncurses sąsasjos)\n"
+"  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją\n"
+"  -c <adresas>  Nurodyti kopijos (Cc) gavėją\n"
+"  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis\n"
+"  -D -S         Kaip -D, bet slėpti slaptažodžius\n"
+"  -d <lygis>    Rašyti informacinius pranešimus į bylą (\"~/.neomuttdebug0\"\n"
+"                pagal nutylėjimą).  Lygis gali būti nuo 1 iki 5\n"
+"  -E            Redaguoti juodraštį (-H) ar įtraukiamą (-i) bylą prieš siunčiant\n"
+"                laišką\n"
+"  -e <komanda>  Vykdyti komandą perskaičius konfigūracijos failus\n"
+"  -F <konf>     Naudoti alternatyvią konfigūracijos bylą\n"
+"  -f <dėžutė>   Atidaryti nurodytą pašto dėžutę (apibrėžtą 'mailboxes' komanda)\n"
+"  -G            Pradėti NeoMutt rodant sąrašą prenumeruotų naujienų grupių\n"
+"  -g <serveris> Kaip -G, bet naudoti nurodytą naujienų serverį\n"
+"  -H <juodr>    Nurodyti juodraščio bylą su antraštėmis ir tekstu naujam laiškui\n"
+"  -h            Rodyti šią žinutę ir išeiti\n"
+"  -i <įtraukti> Nurodyti bylą, įtraukiamą į naujos žinutės tekstą\n"
+"  -l <byla>     Nurodyti žurnalo bylą (\"~/.neomuttdebug0\" pagal nutylėjimą)\n"
+"  -m <tipas>    Nurodyti pašto dėžutės tipą naujai kuriamoms dėžutėms.\n"
+"                Tipas gali būti MH, MMDF, Maildir arba mbox (raidžių dydis\n"
+"                nesvarbus)\n"
+"  -n            Neskaityti sisteminės konfigūracijos bylos\n"
+"  -p            Pratęsti atidėtą laišką, jei tokių yra\n"
+"  -Q <kintamasis> Spausdinti konfigūracijos kintamojo reikšmę\n"
+"                (perskaičius konfigūracijos bylą ir įvykdžius komandas)\n"
+"  -R            Atidaryti pašto dėžutę tik skaitymui\nn"
+"  -s <tema>     Nurodyti laiško temą (naudokite kabutes, jei temoje yra tarpų)\n"
+"  -v            Spausdinti NeoMutt versijos numerį ir kompiliavimo parinktis\n"
+"  -vv           Spausdinti NeoMutt licenciją ir autorinių teisių informaciją\n"
+"  -x            Simuliuoti mailx(1) išsiuntimo režimą\n"
+"  -y            Pradėti NeoMutt rodant sąrašą visų apibrėžtų pašto dėžučių\n"
+"  -Z            Atidaryti pirmą pašto dėžutę su naujais laiškais arba iškart\n"
+"                išeiti su klaidos kodu 1 jei tokios nėra\n"
+"  -z            Atidaryti pirmą arba nurodytą (-f) pašto dėžutę jei joje yra\n"
+"                laiškų arba iškart išeiti su klaidos kodu 1"
 
 #: main.c:179
 msgid "Error initializing terminal."
@@ -2787,7 +2846,7 @@ msgstr "negaliu nustatyti namų katalogo"
 #: main.c:507
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
-msgstr ""
+msgstr "Klaida: -d reikšmė '%s' yra netinkama."
 
 #: main.c:687
 #, c-format
@@ -2993,7 +3052,7 @@ msgstr "Žurnalo lygis %d į bylą '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Sveikųjų skaičių perpildymas - negaliu išskirti atminties!"
 
 #: mutt/memory.c:68 mutt/memory.c:109 mutt/memory.c:143 safe_asprintf.c:61
 msgid "Out of memory!"
@@ -3109,7 +3168,7 @@ msgstr ""
 
 #: mutt_notmuch.c:398
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
-msgstr ""
+msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, week, month arba year)."
 
 #: mutt_notmuch.c:453
 #, c-format
@@ -3231,7 +3290,7 @@ msgstr "Slapta frazė pamiršta."
 
 #: ncrypt/crypt.c:155
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
+msgstr "Inline PGP negalima naudoti jei laiškas turi priedų.  Naudoti PGP/MIME?"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
@@ -3239,7 +3298,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:166
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr ""
+msgstr "Inline PGP negalima naudoti su format=flowed.  Naudoti PGP/MIME?"
 
 #: ncrypt/crypt.c:170
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
@@ -3264,11 +3323,11 @@ msgstr ""
 
 #: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Bandau išgauti PGP raktus...\n"
 
 #: ncrypt/crypt.c:776 ncrypt/crypt.c:816
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Bandau išgauti S/MIME sertifikatus...\n"
 
 #: ncrypt/crypt.c:976
 #, c-format
@@ -3322,7 +3381,7 @@ msgstr ""
 
 #: ncrypt/cryptglue.c:100
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
+msgstr "\"crypt_use_gpgme\" įjungtas, bet GPGME palaikymas išjungtas kompiliuojant."
 
 #: ncrypt/cryptglue.c:127
 msgid "Invoking S/MIME..."
@@ -3356,7 +3415,7 @@ msgstr "klaida atsukant duomenų objektą: %s\n"
 
 #: ncrypt/crypt_gpgme.c:627
 msgid "[tempfile]"
-msgstr ""
+msgstr "[tempfile]"
 
 #: ncrypt/crypt_gpgme.c:633 ncrypt/crypt_gpgme.c:688
 #, c-format
@@ -4223,11 +4282,11 @@ msgstr "(nėra dėžutės)"
 
 #: ncrypt/smime.c:1477 ncrypt/smime.c:1623
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Trūksta OpenSSL išvesties..."
 
 #: ncrypt/smime.c:1540
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
+msgstr "Negaliu pasirašyti: nenurodytas raktas.  Naudokite \"Pasirašyti kaip\"."
 
 #: ncrypt/smime.c:1588
 msgid "Can't open OpenSSL subprocess!"
@@ -4333,16 +4392,16 @@ msgstr "(1) AES128, (2) AES192, (3) AES256 "
 
 #: newsrc.c:644
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Užkraunu sąrašą grupių iš podėlio..."
 
 #: newsrc.c:1026
 msgid "No news server defined!"
-msgstr ""
+msgstr "Nenurodytas nė vienas naujienų serveris!"
 
 #: newsrc.c:1040
 #, c-format
 msgid "%s is an invalid news server specification!"
-msgstr ""
+msgstr "%s yra bloga naujienų serverio speficikacija!"
 
 #: nntp.c:75 nntp.c:612 pop.c:1028 pop_lib.c:405
 msgid "Server closed connection!"
@@ -4350,7 +4409,7 @@ msgstr "Serveris uždarė jungtį!"
 
 #: nntp.c:178
 msgid "Server doesn't support reader mode."
-msgstr ""
+msgstr "Serveris nepalaiko skaitymo režimo."
 
 #: nntp.c:383 pop_auth.c:455 smtp.c:504 smtp.c:559
 msgid "No authenticators available"
@@ -4390,22 +4449,22 @@ msgstr "Paimu straipsnių sąrašą..."
 #: nntp.c:1503
 #, c-format
 msgid "%s is an invalid newsgroup specification!"
-msgstr ""
+msgstr "%s yra bloga naujienų grupės specifikacija!"
 
 #: nntp.c:1521
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr ""
+msgstr "Naujienų grupė %s nerasta serveryje."
 
 #: nntp.c:1541
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr ""
+msgstr "Naujienų grupė %s buvo pašalinta iš serverio."
 
 #: nntp.c:1697
 #, c-format
 msgid "Article %d not found on the server."
-msgstr ""
+msgstr "Straipsnis %d nerastas serveryje."
 
 #: nntp.c:1796 nntp.c:1829
 #, c-format
@@ -4431,7 +4490,7 @@ msgstr "Tikrinu, ar yra naujų naujienų grupių..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
-msgstr ""
+msgstr "Negaliu rasti vaikinių straipsnių nes serveris nepalaiko XPAT komandos."
 
 #: opcodes.h:30
 msgid "null operation"
@@ -4459,7 +4518,7 @@ msgstr "vėl siųsti laišką kitam vartotojui"
 
 #: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "sukeisti dabartinio aplanko poziciją su $folder jei jis yra"
 
 #: opcodes.h:37
 msgid "select a new file in this directory"
@@ -4491,7 +4550,7 @@ msgstr "rodyti dėžutės su nauju paštu"
 
 #: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "pažymėti visus strapsnius naujienų grupėje skaitytais"
 
 #: opcodes.h:45
 msgid "change directories"
@@ -4587,11 +4646,11 @@ msgstr "gauti laikiną priedo kopiją"
 
 #: opcodes.h:68
 msgid "group tagged attachments as multipart/alternative"
-msgstr ""
+msgstr "grupuoti pažymėtus priedus kaip alternatyvas"
 
 #: opcodes.h:69
 msgid "group tagged attachments as multipart/multilingual"
-msgstr ""
+msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas"
 
 #: opcodes.h:70
 msgid "run ispell on the message"
@@ -4811,7 +4870,7 @@ msgstr "keisti gryną laišką jei pašto dėžutė nėra tik skaitoma, kitaip r
 
 #: opcodes.h:124
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "redaguoti gryną laišką (edit ir edit-raw-message yra sinonimai)"
 
 #: opcodes.h:125
 msgid "edit attachment content type"
@@ -4819,7 +4878,7 @@ msgstr "keisti priedo Content-Type"
 
 #: opcodes.h:126
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "baigti sąlyginį vykdymą (nieko nedaryti)"
 
 #: opcodes.h:127
 msgid "enter a neomuttrc command"
@@ -4855,7 +4914,7 @@ msgstr "persiųsti laišką su komentarais"
 
 #: opcodes.h:135
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "persiųsti į naujienų grupę"
 
 #: opcodes.h:136
 msgid "select the current entry"
@@ -4911,7 +4970,7 @@ msgstr "atsakyti nurodytai konferencijai"
 
 #: opcodes.h:149
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "užkrauti sąrašą naujienų grupių iš NNTP serverio"
 
 #: opcodes.h:150
 msgid "execute a macro"
@@ -4967,7 +5026,7 @@ msgstr "parsiųsti paštą iš IMAP serverio"
 
 #: opcodes.h:163
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "atsijungti nuo visų IMAP serverių"
 
 #: opcodes.h:164
 msgid "show only messages matching a pattern"
@@ -4979,7 +5038,7 @@ msgstr "prijungti pažymėtą laišką po dabartiniu"
 
 #: opcodes.h:166
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "keisti (notmuch/imap) etiketes"
 
 #: opcodes.h:167
 msgid "modify (notmuch/imap) tags and then hide message"
@@ -5043,7 +5102,7 @@ msgstr "šokti į praeitą neskaitytą laišką"
 
 #: opcodes.h:182
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "išmesti iš NeoMutt, bet neliesti disko"
 
 #: opcodes.h:183
 msgid "mark the current subthread as read"
@@ -5143,11 +5202,11 @@ msgstr "spausdinti esamą įrašą"
 
 #: opcodes.h:207
 msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "išmesti esamą įrašą, neperkeliant į šiukšlių aplanką"
 
 #: opcodes.h:208
 msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "išmesti esamą giją, neperkeliant į šiukšlių aplanką"
 
 #: opcodes.h:209
 msgid "query external program for addresses"
@@ -5275,7 +5334,7 @@ msgstr "eiti į puslapio viršų"
 
 #: opcodes.h:240
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "pažymėti visus straipsnius naujienų grupėje neskaitytais"
 
 #: opcodes.h:241
 msgid "undelete the current entry"
@@ -5363,19 +5422,19 @@ msgstr "atidaryti kitą virtualų aplanką"
 
 #: opcodes.h:273
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "skaityti visą esamo laiško giją"
 
 #: opcodes.h:274
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "sukurti virtualų aplanką pagal užklausą"
 
 #: opcodes.h:275
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "perkelti virtualaus aplanko laiko langą atgal"
 
 #: opcodes.h:276
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "perkelti virtualaus aplanko laiko langą pirmyn"
 
 #: opcodes.h:282
 msgid "check for classic PGP"
@@ -5623,7 +5682,7 @@ msgstr[2] "%d laiškų pradingo. Bandyk iš naujo atidaryti dėžutę."
 #: pop.c:469 pop.c:897
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s yra blogas POP kelias"
 
 #: pop.c:512
 msgid "Fetching list of messages..."
@@ -5674,7 +5733,7 @@ msgstr "Autentikuojuosi (SASL)..."
 
 #: pop_auth.c:240
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "POP laikas neteisingas!"
 
 #: pop_auth.c:244
 msgid "Authenticating (APOP)..."
@@ -5978,7 +6037,7 @@ msgstr "mailcap įrašas tipui %s nerastas"
 
 #: score.c:136
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Klaida: score: blogas skaičius"
 
 #: send.c:293
 msgid "No subject, abort?"
@@ -6091,7 +6150,7 @@ msgstr "Siunčiu fone."
 
 #: send.c:2163
 msgid "Article posted."
-msgstr ""
+msgstr "Straipsnis išsiųstas."
 
 #: send.c:2164
 msgid "Mail sent."
@@ -6122,7 +6181,7 @@ msgstr "Negalėjau atidaryti %s"
 
 #: sendlib.c:2503
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$sendmail turi būti nurodytas norint siųsti laiškus."
 
 #: sendlib.c:2610
 #, c-format
@@ -6136,7 +6195,7 @@ msgstr "Pristatymo proceso išvestis"
 #: sendlib.c:2800
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "Blogas IDN %s bandant paruošti Resent-From: antraštę."
 
 #: smtp.c:141
 #, c-format
@@ -6164,23 +6223,23 @@ msgstr "SASL autentikacija nepavyko"
 
 #: smtp.c:618
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "SMTP serveris nepalaiko autentikacijos"
 
 #: smtp.c:650
 msgid "No from address given"
-msgstr ""
+msgstr "Nenurodytas siuntėjo adresas"
 
 #: smtp.c:717
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "SMTP sesija nepavyko: skaitymo klaida"
 
 #: smtp.c:719
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "SMTP sesija nepavyko: rašymo klaida"
 
 #: smtp.c:721
 msgid "Invalid server response"
-msgstr ""
+msgstr "Blogas serverio atsakymas"
 
 #: sort.c:323
 msgid "Sorting mailbox..."
@@ -6211,6 +6270,8 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Daugelis kitų čia nepaminėtų prisidėjo kodu, klaidų pataisymais\n"
+"bei pasiūlymais.\n"
 
 #: version.c:68
 msgid ""
@@ -6236,6 +6297,10 @@ msgid ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
+"Jei norite daugiau sužinoti apie NeoMutt, aplankykite: https://neomutt.org\n"
+"Jei radote NeoMutt klaidą, praneškite apie ją\n"
+"    https://github.com/neomutt/neomutt/issues\n"
+"arba paštu į <neomutt-devel@neomutt.org>\n"
 
 #: version.c:91
 msgid ""
@@ -6246,7 +6311,7 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins ir kiti.\n"
 "NeoMutt ateina ABSOLIUČIAI BE JOKIOS GARANTIJOS; dėl smulkmenų paleisk 'neomutt -vv.'\n"
-"NeoMutt yra free software, ir tu gali laisvai ją platinti su tam\n"
+"NeoMutt yra laisva programinė įranga, ir tu gali laisvai ją platinti su tam\n"
 "tikromis sąlygomis; rašyk 'neomutt -vv' dėl smulkmenų.\n"
 
 #: version.c:401
