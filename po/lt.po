@@ -3496,7 +3496,7 @@ msgstr "Pasiekiamas CRL per senas\n"
 
 #: ncrypt/crypt_gpgme.c:1294
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Vienas iš reikalavimų neįvykdytas\n"
 
 #: ncrypt/crypt_gpgme.c:1303
 msgid "A system error occurred"
@@ -6289,6 +6289,19 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
+"    Ši programa yra laisva; tu gali ją platinti ir/arba keisti\n"
+"    pagal GNU General Public License sąlygas, kurias paskelbė\n"
+"    Free Software Foundation; arba 2 Licenzijos versiją, arba\n"
+"    (pagal tavo pasirinkimą) bet kurią vėlesnę versiją.\n"
+"\n"
+"    Ši programa yra platinama tikintis, kad ji bus naudinga,\n"
+"    bet BE JOKIOS GARANTIJOS; netgi be numanomos garantijos\n"
+"    VERTINGUMUI arba TINKAMUMUI KOKIAM NORS TIKSLUI.\n"
+"    Skaityk GNU General Public License dėl visų detalių.\n"
+"\n"
+"    Tu turėjai gauti GNU General Public License kopiją\n"
+"    kartu su šia programa; jeigu ne, parašyk Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:84
 msgid ""
