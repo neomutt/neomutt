@@ -15,28 +15,28 @@ cache: ccache
 addons:
   apt:
     packages:
-      - libgpgme11-dev
-      - libnotmuch-dev
-      - libtokyocabinet-dev
-      - libkyotocabinet-dev
-      - libgdbm-dev
-      - libdb-dev
-      - liblmdb-dev
-      - libqdbm-dev
-      - libslang2-dev
-      - libgnutls-dev
-      - libssl-dev
-      - libsasl2-dev
-      - libgss-dev
-      - xsltproc
-      - lynx
+      - autopoint
       - docbook-simple
       - docbook-xsl
-      - libxml2-utils
       - gettext
-      - lua5.2
+      - libdb-dev
+      - libgdbm-dev
+      - libgnutls-dev
+      - libgpgme11-dev
+      - libgss-dev
+      - libkyotocabinet-dev
+      - liblmdb-dev
       - liblua5.2-dev
-      - autopoint
+      - libnotmuch-dev
+      - libqdbm-dev
+      - libsasl2-dev
+      - libslang2-dev
+      - libssl-dev
+      - libtokyocabinet-dev
+      - libxml2-utils
+      - lua5.2
+      - lynx
+      - xsltproc
 
 git:
   depth: 3
@@ -46,6 +46,11 @@ install:
 
 before_script:
   - ccache --zero-stats
+  - export ANSI_CLEAR
+  - export -f travis_fold
+  - export -f travis_nanoseconds
+  - export -f travis_time_finish
+  - export -f travis_time_start
 
 script:
   - ~/config/build
