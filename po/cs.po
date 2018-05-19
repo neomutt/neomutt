@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2018-03-06 15:18+0100\n"
 "Last-Translator: David Sterba <dsterba@suse.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -53,59 +53,59 @@ msgstr "Volba"
 msgid "Help"
 msgstr "Nápověda"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Nejsou definovány žádné přezdívky!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Přezdívky"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Přezdívat jako: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Pro toto jméno je již přezdívka definována!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Pozor: :Takto pojmenovaný alias nemusí fungovat, mám to napravit?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Adresa: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Chyba: „%s“ není platné IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Vlastní jméno: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Přijmout?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Uložit jako: "
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "Chyba při čtení souboru s přezdívkami"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Přezdívka zavedena."
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "Chyba při pohybu v souboru s přezdívkami"
 
@@ -380,8 +380,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: příkaz je platný pouze pro objekt typu seznam, tělo, hlavička"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "příliš málo argumentů pro %s"
@@ -391,7 +391,7 @@ msgstr "příliš málo argumentů pro %s"
 msgid "%s: no such attribute"
 msgstr "Atribut %s není definován."
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -801,7 +801,7 @@ msgstr "Pozor: „%s“ není platné IDN."
 msgid "You may not delete the only attachment."
 msgstr "Nemůžete smazat jedinou přílohu."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Neplatné IDN v „%s“: „%s“"
@@ -2330,12 +2330,12 @@ msgstr "Přihlašuji %s…"
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s přihlášeno"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"
@@ -2448,7 +2448,7 @@ msgstr "Kopíruji zprávu %d do %s…"
 msgid "Continue?"
 msgstr "Pokračovat?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "V tomto menu není tato funkce dostupná."
 
@@ -2457,155 +2457,155 @@ msgstr "V tomto menu není tato funkce dostupná."
 msgid "%s: unknown sorting method"
 msgstr "metoda %s pro řazení není známa"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "neznámý typ %s"
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "spam: vzoru nic nevyhovuje"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "nospam: vzoru nic nevyhovuje"
 
 # "%sgroup" is literal
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: chybí -rx nebo -addr."
 
 # "%sgroup" is literal
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: pozor: chybné IDN „%s“.\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "přílohy: chybí dispozice"
 
-#: init.c:1635
+#: init.c:1647
 msgid "Current attachments settings:"
 msgstr "Současné nastavení příloh:"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "přílohy: neplatná dispozice"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "nepřílohy: chybí dispozice"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "nepřílohy: neplatná dispozice"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "přezdívka: žádná adresa"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "neplatná hlavička"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s není nastaveno"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "Proměnná %s není známa."
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "Prefix není s „reset“ povolen."
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "Hodnota není s „reset“ povolena."
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Použití: set proměnná=yes|no (ano|ne)"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s je nastaveno"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Neplatná hodnota přepínače %s: „%s“"
 
-#: init.c:2538
+#: init.c:2542
 #, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Neplatné jméno přepínače %s: „%s“"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s je neplatný typ schránky"
 
-#: init.c:2666
+#: init.c:2670
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: neplatná hodnota (%s)"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "chyba formátu"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr "přetečení čísla"
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "Hodnota %s je neplatná"
 
-#: init.c:2821
+#: init.c:2825
 #, c-format
 msgid "%s: invalid backend"
 msgstr "Backend %s je neplatný"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "neznámý typ %s"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na řádku %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Varování v %s na řádku %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: init.c:2985
+#: init.c:2989
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
-#: init.c:2995
+#: init.c:2999
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
@@ -2613,48 +2613,48 @@ msgstr[0] "source: %d varování v %s"
 msgstr[1] "source: %d varování v %s"
 msgstr[2] "source: %d varování v %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
-#: init.c:3030
+#: init.c:3034
 #, c-format
 msgid "source: file %s could not be sourced."
 msgstr "source: soubor %s nelze vložit"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "Příkaz %s není znám."
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Chyba %s na příkazovém řádku"
 
-#: init.c:3808
+#: init.c:3812
 msgid "unable to determine nodename via uname()"
 msgstr "název stroje nelze určit pomocí volání uname()"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: chybí jméno skupiny"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "příliš málo argumentů"
 
-#: init.c:4254
+#: init.c:4258
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nelze přihlásit do %s"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 msgid "No folder specified"
 msgstr "Složka nebyla zadána"
 
-#: init.c:4308
+#: init.c:4312
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nelze odhlásit odběr %s"
@@ -2868,7 +2868,7 @@ msgstr "%s neexistuje. Mám ho vytvořit?"
 msgid "Failed to parse mailto: link"
 msgstr "Rozebrání odkazu mailto: se nezdařilo"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Nejsou specifikováni žádní příjemci."
 
@@ -3324,7 +3324,7 @@ msgstr "Spouští se PGP…"
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Zprávu nelze poslat vloženou do textu. Použít PGP/MIME?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Zpráva nebyla odeslána."
 
@@ -6103,71 +6103,71 @@ msgstr "Připravuji přeposílanou zprávu…"
 msgid "Recall postponed message?"
 msgstr "Vrátit se k odloženým zprávám?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Upravit přeposílanou zprávu?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Zahodit nezměněnou zprávu?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Nezměněná zpráva byla zahozena."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Neni nakonfigurováno s podporou šifrování. Vypínám nastavení bezpečnosti."
 
-#: send.c:1823
+#: send.c:1821
 msgid "Article not posted."
 msgstr "Článek nebyl publikován."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Zpráva byla odložena."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Žádná věc, zrušit odeslání?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Věc nebyla zadána."
 
-#: send.c:1941
+#: send.c:1939
 msgid "No newsgroup specified."
 msgstr "Nezadány žádné diskusní skupiny."
 
-#: send.c:1950
+#: send.c:1948
 msgid "No attachments, cancel sending?"
 msgstr "Žádné přílohy, zrušit odeslání?"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Zpráva obsahuje text odpovídající „$abort_noattach_regex“. Neodesílám."
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Posílám zprávu…"
 
-#: send.c:2049
+#: send.c:2047
 msgid "Save attachments in Fcc?"
 msgstr "Uložit do Fcc přílohy?"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Zprávu nelze odeslat."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Zasílám na pozadí."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr "Článek publikován."
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Zpráva odeslána."
 
@@ -6348,4 +6348,3 @@ msgstr "Výchzí volby:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
-

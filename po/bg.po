@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -48,60 +48,60 @@ msgstr "Избор"
 msgid "Help"
 msgstr "Помощ"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "В адресната книга няма записи!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Псевдоними"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Псевдоним за адресната книга:"
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Вече има запис за този псевдоним!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Предупреждение: Този псевдоним може да не работи. Желаете ли да го поправите?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Адрес:"
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Грешка: '%s' е невалиден IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Име:"
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Запис?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Запис във файл:"
 
-#: alias.c:420
+#: alias.c:414
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "Грешка при показването на файла"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Псевдонимът е добавен."
 
-#: alias.c:452
+#: alias.c:446
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "Грешка при показването на файла"
@@ -386,8 +386,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: командата е валидна само за индексен обект"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: недостатъчно аргументи"
@@ -397,7 +397,7 @@ msgstr "%s: недостатъчно аргументи"
 msgid "%s: no such attribute"
 msgstr "%s: няма такъв атрибут"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -829,7 +829,7 @@ msgstr "Предупреждение: '%s' е невалиден IDN."
 msgid "You may not delete the only attachment."
 msgstr "Не може да изтриете единствената част на писмото."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Лош IDN в \"%s\": '%s'"
@@ -2437,12 +2437,12 @@ msgstr "Абониране за %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Отписване от %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Абониране за %s..."
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отписване от %s..."
@@ -2556,7 +2556,7 @@ msgstr "Копиране на %d-то съобщение в %s..."
 msgid "Continue?"
 msgstr "Желаете ли да продължите?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Функцията не е достъпна от това меню."
 
@@ -2565,210 +2565,210 @@ msgstr "Функцията не е достъпна от това меню."
 msgid "%s: unknown sorting method"
 msgstr "%s: непознат метод за сортиране"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Непознат тип."
 
-#: init.c:1221
+#: init.c:1233
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "маркира писма, отговарящи на шаблон"
 
-#: init.c:1223
+#: init.c:1235
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "премахва маркировката от писма, отговарящи на шаблон"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr ""
 
-#: init.c:1419
+#: init.c:1431
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%s'.\n"
 
-#: init.c:1624
+#: init.c:1636
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "променя описанието на приложението"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "променя описанието на приложението"
 
-#: init.c:1665
+#: init.c:1677
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "променя описанието на приложението"
 
-#: init.c:1681
+#: init.c:1693
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "променя описанието на приложението"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: няма адрес"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%s'.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "невалидно заглавно поле"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s е изключен"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: непозната променлива"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "този префикс не е валиден с \"reset\""
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "тази стойност не е валидна с \"reset\""
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s е включен"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Невалиден ден от месеца: %s"
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Невалиден ден от месеца: %s"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: невалиден тип на пощенската кутия"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: невалидна стойност"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr ""
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: невалидна стойност"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: невалидна стойност"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: непознат тип"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Грешка в %s, ред %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Грешка в %s, ред %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: грешки в %s"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: вмъкването е прекъснато поради твърде много грешки в %s"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: грешки в %s"
 msgstr[1] "source: грешки в %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка при %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Писмата не са отпечатани"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: непозната команда"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Грешка в командния ред: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4131
+#: init.c:4135
 #, fuzzy
 msgid "out of arguments"
 msgstr "недостатъчно аргументи"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Абониране за %s..."
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "Липсва тема."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Отписване от %s..."
@@ -2926,7 +2926,7 @@ msgstr "%s не съществува. Да бъде ли създаден?"
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Не са указани получатели."
 
@@ -3390,7 +3390,7 @@ msgstr "Стартиране на PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Писмото не е изпратено."
 
@@ -6281,75 +6281,75 @@ msgstr "Подготовка за препращане..."
 msgid "Recall postponed message?"
 msgstr "Желаете ли да редактирате чернова?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Желаете ли да редактирате писмото преди препращане?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Желаете ли да изтриете непромененото писмо?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Непромененото писмо е изтрито."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Писмото не е изпратено."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Писмото е записано като чернова."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Липсва тема на писмото. Желаете ли да прекъснете изпращането?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Липсва тема."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Липсва тема."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "променя кодирането на приложението"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Изпращане на писмото..."
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "показва приложението като текст"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Писмото не може да бъде изпратено."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Изпращане на заден фон."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Писмото е изпратенo."
 
@@ -6517,4 +6517,3 @@ msgstr "Опции при компилация:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Опции при компилация:"
-

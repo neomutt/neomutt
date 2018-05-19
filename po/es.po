@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2016-11-28 19:29+0100\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
@@ -45,60 +45,60 @@ msgstr "Seleccionar"
 msgid "Help"
 msgstr "Ayuda"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "¡No tiene nombres en la libreta!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Libreta"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Nombre corto: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "¡Este nombre ya está definido en la libreta!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Aviso: Este alias podría no funcionar adecuadamente. ¿Desea arreglarlo? "
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Dirección: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Error: '%s' es un IDN incorrecto."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Nombre: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] ¿Aceptar?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Guardar en archivo: "
 
-#: alias.c:420
+#: alias.c:414
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "Error al tratar de mostrar el archivo"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Dirección añadida."
 
-#: alias.c:452
+#: alias.c:446
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "Error al tratar de mostrar el archivo"
@@ -383,8 +383,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: comando sólo válido para objetos en el índice"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: parámetros insuficientes"
@@ -394,7 +394,7 @@ msgstr "%s: parámetros insuficientes"
 msgid "%s: no such attribute"
 msgstr "%s: atributo desconocido"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -830,7 +830,7 @@ msgstr "Aviso: '%s' es un IDN inválido."
 msgid "You may not delete the only attachment."
 msgstr "No puede borrar la única pieza."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN inválido en \"%s\": '%s'"
@@ -2438,12 +2438,12 @@ msgstr "Suscribiendo a %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Desuscribiendo de %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Suscribiendo a %s..."
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Desuscribiendo de %s..."
@@ -2557,7 +2557,7 @@ msgstr "Copiando mensaje %d a %s..."
 msgid "Continue?"
 msgstr "¿Continuar?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "No disponible en este menú."
 
@@ -2566,209 +2566,209 @@ msgstr "No disponible en este menú."
 msgid "%s: unknown sorting method"
 msgstr "%s: órden desconocido"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, fuzzy, c-format
 msgid "%s: Unknown type."
 msgstr "%s: tipo desconocido"
 
-#: init.c:1221
+#: init.c:1233
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "marcar mensajes que coincidan con un patrón"
 
-#: init.c:1223
+#: init.c:1235
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "quitar marca de los mensajes que coincidan con un patrón"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: falta -rx o -addr."
 
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: aviso: IDN inválido '%s'.\n"
 
-#: init.c:1624
+#: init.c:1636
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "editar la descripción del archivo adjunto"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "editar la descripción del archivo adjunto"
 
-#: init.c:1665
+#: init.c:1677
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "editar la descripción del archivo adjunto"
 
-#: init.c:1681
+#: init.c:1693
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "editar la descripción del archivo adjunto"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: sin dirección"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Aviso: IDN '%s' inválido en alias '%s'.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "encabezado erróneo"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s no está activada"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variable desconocida"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "prefijo es ilegal con reset"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "valor es ilegal con reset"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s está activada"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Día inválido del mes: %s"
 
-#: init.c:2538
+#: init.c:2542
 #, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr ""
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: tipo de buzón inválido"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: valor inválido"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "error de formato"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr "desbordamiento de número"
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: valor inválido"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: valor inválido"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: tipo desconocido"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error en %s, renglón %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Error en %s, renglón %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errores en %s"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: lectura fue cancelada por demasiados errores en %s"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: errores en %s"
 msgstr[1] "source: errores en %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: errores en %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Los mensajes no pudieron ser imprimidos"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: comando desconocido"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Error en línea de comando: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "imposible determinar nombre del usuario"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4131
+#: init.c:4135
 #, fuzzy
 msgid "out of arguments"
 msgstr "Faltan parámetros"
 
-#: init.c:4254
+#: init.c:4258
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr ""
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 msgid "No folder specified"
 msgstr ""
 
-#: init.c:4308
+#: init.c:4312
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr ""
@@ -2928,7 +2928,7 @@ msgstr "%s no existe. ¿Crearlo?"
 msgid "Failed to parse mailto: link"
 msgstr "Fallo al interpretar enlace mailto:"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "No hay destinatario."
 
@@ -3396,7 +3396,7 @@ msgstr "Invocando PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "El mensaje no puede enviarse en modo inline. ¿Cambiar a PGP/MIME?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Mensaje no enviado."
 
@@ -6335,76 +6335,76 @@ msgstr "Preparando mensaje reenviado..."
 msgid "Recall postponed message?"
 msgstr "¿Continuar mensaje pospuesto?"
 
-#: send.c:1618
+#: send.c:1616
 #, fuzzy
 msgid "Edit forwarded message?"
 msgstr "Preparando mensaje reenviado..."
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "¿Cancelar mensaje sin cambios?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Mensaje sin cambios cancelado."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Mensaje no enviado."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Mensaje pospuesto."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Falta el asunto, ¿cancelar envío?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Asunto no fue especificado."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Asunto no fue especificado."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "editar la codificación del archivo adjunto"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "El mensaje contiene texto que coincide con \"$abort_noattach_regex\". No se envía."
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Enviando mensaje..."
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "mostrar archivos adjuntos como texto"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "No se pudo enviar el mensaje."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Enviando en un proceso en segundo plano."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr "Artículo enviado."
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Mensaje enviado."
 
@@ -6573,4 +6573,3 @@ msgstr "Opciones especificadas al compilar:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Opciones especificadas al compilar:"
-

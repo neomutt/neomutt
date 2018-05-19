@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2018-05-11 14:00+0000\n"
 "Last-Translator: Zero King <l2dy@macports.org>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -49,59 +49,59 @@ msgstr "选择"
 msgid "Help"
 msgstr "帮助"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "您没有别名信息！"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "别名"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "取别名为："
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "您已经为这个名字定义了别名啦！"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "警告：此别名可能无法工作。要修正它吗？"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "地址："
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "错误：'%s' 是错误的 IDN。"
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "个人姓名："
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 接受?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "存到文件："
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "读取别名文件时出错"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "别名已添加。"
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "无法在别名文件里查找"
 
@@ -376,8 +376,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s：命令只对索引，正文，标头对象有效"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s：参数太少"
@@ -387,7 +387,7 @@ msgstr "%s：参数太少"
 msgid "%s: no such attribute"
 msgstr "%s：没有这个属性"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -785,7 +785,7 @@ msgstr "警告：'%s' 是错误的 IDN。"
 msgid "You may not delete the only attachment."
 msgstr "您不可以删除唯一的附件。"
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "在 \"%s\" 中有错误的 IDN：'%s'"
@@ -2311,12 +2311,12 @@ msgstr "正在订阅 %s..."
 msgid "Unsubscribing from %s..."
 msgstr "正在取消订阅 %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "已订阅 %s"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "已取消订阅 %s"
@@ -2422,7 +2422,7 @@ msgstr "正在复制信件 %d 到 %s ..."
 msgid "Continue?"
 msgstr "继续？"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "在此菜单中不可用。"
 
@@ -2431,200 +2431,200 @@ msgstr "在此菜单中不可用。"
 msgid "%s: unknown sorting method"
 msgstr "%s：未知的排序方式"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s：未知类型。"
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "垃圾邮件：无匹配的模式"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "去掉垃圾邮件：无匹配的模式"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup：缺少 -rx 或 -addr。"
 
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup：警告：错误的 IDN '%s'。\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "附件：无处理方式"
 
-#: init.c:1635
+#: init.c:1647
 msgid "Current attachments settings:"
 msgstr "当前附件设置："
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "附件：无效的处理方式"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "去掉附件：无处理方式"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "去掉附件：无效的处理方式"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "别名：没有邮件地址"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "警告：错误的 IDN '%s' 在别名 '%s' 中。\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "无效的标头域"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s 没有被设定"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s：未知的变量"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "带重置的前缀是非法的"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "带重置的值是非法的"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "用法：set variable=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s 已被设定"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "选项 %s 的值无效：\"%s\""
 
-#: init.c:2538
+#: init.c:2542
 #, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "名称 %s 的值无效：\"%s\""
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s：无效的信箱类型"
 
-#: init.c:2666
+#: init.c:2670
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s：无效的值(%s)"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "格式错误"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr "数字溢出"
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s：无效的值"
 
-#: init.c:2821
+#: init.c:2825
 #, c-format
 msgid "%s: invalid backend"
 msgstr "%s：无效的后端"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s：未知类型"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s 发生错误，第 %d 行：%s"
 
-#: init.c:2959
+#: init.c:2963
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s 出现警告，第 %d 行：%s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：%s 中有错误"
 
-#: init.c:2985
+#: init.c:2989
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source：读取因 %s 中错误过多而中止"
 
-#: init.c:2995
+#: init.c:2999
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source：%2$s 中出现 %1$d 个警告"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source：%s 有错误"
 
-#: init.c:3030
+#: init.c:3034
 #, c-format
 msgid "source: file %s could not be sourced."
 msgstr "source：文件 %s 无法被加载。"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s：未知命令"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "命令行有错：%s"
 
-#: init.c:3808
+#: init.c:3812
 msgid "unable to determine nodename via uname()"
 msgstr "无法通过 uname() 确定节点名称"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group：无组名称"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "参数不够用"
 
-#: init.c:4254
+#: init.c:4258
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "无法订阅 %s"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 msgid "No folder specified"
 msgstr "没有指定文件夹"
 
-#: init.c:4308
+#: init.c:4312
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "无法取消订阅 %s"
@@ -2836,7 +2836,7 @@ msgstr "%s 不存在。创建它吗？"
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "没有指定接收者。"
 
@@ -3290,7 +3290,7 @@ msgstr "正在调用 PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "无法将信件嵌入发送。回到使用 PGP/MIME 吗？"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
@@ -6059,71 +6059,71 @@ msgstr "正在准备转发信件..."
 msgid "Recall postponed message?"
 msgstr "叫出延迟寄出的信件吗？"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "编辑已转发的信件吗？"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "中止未修改过的信件？"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "已中止未修改过的信件。"
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "没有配置加密后端。已禁用信件安全设置。"
 
-#: send.c:1823
+#: send.c:1821
 msgid "Article not posted."
 msgstr "帖子没有发表。"
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "信件被延迟寄出。"
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "没有主题，要中止发送吗?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "没有指定主题。"
 
-#: send.c:1941
+#: send.c:1939
 msgid "No newsgroup specified."
 msgstr "没有指定新闻组。"
 
-#: send.c:1950
+#: send.c:1948
 msgid "No attachments, cancel sending?"
 msgstr "没有附件，取消发送？"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "信件内容匹配 \"$abort_noattach_regex\"。没有发送。"
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "正在发送信件..."
 
-#: send.c:2049
+#: send.c:2047
 msgid "Save attachments in Fcc?"
 msgstr "将附件保存到 Fcc 吗？"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "无法发送此信件。"
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "正在后台发送。"
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr "帖子已发表。"
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "信件已发送。"
 

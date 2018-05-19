@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -46,59 +46,59 @@ msgstr "Pasirinkti"
 msgid "Help"
 msgstr "Pagalba"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Tu neturi aliasų!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Aliasai"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Aliase kaip: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Tu jau apibrėžei aliasą tokiu vardu!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Įspėjimas: šis aliaso vardas gali neveikti.  Pataisyti?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Adresas: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Klaida: '%s' yra blogas IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Asmens vardas: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Tinka?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Išsaugoti į bylą: "
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "Klaida bandant skaityti aliasų bylą"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Aliasas įdėtas."
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "Klaida bandant pozicionuoti aliasų bylą"
 
@@ -373,8 +373,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: komanda teisinga tik indekso, teksto, antraštės objektams"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: per mažai argumentų"
@@ -384,7 +384,7 @@ msgstr "%s: per mažai argumentų"
 msgid "%s: no such attribute"
 msgstr "%s: tokio atributo nėra"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -792,7 +792,7 @@ msgstr "Įspėjimas: '%s' yra blogas IDN."
 msgid "You may not delete the only attachment."
 msgstr "Tu negali ištrinti vienintelio priedo."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Blogas IDN \"%s\": '%s'"
@@ -2265,7 +2265,7 @@ msgid "Mailbox %s@%s closed"
 msgstr "Pašto dėžutė %s@%s uždaryta"
 
 #: imap/command.c:1111 imap/command.c:1205
-#, , c-format
+#, c-format
 msgid "Connection to %s timed out"
 msgstr "Prisijungimui prie %s pasibaigė laikas"
 
@@ -2319,12 +2319,12 @@ msgstr "Užsakau %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Atsisakau %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Užsakiau %s"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Atsisakiau %s"
@@ -2436,7 +2436,7 @@ msgstr "Kopijuoju laišką %d į %s..."
 msgid "Continue?"
 msgstr "Tęsti?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Neprieinama šiame meniu."
 
@@ -2445,153 +2445,153 @@ msgstr "Neprieinama šiame meniu."
 msgid "%s: unknown sorting method"
 msgstr "%s: nežinomas rikiavimo metodas"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: nežinomas tipas."
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "spam: trūksta šablono"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "nospam: trūksta šablono"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: trūksta -rx arba -addr"
 
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: įspėjimas: blogas IDN '%s'.\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "attachments: trūksta dispozicijos"
 
-#: init.c:1635
+#: init.c:1647
 msgid "Current attachments settings:"
 msgstr "Dabartiniai priedų nustatymai:"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "attachments: neteisinga dispozicija"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "unattachments: trūksta dispozicijos"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: neteisinga dispozicija"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: nėra adreso"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "blogas antraštės laukas"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s yra išjungtas"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nežinomas kintamasis"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "negalima vartoti priešdėlio su reset"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "reikšmė neleistina reset komandoje"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Naudojimas: set kintamasis=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s yra įjungtas"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Bloga parametro %s reikšmė: \"%s\""
 
-#: init.c:2538
+#: init.c:2542
 #, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Bloga vardo %s reikšmė: \"%s\""
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: blogas pašto dėžutės tipas"
 
-#: init.c:2666
+#: init.c:2670
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: bloga reikšmė (%s)"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "formato klaida"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr "skaičių perpildymas"
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: bloga reikšmė"
 
-#: init.c:2821
+#: init.c:2825
 #, c-format
 msgid "%s: invalid backend"
 msgstr "%s: bloga reikšmė"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nežinomas tipas"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Klaida %s, eilutė %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Įspėjimas %s, eilutė %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: klaidos %s"
 
-#: init.c:2985
+#: init.c:2989
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidų"
 
-#: init.c:2995
+#: init.c:2999
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
@@ -2599,48 +2599,48 @@ msgstr[0] "source: %d įspėjimas %s"
 msgstr[1] "source: %d įspėjimai %s"
 msgstr[2] "source: %d įspėjimų %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: klaida %s"
 
-#: init.c:3030
+#: init.c:3034
 #, c-format
 msgid "source: file %s could not be sourced."
 msgstr "source: byla %s negalėjo būti įtraukta"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nežinoma komanda"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Klaida komandinėje eilutėje: %s"
 
-#: init.c:3808
+#: init.c:3812
 msgid "unable to determine nodename via uname()"
 msgstr "negaliu nustatyti kompiuterio vardo per uname()"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: trūksta grupės vardo"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "per mažai argumentų"
 
-#: init.c:4254
+#: init.c:4258
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nepavyko užsakyti %s"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 msgid "No folder specified"
 msgstr "Nenurodytas aplankas."
 
-#: init.c:4308
+#: init.c:4312
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nepavyko atsisakyti %s"
@@ -2857,7 +2857,7 @@ msgstr "%s neegzistuoja. Sukurti ją?"
 msgid "Failed to parse mailto: link"
 msgstr "Nepavyko išanalizuoti mailto: nuorodos"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Nenurodyti jokie gavėjai."
 
@@ -3313,7 +3313,7 @@ msgstr "Kviečiu PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Laiško nepavyko išsiųsti inline formatu.  Naudoti PGP/MIME?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Laiškas neišsiųstas."
 
@@ -6088,71 +6088,71 @@ msgstr "Paruošiu persiunčiamą laišką..."
 msgid "Recall postponed message?"
 msgstr "Tęsti atidėtą laišką?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Redaguoti persiunčiamą laišką?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Nutraukti nepakeistą laišką?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Nutrauktas nepakeistas laiškas."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Kriptografijos mechanizmas nesukonfigūruotas.  Išjungiu laiškų saugumo nustatymus."
 
-#: send.c:1823
+#: send.c:1821
 msgid "Article not posted."
 msgstr "Straipsnis neišsiųstas."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Laiškas atidėtas."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Nėra temos, nutraukti siuntimą?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Nenurodyta jokia tema."
 
-#: send.c:1941
+#: send.c:1939
 msgid "No newsgroup specified."
 msgstr "Nenurodyta jokia naujienų grupė."
 
-#: send.c:1950
+#: send.c:1948
 msgid "No attachments, cancel sending?"
 msgstr "Nėra priedų, atšaukti siuntimą?"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Laiške yra tekstas, atitinkantis \"$abort_noattach_regex\". Nesiunčiu."
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Siunčiu laišką..."
 
-#: send.c:2049
+#: send.c:2047
 msgid "Save attachments in Fcc?"
 msgstr "Išsaugoti priedus Fcc?"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Negalėjau išsiųsti laiško."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Siunčiu fone."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr "Straipsnis išsiųstas."
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Laiškas išsiųstas."
 
@@ -6334,4 +6334,3 @@ msgstr "Įprastos parinktys:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
-

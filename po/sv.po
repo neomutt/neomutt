@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -43,60 +43,60 @@ msgstr "Välj"
 msgid "Help"
 msgstr "Hjälp"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Du saknar alias!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Alias"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Alias: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Du har redan definierat ett alias med det namnet!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Varning: Detta alias kommer kanske inte att fungera. Fixa det?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Adress: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Fel: '%s' är ett felaktigt IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Namn: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Godkänn?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Spara till fil: "
 
-#: alias.c:420
+#: alias.c:414
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "Fel vid försök att visa fil"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Lade till alias."
 
-#: alias.c:452
+#: alias.c:446
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "Fel vid försök att visa fil"
@@ -378,8 +378,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: kommandot är endast giltigt för index-objekt"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: för få parametrar"
@@ -389,7 +389,7 @@ msgstr "%s: för få parametrar"
 msgid "%s: no such attribute"
 msgstr "%s: attributet finns inte"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -822,7 +822,7 @@ msgstr "Varning: \"%s\" är ett felaktigt IDN."
 msgid "You may not delete the only attachment."
 msgstr "Du får inte ta bort den enda bilagan."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Felaktigt IDN i \"%s\": \"%s\""
@@ -2402,12 +2402,12 @@ msgstr "Prenumererar på %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Avslutar prenumeration på %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Avslutar prenumeration på %s"
@@ -2518,7 +2518,7 @@ msgstr "Kopierar meddelande %d till %s..."
 msgid "Continue?"
 msgstr "Fortsätt?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Inte tillgänglig i den här menyn."
 
@@ -2527,204 +2527,204 @@ msgstr "Inte tillgänglig i den här menyn."
 msgid "%s: unknown sorting method"
 msgstr "%s: okänd sorteringsmetod"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Okänd typ."
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "spam: inget matchande mönster"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "nospam: inget matchande mönster"
 
-#: init.c:1396
+#: init.c:1408
 #, fuzzy, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "Saknar -rx eller -addr."
 
-#: init.c:1419
+#: init.c:1431
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "Varning: Felaktigtt IDN \"%s\".\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "bilagor: ingen disposition"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "redigera bilagebeskrivning"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "bilagor: ogiltig disposition"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "gamla bilagor: ingen disposition"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "gamla bilagor: ogiltigt disposition"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: ingen adress"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "ogiltigt huvudfält"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s är inte satt"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: okänd variabel"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "prefix är otillåtet med \"reset\""
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "värde är otillåtet med \"reset\""
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Användning: set variable=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s är satt"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Ogiltig dag i månaden: %s"
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Ogiltig dag i månaden: %s"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ogiltig typ av brevlåda"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr ""
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: läsningen avbruten pga för många fel i %s"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: fel i %s"
 msgstr[1] "source: fel i %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Meddelanden kunde inte skrivas ut"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Fel i kommandorad: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: inget gruppnamn"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "slut på parametrar"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Prenumererar på %s..."
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "Inget ärende angivet."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Avslutar prenumeration på %s"
@@ -2882,7 +2882,7 @@ msgstr "%s finns inte. Skapa den?"
 msgid "Failed to parse mailto: link"
 msgstr "Misslyckades att tolka mailto:-länk"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Inga mottagare angivna."
 
@@ -3348,7 +3348,7 @@ msgstr "Startar PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Meddelande kan inte skickas infogat. Återgå till att använda PGP/MIME?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
@@ -6225,75 +6225,75 @@ msgstr "Förbereder vidarebefordrat meddelande..."
 msgid "Recall postponed message?"
 msgstr "Återkalla uppskjutet meddelande?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Redigera vidarebefordrat meddelande?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Meddelandet har inte ändrats. Avbryt?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Meddelandet har inte ändrats. Avbröt."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Brevet skickades inte."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Meddelande uppskjutet."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Inget ärende, avbryt sändning?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Inget ärende angivet."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Inget ärende angivet."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "redigera transportkodning för bilagan"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Skickar meddelande..."
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "visa bilaga som text"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Kunde inte skicka meddelandet."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Skickar i bakgrunden."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Brevet skickat."
 
@@ -6479,4 +6479,3 @@ msgstr "Kompileringsval:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Kompileringsval:"
-
