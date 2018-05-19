@@ -1595,11 +1595,11 @@ msgstr "Nepavyko sukurti užklausos, ašaukiu."
 
 #: curs_main.c:1911 curs_main.c:1930
 msgid "Windowed queries disabled."
-msgstr ""
+msgstr "Langų užklausos išjungtos."
 
 #: curs_main.c:1916 curs_main.c:1935
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "Joks notmuch virtualaus aplanko šiuo metu nėra užkrautas."
 
 #: curs_main.c:1973
 msgid "Open mailbox in read-only mode"
@@ -1786,11 +1786,11 @@ msgstr "Laiškas neturi ID."
 
 #: curs_main.c:3105 pager.c:2961 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "Atsakyti paštu, kaip pageidauja autorius?"
 
 #: curs_main.c:3108 pager.c:2927 pager.c:2939 pager.c:2964
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Siuntimas į šią grupę neleidžiamas, gali būti moderuotas. Tęsti?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3173 pager.c:3120
@@ -1910,7 +1910,7 @@ msgstr "Laiškas nepakeistas!"
 
 #: editmsg.c:167
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Laiškas tik skaitymui atidarytoje dėžutėje pakeistas!  Ignoruoju pakeitimus."
 
 #: editmsg.c:183
 #, c-format
@@ -2143,19 +2143,19 @@ msgstr "Istorija '%s''"
 
 #: hook.c:132
 msgid "current mailbox shortcut '^' is unset"
-msgstr ""
+msgstr "dabartinės pašto dėžutės trumpinys '^' yra nenustatytas"
 
 #: hook.c:143
 msgid "mailbox shortcut expanded to empty regex"
-msgstr ""
+msgstr "pašto dėžutės trumpinys išplėstas atitinka tuščią šabloną"
 
 #: hook.c:156
 msgid "badly formatted command string"
-msgstr ""
+msgstr "blogai suformuota komanda"
 
 #: hook.c:337
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: negalima išmesti kablių kablio viduje."
 
 #: hook.c:349
 #, c-format
@@ -2165,7 +2165,7 @@ msgstr "unhook: nežinomas hook tipas: %s"
 #: hook.c:359
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: negaliu išmesti %s %s viduje."
 
 #: imap/auth.c:118
 msgid "No authenticators available or wrong credentials"
@@ -2281,7 +2281,7 @@ msgstr "Antraščių paieška be antraštės pavadinimo: %s"
 #: imap/imap.c:494
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "Serverinė paieška nepalaikoma: %s"
 
 #: imap/imap.c:672
 #, c-format
@@ -2303,7 +2303,7 @@ msgstr "Nepavyko sukurti TLS jungties"
 
 #: imap/imap.c:1069 pop_lib.c:365
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Šifruota jungtis negalima"
 
 #: imap/imap.c:1717
 msgid "Bad mailbox name"
@@ -2648,7 +2648,7 @@ msgstr "Nepavyko atsisakyti %s"
 #: keymap.c:281 keymap.c:289
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr ""
+msgstr "Klavišo '%s' susiejimas paslėps '%s'  Prieš tai darykite 'bind %s %s noop'  vhttps://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:591
 msgid "Macros are currently disabled."
@@ -2855,7 +2855,7 @@ msgstr "%s neegzistuoja. Sukurti ją?"
 
 #: main.c:737
 msgid "Failed to parse mailto: link"
-msgstr ""
+msgstr "Nepavyko išanalizuoti mailto: nuorodos"
 
 #: main.c:747 send.c:1904 send.c:1909
 msgid "No recipients specified."
@@ -3061,11 +3061,11 @@ msgstr "Baigėsi atmintis!"
 #: mutt/regex.c:292
 #, c-format
 msgid "Bad regex: %s"
-msgstr ""
+msgstr "Blogas regex: %s"
 
 #: mutt/regex.c:353
 msgid "Not enough subexpressions for template"
-msgstr ""
+msgstr "Nepakanka pogrupių šablonui"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
@@ -3159,12 +3159,12 @@ msgstr "%s@%s slaptažodis: "
 #: mutt_notmuch.c:205 mutt_notmuch.c:1969 mutt_notmuch.c:2188
 #, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr ""
+msgstr "nepavyko išanalizuoti notmuch uri: %s"
 
 #: mutt_notmuch.c:287
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "nepavyko išanalizuoti notmuch užklausos tipo: %s"
 
 #: mutt_notmuch.c:398
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
@@ -3173,7 +3173,7 @@ msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, w
 #: mutt_notmuch.c:453
 #, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr ""
+msgstr "nepavyko išanalizuoti notmuch ribojimo: %s"
 
 #: mutt_notmuch.c:561
 #, c-format
@@ -3294,7 +3294,7 @@ msgstr "Inline PGP negalima naudoti jei laiškas turi priedų.  Naudoti PGP/MIME
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
+msgstr "Laiškas neišsiųstas: inline PGP negalima naudoti, jei laiškas turi priedų."
 
 #: ncrypt/crypt.c:166
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
@@ -3302,7 +3302,7 @@ msgstr "Inline PGP negalima naudoti su format=flowed.  Naudoti PGP/MIME?"
 
 #: ncrypt/crypt.c:170
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr ""
+msgstr "Laiškas neišsiųstas: inline PGP negalima naudoti su format=flowed."
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:782
@@ -3311,7 +3311,7 @@ msgstr "Kviečiu PGP..."
 
 #: ncrypt/crypt.c:192
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
+msgstr "Laiško nepavyko išsiųsti inline formatu.  Naudoti PGP/MIME?"
 
 #: ncrypt/crypt.c:194 send.c:1826
 msgid "Mail not sent."
@@ -3319,7 +3319,7 @@ msgstr "Laiškas neišsiųstas."
 
 #: ncrypt/crypt.c:540
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "S/MIME laiškai be turinio užuominų nepalaikomi."
 
 #: ncrypt/crypt.c:754 ncrypt/crypt.c:795
 msgid "Trying to extract PGP keys...\n"
@@ -5370,7 +5370,7 @@ msgstr "rodyti gryną laišką"
 
 #: opcodes.h:249
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "parodyti klavišų kodus"
 
 #: opcodes.h:252
 msgid "make decrypted copy"
@@ -5624,7 +5624,7 @@ msgstr "tuščias pattern'as"
 
 #: pattern.c:1607 pattern.c:1610
 msgid "error: server custom search only supported with IMAP."
-msgstr ""
+msgstr "klaida: serverio paieška palaikoma tik su IMAP."
 
 #: pattern.c:1778
 #, c-format
@@ -5874,7 +5874,7 @@ msgstr "Spausdinti priedą?"
 
 #: recvattach.c:900
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "Struktūriniai iššifruotų priedų pakeitimai nepalaikomi"
 
 #: recvattach.c:1046
 msgid "Can't decrypt encrypted message!"
@@ -5955,7 +5955,7 @@ msgstr "Negaliu dekoduoti visų pažymėtų priedų.  Enkapsuliuoti kitus MIME f
 
 #: remailer.c:156
 msgid "<random>"
-msgstr ""
+msgstr "<atsitiktinis>"
 
 #: remailer.c:475
 msgid "Append"
@@ -6102,7 +6102,7 @@ msgstr "Nutrauktas nepakeistas laiškas."
 
 #: send.c:1785
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Kriptografijos mechanizmas nesukonfigūruotas.  Išjungiu laiškų saugumo nustatymus."
 
 #: send.c:1823
 msgid "Article not posted."
@@ -6130,7 +6130,7 @@ msgstr "Nėra priedų, atšaukti siuntimą?"
 
 #: send.c:1955
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Laiške yra tekstas, atitinkantis \"$abort_noattach_regex\". Nesiunčiu."
 
 #: send.c:2017 smtp.c:189
 msgid "Sending message..."
