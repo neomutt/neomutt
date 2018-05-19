@@ -65,7 +65,7 @@ msgstr "Tu jau apibrėžei aliasą tokiu vardu!"
 
 #: alias.c:331
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Įspėjimas: šis aliaso vardas gali neveikti.  Pataisyti?"
 
 #: alias.c:355
 msgid "Address: "
@@ -74,7 +74,7 @@ msgstr "Adresas: "
 #: alias.c:366 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Klaida: '%s' yra blogas IDN."
 
 #: alias.c:376
 msgid "Personal name: "
@@ -161,12 +161,12 @@ msgstr "Negaliu sukurti filtro"
 #: attach.c:513
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Komanda: %-20.20s Aprašymas: %s"
 
 #: attach.c:516
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Komanda: %-30.30s Priedas: %s"
 
 #: attach.c:595
 #, c-format
@@ -207,7 +207,7 @@ msgstr "Pereiti"
 
 #: browser.c:73
 msgid "Goto"
-msgstr ""
+msgstr "Eiti"
 
 #: browser.c:74 browser.c:86
 msgid "Mask"
@@ -215,7 +215,7 @@ msgstr "Kaukė"
 
 #: browser.c:82
 msgid "List"
-msgstr ""
+msgstr "Sąrašas"
 
 #: browser.c:83
 msgid "Subscribe"
@@ -227,7 +227,7 @@ msgstr "Atsisakyti"
 
 #: browser.c:85 curs_main.c:760
 msgid "Catchup"
-msgstr ""
+msgstr "Pasivyti"
 
 #: browser.c:767 browser.c:1781
 #, c-format
@@ -242,7 +242,7 @@ msgstr "Užsakiau naujienų grupes"
 #: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Naujienų grupės serveryje [%s]"
 
 #: browser.c:1060
 #, c-format
@@ -441,7 +441,7 @@ msgstr "Komanda: "
 
 #: commands.c:272 commands.c:285 recvcmd.c:142 recvcmd.c:154
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Įspėjimas: laiškas neturi From: antraštės"
 
 #: commands.c:295 recvcmd.c:163
 msgid "Bounce message to: "
@@ -458,7 +458,7 @@ msgstr "Klaida nagrinėjant adresą!"
 #: commands.c:314 recvcmd.c:182
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "Blogas IDN: '%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, c-format
@@ -591,7 +591,7 @@ msgstr "Kopijuoju į %s..."
 #: commands.c:1033
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Konvertuoti į %s siunčiant?"
 
 #: commands.c:1044
 #, c-format
@@ -615,47 +615,47 @@ msgstr "Nėra jokių priedų."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:110
 msgid "From: "
-msgstr ""
+msgstr "Nuo: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:112 send.c:256
 msgid "To: "
-msgstr ""
+msgstr "Kam: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:114 send.c:258
 msgid "Cc: "
-msgstr ""
+msgstr "Kopija: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116 send.c:260
 msgid "Bcc: "
-msgstr ""
+msgstr "Slapta kopija: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 compose.c:970 send.c:292
 msgid "Subject: "
-msgstr ""
+msgstr "Tema: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120
 msgid "Reply-To: "
-msgstr ""
+msgstr "Atsakyti: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:987
 msgid "Fcc: "
-msgstr ""
+msgstr "Kopija į failą: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:125
 msgid "Mix: "
-msgstr ""
+msgstr "MixMaster grandis: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:128
 msgid "Security: "
-msgstr ""
+msgstr "Saugumas: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -674,17 +674,17 @@ msgstr "Pasirašyti kaip: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:141
 msgid "Newsgroups: "
-msgstr ""
+msgstr "Naujienių grupės: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:143
 msgid "Followup-To: "
-msgstr ""
+msgstr "Atsakyti: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:145
 msgid "X-Comment-To: "
-msgstr ""
+msgstr "X-Komentuoti: "
 
 #: compose.c:150 compose.c:166
 msgid "Send"
@@ -697,17 +697,17 @@ msgstr "Nutraukti"
 #. L10N: compose menu help line entry
 #: compose.c:153
 msgid "To"
-msgstr ""
+msgstr "Kam"
 
 #. L10N: compose menu help line entry
 #: compose.c:155
 msgid "CC"
-msgstr ""
+msgstr "Kopija"
 
 #. L10N: compose menu help line entry
 #: compose.c:157 compose.c:169
 msgid "Subj"
-msgstr ""
+msgstr "Tema"
 
 #: compose.c:158 compose.c:170 compose.c:1274
 msgid "Attach file"
@@ -743,19 +743,19 @@ msgstr "Jokio"
 
 #: compose.c:277
 msgid " (inline PGP)"
-msgstr ""
+msgstr " (PGP tekste)"
 
 #: compose.c:279
 msgid " (PGP/MIME)"
-msgstr ""
+msgstr " (PGP/MIME)"
 
 #: compose.c:282
 msgid " (S/MIME)"
-msgstr ""
+msgstr " (S/MIME)"
 
 #: compose.c:286
 msgid " (OppEnc mode)"
-msgstr ""
+msgstr " (OpŠifr režimas)"
 
 #: compose.c:298 compose.c:307
 msgid "<default>"
@@ -767,7 +767,7 @@ msgstr "Užšifruoti: "
 
 #: compose.c:337
 msgid "<no chain defined>"
-msgstr ""
+msgstr "<nėra grandinės>"
 
 #: compose.c:376
 #, c-format
@@ -786,7 +786,7 @@ msgstr "-- Priedai"
 #: compose.c:482
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Įspėjimas: '%s' yra blogas IDN."
 
 #: compose.c:501
 msgid "You may not delete the only attachment."
@@ -795,7 +795,7 @@ msgstr "Tu negali ištrinti vienintelio priedo."
 #: compose.c:1016 send.c:1916
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "Blogas IDN \"%s\": '%s'"
 
 #: compose.c:1064
 msgid "Attachment is already at top."
@@ -815,11 +815,11 @@ msgstr "Alternatyvų grupavimui reikia bent dviejų pažymėtų laiškų."
 
 #: compose.c:1179
 msgid "Grouping multilingual requires at least 2 tagged messages."
-msgstr ""
+msgstr "Kalbų grupavimui reikia bent dviejų pažymėtų laiškų."
 
 #: compose.c:1193
 msgid "Not all parts have Content-Language: set, continue?"
-msgstr ""
+msgstr "Ne visos dalys turi Content-Language: antraštę, tęsti?"
 
 #: compose.c:1195
 msgid "Not sending this message."
@@ -876,7 +876,7 @@ msgstr "Esamas priedas bus konvertuotas."
 
 #: compose.c:1536
 msgid "Empty Content-Language"
-msgstr ""
+msgstr "Tušia Content-Language antraštė"
 
 #: compose.c:1553
 msgid "Invalid encoding."
@@ -942,7 +942,7 @@ msgstr "Laiškas įrašytas."
 
 #: compose.c:1865
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "PGP nesukonfigūruotas"
 
 #: compose.c:1873
 msgid "S/MIME already selected. Clear and continue ? "
@@ -950,7 +950,7 @@ msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti? "
 
 #: compose.c:1899
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "S/MIME nesukonfigūruotas"
 
 #: compose.c:1907
 msgid "PGP already selected. Clear and continue ? "
@@ -963,21 +963,21 @@ msgstr "Negaliu užrakinti dėžutės!"
 #: compress.c:481 compress.c:551 compress.c:703
 #, c-format
 msgid "Decompressing %s"
-msgstr ""
+msgstr "Išskleidžiu %s"
 
 #: compress.c:490
 msgid "Can't identify the contents of the compressed file"
-msgstr ""
+msgstr "Negaliu identifikuoti suspaustos bylos turinio"
 
 #: compress.c:497 compress.c:572
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
+msgstr "Negaliu rasti pašto dėžutės operacijų pašto dėžutės tipui %d"
 
 #: compress.c:533 compress.c:836
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr ""
+msgstr "Negaliu papildyti be append-hoook ar close-hook: %s"
 
 #: compress.c:554
 #, c-format
@@ -986,7 +986,7 @@ msgstr "Suspaudimo komanda nepavyko: %s"
 
 #: compress.c:565
 msgid "Unsupported mailbox type for appending."
-msgstr ""
+msgstr "Papildymui nepalaikomas pašto dėžutės tipas."
 
 #: compress.c:640
 #, c-format
@@ -1317,11 +1317,11 @@ msgstr "ap"
 
 #: conn/ssl_gnutls.c:1041 conn/ssl_gnutls.c:1087
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Visi galimi protokolai TLS/SSL jungčiai išjungti"
 
 #: conn/ssl_gnutls.c:1094
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
+msgstr "Šifro pasirinkimas per $ssl_ciphers nepalaikomas"
 
 #: conn/ssl_gnutls.c:1209
 #, c-format
@@ -1345,7 +1345,7 @@ msgstr "Tunkelio klaida kalbant su %s: %s"
 
 #: copy.c:722
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Nėra iššifravimo mechanizmo laiškui"
 
 #: curs_lib.c:224
 msgid "yes"
@@ -1432,7 +1432,7 @@ msgstr "Grupei"
 
 #: curs_main.c:758 pager.c:1713
 msgid "Post"
-msgstr ""
+msgstr "Siųsti"
 
 #: curs_main.c:759 pager.c:1714
 msgid "Followup"
@@ -1464,7 +1464,7 @@ msgstr "Įvesk laiško ID: "
 
 #: curs_main.c:1177
 msgid "Article has no parent reference."
-msgstr ""
+msgstr "Straipsnis neturi nuorodos į tėvinį straipsnį."
 
 #: curs_main.c:1201
 msgid "Message is not visible in limited view."
@@ -1478,11 +1478,11 @@ msgstr "Siunčiu %s iš serverio..."
 #: curs_main.c:1217
 #, c-format
 msgid "Article %s not found on the server."
-msgstr ""
+msgstr "Straipsnis %s nerastas serveryje."
 
 #: curs_main.c:1236
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Nėra Message-Id antraštės. Negaliu atlikti operacijos."
 
 #: curs_main.c:1240 imap/message.c:788 nntp.c:1333 pop.c:330
 msgid "Fetching message headers..."
@@ -1533,7 +1533,7 @@ msgstr "Riboti iki laiškų, tenkinančių: "
 
 #: curs_main.c:1488
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Norėdami matyti visus laiškus apribokite iki \"all\"."
 
 #: curs_main.c:1500 pager.c:2318
 msgid "Quit NeoMutt?"
@@ -1566,11 +1566,11 @@ msgstr "Nėra virtualaus aplanko, nutraukiu."
 
 #: curs_main.c:1761
 msgid "Failed to read thread, aborting."
-msgstr ""
+msgstr "Nepavyko perskaityti gijos, nutraukiu."
 
 #: curs_main.c:1793 mx.c:1458 mx.c:1475
 msgid "Folder doesn't support tagging, aborting."
-msgstr ""
+msgstr "Katalogas nepalaiko etikečių, nutraukiu."
 
 #: curs_main.c:1808
 msgid "No tag specified, aborting."
@@ -1579,11 +1579,11 @@ msgstr "Nėra etiketės, nutraukiu."
 #: curs_main.c:1820
 #, c-format
 msgid "Update tags..."
-msgstr ""
+msgstr "Atnaujinu etiketes..."
 
 #: curs_main.c:1857
 msgid "Failed to modify tags, aborting."
-msgstr ""
+msgstr "Nepavyko atnaujinti etikečių, nutraukiu."
 
 #: curs_main.c:1898
 msgid "No query, aborting."
@@ -1591,7 +1591,7 @@ msgstr "Nėra užklausos, nutraukiu."
 
 #: curs_main.c:1902 curs_main.c:1922 curs_main.c:1941
 msgid "Failed to create query, aborting."
-msgstr ""
+msgstr "Nepavyko sukurti užklausos, ašaukiu."
 
 #: curs_main.c:1911 curs_main.c:1930
 msgid "Windowed queries disabled."
