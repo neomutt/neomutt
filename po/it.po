@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -46,59 +46,59 @@ msgstr "Seleziona"
 msgid "Help"
 msgstr "Aiuto"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Non ci sono alias!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Alias"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Crea l'alias: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "È già stato definito un alias con questo nome!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Attenzione: il nome di questo alias può non funzionare. Correggerlo?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Indirizzo: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Errore: '%s' non è un IDN valido."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Nome della persona: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Confermare?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Salva nel file: "
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "Errore nella lettura del file degli alias"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Alias aggiunto."
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "Errore nella ricerca nel file degli alias"
 
@@ -380,8 +380,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: comando valido solo per gli oggetti index, body, header"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: troppo pochi argomenti"
@@ -391,7 +391,7 @@ msgstr "%s: troppo pochi argomenti"
 msgid "%s: no such attribute"
 msgstr "%s: attributo inesistente"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -819,7 +819,7 @@ msgstr "Attenzione: '%s' non è un IDN valido."
 msgid "You may not delete the only attachment."
 msgstr "Non si può cancellare l'unico allegato."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN non valido in \"%s\": '%s'"
@@ -1046,9 +1046,9 @@ msgid "Compressing %s"
 msgstr "Copio in %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Errore del tunnel nella comunicazione con %s: %s"
+msgstr "Errore di comunicazione con %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1056,29 +1056,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Connessione a %s chiusa."
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN non valido: '%s'"
+msgstr "IDN \"%s\" non valido."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copio in %s..."
+msgstr "Ricerca di %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Impossibile spedire il messaggio."
+msgstr "Impossibile trovare l'host \"%s\"."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Connessione a \"%s\"..."
+msgstr "Connessione a %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Iscritto a %s"
+msgstr "Impossibile connettersi a %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -2397,12 +2397,12 @@ msgstr "Iscrizione a %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Rimozione della sottoscrizione da %s..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Iscritto a %s"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Sottoscrizione rimossa da %s..."
@@ -2513,7 +2513,7 @@ msgstr "Copia messaggio %d in %s..."
 msgid "Continue?"
 msgstr "Continuare?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Non disponibile in questo menù."
 
@@ -2522,204 +2522,204 @@ msgstr "Non disponibile in questo menù."
 msgid "%s: unknown sorting method"
 msgstr "%s: metodo di ordinamento sconosciuto"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: tipo sconosciuto."
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "spam: nessun modello corrispondente"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "nospam: nessun modello corrispondente"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: -rx o -addr mancanti."
 
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: attenzione: ID '%s' errato.\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "allegati: nessuna disposizione"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "modifica la descrizione dell'allegato"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "allegati: disposizione non valida"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr ""
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: nessun indirizzo"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Attenzione: l'IDN '%s' nell'alias '%s' non è valido.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "Campo dell'header non valido"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s non è attivo"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variabile sconosciuta"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "prefix non è consentito con reset"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "value non è consentito con reset"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Uso: set variabile=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s è attivo"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Valore per l'opzione %s non valido: \"%s\""
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Valore per l'opzione %s non valido: \"%s\""
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: tipo di mailbox non valido"
 
-#: init.c:2666
+#: init.c:2670
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: valore non valido (%s)"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "errore formato"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: valore non valido"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: valore non valido"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: tipo sconosciuto"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Errore in %s, linea %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Errore in %s, linea %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errori in %s"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: lettura terminata a causa di troppi errori in %s"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: errori in %s"
 msgstr[1] "source: errori in %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: errore in %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Impossibile stampare i messaggi"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: comando sconosciuto"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Errore nella riga di comando: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "impossibile determinare l'username"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: nessun nome per il gruppo"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr ""
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Iscritto a %s"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "Non è stato specificato un oggetto."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Sottoscrizione rimossa da %s..."
@@ -2877,7 +2877,7 @@ msgstr "%s non esiste. Crearlo?"
 msgid "Failed to parse mailto: link"
 msgstr "Impossibile analizzare il collegamento mailto:"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Nessun destinatario specificato."
 
@@ -3341,7 +3341,7 @@ msgstr "Eseguo PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Il messaggio non può essere inviato in linea.  Riutilizzare PGP/MIME?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Il messaggio non è stato inviato."
 
@@ -6198,74 +6198,74 @@ msgstr "Preparo il messaggio inoltrato..."
 msgid "Recall postponed message?"
 msgstr "Richiamare il messaggio rimandato?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Modificare il messaggio da inoltrare?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Abbandonare il messaggio non modificato?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Ho abbandonato il messaggio non modificato."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Il messaggio non è stato inviato."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Il messaggio è stato rimandato."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Nessun oggetto, abbandonare l'invio?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Non è stato specificato un oggetto."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Non è stato specificato un oggetto."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "modifica il transfer-encoding dell'allegato"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Invio il messaggio..."
 
-#: send.c:2049
+#: send.c:2047
 msgid "Save attachments in Fcc?"
 msgstr "Salvare l'allegato in Fcc?"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Impossibile spedire il messaggio."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Invio in background."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Messaggio spedito."
 
@@ -6435,86 +6435,3 @@ msgstr "Opzioni di compilazione:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Opzioni di compilazione:"
-
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "troppo pochi argomenti"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "usage: neomutt [<opzioni>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<opzioni>] [-x] [-Hi <file>] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <indir> [...]\n"
-#~ "       neomutt [<opzioni>] [-x] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <addr> [...] < messaggio\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "opzioni:\n"
-#~ "  -A <alias>    espande l'alias indicato\n"
-#~ "  -a <file>[...]  --    allega uno o più file al messaggio\n"
-#~ "                la lista di file va terminata con la sequenza \"--\"\n"
-#~ "  -b <indir>    indirizzo in blind carbon copy (BCC)\n"
-#~ "  -c <indir>    indirizzo in carbon copy (CC)\n"
-#~ "  -D            stampa il valore di tutte le variabile sullo standard output\n"
-#~ "  -d <livello>  registra l'output di debug in ~/.neomuttdebug0\n"
-#~ "  -e <comando>  comando da eseguire dopo l'inizializzazione\n"
-#~ "  -f <file>     specificaquale mailbox leggere\n"
-#~ "  -F <file>     specifica un file neomuttrc alternativo\n"
-#~ "  -H <file>     specifica un file di esempio da cui leggere header e body\n"
-#~ "  -i <file>     specifica un file che neomutt dovrebbe includere nella risposta\n"
-#~ "  -m <tipo>     specifica il tipo di mailbox predefinita\n"
-#~ "  -n            disabilita la lettura del neomuttrc di sistema\n"
-#~ "  -p            richiama un messaggio rimandato\n"
-#~ "  -Q <variabile>        interroga una variabile di configurazione\n"
-#~ "  -R            apre la mailbox in sola lettura\n"
-#~ "  -s <sogg>     specifica il Subject (deve essere tra apici se ha spazi)\n"
-#~ "  -v            mostra la versione e le definizioni della compilazione\n"
-#~ "  -x            simula la modalità invio di mailx\n"
-#~ "  -y            seleziona una mailbox specificata nella lista 'mailboxes'\n"
-#~ "  -z            esce immediatamente se non ci sono messaggi nella mailbox\n"
-#~ "  -Z            apre il primo folder con un nuovo messaggio, esce se non ce ne sono\n"
-#~ "  -h            questo messaggio di aiuto"

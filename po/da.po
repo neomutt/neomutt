@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2017-02-16 18:06+0100\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -46,59 +46,59 @@ msgstr "Vælg"
 msgid "Help"
 msgstr "Hjælp"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Adressebogen er tom!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Adressebog"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Vælg et alias: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Der er allerede et alias med det navn!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Advarsel: Dette navn for alias vil måske ikke virke. Ret det?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Adresse: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Fejl: '%s' er et forkert IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Navn: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] O.k.?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Gem i fil: "
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "Fejl ved læsning af alias-fil"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Adresse tilføjet."
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "Fejl ved søgning i alias-fil"
 
@@ -379,8 +379,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: kommandoen kan kun bruges på index-, body- og header-objekter"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: for få parametre"
@@ -390,7 +390,7 @@ msgstr "%s: for få parametre"
 msgid "%s: no such attribute"
 msgstr "%s: ukendt attribut"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -817,7 +817,7 @@ msgstr "Advarsel: '%s' er et forkert IDN."
 msgid "You may not delete the only attachment."
 msgstr "Brevets eneste del kan ikke slettes."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Forkert IDN i \"%s\": '%s'"
@@ -1043,9 +1043,9 @@ msgid "Compressing %s"
 msgstr "Komprimerer %s"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Fejl i tunnel under kommunikation med %s: %s"
+msgstr "Kommunikationsfejl med server %s (%s)"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1053,29 +1053,29 @@ msgid "Connection to %s has been aborted"
 msgstr "Forbindelse til %s er lukket"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Forkert IDN: '%s'"
+msgstr "Forkert IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopierer til %s ..."
+msgstr "Opsøger %s ..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Kunne ikke sende brevet."
+msgstr "Kunne ikke finde værten \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "Opretter forbindelse til \"%s\" ..."
+msgstr "Forbinder til %s ..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Abonnerer på %s"
+msgstr "Kunne ikke forbinde til %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -2368,12 +2368,12 @@ msgstr "Abonnerer på %s ..."
 msgid "Unsubscribing from %s..."
 msgstr "Afmelder %s ..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonnerer på %s"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Afmeldt fra %s"
@@ -2484,7 +2484,7 @@ msgstr "Kopierer brev %d til %s ..."
 msgid "Continue?"
 msgstr "Fortsæt?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Funktion er ikke tilgængelig i denne menu."
 
@@ -2493,203 +2493,203 @@ msgstr "Funktion er ikke tilgængelig i denne menu."
 msgid "%s: unknown sorting method"
 msgstr "%s: ukendt sorteringsmetode"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Ukendt type."
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "spam: intet mønster matcher"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "nospam: intet mønster matcher"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: mangler -rx eller -addr."
 
-#: init.c:1419
+#: init.c:1431
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: advarsel: forkert IDN \"%s\".\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "vedlæg bilag: ingen beskrivelse"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "ret brevdelens beskrivelse"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "vedlæg bilag: ugyldig beskrivelse"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "fjern bilag: ingen beskrivelse"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "fjern bilag: ugyldig beskrivelse"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "alias: Ingen adresse"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Advarsel: Forkert IDN '%s' i alias '%s'.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "ugyldig linje i brevhoved"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s er ikke sat"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: ukendt variabel"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "præfiks er ikke tilladt med reset"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "værdi er ikke tilladt med reset"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Brug: set variable=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s er sat"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Ugyldig værdi for tilvalget %s: \"%s\""
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Ugyldig værdi for tilvalget %s: \"%s\""
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ugyldig type brevbakke"
 
-#: init.c:2666
+#: init.c:2670
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: Ugyldig værdi (%s)"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr "formatfejl"
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr "taloverløb"
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: Ugyldig værdi"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: Ugyldig værdi"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: ukendt type"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fejl i %s, linje %d: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Fejl i %s, linje %d: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Fejl i %s"
 
-#: init.c:2985
+#: init.c:2989
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: læsning afbrudt pga. for mange fejl i %s"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: Fejl i %s"
 msgstr[1] "source: Fejl i %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fejl ved %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Brevene kunne ikke udskrives"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: Ukendt kommando"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Fejl i kommandolinje: %s"
 
-#: init.c:3808
+#: init.c:3812
 msgid "unable to determine nodename via uname()"
 msgstr "kan ikke bestemme nodenavn via uname()"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: intet gruppenavn"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "parametre slap op"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Abonnerer på %s"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "Intet emne er angivet."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Afmeldt fra %s"
@@ -2847,7 +2847,7 @@ msgstr "%s findes ikke. Opret?"
 msgid "Failed to parse mailto: link"
 msgstr "Kunne ikke fortolke mailto:-link"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Ingen angivelse af modtagere."
 
@@ -3309,7 +3309,7 @@ msgstr "Starter PGP ..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Brevet kan ikke sendes integreret. Brug PGP/MIME i stedet?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Brev ikke sendt."
 
@@ -6127,74 +6127,74 @@ msgstr "Forbereder brev til videresendelse ..."
 msgid "Recall postponed message?"
 msgstr "Genindlæs tilbageholdt brev?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Redigér brev før videresendelse?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Annullér uændret brev?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Annullerede uændret brev."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Ingen krypteringsressource er konfigureret. Deaktiverer brevets sikkerhedsindstilling."
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Brev ikke sendt."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Brev tilbageholdt."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Intet emne, undlad at sende?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Intet emne er angivet."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Intet emne er angivet."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "ret brevdelens indkodning"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Sender brev ..."
 
-#: send.c:2049
+#: send.c:2047
 msgid "Save attachments in Fcc?"
 msgstr "Gem bilag i Fcc?"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Kunne ikke sende brevet."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Sender i baggrunden."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Brev sendt."
 
@@ -6376,86 +6376,3 @@ msgstr "Tilvalg ved oversættelsen:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Tilvalg ved oversættelsen:"
-
-#~ msgid "not enough arguments"
-#~ msgstr "ikke nok parametre"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "brug: neomutt [<tilvalg>] [-z] [-f <fil> | -yZ]\n"
-#~ "      neomutt [<tilvalg>] [-Ex] [-Hi <fil>] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] <adr> [...]\n"
-#~ "      neomutt [<tilvalg>] [-x] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] <adr> [...] < brev\n"
-#~ "      neomutt [<tilvalg>] -p\n"
-#~ "      neomutt [<tilvalg>] -A <alias> [...]\n"
-#~ "      neomutt [<tilvalg>] -Q <forespørgsel> [...]\n"
-#~ "      neomutt [<tilvalg>] -D\n"
-#~ "      neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options:\n"
-#~ "  -A <alias>    udfold det angivne alias\n"
-#~ "  -a <fil> [...] --     vedhæft fil(er) til brevet\n"
-#~ "                fillisten skal afsluttes med sekvensen \"--\"\n"
-#~ "  -b <adresse>  anfør en \"blind carbon-copy\"-adresse (BCC)\n"
-#~ "  -c <adresse>  anfør en \"carbon-copy\"-adresse (CC)\n"
-#~ "  -D            udskriv værdien af alle variabler til standardud\n"
-#~ "  -d <niveau>   log uddata fra fejlfinding til ~/.neomuttdebug0\n"
-#~ "  -E            redigér kladden (-H) eller medtag (-i) fil\n"
-#~ "  -e <kommando> anfør en kommando til udførelse efter opstart\n"
-#~ "  -f <fil>      anfør hvilken brevbakke der skal læses\n"
-#~ "  -F <fil>      anfør en alternativ neomuttrc-fil\n"
-#~ "  -H <fil>      anfør en kladdefil hvorfra brevhoved og indhold skal læses\n"
-#~ "  -i <fil>      anfør en fil som NeoMutt skal medtage i brevet\n"
-#~ "  -m <type>     anfør en standardtype på brevbakke\n"
-#~ "  -n            bevirker at NeoMutt ikke læser systemets neomuttrc\n"
-#~ "  -p            genkald et udsat brev\n"
-#~ "  -Q <variabel> spørg til en opsætningsvariabel\n"
-#~ "  -R            åbn en brevbakke i skrivebeskyttet tilstand\n"
-#~ "  -s <emne>     anfør et emne (skal stå i citationstegn hvis der er mellemrum)\n"
-#~ "  -v            vis version og definitioner ved kompilering\n"
-#~ "  -x            simulér mailx' måde at sende på\n"
-#~ "  -y            vælg en brevbakke som er angivet i din \"mailboxes\"-liste\n"
-#~ "  -z            afslut øjeblikkeligt hvis der ikke er nogen breve i brevbakken\n"
-#~ "  -Z            åbn den første brevbakke med nye breve, afslut øjeblikkeligt hvis ingen\n"
-#~ "  -h            denne hjælpebesked"

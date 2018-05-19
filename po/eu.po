@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -45,59 +45,59 @@ msgstr "Hautatu"
 msgid "Help"
 msgstr "Laguntza"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "Ez duzu aliasik!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "Aliasak"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "Aliasa sortu: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "Izen honekin baduzu ezarritako ezizena bat!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Kontuz: ezizena izen honek ez du funtzionatuko.  Konpondu?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "Helbidea: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "Errorea: '%s' IDN okerra da."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "Pertsona izena: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Onartu?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Gorde fitxategian: "
 
-#: alias.c:420
+#: alias.c:414
 msgid "Error reading alias file"
 msgstr "Errorea ezizen fitxategia irakurtzean"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "Ezizena gehiturik."
 
-#: alias.c:452
+#: alias.c:446
 msgid "Error seeking in alias file"
 msgstr "Errorea ezizen fitxategian bilatzean"
 
@@ -378,8 +378,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: komandoa sarrera objektutan bakarrik erabili daiteke"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: argumentu gutxiegi"
@@ -389,7 +389,7 @@ msgstr "%s: argumentu gutxiegi"
 msgid "%s: no such attribute"
 msgstr "%s: ez da atributua aurkitu"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -822,7 +822,7 @@ msgstr "Kontuz: '%s' IDN okerra da."
 msgid "You may not delete the only attachment."
 msgstr "Ezin duzu gehigarri bakarra ezabatu."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN okerra \"%s\"-n: '%s'"
@@ -1049,9 +1049,9 @@ msgid "Compressing %s"
 msgstr "Hona kopiatzen %s..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Tunel errorea %s-rekiko konexioan: %s"
+msgstr "Errorea %s (%s) komunikatzerakoan"
 
 #: conn/conn_raw.c:139 conn/conn_raw.c:170
 #, fuzzy, c-format
@@ -1059,29 +1059,29 @@ msgid "Connection to %s has been aborted"
 msgstr "%s-rekiko konexioa itxia"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "IDN Okerra: '%s'"
+msgstr "IDN okerra \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Hona kopiatzen %s..."
+msgstr "%s Bilatzen..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Ezin da mezua bidali."
+msgstr "Ezin da \"%s\" ostalaria aurkitu"
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
-msgstr "\"%s\"-rekin konektatzen..."
+msgstr "%s-ra konektatzen..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s-ra harpideturik"
+msgstr "Ezin da %s (%s)-ra konektatu."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -2402,12 +2402,12 @@ msgstr "%s-ra harpidetzen..."
 msgid "Unsubscribing from %s..."
 msgstr "%s-ra harpidetzaz ezabatzen..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s-ra harpideturik"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s-ra harpidetzaz ezabaturik"
@@ -2518,7 +2518,7 @@ msgstr "%d mezua %s-ra kopiatzen..."
 msgid "Continue?"
 msgstr "Jarraitu?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "Menu honetan ezin da egin."
 
@@ -2527,204 +2527,204 @@ msgstr "Menu honetan ezin da egin."
 msgid "%s: unknown sorting method"
 msgstr "%s: sailkatze modu ezezaguna"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s Mota ezezaguna."
 
-#: init.c:1221
+#: init.c:1233
 msgid "spam: no matching pattern"
 msgstr "zabor-posta: ez da patroia aurkitu"
 
-#: init.c:1223
+#: init.c:1235
 msgid "nospam: no matching pattern"
 msgstr "ez zabor-posta: ez da patroia aurkitu"
 
-#: init.c:1396
+#: init.c:1408
 #, fuzzy, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "-rx edo -helb falta da."
 
-#: init.c:1419
+#: init.c:1431
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "Kontuz: '%s' IDN okerra.\n"
 
-#: init.c:1624
+#: init.c:1636
 msgid "attachments: no disposition"
 msgstr "eranskinak: disposiziorik ez"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "gehigarri deskribapena editatu"
 
-#: init.c:1665
+#: init.c:1677
 msgid "attachments: invalid disposition"
 msgstr "eranskinak: disposizio okerra"
 
-#: init.c:1681
+#: init.c:1693
 msgid "unattachments: no disposition"
 msgstr "deseranskinak: disposiziorik ez"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr "deseranskinak: disposizio okerra"
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "ezizena: helbide gabea"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "baliogabeko mezu burua"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s ezarri gabe dago"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: aldagai ezezaguna"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "aurrizkia legezkanpokoa da reset-ekin"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "balioa legezkanpokoa da reset-ekin"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr "Erabilera: set variable=yes|no"
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s ezarririk dago"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Baliogabeko hilabete eguna: %s"
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "Baliogabeko hilabete eguna: %s"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: posta-kutxa mota okerra"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: balio okerra"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr ""
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: balio okerra"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: balio okerra"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: mota ezezaguna"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Errorea %s-n, %d lerroan: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Errorea %s-n, %d lerroan: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "jatorria: erroreak %s-n"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "jatorria: %s-n akats gehiegiengatik irakurketa ezeztatua"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "jatorria: erroreak %s-n"
 msgstr[1] "jatorria: erroreak %s-n"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "jatorria: %s-n errorea"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Ezin dira mezuak inprimatu"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: komando ezezaguna"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Komando lerroan errorea: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr "-group: ez dago talde izenik"
 
-#: init.c:4131
+#: init.c:4135
 msgid "out of arguments"
 msgstr "argumentu gehiegi"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s-ra harpideturik"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "Ez da gairik ezarri."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "%s-ra harpidetzaz ezabaturik"
@@ -2882,7 +2882,7 @@ msgstr "%s ez da existitzen. Sortu?"
 msgid "Failed to parse mailto: link"
 msgstr "Huts maito: lotura analizatzean"
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "Ez da jasotzailerik eman."
 
@@ -3348,7 +3348,7 @@ msgstr "PGP deitzen..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "Eposta ez da bidali."
 
@@ -6222,75 +6222,75 @@ msgstr "Berbidalketa mezua prestatzen..."
 msgid "Recall postponed message?"
 msgstr "Atzeraturiko mezuak hartu?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "Berbidalitako mezua editatu?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Aldatugabeko mezua ezeztatu?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Aldatugabeko mezua ezeztatuta."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "Eposta ez da bidali."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "Mezua atzeraturik."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "Ez dago gairik, bidalketa ezeztatzen?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "Ez da gairik ezarri."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Ez da gairik ezarri."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "gehigarriaren transferentzi kodifikazioa editatu"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "Mezua bidaltzen..."
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "gehigarriak testua balira ikusi"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "Ezin da mezua bidali."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "Bigarren planoan bidaltzen."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "Mezua bidalirik."
 
@@ -6455,84 +6455,3 @@ msgstr "Konpilazio aukerak:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Konpilazio aukerak:"
-
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "argumentu gehiegi"
-
-#, fuzzy
-#~ msgid ""
-#~ "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
-#~ "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-#~ "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-#~ "       neomutt [<options>] -p\n"
-#~ "       neomutt [<options>] -A <alias> [...]\n"
-#~ "       neomutt [<options>] -Q <query> [...]\n"
-#~ "       neomutt [<options>] -B\n"
-#~ "       neomutt [<options>] -D [-S]\n"
-#~ "       neomutt -v[v]\n"
-#~ msgstr ""
-#~ "erabilera: neomutt [<aukerak>] [-z] [-f <fitx> | -yZ]\n"
-#~ "       neomutt [<aukerak>] [-x] [-Hi <fitx>] [-s <gaia>] [-bc <helb>] [-a <fitx> [...]] [--] <helb> [...]\n"
-#~ "       neomutt [<aukerak>] -p\n"
-#~ "       neomutt [<aukerak>] -A <ezizena> [...]\n"
-#~ "       neomutt [<aukerak>] -Q <query> [...]\n"
-#~ "       neomutt [<aukerak>] -D\n"
-#~ "       neomutt -v[v]\n"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "aukerak:\n"
-#~ "  -A <ezizena>  zabaldu emandako ezizena\n"
-#~ "  -a <fitx>     erantsi fitxategi bat mezura\n"
-#~ "  -b <helbidea> zehaztu ezkutuko kopiarako (BCC) helbide bat\n"
-#~ "  -c <helbidea> zehaztu kopiarako (CC) helbide bat\n"
-#~ "  -D            inprimatu aldagai guztien balioa irteera estandarrean\n"
-#~ "  -d <maila>    inprimatu arazpen irteera hemen: ~/.neomuttdebug0\n"
-#~ "  -e <komandoa> zehaztu abiarazi ondoren exekutatuko den komando bat\n"
-#~ "  -f <fitx>     zein posta-kutxa irakurri zehaztu\n"
-#~ "  -F <fitx>     beste neomuttrc fitxategi bat zehaztu\n"
-#~ "  -H <fitx>     zehaztu zirriborro fitxategi bat burua eta gorputza bertatik kopiatzeko\n"
-#~ "  -i <fitx>     zehaztu neomutt-ek gorputzean txertatu behar duen fitxategi bat\n"
-#~ "  -m <type>     zehaztu lehenetsiriko postakutxa mota\n"
-#~ "  -n            NeoMutt-ek sistema neomuttrc ez irakurtzea eragiten du\n"
-#~ "  -p            atzeratutako mezu bat berreskuratzen du\n"
-#~ "  -Q <aldagaia> galdezkatu konfigurazio aldagai bat\n"
-#~ "  -R            ireki postakutxa irakurketa-soileko moduan\n"
-#~ "  -s <gaia>     zehaztu gai bat (komatxo artean zuriunerik badu)\n"
-#~ "  -v            ikusi bertsio eta konpilazio-une definizioak\n"
-#~ "  -x            simulatu mailx bidalketa modua\n"
-#~ "  -y            zehaztu postakutxa zehatz zure 'postakutxa' zerrendan\n"
-#~ "  -z            irten berehala postakutxan mezurik ez badago\n"
-#~ "  -Z            ireki mezu berri bat duen lehen karpeta, irten batez ez balego\n"
-#~ "  -h            laguntza testu hau"

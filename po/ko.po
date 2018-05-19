@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -46,60 +46,60 @@ msgstr "선택"
 msgid "Help"
 msgstr "도움말"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "별칭이 없음!"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "별칭"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "사용 별칭: "
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "같은 이름의 별칭이 이미 있음!"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "경고: 이 알리아스는 작동하지 않습니다. 고칠까요?"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "주소: "
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "오류: '%s'는 잘못된 IDN."
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "이름: "
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 추가할까요?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "파일로 저장: "
 
-#: alias.c:420
+#: alias.c:414
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "파일 보기 시도 중 오류"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "별칭 추가됨."
 
-#: alias.c:452
+#: alias.c:446
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "파일 보기 시도 중 오류"
@@ -384,8 +384,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: 인덱스 항목에서만 사용 가능한 명령어."
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: 인수가 부족함"
@@ -395,7 +395,7 @@ msgstr "%s: 인수가 부족함"
 msgid "%s: no such attribute"
 msgstr "%s: 속성 없음."
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -822,7 +822,7 @@ msgstr "경고: '%s' 잘못된 IDN."
 msgid "You may not delete the only attachment."
 msgstr "첨부물만을 삭제할 수는 없습니다."
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "잘못된 IDN \"%s\": '%s'"
@@ -1048,7 +1048,7 @@ msgid "Compressing %s"
 msgstr "%s로 복사..."
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
 msgstr "%s (%s) 오류"
 
@@ -1058,29 +1058,29 @@ msgid "Connection to %s has been aborted"
 msgstr "%s의 접속이 끊어짐"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "잘못된 IDN: '%s'"
+msgstr "잘못된 IDN \"%s\"."
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "%s로 복사..."
+msgstr "%s를 찾는 중..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "메일을 보낼 수 없음."
+msgstr "%s 호스트를 찾을 수 없음."
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "%s로 연결 중..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s에 가입 중..."
+msgstr "%s (%s)로 연결할 수 없음."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -2424,12 +2424,12 @@ msgstr "%s에 가입 중..."
 msgid "Unsubscribing from %s..."
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -2539,7 +2539,7 @@ msgstr "메세지 %d를 %s로 복사 중..."
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "이 메뉴에선 유효하지 않음."
 
@@ -2548,209 +2548,209 @@ msgstr "이 메뉴에선 유효하지 않음."
 msgid "%s: unknown sorting method"
 msgstr "%s: 알 수 없는 정렬 방법"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:1221
+#: init.c:1233
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
-#: init.c:1223
+#: init.c:1235
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr ""
 
-#: init.c:1419
+#: init.c:1431
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
 
-#: init.c:1624
+#: init.c:1636
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1665
+#: init.c:1677
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1681
+#: init.c:1693
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "별칭: 주소 없음"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "잘못된 헤더 필드"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: 알 수 없는 변수"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "잘못된 접두사"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "잘못된 변수값"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s 설정"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "잘못된 날짜 입력: %s"
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "잘못된 날짜 입력: %s"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: 잘못된 메일함 형식"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: 잘못된 값"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr ""
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: 잘못된 값"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: 잘못된 값"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %s에 오류"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "메일들을 프린트 할 수 없음"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "명령어 오류: %s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "사용자 이름을 알수 없음"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4131
+#: init.c:4135
 #, fuzzy
 msgid "out of arguments"
 msgstr "인수가 부족함"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s에 가입 중..."
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "제목이 지정되지 않음."
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -2908,7 +2908,7 @@ msgstr "%s가 없음. 만들까요?"
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "수신자가 지정되지 않음."
 
@@ -3370,7 +3370,7 @@ msgstr "PGP를 구동합니다..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "보내지 않음."
 
@@ -6273,75 +6273,75 @@ msgstr "메일 포워딩을 준비 중..."
 msgid "Recall postponed message?"
 msgstr "발송 연기된 메일을 다시 부를까요?"
 
-#: send.c:1618
+#: send.c:1616
 msgid "Edit forwarded message?"
 msgstr "포워딩된 메일을 수정할까요?"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "변경되지 않은 메일을 취소할까요?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "변경되지 않은 메일 취소함."
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "보내지 않음."
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "발송 연기됨."
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "제목 없음, 보내기를 취소할까요?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "제목이 지정되지 않음."
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "제목이 지정되지 않음."
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "메일 보내는 중..."
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "첨부물을 text로 보기"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "메일을 보낼 수 없음."
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "백그라운드로 보냄."
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "메일 보냄."
 
@@ -6509,108 +6509,3 @@ msgstr "컴파일 선택사항:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "컴파일 선택사항:"
-
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "인수가 부족함"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "usage: neomutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일> ]\n"
-#~ "       neomutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] [...]\n"
-#~ "       neomutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아스> ] [...]\n"
-#~ "       neomutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
-#~ "       neomutt [ -n ] [ -e <명령어> ] [ -F <파일> ] -p\n"
-#~ "       neomutt -v[v]\n"
-#~ "\n"
-#~ "선택사항:\n"
-#~ "  -A <알리아스> 주어진 알리아스 확장\n"
-#~ "  -a <파일>     메일에 파일 첨부\n"
-#~ "  -b <주소>     BCC 주소 지정\n"
-#~ "  -c <주소>     CC 주소 지정\n"
-#~ "  -e <명령어>   초기화 후 실행할 명령어 지정\n"
-#~ "  -f <파일>     읽을 메일함 지정\n"
-#~ "  -F <파일>     별도의 neomuttrc 파일 지정\n"
-#~ "  -H <파일>     헤더부터 읽을 초안 파일 지정\n"
-#~ "  -i <파일>     NeoMutt 가 답장에 포함시킬 파일 지정\n"
-#~ "  -m <유형>     기본 메일함 유형 지정\n"
-#~ "  -n            NeoMutt 시스템 neomuttrc 파일 읽지 않음\n"
-#~ "  -p            발송 연기된 메일 다시 열기\n"
-#~ "  -Q <변수>     설정 변수 쿼리\n"
-#~ "  -R            메일함 읽기 전용 방식으로 열기\n"
-#~ "  -s <제목>     제목 지정 (공백이 있을 경우 인용 부호 사용)\n"
-#~ "  -v            버젼, 컴파일 옵션 보기\n"
-#~ "  -x            mailx 전송 방식 흉내내기\n"
-#~ "  -y            '메일함'의 목록 중 메일함 지정\n"
-#~ "  -z            메일함에 메일이 없으면 즉시 끝내기\n"
-#~ "  -Z            새 메일이 있는 첫번째 메일함 열기, 없을 경우 끝냄\n"
-#~ "  -h            현재 도움말\n"
-#~ "usage: neomutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일> ]\n"
-#~ "       neomutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] [...]\n"
-#~ "       neomutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아스> ] [...]\n"
-#~ "       neomutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
-#~ "       neomutt [ -n ] [ -e <명령어> ] [ -F <파일> ] -p\n"
-#~ "       neomutt -v[v]\n"
-#~ "\n"
-#~ "선택사항:\n"
-#~ "  -A <알리아스> 주어진 알리아스 확장\n"
-#~ "  -a <파일>     메일에 파일 첨부\n"
-#~ "  -b <주소>     BCC 주소 지정\n"
-#~ "  -c <주소>     CC 주소 지정\n"
-#~ "  -e <명령어>   초기화 후 실행할 명령어 지정\n"
-#~ "  -f <파일>     읽을 메일함 지정\n"
-#~ "  -F <파일>     별도의 neomuttrc 파일 지정\n"
-#~ "  -H <파일>     헤더부터 읽을 초안 파일 지정\n"
-#~ "  -i <파일>     NeoMutt 가 답장에 포함시킬 파일 지정\n"
-#~ "  -m <유형>     기본 메일함 유형 지정\n"
-#~ "  -n            NeoMutt 시스템 neomuttrc 파일 읽지 않음\n"
-#~ "  -p            발송 연기된 메일 다시 열기\n"
-#~ "  -Q <변수>     설정 변수 쿼리\n"
-#~ "  -R            메일함 읽기 전용 방식으로 열기\n"
-#~ "  -s <제목>     제목 지정 (공백이 있을 경우 인용 부호 사용)\n"
-#~ "  -v            버젼, 컴파일 옵션 보기\n"
-#~ "  -x            mailx 전송 방식 흉내내기\n"
-#~ "  -y            '메일함'의 목록 중 메일함 지정\n"
-#~ "  -z            메일함에 메일이 없으면 즉시 끝내기\n"
-#~ "  -Z            새 메일이 있는 첫번째 메일함 열기, 없을 경우 끝냄\n"
-#~ "  -h            현재 도움말"

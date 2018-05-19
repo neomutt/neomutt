@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-12 03:44+0100\n"
+"POT-Creation-Date: 2018-05-19 22:04+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -46,60 +46,60 @@ msgstr "選擇"
 msgid "Help"
 msgstr "求助"
 
-#: addrbook.c:219
+#: addrbook.c:218
 msgid "You have no aliases!"
 msgstr "您沒有別名資料！"
 
-#: addrbook.c:226
+#: addrbook.c:225
 msgid "Aliases"
 msgstr "別名"
 
 #. L10N: prompt to add a new alias
-#: alias.c:319
+#: alias.c:321
 msgid "Alias as: "
 msgstr "取別名為："
 
-#: alias.c:325
+#: alias.c:327
 msgid "You already have an alias defined with that name!"
 msgstr "您已經為這個名字定義了別名啦！"
 
-#: alias.c:331
+#: alias.c:333
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "警告：這個別名可能無效。要修正它？"
 
-#: alias.c:355
+#: alias.c:357
 msgid "Address: "
 msgstr "地址："
 
-#: alias.c:366 send.c:207
+#: alias.c:368 send.c:207
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "錯誤：「%s」是無效的 IDN。"
 
-#: alias.c:376
+#: alias.c:378
 msgid "Personal name: "
 msgstr "個人姓名："
 
-#: alias.c:385
+#: alias.c:387
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 接受?"
 
-#: alias.c:405 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "存到檔案："
 
-#: alias.c:420
+#: alias.c:414
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "讀取信件時發生錯誤！"
 
-#: alias.c:444
+#: alias.c:438
 msgid "Alias added."
 msgstr "別名已經增加。"
 
-#: alias.c:452
+#: alias.c:446
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "無法試著顯示檔案"
@@ -385,8 +385,8 @@ msgid "%s: command valid only for index, body, header objects"
 msgstr "%s：命令只提供索引物件"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:933 init.c:1048 init.c:1131
-#: init.c:1139 init.c:1162 init.c:2218 init.c:2277 keymap.c:1020 score.c:87
+#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
+#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s：太少參數"
@@ -396,7 +396,7 @@ msgstr "%s：太少參數"
 msgid "%s: no such attribute"
 msgstr "%s：沒有這個屬性"
 
-#: color.c:874 color.c:931 hook.c:122 init.c:848 init.c:4245 init.c:4299
+#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
 #: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
 #, c-format
 msgid "%s: too many arguments"
@@ -826,7 +826,7 @@ msgstr "警告：「%s」為無效的 IDN。"
 msgid "You may not delete the only attachment."
 msgstr "您不可以刪除唯一的附件。"
 
-#: compose.c:1016 send.c:1916
+#: compose.c:1016 send.c:1914
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "「%s」中有無效的 IDN：「%s」"
@@ -1052,7 +1052,7 @@ msgid "Compressing %s"
 msgstr "拷貝到 %s…"
 
 #: conn/conn_raw.c:132 conn/conn_raw.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
 msgstr "連線到 %s (%s) 時失敗"
 
@@ -1062,29 +1062,29 @@ msgid "Connection to %s has been aborted"
 msgstr "到 %s 的連線中斷了"
 
 #: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, fuzzy, c-format
+#, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "無效的 IDN：「%s」"
+msgstr "無效的 IDN「%s」。"
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "拷貝到 %s…"
+msgstr "正在尋找 %s…"
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "無法寄出信件。"
+msgstr "找不到主機 \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting to %s..."
 msgstr "正連接到 %s…"
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "訂閱 %s…"
+msgstr "無法連線到 %s (%s)。"
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -2437,12 +2437,12 @@ msgstr "訂閱 %s…"
 msgid "Unsubscribing from %s..."
 msgstr "取消訂閱 %s…"
 
-#: imap/imap.c:1753 init.c:4259
+#: imap/imap.c:1753 init.c:4263
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "訂閱 %s…"
 
-#: imap/imap.c:1755 init.c:4313
+#: imap/imap.c:1755 init.c:4317
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "取消訂閱 %s…"
@@ -2552,7 +2552,7 @@ msgstr "正在複制 信件 %d 到 %s …"
 msgid "Continue?"
 msgstr "繼續？"
 
-#: init.c:72 init.c:2356 pager.c:72
+#: init.c:72 init.c:2361 pager.c:72
 msgid "Not available in this menu."
 msgstr "在這個菜單中沒有這個功能。"
 
@@ -2561,209 +2561,209 @@ msgstr "在這個菜單中沒有這個功能。"
 msgid "%s: unknown sorting method"
 msgstr "%s：不明的排序方式"
 
-#: init.c:408 init.c:442 init.c:2775
+#: init.c:408 init.c:442 init.c:2779
 #, fuzzy, c-format
 msgid "%s: Unknown type."
 msgstr "%s：不明的種類"
 
-#: init.c:1221
+#: init.c:1233
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "標記符合某個格式的信件"
 
-#: init.c:1223
+#: init.c:1235
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: init.c:1396
+#: init.c:1408
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr ""
 
-#: init.c:1419
+#: init.c:1431
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"
 
-#: init.c:1624
+#: init.c:1636
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "編輯附件的說明"
 
-#: init.c:1635
+#: init.c:1647
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "編輯附件的說明"
 
-#: init.c:1665
+#: init.c:1677
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "編輯附件的說明"
 
-#: init.c:1681
+#: init.c:1693
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "編輯附件的說明"
 
-#: init.c:1708
+#: init.c:1720
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:1842
+#: init.c:1851
 msgid "alias: no address"
 msgstr "別名：沒有電子郵件位址"
 
-#: init.c:1888
+#: init.c:1893
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"
 
-#: init.c:1958
+#: init.c:1963
 msgid "invalid header field"
 msgstr "無效的標頭欄位"
 
-#: init.c:2256 init.c:2403
+#: init.c:2261 init.c:2408
 #, c-format
 msgid "%s is unset"
 msgstr "%s 沒有被設定"
 
-#: init.c:2333 init.c:2450
+#: init.c:2338 init.c:2455
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s：不明的變數"
 
-#: init.c:2342
+#: init.c:2347
 msgid "prefix is illegal with reset"
 msgstr "重新設置後字首仍不合規定"
 
-#: init.c:2348
+#: init.c:2353
 msgid "value is illegal with reset"
 msgstr "重新設置後值仍不合規定"
 
-#: init.c:2383 init.c:2395
+#: init.c:2388 init.c:2400
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2403
+#: init.c:2408
 #, c-format
 msgid "%s is set"
 msgstr "%s 已被設定"
 
-#: init.c:2524
+#: init.c:2528
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "無效的日子：%s"
 
-#: init.c:2538
+#: init.c:2542
 #, fuzzy, c-format
 msgid "Invalid value for name %s: \"%s\""
 msgstr "無效的日子：%s"
 
-#: init.c:2635
+#: init.c:2639
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s：無效的信箱種類"
 
-#: init.c:2666
+#: init.c:2670
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s：無效的值"
 
-#: init.c:2667
+#: init.c:2671
 msgid "format error"
 msgstr ""
 
-#: init.c:2667
+#: init.c:2671
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2730
+#: init.c:2734
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s：無效的值"
 
-#: init.c:2821
+#: init.c:2825
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s：無效的值"
 
-#: init.c:2829
+#: init.c:2833
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s：不明的種類"
 
-#: init.c:2948
+#: init.c:2952
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s 發生錯誤，行號 %d：%s"
 
-#: init.c:2959
+#: init.c:2963
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s 發生錯誤，行號 %d：%s"
 
-#: init.c:2984
+#: init.c:2988
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：錯誤發生在 %s"
 
-#: init.c:2985
+#: init.c:2989
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: 因 %s 發生太多錯誤，因此閱讀終止。"
 
-#: init.c:2995
+#: init.c:2999
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source：錯誤發生在 %s"
 
-#: init.c:3022 mutt_lua.c:421
+#: init.c:3026 mutt_lua.c:421
 #, c-format
 msgid "source: error at %s"
 msgstr "source：錯誤發生在 %s"
 
-#: init.c:3030
+#: init.c:3034
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "信件未能列印出來"
 
-#: init.c:3091
+#: init.c:3095
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s：不明的指令"
 
-#: init.c:3735
+#: init.c:3739
 #, c-format
 msgid "Error in command line: %s"
 msgstr "指令行有錯：%s"
 
-#: init.c:3808
+#: init.c:3812
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "無法決定使用者名稱"
 
-#: init.c:4121
+#: init.c:4125
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4131
+#: init.c:4135
 #, fuzzy
 msgid "out of arguments"
 msgstr "太少參數"
 
-#: init.c:4254
+#: init.c:4258
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "訂閱 %s…"
 
-#: init.c:4270 init.c:4324
+#: init.c:4274 init.c:4328
 #, fuzzy
 msgid "No folder specified"
 msgstr "沒有指定標題。"
 
-#: init.c:4308
+#: init.c:4312
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "取消訂閱 %s…"
@@ -2922,7 +2922,7 @@ msgstr "%s 不存在。建立嗎？"
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:747 send.c:1904 send.c:1909
+#: main.c:747 send.c:1902 send.c:1907
 msgid "No recipients specified."
 msgstr "沒有指定收件人。"
 
@@ -3386,7 +3386,7 @@ msgstr "啟動 PGP…"
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:194 send.c:1826
+#: ncrypt/crypt.c:194 send.c:1824
 msgid "Mail not sent."
 msgstr "信件沒有寄出。"
 
@@ -6329,76 +6329,76 @@ msgstr "準備轉寄信件…"
 msgid "Recall postponed message?"
 msgstr "要叫出被延遲的信件?"
 
-#: send.c:1618
+#: send.c:1616
 #, fuzzy
 msgid "Edit forwarded message?"
 msgstr "準備轉寄信件…"
 
-#: send.c:1668
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "是否要中斷未修改過的信件?"
 
-#: send.c:1670
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "中斷沒有修改過的信件"
 
-#: send.c:1785
+#: send.c:1783
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1823
+#: send.c:1821
 #, fuzzy
 msgid "Article not posted."
 msgstr "信件沒有寄出。"
 
-#: send.c:1889
+#: send.c:1887
 msgid "Message postponed."
 msgstr "信件被延遲寄出。"
 
-#: send.c:1925
+#: send.c:1923
 msgid "No subject, abort sending?"
 msgstr "沒有信件標題，要中斷寄信的工作?"
 
-#: send.c:1929 send.c:1935
+#: send.c:1927 send.c:1933
 msgid "No subject specified."
 msgstr "沒有指定標題。"
 
-#: send.c:1941
+#: send.c:1939
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "沒有指定標題。"
 
-#: send.c:1950
+#: send.c:1948
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "編輯附件的傳輸編碼"
 
-#: send.c:1955
+#: send.c:1953
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2017 smtp.c:189
+#: send.c:2015 smtp.c:189
 msgid "Sending message..."
 msgstr "正在寄出信件…"
 
-#: send.c:2049
+#: send.c:2047
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "用文字方式顯示附件內容"
 
-#: send.c:2156
+#: send.c:2154
 msgid "Could not send the message."
 msgstr "無法寄出信件。"
 
-#: send.c:2162
+#: send.c:2160
 msgid "Sending in background."
 msgstr "正在背景作業中傳送。"
 
-#: send.c:2163
+#: send.c:2161
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2164
+#: send.c:2162
 msgid "Mail sent."
 msgstr "信件已經寄出。"
 
@@ -6567,104 +6567,3 @@ msgstr "編譯選項："
 #: version.c:404
 msgid "Compile options:"
 msgstr "編譯選項："
-
-#, fuzzy
-#~ msgid "not enough arguments"
-#~ msgstr "太少參數"
-
-#~ msgid ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "  -E            edit the draft (-H) or include (-i) file\n"
-#~ "  -e <command>  specify a command to be executed after initialization\n"
-#~ "  -f <file>     specify which mailbox to read\n"
-#~ "  -F <file>     specify an alternate neomuttrc file\n"
-#~ "  -g <server>   specify a news server (if compiled with NNTP)\n"
-#~ "  -G            select a newsgroup (if compiled with NNTP)\n"
-#~ "  -H <file>     specify a draft file to read header and body from\n"
-#~ "  -i <file>     specify a file which NeoMutt should include in the body\n"
-#~ "  -m <type>     specify a default mailbox type\n"
-#~ "  -n            causes NeoMutt not to read the system neomuttrc\n"
-#~ "  -p            recall a postponed message\n"
-#~ "  -Q <variable> query a configuration variable\n"
-#~ "  -R            open mailbox in read-only mode\n"
-#~ "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
-#~ "  -v            show version and compile-time definitions\n"
-#~ "  -x            simulate the mailx send mode\n"
-#~ "  -y            select a mailbox specified in your 'mailboxes' list\n"
-#~ "  -z            exit immediately if there are no messages in the mailbox\n"
-#~ "  -Z            open the first folder with new message, exit immediately if none\n"
-#~ "  -h            this help message"
-#~ msgstr ""
-#~ "options:\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <file> [...] --    attach file(s) to the message\n"
-#~ "                the list of files must be terminated with the \"--\" sequence\n"
-#~ "  -b <address>  specify a blind carbon-copy (BCC) address\n"
-#~ "  -c <address>  specify a carbon-copy (CC) address\n"
-#~ "  -D            print the value of all variables to stdout\n"
-#~ "  -D -S         like -D, but hide the value of sensitive variables\n"
-#~ "  -B            run in batch mode (do not start the ncurses UI)\n"
-#~ "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
-#~ "用法: neomutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
-#~ "        neomutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-#~ "        neomutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
-#~ "        neomutt -v[v]\n"
-#~ "\n"
-#~ "參數：\n"
-#~ "  -a <檔案>     將檔案附在信件中\n"
-#~ "  -b <地址>     指定一個 秘密複製 (BCC) 的地址\n"
-#~ "  -c <地址>     指定一個 複製 (CC) 的地址\n"
-#~ "  -e <命令>     指定一個初始化後要被執行的命令\n"
-#~ "  -f <檔案>     指定要閱讀那一個郵筒\n"
-#~ "  -F <檔案>     指定另一個 neomuttrc 檔案\n"
-#~ "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
-#~ "  -i <檔案>     指定一個包括在回覆中的檔案\n"
-#~ "  -m <類型>     指定一個預設的郵筒類型\n"
-#~ "  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
-#~ "  -p            叫回一個延後寄送的信件\n"
-#~ "  -R            以唯讀模式開啟郵筒\n"
-#~ "  -s <主題>     指定一個主題 (如果有空白的話必須被包括在引言中)\n"
-#~ "  -v            顯示版本和編譯時所定義的參數\n"
-#~ "  -x            模擬 mailx 寄送模式\n"
-#~ "  -y            選擇一個被指定在您郵筒清單中的郵筒\n"
-#~ "  -z            如果沒有訊息在郵筒中的話，立即離開\n"
-#~ "  -Z            開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
-#~ "  -h            這個說明訊息\n"
-#~ "用法: neomutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
-#~ "       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] [...]\n"
-#~ "       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] [...]\n"
-#~ "       neomutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-#~ "       neomutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
-#~ "       neomutt -v[v]\n"
-#~ "\n"
-#~ "參數：\n"
-#~ "  -A <alias>    expand the given alias\n"
-#~ "  -a <檔案>     將檔案附在信件中\n"
-#~ "  -b <地址>     指定一個 秘密複製 (BCC) 的地址\n"
-#~ "  -c <地址>     指定一個 複製 (CC) 的地址\n"
-#~ "  -e <命令>     指定一個初始化後要被執行的命令\n"
-#~ "  -f <檔案>     指定要閱讀那一個郵筒\n"
-#~ "  -F <檔案>     指定另一個 neomuttrc 檔案\n"
-#~ "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
-#~ "  -i <檔案>     指定一個包括在回覆中的檔案\n"
-#~ "  -m <類型>     指定一個預設的郵筒類型\n"
-#~ "  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
-#~ "  -p            叫回一個延後寄送的信件\n"
-#~ "  -Q <變數>     查詢一個設定變數\n"
-#~ "  -R            以唯讀模式開啟郵筒\n"
-#~ "  -s <主題>     指定一個主題 (如果有空白的話必須被包括在引言中)\n"
-#~ "  -v            顯示版本和編譯時所定義的參數\n"
-#~ "  -x            模擬 mailx 寄送模式\n"
-#~ "  -y            選擇一個被指定在您郵筒清單中的郵筒\n"
-#~ "  -z            如果沒有訊息在郵筒中的話，立即離開\n"
-#~ "  -Z            開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
-#~ "  -h            這個說明訊息"
