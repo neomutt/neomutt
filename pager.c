@@ -1994,7 +1994,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
                (100 * rd->last_offset / rd->sb.st_size));
     else
-      mutt_str_strfcpy(pager_progress_str, (rd->topline == 0) ? "all" : "end",
+      mutt_str_strfcpy(pager_progress_str, (rd->topline == 0) ? _("all") : _("end"),
                        sizeof(pager_progress_str));
 
     /* print out the pager status bar */
