@@ -115,7 +115,7 @@ const char *mutt_get_name(struct Address *a)
 
   if (a)
   {
-    if (ReverseAlias && (ali = alias_reverse_lookup(a)) && ali->personal)
+    if (ReverseAlias && (ali = mutt_alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     else if (a->personal)
       return a->personal;

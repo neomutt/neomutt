@@ -346,7 +346,7 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 int mutt_randbuf(void *out, size_t len);
 
-struct Address *alias_reverse_lookup(struct Address *a);
+struct Address *mutt_alias_reverse_lookup(struct Address *a);
 
 int getdnsdomainname(char *d, size_t len);
 
