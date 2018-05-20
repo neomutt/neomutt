@@ -5501,6 +5501,14 @@ msgstr "View Attachm."
 msgid "Next"
 msgstr "Next"
 
+#: pager.c:1997
+msgid "all"
+msgstr ""
+
+#: pager.c:1997
+msgid "end"
+msgstr ""
+
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."
 msgstr "Bottom of message is shown."
