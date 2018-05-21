@@ -62,7 +62,7 @@ struct MixChain
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Header *msg);
-void mix_make_chain(struct ListHead *chain);
+void mix_make_chain(struct ListHead *chainhead);
 
 #endif /* MIXMASTER */
 
