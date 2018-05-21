@@ -1180,11 +1180,6 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   int count = 0;
 
   struct Buffer *cmd = mutt_buffer_new();
-  if (!cmd)
-  {
-    mutt_debug(1, "unable to allocate buffer\n");
-    return -1;
-  }
 
   /* We make a copy of the headers just in case resorting doesn't give
    exactly the original order (duplicate messages?), because other parts of

@@ -414,8 +414,6 @@ int mutt_mb_filter_unprintable(char **s)
   mbstate_t mbstate1, mbstate2;
 
   struct Buffer *b = mutt_buffer_new();
-  if (!b)
-    return -1;
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
