@@ -951,6 +951,15 @@ void km_error_key(int menu)
   return;
 }
 
+/**
+ * mutt_parse_push - Parse the 'push' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
@@ -1083,7 +1092,13 @@ const struct Binding *km_get_table(int menu)
 }
 
 /**
- * mutt_parse_bind - Parse a 'bind' command
+ * mutt_parse_bind - Parse the 'bind' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * bind menu-name `<key_sequence>` function-name
  */
@@ -1140,7 +1155,13 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_macro - Parse a 'macro' command
+ * mutt_parse_macro - Parse the 'macro' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
@@ -1194,7 +1215,13 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_exec - exec function-name
+ * mutt_parse_exec - Parse the 'exec' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)

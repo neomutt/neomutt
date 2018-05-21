@@ -104,6 +104,11 @@ struct MyVar
 
 static TAILQ_HEAD(, MyVar) MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 
+/**
+ * myvar_set - Set the value of a "my_" variable
+ * @param var Variable name
+ * @param val Value to set
+ */
 void myvar_set(const char *var, const char *val)
 {
   struct MyVar *myv = NULL;
@@ -123,6 +128,10 @@ void myvar_set(const char *var, const char *val)
   TAILQ_INSERT_TAIL(&MyVars, myv, entries);
 }
 
+/**
+ * myvar_del - Unset the value of a "my_" variable
+ * @param var Variable name
+ */
 static void myvar_del(const char *var)
 {
   struct MyVar *myv = NULL;
@@ -175,14 +184,28 @@ static char *getmailname(void)
 }
 #endif
 
+/**
+ * toggle_quadoption - Toggle the value of a quad-type
+ * @param opt Option to toggle
+ * @retval num New value
+ *
+ * Toggle the low bit:
+ * MUTT_NO    <--> MUTT_YES
+ * MUTT_ASKNO <--> MUTT_ASKYES
+ */
 static int toggle_quadoption(int opt)
 {
-  /* toggle the low bit
-   * MUTT_NO    <--> MUTT_YES
-   * MUTT_ASKNO <--> MUTT_ASKYES */
   return opt ^= 1;
 }
 
+/**
+ * parse_regex - Parse a regular expression
+ * @param idx Index of config item in MuttVars
+ * @param tmp Temporary Buffer space
+ * @param err Buffer for error messages
+ * @retval 0 Success
+ * @retval 1 Error
+ */
 static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
 {
   struct Regex **ptr = (struct Regex **) MuttVars[idx].var;
@@ -209,6 +232,12 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   return 0;
 }
 
+/**
+ * query_quadoption - Ask the user a quad-question
+ * @param opt    Option to use
+ * @param prompt Message to show to the user
+ * @retval num Result, e.g. #MUTT_YES
+ */
 int query_quadoption(int opt, const char *prompt)
 {
   switch (opt)
@@ -243,6 +272,14 @@ int mutt_option_index(const char *s)
 }
 
 #ifdef USE_LUA
+/**
+ * mutt_option_to_string - Convert an Option to a string
+ * @param opt Option to convert
+ * @param val Buffer for the result
+ * @param len Length of the buffer
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
 {
   mutt_debug(2, " * mutt_option_to_string(%s)\n", NONULL((char *) opt->var));
@@ -252,6 +289,15 @@ int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
   return 0;
 }
 
+/**
+ * mutt_option_get - Get the Option for a config string
+ * @param[in]  s   Name of the option
+ * @param[out] opt Option result
+ * @retval true  Success
+ * @retval false Error, option doesn't exist
+ *
+ * @note The caller must not free the Option.
+ */
 bool mutt_option_get(const char *s, struct Option *opt)
 {
   mutt_debug(2, " * mutt_option_get(%s)\n", s);
@@ -282,6 +328,10 @@ bool mutt_option_get(const char *s, struct Option *opt)
 }
 #endif
 
+/**
+ * free_mbtable - Free an MbTable
+ * @param t MbTable to free
+ */
 static void free_mbtable(struct MbTable **t)
 {
   if (!t || !*t)
@@ -293,6 +343,11 @@ static void free_mbtable(struct MbTable **t)
   FREE(t);
 }
 
+/**
+ * parse_mbtable - Parse an MbTable string
+ * @param s String to parse
+ * @retval ptr New MbTable
+ */
 static struct MbTable *parse_mbtable(const char *s)
 {
   size_t slen, k;
@@ -332,6 +387,15 @@ static struct MbTable *parse_mbtable(const char *s)
   return t;
 }
 
+/**
+ * parse_sort - Parse a sort string
+ * @param[out] val Sort ID, e.g. #SORT_DATE
+ * @param[in]  s   Sort string
+ * @param[in]  map Lookup table for the config item
+ * @param[out] err Buffer for error messages
+ * @retval 0  Success, valid sort string
+ * @retval -1 Error, invalid sort string
+ */
 static int parse_sort(short *val, const char *s, const struct Mapping *map, struct Buffer *err)
 {
   int i, flags = 0;
@@ -361,6 +425,13 @@ static int parse_sort(short *val, const char *s, const struct Mapping *map, stru
 }
 
 #ifdef USE_LUA
+/**
+ * mutt_option_set - Set an Option
+ * @param val Option to set
+ * @param err Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_option_set(const struct Option *val, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_option_set()\n");
@@ -505,6 +576,14 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 }
 #endif
 
+/**
+ * mutt_extract_token - Extract one token from a string
+ * @param dest  Buffer for the result
+ * @param tok   Buffer containing tokens
+ * @param flags Flags, e.g. #MUTT_TOKEN_SPACE
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 {
   if (!dest || !tok)
@@ -719,6 +798,10 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
   return 0;
 }
 
+/**
+ * free_opt - Free an Option
+ * @param p Option to free
+ */
 static void free_opt(struct Option *p)
 {
   switch (DTYPE(p->type))
@@ -842,7 +925,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
 }
 
 /**
- * finish_source - 'finish' command: stop processing current config file
+ * finish_source - Parse the 'finish' command
  * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
@@ -865,7 +948,7 @@ static int finish_source(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_ifdef - 'ifdef' command: conditional config
+ * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands
  * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
@@ -990,6 +1073,14 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
   }
 }
 
+/**
+ * parse_unignore - Parse the 'unignore' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_unignore(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
@@ -1007,6 +1098,14 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_ignore - Parse the 'ignore' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_ignore(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -1020,6 +1119,16 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_stailq - Parse a list command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ *
+ * This is used by 'alternative_order', 'auto_view' and several others.
+ */
 static int parse_stailq(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -1032,6 +1141,16 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_unstailq - Parse an unlist command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ *
+ * This is used by 'unalternative_order', 'unauto_view' and several others.
+ */
 static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
@@ -1052,6 +1171,14 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_echo - Parse the 'echo' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
 {
@@ -1069,6 +1196,9 @@ static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+/**
+ * alternates_clean - Clear the recipient valid flag of all emails
+ */
 static void alternates_clean(void)
 {
   if (!Context)
@@ -1078,6 +1208,15 @@ static void alternates_clean(void)
     Context->hdrs[i]->recip_valid = false;
 }
 
+/**
+ * parse_alternates - Parse the 'alternates' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_alternates(struct Buffer *buf, struct Buffer *s,
                             unsigned long data, struct Buffer *err)
 {
@@ -1109,6 +1248,15 @@ bail:
   return -1;
 }
 
+/**
+ * parse_unalternates - Parse the 'unalternates' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
@@ -1129,6 +1277,15 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_replace_list - Parse a string replacement rule
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
@@ -1163,6 +1320,15 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_unreplace_list - Remove a string replacement rule
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
@@ -1188,6 +1354,9 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * clear_subject_mods - Clear out all modified email subjects
+ */
 static void clear_subject_mods(void)
 {
   if (!Context)
@@ -1197,6 +1366,15 @@ static void clear_subject_mods(void)
     FREE(&Context->hdrs[i]->env->disp_subj);
 }
 
+/**
+ * parse_subjectrx_list - Parse the 'subjectrx' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
@@ -1208,6 +1386,15 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
+/**
+ * parse_unsubjectrx_list - Parse the 'unsubjectrx' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
@@ -1219,6 +1406,15 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
+/**
+ * parse_spam_list - Parse the 'spam' and 'nospam' commands
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
@@ -1295,6 +1491,14 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
 }
 
 #ifdef USE_SIDEBAR
+/**
+ * parse_path_list - Parse the 'sidebar_whitelist' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
@@ -1311,6 +1515,14 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_path_unlist - Parse the 'unsidebar_whitelist' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
@@ -1336,6 +1548,15 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
 }
 #endif
 
+/**
+ * parse_lists - Parse the 'lists' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
@@ -1375,6 +1596,15 @@ enum GroupState
   GS_ADDR
 };
 
+/**
+ * parse_group - Parse the 'group' and 'ungroup' commands
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
@@ -1624,6 +1854,15 @@ static int print_attach_list(struct ListHead *h, char op, char *name)
   return 0;
 }
 
+/**
+ * parse_attachments - Parse the 'attachments' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
@@ -1681,6 +1920,15 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   return parse_attach_list(buf, s, head, err);
 }
 
+/**
+ * parse_unattachments - Parse the 'unattachments' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
@@ -1724,6 +1972,15 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   return parse_unattach_list(buf, s, head, err);
 }
 
+/**
+ * parse_unlists - Parse the 'unlists' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unlists(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
@@ -1743,6 +2000,15 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_subscribe - Parse the 'subscribe' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
@@ -1774,6 +2040,15 @@ bail:
   return -1;
 }
 
+/**
+ * parse_unsubscribe - Parse the 'unsubscribe' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
@@ -1792,6 +2067,14 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_unalias - Parse the 'unalias' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_unalias(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
@@ -1839,6 +2122,15 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_alias - Parse the 'alias' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
@@ -1918,6 +2210,14 @@ bail:
   return -1;
 }
 
+/**
+ * parse_unmy_hdr - Parse the 'unmy_hdr' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
@@ -1950,6 +2250,15 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_my_hdr - Parse the 'my_hdr' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -1991,6 +2300,10 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * set_default - Set the default/initial value of a config item
+ * @param p Option to set
+ */
 static void set_default(struct Option *p)
 {
   switch (DTYPE(p->type))
@@ -2026,6 +2339,10 @@ static void set_default(struct Option *p)
   }
 }
 
+/**
+ * restore_default - Restore the default of an Option
+ * @param p Option to reset
+ */
 static void restore_default(struct Option *p)
 {
   switch (DTYPE(p->type))
@@ -2118,6 +2435,13 @@ static void restore_default(struct Option *p)
     mutt_menu_set_current_redraw_full();
 }
 
+/**
+ * esc_char - Escape a single character
+ * @param c      Character to escape
+ * @param p      Where in the buffer to place the escaped character
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ */
 static void esc_char(char c, char *p, char *buf, size_t buflen)
 {
   *p++ = '\\';
@@ -2125,6 +2449,13 @@ static void esc_char(char c, char *p, char *buf, size_t buflen)
     *p++ = c;
 }
 
+/**
+ * escape_string - Escape a string
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param src    String to escape
+ * @retval num Number of bytes written to the buffer
+ */
 static size_t escape_string(char *buf, size_t buflen, const char *src)
 {
   char *p = buf;
@@ -2159,6 +2490,15 @@ static size_t escape_string(char *buf, size_t buflen, const char *src)
   return p - buf;
 }
 
+/**
+ * pretty_var - Make a config value ready for user display
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param option Option
+ * @param val    Value to format
+ *
+ * This function escapes and quotes the string value.
+ */
 static void pretty_var(char *buf, size_t buflen, const char *option, const char *val)
 {
   char *p = NULL;
@@ -2180,6 +2520,13 @@ static void pretty_var(char *buf, size_t buflen, const char *option, const char 
   *p = '\0';
 }
 
+/**
+ * check_charset - Check a charset Option is valid
+ * @param opt Option
+ * @param val Value to check
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int check_charset(struct Option *opt, const char *val)
 {
   char *q = NULL, *s = mutt_str_strdup(val);
@@ -2204,12 +2551,26 @@ static int check_charset(struct Option *opt, const char *val)
   return rc;
 }
 
+/**
+ * valid_show_multipart_alternative - Is a string a valid multipart descriptor?
+ * @param val String to test
+ * @retval true It is value
+ */
 static bool valid_show_multipart_alternative(const char *val)
 {
   return ((mutt_str_strcmp(val, "inline") == 0) ||
           (mutt_str_strcmp(val, "info") == 0) || !val || (*val == 0));
 }
 
+/**
+ * parse_setenv - Parse the 'setenv' and 'unsetenv' commands
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_setenv(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -2291,6 +2652,17 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_set - Parse the 'set' family of commands
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * This is used by 'reset', 'set', 'toggle' and 'unset'.
+ */
 static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
@@ -3014,6 +3386,15 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
 #undef MAXERRS
 
+/**
+ * parse_source - Parse the 'source' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_source(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -3103,6 +3484,10 @@ finish:
   return r;
 }
 
+/**
+ * matches_ensure_morespace - Allocate more space for auto-completion
+ * @param current Current allocation
+ */
 static void matches_ensure_morespace(int current)
 {
   if (current <= (MatchesListsize - 2))
@@ -3148,6 +3533,12 @@ static void candidate(char *try, const char *src, char *dest, size_t dlen)
 }
 
 #ifdef USE_LUA
+/**
+ * mutt_command_get - Get a Command by its name
+ * @param s Command string to lookup
+ * @retval ptr  Success, Command
+ * @retval NULL Error, no such command
+ */
 const struct Command *mutt_command_get(const char *s)
 {
   for (int i = 0; Commands[i].name; i++)
@@ -3157,12 +3548,28 @@ const struct Command *mutt_command_get(const char *s)
 }
 #endif
 
+/**
+ * mutt_commands_apply - Run a callback function on every Command
+ * @param data        Data to pass to the callback function
+ * @param application Callback function
+ *
+ * This is used by Lua to expose all of NeoMutt's Commands.
+ */
 void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *))
 {
   for (int i = 0; Commands[i].name; i++)
     application(data, &Commands[i]);
 }
 
+/**
+ * mutt_command_complete - Complete a command name
+ * @param buf     Buffer for the result
+ * @param buflen  Length of the buffer
+ * @param pos     Cursor position in the buffer
+ * @param numtabs Number of times the user has hit 'tab'
+ * @retval 1 Success, a match
+ * @retval 0 Error, no match
+ */
 int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 {
   char *pt = buf;
@@ -3325,6 +3732,12 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
   return 1;
 }
 
+/**
+ * mutt_var_value_complete - Complete a variable/value
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param pos    Cursor position in the buffer
+ */
 int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 {
   char *pt = buf;
@@ -3378,7 +3791,10 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 #ifdef USE_NOTMUCH
 
 /**
- * complete_all_nm_tags - Pass a list of notmuch tags to the completion code
+ * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
+ * @param pt List of all Notmuch tags
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int complete_all_nm_tags(const char *pt)
 {
@@ -3432,6 +3848,12 @@ done:
 
 /**
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
+ * @param buf     Buffer for the result
+ * @param buflen  Length of the buffer
+ * @param pos     Cursor position in the buffer
+ * @param numtabs Number of times the user has hit 'tab'
+ * @retval true  Success, a match
+ * @retval false Error, no match
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.
  */
@@ -3483,6 +3905,11 @@ bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
 
 /**
  * mutt_nm_tag_complete - Complete to the nearest notmuch tag
+ * @param buf     Buffer for the result
+ * @param buflen  Length of the buffer
+ * @param numtabs Number of times the user has hit 'tab'
+ * @retval true  Success, a match
+ * @retval false Error, no match
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
@@ -3534,6 +3961,14 @@ bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
 }
 #endif
 
+/**
+ * var_to_string - Get a config item's value as a string
+ * @param idx Index of config item in MuttVars
+ * @param val Buffer for the result
+ * @param len Length of the buffer
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 int var_to_string(int idx, char *val, size_t len)
 {
   char tmp[LONG_STRING];
@@ -3676,6 +4111,9 @@ int mutt_query_variables(struct ListHead *queries)
 
 /**
  * mutt_dump_variables - Print a list of all variables with their values
+ * @param hide_sensitive Don't display the values of private config items
+ * @retval 0 Success
+ * @retval 1 Error
  */
 int mutt_dump_variables(bool hide_sensitive)
 {
@@ -3749,6 +4187,13 @@ static int execute_commands(struct ListHead *p)
   return 0;
 }
 
+/**
+ * find_cfg - Find a config file
+ * @param home         User's home directory
+ * @param xdg_cfg_home XDG home directory
+ * @retval ptr  Success, first matching directory
+ * @retval NULL Error, no matching directories
+ */
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
@@ -4107,6 +4552,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   return 0;
 }
 
+/**
+ * mutt_get_hook_type - Find a hook by name
+ * @param name Name to find
+ * @retval num Data associated with the hook
+ * @retval 0   Error, no matching hook
+ */
 int mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
@@ -4115,6 +4566,16 @@ int mutt_get_hook_type(const char *name)
   return 0;
 }
 
+/**
+ * parse_group_context - Parse a group context
+ * @param ctx  GroupContext to add to
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
                                struct Buffer *s, unsigned long data, struct Buffer *err)
 {
@@ -4146,6 +4607,15 @@ bail:
   return -1;
 }
 
+/**
+ * parse_tag_transforms - Parse the 'tag-transforms' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
@@ -4182,6 +4652,15 @@ static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_tag_formats - Parse the 'tag-formats' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
@@ -4220,7 +4699,7 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_IMAP
 /**
- * parse_subscribe_to - 'subscribe-to' command: Add an IMAP subscription.
+ * parse_subscribe_to - Parse the 'subscribe-to' command
  * @param buf  Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
@@ -4276,7 +4755,7 @@ static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel an IMAP subscription.
+ * parse_unsubscribe_from - Parse the 'unsubscribe-from' command
  * @param buf  Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
@@ -4330,6 +4809,12 @@ static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
 }
 #endif
 
+/**
+ * myvar_get - Get the value of a "my_" variable
+ * @param var Variable name
+ * @retval ptr  Success, value of variable
+ * @retval NULL Error, variable doesn't exist
+ */
 const char *myvar_get(const char *var)
 {
   struct MyVar *myv = NULL;
@@ -4343,6 +4828,14 @@ const char *myvar_get(const char *var)
   return NULL;
 }
 
+/**
+ * mutt_label_complete - Complete a label name
+ * @param buf     Buffer for the result
+ * @param buflen  Length of the buffer
+ * @param numtabs Number of times the user has hit 'tab'
+ * @retval 1 Success, a match
+ * @retval 0 Error, no match
+ */
 int mutt_label_complete(char *buf, size_t buflen, int numtabs)
 {
   char *pt = buf;
@@ -4396,6 +4889,13 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   return 1;
 }
 
+/**
+ * set_default_value - Set a config item's default/initial value
+ * @param name  Name of config item
+ * @param value Value to set
+ * @retval true  Success, value set
+ * @retval false Error, config item doesn't exist
+ */
 bool set_default_value(const char *name, intptr_t value)
 {
   if (!name)
@@ -4409,6 +4909,10 @@ bool set_default_value(const char *name, intptr_t value)
   return true;
 }
 
+/**
+ * reset_value - Reset a config item to its default/initial value
+ * @param name Name of config item
+ */
 void reset_value(const char *name)
 {
   if (!name)
