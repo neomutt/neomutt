@@ -2118,64 +2118,64 @@ static void restore_default(struct Option *p)
     mutt_menu_set_current_redraw_full();
 }
 
-static void esc_char(char c, char *p, char *dst, size_t len)
+static void esc_char(char c, char *p, char *buf, size_t buflen)
 {
   *p++ = '\\';
-  if (p - dst < len)
+  if (p - buf < buflen)
     *p++ = c;
 }
 
-static size_t escape_string(char *dst, size_t len, const char *src)
+static size_t escape_string(char *buf, size_t buflen, const char *src)
 {
-  char *p = dst;
+  char *p = buf;
 
-  if (!len)
+  if (!buflen)
     return 0;
-  len--; /* save room for \0 */
-  while (p - dst < len && src && *src)
+  buflen--; /* save room for \0 */
+  while (p - buf < buflen && src && *src)
   {
     switch (*src)
     {
       case '\n':
-        esc_char('n', p, dst, len);
+        esc_char('n', p, buf, buflen);
         p += 2;
         break;
       case '\r':
-        esc_char('r', p, dst, len);
+        esc_char('r', p, buf, buflen);
         p += 2;
         break;
       case '\t':
-        esc_char('t', p, dst, len);
+        esc_char('t', p, buf, buflen);
         p += 2;
         break;
       default:
-        if ((*src == '\\' || *src == '"') && p - dst < len - 1)
+        if ((*src == '\\' || *src == '"') && p - buf < buflen - 1)
           *p++ = '\\';
         *p++ = *src;
     }
     src++;
   }
   *p = '\0';
-  return p - dst;
+  return p - buf;
 }
 
-static void pretty_var(char *dst, size_t len, const char *option, const char *val)
+static void pretty_var(char *buf, size_t buflen, const char *option, const char *val)
 {
   char *p = NULL;
 
-  if (!len)
+  if (!buflen)
     return;
 
-  mutt_str_strfcpy(dst, option, len);
-  len--; /* save room for \0 */
-  p = dst + mutt_str_strlen(dst);
+  mutt_str_strfcpy(buf, option, buflen);
+  buflen--; /* save room for \0 */
+  p = buf + mutt_str_strlen(buf);
 
-  if (p - dst < len)
+  if (p - buf < buflen)
     *p++ = '=';
-  if (p - dst < len)
+  if (p - buf < buflen)
     *p++ = '"';
-  p += escape_string(p, len - (p - dst) + 1, val); /* \0 terminate it */
-  if (p - dst < len)
+  p += escape_string(p, buflen - (p - buf) + 1, val); /* \0 terminate it */
+  if (p - buf < buflen)
     *p++ = '"';
   *p = '\0';
 }
@@ -3119,14 +3119,14 @@ static void matches_ensure_morespace(int current)
 
 /**
  * candidate - helper function for completion
- * @param dest Completion result gets here
- * @param src  Candidate for completion
  * @param try  User entered data for completion
- * @param len  Length of dest buffer
+ * @param src  Candidate for completion
+ * @param dest Completion result gets here
+ * @param dlen Length of dest buffer
  *
  * Changes the dest buffer if necessary/possible to aid completion.
 */
-static void candidate(char *dest, char *try, const char *src, size_t len)
+static void candidate(char *try, const char *src, char *dest, size_t dlen)
 {
   if (!dest || !try || !src)
     return;
@@ -3137,7 +3137,7 @@ static void candidate(char *dest, char *try, const char *src, size_t len)
   matches_ensure_morespace(NumMatched);
   Matches[NumMatched++] = src;
   if (dest[0] == 0)
-    mutt_str_strfcpy(dest, src, len);
+    mutt_str_strfcpy(dest, src, dlen);
   else
   {
     int l;
@@ -3163,21 +3163,21 @@ void mutt_commands_apply(void *data, void (*application)(void *, const struct Co
     application(data, &Commands[i]);
 }
 
-int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
+int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 {
-  char *pt = buffer;
+  char *pt = buf;
   int num;
   int spaces; /* keep track of the number of leading spaces on the line */
   struct MyVar *myv = NULL;
 
-  SKIPWS(buffer);
-  spaces = buffer - pt;
+  SKIPWS(buf);
+  spaces = buf - pt;
 
-  pt = buffer + pos - spaces;
-  while ((pt > buffer) && !isspace((unsigned char) *pt))
+  pt = buf + pos - spaces;
+  while ((pt > buf) && !isspace((unsigned char) *pt))
     pt--;
 
-  if (pt == buffer) /* complete cmd */
+  if (pt == buf) /* complete cmd */
   {
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
@@ -3187,12 +3187,12 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; Commands[num].name; num++)
-        candidate(Completed, UserTyped, Commands[num].name, sizeof(Completed));
+        candidate(UserTyped, Commands[num].name, Completed, sizeof(Completed));
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buf'. Fake successful return this time */
       if (UserTyped[0] == 0)
         return 1;
     }
@@ -3211,18 +3211,18 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     }
 
     /* return the completed command */
-    strncpy(buffer, Completed, len - spaces);
+    strncpy(buf, Completed, buflen - spaces);
   }
-  else if ((mutt_str_strncmp(buffer, "set", 3) == 0) ||
-           (mutt_str_strncmp(buffer, "unset", 5) == 0) ||
-           (mutt_str_strncmp(buffer, "reset", 5) == 0) ||
-           (mutt_str_strncmp(buffer, "toggle", 6) == 0))
+  else if ((mutt_str_strncmp(buf, "set", 3) == 0) ||
+           (mutt_str_strncmp(buf, "unset", 5) == 0) ||
+           (mutt_str_strncmp(buf, "reset", 5) == 0) ||
+           (mutt_str_strncmp(buf, "toggle", 6) == 0))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_strncmp(buffer, "set", 3) == 0)
+    if (mutt_str_strncmp(buf, "set", 3) == 0)
     {
       for (num = 0; prefixes[num]; num++)
       {
@@ -3242,16 +3242,16 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; MuttVars[num].name; num++)
-        candidate(Completed, UserTyped, MuttVars[num].name, sizeof(Completed));
+        candidate(UserTyped, MuttVars[num].name, Completed, sizeof(Completed));
       TAILQ_FOREACH(myv, &MyVars, entries)
       {
-        candidate(Completed, UserTyped, myv->name, sizeof(Completed));
+        candidate(UserTyped, myv->name, Completed, sizeof(Completed));
       }
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buf'. Fake successful return this time */
       if (UserTyped[0] == 0)
         return 1;
     }
@@ -3269,9 +3269,9 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
-    strncpy(pt, Completed, buffer + len - pt - spaces);
+    strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
-  else if (mutt_str_strncmp(buffer, "exec", 4) == 0)
+  else if (mutt_str_strncmp(buf, "exec", 4) == 0)
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
@@ -3287,19 +3287,19 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; menu[num].name; num++)
-        candidate(Completed, UserTyped, menu[num].name, sizeof(Completed));
+        candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       /* try the generic menu */
       if (Completed[0] == 0 && CurrentMenu != MENU_PAGER)
       {
         menu = OpGeneric;
         for (num = 0; menu[num].name; num++)
-          candidate(Completed, UserTyped, menu[num].name, sizeof(Completed));
+          candidate(UserTyped, menu[num].name, Completed, sizeof(Completed));
       }
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buf'. Fake successful return this time */
       if (UserTyped[0] == 0)
         return 1;
     }
@@ -3317,7 +3317,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
-    strncpy(pt, Completed, buffer + len - pt - spaces);
+    strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
   else
     return 0;
@@ -3325,24 +3325,24 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
   return 1;
 }
 
-int mutt_var_value_complete(char *buffer, size_t len, int pos)
+int mutt_var_value_complete(char *buf, size_t buflen, int pos)
 {
-  char *pt = buffer;
+  char *pt = buf;
 
-  if (buffer[0] == 0)
+  if (buf[0] == 0)
     return 0;
 
-  SKIPWS(buffer);
-  const int spaces = buffer - pt;
+  SKIPWS(buf);
+  const int spaces = buf - pt;
 
-  pt = buffer + pos - spaces;
-  while ((pt > buffer) && !isspace((unsigned char) *pt))
+  pt = buf + pos - spaces;
+  while ((pt > buf) && !isspace((unsigned char) *pt))
     pt--;
   pt++;           /* move past the space */
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_strncmp(buffer, "set", 3) == 0)
+  if (mutt_str_strncmp(buf, "set", 3) == 0)
   {
     int idx;
     char val[LONG_STRING];
@@ -3361,14 +3361,14 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
       myvarval = myvar_get(var);
       if (myvarval)
       {
-        pretty_var(pt, len - (pt - buffer), var, myvarval);
+        pretty_var(pt, buflen - (pt - buf), var, myvarval);
         return 1;
       }
       return 0; /* no such variable. */
     }
     else if (var_to_string(idx, val, sizeof(val)))
     {
-      snprintf(pt, len - (pt - buffer), "%s=\"%s\"", var, val);
+      snprintf(pt, buflen - (pt - buf), "%s=\"%s\"", var, val);
       return 1;
     }
   }
@@ -3419,7 +3419,7 @@ static int complete_all_nm_tags(const char *pt)
   /* Put them into the completion machinery. */
   for (int num = 0; num < tag_count_1; num++)
   {
-    candidate(Completed, UserTyped, nm_tags[num], sizeof(Completed));
+    candidate(UserTyped, nm_tags[num], Completed, sizeof(Completed));
   }
 
   matches_ensure_morespace(NumMatched);
@@ -3435,15 +3435,15 @@ done:
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.
  */
-bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
+bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
 {
-  char *pt = buffer;
+  char *pt = buf;
   int spaces;
 
-  SKIPWS(buffer);
-  spaces = buffer - pt;
+  SKIPWS(buf);
+  spaces = buf - pt;
 
-  pt = (char *) mutt_str_rstrnstr((char *) buffer, pos, "tag:");
+  pt = (char *) mutt_str_rstrnstr((char *) buf, pos, "tag:");
   if (pt)
   {
     pt += 4;
@@ -3453,7 +3453,7 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
       complete_all_nm_tags(pt);
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buffer'. Fake successful return this time.
+       * i.e. don't change 'buf'. Fake successful return this time.
        */
       if (UserTyped[0] == 0)
         return true;
@@ -3473,7 +3473,7 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
     }
 
     /* return the completed query */
-    strncpy(pt, Completed, buffer + len - pt - spaces);
+    strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
   else
     return false;
@@ -3486,15 +3486,15 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
-bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
+bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
 {
-  if (!buffer)
+  if (!buf)
     return false;
 
-  char *pt = buffer;
+  char *pt = buf;
 
   /* Only examine the last token */
-  char *last_space = strrchr(buffer, ' ');
+  char *last_space = strrchr(buf, ' ');
   if (last_space)
     pt = (last_space + 1);
 
@@ -3508,7 +3508,7 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
     complete_all_nm_tags(pt);
 
     /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. don't change 'buffer'. Fake successful return this time.
+     * i.e. don't change 'buf'. Fake successful return this time.
      */
     if (UserTyped[0] == 0)
       return true;
@@ -3528,7 +3528,7 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
   }
 
   /* return the completed query */
-  strncpy(pt, Completed, buffer + len - pt);
+  strncpy(pt, Completed, buf + buflen - pt);
 
   return true;
 }
@@ -3677,7 +3677,7 @@ int mutt_query_variables(struct ListHead *queries)
 /**
  * mutt_dump_variables - Print a list of all variables with their values
  */
-int mutt_dump_variables(int hide_sensitive)
+int mutt_dump_variables(bool hide_sensitive)
 {
   char command[STRING];
 
@@ -3869,7 +3869,7 @@ static bool get_hostname(void)
  * @retval 0 Success
  * @retval 1 Error
  */
-int mutt_init(int skip_sys_rc, struct ListHead *commands)
+int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 {
   char buffer[LONG_STRING];
   int need_pause = 0;
@@ -4221,7 +4221,7 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_IMAP
 /**
  * parse_subscribe_to - 'subscribe-to' command: Add an IMAP subscription.
- * @param b    Buffer space shared by all command handlers
+ * @param buf  Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -4232,17 +4232,17 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
  * Patterns are not supported.
  * Use it as follows: subscribe-to =folder
  */
-static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
+static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
-  if (!b || !s || !err)
+  if (!buf || !s || !err)
     return -1;
 
   mutt_buffer_reset(err);
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(b, s, 0);
+    mutt_extract_token(buf, s, 0);
 
     if (MoreArgs(s))
     {
@@ -4250,17 +4250,17 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
       return -1;
     }
 
-    if (b->data && *b->data)
+    if (buf->data && *buf->data)
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0)
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), 1) != 0)
       {
-        mutt_buffer_printf(err, _("Could not subscribe to %s"), b->data);
+        mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
         return -1;
       }
       else
       {
-        mutt_message(_("Subscribed to %s"), b->data);
+        mutt_message(_("Subscribed to %s"), buf->data);
         return 0;
       }
     }
@@ -4277,7 +4277,7 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
 
 /**
  * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel an IMAP subscription.
- * @param b    Buffer space shared by all command handlers
+ * @param buf  Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -4288,15 +4288,15 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
  * Patterns are not supported.
  * Use it as follows: unsubscribe-from =folder
  */
-static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
+static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
-  if (!b || !s || !err)
+  if (!buf || !s || !err)
     return -1;
 
   if (MoreArgs(s))
   {
-    mutt_extract_token(b, s, 0);
+    mutt_extract_token(buf, s, 0);
 
     if (MoreArgs(s))
     {
@@ -4304,17 +4304,17 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
       return -1;
     }
 
-    if (b->data && *b->data)
+    if (buf->data && *buf->data)
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0)
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), 0) != 0)
       {
-        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), b->data);
+        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
         return -1;
       }
       else
       {
-        mutt_message(_("Unsubscribed from %s"), b->data);
+        mutt_message(_("Unsubscribed from %s"), buf->data);
         return 0;
       }
     }
@@ -4343,16 +4343,16 @@ const char *myvar_get(const char *var)
   return NULL;
 }
 
-int mutt_label_complete(char *buffer, size_t len, int numtabs)
+int mutt_label_complete(char *buf, size_t buflen, int numtabs)
 {
-  char *pt = buffer;
+  char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
 
   if (!Context || !Context->label_hash)
     return 0;
 
-  SKIPWS(buffer);
-  spaces = buffer - pt;
+  SKIPWS(buf);
+  spaces = buf - pt;
 
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
@@ -4361,18 +4361,18 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
     struct HashWalkState state;
 
     NumMatched = 0;
-    mutt_str_strfcpy(UserTyped, buffer, sizeof(UserTyped));
+    mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
     memset(&state, 0, sizeof(state));
     while ((entry = mutt_hash_walk(Context->label_hash, &state)))
-      candidate(Completed, UserTyped, entry->key.strkey, sizeof(Completed));
+      candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
     qsort(Matches, NumMatched, sizeof(char *), (sort_t *) mutt_str_strcasecmp);
     Matches[NumMatched++] = UserTyped;
 
     /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. don't change 'buffer'. Fake successful return this time */
+     * i.e. don't change 'buf'. Fake successful return this time */
     if (UserTyped[0] == 0)
       return 1;
   }
@@ -4391,7 +4391,7 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
   }
 
   /* return the completed label */
-  strncpy(buffer, Completed, len - spaces);
+  strncpy(buf, Completed, buflen - spaces);
 
   return 1;
 }

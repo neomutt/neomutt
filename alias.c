@@ -501,19 +501,19 @@ void mutt_alias_delete_reverse(struct Alias *t)
  * from the alias list as much as possible. if given empty search string
  * or found nothing, present all aliases
  */
-int mutt_alias_complete(char *s, size_t buflen)
+int mutt_alias_complete(char *buf, size_t buflen)
 {
   struct Alias *a = NULL, *tmp = NULL;
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
   char bestname[HUGE_STRING];
 
-  if (s[0] != 0) /* avoid empty string as strstr argument */
+  if (buf[0] != 0) /* avoid empty string as strstr argument */
   {
     memset(bestname, 0, sizeof(bestname));
 
     TAILQ_FOREACH(a, &Aliases, entries)
     {
-      if (a->name && strncmp(a->name, s, strlen(s)) == 0)
+      if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)
       {
         if (!bestname[0]) /* init */
           mutt_str_strfcpy(bestname, a->name,
@@ -530,17 +530,17 @@ int mutt_alias_complete(char *s, size_t buflen)
 
     if (bestname[0] != 0)
     {
-      if (mutt_str_strcmp(bestname, s) != 0)
+      if (mutt_str_strcmp(bestname, buf) != 0)
       {
         /* we are adding something to the completion */
-        mutt_str_strfcpy(s, bestname, mutt_str_strlen(bestname) + 1);
+        mutt_str_strfcpy(buf, bestname, mutt_str_strlen(bestname) + 1);
         return 1;
       }
 
       /* build alias list and show it */
       TAILQ_FOREACH(a, &Aliases, entries)
       {
-        if (a->name && strncmp(a->name, s, strlen(s)) == 0)
+        if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)
         {
           tmp = mutt_mem_calloc(1, sizeof(struct Alias));
           memcpy(tmp, a, sizeof(struct Alias));
@@ -553,7 +553,7 @@ int mutt_alias_complete(char *s, size_t buflen)
   bestname[0] = '\0';
   mutt_alias_menu(bestname, sizeof(bestname), !TAILQ_EMPTY(&a_list) ? &a_list : &Aliases);
   if (bestname[0] != 0)
-    mutt_str_strfcpy(s, bestname, buflen);
+    mutt_str_strfcpy(buf, bestname, buflen);
 
   /* free the alias list */
   TAILQ_FOREACH_SAFE(a, &a_list, entries, tmp)

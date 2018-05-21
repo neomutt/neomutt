@@ -47,15 +47,15 @@
 
 /**
  * mutt_complete - Attempt to complete a partial pathname
- * @param s    Buffer containing pathname
- * @param slen Buffer length
+ * @param buf    Buffer containing pathname
+ * @param buflen Length of buffer
  * @retval 0 if ok
  * @retval -1 if no matches
  *
  * Given a partial pathname, fill in as much of the rest of the path as is
  * unique.
  */
-int mutt_complete(char *s, size_t slen)
+int mutt_complete(char *buf, size_t buflen)
 {
   char *p = NULL;
   DIR *dirp = NULL;
@@ -68,7 +68,7 @@ int mutt_complete(char *s, size_t slen)
   char imap_path[LONG_STRING];
 #endif
 
-  mutt_debug(2, "completing %s\n", s);
+  mutt_debug(2, "completing %s\n", buf);
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -76,7 +76,7 @@ int mutt_complete(char *s, size_t slen)
     struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int n = 0;
 
-    mutt_str_strfcpy(filepart, s, sizeof(filepart));
+    mutt_str_strfcpy(filepart, buf, sizeof(filepart));
 
     /* special case to handle when there is no filepart yet
      * find the first subscribed newsgroup */
@@ -124,62 +124,62 @@ int mutt_complete(char *s, size_t slen)
       }
     }
 
-    mutt_str_strfcpy(s, filepart, slen);
+    mutt_str_strfcpy(buf, filepart, buflen);
     return (init ? 0 : -1);
   }
 #endif
 
 #ifdef USE_IMAP
   /* we can use '/' as a delimiter, imap_complete rewrites it */
-  if (*s == '=' || *s == '+' || *s == '!')
+  if (*buf == '=' || *buf == '+' || *buf == '!')
   {
-    if (*s == '!')
+    if (*buf == '!')
       p = NONULL(Spoolfile);
     else
       p = NONULL(Folder);
 
-    mutt_file_concat_path(imap_path, p, s + 1, sizeof(imap_path));
+    mutt_file_concat_path(imap_path, p, buf + 1, sizeof(imap_path));
   }
   else
-    mutt_str_strfcpy(imap_path, s, sizeof(imap_path));
+    mutt_str_strfcpy(imap_path, buf, sizeof(imap_path));
 
   if (mx_is_imap(imap_path))
-    return imap_complete(s, slen, imap_path);
+    return imap_complete(buf, buflen, imap_path);
 #endif
 
-  if (*s == '=' || *s == '+' || *s == '!')
+  if (*buf == '=' || *buf == '+' || *buf == '!')
   {
-    dirpart[0] = *s;
+    dirpart[0] = *buf;
     dirpart[1] = '\0';
-    if (*s == '!')
+    if (*buf == '!')
       mutt_str_strfcpy(exp_dirpart, NONULL(Spoolfile), sizeof(exp_dirpart));
     else
       mutt_str_strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
-    p = strrchr(s, '/');
+    p = strrchr(buf, '/');
     if (p)
     {
-      char buf[_POSIX_PATH_MAX];
-      if (mutt_file_concatn_path(buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart),
-                                 s + 1, (size_t)(p - s - 1)) == NULL)
+      char tmp[_POSIX_PATH_MAX];
+      if (mutt_file_concatn_path(tmp, sizeof(tmp), exp_dirpart, strlen(exp_dirpart),
+                                 buf + 1, (size_t)(p - buf - 1)) == NULL)
       {
         return -1;
       }
-      mutt_str_strfcpy(exp_dirpart, buf, sizeof(exp_dirpart));
-      mutt_str_substr_cpy(dirpart, s, p + 1, sizeof(dirpart));
+      mutt_str_strfcpy(exp_dirpart, tmp, sizeof(exp_dirpart));
+      mutt_str_substr_cpy(dirpart, buf, p + 1, sizeof(dirpart));
       mutt_str_strfcpy(filepart, p + 1, sizeof(filepart));
     }
     else
-      mutt_str_strfcpy(filepart, s + 1, sizeof(filepart));
+      mutt_str_strfcpy(filepart, buf + 1, sizeof(filepart));
     dirp = opendir(exp_dirpart);
   }
   else
   {
-    p = strrchr(s, '/');
+    p = strrchr(buf, '/');
     if (p)
     {
-      if (p == s) /* absolute path */
+      if (p == buf) /* absolute path */
       {
-        p = s + 1;
+        p = buf + 1;
         mutt_str_strfcpy(dirpart, "/", sizeof(dirpart));
         exp_dirpart[0] = '\0';
         mutt_str_strfcpy(filepart, p, sizeof(filepart));
@@ -187,7 +187,7 @@ int mutt_complete(char *s, size_t slen)
       }
       else
       {
-        mutt_str_substr_cpy(dirpart, s, p, sizeof(dirpart));
+        mutt_str_substr_cpy(dirpart, buf, p, sizeof(dirpart));
         mutt_str_strfcpy(filepart, p + 1, sizeof(filepart));
         mutt_str_strfcpy(exp_dirpart, dirpart, sizeof(exp_dirpart));
         mutt_expand_path(exp_dirpart, sizeof(exp_dirpart));
@@ -198,7 +198,7 @@ int mutt_complete(char *s, size_t slen)
     {
       /* no directory name, so assume current directory. */
       dirpart[0] = '\0';
-      mutt_str_strfcpy(filepart, s, sizeof(filepart));
+      mutt_str_strfcpy(filepart, buf, sizeof(filepart));
       dirp = opendir(".");
     }
   }
@@ -246,7 +246,7 @@ int mutt_complete(char *s, size_t slen)
       }
       else
       {
-        char buf[_POSIX_PATH_MAX];
+        char tmp[_POSIX_PATH_MAX];
         struct stat st;
 
         mutt_str_strfcpy(filepart, de->d_name, sizeof(filepart));
@@ -254,13 +254,13 @@ int mutt_complete(char *s, size_t slen)
         /* check to see if it is a directory */
         if (dirpart[0])
         {
-          mutt_str_strfcpy(buf, exp_dirpart, sizeof(buf));
-          mutt_str_strfcpy(buf + strlen(buf), "/", sizeof(buf) - strlen(buf));
+          mutt_str_strfcpy(tmp, exp_dirpart, sizeof(tmp));
+          mutt_str_strfcpy(tmp + strlen(tmp), "/", sizeof(tmp) - strlen(tmp));
         }
         else
-          buf[0] = 0;
-        mutt_str_strfcpy(buf + strlen(buf), filepart, sizeof(buf) - strlen(buf));
-        if (stat(buf, &st) != -1 && (st.st_mode & S_IFDIR))
+          tmp[0] = 0;
+        mutt_str_strfcpy(tmp + strlen(tmp), filepart, sizeof(tmp) - strlen(tmp));
+        if (stat(tmp, &st) != -1 && (st.st_mode & S_IFDIR))
           mutt_str_strfcpy(filepart + strlen(filepart), "/",
                            sizeof(filepart) - strlen(filepart));
         init = 1;
@@ -271,13 +271,13 @@ int mutt_complete(char *s, size_t slen)
 
   if (dirpart[0])
   {
-    mutt_str_strfcpy(s, dirpart, slen);
+    mutt_str_strfcpy(buf, dirpart, buflen);
     if ((mutt_str_strcmp("/", dirpart) != 0) && dirpart[0] != '=' && dirpart[0] != '+')
-      mutt_str_strfcpy(s + strlen(s), "/", slen - strlen(s));
-    mutt_str_strfcpy(s + strlen(s), filepart, slen - strlen(s));
+      mutt_str_strfcpy(buf + strlen(buf), "/", buflen - strlen(buf));
+    mutt_str_strfcpy(buf + strlen(buf), filepart, buflen - strlen(buf));
   }
   else
-    mutt_str_strfcpy(s, filepart, slen);
+    mutt_str_strfcpy(buf, filepart, buflen);
 
   return (init ? 0 : -1);
 }
