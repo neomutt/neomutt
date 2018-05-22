@@ -1374,7 +1374,11 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           delete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete messages"));
 
         CHECK_ATTACH;
         mutt_pattern_func(MUTT_DELETE, _("Delete messages matching: "));
@@ -1603,7 +1607,11 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           undelete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         if (mutt_pattern_func(MUTT_UNDELETE,
                               _("Undelete messages matching: ")) == 0)
@@ -2769,7 +2777,11 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           delete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete messages"));
 
         {
           int subthread = (op == OP_DELETE_SUBTHREAD);
@@ -3003,7 +3015,11 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_SEEN, _("Cannot mark message(s) as read"));
+        /* L10N: Due to the implementation details we do not know whether we
+           mark zero, 1, 12, ... messages as read. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_SEEN, _("Cannot mark messages as read"));
 
         rc = mutt_thread_set_flag(CURHDR, MUTT_READ, 1, op == OP_MAIN_READ_THREAD ? 0 : 1);
 
@@ -3200,7 +3216,11 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           undelete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         rc = mutt_thread_set_flag(CURHDR, MUTT_DELETE, 0, op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
