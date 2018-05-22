@@ -610,15 +610,17 @@ static int trash_append(struct Context *ctx)
 {
   struct Context ctx_trash;
   int i;
+  int delmsgcount;
   struct stat st, stc;
   int opt_confappend, rc;
 
   if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
     return 0;
 
+  delmsgcount = 0;
   for (i = 0; i < ctx->msgcount; i++)
     if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
-      break;
+      delmsgcount++;
   if (i == ctx->msgcount)
     return 0; /* nothing to be done */
 
@@ -631,7 +633,10 @@ static int trash_append(struct Context *ctx)
     Confirmappend = true;
   if (rc != 0)
   {
-    mutt_error(_("message(s) not deleted"));
+    /* L10N: Although we now the precise number of messages, we do not show it to the user.
+       So feel free to use a "generic plural" as plural translation if your language has one.
+     */
+    mutt_error(ngettext("message not deleted", "messages not deleted", delmsgcount));
     return -1;
   }
 
