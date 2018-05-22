@@ -1194,28 +1194,60 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
       char pretty_size[10];
+      long size = 0;
+
       char *length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
-        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
+        size = strtol(length, NULL, 10);
+        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
         if (expire != -1)
         {
-          /* L10N: If the translation of this string is a multi line string, then
-             each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
-             expands to a date as returned by `mutt_date_parse_date()`.
-           */
-          str = _("[-- This %s/%s attachment (size %s bytes) has been deleted "
-                  "--]\n[-- on %s --]\n");
+          str = ngettext(
+              /* L10N: If the translation of this string is a multi line string, then
+                 each line should start with "[-- " and end with " --]".
+                 The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+                 expands to a date as returned by `mutt_date_parse_date()`.
+
+                 Note: The size argument printed is not the actual number as passed
+                 to gettext but the prettified version, e.g. size = 2048 will be
+                 printed as 2K.  Your language might be sensitive to that: For
+                 example although '1K' and '1024' represent the same number your
+                 language might inflect the noun 'byte' differently.
+
+                 Sadly, we cannot do anything about that at the moment besides
+                 passing the precise size in bytes. If you are interested the
+                 function responsible for the prettification is
+                 mutt_str_pretty_size() in mutt/string.c.
+               */
+              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
+              "[-- on %s --]\n",
+              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
+              "[-- on %s --]\n",
+              size);
         }
         else
         {
-          /* L10N: If the translation of this string is a multi line string, then
-             each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain".
-           */
-          str = _("[-- This %s/%s attachment (size %s bytes) has been deleted "
-                  "--]\n");
+          str = ngettext(
+              /* L10N: If the translation of this string is a multi line string, then
+                 each line should start with "[-- " and end with " --]".
+                 The first "%s/%s" is a MIME type, e.g. "text/plain".
+
+                 Note: The size argument printed is not the actual number as passed
+                 to gettext but the prettified version, e.g. size = 2048 will be
+                 printed as 2K.  Your language might be sensitive to that: For
+                 example although '1K' and '1024' represent the same number your
+                 language might inflect the noun 'byte' differently.
+
+                 Sadly, we cannot do anything about that at the moment besides
+                 passing the precise size in bytes. If you are interested the
+                 function responsible for the prettification is
+                 mutt_str_pretty_size() in mutt/string.c.
+               */
+              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
+              "[-- This %s/%s attachment (size %s bytes) has been deleted "
+              "--]\n",
+              size);
         }
       }
       else
