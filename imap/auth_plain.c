@@ -47,7 +47,7 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {
   int rc;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
-  const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
+  static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
   char buf[STRING];
 
   if (mutt_account_getuser(&idata->conn->account) < 0)
