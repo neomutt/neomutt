@@ -756,7 +756,12 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     if (is_spool && *mbox)
     {
       mutt_expand_path(mbox, sizeof(mbox));
-      snprintf(buf, sizeof(buf), _("Move %d read messages to %s?"), read_msgs, mbox);
+      snprintf(buf, sizeof(buf),
+               /* L10N: The first argument is the number of read messages to be
+                  moved, the second argument is the target mailbox. */
+               ngettext("Move %d read message to %s?",
+                        "Move %d read messages to %s?", read_msgs),
+               read_msgs, mbox);
       move_messages = query_quadoption(Move, buf);
       if (move_messages == MUTT_ABORT)
       {
