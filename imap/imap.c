@@ -528,33 +528,33 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
 
 /**
  * complete_hosts - Look for completion matches for mailboxes
- * @param dest Partial mailbox name to complete
- * @param len  Length of buffer
+ * @param buf Partial mailbox name to complete
+ * @param buflen  Length of buffer
  * @retval  0 Success
  * @retval -1 Failure
  *
  * look for IMAP URLs to complete from defined mailboxes. Could be extended to
  * complete over open connections and account/folder hooks too.
  */
-static int complete_hosts(char *dest, size_t len)
+static int complete_hosts(char *buf, size_t buflen)
 {
   struct Buffy *mailbox = NULL;
   struct Connection *conn = NULL;
   int rc = -1;
   size_t matchlen;
 
-  matchlen = mutt_str_strlen(dest);
+  matchlen = mutt_str_strlen(buf);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {
-    if (mutt_str_strncmp(dest, mailbox->path, matchlen) == 0)
+    if (mutt_str_strncmp(buf, mailbox->path, matchlen) == 0)
     {
       if (rc)
       {
-        mutt_str_strfcpy(dest, mailbox->path, len);
+        mutt_str_strfcpy(buf, mailbox->path, buflen);
         rc = 0;
       }
       else
-        longest_common_prefix(dest, mailbox->path, matchlen, len);
+        longest_common_prefix(buf, mailbox->path, matchlen, buflen);
     }
   }
 
@@ -571,15 +571,15 @@ static int complete_hosts(char *dest, size_t len)
     url.user = NULL;
     url.path = NULL;
     url_tostring(&url, urlstr, sizeof(urlstr), 0);
-    if (mutt_str_strncmp(dest, urlstr, matchlen) == 0)
+    if (mutt_str_strncmp(buf, urlstr, matchlen) == 0)
     {
       if (rc)
       {
-        mutt_str_strfcpy(dest, urlstr, len);
+        mutt_str_strfcpy(buf, urlstr, buflen);
         rc = 0;
       }
       else
-        longest_common_prefix(dest, urlstr, matchlen, len);
+        longest_common_prefix(buf, urlstr, matchlen, buflen);
     }
   }
 
@@ -1763,8 +1763,8 @@ fail:
 
 /**
  * imap_complete - Try to complete an IMAP folder path
- * @param dest Buffer for result
- * @param dlen Length of buffer
+ * @param buf Buffer for result
+ * @param buflen Length of buffer
  * @param path Partial mailbox name to complete
  * @retval  0 Success
  * @retval -1 Failure
@@ -1772,11 +1772,11 @@ fail:
  * Given a partial IMAP folder path, return a string which adds as much to the
  * path as is unique
  */
-int imap_complete(char *dest, size_t dlen, char *path)
+int imap_complete(char *buf, size_t buflen, char *path)
 {
   struct ImapData *idata = NULL;
   char list[LONG_STRING];
-  char buf[LONG_STRING];
+  char tmp[LONG_STRING];
   struct ImapList listresp;
   char completion[LONG_STRING];
   int clen;
@@ -1787,8 +1787,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
 
   if (imap_parse_path(path, &mx))
   {
-    mutt_str_strfcpy(dest, path, dlen);
-    return complete_hosts(dest, dlen);
+    mutt_str_strfcpy(buf, path, buflen);
+    return complete_hosts(buf, buflen);
   }
 
   /* don't open a new socket just for completion. Instead complete over
@@ -1797,8 +1797,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
   if (!idata)
   {
     FREE(&mx.mbox);
-    mutt_str_strfcpy(dest, path, dlen);
-    return complete_hosts(dest, dlen);
+    mutt_str_strfcpy(buf, path, buflen);
+    return complete_hosts(buf, buflen);
   }
 
   /* reformat path for IMAP list, and append wildcard */
@@ -1809,9 +1809,9 @@ int imap_complete(char *dest, size_t dlen, char *path)
     list[0] = '\0';
 
   /* fire off command */
-  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"", ImapListSubscribed ? "LSUB" : "LIST", list);
+  snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"", ImapListSubscribed ? "LSUB" : "LIST", list);
 
-  imap_cmd_start(idata, buf);
+  imap_cmd_start(idata, tmp);
 
   /* and see what the results are */
   mutt_str_strfcpy(completion, NONULL(mx.mbox), sizeof(completion));
@@ -1850,8 +1850,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path(dest, dlen, &mx, completion);
-    mutt_pretty_mailbox(dest, dlen);
+    imap_qualify_path(buf, buflen, &mx, completion);
+    mutt_pretty_mailbox(buf, buflen);
 
     FREE(&mx.mbox);
     return 0;

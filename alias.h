@@ -46,12 +46,10 @@ TAILQ_HEAD(AliasList, Alias);
 
 void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
 void            mutt_alias_free(struct Alias **p);
-struct Address *mutt_alias_lookup(const char *s);
-
 void            mutt_aliaslist_free(struct AliasList *a_list);
-
+struct Address *mutt_alias_lookup(const char *s);
+void            mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_expand_aliases(struct Address *a);
-void mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
 
 #endif /* _MUTT_ALIAS_H */

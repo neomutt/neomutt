@@ -590,6 +590,15 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
 
 #ifdef HAVE_COLOR
 
+/**
+ * mutt_parse_uncolor - Parse the 'uncolor' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
@@ -598,6 +607,15 @@ int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 #endif
 
+/**
+ * mutt_parse_unmono - Parse the 'unmono' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
 {
@@ -995,6 +1013,15 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 
+/**
+ * mutt_parse_color - Parse the 'color' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
@@ -1008,6 +1035,15 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 #endif
 
+/**
+ * mutt_parse_mono - Parse the 'mono' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {

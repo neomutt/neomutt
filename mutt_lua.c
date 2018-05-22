@@ -390,6 +390,15 @@ static bool lua_init(lua_State **l)
 
 lua_State *Lua = NULL;
 
+/**
+ * mutt_lua_parse - Parse the 'lua' command
+ * @param tmp  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   lua_init(&Lua);
@@ -407,6 +416,15 @@ int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, str
   return 2;
 }
 
+/**
+ * mutt_lua_source_file - Parse the 'lua-source' command
+ * @param tmp  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {

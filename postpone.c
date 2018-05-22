@@ -385,10 +385,9 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 #ifdef MIXMASTER
     else if (mutt_str_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
-      char *t = NULL;
       mutt_list_free(&hdr->chain);
 
-      t = strtok(np->data + 11, " \t\n");
+      char *t = strtok(np->data + 11, " \t\n");
       while (t)
       {
         mutt_list_insert_tail(&hdr->chain, mutt_str_strdup(t));

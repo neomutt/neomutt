@@ -1350,7 +1350,7 @@ static int match_addrlist(struct Pattern *pat, int match_personal, int n, ...)
   {
     for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
     {
-      if (pat->alladdr ^ ((!pat->isalias || alias_reverse_lookup(a)) &&
+      if (pat->alladdr ^ ((!pat->isalias || mutt_alias_reverse_lookup(a)) &&
                           ((a->mailbox && !patmatch(pat, a->mailbox)) ||
                            (match_personal && a->personal && !patmatch(pat, a->personal)))))
       {

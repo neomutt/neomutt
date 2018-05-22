@@ -65,13 +65,15 @@ static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 static int current_hook_type = 0;
 
 /**
- * mutt_parse_hook - Parse a hook command
+ * mutt_parse_hook - Parse the 'hook' family of commands
  * @param buf  Temporary Buffer
  * @param s    Buffer containing command
  * @param data Data from Command definition
  * @param err  Buffer for error messages
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * This is used by 'account-hook', 'append-hook' and many more.
  */
 int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
@@ -315,7 +317,7 @@ void mutt_delete_hooks(int type)
 }
 
 /**
- * mutt_parse_unhook - Parse an unhook command
+ * mutt_parse_unhook - Parse the 'unhook' command
  * @param buf  Temporary Buffer
  * @param s    Buffer containing command
  * @param data Data from Command definition
@@ -485,7 +487,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
  * addr_hook - Perform an address hook (get a path)
  * @param path    Buffer for path
  * @param pathlen Length of buffer
- * @param type    Type e.g. XXX
+ * @param type    Type e.g. #MUTT_FCCHOOK
  * @param ctx     Mailbox Context
  * @param hdr     Email Header
  * @retval  0 Success

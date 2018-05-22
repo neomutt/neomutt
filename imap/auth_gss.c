@@ -74,7 +74,6 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
   gss_buffer_desc status_string;
   char buf_maj[512];
   char buf_min[512];
-  size_t status_len;
 
   do
   {
@@ -82,7 +81,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
                                   GSS_C_NO_OID, &msg_ctx, &status_string);
     if (GSS_ERROR(maj_stat))
       break;
-    status_len = status_string.length;
+    size_t status_len = status_string.length;
     if (status_len >= sizeof(buf_maj))
       status_len = sizeof(buf_maj) - 1;
     strncpy(buf_maj, (char *) status_string.value, status_len);
