@@ -4545,11 +4545,11 @@ const struct Mapping SortSidebarMethods[] = {
 };
 
 /* functions used to parse commands in a rc file */
-static int finish_source         (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_alias           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_alternates      (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_attachments     (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_echo            (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+static int parse_finish          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_group           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_ifdef           (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 static int parse_ignore          (struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -4614,7 +4614,7 @@ const struct Command Commands[] = {
   { "exec",                mutt_parse_exec,        0 },
   { "fcc-hook",            mutt_parse_hook,        MUTT_FCCHOOK },
   { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCCHOOK | MUTT_SAVEHOOK },
-  { "finish",              finish_source,          0 },
+  { "finish",              parse_finish,           0 },
   { "folder-hook",         mutt_parse_hook,        MUTT_FOLDERHOOK },
   { "group",               parse_group,            MUTT_GROUP },
   { "hdr_order",           parse_stailq,           UL &HeaderOrderList },
