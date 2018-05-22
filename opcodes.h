@@ -44,9 +44,9 @@
   _fmt(OP_CATCHUP,                        N_("mark all articles in newsgroup as read")) \
   _fmt(OP_CHANGE_DIRECTORY,               N_("change directories")) \
   _fmt(OP_CHECK_NEW,                      N_("check mailboxes for new mail")) \
-  _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach file(s) to this message")) \
-  _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach message(s) to this message")) \
-  _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news article(s) to this message")) \
+  _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach files to this message")) \
+  _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach messages to this message")) \
+  _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news articles to this message")) \
   _fmt(OP_COMPOSE_EDIT_BCC,               N_("edit the BCC list")) \
   _fmt(OP_COMPOSE_EDIT_CC,                N_("edit the CC list")) \
   _fmt(OP_COMPOSE_EDIT_DESCRIPTION,       N_("edit attachment description")) \
@@ -252,7 +252,7 @@
   _fmt(OP_DECRYPT_COPY,                   N_("make decrypted copy")) \
   _fmt(OP_DECRYPT_SAVE,                   N_("make decrypted copy and delete")) \
   _fmt(OP_EXTRACT_KEYS,                   N_("extract supported public keys")) \
-  _fmt(OP_FORGET_PASSPHRASE,              N_("wipe passphrase(s) from memory")) \
+  _fmt(OP_FORGET_PASSPHRASE,              N_("wipe passphrases from memory")) \
 
 #ifdef MIXMASTER
 #define OPS_MIX(_fmt) \
