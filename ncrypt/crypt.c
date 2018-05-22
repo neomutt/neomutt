@@ -92,7 +92,13 @@ void crypt_forget_passphrase(void)
     crypt_smime_void_passphrase();
 
   if (WithCrypto)
-    mutt_message(_("Passphrase(s) forgotten."));
+  {
+    /* L10N: Due to the implementation details (e.g. some passwords are managed
+       by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
+       passwords. So in English we use "Passphrases". Your language might
+       have other means to express this. */
+    mutt_message(_("Passphrases forgotten."));
+  }
 }
 
 #ifndef DEBUG
