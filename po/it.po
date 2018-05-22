@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-19 22:04+0100\n"
+"POT-Creation-Date: 2018-05-20 02:02+0000\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -5620,6 +5620,14 @@ msgstr "Vedi Allegato"
 #: pager.c:1707 pager.c:1716
 msgid "Next"
 msgstr "Succ"
+
+#: pager.c:1997
+msgid "all"
+msgstr ""
+
+#: pager.c:1997
+msgid "end"
+msgstr ""
 
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."

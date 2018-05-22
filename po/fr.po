@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-19 22:04+0100\n"
+"POT-Creation-Date: 2018-05-20 02:02+0000\n"
 "PO-Revision-Date: 2017-02-10 12:46+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -5748,6 +5748,14 @@ msgstr "Voir attach."
 #: pager.c:1707 pager.c:1716
 msgid "Next"
 msgstr "Suivant"
+
+#: pager.c:1997
+msgid "all"
+msgstr ""
+
+#: pager.c:1997
+msgid "end"
+msgstr ""
 
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."
