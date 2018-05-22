@@ -951,7 +951,10 @@ void pop_fetch_mail(void)
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
 
-  snprintf(msgbuf, sizeof(msgbuf), _("Reading new messages (%d bytes)..."), bytes);
+  snprintf(msgbuf, sizeof(msgbuf),
+           ngettext("Reading new messages (%d byte)...",
+                    "Reading new messages (%d bytes)...", bytes),
+           bytes);
   mutt_message("%s", msgbuf);
 
   for (int i = last + 1; i <= msgs; i++)
