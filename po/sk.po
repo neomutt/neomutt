@@ -191,14 +191,14 @@ msgid "Path too long: %s%s%s"
 msgstr ""
 
 #: bcache.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "%s nie je adresár."
+msgstr "Cache zo správami %s nie je adresár."
 
 #: bcache.c:176
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s %s"
-msgstr "Nemožno vytvoriť súbor %s"
+msgstr "Nemožno vytvoriť %s %s"
 
 #: browser.c:72
 msgid "Chdir"
@@ -274,9 +274,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Mazanie je podporovaná len pre IMAP mailboxy."
 
 #: browser.c:1662 browser.c:1688
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "Mailbox bol vymazaný."
+msgstr "Vymazanie schránky zlyhalo."
 
 #: browser.c:1667
 msgid "Cannot delete root folder"
@@ -289,11 +288,11 @@ msgstr "Naozaj zmazať mailbox \"%s\"?"
 
 #: browser.c:1684
 msgid "Mailbox deleted."
-msgstr "Mailbox bol vymazaný."
+msgstr "Schránka bola vymazaná."
 
 #: browser.c:1691
 msgid "Mailbox not deleted."
-msgstr "Mailbox nebol vymazaný."
+msgstr "Schránka nebola vymazaná."
 
 #: browser.c:1721
 msgid "Chdir to: "
@@ -502,12 +501,10 @@ msgid "No printing command has been defined."
 msgstr "Nebol nájdený príkaz na tlač."
 
 #: commands.c:544
-#, fuzzy
 msgid "Print message?"
 msgstr "Vytlačiť správu?"
 
 #: commands.c:544
-#, fuzzy
 msgid "Print tagged messages?"
 msgstr "Vytlačiť označené správy?"
 
@@ -550,64 +547,53 @@ msgid "Shell command: "
 msgstr "Príkaz shell-u: "
 
 #: commands.c:790
-#, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Dekódovať-Uložiť do schránky"
 
 #: commands.c:790
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr "Dekódovať-Uložiť označiť do schránky"
+msgstr "Dekódovať-Uložiť označené do schránky"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Dešifrovať-Uložiť do schránky"
 
 #: commands.c:792
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr "Dešifrovať-Uložiť označiť do schránky"
+msgstr "Dešifrovať-Uložiť označené do schránky"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save to mailbox"
 msgstr "Uložiť do schránky"
 
 #: commands.c:794
-#, fuzzy
 msgid "Save tagged to mailbox"
-msgstr "Uložiť označiť do schránky"
+msgstr "Uložiť označené do schránky"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Dekódovať-Skopírovať do schránky"
 
 #: commands.c:799
-#, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr "Dekódovať-Skopírovať označiť do schránky"
+msgstr "Dekódovať-Skopírovať označené do schránky"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Dešifrovať-Skopírovať do schránky"
 
 #: commands.c:801
-#, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr "Dešifrovať-Skopírovať označiť do schránky"
+msgstr "Dešifrovať-Skopírovať označené do schránky"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy to mailbox"
 msgstr "Skopírovať do schránky"
 
 #: commands.c:803
-#, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr "Skopírovať označiť do schránky"
+msgstr "Skopírovať označené do schránky"
 
 #: commands.c:871
 #, c-format
@@ -625,12 +611,12 @@ msgid "Content-Type changed to %s."
 msgstr "Položka 'Content-Type' zmenená na %s..."
 
 #: commands.c:1049
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
 msgstr "Znaková sada zmenená na %s; neprevádzam."
 
 #: commands.c:1050
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "Znaková sada zmenená na %s; prevádzam."
 
@@ -641,17 +627,17 @@ msgstr "Správa je bez príloh."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:110
 msgid "From: "
-msgstr ""
+msgstr "Od: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:112 send.c:256
 msgid "To: "
-msgstr ""
+msgstr "Komu: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:114 send.c:258
 msgid "Cc: "
-msgstr ""
+msgstr "Kopia: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116 send.c:260
@@ -672,7 +658,7 @@ msgstr "Odpovedz"
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:987
 msgid "Fcc: "
-msgstr ""
+msgstr "Kopia do súboru: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:125
@@ -773,7 +759,6 @@ msgid "None"
 msgstr "Žiadne"
 
 #: compose.c:277
-#, fuzzy
 msgid " (inline PGP)"
 msgstr " (inline PGP)"
 
@@ -857,9 +842,8 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1195
-#, fuzzy
 msgid "Not sending this message."
-msgstr "Chyba pri posielaní správy."
+msgstr "Neodosielam túto správu."
 
 #: compose.c:1286
 #, fuzzy
@@ -3801,44 +3785,36 @@ msgstr "Nedá sa zobraziť ID tohoto užívateľa (neplatné DN)"
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Name: "
-msgstr "Meno ......: "
+msgstr "Meno: "
 
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Valid From: "
-msgstr "Platný od ....: %s\n"
+msgstr "Platný od: "
 
 #: ncrypt/crypt_gpgme.c:3573
-#, fuzzy
 msgid "Valid To: "
-msgstr "Platný do ....: %s\n"
+msgstr "Platný do: "
 
 #: ncrypt/crypt_gpgme.c:3574
-#, fuzzy
 msgid "Key Type: "
-msgstr "Použitie kľúča: "
+msgstr "Typ kľúča: "
 
 #: ncrypt/crypt_gpgme.c:3574
-#, fuzzy
 msgid "Key Usage: "
 msgstr "Použitie kľúča: "
 
 #: ncrypt/crypt_gpgme.c:3574
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Sériové č. ...: 0x%s\n"
+msgstr "Sériové č.: "
 
 #: ncrypt/crypt_gpgme.c:3575
-#, fuzzy
 msgid "Issued By: "
-msgstr "Vydal ........: "
+msgstr "Vydal: "
 
 #: ncrypt/crypt_gpgme.c:3575
-#, fuzzy
 msgid "Subkey: "
-msgstr "Podkľúč ......: 0x%s"
+msgstr "Podkľúč: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -3899,7 +3875,7 @@ msgstr "Chyba pri vyhľadávaní kľúča vydavateľa: %s\n"
 
 #: ncrypt/crypt_gpgme.c:3885
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Chyba: overovací reťazec je príliš dlhý - končí tu\n"
+msgstr "Chyba: overovací reťazec je príliš dlhý - končím tu\n"
 
 #: ncrypt/crypt_gpgme.c:3895 ncrypt/pgpkey.c:608
 #, c-format
@@ -3935,7 +3911,7 @@ msgstr "Skontrolovať kľúč  "
 
 #: ncrypt/crypt_gpgme.c:4233
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP a S/MIME kľúče sa zhodujú "
+msgstr "PGP a S/MIME kľúče sa zhodujú"
 
 #: ncrypt/crypt_gpgme.c:4235
 msgid "PGP keys matching"
@@ -3970,22 +3946,18 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Tento kľúč nemôže byť použitý: je expirovaný/zakázaný/odvolaný."
 
 #: ncrypt/crypt_gpgme.c:4290 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "ID je expirovaný/zakázaný/odvolaný. Chcete naozaj použiť tento kľúč?"
 
 #: ncrypt/crypt_gpgme.c:4299 ncrypt/pgpkey.c:650
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "Toto ID nie je dôveryhodné. Chcete naozaj použiť tento kľúč?"
 
 #: ncrypt/crypt_gpgme.c:4302 ncrypt/pgpkey.c:653
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "Toto ID je dôveryhodné iba nepatrne. Chcete naozaj použiť tento kľúč?"
 
 #: ncrypt/crypt_gpgme.c:4310 ncrypt/pgpkey.c:646 ncrypt/smime.c:509
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID nemá definovanú dôverihodnosť. Chcete naozaj použiť tento kľúč?"
 
@@ -4062,7 +4034,6 @@ msgstr "S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)y�
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4903
-#, fuzzy
 msgid "esabpco"
 msgstr "rspbgvo"
 
@@ -4073,7 +4044,6 @@ msgstr "PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, (v)y�
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4912
-#, fuzzy
 msgid "esabmco"
 msgstr "rspbmvo"
 
@@ -4083,7 +4053,6 @@ msgstr "S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)y�
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:4927
-#, fuzzy
 msgid "esabpc"
 msgstr "rspbgv"
 
@@ -4093,7 +4062,6 @@ msgstr "PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, alebo
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:4936
-#, fuzzy
 msgid "esabmc"
 msgstr "rspbmv"
 
@@ -4134,9 +4102,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:893 ncrypt/pgp.c:918
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Prihlasovanie zlyhalo."
+msgstr "Dešifrovanie zlyhalo"
 
 #: ncrypt/pgp.c:1134
 msgid "Can't open PGP subprocess!"
@@ -4260,7 +4227,6 @@ msgid "PGP Key %s."
 msgstr "PGP kľúč 0x%s."
 
 #: ncrypt/smime.c:144
-#, fuzzy
 msgid "Enter S/MIME passphrase:"
 msgstr "Zadajte frázu hesla S/MIME:"
 
@@ -4355,9 +4321,8 @@ msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Toto ID nie je dôveryhodné. Chcete naozaj použiť tento kľúč?"
 
 #: ncrypt/smime.c:797
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "Zadajte ID kľúča pre %s: "
+msgstr "Zadajte ID kľúča: "
 
 #: ncrypt/smime.c:944
 #, c-format
@@ -4365,10 +4330,9 @@ msgid "No (valid) certificate found for %s."
 msgstr ""
 
 #: ncrypt/smime.c:992 ncrypt/smime.c:1021 ncrypt/smime.c:1087
-#: ncrypt/smime.c:1128 ncrypt/smime.c:1191 ncrypt/smime.c:1272
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Chyba: nemožno vytvoriť podproces OpenSSL! --]\n"
+msgstr "Chyba: nemožno vytvoriť podproces OpenSSL!"
 
 #: ncrypt/smime.c:1252
 #, fuzzy
@@ -4381,9 +4345,8 @@ msgid "no certfile"
 msgstr "Nemožno vytvoriť filter."
 
 #: ncrypt/smime.c:1350
-#, fuzzy
 msgid "no mbox"
-msgstr "(žiadna schránka)"
+msgstr "žiadna schránka"
 
 #: ncrypt/smime.c:1477 ncrypt/smime.c:1623
 msgid "No output from OpenSSL..."
@@ -4394,7 +4357,6 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
 #: ncrypt/smime.c:1588
-#, fuzzy
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Nemožno otvoriť podproces OpenSSL!"
 
@@ -4694,7 +4656,6 @@ msgid "check mailboxes for new mail"
 msgstr "skontroluj nové správy v schránkach"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach file(s) to this message"
 msgstr "priložiť súbor(y) k tejto správe"
 
@@ -5006,7 +4967,6 @@ msgid "convert the word to upper case"
 msgstr "zmeň písmo v slove na veľké"
 
 #: opcodes.h:122
-#, fuzzy
 msgid "add, change, or delete a message's label"
 msgstr "pridať, zmeniť alebo zmazať štítok správy"
 
@@ -5019,7 +4979,6 @@ msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
 #: opcodes.h:125
-#, fuzzy
 msgid "edit attachment content type"
 msgstr "upraviť typ prílohy"
 
@@ -6131,9 +6090,9 @@ msgstr[1] "Chyba pri posielaní správy."
 msgstr[2] "Chyba pri posielaní správy."
 
 #: recvcmd.c:414
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open temporary file %s."
-msgstr "Nemožno vytvoriť dočasný súbor"
+msgstr "Nemožno otvoriť dočasný súbor %s."
 
 #: recvcmd.c:443
 #, fuzzy
@@ -6149,9 +6108,9 @@ msgid "Forward MIME encapsulated?"
 msgstr "Posunúť vo formáte MIME encapsulated?"
 
 #: recvcmd.c:590 recvcmd.c:858
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s."
-msgstr "Nemožno vytvoriť súbor %s"
+msgstr "Nemožno vytvoriť %s."
 
 #: recvcmd.c:711
 #, fuzzy
@@ -6182,7 +6141,7 @@ msgstr ""
 #: remailer.c:476
 #, fuzzy
 msgid "Delete"
-msgstr "Označiť"
+msgstr "Zmazať"
 
 #: remailer.c:477
 msgid "OK"
@@ -6295,9 +6254,8 @@ msgid "Could not include all requested messages!"
 msgstr "Nemožno pripojiť všetky požadované správy!"
 
 #: send.c:864
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Vytlačiť prílohu?"
+msgstr "Preposlať prílohu?"
 
 #: send.c:869
 #, fuzzy
@@ -6391,14 +6349,14 @@ msgid "%s no longer exists!"
 msgstr "%s už viac neexistuje!"
 
 #: sendlib.c:917
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s nie je schránka"
+msgstr "%s nie je súbor."
 
 #: sendlib.c:1093
 #, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "Nemožno poslať správu."
+msgstr "Nemožno náisť žiaden mime.types súbor."
 
 #: sendlib.c:1173
 #, c-format
@@ -6410,9 +6368,9 @@ msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
 #: sendlib.c:2610
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
+msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s)."
 
 #: sendlib.c:2616
 msgid "Output of the delivery process"
