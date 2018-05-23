@@ -3554,7 +3554,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       if (flags & MUTT_TOKEN_BACKTICK_VARS)
       {
           /* recursively extract tokens to interpolate variables */
-          mutt_extract_token(&cmd, tok, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE);
+          mutt_extract_token(&cmd, tok, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE |
+            MUTT_TOKEN_COMMENT | MUTT_TOKEN_SEMICOLON);
       }
       else
       {
