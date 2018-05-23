@@ -1514,9 +1514,8 @@ msgstr "Tas laiškas yra nematomas."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1381 curs_main.c:2784 pager.c:2822
-#, fuzzy
 msgid "Cannot delete messages"
-msgstr "Negaliu ištrinti laiško"
+msgstr "Negaliu ištrinti laiškų"
 
 #: curs_main.c:1384
 msgid "Delete messages matching: "
@@ -1554,9 +1553,8 @@ msgstr "Pažymėti laiškus, tenkinančius: "
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1614 curs_main.c:3223 pager.c:3145
-#, fuzzy
 msgid "Cannot undelete messages"
-msgstr "Negaliu atstatyti ištrinto laiško"
+msgstr "Negaliu atstatyti ištrintų laiškų"
 
 #: curs_main.c:1617
 msgid "Undelete messages matching: "
@@ -1768,7 +1766,6 @@ msgstr "Etiketės nepakeistos."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:3022
-#, fuzzy
 msgid "Cannot mark messages as read"
 msgstr "Negaliu pažymėti laiškų kaip skaitytų"
 
@@ -2016,7 +2013,7 @@ msgstr "[-- Klaida: message/external-body dalis neturi access-type parametro --]
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1624
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -2024,10 +2021,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
+"[-- Šis %s/%s priedas (dydis %s baitas) buvo ištrintas --]\n"
 "[-- %s --]\n"
 msgstr[1] ""
-"[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
+"[-- Šis %s/%s priedas (dydis %s baitai) buvo ištrintas --]\n"
 "[-- %s --]\n"
 msgstr[2] ""
 "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
@@ -2049,11 +2046,11 @@ msgstr[2] ""
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1648
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
-msgstr[1] "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
+msgstr[0] "[-- Šis %s/%s priedas (dydis %s baitas) buvo ištrintas --]\n"
+msgstr[1] "[-- Šis %s/%s priedas (dydis %s baitai) buvo ištrintas --]\n"
 msgstr[2] "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -3270,12 +3267,11 @@ msgstr "Skaitymas iš %s pertrauktas..."
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:638
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "laiškas/ai neištrinti"
-msgstr[1] "laiškas/ai neištrinti"
-msgstr[2] "laiškas/ai neištrinti"
+msgstr[0] "laiškas neištrintas"
+msgstr[1] "laiškai neištrinti"
+msgstr[2] "laiškai neištrinti"
 
 #: mx.c:675
 msgid "Can't open trash folder"
@@ -3288,11 +3284,11 @@ msgstr "Pažymėti visus straipsnius skaitytais?"
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:761
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Perkelti %d skaitytų laiškų į %s?"
-msgstr[1] "Perkelti %d skaitytų laiškų į %s?"
+msgstr[0] "Perkelti %d skaitytą laišką į %s?"
+msgstr[1] "Perkelti %d skaitytus laiškus į %s?"
 msgstr[2] "Perkelti %d skaitytų laiškų į %s?"
 
 #: mx.c:780 mx.c:1086
@@ -3355,9 +3351,8 @@ msgstr "[-- Toliau %s išvestis%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:100
-#, fuzzy
 msgid "Passphrases forgotten."
-msgstr "Slapta frazė pamiršta."
+msgstr "Slaptos frazės pamirštos."
 
 #: ncrypt/crypt.c:161
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
@@ -3842,10 +3837,10 @@ msgstr "[Blogas]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3670 ncrypt/crypt_gpgme.c:3810
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
-msgstr[0] "%s, %lu bitų %s\n"
+msgstr[0] "%s, %lu bito %s\n"
 msgstr[1] "%s, %lu bitų %s\n"
 msgstr[2] "%s, %lu bitų %s\n"
 
@@ -4635,19 +4630,16 @@ msgid "check mailboxes for new mail"
 msgstr "tikrinti, ar dėžutėse yra naujo pašto"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach files to this message"
-msgstr "prisegti bylą(as) prie šio laiško"
+msgstr "prisegti bylas prie šio laiško"
 
 #: opcodes.h:48
-#, fuzzy
 msgid "attach messages to this message"
-msgstr "prisegti laišką(as) prie šio laiško"
+msgstr "prisegti laiškus prie šio laiško"
 
 #: opcodes.h:49
-#, fuzzy
 msgid "attach news articles to this message"
-msgstr "prisegti naujienų straipsnį(us) prie šio laiško"
+msgstr "prisegti naujienų straipsnius prie šio laiško"
 
 #: opcodes.h:50
 msgid "edit the BCC list"
@@ -5462,9 +5454,8 @@ msgid "extract supported public keys"
 msgstr "ištraukti palaikomus viešus raktus"
 
 #: opcodes.h:255
-#, fuzzy
 msgid "wipe passphrases from memory"
-msgstr "užmiršti slaptą frazę"
+msgstr "užmiršti slaptas frazes"
 
 #: opcodes.h:259
 msgid "send the message through a mixmaster remailer chain"
@@ -5596,11 +5587,11 @@ msgstr "Kitas"
 
 #: pager.c:1997
 msgid "all"
-msgstr ""
+msgstr "visi"
 
 #: pager.c:1997
 msgid "end"
-msgstr ""
+msgstr "pabaiga"
 
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."
@@ -5795,11 +5786,11 @@ msgid "Delete messages from server?"
 msgstr "Ištrinti laiškus iš serverio?"
 
 #: pop.c:955
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Skaitau naujus laiškus (%d baitų)..."
-msgstr[1] "Skaitau naujus laiškus (%d baitų)..."
+msgstr[0] "Skaitau naujus laiškus (%d baitas)..."
+msgstr[1] "Skaitau naujus laiškus (%d baitai)..."
 msgstr[2] "Skaitau naujus laiškus (%d baitų)..."
 
 #: pop.c:1000
@@ -5957,12 +5948,12 @@ msgstr "Aš nežinau kaip spausdinti %s priedus!"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:852
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Spausdinti pažymėtus priedus?"
-msgstr[1] "Spausdinti pažymėtus priedus?"
-msgstr[2] "Spausdinti pažymėtus priedus?"
+msgstr[0] "Spausdinti %d pažymėtą priedą?"
+msgstr[1] "Spausdinti %d pažymėtus priedus?"
+msgstr[2] "Spausdinti %d pažymėtų priedus?"
 
 #: recvattach.c:853
 #, c-format
