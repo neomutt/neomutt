@@ -5970,9 +5970,9 @@ msgstr "Neví se, jak vytisknout přílohy typu %s!"
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Vytisknout označené přílohy?"
-msgstr[1] "Vytisknout označené přílohy?"
-msgstr[2] "Vytisknout označené přílohy?"
+msgstr[0] "Vytisknout %d označené přílohy?"
+msgstr[1] "Vytisknout %d označené přílohy?"
+msgstr[2] "Vytisknout %d označené přílohy?"
 
 #: recvattach.c:853
 #, c-format
