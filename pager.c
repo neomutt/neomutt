@@ -1985,17 +1985,25 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   if (pager_menu->redraw & REDRAW_STATUS)
   {
     struct HdrFormatInfo hfi;
-    char pager_progress_str[4];
+    char pager_progress_str[65]; /* Lots of space for translations */
 
     hfi.ctx = Context;
     hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
+    {
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
                (100 * rd->last_offset / rd->sb.st_size));
+    }
     else
-      mutt_str_strfcpy(pager_progress_str, (rd->topline == 0) ? _("all") : _("end"),
-                       sizeof(pager_progress_str));
+    {
+      const char *msg = (rd->topline == 0) ?
+                            /* L10N: Status bar message: the entire email is visible in the pager */
+                            _("all") :
+                            /* L10N: Status bar message: the end of the email is visible in the pager */
+                            _("end");
+      mutt_str_strfcpy(pager_progress_str, msg, sizeof(pager_progress_str));
+    }
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
