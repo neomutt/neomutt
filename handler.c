@@ -1191,7 +1191,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
   int rc = 0;
   struct Body *first_part = NULL;
   struct Body *zxx_part = NULL;
-  char *lang;
+  char *lang = NULL;
 
   mutt_debug(2, "RFC8255 >> entering in handler multilingual handler\n");
   if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
@@ -1216,9 +1216,13 @@ static int multilingual_handler(struct Body *a, struct State *s)
   else
     b = a;
 
-  mutt_debug(2, "RFC8255 >> preferred_languages set in config to '%s'\n", PreferredLanguages);
-  char *preferred_languages = mutt_str_strdup(PreferredLanguages);
-  lang = strtok(preferred_languages, ",");
+  char *preferred_languages = NULL;
+  if (PreferredLanguages)
+  {
+    mutt_debug(2, "RFC8255 >> preferred_languages set in config to '%s'\n", PreferredLanguages);
+    preferred_languages = mutt_str_strdup(PreferredLanguages);
+    lang = strtok(preferred_languages, ",");
+  }
 
   while (lang)
   {
