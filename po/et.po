@@ -5762,10 +5762,12 @@ msgid "Next"
 msgstr "Järgm."
 
 #: pager.c:1997
+#. L10N: Status bar message: the entire email is visible in the pager
 msgid "all"
 msgstr ""
 
 #: pager.c:1997
+#. L10N: Status bar message: the end of the email is visible in the pager
 msgid "end"
 msgstr ""
 
