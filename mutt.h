@@ -69,7 +69,7 @@ struct Mapping;
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
 #endif
 
-/* flags for mutt_get_token() */
+/* flags for mutt_extract_token() */
 #define MUTT_TOKEN_EQUAL         (1<<0)  /* treat '=' as a special */
 #define MUTT_TOKEN_CONDENSE      (1<<1)  /* ^(char) to control chars (macros) */
 #define MUTT_TOKEN_SPACE         (1<<2)  /* don't treat whitespace as a term */
