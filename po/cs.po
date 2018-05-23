@@ -1523,9 +1523,8 @@ msgstr "Tato zpráva není viditelná."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1381 curs_main.c:2784 pager.c:2822
-#, fuzzy
 msgid "Cannot delete messages"
-msgstr "Zprávu nelze smazat"
+msgstr "Zprávy nelze smazat"
 
 #: curs_main.c:1384
 msgid "Delete messages matching: "
@@ -1563,9 +1562,8 @@ msgstr "Označit zprávy shodující se s: "
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1614 curs_main.c:3223 pager.c:3145
-#, fuzzy
 msgid "Cannot undelete messages"
-msgstr "Zprávu nelze obnovit"
+msgstr "Zprávy nelze obnovit"
 
 #: curs_main.c:1617
 msgid "Undelete messages matching: "
@@ -1778,9 +1776,8 @@ msgstr "Žádné štítky nebyly změněny."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:3022
-#, fuzzy
 msgid "Cannot mark messages as read"
-msgstr "Zprávu(-y) nelze označit za přečtenou(-é)"
+msgstr "Zprávy nelze označit za přečtené"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -2026,7 +2023,7 @@ msgstr "[-- Chyba: typ „message/external-body“ nemá parametr „access-type
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1624
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -2059,7 +2056,7 @@ msgstr[2] ""
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1648
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr[0] "[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
@@ -2113,7 +2110,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Tato příloha typu „%s/%s“ není přítomna, --]\n"
-"[-- a udaná hodnota parametru 'access-type %s' --]\n"
+"[-- a udaná hodnota parametru „access-type %s“ --]\n"
 "[-- není podporována --]\n"
 
 #: handler.c:1852
@@ -3281,7 +3278,6 @@ msgstr "Čtení z %s bylo přerušeno…"
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:638
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "zprávy nesmazány"
@@ -3299,7 +3295,7 @@ msgstr "Označit všechny články za přečtené?"
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:761
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "Přesunout %d přečtených zpráv do %s?"
@@ -3366,9 +3362,8 @@ msgstr "[-- následuje výstup %s %s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:100
-#, fuzzy
 msgid "Passphrases forgotten."
-msgstr "Šifrovací heslo(a) zapomenuto(a)."
+msgstr "Šifrovací hesla zapomenuta."
 
 #: ncrypt/crypt.c:161
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
@@ -3853,7 +3848,7 @@ msgstr "[Neplatný]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3670 ncrypt/crypt_gpgme.c:3810
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s, %lu bit %s\n"
@@ -4649,19 +4644,16 @@ msgid "check mailboxes for new mail"
 msgstr "zjistit zda schránky obsahují novou poštu"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach files to this message"
-msgstr "připojit soubor(-y) k této zprávě"
+msgstr "připojit soubory k této zprávě"
 
 #: opcodes.h:48
-#, fuzzy
 msgid "attach messages to this message"
 msgstr "připojit zprávy k této zprávě"
 
 #: opcodes.h:49
-#, fuzzy
 msgid "attach news articles to this message"
-msgstr "připojit článek k této zprávě"
+msgstr "připojit články k této zprávě"
 
 #: opcodes.h:50
 msgid "edit the BCC list"
@@ -5476,7 +5468,6 @@ msgid "extract supported public keys"
 msgstr "extrahovat všechny podporované veřejné klíče"
 
 #: opcodes.h:255
-#, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "odstranit všechna hesla z paměti"
 
@@ -5812,7 +5803,7 @@ msgid "Delete messages from server?"
 msgstr "Odstranit zprávy ze serveru?"
 
 #: pop.c:955
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "Načítám nové zprávy (počet bajtů: %d)…"
@@ -5974,7 +5965,7 @@ msgstr "Neví se, jak vytisknout přílohy typu %s!"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:852
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Vytisknout označené přílohy?"
@@ -6447,9 +6438,3 @@ msgstr "Výchzí volby:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
-
-#~ msgid "Cannot delete message(s)"
-#~ msgstr "Zprávu(-y) nelze smazat"
-
-#~ msgid "Cannot undelete message(s)"
-#~ msgstr "Zprávu(-y) nelze obnovit"
