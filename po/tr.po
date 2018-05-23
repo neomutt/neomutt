@@ -5667,11 +5667,13 @@ msgstr "Sonraki"
 
 #: pager.c:1997
 #. L10N: Status bar message: the entire email is visible in the pager
+#. L10N: Status bar message: all the emails are visible in the index
 msgid "all"
 msgstr ""
 
 #: pager.c:1997
 #. L10N: Status bar message: the end of the email is visible in the pager
+#. L10N: Status bar message: the end of the list emails is visible in the index
 msgid "end"
 msgstr ""
 
