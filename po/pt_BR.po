@@ -5560,7 +5560,7 @@ msgstr "Prox"
 
 #: pager.c:1997
 msgid "all"
-msgstr "inteiro"
+msgstr "tudo"
 
 #: pager.c:1997
 msgid "end"
