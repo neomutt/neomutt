@@ -1507,9 +1507,8 @@ msgstr "Aquela mensagem não está visível."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1381 curs_main.c:2784 pager.c:2822
-#, fuzzy
 msgid "Cannot delete messages"
-msgstr "Não é possível apagar mensagem"
+msgstr "Incapaz de apagar as mensagens"
 
 #: curs_main.c:1384
 msgid "Delete messages matching: "
@@ -1547,9 +1546,8 @@ msgstr "Marcar mensagens que casem com: "
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1614 curs_main.c:3223 pager.c:3145
-#, fuzzy
 msgid "Cannot undelete messages"
-msgstr "Não é possível restaurar mensagem."
+msgstr "Incapaz de restaurar mensagens."
 
 #: curs_main.c:1617
 msgid "Undelete messages matching: "
@@ -1760,9 +1758,8 @@ msgstr "Nenhum rótulo foi alterado."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:3022
-#, fuzzy
 msgid "Cannot mark messages as read"
-msgstr "Não é possível marcar mensagem(ns) como lida(s)."
+msgstr "Incapaz de marcar mensagens como lidas"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -2008,7 +2005,7 @@ msgstr "[-- Erro: message/external-body não tem parâmetro de tipo de accesso -
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1624
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -2016,7 +2013,7 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
+"[-- O anexo %s/%s (tamanho %s byte) foi removido --]\n"
 "[-- em %s --]\n"
 msgstr[1] ""
 "[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
@@ -2038,10 +2035,10 @@ msgstr[1] ""
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1648
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
+msgstr[0] "[-- O anexo %s/%s (tamanho %s byte) foi removido --]\n"
 msgstr[1] "[-- O anexo %s/%s (tamanho %s bytes) foi removido --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -3249,11 +3246,10 @@ msgstr "Aquisição de %s interrompida..."
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:638
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "mensagem(ns) não apagadas"
-msgstr[1] "mensagem(ns) não apagadas"
+msgstr[0] "mensagem não apagada"
+msgstr[1] "mensagens não apagadas"
 
 #: mx.c:675
 msgid "Can't open trash folder"
@@ -3266,10 +3262,10 @@ msgstr "Marcar todos artigos como lidos?"
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:761
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Mover %d mensagens lidas para %s?"
+msgstr[0] "Mover %d mensagem lida para %s?"
 msgstr[1] "Mover %d mensagens lidas para %s?"
 
 #: mx.c:780 mx.c:1086
@@ -3331,7 +3327,6 @@ msgstr "[-- saída %s segue%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:100
-#, fuzzy
 msgid "Passphrases forgotten."
 msgstr "Senha(s) esquecida(s)."
 
@@ -3816,7 +3811,7 @@ msgstr "[Inválido]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3670 ncrypt/crypt_gpgme.c:3810
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s, %lu bit %s\n"
@@ -4608,19 +4603,16 @@ msgid "check mailboxes for new mail"
 msgstr "verifica se há novas mensagens na caixa"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach files to this message"
-msgstr "anexa arquivo(s) nesta mensagem"
+msgstr "anexa arquivos nesta mensagem"
 
 #: opcodes.h:48
-#, fuzzy
 msgid "attach messages to this message"
-msgstr "anexa uma(s) mensagem(ns) à esta mensagem"
+msgstr "anexa mensagens a esta mensagem"
 
 #: opcodes.h:49
-#, fuzzy
 msgid "attach news articles to this message"
-msgstr "anexa novo(s) artigo(s) nesta mensagem"
+msgstr "anexa artigos de notícia nesta mensagem"
 
 #: opcodes.h:50
 msgid "edit the BCC list"
@@ -5435,9 +5427,8 @@ msgid "extract supported public keys"
 msgstr "extrai as chaves públicas suportadas"
 
 #: opcodes.h:255
-#, fuzzy
 msgid "wipe passphrases from memory"
-msgstr "limpa senha(s) da memória"
+msgstr "remove senha(s) da memória"
 
 #: opcodes.h:259
 msgid "send the message through a mixmaster remailer chain"
@@ -5569,11 +5560,11 @@ msgstr "Prox"
 
 #: pager.c:1997
 msgid "all"
-msgstr ""
+msgstr "inteiro"
 
 #: pager.c:1997
 msgid "end"
-msgstr ""
+msgstr "fim"
 
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."
@@ -5767,10 +5758,10 @@ msgid "Delete messages from server?"
 msgstr "Apagar mensagens do servidor?"
 
 #: pop.c:955
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Lendo novas mensagens (%d bytes)..."
+msgstr[0] "Lendo novas mensagens (%d byte)..."
 msgstr[1] "Lendo novas mensagens (%d bytes)..."
 
 #: pop.c:1000
@@ -5927,11 +5918,11 @@ msgstr "Eu não sei como imprimir anexos %s!"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:852
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Imprimir anexo(s) marcado(s)?"
-msgstr[1] "Imprimir anexo(s) marcado(s)?"
+msgstr[0] "Imprimir anexo marcado?"
+msgstr[1] "Imprimir %d anexos marcados?"
 
 #: recvattach.c:853
 #, c-format
