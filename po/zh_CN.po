@@ -1507,7 +1507,7 @@ msgstr "这封信件无法显示。"
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1381 curs_main.c:2784 pager.c:2822
-#, fuzzy
+#,
 msgid "Cannot delete messages"
 msgstr "不能够删除信件"
 
@@ -1547,7 +1547,7 @@ msgstr "标记符合此模式的信件："
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1614 curs_main.c:3223 pager.c:3145
-#, fuzzy
+#,
 msgid "Cannot undelete messages"
 msgstr "不能反删除信件"
 
@@ -1759,7 +1759,7 @@ msgstr "没有标签改变。"
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:3022
-#, fuzzy
+#,
 msgid "Cannot mark messages as read"
 msgstr "不能够标记信件为已读"
 
@@ -2007,7 +2007,7 @@ msgstr "[-- 错误：message/external-body 没有访问类型参数 --]\n"
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1624
-#, fuzzy, c-format
+#,  c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -2034,7 +2034,7 @@ msgstr[0] ""
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:1648
-#, fuzzy, c-format
+#,  c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr[0] "[-- 此 %s/%s 附件 (大小 %s 字节) 已经被删除 --]\n"
@@ -3241,7 +3241,7 @@ msgstr "读取 %s 已中断..."
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:638
-#, fuzzy
+#,
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "信件未被删除"
@@ -3257,7 +3257,7 @@ msgstr "标记所有的帖子已经阅读？"
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:761
-#, fuzzy, c-format
+#,  c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "移动 %d 封已读取的信件到 %s？"
@@ -3320,7 +3320,7 @@ msgstr "[-- %s 输出如下%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:100
-#, fuzzy
+#,
 msgid "Passphrases forgotten."
 msgstr "已忘记通行密码。"
 
@@ -3807,7 +3807,7 @@ msgstr "[无效]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3670 ncrypt/crypt_gpgme.c:3810
-#, fuzzy, c-format
+#,  c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s，%lu 位 %s\n"
@@ -4598,17 +4598,17 @@ msgid "check mailboxes for new mail"
 msgstr "检查信箱是否有新信件"
 
 #: opcodes.h:47
-#, fuzzy
+#,
 msgid "attach files to this message"
 msgstr "将文件附加到此信件作为附件"
 
 #: opcodes.h:48
-#, fuzzy
+#,
 msgid "attach messages to this message"
 msgstr "将信件附加到此信件作为附件"
 
 #: opcodes.h:49
-#, fuzzy
+#,
 msgid "attach news articles to this message"
 msgstr "将帖子附加到此信件作为附件"
 
@@ -5425,7 +5425,7 @@ msgid "extract supported public keys"
 msgstr "取出支持的公钥"
 
 #: opcodes.h:255
-#, fuzzy
+#,
 msgid "wipe passphrases from memory"
 msgstr "从内存中清除通行密钥"
 
@@ -5561,13 +5561,13 @@ msgstr "下一个"
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
 msgid "all"
-msgstr ""
+msgstr "所有"
 
 #: pager.c:1997
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
 msgid "end"
-msgstr ""
+msgstr "结束"
 
 #: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
 msgid "Bottom of message is shown."
@@ -5760,7 +5760,7 @@ msgid "Delete messages from server?"
 msgstr "删除服务器上的信件吗？"
 
 #: pop.c:955
-#, fuzzy, c-format
+#,  c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "正在读取新信件 (%d 字节)..."
@@ -5918,7 +5918,7 @@ msgstr "我不知道要如何打印 %s 类型的附件！"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:852
-#, fuzzy, c-format
+#,  c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "打印已标记的附件？"
