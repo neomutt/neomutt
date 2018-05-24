@@ -44,7 +44,8 @@
  * This function can be used to build a protocol-specific SASL Response message
  * using the PLAIN mechanism. The protocol specific command is given in the cmd
  * parameter. The function appends a space, encodes the string derived from
- * authz\0user\0pass using base64 encoding, and stores the result in buf.
+ * authz\0user\0pass using base64 encoding, and stores the result in buf. If
+ * cmd is either NULL or the empty string, the initial space is skipped.
  *
  * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
  * string. Add the two NULL bytes in between plus one at the end and we get
@@ -54,7 +55,7 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)
 {
   char tmp[768];
-  size_t len;
+  size_t len = 0;
   size_t tmplen;
 
   if (!user || !*user || !pass || !*pass)
@@ -62,7 +63,10 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
 
   tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
 
-  len = snprintf(buf, buflen, "%s ", cmd);
+  if (cmd && *cmd)
+  {
+    len = snprintf(buf, buflen, "%s ", cmd);
+  }
   len += mutt_b64_encode(buf + len, tmp, tmplen, buflen - len);
   return len;
 }
