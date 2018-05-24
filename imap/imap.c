@@ -985,12 +985,23 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
   {
     /* capabilities may have changed */
     imap_exec(idata, "CAPABILITY", IMAP_CMD_QUEUE);
+
     /* enable RFC6855, if the server supports that */
     if (mutt_bit_isset(idata->capabilities, ENABLE))
       imap_exec(idata, "ENABLE UTF8=ACCEPT", IMAP_CMD_QUEUE);
+
+    /* enable QRESYNC.  Advertising QRESYNC also means CONDSTORE
+     * is supported (even if not advertised), so flip that bit. */
+    if (mutt_bit_isset(idata->capabilities, QRESYNC))
+    {
+      mutt_bit_set(idata->capabilities, CONDSTORE);
+      imap_exec(idata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
+    }
+
     /* get root delimiter, '/' as default */
     idata->delim = '/';
     imap_exec(idata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
+
     /* we may need the root delimiter before we open a mailbox */
     imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);
   }

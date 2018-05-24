@@ -72,7 +72,8 @@ static const char *const Capabilities[] = {
   "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
   "STARTTLS",    "LOGINDISABLED",  "IDLE",
   "SASL-IR",     "ENABLE",         "CONDSTORE",
-  "X-GM-EXT-1",  "X-GM-EXT1",      NULL,
+  "QRESYNC",     "X-GM-EXT-1",     "X-GM-EXT1",
+  NULL,
 };
 
 /**
@@ -272,6 +273,92 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
   idata->max_msn--;
 
   idata->reopen |= IMAP_EXPUNGE_PENDING;
+}
+
+/* cmd_parse_vanished: handles VANISHED (RFC 7162), which is like
+ *   expunge, but passes a seqset of UIDs.  An optional (EARLIER) argument
+ *   specifies not to decrement subsequent MSNs. */
+static void cmd_parse_vanished(struct ImapData *idata, char *s)
+{
+  int earlier = 0, rc;
+  char *end_of_seqset;
+  struct SeqsetIterator *iter;
+  unsigned int uid, exp_msn, cur;
+  struct Header *h;
+
+  mutt_debug(2, "Handling VANISHED\n");
+
+  if (mutt_str_strncasecmp("(EARLIER)", s, 9) == 0)
+  {
+    earlier = 1;
+    s = imap_next_word(s);
+  }
+
+  end_of_seqset = s;
+  while (*end_of_seqset)
+  {
+    if (!strchr("0123456789:,", *end_of_seqset))
+      *end_of_seqset = '\0';
+    else
+      end_of_seqset++;
+  }
+
+  iter = mutt_seqset_iterator_new(s);
+  if (!iter)
+  {
+    mutt_debug(2, "VANISHED: empty seqset [%s]?\n", s);
+    return;
+  }
+
+  while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
+  {
+    h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
+    if (!h)
+      continue;
+
+    exp_msn = HEADER_DATA(h)->msn;
+
+    /* imap_expunge_mailbox() will rewrite h->index.
+     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * makes the code simpler and possibly more efficient. */
+    h->index = INT_MAX;
+    HEADER_DATA(h)->msn = 0;
+
+    if (exp_msn < 1 || exp_msn > idata->max_msn)
+    {
+      mutt_debug(1, "VANISHED: msn for UID %u is incorrect.\n", uid);
+      continue;
+    }
+    if (idata->msn_index[exp_msn - 1] != h)
+    {
+      mutt_debug(1, "VANISHED: msn_index for UID %u is incorrect.\n", uid);
+      continue;
+    }
+
+    idata->msn_index[exp_msn - 1] = NULL;
+
+    if (!earlier)
+    {
+      /* decrement seqno of those above. */
+      for (cur = exp_msn; cur < idata->max_msn; cur++)
+      {
+        h = idata->msn_index[cur];
+        if (h)
+          HEADER_DATA(h)->msn--;
+        idata->msn_index[cur - 1] = h;
+      }
+
+      idata->msn_index[idata->max_msn - 1] = NULL;
+      idata->max_msn--;
+    }
+  }
+
+  if (rc < 0)
+    mutt_debug(1, "VANISHED: illegal seqset %s\n", s);
+
+  idata->reopen |= IMAP_EXPUNGE_PENDING;
+
+  mutt_seqset_iterator_free(&iter);
 }
 
 /**
@@ -860,6 +947,8 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
     {
       idata->unicode = 1;
     }
+    if (mutt_str_strncasecmp(s, "QRESYNC", 7) == 0)
+      idata->qresync = 1;
   }
 }
 
@@ -920,6 +1009,8 @@ static int cmd_handle_untagged(struct ImapData *idata)
     else if (mutt_str_strncasecmp("FETCH", s, 5) == 0)
       cmd_parse_fetch(idata, pn);
   }
+  else if ((idata->state >= IMAP_SELECTED) && mutt_str_strncasecmp("VANISHED", s, 8) == 0)
+    cmd_parse_vanished(idata, pn);
   else if (mutt_str_strncasecmp("CAPABILITY", s, 10) == 0)
     cmd_parse_capability(idata, s);
   else if (mutt_str_strncasecmp("OK [CAPABILITY", s, 14) == 0)

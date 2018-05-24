@@ -530,8 +530,8 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
  * Ideally, we would generate multiple requests if the number of ranges
  * is too big, but for now just abort to using the whole range.
  */
-static void generate_seqset(struct Buffer *b, struct ImapData *idata,
-                            unsigned int msn_begin, unsigned int msn_end)
+static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapData *idata,
+                                  unsigned int msn_begin, unsigned int msn_end)
 {
   int chunks = 0;
   int state = 0; /* 1: single msn, 2: range of msn */
@@ -880,7 +880,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (header_msn < 1 || header_msn > msn_end || !idata->msn_index[header_msn - 1])
         {
           mutt_debug(1, "imap_read_headers: skipping CONDSTORE flag update for unknown message number %u\n",
-              header_msn);
+                     header_msn);
           continue;
         }
 
@@ -913,7 +913,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     {
       /* In case there are holes in the header cache. */
       evalhc = false;
-      generate_seqset(b, idata, msn_begin, msn_end);
+      imap_fetch_msn_seqset(b, idata, msn_begin, msn_end);
     }
     else
       mutt_buffer_printf(b, "%u:%u", msn_begin, msn_end);
