@@ -5921,8 +5921,7 @@ msgstr "我不知道要如何打印 %s 类型的附件！"
 #,  c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "打印已标记的附件？"
-msgstr[1] "打印 %d 件已标记的附件?"
+msgstr[0] "打印 %d 件已标记的附件？"
 
 #: recvattach.c:853
 #, c-format
