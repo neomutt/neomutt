@@ -417,8 +417,8 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   const char *names[] = {
     "neomuttrc",
     "muttrc",
-  NULL,
-};
+    NULL,
+  };
 
   const char *locations[][2] = {
     { xdg_cfg_home, "neomutt/" },
