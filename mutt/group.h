@@ -70,4 +70,7 @@ int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a
 
 struct Group *mutt_pattern_group(const char *k);
 
+void mutt_groups_init(void);
+void mutt_groups_free(void);
+
 #endif /* MUTT_GROUP_H */
