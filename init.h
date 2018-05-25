@@ -43,7 +43,6 @@
 #include "curs_lib.h"
 #include "edit.h"
 #include "globals.h"
-#include "group.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "hook.h"

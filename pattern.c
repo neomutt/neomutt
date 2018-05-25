@@ -49,7 +49,6 @@
 #include "curs_lib.h"
 #include "filter.h"
 #include "globals.h"
-#include "group.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "mailbox.h"

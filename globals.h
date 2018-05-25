@@ -54,7 +54,6 @@ WHERE char *LastFolder;    ///< Previously selected mailbox
 
 extern const char *GitVer;
 
-WHERE struct Hash *Groups;         ///< Hash table of alias groups (name -> Group)
 WHERE struct Hash *ReverseAliases; ///< Hash table of aliases (email address -> alias)
 WHERE struct Hash *TagFormats;     ///< Hash table of tag-formats (tag -> format string)
 

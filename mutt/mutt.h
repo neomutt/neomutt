@@ -34,6 +34,7 @@
  * | mutt/envlist.c   | @subpage envlist   |
  * | mutt/exit.c      | @subpage exit      |
  * | mutt/file.c      | @subpage file      |
+ * | mutt/group.c     | @subpage group     |
  * | mutt/hash.c      | @subpage hash      |
  * | mutt/history.c   | @subpage history   |
  * | mutt/list.c      | @subpage list      |
@@ -62,6 +63,7 @@
 #include "envlist.h"
 #include "exit.h"
 #include "file.h"
+#include "group.h"
 #include "hash.h"
 #include "history.h"
 #include "list.h"

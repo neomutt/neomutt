@@ -48,7 +48,6 @@
 #include "alias.h"
 #include "context.h"
 #include "filter.h"
-#include "group.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
 #include "menu.h"

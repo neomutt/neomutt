@@ -25,9 +25,14 @@
 #define MUTT_GROUP_H
 
 #include <stdbool.h>
+#include "queue.h"
+#include "regex3.h"
 
 struct Address;
 struct Buffer;
+struct Hash;
+
+extern struct Hash *Groups;
 
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
