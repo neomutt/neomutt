@@ -4707,9 +4707,6 @@ static int parse_unsubscribe     (struct Buffer *buf, struct Buffer *s, unsigned
 #ifdef USE_IMAP
 static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
-/* Parse -group arguments */
-static int parse_group_context   (struct GroupList *ctx,
-                                  struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 const struct Command Commands[] = {
 #ifdef USE_SOCKET

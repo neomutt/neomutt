@@ -41,12 +41,22 @@
 
 static struct Hash *Groups = NULL;
 
-void mutt_groups_init(void)
+/**
+ * mutt_grouplist_init - Initialize the GroupList singleton.
+ *
+ * This is called once from init.c when initializing the global structures.
+ */
+void mutt_grouplist_init(void)
 {
   Groups = mutt_hash_new(1031, 0);
 }
 
-void mutt_groups_free(void)
+/**
+ * mutt_grouplist_free - Free GroupList singleton resource.
+ *
+ * This is called once from init.c when deinitializing the global resources.
+ */
+void mutt_grouplist_free(void)
 {
   mutt_hash_destroy(&Groups);
 }
@@ -93,10 +103,10 @@ static void group_remove(struct Group *g)
 }
 
 /**
- * mutt_group_context_clear - Clear a GroupList
+ * mutt_grouplist_clear - Clear a GroupList
  * @param head GroupList to clear
  */
-void mutt_group_context_clear(struct GroupList *head)
+void mutt_grouplist_clear(struct GroupList *head)
 {
   struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
@@ -122,11 +132,11 @@ static bool empty_group(struct Group *g)
 }
 
 /**
- * mutt_group_context_add - Add a Group to a GroupList
+ * mutt_grouplist_add - Add a Group to a GroupList
  * @param head  GroupList to add to
  * @param group Group to add
  */
-void mutt_group_context_add(struct GroupList *head, struct Group *group)
+void mutt_grouplist_add(struct GroupList *head, struct Group *group)
 {
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
@@ -140,10 +150,10 @@ void mutt_group_context_add(struct GroupList *head, struct Group *group)
 }
 
 /**
- * mutt_group_context_destroy - Free a GroupList
+ * mutt_grouplist_destroy - Free a GroupList
  * @param head GroupList to free
  */
-void mutt_group_context_destroy(struct GroupList *head)
+void mutt_grouplist_destroy(struct GroupList *head)
 {
   struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
@@ -226,11 +236,11 @@ static int group_remove_regex(struct Group *g, const char *s)
 }
 
 /**
- * mutt_group_context_add_addrlist - Add Address list to a GroupList
+ * mutt_grouplist_add_addrlist - Add Address list to a GroupList
  * @param head GroupList to add to
  * @param a    Address to add
  */
-void mutt_group_context_add_addrlist(struct GroupList *head, struct Address *a)
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a)
 {
   struct GroupNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
@@ -240,13 +250,13 @@ void mutt_group_context_add_addrlist(struct GroupList *head, struct Address *a)
 }
 
 /**
- * mutt_group_context_remove_addrlist - Remove Address from a GroupList
+ * mutt_grouplist_remove_addrlist - Remove Address from a GroupList
  * @param head GroupList to remove from
  * @param a    Address to remove
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a)
+int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
 {
   int rc = 0;
   struct GroupNode *np = NULL;
@@ -263,7 +273,7 @@ int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a
 }
 
 /**
- * mutt_group_context_add_regex - Add matching Addresses to a GroupList
+ * mutt_grouplist_add_regex - Add matching Addresses to a GroupList
  * @param head  GroupList to add to
  * @param s     Address to match
  * @param flags Flags, e.g. REG_ICASE
@@ -271,7 +281,7 @@ int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_add_regex(struct GroupList *head, const char *s,
+int mutt_grouplist_add_regex(struct GroupList *head, const char *s,
                                  int flags, struct Buffer *err)
 {
   int rc = 0;
@@ -287,13 +297,13 @@ int mutt_group_context_add_regex(struct GroupList *head, const char *s,
 }
 
 /**
- * mutt_group_context_remove_regex - Remove matching addresses from a GroupList
+ * mutt_grouplist_remove_regex - Remove matching addresses from a GroupList
  * @param head GroupList to remove from
  * @param s    Address to match
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_group_context_remove_regex(struct GroupList *head, const char *s)
+int mutt_grouplist_remove_regex(struct GroupList *head, const char *s)
 {
   int rc = 0;
   struct GroupNode *np = NULL;

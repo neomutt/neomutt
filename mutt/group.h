@@ -54,23 +54,23 @@ struct GroupNode
   STAILQ_ENTRY(GroupNode) entries;
 };
 
+/**
+ * struct GroupList - A list of GroupNodes
+ */
 STAILQ_HEAD(GroupList, GroupNode);
 
-void mutt_group_context_add(struct GroupList *head, struct Group *group);
-void mutt_group_context_destroy(struct GroupList *head);
-void mutt_group_context_add_addrlist(struct GroupList *head, struct Address *a);
-int mutt_group_context_add_regex(struct GroupList *head, const char *s,
-                                 int flags, struct Buffer *err);
+void mutt_grouplist_init(void);
+void mutt_grouplist_free(void);
+void mutt_grouplist_add(struct GroupList *head, struct Group *group);
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
+int  mutt_grouplist_add_regex(struct GroupList *head, const char *s,
+                              int flags, struct Buffer *err);
+void mutt_grouplist_destroy(struct GroupList *head);
+void mutt_grouplist_clear(struct GroupList *head);
+int  mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
+int  mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a);
 
 bool mutt_group_match(struct Group *g, const char *s);
-
-void mutt_group_context_clear(struct GroupList *head);
-int mutt_group_context_remove_regex(struct GroupList *head, const char *s);
-int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a);
-
 struct Group *mutt_pattern_group(const char *k);
-
-void mutt_groups_init(void);
-void mutt_groups_free(void);
 
 #endif /* MUTT_GROUP_H */
