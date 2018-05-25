@@ -76,6 +76,15 @@
 #include "nntp.h"
 #endif
 
+#define MUTT_IGNORE (1 << 0)  /* -z */
+#define MUTT_BUFFY (1 << 1)   /* -Z */
+#define MUTT_NOSYSRC (1 << 2) /* -n */
+#define MUTT_RO (1 << 3)      /* -R */
+#define MUTT_SELECT (1 << 4)  /* -y */
+#ifdef USE_NNTP
+#define MUTT_NEWS (1 << 5) /* -g and -G */
+#endif
+
 /**
  * mutt_exit - Leave NeoMutt NOW
  * @param code Value to return to the calling environment
@@ -197,19 +206,10 @@ static int start_curses(void)
   return 0;
 }
 
-#define MUTT_IGNORE (1 << 0)  /* -z */
-#define MUTT_BUFFY (1 << 1)   /* -Z */
-#define MUTT_NOSYSRC (1 << 2) /* -n */
-#define MUTT_RO (1 << 3)      /* -R */
-#define MUTT_SELECT (1 << 4)  /* -y */
-#ifdef USE_NNTP
-#define MUTT_NEWS (1 << 5) /* -g and -G */
-#endif
-
 /**
  * init_locale - Initialise the Locale/NLS settings
  */
-void init_locale(void)
+static void init_locale(void)
 {
   setlocale(LC_ALL, "");
 
