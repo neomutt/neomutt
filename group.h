@@ -43,27 +43,27 @@ struct Group
 };
 
 /**
- * struct GroupContext - A set of Groups
+ * struct GroupNode - A node in a GroupNode
  */
-struct GroupContext
+struct GroupNode
 {
   struct Group *g;
-  STAILQ_ENTRY(GroupContext) entries;
+  STAILQ_ENTRY(GroupNode) entries;
 };
 
-STAILQ_HEAD(GroupContextHead, GroupContext);
+STAILQ_HEAD(GroupList, GroupNode);
 
-void mutt_group_context_add(struct GroupContextHead *head, struct Group *group);
-void mutt_group_context_destroy(struct GroupContextHead *head);
-void mutt_group_context_add_addrlist(struct GroupContextHead *head, struct Address *a);
-int mutt_group_context_add_regex(struct GroupContextHead *head, const char *s,
+void mutt_group_context_add(struct GroupList *head, struct Group *group);
+void mutt_group_context_destroy(struct GroupList *head);
+void mutt_group_context_add_addrlist(struct GroupList *head, struct Address *a);
+int mutt_group_context_add_regex(struct GroupList *head, const char *s,
                                  int flags, struct Buffer *err);
 
 bool mutt_group_match(struct Group *g, const char *s);
 
-int mutt_group_context_clear(struct GroupContextHead *head);
-int mutt_group_context_remove_regex(struct GroupContextHead *head, const char *s);
-int mutt_group_context_remove_addrlist(struct GroupContextHead *head, struct Address *a);
+int mutt_group_context_clear(struct GroupList *head);
+int mutt_group_context_remove_regex(struct GroupList *head, const char *s);
+int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a);
 
 struct Group *mutt_pattern_group(const char *k);
 
