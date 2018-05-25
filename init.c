@@ -1117,8 +1117,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
     if (data == MUTT_UNGROUP && (mutt_str_strcasecmp(buf->data, "*") == 0))
     {
-      if (mutt_group_context_clear(&gc) < 0)
-        goto bail;
+      mutt_group_context_clear(&gc);
       goto out;
     }
 

@@ -64,7 +64,7 @@ int mutt_group_context_add_regex(struct GroupList *head, const char *s,
 
 bool mutt_group_match(struct Group *g, const char *s);
 
-int mutt_group_context_clear(struct GroupList *head);
+void mutt_group_context_clear(struct GroupList *head);
 int mutt_group_context_remove_regex(struct GroupList *head, const char *s);
 int mutt_group_context_remove_addrlist(struct GroupList *head, struct Address *a);
 

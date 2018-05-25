@@ -95,9 +95,8 @@ static void group_remove(struct Group *g)
 /**
  * mutt_group_context_clear - Clear a GroupList
  * @param head GroupList to clear
- * @retval 0 Always
  */
-int mutt_group_context_clear(struct GroupList *head)
+void mutt_group_context_clear(struct GroupList *head)
 {
   struct GroupNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
@@ -108,7 +107,6 @@ int mutt_group_context_clear(struct GroupList *head)
     np = next;
   }
   STAILQ_INIT(head);
-  return 0;
 }
 
 /**
