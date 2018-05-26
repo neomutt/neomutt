@@ -5918,10 +5918,10 @@ msgstr "我不知道要如何打印 %s 类型的附件！"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:852
-#,  c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "打印已标记的 %d 附件？"
+msgstr[0] "打印已标记的 %d 个附件？"
 
 #: recvattach.c:853
 #, c-format
