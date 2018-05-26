@@ -290,6 +290,9 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 
   if (mutt_str_strncasecmp("(EARLIER)", s, 9) == 0)
   {
+    /* The RFC says we should not decrement msns with the VANISHED EARLIER tag.
+     * My experimentation says that's crap. */
+    /* earlier = 1; */
     earlier = 1;
     s = imap_next_word(s);
   }

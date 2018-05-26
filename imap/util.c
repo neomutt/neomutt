@@ -417,6 +417,14 @@ int imap_hcache_store_uid_seqset(struct ImapData *idata)
   return rc;
 }
 
+int imap_hcache_clear_uid_seqset(struct ImapData *idata)
+{
+  if (!idata->hcache)
+    return -1;
+
+  return mutt_hcache_delete(idata->hcache, "/UIDSEQSET", 10);
+}
+
 char *imap_hcache_get_uid_seqset(struct ImapData *idata)
 {
   char *hc_seqset, *seqset;

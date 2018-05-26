@@ -995,7 +995,8 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     if (mutt_bit_isset(idata->capabilities, QRESYNC))
     {
       mutt_bit_set(idata->capabilities, CONDSTORE);
-      imap_exec(idata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
+      if (ImapQResync)
+        imap_exec(idata, "ENABLE QRESYNC", IMAP_CMD_QUEUE);
     }
 
     /* get root delimiter, '/' as default */

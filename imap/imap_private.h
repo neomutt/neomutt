@@ -332,6 +332,7 @@ struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid);
 int imap_hcache_put(struct ImapData *idata, struct Header *h);
 int imap_hcache_del(struct ImapData *idata, unsigned int uid);
 int imap_hcache_store_uid_seqset (struct ImapData *idata);
+int imap_hcache_clear_uid_seqset (struct ImapData *idata);
 char *imap_hcache_get_uid_seqset (struct ImapData *idata);
 #endif
 

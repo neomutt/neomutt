@@ -228,6 +228,7 @@ WHERE bool ImapCondStore;
 WHERE bool ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
 WHERE bool ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
 WHERE bool ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
+WHERE bool ImapQResync;
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS
