@@ -1747,7 +1747,7 @@ msgstr "无法编辑信件"
 #, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "%d 标签改变。"
+msgstr[0] "已改变 %d 封信件的标签。"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
