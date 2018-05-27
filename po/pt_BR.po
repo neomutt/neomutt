@@ -20,6 +20,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "IDN inválido: '%s'"
+
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr "IDN inválida em '%s': '%s'"
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -453,11 +461,6 @@ msgstr "Replicar mensagens marcadas para: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "Erro ao interpretar endereço!"
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "IDN inválido: '%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, c-format

@@ -256,7 +256,7 @@ int raw_socket_open(struct Connection *conn)
 #ifdef HAVE_LIBIDN
   if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
   {
-    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
+    mutt_error(_("Bad IDN: '%s'"), conn->account.host);
     return -1;
   }
 #else
@@ -314,7 +314,7 @@ int raw_socket_open(struct Connection *conn)
 #ifdef HAVE_LIBIDN
   if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
   {
-    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
+    mutt_error(_("Bad IDN: '%s'"), conn->account.host);
     return -1;
   }
 #else

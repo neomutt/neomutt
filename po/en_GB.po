@@ -19,6 +19,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "Bad IDN: '%s'"
+
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr "Bad IDN in '%s': '%s'"
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -452,11 +460,6 @@ msgstr "Bounce tagged messages to: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "Error parsing address!"
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "Bad IDN: '%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, c-format

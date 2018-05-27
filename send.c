@@ -204,7 +204,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
     idna_ok = mutt_addrlist_to_intl(*a, &err);
     if (idna_ok != 0)
     {
-      mutt_error(_("Error: '%s' is a bad IDN."), err);
+      mutt_error(_("Bad IDN: '%s'"), err);
       FREE(&err);
     }
   } while (idna_ok != 0);
@@ -1911,7 +1911,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   if (mutt_env_to_intl(msg->env, &tag, &err))
   {
-    mutt_error(_("Bad IDN in \"%s\": '%s'"), tag, err);
+    mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
     FREE(&err);
     if (!(flags & SENDBATCH))
       goto main_loop;
