@@ -23,6 +23,7 @@
 #ifndef _MUTT_PARAMETER_H
 #define _MUTT_PARAMETER_H
 
+#include <stdbool.h>
 #include "queue.h"
 
 /**
@@ -41,7 +42,7 @@ struct Parameter
 };
 
 struct Parameter *mutt_param_new(void);
-int               mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
+bool              mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
 void              mutt_param_delete(struct ParameterList *p, const char *attribute);
 void              mutt_param_free(struct ParameterList *p);
 void              mutt_param_free_one(struct Parameter **p);

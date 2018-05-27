@@ -160,16 +160,16 @@ void mutt_param_delete(struct ParameterList *p, const char *attribute)
  * @param p2 Second parameter
  * @retval true Parameters are strictly identical
  */
-int mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2)
+bool mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2)
 {
   if (!p1 && !p2)
   {
-    return 0;
+    return false;
   }
 
   if ((p1 == NULL) ^ (p2 == NULL))
   {
-    return 1;
+    return true;
   }
 
   struct Parameter *np1 = TAILQ_FIRST(p1);
@@ -180,7 +180,7 @@ int mutt_param_cmp_strict(const struct ParameterList *p1, const struct Parameter
     if ((mutt_str_strcmp(np1->attribute, np2->attribute) != 0) ||
         (mutt_str_strcmp(np1->value, np2->value) != 0))
     {
-      return 0;
+      return false;
     }
 
     np1 = TAILQ_NEXT(np1, entries);
@@ -188,7 +188,7 @@ int mutt_param_cmp_strict(const struct ParameterList *p1, const struct Parameter
   }
 
   if (np1 || np2)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
