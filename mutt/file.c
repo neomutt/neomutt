@@ -546,14 +546,14 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
  * @param f     Filename to make safe
  * @param slash Replace '/' characters too
  */
-void mutt_file_sanitize_filename(char *f, short slash)
+void mutt_file_sanitize_filename(char *f, bool slash)
 {
   if (!f)
     return;
 
   for (; *f; f++)
   {
-    if ((slash && *f == '/') || !strchr(safe_chars, *f))
+    if ((slash && (*f == '/')) || !strchr(safe_chars, *f))
       *f = '_';
   }
 }

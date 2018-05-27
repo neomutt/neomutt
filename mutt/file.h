@@ -61,7 +61,7 @@ char *      mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int 
 int         mutt_file_rename(char *oldfile, char *newfile);
 int         mutt_file_rmtree(const char *path);
 int         mutt_file_safe_rename(const char *src, const char *target);
-void        mutt_file_sanitize_filename(char *f, short slash);
+void        mutt_file_sanitize_filename(char *f, bool slash);
 int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);

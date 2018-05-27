@@ -92,7 +92,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   {
     char prefix[_POSIX_PATH_MAX];
     mutt_str_strfcpy(prefix, s, sizeof(prefix));
-    mutt_file_sanitize_filename(prefix, 1);
+    mutt_file_sanitize_filename(prefix, true);
     snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
     struct stat sb;
     if (lstat(s, &sb) == -1 && errno == ENOENT)
