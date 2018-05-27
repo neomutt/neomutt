@@ -163,8 +163,8 @@ const struct Binding OpMain[] = { /* map: index */
   { "mail",                      OP_MAIL,                           "m" },
   { "mail-key",                  OP_MAIL_KEY,                       "\033k" },
   { "mark-message",              OP_MARK_MSG,                       "~" },
-  { "modify-labels",             OP_MAIN_MODIFY_TAGS,               NULL }, // NOTE(silent): kept for backward compatibility
-  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,     NULL }, // NOTE(silent): kept for backward compatibility
+  { "modify-labels",             OP_MAIN_MODIFY_TAGS,               NULL }, // NOTE(sileht): kept for backward compatibility
+  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,     NULL }, // NOTE(sileht): kept for backward compatibility
   { "modify-tags",               OP_MAIN_MODIFY_TAGS,               NULL },
   { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,     NULL },
   { "next-new",                  OP_MAIN_NEXT_NEW,                  NULL },
@@ -303,8 +303,8 @@ const struct Binding OpPager[] = { /* map: pager */
   { "mail",                      OP_MAIL,                         "m" },
   { "mail-key",                  OP_MAIL_KEY,                     "\033k" },
   { "mark-as-new",               OP_TOGGLE_NEW,                   "N" },
-  { "modify-labels",             OP_MAIN_MODIFY_TAGS,             NULL }, // NOTE(silent): kept for backward compatibility
-  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL }, // NOTE(silent): kept for backward compatibility
+  { "modify-labels",             OP_MAIN_MODIFY_TAGS,             NULL }, // NOTE(sileht): kept for backward compatibility
+  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL }, // NOTE(sileht): kept for backward compatibility
   { "modify-tags",               OP_MAIN_MODIFY_TAGS,             NULL },
   { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
   { "next-entry",                OP_NEXT_ENTRY,                   "J" },
