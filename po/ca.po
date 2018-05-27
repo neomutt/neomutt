@@ -64,6 +64,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "L’IDN no és vàlid: %s"
+
+# El primer camp és una capçalera de correu.  ivb
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr "L’IDN de «%s» no és vàlid: %s"
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -516,11 +525,6 @@ msgstr "Redirigeix els missatges marcats a: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "Error en interpretar l’adreça."
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "L’IDN no és vàlid: %s"
 
 # ivb (2001/12/02)
 # ivb  El programa posa l’interrogant.

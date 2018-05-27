@@ -26,6 +26,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "Некорректный IDN: %s"
+
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr "Некорректный IDN в '%s': %s."
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -467,11 +475,6 @@ msgstr "Перенаправить сообщения: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "Ошибка разбора адреса!"
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "Некорректный IDN: %s"
 
 #: commands.c:325 recvcmd.c:196
 #, fuzzy, c-format

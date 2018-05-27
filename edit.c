@@ -460,7 +460,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);
               if (mutt_env_to_intl(msg->env, &tag, &err))
-                printw(_("Bad IDN in %s: '%s'\n"), tag, err);
+                printw(_("Bad IDN in '%s': '%s'"), tag, err);
               /* tag is a statically allocated string and should not be freed */
               FREE(&err);
             }

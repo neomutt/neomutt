@@ -20,6 +20,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "Zlý IDN: '%s'"
+
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr ""
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -458,11 +466,6 @@ msgstr "Presmerovať označené správy do: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "Chyba pri analýze adresy!"
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "Zlý IDN: '%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, fuzzy, c-format

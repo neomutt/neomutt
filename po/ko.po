@@ -21,6 +21,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#, c-format
+msgid "Bad IDN: '%s'"
+msgstr "잘못된 IDN: '%s'"
+
+#, c-format
+msgid "Bad IDN in '%s': '%s'"
+msgstr "잘못된 IDN '%s': '%s'"
+
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
 msgid "Exit"
@@ -467,11 +475,6 @@ msgstr "메일을 전달할 주소: "
 #: commands.c:306 recvcmd.c:174
 msgid "Error parsing address!"
 msgstr "주소 분석 중 오류!"
-
-#: commands.c:314 recvcmd.c:182
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "잘못된 IDN: '%s'"
 
 #: commands.c:325 recvcmd.c:196
 #, fuzzy, c-format
