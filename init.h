@@ -1385,9 +1385,9 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will fetch the set of subscribed folders from
-  ** your server on connection, and add them to the set of mailboxes
-  ** it polls for new mail just as if you had issued individual ``$mailboxes''
-  ** commands.
+  ** your server whenever a mailbox is \fBselected\fP, and add them to the set
+  ** of mailboxes it polls for new mail just as if you had issued individual
+  ** ``$mailboxes'' commands.
   */
   { "imap_delim_chars",         DT_STRING, R_NONE, &ImapDelimChars, IP "/." },
   /*
