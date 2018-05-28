@@ -126,7 +126,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
                             unsigned long data, enum FormatFlag flags);
 
 char *mutt_expand_path(char *s, size_t slen);
-char *mutt_expand_path_regex(char *s, size_t slen, int regex);
+char *mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
