@@ -56,6 +56,12 @@
 
 typedef int (*handler_t)(struct Body *b, struct State *s);
 
+/**
+ * print_part_line - Print a separator for the Mime part
+ * @param s State of text being processed
+ * @param b Body of the email
+ * @param n Part number for multipart emails (0 otherwise)
+ */
 static void print_part_line(struct State *s, struct Body *b, int n)
 {
   char length[5];
@@ -63,15 +69,26 @@ static void print_part_line(struct State *s, struct Body *b, int n)
   state_mark_attach(s);
   char *charset = mutt_param_get(&b->parameter, "charset");
   if (n != 0)
+  {
     state_printf(s, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  n, TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
+  }
   else
+  {
     state_printf(s, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  TYPE(b), b->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b->encoding), length);
+  }
 }
 
+/**
+ * convert_to_state - Convert text and write it to a file
+ * @param cd   Iconv conversion descriptor
+ * @param bufi Buffer with text to convert
+ * @param l    Length of buffer
+ * @param s    State to write to
+ */
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 {
   char bufo[BUFO_SIZE];
@@ -112,7 +129,14 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   *l = ibl;
 }
 
-static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
+/**
+ * decode_xbit - Decode xbit-encoded text
+ * @param s      State to work with
+ * @param len    Length of text to decode
+ * @param istext Mime part is plain text
+ * @param cd     Iconv conversion descriptor
+ */
+static void decode_xbit(struct State *s, long len, bool istext, iconv_t cd)
 {
   if (!istext)
   {
@@ -127,7 +151,7 @@ static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
   size_t l = 0;
   while ((c = fgetc(s->fpin)) != EOF && len--)
   {
-    if (c == '\r' && len)
+    if ((c == '\r') && len)
     {
       const int ch = fgetc(s->fpin);
       if (ch == '\n')
@@ -150,14 +174,21 @@ static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
+/**
+ * qp_decode_triple - Decode a quoted-printable triplet
+ * @param s State to work with
+ * @param d Decoded character
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int qp_decode_triple(char *s, char *d)
 {
   /* soft line break */
-  if (*s == '=' && !(*(s + 1)))
+  if ((*s == '=') && !(*(s + 1)))
     return 1;
 
   /* quoted-printable triple */
-  if (*s == '=' && isxdigit((unsigned char) *(s + 1)) &&
+  if ((*s == '=') && isxdigit((unsigned char) *(s + 1)) &&
       isxdigit((unsigned char) *(s + 2)))
   {
     *d = (hexval(*(s + 1)) << 4) | hexval(*(s + 2));
@@ -168,6 +199,13 @@ static int qp_decode_triple(char *s, char *d)
   return -1;
 }
 
+/**
+ * qp_decode_line - Decode a line of quoted-printable text
+ * @param dest Buffer for result
+ * @param src  Text to decode
+ * @param l    Bytes written to buffer
+ * @param last Last character of the line
+ */
 static void qp_decode_line(char *dest, char *src, size_t *l, int last)
 {
   char *d = NULL, *s = NULL;
@@ -196,12 +234,12 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
     }
   }
 
-  if (!soft && last == '\n')
+  if (!soft && (last == '\n'))
   {
     /* neither \r nor \n as part of line-terminating CRLF
      * may be qp-encoded, so remove \r and \n-terminate;
      * see RFC2045, sect. 6.7, (1): General 8bit representation */
-    if (kind == 0 && c == '\r')
+    if ((kind == 0) && (c == '\r'))
       *(d - 1) = '\n';
     else
       *d++ = '\n';
@@ -213,26 +251,30 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
 
 /**
  * decode_quoted - Decode an attachment encoded with quoted-printable
+ * @param s      State to work with
+ * @param len    Length of text to decode
+ * @param istext Mime part is plain text
+ * @param cd     Iconv conversion descriptor
  *
- * Why doesn't this overflow any buffers?  First, it's guaranteed that the
- * length of a line grows when you _en_-code it to quoted-printable.  That
+ * Why doesn't this overflow any buffers? First, it's guaranteed that the
+ * length of a line grows when you _en_-code it to quoted-printable. That
  * means that we always can store the result in a buffer of at most the _same_
  * size.
  *
  * Now, we don't special-case if the line we read with fgets() isn't
- * terminated.  We don't care about this, since STRING > 78, so corrupted input
- * will just be corrupted a bit more.  That implies that STRING+1 bytes are
+ * terminated. We don't care about this, since STRING > 78, so corrupted input
+ * will just be corrupted a bit more. That implies that STRING+1 bytes are
  * always sufficient to store the result of qp_decode_line.
  *
  * Finally, at soft line breaks, some part of a multibyte character may have
- * been left over by convert_to_state().  This shouldn't be more than 6
+ * been left over by convert_to_state(). This shouldn't be more than 6
  * characters, so STRING + 7 should be sufficient memory to store the decoded
  * data.
  *
  * Just to make sure that I didn't make some off-by-one error above, we just
  * use STRING*2 for the target buffer's size.
  */
-static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
+static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 {
   char line[STRING];
   char decline[2 * STRING];
@@ -244,8 +286,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
 
   while (len > 0)
   {
-    /*
-     * It's ok to use a fixed size buffer for input, even if the line turns
+    /* It's ok to use a fixed size buffer for input, even if the line turns
      * out to be longer than this.  Just process the line in chunks.  This
      * really shouldn't happen according the MIME spec, since Q-P encoded
      * lines are at most 76 characters, but we should be liberal about what
@@ -257,8 +298,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
     size_t linelen = strlen(line);
     len -= linelen;
 
-    /*
-     * inspect the last character we read so we can tell if we got the
+    /* inspect the last character we read so we can tell if we got the
      * entire line.
      */
     const int last = linelen ? line[linelen - 1] : 0;
@@ -281,7 +321,14 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd)
+/**
+ * mutt_decode_base64 - Decode base64-encoded text
+ * @param s      State to work with
+ * @param len    Length of text to decode
+ * @param istext Mime part is plain text
+ * @param cd     Iconv conversion descriptor
+ */
+void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
 {
   char buf[5];
   int ch, i;
@@ -295,12 +342,12 @@ void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd)
 
   while (len > 0)
   {
-    for (i = 0; i < 4 && len > 0; len--)
+    for (i = 0; (i < 4) && (len > 0); len--)
     {
       ch = fgetc(s->fpin);
       if (ch == EOF)
         break;
-      if (ch >= 0 && ch < 128 && (base64val(ch) != -1 || ch == '='))
+      if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
         buf[i++] = ch;
     }
     if (i != 4)
@@ -328,7 +375,7 @@ void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd)
     ch = ((c3 & 0x3) << 6) | c4;
     bufi[l++] = ch;
 
-    if (l + 8 >= sizeof(bufi))
+    if ((l + 8) >= sizeof(bufi))
       convert_to_state(cd, bufi, &l, s);
   }
 
@@ -338,14 +385,26 @@ void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
+/**
+ * decode_byte - Decode a uuencoded byte
+ * @param ch Character to decode
+ * @retval num Decoded value
+ */
 static unsigned char decode_byte(char ch)
 {
   if (ch == 96)
     return 0;
-  return ch - 32;
+  return (ch - 32);
 }
 
-static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
+/**
+ * decode_uuencoded - Decode uuencoded text
+ * @param s      State to work with
+ * @param len    Length of text to decode
+ * @param istext Mime part is plain text
+ * @param cd     Iconv conversion descriptor
+ */
+static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char *pt = NULL;
@@ -397,8 +456,8 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
 }
 
 /* ----------------------------------------------------------------------------
-   * A (not so) minimal implementation of RFC1563.
-   */
+ * A (not so) minimal implementation of RFC1563.
+ */
 
 #define INDENT_SIZE 4
 
@@ -422,27 +481,29 @@ enum RichAttribs
   RICH_LAST_TAG
 };
 
+// clang-format off
 static const struct
 {
   const wchar_t *tag_name;
   int index;
 } EnrichedTags[] = {
-  { L"param", RICH_PARAM },
-  { L"bold", RICH_BOLD },
-  { L"italic", RICH_ITALIC },
-  { L"underline", RICH_UNDERLINE },
-  { L"nofill", RICH_NOFILL },
-  { L"excerpt", RICH_EXCERPT },
-  { L"indent", RICH_INDENT },
+  { L"param",       RICH_PARAM        },
+  { L"bold",        RICH_BOLD         },
+  { L"italic",      RICH_ITALIC       },
+  { L"underline",   RICH_UNDERLINE    },
+  { L"nofill",      RICH_NOFILL       },
+  { L"excerpt",     RICH_EXCERPT      },
+  { L"indent",      RICH_INDENT       },
   { L"indentright", RICH_INDENT_RIGHT },
-  { L"center", RICH_CENTER },
-  { L"flushleft", RICH_FLUSHLEFT },
-  { L"flushright", RICH_FLUSHRIGHT },
-  { L"flushboth", RICH_FLUSHLEFT },
-  { L"color", RICH_COLOR },
-  { L"x-color", RICH_COLOR },
-  { NULL, -1 },
+  { L"center",      RICH_CENTER       },
+  { L"flushleft",   RICH_FLUSHLEFT    },
+  { L"flushright",  RICH_FLUSHRIGHT   },
+  { L"flushboth",   RICH_FLUSHLEFT    },
+  { L"color",       RICH_COLOR        },
+  { L"x-color",     RICH_COLOR        },
+  { NULL,           -1                },
 };
+// clang-format on
 
 /**
  * struct EnrichedState - State of enriched-text parser
@@ -466,6 +527,10 @@ struct EnrichedState
   struct State *s;
 };
 
+/**
+ * enriched_wrap - Wrap enriched text
+ * @param stte State of enriched text
+ */
 static void enriched_wrap(struct EnrichedState *stte)
 {
   int x;
@@ -573,12 +638,19 @@ static void enriched_wrap(struct EnrichedState *stte)
   }
 }
 
-static void enriched_flush(struct EnrichedState *stte, int wrap)
+/**
+ * enriched_flush - Write enriched text to the State
+ * @param stte State of Enriched text
+ * @param wrap true if the text should be wrapped
+ */
+static void enriched_flush(struct EnrichedState *stte, bool wrap)
 {
   if (!stte->tag_level[RICH_NOFILL] &&
-      (stte->line_len + stte->word_len >
+      ((stte->line_len + stte->word_len) >
        (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) - stte->indent_len)))
+  {
     enriched_wrap(stte);
+  }
 
   if (stte->buf_used)
   {
@@ -599,6 +671,11 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
   fflush(stte->s->fpout);
 }
 
+/**
+ * enriched_putwc - Write one wide character to the state
+ * @param c    Character to write
+ * @param stte State of Enriched text
+ */
 static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
 {
   if (stte->tag_level[RICH_PARAM])
@@ -614,7 +691,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   }
 
   /* see if more space is needed (plus extra for possible rich characters) */
-  if (stte->buf_len < stte->buf_used + 3)
+  if (stte->buf_len < (stte->buf_used + 3))
   {
     stte->buf_len += LONG_STRING;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
@@ -628,7 +705,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
       stte->word_len++;
 
     stte->buffer[stte->buf_used++] = c;
-    enriched_flush(stte, 0);
+    enriched_flush(stte, false);
   }
   else
   {
@@ -665,11 +742,16 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   }
 }
 
+/**
+ * enriched_puts - Write an enriched text string to the State
+ * @param s    String to write
+ * @param stte State of Enriched text
+ */
 static void enriched_puts(const char *s, struct EnrichedState *stte)
 {
   const char *c = NULL;
 
-  if (stte->buf_len < stte->buf_used + mutt_str_strlen(s))
+  if (stte->buf_len < (stte->buf_used + mutt_str_strlen(s)))
   {
     stte->buf_len += LONG_STRING;
     mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
@@ -682,6 +764,11 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
   }
 }
 
+/**
+ * enriched_set_flags - Set flags on the enriched text state
+ * @param tag  Tag to set
+ * @param stte State of Enriched text
+ */
 static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
 {
   const wchar_t *tagptr = tag;
@@ -701,14 +788,14 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
 
   if (j != -1)
   {
-    if (j == RICH_CENTER || j == RICH_FLUSHLEFT || j == RICH_FLUSHRIGHT)
-      enriched_flush(stte, 1);
+    if ((j == RICH_CENTER) || (j == RICH_FLUSHLEFT) || (j == RICH_FLUSHRIGHT))
+      enriched_flush(stte, true);
 
     if (*tag == (wchar_t) '/')
     {
       if (stte->tag_level[j]) /* make sure not to go negative */
         stte->tag_level[j]--;
-      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
+      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_PARAM) && stte->tag_level[RICH_COLOR])
       {
         stte->param[stte->param_used] = (wchar_t) '\0';
         if (wcscasecmp(L"black", stte->param) == 0)
@@ -744,7 +831,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
           enriched_puts("\033[37m", stte);
         }
       }
-      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_COLOR)
+      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_COLOR))
       {
         enriched_puts("\033[0m", stte);
       }
@@ -760,10 +847,16 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
       stte->tag_level[j]++;
 
     if (j == RICH_EXCERPT)
-      enriched_flush(stte, 1);
+      enriched_flush(stte, true);
   }
 }
 
+/**
+ * text_enriched_handler - Handler for enriched text
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Always
+ */
 static int text_enriched_handler(struct Body *a, struct State *s)
 {
   enum
@@ -824,7 +917,7 @@ static int text_enriched_handler(struct Body *a, struct State *s)
           case '\n':
             if (stte.tag_level[RICH_NOFILL])
             {
-              enriched_flush(&stte, 1);
+              enriched_flush(&stte, true);
             }
             else
             {
@@ -872,7 +965,7 @@ static int text_enriched_handler(struct Body *a, struct State *s)
 
       case NEWLINE:
         if (wc == (wchar_t) '\n')
-          enriched_flush(&stte, 1);
+          enriched_flush(&stte, true);
         else
         {
           ungetwc(wc, s->fpin);
@@ -883,7 +976,7 @@ static int text_enriched_handler(struct Body *a, struct State *s)
 
       case ST_EOF:
         enriched_putwc((wchar_t) '\0', &stte);
-        enriched_flush(&stte, 1);
+        enriched_flush(&stte, true);
         state = DONE;
         break;
 
@@ -902,69 +995,76 @@ static int text_enriched_handler(struct Body *a, struct State *s)
 }
 
 /**
- * is_mmnoask - for compatibility with metamail
+ * is_mmnoask - Metamail compatibility: should the attachment be autoviewed?
+ * @param buf Mime type, e.g. 'text/plain'
+ * @retval true Metamail "no ask" is true
+ *
+ * Test if the `MM_NOASK` environment variable should allow autoviewing of the
+ * attachment.
+ *
+ * @note If `MM_NOASK=1` then the function will automaticaly return true.
  */
-static int is_mmnoask(const char *buf)
+static bool is_mmnoask(const char *buf)
 {
   char *p = NULL;
   char tmp[LONG_STRING], *q = NULL;
 
   const char *val = mutt_str_getenv("MM_NOASK");
-  if (val)
+  if (!val)
+    return false;
+
+  if (mutt_str_strcmp(val, "1") == 0)
+    return true;
+
+  mutt_str_strfcpy(tmp, val, sizeof(tmp));
+  p = tmp;
+
+  while ((p = strtok(p, ",")) != NULL)
   {
-    if (mutt_str_strcmp(val, "1") == 0)
-      return 1;
-
-    mutt_str_strfcpy(tmp, val, sizeof(tmp));
-    p = tmp;
-
-    while ((p = strtok(p, ",")) != NULL)
+    q = strrchr(p, '/');
+    if (q)
     {
-      q = strrchr(p, '/');
-      if (q)
+      if (*(q + 1) == '*')
       {
-        if (*(q + 1) == '*')
-        {
-          if (mutt_str_strncasecmp(buf, p, q - p) == 0)
-            return 1;
-        }
-        else
-        {
-          if (mutt_str_strcasecmp(buf, p) == 0)
-            return 1;
-        }
+        if (mutt_str_strncasecmp(buf, p, q - p) == 0)
+          return true;
       }
       else
       {
-        const int lng = mutt_str_strlen(p);
-        if (buf[lng] == '/' && (mutt_str_strncasecmp(buf, p, lng) == 0))
-          return 1;
+        if (mutt_str_strcasecmp(buf, p) == 0)
+          return true;
       }
-
-      p = NULL;
     }
+    else
+    {
+      const int lng = mutt_str_strlen(p);
+      if ((buf[lng] == '/') && (mutt_str_strncasecmp(buf, p, lng) == 0))
+        return true;
+    }
+
+    p = NULL;
   }
 
-  return 0;
+  return false;
 }
 
 /**
  * is_autoview - Should email body be filtered by mailcap
- * @param b Email body
+ * @param b Body of the email
  * @retval 1 body part should be filtered by a mailcap entry prior to viewing inline
  * @retval 0 otherwise
  */
-static int is_autoview(struct Body *b)
+static bool is_autoview(struct Body *b)
 {
   char type[SHORT_STRING];
-  int is_av = 0;
+  bool is_av = false;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
 
   if (ImplicitAutoview)
   {
     /* $implicit_autoview is essentially the same as "auto_view *" */
-    is_av = 1;
+    is_av = true;
   }
   else
   {
@@ -974,32 +1074,39 @@ static int is_autoview(struct Body *b)
     STAILQ_FOREACH(np, &AutoViewList, entries)
     {
       int i = mutt_str_strlen(np->data) - 1;
-      if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
+      if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
            (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
           (mutt_str_strcasecmp(type, np->data) == 0))
       {
-        is_av = 1;
+        is_av = true;
         break;
       }
     }
 
     if (is_mmnoask(type))
-      is_av = 1;
+      is_av = true;
   }
 
   /* determine if there is a mailcap entry suitable for auto_view
    *
-   * WARNING: type is altered by this call as a result of `mime_lookup' support */
+   * @warning type is altered by this call as a result of 'mime_lookup' support */
   if (is_av)
     return rfc1524_mailcap_lookup(b, type, NULL, MUTT_AUTOVIEW);
 
-  return 0;
+  return false;
 }
 
 #define TXTHTML 1
 #define TXTPLAIN 2
 #define TXTENRICHED 3
 
+/**
+ * alternative_handler - Handler for multipart alternative emails
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int alternative_handler(struct Body *a, struct State *s)
 {
   struct Body *choice = NULL;
@@ -1007,7 +1114,8 @@ static int alternative_handler(struct Body *a, struct State *s)
   bool mustfree = false;
   int rc = 0;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     struct stat st;
     mustfree = true;
@@ -1033,7 +1141,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     char *c = strchr(np->data, '/');
     if (c)
     {
-      wild = (c[1] == '*' && c[2] == 0);
+      wild = ((c[1] == '*') && (c[2] == 0));
       btlen = c - np->data;
     }
     else
@@ -1091,17 +1199,17 @@ static int alternative_handler(struct Body *a, struct State *s)
     {
       if (b->type == TYPETEXT)
       {
-        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && type <= TXTPLAIN)
+        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXTPLAIN))
         {
           choice = b;
           type = TXTPLAIN;
         }
-        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && type <= TXTENRICHED)
+        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && (type <= TXTENRICHED))
         {
           choice = b;
           type = TXTENRICHED;
         }
-        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && type <= TXTHTML)
+        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && (type <= TXTHTML))
         {
           choice = b;
           type = TXTHTML;
@@ -1178,9 +1286,9 @@ static int alternative_handler(struct Body *a, struct State *s)
 }
 
 /**
- * multilingual_handler - Parse a multi-lingual email
+ * multilingual_handler - Handler for multi-lingual emails
  * @param a Body of the email
- * @param s State for the file containing the email
+ * @param s State of text being processed
  * @retval 0 Always
  */
 static int multilingual_handler(struct Body *a, struct State *s)
@@ -1279,7 +1387,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
 }
 
 /**
- * message_handler - handles message/rfc822 body parts
+ * message_handler - Handler for message/rfc822 body parts
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
  */
 static int message_handler(struct Body *a, struct State *s)
 {
@@ -1292,7 +1404,8 @@ static int message_handler(struct Body *a, struct State *s)
   if (off_start < 0)
     return -1;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     fstat(fileno(s->fpin), &st);
     b = mutt_body_new();
@@ -1320,7 +1433,8 @@ static int message_handler(struct Body *a, struct State *s)
     rc = mutt_body_handler(b->parts, s);
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
     mutt_body_free(&b);
 
   return rc;
@@ -1328,16 +1442,17 @@ static int message_handler(struct Body *a, struct State *s)
 
 /**
  * mutt_can_decode - Will decoding the attachment produce any output
- * @retval 1 if decoding the attachment will produce output
+ * @param a Body of email to test
+ * @retval true Decoding the attachment will produce output
  */
-int mutt_can_decode(struct Body *a)
+bool mutt_can_decode(struct Body *a)
 {
   if (is_autoview(a))
-    return 1;
+    return true;
   else if (a->type == TYPETEXT)
-    return 1;
+    return true;
   else if (a->type == TYPEMESSAGE)
-    return 1;
+    return true;
   else if (a->type == TYPEMULTIPART)
   {
     if (WithCrypto)
@@ -1345,27 +1460,34 @@ int mutt_can_decode(struct Body *a)
       if ((mutt_str_strcasecmp(a->subtype, "signed") == 0) ||
           (mutt_str_strcasecmp(a->subtype, "encrypted") == 0))
       {
-        return 1;
+        return true;
       }
     }
 
     for (struct Body *b = a->parts; b; b = b->next)
     {
       if (mutt_can_decode(b))
-        return 1;
+        return true;
     }
   }
   else if ((WithCrypto != 0) && a->type == TYPEAPPLICATION)
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
-      return 1;
+      return true;
     if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(a))
-      return 1;
+      return true;
   }
 
-  return 0;
+  return false;
 }
 
+/**
+ * multipart_handler - Handler for multipart emails
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int multipart_handler(struct Body *a, struct State *s)
 {
   struct Body *b = NULL, *p = NULL;
@@ -1373,7 +1495,8 @@ static int multipart_handler(struct Body *a, struct State *s)
   int count;
   int rc = 0;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     fstat(fileno(s->fpin), &st);
     b = mutt_body_new();
@@ -1412,7 +1535,7 @@ static int multipart_handler(struct Body *a, struct State *s)
     rc = mutt_body_handler(p, s);
     state_putc('\n', s);
 
-    if (rc)
+    if (rc != 0)
     {
       mutt_error(_("One or more parts of this message could not be displayed"));
       mutt_debug(1, "Failed on attachment #%d, type %s/%s.\n", count, TYPE(p),
@@ -1425,7 +1548,8 @@ static int multipart_handler(struct Body *a, struct State *s)
     }
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
     mutt_body_free(&b);
 
   /* make failure of a single part non-fatal */
@@ -1434,6 +1558,13 @@ static int multipart_handler(struct Body *a, struct State *s)
   return rc;
 }
 
+/**
+ * autoview_handler - Handler for autoviewable attachments
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int autoview_handler(struct Body *a, struct State *s)
 {
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
@@ -1566,6 +1697,13 @@ static int autoview_handler(struct Body *a, struct State *s)
   return rc;
 }
 
+/**
+ * external_body_handler - Handler for external-body emails
+ * @param b Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int external_body_handler(struct Body *b, struct State *s)
 {
   const char *str = NULL;
@@ -1609,9 +1747,8 @@ static int external_body_handler(struct Body *b, struct State *s)
              The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
              expands to a date as returned by `mutt_date_parse_date()`.
            */
-          str = _(
-              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-              "[-- on %s --]\n");
+          str = _("[-- This %s/%s attachment (size %s bytes) has been deleted "
+                  "--]\n[-- on %s --]\n");
         }
         else
         {
@@ -1636,8 +1773,8 @@ static int external_body_handler(struct Body *b, struct State *s)
              Caution: Argument three %3$ is also defined but should not be used
              in this translation!
            */
-          str = _("[-- This %s/%s attachment has been deleted --]\n"
-                  "[-- on %4$s --]\n");
+          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
+                  "--]\n");
         }
         else
         {
@@ -1670,10 +1807,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain".
        */
-      snprintf(strbuf, sizeof(strbuf),
-               _("[-- This %s/%s attachment is not included, --]\n"
-                 "[-- and the indicated external source has --]\n"
-                 "[-- expired. --]\n"),
+      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
                TYPE(b->parts), b->parts->subtype);
       state_attach_puts(strbuf, s);
 
@@ -1691,9 +1825,7 @@ static int external_body_handler(struct Body *b, struct State *s)
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
          "LOCAL-FILE", "MAIL-SERVER".
        */
-      snprintf(strbuf, sizeof(strbuf),
-               _("[-- This %s/%s attachment is not included, --]\n"
-                 "[-- and the indicated access-type %s is unsupported --]\n"),
+      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
                TYPE(b->parts), b->parts->subtype, access_type);
       state_attach_puts(strbuf, s);
 
@@ -1705,6 +1837,11 @@ static int external_body_handler(struct Body *b, struct State *s)
   return 0;
 }
 
+/**
+ * mutt_decode_attachment - Decode an email's attachment
+ * @param b Body of the email
+ * @param s State of text being processed
+ */
 void mutt_decode_attachment(struct Body *b, struct State *s)
 {
   int istext = mutt_is_text_part(b);
@@ -1755,11 +1892,14 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
 }
 
 /**
- * text_plain_handler - Display plain text
+ * text_plain_handler - Handler for plain text
+ * @param b Body of email (UNUSED)
+ * @param s State to work with
+ * @retval 0 Always
  *
- * when generating format=flowed ($text_flowed is set) from format=fixed, strip
+ * When generating format=flowed ($text_flowed is set) from format=fixed, strip
  * all trailing spaces to improve interoperability; if $text_flowed is unset,
- * simply verbatim copy input
+ * simply verbatim copy input.
  */
 static int text_plain_handler(struct Body *b, struct State *s)
 {
@@ -1784,8 +1924,17 @@ static int text_plain_handler(struct Body *b, struct State *s)
   return 0;
 }
 
+/**
+ * run_decode_and_handler - Run an appropriate decoder for an email
+ * @param b         Body of the email
+ * @param s         State to work with
+ * @param handler   Callback function to process the content, e.g. rfc3676_handler()
+ * @param plaintext Is the content in plain text
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int run_decode_and_handler(struct Body *b, struct State *s,
-                                  handler_t handler, int plaintext)
+                                  handler_t handler, bool plaintext)
 {
   char *save_prefix = NULL;
   FILE *fp = NULL;
@@ -1802,12 +1951,9 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 #endif
 
   /* see if we need to decode this part before processing it */
-  if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-      b->encoding == ENCUUENCODED || plaintext || mutt_is_text_part(b)) /* text subtypes may
-                                                        * require character
-                                                        * set conversion even
-                                                        * with 8bit encoding.
-                                                        */
+  if ((b->encoding == ENCBASE64) || (b->encoding == ENCQUOTEDPRINTABLE) ||
+      (b->encoding == ENCUUENCODED) || (plaintext || mutt_is_text_part(b)))
+  /* text subtypes may require character set conversion even with 8bit encoding */
   {
     const int orig_type = b->type;
 #ifndef USE_FMEMOPEN
@@ -1898,8 +2044,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   if (handler)
   {
     rc = handler(b, s);
-
-    if (rc)
+    if (rc != 0)
     {
       mutt_debug(1, "Failed on attachment of type %s/%s.\n", TYPE(b), NONULL(b->subtype));
     }
@@ -1922,6 +2067,13 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   return rc;
 }
 
+/**
+ * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails
+ * @param b Body of the email
+ * @param s State to work with
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   struct Body *octetstream = b->parts->next;
@@ -1931,16 +2083,30 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
   return rc;
 }
 
+/**
+ * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails
+ * @param b Body of the email
+ * @param s State to work with
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   struct Body *octetstream = b->parts->next->next;
   /* exchange encodes the octet-stream, so re-run it through the decoder */
-  int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, 0);
+  int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, false);
   b->goodsig |= octetstream->goodsig;
 
   return rc;
 }
 
+/**
+ * mutt_body_handler - Handler for the Body of an email
+ * @param b Body of the email
+ * @param s State to work with
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 int mutt_body_handler(struct Body *b, struct State *s)
 {
   if (!b || !s)
@@ -1995,8 +2161,6 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPEMULTIPART)
   {
-    char *p = NULL;
-
     if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
     {
@@ -2009,9 +2173,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
     else if ((WithCrypto != 0) && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
-      p = mutt_param_get(&b->parameter, "protocol");
-
-      if (!p)
+      if (!mutt_param_get(&b->parameter, "protocol"))
         mutt_error(_("Error: multipart/signed has no protocol."));
       else if (s->flags & MUTT_VERIFY)
         handler = mutt_signed_handler;
@@ -2028,13 +2190,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
     if (!handler)
       handler = multipart_handler;
 
-    if (b->encoding != ENC7BIT && b->encoding != ENC8BIT && b->encoding != ENCBINARY)
+    if ((b->encoding != ENC7BIT) && (b->encoding != ENC8BIT) && (b->encoding != ENCBINARY))
     {
       mutt_debug(1, "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
       b->encoding = ENC7BIT;
     }
   }
-  else if ((WithCrypto != 0) && b->type == TYPEAPPLICATION)
+  else if ((WithCrypto != 0) && (b->type == TYPEAPPLICATION))
   {
     if (OptDontHandlePgpKeys && (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
     {
@@ -2049,14 +2211,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!HonorDisposition || (b->disposition != DISPATTACH || OptViewAttach)) &&
+  if ((!HonorDisposition || ((b->disposition != DISPATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
-  else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH && !OptViewAttach &&
+  else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISPATTACH) && !OptViewAttach &&
                                          HonorDisposition && (plaintext || handler)))
   {
     const char *str = NULL;
@@ -2069,6 +2231,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
         if (HonorDisposition && b->disposition == DISPATTACH)
+        {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
 
@@ -2076,38 +2239,45 @@ int mutt_body_handler(struct Body *b, struct State *s)
            */
           str = _(
               "[-- This is an attachment (use '%3$s' to view this part) --]\n");
+        }
         else
+        {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
              The last %s expands to a keystroke/key binding, e.g. 'v'.
            */
           str =
               _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n");
+        }
       }
       else
       {
-        if (HonorDisposition && b->disposition == DISPATTACH)
+        if (HonorDisposition && (b->disposition == DISPATTACH))
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
                   "key!) --]\n");
         else
+        {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
           str = _("[-- %s/%s is unsupported (need 'view-attachments' bound to "
                   "key!) --]\n");
+        }
       }
     }
     else
     {
-      if (HonorDisposition && b->disposition == DISPATTACH)
+      if (HonorDisposition && (b->disposition == DISPATTACH))
         str = _("[-- This is an attachment --]\n");
       else
+      {
         /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
         str = _("[-- %s/%s is unsupported --]\n");
+      }
     }
     state_mark_attach(s);
     state_printf(s, str, TYPE(b), b->subtype, keystroke);
   }
 
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
-  if (rc)
+  if (rc != 0)
   {
     mutt_debug(1, "Bailing on attachment of type %s/%s.\n", TYPE(b), NONULL(b->subtype));
   }

@@ -153,7 +153,7 @@ void mutt_check_rescore(struct Context *ctx);
 void mutt_clear_error(void);
 void mutt_clear_pager_position(void);
 void mutt_decode_attachment(struct Body *b, struct State *s);
-void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd);
+void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd);
 void mutt_default_save(char *path, size_t pathlen, struct Header *hdr);
 void mutt_display_address(struct Envelope *env);
 void mutt_draw_statusline(int cols, const char *buf, int buflen);
@@ -232,7 +232,7 @@ int mutt_any_key_to_continue(const char *s);
 int mutt_buffy_check(bool force);
 int mutt_buffy_notify(void);
 int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur);
-int mutt_can_decode(struct Body *a);
+bool mutt_can_decode(struct Body *a);
 int mutt_change_flag(struct Header *h, int bf);
 int mutt_check_encoding(const char *c);
 
