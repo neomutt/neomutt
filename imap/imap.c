@@ -992,8 +992,6 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     /* get root delimiter, '/' as default */
     idata->delim = '/';
     imap_exec(idata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
-    if (ImapCheckSubscribed)
-      imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
     /* we may need the root delimiter before we open a mailbox */
     imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);
   }
@@ -2058,6 +2056,8 @@ static int imap_open_mailbox(struct Context *ctx)
   }
   FREE(&pmx.mbox);
 
+  if (ImapCheckSubscribed)
+    imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
   snprintf(bufout, sizeof(bufout), "%s %s", ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
   idata->state = IMAP_SELECTED;
