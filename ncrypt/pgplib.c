@@ -92,20 +92,21 @@ short pgp_get_abilities(unsigned char type)
   return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
 }
 
-static void pgp_free_sig(struct PgpSignature **sigp)
+/**
+ *
+ *
+ */
+static void pgp_free_sig(struct PgpSignatureList *sigp)
 {
-  struct PgpSignature *sp = NULL, *q = NULL;
+  struct PgpSignatureNode *sp = STAILQ_FIRST(sigp), *next = NULL;
 
-  if (!sigp || !*sigp)
-    return;
-
-  for (sp = *sigp; sp; sp = q)
+  while(sp)
   {
-    q = sp->next;
+    next = STAILQ_NEXT(sp, entriens);
     FREE(&sp);
+    sp = next;
   }
-
-  *sigp = NULL;
+  STAILQ_INIT(sigp);
 }
 
 static void pgp_free_uid(struct PgpUid **upp)
