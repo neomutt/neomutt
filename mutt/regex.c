@@ -136,7 +136,7 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
   rx = mutt_regex_compile(str, flags);
   if (!rx)
   {
-    snprintf(err->data, err->dsize, "Bad regex: %s\n", str);
+    mutt_buffer_printf(err, "Bad regex: %s\n", str);
     return -1;
   }
 
@@ -289,7 +289,7 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
   rx = mutt_regex_compile(pat, REG_ICASE);
   if (!rx)
   {
-    snprintf(err->data, err->dsize, _("Bad regex: %s"), pat);
+    mutt_buffer_printf(err, _("Bad regex: %s"), pat);
     return -1;
   }
 
@@ -349,9 +349,7 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
 
   if (t->nmatch > t->regex->regex->re_nsub)
   {
-    snprintf(err->data, err->dsize, "%s",
-             _("Not enough subexpressions for "
-               "template"));
+    mutt_buffer_printf(err, "%s", _("Not enough subexpressions for template"));
     mutt_replacelist_remove(rl, pat);
     return -1;
   }

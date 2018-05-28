@@ -405,13 +405,13 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
     *col = strtol(s, &eptr, 10);
     if (!*s || *eptr || *col < 0 || (*col >= COLORS && !OptNoCurses && has_colors()))
     {
-      snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
+      mutt_buffer_printf(err, _("%s: color not supported by term"), s);
       return -1;
     }
   }
   else if ((*col = mutt_map_get_value(s, Colors)) == -1)
   {
-    snprintf(err->data, err->dsize, _("%s: no such color"), s);
+    mutt_buffer_printf(err, _("%s: no such color"), s);
     return -1;
   }
 
@@ -508,7 +508,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   object = mutt_map_get_value(buf->data, Fields);
   if (object == -1)
   {
-    snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
+    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
     return -1;
   }
 
@@ -523,16 +523,14 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
       (mutt_str_strncmp(buf->data, "header", 6) != 0) &&
       (mutt_str_strncmp(buf->data, "index", 5) != 0))
   {
-    snprintf(err->data, err->dsize,
-             _("%s: command valid only for index, body, header objects"),
-             parse_uncolor ? "uncolor" : "unmono");
+    mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
+                       parse_uncolor ? "uncolor" : "unmono");
     return -1;
   }
 
   if (!MoreArgs(s))
   {
-    snprintf(err->data, err->dsize, _("%s: too few arguments"),
-             parse_uncolor ? "uncolor" : "unmono");
+    mutt_buffer_printf(err, _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
     return -1;
   }
 
@@ -736,7 +734,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
       *ql = strtol(buf->data + 6, &eptr, 10);
       if (*eptr || *ql < 0)
       {
-        snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
+        mutt_buffer_printf(err, _("%s: no such object"), buf->data);
         return -1;
       }
     }
@@ -758,13 +756,13 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
     *o = mutt_map_get_value(buf->data, ComposeFields);
     if (*o == -1)
     {
-      snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
+      mutt_buffer_printf(err, _("%s: no such object"), buf->data);
       return (-1);
     }
   }
   else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)
   {
-    snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
+    mutt_buffer_printf(err, _("%s: no such object"), buf->data);
     return -1;
   }
 
@@ -836,7 +834,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
     *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
   else
   {
-    snprintf(err->data, err->dsize, _("%s: no such attribute"), buf->data);
+    mutt_buffer_printf(err, _("%s: no such attribute"), buf->data);
     return -1;
   }
 

@@ -838,9 +838,9 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
  * @param[in]  s        String to format
  * @param[in]  arboreal  If true, string contains graphical tree characters
  *
- * This formats a string rather like
- *   snprintf (fmt, sizeof (fmt), "%%%ss", prec);
- *   snprintf (buf, buflen, fmt, s);
+ * This formats a string rather like:
+ * - snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+ * - snprintf(buf, buflen, fmt, s);
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
