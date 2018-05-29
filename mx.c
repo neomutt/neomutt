@@ -227,7 +227,6 @@ int mx_get_magic(const char *path)
 {
   struct stat st;
   int magic = 0;
-  char tmp[_POSIX_PATH_MAX];
   FILE *f = NULL;
 
 #ifdef USE_IMAP
@@ -291,6 +290,7 @@ int mx_get_magic(const char *path)
       }
     }
 
+    char tmp[STRING];
     if (fgets(tmp, sizeof(tmp), f))
     {
       if (mutt_str_strncmp("From ", tmp, 5) == 0)
