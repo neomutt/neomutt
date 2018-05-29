@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-05-22 23:29+0100\n"
+"POT-Creation-Date: 2018-05-29 03:54+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -63,15 +63,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#, c-format
-msgid "Bad IDN: '%s'"
-msgstr "L’IDN no és vàlid: %s"
-
-# El primer camp és una capçalera de correu.  ivb
-#, c-format
-msgid "Bad IDN in '%s': '%s'"
-msgstr "L’IDN de «%s» no és vàlid: %s"
 
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
@@ -94,7 +85,7 @@ msgstr "Selecciona"
 #: addrbook.c:52 browser.c:75 browser.c:87 compose.c:160 compose.c:172
 #: conn/ssl.c:1041 conn/ssl_gnutls.c:793 curs_main.c:748 curs_main.c:761
 #: history.c:106 ncrypt/crypt_gpgme.c:4221 ncrypt/pgpkey.c:547
-#: ncrypt/smime.c:477 pager.c:2141 postpone.c:65 query.c:72 recvattach.c:70
+#: ncrypt/smime.c:477 pager.c:2149 postpone.c:65 query.c:72 recvattach.c:70
 msgid "Help"
 msgstr "Ajuda"
 
@@ -107,50 +98,51 @@ msgid "Aliases"
 msgstr "Àlies"
 
 #. L10N: prompt to add a new alias
-#: alias.c:321
+#: alias.c:380
 msgid "Alias as: "
 msgstr "Nou àlies: "
 
-#: alias.c:327
+#: alias.c:386
 msgid "You already have an alias defined with that name!"
 msgstr "Ja heu definit un àlies amb aquest nom."
 
-#: alias.c:333
+#: alias.c:392
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Avís: Aquest àlies podria no funcionar.  Voleu reparar-lo?"
 
-#: alias.c:357
+#: alias.c:416
 msgid "Address: "
 msgstr "Adreça: "
 
-#: alias.c:368 send.c:207
+#: alias.c:427 commands.c:314 compose.c:482 conn/conn_raw.c:259
+#: conn/conn_raw.c:317 recvcmd.c:182 send.c:207
 #, c-format
-msgid "Error: '%s' is a bad IDN."
-msgstr "Error: L’IDN no és vàlid: %s"
+msgid "Bad IDN: '%s'"
+msgstr "L’IDN no és vàlid: %s"
 
-#: alias.c:378
+#: alias.c:437
 msgid "Personal name: "
 msgstr "Nom personal: "
 
-#: alias.c:387
+#: alias.c:446
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "Voleu acceptar «%s» com a àlies de «%s»?"
 
-#: alias.c:399 recvattach.c:479 recvattach.c:503 recvattach.c:517
+#: alias.c:458 recvattach.c:479 recvattach.c:503 recvattach.c:517
 #: recvattach.c:531 recvattach.c:567
 msgid "Save to file: "
 msgstr "Desa al fitxer: "
 
-#: alias.c:414
+#: alias.c:473
 msgid "Error reading alias file"
 msgstr "Error en llegir el fitxer d’àlies."
 
-#: alias.c:438
+#: alias.c:497
 msgid "Alias added."
 msgstr "S’ha afegit l’àlies."
 
-#: alias.c:446
+#: alias.c:505
 msgid "Error seeking in alias file"
 msgstr "Error en desplaçar-se dins del fitxer d’àlies."
 
@@ -166,7 +158,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Cal que l’entrada «compose» de «mailcap» continga «%%s»."
 
 #: attach.c:139 attach.c:272 commands.c:237 compose.c:1826 compress.c:439
-#: curs_lib.c:213 curs_lib.c:453 curs_main.c:936 curs_main.c:979 pager.c:2264
+#: curs_lib.c:213 curs_lib.c:453 curs_main.c:936 curs_main.c:979 pager.c:2272
 #: sendlib.c:1450
 #, c-format
 msgid "Error running \"%s\"!"
@@ -211,7 +203,7 @@ msgid "MIME type not defined.  Cannot view attachment."
 msgstr "No s’ha definit el tipus MIME.  No es pot veure l’adjunció."
 
 #: attach.c:505 attach.c:680 attach.c:713 attach.c:1037 attach.c:1099
-#: handler.c:1495 ncrypt/pgpkey.c:598 ncrypt/pgpkey.c:787
+#: handler.c:1088 ncrypt/pgpkey.c:598 ncrypt/pgpkey.c:787
 msgid "Can't create filter"
 msgstr "No s’ha pogut crear el filtre."
 
@@ -413,7 +405,7 @@ msgid "No newsgroups match the mask"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 
 # Vaja, no hi ha com posar-li cometes…  ivb
-#: buffy.c:758
+#: buffy.c:780
 msgid "New mail in "
 msgstr "Hi ha correu nou a "
 
@@ -427,38 +419,38 @@ msgstr "%s: El terminal no permet aquest color."
 msgid "%s: no such color"
 msgstr "%s: El color no existeix."
 
-#: color.c:511 color.c:721 color.c:743 color.c:749
+#: color.c:511 color.c:737 color.c:759 color.c:765
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: L’objecte no existeix."
 
 # «index» i companyia són paraules clau.  ivb
-#: color.c:527
+#: color.c:526
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: L’ordre només és vàlida per a objectes «index», «body» i «header»."
 
-#: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
-#: color.c:865 hook.c:103 hook.c:116 init.c:945 init.c:1060 init.c:1143
-#: init.c:1151 init.c:1174 init.c:2223 init.c:2282 keymap.c:1020 score.c:87
+#: color.c:533 color.c:724 color.c:750 color.c:782 color.c:793 color.c:817
+#: color.c:881 hook.c:105 hook.c:118 init.c:830 init.c:838 init.c:970
+#: init.c:1570 init.c:1770 init.c:2568 init.c:2627 keymap.c:1029 score.c:96
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: Manquen arguments."
 
-#: color.c:821
+#: color.c:837
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: L’atribut no existeix."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color.c:874 color.c:931 hook.c:122 init.c:860 init.c:4249 init.c:4303
-#: keymap.c:962 keymap.c:1104 keymap.c:1172 mutt_lua.c:426 score.c:96
+#: color.c:890 color.c:947 hook.c:124 init.c:1598 init.c:2868 init.c:3320
+#: keymap.c:971 keymap.c:1119 keymap.c:1193 mutt_lua.c:444 score.c:105
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: Sobren arguments."
 
-#: color.c:899
+#: color.c:915
 msgid "default colors not supported"
 msgstr "No es permet l’ús de colors per defecte."
 
@@ -883,19 +875,14 @@ msgstr "Modificat «%s» [#%d].  Actualitzar codificació?"
 msgid "-- Attachments"
 msgstr "-- Adjuncions"
 
-#: compose.c:482
-#, c-format
-msgid "Warning: '%s' is a bad IDN."
-msgstr "Avís: L’IDN no és vàlid: %s"
-
 #: compose.c:501
 msgid "You may not delete the only attachment."
 msgstr "No es pot esborrar l’única adjunció."
 
 # El primer camp és una capçalera de correu.  ivb
-#: compose.c:1016 send.c:1914
+#: compose.c:1016 edit.c:463 send.c:1914
 #, c-format
-msgid "Bad IDN in \"%s\": '%s'"
+msgid "Bad IDN in '%s': '%s'"
 msgstr "L’IDN de «%s» no és vàlid: %s"
 
 #: compose.c:1064
@@ -1129,11 +1116,6 @@ msgstr "Error en parlar amb «%s» (%s)."
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
 msgstr "S’ha tancat la connexió amb «%s»."
-
-#: conn/conn_raw.c:259 conn/conn_raw.c:317
-#, c-format
-msgid "Bad IDN \"%s\"."
-msgstr "L’IDN no és vàlid: %s"
 
 #: conn/conn_raw.c:267 conn/conn_raw.c:325
 #, c-format
@@ -1569,7 +1551,7 @@ msgstr "Voleu escriure un seguiment a %s%s?"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "S’ha modificat la bústia des de fora.  Els senyaladors poden ser incorrectes."
 
-#: curs_main.c:928 pager.c:2221
+#: curs_main.c:928 pager.c:2229
 msgid "New mail in this mailbox."
 msgstr "Hi ha correu nou en aquesta bústia."
 
@@ -1644,7 +1626,7 @@ msgstr "El missatge no és visible."
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1381 curs_main.c:2784 pager.c:2822
+#: curs_main.c:1381 curs_main.c:2784 pager.c:2830
 #, fuzzy
 msgid "Cannot delete messages"
 msgstr "No es pot esborrar el missatge"
@@ -1673,7 +1655,7 @@ msgstr "Limita als missatges que concorden amb: "
 msgid "To view all messages, limit to \"all\"."
 msgstr "Per a veure tots els missatges, limiteu a «all»."
 
-#: curs_main.c:1504 pager.c:2318
+#: curs_main.c:1504 pager.c:2326
 msgid "Quit NeoMutt?"
 msgstr "Voleu abandonar NeoMutt?"
 
@@ -1687,7 +1669,7 @@ msgstr "Marca els missatges que concorden amb: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1614 curs_main.c:3223 pager.c:3145
+#: curs_main.c:1614 curs_main.c:3223 pager.c:3153
 #, fuzzy
 msgid "Cannot undelete messages"
 msgstr "No es pot restaurar el missatge"
@@ -1836,11 +1818,11 @@ msgstr "No hi ha cap missatge no esborrat."
 msgid "You are on the first message."
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: curs_main.c:2403 menu.c:970 pager.c:2440 pattern.c:2110
+#: curs_main.c:2403 menu.c:970 pager.c:2448 pattern.c:2110
 msgid "Search wrapped to top."
 msgstr "La cerca ha tornat al principi."
 
-#: curs_main.c:2412 pager.c:2463 pattern.c:2121
+#: curs_main.c:2412 pager.c:2471 pattern.c:2121
 msgid "Search wrapped to bottom."
 msgstr "La cerca ha tornat al final."
 
@@ -1868,7 +1850,7 @@ msgstr "No es pot senyalar el missatge"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2521 pager.c:3104
+#: curs_main.c:2521 pager.c:3112
 msgid "Cannot toggle new"
 msgstr "No es pot canviar el senyalador «nou»"
 
@@ -1887,7 +1869,7 @@ msgstr "El fil conté missatges no llegits."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2734 pager.c:2784
+#: curs_main.c:2734 pager.c:2792
 msgid "Cannot delete message"
 msgstr "No es pot esborrar el missatge"
 
@@ -1899,7 +1881,7 @@ msgstr "No es pot editar el missatge."
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2912 pager.c:3208
+#: curs_main.c:2912 pager.c:3216
 #, fuzzy, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
@@ -1909,7 +1891,7 @@ msgstr[1] "S’han canviat %d etiquetes."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2919 pager.c:3212
+#: curs_main.c:2919 pager.c:3220
 msgid "No labels changed."
 msgstr "No s’ha canviat cap etiqueta."
 
@@ -1951,17 +1933,17 @@ msgstr "S’ha vinculat el missatge amb la drecera «%s»."
 msgid "No message ID to macro."
 msgstr "El missatge no té identificador per a ser vinculat amb la drecera."
 
-#: curs_main.c:3121 pager.c:2965 recvattach.c:1401
+#: curs_main.c:3121 pager.c:2973 recvattach.c:1401
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3124 pager.c:2931 pager.c:2943 pager.c:2968
+#: curs_main.c:3124 pager.c:2939 pager.c:2951 pager.c:2976
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:3189 pager.c:3124
+#: curs_main.c:3189 pager.c:3132
 msgid "Cannot undelete message"
 msgstr "No es pot restaurar el missatge"
 
@@ -2045,12 +2027,6 @@ msgstr "Manca un nom de fitxer.\n"
 msgid "No lines in message.\n"
 msgstr "El missatge no conté cap línia.\n"
 
-# El primer camp és una capçalera de correu.  ivb
-#: edit.c:463
-#, c-format
-msgid "Bad IDN in %s: '%s'\n"
-msgstr "L’IDN de «%s» no és vàlid: %s\n"
-
 #: edit.c:483
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
@@ -2106,36 +2082,36 @@ msgstr "Quin senyalador voleu activar"
 msgid "Clear flag"
 msgstr "Quin senyalador voleu desactivar"
 
-#: handler.c:66
+#: handler.c:70
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipus: %s/%s, Codificació: %s, Mida: %s --]\n"
 
-#: handler.c:70
+#: handler.c:76
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipus: %s/%s, Codificació: %s, Mida: %s --]\n"
 
-#: handler.c:1168
+#: handler.c:734
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Error: No s’ha pogut mostrar cap part del «multipart/alternative». --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
-#: handler.c:1392
+#: handler.c:977
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Adjunció #%d: %s --]\n"
 
-#: handler.c:1397
+#: handler.c:982
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Adjunció #%d --]\n"
 
-#: handler.c:1413
+#: handler.c:998
 msgid "One or more parts of this message could not be displayed"
 msgstr "No s’han pogut mostrar una o més parts d’aquest missatge."
 
-#: handler.c:1466
+#: handler.c:1059
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr ""
@@ -2145,24 +2121,24 @@ msgstr ""
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  S’està invocant l’ordre de visualització automàtica: %s
-#: handler.c:1467
+#: handler.c:1060
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Ordre de visualització automàtica: %s"
 
-#: handler.c:1499
+#: handler.c:1092
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- No s’ha pogut executar «%s». --]\n"
 
-#: handler.c:1518 handler.c:1539
+#: handler.c:1111 handler.c:1132
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr ""
 "[-- Errors de l’ordre de visualització automàtica --]\n"
 "[-- «%s». --]\n"
 
-#: handler.c:1576
+#: handler.c:1176
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Error: La part «message/external-body» no té paràmetre «access-type». --]\n"
 
@@ -2182,7 +2158,7 @@ msgstr "[-- Error: La part «message/external-body» no té paràmetre «access-
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
-#: handler.c:1624
+#: handler.c:1223
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
@@ -2214,7 +2190,7 @@ msgstr[1] ""
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
-#: handler.c:1648
+#: handler.c:1247
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -2233,7 +2209,7 @@ msgstr[1] ""
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #.
-#: handler.c:1667
+#: handler.c:1266
 #, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
@@ -2247,19 +2223,23 @@ msgstr ""
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
-#: handler.c:1676
+#: handler.c:1275
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr ""
 "[-- Aquesta adjunció de tipus «%s/%s» --]\n"
 "[-- ha estat esborrada --]\n"
 
-#: handler.c:1686
+#: handler.c:1285
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- Nom: %s --]\n"
 
-#: handler.c:1702
+#. L10N: If the translation of this string is a multi line string, then
+#. each line should start with "[-- " and end with " --]".
+#. The "%s/%s" is a MIME type, e.g. "text/plain".
+#.
+#: handler.c:1300
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2269,7 +2249,13 @@ msgstr ""
 "[-- Aquesta adjunció de tipus «%s/%s» no s’inclou, --]\n"
 "[-- i la font externa indicada ha expirat. --]\n"
 
-#: handler.c:1723
+#. L10N: If the translation of this string is a multi line string, then
+#. each line should start with "[-- " and end with " --]".
+#. The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
+#. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
+#. "LOCAL-FILE", "MAIL-SERVER".
+#.
+#: handler.c:1318
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2278,54 +2264,54 @@ msgstr ""
 "[-- Aquesta adjunció de tipus «%s/%s» no s’inclou, --]\n"
 "[-- i no es pot emprar el mètode d’accés indicat, «%s». --]\n"
 
-#: handler.c:1852
+#: handler.c:1460
 #, fuzzy
 msgid "Unable to open memory stream!"
 msgstr "No s’ha pogut obrir el fitxer temporal."
 
-#: handler.c:1861
+#: handler.c:1469
 msgid "Unable to open temporary file!"
 msgstr "No s’ha pogut obrir el fitxer temporal."
 
-#: handler.c:1911
+#: handler.c:1519
 #, fuzzy
 msgid "failed to re-open memstream!"
 msgstr "No s’ha pogut obrir el fitxer temporal."
 
-#: handler.c:2043
+#: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
 msgstr "Error: La part «multipart/signed» no té paràmetre «protocol»."
 
-#: handler.c:2106
+#: handler.c:1731
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[-- Açò és una adjunció. (Useu «%3$s» per a veure aquesta part.) --]\n"
 
-#: handler.c:2112
+#: handler.c:1739
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- No es pot mostrar «%s/%s». (Useu «%s» per a veure aquesta part.) --]\n"
 
-#: handler.c:2117
+#: handler.c:1745
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- Açò és una adjunció. (Vinculeu «view-attachents» a una tecla.) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:2121
+#: handler.c:1750
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- No es pot mostrar «%s/%s». (Vinculeu «view-attachents» a una tecla.) --]\n"
 
 # Es concatenen amb una o cap de les següents i en acabant « --]».  ivb
 # Sí, la concatenació original està malament.  ivb
-#: handler.c:2128
+#: handler.c:1758
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- Açò és una adjunció. --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:2131
+#: handler.c:1762
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- No es pot mostrar «%s/%s». --]\n"
@@ -2379,28 +2365,28 @@ msgstr "El format del fitxer d’historial no és vàlid (línia %d)."
 msgid "History '%s'"
 msgstr "Consulta de «%s»"
 
-#: hook.c:132
+#: hook.c:134
 msgid "current mailbox shortcut '^' is unset"
 msgstr "La drecera «^» a la bústia actual no està establerta."
 
-#: hook.c:143
+#: hook.c:145
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "La drecera a bústia s’ha expandit a l’expressió regular buida."
 
-#: hook.c:156
+#: hook.c:158
 msgid "badly formatted command string"
 msgstr "La cadena d’ordre no té un format vàlid."
 
-#: hook.c:337
+#: hook.c:338
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: No es pot fer «unhook *» des d’un «hook»."
 
-#: hook.c:349
+#: hook.c:350
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: El tipus de «hook» no és conegut: %s"
 
-#: hook.c:359
+#: hook.c:360
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: No es pot esborrar un «%s» des d’un «%s»."
@@ -2426,11 +2412,11 @@ msgstr "S’està autenticant (CRAM-MD5)…"
 msgid "CRAM-MD5 authentication failed."
 msgstr "L’autenticació CRAM-MD5 ha fallat."
 
-#: imap/auth_gss.c:170
+#: imap/auth_gss.c:169
 msgid "Authenticating (GSSAPI)..."
 msgstr "S’està autenticant (GSSAPI)…"
 
-#: imap/auth_gss.c:330
+#: imap/auth_gss.c:329
 msgid "GSSAPI authentication failed."
 msgstr "L’autenticació GSSAPI ha fallat."
 
@@ -2438,11 +2424,11 @@ msgstr "L’autenticació GSSAPI ha fallat."
 msgid "LOGIN disabled on this server."
 msgstr "L’ordre «LOGIN» no es troba habilitada en aquest servidor."
 
-#: imap/auth_login.c:66 imap/auth_plain.c:57 pop_auth.c:283
+#: imap/auth_login.c:66 imap/auth_plain.c:58 pop_auth.c:283
 msgid "Logging in..."
 msgstr "S’està entrant…"
 
-#: imap/auth_login.c:86 imap/auth_plain.c:73 pop_auth.c:323
+#: imap/auth_login.c:86 imap/auth_plain.c:95 pop_auth.c:323
 msgid "Login failed."
 msgstr "L’entrada ha fallat."
 
@@ -2455,7 +2441,7 @@ msgstr "S’està autenticant (%s)…"
 msgid "SASL authentication failed."
 msgstr "L’autenticació SASL ha fallat."
 
-#: imap/browse.c:207 imap/imap.c:1996
+#: imap/browse.c:207 imap/imap.c:1989
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "«%s» no és un camí IMAP vàlid."
@@ -2533,68 +2519,68 @@ msgstr "L’ordre «CREATE» ha fallat: %s"
 msgid "Closing connection to %s..."
 msgstr "S’està tancant la connexió amb «%s»…"
 
-#: imap/imap.c:1041 nntp.c:700 pop_lib.c:326 smtp.c:590
+#: imap/imap.c:1039 nntp.c:700 pop_lib.c:326 smtp.c:590
 msgid "Secure connection with TLS?"
 msgstr "Voleu protegir la connexió emprant TLS?"
 
-#: imap/imap.c:1054 nntp.c:720 pop_lib.c:345 smtp.c:603
+#: imap/imap.c:1052 nntp.c:720 pop_lib.c:345 smtp.c:603
 msgid "Could not negotiate TLS connection"
 msgstr "No s’ha pogut negociar la connexió TLS."
 
-#: imap/imap.c:1069 pop_lib.c:365
+#: imap/imap.c:1067 pop_lib.c:365
 msgid "Encrypted connection unavailable"
 msgstr "No s’ha pogut establir una connexió xifrada."
 
-#: imap/imap.c:1717
+#: imap/imap.c:1710
 msgid "Bad mailbox name"
 msgstr "El nom de la bústia no és vàlid."
 
-#: imap/imap.c:1741
+#: imap/imap.c:1734
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "S’està subscrivint a «%s»…"
 
-#: imap/imap.c:1743
+#: imap/imap.c:1736
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "S’està dessubscrivint de «%s»…"
 
-#: imap/imap.c:1753 init.c:4263
+#: imap/imap.c:1746 init.c:2882
 #, c-format
 msgid "Subscribed to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: imap/imap.c:1755 init.c:4317
+#: imap/imap.c:1748 init.c:3334
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "S’ha dessubscrit de «%s»."
 
-#: imap/imap.c:1934 imap/message.c:1461
+#: imap/imap.c:1927 imap/message.c:1461
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "S’estan copiant %d missatges a «%s»…"
 msgstr[1] "S’estan copiant %d missatges a «%s»…"
 
-#: imap/imap.c:1951 imap/imap.c:2244 imap/message.c:1499 muttlib.c:1351
+#: imap/imap.c:1944 imap/imap.c:2239 imap/message.c:1499 muttlib.c:1351
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
 
-#: imap/imap.c:2031 nntp.c:1530
+#: imap/imap.c:2024 nntp.c:1530
 #, c-format
 msgid "Selecting %s..."
 msgstr "S’està seleccionant la bústia «%s»…"
 
-#: imap/imap.c:2186
+#: imap/imap.c:2181
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:2398
+#: imap/imap.c:2393
 msgid "Expunge failed"
 msgstr "No s’han pogut eliminar els missatges."
 
-#: imap/imap.c:2409
+#: imap/imap.c:2404
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -2602,35 +2588,35 @@ msgstr[0] "S’estan marcant %d missatges com a esborrats…"
 msgstr[1] "S’estan marcant %d missatges com a esborrats…"
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
-#: imap/imap.c:2444
+#: imap/imap.c:2439
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "S’estan desant els missatges canviats… [%d/%d]"
 msgstr[1] "S’estan desant els missatges canviats… [%d/%d]"
 
-#: imap/imap.c:2500
+#: imap/imap.c:2495
 msgid "Error saving flags. Close anyway?"
 msgstr "Error en desar els senyaladors.  Voleu tancar igualment?"
 
-#: imap/imap.c:2508
+#: imap/imap.c:2503
 msgid "Error saving flags"
 msgstr "Error en desar els senyaladors."
 
-#: imap/imap.c:2530
+#: imap/imap.c:2525
 msgid "Expunging messages from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: imap/imap.c:2536
+#: imap/imap.c:2531
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
-#: imap/imap.c:2582
+#: imap/imap.c:2577
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: imap/imap.c:2626
+#: imap/imap.c:2621
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "No vàlid    "
@@ -2675,163 +2661,43 @@ msgstr "S’està copiant el missatge %d a «%s»…"
 msgid "Continue?"
 msgstr "Voleu continuar?"
 
-#: init.c:72 init.c:2361 pager.c:72
+#: init.c:72 init.c:2038 pager.c:72
 msgid "Not available in this menu."
 msgstr "No es troba disponible en aquest menú."
 
-#: init.c:354
+#: init.c:395
+#, c-format
+msgid "Error in command line: %s"
+msgstr "Error a la línia d’ordres: %s"
+
+#: init.c:541
+msgid "unable to determine nodename via uname()"
+msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
+
+#: init.c:708
+msgid "-group: no group name"
+msgstr "-group: No s’ha indicat el nom del grup."
+
+#: init.c:718
+msgid "out of arguments"
+msgstr "Manquen arguments."
+
+#: init.c:881
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: El mètode d’ordenació no és conegut."
 
-#: init.c:408 init.c:442 init.c:2779
-#, c-format
-msgid "%s: Unknown type."
-msgstr "%s: El tipus no és conegut."
-
-#: init.c:1233
-msgid "spam: no matching pattern"
-msgstr "spam: No s’ha indicat el patró de concordança."
-
-#: init.c:1235
-msgid "nospam: no matching pattern"
-msgstr "nospam: No s’ha indicat el patró de concordança."
-
-# L’indicador de format inicial altera l’ordre de configuració.  ivb
-#: init.c:1408
-#, c-format
-msgid "%sgroup: missing -rx or -addr."
-msgstr "%sgroup: Manca «-rx» o «-addr»."
-
-# L’indicador de format inicial altera l’ordre de configuració.  ivb
-#: init.c:1431
-#, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: Avís: L’IDN no és vàlid: %s\n"
-
-# «attachments» és una ordre de configuració.  ivb
-#: init.c:1636
-msgid "attachments: no disposition"
-msgstr "attachments: No s’ha indicat la disposició."
-
-#: init.c:1647
-#, fuzzy
-msgid "Current attachments settings:"
-msgstr "Edita la descripció d’una adjunció."
-
-#: init.c:1677
-msgid "attachments: invalid disposition"
-msgstr "attachments: La disposició no és vàlida."
-
-# «unattachments» és una ordre de configuració.  ivb
-#: init.c:1693
-msgid "unattachments: no disposition"
-msgstr "unattachments: No s’ha indicat la disposició."
-
-#: init.c:1720
-msgid "unattachments: invalid disposition"
-msgstr "unattachments: La disposició no és vàlida."
-
-#: init.c:1851
-msgid "alias: no address"
-msgstr "alias: No s’ha indicat cap adreça."
-
-#: init.c:1893
-#, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
-
-#: init.c:1963
-msgid "invalid header field"
-msgstr "El camp de capçalera no és vàlid."
-
-# ivb (2001/11/24)
-# ivb  Es refereix a una variable lògica.
-#: init.c:2261 init.c:2408
-#, c-format
-msgid "%s is unset"
-msgstr "«%s» no està activada."
-
-#: init.c:2338 init.c:2455
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: La variable no és coneguda."
-
-#: init.c:2347
-msgid "prefix is illegal with reset"
-msgstr "El prefix emprat en «reset» no és permès."
-
-#: init.c:2353
-msgid "value is illegal with reset"
-msgstr "El valor emprat en «reset» no és permès."
-
-# Açò és sintaxi, no té traducció.  ivb
-#: init.c:2388 init.c:2400
-msgid "Usage: set variable=yes|no"
-msgstr "Forma d’ús: set variable=yes|no"
-
-# ivb (2001/11/24)
-# ivb  Es refereix a una variable lògica.
-#: init.c:2408
-#, c-format
-msgid "%s is set"
-msgstr "«%s» està activada."
-
-#: init.c:2528
-#, c-format
-msgid "Invalid value for option %s: \"%s\""
-msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
-
-#: init.c:2542
-#, fuzzy, c-format
-msgid "Invalid value for name %s: \"%s\""
-msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
-
-#: init.c:2639
-#, c-format
-msgid "%s: invalid mailbox type"
-msgstr "%s: El tipus de bústia no és vàlid."
-
-# La cadena entre parèntesis és un dels missatges següents.  ivb
-#: init.c:2670
-#, c-format
-msgid "%s: invalid value (%s)"
-msgstr "%s: El valor no és vàlid (%s)."
-
-#: init.c:2671
-msgid "format error"
-msgstr "error de format"
-
-#: init.c:2671
-msgid "number overflow"
-msgstr "desbordament numèric"
-
-#: init.c:2734
-#, c-format
-msgid "%s: invalid value"
-msgstr "%s: El valor no és vàlid."
-
-#: init.c:2825
-#, fuzzy, c-format
-msgid "%s: invalid backend"
-msgstr "%s: El valor no és vàlid."
-
-#: init.c:2833
-#, c-format
-msgid "%s: unknown type"
-msgstr "%s: El tipus no és conegut."
-
-#: init.c:2952
+#: init.c:1280
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error a «%s», línia %d: %s"
 
-#: init.c:2963
+#: init.c:1291
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Error a «%s», línia %d: %s"
 
-#: init.c:2988
+#: init.c:1314
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Hi ha errors a «%s»."
@@ -2839,64 +2705,184 @@ msgstr "source: Hi ha errors a «%s»."
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  source: S’avorta la lectura de «%s» perquè conté massa errors.
-#: init.c:2989
+#: init.c:1314
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: «%s» conté massa errors: s’avorta la lectura."
 
-#: init.c:2999
+#: init.c:1323
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: Hi ha errors a «%s»."
 msgstr[1] "source: Hi ha errors a «%s»."
 
-#: init.c:3026 mutt_lua.c:421
+#: init.c:1382
+msgid "alias: no address"
+msgstr "alias: No s’ha indicat cap adreça."
+
+#: init.c:1424
+#, c-format
+msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
+
+# «attachments» és una ordre de configuració.  ivb
+#: init.c:1509
+msgid "attachments: no disposition"
+msgstr "attachments: No s’ha indicat la disposició."
+
+#: init.c:1520
+#, fuzzy
+msgid "Current attachments settings:"
+msgstr "Edita la descripció d’una adjunció."
+
+#: init.c:1550
+msgid "attachments: invalid disposition"
+msgstr "attachments: La disposició no és vàlida."
+
+# L’indicador de format inicial altera l’ordre de configuració.  ivb
+#: init.c:1644
+#, c-format
+msgid "%sgroup: missing -rx or -addr."
+msgstr "%sgroup: Manca «-rx» o «-addr»."
+
+# L’indicador de format inicial altera l’ordre de configuració.  ivb
+#: init.c:1667
+#, c-format
+msgid "%sgroup: warning: bad IDN '%s'.\n"
+msgstr "%sgroup: Avís: L’IDN no és vàlid: %s\n"
+
+#: init.c:1869
+msgid "invalid header field"
+msgstr "El camp de capçalera no és vàlid."
+
+#: init.c:2015 init.c:2131
+#, c-format
+msgid "%s: unknown variable"
+msgstr "%s: La variable no és coneguda."
+
+#: init.c:2024
+msgid "prefix is illegal with reset"
+msgstr "El prefix emprat en «reset» no és permès."
+
+#: init.c:2030
+msgid "value is illegal with reset"
+msgstr "El valor emprat en «reset» no és permès."
+
+# Açò és sintaxi, no té traducció.  ivb
+#: init.c:2065 init.c:2077
+msgid "Usage: set variable=yes|no"
+msgstr "Forma d’ús: set variable=yes|no"
+
+# ivb (2001/11/24)
+# ivb  Es refereix a una variable lògica.
+#: init.c:2084
+#, c-format
+msgid "%s is set"
+msgstr "«%s» està activada."
+
+# ivb (2001/11/24)
+# ivb  Es refereix a una variable lògica.
+#: init.c:2084 init.c:2606
+#, c-format
+msgid "%s is unset"
+msgstr "«%s» no està activada."
+
+#: init.c:2204
+#, c-format
+msgid "Invalid value for option %s: \"%s\""
+msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
+
+#: init.c:2218
+#, fuzzy, c-format
+msgid "Invalid value for name %s: \"%s\""
+msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
+
+#: init.c:2316
+#, c-format
+msgid "%s: invalid mailbox type"
+msgstr "%s: El tipus de bústia no és vàlid."
+
+# La cadena entre parèntesis és un dels missatges següents.  ivb
+#: init.c:2347
+#, c-format
+msgid "%s: invalid value (%s)"
+msgstr "%s: El valor no és vàlid (%s)."
+
+#: init.c:2348
+msgid "format error"
+msgstr "error de format"
+
+#: init.c:2348
+msgid "number overflow"
+msgstr "desbordament numèric"
+
+#: init.c:2411
+#, c-format
+msgid "%s: invalid value"
+msgstr "%s: El valor no és vàlid."
+
+#: init.c:2456 init.c:4098 init.c:4132
+#, c-format
+msgid "%s: Unknown type."
+msgstr "%s: El tipus no és conegut."
+
+#: init.c:2503
+#, fuzzy, c-format
+msgid "%s: invalid backend"
+msgstr "%s: El valor no és vàlid."
+
+#: init.c:2511
+#, c-format
+msgid "%s: unknown type"
+msgstr "%s: El tipus no és conegut."
+
+#: init.c:2657 mutt_lua.c:439
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Error a «%s»."
 
-#: init.c:3034
+#: init.c:2665
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "No s’han pogut imprimir els missatges."
 
-#: init.c:3095
-#, c-format
-msgid "%s: unknown command"
-msgstr "%s: L’ordre no és coneguda."
+#: init.c:2694
+msgid "spam: no matching pattern"
+msgstr "spam: No s’ha indicat el patró de concordança."
 
-#: init.c:3739
-#, c-format
-msgid "Error in command line: %s"
-msgstr "Error a la línia d’ordres: %s"
+#: init.c:2696
+msgid "nospam: no matching pattern"
+msgstr "nospam: No s’ha indicat el patró de concordança."
 
-#: init.c:3812
-msgid "unable to determine nodename via uname()"
-msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
-
-#: init.c:4125
-msgid "-group: no group name"
-msgstr "-group: No s’ha indicat el nom del grup."
-
-#: init.c:4135
-msgid "out of arguments"
-msgstr "Manquen arguments."
-
-#: init.c:4258
+#: init.c:2877
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: init.c:4274 init.c:4328
+#: init.c:2893 init.c:3345
 #, fuzzy
 msgid "No folder specified"
 msgstr "No s’ha indicat l’assumpte."
 
-#: init.c:4312
+# «unattachments» és una ordre de configuració.  ivb
+#: init.c:3090
+msgid "unattachments: no disposition"
+msgstr "unattachments: No s’ha indicat la disposició."
+
+#: init.c:3117
+msgid "unattachments: invalid disposition"
+msgstr "unattachments: La disposició no és vàlida."
+
+#: init.c:3329
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "S’ha dessubscrit de «%s»."
+
+#: init.c:4269
+#, c-format
+msgid "%s: unknown command"
+msgstr "%s: L’ordre no és coneguda."
 
 #: keymap.c:281 keymap.c:289
 #, c-format
@@ -2920,45 +2906,45 @@ msgstr "La tecla no està vinculada."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "La tecla no està vinculada.  Premeu «%s» per a obtenir ajuda."
 
-#: keymap.c:998
+#: keymap.c:1007
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: El menú no existeix."
 
-#: keymap.c:1013
+#: keymap.c:1022
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: La seqüència de tecles és nul·la."
 
-#: keymap.c:1039
+#: keymap.c:1048
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1161
+#: keymap.c:1182
 msgid "macro: empty key sequence"
 msgstr "macro: La seqüència de tecles és buida."
 
-#: keymap.c:1209
+#: keymap.c:1236
 msgid "exec: no arguments"
 msgstr "exec: Manquen arguments."
 
-#: keymap.c:1229
+#: keymap.c:1256
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: La funció no existeix."
 
-#: keymap.c:1250
+#: keymap.c:1277
 msgid "Enter keys (^G to abort): "
 msgstr "Premeu les tecles («^G» avorta): "
 
-#: keymap.c:1256
+#: keymap.c:1283
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caràcter = %s, Octal = %o, Decimal = %d"
 
 #. L10N: Try to limit to 80 columns
-#: main.c:98
+#: main.c:107
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -2982,7 +2968,7 @@ msgstr ""
 
 #. L10N: Try to limit to 80 columns
 #. If more space is needed add an indented line
-#: main.c:119
+#: main.c:128
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -3025,7 +3011,7 @@ msgid ""
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:179
+#: main.c:188
 msgid "Error initializing terminal."
 msgstr "Error en inicialitzar el terminal."
 
@@ -3179,15 +3165,15 @@ msgstr "Vos trobeu a la darrera entrada."
 msgid "You are on the first entry."
 msgstr "Vos trobeu a la primera entrada."
 
-#: menu.c:936 pager.c:2486 pattern.c:2044
+#: menu.c:936 pager.c:2494 pattern.c:2044
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu.c:937 pager.c:2487 pattern.c:2045
+#: menu.c:937 pager.c:2495 pattern.c:2045
 msgid "Reverse search for: "
 msgstr "Cerca cap enrere: "
 
-#: menu.c:988 pager.c:2437 pager.c:2460 pager.c:2589 pattern.c:2166
+#: menu.c:988 pager.c:2445 pager.c:2468 pager.c:2597 pattern.c:2166
 msgid "Not found."
 msgstr "No s’ha trobat."
 
@@ -3275,7 +3261,7 @@ msgstr "L’expressió regular no és vàlida: %s"
 #
 # Una regla usa més referències cap enrere al «format» o «reemplaçament» que
 # es defineixen al «patró».  ivb
-#: mutt/regex.c:353
+#: mutt/regex.c:352
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
@@ -5946,35 +5932,35 @@ msgstr "Adjuncs."
 msgid "Next"
 msgstr "Segnt."
 
-#: pager.c:1997
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
+#: pager.c:2002 status.c:263
 msgid "all"
 msgstr ""
 
-#: pager.c:1997
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
+#: pager.c:2004 status.c:261
 msgid "end"
 msgstr ""
 
-#: pager.c:2334 pager.c:2365 pager.c:2399 pager.c:2719
+#: pager.c:2342 pager.c:2373 pager.c:2407 pager.c:2727
 msgid "Bottom of message is shown."
 msgstr "El final del missatge ja és visible."
 
-#: pager.c:2351 pager.c:2372 pager.c:2379 pager.c:2387
+#: pager.c:2359 pager.c:2380 pager.c:2387 pager.c:2395
 msgid "Top of message is shown."
 msgstr "L’inici del missatge ja és visible."
 
-#: pager.c:2635
+#: pager.c:2643
 msgid "Help is currently being shown."
 msgstr "Ja s’està mostrant l’ajuda."
 
-#: pager.c:2683
+#: pager.c:2691
 msgid "No more quoted text."
 msgstr "No hi ha més text citat."
 
-#: pager.c:2698
+#: pager.c:2706
 msgid "No more unquoted text after quoted text."
 msgstr "No hi ha més text sense citar després del text citat."
 
@@ -6235,19 +6221,19 @@ msgstr "Missatges posposats"
 msgid "No postponed messages."
 msgstr "No hi ha cap missatge posposat."
 
-#: postpone.c:451
+#: postpone.c:450
 msgid "Illegal S/MIME header"
 msgstr "La capçalera S/MIME no és permesa."
 
-#: postpone.c:482 postpone.c:506 postpone.c:515
+#: postpone.c:481 postpone.c:505 postpone.c:514
 msgid "Illegal crypto header"
 msgstr "La capçalera criptogràfica no és permesa."
 
-#: postpone.c:602 postpone.c:699 postpone.c:722
+#: postpone.c:601 postpone.c:698 postpone.c:721
 msgid "Decrypting message..."
 msgstr "S’està desxifrant el missatge…"
 
-#: postpone.c:704 postpone.c:727
+#: postpone.c:703 postpone.c:726
 msgid "Decryption failed."
 msgstr "El desxifratge ha fallat."
 
@@ -6512,7 +6498,7 @@ msgid "mailcap entry for type %s not found"
 msgstr "No s’ha trobat cap entrada pel tipus «%s» a «mailcap»"
 
 # És un error com els anteriors.  ivb
-#: score.c:136
+#: score.c:145
 msgid "Error: score: invalid number"
 msgstr "score: El número no és vàlid."
 
@@ -6822,6 +6808,23 @@ msgstr "Opcions de compilació:"
 #: version.c:404
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
+
+#~ msgid "Error: '%s' is a bad IDN."
+#~ msgstr "Error: L’IDN no és vàlid: %s"
+
+#~ msgid "Warning: '%s' is a bad IDN."
+#~ msgstr "Avís: L’IDN no és vàlid: %s"
+
+# El primer camp és una capçalera de correu.  ivb
+#~ msgid "Bad IDN in \"%s\": '%s'"
+#~ msgstr "L’IDN de «%s» no és vàlid: %s"
+
+#~ msgid "Bad IDN \"%s\"."
+#~ msgstr "L’IDN no és vàlid: %s"
+
+# El primer camp és una capçalera de correu.  ivb
+#~ msgid "Bad IDN in %s: '%s'\n"
+#~ msgstr "L’IDN de «%s» no és vàlid: %s\n"
 
 # Al darrere porta dos punts.  ivb
 #~ msgid "Cannot delete message(s)"
