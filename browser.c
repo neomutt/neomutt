@@ -895,7 +895,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         tmp->msg_unread = Context->unread;
       }
 
-      char buffer[LONG_STRING];
+      char buffer[PATH_MAX];
       mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
@@ -930,7 +930,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (mx_is_maildir(tmp->path))
       {
         struct stat st2;
-        char md[LONG_STRING];
+        char md[PATH_MAX];
 
         snprintf(md, sizeof(md), "%s/new", tmp->path);
         if (stat(md, &s) < 0)

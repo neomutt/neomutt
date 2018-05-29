@@ -423,7 +423,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 int mutt_file_rmtree(const char *path)
 {
   struct dirent *de = NULL;
-  char cur[LONG_STRING];
+  char cur[PATH_MAX];
   struct stat statbuf;
   int rc = 0;
 

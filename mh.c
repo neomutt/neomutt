@@ -2333,7 +2333,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
-  char msgbuf[STRING];
+  char msgbuf[PATH_MAX + 64];
   struct Progress progress;
 
   if (ctx->magic == MUTT_MH)
@@ -2454,7 +2454,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
 {
   char dir[PATH_MAX];
   char tunique[PATH_MAX];
-  char fname[LONG_STRING];
+  char fname[PATH_MAX];
 
   struct dirent *de = NULL;
 

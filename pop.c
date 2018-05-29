@@ -460,7 +460,7 @@ static int pop_fetch_headers(struct Context *ctx)
  */
 static int pop_open_mailbox(struct Context *ctx)
 {
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   struct Connection *conn = NULL;
   struct Account acct;
   struct PopData *pop_data = NULL;

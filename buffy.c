@@ -206,8 +206,8 @@ static void buffy_free(struct Buffy **mailbox)
 static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
                                    bool check_new, bool check_stats)
 {
-  char path[LONG_STRING];
-  char msgpath[LONG_STRING];
+  char path[PATH_MAX];
+  char msgpath[PATH_MAX];
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;

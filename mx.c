@@ -691,7 +691,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   struct Context f;
   char mbox[PATH_MAX];
-  char buf[SHORT_STRING];
+  char buf[PATH_MAX + 64];
 
   if (!ctx)
     return 0;

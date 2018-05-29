@@ -1942,7 +1942,7 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 {
   mutt_debug(2, "(%s)\n", orig_uri);
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   int rc = -1;
 
   struct Context tmp_ctx;
@@ -2629,7 +2629,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     /* all is in this function so we don't use data->progress here */
-    char msgbuf[STRING];
+    char msgbuf[PATH_MAX + 64];
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }

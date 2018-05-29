@@ -59,8 +59,8 @@
 static void add_folder(char delim, char *folder, int noselect, int noinferiors,
                        struct BrowserState *state, short isparent)
 {
-  char tmp[LONG_STRING];
-  char relpath[LONG_STRING];
+  char tmp[PATH_MAX];
+  char relpath[PATH_MAX];
   struct ImapMbox mx;
   struct Buffy *b = NULL;
 
@@ -192,9 +192,9 @@ int imap_browse(char *path, struct BrowserState *state)
 {
   struct ImapData *idata = NULL;
   struct ImapList list;
-  char buf[LONG_STRING];
-  char mbox[LONG_STRING];
-  char munged_mbox[LONG_STRING];
+  char buf[PATH_MAX];
+  char mbox[PATH_MAX];
+  char munged_mbox[PATH_MAX];
   char list_cmd[5];
   int n;
   char ctmp;
@@ -364,7 +364,7 @@ int imap_mailbox_create(const char *folder)
 {
   struct ImapData *idata = NULL;
   struct ImapMbox mx;
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   short n;
 
   if (imap_parse_path(folder, &mx) < 0)
@@ -425,8 +425,8 @@ int imap_mailbox_rename(const char *mailbox)
 {
   struct ImapData *idata = NULL;
   struct ImapMbox mx;
-  char buf[LONG_STRING];
-  char newname[SHORT_STRING];
+  char buf[PATH_MAX];
+  char newname[PATH_MAX];
 
   if (imap_parse_path(mailbox, &mx) < 0)
   {

@@ -988,7 +988,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 {
   FILE *f = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   char subtype[STRING], xtype[STRING];
   int szf, sze, cur_sze;
   int type;

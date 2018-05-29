@@ -65,7 +65,7 @@ int mutt_complete(char *buf, size_t buflen)
   char dirpart[PATH_MAX], exp_dirpart[PATH_MAX];
   char filepart[PATH_MAX];
 #ifdef USE_IMAP
-  char imap_path[LONG_STRING];
+  char imap_path[PATH_MAX];
 #endif
 
   mutt_debug(2, "completing %s\n", buf);

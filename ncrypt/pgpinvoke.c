@@ -267,7 +267,7 @@ void pgp_invoke_import(const char *fname)
 
 void pgp_invoke_getkeys(struct Address *addr)
 {
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   char tmp[LONG_STRING];
   char cmd[HUGE_STRING];
   int devnull;

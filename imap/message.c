@@ -1367,9 +1367,9 @@ fail:
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {
   struct Buffer cmd, sync_cmd;
-  char mbox[LONG_STRING];
-  char mmbox[LONG_STRING];
-  char prompt[LONG_STRING];
+  char mbox[PATH_MAX];
+  char mmbox[PATH_MAX];
+  char prompt[PATH_MAX + 64];
   int rc;
   struct ImapMbox mx;
   int err_continue = MUTT_NO;

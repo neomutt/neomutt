@@ -1379,7 +1379,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 
 struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
 {
-  char buf[LONG_STRING], certfile[LONG_STRING];
+  char buf[LONG_STRING], certfile[PATH_MAX];
   char tempfile[PATH_MAX], smimeerrfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
   char *cert_start, *cert_end;
