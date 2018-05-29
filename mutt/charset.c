@@ -668,6 +668,36 @@ const char *mutt_ch_iconv_lookup(const char *chs)
 }
 
 /**
+ * mutt_ch_check - Check whether a string can be converted between encodings
+ * @param[in] ps    String to check
+ * @param[in] slen  Length of the string to check
+ * @param[in] from  Current character set
+ * @param[in] to    Target character set
+ * @retval 0  Success
+ * @retval -1 Error in iconv_open()
+ * @retval >0 Errno as set by iconv()
+ */
+int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
+{
+  int rc = 0;
+  iconv_t cd = mutt_ch_iconv_open(to, from, 0);
+  if (cd == (iconv_t)-1)
+    return -1;
+
+  size_t outlen = MB_LEN_MAX * slen;
+  char *out = mutt_mem_malloc(outlen + 1);
+  char *saved_out = out;
+
+  const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
+  if (convlen == -1)
+    rc = errno;
+
+  FREE(&saved_out);
+  iconv_close(cd);
+  return rc;
+}
+
+/**
  * mutt_ch_convert_string - Convert a string between encodings
  * @param[in,out] ps    String to convert
  * @param[in]     from  Current character set
@@ -972,7 +1002,9 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    if (mutt_ch_convert_string(&s, fromcode, t, 0) != 0)
+    const int rc = (d != NULL) ? mutt_ch_convert_string(&s, fromcode, t, 0)
+                               : mutt_ch_check(s, ulen, fromcode, t);
+    if (rc)
     {
       FREE(&t);
       FREE(&s);
