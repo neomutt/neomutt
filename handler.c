@@ -510,7 +510,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   char buffer[LONG_STRING];
   char type[STRING];
-  char command[LONG_STRING];
+  char command[HUGE_STRING];
   char tempfile[_POSIX_PATH_MAX] = "";
   char *fname = NULL;
   FILE *fpin = NULL;

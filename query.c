@@ -112,7 +112,7 @@ static struct Query *run_query(char *s, int quiet)
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
-  char cmd[_POSIX_PATH_MAX];
+  char cmd[HUGE_STRING];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;

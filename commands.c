@@ -230,11 +230,12 @@ int mutt_display_message(struct Header *cur)
   {
     int r;
 
+    char cmd[HUGE_STRING];
     mutt_endwin();
-    snprintf(buf, sizeof(buf), "%s %s", NONULL(Pager), tempfile);
-    r = mutt_system(buf);
+    snprintf(cmd, sizeof(cmd), "%s %s", NONULL(Pager), tempfile);
+    r = mutt_system(cmd);
     if (r == -1)
-      mutt_error(_("Error running \"%s\"!"), buf);
+      mutt_error(_("Error running \"%s\"!"), cmd);
     unlink(tempfile);
     if (!OptNoCurses)
       keypad(stdscr, true);

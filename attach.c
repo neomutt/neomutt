@@ -96,7 +96,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[STRING];
-  char command[STRING];
+  char command[HUGE_STRING];
   char newfile[_POSIX_PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -233,7 +233,7 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[STRING];
-  char command[STRING];
+  char command[HUGE_STRING];
   char newfile[_POSIX_PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
@@ -991,7 +991,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
-    char command[_POSIX_PATH_MAX + STRING];
+    char command[HUGE_STRING];
     int piped = false;
 
     mutt_debug(2, "Using mailcap...\n");
