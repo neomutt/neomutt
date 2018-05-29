@@ -124,7 +124,7 @@ msgstr "执行 \"%s\" 时出错！"
 
 #: attach.c:149
 msgid "Failure to open file to parse headers."
-msgstr "打开文件来分析标头失败。"
+msgstr "打开文件时解析标头失败。"
 
 #: attach.c:183
 msgid "Failure to open file to strip headers."
@@ -227,11 +227,11 @@ msgstr "已订阅"
 
 #: browser.c:84
 msgid "Unsubscribe"
-msgstr "已取消订阅"
+msgstr "取消订阅"
 
 #: browser.c:85 curs_main.c:760
 msgid "Catchup"
-msgstr "捕捉"
+msgstr "跟上"
 
 #: browser.c:767 browser.c:1781
 #, c-format
@@ -350,7 +350,7 @@ msgstr "取消订阅模式："
 
 #: browser.c:2137
 msgid "No newsgroups match the mask"
-msgstr "没有新闻组与文件掩码相符"
+msgstr "没有新闻组与掩码相符"
 
 #: buffy.c:780
 msgid "New mail in "
@@ -894,7 +894,7 @@ msgstr "内容类型(Content-Type)的格式是 base/sub"
 #: compose.c:1705
 #, c-format
 msgid "Unknown Content-Type %s"
-msgstr "未知的内容类型(Content-Type)%s"
+msgstr "未知的内容类型(Content-Type) %s"
 
 #: compose.c:1713
 #, c-format
@@ -945,7 +945,7 @@ msgstr "无法锁住信箱！"
 #: compress.c:481 compress.c:551 compress.c:703
 #, c-format
 msgid "Decompressing %s"
-msgstr "解压中...%s"
+msgstr "正在解压 %s"
 
 #: compress.c:490
 msgid "Can't identify the contents of the compressed file"
@@ -1512,7 +1512,7 @@ msgstr "限制：%s"
 
 #: curs_main.c:1468
 msgid "Limit to messages matching: "
-msgstr "限制符合此模式的信件："
+msgstr "限制到符合此模式的信件："
 
 #: curs_main.c:1492
 msgid "To view all messages, limit to \"all\"."
@@ -4993,7 +4993,7 @@ msgstr "回复给指定的邮件列表"
 
 #: opcodes.h:149
 msgid "load list of all newsgroups from NNTP server"
-msgstr "从 NNTP 服务器加载所有的新闻组列表"
+msgstr "从 NNTP 服务器加载所有新闻组的列表"
 
 #: opcodes.h:150
 msgid "execute a macro"
