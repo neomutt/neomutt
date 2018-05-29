@@ -276,8 +276,8 @@ hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/mutt/address.h \
 			$(SRCDIR)/mutt/list.h $(SRCDIR)/mutt/buffer.h \
 			$(SRCDIR)/mutt/parameter.h $(SRCDIR)/body.h \
 			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
-			$(SRCDIR)/hcache/hcachever.sh \
-			$(PWD)/hcache
+			$(SRCDIR)/hcache/hcachever.sh
+	$(MKDIR_P) $(PWD)/hcache
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
 	echo '#include "mutt/address.h"'; echo '#include "mutt/list.h"'; \
 	echo '#include "mutt/buffer.h"'; echo '#include "mutt/parameter.h"'; \
