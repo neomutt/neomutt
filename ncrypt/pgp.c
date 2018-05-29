@@ -328,8 +328,8 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
-  char outfile[_POSIX_PATH_MAX];
-  char tmpfname[_POSIX_PATH_MAX];
+  char outfile[PATH_MAX];
+  char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp = NULL;
   pid_t thepid;
@@ -617,7 +617,7 @@ out:
 
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   char buf[HUGE_STRING];
   FILE *tfp = NULL;
 
@@ -699,7 +699,7 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 
 int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
+  char sigfile[PATH_MAX], pgperrfile[PATH_MAX];
   FILE *pgpout = NULL, *pgperr = NULL;
   pid_t thepid;
   int badsig = -1;
@@ -766,7 +766,7 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
   struct State s;
-  char tempfname[_POSIX_PATH_MAX];
+  char tempfname[PATH_MAX];
 
   mutt_mktemp(tempfname, sizeof(tempfname));
   FILE *tempfp = mutt_file_fopen(tempfname, "w");
@@ -824,8 +824,8 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
-  char pgperrfile[_POSIX_PATH_MAX];
-  char pgptmpfile[_POSIX_PATH_MAX];
+  char pgperrfile[PATH_MAX];
+  char pgptmpfile[PATH_MAX];
   pid_t thepid;
   int rv;
 
@@ -946,7 +946,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   struct State s;
   struct Body *p = b;
   bool need_decode = false;
@@ -1032,7 +1032,7 @@ bail:
  */
 int pgp_encrypted_handler(struct Body *a, struct State *s)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   FILE *fpin = NULL;
   struct Body *tattach = NULL;
   int rc = 0;
@@ -1105,7 +1105,7 @@ struct Body *pgp_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
   char buffer[LONG_STRING];
-  char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
+  char sigfile[PATH_MAX], signedfile[PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
   bool empty = true;
@@ -1360,8 +1360,8 @@ char *pgp_find_keys(struct Address *addrlist, int oppenc_mode)
 struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
-  char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
-  char pgpinfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX], pgperrfile[PATH_MAX];
+  char pgpinfile[PATH_MAX];
   FILE *pgpin = NULL, *pgperr = NULL, *fptmp = NULL;
   struct Body *t = NULL;
   int err = 0;
@@ -1489,9 +1489,9 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 {
   struct Body *b = NULL;
 
-  char pgpoutfile[_POSIX_PATH_MAX];
-  char pgperrfile[_POSIX_PATH_MAX];
-  char pgpinfile[_POSIX_PATH_MAX];
+  char pgpoutfile[PATH_MAX];
+  char pgperrfile[PATH_MAX];
+  char pgpinfile[PATH_MAX];
 
   char body_charset[STRING];
   char *from_charset = NULL;

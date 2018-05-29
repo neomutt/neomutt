@@ -62,7 +62,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   if (!tgt || !src)
     return -1;
 
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   struct Body *b = NULL;
 
   bool use_disp;

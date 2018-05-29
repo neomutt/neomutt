@@ -356,7 +356,7 @@ void rfc3676_space_stuff(struct Header *hdr)
   unsigned char c = '\0';
   FILE *in = NULL, *out = NULL;
   char buf[LONG_STRING];
-  char tmpfile[_POSIX_PATH_MAX];
+  char tmpfile[PATH_MAX];
 
   if (!hdr || !hdr->content || !hdr->content->filename)
     return;

@@ -214,7 +214,7 @@ static int dup_hash_inc(struct Hash *dup_hash, char *str)
  */
 static void shrink_histfile(void)
 {
-  char tmpfname[_POSIX_PATH_MAX];
+  char tmpfname[PATH_MAX];
   FILE *tmp = NULL;
   int n[HC_LAST] = { 0 };
   int line, hclass, read;

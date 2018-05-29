@@ -589,7 +589,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
 {
   void *uidl = NULL;
   char buf[LONG_STRING];
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   struct Progress progressbar;
   struct PopData *pop_data = (struct PopData *) ctx->data;
   struct PopCache *cache = NULL;

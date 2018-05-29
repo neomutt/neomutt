@@ -693,7 +693,7 @@ static bool create_hcache_dir(const char *path)
   if (!path)
     return false;
 
-  static char dir[_POSIX_PATH_MAX];
+  static char dir[PATH_MAX];
   mutt_str_strfcpy(dir, path, sizeof(dir));
 
   char *p = strrchr(dir, '/');
@@ -734,7 +734,7 @@ static bool create_hcache_dir(const char *path)
  */
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {
-  static char hcpath[_POSIX_PATH_MAX];
+  static char hcpath[PATH_MAX];
   char suffix[32] = "";
   struct stat sb;
 
@@ -764,7 +764,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   else
   {
     unsigned char m[16]; /* binary md5sum */
-    char name[_POSIX_PATH_MAX];
+    char name[PATH_MAX];
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
     mutt_md5(name, m);
     mutt_md5_toascii(m, name);
@@ -1016,7 +1016,7 @@ void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
  */
 void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h || !ops)
@@ -1074,7 +1074,7 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
 int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
                           void *data, size_t dlen)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h || !ops)
@@ -1090,7 +1090,7 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
  */
 int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h)

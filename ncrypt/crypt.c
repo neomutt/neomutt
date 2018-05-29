@@ -726,7 +726,7 @@ void crypt_convert_to_7bit(struct Body *a)
 
 void crypt_extract_keys_from_messages(struct Header *h)
 {
-  char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
+  char tempfname[PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
   FILE *fpout = NULL;
 
@@ -1045,7 +1045,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
     if (sigcnt)
     {
-      char tempfile[_POSIX_PATH_MAX];
+      char tempfile[PATH_MAX];
       mutt_mktemp(tempfile, sizeof(tempfile));
       bool goodsig = true;
       if (crypt_write_signed(a, s, tempfile) == 0)

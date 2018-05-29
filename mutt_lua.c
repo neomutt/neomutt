@@ -432,7 +432,7 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
 
   lua_init(&Lua);
 
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   if (mutt_extract_token(tmp, s, 0) != 0)
   {

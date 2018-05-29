@@ -84,7 +84,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   bool not = false;
   regex_t *rx = NULL;
   struct Pattern *pat = NULL;
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   mutt_buffer_init(&pattern);
   mutt_buffer_init(&command);
@@ -547,7 +547,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
     addr = NULL;
   if (addr)
   {
-    char tmp[_POSIX_PATH_MAX];
+    char tmp[PATH_MAX];
     mutt_safe_path(tmp, sizeof(tmp), addr);
     snprintf(path, pathlen, "=%s", tmp);
   }
@@ -567,7 +567,7 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
     if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
       struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
-      char buf[_POSIX_PATH_MAX];
+      char buf[PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!ForceName && mx_access(path, W_OK) != 0)

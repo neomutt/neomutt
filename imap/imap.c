@@ -2315,7 +2315,7 @@ static int imap_mbox_close(struct Context *ctx)
  */
 static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
 
   mutt_mktemp(tmp, sizeof(tmp));
   msg->fp = mutt_file_fopen(tmp, "w");

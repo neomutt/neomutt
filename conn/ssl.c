@@ -595,7 +595,7 @@ static int ssl_init(void)
   if (!HAVE_ENTROPY())
   {
     /* load entropy from files */
-    char path[_POSIX_PATH_MAX];
+    char path[PATH_MAX];
     add_entropy(EntropyFile);
     add_entropy(RAND_file_name(path, sizeof(path)));
 

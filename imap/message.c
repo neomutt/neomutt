@@ -100,7 +100,7 @@ static void update_context(struct ImapData *idata, int oldmsgcount)
  */
 static struct BodyCache *msg_cache_open(struct ImapData *idata)
 {
-  char mailbox[_POSIX_PATH_MAX];
+  char mailbox[PATH_MAX];
 
   if (idata->bcache)
     return idata->bcache;
@@ -606,7 +606,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 {
   char *hdrreq = NULL;
   FILE *fp = NULL;
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int msgno, idx;
   struct ImapHeader h;
   struct ImapStatus *status = NULL;
@@ -976,7 +976,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char *pc = NULL;
   unsigned int bytes;
   struct Progress progressbar;

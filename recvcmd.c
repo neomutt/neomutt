@@ -385,7 +385,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   bool mime_fwd_any = true;
   struct Header *parent_hdr = NULL;
   FILE *parent_fp = NULL;
-  char tmpbody[_POSIX_PATH_MAX];
+  char tmpbody[PATH_MAX];
   char prefix[STRING];
   int rc = 0;
   struct State st;
@@ -560,7 +560,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   int rc;
 
   struct Body **last = NULL;
-  char tmpbody[_POSIX_PATH_MAX];
+  char tmpbody[PATH_MAX];
   FILE *tmpfp = NULL;
 
   int chflags = CH_XMIT;
@@ -807,7 +807,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   struct Header *tmphdr = NULL;
 
   struct State st;
-  char tmpbody[_POSIX_PATH_MAX];
+  char tmpbody[PATH_MAX];
   FILE *tmpfp = NULL;
 
   char prefix[SHORT_STRING];

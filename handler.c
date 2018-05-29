@@ -511,7 +511,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   char buffer[LONG_STRING];
   char type[STRING];
   char command[HUGE_STRING];
-  char tempfile[_POSIX_PATH_MAX] = "";
+  char tempfile[PATH_MAX] = "";
   char *fname = NULL;
   FILE *fpin = NULL;
   FILE *fpout = NULL;
@@ -1296,7 +1296,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
   {
     const int orig_type = b->type;
 #ifndef USE_FMEMOPEN
-    char tempfile[_POSIX_PATH_MAX];
+    char tempfile[PATH_MAX];
 #endif
     if (!plaintext)
     {

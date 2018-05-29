@@ -161,7 +161,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
 
 static short pgp_find_hash(const char *fname)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   size_t l;
   short rc = -1;
 

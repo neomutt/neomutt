@@ -51,7 +51,7 @@ struct HcacheDbCtx
   DB_ENV *env;
   DB *db;
   int fd;
-  char lockfile[_POSIX_PATH_MAX];
+  char lockfile[PATH_MAX];
 };
 
 /**

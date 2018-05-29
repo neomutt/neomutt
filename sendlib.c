@@ -1110,7 +1110,7 @@ bye:
 
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   struct State s;
   struct stat sb;
 
@@ -1165,7 +1165,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
 
 void mutt_message_to_7bit(struct Body *a, FILE *fp)
 {
-  char temp[_POSIX_PATH_MAX];
+  char temp[PATH_MAX];
   char *line = NULL;
   FILE *fpin = NULL;
   FILE *fpout = NULL;
@@ -2293,7 +2293,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 
   if (SendmailWait >= 0 && tempfile)
   {
-    char tmp[_POSIX_PATH_MAX];
+    char tmp[PATH_MAX];
 
     mutt_mktemp(tmp, sizeof(tmp));
     *tempfile = mutt_str_strdup(tmp);
@@ -2714,7 +2714,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
 {
   int rc = 0;
   FILE *f = NULL;
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   struct Message *msg = NULL;
 
   if (!h)
@@ -2895,8 +2895,8 @@ static void set_noconv_flags(struct Body *b, short flag)
 int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid,
                             int post, char *fcc, char **finalpath)
 {
-  char fcc_tok[_POSIX_PATH_MAX];
-  char fcc_expanded[_POSIX_PATH_MAX];
+  char fcc_tok[PATH_MAX];
+  char fcc_expanded[PATH_MAX];
 
   mutt_str_strfcpy(fcc_tok, path, sizeof(fcc_tok));
 
@@ -2933,7 +2933,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 {
   struct Context f;
   struct Message *msg = NULL;
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   FILE *tempfp = NULL;
   int rc = -1;
   bool need_buffy_cleanup = false;

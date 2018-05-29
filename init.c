@@ -1088,7 +1088,7 @@ static void restore_default(struct Option *p)
         FREE((char **) p->var);
         if (init)
         {
-          char path[_POSIX_PATH_MAX];
+          char path[PATH_MAX];
           mutt_str_strfcpy(path, init, sizeof(path));
           mutt_expand_path(path, sizeof(path));
           *((char **) p->var) = mutt_str_strdup(path);
@@ -1909,7 +1909,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   do
   {
@@ -1935,7 +1935,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
 static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   do
   {
@@ -2181,7 +2181,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         }
         else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_PATH))
         {
-          char scratch[_POSIX_PATH_MAX];
+          char scratch[PATH_MAX];
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
@@ -2652,7 +2652,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
 static int parse_source(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   do
   {

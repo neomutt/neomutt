@@ -1069,7 +1069,7 @@ struct Address *mutt_default_from(void)
 
 static int send_message(struct Header *msg)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int i;
 #ifdef USE_SMTP
   short old_write_bcc;
@@ -1286,7 +1286,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
                     struct Context *ctx, struct Header *cur)
 {
   char buffer[LONG_STRING];
-  char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
+  char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;
   int i;

@@ -597,7 +597,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
   struct Buffy **b = NULL;
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
   char *p = NULL;
@@ -698,7 +698,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   bool clear_all = false;
 
   while (!clear_all && MoreArgs(s))
@@ -817,7 +817,7 @@ int mutt_buffy_check(bool force)
 bool mutt_buffy_list(void)
 {
   struct Buffy *b = NULL;
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char buffylist[2 * STRING];
   size_t pos = 0;
   int first = 1;

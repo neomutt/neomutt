@@ -247,7 +247,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
 void pgp_invoke_import(const char *fname)
 {
-  char tmp_fname[_POSIX_PATH_MAX + SHORT_STRING];
+  char tmp_fname[PATH_MAX + SHORT_STRING];
   char cmd[HUGE_STRING];
   struct PgpCommandContext cctx;
 

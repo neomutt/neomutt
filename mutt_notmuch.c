@@ -702,7 +702,7 @@ static bool is_longrun(struct NmCtxData *data)
  */
 static int get_database_mtime(struct NmCtxData *data, time_t *mtime)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   struct stat st;
 
   if (!data)
@@ -1512,9 +1512,9 @@ static int update_header_flags(struct Context *ctx, struct Header *hdr, const ch
 static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
                                    struct Header *h)
 {
-  char filename[_POSIX_PATH_MAX];
-  char suffix[_POSIX_PATH_MAX];
-  char folder[_POSIX_PATH_MAX];
+  char filename[PATH_MAX];
+  char suffix[PATH_MAX];
+  char folder[PATH_MAX];
 
   mutt_str_strfcpy(folder, old, sizeof(folder));
   char *p = strrchr(folder, '/');
@@ -1673,7 +1673,7 @@ static int rename_filename(struct NmCtxData *data, const char *old,
            msg && ls && notmuch_filenames_valid(ls); notmuch_filenames_move_to_next(ls))
       {
         const char *path = notmuch_filenames_get(ls);
-        char newpath[_POSIX_PATH_MAX];
+        char newpath[PATH_MAX];
 
         if (strcmp(new, path) == 0)
           continue;
@@ -1877,7 +1877,7 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
 {
   mutt_debug(2, "(%s)\n", buf);
   struct NmCtxData *data = get_ctxdata(ctx);
-  char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
+  char uri[PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
   int added;
 
   if (data)
@@ -2538,7 +2538,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
        notmuch_messages_move_to_next(msgs), i++)
   {
-    char old[_POSIX_PATH_MAX];
+    char old[PATH_MAX];
     const char *new = NULL;
 
     notmuch_message_t *m = notmuch_messages_get(msgs);
@@ -2636,7 +2636,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
-    char old[_POSIX_PATH_MAX], new[_POSIX_PATH_MAX];
+    char old[PATH_MAX], new[PATH_MAX];
     struct Header *h = ctx->hdrs[i];
     struct NmHdrData *hd = h->data;
 
@@ -2701,7 +2701,7 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (!ctx || !msg)
     return 1;
   struct Header *cur = ctx->hdrs[msgno];
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char *folder = nm_header_get_folder(cur);
 
   snprintf(path, sizeof(path), "%s/%s", folder, cur->path);

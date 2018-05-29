@@ -98,8 +98,8 @@ struct Folder
   int num;
 };
 
-static char OldLastDir[_POSIX_PATH_MAX] = "";
-static char LastDir[_POSIX_PATH_MAX] = "";
+static char OldLastDir[PATH_MAX] = "";
+static char LastDir[PATH_MAX] = "";
 
 /**
  * destroy_state - Free the BrowserState
@@ -257,7 +257,7 @@ static void browser_sort(struct BrowserState *state)
 static int link_is_dir(const char *folder, const char *path)
 {
   struct stat st;
-  char fullpath[_POSIX_PATH_MAX];
+  char fullpath[PATH_MAX];
 
   mutt_file_concat_path(fullpath, folder, path, sizeof(fullpath));
 
@@ -748,7 +748,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     struct stat s;
     DIR *dp = NULL;
     struct dirent *de = NULL;
-    char buffer[_POSIX_PATH_MAX + SHORT_STRING];
+    char buffer[PATH_MAX + SHORT_STRING];
     struct Buffy *tmp = NULL;
 
     while (stat(d, &s) == -1)
@@ -1075,7 +1075,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     }
     else
     {
-      char path[_POSIX_PATH_MAX];
+      char path[PATH_MAX];
       menu->is_mailbox_list = 0;
       mutt_str_strfcpy(path, LastDir, sizeof(path));
       mutt_pretty_mailbox(path, sizeof(path));
@@ -1092,7 +1092,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   int ldlen = mutt_str_strlen(LastDir);
   if ((ldlen > 0) && (mutt_str_strncmp(LastDir, OldLastDir, ldlen) == 0))
   {
-    char TargetDir[_POSIX_PATH_MAX] = "";
+    char TargetDir[PATH_MAX] = "";
 
 #ifdef USE_IMAP
     /* Use mx_is_imap to check what kind of dir is OldLastDir.
@@ -1163,8 +1163,8 @@ void mutt_browser_select_dir(char *f)
 
 void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)
 {
-  char buf[_POSIX_PATH_MAX];
-  char prefix[_POSIX_PATH_MAX] = "";
+  char buf[PATH_MAX];
+  char prefix[PATH_MAX] = "";
   char helpstr[LONG_STRING];
   char title[STRING];
   struct BrowserState state;
@@ -1178,7 +1178,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (Folder)
    */
-  char GotoSwapper[_POSIX_PATH_MAX] = "";
+  char GotoSwapper[PATH_MAX] = "";
 
   buffy = buffy && folder;
 
@@ -1503,7 +1503,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #endif
             else
             {
-              char tmp[_POSIX_PATH_MAX];
+              char tmp[PATH_MAX];
               mutt_file_concat_path(tmp, LastDir,
                                     state.entry[menu->current].name, sizeof(tmp));
               mutt_str_strfcpy(LastDir, tmp, sizeof(LastDir));
@@ -1583,7 +1583,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               struct FolderFile ff = state.entry[j];
               if (ff.tagged)
               {
-                char full[_POSIX_PATH_MAX];
+                char full[PATH_MAX];
                 mutt_file_concat_path(full, LastDir, ff.name, sizeof(full));
                 mutt_expand_path(full, sizeof(full));
                 tfiles[k++] = mutt_str_strdup(full);
@@ -1767,7 +1767,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             {
               /* in case dir is relative, make it relative to LastDir,
                * not current working dir */
-              char tmp[_POSIX_PATH_MAX];
+              char tmp[PATH_MAX];
               mutt_file_concat_path(tmp, LastDir, buf, sizeof(tmp));
               mutt_str_strfcpy(buf, tmp, sizeof(buf));
             }
@@ -2031,7 +2031,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         }
         else
         {
-          char buf2[_POSIX_PATH_MAX];
+          char buf2[PATH_MAX];
 
           mutt_file_concat_path(buf2, LastDir, state.entry[menu->current].name,
                                 sizeof(buf2));

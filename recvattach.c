@@ -268,7 +268,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       {
         if (aptr->content->filename && *aptr->content->filename == '/')
         {
-          char path[_POSIX_PATH_MAX];
+          char path[PATH_MAX];
 
           mutt_str_strfcpy(path, aptr->content->filename, sizeof(path));
           mutt_pretty_mailbox(path, sizeof(path));
@@ -457,7 +457,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
                                  struct Header *hdr, char **directory)
 {
   char *prompt = NULL;
-  char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
+  char buf[PATH_MAX], tfile[PATH_MAX];
   int append = 0;
   int rc;
 
@@ -543,7 +543,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, struct Header *hdr, struct Menu *menu)
 {
-  char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
+  char buf[PATH_MAX], tfile[PATH_MAX];
   char *directory = NULL;
   int rc = 1;
   int last = menu ? menu->current : -1;
@@ -629,11 +629,11 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
 static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bool filter)
 {
-  char tfile[_POSIX_PATH_MAX];
+  char tfile[PATH_MAX];
 
   if (filter)
   {
-    char warning[STRING + _POSIX_PATH_MAX];
+    char warning[STRING + PATH_MAX];
     snprintf(warning, sizeof(warning),
              _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
     if (mutt_yesorno(warning, MUTT_NO) != MUTT_YES)
@@ -808,7 +808,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           /* decode and print */
 
-          char newfile[_POSIX_PATH_MAX] = "";
+          char newfile[PATH_MAX] = "";
           FILE *ifp = NULL;
 
           mutt_mktemp(newfile, sizeof(newfile));
