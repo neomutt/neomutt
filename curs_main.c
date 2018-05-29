@@ -2391,6 +2391,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 
+        const int saved_current = menu->current;
         i = menu->current;
         menu->current = -1;
         for (j = 0; j != Context->vcount; j++)
@@ -2400,7 +2401,6 @@ int mutt_index_menu(void)
             i++;
             if (i > Context->vcount - 1)
             {
-              mutt_message(_("Search wrapped to top."));
               i = 0;
             }
           }
@@ -2409,7 +2409,6 @@ int mutt_index_menu(void)
             i--;
             if (i < 0)
             {
-              mutt_message(_("Search wrapped to bottom."));
               i = Context->vcount - 1;
             }
           }
@@ -2463,8 +2462,22 @@ int mutt_index_menu(void)
             else
               mutt_error(_("No unread messages."));
           }
+          break;
         }
-        else if (menu->menu == MENU_PAGER)
+
+        if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_NEXT_NEW_THEN_UNREAD)
+        {
+          if (saved_current > menu->current)
+          {
+            mutt_message(_("Search wrapped to top."));
+          }
+        }
+        else if (saved_current < menu->current)
+        {
+          mutt_message(_("Search wrapped to bottom."));
+        }
+
+        if (menu->menu == MENU_PAGER)
         {
           op = OP_DISPLAY_MESSAGE;
           continue;
