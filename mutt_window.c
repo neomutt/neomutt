@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdarg.h>
 #include <string.h>
-#include "mutt/logging.h"
 #include "mutt/mutt.h"
 #include "mutt_window.h"
 #include "globals.h"

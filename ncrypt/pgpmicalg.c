@@ -129,7 +129,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
     return;
   }
 
-  mutt_decode_base64(&state, end - start, 0, (iconv_t) -1);
+  mutt_decode_base64(&state, end - start, false, (iconv_t) -1);
 }
 
 static short pgp_mic_from_packet(unsigned char *p, size_t len)

@@ -1004,7 +1004,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
       menu[i] = mutt_map_get_value(p, Menus);
       if (menu[i] == -1)
       {
-        snprintf(err->data, err->dsize, _("%s: no such menu"), p);
+        mutt_buffer_printf(err, _("%s: no such menu"), p);
         goto error;
       }
       i++;
@@ -1045,8 +1045,8 @@ static int try_bind(char *key, int menu, char *func,
   }
   if (err)
   {
-    snprintf(err->data, err->dsize, _("Function '%s' not available for menu '%s'"),
-             func, mutt_map_get_name(menu, Menus));
+    mutt_buffer_printf(err, _("Function '%s' not available for menu '%s'"),
+                       func, mutt_map_get_name(menu, Menus));
   }
   return -1; /* Couldn't find an existing function with this name */
 }

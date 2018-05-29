@@ -136,7 +136,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
 
     mutt_str_strfcpy(path, pattern.data, sizeof(path));
-    mutt_expand_path_regex(path, sizeof(path), 1);
+    mutt_expand_path_regex(path, sizeof(path), true);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
      * This is likely a mistake too */
@@ -335,8 +335,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       if (current_hook_type)
       {
-        snprintf(err->data, err->dsize, "%s",
-                 _("unhook: Can't do unhook * from within a hook."));
+        mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook."));
         return -1;
       }
       mutt_delete_hooks(0);
@@ -348,7 +347,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
       if (!type)
       {
-        snprintf(err->data, err->dsize, _("unhook: unknown hook type: %s"), buf->data);
+        mutt_buffer_printf(err, _("unhook: unknown hook type: %s"), buf->data);
         return -1;
       }
       if (type & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
@@ -358,8 +357,8 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
       if (current_hook_type == type)
       {
-        snprintf(err->data, err->dsize, _("unhook: Can't delete a %s from within a %s."),
-                 buf->data, buf->data);
+        mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s."),
+                           buf->data, buf->data);
         return -1;
       }
       mutt_delete_hooks(type);

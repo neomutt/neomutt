@@ -419,7 +419,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     if (fp)
     {
       fname = mutt_str_strdup(a->filename);
-      mutt_file_sanitize_filename(fname, 1);
+      mutt_file_sanitize_filename(fname, true);
     }
     else
       fname = a->filename;

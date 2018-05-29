@@ -511,21 +511,21 @@ void mutt_generate_boundary(struct ParameterList *parm)
  */
 struct ContentState
 {
-  int from;
+  bool from;
   int whitespace;
-  int dot;
+  bool dot;
   int linelen;
-  int was_cr;
+  bool was_cr;
 };
 
 static void update_content_info(struct Content *info, struct ContentState *s,
                                 char *d, size_t dlen)
 {
-  int from = s->from;
+  bool from = s->from;
   int whitespace = s->whitespace;
-  int dot = s->dot;
+  bool dot = s->dot;
   int linelen = s->linelen;
-  int was_cr = s->was_cr;
+  bool was_cr = s->was_cr;
 
   if (!d) /* This signals EOF */
   {
@@ -543,7 +543,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
 
     if (was_cr)
     {
-      was_cr = 0;
+      was_cr = false;
       if (ch != '\n')
       {
         info->binary = true;
@@ -557,7 +557,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
         if (linelen > info->linemax)
           info->linemax = linelen;
         whitespace = 0;
-        dot = 0;
+        dot = false;
         linelen = 0;
         continue;
       }
@@ -575,13 +575,13 @@ static void update_content_info(struct Content *info, struct ContentState *s,
         info->linemax = linelen;
       whitespace = 0;
       linelen = 0;
-      dot = 0;
+      dot = false;
     }
     else if (ch == '\r')
     {
       info->crlf++;
       info->cr = true;
-      was_cr = 1;
+      was_cr = true;
       continue;
     }
     else if (ch & 0x80)
@@ -603,25 +603,25 @@ static void update_content_info(struct Content *info, struct ContentState *s,
       if (linelen == 1)
       {
         if ((ch == 'F') || (ch == 'f'))
-          from = 1;
+          from = true;
         else
-          from = 0;
+          from = false;
         if (ch == '.')
-          dot = 1;
+          dot = true;
         else
-          dot = 0;
+          dot = false;
       }
       else if (from)
       {
         if (linelen == 2 && ch != 'r')
-          from = 0;
+          from = false;
         else if (linelen == 3 && ch != 'o')
-          from = 0;
+          from = false;
         else if (linelen == 4)
         {
           if (ch == 'm')
             info->from = true;
-          from = 0;
+          from = false;
         }
       }
       if (ch == ' ')
@@ -630,7 +630,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
     }
 
     if (linelen > 1)
-      dot = 0;
+      dot = false;
     if (ch != ' ' && ch != '\t')
       whitespace = 0;
   }

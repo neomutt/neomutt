@@ -24,7 +24,7 @@
 #define _MUTT_ALIAS_H
 
 #include <stdbool.h>
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 
 struct Envelope;
 struct Address;

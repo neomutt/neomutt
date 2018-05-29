@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include "mutt/mutt.h"
-#include "mutt/queue.h"
 #include "crypt_mod.h"
 
 /**

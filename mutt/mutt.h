@@ -77,6 +77,7 @@
 #include "message.h"
 #include "mime.h"
 #include "parameter.h"
+#include "queue.h"
 #include "regex3.h"
 #include "rfc2047.h"
 #include "sha1.h"

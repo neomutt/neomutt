@@ -92,7 +92,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   {
     char prefix[_POSIX_PATH_MAX];
     mutt_str_strfcpy(prefix, s, sizeof(prefix));
-    mutt_file_sanitize_filename(prefix, 1);
+    mutt_file_sanitize_filename(prefix, true);
     snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
     struct stat sb;
     if (lstat(s, &sb) == -1 && errno == ENOENT)
@@ -120,10 +120,10 @@ bool mutt_matches_ignore(const char *s)
 
 char *mutt_expand_path(char *s, size_t slen)
 {
-  return mutt_expand_path_regex(s, slen, 0);
+  return mutt_expand_path_regex(s, slen, false);
 }
 
-char *mutt_expand_path_regex(char *s, size_t slen, int regex)
+char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
 {
   char p[_POSIX_PATH_MAX] = "";
   char q[_POSIX_PATH_MAX] = "";

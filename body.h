@@ -26,8 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-
-#include "mutt/parameter.h"
+#include "mutt/mutt.h"
 
 /**
  * struct Body - The body of an email

@@ -83,12 +83,12 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   char *pexpr = s->dptr;
   if (mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 || !buf.data)
   {
-    snprintf(err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     return false;
   }
   if (!*buf.data)
   {
-    snprintf(err->data, err->dsize, "%s", _("Empty expression"));
+    mutt_buffer_printf(err, "%s", _("Empty expression"));
     return false;
   }
 
@@ -167,7 +167,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   t->tm_mday = strtol(s, &p, 10);
   if (t->tm_mday < 1 || t->tm_mday > 31)
   {
-    snprintf(err->data, err->dsize, _("Invalid day of month: %s"), s);
+    mutt_buffer_printf(err, _("Invalid day of month: %s"), s);
     return NULL;
   }
   if (*p != '/')
@@ -181,7 +181,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   t->tm_mon = strtol(p, &p, 10) - 1;
   if (t->tm_mon < 0 || t->tm_mon > 11)
   {
-    snprintf(err->data, err->dsize, _("Invalid month: %s"), p);
+    mutt_buffer_printf(err, _("Invalid month: %s"), p);
     return NULL;
   }
   if (*p != '/')
@@ -362,7 +362,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
   }
   if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
   { /* get_date has its own error message, don't overwrite it here */
-    snprintf(err->data, err->dsize, _("Invalid relative date: %s"), pc - 1);
+    mutt_buffer_printf(err, _("Invalid relative date: %s"), pc - 1);
   }
   return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
 }
@@ -403,12 +403,12 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (mutt_extract_token(&buffer, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0 ||
       !buffer.data)
   {
-    snprintf(err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     return false;
   }
   if (!*buffer.data)
   {
-    snprintf(err->data, err->dsize, "%s", _("Empty expression"));
+    mutt_buffer_printf(err, "%s", _("Empty expression"));
     return false;
   }
 
@@ -1132,7 +1132,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         {
           if (!curlist)
           {
-            snprintf(err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
+            mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
             return NULL;
           }
           if (curlist->next)
@@ -1159,7 +1159,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
       case '~':
         if (!*(ps.dptr + 1))
         {
-          snprintf(err->data, err->dsize, _("missing pattern: %s"), ps.dptr);
+          mutt_buffer_printf(err, _("missing pattern: %s"), ps.dptr);
           mutt_pattern_free(&curlist);
           return NULL;
         }
@@ -1178,7 +1178,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           p = find_matching_paren(ps.dptr + 1);
           if (*p != ')')
           {
-            snprintf(err->data, err->dsize, _("mismatched brackets: %s"), ps.dptr);
+            mutt_buffer_printf(err, _("mismatched brackets: %s"), ps.dptr);
             mutt_pattern_free(&curlist);
             return NULL;
           }
@@ -1240,13 +1240,13 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         entry = lookup_tag(*ps.dptr);
         if (!entry)
         {
-          snprintf(err->data, err->dsize, _("%c: invalid pattern modifier"), *ps.dptr);
+          mutt_buffer_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
           mutt_pattern_free(&curlist);
           return NULL;
         }
         if (entry->class && (flags & entry->class) == 0)
         {
-          snprintf(err->data, err->dsize, _("%c: not supported in this mode"), *ps.dptr);
+          mutt_buffer_printf(err, _("%c: not supported in this mode"), *ps.dptr);
           mutt_pattern_free(&curlist);
           return NULL;
         }
@@ -1259,7 +1259,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         {
           if (!*ps.dptr)
           {
-            snprintf(err->data, err->dsize, "%s", _("missing parameter"));
+            mutt_buffer_printf(err, "%s", _("missing parameter"));
             mutt_pattern_free(&curlist);
             return NULL;
           }
@@ -1275,7 +1275,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         p = find_matching_paren(ps.dptr + 1);
         if (*p != ')')
         {
-          snprintf(err->data, err->dsize, _("mismatched parenthesis: %s"), ps.dptr);
+          mutt_buffer_printf(err, _("mismatched parenthesis: %s"), ps.dptr);
           mutt_pattern_free(&curlist);
           return NULL;
         }
@@ -1303,7 +1303,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         ps.dptr = p + 1; /* restore location */
         break;
       default:
-        snprintf(err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
+        mutt_buffer_printf(err, _("error in pattern at: %s"), ps.dptr);
         mutt_pattern_free(&curlist);
         return NULL;
     }
