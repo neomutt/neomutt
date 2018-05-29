@@ -63,7 +63,7 @@ bool mutt_ts_capability(void)
   char *tcaps = tigetstr("tsl");
   if (tcaps && tcaps != (char *) -1 && *tcaps)
   {
-    /* update the static definitiions of tsl/fsl from terminfo */
+    /* update the static definitions of tsl/fsl from terminfo */
     tsl = tcaps;
 
     tcaps = tigetstr("fsl");
