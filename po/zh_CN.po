@@ -477,7 +477,7 @@ msgstr[0] "信件已退回。"
 
 #: commands.c:418 commands.c:460 commands.c:480
 msgid "Can't create filter process"
-msgstr "无法建立过滤进程"
+msgstr "无法创建过滤进程"
 
 #: commands.c:512
 msgid "Pipe to command: "
@@ -1872,12 +1872,12 @@ msgstr "%s：不明的编辑器命令(~? 求助)\n"
 #: editmsg.c:91
 #, c-format
 msgid "could not create temporary folder: %s"
-msgstr "无法建立临时文件夹：%s"
+msgstr "无法创建临时文件夹：%s"
 
 #: editmsg.c:104
 #, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "无法建立临时邮件夹：%s"
+msgstr "无法创建临时邮件夹：%s"
 
 #: editmsg.c:123
 #, c-format
@@ -3447,7 +3447,7 @@ msgstr "读取数据对象时出错：%s\n"
 #: ncrypt/crypt_gpgme.c:662 ncrypt/crypt_gpgme.c:3850 ncrypt/pgpkey.c:585
 #: ncrypt/pgpkey.c:768
 msgid "Can't create temporary file"
-msgstr "无法建立临时文件"
+msgstr "无法创建临时文件"
 
 #: ncrypt/crypt_gpgme.c:770
 #, c-format
@@ -3559,7 +3559,7 @@ msgstr "KeyID "
 
 #: ncrypt/crypt_gpgme.c:1482 ncrypt/crypt_gpgme.c:1487
 msgid "created: "
-msgstr "已建立："
+msgstr "创建于："
 
 #: ncrypt/crypt_gpgme.c:1561
 #, c-format
@@ -3677,7 +3677,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2726 ncrypt/crypt_gpgme.c:2801 ncrypt/pgp.c:1040
 msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- 错误：无法建立临时文件！ --]\n"
+msgstr "[-- 错误：无法创建临时文件！ --]\n"
 
 #: ncrypt/crypt_gpgme.c:2739
 msgid ""
@@ -4048,7 +4048,7 @@ msgstr "请输入 PGP 通行密码："
 
 #: ncrypt/pgp.c:447
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- 错误：无法建立 PGP 子进程！ --]\n"
+msgstr "[-- 错误：无法创建 PGP 子进程！ --]\n"
 
 #: ncrypt/pgp.c:484 ncrypt/pgp.c:750 ncrypt/pgp.c:906
 msgid ""
@@ -4067,7 +4067,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- 错误：无法建立 PGP 子进程！ --]\n"
+"[-- 错误：无法创建 PGP 子进程！ --]\n"
 "\n"
 
 #: ncrypt/pgp.c:893 ncrypt/pgp.c:918
