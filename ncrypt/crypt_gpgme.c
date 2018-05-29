@@ -3667,7 +3667,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
   /* L10N: This is printed after "Key Type: " and looks like this:
    *       PGP, 2048 bit RSA */
-  fprintf(fp, _("%s, %lu bit %s\n"), s2, aval, s);
+  fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), s2, aval, s);
 
   fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
   delim = "";
@@ -3805,7 +3805,9 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       aval = subkey->length;
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
-      fprintf(fp, _("%s, %lu bit %s\n"), "PGP", aval, s);
+      /* L10N: This is printed after "Key Type: " and looks like this:
+       *       PGP, 2048 bit RSA */
+      fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), "PGP", aval, s);
 
       fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
       delim = "";

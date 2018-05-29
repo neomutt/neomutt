@@ -836,10 +836,23 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
+  char prompt[SHORT_STRING];
   struct State state = { 0 };
+  int tagmsgcount = 0;
 
-  if (query_quadoption(Print, tag ? _("Print tagged attachment(s)?") :
-                                    _("Print attachment?")) != MUTT_YES)
+  if (tag)
+    for (int i = 0; i < actx->idxlen; i++)
+      if (actx->idx[i]->content->tagged)
+        tagmsgcount++;
+
+  snprintf(prompt, sizeof(prompt),
+           /* L10N: Although we now the precise number of tagged messages, we
+              do not show it to the user.  So feel free to use a "generic
+              plural" as plural translation if your language has one. */
+           tag ? ngettext("Print tagged attachment?", "Print %d tagged attachments?", tagmsgcount) :
+                 _("Print attachment?"),
+           tagmsgcount);
+  if (query_quadoption(Print, prompt) != MUTT_YES)
     return;
 
   if (!AttachSplit)

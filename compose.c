@@ -479,7 +479,7 @@ static void edit_address_list(int line, struct Address **addr)
 
   if (mutt_addrlist_to_intl(*addr, &err) != 0)
   {
-    mutt_error(_("Warning: '%s' is a bad IDN."), err);
+    mutt_error(_("Bad IDN: '%s'"), err);
     mutt_refresh();
     FREE(&err);
   }
@@ -1013,7 +1013,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_edit_headers(NONULL(Editor), msg->content->filename, msg, fcc, fcclen);
           if (mutt_env_to_intl(msg->env, &tag, &err))
           {
-            mutt_error(_("Bad IDN in \"%s\": '%s'"), tag, err);
+            mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
             FREE(&err);
           }
           if (CryptOpportunisticEncrypt)

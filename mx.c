@@ -616,9 +616,10 @@ static int trash_append(struct Context *ctx)
   if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
     return 0;
 
+  int delmsgcount = 0;
   for (i = 0; i < ctx->msgcount; i++)
     if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
-      break;
+      delmsgcount++;
   if (i == ctx->msgcount)
     return 0; /* nothing to be done */
 
@@ -631,7 +632,10 @@ static int trash_append(struct Context *ctx)
     Confirmappend = true;
   if (rc != 0)
   {
-    mutt_error(_("message(s) not deleted"));
+    /* L10N: Although we now the precise number of messages, we do not show it to the user.
+       So feel free to use a "generic plural" as plural translation if your language has one.
+     */
+    mutt_error(ngettext("message not deleted", "messages not deleted", delmsgcount));
     return -1;
   }
 
@@ -751,7 +755,12 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     if (is_spool && *mbox)
     {
       mutt_expand_path(mbox, sizeof(mbox));
-      snprintf(buf, sizeof(buf), _("Move %d read messages to %s?"), read_msgs, mbox);
+      snprintf(buf, sizeof(buf),
+               /* L10N: The first argument is the number of read messages to be
+                  moved, the second argument is the target mailbox. */
+               ngettext("Move %d read message to %s?",
+                        "Move %d read messages to %s?", read_msgs),
+               read_msgs, mbox);
       move_messages = query_quadoption(Move, buf);
       if (move_messages == MUTT_ABORT)
       {

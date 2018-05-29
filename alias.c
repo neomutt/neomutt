@@ -424,7 +424,7 @@ retry_name:
       BEEP();
     if (mutt_addrlist_to_intl(new->addr, &err))
     {
-      mutt_error(_("Error: '%s' is a bad IDN."), err);
+      mutt_error(_("Bad IDN: '%s'"), err);
       continue;
     }
   } while (!new->addr);

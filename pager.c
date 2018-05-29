@@ -1985,17 +1985,25 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   if (pager_menu->redraw & REDRAW_STATUS)
   {
     struct HdrFormatInfo hfi;
-    char pager_progress_str[4];
+    char pager_progress_str[65]; /* Lots of space for translations */
 
     hfi.ctx = Context;
     hfi.pager_progress = pager_progress_str;
 
     if (rd->last_pos < rd->sb.st_size - 1)
+    {
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
                (100 * rd->last_offset / rd->sb.st_size));
+    }
     else
-      mutt_str_strfcpy(pager_progress_str, (rd->topline == 0) ? "all" : "end",
-                       sizeof(pager_progress_str));
+    {
+      const char *msg = (rd->topline == 0) ?
+                            /* L10N: Status bar message: the entire email is visible in the pager */
+                            _("all") :
+                            /* L10N: Status bar message: the end of the email is visible in the pager */
+                            _("end");
+      mutt_str_strfcpy(pager_progress_str, msg, sizeof(pager_progress_str));
+    }
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
@@ -2815,7 +2823,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           delete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete messages"));
 
         {
           int subthread = (ch == OP_DELETE_SUBTHREAD);
@@ -3134,7 +3146,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         CHECK_READONLY;
         /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message(s)"));
+        /* L10N: Due to the implementation details we do not know whether we
+           undelete zero, 1, 12, ... messages. So in English we use
+           "messages". Your language might have other means to express this.
+         */
+        CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete messages"));
 
         r = mutt_thread_set_flag(extra->hdr, MUTT_DELETE, 0,
                                  ch == OP_UNDELETE_THREAD ? 0 : 1);
