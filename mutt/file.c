@@ -1320,11 +1320,11 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
   }
 
   char *dirpath = mutt_file_dirname(reference);
-  mutt_str_strfcpy(abs_path, dirpath, PATH_MAX);
+  mutt_str_strfcpy(abs_path, dirpath, sizeof(abs_path));
   FREE(&dirpath);
   mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
-  path_len = PATH_MAX - strlen(path);
+  path_len = sizeof(abs_path) - strlen(path);
 
   mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 

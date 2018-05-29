@@ -1216,7 +1216,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   pid_t pid;
 
-  mutt_str_strfcpy(rcfile, rcfile_path, PATH_MAX);
+  mutt_str_strfcpy(rcfile, rcfile_path, sizeof(rcfile));
 
   rcfilelen = mutt_str_strlen(rcfile);
   if (rcfilelen == 0)

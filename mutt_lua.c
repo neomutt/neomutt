@@ -323,7 +323,7 @@ static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
   char buf[LONG_STRING];
-  snprintf(buf, LONG_STRING, "mutt.command.%s = function (...); mutt.call('%s', ...); end",
+  snprintf(buf, sizeof(buf), "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
   (void) luaL_dostring(l, buf);
 }
