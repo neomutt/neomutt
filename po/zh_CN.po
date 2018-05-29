@@ -3239,7 +3239,7 @@ msgstr "无法打开回收站"
 
 #: mx.c:714
 msgid "Mark all articles read?"
-msgstr "标记所有的帖子已经阅读？"
+msgstr "标记所有的帖子为已读？"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
@@ -3433,7 +3433,7 @@ msgstr "分配数据对象时出错：%s\n"
 #: ncrypt/crypt_gpgme.c:611
 #, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "复卷数据对象时出错：%s\n"
+msgstr "倒回数据对象时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:627
 msgid "[tempfile]"
@@ -3447,7 +3447,7 @@ msgstr "读取数据对象时出错：%s\n"
 #: ncrypt/crypt_gpgme.c:662 ncrypt/crypt_gpgme.c:3850 ncrypt/pgpkey.c:585
 #: ncrypt/pgpkey.c:768
 msgid "Can't create temporary file"
-msgstr "无法建立暂存档"
+msgstr "无法建立临时文件"
 
 #: ncrypt/crypt_gpgme.c:770
 #, c-format
@@ -3490,7 +3490,7 @@ msgstr "$pgp_sign_as 没有设置并且 ~/.gnupg/gpg.conf 没有指定默认密�
 
 #: ncrypt/crypt_gpgme.c:1239
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "警告：其中一个密钥已经被吊销\n"
+msgstr "警告：密钥中有一个已经被吊销\n"
 
 #: ncrypt/crypt_gpgme.c:1248
 msgid "Warning: The key used to create the signature expired at: "
@@ -6231,7 +6231,7 @@ msgstr "投递进程的输出"
 #: sendlib.c:2800
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr "当准备 resent-from 时发生错误的 IDN %s。"
+msgstr "准备 resent-from 时发生错误的 IDN %s。"
 
 #: smtp.c:141
 #, c-format
