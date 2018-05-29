@@ -5594,13 +5594,13 @@ msgstr "Další"
 #. L10N: Status bar message: all the emails are visible in the index
 #: pager.c:2002 status.c:263
 msgid "all"
-msgstr ""
+msgstr "vše"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #: pager.c:2004 status.c:261
 msgid "end"
-msgstr ""
+msgstr "celé"
 
 #: pager.c:2342 pager.c:2373 pager.c:2407 pager.c:2727
 msgid "Bottom of message is shown."
