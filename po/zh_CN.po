@@ -5125,7 +5125,7 @@ msgstr "跳到上一个未读取的信件"
 
 #: opcodes.h:182
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr "从 NeoMutt 中删除，不在磁盘上创建"
+msgstr "在 NeoMutt 中隐藏，但不从磁盘上删除"
 
 #: opcodes.h:183
 msgid "mark the current subthread as read"
