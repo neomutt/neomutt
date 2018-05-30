@@ -45,7 +45,7 @@
  */
 enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {
-  int rc;
+  int rc = IMAP_CMD_CONTINUE;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
   static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
   char buf[STRING];
@@ -72,9 +72,10 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
      * credentials after the first command continuation request */
     buf[sizeof(auth_plain_cmd) - 1] = '\0';
     imap_cmd_start(idata, buf);
-    do
+    while (rc == IMAP_CMD_CONTINUE)
+    {
       rc = imap_cmd_step(idata);
-    while (rc == IMAP_CMD_CONTINUE);
+    }
     if (rc == IMAP_CMD_RESPOND)
     {
       mutt_socket_send(idata->conn, buf + sizeof(auth_plain_cmd));
@@ -82,9 +83,10 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
     }
   }
 
-  do
+  while (rc == IMAP_CMD_CONTINUE)
+  {
     rc = imap_cmd_step(idata);
-  while (rc == IMAP_CMD_CONTINUE);
+  }
 
   if (rc == IMAP_CMD_BAD)
   {
