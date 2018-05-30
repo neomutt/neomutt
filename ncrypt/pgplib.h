@@ -33,14 +33,15 @@
 /**
  * struct PgpSignature - PGP Signature
  */
-struct PgpSignature
+struct PgpSignatureNode
 {
-  struct PgpSignature *next;
   unsigned char sigtype;
   unsigned long sid1;
   unsigned long sid2;
+  STAILQ_ENTRY(PgpSignatureNode) entriens;
 };
 
+STAILQ_HEAD(PgpSignatureList, PgpSignatureNode);
 /**
  * struct PgpUid - PGP User ID
  */
@@ -51,7 +52,7 @@ struct PgpUid
   int flags;
   struct PgpKeyInfo *parent;
   struct PgpUid *next;
-  struct PgpSignature *sigs;
+  struct PgpSignatureList sigs;
 };
 
 /**
@@ -68,7 +69,7 @@ struct PgpKeyInfo
   int numalg;
   const char *algorithm;
   struct PgpKeyInfo *parent;
-  struct PgpSignature *sigs;
+  struct PgpSignatureList sigs;
   struct PgpKeyInfo *next;
 };
 

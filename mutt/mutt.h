@@ -83,5 +83,6 @@
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"
+#include "queue.h"
 
 #endif /* _MUTT_MUTT_H */
