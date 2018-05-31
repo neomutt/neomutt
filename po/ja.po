@@ -11,13 +11,14 @@ msgstr ""
 "Project-Id-Version: neomutt-20180512\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-05-29 03:54+0100\n"
-"PO-Revision-Date: 2017-06-01 13:00+0900\n"
+"PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: addrbook.c:50 browser.c:71 browser.c:81 history.c:103 pager.c:1697
 #: postpone.c:62 query.c:67 recvattach.c:69
@@ -466,21 +467,18 @@ msgstr "アドレス解析エラー!"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "%s へメッセージ再送"
-msgstr[1] "%s へメッセージ再送"
 
 #: commands.c:340 recvcmd.c:211
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "メッセージは再送されなかった。"
-msgstr[1] "メッセージは再送されなかった。"
 
 #: commands.c:350 recvcmd.c:230
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "メッセージを再送した。"
-msgstr[1] "メッセージを再送した。"
 
 #: commands.c:418 commands.c:460 commands.c:480
 msgid "Can't create filter process"
@@ -509,14 +507,12 @@ msgstr "タグ付きメッセージを印刷?"
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "メッセージは印刷された"
-msgstr[1] "メッセージは印刷された"
 
 #: commands.c:552
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "メッセージは印刷できなかった"
-msgstr[1] "メッセージは印刷できなかった"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:562
@@ -847,7 +843,6 @@ msgstr "メッセージ送信エラー。"
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "選択されたファイルを添付中..."
-msgstr[1] "選択されたファイルを添付中..."
 
 #: compose.c:1299
 #, c-format
@@ -1781,7 +1776,6 @@ msgstr "メッセージを編集できない"
 msgid "%d label changed."
 msgid_plural "%d labels changed."
 msgstr[0] "%d 個のラベルが変更された。"
-msgstr[1] "%d 個のラベルが変更された。"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
@@ -2053,9 +2047,6 @@ msgid_plural ""
 msgstr[0] ""
 "[-- この %s/%s 形式添付ファイル(%s バイト)は削除済み --]\n"
 "[-- (%s に削除) --]\n"
-msgstr[1] ""
-"[-- この %s/%s 形式添付ファイル(%s バイト)は削除済み --]\n"
-"[-- (%s に削除) --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2077,7 +2068,6 @@ msgstr[1] ""
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr[0] "[-- この %s/%s 形式添付ファイル(%s バイト)は削除済み --]\n"
-msgstr[1] "[-- この %s/%s 形式添付ファイル(%s バイト)は削除済み --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2433,7 +2423,6 @@ msgstr "%s の購読を取り消した"
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d メッセージを %s にコピー中..."
-msgstr[1] "%d メッセージを %s にコピー中..."
 
 #: imap/imap.c:1944 imap/imap.c:2239 imap/message.c:1499 muttlib.c:1351
 #, c-format
@@ -2458,7 +2447,6 @@ msgstr "削除に失敗した"
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d 個のメッセージに削除をマーク中..."
-msgstr[1] "%d 個のメッセージに削除をマーク中..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2439
@@ -2466,7 +2454,6 @@ msgstr[1] "%d 個のメッセージに削除をマーク中..."
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "メッセージ変更を保存中... [%d/%d]"
-msgstr[1] "メッセージ変更を保存中... [%d/%d]"
 
 #: imap/imap.c:2495
 msgid "Error saving flags. Close anyway?"
@@ -2587,7 +2574,6 @@ msgstr "source: %s 中にエラーが多すぎるので読み出し中止"
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %s 中でエラー"
-msgstr[1] "source: %s 中でエラー"
 
 #: init.c:1382
 msgid "alias: no address"
@@ -3270,7 +3256,6 @@ msgstr "検索が中断された。"
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "メッセージは削除されなかった"
-msgstr[1] "メッセージは削除されなかった"
 
 #: mx.c:675
 msgid "Can't open trash folder"
@@ -3287,14 +3272,12 @@ msgstr ""
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "既読の %d メッセージを %s に移動?"
-msgstr[1] "既読の %d メッセージを %s に移動?"
 
 #: mx.c:780 mx.c:1086
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "削除された %d メッセージを廃棄?"
-msgstr[1] "削除された %d メッセージを廃棄?"
 
 #: mx.c:802
 #, c-format
@@ -3842,7 +3825,6 @@ msgstr "[不正]"
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s, %lu ビット %s\n"
-msgstr[1] "%s, %lu ビット %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3678 ncrypt/crypt_gpgme.c:3817
@@ -5814,7 +5796,6 @@ msgstr "コマンド UIDL をサーバがサポートしていない。"
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "%d 通が消えている。メールボックスを再オープンしてみること。"
-msgstr[1] "%d 通が消えている。メールボックスを再オープンしてみること。"
 
 #: pop.c:469 pop.c:897
 #, c-format
@@ -5850,7 +5831,6 @@ msgstr "サーバからメッセージを削除?"
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "新着メッセージ読み出し中 (%d バイト)..."
-msgstr[1] "新着メッセージ読み出し中 (%d バイト)..."
 
 #: pop.c:1000
 msgid "Error while writing mailbox!"
@@ -5863,7 +5843,6 @@ msgstr "メールボックス書き込み中にエラー!"
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d / %d メッセージ読み出し]"
-msgstr[1] "%s [%d / %d メッセージ読み出し]"
 
 #: pop_auth.c:99
 msgid "Authenticating (SASL)..."
@@ -6010,7 +5989,6 @@ msgstr "どのように添付ファイル %s を印刷するか不明!"
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "タグ付き添付ファイルを印刷?"
-msgstr[1] "タグ付き添付ファイルを印刷?"
 
 #: recvattach.c:853
 #, c-format
@@ -6063,7 +6041,6 @@ msgstr "message/rfc822 パートのみ再送してもよい。"
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "メッセージ再送エラー!"
-msgstr[1] "メッセージ再送エラー!"
 
 #: recvcmd.c:414
 #, c-format
