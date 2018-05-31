@@ -2068,7 +2068,7 @@ int mutt_index_menu(void)
           mutt_message(_("No query, aborting"));
           break;
         }
-        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
+        if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
           main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
