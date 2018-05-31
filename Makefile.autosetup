@@ -193,13 +193,6 @@ CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
 ALLOBJS+=	$(PGPEWRAPOBJS)
 
 ###############################################################################
-# pgpring
-PGPRING=	pgpring$(EXEEXT)
-PGPRINGOBJS=	pgppubring.o
-CLEANFILES+=	$(PGPRING) $(PGPRINGOBJS)
-ALLOBJS+=	$(PGPRINGOBJS)
-
-###############################################################################
 # generated
 GENERATED=	git_ver.h hcache/hcversion.h
 CLEANFILES+=	$(GENERATED)
@@ -260,9 +253,6 @@ $(PWD)/hcache:
 $(PGPEWRAP): $(PGPEWRAPOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
 
-# pgpring
-$(PGPRING): $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT)
-	$(CC) $(LDFLAGS) -o $@ $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT) $(INTLLIBS)
 
 # generated
 git_ver.h: $(ALL_FILES)
