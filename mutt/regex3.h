@@ -47,14 +47,6 @@ struct Buffer;
  * @retval num Failure, e.g. REG_BADPAT
  */
 #define REGCOMP(X, Y, Z) regcomp(X, Y, REG_WORDS | REG_EXTENDED | (Z))
-/**
- * REGEXEC - Perform a regular expression comparison
- * @param X regex_t containing compiled regular expression
- * @param Y String to compare
- * @retval 0           Success
- * @retval REG_NOMATCH Failure
- */
-#define REGEXEC(X, Y) regexec(&X, Y, (size_t) 0, (regmatch_t *) 0, (int) 0)
 
 /**
  * struct Regex - Cached regular expression
@@ -81,7 +73,7 @@ struct RegexList
 struct ReplaceList
 {
   struct Regex *regex;      /**< Regex containing a regular expression */
-  int nmatch;               /**< Match the 'nth' occurrence (0 means the whole expression) */
+  size_t nmatch;            /**< Match the 'nth' occurrence (0 means the whole expression) */
   char *template;           /**< Template to match */
   struct ReplaceList *next; /**< Next item in list */
 };

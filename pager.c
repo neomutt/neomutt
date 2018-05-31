@@ -792,7 +792,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       {
         STAILQ_FOREACH(color_line, &ColorHdrList, entries)
         {
-          if (REGEXEC(color_line->regex, buf) == 0)
+          if (regexec(&color_line->regex, buf, 0, NULL, 0) == 0)
           {
             line_info[n].type = MT_COLOR_HEADER;
             line_info[n].syntax[0].color = color_line->pair;

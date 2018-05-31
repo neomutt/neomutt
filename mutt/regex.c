@@ -202,7 +202,7 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
   {
     if (!rl->regex || !rl->regex->regex)
       continue;
-    if (regexec(rl->regex->regex, str, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
+    if (regexec(rl->regex->regex, str, 0, NULL, 0) == 0)
     {
       mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
       return true;
@@ -280,7 +280,7 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
 {
   struct ReplaceList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
-  int n;
+  size_t n;
   const char *p = NULL;
 
   if (!pat || !*pat || !templ)
@@ -376,11 +376,11 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
 {
   struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
-  static int nmatch = 0;
+  static size_t nmatch = 0;
   static char twinbuf[2][LONG_STRING];
   int switcher = 0;
   char *p = NULL;
-  int n;
+  size_t n;
   size_t cpysize, tlen;
   char *src = NULL, *dst = NULL;
 
@@ -501,7 +501,7 @@ void mutt_replacelist_free(struct ReplaceList **rl)
 bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
   static regmatch_t *pmatch = NULL;
-  static int nmatch = 0;
+  static size_t nmatch = 0;
   int tlen = 0;
   char *p = NULL;
 
@@ -518,8 +518,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
     }
 
     /* Does this pattern match? */
-    if (regexec(rl->regex->regex, str, (size_t) rl->nmatch,
-                (regmatch_t *) pmatch, (int) 0) == 0)
+    if (regexec(rl->regex->regex, str, (size_t) rl->nmatch, pmatch, 0) == 0)
     {
       mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
       mutt_debug(5, "%d subs\n", (int) rl->regex->regex->re_nsub);
@@ -531,7 +530,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
         if (*p == '%')
         {
           char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
-          int n;
+          size_t n;
 
           p++; /* skip over % char */
           n = strtol(p, &e, 10);
