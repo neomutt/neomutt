@@ -30,16 +30,6 @@
 #include <time.h>
 #include "mutt/mutt.h"
 
-/**
- * struct PgpSignature - PGP Signature
- */
-struct PgpSignature
-{
-  struct PgpSignature *next;
-  unsigned char sigtype;
-  unsigned long sid1;
-  unsigned long sid2;
-};
 
 /**
  * struct PgpUid - PGP User ID
@@ -51,7 +41,6 @@ struct PgpUid
   int flags;
   struct PgpKeyInfo *parent;
   struct PgpUid *next;
-  struct PgpSignature *sigs;
 };
 
 /**
@@ -68,7 +57,6 @@ struct PgpKeyInfo
   int numalg;
   const char *algorithm;
   struct PgpKeyInfo *parent;
-  struct PgpSignature *sigs;
   struct PgpKeyInfo *next;
 };
 
