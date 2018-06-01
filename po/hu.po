@@ -1195,11 +1195,6 @@ msgstr "Ujjlenyomat: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Ujjlenyomat: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr ""
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1331,7 +1326,7 @@ msgstr "A szerver tanúsítványa még nem érvényes"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
 
 #. L10N:

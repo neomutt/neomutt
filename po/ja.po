@@ -1175,11 +1175,6 @@ msgstr "SHA1 フィンガープリント: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 フィンガープリント: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "SSL 証明書検査 (連鎖内 %2$d のうち %1$d 個目)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1302,8 +1297,8 @@ msgstr "警告: サーバの証明書は署名者が CA でない"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "SSL 証明書検査 (連鎖内 %2$d のうち %1$d 個目)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "SSL 証明書検査 (連鎖内 %2$zu のうち %1$zu 個目)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

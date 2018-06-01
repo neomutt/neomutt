@@ -1160,11 +1160,6 @@ msgstr "Otisk SHA1 klíče: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Otisk MD5 klíče: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Kontrola SSL certifikátu (certifikát %zu z %zu v řetězu)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1287,8 +1282,8 @@ msgstr "POZOR: Certifikát serveru nebyl podepsán certifikační autoritou"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Kontrola SSL certifikátu (certifikát %zu z %zu v řetězu)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

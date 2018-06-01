@@ -1181,11 +1181,6 @@ msgstr "SHA1-fingeraftryk: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5-fingeraftryk: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Kontrol af SSL-certifikat (certifikat %d af %d i kæde)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1308,8 +1303,8 @@ msgstr "ADVARSEL: Undskriver af servercertifikat er ikke autoriseret (CA)"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Kontrol af SSL-certifikat (certifikat %d af %d i kæde)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Kontrol af SSL-certifikat (certifikat %zu af %zu i kæde)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

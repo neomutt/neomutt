@@ -1151,11 +1151,6 @@ msgstr "SHA1 pirštų antspaudas: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 pirštų antspaudas: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %zu iš %zu grandinėje)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1278,8 +1273,8 @@ msgstr "ĮSPĖJIMAS: Serverio sertifikatas pasirašytas ne sertifikatų tarnybos
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %d iš %d grandinėje)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %zu iš %zu grandinėje)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

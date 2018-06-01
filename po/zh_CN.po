@@ -1142,11 +1142,6 @@ msgstr "SHA1 指纹：%s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 指纹：%s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "SSL 证书检查 (检查链中有 %zu 个证书，共 %zu 个)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1269,8 +1264,8 @@ msgstr "警告：服务器证书签署者不是证书颁发机构(CA)"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "SSL 证书检查 (检查链中有 %d 个证书，共 %d 个)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "SSL 证书检查 (检查链中有 %zu 个证书，共 %zu 个)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

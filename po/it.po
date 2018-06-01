@@ -1185,11 +1185,6 @@ msgstr "Fingerprint SHA1: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Fingerprint MD5: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1315,8 +1310,8 @@ msgstr "ATTENZIONE: il firmatario del certificato del server non è una CA valid
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Verifica del certificato SSL (certificato %zu di %zu nella catena)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

@@ -1187,11 +1187,6 @@ msgstr "SHA1-отпечаток пальца: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5-отпечаток пальца: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Проверка SSL-сертификата (сертификат %d из %d в цепочке)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1314,8 +1309,8 @@ msgstr "ПРЕДУПРЕЖДЕНИЕ: сертификат сервера не �
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Проверка SSL-сертификата (сертификат %d из %d в цепочке)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Проверка SSL-сертификата (сертификат %zu из %zu в цепочке)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:
