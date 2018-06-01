@@ -309,21 +309,18 @@ msgstr "Maska súborov: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1872
-#, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Spätné triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
+msgstr "Spätné triedenie podľa (d)átumu, (z)nakov, (v)eľkosti, (p)opisu, p(o)čtu, no(v)ých, (n)etriediť? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1875
-#, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "Triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
+msgstr "Triedenie podľa (d)átumu, (z)nakov, (v)eľkosti, (p)opisu, p(o)čtu, no(v)ých, (n)etriediť? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1878
-#, fuzzy
 msgid "dazecwn"
-msgstr "dazecwn"
+msgstr "dzvpovn"
 
 #: browser.c:1983
 msgid "New file name: "
@@ -340,16 +337,16 @@ msgstr "Chyba pri prezeraní súboru"
 #: browser.c:2116
 #, c-format
 msgid "Subscribe pattern: "
-msgstr "Odoberať: "
+msgstr "Odoberať podľa vzoru: "
 
 #: browser.c:2118
 #, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Neodoberať: "
+msgstr "Neodoberať podľa vzoru: "
 
 #: browser.c:2137
 msgid "No newsgroups match the mask"
-msgstr "Žiadne diskusné skupiny nezodpovedajú maske."
+msgstr "Žiadne diskusné skupiny nezodpovedajú maske"
 
 #: buffy.c:780
 msgid "New mail in "
@@ -1015,7 +1012,7 @@ msgstr "Komprimácia do %s..."
 #: compress.c:652 editmsg.c:252
 #, fuzzy, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Nemožno vytvoriť dočasný súbor"
+msgstr "Chyba. Zachovávam dočasný súbor: %s"
 
 #: compress.c:882
 msgid "Can't sync a compressed file without a close-hook"
@@ -1042,9 +1039,9 @@ msgid "Looking up %s..."
 msgstr "Kopírujem do %s..."
 
 #: conn/conn_raw.c:277 conn/conn_raw.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Nemožno nájsť adresu pre hostiteľa %s."
+msgstr "Nemožno nájsť hostiteľa \"%s\""
 
 #: conn/conn_raw.c:282 conn/conn_raw.c:341
 #, c-format
@@ -1052,9 +1049,9 @@ msgid "Connecting to %s..."
 msgstr "Spájam sa s %s..."
 
 #: conn/conn_raw.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Nemožno otvoriť %s"
+msgstr "Nemožno sa spojiť s %s (%s)."
 
 #: conn/conn_raw.c:367 conn/ssl.c:1285 curs_lib.c:406 mutt_logging.c:178
 msgid "unknown error"
@@ -1062,12 +1059,11 @@ msgstr "neznáma chyba"
 
 #: conn/sasl.c:557
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Neznámy SASL profil"
 
 #: conn/sasl.c:590
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "chyba vo vzore na: %s"
+msgstr "Chyba pri alokácii SASL spojenia"
 
 #: conn/sasl.c:600
 msgid "Error setting SASL security properties"
@@ -1115,9 +1111,8 @@ msgid "[unable to calculate]"
 msgstr "%s: súbor nemožno pripojiť"
 
 #: conn/ssl.c:454
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: neplatná hodnota"
+msgstr "[neplatné dátum]"
 
 #: conn/ssl.c:514
 msgid "Server certificate is not yet valid"
@@ -1363,7 +1358,7 @@ msgstr "Pripájam sa na %s"
 
 #: copy.c:722
 msgid "No decryption engine available for message"
-msgstr "Pre správu nebol nájdený dešifrovací program."
+msgstr "Pre správu nebol nájdený dešifrovací program"
 
 #: curs_lib.c:224
 msgid "yes"
@@ -1533,9 +1528,8 @@ msgstr "Táto správa nie je viditeľná."
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1381 curs_main.c:2784 pager.c:2830
-#, fuzzy
 msgid "Cannot delete messages"
-msgstr "Správu nemožno zmazať."
+msgstr "Správy nemožno zmazať"
 
 #: curs_main.c:1384
 msgid "Delete messages matching: "
@@ -2009,12 +2003,12 @@ msgstr "[-- Chyba: Nemožno zobraziť žiadnu časť z Multipart/Alternative! --
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:977
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Príloha #%d: %s --]\n"
 
 #: handler.c:982
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Príloha #%d --]\n"
 
@@ -2125,7 +2119,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1275
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Príloha %s/%s bola zmazaná --]\n"
 
@@ -2165,18 +2159,16 @@ msgstr ""
 "[-- a označený typ prístupu %s nie je podporovaný --]\n"
 
 #: handler.c:1460
-#, fuzzy
 msgid "Unable to open memory stream!"
-msgstr "Nemožno otvoriť dočasný súbor!"
+msgstr "Nemožno otvoriť memstream!"
 
 #: handler.c:1469
 msgid "Unable to open temporary file!"
 msgstr "Nemožno otvoriť dočasný súbor!"
 
 #: handler.c:1519
-#, fuzzy
 msgid "failed to re-open memstream!"
-msgstr "Nemožno otvoriť dočasný súbor!"
+msgstr "Nemožno znovu otvoriť memstream!"
 
 #: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
@@ -2204,20 +2196,19 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- %s/%s nie je podporovaný (potrebujem 'view-attachments' priradené na klávesu!) --]\n"
 
 #: handler.c:1758
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Príloha %s/%s --]\n"
+msgstr "[-- Toto je príloha --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1762
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s nie je podporovaný --]\n"
 
 #: hcache/hcache.c:702 main.c:691 newsrc.c:1102
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s: %s."
-msgstr "Nemožno vytvoriť súbor %s"
+msgstr "Nemožno vytvoriť súbor %s: %s."
 
 #: header.c:201
 #, c-format
