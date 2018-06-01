@@ -23,6 +23,8 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "icommands.h"
+#include "muttlib.h"
+#include "pager.h"
 #include "protos.h"
 #include "summary.h"
 
@@ -36,6 +38,7 @@ static int icmd_messages(struct Buffer *, struct Buffer *, unsigned long, struct
 static int icmd_scripts(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 static int icmd_version(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 static int icmd_vars(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int icmd_set(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 /* WARNING: set is already defined and would be overriden, therfore changed name to vars */
 
 /* lookup table for all available interactive commands
@@ -55,6 +58,7 @@ const struct ICommand ICommandList[] = {
   { "scripts", icmd_scripts, 0 },
   { "version", icmd_version, 0 },
   { "vars", icmd_vars, 0 },
+  { "set", icmd_set, 0 },
   { NULL, NULL, 0 } /* important for end of loop conditions */
 };
 
@@ -188,7 +192,6 @@ static int icmd_vars(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return 1;
 }
 
-
 static int icmd_version(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
@@ -197,3 +200,29 @@ static int icmd_version(struct Buffer *buf, struct Buffer *s,
   return 1;
 }
 
+static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                    struct Buffer *err)
+{
+  /* TODo: implement ':set' command as suggested by flatcap in #162 */
+  snprintf(err->data, err->dsize, _("Not implemented yet."));
+  int i;
+  char tempfile[PATH_MAX];
+  FILE *fpout = NULL;
+
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  fpout = mutt_file_fopen(tempfile, "w");
+  if (!fpout)
+  {
+    mutt_error(_("Could not create temporary file"));
+    return 0;
+  }
+  struct Pager info = { 0 };
+  i = mutt_pager("set", tempfile, MUTT_PAGER_RETWINCH, &info);
+  if (!i)
+  {
+    mutt_error(_("Could not create temporary file"));
+    return 0;
+  }
+  /*  mutt_enter_command(); */
+  return 1;
+}
