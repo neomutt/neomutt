@@ -388,14 +388,6 @@ option \fB\-g\fP.
 .
 .TP
 .SM
-.B PGPPATH
-Directory in which the user's PGP public keyring can be found. When used with
-the original PGP program, NeoMutt and
-.BR pgpring (1)
-rely on this being set.
-.
-.TP
-.SM
 .B RANDFILE
 Like configuration variable $entropy_file, defines a path to a file which
 includes random data that is used to initialize SSL library functions. If
@@ -567,7 +559,6 @@ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 .BR mailx (1),
 .BR msmtp (1),
 .BR notmuch (1),
-.BR pgpring (1),
 .BR sendmail (1),
 .BR smail (1),
 .BR RAND_egd (3),

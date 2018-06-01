@@ -25,8 +25,7 @@ CHUNKED_DOCFILES = doc/advancedusage.html \
 
 HTML_DOCFILES = doc/manual.html doc/index.html $(CHUNKED_DOCFILES)
 
-srcdir_DOCFILES = $(SRCDIR)/doc/PGP-Notes.txt \
-		  $(SRCDIR)/doc/smime-notes.txt \
+srcdir_DOCFILES = $(SRCDIR)/doc/smime-notes.txt \
 		  $(SRCDIR)/ChangeLog.md \
 		  $(SRCDIR)/CODE_OF_CONDUCT.md \
 		  $(SRCDIR)/COPYRIGHT.md \
