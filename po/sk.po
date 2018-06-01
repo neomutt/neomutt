@@ -95,9 +95,8 @@ msgid "Error reading alias file"
 msgstr "Chyba pri čítaní súboru aliasov"
 
 #: alias.c:509
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Chyba pri čítaní súboru aliasov"
+msgstr "Chyba pri pridávaní aliasu"
 
 #: alias.c:511
 msgid "Alias added"
@@ -110,7 +109,7 @@ msgstr "Chyba pri prehľadávaní súboru aliasov."
 #: bcache.c:207
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Cesta je príliš dlhá: %s%s%s"
 
 #: bcache.c:215
 #, c-format
@@ -564,13 +563,12 @@ msgstr ""
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142 compose.c:1048 send.c:386
 msgid "Subject: "
-msgstr ""
+msgstr "Predmet: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Odpovedz"
+msgstr "Odpovedz: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:146 compose.c:1065
@@ -585,7 +583,7 @@ msgstr "Mix: "
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:152
 msgid "Security: "
-msgstr ""
+msgstr "Zabezpečenie: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -635,12 +633,12 @@ msgstr ""
 #. L10N: compose menu help line entry
 #: compose.c:179
 msgid "CC"
-msgstr ""
+msgstr "Kopia"
 
 #. L10N: compose menu help line entry
 #: compose.c:181 compose.c:193
 msgid "Subj"
-msgstr ""
+msgstr "Predm"
 
 #: compose.c:182 compose.c:194 compose.c:1355
 msgid "Attach file"
@@ -724,7 +722,7 @@ msgstr "Nemôžete zmazať jediné pridané dáta"
 #: compose.c:1095 edit.c:524 send.c:2150
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
-msgstr ""
+msgstr "Chybné IDN v '%s': '%s'"
 
 #: compose.c:1143
 #, fuzzy
@@ -810,7 +808,7 @@ msgstr "Táto príloha bude prevedená"
 
 #: compose.c:1622
 msgid "Empty Content-Language"
-msgstr ""
+msgstr "Prázdny Content-Language"
 
 #: compose.c:1639
 msgid "Invalid encoding"
@@ -821,9 +819,8 @@ msgid "Save a copy of this message?"
 msgstr "Uložiť kópiu tejto správy?"
 
 #: compose.c:1719
-#, fuzzy
 msgid "Send attachment with name: "
-msgstr "prezri prílohu ako text"
+msgstr "Poslať prílohu pod menom: "
 
 #: compose.c:1735
 msgid "Rename to: "
@@ -1006,9 +1003,9 @@ msgid "Preconnect command failed"
 msgstr ""
 
 #: conn/socket.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Spájam sa s %s..."
+msgstr "Spojenie s %s zatvoreno"
 
 #: conn/ssl.c:217
 #, c-format
