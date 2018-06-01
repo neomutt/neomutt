@@ -23,7 +23,6 @@ git_ver.h
 hcache/hcversion.h
 neomutt
 pgpewrap
-pgpring
 test/neomutt-test
 
 # ./configure
