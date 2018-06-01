@@ -1144,11 +1144,6 @@ msgstr "Impressão digital SHA1: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Impressão digital MD5: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Verificação de certificado SSL (certificado %zu de %zu no encadeamento)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1271,8 +1266,8 @@ msgstr "AVISO: signatário do certificado do servidor não é CA"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Verificação de certificado SSL (certificado %d de %d no encadeamento)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Verificação de certificado SSL (certificado %zu de %zu no encadeamento)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

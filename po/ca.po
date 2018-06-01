@@ -1265,11 +1265,6 @@ msgstr "Empremta digital SHA1: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Empremta digital MD5: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Comprovació del certificat SSL (%d de %d en la cadena)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1392,8 +1387,8 @@ msgstr "Avís: El signatari del certificat del servidor no és una CA."
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Comprovació del certificat SSL (%d de %d en la cadena)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Comprovació del certificat SSL (%zu de %zu en la cadena)"
 
 # ivb (2001/11/27)
 # ivb  (r)ebutja, accepta (u)na sola volta, accepta (s)empre

@@ -1148,11 +1148,6 @@ msgstr "SHA1-Fingerabdruck: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5-Fingerabdruck: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "SSL-Zertifikatprüfung (Zertifikat %zu von %zu in der Kette)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1275,8 +1270,8 @@ msgstr "WARNUNG: Aussteller des Server-Zertifikats ist keine CA"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "SSL-Zertifikatprüfung (Zertifikat %d von %d in Kette)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "SSL-Zertifikatprüfung (Zertifikat %zu von %zu in Kette)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

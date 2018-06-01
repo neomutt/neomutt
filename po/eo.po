@@ -1180,11 +1180,6 @@ msgstr "SHA1-fingrospuro: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5-fingrospuro: %s"
 
-#: conn/ssl.c:999
-#, fuzzy, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Kontrolo de SSL-atestilo (%d de %d en ĉeno)"
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1307,8 +1302,8 @@ msgstr "AVERTO: Subskribinto de servilo-atestilo ne estas CA"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Kontrolo de SSL-atestilo (%d de %d en ĉeno)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
+msgstr "Kontrolo de SSL-atestilo (%zu de %zu en ĉeno)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:

@@ -548,7 +548,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
  */
 static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,
-                                     const char *hostname, int idx, int len)
+                                     const char *hostname, int idx, size_t len)
 {
   int certerr, savedcert;
   gnutls_x509_crt_t cert;
@@ -759,7 +759,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   }
 
   snprintf(title, sizeof(title),
-           _("SSL Certificate check (certificate %d of %d in chain)"), len - idx, len);
+           _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
    accepted manually each and every time */

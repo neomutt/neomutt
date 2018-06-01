@@ -1202,11 +1202,6 @@ msgstr "Fingerprint: %s"
 msgid "MD5 Fingerprint: %s"
 msgstr "Fingerprint: %s"
 
-#: conn/ssl.c:999
-#, c-format
-msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr ""
-
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
 #. * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1338,7 +1333,7 @@ msgstr "O certificado do servidor non é aínda válido"
 
 #: conn/ssl_gnutls.c:762
 #, c-format
-msgid "SSL Certificate check (certificate %d of %d in chain)"
+msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
 
 #. L10N:
