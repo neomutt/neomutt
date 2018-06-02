@@ -42,7 +42,7 @@ extern bool OptLocales;
 #endif
 
 int    mutt_mb_charlen(const char *s, int *width);
-bool   mutt_mb_get_initials(const char *name, char *buf, int buflen);
+bool   mutt_mb_get_initials(const char *name, char *buf, size_t buflen);
 bool   mutt_mb_is_lower(const char *s);
 bool   mutt_mb_is_shell_char(wchar_t ch);
 size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);

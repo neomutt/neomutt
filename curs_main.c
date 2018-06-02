@@ -614,7 +614,7 @@ int index_color(int index_no)
  * Where regexes overlap, the one nearest the start will be used.
  * If two regexes start at the same place, the longer match will be used.
  */
-void mutt_draw_statusline(int cols, const char *buf, int buflen)
+void mutt_draw_statusline(int cols, const char *buf, size_t buflen)
 {
   size_t i = 0;
   size_t offset = 0;

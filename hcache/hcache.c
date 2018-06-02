@@ -145,35 +145,35 @@ static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 
 /**
  * lazy_malloc - Allocate some memory
- * @param siz Minimum size to allocate
+ * @param size Minimum size to allocate
  * @retval ptr Allocated memory
  *
  * This block is likely to be lazy_realloc()'d repeatedly.
  * It starts off with a minimum size of 4KiB.
  */
-static void *lazy_malloc(size_t siz)
+static void *lazy_malloc(size_t size)
 {
-  if (siz < 4096)
-    siz = 4096;
+  if (size < 4096)
+    size = 4096;
 
-  return mutt_mem_malloc(siz);
+  return mutt_mem_malloc(size);
 }
 
 /**
  * lazy_realloc - Reallocate some memory
  * @param ptr Pointer to resize
- * @param siz Minimum size
+ * @param size Minimum size
  *
  * The minimum size is 4KiB to avoid repeated resizing.
  */
-static void lazy_realloc(void *ptr, size_t siz)
+static void lazy_realloc(void *ptr, size_t size)
 {
   void **p = (void **) ptr;
 
-  if (p != NULL && siz < 4096)
+  if (p != NULL && size < 4096)
     return;
 
-  mutt_mem_realloc(ptr, siz);
+  mutt_mem_realloc(ptr, size);
 }
 
 /**

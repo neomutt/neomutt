@@ -80,7 +80,7 @@ int mutt_mb_charlen(const char *s, int *width)
  * The function saves the first character from each word.  Words are delimited
  * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
  */
-bool mutt_mb_get_initials(const char *name, char *buf, int buflen)
+bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
 {
   if (!name || !buf)
     return false;

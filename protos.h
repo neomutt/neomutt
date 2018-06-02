@@ -153,7 +153,7 @@ void mutt_clear_error(void);
 void mutt_clear_pager_position(void);
 void mutt_default_save(char *path, size_t pathlen, struct Header *hdr);
 void mutt_display_address(struct Envelope *env);
-void mutt_draw_statusline(int cols, const char *buf, int buflen);
+void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 int mutt_edit_content_type (struct Header *h, struct Body *b, FILE *fp);
 void mutt_edit_file(const char *editor, const char *data);
 void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,

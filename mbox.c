@@ -55,7 +55,7 @@
  */
 struct MUpdate
 {
-  short valid;
+  bool valid;
   LOFF_T hdr;
   LOFF_T body;
   long lines;
@@ -1097,7 +1097,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
      * something fails.
      */
 
-    old_offset[i - first].valid = 1;
+    old_offset[i - first].valid = true;
     old_offset[i - first].hdr = ctx->hdrs[i]->offset;
     old_offset[i - first].body = ctx->hdrs[i]->content->offset;
     old_offset[i - first].lines = ctx->hdrs[i]->lines;

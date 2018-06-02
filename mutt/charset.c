@@ -669,7 +669,7 @@ const char *mutt_ch_iconv_lookup(const char *chs)
 
 /**
  * mutt_ch_check - Check whether a string can be converted between encodings
- * @param[in] ps    String to check
+ * @param[in] s     String to check
  * @param[in] slen  Length of the string to check
  * @param[in] from  Current character set
  * @param[in] to    Target character set
