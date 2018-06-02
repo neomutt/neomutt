@@ -1976,9 +1976,9 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   while (MoreArgs(s))
   {
     int query = 0;
-    int unset = data & MUTT_SET_UNSET;
-    int inv = data & MUTT_SET_INV;
-    int reset = data & MUTT_SET_RESET;
+    int unset = (data == MUTT_SET_UNSET);
+    int inv = (data == MUTT_SET_INV);
+    int reset = (data == MUTT_SET_RESET);
     int idx = -1;
     const char *p = NULL;
     const char *myvar = NULL;
@@ -2565,7 +2565,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   char **envp = mutt_envlist_getlist();
 
   bool query = false;
-  bool unset = data & MUTT_SET_UNSET;
+  bool unset = (data == MUTT_SET_UNSET);
 
   if (!MoreArgs(s))
   {
