@@ -48,6 +48,7 @@
 #include "cryptglue.h"
 #include "envelope.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"

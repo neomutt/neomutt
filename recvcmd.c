@@ -33,6 +33,7 @@
 #include "copy.h"
 #include "envelope.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"

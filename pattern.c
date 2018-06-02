@@ -43,6 +43,7 @@
 #include "envelope.h"
 #include "globals.h"
 #include "group.h"
+#include "handler.h"
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
