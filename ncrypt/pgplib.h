@@ -28,8 +28,6 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/mutt.h"
-
 
 /**
  * struct PgpUid - PGP User ID
@@ -72,10 +70,7 @@ void pgp_free_key(struct PgpKeyInfo **kpp);
 
 struct PgpKeyInfo * pgp_remove_key(struct PgpKeyInfo * *klist, struct PgpKeyInfo * key);
 
-static inline struct PgpKeyInfo *pgp_new_keyinfo(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
-}
+struct PgpKeyInfo *pgp_new_keyinfo(void);
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
 

@@ -1091,6 +1091,15 @@ void mutt_pattern_free(struct Pattern **pat)
   }
 }
 
+/**
+ * mutt_pattern_new - Create a new Pattern
+ * @retval ptr New Pattern
+ */
+struct Pattern *mutt_pattern_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Pattern));
+}
+
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
   struct Pattern *curlist = NULL;
@@ -1139,7 +1148,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           if (curlist->next)
           {
             /* A & B | C == (A & B) | C */
-            tmp = new_pattern();
+            tmp = mutt_pattern_new();
             tmp->op = MUTT_AND;
             tmp->child = curlist;
 
@@ -1183,7 +1192,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
             mutt_pattern_free(&curlist);
             return NULL;
           }
-          tmp = new_pattern();
+          tmp = mutt_pattern_new();
           tmp->op = thread_op;
           if (last)
             last->next = tmp;
@@ -1213,7 +1222,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         if (implicit && or)
         {
           /* A | B & C == (A | B) & C */
-          tmp = new_pattern();
+          tmp = mutt_pattern_new();
           tmp->op = MUTT_OR;
           tmp->child = curlist;
           curlist = tmp;
@@ -1221,7 +1230,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           or = false;
         }
 
-        tmp = new_pattern();
+        tmp = mutt_pattern_new();
         tmp->not = not;
         tmp->alladdr = alladdr;
         tmp->isalias = isalias;
@@ -1316,7 +1325,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   }
   if (curlist->next)
   {
-    tmp = new_pattern();
+    tmp = mutt_pattern_new();
     tmp->op = or ? MUTT_OR : MUTT_AND;
     tmp->child = curlist;
     curlist = tmp;

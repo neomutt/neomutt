@@ -113,6 +113,15 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 }
 
 /**
+ * mutt_enter_state_new - Create a new EnterState
+ * @retval ptr New EnterState
+ */
+struct EnterState *mutt_enter_state_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct EnterState));
+}
+
+/**
  * mutt_enter_string - Ask the user for a string
  * @param buf    Buffer to store the string
  * @param buflen Buffer length
