@@ -6224,9 +6224,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:1821
-#, fuzzy
 msgid "Article not posted."
-msgstr "メールは送信されなかった。"
+msgstr "記事は未投稿。"
 
 #: send.c:1887
 msgid "Message postponed."
@@ -6272,7 +6271,7 @@ msgstr "バックグラウンドで送信。"
 
 #: send.c:2161
 msgid "Article posted."
-msgstr ""
+msgstr "記事を投稿した。"
 
 #: send.c:2162
 msgid "Mail sent."
