@@ -969,16 +969,20 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
   row++;
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
+  {
     snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
              x509_get_part(x509_subject, part[u]));
+  }
 
   row++;
   mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
+  {
     snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
              x509_get_part(x509_issuer, part[u]));
+  }
 
   row++;
   snprintf(menu->dialog[row++], SHORT_STRING, "%s", _("This certificate is valid"));

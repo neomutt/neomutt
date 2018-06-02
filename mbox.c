@@ -742,7 +742,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       }
       if (!found)
       {
-        for (j = 0; j < i && j < old_msgcount; j++)
+        for (j = 0; (j < i) && (j < old_msgcount); j++)
         {
           if (!old_hdrs[j])
             continue;
@@ -1041,10 +1041,11 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* find the first deleted/changed message.  we save a lot of time by only
    * rewriting the mailbox from the point where it has actually changed.
    */
-  for (i = 0; i < ctx->msgcount && !ctx->hdrs[i]->deleted &&
+  for (i = 0; (i < ctx->msgcount) && !ctx->hdrs[i]->deleted &&
               !ctx->hdrs[i]->changed && !ctx->hdrs[i]->attach_del;
        i++)
-    ;
+  {
+  }
   if (i == ctx->msgcount)
   {
     /* this means ctx->changed or ctx->deleted was set, but no
@@ -1294,7 +1295,7 @@ bail: /* Come here in case of disaster */
   /* restore offsets, as far as they are valid */
   if (first >= 0 && old_offset)
   {
-    for (i = first; i < ctx->msgcount && old_offset[i - first].valid; i++)
+    for (i = first; (i < ctx->msgcount) && old_offset[i - first].valid; i++)
     {
       ctx->hdrs[i]->offset = old_offset[i - first].hdr;
       ctx->hdrs[i]->content->hdr_offset = old_offset[i - first].hdr;

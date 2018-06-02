@@ -547,7 +547,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   buf[0] = 0;
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -689,7 +689,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, bool tag,
                                  struct Body *top, bool filter, struct State *state)
 {
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -746,7 +746,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
   char type[STRING];
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
       top = actx->idx[i]->content;
@@ -781,7 +781,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 {
   char type[STRING];
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -878,9 +878,13 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
+    {
       if (actx->idx[i]->content->tagged)
+      {
         crypt_pgp_extract_keys_from_attachment_list(actx->idx[i]->fp, 0,
                                                     actx->idx[i]->content);
+      }
+    }
   }
 }
 

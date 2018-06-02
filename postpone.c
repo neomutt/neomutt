@@ -442,9 +442,11 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
+          for (p += 2; *p && (*p != '>') &&
+                       (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
                *q++ = *p++)
-            ;
+          {
+          }
 
           if (*p != '>')
           {
@@ -475,7 +477,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
       case 'M':
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>'; p++)
+          for (p += 2; *p && (*p != '>'); p++)
             ;
           if (*p != '>')
           {
@@ -498,8 +500,10 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>' && q < sign_as + sizeof(sign_as) - 1; *q++ = *p++)
-            ;
+          for (p += 2; *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
+               *q++ = *p++)
+          {
+          }
 
           if (*p != '>')
           {

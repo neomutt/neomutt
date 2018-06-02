@@ -595,8 +595,10 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
   while (*(p = haystack))
   {
     for (q = needle;
-         *p && *q && tolower((unsigned char) *p) == tolower((unsigned char) *q); p++, q++)
-      ;
+         *p && *q && (tolower((unsigned char) *p) == tolower((unsigned char) *q));
+         p++, q++)
+    {
+    }
     if (!*q)
       return haystack;
     haystack++;
@@ -624,7 +626,7 @@ char *mutt_str_skip_whitespace(char *p)
  */
 void mutt_str_remove_trailing_ws(char *s)
 {
-  for (char *p = s + mutt_str_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && ISSPACE(*p); p--)
     *p = '\0';
 }
 
@@ -848,7 +850,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
   char tmp[SHORT_STRING] = "";
 
   int i;
-  for (i = 0; i < SHORT_STRING - 2; i++, b++)
+  for (i = 0; i < (SHORT_STRING - 2); i++, b++)
   {
     if (!*b || ISSPACE(*b))
     {
