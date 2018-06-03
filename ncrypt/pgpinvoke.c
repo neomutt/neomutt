@@ -217,11 +217,15 @@ pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                          const char *fname, const char *uids, int sign)
 {
   if (sign)
+  {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
                       fname, NULL, uids, PgpEncryptSignCommand);
+  }
   else
+  {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0,
                       fname, NULL, uids, PgpEncryptOnlyCommand);
+  }
 }
 
 pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
@@ -229,12 +233,16 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                              const char *fname, const char *uids, int flags)
 {
   if (flags & ENCRYPT)
+  {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
                       (flags & SIGN) ? 1 : 0, fname, NULL, uids,
                       (flags & SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
+  }
   else
+  {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
                       fname, NULL, NULL, PgpClearsignCommand);
+  }
 }
 
 void pgp_invoke_import(const char *fname)

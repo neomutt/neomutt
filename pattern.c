@@ -1668,8 +1668,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(
               cache_entry, mutt_is_list_cc(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -1682,9 +1684,11 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(
               cache_entry,
               mutt_is_list_recipient(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -1697,8 +1701,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(cache_entry,
                                   match_user(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -2046,7 +2052,9 @@ int mutt_search_command(int cur, int op)
                            _("Reverse search for: "),
                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0 ||
         !buf[0])
+    {
       return -1;
+    }
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
       OptSearchReverse = false;

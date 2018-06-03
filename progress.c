@@ -126,8 +126,10 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   if (progress->size != 0)
   {
     if (progress->flags & MUTT_PROGRESS_SIZE)
+    {
       mutt_str_pretty_size(progress->sizestr, sizeof(progress->sizestr),
                            progress->size);
+    }
     else
       snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
   }
@@ -143,8 +145,10 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
     mutt_debug(1, "gettimeofday failed: %d\n", errno);
   /* if timestamp is 0 no time-based suppression is done */
   if (TimeInc != 0)
+  {
     progress->timestamp =
         ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
+  }
   mutt_progress_update(progress, 0, 0);
 }
 
@@ -173,7 +177,9 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
   /* refresh if size > inc */
   if ((progress->flags & MUTT_PROGRESS_SIZE) &&
       (pos >= (progress->pos + (progress->inc << 10))))
+  {
     update = true;
+  }
   else if (pos >= (progress->pos + progress->inc))
     update = true;
 

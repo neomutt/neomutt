@@ -719,7 +719,9 @@ static int message_handler(struct Body *a, struct State *s)
 
   if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
       (a->encoding == ENCUUENCODED))
+  {
     mutt_body_free(&b);
+  }
 
   return rc;
 }
@@ -1251,7 +1253,9 @@ static int multipart_handler(struct Body *a, struct State *s)
 
   if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
       (a->encoding == ENCUUENCODED))
+  {
     mutt_body_free(&b);
+  }
 
   /* make failure of a single part non-fatal */
   if (rc < 0)
@@ -1651,8 +1655,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
       else
       {
         if (HonorDisposition && (b->disposition == DISPATTACH))
+        {
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
                   "key!) --]\n");
+        }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */

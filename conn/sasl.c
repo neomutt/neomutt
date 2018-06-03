@@ -481,8 +481,10 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
     } while (len > *sasldata->pbufsize);
   }
   else
+  {
     /* just write using the underlying socket function */
     rc = (sasldata->msasl_write)(conn, buf, len);
+  }
 
   conn->sockdata = sasldata;
 

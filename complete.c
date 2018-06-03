@@ -261,8 +261,10 @@ int mutt_complete(char *buf, size_t buflen)
           tmp[0] = 0;
         mutt_str_strfcpy(tmp + strlen(tmp), filepart, sizeof(tmp) - strlen(tmp));
         if (stat(tmp, &st) != -1 && (st.st_mode & S_IFDIR))
+        {
           mutt_str_strfcpy(filepart + strlen(filepart), "/",
                            sizeof(filepart) - strlen(filepart));
+        }
         init = 1;
       }
     }

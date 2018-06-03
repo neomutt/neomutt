@@ -513,8 +513,10 @@ static int nntp_auth(struct NntpServer *nserv)
           if (DebugLevel < MUTT_SOCK_LOG_FULL)
           {
             if (strchr(buf, ' '))
+            {
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n",
                          conn->fd, method, client_len ? " sasl_data" : "");
+            }
             else
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           }
@@ -695,11 +697,13 @@ int nntp_open_connection(struct NntpServer *nserv)
   if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || SslForceTls))
   {
     if (nserv->use_tls == 0)
+    {
       nserv->use_tls =
           SslForceTls || query_quadoption(SslStarttls,
                                           _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;
+    }
     if (nserv->use_tls == 2)
     {
       if (mutt_socket_send(conn, "STARTTLS\r\n") < 0 ||
@@ -1325,13 +1329,17 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     }
   }
   else
+  {
     for (current = first; current <= last; current++)
       fc.messages[current - first] = 1;
+  }
 
   /* fetching header from cache or server, or fallback to fetch overview */
   if (!ctx->quiet)
+  {
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
+  }
   for (current = first; current <= last && rc == 0; current++)
   {
     if (!ctx->quiet)
@@ -1383,10 +1391,12 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
     /* fallback to fetch overview */
     else if (nntp_data->nserv->hasOVER || nntp_data->nserv->hasXOVER)
+    {
       if (NntpListgroup && nntp_data->nserv->hasLISTGROUP)
         break;
       else
         continue;
+    }
 
     /* fetch header from server */
     else
@@ -1686,8 +1696,10 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       if (rc > 0)
       {
         if (mutt_str_strncmp(NHDR(hdr)->article_num ? "423" : "430", buf, 3) == 0)
+        {
           mutt_error(_("Article %d not found on the server."),
                      NHDR(hdr)->article_num ? article : hdr->env->message_id);
+        }
         else
           mutt_error("ARTICLE: %s", buf);
       }
@@ -1813,7 +1825,9 @@ int nntp_post(const char *msg)
        mutt_socket_send_d(nntp_data->nserv->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
       mutt_socket_send_d(nntp_data->nserv->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
       mutt_socket_readln(buf, sizeof(buf), nntp_data->nserv->conn) < 0)
+  {
     return nntp_connect_error(nntp_data->nserv);
+  }
   if (buf[0] != '2')
   {
     mutt_error(_("Can't post article: %s"), buf);
@@ -2550,8 +2564,10 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       if (mutt_str_strncmp("500", buf, 3) != 0)
         mutt_error("XPAT: %s", buf);
       else
+      {
         mutt_error(_("Unable to find child articles because server does not "
                      "support XPAT command."));
+      }
     }
     return -1;
   }

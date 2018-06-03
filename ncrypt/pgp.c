@@ -405,7 +405,9 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
             (!needpass &&
              ((mutt_str_strcmp("-----END PGP SIGNATURE-----\n", buf) == 0) ||
               (mutt_str_strcmp("-----END PGP PUBLIC KEY BLOCK-----\n", buf) == 0))))
+        {
           break;
+        }
         /* remember optional Charset: armor header as defined by RFC4880 */
         if (mutt_str_strncmp("Charset: ", buf, 9) == 0)
         {
@@ -859,8 +861,10 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     mutt_file_fclose(&pgperr);
     unlink(pgptmpfile);
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           _("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
+    }
     return NULL;
   }
 
@@ -1049,8 +1053,10 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
   if (tattach)
   {
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           _("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
+    }
 
     fpin = s->fpin;
     s->fpin = fpout;

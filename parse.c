@@ -75,8 +75,10 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
     {
       /* we did get a full line. remove trailing space */
       while (ISSPACE(*buf))
+      {
         *buf-- = 0; /* we cannot come beyond line's beginning because
-                         * it begins with a non-space */
+                     * it begins with a non-space */
+      }
 
       /* check to see if the next line is a continuation line */
       ch = fgetc(f);
@@ -376,10 +378,12 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   {
     pc = mutt_param_get(&ct->parameter, "charset");
     if (!pc)
+    {
       mutt_param_set(&ct->parameter, "charset",
                      (AssumedCharset && *AssumedCharset) ?
                          (const char *) mutt_ch_get_default_charset() :
                          "us-ascii");
+    }
   }
 }
 
@@ -1301,7 +1305,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
 
       if (ReplyRegex && ReplyRegex->regex &&
           (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
+      {
         e->real_subj = e->subject + pmatch[0].rm_eo;
+      }
       else
         e->real_subj = e->subject;
     }

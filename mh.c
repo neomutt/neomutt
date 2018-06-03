@@ -1755,8 +1755,10 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
     }
   }
   if (updseq)
+  {
     mh_sequences_add_one(ctx, hi, !msg->flags.read, msg->flags.flagged,
                          msg->flags.replied);
+  }
   return 0;
 }
 

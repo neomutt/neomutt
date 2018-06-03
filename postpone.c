@@ -627,7 +627,9 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
         (mutt_str_strcasecmp(
              mutt_param_get(&newhdr->content->parameter, "protocol"),
              "application/pgp-signature") == 0))
+    {
       newhdr->security |= APPLICATION_PGP;
+    }
     else if (WithCrypto & APPLICATION_SMIME)
       newhdr->security |= APPLICATION_SMIME;
 
@@ -678,7 +680,9 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     {
       if (mutt_str_strcasecmp("yes",
                               mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
+      {
         b->noconv = true;
+      }
       else
       {
         s.flags |= MUTT_CHARCONV;

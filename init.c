@@ -2109,9 +2109,11 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
           free_mbtable((struct MbTable **) MuttVars[idx].var);
         else
+        {
           /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
           FREE((void *) MuttVars[idx].var);
+        }
       }
       else if (query || *s->dptr != '=')
       {
@@ -2416,8 +2418,10 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       else
       {
         if (inv)
+        {
           *(unsigned char *) MuttVars[idx].var =
               toggle_quadoption(*(unsigned char *) MuttVars[idx].var);
+        }
         else if (unset)
           *(unsigned char *) MuttVars[idx].var = MUTT_NO;
         else
@@ -3454,7 +3458,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
           (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
           (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
           ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
+      {
         break;
+      }
     }
 
     tok->dptr++;

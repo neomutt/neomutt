@@ -920,7 +920,9 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
         (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
+    {
       return -1;
+    }
 
     b->next = msg->content;
     msg->content = b;
@@ -1121,8 +1123,10 @@ static int send_message(struct Header *msg)
   if (!OptNewsSend)
 #endif
     if (SmtpUrl)
+    {
       return mutt_smtp_send(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
                             tempfile, (msg->content->encoding == ENC8BIT));
+    }
 #endif /* USE_SMTP */
 
   i = mutt_invoke_sendmail(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
@@ -1242,7 +1246,9 @@ static bool search_attach_keyword(char *filename)
   /* Search for the regex in AbortNoattachRegex within a file */
   if (!AbortNoattachRegex || !AbortNoattachRegex->regex || !QuoteRegex ||
       !QuoteRegex->regex)
+  {
     return false;
+  }
 
   FILE *attf = mutt_file_fopen(filename, "r");
   if (!attf)
@@ -1442,8 +1448,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
      */
 
     if (msg->env->from)
+    {
       mutt_debug(5, "msg->env->from before set_reverse_name: %s\n",
                  msg->env->from->mailbox);
+    }
     msg->env->from = set_reverse_name(cur->env);
   }
   if (cur && ReplyWithXorig && !(flags & (SENDPOSTPONED | SENDRESEND | SENDFORWARD)))

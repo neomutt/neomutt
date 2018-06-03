@@ -314,7 +314,9 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
       if (mutt_is_message_type(actx->idx[i]->content->type,
                                actx->idx[i]->content->subtype) &&
           is_parent(i, actx, cur))
+      {
         parent = actx->idx[i];
+      }
       if (actx->idx[i]->content == cur)
         break;
     }
@@ -338,8 +340,10 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
     if (prefix)
       mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
     else if (!TextFlowed)
+    {
       mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString),
                              Context, hdr, 0);
+    }
     else
       mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
 
@@ -424,8 +428,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (ForwardQuote)
   {
     if (!TextFlowed)
+    {
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
                              Context, parent_hdr, 0);
+    }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
   }
@@ -882,8 +888,10 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.fpout = tmpfp;
 
     if (!TextFlowed)
+    {
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
                              Context, parent_hdr, 0);
+    }
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
 

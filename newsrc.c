@@ -501,8 +501,10 @@ int nntp_newsrc_update(struct NntpServer *nserv)
       if (nntp_data->newsrc_ent[j].first == nntp_data->newsrc_ent[j].last)
         snprintf(buf + off, buflen - off, "%u", nntp_data->newsrc_ent[j].first);
       else if (nntp_data->newsrc_ent[j].first < nntp_data->newsrc_ent[j].last)
+      {
         snprintf(buf + off, buflen - off, "%u-%u",
                  nntp_data->newsrc_ent[j].first, nntp_data->newsrc_ent[j].last);
+      }
       off += strlen(buf + off);
     }
     buf[off++] = '\n';
@@ -726,7 +728,9 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
       !(nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
+  {
     return NULL;
+  }
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
   url.path = nntp_data->group;
@@ -834,8 +838,10 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
 #endif
 
   if (!nntp_data->bcache)
+  {
     nntp_data->bcache =
         mutt_bcache_open(&nntp_data->nserv->conn->account, nntp_data->group);
+  }
   if (nntp_data->bcache)
   {
     mutt_debug(2, "%s/*\n", nntp_data->group);

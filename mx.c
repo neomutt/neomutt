@@ -920,8 +920,10 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     if (move_messages)
+    {
       mutt_message(_("%d kept, %d moved, %d deleted."),
                    ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
+    }
     else
       mutt_message(_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted, ctx->deleted);
   }
@@ -1020,8 +1022,10 @@ void mx_update_tables(struct Context *ctx, bool committing)
     else
     {
       if (ctx->magic == MUTT_MH || ctx->magic == MUTT_MAILDIR)
+      {
         ctx->size -= (ctx->hdrs[i]->content->length + ctx->hdrs[i]->content->offset -
                       ctx->hdrs[i]->content->hdr_offset);
+      }
       /* remove message from the hash tables */
       if (ctx->subj_hash && ctx->hdrs[i]->env->real_subj)
         mutt_hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i]);

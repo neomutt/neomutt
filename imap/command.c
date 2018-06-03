@@ -760,9 +760,11 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
         inc->msg_unread = status->unseen;
 
         if (inc->new)
+        {
           /* force back to keep detecting new mail until the mailbox is
              opened */
           status->uidnext = oldun;
+        }
 
         FREE(&value);
         return;
@@ -976,7 +978,9 @@ int imap_cmd_step(struct ImapData *idata)
   if (((mutt_str_strncmp(idata->buf, "* ", 2) == 0) ||
        (mutt_str_strncmp(imap_next_word(idata->buf), "OK [", 4) == 0)) &&
       cmd_handle_untagged(idata))
+  {
     return IMAP_CMD_BAD;
+  }
 
   /* server demands a continuation response from us */
   if (idata->buf[0] == '+')

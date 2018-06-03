@@ -174,7 +174,9 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
         !mutt_addr_cmp_strict(e1->reply_to, e2->reply_to) ||
         !mutt_addr_cmp_strict(e1->to, e2->to) || !mutt_addr_cmp_strict(e1->cc, e2->cc) ||
         !mutt_addr_cmp_strict(e1->return_path, e2->return_path))
+    {
       return false;
+    }
     else
       return true;
   }

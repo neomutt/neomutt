@@ -549,8 +549,10 @@ void mutt_print_message(struct Header *h)
   if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
     mutt_message(ngettext("Message printed", "Messages printed", msgcount));
   else
+  {
     mutt_message(ngettext("Message could not be printed",
                           "Messages could not be printed", msgcount));
+  }
 }
 
 int mutt_select_sort(int reverse)
@@ -718,7 +720,9 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              mutt_is_application_pgp(hdr->content) & ENCRYPT)
+    {
       decode = 1;
+    }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              mutt_is_application_smime(hdr->content) & ENCRYPT)
     {
@@ -866,7 +870,9 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 
   if ((WithCrypto != 0) && need_passphrase && (decode || decrypt) &&
       !crypt_valid_passphrase(app))
+  {
     return -1;
+  }
 
   mutt_message(_("Copying to %s..."), buf);
 

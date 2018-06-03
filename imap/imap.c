@@ -1482,11 +1482,15 @@ int imap_buffy_check(int check_stats)
 
     imap_munge_mbox_name(idata, munged, sizeof(munged), name);
     if (check_stats)
+    {
       snprintf(command, sizeof(command),
                "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
+    }
     else
+    {
       snprintf(command, sizeof(command),
                "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
+    }
 
     if (imap_exec(idata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) < 0)
     {
@@ -1547,9 +1551,11 @@ int imap_status(char *path, int queue)
     imap_unmunge_mbox_name(idata, mbox);
   }
   else
+  {
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
     return -1;
+  }
 
   if (queue)
   {
@@ -2166,7 +2172,9 @@ static int imap_mbox_open(struct Context *ctx)
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_SEEN) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_INSERT)))
+  {
     ctx->readonly = true;
+  }
 
   ctx->hdrmax = count;
   ctx->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));

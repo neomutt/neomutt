@@ -319,8 +319,10 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
   if (GecosMask && GecosMask->regex)
   {
     if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
+    {
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
                        MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
+    }
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
     mutt_str_strfcpy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
@@ -475,14 +477,18 @@ void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                       (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= slen)
+  {
     mutt_debug(1,
                "%s:%d: ERROR: insufficient buffer space to hold temporary "
                "filename! slen=%zu but need %zu\n",
                src, line, slen, n);
+  }
   mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s);
   if (unlink(s) && errno != ENOENT)
+  {
     mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s,
                strerror(errno), errno);
+  }
 }
 
 /**
@@ -675,7 +681,9 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
         !tmp[0])
+    {
       return -1;
+    }
     mutt_file_concat_path(fname, path, tmp, flen);
   }
 
@@ -803,11 +811,13 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         for (char *p = tmp; p && *p; p++)
         {
           if (*p == '\'')
+          {
             /* shell quoting doesn't permit escaping a single quote within
              * single-quoted material.  double-quoting instead will lead
              * shell variable expansions, so break out of the single-quoted
              * span, insert a double-quoted single quote, and resume. */
             mutt_buffer_addstr(command, "'\"'\"'");
+          }
           else
             mutt_buffer_addch(command, *p);
         }
@@ -1537,9 +1547,11 @@ int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if (a[0] == '=' && b[0] == '=')
+  {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
                (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
+  }
 
   const char *a_end = strrchr(a, '/');
   const char *b_end = strrchr(b, '/');

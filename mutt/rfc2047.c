@@ -239,7 +239,9 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     assert(strchr(MimeSpecials, '?'));
     if ((c >= 0x7f) || (c < 0x20) || (*p == '_') ||
         ((c != ' ') && strchr(MimeSpecials, *p)))
+    {
       count++;
+    }
   }
 
   len = ENCWORD_LEN_MIN - 2 + strlen(tocode);

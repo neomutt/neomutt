@@ -917,8 +917,10 @@ int mutt_index_menu(void)
       {
         /* notify the user of new mail */
         if (check == MUTT_REOPENED)
+        {
           mutt_error(
               _("Mailbox was externally modified.  Flags may be wrong."));
+        }
         else if (check == MUTT_NEW_MAIL)
         {
           for (i = oldcount; i < Context->msgcount; i++)
@@ -1008,8 +1010,10 @@ int mutt_index_menu(void)
       else if (BrailleFriendly)
         mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
       else
+      {
         mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset,
                          MuttIndexWindow->cols - 1);
+      }
       mutt_refresh();
 
       if (SigWinch)
@@ -2189,8 +2193,10 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
         }
         else
+        {
           mutt_error(
               _("Thread cannot be broken, message is not part of a thread"));
+        }
 
         break;
 
@@ -2434,16 +2440,22 @@ int mutt_index_menu(void)
           if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW ||
                op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
               first_new != -1)
+          {
             break;
+          }
         }
         if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW ||
              op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
             first_new != -1)
+        {
           menu->current = first_new;
+        }
         else if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD ||
                   op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
                  first_unread != -1)
+        {
           menu->current = first_unread;
+        }
 
         if (menu->current == -1)
         {
@@ -2499,8 +2511,10 @@ int mutt_index_menu(void)
           for (j = 0; j < Context->msgcount; j++)
           {
             if (message_is_tagged(Context, j))
+            {
               mutt_set_flag(Context, Context->hdrs[j], MUTT_FLAG,
                             !Context->hdrs[j]->flagged);
+            }
           }
 
           menu->redraw |= REDRAW_INDEX;
@@ -3087,9 +3101,11 @@ int mutt_index_menu(void)
           }
         }
         else
+        {
           /* L10N: This error is printed if <mark-message> cannot find a
              Message-ID for the currently selected message in the index. */
           mutt_error(_("No message ID to macro."));
+        }
         break;
 
       case OP_RECALL_MESSAGE:
@@ -3237,8 +3253,10 @@ int mutt_index_menu(void)
 
         rc = mutt_thread_set_flag(CURHDR, MUTT_DELETE, 0, op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
+        {
           rc = mutt_thread_set_flag(CURHDR, MUTT_PURGE, 0,
                                     op == OP_UNDELETE_THREAD ? 0 : 1);
+        }
         if (rc != -1)
         {
           if (Resolve)

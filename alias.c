@@ -589,8 +589,10 @@ int mutt_alias_complete(char *buf, size_t buflen)
       if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)
       {
         if (!bestname[0]) /* init */
+        {
           mutt_str_strfcpy(bestname, a->name,
                            MIN(mutt_str_strlen(a->name) + 1, sizeof(bestname)));
+        }
         else
         {
           int i;

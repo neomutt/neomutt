@@ -308,9 +308,11 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_s
   if (CheckMboxSize)
     new_or_changed = sb->st_size > mailbox->size;
   else
+  {
     new_or_changed = sb->st_mtime > sb->st_atime ||
                      (mailbox->newly_created && sb->st_ctime == sb->st_mtime &&
                       sb->st_ctime == sb->st_atime);
+  }
 
   if (new_or_changed)
   {

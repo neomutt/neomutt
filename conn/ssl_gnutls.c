@@ -454,7 +454,9 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
   if (chainidx == 0 && SslVerifyHost != MUTT_NO &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
+  {
     *certerr |= CERTERR_HOSTNAME;
+  }
 
   /* see whether certificate is in our cache (certificates file) */
   if (tls_compare_certificates(certdata))

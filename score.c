@@ -128,11 +128,13 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     ptr->str = pattern;
   }
   else
+  {
     /* 'buf' arg was cleared and 'pattern' holds the only reference;
      * as here 'ptr' != NULL -> update the value only in which case
      * ptr->str already has the string, so pattern should be freed.
      */
     FREE(&pattern);
+  }
   pc = buf->data;
   if (*pc == '=')
   {

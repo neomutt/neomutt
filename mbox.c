@@ -306,8 +306,10 @@ static int mbox_parse_mailbox(struct Context *ctx)
       count++;
 
       if (!ctx->quiet)
+      {
         mutt_progress_update(&progress, count,
                              (int) (ftello(ctx->fp) / (ctx->size / 100 + 1)));
+      }
 
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
@@ -393,8 +395,10 @@ static int mbox_parse_mailbox(struct Context *ctx)
       ctx->msgcount++;
 
       if (!curhdr->env->return_path && return_path[0])
+      {
         curhdr->env->return_path =
             mutt_addr_parse_list(curhdr->env->return_path, return_path);
+      }
 
       if (!curhdr->env->from)
         curhdr->env->from = mutt_addr_copy_list(curhdr->env->return_path, false);
@@ -588,7 +592,9 @@ static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
       (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
       (mutt_str_strcmp(b1->description, b2->description) != 0) ||
       !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || b1->length != b2->length)
+  {
     return 0;
+  }
   return 1;
 }
 
@@ -606,7 +612,9 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
         h1->zoccident != h2->zoccident || h1->mime != h2->mime ||
         !mutt_env_cmp_strict(h1->env, h2->env) ||
         !strict_cmp_bodies(h1->content, h2->content))
+    {
       return 0;
+    }
     else
       return 1;
   }
@@ -1321,9 +1329,11 @@ bail: /* Come here in case of disaster */
   }
 
   if (need_sort)
+  {
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
     mutt_sort_headers(ctx, (need_sort == MUTT_REOPENED));
+  }
 
   return rc;
 }

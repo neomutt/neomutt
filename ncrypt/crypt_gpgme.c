@@ -1253,9 +1253,11 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
       state_puts("\n", s);
     }
     else
+    {
       state_puts(_("Warning: At least one certification key "
                    "has expired\n"),
                  s);
+    }
   }
 
   if ((sum & GPGME_SIGSUM_SIG_EXPIRED))
@@ -1275,9 +1277,11 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   }
 
   if ((sum & GPGME_SIGSUM_KEY_MISSING))
+  {
     state_puts(_("Can't verify due to a missing "
                  "key or certificate\n"),
                s);
+  }
 
   if ((sum & GPGME_SIGSUM_CRL_MISSING))
   {
@@ -1870,9 +1874,11 @@ restart:
       *r_is_signed = -1; /* A signature exists. */
 
     if ((s->flags & MUTT_DISPLAY))
+    {
       state_attach_puts(_("[-- Begin signature "
                           "information --]\n"),
                         s);
+    }
     for (idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
     {
       if (res == 1)
@@ -1884,9 +1890,11 @@ restart:
       *r_is_signed = anywarn ? 2 : 1; /* Good signature. */
 
     if ((s->flags & MUTT_DISPLAY))
+    {
       state_attach_puts(_("[-- End signature "
                           "information --]\n\n"),
                         s);
+    }
   }
   gpgme_release(ctx);
   ctx = NULL;
@@ -2224,11 +2232,15 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
       strftime(date, sizeof(date), "%Y-%m-%d", localtime(&tt));
 
       if (!more)
+      {
         fprintf(*fp, "pub %5.5s %d/%8s %s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
                 subkey->length, shortid, date, uid->uid);
+      }
       else
+      {
         fprintf(*fp, "sub %5.5s %d/%8s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
                 subkey->length, shortid, date);
+      }
       subkey = subkey->next;
       more = 1;
     }
@@ -2724,9 +2736,11 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(_("[-- Error: could not create temporary file! "
                           "--]\n"),
                         s);
+    }
     return -1;
   }
 
@@ -2736,11 +2750,13 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     tattach->goodsig = is_signed > 0;
 
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           is_signed ? _("[-- The following data is PGP/MIME signed and "
                         "encrypted --]\n\n") :
                       _("[-- The following data is PGP/MIME encrypted --]\n\n"),
           s);
+    }
 
     {
       FILE *savefp = s->fpin;
@@ -2749,11 +2765,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
       s->fpin = savefp;
     }
 
-    /*
-       * if a multipart/signed is the _only_ sub-part of a
-       * multipart/encrypted, cache signature verification
-       * status.
-       */
+    /* if a multipart/signed is the _only_ sub-part of a
+     * multipart/encrypted, cache signature verification
+     * status.
+     */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
@@ -2799,9 +2814,11 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(_("[-- Error: could not create temporary file! "
                           "--]\n"),
                         s);
+    }
     return -1;
   }
 
@@ -2811,10 +2828,12 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     tattach->goodsig = is_signed > 0;
 
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           is_signed ? _("[-- The following data is S/MIME signed --]\n\n") :
                       _("[-- The following data is S/MIME encrypted --]\n\n"),
           s);
+    }
 
     {
       FILE *savefp = s->fpin;
@@ -3727,8 +3746,10 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     s = key->issuer_serial;
     if (s)
+    {
       fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
               _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
+    }
   }
 
   if (key->issuer_name)
@@ -4242,15 +4263,19 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       ts = _("keys matching");
 
     if (p)
+    {
       /* L10N:
          %1$s is one of the previous four entries.
          %2$s is an address.
          e.g. "S/MIME keys matching <me@mutt.org>." */
       snprintf(buf, sizeof(buf), _("%s <%s>."), ts, p->mailbox);
+    }
     else
+    {
       /* L10N:
          e.g. 'S/MIME keys matching "Michael Elkins".' */
       snprintf(buf, sizeof(buf), _("%s \"%s\"."), ts, s);
+    }
     menu->title = buf;
   }
 
@@ -4290,8 +4315,10 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           char buf2[LONG_STRING];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
+          {
             warn_s = _("ID is expired/disabled/revoked. Do you really want to "
                        "use the key?");
+          }
           else
           {
             warn_s = "??";

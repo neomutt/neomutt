@@ -327,8 +327,10 @@ static int compare_key_address(const void *a, const void *b)
   if (r != 0)
     return r > 0;
   else
+  {
     return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
                                 pgp_fpr_or_lkeyid((*t)->parent)) > 0);
+  }
 }
 
 static int pgp_compare_address(const void *a, const void *b)
@@ -637,9 +639,12 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           char buf2[LONG_STRING];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
+          {
             str = _("ID is expired/disabled/revoked. Do you really want to use "
                     "the key?");
+          }
           else
+          {
             switch (KeyTable[menu->current]->trust & 0x03)
             {
               case 0:
@@ -654,6 +659,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                         "use the key?");
                 break;
             }
+          }
 
           snprintf(buf2, sizeof(buf2), "%s", str);
 
