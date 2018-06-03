@@ -61,6 +61,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* These Config Variables are only used in curs_lib.c */
 bool MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
@@ -149,7 +152,12 @@ struct Event mutt_getch(void)
   ch = KEY_RESIZE;
   while (ch == KEY_RESIZE)
 #endif /* KEY_RESIZE */
-    ch = getch();
+#ifdef USE_INOTIFY
+    if (mutt_monitor_poll() != 0)
+      ch = ERR;
+    else
+#endif
+      ch = getch();
   mutt_sig_allow_interrupt(0);
 
   if (SigInt)

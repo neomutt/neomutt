@@ -8830,6 +8830,35 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         </para>
       </sect2>
 
+      <sect2 id="new-mail-monitoring">
+        <title>Monitoring New Mail</title>
+        <para>
+          When the <emphasis>Inotify</emphasis>mechanism for monitoring of
+          files is supported (Linux only) and not disabled at compilation time,
+          Mutt immediately notifies about new mail for all folders configured
+          via the <link linkend="mailboxes"><command>mailboxes</command></link>
+          command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
+          also added <emphasis>old</emphasis>mails are tracked (not for Maildir).
+        </para>
+        <para>
+          No configuration variables are available. Trace output is given when
+          debugging is enabled via <link linkend="tab-commandline-options">command line option</link>
+          <literal>-d3</literal>. The lower level 2 only shows errors, the
+          higher level 5 all including raw Inotify events.
+        </para>
+        <note>
+          <para>
+            Getting events about new mail is limited to the capabilities of the
+            underlying mechanism.  <emphasis>inotify</emphasis>only reports
+            local changes, i. e. new mail notification works for mails
+            delivered by an agent on the same machine as mutt, but not when
+            delivered remotely on a network file system as nfs. also the
+            monitoring handles might fail in rare conditions, so you better
+            don't completely rely on this feature.
+          </para>
+        </note>
+      </sect2>
+
       <sect2 id="calc-mailbox-counts">
         <title>Calculating Mailbox Message Counts</title>
         <para>

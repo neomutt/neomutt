@@ -43,6 +43,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /**
  * Menus - Menu name lookup table
@@ -590,7 +593,11 @@ int km_dokey(int menu)
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.
            */
+#ifdef USE_INOTIFY
+          if (tmp.ch != -2 || SigWinch || MonitorFilesChanged)
+#else
           if (tmp.ch != -2 || SigWinch)
+#endif
             goto gotkey;
           i -= ImapKeepalive;
           imap_keepalive();

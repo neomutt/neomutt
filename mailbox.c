@@ -58,6 +58,9 @@
 #ifdef USE_POP
 #include "pop/pop.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
@@ -698,6 +701,10 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 #ifdef USE_SIDEBAR
     mutt_sb_notify_mailbox(b, true);
 #endif
+#ifdef USE_INOTIFY
+    b->magic = mx_path_probe(b->path, NULL);
+    mutt_monitor_add(b);
+#endif
   }
   return 0;
 }
@@ -756,6 +763,9 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       {
 #ifdef USE_SIDEBAR
         mutt_sb_notify_mailbox(np->b, false);
+#endif
+#ifdef USE_INOTIFY
+        mutt_monitor_remove(np->b);
 #endif
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
         mailbox_free(&np->b);
