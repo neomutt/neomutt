@@ -349,9 +349,8 @@ msgid "Unsubscribe pattern: "
 msgstr "%s の購読を取り消した"
 
 #: browser.c:2137
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "ファイルマスクに一致するファイルがない"
+msgstr "マスクに一致するニュースグループがない"
 
 #: buffy.c:780
 msgid "New mail in "
@@ -683,9 +682,8 @@ msgstr "署名に使う鍵: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:141
-#, fuzzy
 msgid "Newsgroups: "
-msgstr "題名が指定されていない。"
+msgstr "ニュースグループ: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:143
@@ -854,9 +852,8 @@ msgid "Open mailbox to attach message from"
 msgstr "中のメッセージを添付するためにメールボックスをオープン"
 
 #: compose.c:1330
-#, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "中のメッセージを添付するためにメールボックスをオープン"
+msgstr "中のメッセージを添付するためにニュースグループをオープン"
 
 #: compose.c:1374
 #, c-format
@@ -1643,9 +1640,8 @@ msgid "No mailboxes have new mail"
 msgstr "新着メールのあるメールボックスはない"
 
 #: curs_main.c:2044
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "読み出し専用モードでメールボックスをオープン"
+msgstr "読み出し専用モードでニュースグループをオープン"
 
 #: curs_main.c:2046
 msgid "Open newsgroup"
@@ -5077,14 +5073,12 @@ msgid "open a different folder in read only mode"
 msgstr "読み出し専用モードで別のフォルダをオープン"
 
 #: opcodes.h:155
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "別のフォルダをオープン"
+msgstr "別のニュースグループをオープン"
 
 #: opcodes.h:156
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "読み出し専用モードで別のフォルダをオープン"
+msgstr "読み出し専用モードで別のニュースグループをオープン"
 
 #: opcodes.h:157
 msgid "clear a status flag from a message"
@@ -6240,9 +6234,8 @@ msgid "No subject specified."
 msgstr "題名が指定されていない。"
 
 #: send.c:1939
-#, fuzzy
 msgid "No newsgroup specified."
-msgstr "題名が指定されていない。"
+msgstr "ニュースグループが指定されていない。"
 
 #: send.c:1948
 #, fuzzy
