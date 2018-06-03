@@ -575,7 +575,10 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
 
-  ch = mutt_getch();
+  do
+  {
+    ch = mutt_getch();
+  } while (ch.ch == -2);
   if (ch.ch < 0)
   {
     mutt_window_clearline(MuttMessageWindow, 0);

@@ -431,8 +431,12 @@ int mutt_change_flag(struct Header *h, int bf)
   mutt_window_mvprintw(MuttMessageWindow, 0, 0,
                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
   mutt_window_clrtoeol(MuttMessageWindow);
+  mutt_refresh();
 
-  event = mutt_getch();
+  do
+  {
+    event = mutt_getch();
+  } while (event.ch == -2);
   i = event.ch;
   if (i < 0)
   {
