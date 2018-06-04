@@ -235,7 +235,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
  * This protects against messages with multipart/encrypted headers but which
  * aren't actually encrypted.  See ticket #3770
  */
-static int pgp_check_decryption_okay(FILE *fpin)
+static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
 {
   int rc = -1;
 
@@ -265,6 +265,60 @@ static int pgp_check_decryption_okay(FILE *fpin)
   }
 
   return rc;
+}
+
+/* Checks GnuPGP status fd output for various status codes indicating
+ * an issue.  If $pgp_check_gpg_decrypt_status_fd is unset, it falls
+ * back to the old behavior of just scanning for $pgp_decryption_okay.
+ */
+static int pgp_check_decryption_okay(FILE *fpin)
+{
+  int rv = -1;
+  char *line = NULL, *s = NULL;
+  int lineno = 0;
+  size_t linelen;
+  int inside_decrypt = 0;
+
+  if (!PgpCheckGpgDecryptStatusFd)
+    return pgp_check_pgp_decryption_okay_regex(fpin);
+
+  while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)) != NULL)
+  {
+    if (mutt_str_strncmp(line, "[GNUPG:] ", 9) != 0)
+      continue;
+    s = line + 9;
+    mutt_debug(2, "checking \"%s\".\n", line);
+    if (mutt_str_strncmp(s, "BEGIN_DECRYPTION", 16) == 0)
+      inside_decrypt = 1;
+    else if (mutt_str_strncmp(s, "END_DECRYPTION", 14) == 0)
+      inside_decrypt = 0;
+    else if (mutt_str_strncmp(s, "PLAINTEXT", 9) == 0)
+    {
+      if (!inside_decrypt)
+      {
+        mutt_debug(
+            2, "\tPLAINTEXT encountered outside of DECRYPTION.  Failure.\n");
+        rv = -1;
+        break;
+      }
+    }
+    else if (mutt_str_strncmp(s, "DECRYPTION_FAILED", 17) == 0)
+    {
+      mutt_debug(2, "\tDECRYPTION_FAILED encountered.  Failure.\n");
+      rv = -1;
+      break;
+    }
+    else if (mutt_str_strncmp(s, "DECRYPTION_OKAY", 15) == 0)
+    {
+      /* Don't break out because we still have to check for
+       * PLAINTEXT outside of the decryption boundaries. */
+      mutt_debug(2, "\tDECRYPTION_OKAY encountered.\n");
+      rv = 0;
+    }
+  }
+  FREE(&line);
+
+  return rv;
 }
 
 /**

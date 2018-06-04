@@ -2282,6 +2282,20 @@ struct Option MuttVars[] = {
   ** subprocess failed.
   ** (PGP only)
   */
+  { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, R_NONE, &PgpCheckGpgDecryptStatusFd, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, mutt will check the status file descriptor output
+  ** of $$pgp_decrypt_command for GnuPG status codes indicating
+  ** successful decryption.  This will check for the presence of
+  ** DECRYPTION_OKAY, absence of DECRYPTION_FAILED, and that all
+  ** PLAINTEXT occurs between the BEGIN_DECRYPTION and END_DECRYPTION
+  ** status codes.
+  ** .pp
+  ** If \fIunset\fP, mutt will instead match the status fd output
+  ** against $$pgp_decryption_okay.
+  ** (PGP only)
+  */
   { "pgp_clearsign_command",    DT_STRING, R_NONE, &PgpClearsignCommand, 0 },
   /*
   ** .pp
@@ -2335,6 +2349,9 @@ struct Option MuttVars[] = {
   ** protect against a spoofed encrypted message, with multipart/encrypted
   ** headers but containing a block that is not actually encrypted.
   ** (e.g. simply signed and ascii armored text).
+  ** .pp
+  ** Note that if $$pgp_check_gpg_decrypt_status_fd is set, this variable
+  ** is ignored.
   ** (PGP only)
   */
   { "pgp_default_key",    DT_STRING,   R_NONE, &PgpDefaultKey, 0 },

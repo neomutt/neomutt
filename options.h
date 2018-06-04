@@ -247,6 +247,7 @@ WHERE bool SmimeAskCertLabel;
 WHERE bool SmimeDecryptUseDefaultKey;
 WHERE bool PgpIgnoreSubkeys;
 WHERE bool PgpCheckExit;
+WHERE bool PgpCheckGpgDecryptStatusFd;
 WHERE bool PgpLongIds;
 WHERE bool PgpAutoDecode;
 WHERE bool PgpRetainableSigs;
