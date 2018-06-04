@@ -1416,11 +1416,11 @@ int imap_check(struct ImapData *idata, int force)
 /**
  * imap_buffy_check - Check for new mail in subscribed folders
  * @param check_stats Check for message stats too
- * @retval 0 Failure
+ * @retval num Number of mailboxes with new mail
+ * @retval 0   Failure
  *
  * Given a list of mailboxes rather than called once for each so that it can
- * batch the commands and save on round trips. Returns number of mailboxes with
- * new mail.
+ * batch the commands and save on round trips.
  */
 int imap_buffy_check(int check_stats)
 {

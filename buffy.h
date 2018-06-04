@@ -63,7 +63,7 @@ struct Buffy
 WHERE struct Buffy *Incoming;
 
 #ifdef USE_NOTMUCH
-void mutt_buffy_vfolder(char *s, size_t slen);
+void mutt_buffy_vfolder(char *buf, size_t buflen);
 #endif
 
 extern time_t BuffyDoneTime; /**< last time we knew for sure how much mail there was */
@@ -71,9 +71,7 @@ extern time_t BuffyDoneTime; /**< last time we knew for sure how much mail there
 struct Buffy *mutt_find_mailbox(const char *path);
 void mutt_update_mailbox(struct Buffy *b);
 
-/** fixes up atime + mtime after mbox/mmdf mailbox was modified
- * according to stat() info taken before a modification */
-void mutt_buffy_cleanup(const char *buf, struct stat *st);
+void mutt_buffy_cleanup(const char *path, struct stat *st);
 
 /** mark mailbox just left as already notified */
 void mutt_buffy_setnotified(const char *path);
