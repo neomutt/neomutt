@@ -1618,7 +1618,7 @@ msgstr "不能中断线索"
 #: curs_main.c:2168 curs_main.c:2206 curs_main.c:2666 curs_main.c:2698
 #: flags.c:376 thread.c:1078 thread.c:1134 thread.c:1202
 msgid "Threading is not enabled."
-msgstr "线索功能尚未启动。"
+msgstr "线索功能尚未启用。"
 
 #: curs_main.c:2181
 msgid "Thread broken"
@@ -3276,7 +3276,7 @@ msgstr " 请按下 '%s' 来切换写入"
 
 #: mx.c:1063
 msgid "Use 'toggle-write' to re-enable write!"
-msgstr "请使用 'toggle-write' 来重新启动写入!"
+msgstr "请使用 'toggle-write' 来重新启用写入!"
 
 #: mx.c:1065
 #, c-format
