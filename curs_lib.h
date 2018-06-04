@@ -54,6 +54,7 @@ void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 struct Event mutt_getch(void);
+void         mutt_getch_timeout(int);
 int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, bool multiple, char ***files, int *numfiles);
 int          mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
 int          mutt_multi_choice(const char *prompt, const char *letters);

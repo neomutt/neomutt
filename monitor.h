@@ -29,6 +29,7 @@ struct Mailbox;
 
 int mutt_monitor_add(struct Mailbox *b);
 int mutt_monitor_remove(struct Mailbox *b);
+void mutt_monitor_set_poll_timeout(int timeout);
 int mutt_monitor_poll(void);
 
 #endif /* _MUTT_MONITOR_H */
