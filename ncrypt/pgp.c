@@ -270,6 +270,20 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
 /* Checks GnuPGP status fd output for various status codes indicating
  * an issue.  If $pgp_check_gpg_decrypt_status_fd is unset, it falls
  * back to the old behavior of just scanning for $pgp_decryption_okay.
+ *
+ * pgp_decrypt_part() should fail if the part is not encrypted, so we return
+ * less than 0 to indicate part or all was NOT actually encrypted.
+ *
+ * On the other hand, for pgp_application_pgp_handler(), a
+ * "BEGIN PGP MESSAGE" could indicate a signed and armored message.
+ * For that we allow -1 and -2 as "valid" (with a warning).
+ *
+ * Returns:
+ *   1 - no patterns were matched (if delegated to decryption_okay_regexp)
+ *   0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside.
+ *  -1 - No decryption status codes were encountered
+ *  -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters.
+ *  -3 - DECRYPTION_FAILED was encountered
  */
 static int pgp_check_decryption_okay(FILE *fpin)
 {
@@ -296,16 +310,16 @@ static int pgp_check_decryption_okay(FILE *fpin)
     {
       if (!inside_decrypt)
       {
-        mutt_debug(
-            2, "\tPLAINTEXT encountered outside of DECRYPTION.  Failure.\n");
-        rv = -1;
+        mutt_debug(2, "\tPLAINTEXT encountered outside of DECRYPTION.\n");
+        if (rv > -2)
+          rv = -2;
         break;
       }
     }
     else if (mutt_str_strncmp(s, "DECRYPTION_FAILED", 17) == 0)
     {
       mutt_debug(2, "\tDECRYPTION_FAILED encountered.  Failure.\n");
-      rv = -1;
+      rv = -3;
       break;
     }
     else if (mutt_str_strncmp(s, "DECRYPTION_OKAY", 15) == 0)
@@ -313,7 +327,8 @@ static int pgp_check_decryption_okay(FILE *fpin)
       /* Don't break out because we still have to check for
        * PLAINTEXT outside of the decryption boundaries. */
       mutt_debug(2, "\tDECRYPTION_OKAY encountered.\n");
-      rv = 0;
+      if (rv > -2)
+        rv = 0;
     }
   }
   FREE(&line);
@@ -383,6 +398,7 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 int pgp_class_application_handler(struct Body *m, struct State *s)
 {
   bool could_not_decrypt = false;
+  int decrypt_okay_rc = 0;
   int needpass = -1;
   bool pgp_keyblock = false;
   bool clearsign = false;
@@ -391,7 +407,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
-  char outfile[PATH_MAX];
+  char pgpoutfile[PATH_MAX];
+  char pgperrfile[PATH_MAX];
   char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp = NULL;
@@ -421,6 +438,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
     if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
       clearsign = false;
+      could_not_decrypt = false;
+      decrypt_okay_rc = 0;
 
       if (mutt_str_strcmp("MESSAGE-----\n", buf + 15) == 0)
         needpass = 1;
@@ -491,24 +510,33 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       /* Invoke PGP if needed */
       if (!clearsign || (s->flags & MUTT_VERIFY))
       {
-        mutt_mktemp(outfile, sizeof(outfile));
-        pgpout = mutt_file_fopen(outfile, "w+");
+        mutt_mktemp(pgpoutfile, sizeof(pgpoutfile));
+        pgpout = mutt_file_fopen(pgpoutfile, "w+");
         if (!pgpout)
         {
-          mutt_perror(outfile);
-          mutt_file_fclose(&tmpfp);
-          FREE(&gpgcharset);
-          return -1;
+          mutt_perror(pgpoutfile);
+          rc = -1;
+          goto out;
         }
 
-        thepid = pgp_invoke_decode(&pgpin, NULL, &pgperr, -1, fileno(pgpout),
-                                   -1, tmpfname, (needpass != 0));
+        unlink(pgpoutfile);
+
+        mutt_mktemp(pgperrfile, sizeof(pgperrfile));
+        if ((pgperr = mutt_file_fopen(pgperrfile, "w+")) == NULL)
+        {
+          mutt_perror(pgperrfile);
+          rc = -1;
+          goto out;
+        }
+        unlink(pgperrfile);
+
+        thepid = pgp_invoke_decode(&pgpin, NULL, NULL, -1, fileno(pgpout),
+                                   fileno(pgperr), tmpfname, (needpass != 0));
         if (thepid == -1)
         {
           mutt_file_fclose(&pgpout);
           maybe_goodsig = false;
           pgpin = NULL;
-          pgperr = NULL;
           state_attach_puts(
               _("[-- Error: unable to create PGP subprocess! --]\n"), s);
         }
@@ -525,17 +553,30 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
           mutt_file_fclose(&pgpin);
 
-          if (s->flags & MUTT_DISPLAY)
-          {
-            crypt_current_time(s, "PGP");
-            rc = pgp_copy_checksig(pgperr, s->fpout);
-          }
-
-          mutt_file_fclose(&pgperr);
           rv = mutt_wait_filter(thepid);
 
+          fflush(pgperr);
+          /* If we are expecting an encrypted message, verify status fd output.
+           * Note that BEGIN PGP MESSAGE does not guarantee the content is encrypted,
+           * so we need to be more selective about the value of decrypt_okay_rc.
+           *
+           * -3 indicates we actively found a DECRYPTION_FAILED.
+           * -2 and -1 indicate part or all of the content was plaintext.
+           */
+          if (needpass)
+          {
+            rewind(pgperr);
+            decrypt_okay_rc = pgp_check_decryption_okay(pgperr);
+            if (decrypt_okay_rc <= -3)
+              mutt_file_fclose(&pgpout);
+          }
+
           if (s->flags & MUTT_DISPLAY)
           {
+            rewind(pgperr);
+            crypt_current_time(s, "PGP");
+            rc = pgp_copy_checksig(pgperr, s->fpout);
+
             if (rc == 0)
               have_any_sigs = true;
             /*
@@ -567,7 +608,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           pgp_class_void_passphrase();
         }
 
-        if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
+        if ((could_not_decrypt || (decrypt_okay_rc <= -3)) && !(s->flags & MUTT_DISPLAY))
         {
           mutt_error(_("Could not decrypt PGP message"));
           rc = -1;
@@ -617,11 +658,8 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
        */
       mutt_file_fclose(&tmpfp);
       mutt_file_unlink(tmpfname);
-      if (pgpout)
-      {
-        mutt_file_fclose(&pgpout);
-        mutt_file_unlink(outfile);
-      }
+      mutt_file_fclose(&pgpout);
+      mutt_file_fclose(&pgperr);
 
       if (s->flags & MUTT_DISPLAY)
       {
@@ -629,8 +667,10 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         if (needpass)
         {
           state_attach_puts(_("[-- END PGP MESSAGE --]\n"), s);
-          if (could_not_decrypt)
+          if (could_not_decrypt || (decrypt_okay_rc <= -3))
             mutt_error(_("Could not decrypt PGP message"));
+          else if (decrypt_okay_rc < 0)
+            mutt_error(_("PGP message was not encrypted."));
           else
             mutt_message(_("PGP message successfully decrypted."));
         }
@@ -660,11 +700,8 @@ out:
     mutt_file_fclose(&tmpfp);
     mutt_file_unlink(tmpfname);
   }
-  if (pgpout)
-  {
-    mutt_file_fclose(&pgpout);
-    mutt_file_unlink(outfile);
-  }
+  mutt_file_fclose(&pgpout);
+  mutt_file_fclose(&pgperr);
 
   FREE(&gpgcharset);
 
