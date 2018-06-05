@@ -112,7 +112,7 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
     *out++ = '=';
   }
   *out = '\0';
-  return out - (char *) begin;
+  return (out - (char *) begin);
 }
 
 /**

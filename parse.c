@@ -1457,7 +1457,7 @@ static int count_body_parts(struct Body *body, int flags)
   }
 
   mutt_debug(5, "return %d\n", count < 0 ? 0 : count);
-  return count < 0 ? 0 : count;
+  return (count < 0) ? 0 : count;
 }
 
 int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)

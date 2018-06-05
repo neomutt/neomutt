@@ -227,7 +227,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   else
   {
     if (dlen > (sizeof(buf) - strlen(tocode)))
-      return sizeof(buf) - strlen(tocode) + 1;
+      return (sizeof(buf) - strlen(tocode) + 1);
     memcpy(buf, d, dlen);
     ob = buf + dlen;
   }

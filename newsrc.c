@@ -1085,7 +1085,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
       nntp_clear_cache(nserv);
     if (rc < 0 || !leave_lock)
       nntp_newsrc_close(nserv);
-    return rc < 0 ? NULL : nserv;
+    return (rc < 0) ? NULL : nserv;
   }
 
   /* new news server */

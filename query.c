@@ -303,7 +303,7 @@ static int query_tag(struct Menu *menu, int n, int m)
   bool ot = cur->tagged;
 
   cur->tagged = m >= 0 ? m : !cur->tagged;
-  return cur->tagged - ot;
+  return (cur->tagged - ot);
 }
 
 static void query_menu(char *buf, size_t buflen, struct Query *results, int retbuf)

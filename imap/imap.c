@@ -1971,7 +1971,7 @@ out:
   mutt_buffer_free(&sync_cmd);
   FREE(&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 /**

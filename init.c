@@ -370,7 +370,7 @@ static size_t escape_string(char *buf, size_t buflen, const char *src)
     src++;
   }
   *p = '\0';
-  return p - buf;
+  return (p - buf);
 }
 
 /**
@@ -1347,7 +1347,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
  */
 static int toggle_quadoption(int opt)
 {
-  return opt ^= 1;
+  return (opt ^= 1);
 }
 
 /**

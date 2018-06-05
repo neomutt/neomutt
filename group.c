@@ -74,7 +74,7 @@ static int empty_group(struct Group *g)
 {
   if (!g)
     return -1;
-  return !g->as && !g->rs;
+  return (!g->as && !g->rs);
 }
 
 void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)

@@ -1132,5 +1132,5 @@ const char *mutt_hcache_backend_list(void)
  */
 int mutt_hcache_is_valid_backend(const char *s)
 {
-  return hcache_get_backend_ops(s) != NULL;
+  return (hcache_get_backend_ops(s) != NULL);
 }

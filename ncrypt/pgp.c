@@ -135,7 +135,7 @@ char *pgp_short_keyid(struct PgpKeyInfo *k)
 {
   k = key_parent(k);
 
-  return k->keyid + 8;
+  return (k->keyid + 8);
 }
 
 char *pgp_this_keyid(struct PgpKeyInfo *k)

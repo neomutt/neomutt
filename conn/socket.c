@@ -210,7 +210,7 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 int mutt_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   if (conn->bufpos < conn->available)
-    return conn->available - conn->bufpos;
+    return (conn->available - conn->bufpos);
 
   if (conn->conn_poll)
     return conn->conn_poll(conn, wait_secs);
@@ -287,7 +287,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
   mutt_debug(dbg, "%d< %s\n", conn->fd, buf);
 
   /* number of bytes read, not strlen */
-  return i + 1;
+  return (i + 1);
 }
 
 /**

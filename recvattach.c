@@ -413,7 +413,7 @@ int mutt_tag_attach(struct Menu *menu, int n, int m)
   bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
-  return cur->tagged - ot;
+  return (cur->tagged - ot);
 }
 
 /**

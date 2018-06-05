@@ -2589,7 +2589,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 #endif
   ctx->quiet = quiet;
   FREE(&cc.child);
-  return rc < 0 ? -1 : 0;
+  return (rc < 0) ? -1 : 0;
 }
 
 // clang-format off

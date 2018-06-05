@@ -672,9 +672,9 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
     case RANGE_K_REL:
       return num + CTX_MSGNO(Context);
     case RANGE_K_LT:
-      return num - 1;
+      return (num - 1);
     case RANGE_K_GT:
-      return num + 1;
+      return (num + 1);
     default:
       return num;
   }
@@ -1517,12 +1517,12 @@ static void set_pattern_cache_value(int *cache_entry, int value)
  */
 static int get_pattern_cache_value(int cache_entry)
 {
-  return cache_entry == 2;
+  return (cache_entry == 2);
 }
 
 static int is_pattern_cache_set(int cache_entry)
 {
-  return cache_entry != 0;
+  return (cache_entry != 0);
 }
 
 /**

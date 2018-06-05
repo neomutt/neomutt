@@ -211,7 +211,7 @@ static int add_entropy(const char *file)
     return 0;
 
   if (stat(file, &st) == -1)
-    return errno == ENOENT ? 0 : -1;
+    return (errno == ENOENT) ? 0 : -1;
 
   mutt_message(_("Filling entropy pool: %s...\n"), file);
 

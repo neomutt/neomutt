@@ -652,7 +652,7 @@ size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
     *dest++ = *src++;
 
   *dest = '\0';
-  return dest - dest0;
+  return (dest - dest0);
 }
 
 /**

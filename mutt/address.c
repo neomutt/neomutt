@@ -1195,7 +1195,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   }
 done:
   *pbuf = 0;
-  return pbuf - buf;
+  return (pbuf - buf);
 }
 
 /**

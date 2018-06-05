@@ -176,7 +176,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
   idata->cmddata = NULL;
 
   FREE(&mx.mbox);
-  return rc == IMAP_CMD_OK ? 0 : -1;
+  return (rc == IMAP_CMD_OK) ? 0 : -1;
 }
 
 /**

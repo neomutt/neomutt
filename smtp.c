@@ -504,7 +504,7 @@ static int smtp_auth(struct Connection *conn)
     mutt_error(_("No authenticators available"));
   }
 
-  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
+  return (r == SMTP_AUTH_SUCCESS) ? 0 : -1;
 }
 
 #else  /* USE_SASL */

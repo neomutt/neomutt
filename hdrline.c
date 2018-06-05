@@ -386,7 +386,10 @@ static char *apply_subject_mods(struct Envelope *env)
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
-    return env->disp_subj = NULL;
+  {
+    env->disp_subj = NULL;
+    return NULL;
+  }
 
   env->disp_subj = mutt_replacelist_apply(SubjectRegexList, NULL, 0, env->subject);
   return env->disp_subj;

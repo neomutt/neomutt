@@ -1352,7 +1352,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
   else if (flag & MUTT_THREAD_UNREAD)
     return ((old && new) ? new : (old ? old : new));
   else if (flag & MUTT_THREAD_GET_HIDDEN)
-    return num_hidden + 1;
+    return (num_hidden + 1);
   else if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
   else if (flag & MUTT_THREAD_FLAGGED)

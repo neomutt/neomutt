@@ -1041,7 +1041,7 @@ int imap_cmd_step(struct ImapData *idata)
  */
 bool imap_code(const char *s)
 {
-  return cmd_status(s) == IMAP_CMD_OK;
+  return (cmd_status(s) == IMAP_CMD_OK);
 }
 
 /**

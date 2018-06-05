@@ -3148,7 +3148,7 @@ static int compare_key_address(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
   if (r != 0)
-    return r > 0;
+    return (r > 0);
   else
     return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0);
 }
@@ -3170,7 +3170,7 @@ static int compare_keyid(const void *a, const void *b)
 
   r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t));
   if (r != 0)
-    return r > 0;
+    return (r > 0);
   else
     return (mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0);
 }
@@ -3222,20 +3222,20 @@ static int compare_key_trust(const void *a, const void *b)
 
   r = (((*s)->flags & (KEYFLAG_RESTRICTIONS)) - ((*t)->flags & (KEYFLAG_RESTRICTIONS)));
   if (r != 0)
-    return r > 0;
+    return (r > 0);
 
   ts = (*s)->validity;
   tt = (*t)->validity;
   r = (tt - ts);
   if (r != 0)
-    return r < 0;
+    return (r < 0);
 
   if ((*s)->kobj->subkeys)
     ts = (*s)->kobj->subkeys->length;
   if ((*t)->kobj->subkeys)
     tt = (*t)->kobj->subkeys->length;
   if (ts != tt)
-    return ts > tt;
+    return (ts > tt);
 
   if ((*s)->kobj->subkeys && ((*s)->kobj->subkeys->timestamp > 0))
     ts = (*s)->kobj->subkeys->timestamp;
@@ -3248,7 +3248,7 @@ static int compare_key_trust(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
   if (r != 0)
-    return r > 0;
+    return (r > 0);
   return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0);
 }
 

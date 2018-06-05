@@ -1543,7 +1543,7 @@ out:
     FREE(&sync_cmd.data);
   FREE(&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 /**

@@ -325,7 +325,7 @@ static int compare_key_address(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
-    return r > 0;
+    return (r > 0);
   else
   {
     return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
@@ -348,7 +348,7 @@ static int compare_keyid(const void *a, const void *b)
 
   r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
   if (r != 0)
-    return r > 0;
+    return (r > 0);
   else
     return (mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0);
 }

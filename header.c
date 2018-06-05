@@ -262,12 +262,12 @@ static void label_ref_inc(struct Context *ctx, char *label)
 /**
  * label_message - add an X-Label: field
  */
-static int label_message(struct Context *ctx, struct Header *hdr, char *new)
+static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
   if (!hdr)
-    return 0;
+    return false;
   if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
-    return 0;
+    return false;
 
   if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);
@@ -275,7 +275,9 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
   if (hdr->env->x_label)
     label_ref_inc(ctx, hdr->env->x_label);
 
-  return hdr->changed = hdr->xlabel_changed = true;
+  hdr->changed = true;
+  hdr->xlabel_changed = true;
+  return true;
 }
 
 int mutt_label_message(struct Header *hdr)

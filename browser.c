@@ -1140,7 +1140,7 @@ static int file_tag(struct Menu *menu, int n, int m)
   bool ot = ff->tagged;
   ff->tagged = (m >= 0 ? m : !ff->tagged);
 
-  return ff->tagged - ot;
+  return (ff->tagged - ot);
 }
 
 /**
