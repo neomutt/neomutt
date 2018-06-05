@@ -784,13 +784,13 @@ static int comp_commit_message(struct Context *ctx, struct Message *msg)
 
 /**
  * comp_open_new_message - Delegated to mbox handler
- * @param msg Message to commit
  * @param ctx Mailbox
+ * @param msg Message to commit
  * @param hdr Email header
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int comp_open_new_message(struct Message *msg, struct Context *ctx, struct Header *hdr)
+static int comp_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   if (!ctx)
     return -1;
@@ -804,7 +804,7 @@ static int comp_open_new_message(struct Message *msg, struct Context *ctx, struc
     return -1;
 
   /* Delegate */
-  return ops->open_new_msg(msg, ctx, hdr);
+  return ops->open_new_msg(ctx, msg, hdr);
 }
 
 /**

@@ -1405,9 +1405,9 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
  * Open a new (temporary) message in an MH folder.
  */
 
-static int mh_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int mh_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  return mh_mkstemp(dest, &msg->fp, &msg->path);
+  return mh_mkstemp(ctx, &msg->fp, &msg->path);
 }
 
 static int ch_compar(const void *a, const void *b)
@@ -1485,7 +1485,7 @@ static int mh_close_message(struct Context *ctx, struct Message *msg)
  * Note that this uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-static int maildir_open_new_message(struct Message *msg, struct Context *dest,
+static int maildir_open_new_message(struct Context *ctx, struct Message *msg,
                                     struct Header *hdr)
 {
   int fd;
@@ -1511,10 +1511,10 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   else
     mutt_str_strfcpy(subdir, "new", sizeof(subdir));
 
-  omask = umask(mh_umask(dest));
+  omask = umask(mh_umask(ctx));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path, subdir,
+    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", ctx->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "Trying %s.\n", path);

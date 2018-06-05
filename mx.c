@@ -1203,7 +1203,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   if (msg->received == 0)
     time(&msg->received);
 
-  if (dest->mx_ops->open_new_msg(msg, dest, hdr) == 0)
+  if (dest->mx_ops->open_new_msg(dest, msg, hdr) == 0)
   {
     if (dest->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);

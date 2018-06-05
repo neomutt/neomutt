@@ -2312,13 +2312,13 @@ static int imap_close_mailbox(struct Context *ctx)
 
 /**
  * imap_open_new_message - Open an IMAP message
+ * @param ctx  Context (UNUSED)
  * @param msg  Message to open
- * @param dest Context (UNUSED)
  * @param hdr  Header (UNUSED)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int imap_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 
@@ -2640,9 +2640,9 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 
 /**
  * imap_commit_message_tags - Add/Change/Remove flags from headers
- * @param ctx  Context
- * @param h    Header
- * @param tags List of tags
+ * @param ctx Context
+ * @param hdr Header
+ * @param buf List of tags
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -2656,23 +2656,23 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char *tags)
+static int imap_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct Buffer *cmd = NULL;
   char uid[11];
 
   struct ImapData *idata = ctx->data;
 
-  if (*tags == '\0')
-    tags = NULL;
+  if (*buf == '\0')
+    buf = NULL;
 
   if (!mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
     return 0;
 
-  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(h)->uid);
+  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(hdr)->uid);
 
   /* Remove old custom flags */
-  if (HEADER_DATA(h)->flags_remote)
+  if (HEADER_DATA(hdr)->flags_remote)
   {
     cmd = mutt_buffer_new();
     if (!cmd)
@@ -2684,7 +2684,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);
     mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, HEADER_DATA(h)->flags_remote);
+    mutt_buffer_addstr(cmd, HEADER_DATA(hdr)->flags_remote);
     mutt_buffer_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
@@ -2700,7 +2700,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
   }
 
   /* Add new custom flags */
-  if (tags)
+  if (buf)
   {
     cmd = mutt_buffer_new();
     if (!cmd)
@@ -2712,7 +2712,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);
     mutt_buffer_addstr(cmd, " +FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, tags);
+    mutt_buffer_addstr(cmd, buf);
     mutt_buffer_addstr(cmd, ")");
 
     if (imap_exec(idata, cmd->data, 0) != 0)
@@ -2726,10 +2726,10 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
   }
 
   /* We are good sync them */
-  mutt_debug(1, "NEW TAGS: %d\n", tags);
-  driver_tags_replace(&h->tags, tags);
-  FREE(&HEADER_DATA(h)->flags_remote);
-  HEADER_DATA(h)->flags_remote = driver_tags_get_with_hidden(&h->tags);
+  mutt_debug(1, "NEW TAGS: %d\n", buf);
+  driver_tags_replace(&hdr->tags, buf);
+  FREE(&HEADER_DATA(hdr)->flags_remote);
+  HEADER_DATA(hdr)->flags_remote = driver_tags_get_with_hidden(&hdr->tags);
   return 0;
 }
 

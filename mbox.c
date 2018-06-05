@@ -552,9 +552,9 @@ static int mmdf_commit_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int mbox_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int mbox_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  msg->fp = dest->fp;
+  msg->fp = ctx->fp;
   return 0;
 }
 
