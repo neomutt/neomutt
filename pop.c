@@ -1039,13 +1039,15 @@ fail:
 struct MxOps mx_pop_ops = {
   .open = pop_open_mailbox,
   .open_append = NULL,
-  .close = pop_close_mailbox,
-  .open_msg = pop_fetch_message,
-  .close_msg = pop_close_message,
   .check = pop_check_mailbox,
-  .commit_msg = NULL,
-  .open_new_msg = NULL,
   .sync = pop_sync_mailbox,
+  .close = pop_close_mailbox,
+
+  .open_msg = pop_fetch_message,
+  .open_new_msg = NULL,
+  .commit_msg = NULL,
+  .close_msg = pop_close_message,
+
   .edit_msg_tags = NULL,
   .commit_msg_tags = NULL,
 };

@@ -942,11 +942,15 @@ int mutt_comp_valid_command(const char *cmd)
 struct MxOps mx_comp_ops = {
   .open = comp_open_mailbox,
   .open_append = comp_open_append_mailbox,
-  .close = comp_close_mailbox,
   .check = comp_check_mailbox,
   .sync = comp_sync_mailbox,
+  .close = comp_close_mailbox,
+
   .open_msg = comp_open_message,
-  .close_msg = comp_close_message,
-  .commit_msg = comp_commit_message,
   .open_new_msg = comp_open_new_message,
+  .commit_msg = comp_commit_message,
+  .close_msg = comp_close_message,
+
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };

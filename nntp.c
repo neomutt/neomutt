@@ -2594,13 +2594,15 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 struct MxOps mx_nntp_ops = {
   .open = nntp_open_mailbox,
   .open_append = NULL,
-  .close = nntp_close_mailbox,
   .check = nntp_check_mailbox,
   .sync = nntp_sync_mailbox,
+  .close = nntp_close_mailbox,
+
   .open_msg = nntp_open_message,
-  .close_msg = nntp_close_message,
-  .commit_msg = NULL,
   .open_new_msg = NULL,
+  .commit_msg = NULL,
+  .close_msg = nntp_close_message,
+
   .edit_msg_tags = NULL,
   .commit_msg_tags = NULL,
 };

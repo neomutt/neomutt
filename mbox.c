@@ -1308,13 +1308,15 @@ bail: /* Come here in case of disaster */
 struct MxOps mx_mbox_ops = {
   .open = mbox_open_mailbox,
   .open_append = mbox_open_mailbox_append,
-  .close = mbox_close_mailbox,
-  .open_msg = mbox_open_message,
-  .close_msg = mbox_close_message,
-  .commit_msg = mbox_commit_message,
-  .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .close = mbox_close_mailbox,
+
+  .open_msg = mbox_open_message,
+  .open_new_msg = mbox_open_new_message,
+  .commit_msg = mbox_commit_message,
+  .close_msg = mbox_close_message,
+
   .edit_msg_tags = NULL,
   .commit_msg_tags = NULL,
 };
@@ -1322,13 +1324,15 @@ struct MxOps mx_mbox_ops = {
 struct MxOps mx_mmdf_ops = {
   .open = mbox_open_mailbox,
   .open_append = mbox_open_mailbox_append,
-  .close = mbox_close_mailbox,
-  .open_msg = mbox_open_message,
-  .close_msg = mbox_close_message,
-  .commit_msg = mmdf_commit_message,
-  .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .close = mbox_close_mailbox,
+
+  .open_msg = mbox_open_message,
+  .open_new_msg = mbox_open_new_message,
+  .commit_msg = mmdf_commit_message,
+  .close_msg = mbox_close_message,
+
   .edit_msg_tags = NULL,
   .commit_msg_tags = NULL,
 };
