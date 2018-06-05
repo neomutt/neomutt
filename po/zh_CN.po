@@ -825,7 +825,7 @@ msgstr "打开信箱并从中附加信件"
 
 #: compose.c:1330
 msgid "Open newsgroup to attach message from"
-msgstr "从附件中打开新闻组"
+msgstr "打开新闻组并从中附加信件"
 
 #: compose.c:1374
 #, c-format
@@ -834,7 +834,7 @@ msgstr "无法打开信箱 %s"
 
 #: compose.c:1382
 msgid "No messages in that folder."
-msgstr "文件夹中没有信件。"
+msgstr "这个文件夹中没有信件。"
 
 #: compose.c:1392
 msgid "Tag the messages you want to attach!"
@@ -1480,7 +1480,7 @@ msgstr "无效的信件编号。"
 
 #: curs_main.c:1344
 msgid "That message is not visible."
-msgstr "这封信件无法显示。"
+msgstr "这封信件不可见。"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
