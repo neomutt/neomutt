@@ -1293,7 +1293,7 @@ msgstr "所有用于 TLS/SSL 连接的可用协议已禁用"
 
 #: conn/ssl_gnutls.c:1094
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "明确的密码套件通过$ssl_ciphers 是不支持的"
+msgstr "通过 $ssl_ciphers 明确选择密码套件是不支持的"
 
 #: conn/ssl_gnutls.c:1209
 #, c-format
