@@ -2074,7 +2074,7 @@ msgstr ""
 
 #: handler.c:1460
 msgid "Unable to open 'memory stream'!"
-msgstr "无法打开内存文件！"
+msgstr "无法打开内存流临时文件！"
 
 #: handler.c:1469
 msgid "Unable to open temporary file!"
@@ -2082,7 +2082,7 @@ msgstr "无法打开临时文件！"
 
 #: handler.c:1519
 msgid "failed to re-open 'memory stream'!"
-msgstr "无法重新打开临时内存流文件！"
+msgstr "无法重新打开内存流临时文件！"
 
 #: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
@@ -5604,11 +5604,11 @@ msgstr "没有内容"
 
 #: pattern.c:921
 msgid "Error opening 'memory stream'"
-msgstr "打开 'memory stream' 时出错"
+msgstr "打开内存流临时文件时出错"
 
 #: pattern.c:966
 msgid "Error re-opening 'memory stream'"
-msgstr "重新打开 'memory stream' 时出错"
+msgstr "重新打开内存流临时文件时出错"
 
 #: pattern.c:975
 msgid "Error opening /dev/null"
