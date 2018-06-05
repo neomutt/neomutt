@@ -1305,34 +1305,32 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
+// clang-format off
 struct MxOps mx_mbox_ops = {
-  .open = mbox_open_mailbox,
-  .open_append = mbox_open_mailbox_append,
-  .check = mbox_check_mailbox,
-  .sync = mbox_sync_mailbox,
-  .close = mbox_close_mailbox,
-
-  .open_msg = mbox_open_message,
-  .open_new_msg = mbox_open_new_message,
-  .commit_msg = mbox_commit_message,
-  .close_msg = mbox_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mbox_open_mailbox,
+  .mbox_open_append = mbox_open_mailbox_append,
+  .mbox_check       = mbox_check_mailbox,
+  .mbox_sync        = mbox_sync_mailbox,
+  .mbox_close       = mbox_close_mailbox,
+  .msg_open         = mbox_open_message,
+  .msg_open_new     = mbox_open_new_message,
+  .msg_commit       = mbox_commit_message,
+  .msg_close        = mbox_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
 
 struct MxOps mx_mmdf_ops = {
-  .open = mbox_open_mailbox,
-  .open_append = mbox_open_mailbox_append,
-  .check = mbox_check_mailbox,
-  .sync = mbox_sync_mailbox,
-  .close = mbox_close_mailbox,
-
-  .open_msg = mbox_open_message,
-  .open_new_msg = mbox_open_new_message,
-  .commit_msg = mmdf_commit_message,
-  .close_msg = mbox_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mbox_open_mailbox,
+  .mbox_open_append = mbox_open_mailbox_append,
+  .mbox_check       = mbox_check_mailbox,
+  .mbox_sync        = mbox_sync_mailbox,
+  .mbox_close       = mbox_close_mailbox,
+  .msg_open         = mbox_open_message,
+  .msg_open_new     = mbox_open_new_message,
+  .msg_commit       = mmdf_commit_message,
+  .msg_close        = mbox_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

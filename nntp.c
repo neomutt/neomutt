@@ -2591,18 +2591,18 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   return rc < 0 ? -1 : 0;
 }
 
+// clang-format off
 struct MxOps mx_nntp_ops = {
-  .open = nntp_open_mailbox,
-  .open_append = NULL,
-  .check = nntp_check_mailbox,
-  .sync = nntp_sync_mailbox,
-  .close = nntp_close_mailbox,
-
-  .open_msg = nntp_open_message,
-  .open_new_msg = NULL,
-  .commit_msg = NULL,
-  .close_msg = nntp_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = nntp_open_mailbox,
+  .mbox_open_append = NULL,
+  .mbox_check       = nntp_check_mailbox,
+  .mbox_sync        = nntp_sync_mailbox,
+  .mbox_close       = nntp_close_mailbox,
+  .msg_open         = nntp_open_message,
+  .msg_open_new     = NULL,
+  .msg_commit       = NULL,
+  .msg_close        = nntp_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

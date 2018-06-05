@@ -1033,21 +1033,21 @@ fail:
   FREE(&pop_data);
 }
 
+// clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions
  */
 struct MxOps mx_pop_ops = {
-  .open = pop_open_mailbox,
-  .open_append = NULL,
-  .check = pop_check_mailbox,
-  .sync = pop_sync_mailbox,
-  .close = pop_close_mailbox,
-
-  .open_msg = pop_fetch_message,
-  .open_new_msg = NULL,
-  .commit_msg = NULL,
-  .close_msg = pop_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = pop_open_mailbox,
+  .mbox_open_append = NULL,
+  .mbox_check       = pop_check_mailbox,
+  .mbox_sync        = pop_sync_mailbox,
+  .mbox_close       = pop_close_mailbox,
+  .msg_open         = pop_fetch_message,
+  .msg_open_new     = NULL,
+  .msg_commit       = NULL,
+  .msg_close        = pop_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

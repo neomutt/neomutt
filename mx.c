@@ -411,10 +411,10 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   }
 
   ctx->mx_ops = mx_get_ops(ctx->magic);
-  if (!ctx->mx_ops || !ctx->mx_ops->open_append)
+  if (!ctx->mx_ops || !ctx->mx_ops->mbox_open_append)
     return -1;
 
-  return ctx->mx_ops->open_append(ctx, flags);
+  return ctx->mx_ops->mbox_open_append(ctx, flags);
 }
 
 /**
@@ -508,7 +508,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   if (!ctx->quiet)
     mutt_message(_("Reading %s..."), ctx->path);
 
-  rc = ctx->mx_ops->open(ctx);
+  rc = ctx->mx_ops->mbox_open(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -561,7 +561,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
     mutt_buffy_setnotified(ctx->path);
 
   if (ctx->mx_ops)
-    ctx->mx_ops->close(ctx);
+    ctx->mx_ops->mbox_close(ctx);
 
   if (ctx->subj_hash)
     mutt_hash_destroy(&ctx->subj_hash);
@@ -591,13 +591,13 @@ void mx_fastclose_mailbox(struct Context *ctx)
  */
 static int sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  if (!ctx->mx_ops || !ctx->mx_ops->sync)
+  if (!ctx->mx_ops || !ctx->mx_ops->mbox_sync)
     return -1;
 
   if (!ctx->quiet)
     mutt_message(_("Writing %s..."), ctx->path);
 
-  return ctx->mx_ops->sync(ctx, index_hint);
+  return ctx->mx_ops->mbox_sync(ctx, index_hint);
 }
 
 /**
@@ -1182,7 +1182,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   struct Address *p = NULL;
   struct Message *msg = NULL;
 
-  if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
+  if (!dest->mx_ops || !dest->mx_ops->msg_open_new)
   {
     mutt_debug(1, "function unimplemented for mailbox type %d.\n", dest->magic);
     return NULL;
@@ -1203,7 +1203,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   if (msg->received == 0)
     time(&msg->received);
 
-  if (dest->mx_ops->open_new_msg(dest, msg, hdr) == 0)
+  if (dest->mx_ops->msg_open_new(dest, msg, hdr) == 0)
   {
     if (dest->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
@@ -1246,7 +1246,7 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  return ctx->mx_ops->check(ctx, index_hint);
+  return ctx->mx_ops->mbox_check(ctx, index_hint);
 }
 
 /**
@@ -1260,14 +1260,14 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
 {
   struct Message *msg = NULL;
 
-  if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_open)
   {
     mutt_debug(1, "function not implemented for mailbox type %d.\n", ctx->magic);
     return NULL;
   }
 
   msg = mutt_mem_calloc(1, sizeof(struct Message));
-  if (ctx->mx_ops->open_msg(ctx, msg, msgno))
+  if (ctx->mx_ops->msg_open(ctx, msg, msgno))
     FREE(&msg);
 
   return msg;
@@ -1282,7 +1282,7 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
  */
 int mx_commit_message(struct Message *msg, struct Context *ctx)
 {
-  if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_commit)
     return -1;
 
   if (!(msg->write && ctx->append))
@@ -1291,7 +1291,7 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
     return -1;
   }
 
-  return ctx->mx_ops->commit_msg(ctx, msg);
+  return ctx->mx_ops->msg_commit(ctx, msg);
 }
 
 /**
@@ -1307,8 +1307,8 @@ int mx_close_message(struct Context *ctx, struct Message **msg)
     return 0;
   int r = 0;
 
-  if (ctx->mx_ops && ctx->mx_ops->close_msg)
-    r = ctx->mx_ops->close_msg(ctx, *msg);
+  if (ctx->mx_ops && ctx->mx_ops->msg_close)
+    r = ctx->mx_ops->msg_close(ctx, *msg);
 
   if ((*msg)->path)
   {
@@ -1461,8 +1461,8 @@ int mx_check_empty(const char *path)
  */
 int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
-  if (ctx->mx_ops->edit_msg_tags)
-    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf, buflen);
+  if (ctx->mx_ops->tags_edit)
+    return ctx->mx_ops->tags_edit(ctx, tags, buf, buflen);
 
   mutt_message(_("Folder doesn't support tagging, aborting."));
   return -1;
@@ -1478,8 +1478,8 @@ int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t bufl
  */
 int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
 {
-  if (ctx->mx_ops->commit_msg_tags)
-    return ctx->mx_ops->commit_msg_tags(ctx, h, tags);
+  if (ctx->mx_ops->tags_commit)
+    return ctx->mx_ops->tags_commit(ctx, h, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting."));
   return -1;
@@ -1492,5 +1492,5 @@ int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
  */
 bool mx_tags_is_supported(struct Context *ctx)
 {
-  return ctx->mx_ops->commit_msg_tags && ctx->mx_ops->edit_msg_tags;
+  return ctx->mx_ops->tags_commit && ctx->mx_ops->tags_edit;
 }

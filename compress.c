@@ -498,7 +498,7 @@ static int comp_open_mailbox(struct Context *ctx)
     goto or_fail;
   }
 
-  return ci->child_ops->open(ctx);
+  return ci->child_ops->mbox_open(ctx);
 
 or_fail:
   /* remove the partial uncompressed file */
@@ -573,7 +573,7 @@ static int comp_open_append_mailbox(struct Context *ctx, int flags)
     goto oa_fail2;
   }
 
-  if (ci->child_ops->open_append(ctx, flags) != 0)
+  if (ci->child_ops->mbox_open_append(ctx, flags) != 0)
     goto oa_fail2;
 
   return 0;
@@ -613,7 +613,7 @@ static int comp_close_mailbox(struct Context *ctx)
     return -1;
   }
 
-  ops->close(ctx);
+  ops->mbox_close(ctx);
 
   /* sync has already been called, so we only need to delete some files */
   if (!ctx->append)
@@ -706,7 +706,7 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
   if (rc == 0)
     return -1;
 
-  return ops->check(ctx, index_hint);
+  return ops->mbox_check(ctx, index_hint);
 }
 
 /**
@@ -731,7 +731,7 @@ static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno
     return -1;
 
   /* Delegate */
-  return ops->open_msg(ctx, msg, msgno);
+  return ops->msg_open(ctx, msg, msgno);
 }
 
 /**
@@ -755,7 +755,7 @@ static int comp_close_message(struct Context *ctx, struct Message *msg)
     return -1;
 
   /* Delegate */
-  return ops->close_msg(ctx, msg);
+  return ops->msg_close(ctx, msg);
 }
 
 /**
@@ -779,7 +779,7 @@ static int comp_commit_message(struct Context *ctx, struct Message *msg)
     return -1;
 
   /* Delegate */
-  return ops->commit_msg(ctx, msg);
+  return ops->msg_commit(ctx, msg);
 }
 
 /**
@@ -804,7 +804,7 @@ static int comp_open_new_message(struct Context *ctx, struct Message *msg, struc
     return -1;
 
   /* Delegate */
-  return ops->open_new_msg(ctx, msg, hdr);
+  return ops->msg_open_new(ctx, msg, hdr);
 }
 
 /**
@@ -897,7 +897,7 @@ static int comp_sync_mailbox(struct Context *ctx, int *index_hint)
   if (rc != 0)
     goto sync_cleanup;
 
-  rc = ops->sync(ctx, index_hint);
+  rc = ops->mbox_sync(ctx, index_hint);
   if (rc != 0)
     goto sync_cleanup;
 
@@ -933,6 +933,7 @@ int mutt_comp_valid_command(const char *cmd)
   return (strstr(cmd, "%f") && strstr(cmd, "%t"));
 }
 
+// clang-format off
 /**
  * mx_comp_ops - Mailbox callback functions
  *
@@ -940,17 +941,16 @@ int mutt_comp_valid_command(const char *cmd)
  * The message functions are delegated to mbox.
  */
 struct MxOps mx_comp_ops = {
-  .open = comp_open_mailbox,
-  .open_append = comp_open_append_mailbox,
-  .check = comp_check_mailbox,
-  .sync = comp_sync_mailbox,
-  .close = comp_close_mailbox,
-
-  .open_msg = comp_open_message,
-  .open_new_msg = comp_open_new_message,
-  .commit_msg = comp_commit_message,
-  .close_msg = comp_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = comp_open_mailbox,
+  .mbox_open_append = comp_open_append_mailbox,
+  .mbox_check       = comp_check_mailbox,
+  .mbox_sync        = comp_sync_mailbox,
+  .mbox_close       = comp_close_mailbox,
+  .msg_open         = comp_open_message,
+  .msg_open_new     = comp_open_new_message,
+  .msg_commit       = comp_commit_message,
+  .msg_close        = comp_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

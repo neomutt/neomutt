@@ -2733,21 +2733,21 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *hdr, cha
   return 0;
 }
 
+// clang-format off
 /**
  * mx_imap_ops - Mailbox callback functions
  */
 struct MxOps mx_imap_ops = {
-  .open = imap_open_mailbox,
-  .open_append = imap_open_mailbox_append,
-  .check = imap_check_mailbox_reopen,
-  .sync = NULL, /* imap syncing is handled by imap_sync_mailbox */
-  .close = imap_close_mailbox,
-
-  .open_msg = imap_fetch_message,
-  .open_new_msg = imap_open_new_message,
-  .commit_msg = imap_commit_message,
-  .close_msg = imap_close_message,
-
-  .edit_msg_tags = imap_edit_message_tags,
-  .commit_msg_tags = imap_commit_message_tags,
+  .mbox_open        = imap_open_mailbox,
+  .mbox_open_append = imap_open_mailbox_append,
+  .mbox_check       = imap_check_mailbox_reopen,
+  .mbox_sync        = NULL, /* imap syncing is handled by imap_sync_mailbox */
+  .mbox_close       = imap_close_mailbox,
+  .msg_open         = imap_fetch_message,
+  .msg_open_new     = imap_open_new_message,
+  .msg_commit       = imap_commit_message,
+  .msg_close        = imap_close_message,
+  .tags_edit        = imap_edit_message_tags,
+  .tags_commit      = imap_commit_message_tags,
 };
+// clang-format on

@@ -2761,23 +2761,23 @@ static int nm_commit_message(struct Context *ctx, struct Message *msg)
   return -1;
 }
 
+// clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox API
  *
  * These functions are common to all mailbox types.
  */
 struct MxOps mx_notmuch_ops = {
-  .open = nm_open_mailbox, /* calls init_context() */
-  .open_append = NULL,
-  .check = nm_check_mailbox,
-  .sync = nm_sync_mailbox,
-  .close = nm_close_mailbox,
-
-  .open_msg = nm_open_message,
-  .open_new_msg = NULL,
-  .commit_msg = nm_commit_message,
-  .close_msg = nm_close_message,
-
-  .edit_msg_tags = nm_edit_message_tags,
-  .commit_msg_tags = nm_commit_message_tags,
+  .mbox_open        = nm_open_mailbox, /* calls init_context() */
+  .mbox_open_append = NULL,
+  .mbox_check       = nm_check_mailbox,
+  .mbox_sync        = nm_sync_mailbox,
+  .mbox_close       = nm_close_mailbox,
+  .msg_open         = nm_open_message,
+  .msg_open_new     = NULL,
+  .msg_commit       = nm_commit_message,
+  .msg_close        = nm_close_message,
+  .tags_edit        = nm_edit_message_tags,
+  .tags_commit      = nm_commit_message_tags,
 };
+// clang-format on

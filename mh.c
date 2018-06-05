@@ -2606,34 +2606,32 @@ bool mx_is_mh(const char *path)
   return false;
 }
 
+// clang-format off
 struct MxOps mx_maildir_ops = {
-  .open = maildir_open_mailbox,
-  .open_append = maildir_open_mailbox_append,
-  .check = maildir_check_mailbox,
-  .sync = mh_sync_mailbox,
-  .close = mh_close_mailbox,
-
-  .open_msg = maildir_open_message,
-  .open_new_msg = maildir_open_new_message,
-  .commit_msg = maildir_commit_message,
-  .close_msg = mh_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = maildir_open_mailbox,
+  .mbox_open_append = maildir_open_mailbox_append,
+  .mbox_check       = maildir_check_mailbox,
+  .mbox_sync        = mh_sync_mailbox,
+  .mbox_close       = mh_close_mailbox,
+  .msg_open         = maildir_open_message,
+  .msg_open_new     = maildir_open_new_message,
+  .msg_commit       = maildir_commit_message,
+  .msg_close        = mh_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
 
 struct MxOps mx_mh_ops = {
-  .open = mh_open_mailbox,
-  .open_append = mh_open_mailbox_append,
-  .check = mh_check_mailbox,
-  .sync = mh_sync_mailbox,
-  .close = mh_close_mailbox,
-
-  .open_msg = mh_open_message,
-  .open_new_msg = mh_open_new_message,
-  .commit_msg = mh_commit_message,
-  .close_msg = mh_close_message,
-
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mh_open_mailbox,
+  .mbox_open_append = mh_open_mailbox_append,
+  .mbox_check       = mh_check_mailbox,
+  .mbox_sync        = mh_sync_mailbox,
+  .mbox_close       = mh_close_mailbox,
+  .msg_open         = mh_open_message,
+  .msg_open_new     = mh_open_new_message,
+  .msg_commit       = mh_commit_message,
+  .msg_close        = mh_close_message,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

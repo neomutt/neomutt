@@ -49,19 +49,17 @@ struct stat;
  */
 struct MxOps
 {
-  int (*open)(struct Context *ctx);
-  int (*open_append)(struct Context *ctx, int flags);
-  int (*check)(struct Context *ctx, int *index_hint);
-  int (*sync)(struct Context *ctx, int *index_hint);
-  int (*close)(struct Context *ctx);
-
-  int (*open_msg)(struct Context *ctx, struct Message *msg, int msgno);
-  int (*open_new_msg)(struct Context *ctx, struct Message *msg, struct Header *hdr);
-  int (*commit_msg)(struct Context *ctx, struct Message *msg);
-  int (*close_msg)(struct Context *ctx, struct Message *msg);
-
-  int (*edit_msg_tags)(struct Context *ctx, const char *tags, char *buf, size_t buflen);
-  int (*commit_msg_tags)(struct Context *ctx, struct Header *hdr, char *buf);
+  int (*mbox_open)       (struct Context *ctx);
+  int (*mbox_open_append)(struct Context *ctx, int flags);
+  int (*mbox_check)      (struct Context *ctx, int *index_hint);
+  int (*mbox_sync)       (struct Context *ctx, int *index_hint);
+  int (*mbox_close)      (struct Context *ctx);
+  int (*msg_open)        (struct Context *ctx, struct Message *msg, int msgno);
+  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Header *hdr);
+  int (*msg_commit)      (struct Context *ctx, struct Message *msg);
+  int (*msg_close)       (struct Context *ctx, struct Message *msg);
+  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
 };
 
 /**
