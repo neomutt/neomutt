@@ -2100,16 +2100,16 @@ msgstr ""
 "[-- není podporována --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
-msgstr "Memstream nelze otevřít!"
+msgid "Unable to open 'memory stream'!"
+msgstr "'memory stream' nelze otevřít!"
 
 #: handler.c:1469
 msgid "Unable to open temporary file!"
 msgstr "Dočasný soubor nelze otevřít!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
-msgstr "chyba pří opakovaném otevření memstreamu!"
+msgid "failed to re-open 'memory stream'!"
+msgstr "chyba pří opakovaném otevření 'memory stream'u!"
 
 #: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
@@ -5654,12 +5654,12 @@ msgid "No Context"
 msgstr "Chybí kontext"
 
 #: pattern.c:921
-msgid "Error opening memstream"
-msgstr "Chyba při otevírání memstreamu"
+msgid "Error opening 'memory stream'"
+msgstr "Chyba při otevírání 'memory stream'u"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
-msgstr "Chyba při opětovném otevírání memstream"
+msgid "Error re-opening 'memory stream'"
+msgstr "Chyba při opětovném otevírání 'memory stream'"
 
 #: pattern.c:975
 msgid "Error opening /dev/null"

@@ -2085,7 +2085,7 @@ msgstr ""
 "[-- und die angegebene Zugangsmethode %s wird nicht unterstützt --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "Konnte Datenstrom nicht öffnen!"
 
 #: handler.c:1469
@@ -2093,7 +2093,7 @@ msgid "Unable to open temporary file!"
 msgstr "Konnte Temporärdatei nicht öffnen!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr "Konnte Datenstrom nicht erneut öffnen!"
 
 #: handler.c:1667
@@ -5634,11 +5634,11 @@ msgid "No Context"
 msgstr "Kein Kontext"
 
 #: pattern.c:921
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Fehler beim Öffnen des Datenstroms"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Fehler beim erneuten Öffnen des Datenstroms"
 
 #: pattern.c:975

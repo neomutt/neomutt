@@ -2178,7 +2178,7 @@ msgstr ""
 
 #: handler.c:1460
 #, fuzzy
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "임시 파일을 열 수 없음!"
 
 #: handler.c:1469
@@ -2187,7 +2187,7 @@ msgstr "임시 파일을 열 수 없음!"
 
 #: handler.c:1519
 #, fuzzy
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr "임시 파일을 열 수 없음!"
 
 #: handler.c:1667
@@ -5811,12 +5811,12 @@ msgstr ""
 
 #: pattern.c:921
 #, fuzzy
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "메일함 여는중 오류"
 
 #: pattern.c:966
 #, fuzzy
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "메일함 여는중 오류"
 
 #: pattern.c:975

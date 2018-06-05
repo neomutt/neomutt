@@ -2077,16 +2077,16 @@ msgstr ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
-msgstr "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
+msgstr "Unable to open 'memory stream'!"
 
 #: handler.c:1469
 msgid "Unable to open temporary file!"
 msgstr "Unable to open temporary file!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
-msgstr "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
+msgstr "failed to re-open 'memory stream'!"
 
 #: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
@@ -5618,12 +5618,12 @@ msgid "No Context"
 msgstr "No Context"
 
 #: pattern.c:921
-msgid "Error opening memstream"
-msgstr "Error opening memstream"
+msgid "Error opening 'memory stream'"
+msgstr "Error opening 'memory stream'"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
-msgstr "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
+msgstr "Error re-opening 'memory stream'"
 
 #: pattern.c:975
 msgid "Error opening /dev/null"

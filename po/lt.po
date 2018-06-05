@@ -2089,7 +2089,7 @@ msgstr ""
 "[-- o nurodytas pasiekimo tipas %s yra nepalaikomas. --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "Negaliu atidaryti atminties srauto!"
 
 #: handler.c:1469
@@ -2097,7 +2097,7 @@ msgid "Unable to open temporary file!"
 msgstr "Negaliu atidaryti laikinos bylos!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr "nepavyko iš naujo atidaryti atminties srauto!"
 
 #: handler.c:1667
@@ -5640,11 +5640,11 @@ msgid "No Context"
 msgstr "Nėra konteksto"
 
 #: pattern.c:921
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Klaida atidarant atminties srautą"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Klaida atidarant atminties srautą iš naujo"
 
 #: pattern.c:975

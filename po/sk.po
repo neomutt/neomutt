@@ -2154,16 +2154,16 @@ msgstr ""
 "[-- a označený typ prístupu %s nie je podporovaný --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
-msgstr "Nemožno otvoriť memstream!"
+msgid "Unable to open 'memory stream'!"
+msgstr "Nemožno otvoriť 'memory stream'!"
 
 #: handler.c:1469
 msgid "Unable to open temporary file!"
 msgstr "Nemožno otvoriť dočasný súbor!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
-msgstr "Nemožno znovu otvoriť memstream!"
+msgid "failed to re-open 'memory stream'!"
+msgstr "Nemožno znovu otvoriť 'memory stream'!"
 
 #: handler.c:1667
 msgid "Error: multipart/signed has no protocol."
@@ -5784,12 +5784,12 @@ msgstr ""
 
 #: pattern.c:921
 #, fuzzy
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Chyba pri zapisovaní do schránky!"
 
 #: pattern.c:966
 #, fuzzy
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Chyba pri zapisovaní do schránky!"
 
 #: pattern.c:975

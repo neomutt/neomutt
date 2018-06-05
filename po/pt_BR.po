@@ -2078,7 +2078,7 @@ msgstr ""
 "[-- e o tipo de acesso %s não é suportado --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "Incapaz de abrir fluxo com a memória"
 
 #: handler.c:1469
@@ -2086,7 +2086,7 @@ msgid "Unable to open temporary file!"
 msgstr "Incapaz de abrir o arquivo temporário!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr "falha ao re-abrir fluxo com a memória"
 
 #: handler.c:1667
@@ -5613,11 +5613,11 @@ msgid "No Context"
 msgstr "Sem Contexto"
 
 #: pattern.c:921
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Erro ao abrir o fluxo para memória"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Erro ao abrir novamente o fluxo para memória"
 
 #: pattern.c:975

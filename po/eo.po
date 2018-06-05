@@ -2131,7 +2131,7 @@ msgstr ""
 
 #: handler.c:1460
 #, fuzzy
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "Ne eblas malfermi dumtempan dosieron!"
 
 #: handler.c:1469
@@ -2139,7 +2139,7 @@ msgid "Unable to open temporary file!"
 msgstr "Ne eblas malfermi dumtempan dosieron!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr ""
 
 #: handler.c:1667
@@ -5692,12 +5692,12 @@ msgstr ""
 
 #: pattern.c:921
 #, fuzzy
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Eraro dum malfermado de poŝtfako"
 
 #: pattern.c:966
 #, fuzzy
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Eraro dum malfermado de poŝtfako"
 
 #: pattern.c:975

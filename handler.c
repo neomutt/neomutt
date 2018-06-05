@@ -1306,8 +1306,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       s->fpout = open_memstream(&temp, &tempsize);
       if (!s->fpout)
       {
-        mutt_error(_("Unable to open memory stream!"));
-        mutt_debug(1, "Can't open memory stream.\n");
+        mutt_error(_("Unable to open 'memory stream'!"));
+        mutt_debug(1, "Can't open 'memory stream'.\n");
         return -1;
       }
 #else
@@ -1365,7 +1365,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
       if (!s->fpin)
       {
-        mutt_perror(_("failed to re-open memstream!"));
+        mutt_perror(_("failed to re-open 'memory stream'!"));
         return -1;
       }
 #else

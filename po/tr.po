@@ -2133,7 +2133,7 @@ msgstr ""
 "[-- ve belirtilen %s erişim tipi de desteklenmiyor --]\n"
 
 #: handler.c:1460
-msgid "Unable to open memory stream!"
+msgid "Unable to open 'memory stream'!"
 msgstr "Bellek akışı açılamadı!"
 
 #: handler.c:1469
@@ -2141,7 +2141,7 @@ msgid "Unable to open temporary file!"
 msgstr "Geçici dosya açılamadı!"
 
 #: handler.c:1519
-msgid "failed to re-open memstream!"
+msgid "failed to re-open 'memory stream'!"
 msgstr "bellek akışını yeniden açma başarısız oldu!"
 
 #: handler.c:1667
@@ -5721,11 +5721,11 @@ msgid "No Context"
 msgstr ""
 
 #: pattern.c:921
-msgid "Error opening memstream"
+msgid "Error opening 'memory stream'"
 msgstr "Bellek akışını açılırken hata oluştu!"
 
 #: pattern.c:966
-msgid "Error re-opening memstream"
+msgid "Error re-opening 'memory stream'"
 msgstr "Bellek akışını yeniden açılırken hata oluştu!"
 
 #: pattern.c:975
