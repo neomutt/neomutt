@@ -1969,12 +1969,12 @@ out:
 }
 
 /**
- * imap_open_mailbox - Open an IMAP mailbox
+ * imap_mbox_open - Open an IMAP mailbox
  * @param ctx Context
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_mailbox(struct Context *ctx)
+static int imap_mbox_open(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
   struct ImapStatus *status = NULL;
@@ -2195,13 +2195,13 @@ fail_noidata:
 }
 
 /**
- * imap_open_mailbox_append - Open an IMAP mailbox to append
+ * imap_mbox_open_append - Open an IMAP mailbox to append
  * @param ctx   Context
  * @param flags Mailbox flags (UNUSED)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_mailbox_append(struct Context *ctx, int flags)
+static int imap_mbox_open_append(struct Context *ctx, int flags)
 {
   struct ImapData *idata = NULL;
   char buf[LONG_STRING];
@@ -2247,18 +2247,18 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
 }
 
 /**
- * imap_close_mailbox - Clean up IMAP data in Context
+ * imap_mbox_close - Clean up IMAP data in Context
  * @param ctx Context
  * @retval 0 Always
  */
-static int imap_close_mailbox(struct Context *ctx)
+static int imap_mbox_close(struct Context *ctx)
 {
   struct ImapData *idata = ctx->data;
   /* Check to see if the mailbox is actually open */
   if (!idata)
     return 0;
 
-  /* imap_open_mailbox_append() borrows the struct ImapData temporarily,
+  /* imap_mbox_open_append() borrows the struct ImapData temporarily,
    * just for the connection, but does not set idata->ctx to the
    * open-append ctx.
    *
@@ -2311,14 +2311,14 @@ static int imap_close_mailbox(struct Context *ctx)
 }
 
 /**
- * imap_open_new_message - Open an IMAP message
+ * imap_msg_open_new - Open an IMAP message
  * @param ctx  Context (UNUSED)
  * @param msg  Message to open
  * @param hdr  Header (UNUSED)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 
@@ -2334,13 +2334,13 @@ static int imap_open_new_message(struct Context *ctx, struct Message *msg, struc
 }
 
 /**
- * imap_check_mailbox_reopen - Check for new mail (reopen mailbox if necessary)
+ * imap_mbox_check - Check for new mail (reopen mailbox if necessary)
  * @param ctx        Context
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */
-static int imap_check_mailbox_reopen(struct Context *ctx, int *index_hint)
+static int imap_mbox_check(struct Context *ctx, int *index_hint)
 {
   int rc;
   (void) index_hint;
@@ -2556,7 +2556,7 @@ out:
 }
 
 /**
- * imap_edit_message_tags - Prompt and validate new messages tags
+ * imap_tags_edit - Prompt and validate new messages tags
  * @param ctx    Context
  * @param tags   Existing tags
  * @param buf    Buffer to store the tags
@@ -2565,7 +2565,7 @@ out:
  * @retval  0 No valid user input
  * @retval  1 Buf set
  */
-static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   char *new = NULL;
   char *checker = NULL;
@@ -2639,7 +2639,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 }
 
 /**
- * imap_commit_message_tags - Add/Change/Remove flags from headers
+ * imap_tags_commit - Add/Change/Remove flags from headers
  * @param ctx Context
  * @param hdr Header
  * @param buf List of tags
@@ -2656,7 +2656,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
+static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct Buffer *cmd = NULL;
   char uid[11];
@@ -2738,16 +2738,16 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *hdr, cha
  * mx_imap_ops - Mailbox callback functions
  */
 struct MxOps mx_imap_ops = {
-  .mbox_open        = imap_open_mailbox,
-  .mbox_open_append = imap_open_mailbox_append,
-  .mbox_check       = imap_check_mailbox_reopen,
+  .mbox_open        = imap_mbox_open,
+  .mbox_open_append = imap_mbox_open_append,
+  .mbox_check       = imap_mbox_check,
   .mbox_sync        = NULL, /* imap syncing is handled by imap_sync_mailbox */
-  .mbox_close       = imap_close_mailbox,
-  .msg_open         = imap_fetch_message,
-  .msg_open_new     = imap_open_new_message,
-  .msg_commit       = imap_commit_message,
-  .msg_close        = imap_close_message,
-  .tags_edit        = imap_edit_message_tags,
-  .tags_commit      = imap_commit_message_tags,
+  .mbox_close       = imap_mbox_close,
+  .msg_open         = imap_msg_open,
+  .msg_open_new     = imap_msg_open_new,
+  .msg_commit       = imap_msg_commit,
+  .msg_close        = imap_msg_close,
+  .tags_edit        = imap_tags_edit,
+  .tags_commit      = imap_tags_commit,
 };
 // clang-format on

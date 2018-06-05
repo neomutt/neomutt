@@ -971,14 +971,14 @@ error_out_0:
 }
 
 /**
- * imap_fetch_message - Fetch an email from an IMAP server
+ * imap_msg_open - Fetch an email from an IMAP server
  * @param ctx   Context
  * @param msg   Message to fetch
  * @param msgno Index into ctr->hdrs
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
+int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
@@ -1090,7 +1090,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
           pc = imap_next_word(pc);
           if (imap_get_literal_count(pc, &bytes) < 0)
           {
-            imap_error("imap_fetch_message()", buf);
+            imap_error("imap_msg_open()", buf);
             goto bail;
           }
           if (output_progress)
@@ -1202,26 +1202,26 @@ bail:
 }
 
 /**
- * imap_close_message - Close an email
+ * imap_msg_close - Close an email
  * @param ctx Context
  * @param msg Email info
  * @retval 0   Success
  * @retval EOF Failure, see errno
  */
-int imap_close_message(struct Context *ctx, struct Message *msg)
+int imap_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
 
 /**
- * imap_commit_message - Save changes to an email
+ * imap_msg_commit - Save changes to an email
  * @param ctx Context
  * @param msg Email info
  * @retval 0   Success
  * @retval EOF fclose() failed, see errno
  * @retval -1  Failure
  */
-int imap_commit_message(struct Context *ctx, struct Message *msg)
+int imap_msg_commit(struct Context *ctx, struct Message *msg)
 {
   int r = mutt_file_fclose(&msg->fp);
 

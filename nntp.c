@@ -1478,12 +1478,12 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 }
 
 /**
- * nntp_open_mailbox - Open newsgroup
+ * nntp_mbox_open - Open newsgroup
  * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int nntp_open_mailbox(struct Context *ctx)
+static int nntp_mbox_open(struct Context *ctx)
 {
   struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
@@ -1615,14 +1615,14 @@ static int nntp_open_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_open_message - Fetch message
+ * nntp_msg_open - Fetch message
  * @param ctx   Mailbox
  * @param msg   Message to fetch
  * @param msgno Message number
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
+static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->data;
   struct Header *hdr = ctx->hdrs[msgno];
@@ -1743,13 +1743,13 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 }
 
 /**
- * nntp_close_message - Close message
+ * nntp_msg_close - Close message
  * @param ctx Mailbox
  * @param msg Message to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-static int nntp_close_message(struct Context *ctx, struct Message *msg)
+static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
@@ -2098,7 +2098,7 @@ static int check_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_check_mailbox - Check current newsgroup for new articles
+ * nntp_mbox_check - Check current newsgroup for new articles
  * @param ctx        Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
@@ -2106,7 +2106,7 @@ static int check_mailbox(struct Context *ctx)
  * @retval  0             No change
  * @retval -1             Lost connection
  */
-static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_mbox_check(struct Context *ctx, int *index_hint)
 {
   int ret = check_mailbox(ctx);
   if (ret == 0)
@@ -2119,7 +2119,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_sync_mailbox - Save changes to .newsrc and cache
+ * nntp_mbox_sync - Save changes to .newsrc and cache
  * @param ctx        Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval  0 Success
@@ -2127,7 +2127,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 {
   struct NntpData *nntp_data = ctx->data;
   int rc;
@@ -2185,11 +2185,11 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_close_mailbox - Free up memory associated with the newsgroup context
+ * nntp_mbox_close - Free up memory associated with the newsgroup context
  * @param ctx Mailbox
  * @retval 0 Always
  */
-static int nntp_close_mailbox(struct Context *ctx)
+static int nntp_mbox_close(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
 
@@ -2593,15 +2593,15 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 
 // clang-format off
 struct MxOps mx_nntp_ops = {
-  .mbox_open        = nntp_open_mailbox,
+  .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,
-  .mbox_check       = nntp_check_mailbox,
-  .mbox_sync        = nntp_sync_mailbox,
-  .mbox_close       = nntp_close_mailbox,
-  .msg_open         = nntp_open_message,
+  .mbox_check       = nntp_mbox_check,
+  .mbox_sync        = nntp_mbox_sync,
+  .mbox_close       = nntp_mbox_close,
+  .msg_open         = nntp_msg_open,
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
-  .msg_close        = nntp_close_message,
+  .msg_close        = nntp_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
 };

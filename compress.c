@@ -445,7 +445,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
 }
 
 /**
- * comp_open_mailbox - Open a compressed mailbox
+ * comp_mbox_open - Open a compressed mailbox
  * @param ctx Mailbox to open
  * @retval  0 Success
  * @retval -1 Error
@@ -455,7 +455,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
  * Then determine the type of the mailbox so we can delegate the handling of
  * messages.
  */
-static int comp_open_mailbox(struct Context *ctx)
+static int comp_mbox_open(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_COMPRESSED))
     return -1;
@@ -508,7 +508,7 @@ or_fail:
 }
 
 /**
- * comp_open_append_mailbox - Open a compressed mailbox for appending
+ * comp_mbox_open_append - Open a compressed mailbox for appending
  * @param ctx   Mailbox to open
  * @param flags e.g. Does the file already exist?
  * @retval  0 Success
@@ -517,7 +517,7 @@ or_fail:
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
-static int comp_open_append_mailbox(struct Context *ctx, int flags)
+static int comp_mbox_open_append(struct Context *ctx, int flags)
 {
   if (!ctx)
     return -1;
@@ -589,7 +589,7 @@ oa_fail1:
 }
 
 /**
- * comp_close_mailbox - Close a compressed mailbox
+ * comp_mbox_close - Close a compressed mailbox
  * @param ctx Mailbox to close
  * @retval  0 Success
  * @retval -1 Failure
@@ -597,7 +597,7 @@ oa_fail1:
  * If the mailbox has been changed then re-compress the tmp file.
  * Then delete the tmp file.
  */
-static int comp_close_mailbox(struct Context *ctx)
+static int comp_mbox_close(struct Context *ctx)
 {
   if (!ctx)
     return -1;
@@ -663,7 +663,7 @@ static int comp_close_mailbox(struct Context *ctx)
 }
 
 /**
- * comp_check_mailbox - Check for changes in the compressed file
+ * comp_mbox_check - Check for changes in the compressed file
  * @param ctx        Mailbox
  * @param index_hint Currently selected mailbox
  * @retval 0              Mailbox OK
@@ -677,7 +677,7 @@ static int comp_close_mailbox(struct Context *ctx)
  *
  * The return codes are picked to match mx_check_mailbox().
  */
-static int comp_check_mailbox(struct Context *ctx, int *index_hint)
+static int comp_mbox_check(struct Context *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -710,14 +710,14 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * comp_open_message - Delegated to mbox handler
+ * comp_msg_open - Delegated to mbox handler
  * @param ctx   Mailbox
  * @param msg   Message to open
  * @param msgno Message number
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno)
+static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx)
     return -1;
@@ -735,13 +735,13 @@ static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno
 }
 
 /**
- * comp_close_message - Delegated to mbox handler
+ * comp_msg_close - Delegated to mbox handler
  * @param ctx Mailbox
  * @param msg Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int comp_close_message(struct Context *ctx, struct Message *msg)
+static int comp_msg_close(struct Context *ctx, struct Message *msg)
 {
   if (!ctx)
     return -1;
@@ -759,13 +759,13 @@ static int comp_close_message(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * comp_commit_message - Delegated to mbox handler
+ * comp_msg_commit - Delegated to mbox handler
  * @param ctx Mailbox
  * @param msg Message to commit
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int comp_commit_message(struct Context *ctx, struct Message *msg)
+static int comp_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (!ctx)
     return -1;
@@ -783,14 +783,14 @@ static int comp_commit_message(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * comp_open_new_message - Delegated to mbox handler
+ * comp_msg_open_new - Delegated to mbox handler
  * @param ctx Mailbox
  * @param msg Message to commit
  * @param hdr Email header
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int comp_open_new_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   if (!ctx)
     return -1;
@@ -859,16 +859,16 @@ bool mutt_comp_can_read(const char *path)
 }
 
 /**
- * comp_sync_mailbox - Save changes to the compressed mailbox file
+ * comp_mbox_sync - Save changes to the compressed mailbox file
  * @param ctx        Mailbox to sync
  * @param index_hint Currently selected mailbox
  * @retval  0 Success
  * @retval -1 Failure
  *
- * Changes in NeoMutt only affect the tmp file.  Calling comp_sync_mailbox()
+ * Changes in NeoMutt only affect the tmp file.  Calling comp_mbox_sync()
  * will commit them to the compressed file.
  */
-static int comp_sync_mailbox(struct Context *ctx, int *index_hint)
+static int comp_mbox_sync(struct Context *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -893,7 +893,7 @@ static int comp_sync_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  int rc = comp_check_mailbox(ctx, index_hint);
+  int rc = comp_mbox_check(ctx, index_hint);
   if (rc != 0)
     goto sync_cleanup;
 
@@ -941,15 +941,15 @@ int mutt_comp_valid_command(const char *cmd)
  * The message functions are delegated to mbox.
  */
 struct MxOps mx_comp_ops = {
-  .mbox_open        = comp_open_mailbox,
-  .mbox_open_append = comp_open_append_mailbox,
-  .mbox_check       = comp_check_mailbox,
-  .mbox_sync        = comp_sync_mailbox,
-  .mbox_close       = comp_close_mailbox,
-  .msg_open         = comp_open_message,
-  .msg_open_new     = comp_open_new_message,
-  .msg_commit       = comp_commit_message,
-  .msg_close        = comp_close_message,
+  .mbox_open        = comp_mbox_open,
+  .mbox_open_append = comp_mbox_open_append,
+  .mbox_check       = comp_mbox_check,
+  .mbox_sync        = comp_mbox_sync,
+  .mbox_close       = comp_mbox_close,
+  .msg_open         = comp_msg_open,
+  .msg_open_new     = comp_msg_open_new,
+  .msg_commit       = comp_msg_commit,
+  .msg_close        = comp_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
 };

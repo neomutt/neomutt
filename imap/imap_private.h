@@ -304,9 +304,9 @@ int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);
 int imap_append_message(struct Context *ctx, struct Message *msg);
 
-int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
-int imap_close_message(struct Context *ctx, struct Message *msg);
-int imap_commit_message(struct Context *ctx, struct Message *msg);
+int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno);
+int imap_msg_close(struct Context *ctx, struct Message *msg);
+int imap_msg_commit(struct Context *ctx, struct Message *msg);
 
 /* util.c */
 #ifdef USE_HCACHE
