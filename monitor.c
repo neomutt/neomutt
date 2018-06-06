@@ -219,6 +219,11 @@ void mutt_monitor_set_poll_timeout(int timeout)
   PollTimeout = timeout;
 }
 
+int mutt_monitor_get_poll_timeout(void)
+{
+  return PollTimeout;
+}
+
 #define EVENT_BUFLEN MAX(4096, sizeof(struct inotify_event) + NAME_MAX + 1)
 
 /* mutt_monitor_poll: Waits for I/O ready file descriptors or signals.

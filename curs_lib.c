@@ -132,6 +132,25 @@ void mutt_getch_timeout(int delay)
 #endif
 }
 
+#ifdef USE_INOTIFY
+static int mutt_monitor_getch(void)
+{
+  /* ncurses has its own internal buffer, so before we perform a poll,
+   * we need to make sure there isn't a character waiting */
+  timeout(0);
+  int ch = getch();
+  timeout(mutt_monitor_get_poll_timeout());
+  if (ch == ERR)
+  {
+    if (mutt_monitor_poll() != 0)
+      ch = ERR;
+    else
+      ch = getch();
+  }
+  return ch;
+}
+#endif /* USE_INOTIFY */
+
 /**
  * mutt_getch - Read a character from the input buffer
  * @retval obj Event to process
@@ -166,11 +185,10 @@ struct Event mutt_getch(void)
   while (ch == KEY_RESIZE)
 #endif /* KEY_RESIZE */
 #ifdef USE_INOTIFY
-    if (mutt_monitor_poll() != 0)
-      ch = ERR;
-    else
-#endif
-      ch = getch();
+    ch = mutt_monitor_getch();
+#else
+  ch = getch();
+#endif /* USE_INOTIFY */
   mutt_sig_allow_interrupt(0);
 
   if (SigInt)
