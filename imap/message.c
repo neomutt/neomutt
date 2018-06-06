@@ -971,12 +971,7 @@ error_out_0:
 }
 
 /**
- * imap_msg_open - Fetch an email from an IMAP server
- * @param ctx   Context
- * @param msg   Message to fetch
- * @param msgno Index into ctr->hdrs
- * @retval  0 Success
- * @retval -1 Failure
+ * imap_msg_open - Implements MxOps::msg_open()
  */
 int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -1203,10 +1198,8 @@ bail:
 
 /**
  * imap_msg_close - Close an email
- * @param ctx Context
- * @param msg Email info
- * @retval 0   Success
- * @retval EOF Failure, see errno
+ *
+ * @note May also return EOF Failure, see errno
  */
 int imap_msg_close(struct Context *ctx, struct Message *msg)
 {
@@ -1214,18 +1207,14 @@ int imap_msg_close(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * imap_msg_commit - Save changes to an email
- * @param ctx Context
- * @param msg Email info
- * @retval 0   Success
- * @retval EOF fclose() failed, see errno
- * @retval -1  Failure
+ * imap_msg_commit - Implements MxOps::msg_commit()
+ *
+ * @note May also return EOF Failure, see errno
  */
 int imap_msg_commit(struct Context *ctx, struct Message *msg)
 {
   int r = mutt_file_fclose(&msg->fp);
-
-  if (r)
+  if (r != 0)
     return r;
 
   return imap_append_message(ctx, msg);

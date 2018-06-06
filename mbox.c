@@ -439,7 +439,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 }
 
 /**
- * mbox_mbox_open - open a mbox or mmdf style mailbox
+ * mbox_mbox_open - Implements MxOps::mbox_open()
  */
 static int mbox_mbox_open(struct Context *ctx)
 {
@@ -471,6 +471,9 @@ static int mbox_mbox_open(struct Context *ctx)
   return rc;
 }
 
+/**
+ * mbox_mbox_open_append - Implements MxOps::mbox_open_append()
+ */
 static int mbox_mbox_open_append(struct Context *ctx, int flags)
 {
   ctx->fp = mutt_file_fopen(ctx->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
@@ -492,6 +495,10 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
   return 0;
 }
 
+/**
+ * mbox_mbox_close - Implements MxOps::mbox_close()
+ * @retval 0 Always
+ */
 static int mbox_mbox_close(struct Context *ctx)
 {
   if (!ctx->fp)
@@ -510,6 +517,9 @@ static int mbox_mbox_close(struct Context *ctx)
   return 0;
 }
 
+/**
+ * mbox_msg_open - Implements MxOps::msg_open()
+ */
 static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   msg->fp = ctx->fp;
@@ -517,6 +527,10 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   return 0;
 }
 
+/**
+ * mbox_msg_close - Implements MxOps::msg_close()
+ * @retval 0 Always
+ */
 static int mbox_msg_close(struct Context *ctx, struct Message *msg)
 {
   msg->fp = NULL;
@@ -524,6 +538,9 @@ static int mbox_msg_close(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
+/**
+ * mbox_msg_commit - Implements MxOps::msg_commit()
+ */
 static int mbox_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (fputc('\n', msg->fp) == EOF)
@@ -538,6 +555,9 @@ static int mbox_msg_commit(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
+/**
+ * mmdf_msg_commit - Implements MxOps::msg_commit()
+ */
 static int mmdf_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (fputs(MMDF_SEP, msg->fp) == EOF)
@@ -552,6 +572,10 @@ static int mmdf_msg_commit(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
+/**
+ * mbox_msg_open_new - Implements MxOps::msg_open_new()
+ * @retval 0 Always
+ */
 static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   msg->fp = ctx->fp;
@@ -774,7 +798,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mbox_mbox_check - Has mailbox changed on disk
+ * mbox_mbox_check - Implements MxOps::mbox_check()
  * @param[in]  ctx        Context
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
@@ -936,9 +960,7 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
 }
 
 /**
- * mbox_mbox_sync - Sync a mailbox to disk
- * @retval  0 Success
- * @retval -1 Failure
+ * mbox_mbox_sync - Implements MxOps::mbox_sync()
  */
 static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 {
@@ -1306,6 +1328,9 @@ bail: /* Come here in case of disaster */
 }
 
 // clang-format off
+/**
+ * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
+ */
 struct MxOps mx_mbox_ops = {
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
@@ -1320,6 +1345,9 @@ struct MxOps mx_mbox_ops = {
   .tags_commit      = NULL,
 };
 
+/**
+ * struct mx_mmdf_ops - Mailbox callback functions for MMDF mailboxes
+ */
 struct MxOps mx_mmdf_ops = {
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,

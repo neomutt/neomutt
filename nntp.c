@@ -1478,10 +1478,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 }
 
 /**
- * nntp_mbox_open - Open newsgroup
- * @param ctx Mailbox
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_mbox_open - Implements MxOps::mbox_open()
  */
 static int nntp_mbox_open(struct Context *ctx)
 {
@@ -1615,12 +1612,7 @@ static int nntp_mbox_open(struct Context *ctx)
 }
 
 /**
- * nntp_msg_open - Fetch message
- * @param ctx   Mailbox
- * @param msg   Message to fetch
- * @param msgno Message number
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_msg_open - Implements MxOps::msg_open()
  */
 static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -1743,11 +1735,9 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 }
 
 /**
- * nntp_msg_close - Close message
- * @param ctx Mailbox
- * @param msg Message to close
- * @retval 0   Success
- * @retval EOF Error, see errno
+ * nntp_msg_close - Implements MxOps::msg_close()
+ *
+ * @note May also return EOF Failure, see errno
  */
 static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 {
@@ -2098,7 +2088,7 @@ static int check_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_mbox_check - Check current newsgroup for new articles
+ * nntp_mbox_check - Implements MxOps::mbox_check()
  * @param ctx        Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
@@ -2119,11 +2109,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_mbox_sync - Save changes to .newsrc and cache
- * @param ctx        Mailbox
- * @param index_hint Current message (UNUSED)
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_mbox_sync - Implements MxOps::mbox_sync()
  *
  * @note May also return values from check_mailbox()
  */
@@ -2185,8 +2171,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_mbox_close - Free up memory associated with the newsgroup context
- * @param ctx Mailbox
+ * nntp_mbox_close - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
 static int nntp_mbox_close(struct Context *ctx)
@@ -2592,6 +2577,9 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 }
 
 // clang-format off
+/**
+ * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
+ */
 struct MxOps mx_nntp_ops = {
   .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,

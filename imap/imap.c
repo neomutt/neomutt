@@ -1969,10 +1969,7 @@ out:
 }
 
 /**
- * imap_mbox_open - Open an IMAP mailbox
- * @param ctx Context
- * @retval  0 Success
- * @retval -1 Failure
+ * imap_mbox_open - Implements MxOps::mbox_open()
  */
 static int imap_mbox_open(struct Context *ctx)
 {
@@ -2195,11 +2192,7 @@ fail_noidata:
 }
 
 /**
- * imap_mbox_open_append - Open an IMAP mailbox to append
- * @param ctx   Context
- * @param flags Mailbox flags (UNUSED)
- * @retval  0 Success
- * @retval -1 Failure
+ * imap_mbox_open_append - Implements MxOps::mbox_open_append()
  */
 static int imap_mbox_open_append(struct Context *ctx, int flags)
 {
@@ -2247,8 +2240,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
 }
 
 /**
- * imap_mbox_close - Clean up IMAP data in Context
- * @param ctx Context
+ * imap_mbox_close - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
 static int imap_mbox_close(struct Context *ctx)
@@ -2311,12 +2303,7 @@ static int imap_mbox_close(struct Context *ctx)
 }
 
 /**
- * imap_msg_open_new - Open an IMAP message
- * @param ctx  Context (UNUSED)
- * @param msg  Message to open
- * @param hdr  Header (UNUSED)
- * @retval  0 Success
- * @retval -1 Failure
+ * imap_msg_open_new - Implements MxOps::msg_open_new()
  */
 static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
@@ -2334,7 +2321,7 @@ static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct He
 }
 
 /**
- * imap_mbox_check - Check for new mail (reopen mailbox if necessary)
+ * imap_mbox_check - Implements MxOps::mbox_check()
  * @param ctx        Context
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
@@ -2556,14 +2543,7 @@ out:
 }
 
 /**
- * imap_tags_edit - Prompt and validate new messages tags
- * @param ctx    Context
- * @param tags   Existing tags
- * @param buf    Buffer to store the tags
- * @param buflen Length of buffer
- * @retval -1 Error
- * @retval  0 No valid user input
- * @retval  1 Buf set
+ * imap_tags_edit - Implements MxOps::tags_edit()
  */
 static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
@@ -2639,12 +2619,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 }
 
 /**
- * imap_tags_commit - Add/Change/Remove flags from headers
- * @param ctx Context
- * @param hdr Header
- * @param buf List of tags
- * @retval  0 Success
- * @retval -1 Error
+ * imap_tags_commit - Implements MxOps::tags_commit()
  *
  * This method update the server flags on the server by
  * removing the last know custom flags of a header
@@ -2735,7 +2710,7 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
 
 // clang-format off
 /**
- * mx_imap_ops - Mailbox callback functions
+ * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
  */
 struct MxOps mx_imap_ops = {
   .mbox_open        = imap_mbox_open,

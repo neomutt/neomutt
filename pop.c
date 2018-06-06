@@ -1035,7 +1035,7 @@ fail:
 
 // clang-format off
 /**
- * mx_pop_ops - Mailbox callback functions
+ * mx_pop_ops - Mailbox callback functions for POP mailboxes
  */
 struct MxOps mx_pop_ops = {
   .mbox_open        = pop_open_mailbox,
