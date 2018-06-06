@@ -1968,6 +1968,51 @@ out:
   return rc < 0 ? -1 : rc;
 }
 
+void imap_select_mailbox(struct Context *ctx, struct ImapData *idata, struct Account *mx_account)
+{
+  char buf[LONG_STRING];
+  char bufout[LONG_STRING];
+  struct ImapMbox pmx;
+
+  mutt_message(_("Selecting %s..."), idata->mailbox);
+  imap_munge_mbox_name(idata, buf, sizeof(buf), idata->mailbox);
+
+  /* pipeline ACL test */
+  if (mutt_bit_isset(idata->capabilities, ACL))
+  {
+    snprintf(bufout, sizeof(bufout), "MYRIGHTS %s", buf);
+    imap_exec(idata, bufout, IMAP_CMD_QUEUE);
+  }
+  /* assume we have all rights if ACL is unavailable */
+  else
+  {
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_LOOKUP);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_READ);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_SEEN);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
+    mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
+  }
+  /* pipeline the postponed count if possible */
+  pmx.mbox = NULL;
+  if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
+      mutt_account_match(&pmx.account, mx_account))
+  {
+    imap_status(Postponed, 1);
+  }
+  FREE(&pmx.mbox);
+
+  if (ImapCheckSubscribed)
+    imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
+  snprintf(bufout, sizeof(bufout), "%s %s", ctx->readonly ? "EXAMINE" : "SELECT", buf);
+
+  idata->state = IMAP_SELECTED;
+
+  imap_cmd_start(idata, bufout);
+}
+
 /**
  * imap_open_mailbox - Open an IMAP mailbox
  * @param ctx Context
@@ -1979,9 +2024,8 @@ static int imap_open_mailbox(struct Context *ctx)
   struct ImapData *idata = NULL;
   struct ImapStatus *status = NULL;
   char buf[LONG_STRING];
-  char bufout[LONG_STRING];
   int count = 0;
-  struct ImapMbox mx, pmx;
+  struct ImapMbox mx;
   int rc;
 
   if (imap_parse_path(ctx->path, &mx))
@@ -2021,43 +2065,7 @@ static int imap_open_mailbox(struct Context *ctx)
   idata->new_mail_count = 0;
   idata->max_msn = 0;
 
-  mutt_message(_("Selecting %s..."), idata->mailbox);
-  imap_munge_mbox_name(idata, buf, sizeof(buf), idata->mailbox);
-
-  /* pipeline ACL test */
-  if (mutt_bit_isset(idata->capabilities, ACL))
-  {
-    snprintf(bufout, sizeof(bufout), "MYRIGHTS %s", buf);
-    imap_exec(idata, bufout, IMAP_CMD_QUEUE);
-  }
-  /* assume we have all rights if ACL is unavailable */
-  else
-  {
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_LOOKUP);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_READ);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_SEEN);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
-  }
-  /* pipeline the postponed count if possible */
-  pmx.mbox = NULL;
-  if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
-      mutt_account_match(&pmx.account, &mx.account))
-  {
-    imap_status(Postponed, 1);
-  }
-  FREE(&pmx.mbox);
-
-  if (ImapCheckSubscribed)
-    imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
-  snprintf(bufout, sizeof(bufout), "%s %s", ctx->readonly ? "EXAMINE" : "SELECT", buf);
-
-  idata->state = IMAP_SELECTED;
-
-  imap_cmd_start(idata, bufout);
+  imap_select_mailbox(ctx, idata, &(mx.account));
 
   status = imap_mboxcache_get(idata, idata->mailbox, 1);
 
