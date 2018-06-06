@@ -1177,7 +1177,7 @@ void mutt_view_attachments(struct Header *hdr)
 
   mutt_message_hook(Context, hdr, MUTT_MESSAGEHOOK);
 
-  struct Message *msg = mx_open_message(Context, hdr->msgno);
+  struct Message *msg = mx_msg_open(Context, hdr->msgno);
   if (!msg)
     return;
 
@@ -1427,7 +1427,7 @@ void mutt_view_attachments(struct Header *hdr)
         break;
 
       case OP_EXIT:
-        mx_close_message(Context, &msg);
+        mx_msg_close(Context, &msg);
 
         hdr->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)

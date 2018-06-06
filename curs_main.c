@@ -456,7 +456,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
       new_last_folder = mutt_str_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
-    int check = mx_close_mailbox(Context, index_hint);
+    int check = mx_mbox_close(Context, index_hint);
     if (check != 0)
     {
       if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
@@ -485,7 +485,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
    * switch statement would need to be run. */
   mutt_folder_hook(buf);
 
-  Context = mx_open_mailbox(
+  Context = mx_mbox_open(
       buf, (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0, NULL);
   if (Context)
   {
@@ -901,7 +901,7 @@ int mutt_index_menu(void)
               CURHDR->index :
               0;
 
-      check = mx_check_mailbox(Context, &index_hint);
+      check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
       {
         if (!Context->path)
@@ -1509,7 +1509,7 @@ int mutt_index_menu(void)
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWNHOOK);
 
-          if (!Context || (check = mx_close_mailbox(Context, &index_hint)) == 0)
+          if (!Context || (check = mx_mbox_close(Context, &index_hint)) == 0)
             done = true;
           else
           {
@@ -1649,7 +1649,7 @@ int mutt_index_menu(void)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (Context && Context->magic == MUTT_IMAP)
         {
-          if (mx_close_mailbox(Context, &index_hint) != 0)
+          if (mx_mbox_close(Context, &index_hint) != 0)
           {
             OptSearchInvalid = true;
             menu->redraw = REDRAW_FULL;
@@ -1691,7 +1691,7 @@ int mutt_index_menu(void)
               newhdr = Context->hdrs[Context->v2r[newidx]];
           }
 
-          check = mx_sync_mailbox(Context, &index_hint);
+          check = mx_mbox_sync(Context, &index_hint);
           if (check == 0)
           {
             if (newhdr && Context->vcount != ovc)
@@ -1711,7 +1711,7 @@ int mutt_index_menu(void)
             update_index(menu, Context, check, oc, index_hint);
 
           /*
-           * do a sanity check even if mx_sync_mailbox failed.
+           * do a sanity check even if mx_mbox_sync failed.
            */
 
           if (menu->current < 0 || menu->current >= Context->vcount)
@@ -1807,7 +1807,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CURHDR->tags);
-        rc = mx_tags_editor(Context, tags, buf, sizeof(buf));
+        rc = mx_tags_edit(Context, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;

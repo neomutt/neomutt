@@ -1231,7 +1231,11 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
   mh_sort_natural(ctx, md);
 }
 
-static int mh_close_mailbox(struct Context *ctx)
+/**
+ * mh_mbox_close - Implements MxOps::mbox_close()
+ * @retval 0 Always
+ */
+static int mh_mbox_close(struct Context *ctx)
 {
   FREE(&ctx->data);
 
@@ -1317,12 +1321,15 @@ static int maildir_read_dir(struct Context *ctx)
   return 0;
 }
 
-static int maildir_open_mailbox(struct Context *ctx)
+static int maildir_mbox_open(struct Context *ctx)
 {
   return maildir_read_dir(ctx);
 }
 
-static int maildir_open_mailbox_append(struct Context *ctx, int flags)
+/**
+ * maildir_mbox_open_append - Implements MxOps::mbox_open_append()
+ */
+static int maildir_mbox_open_append(struct Context *ctx, int flags)
 {
   if (!(flags & MUTT_APPENDNEW))
   {
@@ -1369,12 +1376,18 @@ static int maildir_open_mailbox_append(struct Context *ctx, int flags)
   return 0;
 }
 
-static int mh_open_mailbox(struct Context *ctx)
+/**
+ * mh_mbox_open - Implements MxOps::mbox_open()
+ */
+static int mh_mbox_open(struct Context *ctx)
 {
   return mh_read_dir(ctx, NULL);
 }
 
-static int mh_open_mailbox_append(struct Context *ctx, int flags)
+/**
+ * mh_mbox_open_append - Implements MxOps::mbox_open_append()
+ */
+static int mh_mbox_open_append(struct Context *ctx, int flags)
 {
   if (!(flags & MUTT_APPENDNEW))
   {
@@ -1401,13 +1414,14 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
   return 0;
 }
 
-/*
+/**
+ * mh_msg_open_new - Implements MxOps::msg_open_new()
+ *
  * Open a new (temporary) message in an MH folder.
  */
-
-static int mh_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int mh_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  return mh_mkstemp(dest, &msg->fp, &msg->path);
+  return mh_mkstemp(ctx, &msg->fp, &msg->path);
 }
 
 static int ch_compar(const void *a, const void *b)
@@ -1462,30 +1476,41 @@ static int maildir_mh_open_message(struct Context *ctx, struct Message *msg,
   return 0;
 }
 
-static int maildir_open_message(struct Context *ctx, struct Message *msg, int msgno)
+/**
+ * maildir_msg_open - Implements MxOps::msg_open()
+ */
+static int maildir_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 1);
 }
 
-static int mh_open_message(struct Context *ctx, struct Message *msg, int msgno)
+/**
+ * mh_msg_open - Implements MxOps::msg_open()
+ */
+static int mh_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 0);
 }
 
-static int mh_close_message(struct Context *ctx, struct Message *msg)
+/**
+ * nm_msg_close - Close a message
+ *
+ * @note May also return EOF Failure, see errno
+ */
+static int mh_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
 
 /**
- * maildir_open_new_message - Open a new message in a maildir folder
+ * maildir_msg_open_new - Implements MxOps::msg_open_new()
  *
  * Open a new (temporary) message in a maildir folder.
  *
- * Note that this uses _almost_ the maildir file name format,
+ * @note This uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-static int maildir_open_new_message(struct Message *msg, struct Context *dest,
+static int maildir_msg_open_new(struct Context *ctx, struct Message *msg,
                                     struct Header *hdr)
 {
   int fd;
@@ -1511,10 +1536,10 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   else
     mutt_str_strfcpy(subdir, "new", sizeof(subdir));
 
-  omask = umask(mh_umask(dest));
+  omask = umask(mh_umask(ctx));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path, subdir,
+    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", ctx->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "Trying %s.\n", path);
@@ -1560,14 +1585,14 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
  *
  * hdr is a header structure to which we write the message's new
  * file name.  This is used in the mh and maildir folder synch
- * routines.  When this routine is invoked from mx_commit_message,
+ * routines.  When this routine is invoked from mx_msg_commit(),
  * hdr is NULL.
  *
  * msg->path looks like this:
  *
  *    tmp/{cur,new}.neomutt-HOSTNAME-PID-COUNTER:flags
  *
- * See also maildir_open_new_message().
+ * See also maildir_msg_open_new().
  */
 static int md_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
@@ -1646,15 +1671,18 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
   }
 }
 
-static int maildir_commit_message(struct Context *ctx, struct Message *msg)
+/**
+ * maildir_msg_commit - Implements MxOps::msg_commit()
+ */
+static int maildir_msg_commit(struct Context *ctx, struct Message *msg)
 {
   return md_commit_message(ctx, msg, NULL);
 }
 
-/*
+/**
+ * mh_commit_msg - XXX
  * commit a message to an MH folder.
  */
-
 static int mh_commit_msg(struct Context *ctx, struct Message *msg,
                          struct Header *hdr, short updseq)
 {
@@ -1732,7 +1760,10 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
   return 0;
 }
 
-static int mh_commit_message(struct Context *ctx, struct Message *msg)
+/**
+ * mh_msg_commit - Implements MxOps::msg_commit()
+ */
+static int mh_msg_commit(struct Context *ctx, struct Message *msg)
 {
   return mh_commit_msg(ctx, msg, NULL, 1);
 }
@@ -1751,7 +1782,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   long old_body_length = h->content->length;
   long old_hdr_lines = h->lines;
 
-  struct Message *dest = mx_open_new_message(ctx, h, 0);
+  struct Message *dest = mx_msg_open_new(ctx, h, 0);
   if (!dest)
     return -1;
 
@@ -1768,7 +1799,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     else
       rc = mh_commit_msg(ctx, dest, h, 0);
 
-    mx_close_message(ctx, &dest);
+    mx_msg_close(ctx, &dest);
 
     if (rc == 0)
     {
@@ -1801,7 +1832,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     }
   }
   else
-    mx_close_message(ctx, &dest);
+    mx_msg_close(ctx, &dest);
 
   if (rc == -1 && restore)
   {
@@ -2012,7 +2043,7 @@ static void maildir_update_tables(struct Context *ctx, int *index_hint)
 }
 
 /**
- * maildir_check_mailbox - Check for new mail
+ * maildir_mbox_check - Implements mbox_check()
  *
  * This function handles arrival of new mail and reopening of maildir folders.
  * The basic idea here is we check to see if either the new or cur
@@ -2021,7 +2052,7 @@ static void maildir_update_tables(struct Context *ctx, int *index_hint)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
+static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct stat st_new; /* status of the "new" subdirectory */
   struct stat st_cur; /* status of the "cur" subdirectory */
@@ -2038,7 +2069,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
                                    for a maildir message */
   struct MhData *data = mh_data(ctx);
 
-  /* XXX seems like this check belongs in mx_check_mailbox()
+  /* XXX seems like this check belongs in mx_mbox_check()
    * rather than here.
    */
   if (!CheckNew)
@@ -2171,7 +2202,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mh_check_mailbox - Check for new mail
+ * mh_mbox_check - Implements MxOps::mbox_check()
  *
  * This function handles arrival of new mail and reopening of mh/maildir
  * folders. Things are getting rather complex because we don't have a
@@ -2180,7 +2211,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-static int mh_check_mailbox(struct Context *ctx, int *index_hint)
+static int mh_mbox_check(struct Context *ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
@@ -2291,7 +2322,10 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   return 0;
 }
 
-static int mh_sync_mailbox(struct Context *ctx, int *index_hint)
+/**
+ * mh_mbox_sync - Implements MxOps::mbox_sync()
+ */
+static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int i, j;
 #ifdef USE_HCACHE
@@ -2301,9 +2335,9 @@ static int mh_sync_mailbox(struct Context *ctx, int *index_hint)
   struct Progress progress;
 
   if (ctx->magic == MUTT_MH)
-    i = mh_check_mailbox(ctx, index_hint);
+    i = mh_mbox_check(ctx, index_hint);
   else
-    i = maildir_check_mailbox(ctx, index_hint);
+    i = maildir_mbox_check(ctx, index_hint);
 
   if (i != 0)
     return i;
@@ -2606,30 +2640,38 @@ bool mx_is_mh(const char *path)
   return false;
 }
 
+// clang-format off
+/**
+ * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
+ */
 struct MxOps mx_maildir_ops = {
-  .open = maildir_open_mailbox,
-  .open_append = maildir_open_mailbox_append,
-  .close = mh_close_mailbox,
-  .open_msg = maildir_open_message,
-  .close_msg = mh_close_message,
-  .commit_msg = maildir_commit_message,
-  .open_new_msg = maildir_open_new_message,
-  .check = maildir_check_mailbox,
-  .sync = mh_sync_mailbox,
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = maildir_mbox_open,
+  .mbox_open_append = maildir_mbox_open_append,
+  .mbox_check       = maildir_mbox_check,
+  .mbox_sync        = mh_mbox_sync,
+  .mbox_close       = mh_mbox_close,
+  .msg_open         = maildir_msg_open,
+  .msg_open_new     = maildir_msg_open_new,
+  .msg_commit       = maildir_msg_commit,
+  .msg_close        = mh_msg_close,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
 
+/**
+ * struct mx_mh_ops - Mailbox callback functions for MH mailboxes
+ */
 struct MxOps mx_mh_ops = {
-  .open = mh_open_mailbox,
-  .open_append = mh_open_mailbox_append,
-  .close = mh_close_mailbox,
-  .open_msg = mh_open_message,
-  .close_msg = mh_close_message,
-  .commit_msg = mh_commit_message,
-  .open_new_msg = mh_open_new_message,
-  .check = mh_check_mailbox,
-  .sync = mh_sync_mailbox,
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mh_mbox_open,
+  .mbox_open_append = mh_mbox_open_append,
+  .mbox_check       = mh_mbox_check,
+  .mbox_sync        = mh_mbox_sync,
+  .mbox_close       = mh_mbox_close,
+  .msg_open         = mh_msg_open,
+  .msg_open_new     = mh_msg_open_new,
+  .msg_commit       = mh_msg_commit,
+  .msg_close        = mh_msg_close,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

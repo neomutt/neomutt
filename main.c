@@ -1069,7 +1069,7 @@ int main(int argc, char *argv[], char *envp[])
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
     repeat_error = true;
-    Context = mx_open_mailbox(
+    Context = mx_mbox_open(
         folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
     if (Context || !explicit_folder)
     {

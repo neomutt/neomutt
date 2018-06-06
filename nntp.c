@@ -1478,12 +1478,9 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 }
 
 /**
- * nntp_open_mailbox - Open newsgroup
- * @param ctx Mailbox
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_mbox_open - Implements MxOps::mbox_open()
  */
-static int nntp_open_mailbox(struct Context *ctx)
+static int nntp_mbox_open(struct Context *ctx)
 {
   struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
@@ -1615,14 +1612,9 @@ static int nntp_open_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_open_message - Fetch message
- * @param ctx   Mailbox
- * @param msg   Message to fetch
- * @param msgno Message number
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_msg_open - Implements MxOps::msg_open()
  */
-static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
+static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->data;
   struct Header *hdr = ctx->hdrs[msgno];
@@ -1743,13 +1735,11 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 }
 
 /**
- * nntp_close_message - Close message
- * @param ctx Mailbox
- * @param msg Message to close
- * @retval 0   Success
- * @retval EOF Error, see errno
+ * nntp_msg_close - Implements MxOps::msg_close()
+ *
+ * @note May also return EOF Failure, see errno
  */
-static int nntp_close_message(struct Context *ctx, struct Message *msg)
+static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
@@ -2098,7 +2088,7 @@ static int check_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_check_mailbox - Check current newsgroup for new articles
+ * nntp_mbox_check - Implements MxOps::mbox_check()
  * @param ctx        Mailbox
  * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
@@ -2106,7 +2096,7 @@ static int check_mailbox(struct Context *ctx)
  * @retval  0             No change
  * @retval -1             Lost connection
  */
-static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_mbox_check(struct Context *ctx, int *index_hint)
 {
   int ret = check_mailbox(ctx);
   if (ret == 0)
@@ -2119,15 +2109,11 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_sync_mailbox - Save changes to .newsrc and cache
- * @param ctx        Mailbox
- * @param index_hint Current message (UNUSED)
- * @retval  0 Success
- * @retval -1 Failure
+ * nntp_mbox_sync - Implements MxOps::mbox_sync()
  *
  * @note May also return values from check_mailbox()
  */
-static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 {
   struct NntpData *nntp_data = ctx->data;
   int rc;
@@ -2185,11 +2171,10 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nntp_close_mailbox - Free up memory associated with the newsgroup context
- * @param ctx Mailbox
+ * nntp_mbox_close - Implements MxOps::mbox_close()
  * @retval 0 Always
  */
-static int nntp_close_mailbox(struct Context *ctx)
+static int nntp_mbox_close(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
 
@@ -2591,16 +2576,21 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   return rc < 0 ? -1 : 0;
 }
 
+// clang-format off
+/**
+ * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
+ */
 struct MxOps mx_nntp_ops = {
-  .open = nntp_open_mailbox,
-  .open_append = NULL,
-  .close = nntp_close_mailbox,
-  .check = nntp_check_mailbox,
-  .sync = nntp_sync_mailbox,
-  .open_msg = nntp_open_message,
-  .close_msg = nntp_close_message,
-  .commit_msg = NULL,
-  .open_new_msg = NULL,
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = nntp_mbox_open,
+  .mbox_open_append = NULL,
+  .mbox_check       = nntp_mbox_check,
+  .mbox_sync        = nntp_mbox_sync,
+  .mbox_close       = nntp_mbox_close,
+  .msg_open         = nntp_msg_open,
+  .msg_open_new     = NULL,
+  .msg_commit       = NULL,
+  .msg_close        = nntp_msg_close,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

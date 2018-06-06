@@ -2722,7 +2722,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
   }
 
   /* If we failed to open a message, return with error */
-  if (!fp && (msg = mx_open_message(Context, h->msgno)) == NULL)
+  if (!fp && (msg = mx_msg_open(Context, h->msgno)) == NULL)
     return -1;
 
   if (!fp)
@@ -2766,7 +2766,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
   }
 
   if (msg)
-    mx_close_message(Context, &msg);
+    mx_msg_close(Context, &msg);
 
   return rc;
 }
@@ -2942,7 +2942,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path);
 #endif
-  if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
+  if (mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
     goto done;
@@ -2958,7 +2958,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     if (!tempfp)
     {
       mutt_perror(tempfile);
-      mx_close_mailbox(&f, NULL);
+      mx_mbox_close(&f, NULL);
       goto done;
     }
     /* remember new mail status before appending message */
@@ -2970,11 +2970,11 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_open_new_message(&f, hdr, onm_flags);
+  msg = mx_msg_open_new(&f, hdr, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
-    mx_close_mailbox(&f, NULL);
+    mx_mbox_close(&f, NULL);
     goto done;
   }
 
@@ -3090,9 +3090,9 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_commit_message(msg, &f); /* XXX - really? */
-      mx_close_message(&f, &msg);
-      mx_close_mailbox(&f, NULL);
+      mx_msg_commit(&f, msg); /* XXX - really? */
+      mx_msg_close(&f, &msg);
+      mx_mbox_close(&f, NULL);
       goto done;
     }
 
@@ -3118,12 +3118,12 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     rc = mutt_write_mime_body(hdr->content, msg->fp);
   }
 
-  if (mx_commit_message(msg, &f) != 0)
+  if (mx_msg_commit(&f, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->commited_path);
-  mx_close_message(&f, &msg);
-  mx_close_mailbox(&f, NULL);
+  mx_msg_close(&f, &msg);
+  mx_mbox_close(&f, NULL);
 
   if (!post && need_buffy_cleanup)
     mutt_buffy_cleanup(path, &st);

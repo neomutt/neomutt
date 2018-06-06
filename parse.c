@@ -760,7 +760,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
     if (cur->content->parts)
       break; /* The message was parsed earlier. */
 
-    msg = mx_open_message(ctx, cur->msgno);
+    msg = mx_msg_open(ctx, cur->msgno);
     if (msg)
     {
       mutt_parse_part(msg->fp, cur->content);
@@ -768,7 +768,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
       if (WithCrypto)
         cur->security = crypt_query(cur->content);
 
-      mx_close_message(ctx, &msg);
+      mx_msg_close(ctx, &msg);
     }
   } while (0);
 

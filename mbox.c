@@ -439,9 +439,9 @@ static int mbox_parse_mailbox(struct Context *ctx)
 }
 
 /**
- * mbox_open_mailbox - open a mbox or mmdf style mailbox
+ * mbox_mbox_open - Implements MxOps::mbox_open()
  */
-static int mbox_open_mailbox(struct Context *ctx)
+static int mbox_mbox_open(struct Context *ctx)
 {
   int rc;
 
@@ -471,7 +471,10 @@ static int mbox_open_mailbox(struct Context *ctx)
   return rc;
 }
 
-static int mbox_open_mailbox_append(struct Context *ctx, int flags)
+/**
+ * mbox_mbox_open_append - Implements MxOps::mbox_open_append()
+ */
+static int mbox_mbox_open_append(struct Context *ctx, int flags)
 {
   ctx->fp = mutt_file_fopen(ctx->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
   if (!ctx->fp)
@@ -492,7 +495,11 @@ static int mbox_open_mailbox_append(struct Context *ctx, int flags)
   return 0;
 }
 
-static int mbox_close_mailbox(struct Context *ctx)
+/**
+ * mbox_mbox_close - Implements MxOps::mbox_close()
+ * @retval 0 Always
+ */
+static int mbox_mbox_close(struct Context *ctx)
 {
   if (!ctx->fp)
   {
@@ -510,21 +517,31 @@ static int mbox_close_mailbox(struct Context *ctx)
   return 0;
 }
 
-static int mbox_open_message(struct Context *ctx, struct Message *msg, int msgno)
+/**
+ * mbox_msg_open - Implements MxOps::msg_open()
+ */
+static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   msg->fp = ctx->fp;
 
   return 0;
 }
 
-static int mbox_close_message(struct Context *ctx, struct Message *msg)
+/**
+ * mbox_msg_close - Implements MxOps::msg_close()
+ * @retval 0 Always
+ */
+static int mbox_msg_close(struct Context *ctx, struct Message *msg)
 {
   msg->fp = NULL;
 
   return 0;
 }
 
-static int mbox_commit_message(struct Context *ctx, struct Message *msg)
+/**
+ * mbox_msg_commit - Implements MxOps::msg_commit()
+ */
+static int mbox_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (fputc('\n', msg->fp) == EOF)
     return -1;
@@ -538,7 +555,10 @@ static int mbox_commit_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int mmdf_commit_message(struct Context *ctx, struct Message *msg)
+/**
+ * mmdf_msg_commit - Implements MxOps::msg_commit()
+ */
+static int mmdf_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (fputs(MMDF_SEP, msg->fp) == EOF)
     return -1;
@@ -552,9 +572,13 @@ static int mmdf_commit_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int mbox_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+/**
+ * mbox_msg_open_new - Implements MxOps::msg_open_new()
+ * @retval 0 Always
+ */
+static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  msg->fp = dest->fp;
+  msg->fp = ctx->fp;
   return 0;
 }
 
@@ -774,7 +798,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mbox_check_mailbox - Has mailbox changed on disk
+ * mbox_mbox_check - Implements MxOps::mbox_check()
  * @param[in]  ctx        Context
  * @param[out] index_hint Keep track of current index selection
  * @retval #MUTT_REOPENED  Mailbox has been reopened
@@ -783,7 +807,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
  * @retval 0               No change
  * @retval -1              Error
  */
-static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
+static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct stat st;
   bool unlock = false;
@@ -936,11 +960,9 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
 }
 
 /**
- * mbox_sync_mailbox - Sync a mailbox to disk
- * @retval  0 Success
- * @retval -1 Failure
+ * mbox_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
+static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[32];
@@ -988,7 +1010,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  i = mbox_check_mailbox(ctx, index_hint);
+  i = mbox_mbox_check(ctx, index_hint);
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
@@ -1305,30 +1327,38 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
+// clang-format off
+/**
+ * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
+ */
 struct MxOps mx_mbox_ops = {
-  .open = mbox_open_mailbox,
-  .open_append = mbox_open_mailbox_append,
-  .close = mbox_close_mailbox,
-  .open_msg = mbox_open_message,
-  .close_msg = mbox_close_message,
-  .commit_msg = mbox_commit_message,
-  .open_new_msg = mbox_open_new_message,
-  .check = mbox_check_mailbox,
-  .sync = mbox_sync_mailbox,
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mbox_mbox_open,
+  .mbox_open_append = mbox_mbox_open_append,
+  .mbox_check       = mbox_mbox_check,
+  .mbox_sync        = mbox_mbox_sync,
+  .mbox_close       = mbox_mbox_close,
+  .msg_open         = mbox_msg_open,
+  .msg_open_new     = mbox_msg_open_new,
+  .msg_commit       = mbox_msg_commit,
+  .msg_close        = mbox_msg_close,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
 
+/**
+ * struct mx_mmdf_ops - Mailbox callback functions for MMDF mailboxes
+ */
 struct MxOps mx_mmdf_ops = {
-  .open = mbox_open_mailbox,
-  .open_append = mbox_open_mailbox_append,
-  .close = mbox_close_mailbox,
-  .open_msg = mbox_open_message,
-  .close_msg = mbox_close_message,
-  .commit_msg = mmdf_commit_message,
-  .open_new_msg = mbox_open_new_message,
-  .check = mbox_check_mailbox,
-  .sync = mbox_sync_mailbox,
-  .edit_msg_tags = NULL,
-  .commit_msg_tags = NULL,
+  .mbox_open        = mbox_mbox_open,
+  .mbox_open_append = mbox_mbox_open_append,
+  .mbox_check       = mbox_mbox_check,
+  .mbox_sync        = mbox_mbox_sync,
+  .mbox_close       = mbox_mbox_close,
+  .msg_open         = mbox_msg_open,
+  .msg_open_new     = mbox_msg_open_new,
+  .msg_commit       = mmdf_msg_commit,
+  .msg_close        = mbox_msg_close,
+  .tags_edit        = NULL,
+  .tags_commit      = NULL,
 };
+// clang-format on

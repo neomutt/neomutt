@@ -82,7 +82,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  rc = (mx_open_mailbox(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
+  rc = (mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
 
   MboxType = omagic;
 
@@ -97,7 +97,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
       CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
   oerrno = errno;
 
-  mx_close_mailbox(&tmpctx, NULL);
+  mx_mbox_close(&tmpctx, NULL);
 
   if (rc == -1)
   {
@@ -184,7 +184,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  if (mx_open_mailbox(ctx->path, MUTT_APPEND, &tmpctx) == NULL)
+  if (mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx) == NULL)
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
@@ -209,14 +209,14 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   o_read = cur->read;
   o_old = cur->old;
   cur->read = cur->old = false;
-  msg = mx_open_new_message(&tmpctx, cur, of);
+  msg = mx_msg_open_new(&tmpctx, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
   if (!msg)
   {
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_close_mailbox(&tmpctx, NULL);
+    mx_mbox_close(&tmpctx, NULL);
     goto bail;
   }
 
@@ -227,10 +227,10 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_commit_message(msg, &tmpctx);
-  mx_close_message(&tmpctx, &msg);
+  rc = mx_msg_commit(&tmpctx, msg);
+  mx_msg_close(&tmpctx, &msg);
 
-  mx_close_mailbox(&tmpctx, NULL);
+  mx_mbox_close(&tmpctx, NULL);
 
 bail:
   if (fp)

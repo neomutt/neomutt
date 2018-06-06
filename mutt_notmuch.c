@@ -1171,7 +1171,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
 
   if (newpath)
   {
-    /* remember that file has been moved -- nm_sync_mailbox() will update the DB */
+    /* remember that file has been moved -- nm_mbox_sync() will update the DB */
     struct NmHdrData *hd = (struct NmHdrData *) h->data;
 
     if (hd)
@@ -2005,16 +2005,9 @@ void nm_query_window_backward(void)
 }
 
 /**
- * nm_edit_message_tags - Prompt new messages tags
- * @param ctx    Mailbox
- * @param tags   Existing tags (UNUSED)
- * @param buf    Buffer for message tags
- * @param buflen Length of buffer
- * @retval -1 Error
- * @retval 0  No valid user input
- * @retval 1  Buffer set
+ * nm_tags_edit - Implements MxOps::tags_edit()
  */
-static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
   if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
@@ -2023,14 +2016,9 @@ static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf
 }
 
 /**
- * nm_commit_message_tags - Save the tags to a message
- * @param ctx Mailbox
- * @param hdr Email Header
- * @param buf Buffer containing tags
- * @retval  0 Success
- * @retval -1 Failure
+ * nm_tags_commit - Implements MxOps::tags_commit()
  */
-static int nm_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
+static int nm_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
@@ -2410,13 +2398,9 @@ done:
 }
 
 /**
- * nm_open_mailbox - Open a notmuch virtual mailbox
- * @param ctx Mailbox
- * @retval  0 Success
- * @retval -1 Error
+ * nm_mbox_open - Implements MxOps::mbox_open()
  */
-
-static int nm_open_mailbox(struct Context *ctx)
+static int nm_mbox_open(struct Context *ctx)
 {
   notmuch_query_t *q = NULL;
   struct NmCtxData *data = NULL;
@@ -2464,12 +2448,9 @@ static int nm_open_mailbox(struct Context *ctx)
 }
 
 /**
- * nm_close_mailbox - Close a notmuch virtual mailbox
- * @param ctx Mailbox
- * @retval  0 Success
- * @retval -1 Error
+ * nm_mbox_close - Implements MxOps::mbox_close()
  */
-static int nm_close_mailbox(struct Context *ctx)
+static int nm_mbox_close(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
     return -1;
@@ -2477,7 +2458,6 @@ static int nm_close_mailbox(struct Context *ctx)
   for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *h = ctx->hdrs[i];
-
     if (h)
     {
       free_hdrdata(h->data);
@@ -2491,7 +2471,7 @@ static int nm_close_mailbox(struct Context *ctx)
 }
 
 /**
- * nm_check_mailbox - Check a notmuch mailbox for new mail
+ * nm_mbox_check - Implements MxOps::mbox_check()
  * @param ctx         Mailbox
  * @param index_hint  Remember our place in the index
  * @retval -1 Error
@@ -2500,7 +2480,7 @@ static int nm_close_mailbox(struct Context *ctx)
  * @retval #MUTT_REOPENED Mailbox closed and reopened
  * @retval #MUTT_FLAGS    Flags have changed
  */
-static int nm_check_mailbox(struct Context *ctx, int *index_hint)
+static int nm_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   time_t mtime = 0;
@@ -2619,13 +2599,9 @@ done:
 }
 
 /**
- * nm_sync_mailbox - Sync a notmuch mailbox
- * @param ctx        Mailbox
- * @param index_hint Remember our place in the index
- * @retval  0 Success
- * @retval -1 Failure
+ * nm_mbox_sync - Implements MxOps::mbox_sync()
  */
-static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
+static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   int rc = 0;
@@ -2706,14 +2682,9 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * nm_open_message - Open a message from a notmuch mailbox
- * @param ctx   Mailbox
- * @param msg   Message to open
- * @param msgno Index of message to open
- * @retval 0 Success
- * @retval 1 Error
+ * nm_msg_open - Implements MxOps::msg_open()
  */
-static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
+static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx || !msg)
     return 1;
@@ -2735,47 +2706,41 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 }
 
 /**
- * nm_close_message - Close a message
- * @param ctx Mailbox
- * @param msg Message to close
- * @retval 0 Success
- * @retval 1 Error
+ * nm_msg_close - Implements MxOps::msg_close()
  */
-static int nm_close_message(struct Context *ctx, struct Message *msg)
+static int nm_msg_close(struct Context *ctx, struct Message *msg)
 {
   if (!msg)
-    return 1;
+    return -1;
   mutt_file_fclose(&(msg->fp));
   return 0;
 }
 
 /**
- * nm_commit_message - Save the changes to a message
- * @param ctx Mailbox
- * @param msg Message to commit
+ * nm_msg_commit - Implements MxOps::msg_commit()
  * @retval -1 Always
  */
-static int nm_commit_message(struct Context *ctx, struct Message *msg)
+static int nm_msg_commit(struct Context *ctx, struct Message *msg)
 {
   mutt_error(_("Can't write to virtual folder."));
   return -1;
 }
 
+// clang-format off
 /**
- * struct mx_notmuch_ops - Mailbox API
- *
- * These functions are common to all mailbox types.
+ * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
  */
 struct MxOps mx_notmuch_ops = {
-  .open = nm_open_mailbox, /* calls init_context() */
-  .open_append = NULL,
-  .close = nm_close_mailbox,
-  .check = nm_check_mailbox,
-  .sync = nm_sync_mailbox,
-  .open_msg = nm_open_message,
-  .close_msg = nm_close_message,
-  .commit_msg = nm_commit_message,
-  .open_new_msg = NULL,
-  .edit_msg_tags = nm_edit_message_tags,
-  .commit_msg_tags = nm_commit_message_tags,
+  .mbox_open        = nm_mbox_open, /* calls init_context() */
+  .mbox_open_append = NULL,
+  .mbox_check       = nm_mbox_check,
+  .mbox_sync        = nm_mbox_sync,
+  .mbox_close       = nm_mbox_close,
+  .msg_open         = nm_msg_open,
+  .msg_open_new     = NULL,
+  .msg_commit       = nm_msg_commit,
+  .msg_close        = nm_msg_close,
+  .tags_edit        = nm_tags_edit,
+  .tags_commit      = nm_tags_commit,
 };
+// clang-format on
