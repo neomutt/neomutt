@@ -919,7 +919,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     s.fpout = open_memstream(&temp, &tempsize);
     if (!s.fpout)
     {
-      mutt_perror(_("Error opening memstream"));
+      mutt_perror(_("Error opening 'memory stream'"));
       return 0;
     }
 #else
@@ -964,7 +964,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       fp = fmemopen(temp, tempsize, "r");
       if (!fp)
       {
-        mutt_perror(_("Error re-opening memstream"));
+        mutt_perror(_("Error re-opening 'memory stream'"));
         return 0;
       }
     }
