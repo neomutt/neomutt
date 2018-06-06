@@ -352,7 +352,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         if (!is_uid && (!*is_subkey || !PgpIgnoreSubkeys ||
                         !((flags & KEYFLAG_DISABLED) || (flags & KEYFLAG_REVOKED) ||
                           (flags & KEYFLAG_EXPIRED))))
+        {
           tmp.flags |= flags;
+        }
 
         break;
 

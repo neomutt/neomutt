@@ -630,11 +630,15 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
         if (folder->ff->nd->unread != 0)
+        {
           mutt_expando_format(buf, buflen, col, cols, if_str,
                               group_index_format_str, data, flags);
+        }
         else
+        {
           mutt_expando_format(buf, buflen, col, cols, else_str,
                               group_index_format_str, data, flags);
+        }
       }
       else if (Context && Context->data == folder->ff->nd)
       {
@@ -732,7 +736,9 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       if (Mask && Mask->regex &&
           !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
+      {
         continue;
+      }
       add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
     }
   }
@@ -791,7 +797,9 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       }
       if (Mask && Mask->regex &&
           !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
+      {
         continue;
+      }
 
       mutt_file_concat_path(buffer, d, de->d_name, sizeof(buffer));
       if (lstat(buffer, &s) == -1)
@@ -973,14 +981,18 @@ static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 #ifdef USE_NNTP
   if (OptNews)
+  {
     mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
                         NONULL(GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+  }
   else
 #endif
+  {
     mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
                         NONULL(FolderFormat), folder_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+  }
 }
 
 #ifdef USE_NOTMUCH
@@ -1048,8 +1060,10 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     if (buffy)
       snprintf(title, titlelen, _("Subscribed newsgroups"));
     else
+    {
       snprintf(title, titlelen, _("Newsgroups on server [%s]"),
                CurrentNewsSrv->conn->account.host);
+    }
   }
   else
 #endif
@@ -1126,7 +1140,7 @@ static int file_tag(struct Menu *menu, int n, int m)
   bool ot = ff->tagged;
   ff->tagged = (m >= 0 ? m : !ff->tagged);
 
-  return ff->tagged - ot;
+  return (ff->tagged - ot);
 }
 
 /**
@@ -1428,8 +1442,10 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           }
 #endif
           else
+          {
             mutt_file_concat_path(buf, LastDir, state.entry[menu->current].name,
                                   sizeof(buf));
+          }
 
           if ((mx_get_magic(buf) <= 0)
 #ifdef USE_IMAP
@@ -1677,8 +1693,10 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               FREE(&((state.entry)[nentry].desc));
               /* and move all other entries up */
               if (nentry + 1 < state.entrylen)
+              {
                 memmove(state.entry + nentry, state.entry + nentry + 1,
                         sizeof(struct FolderFile) * (state.entrylen - (nentry + 1)));
+              }
               memset(&state.entry[state.entrylen - 1], 0, sizeof(struct FolderFile));
               state.entrylen--;
               mutt_message(_("Mailbox deleted."));

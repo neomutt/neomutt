@@ -37,6 +37,7 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
@@ -412,7 +413,7 @@ int mutt_tag_attach(struct Menu *menu, int n, int m)
   bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
-  return cur->tagged - ot;
+  return (cur->tagged - ot);
 }
 
 /**
@@ -439,7 +440,9 @@ static void prepend_curdir(char *dst, size_t dstlen)
   if (!dst || !*dst || *dst == '/' || dstlen < 3 ||
       /* XXX bad modularization, these are special to mutt_expand_path() */
       !strchr("~=+@<>!-^", *dst))
+  {
     return;
+  }
 
   dstlen -= 3;
   l = strlen(dst) + 2;
@@ -461,8 +464,10 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   if (body->filename)
   {
     if (directory && *directory)
+    {
       mutt_file_concat_path(buf, *directory, mutt_file_basename(body->filename),
                             sizeof(buf));
+    }
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
@@ -546,7 +551,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   buf[0] = 0;
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -688,7 +693,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, bool tag,
                                  struct Body *top, bool filter, struct State *state)
 {
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -724,7 +729,9 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (mutt_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
                      sizeof(buf), MUTT_CMD) != 0 ||
       !buf[0])
+  {
     return;
+  }
 
   mutt_expand_path(buf, sizeof(buf));
 
@@ -745,7 +752,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
   char type[STRING];
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
       top = actx->idx[i]->content;
@@ -780,7 +787,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 {
   char type[STRING];
 
-  for (int i = 0; !tag || i < actx->idxlen; i++)
+  for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
     {
@@ -877,9 +884,13 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
+    {
       if (actx->idx[i]->content->tagged)
+      {
         crypt_pgp_extract_keys_from_attachment_list(actx->idx[i]->fp, 0,
                                                     actx->idx[i]->content);
+      }
+    }
   }
 }
 
@@ -1314,8 +1325,10 @@ void mutt_view_attachments(struct Header *hdr)
               menu->redraw = REDRAW_CURRENT;
           }
           else
+          {
             mutt_message(
                 _("Only deletion of multipart attachments is supported."));
+          }
         }
         else
         {
@@ -1329,8 +1342,10 @@ void mutt_view_attachments(struct Header *hdr)
                 menu->redraw = REDRAW_INDEX;
               }
               else
+              {
                 mutt_message(
                     _("Only deletion of multipart attachments is supported."));
+              }
             }
           }
         }

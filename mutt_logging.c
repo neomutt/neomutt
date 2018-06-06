@@ -180,7 +180,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     ret += snprintf(buf2, len, ": %s (errno = %d)", p, errno);
   }
 
-  bool dupe = (strcmp(buf, ErrorBuf) == 0);
+  const bool dupe = (strcmp(buf, ErrorBuf) == 0);
   if (!dupe)
   {
     /* Only log unique messages */

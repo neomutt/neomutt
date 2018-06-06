@@ -386,7 +386,10 @@ static char *apply_subject_mods(struct Envelope *env)
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
-    return env->disp_subj = NULL;
+  {
+    env->disp_subj = NULL;
+    return NULL;
+  }
 
   env->disp_subj = mutt_replacelist_apply(SubjectRegexList, NULL, 0, env->subject);
   return env->disp_subj;
@@ -523,8 +526,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'a':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
       if (hdr->env->from && hdr->env->from->mailbox)
+      {
         mutt_format_s(buf + colorlen, buflen - colorlen, prec,
                       mutt_addr_for_display(hdr->env->from));
+      }
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
@@ -883,11 +888,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           char *parent_tags = NULL;
           if (hdr->thread->prev && hdr->thread->prev->message)
+          {
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+          }
           if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
+          {
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+          }
           if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
             i = 0;
           FREE(&parent_tags);
@@ -1140,8 +1149,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'W':
       if (!optional)
+      {
         mutt_format_s(buf, buflen, prec,
                       hdr->env->organization ? hdr->env->organization : "");
+      }
       else if (!hdr->env->organization)
         optional = 0;
       break;
@@ -1149,8 +1160,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 #ifdef USE_NNTP
     case 'x':
       if (!optional)
+      {
         mutt_format_s(buf, buflen, prec,
                       hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
+      }
       else if (!hdr->env->x_comment_to)
         optional = 0;
       break;
@@ -1342,11 +1355,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   }
 
   if (optional)
+  {
     mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str,
                         (unsigned long) hfi, flags);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
+  {
     mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str,
                         (unsigned long) hfi, flags);
+  }
 
   return src;
 }

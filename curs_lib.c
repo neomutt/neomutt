@@ -1045,7 +1045,7 @@ bool message_is_visible(struct Context *ctx, int index)
   if (!ctx || !ctx->hdrs || (index >= ctx->msgcount))
     return false;
 
-  return !ctx->pattern || ctx->hdrs[index]->limited;
+  return (!ctx->pattern || ctx->hdrs[index]->limited);
 }
 
 /**

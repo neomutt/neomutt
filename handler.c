@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "handler.h"
 #include "body.h"
 #include "copy.h"
 #include "enriched.h"
@@ -47,9 +48,16 @@
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
+
+#define TXTHTML 1
+#define TXTPLAIN 2
+#define TXTENRICHED 3
 
 typedef int (*handler_t)(struct Body *b, struct State *s);
 
@@ -319,70 +327,6 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
 }
 
 /**
- * mutt_decode_base64 - Decode base64-encoded text
- * @param s      State to work with
- * @param len    Length of text to decode
- * @param istext Mime part is plain text
- * @param cd     Iconv conversion descriptor
- */
-void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
-{
-  char buf[5];
-  int ch, i;
-  char bufi[BUFI_SIZE];
-  size_t l = 0;
-
-  buf[4] = '\0';
-
-  if (istext)
-    state_set_prefix(s);
-
-  while (len > 0)
-  {
-    for (i = 0; (i < 4) && (len > 0); len--)
-    {
-      ch = fgetc(s->fpin);
-      if (ch == EOF)
-        break;
-      if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
-        buf[i++] = ch;
-    }
-    if (i != 4)
-    {
-      /* "i" may be zero if there is trailing whitespace, which is not an error */
-      if (i != 0)
-        mutt_debug(2, "didn't get a multiple of 4 chars.\n");
-      break;
-    }
-
-    const int c1 = base64val(buf[0]);
-    const int c2 = base64val(buf[1]);
-    ch = (c1 << 2) | (c2 >> 4);
-    bufi[l++] = ch;
-
-    if (buf[2] == '=')
-      break;
-    const int c3 = base64val(buf[2]);
-    ch = ((c2 & 0xf) << 4) | (c3 >> 2);
-    bufi[l++] = ch;
-
-    if (buf[3] == '=')
-      break;
-    const int c4 = base64val(buf[3]);
-    ch = ((c3 & 0x3) << 6) | c4;
-    bufi[l++] = ch;
-
-    if ((l + 8) >= sizeof(bufi))
-      convert_to_state(cd, bufi, &l, s);
-  }
-
-  convert_to_state(cd, bufi, &l, s);
-  convert_to_state(cd, 0, 0, s);
-
-  state_reset_prefix(s);
-}
-
-/**
  * decode_byte - Decode a uuencoded byte
  * @param ch Character to decode
  * @retval num Decoded value
@@ -554,9 +498,405 @@ static bool is_autoview(struct Body *b)
   return false;
 }
 
-#define TXTHTML 1
-#define TXTPLAIN 2
-#define TXTENRICHED 3
+/**
+ * autoview_handler - Handler for autoviewable attachments
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
+static int autoview_handler(struct Body *a, struct State *s)
+{
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
+  char buffer[LONG_STRING];
+  char type[STRING];
+  char command[LONG_STRING];
+  char tempfile[_POSIX_PATH_MAX] = "";
+  char *fname = NULL;
+  FILE *fpin = NULL;
+  FILE *fpout = NULL;
+  FILE *fperr = NULL;
+  int piped = false;
+  pid_t thepid;
+  int rc = 0;
+
+  snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
+  rfc1524_mailcap_lookup(a, type, entry, MUTT_AUTOVIEW);
+
+  fname = mutt_str_strdup(a->filename);
+  mutt_file_sanitize_filename(fname, true);
+  rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile));
+  FREE(&fname);
+
+  if (entry->command)
+  {
+    mutt_str_strfcpy(command, entry->command, sizeof(command));
+
+    /* rfc1524_expand_command returns 0 if the file is required */
+    piped = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
+
+    if (s->flags & MUTT_DISPLAY)
+    {
+      state_mark_attach(s);
+      state_printf(s, _("[-- Autoview using %s --]\n"), command);
+      mutt_message(_("Invoking autoview command: %s"), command);
+    }
+
+    fpin = mutt_file_fopen(tempfile, "w+");
+    if (!fpin)
+    {
+      mutt_perror("fopen");
+      rfc1524_free_entry(&entry);
+      return -1;
+    }
+
+    mutt_file_copy_bytes(s->fpin, fpin, a->length);
+
+    if (!piped)
+    {
+      mutt_file_fclose(&fpin);
+      thepid = mutt_create_filter(command, NULL, &fpout, &fperr);
+    }
+    else
+    {
+      unlink(tempfile);
+      fflush(fpin);
+      rewind(fpin);
+      thepid = mutt_create_filter_fd(command, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
+    }
+
+    if (thepid < 0)
+    {
+      mutt_perror(_("Can't create filter"));
+      if (s->flags & MUTT_DISPLAY)
+      {
+        state_mark_attach(s);
+        state_printf(s, _("[-- Can't run %s. --]\n"), command);
+      }
+      rc = -1;
+      goto bail;
+    }
+
+    if (s->prefix)
+    {
+      while (fgets(buffer, sizeof(buffer), fpout) != NULL)
+      {
+        state_puts(s->prefix, s);
+        state_puts(buffer, s);
+      }
+      /* check for data on stderr */
+      if (fgets(buffer, sizeof(buffer), fperr))
+      {
+        if (s->flags & MUTT_DISPLAY)
+        {
+          state_mark_attach(s);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+        }
+
+        state_puts(s->prefix, s);
+        state_puts(buffer, s);
+        while (fgets(buffer, sizeof(buffer), fperr) != NULL)
+        {
+          state_puts(s->prefix, s);
+          state_puts(buffer, s);
+        }
+      }
+    }
+    else
+    {
+      mutt_file_copy_stream(fpout, s->fpout);
+      /* Check for stderr messages */
+      if (fgets(buffer, sizeof(buffer), fperr))
+      {
+        if (s->flags & MUTT_DISPLAY)
+        {
+          state_mark_attach(s);
+          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
+        }
+
+        state_puts(buffer, s);
+        mutt_file_copy_stream(fperr, s->fpout);
+      }
+    }
+
+  bail:
+    mutt_file_fclose(&fpout);
+    mutt_file_fclose(&fperr);
+
+    mutt_wait_filter(thepid);
+    if (piped)
+      mutt_file_fclose(&fpin);
+    else
+      mutt_file_unlink(tempfile);
+
+    if (s->flags & MUTT_DISPLAY)
+      mutt_clear_error();
+  }
+  rfc1524_free_entry(&entry);
+
+  return rc;
+}
+
+/**
+ * text_plain_handler - Handler for plain text
+ * @param b Body of email (UNUSED)
+ * @param s State to work with
+ * @retval 0 Always
+ *
+ * When generating format=flowed ($text_flowed is set) from format=fixed, strip
+ * all trailing spaces to improve interoperability; if $text_flowed is unset,
+ * simply verbatim copy input.
+ */
+static int text_plain_handler(struct Body *b, struct State *s)
+{
+  char *buf = NULL;
+  size_t l = 0, sz = 0;
+
+  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
+  {
+    if ((mutt_str_strcmp(buf, "-- ") != 0) && TextFlowed)
+    {
+      l = mutt_str_strlen(buf);
+      while (l > 0 && buf[l - 1] == ' ')
+        buf[--l] = '\0';
+    }
+    if (s->prefix)
+      state_puts(s->prefix, s);
+    state_puts(buf, s);
+    state_putc('\n', s);
+  }
+
+  FREE(&buf);
+  return 0;
+}
+
+/**
+ * message_handler - Handler for message/rfc822 body parts
+ * @param a Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
+static int message_handler(struct Body *a, struct State *s)
+{
+  struct stat st;
+  struct Body *b = NULL;
+  LOFF_T off_start;
+  int rc = 0;
+
+  off_start = ftello(s->fpin);
+  if (off_start < 0)
+    return -1;
+
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
+  {
+    fstat(fileno(s->fpin), &st);
+    b = mutt_body_new();
+    b->length = (LOFF_T) st.st_size;
+    b->parts = mutt_rfc822_parse_message(s->fpin, b);
+  }
+  else
+    b = a;
+
+  if (b->parts)
+  {
+    mutt_copy_hdr(s->fpin, s->fpout, off_start, b->parts->offset,
+                  (((s->flags & MUTT_WEED) ||
+                    ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && Weed)) ?
+                       (CH_WEED | CH_REORDER) :
+                       0) |
+                      (s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
+                      ((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0),
+                  s->prefix);
+
+    if (s->prefix)
+      state_puts(s->prefix, s);
+    state_putc('\n', s);
+
+    rc = mutt_body_handler(b->parts, s);
+  }
+
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
+  {
+    mutt_body_free(&b);
+  }
+
+  return rc;
+}
+
+/**
+ * external_body_handler - Handler for external-body emails
+ * @param b Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
+static int external_body_handler(struct Body *b, struct State *s)
+{
+  const char *str = NULL;
+  char strbuf[LONG_STRING]; // STRING might be too short but LONG_STRING should be large enough
+
+  const char *access_type = mutt_param_get(&b->parameter, "access-type");
+  if (!access_type)
+  {
+    if (s->flags & MUTT_DISPLAY)
+    {
+      state_mark_attach(s);
+      state_puts(_("[-- Error: message/external-body has no access-type "
+                   "parameter --]\n"),
+                 s);
+      return 0;
+    }
+    else
+      return -1;
+  }
+
+  const char *expiration = mutt_param_get(&b->parameter, "expiration");
+  time_t expire;
+  if (expiration)
+    expire = mutt_date_parse_date(expiration, NULL);
+  else
+    expire = -1;
+
+  if (mutt_str_strcasecmp(access_type, "x-mutt-deleted") == 0)
+  {
+    if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
+    {
+      char pretty_size[10];
+      long size = 0;
+
+      char *length = mutt_param_get(&b->parameter, "length");
+      if (length)
+      {
+        size = strtol(length, NULL, 10);
+        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
+        if (expire != -1)
+        {
+          str = ngettext(
+              /* L10N: If the translation of this string is a multi line string, then
+                 each line should start with "[-- " and end with " --]".
+                 The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+                 expands to a date as returned by `mutt_date_parse_date()`.
+
+                 Note: The size argument printed is not the actual number as passed
+                 to gettext but the prettified version, e.g. size = 2048 will be
+                 printed as 2K.  Your language might be sensitive to that: For
+                 example although '1K' and '1024' represent the same number your
+                 language might inflect the noun 'byte' differently.
+
+                 Sadly, we cannot do anything about that at the moment besides
+                 passing the precise size in bytes. If you are interested the
+                 function responsible for the prettification is
+                 mutt_str_pretty_size() in mutt/string.c.
+               */
+              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
+              "[-- on %s --]\n",
+              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
+              "[-- on %s --]\n",
+              size);
+        }
+        else
+        {
+          str = ngettext(
+              /* L10N: If the translation of this string is a multi line string, then
+                 each line should start with "[-- " and end with " --]".
+                 The first "%s/%s" is a MIME type, e.g. "text/plain".
+
+                 Note: The size argument printed is not the actual number as passed
+                 to gettext but the prettified version, e.g. size = 2048 will be
+                 printed as 2K.  Your language might be sensitive to that: For
+                 example although '1K' and '1024' represent the same number your
+                 language might inflect the noun 'byte' differently.
+
+                 Sadly, we cannot do anything about that at the moment besides
+                 passing the precise size in bytes. If you are interested the
+                 function responsible for the prettification is
+                 mutt_str_pretty_size() in mutt/string.c.
+               */
+              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
+              "[-- This %s/%s attachment (size %s bytes) has been deleted "
+              "--]\n",
+              size);
+        }
+      }
+      else
+      {
+        pretty_size[0] = '\0';
+        if (expire != -1)
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+             expands to a date as returned by `mutt_date_parse_date()`.
+
+             Caution: Argument three %3$ is also defined but should not be used
+             in this translation!
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
+                  "--]\n");
+        }
+        else
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain".
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n");
+        }
+      }
+
+      snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
+               pretty_size, expiration);
+      state_attach_puts(strbuf, s);
+      if (b->parts->filename)
+      {
+        state_mark_attach(s);
+        state_printf(s, _("[-- name: %s --]\n"), b->parts->filename);
+      }
+
+      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
+    }
+  }
+  else if (expiration && expire < time(NULL))
+  {
+    if (s->flags & MUTT_DISPLAY)
+    {
+      /* L10N: If the translation of this string is a multi line string, then
+         each line should start with "[-- " and end with " --]".
+         The "%s/%s" is a MIME type, e.g. "text/plain".
+       */
+      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
+               TYPE(b->parts), b->parts->subtype);
+      state_attach_puts(strbuf, s);
+
+      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+    }
+  }
+  else
+  {
+    if (s->flags & MUTT_DISPLAY)
+    {
+      /* L10N: If the translation of this string is a multi line string, then
+         each line should start with "[-- " and end with " --]".
+         The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
+         access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
+         "LOCAL-FILE", "MAIL-SERVER".
+       */
+      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
+               TYPE(b->parts), b->parts->subtype, access_type);
+      state_attach_puts(strbuf, s);
+
+      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
+                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
+    }
+  }
+
+  return 0;
+}
 
 /**
  * alternative_handler - Handler for multipart alternative emails
@@ -845,101 +1185,6 @@ static int multilingual_handler(struct Body *a, struct State *s)
 }
 
 /**
- * message_handler - Handler for message/rfc822 body parts
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
- */
-static int message_handler(struct Body *a, struct State *s)
-{
-  struct stat st;
-  struct Body *b = NULL;
-  LOFF_T off_start;
-  int rc = 0;
-
-  off_start = ftello(s->fpin);
-  if (off_start < 0)
-    return -1;
-
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
-  {
-    fstat(fileno(s->fpin), &st);
-    b = mutt_body_new();
-    b->length = (LOFF_T) st.st_size;
-    b->parts = mutt_rfc822_parse_message(s->fpin, b);
-  }
-  else
-    b = a;
-
-  if (b->parts)
-  {
-    mutt_copy_hdr(s->fpin, s->fpout, off_start, b->parts->offset,
-                  (((s->flags & MUTT_WEED) ||
-                    ((s->flags & (MUTT_DISPLAY | MUTT_PRINTING)) && Weed)) ?
-                       (CH_WEED | CH_REORDER) :
-                       0) |
-                      (s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
-                      ((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0),
-                  s->prefix);
-
-    if (s->prefix)
-      state_puts(s->prefix, s);
-    state_putc('\n', s);
-
-    rc = mutt_body_handler(b->parts, s);
-  }
-
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
-    mutt_body_free(&b);
-
-  return rc;
-}
-
-/**
- * mutt_can_decode - Will decoding the attachment produce any output
- * @param a Body of email to test
- * @retval true Decoding the attachment will produce output
- */
-bool mutt_can_decode(struct Body *a)
-{
-  if (is_autoview(a))
-    return true;
-  else if (a->type == TYPETEXT)
-    return true;
-  else if (a->type == TYPEMESSAGE)
-    return true;
-  else if (a->type == TYPEMULTIPART)
-  {
-    if (WithCrypto)
-    {
-      if ((mutt_str_strcasecmp(a->subtype, "signed") == 0) ||
-          (mutt_str_strcasecmp(a->subtype, "encrypted") == 0))
-      {
-        return true;
-      }
-    }
-
-    for (struct Body *b = a->parts; b; b = b->next)
-    {
-      if (mutt_can_decode(b))
-        return true;
-    }
-  }
-  else if ((WithCrypto != 0) && a->type == TYPEAPPLICATION)
-  {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
-      return true;
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(a))
-      return true;
-  }
-
-  return false;
-}
-
-/**
  * multipart_handler - Handler for multipart emails
  * @param a Body of the email
  * @param s State of text being processed
@@ -1008,410 +1253,14 @@ static int multipart_handler(struct Body *a, struct State *s)
 
   if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
       (a->encoding == ENCUUENCODED))
+  {
     mutt_body_free(&b);
+  }
 
   /* make failure of a single part non-fatal */
   if (rc < 0)
     rc = 1;
   return rc;
-}
-
-/**
- * autoview_handler - Handler for autoviewable attachments
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
- */
-static int autoview_handler(struct Body *a, struct State *s)
-{
-  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
-  char buffer[LONG_STRING];
-  char type[STRING];
-  char command[LONG_STRING];
-  char tempfile[_POSIX_PATH_MAX] = "";
-  char *fname = NULL;
-  FILE *fpin = NULL;
-  FILE *fpout = NULL;
-  FILE *fperr = NULL;
-  int piped = false;
-  pid_t thepid;
-  int rc = 0;
-
-  snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, MUTT_AUTOVIEW);
-
-  fname = mutt_str_strdup(a->filename);
-  mutt_file_sanitize_filename(fname, true);
-  rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile));
-  FREE(&fname);
-
-  if (entry->command)
-  {
-    mutt_str_strfcpy(command, entry->command, sizeof(command));
-
-    /* rfc1524_expand_command returns 0 if the file is required */
-    piped = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
-
-    if (s->flags & MUTT_DISPLAY)
-    {
-      state_mark_attach(s);
-      state_printf(s, _("[-- Autoview using %s --]\n"), command);
-      mutt_message(_("Invoking autoview command: %s"), command);
-    }
-
-    fpin = mutt_file_fopen(tempfile, "w+");
-    if (!fpin)
-    {
-      mutt_perror("fopen");
-      rfc1524_free_entry(&entry);
-      return -1;
-    }
-
-    mutt_file_copy_bytes(s->fpin, fpin, a->length);
-
-    if (!piped)
-    {
-      mutt_file_fclose(&fpin);
-      thepid = mutt_create_filter(command, NULL, &fpout, &fperr);
-    }
-    else
-    {
-      unlink(tempfile);
-      fflush(fpin);
-      rewind(fpin);
-      thepid = mutt_create_filter_fd(command, NULL, &fpout, &fperr, fileno(fpin), -1, -1);
-    }
-
-    if (thepid < 0)
-    {
-      mutt_perror(_("Can't create filter"));
-      if (s->flags & MUTT_DISPLAY)
-      {
-        state_mark_attach(s);
-        state_printf(s, _("[-- Can't run %s. --]\n"), command);
-      }
-      rc = -1;
-      goto bail;
-    }
-
-    if (s->prefix)
-    {
-      while (fgets(buffer, sizeof(buffer), fpout) != NULL)
-      {
-        state_puts(s->prefix, s);
-        state_puts(buffer, s);
-      }
-      /* check for data on stderr */
-      if (fgets(buffer, sizeof(buffer), fperr))
-      {
-        if (s->flags & MUTT_DISPLAY)
-        {
-          state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
-        }
-
-        state_puts(s->prefix, s);
-        state_puts(buffer, s);
-        while (fgets(buffer, sizeof(buffer), fperr) != NULL)
-        {
-          state_puts(s->prefix, s);
-          state_puts(buffer, s);
-        }
-      }
-    }
-    else
-    {
-      mutt_file_copy_stream(fpout, s->fpout);
-      /* Check for stderr messages */
-      if (fgets(buffer, sizeof(buffer), fperr))
-      {
-        if (s->flags & MUTT_DISPLAY)
-        {
-          state_mark_attach(s);
-          state_printf(s, _("[-- Autoview stderr of %s --]\n"), command);
-        }
-
-        state_puts(buffer, s);
-        mutt_file_copy_stream(fperr, s->fpout);
-      }
-    }
-
-  bail:
-    mutt_file_fclose(&fpout);
-    mutt_file_fclose(&fperr);
-
-    mutt_wait_filter(thepid);
-    if (piped)
-      mutt_file_fclose(&fpin);
-    else
-      mutt_file_unlink(tempfile);
-
-    if (s->flags & MUTT_DISPLAY)
-      mutt_clear_error();
-  }
-  rfc1524_free_entry(&entry);
-
-  return rc;
-}
-
-/**
- * external_body_handler - Handler for external-body emails
- * @param b Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
- */
-static int external_body_handler(struct Body *b, struct State *s)
-{
-  const char *str = NULL;
-  char strbuf[LONG_STRING]; // STRING might be too short but LONG_STRING should be large enough
-
-  const char *access_type = mutt_param_get(&b->parameter, "access-type");
-  if (!access_type)
-  {
-    if (s->flags & MUTT_DISPLAY)
-    {
-      state_mark_attach(s);
-      state_puts(_("[-- Error: message/external-body has no access-type "
-                   "parameter --]\n"),
-                 s);
-      return 0;
-    }
-    else
-      return -1;
-  }
-
-  const char *expiration = mutt_param_get(&b->parameter, "expiration");
-  time_t expire;
-  if (expiration)
-    expire = mutt_date_parse_date(expiration, NULL);
-  else
-    expire = -1;
-
-  if (mutt_str_strcasecmp(access_type, "x-mutt-deleted") == 0)
-  {
-    if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
-    {
-      char pretty_size[10];
-      long size = 0;
-
-      char *length = mutt_param_get(&b->parameter, "length");
-      if (length)
-      {
-        size = strtol(length, NULL, 10);
-        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
-        if (expire != -1)
-        {
-          str = ngettext(
-              /* L10N: If the translation of this string is a multi line string, then
-                 each line should start with "[-- " and end with " --]".
-                 The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
-                 expands to a date as returned by `mutt_date_parse_date()`.
-
-                 Note: The size argument printed is not the actual number as passed
-                 to gettext but the prettified version, e.g. size = 2048 will be
-                 printed as 2K.  Your language might be sensitive to that: For
-                 example although '1K' and '1024' represent the same number your
-                 language might inflect the noun 'byte' differently.
-
-                 Sadly, we cannot do anything about that at the moment besides
-                 passing the precise size in bytes. If you are interested the
-                 function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
-              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
-              "[-- on %s --]\n",
-              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-              "[-- on %s --]\n",
-              size);
-        }
-        else
-        {
-          str = ngettext(
-              /* L10N: If the translation of this string is a multi line string, then
-                 each line should start with "[-- " and end with " --]".
-                 The first "%s/%s" is a MIME type, e.g. "text/plain".
-
-                 Note: The size argument printed is not the actual number as passed
-                 to gettext but the prettified version, e.g. size = 2048 will be
-                 printed as 2K.  Your language might be sensitive to that: For
-                 example although '1K' and '1024' represent the same number your
-                 language might inflect the noun 'byte' differently.
-
-                 Sadly, we cannot do anything about that at the moment besides
-                 passing the precise size in bytes. If you are interested the
-                 function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.
-               */
-              "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
-              "[-- This %s/%s attachment (size %s bytes) has been deleted "
-              "--]\n",
-              size);
-        }
-      }
-      else
-      {
-        pretty_size[0] = '\0';
-        if (expire != -1)
-        {
-          /* L10N: If the translation of this string is a multi line string, then
-             each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
-             expands to a date as returned by `mutt_date_parse_date()`.
-
-             Caution: Argument three %3$ is also defined but should not be used
-             in this translation!
-           */
-          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s "
-                  "--]\n");
-        }
-        else
-        {
-          /* L10N: If the translation of this string is a multi line string, then
-             each line should start with "[-- " and end with " --]".
-             The first "%s/%s" is a MIME type, e.g. "text/plain".
-           */
-          str = _("[-- This %s/%s attachment has been deleted --]\n");
-        }
-      }
-
-      snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
-               pretty_size, expiration);
-      state_attach_puts(strbuf, s);
-      if (b->parts->filename)
-      {
-        state_mark_attach(s);
-        state_printf(s, _("[-- name: %s --]\n"), b->parts->filename);
-      }
-
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE, NULL);
-    }
-  }
-  else if (expiration && expire < time(NULL))
-  {
-    if (s->flags & MUTT_DISPLAY)
-    {
-      /* L10N: If the translation of this string is a multi line string, then
-         each line should start with "[-- " and end with " --]".
-         The "%s/%s" is a MIME type, e.g. "text/plain".
-       */
-      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
-               TYPE(b->parts), b->parts->subtype);
-      state_attach_puts(strbuf, s);
-
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
-    }
-  }
-  else
-  {
-    if (s->flags & MUTT_DISPLAY)
-    {
-      /* L10N: If the translation of this string is a multi line string, then
-         each line should start with "[-- " and end with " --]".
-         The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
-         access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
-         "LOCAL-FILE", "MAIL-SERVER".
-       */
-      snprintf(strbuf, sizeof(strbuf), _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
-               TYPE(b->parts), b->parts->subtype, access_type);
-      state_attach_puts(strbuf, s);
-
-      mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
-                    (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
-    }
-  }
-
-  return 0;
-}
-
-/**
- * mutt_decode_attachment - Decode an email's attachment
- * @param b Body of the email
- * @param s State of text being processed
- */
-void mutt_decode_attachment(struct Body *b, struct State *s)
-{
-  int istext = mutt_is_text_part(b);
-  iconv_t cd = (iconv_t)(-1);
-
-  if (istext && s->flags & MUTT_CHARCONV)
-  {
-    char *charset = mutt_param_get(&b->parameter, "charset");
-    if (!charset && AssumedCharset && *AssumedCharset)
-      charset = mutt_ch_get_default_charset();
-    if (charset && Charset)
-      cd = mutt_ch_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
-  }
-  else if (istext && b->charset)
-    cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
-
-  fseeko(s->fpin, b->offset, SEEK_SET);
-  switch (b->encoding)
-  {
-    case ENCQUOTEDPRINTABLE:
-      decode_quoted(s, b->length,
-                    istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
-                               mutt_is_application_pgp(b)),
-                    cd);
-      break;
-    case ENCBASE64:
-      mutt_decode_base64(s, b->length,
-                         istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
-                                    mutt_is_application_pgp(b)),
-                         cd);
-      break;
-    case ENCUUENCODED:
-      decode_uuencoded(s, b->length,
-                       istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
-                                  mutt_is_application_pgp(b)),
-                       cd);
-      break;
-    default:
-      decode_xbit(s, b->length,
-                  istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
-                             mutt_is_application_pgp(b)),
-                  cd);
-      break;
-  }
-
-  if (cd != (iconv_t)(-1))
-    iconv_close(cd);
-}
-
-/**
- * text_plain_handler - Handler for plain text
- * @param b Body of email (UNUSED)
- * @param s State to work with
- * @retval 0 Always
- *
- * When generating format=flowed ($text_flowed is set) from format=fixed, strip
- * all trailing spaces to improve interoperability; if $text_flowed is unset,
- * simply verbatim copy input.
- */
-static int text_plain_handler(struct Body *b, struct State *s)
-{
-  char *buf = NULL;
-  size_t l = 0, sz = 0;
-
-  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
-  {
-    if ((mutt_str_strcmp(buf, "-- ") != 0) && TextFlowed)
-    {
-      l = mutt_str_strlen(buf);
-      while (l > 0 && buf[l - 1] == ' ')
-        buf[--l] = '\0';
-    }
-    if (s->prefix)
-      state_puts(s->prefix, s);
-    state_puts(buf, s);
-    state_putc('\n', s);
-  }
-
-  FREE(&buf);
-  return 0;
 }
 
 /**
@@ -1591,6 +1440,70 @@ static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 }
 
 /**
+ * mutt_decode_base64 - Decode base64-encoded text
+ * @param s      State to work with
+ * @param len    Length of text to decode
+ * @param istext Mime part is plain text
+ * @param cd     Iconv conversion descriptor
+ */
+void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd)
+{
+  char buf[5];
+  int ch, i;
+  char bufi[BUFI_SIZE];
+  size_t l = 0;
+
+  buf[4] = '\0';
+
+  if (istext)
+    state_set_prefix(s);
+
+  while (len > 0)
+  {
+    for (i = 0; (i < 4) && (len > 0); len--)
+    {
+      ch = fgetc(s->fpin);
+      if (ch == EOF)
+        break;
+      if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
+        buf[i++] = ch;
+    }
+    if (i != 4)
+    {
+      /* "i" may be zero if there is trailing whitespace, which is not an error */
+      if (i != 0)
+        mutt_debug(2, "didn't get a multiple of 4 chars.\n");
+      break;
+    }
+
+    const int c1 = base64val(buf[0]);
+    const int c2 = base64val(buf[1]);
+    ch = (c1 << 2) | (c2 >> 4);
+    bufi[l++] = ch;
+
+    if (buf[2] == '=')
+      break;
+    const int c3 = base64val(buf[2]);
+    ch = ((c2 & 0xf) << 4) | (c3 >> 2);
+    bufi[l++] = ch;
+
+    if (buf[3] == '=')
+      break;
+    const int c4 = base64val(buf[3]);
+    ch = ((c3 & 0x3) << 6) | c4;
+    bufi[l++] = ch;
+
+    if ((l + 8) >= sizeof(bufi))
+      convert_to_state(cd, bufi, &l, s);
+  }
+
+  convert_to_state(cd, bufi, &l, s);
+  convert_to_state(cd, 0, 0, s);
+
+  state_reset_prefix(s);
+}
+
+/**
  * mutt_body_handler - Handler for the Body of an email
  * @param b Body of the email
  * @param s State to work with
@@ -1742,8 +1655,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
       else
       {
         if (HonorDisposition && (b->disposition == DISPATTACH))
+        {
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
                   "key!) --]\n");
+        }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
@@ -1774,3 +1689,99 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   return rc;
 }
+
+/**
+ * mutt_can_decode - Will decoding the attachment produce any output
+ * @param a Body of email to test
+ * @retval true Decoding the attachment will produce output
+ */
+bool mutt_can_decode(struct Body *a)
+{
+  if (is_autoview(a))
+    return true;
+  else if (a->type == TYPETEXT)
+    return true;
+  else if (a->type == TYPEMESSAGE)
+    return true;
+  else if (a->type == TYPEMULTIPART)
+  {
+    if (WithCrypto)
+    {
+      if ((mutt_str_strcasecmp(a->subtype, "signed") == 0) ||
+          (mutt_str_strcasecmp(a->subtype, "encrypted") == 0))
+      {
+        return true;
+      }
+    }
+
+    for (struct Body *b = a->parts; b; b = b->next)
+    {
+      if (mutt_can_decode(b))
+        return true;
+    }
+  }
+  else if ((WithCrypto != 0) && a->type == TYPEAPPLICATION)
+  {
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
+      return true;
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(a))
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * mutt_decode_attachment - Decode an email's attachment
+ * @param b Body of the email
+ * @param s State of text being processed
+ */
+void mutt_decode_attachment(struct Body *b, struct State *s)
+{
+  int istext = mutt_is_text_part(b);
+  iconv_t cd = (iconv_t)(-1);
+
+  if (istext && s->flags & MUTT_CHARCONV)
+  {
+    char *charset = mutt_param_get(&b->parameter, "charset");
+    if (!charset && AssumedCharset && *AssumedCharset)
+      charset = mutt_ch_get_default_charset();
+    if (charset && Charset)
+      cd = mutt_ch_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
+  }
+  else if (istext && b->charset)
+    cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
+
+  fseeko(s->fpin, b->offset, SEEK_SET);
+  switch (b->encoding)
+  {
+    case ENCQUOTEDPRINTABLE:
+      decode_quoted(s, b->length,
+                    istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                               mutt_is_application_pgp(b)),
+                    cd);
+      break;
+    case ENCBASE64:
+      mutt_decode_base64(s, b->length,
+                         istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                                    mutt_is_application_pgp(b)),
+                         cd);
+      break;
+    case ENCUUENCODED:
+      decode_uuencoded(s, b->length,
+                       istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                                  mutt_is_application_pgp(b)),
+                       cd);
+      break;
+    default:
+      decode_xbit(s, b->length,
+                  istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                             mutt_is_application_pgp(b)),
+                  cd);
+      break;
+  }
+
+  if (cd != (iconv_t)(-1))
+    iconv_close(cd);
+}
+

@@ -43,6 +43,7 @@
 #include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
@@ -441,9 +442,11 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
+          for (p += 2; *p && (*p != '>') &&
+                       (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
                *q++ = *p++)
-            ;
+          {
+          }
 
           if (*p != '>')
           {
@@ -474,7 +477,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
       case 'M':
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>'; p++)
+          for (p += 2; *p && (*p != '>'); p++)
             ;
           if (*p != '>')
           {
@@ -497,8 +500,10 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         if (*(p + 1) == '<')
         {
-          for (p += 2; *p && *p != '>' && q < sign_as + sizeof(sign_as) - 1; *q++ = *p++)
-            ;
+          for (p += 2; *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
+               *q++ = *p++)
+          {
+          }
 
           if (*p != '>')
           {
@@ -622,7 +627,9 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
         (mutt_str_strcasecmp(
              mutt_param_get(&newhdr->content->parameter, "protocol"),
              "application/pgp-signature") == 0))
+    {
       newhdr->security |= APPLICATION_PGP;
+    }
     else if (WithCrypto & APPLICATION_SMIME)
       newhdr->security |= APPLICATION_SMIME;
 
@@ -673,7 +680,9 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     {
       if (mutt_str_strcasecmp("yes",
                               mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
+      {
         b->noconv = true;
+      }
       else
       {
         s.flags |= MUTT_CHARCONV;

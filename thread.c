@@ -286,8 +286,10 @@ void mutt_draw_tree(struct Context *ctx)
       else
         myarrow[0] = vtee;
       if (width == 2)
+      {
         myarrow[1] = pseudo ? MUTT_TREE_STAR :
                               (tree->duplicate_thread ? MUTT_TREE_EQUALS : MUTT_TREE_HLINE);
+      }
       if (tree->visible)
       {
         myarrow[width] = MUTT_TREE_RARROW;
@@ -612,8 +614,10 @@ static int compare_threads(const void *a, const void *b)
   static sort_t *sort_func = NULL;
 
   if (a && b)
+  {
     return ((*sort_func)(&(*((struct MuttThread **) a))->sort_key,
                          &(*((struct MuttThread **) b))->sort_key));
+  }
   /* a hack to let us reset sort_func even though we can't
    * have extra arguments because of qsort
    */
@@ -725,7 +729,9 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
             if (!thread->sort_key ||
                 ((((Sort & SORT_REVERSE) ? 1 : -1) *
                   compare_threads((void *) &thread, (void *) &sort_key)) > 0))
+            {
               thread->sort_key = sort_key->sort_key;
+            }
           }
           else if (!thread->sort_key)
             thread->sort_key = sort_key->sort_key;
@@ -774,11 +780,15 @@ static void check_subjects(struct Context *ctx, int init)
     if (!tmp)
       cur->subject_changed = true;
     else if (cur->env->real_subj && tmp->message->env->real_subj)
+    {
       cur->subject_changed =
           (mutt_str_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0) ? true : false;
+    }
     else
+    {
       cur->subject_changed =
           (cur->env->real_subj || tmp->message->env->real_subj) ? true : false;
+    }
   }
 }
 
@@ -1342,7 +1352,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
   else if (flag & MUTT_THREAD_UNREAD)
     return ((old && new) ? new : (old ? old : new));
   else if (flag & MUTT_THREAD_GET_HIDDEN)
-    return num_hidden + 1;
+    return (num_hidden + 1);
   else if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
   else if (flag & MUTT_THREAD_FLAGGED)
@@ -1381,8 +1391,10 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
   if (Sort & SORT_REVERSE)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
+  {
     rc = (threads[1] ? threads[1]->message->msgno : ctx->msgcount) -
          threads[0]->message->msgno;
+  }
 
   if (flag)
     rc += 1;

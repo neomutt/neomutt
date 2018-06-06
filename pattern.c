@@ -43,6 +43,7 @@
 #include "envelope.h"
 #include "globals.h"
 #include "group.h"
+#include "handler.h"
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -671,9 +672,9 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
     case RANGE_K_REL:
       return num + CTX_MSGNO(Context);
     case RANGE_K_LT:
-      return num - 1;
+      return (num - 1);
     case RANGE_K_GT:
-      return num + 1;
+      return (num + 1);
     default:
       return num;
   }
@@ -1090,6 +1091,15 @@ void mutt_pattern_free(struct Pattern **pat)
   }
 }
 
+/**
+ * mutt_pattern_new - Create a new Pattern
+ * @retval ptr New Pattern
+ */
+struct Pattern *mutt_pattern_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Pattern));
+}
+
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
   struct Pattern *curlist = NULL;
@@ -1138,7 +1148,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           if (curlist->next)
           {
             /* A & B | C == (A & B) | C */
-            tmp = new_pattern();
+            tmp = mutt_pattern_new();
             tmp->op = MUTT_AND;
             tmp->child = curlist;
 
@@ -1182,7 +1192,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
             mutt_pattern_free(&curlist);
             return NULL;
           }
-          tmp = new_pattern();
+          tmp = mutt_pattern_new();
           tmp->op = thread_op;
           if (last)
             last->next = tmp;
@@ -1212,7 +1222,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         if (implicit && or)
         {
           /* A | B & C == (A | B) & C */
-          tmp = new_pattern();
+          tmp = mutt_pattern_new();
           tmp->op = MUTT_OR;
           tmp->child = curlist;
           curlist = tmp;
@@ -1220,7 +1230,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           or = false;
         }
 
-        tmp = new_pattern();
+        tmp = mutt_pattern_new();
         tmp->not = not;
         tmp->alladdr = alladdr;
         tmp->isalias = isalias;
@@ -1315,7 +1325,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   }
   if (curlist->next)
   {
-    tmp = new_pattern();
+    tmp = mutt_pattern_new();
     tmp->op = or ? MUTT_OR : MUTT_AND;
     tmp->child = curlist;
     curlist = tmp;
@@ -1516,12 +1526,12 @@ static void set_pattern_cache_value(int *cache_entry, int value)
  */
 static int get_pattern_cache_value(int cache_entry)
 {
-  return cache_entry == 2;
+  return (cache_entry == 2);
 }
 
 static int is_pattern_cache_set(int cache_entry)
 {
-  return cache_entry != 0;
+  return (cache_entry != 0);
 }
 
 /**
@@ -1667,8 +1677,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(
               cache_entry, mutt_is_list_cc(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -1681,9 +1693,11 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(
               cache_entry,
               mutt_is_list_recipient(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -1696,8 +1710,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       {
         cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set(*cache_entry))
+        {
           set_pattern_cache_value(cache_entry,
                                   match_user(pat->alladdr, h->env->to, h->env->cc));
+        }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
@@ -2045,7 +2061,9 @@ int mutt_search_command(int cur, int op)
                            _("Reverse search for: "),
                        buf, sizeof(buf), MUTT_CLEAR | MUTT_PATTERN) != 0 ||
         !buf[0])
+    {
       return -1;
+    }
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
       OptSearchReverse = false;

@@ -48,6 +48,7 @@
 #include "cryptglue.h"
 #include "envelope.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"
@@ -368,7 +369,9 @@ int mutt_is_multipart_encrypted(struct Body *b)
       (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
       !(p = mutt_param_get(&b->parameter, "protocol")) ||
       (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
+  {
     return 0;
+  }
 
   return PGPENCRYPT;
 }
@@ -486,7 +489,9 @@ int mutt_is_application_pgp(struct Body *m)
          (p = mutt_param_get(&m->parameter, "x-action")) ||
          (p = mutt_param_get(&m->parameter, "action"))) &&
         (mutt_str_strncasecmp("pgp-sign", p, 8) == 0))
+    {
       t |= PGPSIGN;
+    }
     else if (p && (mutt_str_strncasecmp("pgp-encrypt", p, 11) == 0))
       t |= PGPENCRYPT;
     else if (p && (mutt_str_strncasecmp("pgp-keys", p, 7) == 0))
@@ -542,8 +547,10 @@ int mutt_is_application_smime(struct Body *m)
   if (!t)
   {
     if (complain)
+    {
       mutt_message(
           _("S/MIME messages with no hints on content are unsupported."));
+    }
     return 0;
   }
 
@@ -554,9 +561,11 @@ int mutt_is_application_smime(struct Body *m)
   {
     len++;
     if (mutt_str_strcasecmp((t + len), "p7m") == 0)
+    {
       /* Not sure if this is the correct thing to do, but
         it's required for compatibility with Outlook */
       return (SMIMESIGN | SMIMEOPAQUE);
+    }
     else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
       return (SMIMESIGN | SMIMEOPAQUE);
   }
@@ -764,9 +773,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if (((WithCrypto & APPLICATION_SMIME) != 0) && (hi->security & APPLICATION_SMIME))
       {
         if (hi->security & ENCRYPT)
+        {
           mutt_copy_message_ctx(fpout, Context, hi,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
+        }
         else
           mutt_copy_message_ctx(fpout, Context, hi, 0, 0);
         fflush(fpout);
@@ -805,9 +816,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if (((WithCrypto & APPLICATION_SMIME) != 0) && (h->security & APPLICATION_SMIME))
       {
         if (h->security & ENCRYPT)
+        {
           mutt_copy_message_ctx(fpout, Context, h,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
+        }
         else
           mutt_copy_message_ctx(fpout, Context, h, 0, 0);
 

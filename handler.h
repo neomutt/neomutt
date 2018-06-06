@@ -1,9 +1,9 @@
 /**
  * @file
- * Struct to store the cursor position when entering text
+ * Decide how to display email content
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2000,2002,2010,2013 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,25 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_ENTER_STATE_H
-#define _MUTT_ENTER_STATE_H
+#ifndef _MUTT_HANDLER_H
+#define _MUTT_HANDLER_H
 
 #include <stddef.h>
+#include <iconv.h>
+#include <stdbool.h>
 
-/**
- * struct EnterState - Keep our place when entering a string
- */
-struct EnterState
-{
-  wchar_t *wbuf;
-  size_t wbuflen;
-  size_t lastchar;
-  size_t curpos;
-  size_t begin;
-  int tabs;
-};
+struct Body;
+struct State;
 
-void mutt_enter_state_free(struct EnterState **esp);
-struct EnterState *mutt_enter_state_new(void);
+int  mutt_body_handler(struct Body *b, struct State *s);
+bool mutt_can_decode(struct Body *a);
+void mutt_decode_attachment(struct Body *b, struct State *s);
+void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd);
 
-#endif /* _MUTT_ENTER_STATE_H */
+#endif /* _MUTT_HANDLER_H */

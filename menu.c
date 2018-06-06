@@ -513,12 +513,16 @@ void menu_check_recenter(struct Menu *menu)
     else
     {
       if (menu->current < menu->top + c)
+      {
         menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) /
                                             (menu->pagelen - c)) -
                      c;
+      }
       else if ((menu->current >= menu->top + menu->pagelen - c))
+      {
         menu->top +=
             (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
+      }
     }
   }
 
@@ -937,7 +941,9 @@ static int menu_search(struct Menu *menu, int op)
                            _("Reverse search for: "),
                        buf, sizeof(buf), MUTT_CLEAR) != 0 ||
         !buf[0])
+    {
       return -1;
+    }
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace(&SearchBuffers[menu->menu], buf);
@@ -1120,8 +1126,10 @@ int mutt_menu_loop(struct Menu *menu)
     else if (BrailleFriendly)
       mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 0);
     else
+    {
       mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset,
                        menu->indexwin->cols - 1);
+    }
 
     mutt_refresh();
 

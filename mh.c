@@ -224,7 +224,7 @@ static inline mode_t mh_umask(struct Context *ctx)
     return 077;
   }
 
-  return 0777 & ~st.st_mode;
+  return (0777 & ~st.st_mode);
 }
 
 /**
@@ -951,7 +951,7 @@ static size_t maildir_hcache_keylen(const char *fn)
 
 static int md_cmp_inode(struct Maildir *a, struct Maildir *b)
 {
-  return a->inode - b->inode;
+  return (a->inode - b->inode);
 }
 
 static int md_cmp_path(struct Maildir *a, struct Maildir *b)
@@ -1755,8 +1755,10 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
     }
   }
   if (updseq)
+  {
     mh_sequences_add_one(ctx, hi, !msg->flags.read, msg->flags.flagged,
                          msg->flags.replied);
+  }
   return 0;
 }
 

@@ -36,6 +36,7 @@
 #include "copy.h"
 #include "filter.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -509,11 +510,15 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
       if (use_pager)
       {
         if (a->description)
+        {
           snprintf(descrip, sizeof(descrip),
                    _("---Command: %-20.20s Description: %s"), command, a->description);
+        }
         else
+        {
           snprintf(descrip, sizeof(descrip),
                    _("---Command: %-30.30s Attachment: %s"), command, type);
+        }
       }
 
       if ((mutt_wait_filter(thepid) || (entry->needsterminal && WaitKey)) && !use_pager)

@@ -318,7 +318,9 @@ static bool query_window_check_timebase(const char *timebase)
   if ((strcmp(timebase, "hour") == 0) || (strcmp(timebase, "day") == 0) ||
       (strcmp(timebase, "week") == 0) || (strcmp(timebase, "month") == 0) ||
       (strcmp(timebase, "year") == 0))
+  {
     return true;
+  }
   return false;
 }
 
@@ -402,11 +404,15 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   }
 
   if (end == 0)
+  {
     snprintf(buf, buflen, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
              NmQueryWindowCurrentSearch);
+  }
   else
+  {
     snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
+  }
 
   mutt_debug(2, "nm: %s -> %s\n", query, buf);
 
@@ -1048,8 +1054,10 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
   }
 
   if (data->progress_ready)
+  {
     mutt_progress_update(&data->progress,
                          ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
+  }
 }
 
 /**
@@ -1888,11 +1896,15 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
     }
   }
   else if (NmDefaultUri)
+  {
     added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
                      query_type_to_string(string_to_query_type(NmQueryType)));
+  }
   else if (Folder)
+  {
     added = snprintf(uri, sizeof(uri), "notmuch://%s?type=%s&query=", Folder,
                      query_type_to_string(string_to_query_type(NmQueryType)));
+  }
   else
     return NULL;
 

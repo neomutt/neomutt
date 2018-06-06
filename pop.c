@@ -327,8 +327,10 @@ static int pop_fetch_headers(struct Context *ctx)
   }
 
   if (!ctx->quiet)
+  {
     mutt_progress_init(&progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
+  }
 
   if (ret == 0)
   {

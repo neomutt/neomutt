@@ -141,7 +141,7 @@ static int alias_tag(struct Menu *menu, int n, int m)
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
 
-  return cur->tagged - ot;
+  return (cur->tagged - ot);
 }
 
 /**

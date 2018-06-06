@@ -51,10 +51,13 @@
 
 // clang-format off
 #ifndef _MAKEDOC
-/* flags to parse_set() */
-#define MUTT_SET_INV   (1 << 0) /**< default is to invert all vars */
-#define MUTT_SET_UNSET (1 << 1) /**< default is to unset all vars */
-#define MUTT_SET_RESET (1 << 2) /**< default is to reset all vars to default */
+enum MuttSetCommand
+{
+  MUTT_SET_SET,   /**< default is to set all vars */
+  MUTT_SET_INV,   /**< default is to invert all vars */
+  MUTT_SET_UNSET, /**< default is to unset all vars */
+  MUTT_SET_RESET, /**< default is to reset all vars to default */
+};
 
 /* forced redraw/resort types + other flags */
 #define R_NONE        0
@@ -4641,8 +4644,8 @@ const struct Command Commands[] = {
   { "score",               mutt_parse_score,       0 },
   { "send-hook",           mutt_parse_hook,        MUTT_SENDHOOK },
   { "send2-hook",          mutt_parse_hook,        MUTT_SEND2HOOK },
-  { "set",                 parse_set,              0 },
-  { "setenv",              parse_setenv,           0 },
+  { "set",                 parse_set,              MUTT_SET_SET },
+  { "setenv",              parse_setenv,           MUTT_SET_SET },
   { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWNHOOK | MUTT_GLOBALHOOK },
 #ifdef USE_SIDEBAR
   { "sidebar_whitelist",   parse_path_list,        UL &SidebarWhitelist },

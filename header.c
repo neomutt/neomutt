@@ -128,11 +128,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 #ifdef USE_NNTP
   if (!OptNewsSend)
 #endif
+  {
     if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
          (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
                           STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+    {
       mutt_list_free(&msg->env->references);
+    }
+  }
 
   /* restore old info. */
   mutt_list_free(&n->references);
@@ -258,12 +262,12 @@ static void label_ref_inc(struct Context *ctx, char *label)
 /**
  * label_message - add an X-Label: field
  */
-static int label_message(struct Context *ctx, struct Header *hdr, char *new)
+static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
   if (!hdr)
-    return 0;
+    return false;
   if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
-    return 0;
+    return false;
 
   if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);
@@ -271,7 +275,9 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
   if (hdr->env->x_label)
     label_ref_inc(ctx, hdr->env->x_label);
 
-  return hdr->changed = hdr->xlabel_changed = true;
+  hdr->changed = true;
+  hdr->xlabel_changed = true;
+  return true;
 }
 
 int mutt_label_message(struct Header *hdr)

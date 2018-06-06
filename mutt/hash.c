@@ -106,7 +106,7 @@ static int cmp_case_string_key(union HashKey a, union HashKey b)
  */
 static size_t gen_int_hash(union HashKey key, size_t n)
 {
-  return key.intkey % n;
+  return (key.intkey % n);
 }
 
 /**

@@ -942,8 +942,10 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     idata->uidnext = maxuid + 1;
   }
   if (idata->uidnext > 1)
+  {
     mutt_hcache_store_raw(idata->hcache, "/UIDNEXT", 8, &idata->uidnext,
                           sizeof(idata->uidnext));
+  }
 
   imap_hcache_close(idata);
 #endif /* USE_HCACHE */
@@ -1076,8 +1078,10 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
           if (mutt_str_atoui(pc, &uid) < 0)
             goto bail;
           if (uid != HEADER_DATA(h)->uid)
+          {
             mutt_error(_(
                 "The message index is incorrect. Try reopening the mailbox."));
+          }
         }
         else if ((mutt_str_strncasecmp("RFC822", pc, 6) == 0) ||
                  (mutt_str_strncasecmp("BODY[]", pc, 6) == 0))
@@ -1447,8 +1451,10 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         goto out;
       }
       else
+      {
         mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
                      rc, mbox);
+      }
     }
     else
     {
@@ -1537,7 +1543,7 @@ out:
     FREE(&sync_cmd.data);
   FREE(&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 /**

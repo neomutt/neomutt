@@ -237,11 +237,15 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   }
 
   if (optional)
+  {
     mutt_expando_format(buf, buflen, col, SidebarWidth, if_str,
                         sidebar_format_str, (unsigned long) sbe, flags);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
+  {
     mutt_expando_format(buf, buflen, col, SidebarWidth, else_str,
                         sidebar_format_str, (unsigned long) sbe, flags);
+  }
 
   /* We return the format string, unchanged */
   return src;
@@ -883,7 +887,9 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if ((mutt_str_strlen(b->path) > maildirlen) &&
         (mutt_str_strncmp(Folder, b->path, maildirlen) == 0) &&
         SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
+    {
       maildir_is_prefix = true;
+    }
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;

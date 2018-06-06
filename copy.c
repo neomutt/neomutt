@@ -38,6 +38,7 @@
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -127,11 +128,15 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
             ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
              (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+        {
           continue;
+        }
         if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
             ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
              (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+        {
           continue;
+        }
         if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
           continue;
         if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
@@ -399,8 +404,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
 {
   if (h->env)
+  {
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0) |
              (h->env->refs_changed ? CH_UPDATE_REFS : 0);
+  }
 
   if (mutt_copy_hdr(in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return -1;

@@ -80,8 +80,10 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = TXN_READ;
   else
+  {
     mutt_debug(2, "%s: %s\n", ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin",
                mdb_strerror(rc));
+  }
 
   return rc;
 }

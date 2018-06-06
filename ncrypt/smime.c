@@ -47,6 +47,7 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "keymap.h"
 #include "mutt_curses.h"
@@ -1308,8 +1309,10 @@ int smime_verify_sender(struct Header *h)
   }
 
   if (h->security & ENCRYPT)
+  {
     mutt_copy_message_ctx(fpout, Context, h, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
+  }
   else
     mutt_copy_message_ctx(fpout, Context, h, 0, 0);
 
@@ -1846,8 +1849,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     mutt_file_fclose(&smimeout);
     mutt_file_unlink(tmpfname);
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           _("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    }
     mutt_file_fclose(&smimeerr);
     return NULL;
   }
@@ -1858,8 +1863,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     mutt_file_fclose(&smimeout);
     mutt_file_unlink(tmpfname);
     if (s->flags & MUTT_DISPLAY)
+    {
       state_attach_puts(
           _("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    }
     mutt_file_fclose(&smimeerr);
     return NULL;
   }
@@ -1893,9 +1900,11 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     }
 
     if (type & ENCRYPT)
+    {
       state_attach_puts(_("[-- The following data is S/MIME"
                           " encrypted --]\n"),
                         s);
+    }
     else
       state_attach_puts(_("[-- The following data is S/MIME signed --]\n"), s);
   }

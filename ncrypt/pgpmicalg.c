@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "handler.h"
 #include "pgppacket.h"
 #include "protos.h"
 #include "state.h"

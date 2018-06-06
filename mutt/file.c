@@ -788,7 +788,7 @@ const char *mutt_file_basename(const char *f)
 {
   const char *p = strrchr(f, '/');
   if (p)
-    return p + 1;
+    return (p + 1);
   else
     return f;
 }
@@ -960,11 +960,11 @@ void mutt_file_set_mtime(const char *from, const char *to)
  * This is just as read() would do on !noatime.
  * Silently ignored if futimens() isn't supported.
  */
-void mutt_file_touch_atime(int f)
+void mutt_file_touch_atime(int fd)
 {
 #ifdef HAVE_FUTIMENS
   struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
-  futimens(f, times);
+  futimens(fd, times);
 #endif
 }
 

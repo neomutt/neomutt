@@ -504,7 +504,7 @@ static int smtp_auth(struct Connection *conn)
     mutt_error(_("No authenticators available"));
   }
 
-  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
+  return (r == SMTP_AUTH_SUCCESS) ? 0 : -1;
 }
 
 #else  /* USE_SASL */
@@ -588,7 +588,9 @@ static int smtp_open(struct Connection *conn)
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
            (rc = query_quadoption(SslStarttls,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
+  {
     return rc;
+  }
 
   if (rc == MUTT_YES)
   {

@@ -370,7 +370,7 @@ static size_t escape_string(char *buf, size_t buflen, const char *src)
     src++;
   }
   *p = '\0';
-  return p - buf;
+  return (p - buf);
 }
 
 /**
@@ -1347,7 +1347,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
  */
 static int toggle_quadoption(int opt)
 {
-  return opt ^= 1;
+  return (opt ^= 1);
 }
 
 /**
@@ -1976,9 +1976,9 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   while (MoreArgs(s))
   {
     int query = 0;
-    int unset = data & MUTT_SET_UNSET;
-    int inv = data & MUTT_SET_INV;
-    int reset = data & MUTT_SET_RESET;
+    int unset = (data == MUTT_SET_UNSET);
+    int inv = (data == MUTT_SET_INV);
+    int reset = (data == MUTT_SET_RESET);
     int idx = -1;
     const char *p = NULL;
     const char *myvar = NULL;
@@ -2109,9 +2109,11 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
           free_mbtable((struct MbTable **) MuttVars[idx].var);
         else
+        {
           /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
           FREE((void *) MuttVars[idx].var);
+        }
       }
       else if (query || *s->dptr != '=')
       {
@@ -2416,8 +2418,10 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       else
       {
         if (inv)
+        {
           *(unsigned char *) MuttVars[idx].var =
               toggle_quadoption(*(unsigned char *) MuttVars[idx].var);
+        }
         else if (unset)
           *(unsigned char *) MuttVars[idx].var = MUTT_NO;
         else
@@ -2561,7 +2565,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
   char **envp = mutt_envlist_getlist();
 
   bool query = false;
-  bool unset = data & MUTT_SET_UNSET;
+  bool unset = (data == MUTT_SET_UNSET);
 
   if (!MoreArgs(s))
   {
@@ -3454,7 +3458,9 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
           (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
           (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
           ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
+      {
         break;
+      }
     }
 
     tok->dptr++;
@@ -4036,10 +4042,14 @@ bool mutt_option_get(const char *s, struct Option *opt)
 int mutt_option_index(const char *s)
 {
   for (int i = 0; MuttVars[i].name; i++)
+  {
     if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
+    {
       return (MuttVars[i].type == DT_SYNONYM ?
                   mutt_option_index((char *) MuttVars[i].initial) :
                   i);
+    }
+  }
   return -1;
 }
 

@@ -406,8 +406,10 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
     if (!c)
       return -1;
     else
+    {
       /* walk past closing '}' */
       mx->mbox = mutt_str_strdup(c + 1);
+    }
 
     c = strrchr(tmp, '@');
     if (c)
@@ -519,9 +521,11 @@ void imap_pretty_mailbox(char *path)
       if (hlen == 0)
         home_match = true;
       else if (ImapDelimChars)
+      {
         for (delim = ImapDelimChars; *delim != '\0'; delim++)
           if (target.mbox[hlen] == *delim)
             home_match = true;
+      }
     }
     FREE(&home.mbox);
   }

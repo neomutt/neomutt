@@ -26,9 +26,9 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "mutt/mutt.h"
 
 struct Address;
+struct Buffer;
 struct Header;
 struct Context;
 
@@ -83,11 +83,7 @@ struct PatternCache
   int pers_from_one;  /**<  ~P */
 };
 
-static inline struct Pattern *new_pattern(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct Pattern));
-}
-
+struct Pattern *mutt_pattern_new(void);
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *h, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);

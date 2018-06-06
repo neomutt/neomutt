@@ -46,6 +46,7 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "handler.h"
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -332,7 +333,9 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) &&
           (strcmp(buffer, tmp) == 0))
+      {
         snprintf(buffer, sizeof(buffer), "\"%s\"", tmp);
+      }
 
       FREE(&tmp);
 
@@ -960,9 +963,11 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   mutt_file_fclose(&fp);
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
+  {
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ? "us-ascii" :
                                    Charset && !mutt_ch_is_us_ascii(Charset) ? Charset : "unknown-8bit"));
+  }
 
   return info;
 }
