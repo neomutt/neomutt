@@ -1280,7 +1280,7 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_commit_message(struct Message *msg, struct Context *ctx)
+int mx_commit_message(struct Context *ctx, struct Message *msg)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->msg_commit)
     return -1;

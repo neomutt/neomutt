@@ -1585,7 +1585,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg,
  *
  * hdr is a header structure to which we write the message's new
  * file name.  This is used in the mh and maildir folder synch
- * routines.  When this routine is invoked from mx_commit_message,
+ * routines.  When this routine is invoked from mx_commit_message(),
  * hdr is NULL.
  *
  * msg->path looks like this:

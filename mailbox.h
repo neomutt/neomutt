@@ -85,7 +85,7 @@ void mx_fastclose_mailbox(struct Context *ctx);
 
 int mx_close_mailbox(struct Context *ctx, int *index_hint);
 int mx_sync_mailbox(struct Context *ctx, int *index_hint);
-int mx_commit_message(struct Message *msg, struct Context *ctx);
+int mx_commit_message(struct Context *ctx, struct Message *msg);
 int mx_close_message(struct Context *ctx, struct Message **msg);
 int mx_get_magic(const char *path);
 int mx_set_magic(const char *s);

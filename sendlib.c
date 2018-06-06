@@ -3090,7 +3090,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_commit_message(msg, &f); /* XXX - really? */
+      mx_commit_message(&f, msg); /* XXX - really? */
       mx_close_message(&f, &msg);
       mx_close_mailbox(&f, NULL);
       goto done;
@@ -3118,7 +3118,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     rc = mutt_write_mime_body(hdr->content, msg->fp);
   }
 
-  if (mx_commit_message(msg, &f) != 0)
+  if (mx_commit_message(&f, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->commited_path);

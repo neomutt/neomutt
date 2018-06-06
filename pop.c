@@ -969,7 +969,7 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if (ret == 0 && mx_commit_message(msg, &ctx) != 0)
+      if (ret == 0 && mx_commit_message(&ctx, msg) != 0)
       {
         rset = 1;
         ret = -3;
