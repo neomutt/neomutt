@@ -478,7 +478,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   int i;
   bool done = false;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
-  char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
+  char cmd[LONG_STRING], tempfile[PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   struct PgpKeyInfo *kp = NULL;
@@ -746,7 +746,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
 {
   struct Body *att = NULL;
   char buf[LONG_STRING];
-  char tempfb[_POSIX_PATH_MAX], tmp[STRING];
+  char tempfb[PATH_MAX], tmp[STRING];
   FILE *tempfp = NULL;
   FILE *devnull = NULL;
   struct stat sb;

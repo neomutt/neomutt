@@ -231,8 +231,8 @@ header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
 {
   struct ImapMbox mx;
   struct Url url;
-  char cachepath[LONG_STRING];
-  char mbox[LONG_STRING];
+  char cachepath[PATH_MAX];
+  char mbox[PATH_MAX];
 
   if (path)
     imap_cachepath(idata, path, mbox, sizeof(mbox));

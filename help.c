@@ -345,7 +345,7 @@ static void dump_unbound(FILE *f, const struct Binding *funcs,
 
 void mutt_help(int menu)
 {
-  char t[_POSIX_PATH_MAX];
+  char t[PATH_MAX];
   char buf[SHORT_STRING];
   FILE *f = NULL;
 

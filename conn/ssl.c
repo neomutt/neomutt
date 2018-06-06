@@ -433,7 +433,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
     for (unsigned int i = 0; i < n; i++)
     {
       char ch[8];
-      snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
+      snprintf(ch, sizeof(ch), "%02X%s", md[i], (i % 2 ? " " : ""));
       mutt_str_strcat(s, l, ch);
     }
   }
@@ -595,7 +595,7 @@ static int ssl_init(void)
   if (!HAVE_ENTROPY())
   {
     /* load entropy from files */
-    char path[_POSIX_PATH_MAX];
+    char path[PATH_MAX];
     add_entropy(EntropyFile);
     add_entropy(RAND_file_name(path, sizeof(path)));
 

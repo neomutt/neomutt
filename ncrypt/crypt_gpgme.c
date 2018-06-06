@@ -517,7 +517,7 @@ static gpgme_data_t create_gpgme_data(void)
  */
 static gpgme_data_t body_to_data_object(struct Body *a, int convert)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int err = 0;
   gpgme_data_t data;
 
@@ -648,7 +648,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_fp)
 {
   int err;
-  char tempfb[_POSIX_PATH_MAX];
+  char tempfb[PATH_MAX];
   FILE *fp = NULL;
   ssize_t nread = 0;
 
@@ -1928,7 +1928,7 @@ restart:
  */
 int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   struct State s;
   struct Body *first_part = b;
   int is_signed = 0;
@@ -2021,7 +2021,7 @@ bail:
  */
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   struct State s;
   FILE *tmpfp = NULL;
   int is_signed;
@@ -2148,8 +2148,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 {
   /* there's no side-effect free way to view key data in GPGME,
    * so we import the key into a temporary keyring */
-  char tmpdir[_POSIX_PATH_MAX];
-  char tmpfile[_POSIX_PATH_MAX];
+  char tmpdir[PATH_MAX];
+  char tmpfile[PATH_MAX];
   gpgme_ctx_t tmpctx;
   gpgme_error_t err;
   gpgme_engine_info_t engineinfo;
@@ -2300,7 +2300,7 @@ static int line_compare(const char *a, size_t n, const char *b)
  */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   char buf[HUGE_STRING];
   FILE *tfp = NULL;
 
@@ -2725,7 +2725,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
  */
 int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int is_signed;
   int rc = 0;
 
@@ -2802,7 +2802,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
  */
 int smime_gpgme_application_handler(struct Body *a, struct State *s)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int is_signed;
   int rc = 0;
 
@@ -3858,7 +3858,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
  */
 static void verify_key(struct CryptKeyInfo *key)
 {
-  char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
+  char cmd[LONG_STRING], tempfile[PATH_MAX];
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;

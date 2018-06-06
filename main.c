@@ -289,7 +289,7 @@ static int get_user_info(void)
  */
 int main(int argc, char *argv[], char *envp[])
 {
-  char folder[_POSIX_PATH_MAX] = "";
+  char folder[PATH_MAX] = "";
   char *subject = NULL;
   char *include_file = NULL;
   char *draft_file = NULL;
@@ -669,7 +669,7 @@ int main(int argc, char *argv[], char *envp[])
   if (!OptNoCurses && Folder)
   {
     struct stat sb;
-    char fpath[_POSIX_PATH_MAX];
+    char fpath[PATH_MAX];
 
     mutt_str_strfcpy(fpath, Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
@@ -718,7 +718,7 @@ int main(int argc, char *argv[], char *envp[])
     char *tempfile = NULL, *infile = NULL;
     char *bodytext = NULL, *bodyfile = NULL;
     int rv = 0;
-    char expanded_infile[_POSIX_PATH_MAX];
+    char expanded_infile[PATH_MAX];
 
     if (!OptNoCurses)
       mutt_flushinp();

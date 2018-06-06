@@ -90,7 +90,7 @@ static bool compare_stat(struct stat *osb, struct stat *nsb)
 static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir, size_t ndlen)
 {
   const char *basename = NULL;
-  char parent[_POSIX_PATH_MAX];
+  char parent[PATH_MAX];
   char *p = NULL;
 
   mutt_str_strfcpy(parent, NONULL(path), sizeof(parent));
@@ -303,7 +303,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
   else
   {
-    char abs_oldpath[_POSIX_PATH_MAX];
+    char abs_oldpath[PATH_MAX];
 
     if ((getcwd(abs_oldpath, sizeof(abs_oldpath)) == NULL) ||
         ((strlen(abs_oldpath) + 1 + strlen(oldpath) + 1) > sizeof(abs_oldpath)))
@@ -423,7 +423,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 int mutt_file_rmtree(const char *path)
 {
   struct dirent *de = NULL;
-  char cur[LONG_STRING];
+  char cur[PATH_MAX];
   struct stat statbuf;
   int rc = 0;
 
@@ -473,8 +473,8 @@ int mutt_file_open(const char *path, int flags)
 
   if (flags & O_EXCL)
   {
-    char safe_file[_POSIX_PATH_MAX];
-    char safe_dir[_POSIX_PATH_MAX];
+    char safe_file[PATH_MAX];
+    char safe_dir[PATH_MAX];
 
     if (mkwrapdir(path, safe_file, sizeof(safe_file), safe_dir, sizeof(safe_dir)) == -1)
       return -1;
@@ -1320,11 +1320,11 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
   }
 
   char *dirpath = mutt_file_dirname(reference);
-  mutt_str_strfcpy(abs_path, dirpath, PATH_MAX);
+  mutt_str_strfcpy(abs_path, dirpath, sizeof(abs_path));
   FREE(&dirpath);
   mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
-  path_len = PATH_MAX - strlen(path);
+  path_len = sizeof(abs_path) - strlen(path);
 
   mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 

@@ -42,7 +42,7 @@
  */
 struct BodyCache
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   size_t pathlen;
 };
 
@@ -87,8 +87,8 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
 {
-  char path[_POSIX_PATH_MAX];
-  char newpath[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
+  char newpath[PATH_MAX];
 
   if (!bcache || !id || !*id || !newid || !*newid)
     return -1;
@@ -130,7 +130,7 @@ void mutt_bcache_close(struct BodyCache **bcache)
 
 FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   FILE *fp = NULL;
 
   if (!id || !*id || !bcache)
@@ -149,7 +149,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 
 FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 {
-  char path[LONG_STRING];
+  char path[PATH_MAX];
   struct stat sb;
 
   if (!id || !*id || !bcache)
@@ -185,7 +185,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
 {
-  char tmpid[_POSIX_PATH_MAX];
+  char tmpid[PATH_MAX];
 
   snprintf(tmpid, sizeof(tmpid), "%s.tmp", id);
 
@@ -194,7 +194,7 @@ int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
 
 int mutt_bcache_del(struct BodyCache *bcache, const char *id)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   if (!id || !*id || !bcache)
     return -1;
@@ -210,7 +210,7 @@ int mutt_bcache_del(struct BodyCache *bcache, const char *id)
 
 int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   struct stat st;
   int rc = 0;
 

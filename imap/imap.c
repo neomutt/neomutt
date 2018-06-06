@@ -710,7 +710,7 @@ int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char 
  */
 int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
 {
-  char buf[LONG_STRING], mbox[LONG_STRING];
+  char buf[PATH_MAX], mbox[PATH_MAX];
   struct ImapData *idata = NULL;
 
   if (!ctx || !ctx->data)
@@ -1981,8 +1981,8 @@ static int imap_mbox_open(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
   struct ImapStatus *status = NULL;
-  char buf[LONG_STRING];
-  char bufout[LONG_STRING];
+  char buf[PATH_MAX];
+  char bufout[PATH_MAX];
   int count = 0;
   struct ImapMbox mx, pmx;
   int rc;
@@ -2205,8 +2205,7 @@ fail_noidata:
 static int imap_mbox_open_append(struct Context *ctx, int flags)
 {
   struct ImapData *idata = NULL;
-  char buf[LONG_STRING];
-  char mailbox[LONG_STRING];
+  char mailbox[PATH_MAX];
   struct ImapMbox mx;
   int rc;
 
@@ -2237,6 +2236,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
   if (rc == -1)
     return -1;
 
+  char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mailbox);
   if (Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
     return -1;
@@ -2315,7 +2315,7 @@ static int imap_mbox_close(struct Context *ctx)
  */
 static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
 
   mutt_mktemp(tmp, sizeof(tmp));
   msg->fp = mutt_file_fopen(tmp, "w");

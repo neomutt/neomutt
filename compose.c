@@ -363,7 +363,7 @@ static int check_attachments(struct AttachCtx *actx)
 {
   int r;
   struct stat st;
-  char pretty[_POSIX_PATH_MAX], msg[_POSIX_PATH_MAX + SHORT_STRING];
+  char pretty[PATH_MAX], msg[PATH_MAX + SHORT_STRING];
 
   for (int i = 0; i < actx->idxlen; i++)
   {
@@ -814,7 +814,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
-  char fname[_POSIX_PATH_MAX];
+  char fname[PATH_MAX];
   struct AttachPtr *new = NULL;
   int i, close = 0;
   int r = -1; /* return value */

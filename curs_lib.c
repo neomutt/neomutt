@@ -204,7 +204,7 @@ int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
 
 void mutt_edit_file(const char *editor, const char *data)
 {
-  char cmd[LONG_STRING];
+  char cmd[HUGE_STRING];
 
   mutt_endwin();
   mutt_expand_file_fmt(cmd, sizeof(cmd), editor, data);

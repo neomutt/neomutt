@@ -1491,7 +1491,7 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
   if (!b)
     return 0;
 
-  snprintf(buffer, STRING, "%s/%s", TYPE(b), b->subtype);
+  snprintf(buffer, sizeof(buffer), "%s/%s", TYPE(b), b->subtype);
 
   if (patmatch(pat, buffer) == 0)
     return 1;

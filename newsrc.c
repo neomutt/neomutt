@@ -410,7 +410,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
 static int update_file(char *filename, char *buf)
 {
   FILE *fp = NULL;
-  char tmpfile[_POSIX_PATH_MAX];
+  char tmpfile[PATH_MAX];
   int rc = -1;
 
   while (true)
@@ -542,7 +542,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
 static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *src)
 {
   char *c = NULL;
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
 
   /* server subdirectory */
   if (acct)
@@ -627,7 +627,7 @@ int nntp_add_group(char *line, void *data)
 static int active_get_cache(struct NntpServer *nserv)
 {
   char buf[HUGE_STRING];
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
   time_t t;
 
   cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
@@ -660,7 +660,7 @@ static int active_get_cache(struct NntpServer *nserv)
  */
 int nntp_active_save_cache(struct NntpServer *nserv)
 {
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
   char *buf = NULL;
   size_t buflen, off;
   int rc;
@@ -723,7 +723,7 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
   struct Url url;
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
@@ -829,7 +829,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
     return;
 
 #ifdef USE_HCACHE
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
   nntp_hcache_namer(nntp_data->group, file, sizeof(file));
   cache_expand(file, sizeof(file), &nntp_data->nserv->conn->account, file);
   unlink(file);
@@ -858,7 +858,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
  */
 void nntp_clear_cache(struct NntpServer *nserv)
 {
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
   char *fp = NULL;
   struct dirent *entry = NULL;
   DIR *dp = NULL;
@@ -1016,7 +1016,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
  */
 struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 {
-  char file[_POSIX_PATH_MAX];
+  char file[PATH_MAX];
 #ifdef USE_HCACHE
   char *p = NULL;
 #endif

@@ -51,7 +51,7 @@ struct HcacheDbCtx
   DB_ENV *env;
   DB *db;
   int fd;
-  char lockfile[_POSIX_PATH_MAX];
+  char lockfile[PATH_MAX];
 };
 
 /**
@@ -94,7 +94,7 @@ static void *hcache_bdb_open(const char *path)
   if (mutt_str_atoi(HeaderCachePagesize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
-  snprintf(ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
+  snprintf(ctx->lockfile, sizeof(ctx->lockfile), "%s-lock-hack", path);
 
   ctx->fd = open(ctx->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (ctx->fd < 0)

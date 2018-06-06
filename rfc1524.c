@@ -68,7 +68,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
 {
   int x = 0, y = 0;
   int needspipe = true;
-  char buf[LONG_STRING];
+  char buf[HUGE_STRING];
   char type2[LONG_STRING];
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
@@ -425,7 +425,7 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 int rfc1524_mailcap_lookup(struct Body *a, char *type,
                            struct Rfc1524MailcapEntry *entry, int opt)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   int found = false;
   char *curr = MailcapPath;
 
@@ -495,8 +495,8 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   int i, j, k, ps;
   char *s = NULL;
   bool lmatch = false, rmatch = false;
-  char left[_POSIX_PATH_MAX];
-  char right[_POSIX_PATH_MAX];
+  char left[PATH_MAX];
+  char right[PATH_MAX];
 
   newfile[0] = 0;
 

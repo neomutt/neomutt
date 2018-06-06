@@ -100,7 +100,7 @@ static void update_context(struct ImapData *idata, int oldmsgcount)
  */
 static struct BodyCache *msg_cache_open(struct ImapData *idata)
 {
-  char mailbox[_POSIX_PATH_MAX];
+  char mailbox[PATH_MAX];
 
   if (idata->bcache)
     return idata->bcache;
@@ -119,12 +119,11 @@ static struct BodyCache *msg_cache_open(struct ImapData *idata)
  */
 static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
 {
-  char id[_POSIX_PATH_MAX];
-
   if (!idata || !h)
     return NULL;
 
   idata->bcache = msg_cache_open(idata);
+  char id[64];
   snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
   return mutt_bcache_get(idata->bcache, id);
 }
@@ -138,12 +137,11 @@ static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
  */
 static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
 {
-  char id[_POSIX_PATH_MAX];
-
   if (!idata || !h)
     return NULL;
 
   idata->bcache = msg_cache_open(idata);
+  char id[64];
   snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
   return mutt_bcache_put(idata->bcache, id);
 }
@@ -157,12 +155,11 @@ static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
  */
 static int msg_cache_commit(struct ImapData *idata, struct Header *h)
 {
-  char id[_POSIX_PATH_MAX];
-
   if (!idata || !h)
     return -1;
 
   idata->bcache = msg_cache_open(idata);
+  char id[64];
   snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
 
   return mutt_bcache_commit(idata->bcache, id);
@@ -609,7 +606,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 {
   char *hdrreq = NULL;
   FILE *fp = NULL;
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   int msgno, idx;
   struct ImapHeader h;
   struct ImapStatus *status = NULL;
@@ -979,7 +976,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char *pc = NULL;
   unsigned int bytes;
   struct Progress progressbar;
@@ -1370,9 +1367,9 @@ fail:
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {
   struct Buffer cmd, sync_cmd;
-  char mbox[LONG_STRING];
-  char mmbox[LONG_STRING];
-  char prompt[LONG_STRING];
+  char mbox[PATH_MAX];
+  char mmbox[PATH_MAX];
+  char prompt[PATH_MAX + 64];
   int rc;
   struct ImapMbox mx;
   int err_continue = MUTT_NO;
@@ -1555,12 +1552,11 @@ out:
  */
 int imap_cache_del(struct ImapData *idata, struct Header *h)
 {
-  char id[_POSIX_PATH_MAX];
-
   if (!idata || !h)
     return -1;
 
   idata->bcache = msg_cache_open(idata);
+  char id[64];
   snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
   return mutt_bcache_del(idata->bcache, id);
 }

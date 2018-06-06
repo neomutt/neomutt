@@ -58,7 +58,7 @@
  */
 static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   char buf[STRING];
   int omagic;
   int oerrno;

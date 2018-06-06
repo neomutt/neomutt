@@ -51,7 +51,7 @@
 int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[STRING];
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
 
@@ -96,8 +96,8 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[STRING];
-  char command[STRING];
-  char newfile[_POSIX_PATH_MAX] = "";
+  char command[HUGE_STRING];
+  char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
   int rc = 0;
@@ -142,7 +142,7 @@ int mutt_compose_attachment(struct Body *a)
         if (r != -1 && entry->composetypecommand)
         {
           struct Body *b = NULL;
-          char tempfile[_POSIX_PATH_MAX];
+          char tempfile[PATH_MAX];
 
           FILE *fp = mutt_file_fopen(a->filename, "r");
           if (!fp)
@@ -233,8 +233,8 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[STRING];
-  char command[STRING];
-  char newfile[_POSIX_PATH_MAX] = "";
+  char command[HUGE_STRING];
+  char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
   int rc = 0;
@@ -367,8 +367,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachCtx *actx)
 {
-  char tempfile[_POSIX_PATH_MAX] = "";
-  char pagerfile[_POSIX_PATH_MAX] = "";
+  char tempfile[PATH_MAX] = "";
+  char pagerfile[PATH_MAX] = "";
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
@@ -981,7 +981,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
  */
 int mutt_print_attachment(FILE *fp, struct Body *a)
 {
-  char newfile[_POSIX_PATH_MAX] = "";
+  char newfile[PATH_MAX] = "";
   char type[STRING];
   pid_t thepid;
   FILE *ifp = NULL, *fpout = NULL;
@@ -991,7 +991,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
-    char command[_POSIX_PATH_MAX + STRING];
+    char command[HUGE_STRING];
     int piped = false;
 
     mutt_debug(2, "Using mailcap...\n");

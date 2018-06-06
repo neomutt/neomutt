@@ -167,7 +167,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
   short f;
   int first, last, rc = 0;
 
-  char pathname[_POSIX_PATH_MAX];
+  char pathname[PATH_MAX];
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);
 
   FILE *fp = fopen(pathname, "r");
@@ -236,7 +236,7 @@ static inline mode_t mh_umask(struct Context *ctx)
  */
 static int mh_sequences_changed(struct Buffy *b)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   struct stat sb;
 
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
@@ -257,7 +257,7 @@ static int mh_sequences_changed(struct Buffy *b)
  */
 static int mh_already_notified(struct Buffy *b, int msgno)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   struct stat sb;
 
   if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
@@ -374,13 +374,13 @@ bool mh_buffy(struct Buffy *mailbox, bool check_stats)
 static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
 {
   int fd;
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   mode_t omask;
 
   omask = umask(mh_umask(dest));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/.neomutt-%s-%d-%" PRIu64, dest->path,
+    snprintf(path, sizeof(path), "%s/.neomutt-%s-%d-%" PRIu64, dest->path,
              NONULL(ShortHostname), (int) getpid(), mutt_rand64());
     fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
     if (fd == -1)
@@ -462,7 +462,7 @@ static void mh_update_sequences(struct Context *ctx)
 {
   FILE *ofp = NULL, *nfp = NULL;
 
-  char sequences[_POSIX_PATH_MAX];
+  char sequences[PATH_MAX];
   char *tmpfname = NULL;
   char *buf = NULL;
   char *p = NULL;
@@ -576,7 +576,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   FILE *ofp = NULL, *nfp = NULL;
 
   char *tmpfname = NULL;
-  char sequences[_POSIX_PATH_MAX];
+  char sequences[PATH_MAX];
 
   char seq_unseen[STRING];
   char seq_replied[STRING];
@@ -746,7 +746,7 @@ void maildir_parse_flags(struct Header *h, const char *path)
 
 static void maildir_update_mtime(struct Context *ctx)
 {
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   struct stat st;
   struct MhData *data = mh_data(ctx);
 
@@ -831,7 +831,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   int is_old = 0;
   struct Maildir *entry = NULL;
   struct Header *h = NULL;
@@ -1121,7 +1121,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
                                     struct Progress *progress)
 {
   struct Maildir *p, *last = NULL;
-  char fn[_POSIX_PATH_MAX];
+  char fn[PATH_MAX];
   int count;
   int sort = 0;
 #ifdef USE_HCACHE
@@ -1342,7 +1342,7 @@ static int maildir_mbox_open_append(struct Context *ctx, int flags)
     return -1;
   }
 
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
   if (mkdir(tmp, S_IRWXU))
   {
@@ -1400,7 +1400,7 @@ static int mh_mbox_open_append(struct Context *ctx, int flags)
     return -1;
   }
 
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", ctx->path);
   const int i = creat(tmp, S_IRWXU);
   if (i == -1)
@@ -1458,7 +1458,7 @@ static int maildir_mh_open_message(struct Context *ctx, struct Message *msg,
                                    int msgno, int is_maildir)
 {
   struct Header *cur = ctx->hdrs[msgno];
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
 
   snprintf(path, sizeof(path), "%s/%s", ctx->path, cur->path);
 
@@ -1514,7 +1514,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg,
                                     struct Header *hdr)
 {
   int fd;
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char suffix[16];
   char subdir[16];
   mode_t omask;
@@ -1539,7 +1539,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg,
   omask = umask(mh_umask(ctx));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", ctx->path, subdir,
+    snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", ctx->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "Trying %s.\n", path);
@@ -1598,8 +1598,8 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
 {
   char subdir[4];
   char suffix[16];
-  char path[_POSIX_PATH_MAX];
-  char full[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
+  char full[PATH_MAX];
   char *s = NULL;
 
   if (mutt_file_fsync_close(&msg->fp))
@@ -1622,9 +1622,9 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
   /* construct a new file name. */
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
+    snprintf(path, sizeof(path), "%s/%lld.R%" PRIu64 ".%s%s", subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
-    snprintf(full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
+    snprintf(full, sizeof(full), "%s/%s", ctx->path, path);
 
     mutt_debug(2, "renaming %s to %s.\n", msg->path, full);
 
@@ -1690,7 +1690,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
   struct dirent *de = NULL;
   char *cp = NULL, *dep = NULL;
   unsigned int n, hi = 0;
-  char path[_POSIX_PATH_MAX];
+  char path[PATH_MAX];
   char tmp[16];
 
   if (mutt_file_fsync_close(&msg->fp))
@@ -1791,10 +1791,10 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   int rc = mutt_copy_message_ctx(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
-    char oldpath[_POSIX_PATH_MAX];
-    char partpath[_POSIX_PATH_MAX];
-    snprintf(oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
-    mutt_str_strfcpy(partpath, h->path, _POSIX_PATH_MAX);
+    char oldpath[PATH_MAX];
+    char partpath[PATH_MAX];
+    snprintf(oldpath, sizeof(oldpath), "%s/%s", ctx->path, h->path);
+    mutt_str_strfcpy(partpath, h->path, sizeof(partpath));
 
     if (ctx->magic == MUTT_MAILDIR)
       rc = md_commit_message(ctx, dest, h);
@@ -1826,8 +1826,8 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
 
     if (ctx->magic == MUTT_MH && rc == 0)
     {
-      char newpath[_POSIX_PATH_MAX];
-      snprintf(newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
+      char newpath[PATH_MAX];
+      snprintf(newpath, sizeof(newpath), "%s/%s", ctx->path, h->path);
       rc = mutt_file_safe_rename(newpath, oldpath);
       if (rc == 0)
         mutt_str_replace(&h->path, partpath);
@@ -1876,10 +1876,10 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
   {
     /* we just have to rename the file. */
 
-    char newpath[_POSIX_PATH_MAX];
-    char partpath[_POSIX_PATH_MAX];
-    char fullpath[_POSIX_PATH_MAX];
-    char oldpath[_POSIX_PATH_MAX];
+    char newpath[PATH_MAX];
+    char partpath[PATH_MAX];
+    char fullpath[PATH_MAX];
+    char oldpath[PATH_MAX];
     char suffix[16];
 
     char *p = strrchr(h->path, '/');
@@ -1932,7 +1932,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 
   if (h->deleted && (ctx->magic != MUTT_MAILDIR || !MaildirTrash))
   {
-    char path[_POSIX_PATH_MAX];
+    char path[PATH_MAX];
     snprintf(path, sizeof(path), "%s/%s", ctx->path, h->path);
     if (ctx->magic == MUTT_MAILDIR || (MhPurge && ctx->magic == MUTT_MH))
     {
@@ -1961,7 +1961,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
       /* MH just moves files out of the way when you delete them */
       if (*h->path != ',')
       {
-        char tmp[_POSIX_PATH_MAX];
+        char tmp[PATH_MAX];
         snprintf(tmp, sizeof(tmp), "%s/,%s", ctx->path, h->path);
         unlink(tmp);
         rename(path, tmp);
@@ -2058,7 +2058,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct stat st_new; /* status of the "new" subdirectory */
   struct stat st_cur; /* status of the "cur" subdirectory */
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
   bool occult = false;        /* messages were removed from the mailbox */
@@ -2215,7 +2215,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int mh_mbox_check(struct Context *ctx, int *index_hint)
 {
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   struct stat st, st_cur;
   bool modified = false, have_new = false, occult = false, flags_changed = false;
   struct Maildir *md = NULL, *p = NULL;
@@ -2333,7 +2333,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
-  char msgbuf[STRING];
+  char msgbuf[PATH_MAX + 64];
   struct Progress progress;
 
   if (ctx->magic == MUTT_MH)
@@ -2452,9 +2452,9 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
 static FILE *md_open_find_message(const char *folder, const char *unique,
                                   const char *subfolder, char **newname)
 {
-  char dir[_POSIX_PATH_MAX];
-  char tunique[_POSIX_PATH_MAX];
-  char fname[LONG_STRING];
+  char dir[PATH_MAX];
+  char tunique[PATH_MAX];
+  char fname[PATH_MAX];
 
   struct dirent *de = NULL;
 
@@ -2494,7 +2494,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname)
 {
-  char unique[_POSIX_PATH_MAX];
+  char unique[PATH_MAX];
 
   static unsigned int new_hits = 0, cur_hits = 0; /* simple dynamic optimization */
 
@@ -2538,7 +2538,7 @@ int maildir_check_empty(const char *path)
   DIR *dp = NULL;
   struct dirent *de = NULL;
   int r = 1; /* assume empty until we find a message */
-  char realpath[_POSIX_PATH_MAX];
+  char realpath[PATH_MAX];
   int iter = 0;
 
   /* Strategy here is to look for any file not beginning with a period */
@@ -2597,7 +2597,7 @@ int mh_check_empty(const char *path)
 
 bool mx_is_maildir(const char *path)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   struct stat st;
 
   snprintf(tmp, sizeof(tmp), "%s/cur", path);
@@ -2608,7 +2608,7 @@ bool mx_is_maildir(const char *path)
 
 bool mx_is_mh(const char *path)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
 
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", path);
   if (access(tmp, F_OK) == 0)

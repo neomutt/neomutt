@@ -62,10 +62,10 @@ int mutt_complete(char *buf, size_t buflen)
   struct dirent *de = NULL;
   int i, init = 0;
   size_t len;
-  char dirpart[_POSIX_PATH_MAX], exp_dirpart[_POSIX_PATH_MAX];
-  char filepart[_POSIX_PATH_MAX];
+  char dirpart[PATH_MAX], exp_dirpart[PATH_MAX];
+  char filepart[PATH_MAX];
 #ifdef USE_IMAP
-  char imap_path[LONG_STRING];
+  char imap_path[PATH_MAX];
 #endif
 
   mutt_debug(2, "completing %s\n", buf);
@@ -158,7 +158,7 @@ int mutt_complete(char *buf, size_t buflen)
     p = strrchr(buf, '/');
     if (p)
     {
-      char tmp[_POSIX_PATH_MAX];
+      char tmp[PATH_MAX];
       if (mutt_file_concatn_path(tmp, sizeof(tmp), exp_dirpart, strlen(exp_dirpart),
                                  buf + 1, (size_t)(p - buf - 1)) == NULL)
       {
@@ -246,7 +246,7 @@ int mutt_complete(char *buf, size_t buflen)
       }
       else
       {
-        char tmp[_POSIX_PATH_MAX];
+        char tmp[PATH_MAX];
         struct stat st;
 
         mutt_str_strfcpy(filepart, de->d_name, sizeof(filepart));

@@ -154,7 +154,7 @@ static int setup_paths(struct Context *ctx)
   if (!ctx)
     return -1;
 
-  char tmppath[_POSIX_PATH_MAX];
+  char tmppath[PATH_MAX];
 
   /* Setup the right paths */
   FREE(&ctx->realpath);

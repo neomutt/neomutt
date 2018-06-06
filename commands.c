@@ -63,11 +63,11 @@
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */
-static char LastSaveFolder[_POSIX_PATH_MAX] = "";
+static char LastSaveFolder[PATH_MAX] = "";
 
 int mutt_display_message(struct Header *cur)
 {
-  char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
+  char tempfile[PATH_MAX], buf[LONG_STRING];
   int rc = 0;
   bool builtin = false;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
@@ -230,11 +230,12 @@ int mutt_display_message(struct Header *cur)
   {
     int r;
 
+    char cmd[HUGE_STRING];
     mutt_endwin();
-    snprintf(buf, sizeof(buf), "%s %s", NONULL(Pager), tempfile);
-    r = mutt_system(buf);
+    snprintf(cmd, sizeof(cmd), "%s %s", NONULL(Pager), tempfile);
+    r = mutt_system(cmd);
     if (r == -1)
-      mutt_error(_("Error running \"%s\"!"), buf);
+      mutt_error(_("Error running \"%s\"!"), cmd);
     unlink(tempfile);
     if (!OptNoCurses)
       keypad(stdscr, true);
@@ -783,7 +784,7 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
   int need_passphrase = 0, app = 0;
-  char buf[_POSIX_PATH_MAX];
+  char buf[PATH_MAX];
   const char *prompt = NULL;
   struct Context ctx;
   struct stat st;

@@ -972,7 +972,7 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
  */
 static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfile[PATH_MAX];
   char buf[32];
   int i, j, save_sort = SORT_ORDER;
   int rc = -1;
@@ -984,7 +984,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;
   struct Progress progress;
-  char msgbuf[STRING];
+  char msgbuf[PATH_MAX + 64];
   struct Buffy *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
@@ -1241,7 +1241,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
      * around
      */
 
-    char savefile[_POSIX_PATH_MAX];
+    char savefile[PATH_MAX];
 
     snprintf(savefile, sizeof(savefile), "%s/neomutt.%s-%s-%u", NONULL(Tmpdir),
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());

@@ -40,9 +40,9 @@ struct stat;
  */
 struct Buffy
 {
-  char path[_POSIX_PATH_MAX];
-  char realpath[_POSIX_PATH_MAX]; /**< used for duplicate detection, context
-                                   * comparison, and the sidebar */
+  char path[PATH_MAX];
+  char realpath[PATH_MAX]; /**< used for duplicate detection, context
+                            * comparison, and the sidebar */
   char *desc;
   off_t size;
   struct Buffy *next;

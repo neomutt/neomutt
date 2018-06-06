@@ -90,7 +90,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   }
   else
   {
-    char prefix[_POSIX_PATH_MAX];
+    char prefix[PATH_MAX];
     mutt_str_strfcpy(prefix, s, sizeof(prefix));
     mutt_file_sanitize_filename(prefix, true);
     snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
@@ -125,9 +125,9 @@ char *mutt_expand_path(char *s, size_t slen)
 
 char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
 {
-  char p[_POSIX_PATH_MAX] = "";
-  char q[_POSIX_PATH_MAX] = "";
-  char tmp[_POSIX_PATH_MAX];
+  char p[PATH_MAX] = "";
+  char q[PATH_MAX] = "";
+  char tmp[PATH_MAX];
   char *t = NULL;
 
   char *tail = "";
@@ -571,7 +571,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
 
 void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
-  char tmp[LONG_STRING];
+  char tmp[PATH_MAX];
 
   mutt_file_quote_filename(tmp, sizeof(tmp), src);
   mutt_expand_fmt(dest, destlen, fmt, tmp);
@@ -676,7 +676,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (rc == MUTT_NO) ? 1 : -1;
 
-    char tmp[_POSIX_PATH_MAX];
+    char tmp[PATH_MAX];
     mutt_str_strfcpy(tmp, mutt_file_basename(NONULL(attname)), sizeof(tmp));
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
@@ -1304,7 +1304,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
  */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   int ret = 0;
   int rc;
   int magic = 0;
@@ -1518,7 +1518,7 @@ size_t mutt_realpath(char *buf)
   if (realpath(buf, s) == NULL)
     return 0;
 
-  return mutt_str_strfcpy(buf, s, PATH_MAX);
+  return mutt_str_strfcpy(buf, s, sizeof(s));
 }
 
 /**
