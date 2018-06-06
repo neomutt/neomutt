@@ -80,7 +80,7 @@ static void dbt_empty_init(DBT *dbt)
 }
 
 /**
- * hcache_bdb_open - Implements #hcache_open_t
+ * hcache_bdb_open - Implements HcacheOps::open()
  */
 static void *hcache_bdb_open(const char *path)
 {
@@ -146,7 +146,7 @@ fail_close:
 }
 
 /**
- * hcache_bdb_fetch - Implements #hcache_fetch_t
+ * hcache_bdb_fetch - Implements HcacheOps::fetch()
  */
 static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 {
@@ -168,7 +168,7 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_bdb_free - Implements #hcache_free_t
+ * hcache_bdb_free - Implements HcacheOps::free()
  */
 static void hcache_bdb_free(void *vctx, void **data)
 {
@@ -176,7 +176,7 @@ static void hcache_bdb_free(void *vctx, void **data)
 }
 
 /**
- * hcache_bdb_store - Implements #hcache_store_t
+ * hcache_bdb_store - Implements HcacheOps::store()
  */
 static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
@@ -199,7 +199,7 @@ static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *da
 }
 
 /**
- * hcache_bdb_delete - Implements #hcache_delete_t
+ * hcache_bdb_delete - Implements HcacheOps::delete()
  */
 static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
@@ -215,7 +215,7 @@ static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_bdb_close - Implements #hcache_close_t
+ * hcache_bdb_close - Implements HcacheOps::close()
  */
 static void hcache_bdb_close(void **vctx)
 {
@@ -233,7 +233,7 @@ static void hcache_bdb_close(void **vctx)
 }
 
 /**
- * hcache_bdb_backend - Implements #hcache_backend_t
+ * hcache_bdb_backend - Implements HcacheOps::backend()
  */
 static const char *hcache_bdb_backend(void)
 {

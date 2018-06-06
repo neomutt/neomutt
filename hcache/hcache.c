@@ -84,7 +84,12 @@ union Validate {
 };
 
 #define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
-HCACHE_BACKEND_LIST
+HCACHE_BACKEND(bdb)
+HCACHE_BACKEND(gdbm)
+HCACHE_BACKEND(kyotocabinet)
+HCACHE_BACKEND(lmdb)
+HCACHE_BACKEND(qdbm)
+HCACHE_BACKEND(tokyocabinet)
 #undef HCACHE_BACKEND
 
 #define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
@@ -892,7 +897,7 @@ static char *get_foldername(const char *folder)
 }
 
 /**
- * mutt_hcache_open - Multiplexor for #hcache_open_t
+ * mutt_hcache_open - Multiplexor for HcacheOps::open
  */
 header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
@@ -970,7 +975,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 }
 
 /**
- * mutt_hcache_close - Multiplexor for #hcache_close_t
+ * mutt_hcache_close - Multiplexor for HcacheOps::close
  */
 void mutt_hcache_close(header_cache_t *h)
 {
@@ -984,7 +989,7 @@ void mutt_hcache_close(header_cache_t *h)
 }
 
 /**
- * mutt_hcache_fetch - Multiplexor for #hcache_fetch_t
+ * mutt_hcache_fetch - Multiplexor for HcacheOps::fetch
  */
 void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
 {
@@ -1023,7 +1028,7 @@ void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
 }
 
 /**
- * mutt_hcache_free - Multiplexor for #hcache_free_t
+ * mutt_hcache_free - Multiplexor for HcacheOps::free
  */
 void mutt_hcache_free(header_cache_t *h, void **data)
 {
@@ -1036,7 +1041,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
 }
 
 /**
- * mutt_hcache_store - Multiplexor for #hcache_store_t
+ * mutt_hcache_store - Multiplexor for HcacheOps::store
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
                       struct Header *header, unsigned int uidvalidity)
@@ -1081,7 +1086,7 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
 }
 
 /**
- * mutt_hcache_delete - Multiplexor for #hcache_delete_t
+ * mutt_hcache_delete - Multiplexor for HcacheOps::delete
  */
 int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 {

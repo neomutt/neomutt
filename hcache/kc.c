@@ -38,7 +38,7 @@
 #include "options.h"
 
 /**
- * hcache_kyotocabinet_open - Implements #hcache_open_t
+ * hcache_kyotocabinet_open - Implements HcacheOps::open()
  */
 static void *hcache_kyotocabinet_open(const char *path)
 {
@@ -68,7 +68,7 @@ static void *hcache_kyotocabinet_open(const char *path)
 }
 
 /**
- * hcache_kyotocabinet_fetch - Implements #hcache_fetch_t
+ * hcache_kyotocabinet_fetch - Implements HcacheOps::fetch()
  */
 static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
@@ -82,7 +82,7 @@ static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen
 }
 
 /**
- * hcache_kyotocabinet_free - Implements #hcache_free_t
+ * hcache_kyotocabinet_free - Implements HcacheOps::free()
  */
 static void hcache_kyotocabinet_free(void *vctx, void **data)
 {
@@ -91,7 +91,7 @@ static void hcache_kyotocabinet_free(void *vctx, void **data)
 }
 
 /**
- * hcache_kyotocabinet_store - Implements #hcache_store_t
+ * hcache_kyotocabinet_store - Implements HcacheOps::store()
  */
 static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
                                      void *data, size_t dlen)
@@ -109,7 +109,7 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
 }
 
 /**
- * hcache_kyotocabinet_delete - Implements #hcache_delete_t
+ * hcache_kyotocabinet_delete - Implements HcacheOps::delete()
  */
 static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
@@ -126,7 +126,7 @@ static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_kyotocabinet_close - Implements #hcache_close_t
+ * hcache_kyotocabinet_close - Implements HcacheOps::close()
  */
 static void hcache_kyotocabinet_close(void **ctx)
 {
@@ -143,7 +143,7 @@ static void hcache_kyotocabinet_close(void **ctx)
 }
 
 /**
- * hcache_kyotocabinet_backend - Implements #hcache_backend_t
+ * hcache_kyotocabinet_backend - Implements HcacheOps::backend()
  */
 static const char *hcache_kyotocabinet_backend(void)
 {

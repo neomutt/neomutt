@@ -38,7 +38,7 @@
 #include "options.h"
 
 /**
- * hcache_qdbm_open - Implements #hcache_open_t
+ * hcache_qdbm_open - Implements HcacheOps::open()
  */
 static void *hcache_qdbm_open(const char *path)
 {
@@ -51,7 +51,7 @@ static void *hcache_qdbm_open(const char *path)
 }
 
 /**
- * hcache_qdbm_fetch - Implements #hcache_fetch_t
+ * hcache_qdbm_fetch - Implements HcacheOps::fetch()
  */
 static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
@@ -63,7 +63,7 @@ static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_qdbm_free - Implements #hcache_free_t
+ * hcache_qdbm_free - Implements HcacheOps::free()
  */
 static void hcache_qdbm_free(void *ctx, void **data)
 {
@@ -71,7 +71,7 @@ static void hcache_qdbm_free(void *ctx, void **data)
 }
 
 /**
- * hcache_qdbm_store - Implements #hcache_store_t
+ * hcache_qdbm_store - Implements HcacheOps::store()
  */
 static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
@@ -86,7 +86,7 @@ static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *da
 }
 
 /**
- * hcache_qdbm_delete - Implements #hcache_delete_t
+ * hcache_qdbm_delete - Implements HcacheOps::delete()
  */
 static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
 {
@@ -101,7 +101,7 @@ static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_qdbm_close - Implements #hcache_close_t
+ * hcache_qdbm_close - Implements HcacheOps::close()
  */
 static void hcache_qdbm_close(void **ctx)
 {
@@ -113,7 +113,7 @@ static void hcache_qdbm_close(void **ctx)
 }
 
 /**
- * hcache_qdbm_backend - Implements #hcache_backend_t
+ * hcache_qdbm_backend - Implements HcacheOps::backend()
  */
 static const char *hcache_qdbm_backend(void)
 {

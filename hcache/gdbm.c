@@ -37,7 +37,7 @@
 #include "globals.h"
 
 /**
- * hcache_gdbm_open - Implements #hcache_open_t
+ * hcache_gdbm_open - Implements HcacheOps::open()
  */
 static void *hcache_gdbm_open(const char *path)
 {
@@ -55,7 +55,7 @@ static void *hcache_gdbm_open(const char *path)
 }
 
 /**
- * hcache_gdbm_fetch - Implements #hcache_fetch_t
+ * hcache_gdbm_fetch - Implements HcacheOps::fetch()
  */
 static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
@@ -74,7 +74,7 @@ static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_gdbm_free - Implements #hcache_free_t
+ * hcache_gdbm_free - Implements HcacheOps::free()
  */
 static void hcache_gdbm_free(void *vctx, void **data)
 {
@@ -82,7 +82,7 @@ static void hcache_gdbm_free(void *vctx, void **data)
 }
 
 /**
- * hcache_gdbm_store - Implements #hcache_store_t
+ * hcache_gdbm_store - Implements HcacheOps::store()
  */
 static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
@@ -104,7 +104,7 @@ static int hcache_gdbm_store(void *ctx, const char *key, size_t keylen, void *da
 }
 
 /**
- * hcache_gdbm_delete - Implements #hcache_delete_t
+ * hcache_gdbm_delete - Implements HcacheOps::delete()
  */
 static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
 {
@@ -122,7 +122,7 @@ static int hcache_gdbm_delete(void *ctx, const char *key, size_t keylen)
 }
 
 /**
- * hcache_gdbm_close - Implements #hcache_close_t
+ * hcache_gdbm_close - Implements HcacheOps::close()
  */
 static void hcache_gdbm_close(void **ctx)
 {
@@ -134,7 +134,7 @@ static void hcache_gdbm_close(void **ctx)
 }
 
 /**
- * hcache_gdbm_backend - Implements #hcache_backend_t
+ * hcache_gdbm_backend - Implements HcacheOps::backend()
  */
 static const char *hcache_gdbm_backend(void)
 {
