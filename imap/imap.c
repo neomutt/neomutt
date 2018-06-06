@@ -2262,7 +2262,7 @@ static int imap_mbox_close(struct Context *ctx)
   {
     if (idata->status != IMAP_FATAL && idata->state >= IMAP_SELECTED)
     {
-      /* mx_close_mailbox won't sync if there are no deleted messages
+      /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
       if (!ctx->deleted)
         imap_exec(idata, "CLOSE", IMAP_CMD_QUEUE);
@@ -2427,7 +2427,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
                               "Saving changed messages... [%d/%d]", ctx->msgcount),
                      i + 1, ctx->msgcount);
         if (!appendctx)
-          appendctx = mx_open_mailbox(ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
+          appendctx = mx_mbox_open(ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else

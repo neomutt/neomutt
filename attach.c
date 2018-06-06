@@ -786,19 +786,19 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         return -1;
       if (fgets(buf, sizeof(buf), fp) == NULL)
         return -1;
-      if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
+      if (mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
         return -1;
-      msg = mx_open_new_message(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)
       {
-        mx_close_mailbox(&ctx, NULL);
+        mx_mbox_close(&ctx, NULL);
         return -1;
       }
       if (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF)
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx.magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if (mutt_copy_message_fp(msg->fp, fp, hn, 0, chflags) == 0 &&
-          mx_commit_message(&ctx, msg) == 0)
+          mx_msg_commit(&ctx, msg) == 0)
       {
         r = 0;
       }
@@ -807,8 +807,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         r = -1;
       }
 
-      mx_close_message(&ctx, &msg);
-      mx_close_mailbox(&ctx, NULL);
+      mx_msg_close(&ctx, &msg);
+      mx_mbox_close(&ctx, NULL);
       return r;
     }
     else

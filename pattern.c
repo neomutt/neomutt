@@ -891,7 +891,7 @@ static int patmatch(const struct Pattern *pat, const char *buf)
 static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
   int match = 0;
-  struct Message *msg = mx_open_message(ctx, msgno);
+  struct Message *msg = mx_msg_open(ctx, msgno);
   if (!msg)
   {
     return match;
@@ -939,7 +939,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
       if ((WithCrypto != 0) && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
       {
-        mx_close_message(ctx, &msg);
+        mx_msg_close(ctx, &msg);
         if (s.fpout)
         {
           mutt_file_fclose(&s.fpout);
@@ -1025,7 +1025,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   FREE(&buf);
 
-  mx_close_message(ctx, &msg);
+  mx_msg_close(ctx, &msg);
 
   if (ThoroughSearch)
   {

@@ -786,7 +786,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
                           int flags, int chflags)
 {
-  struct Message *msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_msg_open(src, hdr->msgno);
   if (!msg)
     return -1;
   if (!hdr->content)
@@ -797,7 +797,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
     mutt_debug(1, "failed to detect EOF!\n");
     r = -1;
   }
-  mx_close_message(src, &msg);
+  mx_msg_close(src, &msg);
   return r;
 }
 
@@ -824,14 +824,14 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   if (fgets(buf, sizeof(buf), fpin) == NULL)
     return -1;
 
-  msg = mx_open_new_message(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = mutt_copy_message_fp(msg->fp, fpin, hdr, flags, chflags);
-  if (mx_commit_message(dest, msg) != 0)
+  if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
@@ -839,7 +839,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
     nm_update_filename(src, NULL, msg->commited_path, hdr);
 #endif
 
-  mx_close_message(dest, &msg);
+  mx_msg_close(dest, &msg);
   return r;
 }
 
@@ -856,11 +856,11 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 int mutt_append_message(struct Context *dest, struct Context *src,
                         struct Header *hdr, int cmflags, int chflags)
 {
-  struct Message *msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_msg_open(src, hdr->msgno);
   if (!msg)
     return -1;
   int r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
-  mx_close_message(src, &msg);
+  mx_msg_close(src, &msg);
   return r;
 }
 

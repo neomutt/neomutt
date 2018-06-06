@@ -178,8 +178,6 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno);
 bool mx_is_notmuch(const char *p);
 #endif
 
-int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
-int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags);
 bool mx_tags_is_supported(struct Context *ctx);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);

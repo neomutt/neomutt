@@ -158,7 +158,7 @@ int mutt_num_postponed(int force)
     if (optnews)
       OptNews = false;
 #endif
-    if (mx_open_mailbox(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
+    if (mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
     else
       PostCount = ctx.msgcount;
@@ -285,7 +285,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_open_mailbox(Postponed, MUTT_NOSORT, NULL);
+  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT, NULL);
   if (!PostContext)
   {
     PostCount = 0;
@@ -296,7 +296,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!PostContext->msgcount)
   {
     PostCount = 0;
-    mx_close_mailbox(PostContext, NULL);
+    mx_mbox_close(PostContext, NULL);
     FREE(&PostContext);
     mutt_error(_("No postponed messages."));
     return -1;
@@ -309,7 +309,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   }
   else if ((h = select_msg()) == NULL)
   {
-    mx_close_mailbox(PostContext, NULL);
+    mx_mbox_close(PostContext, NULL);
     FREE(&PostContext);
     return -1;
   }
@@ -331,7 +331,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_close_mailbox(PostContext, NULL);
+  mx_mbox_close(PostContext, NULL);
   Delete = opt_delete;
 
   FREE(&PostContext);
@@ -562,7 +562,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
   memset(&s, 0, sizeof(s));
 
-  if (!fp && (msg = mx_open_message(ctx, hdr->msgno)) == NULL)
+  if (!fp && (msg = mx_msg_open(ctx, hdr->msgno)) == NULL)
     return -1;
 
   if (!fp)
@@ -773,7 +773,7 @@ bail:
   if (bfp != fp)
     mutt_file_fclose(&bfp);
   if (msg)
-    mx_close_message(ctx, &msg);
+    mx_msg_close(ctx, &msg);
 
   if (rc == -1)
   {

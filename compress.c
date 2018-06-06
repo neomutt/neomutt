@@ -667,7 +667,7 @@ static int comp_mbox_close(struct Context *ctx)
  *
  * If the mailbox has been changed in NeoMutt, warn the user.
  *
- * The return codes are picked to match mx_check_mailbox().
+ * The return codes are picked to match mx_mbox_check().
  */
 static int comp_mbox_check(struct Context *ctx, int *index_hint)
 {

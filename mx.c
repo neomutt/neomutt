@@ -418,7 +418,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
 }
 
 /**
- * mx_open_mailbox - Open a mailbox and parse it
+ * mx_mbox_open - Open a mailbox and parse it
  * @param path  Path to the mailbox
  * @param flags See below
  * @param pctx  Reuse this Context (if supplied)
@@ -432,7 +432,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx)
+struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
 {
   struct Context *ctx = pctx;
   int rc;
@@ -556,7 +556,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   }
 
   /* never announce that a mailbox we've just left has new mail. #3290
-   * TODO: really belongs in mx_close_mailbox, but this is a nice hook point */
+   * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
     mutt_buffy_setnotified(ctx->path);
 
@@ -653,7 +653,7 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  if (mx_open_mailbox(Trash, MUTT_APPEND, &ctx_trash) != NULL)
+  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash) != NULL)
   {
     /* continue from initial scan above */
     for (; i < ctx->msgcount; i++)
@@ -662,13 +662,13 @@ static int trash_append(struct Context *ctx)
       {
         if (mutt_append_message(&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
-          mx_close_mailbox(&ctx_trash, NULL);
+          mx_mbox_close(&ctx_trash, NULL);
           return -1;
         }
       }
     }
 
-    mx_close_mailbox(&ctx_trash, NULL);
+    mx_mbox_close(&ctx_trash, NULL);
   }
   else
   {
@@ -680,13 +680,13 @@ static int trash_append(struct Context *ctx)
 }
 
 /**
- * mx_close_mailbox - save changes and close mailbox
+ * mx_mbox_close - save changes and close mailbox
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_close_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_close(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   struct Context f;
@@ -834,7 +834,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      if (mx_open_mailbox(mbox, MUTT_APPEND, &f) == NULL)
+      if (mx_mbox_open(mbox, MUTT_APPEND, &f) == NULL)
       {
         ctx->closing = false;
         return -1;
@@ -852,14 +852,14 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
           }
           else
           {
-            mx_close_mailbox(&f, NULL);
+            mx_mbox_close(&f, NULL);
             ctx->closing = false;
             return -1;
           }
         }
       }
 
-      mx_close_mailbox(&f, NULL);
+      mx_mbox_close(&f, NULL);
     }
   }
   else if (!ctx->changed && ctx->deleted == 0)
@@ -1028,9 +1028,9 @@ void mx_update_tables(struct Context *ctx, bool committing)
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
         mutt_hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i]);
       mutt_label_hash_remove(ctx, ctx->hdrs[i]);
-      /* The path mx_check_mailbox() -> imap_check_mailbox() ->
+      /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
-       * can occur before a call to mx_sync_mailbox(), resulting in
+       * can occur before a call to mx_mbox_sync(), resulting in
        * last_tag being stale if it's not reset here.
        */
       if (ctx->last_tag == ctx->hdrs[i])
@@ -1042,13 +1042,13 @@ void mx_update_tables(struct Context *ctx, bool committing)
 }
 
 /**
- * mx_sync_mailbox - Save changes to mailbox
+ * mx_mbox_sync - Save changes to mailbox
  * @param[in]  ctx        Context
  * @param[out] index_hint Currently selected mailbox
  * @retval  0 Success
  * @retval -1 Error
  */
-int mx_sync_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int rc;
   int purge = 1;
@@ -1171,20 +1171,20 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mx_open_new_message - Open a new message
- * @param dest  Destination mailbox
+ * mx_msg_open_new - Open a new message
+ * @param ctx   Destination mailbox
  * @param hdr   Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message
  */
-struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
+struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags)
 {
   struct Address *p = NULL;
   struct Message *msg = NULL;
 
-  if (!dest->mx_ops || !dest->mx_ops->msg_open_new)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_open_new)
   {
-    mutt_debug(1, "function unimplemented for mailbox type %d.\n", dest->magic);
+    mutt_debug(1, "function unimplemented for mailbox type %d.\n", ctx->magic);
     return NULL;
   }
 
@@ -1203,12 +1203,12 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   if (msg->received == 0)
     time(&msg->received);
 
-  if (dest->mx_ops->msg_open_new(dest, msg, hdr) == 0)
+  if (ctx->mx_ops->msg_open_new(ctx, msg, hdr) == 0)
   {
-    if (dest->magic == MUTT_MMDF)
+    if (ctx->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if ((dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
+    if ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
     {
       if (hdr)
       {
@@ -1231,14 +1231,14 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
 }
 
 /**
- * mx_check_mailbox - check for new mail
+ * mx_mbox_check - check for new mail
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_NEW_MAIL
  * @retval  0 Success, no change
  * @retval -1 Failure
  */
-int mx_check_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_check(struct Context *ctx, int *index_hint)
 {
   if (!ctx || !ctx->mx_ops)
   {
@@ -1250,13 +1250,13 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mx_open_message - return a stream pointer for a message
+ * mx_msg_open - return a stream pointer for a message
  * @param ctx   Mailbox
  * @param msgno Message number
  * @retval ptr  Message
  * @retval NULL Error
  */
-struct Message *mx_open_message(struct Context *ctx, int msgno)
+struct Message *mx_msg_open(struct Context *ctx, int msgno)
 {
   struct Message *msg = NULL;
 
@@ -1274,13 +1274,13 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
 }
 
 /**
- * mx_commit_message - commit a message to a folder
+ * mx_msg_commit - commit a message to a folder
  * @param msg Message to commit
  * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_commit_message(struct Context *ctx, struct Message *msg)
+int mx_msg_commit(struct Context *ctx, struct Message *msg)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->msg_commit)
     return -1;
@@ -1295,13 +1295,13 @@ int mx_commit_message(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * mx_close_message - Close a message
+ * mx_msg_close - Close a message
  * @param ctx Mailbox
  * @param msg Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_close_message(struct Context *ctx, struct Message **msg)
+int mx_msg_close(struct Context *ctx, struct Message **msg)
 {
   if (!ctx || !msg || !*msg)
     return 0;
@@ -1450,7 +1450,7 @@ int mx_check_empty(const char *path)
 }
 
 /**
- * mx_tags_editor - start the tag editor of the mailbox
+ * mx_tags_edit - start the tag editor of the mailbox
  * @param ctx    Mailbox
  * @param tags   Existing tags
  * @param buf    Buffer for the results
@@ -1459,7 +1459,7 @@ int mx_check_empty(const char *path)
  * @retval 0  No valid user input
  * @retval 1  Buffer set
  */
-int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   if (ctx->mx_ops->tags_edit)
     return ctx->mx_ops->tags_edit(ctx, tags, buf, buflen);
@@ -1471,15 +1471,15 @@ int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t bufl
 /**
  * mx_tags_commit - save tags to the mailbox
  * @param ctx  Mailbox
- * @param h    Email Header
+ * @param hdr  Email Header
  * @param tags Tags to save
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
+int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
 {
   if (ctx->mx_ops->tags_commit)
-    return ctx->mx_ops->tags_commit(ctx, h, tags);
+    return ctx->mx_ops->tags_commit(ctx, hdr, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting."));
   return -1;

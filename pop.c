@@ -946,7 +946,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  if (mx_open_mailbox(NONULL(Spoolfile), MUTT_APPEND, &ctx) == NULL)
+  if (mx_mbox_open(NONULL(Spoolfile), MUTT_APPEND, &ctx) == NULL)
     goto finish;
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
@@ -959,7 +959,7 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM);
+    msg = mx_msg_open_new(&ctx, NULL, MUTT_ADD_FROM);
     if (!msg)
       ret = -3;
     else
@@ -969,13 +969,13 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if (ret == 0 && mx_commit_message(&ctx, msg) != 0)
+      if (ret == 0 && mx_msg_commit(&ctx, msg) != 0)
       {
         rset = 1;
         ret = -3;
       }
 
-      mx_close_message(&ctx, &msg);
+      mx_msg_close(&ctx, &msg);
     }
 
     if (ret == 0 && delanswer == MUTT_YES)
@@ -987,7 +987,7 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
-      mx_close_mailbox(&ctx, NULL);
+      mx_mbox_close(&ctx, NULL);
       goto fail;
     }
     if (ret == -2)
@@ -1008,7 +1008,7 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
-  mx_close_mailbox(&ctx, NULL);
+  mx_mbox_close(&ctx, NULL);
 
   if (rset)
   {

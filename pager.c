@@ -2204,7 +2204,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     {
       oldcount = Context ? Context->msgcount : 0;
       /* check for new mail */
-      check = mx_check_mailbox(Context, &index_hint);
+      check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
       {
         if (!Context->path)

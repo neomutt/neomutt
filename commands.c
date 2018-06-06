@@ -889,7 +889,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   }
 #endif
 
-  if (mx_open_mailbox(buf, MUTT_APPEND, &ctx) != NULL)
+  if (mx_mbox_open(buf, MUTT_APPEND, &ctx) != NULL)
   {
 #ifdef USE_COMPRESSED
     /* If we're saving to a compressed mailbox, the stats won't be updated
@@ -905,7 +905,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
     {
       if (mutt_save_message_ctx(h, delete, decode, decrypt, &ctx) != 0)
       {
-        mx_close_mailbox(&ctx, NULL);
+        mx_mbox_close(&ctx, NULL);
         return -1;
       }
 #ifdef USE_COMPRESSED
@@ -954,14 +954,14 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 #endif
       if (rc != 0)
       {
-        mx_close_mailbox(&ctx, NULL);
+        mx_mbox_close(&ctx, NULL);
         return -1;
       }
     }
 
     const int need_buffy_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
 
-    mx_close_mailbox(&ctx, NULL);
+    mx_mbox_close(&ctx, NULL);
 
     if (need_buffy_cleanup)
       mutt_buffy_cleanup(buf, &st);
@@ -1089,7 +1089,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   h->security |= PGP_TRADITIONAL_CHECKED;
 
   mutt_parse_mime_message(Context, h);
-  struct Message *msg = mx_open_message(Context, h->msgno);
+  struct Message *msg = mx_msg_open(Context, h->msgno);
   if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, h->content, 0))
@@ -1100,7 +1100,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   }
 
   h->security |= PGP_TRADITIONAL_CHECKED;
-  mx_close_message(Context, &msg);
+  mx_msg_close(Context, &msg);
   return rc;
 }
 

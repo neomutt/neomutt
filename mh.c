@@ -1585,7 +1585,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg,
  *
  * hdr is a header structure to which we write the message's new
  * file name.  This is used in the mh and maildir folder synch
- * routines.  When this routine is invoked from mx_commit_message(),
+ * routines.  When this routine is invoked from mx_msg_commit(),
  * hdr is NULL.
  *
  * msg->path looks like this:
@@ -1782,7 +1782,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   long old_body_length = h->content->length;
   long old_hdr_lines = h->lines;
 
-  struct Message *dest = mx_open_new_message(ctx, h, 0);
+  struct Message *dest = mx_msg_open_new(ctx, h, 0);
   if (!dest)
     return -1;
 
@@ -1799,7 +1799,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     else
       rc = mh_commit_msg(ctx, dest, h, 0);
 
-    mx_close_message(ctx, &dest);
+    mx_msg_close(ctx, &dest);
 
     if (rc == 0)
     {
@@ -1832,7 +1832,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     }
   }
   else
-    mx_close_message(ctx, &dest);
+    mx_msg_close(ctx, &dest);
 
   if (rc == -1 && restore)
   {
@@ -2069,7 +2069,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
                                    for a maildir message */
   struct MhData *data = mh_data(ctx);
 
-  /* XXX seems like this check belongs in mx_check_mailbox()
+  /* XXX seems like this check belongs in mx_mbox_check()
    * rather than here.
    */
   if (!CheckNew)
