@@ -45,26 +45,26 @@ struct stat;
 struct MxOps
 {
   /**
-   * mbox_check - Check for new mail
-   * @param ctx Mailbox
-   * @param index_hint Remember our place in the index
-   * @retval >0 Success, e.g. #MUTT_REOPENED
-   * @retval -1 Error
-   */
-  int (*mbox_open)       (struct Context *ctx);
-  /**
    * mbox_open - Open a mailbox
    * @param ctx Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*mbox_open_append)(struct Context *ctx, int flags);
+  int (*mbox_open)       (struct Context *ctx);
   /**
    * mbox_open_append - Open a mailbox for appending
    * @param ctx   Mailbox to open
    * @param flags e.g. #MUTT_READONLY
    * @retval  0 Success
    * @retval -1 Failure
+   */
+  int (*mbox_open_append)(struct Context *ctx, int flags);
+  /**
+   * mbox_check - Check for new mail
+   * @param ctx Mailbox
+   * @param index_hint Remember our place in the index
+   * @retval >0 Success, e.g. #MUTT_REOPENED
+   * @retval -1 Error
    */
   int (*mbox_check)      (struct Context *ctx, int *index_hint);
   /**
