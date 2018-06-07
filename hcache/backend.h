@@ -103,13 +103,13 @@ struct HcacheOps
 
 #define HCACHE_BACKEND_OPS(_name)                                              \
   const struct HcacheOps hcache_##_name##_ops = {                              \
-    .name = #_name,                                                            \
-    .open = hcache_##_name##_open,                                             \
-    .fetch = hcache_##_name##_fetch,                                           \
-    .free = hcache_##_name##_free,                                             \
-    .store = hcache_##_name##_store,                                           \
-    .delete = hcache_##_name##_delete,                                         \
-    .close = hcache_##_name##_close,                                           \
+    .name    = #_name,                                                         \
+    .open    = hcache_##_name##_open,                                          \
+    .fetch   = hcache_##_name##_fetch,                                         \
+    .free    = hcache_##_name##_free,                                          \
+    .store   = hcache_##_name##_store,                                         \
+    .delete  = hcache_##_name##_delete,                                        \
+    .close   = hcache_##_name##_close,                                         \
     .backend = hcache_##_name##_backend,                                       \
   };
 
