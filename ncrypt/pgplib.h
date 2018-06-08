@@ -68,7 +68,7 @@ short pgp_get_abilities(unsigned char type);
 
 void pgp_free_key(struct PgpKeyInfo **kpp);
 
-struct PgpKeyInfo * pgp_remove_key(struct PgpKeyInfo * *klist, struct PgpKeyInfo * key);
+struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
 
 struct PgpKeyInfo *pgp_new_keyinfo(void);
 

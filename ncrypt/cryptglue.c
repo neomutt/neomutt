@@ -68,6 +68,18 @@ extern struct CryptModuleSpecs crypt_mod_pgp_gpgme;
 extern struct CryptModuleSpecs crypt_mod_smime_gpgme;
 #endif
 
+/* If the crypto module identifier by IDENTIFIER has been registered,
+ * call its function FUNC.  Do nothing else.  This may be used as an
+ * expression. */
+#define CRYPT_MOD_CALL_CHECK(identifier, func)                                 \
+  (crypto_module_lookup(APPLICATION_##identifier) &&                           \
+   (crypto_module_lookup(APPLICATION_##identifier))->func)
+
+/* Call the function FUNC in the crypto module identified by
+ * IDENTIFIER. This may be used as an expression. */
+#define CRYPT_MOD_CALL(identifier, func)                                       \
+  *(crypto_module_lookup(APPLICATION_##identifier))->func
+
 void crypt_init(void)
 {
 #ifdef CRYPT_BACKEND_CLASSIC_PGP

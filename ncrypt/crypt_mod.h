@@ -45,7 +45,7 @@ struct CryptModuleSpecs
   void         (*init)(void);
   void         (*void_passphrase)(void);
   int          (*valid_passphrase)(void);
-  int          (*decrypt_mime)(FILE *a, FILE **b, struct Body *c, struct Body **d);
+  int          (*decrypt_mime)(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
   int          (*application_handler)(struct Body *m, struct State *s);
   int          (*encrypted_handler)(struct Body *m, struct State *s);
   char *       (*findkeys)(struct Address *addrlist, bool oppenc_mode);
@@ -71,20 +71,7 @@ struct CryptModuleSpecs
 };
 
 /* High Level crypto module interface */
-
 void crypto_module_register(struct CryptModuleSpecs *specs);
 struct CryptModuleSpecs *crypto_module_lookup(int identifier);
-
-/* If the crypto module identifier by IDENTIFIER has been registered,
- * call its function FUNC.  Do nothing else.  This may be used as an
- * expression. */
-#define CRYPT_MOD_CALL_CHECK(identifier, func)                                 \
-  (crypto_module_lookup(APPLICATION_##identifier) &&                           \
-   (crypto_module_lookup(APPLICATION_##identifier))->func)
-
-/* Call the function FUNC in the crypto module identified by
- * IDENTIFIER. This may be used as an expression. */
-#define CRYPT_MOD_CALL(identifier, func)                                       \
-  *(crypto_module_lookup(APPLICATION_##identifier))->func
 
 #endif /* _NCRYPT_CRYPT_MOD_H */

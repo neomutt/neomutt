@@ -270,6 +270,7 @@ int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
 #define mutt_get_password(A, B, C) mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
 
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr, struct Header **cur, char *fcc, size_t fcclen);
+int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 int mutt_get_tmp_attachment(struct Body *a);
 int mutt_index_menu(void);
 int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Address *cc, struct Address *bcc,
