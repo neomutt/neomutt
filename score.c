@@ -50,6 +50,10 @@ struct Score
 
 static struct Score *ScoreList = NULL;
 
+/**
+ * mutt_check_rescore - Do the emails need to have their scores recalculated?
+ * @param ctx Mailbox
+ */
 void mutt_check_rescore(struct Context *ctx)
 {
   if (OptNeedRescore && Score)

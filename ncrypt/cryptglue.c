@@ -24,9 +24,10 @@
 /**
  * @page crypt_cryptglue Wrapper around crypto functions
  *
- * This file dispatches the generic crypto functions to the implemented backend
- * or provides dummy stubs.  Note, that some generic functions are handled in
- * crypt.c.
+ * This file dispatches the generic crypto functions to the implemented
+ * backend or provides dummy stubs.
+ *
+ * @note Some generic functions are handled in crypt.c
  *
  * @note This file has been changed to make use of the new module system.
  * Consequently there's a 1:1 mapping between the functions contained in this

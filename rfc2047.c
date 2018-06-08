@@ -29,6 +29,11 @@
 
 #include <string.h>
 
+/**
+ * rfc2047_encode_addrlist - Encode any RFC2047 headers, where required, in an Address list
+ * @param addr Address list
+ * @param tag  Header tag (used for wrapping calculation)
+ */
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
 {
   struct Address *ptr = addr;
@@ -44,6 +49,10 @@ void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
   }
 }
 
+/**
+ * rfc2047_decode_addrlist - Decode any RFC2047 headers in an Address list
+ * @param a Address list
+ */
 void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)

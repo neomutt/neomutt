@@ -68,10 +68,12 @@
  *   - signature class
  */
 
-/* decode the backslash-escaped user ids. */
-
 static char *chs = NULL;
 
+/**
+ * fix_uid - Decode backslash-escaped user ids (in place)
+ * @param uid String to decode
+ */
 static void fix_uid(char *uid)
 {
   char *s = NULL, *d = NULL;
@@ -115,6 +117,14 @@ static void fix_uid(char *uid)
   }
 }
 
+/**
+ * parse_pub_line - Parse the 'pub' line from the pgp output
+ * @param[in]  buf       Buffer containing string to parse
+ * @param[out] is_subkey Is this a subkey of another key?
+ * @param[in]  k         Key to from which to merge info (optional)
+ * @retval ptr  PgpKeyInfo containing the (merged) results
+ * @retval NULL Error
+ */
 static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
 {
   struct PgpUid *uid = NULL;

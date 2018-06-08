@@ -32,11 +32,21 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 
-#define CHUNKSIZE 1024
+#define CHUNKSIZE 1024 /**< Amount of data to read at once */
 
-static unsigned char *pbuf = NULL;
-static size_t plen = 0;
+static unsigned char *pbuf = NULL; /**< Cache PGP data packet */
+static size_t plen = 0;            /**< Length of cached packet */
 
+/**
+ * read_material - Read PGP data into a buffer
+ * @param[in]     material Number of bytes to read
+ * @param[in,out] used     Number of bytes already read
+ * @param[in]     fp       File to read from
+ * @retval  0 Success
+ * @retval -1 Failure (see errno)
+ *
+ * This function uses a cache to store the data: #pbuf, #plen.
+ */
 static int read_material(size_t material, size_t *used, FILE *fp)
 {
   if (*used + material >= plen)
@@ -63,6 +73,13 @@ static int read_material(size_t material, size_t *used, FILE *fp)
   return 0;
 }
 
+/**
+ * pgp_read_packet - Read a PGP packet from a file
+ * @param[in]  fp  File to read from
+ * @param[out] len Number of bytes read
+ *
+ * This function uses a cache to store the data: #pbuf, #plen.
+ */
 unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 {
   size_t used = 0;
@@ -213,6 +230,11 @@ bail:
   return NULL;
 }
 
+/**
+ * pgp_release_packet - Free the cached PGP packet
+ *
+ * Free the data stored in #pbuf.
+ */
 void pgp_release_packet(void)
 {
   plen = 0;

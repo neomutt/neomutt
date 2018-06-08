@@ -160,9 +160,12 @@ static void write_safe_address(FILE *fp, char *s)
 }
 
 /**
- * recode_buf - XXX
+ * recode_buf - Convert some text between two character sets
  * @param buf    Buffer to convert
  * @param buflen Length of buffer
+ *
+ * The 'from' charset is controlled by the 'charset'        config variable.
+ * The 'to'   charset is controlled by the 'config_charset' config variable.
  */
 static void recode_buf(char *buf, size_t buflen)
 {
@@ -285,7 +288,7 @@ struct Address *mutt_expand_aliases(struct Address *a)
 }
 
 /**
- * mutt_expand_aliases_env - XXX
+ * mutt_expand_aliases_env - Expand aliases in all the fields of an Envelope
  * @param env Envelope to expand
  */
 void mutt_expand_aliases_env(struct Envelope *env)

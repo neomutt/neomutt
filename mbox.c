@@ -86,6 +86,10 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
   return r;
 }
 
+/**
+ * mbox_unlock_mailbox - Unlock a mailbox
+ * @param ctx Context to unlock
+ */
 static void mbox_unlock_mailbox(struct Context *ctx)
 {
   if (ctx->locked)
@@ -97,6 +101,13 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   }
 }
 
+/**
+ * mmdf_parse_mailbox - Read a mailbox in MMDF format
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Failure
+ * @retval -2 Aborted
+ */
 static int mmdf_parse_mailbox(struct Context *ctx)
 {
   char buf[HUGE_STRING];

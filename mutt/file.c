@@ -955,7 +955,7 @@ void mutt_file_set_mtime(const char *from, const char *to)
 
 /**
  * mutt_file_touch_atime - Set the access time to current time
- * @param f File descriptor of the file to alter
+ * @param fd File descriptor of the file to alter
  *
  * This is just as read() would do on !noatime.
  * Silently ignored if futimens() isn't supported.
