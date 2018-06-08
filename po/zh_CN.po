@@ -2288,7 +2288,7 @@ msgstr "信箱 %s@%s 已关闭"
 #: imap/command.c:1115 imap/command.c:1209
 #, c-format
 msgid "Connection to %s timed out"
-msgstr "到 %s 的连接已关闭"
+msgstr "到 %s 的连接已超时"
 
 #: imap/imap.c:90
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
