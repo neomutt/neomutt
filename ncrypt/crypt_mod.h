@@ -32,43 +32,6 @@ struct Envelope;
 struct Header;
 struct State;
 
-/*
-    Type definitions for crypto module functions.
- */
-typedef void (*crypt_func_void_passphrase_t)(void);
-typedef int (*crypt_func_valid_passphrase_t)(void);
-
-typedef int (*crypt_func_decrypt_mime_t)(FILE *a, FILE **b, struct Body *c, struct Body **d);
-
-typedef int (*crypt_func_application_handler_t)(struct Body *m, struct State *s);
-typedef int (*crypt_func_encrypted_handler_t)(struct Body *m, struct State *s);
-
-typedef void (*crypt_func_pgp_invoke_getkeys_t)(struct Address *addr);
-typedef int (*crypt_func_pgp_check_traditional_t) (FILE *fp, struct Body *b, int just_one);
-typedef struct Body *(*crypt_func_pgp_traditional_encryptsign_t)(struct Body *a, int flags, char *keylist);
-typedef struct Body *(*crypt_func_pgp_make_key_attachment_t)(char *tempf);
-typedef char *(*crypt_func_findkeys_t)(struct Address *addrlist, bool oppenc_mode);
-typedef struct Body *(*crypt_func_sign_message_t)(struct Body *a);
-typedef struct Body *(*crypt_func_pgp_encrypt_message_t)(struct Body *a, char *keylist, int sign);
-typedef void (*crypt_func_pgp_invoke_import_t)(const char *fname);
-typedef int (*crypt_func_verify_one_t)(struct Body *sigbdy, struct State *s, const char *tempf);
-typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)(FILE *fp, int tag,
-                                                                   struct Body *top);
-
-typedef int (*crypt_func_send_menu_t)(struct Header *msg);
-
-/* (SMIME) */
-typedef void (*crypt_func_smime_getkeys_t)(struct Envelope *env);
-typedef int (*crypt_func_smime_verify_sender_t)(struct Header *h);
-
-typedef struct Body *(*crypt_func_smime_build_smime_entity_t)(struct Body *a, char *certlist);
-
-typedef void (*crypt_func_smime_invoke_import_t)(char *infile, char *mailbox);
-
-typedef void (*crypt_func_init_t)(void);
-
-typedef void (*crypt_func_set_sender_t)(const char *sender);
-
 /**
  * struct CryptModuleFunctions - Crypto API for signing/verifying/encrypting
  *
@@ -76,33 +39,33 @@ typedef void (*crypt_func_set_sender_t)(const char *sender);
  */
 struct CryptModuleFunctions
 {
-  /* Common/General functions.  */
-  crypt_func_init_t                init;
-  crypt_func_void_passphrase_t     void_passphrase;
-  crypt_func_valid_passphrase_t    valid_passphrase;
-  crypt_func_decrypt_mime_t        decrypt_mime;
-  crypt_func_application_handler_t application_handler;
-  crypt_func_encrypted_handler_t   encrypted_handler;
-  crypt_func_findkeys_t            findkeys;
-  crypt_func_sign_message_t        sign_message;
-  crypt_func_verify_one_t          verify_one;
-  crypt_func_send_menu_t           send_menu;
-  crypt_func_set_sender_t          set_sender;
+  /* Common/General functions */
+  void         (*init)(void);
+  void         (*void_passphrase)(void);
+  int          (*valid_passphrase)(void);
+  int          (*decrypt_mime)(FILE *a, FILE **b, struct Body *c, struct Body **d);
+  int          (*application_handler)(struct Body *m, struct State *s);
+  int          (*encrypted_handler)(struct Body *m, struct State *s);
+  char *       (*findkeys)(struct Address *addrlist, bool oppenc_mode);
+  struct Body *(*sign_message)(struct Body *a);
+  int          (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
+  int          (*send_menu)(struct Header *msg);
+  void         (*set_sender)(const char *sender);
 
-  /* PGP specific functions.  */
-  crypt_func_pgp_encrypt_message_t                   pgp_encrypt_message;
-  crypt_func_pgp_make_key_attachment_t               pgp_make_key_attachment;
-  crypt_func_pgp_check_traditional_t                 pgp_check_traditional;
-  crypt_func_pgp_traditional_encryptsign_t           pgp_traditional_encryptsign;
-  crypt_func_pgp_invoke_getkeys_t                    pgp_invoke_getkeys;
-  crypt_func_pgp_invoke_import_t                     pgp_invoke_import;
-  crypt_func_pgp_extract_keys_from_attachment_list_t pgp_extract_keys_from_attachment_list;
+  /* PGP specific functions */
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, int sign);
+  struct Body *(*pgp_make_key_attachment)(char *tempf);
+  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, int just_one);
+  struct Body *(*pgp_traditional_encryptsign)(struct Body *a, int flags, char *keylist);
+  void         (*pgp_invoke_getkeys)(struct Address *addr);
+  void         (*pgp_invoke_import)(const char *fname);
+  void         (*pgp_extract_keys_from_attachment_list)(FILE *fp, int tag, struct Body *top);
 
-  /* S/MIME specific functions.  */
-  crypt_func_smime_getkeys_t            smime_getkeys;
-  crypt_func_smime_verify_sender_t      smime_verify_sender;
-  crypt_func_smime_build_smime_entity_t smime_build_smime_entity;
-  crypt_func_smime_invoke_import_t      smime_invoke_import;
+  /* S/MIME specific functions */
+  void         (*smime_getkeys)(struct Envelope *env);
+  int          (*smime_verify_sender)(struct Header *h);
+  struct Body *(*smime_build_smime_entity)(struct Body *a, char *certlist);
+  void         (*smime_invoke_import)(char *infile, char *mailbox);
 };
 
 /**
