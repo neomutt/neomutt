@@ -78,7 +78,7 @@ static void crypt_mod_pgp_invoke_import(const char *fname)
   pgp_gpgme_invoke_import(fname);
 }
 
-static char *crypt_mod_pgp_findkeys(struct Address *addrlist, int oppenc_mode)
+static char *crypt_mod_pgp_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   return pgp_gpgme_findkeys(addrlist, oppenc_mode);
 }

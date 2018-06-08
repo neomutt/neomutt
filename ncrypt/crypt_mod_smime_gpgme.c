@@ -63,7 +63,7 @@ static int crypt_mod_smime_application_handler(struct Body *m, struct State *s)
   return smime_gpgme_application_handler(m, s);
 }
 
-static char *crypt_mod_smime_findkeys(struct Address *addrlist, int oppenc_mode)
+static char *crypt_mod_smime_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   return smime_gpgme_findkeys(addrlist, oppenc_mode);
 }

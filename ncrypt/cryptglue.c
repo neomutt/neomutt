@@ -241,7 +241,7 @@ struct Body *crypt_pgp_make_key_attachment(char *tempf)
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_pgp_findkeys(struct Address *addrlist, int oppenc_mode)
+char *crypt_pgp_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, findkeys))
     return (CRYPT_MOD_CALL(PGP, findkeys))(addrlist, oppenc_mode);
@@ -386,7 +386,7 @@ int crypt_smime_verify_sender(struct Header *h)
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_smime_findkeys(struct Address *addrlist, int oppenc_mode)
+char *crypt_smime_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, findkeys))
     return (CRYPT_MOD_CALL(SMIME, findkeys))(addrlist, oppenc_mode);

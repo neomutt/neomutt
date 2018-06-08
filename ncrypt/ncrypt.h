@@ -49,6 +49,7 @@
 #ifndef _NCRYPT_NCRYPT_H
 #define _NCRYPT_NCRYPT_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;
@@ -135,7 +136,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 /* -- crypt.c -- */
 int crypt_query(struct Body *m);
 void crypt_extract_keys_from_messages(struct Header *h);
-int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode);
+int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode);
 void crypt_opportunistic_encrypt(struct Header *msg);
 void crypt_forget_passphrase(void);
 int crypt_valid_passphrase(int flags);

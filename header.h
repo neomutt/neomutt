@@ -121,6 +121,6 @@ struct Header
 void           mutt_header_free(struct Header **h);
 struct Header *mutt_header_new(void);
 
-int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
+bool mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
 #endif /* _MUTT_HEADER_H */

@@ -858,7 +858,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
+int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
 {
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);

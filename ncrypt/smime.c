@@ -920,7 +920,7 @@ void smime_getkeys(struct Envelope *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *smime_find_keys(struct Address *addrlist, int oppenc_mode)
+char *smime_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;

@@ -586,50 +586,65 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   return 0;
 }
 
-static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
+/**
+ * strict_cmp_bodies - Strictly compare two email Body's
+ * @param b1 First Body
+ * @param b2 Second Body
+ * @retval true Body's are strictly identical
+ */
+static bool strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
 {
-  if (b1->type != b2->type || b1->encoding != b2->encoding ||
+  if ((b1->type != b2->type) || (b1->encoding != b2->encoding) ||
       (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
       (mutt_str_strcmp(b1->description, b2->description) != 0) ||
-      !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || b1->length != b2->length)
+      !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || (b1->length != b2->length))
   {
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 /**
  * mbox_strict_cmp_headers - Strictly compare message headers
- * @retval 1 if headers are strictly identical
+ * @param h1 First Header
+ * @param h2 Second Header
+ * @retval true Headers are strictly identical
  */
-int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
+bool mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
 {
   if (h1 && h2)
   {
-    if (h1->received != h2->received || h1->date_sent != h2->date_sent ||
-        h1->content->length != h2->content->length || h1->lines != h2->lines ||
-        h1->zhours != h2->zhours || h1->zminutes != h2->zminutes ||
-        h1->zoccident != h2->zoccident || h1->mime != h2->mime ||
+    if ((h1->received != h2->received) || (h1->date_sent != h2->date_sent) ||
+        (h1->content->length != h2->content->length) || (h1->lines != h2->lines) ||
+        (h1->zhours != h2->zhours) || (h1->zminutes != h2->zminutes) ||
+        (h1->zoccident != h2->zoccident) || (h1->mime != h2->mime) ||
         !mutt_env_cmp_strict(h1->env, h2->env) ||
         !strict_cmp_bodies(h1->content, h2->content))
     {
-      return 0;
+      return false;
     }
     else
-      return 1;
+      return true;
   }
   else
   {
     if (!h1 && !h2)
-      return 1;
+      return true;
     else
-      return 0;
+      return false;
   }
 }
 
+/**
+ * reopen_mailbox - Close and reopen a mailbox
+ * @param ctx        Mailbox
+ * @param index_hint Current email
+ * @retval >0 Success, e.g. #MUTT_REOPENED, #MUTT_NEW_MAIL
+ * @retval -1 Error
+ */
 static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
-  int (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
+  bool (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
   struct Header **old_hdrs = NULL;
   int old_msgcount;
   bool msg_mod = false;

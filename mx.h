@@ -182,8 +182,6 @@ bool mx_tags_is_supported(struct Context *ctx);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
-int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
-
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, bool committing);

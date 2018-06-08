@@ -4636,7 +4636,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.
  */
-static char *find_keys(struct Address *addrlist, unsigned int app, int oppenc_mode)
+static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
@@ -4759,12 +4759,12 @@ static char *find_keys(struct Address *addrlist, unsigned int app, int oppenc_mo
   return keylist;
 }
 
-char *pgp_gpgme_findkeys(struct Address *addrlist, int oppenc_mode)
+char *pgp_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_PGP, oppenc_mode);
 }
 
-char *smime_gpgme_findkeys(struct Address *addrlist, int oppenc_mode)
+char *smime_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
 }

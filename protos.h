@@ -202,12 +202,12 @@ void mutt_query_exit(void);
 void mutt_query_menu(char *buf, size_t buflen);
 void mutt_safe_path(char *s, size_t l, struct Address *a);
 void mutt_save_path(char *d, size_t dsize, struct Address *a);
-void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx);
+void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx);
 void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr);
 void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles);
 void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type);
-void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx);
-#define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, 1)
+void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool bf, bool upd_ctx);
+#define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, true)
 void mutt_set_followup_to(struct Envelope *e);
 void mutt_shell_escape(void);
 void mutt_show_error(void);
