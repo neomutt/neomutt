@@ -23,8 +23,8 @@
 #ifndef _NCRYPT_CRYPT_MOD_H
 #define _NCRYPT_CRYPT_MOD_H
 
+#include <stdbool.h>
 #include <stdio.h>
-#include "ncrypt.h"
 
 struct Address;
 struct Body;
@@ -33,12 +33,14 @@ struct Header;
 struct State;
 
 /**
- * struct CryptModuleFunctions - Crypto API for signing/verifying/encrypting
+ * struct CryptModuleSpecs - Crypto API
  *
- * A structure to keep all crypto module functions together.
+ * A structure to describe a crypto module.
  */
-struct CryptModuleFunctions
+struct CryptModuleSpecs
 {
+  int identifier; /**< Identifying bit */
+
   /* Common/General functions */
   void         (*init)(void);
   void         (*void_passphrase)(void);
@@ -68,34 +70,21 @@ struct CryptModuleFunctions
   void         (*smime_invoke_import)(char *infile, char *mailbox);
 };
 
-/**
- * struct CryptModuleSpecs - Crypto API
- *
- * A structure to describe a crypto module.
- */
-struct CryptModuleSpecs
-{
-  int identifier; /**< Identifying bit */
-  struct CryptModuleFunctions functions;
-};
-
-/*
-   High Level crypto module interface.
- */
+/* High Level crypto module interface */
 
 void crypto_module_register(struct CryptModuleSpecs *specs);
 struct CryptModuleSpecs *crypto_module_lookup(int identifier);
 
-/** If the crypto module identifier by IDENTIFIER has been registered,
-   call its function FUNC.  Do nothing else.  This may be used as an
-   expression. */
+/* If the crypto module identifier by IDENTIFIER has been registered,
+ * call its function FUNC.  Do nothing else.  This may be used as an
+ * expression. */
 #define CRYPT_MOD_CALL_CHECK(identifier, func)                                 \
   (crypto_module_lookup(APPLICATION_##identifier) &&                           \
-   (crypto_module_lookup(APPLICATION_##identifier))->functions.func)
+   (crypto_module_lookup(APPLICATION_##identifier))->func)
 
-/** Call the function FUNC in the crypto module identified by
-   IDENTIFIER. This may be used as an expression. */
+/* Call the function FUNC in the crypto module identified by
+ * IDENTIFIER. This may be used as an expression. */
 #define CRYPT_MOD_CALL(identifier, func)                                       \
-  *(crypto_module_lookup(APPLICATION_##identifier))->functions.func
+  *(crypto_module_lookup(APPLICATION_##identifier))->func
 
 #endif /* _NCRYPT_CRYPT_MOD_H */

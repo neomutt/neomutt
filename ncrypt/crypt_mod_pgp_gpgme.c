@@ -103,41 +103,47 @@ static struct Body *crypt_mod_pgp_encrypt_message(struct Body *a, char *keylist,
   return pgp_gpgme_encrypt_message(a, keylist, sign);
 }
 
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
 static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
 {
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
   return pgp_gpgme_make_key_attachment(tempf);
-}
+#else
+  return NULL;
 #endif
+}
 
 static void crypt_mod_pgp_set_sender(const char *sender)
 {
   mutt_gpgme_set_sender(sender);
 }
 
+// clang-format off
 struct CryptModuleSpecs crypt_mod_pgp_gpgme = {
   APPLICATION_PGP,
-  {
-      /* Common.  */
-      crypt_mod_pgp_init, crypt_mod_pgp_void_passphrase, crypt_mod_pgp_valid_passphrase,
-      crypt_mod_pgp_decrypt_mime, crypt_mod_pgp_application_handler,
-      crypt_mod_pgp_encrypted_handler, crypt_mod_pgp_findkeys, crypt_mod_pgp_sign_message,
-      crypt_mod_pgp_verify_one, crypt_mod_pgp_send_menu, crypt_mod_pgp_set_sender,
 
-      /* PGP specific.  */
-      crypt_mod_pgp_encrypt_message,
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
-      crypt_mod_pgp_make_key_attachment,
-#else
-      NULL,
-#endif
-      crypt_mod_pgp_check_traditional, NULL, /* pgp_traditional_encryptsign  */
-      NULL,                                  /* pgp_invoke_getkeys  */
-      crypt_mod_pgp_invoke_import, NULL, /* pgp_extract_keys_from_attachment_list  */
+  crypt_mod_pgp_init,
+  crypt_mod_pgp_void_passphrase,
+  crypt_mod_pgp_valid_passphrase,
+  crypt_mod_pgp_decrypt_mime,
+  crypt_mod_pgp_application_handler,
+  crypt_mod_pgp_encrypted_handler,
+  crypt_mod_pgp_findkeys,
+  crypt_mod_pgp_sign_message,
+  crypt_mod_pgp_verify_one,
+  crypt_mod_pgp_send_menu,
+  crypt_mod_pgp_set_sender,
 
-      NULL, /* smime_getkeys */
-      NULL, /* smime_verify_sender */
-      NULL, /* smime_build_smime_entity */
-      NULL, /* smime_invoke_import */
-  },
+  crypt_mod_pgp_encrypt_message,
+  crypt_mod_pgp_make_key_attachment,
+  crypt_mod_pgp_check_traditional,
+  NULL, /* pgp_traditional_encryptsign  */
+  NULL, /* pgp_invoke_getkeys  */
+  crypt_mod_pgp_invoke_import,
+  NULL, /* pgp_extract_keys_from_attachment_list  */
+
+  NULL, /* smime_getkeys */
+  NULL, /* smime_verify_sender */
+  NULL, /* smime_build_smime_entity */
+  NULL, /* smime_invoke_import */
 };
+// clang-format on

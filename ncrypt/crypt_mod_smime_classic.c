@@ -98,32 +98,33 @@ static void crypt_mod_smime_invoke_import(char *infile, char *mailbox)
   smime_invoke_import(infile, mailbox);
 }
 
+// clang-format off
 struct CryptModuleSpecs crypt_mod_smime_classic = {
   APPLICATION_SMIME,
-  {
-      NULL, /* init */
-      crypt_mod_smime_void_passphrase,
-      crypt_mod_smime_valid_passphrase,
-      crypt_mod_smime_decrypt_mime,
-      crypt_mod_smime_application_handler,
-      NULL, /* encrypted_handler */
-      crypt_mod_smime_findkeys,
-      crypt_mod_smime_sign_message,
-      crypt_mod_smime_verify_one,
-      crypt_mod_smime_send_menu,
-      NULL,
 
-      NULL, /* pgp_encrypt_message */
-      NULL, /* pgp_make_key_attachment */
-      NULL, /* pgp_check_traditional */
-      NULL, /* pgp_traditional_encryptsign */
-      NULL, /* pgp_invoke_getkeys */
-      NULL, /* pgp_invoke_import */
-      NULL, /* pgp_extract_keys_from_attachment_list */
+  NULL, /* init */
+  crypt_mod_smime_void_passphrase,
+  crypt_mod_smime_valid_passphrase,
+  crypt_mod_smime_decrypt_mime,
+  crypt_mod_smime_application_handler,
+  NULL, /* encrypted_handler */
+  crypt_mod_smime_findkeys,
+  crypt_mod_smime_sign_message,
+  crypt_mod_smime_verify_one,
+  crypt_mod_smime_send_menu,
+  NULL, /* set_sender */
 
-      crypt_mod_smime_getkeys,
-      crypt_mod_smime_verify_sender,
-      crypt_mod_smime_build_smime_entity,
-      crypt_mod_smime_invoke_import,
-  },
+  NULL, /* pgp_encrypt_message */
+  NULL, /* pgp_make_key_attachment */
+  NULL, /* pgp_check_traditional */
+  NULL, /* pgp_traditional_encryptsign */
+  NULL, /* pgp_invoke_getkeys */
+  NULL, /* pgp_invoke_import */
+  NULL, /* pgp_extract_keys_from_attachment_list */
+
+  crypt_mod_smime_getkeys,
+  crypt_mod_smime_verify_sender,
+  crypt_mod_smime_build_smime_entity,
+  crypt_mod_smime_invoke_import,
 };
+// clang-format on
