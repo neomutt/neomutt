@@ -170,7 +170,7 @@ msgstr "---命令：%-20.20s 描述：%s"
 #: attach.c:520
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr "---命令：%-30.30s 描述：%s"
+msgstr "---命令：%-30.30s 附件：%s"
 
 #: attach.c:600
 #, c-format
