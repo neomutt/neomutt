@@ -87,6 +87,8 @@ static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static struct Event *UngetKeyEvents;
 
+int MuttGetchTimeout = -1;
+
 /**
  * mutt_refresh - Force a refresh of the screen
  */
@@ -126,10 +128,8 @@ void mutt_need_hard_redraw(void)
  */
 void mutt_getch_timeout(int delay)
 {
+  MuttGetchTimeout = delay;
   timeout(delay);
-#ifdef USE_INOTIFY
-  mutt_monitor_set_poll_timeout(delay);
-#endif
 }
 
 #ifdef USE_INOTIFY
@@ -139,7 +139,7 @@ static int mutt_monitor_getch(void)
    * we need to make sure there isn't a character waiting */
   timeout(0);
   int ch = getch();
-  timeout(mutt_monitor_get_poll_timeout());
+  timeout(MuttGetchTimeout);
   if (ch == ERR)
   {
     if (mutt_monitor_poll() != 0)

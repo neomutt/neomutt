@@ -35,6 +35,8 @@ struct Pager;
 /* These Config Variables are only used in curs_lib.c */
 extern bool MetaKey; /**< interpret ALT-x as ESC-x */
 
+extern int MuttGetchTimeout;
+
 /* For mutt_simple_format() justifications */
 #define FMT_LEFT   -1
 #define FMT_CENTER 0
