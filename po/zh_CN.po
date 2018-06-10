@@ -681,7 +681,7 @@ msgstr "寄出"
 
 #: compose.c:151 compose.c:167 remailer.c:477
 msgid "Abort"
-msgstr "中断"
+msgstr "中止"
 
 #. L10N: compose menu help line entry
 #: compose.c:153
@@ -1335,7 +1335,7 @@ msgstr "退出 NeoMutt？"
 
 #: curs_lib.c:428
 msgid "Press any key to continue..."
-msgstr "按下任何一个键继续..."
+msgstr "按任意键继续..."
 
 #: curs_lib.c:471
 msgid " ('?' for list): "
@@ -1540,7 +1540,7 @@ msgstr "反标记符合此模式的信件："
 
 #: curs_main.c:1665
 msgid "Logged out of IMAP servers."
-msgstr "正在退出 IMAP 服务器."
+msgstr "已从 IMAP 服务器退出。"
 
 #: curs_main.c:1765
 msgid "No virtual folder, aborting."
