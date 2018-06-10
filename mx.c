@@ -617,10 +617,18 @@ static int trash_append(struct Context *ctx)
     return 0;
 
   int delmsgcount = 0;
+  int first_del = -1;
   for (i = 0; i < ctx->msgcount; i++)
+  {
     if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
+    {
+      if (first_del < 0)
+        first_del = i;
       delmsgcount++;
-  if (i == ctx->msgcount)
+    }
+  }
+
+  if (delmsgcount == 0)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
@@ -632,7 +640,7 @@ static int trash_append(struct Context *ctx)
     Confirmappend = true;
   if (rc != 0)
   {
-    /* L10N: Although we now the precise number of messages, we do not show it to the user.
+    /* L10N: Although we know the precise number of messages, we do not show it to the user.
        So feel free to use a "generic plural" as plural translation if your language has one.
      */
     mutt_error(ngettext("message not deleted", "messages not deleted", delmsgcount));
@@ -656,7 +664,7 @@ static int trash_append(struct Context *ctx)
   if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash) != NULL)
   {
     /* continue from initial scan above */
-    for (; i < ctx->msgcount; i++)
+    for (i = first_del; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
