@@ -325,7 +325,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
   if (OptNeedRescore && Score)
   {
     for (int i = 0; i < ctx->msgcount; i++)
-      mutt_score_message(ctx, ctx->hdrs[i], 1);
+      mutt_score_message(ctx, ctx->hdrs[i], true);
   }
   OptNeedRescore = false;
 

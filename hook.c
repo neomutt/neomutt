@@ -663,6 +663,12 @@ void mutt_account_hook(const char *url)
 }
 #endif
 
+/**
+ * mutt_timeout_hook - Execute any timeout hooks
+ *
+ * The user can configure hooks to be run on timeout.
+ * This function finds all the matching hooks and executes them.
+ */
 void mutt_timeout_hook(void)
 {
   struct Hook *hook = NULL;

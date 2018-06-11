@@ -26,8 +26,8 @@
  * @page crypt_pgp PGP sign, encrypt, check routines
  *
  * This file contains all of the PGP routines necessary to sign, encrypt,
- * verify and decrypt PGP messages in either the new PGP/MIME format, or in the
- * older Application/Pgp format.  It also contains some code to cache the
+ * verify and decrypt PGP messages in either the new PGP/MIME format, or in
+ * the older Application/Pgp format.  It also contains some code to cache the
  * user's passphrase for repeat use when decrypting or signing a message.
  */
 
@@ -1235,7 +1235,7 @@ struct Body *pgp_sign_message(struct Body *a)
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.
  */
-char *pgp_find_keys(struct Address *addrlist, int oppenc_mode)
+char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;

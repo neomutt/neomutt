@@ -1407,7 +1407,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       {
         h2->superseded = true;
         if (Score)
-          mutt_score_message(ctx, h2, 1);
+          mutt_score_message(ctx, h2, true);
       }
     }
 
@@ -1419,7 +1419,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     mutt_label_hash_add(ctx, h);
 
     if (Score)
-      mutt_score_message(ctx, h, 0);
+      mutt_score_message(ctx, h, false);
 
     if (h->changed)
       ctx->changed = true;

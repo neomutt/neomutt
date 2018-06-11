@@ -167,6 +167,11 @@ static void usage(void)
 }
 // clang-format on
 
+/**
+ * start_curses - Start the curses or slang UI
+ * @retval 0 Success
+ * @retval 1 Failure
+ */
 static int start_curses(void)
 {
   km_init(); /* must come before mutt_init */

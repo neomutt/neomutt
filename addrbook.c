@@ -162,7 +162,7 @@ static int alias_sort_alias(const void *a, const void *b)
 }
 
 /**
- * address_sort_address - Compare two Addresses
+ * alias_sort_address - Compare two Addresses
  * @param a First  Address to compare
  * @param b Second Address to compare
  * @retval -1 a precedes b

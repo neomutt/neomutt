@@ -852,7 +852,7 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 }
 
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
-                                    enum PgpRing keyring, int oppenc_mode)
+                                    enum PgpRing keyring, bool oppenc_mode)
 {
   if (!a)
     return NULL;

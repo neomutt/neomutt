@@ -51,7 +51,7 @@
  * @param bf      true: set the flag; false: clear the flag
  * @param upd_ctx true: update the Context
  */
-void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
+void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool bf, bool upd_ctx)
 {
   if (!ctx || !h)
     return;

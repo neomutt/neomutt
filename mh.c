@@ -566,8 +566,8 @@ static void mh_update_sequences(struct Context *ctx)
   FREE(&tmpfname);
 }
 
-static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
-                                 short flagged, short replied)
+static void mh_sequences_add_one(struct Context *ctx, int n, bool unseen,
+                                 bool flagged, bool replied)
 {
   short unseen_done = 0;
   short flagged_done = 0;
@@ -1680,11 +1680,16 @@ static int maildir_msg_commit(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * mh_commit_msg - XXX
- * commit a message to an MH folder.
+ * mh_commit_msg - Commit a message to an MH folder
+ * @param ctx    Mailbox
+ * @param msg    Message to commit
+ * @param hdr    Email Header
+ * @param updseq If true, update the sequence number
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int mh_commit_msg(struct Context *ctx, struct Message *msg,
-                         struct Header *hdr, short updseq)
+                         struct Header *hdr, bool updseq)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -1767,7 +1772,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
  */
 static int mh_msg_commit(struct Context *ctx, struct Message *msg)
 {
-  return mh_commit_msg(ctx, msg, NULL, 1);
+  return mh_commit_msg(ctx, msg, NULL, true);
 }
 
 /**
@@ -1799,7 +1804,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     if (ctx->magic == MUTT_MAILDIR)
       rc = md_commit_message(ctx, dest, h);
     else
-      rc = mh_commit_msg(ctx, dest, h, 0);
+      rc = mh_commit_msg(ctx, dest, h, false);
 
     mx_msg_close(ctx, &dest);
 
