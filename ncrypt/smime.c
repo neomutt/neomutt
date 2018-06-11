@@ -123,18 +123,18 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
  */
 
 /**
- * smime_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ * smime_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
  */
-void smime_void_passphrase(void)
+void smime_class_void_passphrase(void)
 {
   memset(SmimePass, 0, sizeof(SmimePass));
   SmimeExptime = 0;
 }
 
 /**
- * smime_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ * smime_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
  */
-int smime_valid_passphrase(void)
+int smime_class_valid_passphrase(void)
 {
   time_t now = time(NULL);
 
@@ -144,7 +144,7 @@ int smime_valid_passphrase(void)
     return 1;
   }
 
-  smime_void_passphrase();
+  smime_class_void_passphrase();
 
   if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
   {
@@ -848,14 +848,14 @@ static void getkeys(char *mailbox)
       return;
     }
     else
-      smime_void_passphrase();
+      smime_class_void_passphrase();
 
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), k);
 
     snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s", NONULL(SmimeCertificates), k);
 
     if (mutt_str_strcasecmp(k, SmimeDefaultKey) != 0)
-      smime_void_passphrase();
+      smime_class_void_passphrase();
 
     smime_free_key(&key);
     return;
@@ -869,7 +869,7 @@ static void getkeys(char *mailbox)
       return;
     }
 
-    smime_void_passphrase();
+    smime_class_void_passphrase();
   }
 
   snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys),
@@ -880,9 +880,9 @@ static void getkeys(char *mailbox)
 }
 
 /**
- * smime_getkeys - Implements CryptModuleSpecs::smime_getkeys()
+ * smime_class_getkeys - Implements CryptModuleSpecs::smime_getkeys()
  */
-void smime_getkeys(struct Envelope *env)
+void smime_class_getkeys(struct Envelope *env)
 {
   struct Address *t = NULL;
   bool found = false;
@@ -921,9 +921,9 @@ void smime_getkeys(struct Envelope *env)
 }
 
 /**
- * smime_find_keys - Implements CryptModuleSpecs::findkeys()
+ * smime_class_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *smime_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;
@@ -1224,9 +1224,9 @@ static char *smime_extract_signer_certificate(char *infile)
 }
 
 /**
- * smime_invoke_import - Implements CryptModuleSpecs::smime_invoke_import()
+ * smime_class_invoke_import - Implements CryptModuleSpecs::smime_invoke_import()
  */
-void smime_invoke_import(char *infile, char *mailbox)
+void smime_class_invoke_import(char *infile, char *mailbox)
 {
   char tmpfname[PATH_MAX], *certfile = NULL, buf[STRING];
   FILE *smimein = NULL;
@@ -1299,9 +1299,9 @@ void smime_invoke_import(char *infile, char *mailbox)
 }
 
 /**
- * smime_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
+ * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_verify_sender(struct Header *h)
+int smime_class_verify_sender(struct Header *h)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
   int retval = 1;
@@ -1384,9 +1384,9 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 }
 
 /**
- * smime_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
+ * smime_class_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
  */
-struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
+struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[LONG_STRING], certfile[PATH_MAX];
   char tempfile[PATH_MAX], smimeerrfile[PATH_MAX];
@@ -1537,9 +1537,9 @@ static char *openssl_md_to_smime_micalg(char *md)
 }
 
 /**
- * smime_sign_message - Implements CryptModuleSpecs::sign_message()
+ * smime_class_sign_message - Implements CryptModuleSpecs::sign_message()
  */
-struct Body *smime_sign_message(struct Body *a)
+struct Body *smime_class_sign_message(struct Body *a)
 {
   char buffer[LONG_STRING];
   char signedfile[PATH_MAX], filetosign[PATH_MAX];
@@ -1695,9 +1695,9 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
 }
 
 /**
- * smime_verify_one - Implements CryptModuleSpecs::verify_one()
+ * smime_class_verify_one - Implements CryptModuleSpecs::verify_one()
  */
-int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
+int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char signedfile[PATH_MAX], smimeerrfile[PATH_MAX];
   FILE *smimeout = NULL;
@@ -1888,8 +1888,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 
   if (type & ENCRYPT)
   {
-    if (!smime_valid_passphrase())
-      smime_void_passphrase();
+    if (!smime_class_valid_passphrase())
+      smime_class_void_passphrase();
     fputs(SmimePass, smimein);
     fputc('\n', smimein);
   }
@@ -2018,9 +2018,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 }
 
 /**
- * smime_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ * smime_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
-int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
   struct State s;
@@ -2090,17 +2090,17 @@ bail:
 }
 
 /**
- * smime_application_smime_handler - Implements CryptModuleSpecs::application_handler()
+ * smime_class_application_handler - Implements CryptModuleSpecs::application_handler()
  */
-int smime_application_smime_handler(struct Body *m, struct State *s)
+int smime_class_application_handler(struct Body *m, struct State *s)
 {
   return smime_handle_entity(m, s, NULL) ? 0 : -1;
 }
 
 /**
- * smime_send_menu - Implements CryptModuleSpecs::send_menu()
+ * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_send_menu(struct Header *msg)
+int smime_class_send_menu(struct Header *msg)
 {
   struct SmimeKey *key = NULL;
   char *prompt = NULL, *letters = NULL, *choices = NULL;

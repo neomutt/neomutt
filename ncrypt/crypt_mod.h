@@ -85,7 +85,7 @@ struct CryptModuleSpecs
    */
   int          (*encrypted_handler)(struct Body *m, struct State *s);
   /**
-   * findkeys - Find the keyids of the recipients of a message
+   * find_keys - Find the keyids of the recipients of a message
    * @param addrlist    Address List
    * @param oppenc_mode If true, use opportunistic encryption
    * @retval ptr  Space-separated string of keys
@@ -94,7 +94,7 @@ struct CryptModuleSpecs
    * If oppenc_mode is true, only keys that can be determined without prompting
    * will be used.
    */
-  char *       (*findkeys)(struct Address *addrlist, bool oppenc_mode);
+  char *       (*find_keys)(struct Address *addrlist, bool oppenc_mode);
   /**
    * sign_message - Cryptographically sign the Body of a message
    * @param a Body of the message

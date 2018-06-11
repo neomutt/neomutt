@@ -33,20 +33,20 @@
 #include "ncrypt.h"
 
 /**
- * crypt_mod_smime_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ * smime_gpgme_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
  *
  * This is handled by gpg-agent.
  */
-static void crypt_mod_smime_void_passphrase(void)
+static void smime_gpgme_void_passphrase(void)
 {
 }
 
 /**
- * crypt_mod_smime_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ * smime_gpgme_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
  *
  * This is handled by gpg-agent.
  */
-static int crypt_mod_smime_valid_passphrase(void)
+static int smime_gpgme_valid_passphrase(void)
 {
   return 1;
 }
@@ -56,12 +56,12 @@ struct CryptModuleSpecs crypt_mod_smime_gpgme = {
   APPLICATION_SMIME,
 
   smime_gpgme_init,
-  crypt_mod_smime_void_passphrase,
-  crypt_mod_smime_valid_passphrase,
+  smime_gpgme_void_passphrase,
+  smime_gpgme_valid_passphrase,
   smime_gpgme_decrypt_mime,
   smime_gpgme_application_handler,
   NULL, /* encrypted_handler */
-  smime_gpgme_findkeys,
+  smime_gpgme_find_keys,
   smime_gpgme_sign_message,
   smime_gpgme_verify_one,
   smime_gpgme_send_menu,

@@ -37,15 +37,15 @@ struct CryptModuleSpecs crypt_mod_smime_classic = {
   APPLICATION_SMIME,
 
   NULL, /* init */
-  smime_void_passphrase,
-  smime_valid_passphrase,
-  smime_decrypt_mime,
-  smime_application_smime_handler,
+  smime_class_void_passphrase,
+  smime_class_valid_passphrase,
+  smime_class_decrypt_mime,
+  smime_class_application_handler,
   NULL, /* encrypted_handler */
-  smime_find_keys,
-  smime_sign_message,
-  smime_verify_one,
-  smime_send_menu,
+  smime_class_find_keys,
+  smime_class_sign_message,
+  smime_class_verify_one,
+  smime_class_send_menu,
   NULL, /* set_sender */
 
   NULL, /* pgp_encrypt_message */
@@ -56,9 +56,9 @@ struct CryptModuleSpecs crypt_mod_smime_classic = {
   NULL, /* pgp_invoke_import */
   NULL, /* pgp_extract_keys_from_attachment_list */
 
-  smime_getkeys,
-  smime_verify_sender,
-  smime_build_smime_entity,
-  smime_invoke_import,
+  smime_class_getkeys,
+  smime_class_verify_sender,
+  smime_class_build_smime_entity,
+  smime_class_invoke_import,
 };
 // clang-format on

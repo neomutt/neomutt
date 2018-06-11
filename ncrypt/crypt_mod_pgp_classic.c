@@ -39,24 +39,24 @@ struct CryptModuleSpecs crypt_mod_pgp_classic = {
   APPLICATION_PGP,
 
   NULL, /* init */
-  pgp_void_passphrase,
-  pgp_valid_passphrase,
-  pgp_decrypt_mime,
-  pgp_application_pgp_handler,
-  pgp_encrypted_handler,
-  pgp_find_keys,
-  pgp_sign_message,
-  pgp_verify_one,
-  pgp_send_menu,
+  pgp_class_void_passphrase,
+  pgp_class_valid_passphrase,
+  pgp_class_decrypt_mime,
+  pgp_class_application_handler,
+  pgp_class_encrypted_handler,
+  pgp_class_find_keys,
+  pgp_class_sign_message,
+  pgp_class_verify_one,
+  pgp_class_send_menu,
   NULL, /* set_sender */
 
-  pgp_encrypt_message,
-  pgp_make_key_attachment,
-  pgp_check_traditional,
-  pgp_traditional_encryptsign,
-  pgp_invoke_getkeys,
-  pgp_invoke_import,
-  pgp_extract_keys_from_attachment_list,
+  pgp_class_encrypt_message,
+  pgp_class_make_key_attachment,
+  pgp_class_check_traditional,
+  pgp_class_traditional_encryptsign,
+  pgp_class_invoke_getkeys,
+  pgp_class_invoke_import,
+  pgp_class_extract_keys_from_attachment_list,
 
   NULL, /* smime_getkeys */
   NULL, /* smime_verify_sender */

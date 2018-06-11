@@ -4729,24 +4729,27 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
 }
 
 /**
- * pgp_gpgme_findkeys - Implements CryptModuleSpecs::findkeys()
+ * pgp_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *pgp_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
+char *pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_PGP, oppenc_mode);
 }
 
 /**
- * smime_gpgme_findkeys - Implements CryptModuleSpecs::findkeys()
+ * smime_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *smime_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
+char *smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
+/**
+ * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
+ */
 struct Body *pgp_gpgme_make_key_attachment(char *tempf)
 {
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
   gpgme_ctx_t context = NULL;
   gpgme_key_t export_keys[2];
   gpgme_data_t keydata = NULL;
@@ -4802,8 +4805,10 @@ bail:
   gpgme_release(context);
 
   return att;
-}
+#else
+  return NULL;
 #endif
+}
 
 /**
  * init_common - Initialise code common to PGP and SMIME parts of GPGME
@@ -5120,9 +5125,9 @@ int smime_gpgme_verify_sender(struct Header *h)
 }
 
 /**
- * mutt_gpgme_set_sender - Implements CryptModuleSpecs::set_sender()
+ * pgp_gpgme_set_sender - Implements CryptModuleSpecs::set_sender()
  */
-void mutt_gpgme_set_sender(const char *sender)
+void pgp_gpgme_set_sender(const char *sender)
 {
   mutt_debug(2, "setting to: %s\n", sender);
   FREE(&current_sender);

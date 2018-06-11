@@ -888,7 +888,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
-      *keylist = crypt_pgp_findkeys(addrlist, oppenc_mode);
+      *keylist = crypt_pgp_find_keys(addrlist, oppenc_mode);
       if (!*keylist)
       {
         mutt_addr_free(&addrlist);
@@ -900,7 +900,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
-      *keylist = crypt_smime_findkeys(addrlist, oppenc_mode);
+      *keylist = crypt_smime_find_keys(addrlist, oppenc_mode);
       if (!*keylist)
       {
         mutt_addr_free(&addrlist);

@@ -49,12 +49,6 @@ struct Envelope;
 struct Header;
 struct State;
 
-/*
-
-    Generic
-
-*/
-
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 extern struct CryptModuleSpecs crypt_mod_pgp_classic;
 #endif
@@ -191,9 +185,9 @@ int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /**
- * crypt_pgp_application_pgp_handler - MIME handler for the pgp content-type
+ * crypt_pgp_application_handler - MIME handler for the pgp content-type
  */
-int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s)
+int crypt_pgp_application_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
     return (CRYPT_MOD_CALL(PGP, application_handler))(m, s);
@@ -249,15 +243,15 @@ struct Body *crypt_pgp_make_key_attachment(char *tempf)
 }
 
 /**
- * crypt_pgp_findkeys - Find the keyids of the recipients of the message
+ * crypt_pgp_find_keys - Find the keyids of the recipients of the message
  *
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_pgp_findkeys(struct Address *addrlist, bool oppenc_mode)
+char *crypt_pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, findkeys))
-    return (CRYPT_MOD_CALL(PGP, findkeys))(addrlist, oppenc_mode);
+  if (CRYPT_MOD_CALL_CHECK(PGP, find_keys))
+    return (CRYPT_MOD_CALL(PGP, find_keys))(addrlist, oppenc_mode);
 
   return NULL;
 }
@@ -357,9 +351,9 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /**
- * crypt_smime_application_smime_handler - Handler for application/smime
+ * crypt_smime_application_handler - Handler for application/smime
  */
-int crypt_smime_application_smime_handler(struct Body *m, struct State *s)
+int crypt_smime_application_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
     return (CRYPT_MOD_CALL(SMIME, application_handler))(m, s);
@@ -394,15 +388,15 @@ int crypt_smime_verify_sender(struct Header *h)
 }
 
 /**
- * crypt_smime_findkeys - Find the keyids of the recipients of the message
+ * crypt_smime_find_keys - Find the keyids of the recipients of the message
  *
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_smime_findkeys(struct Address *addrlist, bool oppenc_mode)
+char *crypt_smime_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, findkeys))
-    return (CRYPT_MOD_CALL(SMIME, findkeys))(addrlist, oppenc_mode);
+  if (CRYPT_MOD_CALL_CHECK(SMIME, find_keys))
+    return (CRYPT_MOD_CALL(SMIME, find_keys))(addrlist, oppenc_mode);
 
   return NULL;
 }

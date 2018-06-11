@@ -32,8 +32,8 @@ struct ListHead;
 
 /* The PGP invocation interface */
 
-void pgp_invoke_import(const char *fname);
-void pgp_invoke_getkeys(struct Address *addr);
+void pgp_class_invoke_import(const char *fname);
+void pgp_class_invoke_getkeys(struct Address *addr);
 
 pid_t pgp_invoke_decode     (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, short need_passphrase);
 pid_t pgp_invoke_decrypt    (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname);
