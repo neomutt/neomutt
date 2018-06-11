@@ -1217,10 +1217,6 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
   return t;
 }
 
-/*
- * Implementation of `verify_one'.
- */
-
 /**
  * show_sig_summary - Show a signature summary
  * @retval 1 if there is is a severe warning
