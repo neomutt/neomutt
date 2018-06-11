@@ -280,7 +280,6 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
 {
   struct ReplaceList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
-  size_t n;
   const char *p = NULL;
 
   if (!pat || !*pat || !templ)
@@ -337,7 +336,7 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
   {
     if (*p == '%')
     {
-      n = atoi(++p);
+      int n = atoi(++p);
       if (n > t->nmatch)
         t->nmatch = n;
       while (*p && isdigit((int) *p))
@@ -380,7 +379,6 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   static char twinbuf[2][LONG_STRING];
   int switcher = 0;
   char *p = NULL;
-  size_t n;
   size_t cpysize, tlen;
   char *src = NULL, *dst = NULL;
 
@@ -438,7 +436,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
             }
             else
             {
-              n = strtoul(p, &p, 10);             /* get subst number */
+              long n = strtoul(p, &p, 10);        /* get subst number */
               while (isdigit((unsigned char) *p)) /* skip subst token */
                 p++;
               for (int i = pmatch[n].rm_so;
@@ -530,10 +528,9 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
         if (*p == '%')
         {
           char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
-          size_t n;
 
           p++; /* skip over % char */
-          n = strtol(p, &e, 10);
+          long n = strtol(p, &e, 10);
           /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
            * should not strictly be necessary since add_to_spam_list() finds the largest value, and
            * the static array above is always large enough based on that value. */
