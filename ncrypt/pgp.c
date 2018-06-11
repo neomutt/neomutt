@@ -63,12 +63,18 @@
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
+/**
+ * pgp_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ */
 void pgp_void_passphrase(void)
 {
   memset(PgpPass, 0, sizeof(PgpPass));
   PgpExptime = 0;
 }
 
+/**
+ * pgp_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ */
 int pgp_valid_passphrase(void)
 {
   time_t now = time(NULL);
@@ -315,7 +321,7 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 }
 
 /**
- * pgp_application_pgp_handler - Support for the Application/PGP Content Type
+ * pgp_application_pgp_handler - Implements CryptModuleSpecs::application_handler()
  */
 int pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
@@ -673,6 +679,9 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   return 1;
 }
 
+/**
+ * pgp_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
+ */
 int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   int rc = 0;
@@ -697,6 +706,9 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
   return rc;
 }
 
+/**
+ * pgp_verify_one - Implements CryptModuleSpecs::verify_one()
+ */
 int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[PATH_MAX], pgperrfile[PATH_MAX];
@@ -791,6 +803,9 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
   mutt_file_unlink(tempfname);
 }
 
+/**
+ * pgp_extract_keys_from_attachment_list - Implements CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ */
 void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (!fp)
@@ -944,6 +959,9 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   return tattach;
 }
 
+/**
+ * pgp_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ */
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
@@ -1025,10 +1043,7 @@ bail:
 }
 
 /**
- * pgp_encrypted_handler - Handler of PGP encrypted data
- *
- * This handler is passed the application/octet-stream directly.
- * The caller must propagate a->goodsig to its parent.
+ * pgp_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler()
  */
 int pgp_encrypted_handler(struct Body *a, struct State *s)
 {
@@ -1101,6 +1116,9 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
  * Routines for sending PGP/MIME messages.
  */
 
+/**
+ * pgp_sign_message - Implements CryptModuleSpecs::sign_message()
+ */
 struct Body *pgp_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
@@ -1226,14 +1244,7 @@ struct Body *pgp_sign_message(struct Body *a)
 }
 
 /**
- * pgp_find_keys - Find the keyids of the recipients of a message
- * @param addrlist    Address List
- * @param oppenc_mode If true, use opportunistic encryption
- * @retval ptr  Space-separated string of keys
- * @retval NULL At least one of the keys can't be found
- *
- * If oppenc_mode is true, only keys that can be determined without prompting
- * will be used.
+ * pgp_find_keys - Implements CryptModuleSpecs::findkeys()
  */
 char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
@@ -1352,9 +1363,9 @@ char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 }
 
 /**
- * pgp_encrypt_message - Encrypt a message
+ * pgp_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
  *
- * Warning: "a" is no longer freed in this routine, you need to free it later.
+ * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
  */
 struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
@@ -1485,6 +1496,9 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   return t;
 }
 
+/**
+ * pgp_traditional_encryptsign - Implements CryptModuleSpecs::pgp_traditional_encryptsign()
+ */
 struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   struct Body *b = NULL;
@@ -1660,6 +1674,9 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   return b;
 }
 
+/**
+ * pgp_send_menu - Implements CryptModuleSpecs::send_menu()
+ */
 int pgp_send_menu(struct Header *msg)
 {
   struct PgpKeyInfo *p = NULL;

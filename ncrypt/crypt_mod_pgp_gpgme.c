@@ -32,17 +32,28 @@
 #include "crypt_mod.h"
 #include "ncrypt.h"
 
+/**
+ * crypt_mod_pgp_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ *
+ * This is handled by gpg-agent.
+ */
 static void crypt_mod_pgp_void_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
 }
 
+/**
+ * crypt_mod_pgp_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ *
+ * This is handled by gpg-agent.
+ */
 static int crypt_mod_pgp_valid_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
   return 1;
 }
 
+/**
+ * crypt_mod_pgp_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
+ */
 static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
 {
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS

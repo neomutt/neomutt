@@ -122,14 +122,18 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
  *     Queries and passphrase handling.
  */
 
-/* these are copies from pgp.c */
-
+/**
+ * smime_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ */
 void smime_void_passphrase(void)
 {
   memset(SmimePass, 0, sizeof(SmimePass));
   SmimeExptime = 0;
 }
 
+/**
+ * smime_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ */
 int smime_valid_passphrase(void)
 {
   time_t now = time(NULL);
@@ -875,6 +879,9 @@ static void getkeys(char *mailbox)
            NONULL(SmimeCertificates), NONULL(SmimeDefaultKey));
 }
 
+/**
+ * smime_getkeys - Implements CryptModuleSpecs::smime_getkeys()
+ */
 void smime_getkeys(struct Envelope *env)
 {
   struct Address *t = NULL;
@@ -914,11 +921,7 @@ void smime_getkeys(struct Envelope *env)
 }
 
 /**
- * smime_find_keys - Find the keys of the recipients of a message
- * @retval NULL if any of the keys can not be found
- *
- * If oppenc_mode is true, only keys that can be determined without
- * prompting will be used.
+ * smime_find_keys - Implements CryptModuleSpecs::findkeys()
  */
 char *smime_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
@@ -1221,7 +1224,7 @@ static char *smime_extract_signer_certificate(char *infile)
 }
 
 /**
- * smime_invoke_import - Add a certificate and update index file (externally)
+ * smime_invoke_import - Implements CryptModuleSpecs::smime_invoke_import()
  */
 void smime_invoke_import(char *infile, char *mailbox)
 {
@@ -1295,6 +1298,9 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_file_fclose(&fperr);
 }
 
+/**
+ * smime_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
+ */
 int smime_verify_sender(struct Header *h)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
@@ -1377,6 +1383,9 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                       SmimeCertToUse, SmimeIntermediateToUse, SmimeSignCommand);
 }
 
+/**
+ * smime_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
+ */
 struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[LONG_STRING], certfile[PATH_MAX];
@@ -1527,6 +1536,9 @@ static char *openssl_md_to_smime_micalg(char *md)
   return micalg;
 }
 
+/**
+ * smime_sign_message - Implements CryptModuleSpecs::sign_message()
+ */
 struct Body *smime_sign_message(struct Body *a)
 {
   char buffer[LONG_STRING];
@@ -1682,6 +1694,9 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
                       SmimeCertToUse, NULL, SmimeDecryptCommand);
 }
 
+/**
+ * smime_verify_one - Implements CryptModuleSpecs::verify_one()
+ */
 int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char signedfile[PATH_MAX], smimeerrfile[PATH_MAX];
@@ -2002,6 +2017,9 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   return p;
 }
 
+/**
+ * smime_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ */
 int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
@@ -2071,11 +2089,17 @@ bail:
   return rc;
 }
 
+/**
+ * smime_application_smime_handler - Implements CryptModuleSpecs::application_handler()
+ */
 int smime_application_smime_handler(struct Body *m, struct State *s)
 {
   return smime_handle_entity(m, s, NULL) ? 0 : -1;
 }
 
+/**
+ * smime_send_menu - Implements CryptModuleSpecs::send_menu()
+ */
 int smime_send_menu(struct Header *msg)
 {
   struct SmimeKey *key = NULL;

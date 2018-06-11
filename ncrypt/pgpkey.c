@@ -740,7 +740,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 }
 
 /**
- * pgp_make_key_attachment - generate a public key attachment
+ * pgp_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
  */
 struct Body *pgp_make_key_attachment(char *tempf)
 {

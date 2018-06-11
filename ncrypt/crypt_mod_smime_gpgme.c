@@ -32,14 +32,22 @@
 #include "crypt_mod.h"
 #include "ncrypt.h"
 
+/**
+ * crypt_mod_smime_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ *
+ * This is handled by gpg-agent.
+ */
 static void crypt_mod_smime_void_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
 }
 
+/**
+ * crypt_mod_smime_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ *
+ * This is handled by gpg-agent.
+ */
 static int crypt_mod_smime_valid_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
   return 1;
 }
 
