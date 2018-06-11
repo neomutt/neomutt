@@ -450,11 +450,11 @@ msgstr "警告：信件未包含 From: 信件头"
 
 #: commands.c:296 recvcmd.c:164
 msgid "Bounce message to: "
-msgstr "退回信件至："
+msgstr "重发信件至："
 
 #: commands.c:298 recvcmd.c:166
 msgid "Bounce tagged messages to: "
-msgstr "退回已标记的信件至："
+msgstr "重发已标记的信件至："
 
 #: commands.c:307 recvcmd.c:175
 msgid "Error parsing address!"
@@ -464,17 +464,17 @@ msgstr "解析地址出错！"
 #, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
-msgstr[0] "退回信件至 %s"
+msgstr[0] "重发信件至 %s"
 
 #: commands.c:341 recvcmd.c:212
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
-msgstr[0] "信件未退回。"
+msgstr[0] "信件未重发。"
 
 #: commands.c:351 recvcmd.c:231
 msgid "Message bounced."
 msgid_plural "Messages bounced."
-msgstr[0] "信件已退回。"
+msgstr[0] "信件已重发。"
 
 #: commands.c:419 commands.c:461 commands.c:481
 msgid "Can't create filter process"
@@ -1761,7 +1761,7 @@ msgstr "信件热键"
 #: curs_main.c:3098
 #, c-format
 msgid "Message bound to %s."
-msgstr "信件已退回给 %s。"
+msgstr "信件已重发给 %s。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
@@ -5944,12 +5944,12 @@ msgstr "只支持删除多段附件。"
 
 #: recvcmd.c:55
 msgid "You may only bounce message/rfc822 parts."
-msgstr "您只能退回 message/rfc822 的部分。"
+msgstr "您只能重发 message/rfc822 的部分。"
 
 #: recvcmd.c:233
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
-msgstr[0] "退回信件出错！"
+msgstr[0] "重发信件出错！"
 
 #: recvcmd.c:419
 #, c-format
