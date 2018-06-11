@@ -67,10 +67,23 @@ bool ImapServernoise; ///< Config: (imap) Display server warnings as error messa
  * @note Gmail documents one string but use another, so we support both.
  */
 static const char *const Capabilities[] = {
-  "IMAP4",     "IMAP4rev1",     "STATUS",      "ACL",
-  "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS",
-  "STARTTLS",  "LOGINDISABLED", "IDLE",        "SASL-IR",
-  "ENABLE",    "X-GM-EXT-1",    "X-GM-EXT1",   NULL,
+  "IMAP4",
+  "IMAP4rev1",
+  "STATUS",
+  "ACL",
+  "NAMESPACE",
+  "AUTH=CRAM-MD5",
+  "AUTH=GSSAPI",
+  "AUTH=ANONYMOUS",
+  "AUTH=OAUTHBEARER",
+  "STARTTLS",
+  "LOGINDISABLED",
+  "IDLE",
+  "SASL-IR",
+  "ENABLE",
+  "X-GM-EXT-1",
+  "X-GM-EXT1",
+  NULL,
 };
 
 /**
