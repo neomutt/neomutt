@@ -1610,14 +1610,13 @@ void imap_free_header_data(struct ImapHeaderData **data)
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes)
 {
   struct Context *ctx = idata->ctx;
-  struct ImapHeader newh;
+  struct ImapHeader newh = { 0 };
   struct ImapHeaderData old_hd;
   bool readonly;
   int local_changes;
 
   local_changes = h->changed;
 
-  memset(&newh, 0, sizeof(newh));
   struct ImapHeaderData *hd = h->data;
   newh.data = hd;
 

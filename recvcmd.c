@@ -388,7 +388,6 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   char tmpbody[PATH_MAX];
   char prefix[STRING];
   int rc = 0;
-  struct State st;
 
   /*
    * First, find the parent message.
@@ -474,8 +473,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   /* initialize a state structure */
 
-  memset(&st, 0, sizeof(st));
-
+  struct State st = { 0 };
   if (ForwardQuote)
     st.prefix = prefix;
   st.flags = MUTT_CHARCONV;

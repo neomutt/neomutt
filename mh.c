@@ -296,7 +296,7 @@ static bool mh_valid_message(const char *s)
  */
 bool mh_buffy(struct Buffy *mailbox, bool check_stats)
 {
-  struct MhSequences mhs;
+  struct MhSequences mhs = { 0 };
   bool check_new = true;
   bool rc = false;
   DIR *dirp = NULL;
@@ -313,7 +313,6 @@ bool mh_buffy(struct Buffy *mailbox, bool check_stats)
   if (!(check_new || check_stats))
     return rc;
 
-  memset(&mhs, 0, sizeof(mhs));
   if (mh_read_sequences(&mhs, mailbox->path) < 0)
     return false;
 
@@ -478,8 +477,7 @@ static void mh_update_sequences(struct Context *ctx)
   char seq_replied[STRING];
   char seq_flagged[STRING];
 
-  struct MhSequences mhs;
-  memset(&mhs, 0, sizeof(mhs));
+  struct MhSequences mhs = { 0 };
 
   snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhSeqUnseen));
   snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhSeqReplied));
@@ -1253,14 +1251,13 @@ static int mh_mbox_close(struct Context *ctx)
 static int mh_read_dir(struct Context *ctx, const char *subdir)
 {
   struct Maildir *md = NULL;
-  struct MhSequences mhs;
+  struct MhSequences mhs = { 0 };
   struct Maildir **last = NULL;
   struct MhData *data = NULL;
   int count;
   char msgbuf[STRING];
   struct Progress progress;
 
-  memset(&mhs, 0, sizeof(mhs));
   if (!ctx->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Scanning %s..."), ctx->path);
@@ -2225,7 +2222,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   bool modified = false, have_new = false, occult = false, flags_changed = false;
   struct Maildir *md = NULL, *p = NULL;
   struct Maildir **last = NULL;
-  struct MhSequences mhs;
+  struct MhSequences mhs = { 0 };
   int count = 0;
   struct Hash *fnames = NULL;
   int i;
@@ -2266,8 +2263,6 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   data->mtime_cur = st_cur.st_mtime;
   ctx->mtime = st.st_mtime;
-
-  memset(&mhs, 0, sizeof(mhs));
 
   md = NULL;
   last = &md;

@@ -453,12 +453,11 @@ int text_enriched_handler(struct Body *a, struct State *s)
   } state = TEXT;
 
   long bytes = a->length;
-  struct EnrichedState stte;
+  struct EnrichedState stte = { 0 };
   wchar_t wc = 0;
   int tag_len = 0;
   wchar_t tag[LONG_STRING + 1];
 
-  memset(&stte, 0, sizeof(stte));
   stte.s = s;
   stte.wrap_margin =
       ((s->flags & MUTT_DISPLAY) ?

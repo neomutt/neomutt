@@ -442,7 +442,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
-  struct PatternCache cache;
+  struct PatternCache cache = { 0 };
 
   current_hook_type = type;
 
@@ -450,7 +450,6 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
-  memset(&cache, 0, sizeof(cache));
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
@@ -496,9 +495,8 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
                      struct Header *hdr)
 {
   struct Hook *hook = NULL;
-  struct PatternCache cache;
+  struct PatternCache cache = { 0 };
 
-  memset(&cache, 0, sizeof(cache));
   /* determine if a matching hook exists */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {

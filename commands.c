@@ -193,8 +193,6 @@ int mutt_display_message(struct Header *cur)
 
   if (builtin)
   {
-    struct Pager info;
-
     if ((WithCrypto != 0) && (cur->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
     {
       if (cur->security & GOODSIGN)
@@ -220,8 +218,8 @@ int mutt_display_message(struct Header *cur)
         mutt_message(_("PGP signature could NOT be verified."));
     }
 
+    struct Pager info = { 0 };
     /* Invoke the builtin pager */
-    memset(&info, 0, sizeof(struct Pager));
     info.hdr = cur;
     info.ctx = Context;
     rc = mutt_pager(NULL, tempfile, MUTT_PAGER_MESSAGE, &info);

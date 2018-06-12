@@ -820,9 +820,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
   struct ReplaceList **list = (struct ReplaceList **) data;
-  struct Buffer templ;
-
-  memset(&templ, 0, sizeof(templ));
+  struct Buffer templ = { 0 };
 
   /* First token is a regex. */
   if (!MoreArgs(s))
@@ -1712,9 +1710,8 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
   bool res = 0;
-  struct Buffer token;
+  struct Buffer token = { 0 };
 
-  memset(&token, 0, sizeof(token));
   mutt_extract_token(buf, s, 0);
 
   /* is the item defined as a variable? */
@@ -4731,13 +4728,12 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   if (numtabs == 1)
   {
     struct HashElem *entry = NULL;
-    struct HashWalkState state;
+    struct HashWalkState state = { 0 };
 
     NumMatched = 0;
     mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
-    memset(&state, 0, sizeof(state));
     while ((entry = mutt_hash_walk(Context->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);

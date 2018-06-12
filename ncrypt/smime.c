@@ -313,10 +313,8 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                           const char *digestalg, const char *key, const char *certificates,
                           const char *intermediates, const char *format)
 {
-  struct SmimeCommandContext cctx;
+  struct SmimeCommandContext cctx = { 0 };
   char cmd[HUGE_STRING];
-
-  memset(&cctx, 0, sizeof(cctx));
 
   if (!format || !*format)
     return (pid_t) -1;
@@ -2023,7 +2021,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
-  struct State s;
+  struct State s = { 0 };
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int orig_type = b->type;
@@ -2036,7 +2034,6 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   if (b->parts)
     return -1;
 
-  memset(&s, 0, sizeof(s));
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
 

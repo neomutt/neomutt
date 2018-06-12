@@ -715,14 +715,13 @@ static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp
 void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter)
 {
-  struct State state;
+  struct State state = { 0 };
   char buf[SHORT_STRING];
 
   if (fp)
     filter = false; /* sanity check: we can't filter in the recv case yet */
 
   buf[0] = 0;
-  memset(&state, 0, sizeof(struct State));
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 

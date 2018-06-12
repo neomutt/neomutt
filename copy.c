@@ -583,7 +583,6 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 {
   struct Body *body = hdr->content;
   char prefix[SHORT_STRING];
-  struct State s;
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -683,7 +682,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
   if (flags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
-    memset(&s, 0, sizeof(struct State));
+    struct State s = { 0 };
     s.fpin = fpin;
     s.fpout = fpout;
     if (flags & MUTT_CM_PREFIX)

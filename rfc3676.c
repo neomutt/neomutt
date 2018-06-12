@@ -271,9 +271,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   unsigned int quotelevel = 0;
   int delsp = 0;
   size_t sz = 0;
-  struct FlowedState fst;
-
-  memset(&fst, 0, sizeof(fst));
+  struct FlowedState fst = { 0 };
 
   /* respect DelSp of RFC3676 only with f=f parts */
   char *t = mutt_param_get(&a->parameter, "delsp");

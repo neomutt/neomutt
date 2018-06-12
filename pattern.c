@@ -911,8 +911,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   if (ThoroughSearch)
   {
     /* decode the header / body */
-    struct State s;
-    memset(&s, 0, sizeof(s));
+    struct State s = { 0 };
     s.fpin = msg->fp;
     s.flags = MUTT_CHARCONV;
 #ifdef USE_FMEMOPEN

@@ -897,7 +897,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
 struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 {
   struct Content *info = NULL;
-  struct ContentState state;
+  struct ContentState state = { 0 };
   FILE *fp = NULL;
   char *fromcode = NULL;
   char *tocode = NULL;
@@ -929,7 +929,6 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   }
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
-  memset(&state, 0, sizeof(state));
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
   {
@@ -1111,10 +1110,9 @@ bye:
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
   char buf[PATH_MAX];
-  struct State s;
+  struct State s = { 0 };
   struct stat sb;
 
-  memset(&s, 0, sizeof(s));
   for (; a; a = a->next)
   {
     if (a->type == TYPEMULTIPART)

@@ -1945,8 +1945,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   char buf[PATH_MAX];
   int rc = -1;
 
-  struct Context tmp_ctx;
-  memset(&tmp_ctx, 0, sizeof(tmp_ctx));
+  struct Context tmp_ctx = { 0 };
   struct NmCtxData *tmp_ctxdata = new_ctxdata(orig_uri);
 
   if (!tmp_ctxdata)
@@ -2174,14 +2173,12 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 int nm_nonctx_get_count(char *path, int *all, int *new)
 {
   struct UrlQueryString *item = NULL;
-  struct Url url;
+  struct Url url = { 0 };
   char *url_holder = mutt_str_strdup(path);
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
   mutt_debug(1, "nm: count\n");
-
-  memset(&url, 0, sizeof(struct Url));
 
   if (url_parse(&url, url_holder) < 0)
   {
@@ -2570,8 +2567,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
        * this message, update the flags we just
        * detected.
        */
-      struct Header tmp;
-      memset(&tmp, 0, sizeof(tmp));
+      struct Header tmp = { 0 };
       maildir_parse_flags(&tmp, new);
       maildir_update_flags(ctx, h, &tmp);
     }

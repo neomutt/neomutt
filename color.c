@@ -935,8 +935,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
     if (MoreArgs(s))
     {
-      struct Buffer temporary;
-      memset(&temporary, 0, sizeof(struct Buffer));
+      struct Buffer temporary = { 0 };
       mutt_extract_token(&temporary, s, 0);
       match = atoi(temporary.data);
       FREE(&temporary.data);

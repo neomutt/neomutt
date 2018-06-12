@@ -58,14 +58,13 @@ struct BodyCache
 static int bcache_path(struct Account *account, const char *mailbox, char *dst, size_t dstlen)
 {
   char host[STRING];
-  struct Url url;
+  struct Url url = { 0 };
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || (dstlen == 0))
     return -1;
 
   /* make up a Url we can turn into a string */
-  memset(&url, 0, sizeof(struct Url));
   mutt_account_tourl(account, &url);
   /*
    * mutt_account_tourl() just sets up some pointers;

@@ -66,9 +66,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
   LOFF_T end;
   char *r = NULL;
 
-  struct State state;
-
-  memset(&state, 0, sizeof(struct State));
+  struct State state = { 0 };
   state.fpin = in;
   state.fpout = out;
 

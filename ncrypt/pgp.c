@@ -777,7 +777,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
  */
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
-  struct State s;
+  struct State s = { 0 };
   char tempfname[PATH_MAX];
 
   mutt_mktemp(tempfname, sizeof(tempfname));
@@ -787,8 +787,6 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
     mutt_perror(tempfname);
     return;
   }
-
-  memset(&s, 0, sizeof(struct State));
 
   s.fpin = fp;
   s.fpout = tempfp;
@@ -957,7 +955,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
 int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
-  struct State s;
+  struct State s = { 0 };
   struct Body *p = b;
   bool need_decode = false;
   int saved_type = 0;
@@ -976,7 +974,6 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else
     return -1;
 
-  memset(&s, 0, sizeof(s));
   s.fpin = fpin;
 
   if (need_decode)

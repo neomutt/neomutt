@@ -164,9 +164,8 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
 void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx)
 {
   struct Score *tmp = NULL;
-  struct PatternCache cache;
+  struct PatternCache cache = { 0 };
 
-  memset(&cache, 0, sizeof(cache));
   hdr->score = 0; /* in case of re-scoring */
   for (tmp = ScoreList; tmp; tmp = tmp->next)
   {

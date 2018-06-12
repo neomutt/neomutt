@@ -3345,12 +3345,10 @@ int mutt_index_menu(void)
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
   struct ColorLine *color = NULL;
-  struct PatternCache cache;
+  struct PatternCache cache = { 0 };
 
   if (!curhdr)
     return;
-
-  memset(&cache, 0, sizeof(cache));
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {
