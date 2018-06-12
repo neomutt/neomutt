@@ -74,6 +74,11 @@ extern struct CryptModuleSpecs crypt_mod_smime_gpgme;
 #define CRYPT_MOD_CALL(identifier, func)                                       \
   *(crypto_module_lookup(APPLICATION_##identifier))->func
 
+/**
+ * crypt_init - Initialise the crypto backends
+ *
+ * This calls CryptModuleSpecs::init()
+ */
 void crypt_init(void)
 {
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
@@ -123,6 +128,7 @@ void crypt_init(void)
 
 /**
  * crypt_invoke_message - Display an informative message
+ * @param type Crypto type, e.g. #APPLICATION_PGP
  *
  * Show a message that a backend will be invoked.
  */
@@ -134,7 +140,12 @@ void crypt_invoke_message(int type)
     mutt_message(_("Invoking S/MIME..."));
 }
 
-/* Returns 1 if a module backend is registered for the type */
+/**
+ * crypt_has_module_backend - Is there a crypto backend for a given type?
+ * @param type Crypto type, e.g. #APPLICATION_PGP
+ * @retval 1 Backend is present
+ * @retval 0 Backend is not present
+ */
 int crypt_has_module_backend(int type)
 {
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
@@ -152,12 +163,8 @@ int crypt_has_module_backend(int type)
   return 0;
 }
 
-/*
- * PGP
- */
-
 /**
- * crypt_pgp_void_passphrase - Silently, reset a PGP passphrase
+ * crypt_pgp_void_passphrase - Wrapper for CryptModuleSpecs::void_passphrase()
  */
 void crypt_pgp_void_passphrase(void)
 {
@@ -165,6 +172,9 @@ void crypt_pgp_void_passphrase(void)
     (CRYPT_MOD_CALL(PGP, void_passphrase))();
 }
 
+/**
+ * crypt_pgp_valid_passphrase - Wrapper for CryptModuleSpecs::valid_passphrase()
+ */
 int crypt_pgp_valid_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, valid_passphrase))
@@ -174,7 +184,7 @@ int crypt_pgp_valid_passphrase(void)
 }
 
 /**
- * crypt_pgp_decrypt_mime - Decrypt a PGP/MIME message
+ * crypt_pgp_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
 int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
@@ -185,7 +195,7 @@ int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /**
- * crypt_pgp_application_handler - MIME handler for the pgp content-type
+ * crypt_pgp_application_handler - Wrapper for CryptModuleSpecs::application_handler()
  */
 int crypt_pgp_application_handler(struct Body *m, struct State *s)
 {
@@ -196,7 +206,7 @@ int crypt_pgp_application_handler(struct Body *m, struct State *s)
 }
 
 /**
- * crypt_pgp_encrypted_handler - MIME handler for an PGP/MIME encrypted message
+ * crypt_pgp_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler()
  */
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
@@ -206,6 +216,9 @@ int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
   return -1;
 }
 
+/**
+ * crypt_pgp_invoke_getkeys - Wrapper for CryptModuleSpecs::pgp_invoke_getkeys()
+ */
 void crypt_pgp_invoke_getkeys(struct Address *addr)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_invoke_getkeys))
@@ -213,7 +226,7 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 }
 
 /**
- * crypt_pgp_check_traditional - Check for a traditional PGP message in body B
+ * crypt_pgp_check_traditional - Wrapper for CryptModuleSpecs::pgp_check_traditional()
  */
 int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
@@ -223,6 +236,9 @@ int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
   return 0;
 }
 
+/**
+ * crypt_pgp_traditional_encryptsign - Wrapper for CryptModuleSpecs::pgp_traditional_encryptsign()
+ */
 struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_traditional_encryptsign))
@@ -232,7 +248,7 @@ struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *
 }
 
 /**
- * crypt_pgp_make_key_attachment - Generate a PGP public key attachment
+ * crypt_pgp_make_key_attachment - Wrapper for CryptModuleSpecs::pgp_make_key_attachment()
  */
 struct Body *crypt_pgp_make_key_attachment(char *tempf)
 {
@@ -243,10 +259,7 @@ struct Body *crypt_pgp_make_key_attachment(char *tempf)
 }
 
 /**
- * crypt_pgp_find_keys - Find the keyids of the recipients of the message
- *
- * It returns NULL if any of the keys can not be found.  If oppenc_mode is
- * true, only keys that can be determined without prompting will be used.
+ * crypt_pgp_find_keys - Wrapper for CryptModuleSpecs::find_keys()
  */
 char *crypt_pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
@@ -257,7 +270,7 @@ char *crypt_pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 }
 
 /**
- * crypt_pgp_sign_message - Create a new body with a PGP signed message from A
+ * crypt_pgp_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
 struct Body *crypt_pgp_sign_message(struct Body *a)
 {
@@ -268,10 +281,7 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 }
 
 /**
- * crypt_pgp_encrypt_message - Encrypt a message
- *
- * Warning: A is no longer freed in this routine, you need to free it later.
- * This is necessary for $fcc_attach.
+ * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
 struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
@@ -282,7 +292,7 @@ struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 }
 
 /**
- * crypt_pgp_invoke_import - Invoke the PGP command to import a key
+ * crypt_pgp_invoke_import - Wrapper for CryptModuleSpecs::pgp_invoke_import()
  */
 void crypt_pgp_invoke_import(const char *fname)
 {
@@ -290,6 +300,9 @@ void crypt_pgp_invoke_import(const char *fname)
     (CRYPT_MOD_CALL(PGP, pgp_invoke_import))(fname);
 }
 
+/**
+ * crypt_pgp_verify_one - Wrapper for CryptModuleSpecs::verify_one()
+ */
 int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
@@ -298,6 +311,9 @@ int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   return -1;
 }
 
+/**
+ * crypt_pgp_send_menu - Wrapper for CryptModuleSpecs::send_menu()
+ */
 int crypt_pgp_send_menu(struct Header *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
@@ -306,24 +322,26 @@ int crypt_pgp_send_menu(struct Header *msg)
   return 0;
 }
 
+/**
+ * crypt_pgp_extract_keys_from_attachment_list - Wrapper for CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ */
 void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_keys_from_attachment_list))
     (CRYPT_MOD_CALL(PGP, pgp_extract_keys_from_attachment_list))(fp, tag, top);
 }
 
+/**
+ * crypt_pgp_set_sender - Wrapper for CryptModuleSpecs::set_sender()
+ */
 void crypt_pgp_set_sender(const char *sender)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, set_sender))
     (CRYPT_MOD_CALL(PGP, set_sender))(sender);
 }
 
-/*
- * S/MIME
- */
-
 /**
- * crypt_smime_void_passphrase - Silently, reset an SMIME passphrase
+ * crypt_smime_void_passphrase - Wrapper for CryptModuleSpecs::void_passphrase()
  */
 void crypt_smime_void_passphrase(void)
 {
@@ -331,6 +349,9 @@ void crypt_smime_void_passphrase(void)
     (CRYPT_MOD_CALL(SMIME, void_passphrase))();
 }
 
+/**
+ * crypt_smime_valid_passphrase - Wrapper for CryptModuleSpecs::valid_passphrase()
+ */
 int crypt_smime_valid_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, valid_passphrase))
@@ -340,7 +361,7 @@ int crypt_smime_valid_passphrase(void)
 }
 
 /**
- * crypt_smime_decrypt_mime - Decrypt am S/MIME message
+ * crypt_smime_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
 int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
@@ -351,7 +372,7 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /**
- * crypt_smime_application_handler - Handler for application/smime
+ * crypt_smime_application_handler - Wrapper for CryptModuleSpecs::application_handler()
  */
 int crypt_smime_application_handler(struct Body *m, struct State *s)
 {
@@ -362,7 +383,7 @@ int crypt_smime_application_handler(struct Body *m, struct State *s)
 }
 
 /**
- * crypt_smime_encrypted_handler - Handler for an PGP/MIME encrypted message
+ * crypt_smime_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler()
  */
 void crypt_smime_encrypted_handler(struct Body *a, struct State *s)
 {
@@ -370,6 +391,9 @@ void crypt_smime_encrypted_handler(struct Body *a, struct State *s)
     (CRYPT_MOD_CALL(SMIME, encrypted_handler))(a, s);
 }
 
+/**
+ * crypt_smime_getkeys - Wrapper for CryptModuleSpecs::smime_getkeys()
+ */
 void crypt_smime_getkeys(struct Envelope *env)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_getkeys))
@@ -377,7 +401,7 @@ void crypt_smime_getkeys(struct Envelope *env)
 }
 
 /**
- * crypt_smime_verify_sender - Check that the sender matches
+ * crypt_smime_verify_sender - Wrapper for CryptModuleSpecs::smime_verify_sender()
  */
 int crypt_smime_verify_sender(struct Header *h)
 {
@@ -388,10 +412,7 @@ int crypt_smime_verify_sender(struct Header *h)
 }
 
 /**
- * crypt_smime_find_keys - Find the keyids of the recipients of the message
- *
- * It returns NULL if any of the keys can not be found.  If oppenc_mode is
- * true, only keys that can be determined without prompting will be used.
+ * crypt_smime_find_keys - Wrapper for CryptModuleSpecs::find_keys()
  */
 char *crypt_smime_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
@@ -401,6 +422,9 @@ char *crypt_smime_find_keys(struct Address *addrlist, bool oppenc_mode)
   return NULL;
 }
 
+/**
+ * crypt_smime_sign_message - Wrapper for CryptModuleSpecs::sign_message()
+ */
 struct Body *crypt_smime_sign_message(struct Body *a)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
@@ -409,6 +433,9 @@ struct Body *crypt_smime_sign_message(struct Body *a)
   return NULL;
 }
 
+/**
+ * crypt_smime_build_smime_entity - Wrapper for CryptModuleSpecs::smime_build_smime_entity()
+ */
 struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_build_smime_entity))
@@ -418,9 +445,7 @@ struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
 }
 
 /**
- * crypt_smime_invoke_import - Add a certificate and update index file
- *
- * This is done externally.
+ * crypt_smime_invoke_import - Wrapper for CryptModuleSpecs::smime_invoke_import()
  */
 void crypt_smime_invoke_import(char *infile, char *mailbox)
 {
@@ -428,6 +453,9 @@ void crypt_smime_invoke_import(char *infile, char *mailbox)
     (CRYPT_MOD_CALL(SMIME, smime_invoke_import))(infile, mailbox);
 }
 
+/**
+ * crypt_smime_verify_one - Wrapper for CryptModuleSpecs::verify_one()
+ */
 int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
@@ -436,6 +464,9 @@ int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   return -1;
 }
 
+/**
+ * crypt_smime_send_menu - Wrapper for CryptModuleSpecs::send_menu()
+ */
 int crypt_smime_send_menu(struct Header *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
@@ -444,6 +475,9 @@ int crypt_smime_send_menu(struct Header *msg)
   return 0;
 }
 
+/**
+ * crypt_smime_set_sender - Wrapper for CryptModuleSpecs::set_sender()
+ */
 void crypt_smime_set_sender(const char *sender)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, set_sender))
