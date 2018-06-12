@@ -54,7 +54,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode);
 
 int pgp_class_application_handler(struct Body *m, struct State *s);
 int pgp_class_encrypted_handler(struct Body *a, struct State *s);
-void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
+void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top);
 void pgp_class_void_passphrase(void);
 int pgp_class_valid_passphrase(void);
 

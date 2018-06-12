@@ -880,14 +880,14 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
-    crypt_pgp_extract_keys_from_attachment_list(CURATTACH->fp, 0, CURATTACH->content);
+    crypt_pgp_extract_key_from_attachment(CURATTACH->fp, CURATTACH->content);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
       {
-        crypt_pgp_extract_keys_from_attachment_list(actx->idx[i]->fp, 0,
+        crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp,
                                                     actx->idx[i]->content);
       }
     }

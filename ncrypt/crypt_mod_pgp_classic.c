@@ -56,7 +56,7 @@ struct CryptModuleSpecs crypt_mod_pgp_classic = {
   pgp_class_traditional_encryptsign,
   pgp_class_invoke_getkeys,
   pgp_class_invoke_import,
-  pgp_class_extract_keys_from_attachment_list,
+  pgp_class_extract_key_from_attachment,
 
   NULL, /* smime_getkeys */
   NULL, /* smime_verify_sender */

@@ -73,7 +73,7 @@ struct CryptModuleSpecs crypt_mod_smime_gpgme = {
   NULL, /* pgp_traditional_encryptsign */
   NULL, /* pgp_invoke_getkeys */
   NULL, /* pgp_invoke_import */
-  NULL, /* pgp_extract_keys_from_attachment_list */
+  NULL, /* pgp_extract_key_from_attachment */
 
   NULL, /* smime_getkeys */
   smime_gpgme_verify_sender,

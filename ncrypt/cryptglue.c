@@ -323,12 +323,12 @@ int crypt_pgp_send_menu(struct Header *msg)
 }
 
 /**
- * crypt_pgp_extract_keys_from_attachment_list - Wrapper for CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ * crypt_pgp_extract_key_from_attachment - Wrapper for CryptModuleSpecs::pgp_extract_key_from_attachment()
  */
-void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_keys_from_attachment_list))
-    (CRYPT_MOD_CALL(PGP, pgp_extract_keys_from_attachment_list))(fp, tag, top);
+  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_key_from_attachment))
+    (CRYPT_MOD_CALL(PGP, pgp_extract_key_from_attachment))(fp, top);
 }
 
 /**

@@ -169,12 +169,11 @@ struct CryptModuleSpecs
    */
   void         (*pgp_invoke_import)(const char *fname);
   /**
-   * pgp_extract_keys_from_attachment_list - Extract PGP keys from a list of attachments
+   * pgp_extract_key_from_attachment - Extract PGP key from an attachment
    * @param fp  File containing email
-   * @param tag If true, extract from all tagged attachments
    * @param top Body of the email
    */
-  void         (*pgp_extract_keys_from_attachment_list)(FILE *fp, int tag, struct Body *top);
+  void         (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *top);
 
   /**
    * smime_getkeys - Get the S/MIME keys required to encrypt this email

@@ -804,9 +804,9 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 }
 
 /**
- * pgp_class_extract_keys_from_attachment_list - Implements CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ * pgp_class_extract_key_from_attachment - Implements CryptModuleSpecs::pgp_extract_key_from_attachment()
  */
-void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top)
 {
   if (!fp)
   {
@@ -815,17 +815,9 @@ void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body 
   }
 
   mutt_endwin();
+
   OptDontHandlePgpKeys = true;
-
-  for (; top; top = top->next)
-  {
-    if (!tag || top->tagged)
-      pgp_extract_keys_from_attachment(fp, top);
-
-    if (!tag)
-      break;
-  }
-
+  pgp_extract_keys_from_attachment(fp, top);
   OptDontHandlePgpKeys = false;
 }
 
