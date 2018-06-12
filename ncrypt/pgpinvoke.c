@@ -245,7 +245,10 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
   }
 }
 
-void pgp_invoke_import(const char *fname)
+/**
+ * pgp_class_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import()
+ */
+void pgp_class_invoke_import(const char *fname)
 {
   char tmp_fname[PATH_MAX + SHORT_STRING];
   char cmd[HUGE_STRING];
@@ -265,7 +268,10 @@ void pgp_invoke_import(const char *fname)
     mutt_debug(1, "Error running \"%s\"!", cmd);
 }
 
-void pgp_invoke_getkeys(struct Address *addr)
+/**
+ * pgp_class_invoke_getkeys - Implements CryptModuleSpecs::pgp_invoke_getkeys()
+ */
+void pgp_class_invoke_getkeys(struct Address *addr)
 {
   char buf[PATH_MAX];
   char tmp[LONG_STRING];

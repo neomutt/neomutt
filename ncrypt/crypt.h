@@ -28,11 +28,10 @@
 struct Body;
 struct State;
 
-void crypt_convert_to_7bit(struct Body *a);
-void crypt_current_time(struct State *s, char *app_name);
-int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile);
-const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
-                                        const char **ppl, const char **pps);
-bool crypt_is_numerical_keyid(const char *s);
+void        crypt_convert_to_7bit(struct Body *a);
+void        crypt_current_time(struct State *s, char *app_name);
+const char *crypt_get_fingerprint_or_id(char *p, const char **pphint, const char **ppl, const char **pps);
+bool        crypt_is_numerical_keyid(const char *s);
+int         crypt_write_signed(struct Body *a, struct State *s, const char *tempfile);
 
 #endif /* _NCRYPT_CRYPT_H */

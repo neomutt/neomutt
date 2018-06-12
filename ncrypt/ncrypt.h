@@ -89,11 +89,11 @@ struct State;
 #define SMIMEOPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
 
 /* WITHCRYPTO actually replaces ifdefs so make the code more readable.
-   Because it is defined as a constant and known at compile time, the
-   compiler can do dead code elimination and thus it behaves
-   effectively as a conditional compile directive. It is set to false
-   if no crypto backend is configured or to a bit vector denoting the
-   configured backends. */
+ * Because it is defined as a constant and known at compile time, the
+ * compiler can do dead code elimination and thus it behaves
+ * effectively as a conditional compile directive. It is set to false
+ * if no crypto backend is configured or to a bit vector denoting the
+ * configured backends. */
 #if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || \
     defined(CRYPT_BACKEND_GPGME)
 #define WithCrypto (APPLICATION_PGP | APPLICATION_SMIME)
@@ -122,43 +122,38 @@ struct State;
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
-/* Some prototypes -- old crypt.h. */
-int mutt_protect(struct Header *msg, char *keylist);
-int mutt_is_multipart_encrypted(struct Body *b);
-int mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
-int mutt_is_multipart_signed(struct Body *b);
-int mutt_is_application_pgp(struct Body *m);
-int mutt_is_application_smime(struct Body *m);
-int mutt_signed_handler(struct Body *a, struct State *s);
-int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
+/* crypt.c */
+void         crypt_extract_keys_from_messages(struct Header *h);
+void         crypt_forget_passphrase(void);
+int          crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode);
+void         crypt_opportunistic_encrypt(struct Header *msg);
+int          crypt_query(struct Body *m);
+int          crypt_valid_passphrase(int flags);
+int          mutt_is_application_pgp(struct Body *m);
+int          mutt_is_application_smime(struct Body *m);
+int          mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
+int          mutt_is_multipart_encrypted(struct Body *b);
+int          mutt_is_multipart_signed(struct Body *b);
+int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
+int          mutt_protect(struct Header *msg, char *keylist);
+int          mutt_signed_handler(struct Body *a, struct State *s);
 
-/* -- crypt.c -- */
-int crypt_query(struct Body *m);
-void crypt_extract_keys_from_messages(struct Header *h);
-int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode);
-void crypt_opportunistic_encrypt(struct Header *msg);
-void crypt_forget_passphrase(void);
-int crypt_valid_passphrase(int flags);
-
-/* -- cryptglue.c -- */
-void crypt_invoke_message(int type);
-int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
-int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s);
-int crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
-void crypt_pgp_invoke_getkeys(struct Address *addr);
-int crypt_pgp_check_traditional (FILE *fp, struct Body *b, int just_one);
+/* cryptglue.c */
+int          crypt_has_module_backend(int type);
+void         crypt_init(void);
+void         crypt_invoke_message(int type);
+int          crypt_pgp_application_handler(struct Body *m, struct State *s);
+int          crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one);
+int          crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
+int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
+void         crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
+void         crypt_pgp_invoke_getkeys(struct Address *addr);
 struct Body *crypt_pgp_make_key_attachment(char *tempf);
-int crypt_pgp_send_menu(struct Header *msg);
-void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
-int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
-int crypt_smime_application_smime_handler(struct Body *m, struct State *s);
-void crypt_smime_getkeys(struct Envelope *env);
-int crypt_smime_verify_sender(struct Header *h);
-int crypt_smime_send_menu(struct Header *msg);
-void crypt_init(void);
-
-/* Returns 1 if a module backend is registered for the type */
-int crypt_has_module_backend(int type);
+int          crypt_pgp_send_menu(struct Header *msg);
+int          crypt_smime_application_handler(struct Body *m, struct State *s);
+int          crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
+void         crypt_smime_getkeys(struct Envelope *env);
+int          crypt_smime_send_menu(struct Header *msg);
+int          crypt_smime_verify_sender(struct Header *h);
 
 #endif /* _NCRYPT_NCRYPT_H */

@@ -63,13 +63,19 @@
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
-void pgp_void_passphrase(void)
+/**
+ * pgp_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase()
+ */
+void pgp_class_void_passphrase(void)
 {
   memset(PgpPass, 0, sizeof(PgpPass));
   PgpExptime = 0;
 }
 
-int pgp_valid_passphrase(void)
+/**
+ * pgp_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase()
+ */
+int pgp_class_valid_passphrase(void)
 {
   time_t now = time(NULL);
 
@@ -85,7 +91,7 @@ int pgp_valid_passphrase(void)
     return 1;
   }
 
-  pgp_void_passphrase();
+  pgp_class_void_passphrase();
 
   if (mutt_get_password(_("Enter PGP passphrase:"), PgpPass, sizeof(PgpPass)) == 0)
   {
@@ -315,9 +321,9 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 }
 
 /**
- * pgp_application_pgp_handler - Support for the Application/PGP Content Type
+ * pgp_class_application_handler - Implements CryptModuleSpecs::application_handler()
  */
-int pgp_application_pgp_handler(struct Body *m, struct State *s)
+int pgp_class_application_handler(struct Body *m, struct State *s)
 {
   bool could_not_decrypt = false;
   int needpass = -1;
@@ -453,8 +459,8 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         {
           if (needpass)
           {
-            if (!pgp_valid_passphrase())
-              pgp_void_passphrase();
+            if (!pgp_class_valid_passphrase())
+              pgp_class_void_passphrase();
             if (pgp_use_gpg_agent())
               *PgpPass = 0;
             fprintf(pgpin, "%s\n", PgpPass);
@@ -501,7 +507,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         if (!clearsign && (!pgpout || c == EOF))
         {
           could_not_decrypt = true;
-          pgp_void_passphrase();
+          pgp_class_void_passphrase();
         }
 
         if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
@@ -673,14 +679,17 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   return 1;
 }
 
-int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
+/**
+ * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
+ */
+int pgp_class_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rc = pgp_check_traditional(fp, b->parts, 0) || rc;
+      rc = pgp_class_check_traditional(fp, b->parts, 0) || rc;
     else if (b->type == TYPETEXT)
     {
       r = mutt_is_application_pgp(b);
@@ -697,7 +706,10 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
   return rc;
 }
 
-int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
+/**
+ * pgp_class_verify_one - Implements CryptModuleSpecs::verify_one()
+ */
+int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[PATH_MAX], pgperrfile[PATH_MAX];
   FILE *pgpout = NULL, *pgperr = NULL;
@@ -785,13 +797,16 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 
   mutt_file_fclose(&tempfp);
 
-  pgp_invoke_import(tempfname);
+  pgp_class_invoke_import(tempfname);
   mutt_any_key_to_continue(NULL);
 
   mutt_file_unlink(tempfname);
 }
 
-void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+/**
+ * pgp_class_extract_keys_from_attachment_list - Implements CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ */
+void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (!fp)
   {
@@ -896,7 +911,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (pgp_check_decryption_okay(pgperr) < 0)
   {
     mutt_error(_("Decryption failed"));
-    pgp_void_passphrase();
+    pgp_class_void_passphrase();
     mutt_file_fclose(&pgperr);
     return NULL;
   }
@@ -921,7 +936,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   if (fgetc(fpout) == EOF)
   {
     mutt_error(_("Decryption failed"));
-    pgp_void_passphrase();
+    pgp_class_void_passphrase();
     return NULL;
   }
 
@@ -944,7 +959,10 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   return tattach;
 }
 
-int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
+/**
+ * pgp_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
+ */
+int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[PATH_MAX];
   struct State s;
@@ -1025,12 +1043,9 @@ bail:
 }
 
 /**
- * pgp_encrypted_handler - Handler of PGP encrypted data
- *
- * This handler is passed the application/octet-stream directly.
- * The caller must propagate a->goodsig to its parent.
+ * pgp_class_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler()
  */
-int pgp_encrypted_handler(struct Body *a, struct State *s)
+int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 {
   char tempfile[PATH_MAX];
   FILE *fpin = NULL;
@@ -1087,7 +1102,7 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
   {
     mutt_error(_("Could not decrypt PGP message"));
     /* void the passphrase, even if it's not necessarily the problem */
-    pgp_void_passphrase();
+    pgp_class_void_passphrase();
     rc = -1;
   }
 
@@ -1101,7 +1116,10 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
  * Routines for sending PGP/MIME messages.
  */
 
-struct Body *pgp_sign_message(struct Body *a)
+/**
+ * pgp_class_sign_message - Implements CryptModuleSpecs::sign_message()
+ */
+struct Body *pgp_class_sign_message(struct Body *a)
 {
   struct Body *t = NULL;
   char buffer[LONG_STRING];
@@ -1193,7 +1211,7 @@ struct Body *pgp_sign_message(struct Body *a)
   {
     unlink(sigfile);
     /* most likely error is a bad passphrase, so automatically forget it */
-    pgp_void_passphrase();
+    pgp_class_void_passphrase();
     return NULL; /* fatal error while signing */
   }
 
@@ -1226,16 +1244,9 @@ struct Body *pgp_sign_message(struct Body *a)
 }
 
 /**
- * pgp_find_keys - Find the keyids of the recipients of a message
- * @param addrlist    Address List
- * @param oppenc_mode If true, use opportunistic encryption
- * @retval ptr  Space-separated string of keys
- * @retval NULL At least one of the keys can't be found
- *
- * If oppenc_mode is true, only keys that can be determined without prompting
- * will be used.
+ * pgp_class_find_keys - Implements CryptModuleSpecs::find_keys()
  */
-char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
+char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
@@ -1310,7 +1321,7 @@ char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 
       if (!k_info)
       {
-        pgp_invoke_getkeys(q);
+        pgp_class_invoke_getkeys(q);
         k_info = pgp_getkeybyaddr(q, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
       }
 
@@ -1352,12 +1363,12 @@ char *pgp_find_keys(struct Address *addrlist, bool oppenc_mode)
 }
 
 /**
- * pgp_encrypt_message - Encrypt a message
+ * pgp_class_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
  *
- * Warning: "a" is no longer freed in this routine, you need to free it later.
+ * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
  */
-struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
   char tempfile[PATH_MAX], pgperrfile[PATH_MAX];
@@ -1452,7 +1463,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   {
     /* fatal error while trying to encrypt message */
     if (sign)
-      pgp_void_passphrase(); /* just in case */
+      pgp_class_void_passphrase(); /* just in case */
     unlink(tempfile);
     return NULL;
   }
@@ -1485,7 +1496,10 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   return t;
 }
 
-struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
+/**
+ * pgp_class_traditional_encryptsign - Implements CryptModuleSpecs::pgp_traditional_encryptsign()
+ */
+struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   struct Body *b = NULL;
 
@@ -1631,7 +1645,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   if (empty)
   {
     if (flags & SIGN)
-      pgp_void_passphrase(); /* just in case */
+      pgp_class_void_passphrase(); /* just in case */
     unlink(pgpoutfile);
     return NULL;
   }
@@ -1660,7 +1674,10 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   return b;
 }
 
-int pgp_send_menu(struct Header *msg)
+/**
+ * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
+ */
+int pgp_class_send_menu(struct Header *msg)
 {
   struct PgpKeyInfo *p = NULL;
   char *prompt = NULL, *letters = NULL, *choices = NULL;

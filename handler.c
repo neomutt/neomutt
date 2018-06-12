@@ -1536,7 +1536,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
        * the only operation needed.
        */
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
-        handler = crypt_pgp_application_pgp_handler;
+        handler = crypt_pgp_application_handler;
       else if (ReflowText &&
                (mutt_str_strcasecmp("flowed",
                                     mutt_param_get(&b->parameter, "format")) == 0))
@@ -1607,9 +1607,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
       plaintext = true;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
-      handler = crypt_pgp_application_pgp_handler;
+      handler = crypt_pgp_application_handler;
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(b))
-      handler = crypt_smime_application_smime_handler;
+      handler = crypt_smime_application_handler;
   }
 
   /* only respect disposition == attachment if we're not

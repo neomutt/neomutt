@@ -967,10 +967,6 @@ static void print_time(time_t t, struct State *s)
   state_puts(p, s);
 }
 
-/*
- * Implementation of `sign_message'.
- */
-
 /**
  * sign_message - Sign a message
  * @param a         Message to sign
@@ -1097,25 +1093,24 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   return a;
 }
 
+/**
+ * pgp_gpgme_sign_message - Implements CryptModuleSpecs::sign_message()
+ */
 struct Body *pgp_gpgme_sign_message(struct Body *a)
 {
   return sign_message(a, 0);
 }
 
+/**
+ * smime_gpgme_sign_message - Implements CryptModuleSpecs::sign_message()
+ */
 struct Body *smime_gpgme_sign_message(struct Body *a)
 {
   return sign_message(a, 1);
 }
 
-/*
- * Implementation of `encrypt_message'.
- */
-
 /**
- * pgp_gpgme_encrypt_message - Encrypt a message
- *
- * Encrypt the mail body A to all keys given as space separated keyids
- * or fingerprints in KEYLIST and return the encrypted body.
+ * pgp_gpgme_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
  */
 struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
 {
@@ -1167,15 +1162,8 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
   return t;
 }
 
-/*
- * Implementation of `smime_build_smime_entity'.
- */
-
 /**
- * smime_gpgme_build_smime_entity - Encrypt the email body to all recipients
- *
- * Encrypt the mail body A to all keys given as space separated fingerprints in
- * KEYLIST and return the S/MIME encrypted body.
+ * smime_gpgme_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity()
  */
 struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 {
@@ -1216,10 +1204,6 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 
   return t;
 }
-
-/*
- * Implementation of `verify_one'.
- */
 
 /**
  * show_sig_summary - Show a signature summary
@@ -1744,19 +1728,21 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   return badsig ? 1 : anywarn ? 2 : 0;
 }
 
+/**
+ * pgp_gpgme_verify_one - Implements CryptModuleSpecs::verify_one()
+ */
 int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 0);
 }
 
+/**
+ * smime_gpgme_verify_one - Implements CryptModuleSpecs::verify_one()
+ */
 int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 1);
 }
-
-/*
- * Implementation of `decrypt_part'.
- */
 
 /**
  * decrypt_part - Decrypt a PGP or SMIME message
@@ -1920,11 +1906,7 @@ restart:
 }
 
 /**
- * pgp_gpgme_decrypt_mime - Decrypt a PGP/MIME message
- * @retval 0 Success
- *
- * The message in FPIN and B and return a new body and the stream in CUR and
- * FPOUT.
+ * pgp_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
 int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
@@ -2013,11 +1995,7 @@ bail:
 }
 
 /**
- * smime_gpgme_decrypt_mime - Decrypt a S/MIME message
- * @retval 0 Success
- *
- * The message in FPIN and B and return a new body and
- * the stream in CUR and FPOUT.
+ * smime_gpgme_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime()
  */
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
@@ -2295,9 +2273,6 @@ static int line_compare(const char *a, size_t n, const char *b)
 #define BEGIN_PGP_SIGNATURE(_y)                                                \
   _LINE_COMPARE("-----BEGIN PGP SIGNATURE-----", _y)
 
-/*
- * Implementation of `pgp_check_traditional'.
- */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
@@ -2354,6 +2329,9 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   return 1;
 }
 
+/**
+ * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
+ */
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   int rc = 0;
@@ -2377,6 +2355,9 @@ int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
   return rc;
 }
 
+/**
+ * pgp_gpgme_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import()
+ */
 void pgp_gpgme_invoke_import(const char *fname)
 {
   gpgme_data_t keydata;
@@ -2404,10 +2385,6 @@ void pgp_gpgme_invoke_import(const char *fname)
   mutt_file_fclose(&in);
   mutt_file_fclose(&out);
 }
-
-/*
- * Implementation of `application_handler'.
- */
 
 /**
  * copy_clearsigned - Copy a clearsigned message
@@ -2476,7 +2453,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 }
 
 /**
- * pgp_gpgme_application_handler - Support for classic_application/pgp
+ * pgp_gpgme_application_handler - Implements CryptModuleSpecs::application_handler()
  */
 int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 {
@@ -2713,12 +2690,8 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   return err;
 }
 
-/*
- * Implementation of `encrypted_handler'.
- */
-
 /**
- * pgp_gpgme_encrypted_handler - MIME handler for pgp/mime encrypted messages
+ * pgp_gpgme_encrypted_handler - Implements CryptModuleSpecs::encrypted_handler()
  *
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
@@ -2798,7 +2771,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 }
 
 /**
- * smime_gpgme_application_handler - Support for application/smime
+ * smime_gpgme_application_handler - Implements CryptModuleSpecs::application_handler()
  */
 int smime_gpgme_application_handler(struct Body *a, struct State *s)
 {
@@ -3920,10 +3893,6 @@ leave:
   mutt_do_pager(cmd, tempfile, 0, NULL);
 }
 
-/*
- * Implementation of `findkeys'.
- */
-
 /**
  * list_to_pattern - Convert STailQ to GPGME-compatible pattern
  * @param list List of strings to convert
@@ -4759,19 +4728,28 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
   return keylist;
 }
 
-char *pgp_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
+/**
+ * pgp_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
+ */
+char *pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_PGP, oppenc_mode);
 }
 
-char *smime_gpgme_findkeys(struct Address *addrlist, bool oppenc_mode)
+/**
+ * smime_gpgme_find_keys - Implements CryptModuleSpecs::find_keys()
+ */
+char *smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 {
   return find_keys(addrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
+/**
+ * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
+ */
 struct Body *pgp_gpgme_make_key_attachment(char *tempf)
 {
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
   gpgme_ctx_t context = NULL;
   gpgme_key_t export_keys[2];
   gpgme_data_t keydata = NULL;
@@ -4827,12 +4805,10 @@ bail:
   gpgme_release(context);
 
   return att;
-}
+#else
+  return NULL;
 #endif
-
-/*
- * Implementation of `init'.
- */
+}
 
 /**
  * init_common - Initialise code common to PGP and SMIME parts of GPGME
@@ -4869,12 +4845,18 @@ static void init_smime(void)
   }
 }
 
+/**
+ * pgp_gpgme_init - Implements CryptModuleSpecs::init()
+ */
 void pgp_gpgme_init(void)
 {
   init_common();
   init_pgp();
 }
 
+/**
+ * smime_gpgme_init - Implements CryptModuleSpecs::init()
+ */
 void smime_gpgme_init(void)
 {
   init_common();
@@ -5043,11 +5025,17 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
   return msg->security;
 }
 
+/**
+ * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
+ */
 int pgp_gpgme_send_menu(struct Header *msg)
 {
   return gpgme_send_menu(msg, 0);
 }
 
+/**
+ * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
+ */
 int smime_gpgme_send_menu(struct Header *msg)
 {
   return gpgme_send_menu(msg, 1);
@@ -5128,12 +5116,18 @@ static int verify_sender(struct Header *h)
   return rc;
 }
 
+/**
+ * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
+ */
 int smime_gpgme_verify_sender(struct Header *h)
 {
   return verify_sender(h);
 }
 
-void mutt_gpgme_set_sender(const char *sender)
+/**
+ * pgp_gpgme_set_sender - Implements CryptModuleSpecs::set_sender()
+ */
+void pgp_gpgme_set_sender(const char *sender)
 {
   mutt_debug(2, "setting to: %s\n", sender);
   FREE(&current_sender);
