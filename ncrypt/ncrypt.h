@@ -65,10 +65,10 @@ extern bool          C_CryptTimestamp;
 extern unsigned char C_PgpEncryptSelf; ///< Deprecated, see #C_PgpSelfEncrypt
 extern unsigned char C_PgpMimeAuto;
 extern bool          C_PgpRetainableSigs;
-extern bool          C_PgpSelfEncrypt;
+extern unsigned char C_PgpSelfEncrypt;
 extern bool          C_PgpStrictEnc;
 extern unsigned char C_SmimeEncryptSelf; ///< Deprecated, see #C_SmimeSelfEncrypt
-extern bool          C_SmimeSelfEncrypt;
+extern unsigned char C_SmimeSelfEncrypt;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */
 extern bool C_CryptUseGpgme;

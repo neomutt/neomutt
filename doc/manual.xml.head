@@ -12686,7 +12686,7 @@ set pgp_default_key  = A4AF18C5582473BD35A1E9CE78BB3D480042198E
               </row>
               <row>
                 <entry><literal>pgp_self_encrypt</literal></entry>
-                <entry>boolean</entry>
+                <entry>quadoption</entry>
                 <entry><literal>yes</literal></entry>
               </row>
               <row>
@@ -12701,7 +12701,7 @@ set pgp_default_key  = A4AF18C5582473BD35A1E9CE78BB3D480042198E
               </row>
               <row>
                 <entry><literal>smime_self_encrypt</literal></entry>
-                <entry>boolean</entry>
+                <entry>quadoption</entry>
                 <entry><literal>yes</literal></entry>
               </row>
               <row>

@@ -3360,6 +3360,10 @@ msgstr "S/MIME-Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt
 msgid "Trying to extract PGP keys...\n"
 msgstr "Versuche PGP-Schlüssel zu extrahieren...\n"
 
+#: ncrypt/crypt.c:899 ncrypt/crypt.c:911
+msgid "Do you want to be able to decrypt it yourself later?"
+msgstr "Möchten Sie es später selber wieder entschlüsseln können?"
+
 #: ncrypt/crypt.c:876
 msgid "Trying to extract S/MIME certificates..."
 msgstr "Versuche S/MIME-Zertifikate zu extrahieren..."

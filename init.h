@@ -2807,7 +2807,7 @@ struct ConfigDef MuttVars[] = {
   ** removed, while the inner \fCmultipart/signed\fP part is retained.
   ** (PGP only)
   */
-  { "pgp_self_encrypt",    DT_BOOL, R_NONE, &C_PgpSelfEncrypt, true },
+  { "pgp_self_encrypt",    DT_QUAD, R_NONE, &C_PgpSelfEncrypt, MUTT_YES },
   /*
   ** .pp
   ** When \fIset\fP, PGP encrypted messages will also be encrypted
@@ -3983,7 +3983,7 @@ struct ConfigDef MuttVars[] = {
   ** (S/MIME only)
   */
 #endif
-  { "smime_self_encrypt",    DT_BOOL, R_NONE, &C_SmimeSelfEncrypt, true },
+  { "smime_self_encrypt",    DT_QUAD, R_NONE, &C_SmimeSelfEncrypt, MUTT_YES },
   /*
   ** .pp
   ** When \fIset\fP, S/MIME encrypted messages will also be encrypted

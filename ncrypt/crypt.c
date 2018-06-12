@@ -64,9 +64,9 @@
 bool C_CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
 unsigned char C_PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
 bool C_PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
-bool C_PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
+unsigned char C_PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
 bool C_PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
-bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
+unsigned char C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
 
 /**
  * crypt_current_time - Print the current time
@@ -912,6 +912,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(true);
   char *self_encrypt = NULL;
+  int q;
 
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.  */
@@ -934,24 +935,28 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
       *keylist = crypt_pgp_find_keys(addrlist, oppenc_mode);
-      if (!*keylist)
+      if (!*keylist ||
+            (q = query_quadoption(C_PgpSelfEncrypt,
+              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT)
       {
         mutt_addr_free(&addrlist);
         return -1;
       }
-      OptPgpCheckTrust = false;
-      if (C_PgpSelfEncrypt == MUTT_YES)
+      if (q == MUTT_YES)
         self_encrypt = C_PgpDefaultKey;
+      OptPgpCheckTrust = false;
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
       *keylist = crypt_smime_find_keys(addrlist, oppenc_mode);
-      if (!*keylist)
+      if (!*keylist ||
+            (q = query_quadoption(C_SmimeSelfEncrypt,
+              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT)
       {
         mutt_addr_free(&addrlist);
         return -1;
       }
-      if (C_SmimeSelfEncrypt == MUTT_YES)
+      if (q == MUTT_YES)
         self_encrypt = C_SmimeDefaultKey;
     }
   }
