@@ -62,12 +62,10 @@
 
 /* These Config Variables are only used in ncrypt/crypt.c */
 bool C_CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
-unsigned char C_PgpEncryptSelf;
 unsigned char C_PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
 bool C_PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
 bool C_PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to C_PgpDefaultKey too
 bool C_PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
-unsigned char C_SmimeEncryptSelf;
 bool C_SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to C_SmimeDefaultKey too
 
 /**
@@ -942,7 +940,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         return -1;
       }
       OptPgpCheckTrust = false;
-      if (C_PgpSelfEncrypt || (C_PgpEncryptSelf == MUTT_YES))
+      if (C_PgpSelfEncrypt == MUTT_YES)
         self_encrypt = C_PgpDefaultKey;
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
@@ -953,7 +951,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         mutt_addr_free(&addrlist);
         return -1;
       }
-      if (C_SmimeSelfEncrypt || (C_SmimeEncryptSelf == MUTT_YES))
+      if (C_SmimeSelfEncrypt == MUTT_YES)
         self_encrypt = C_SmimeDefaultKey;
     }
   }

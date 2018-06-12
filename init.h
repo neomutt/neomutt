@@ -4770,8 +4770,6 @@ struct ConfigDef MuttVars[] = {
   /*--*/
 
   { "ignore_linear_white_space", DT_BOOL,   R_NONE,  &C_IgnoreLinearWhiteSpace, false },
-  { "pgp_encrypt_self",          DT_QUAD,   R_NONE,  &C_PgpEncryptSelf,         MUTT_NO },
-  { "smime_encrypt_self",        DT_QUAD,   R_NONE,  &C_SmimeEncryptSelf,       MUTT_NO },
   { "wrapmargin",                DT_NUMBER, R_PAGER, &C_Wrap,                   0 },
 
   { "abort_noattach_regexp",  DT_SYNONYM, R_NONE, NULL, IP "abort_noattach_regex",     },
