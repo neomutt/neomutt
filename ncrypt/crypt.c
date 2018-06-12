@@ -288,7 +288,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
-      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, flags & SIGN);
+      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, (flags & SIGN));
       if (!pbody)
       {
         /* did we perform a retainable signature? */

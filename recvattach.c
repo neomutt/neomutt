@@ -899,12 +899,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   int rc = 0;
 
   if (!menu->tagprefix)
-    rc = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, 1);
+    rc = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, true);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
       if (actx->idx[i]->content->tagged)
-        rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->content, 1);
+        rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->content, true);
   }
 
   return rc;

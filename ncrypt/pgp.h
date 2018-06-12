@@ -40,7 +40,7 @@ struct State;
 
 bool pgp_use_gpg_agent(void);
 
-int pgp_class_check_traditional(FILE *fp, struct Body *b, int just_one);
+int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one);
 
 char *pgp_this_keyid(struct PgpKeyInfo *k);
 char *pgp_keyid(struct PgpKeyInfo *k);
@@ -60,7 +60,7 @@ int pgp_class_valid_passphrase(void);
 
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *keylist);
-struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, int sign);
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign);
 struct Body *pgp_class_sign_message(struct Body *a);
 
 int pgp_class_send_menu(struct Header *msg);

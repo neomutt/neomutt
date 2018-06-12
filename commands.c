@@ -1100,7 +1100,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   struct Message *msg = mx_msg_open(Context, h->msgno);
   if (!msg)
     return 0;
-  if (crypt_pgp_check_traditional(msg->fp, h->content, 0))
+  if (crypt_pgp_check_traditional(msg->fp, h->content, false))
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;

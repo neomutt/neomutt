@@ -214,7 +214,7 @@ pid_t pgp_invoke_sign(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 
 pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                          int pgpinfd, int pgpoutfd, int pgperrfd,
-                         const char *fname, const char *uids, int sign)
+                         const char *fname, const char *uids, bool sign)
 {
   if (sign)
   {

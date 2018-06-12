@@ -143,7 +143,7 @@ int          crypt_has_module_backend(int type);
 void         crypt_init(void);
 void         crypt_invoke_message(int type);
 int          crypt_pgp_application_handler(struct Body *m, struct State *s);
-int          crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one);
+int          crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one);
 int          crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
 int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
 void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);

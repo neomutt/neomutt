@@ -682,14 +682,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 /**
  * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_class_check_traditional(FILE *fp, struct Body *b, int just_one)
+int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rc = pgp_class_check_traditional(fp, b->parts, 0) || rc;
+      rc = pgp_class_check_traditional(fp, b->parts, false) || rc;
     else if (b->type == TYPETEXT)
     {
       r = mutt_is_application_pgp(b);
@@ -1360,7 +1360,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
  * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
  */
-struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   char buf[LONG_STRING];
   char tempfile[PATH_MAX], pgperrfile[PATH_MAX];

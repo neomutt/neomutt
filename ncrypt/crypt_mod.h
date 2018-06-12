@@ -133,7 +133,7 @@ struct CryptModuleSpecs
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, int sign);
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign);
   /**
    * pgp_make_key_attachment - Generate a public key attachment
    * @retval ptr  New Body containing the attachment
@@ -148,7 +148,7 @@ struct CryptModuleSpecs
    * @retval 1 It's an inline PGP email
    * @retval 0 It's not inline, or an error
    */
-  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, int just_one);
+  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
    * @param a       Body of the email

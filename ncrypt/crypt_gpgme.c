@@ -461,10 +461,10 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
 
 /**
  * create_gpgme_context - Create a new GPGME context
- * @param for_smime If set, protocol of the context is set to CMS
+ * @param for_smime If true, protocol of the context is set to CMS
  * @retval ptr New GPGME context
  */
-static gpgme_ctx_t create_gpgme_context(int for_smime)
+static gpgme_ctx_t create_gpgme_context(bool for_smime)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx;
@@ -785,9 +785,12 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
 
 /**
  * set_signer - Make sure that the correct signer is set
- * @retval 0 Success
+ * @param ctx       gpgme Context
+ * @param for_smime Use S/MIME
+ * @retval  0 Success
+ * @retval -1 Error
  */
-static int set_signer(gpgme_ctx_t ctx, int for_smime)
+static int set_signer(gpgme_ctx_t ctx, bool for_smime)
 {
   char *signid = for_smime ? SmimeDefaultKey : PgpSignAs;
   gpgme_error_t err;
@@ -853,7 +856,7 @@ static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
  * a PGP message is signed and encrypted.  Returns NULL in case of error
  */
 static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
-                                  int use_smime, int combined_signed)
+                                  bool use_smime, bool combined_signed)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx;
@@ -969,7 +972,7 @@ static void print_time(time_t t, struct State *s)
  * @retval ptr  new Body
  * @retval NULL error
  */
-static struct Body *sign_message(struct Body *a, int use_smime)
+static struct Body *sign_message(struct Body *a, bool use_smime)
 {
   struct Body *t = NULL;
   char *sigfile = NULL;
@@ -1093,7 +1096,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
  */
 struct Body *pgp_gpgme_sign_message(struct Body *a)
 {
-  return sign_message(a, 0);
+  return sign_message(a, false);
 }
 
 /**
@@ -1101,13 +1104,13 @@ struct Body *pgp_gpgme_sign_message(struct Body *a)
  */
 struct Body *smime_gpgme_sign_message(struct Body *a)
 {
-  return sign_message(a, 1);
+  return sign_message(a, true);
 }
 
 /**
  * pgp_gpgme_encrypt_message - Implements CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   gpgme_key_t *rset = create_recipient_set(keylist, GPGME_PROTOCOL_OpenPGP);
   if (!rset)
@@ -1122,7 +1125,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
     return NULL;
   }
 
-  char *outfile = encrypt_gpgme_object(plaintext, rset, 0, sign);
+  char *outfile = encrypt_gpgme_object(plaintext, rset, false, sign);
   gpgme_data_release(plaintext);
   free_recipient_set(&rset);
   if (!outfile)
@@ -1177,7 +1180,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
     return NULL;
   }
 
-  char *outfile = encrypt_gpgme_object(plaintext, rset, 1, 0);
+  char *outfile = encrypt_gpgme_object(plaintext, rset, true, false);
   gpgme_data_release(plaintext);
   free_recipient_set(&rset);
   if (!outfile)
@@ -1599,7 +1602,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
  *
  * With IS_SMIME set to true we assume S/MIME (surprise!)
  */
-static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, int is_smime)
+static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, bool is_smime)
 {
   int badsig = -1;
   int anywarn = 0;
@@ -1728,7 +1731,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
  */
 int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  return verify_one(sigbdy, s, tempfile, 0);
+  return verify_one(sigbdy, s, tempfile, false);
 }
 
 /**
@@ -1736,7 +1739,7 @@ int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
  */
 int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  return verify_one(sigbdy, s, tempfile, 1);
+  return verify_one(sigbdy, s, tempfile, true);
 }
 
 /**
@@ -1749,7 +1752,7 @@ int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  * encrypted but a signed message.
  */
 static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout,
-                                 int is_smime, int *r_is_signed)
+                                 bool is_smime, int *r_is_signed)
 {
   if (!a || !s || !fpout)
     return NULL;
@@ -1970,7 +1973,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   }
   unlink(tempfile);
 
-  *cur = decrypt_part(b, &s, *fpout, 0, &is_signed);
+  *cur = decrypt_part(b, &s, *fpout, false, &is_signed);
   if (!*cur)
     rc = -1;
   rewind(*fpout);
@@ -2046,7 +2049,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   }
   mutt_file_unlink(tempfile);
 
-  *cur = decrypt_part(b, &s, *fpout, 1, &is_signed);
+  *cur = decrypt_part(b, &s, *fpout, true, &is_signed);
   if (*cur)
     (*cur)->goodsig = is_signed > 0;
   b->type = saved_b_type;
@@ -2103,7 +2106,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     }
     mutt_file_unlink(tempfile);
 
-    tmp_b = decrypt_part(bb, &s, *fpout, 1, &is_signed);
+    tmp_b = decrypt_part(bb, &s, *fpout, true, &is_signed);
     if (tmp_b)
       tmp_b->goodsig = is_signed > 0;
     bb->type = saved_b_type;
@@ -2327,14 +2330,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 /**
  * pgp_gpgme_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
+int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rc = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rc);
+      rc = (pgp_gpgme_check_traditional(fp, b->parts, false) || rc);
     else if (b->type == TYPETEXT)
     {
       r = mutt_is_application_pgp(b);
@@ -2528,7 +2531,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
         gpgme_ctx_t ctx;
 
         plaintext = create_gpgme_data();
-        ctx = create_gpgme_context(0);
+        ctx = create_gpgme_context(false);
 
         if (clearsign)
           err = gpgme_op_verify(ctx, armored_data, NULL, plaintext);
@@ -2712,7 +2715,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fpout, 0, &is_signed);
+  struct Body *tattach = decrypt_part(a, s, fpout, false, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
@@ -2771,7 +2774,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 int smime_gpgme_application_handler(struct Body *a, struct State *s)
 {
   char tempfile[PATH_MAX];
-  int is_signed;
+  int is_signed = 0;
   int rc = 0;
 
   mutt_debug(2, "Entering handler\n");
@@ -2790,7 +2793,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     return -1;
   }
 
-  struct Body *tattach = decrypt_part(a, s, fpout, 1, &is_signed);
+  struct Body *tattach = decrypt_part(a, s, fpout, true, &is_signed);
   if (tattach)
   {
     tattach->goodsig = is_signed > 0;
@@ -4762,7 +4765,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   export_keys[0] = key->kobj;
   export_keys[1] = NULL;
 
-  context = create_gpgme_context(0);
+  context = create_gpgme_context(false);
   gpgme_set_armor(context, 1);
   keydata = create_gpgme_data();
   err = gpgme_op_export_keys(context, export_keys, 0, keydata);

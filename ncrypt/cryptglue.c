@@ -228,7 +228,7 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 /**
  * crypt_pgp_check_traditional - Wrapper for CryptModuleSpecs::pgp_check_traditional()
  */
-int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
+int crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
     return (CRYPT_MOD_CALL(PGP, pgp_check_traditional))(fp, b, just_one);
@@ -283,7 +283,7 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
     return (CRYPT_MOD_CALL(PGP, pgp_encrypt_message))(a, keylist, sign);
