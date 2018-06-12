@@ -445,7 +445,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         }
 
         thepid = pgp_invoke_decode(&pgpin, NULL, &pgperr, -1, fileno(pgpout),
-                                   -1, tmpfname, needpass);
+                                   -1, tmpfname, (needpass != 0));
         if (thepid == -1)
         {
           mutt_file_fclose(&pgpout);
