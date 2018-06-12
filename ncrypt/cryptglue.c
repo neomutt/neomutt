@@ -143,24 +143,24 @@ void crypt_invoke_message(int type)
 /**
  * crypt_has_module_backend - Is there a crypto backend for a given type?
  * @param type Crypto type, e.g. #APPLICATION_PGP
- * @retval 1 Backend is present
- * @retval 0 Backend is not present
+ * @retval true  Backend is present
+ * @retval false Backend is not present
  */
-int crypt_has_module_backend(int type)
+bool crypt_has_module_backend(int type)
 {
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
       crypto_module_lookup(APPLICATION_PGP))
   {
-    return 1;
+    return true;
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (type & APPLICATION_SMIME) &&
       crypto_module_lookup(APPLICATION_SMIME))
   {
-    return 1;
+    return true;
   }
 
-  return 0;
+  return false;
 }
 
 /**

@@ -139,7 +139,7 @@ int          mutt_protect(struct Header *msg, char *keylist);
 int          mutt_signed_handler(struct Body *a, struct State *s);
 
 /* cryptglue.c */
-int          crypt_has_module_backend(int type);
+bool         crypt_has_module_backend(int type);
 void         crypt_init(void);
 void         crypt_invoke_message(int type);
 int          crypt_pgp_application_handler(struct Body *m, struct State *s);
