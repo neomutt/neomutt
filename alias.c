@@ -581,12 +581,10 @@ int mutt_alias_complete(char *buf, size_t buflen)
 {
   struct Alias *a = NULL, *tmp = NULL;
   struct AliasList a_list = TAILQ_HEAD_INITIALIZER(a_list);
-  char bestname[HUGE_STRING];
+  char bestname[HUGE_STRING] = { 0 };
 
   if (buf[0] != 0) /* avoid empty string as strstr argument */
   {
-    memset(bestname, 0, sizeof(bestname));
-
     TAILQ_FOREACH(a, &Aliases, entries)
     {
       if (a->name && strncmp(a->name, buf, strlen(buf)) == 0)

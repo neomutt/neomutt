@@ -51,7 +51,8 @@
 static void hmac_md5(const char *password, char *challenge, unsigned char *response)
 {
   struct Md5Ctx ctx;
-  unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
+  unsigned char ipad[MD5_BLOCK_LEN] = { 0 };
+  unsigned char opad[MD5_BLOCK_LEN] = { 0 };
   unsigned char secret[MD5_BLOCK_LEN + 1];
   size_t secret_len;
 
@@ -69,8 +70,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   else
     mutt_str_strfcpy((char *) secret, password, sizeof(secret));
 
-  memset(ipad, 0, sizeof(ipad));
-  memset(opad, 0, sizeof(opad));
   memcpy(ipad, secret, secret_len);
   memcpy(opad, secret, secret_len);
 

@@ -217,8 +217,7 @@ void mutt_file_unlink(const char *s)
   if (f)
   {
     unlink(s);
-    char buf[2048];
-    memset(buf, 0, sizeof(buf));
+    char buf[2048] = { 0 };
     while (sb.st_size > 0)
     {
       fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), f);

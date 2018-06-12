@@ -68,10 +68,9 @@ static short BuffyNotify = 0; /**< # of unnotified new boxes */
 static int fseek_last_message(FILE *f)
 {
   LOFF_T pos;
-  char buffer[BUFSIZ + 9]; /* 7 for "\n\nFrom " */
+  char buffer[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
   size_t bytes_read;
 
-  memset(buffer, 0, sizeof(buffer));
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
