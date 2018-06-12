@@ -919,7 +919,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
     struct Body *b = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
+        (b = crypt_pgp_make_key_attachment()) == NULL)
     {
       return -1;
     }

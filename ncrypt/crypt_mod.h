@@ -136,11 +136,10 @@ struct CryptModuleSpecs
   struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, int sign);
   /**
    * pgp_make_key_attachment - Generate a public key attachment
-   * @param tempf Filename to use (OPTIONAL)
    * @retval ptr  New Body containing the attachment
    * @retval NULL Error
    */
-  struct Body *(*pgp_make_key_attachment)(char *tempf);
+  struct Body *(*pgp_make_key_attachment)(void);
   /**
    * pgp_check_traditional - Look for inline (non-MIME) PGP content
    * @param fp       File pointer to the current attachment

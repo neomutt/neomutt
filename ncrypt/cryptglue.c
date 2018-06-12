@@ -250,10 +250,10 @@ struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *
 /**
  * crypt_pgp_make_key_attachment - Wrapper for CryptModuleSpecs::pgp_make_key_attachment()
  */
-struct Body *crypt_pgp_make_key_attachment(char *tempf)
+struct Body *crypt_pgp_make_key_attachment(void)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_make_key_attachment))
-    return (CRYPT_MOD_CALL(PGP, pgp_make_key_attachment))(tempf);
+    return (CRYPT_MOD_CALL(PGP, pgp_make_key_attachment))();
 
   return NULL;
 }

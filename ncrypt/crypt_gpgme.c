@@ -640,24 +640,19 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 /**
  * data_object_to_tempfile - Copy a data object to a temporary file
  *
- * The tempfile name may be optionally passed in.
  * If ret_fp is passed in, the file will be rewound, left open, and returned
  * via that parameter.
  * The tempfile name is returned, and must be freed.
  */
-static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_fp)
+static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
 {
   int err;
-  char tempfb[PATH_MAX];
+  char tempf[PATH_MAX];
   FILE *fp = NULL;
   ssize_t nread = 0;
 
-  if (!tempf)
-  {
-    mutt_mktemp(tempfb, sizeof(tempfb));
-    tempf = tempfb;
-  }
-  fp = mutt_file_fopen(tempf, tempf == tempfb ? "w+" : "a+");
+  mutt_mktemp(tempf, sizeof(tempf));
+  fp = mutt_file_fopen(tempf, "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -906,7 +901,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
 
   gpgme_release(ctx);
 
-  outfile = data_object_to_tempfile(ciphertext, NULL, NULL);
+  outfile = data_object_to_tempfile(ciphertext, NULL);
   gpgme_data_release(ciphertext);
   return outfile;
 }
@@ -1038,7 +1033,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
     return NULL;
   }
 
-  sigfile = data_object_to_tempfile(signature, NULL, NULL);
+  sigfile = data_object_to_tempfile(signature, NULL);
   gpgme_data_release(signature);
   if (!sigfile)
   {
@@ -2404,7 +2399,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   bool complete, armor_header;
   FILE *fp = NULL;
 
-  char *fname = data_object_to_tempfile(data, NULL, &fp);
+  char *fname = data_object_to_tempfile(data, &fp);
   if (!fname)
   {
     mutt_file_fclose(&fp);
@@ -2599,7 +2594,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
                               s);
           }
 
-          tmpfname = data_object_to_tempfile(plaintext, NULL, &pgpout);
+          tmpfname = data_object_to_tempfile(plaintext, &pgpout);
           if (!tmpfname)
           {
             mutt_file_fclose(&pgpout);
@@ -4747,7 +4742,7 @@ char *smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
 /**
  * pgp_gpgme_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
  */
-struct Body *pgp_gpgme_make_key_attachment(char *tempf)
+struct Body *pgp_gpgme_make_key_attachment(void)
 {
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS
   gpgme_ctx_t context = NULL;
@@ -4777,7 +4772,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
     goto bail;
   }
 
-  tempf = data_object_to_tempfile(keydata, tempf, NULL);
+  char *tempf = data_object_to_tempfile(keydata, NULL);
   if (!tempf)
     goto bail;
 
