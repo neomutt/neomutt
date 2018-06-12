@@ -445,7 +445,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         }
 
         thepid = pgp_invoke_decode(&pgpin, NULL, &pgperr, -1, fileno(pgpout),
-                                   -1, tmpfname, needpass);
+                                   -1, tmpfname, (needpass != 0));
         if (thepid == -1)
         {
           mutt_file_fclose(&pgpout);
@@ -682,14 +682,14 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 /**
  * pgp_class_check_traditional - Implements CryptModuleSpecs::pgp_check_traditional()
  */
-int pgp_class_check_traditional(FILE *fp, struct Body *b, int just_one)
+int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rc = pgp_class_check_traditional(fp, b->parts, 0) || rc;
+      rc = pgp_class_check_traditional(fp, b->parts, false) || rc;
     else if (b->type == TYPETEXT)
     {
       r = mutt_is_application_pgp(b);
@@ -804,9 +804,9 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 }
 
 /**
- * pgp_class_extract_keys_from_attachment_list - Implements CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ * pgp_class_extract_key_from_attachment - Implements CryptModuleSpecs::pgp_extract_key_from_attachment()
  */
-void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top)
 {
   if (!fp)
   {
@@ -815,17 +815,9 @@ void pgp_class_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body 
   }
 
   mutt_endwin();
+
   OptDontHandlePgpKeys = true;
-
-  for (; top; top = top->next)
-  {
-    if (!tag || top->tagged)
-      pgp_extract_keys_from_attachment(fp, top);
-
-    if (!tag)
-      break;
-  }
-
+  pgp_extract_keys_from_attachment(fp, top);
   OptDontHandlePgpKeys = false;
 }
 
@@ -1368,7 +1360,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
  * @warning "a" is no longer freed in this routine, you need to free it later.
  * This is necessary for $fcc_attach.
  */
-struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   char buf[LONG_STRING];
   char tempfile[PATH_MAX], pgperrfile[PATH_MAX];

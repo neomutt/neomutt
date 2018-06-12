@@ -36,7 +36,7 @@ enum PgpRing
   PGP_SECRING, /**< Secret keys */
 };
 
-struct Body *pgp_class_make_key_attachment(char *tempf);
+struct Body *pgp_class_make_key_attachment(void);
 
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring);
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, enum PgpRing keyring, bool oppenc_mode);

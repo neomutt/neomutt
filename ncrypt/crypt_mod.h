@@ -133,14 +133,13 @@ struct CryptModuleSpecs
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, int sign);
+  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign);
   /**
    * pgp_make_key_attachment - Generate a public key attachment
-   * @param tempf Filename to use (OPTIONAL)
    * @retval ptr  New Body containing the attachment
    * @retval NULL Error
    */
-  struct Body *(*pgp_make_key_attachment)(char *tempf);
+  struct Body *(*pgp_make_key_attachment)(void);
   /**
    * pgp_check_traditional - Look for inline (non-MIME) PGP content
    * @param fp       File pointer to the current attachment
@@ -149,7 +148,7 @@ struct CryptModuleSpecs
    * @retval 1 It's an inline PGP email
    * @retval 0 It's not inline, or an error
    */
-  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, int just_one);
+  int          (*pgp_check_traditional)(FILE *fp, struct Body *b, bool just_one);
   /**
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
    * @param a       Body of the email
@@ -170,12 +169,11 @@ struct CryptModuleSpecs
    */
   void         (*pgp_invoke_import)(const char *fname);
   /**
-   * pgp_extract_keys_from_attachment_list - Extract PGP keys from a list of attachments
+   * pgp_extract_key_from_attachment - Extract PGP key from an attachment
    * @param fp  File containing email
-   * @param tag If true, extract from all tagged attachments
    * @param top Body of the email
    */
-  void         (*pgp_extract_keys_from_attachment_list)(FILE *fp, int tag, struct Body *top);
+  void         (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *top);
 
   /**
    * smime_getkeys - Get the S/MIME keys required to encrypt this email

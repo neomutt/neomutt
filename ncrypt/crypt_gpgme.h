@@ -34,14 +34,14 @@ struct State;
 void         pgp_gpgme_set_sender(const char *sender);
 
 int          pgp_gpgme_application_handler(struct Body *m, struct State *s);
-int          pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one);
+int          pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one);
 int          pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 int          pgp_gpgme_encrypted_handler(struct Body *a, struct State *s);
-struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign);
+struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign);
 char *       pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode);
 void         pgp_gpgme_init(void);
 void         pgp_gpgme_invoke_import(const char *fname);
-struct Body *pgp_gpgme_make_key_attachment(char *tempf);
+struct Body *pgp_gpgme_make_key_attachment(void);
 int          pgp_gpgme_send_menu(struct Header *msg);
 struct Body *pgp_gpgme_sign_message(struct Body *a);
 int          pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);

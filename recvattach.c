@@ -880,14 +880,14 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
-    crypt_pgp_extract_keys_from_attachment_list(CURATTACH->fp, 0, CURATTACH->content);
+    crypt_pgp_extract_key_from_attachment(CURATTACH->fp, CURATTACH->content);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
       {
-        crypt_pgp_extract_keys_from_attachment_list(actx->idx[i]->fp, 0,
+        crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp,
                                                     actx->idx[i]->content);
       }
     }
@@ -899,12 +899,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   int rc = 0;
 
   if (!menu->tagprefix)
-    rc = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, 1);
+    rc = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, true);
   else
   {
     for (int i = 0; i < actx->idxlen; i++)
       if (actx->idx[i]->content->tagged)
-        rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->content, 1);
+        rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->content, true);
   }
 
   return rc;

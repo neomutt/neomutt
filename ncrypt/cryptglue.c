@@ -143,24 +143,24 @@ void crypt_invoke_message(int type)
 /**
  * crypt_has_module_backend - Is there a crypto backend for a given type?
  * @param type Crypto type, e.g. #APPLICATION_PGP
- * @retval 1 Backend is present
- * @retval 0 Backend is not present
+ * @retval true  Backend is present
+ * @retval false Backend is not present
  */
-int crypt_has_module_backend(int type)
+bool crypt_has_module_backend(int type)
 {
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
       crypto_module_lookup(APPLICATION_PGP))
   {
-    return 1;
+    return true;
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (type & APPLICATION_SMIME) &&
       crypto_module_lookup(APPLICATION_SMIME))
   {
-    return 1;
+    return true;
   }
 
-  return 0;
+  return false;
 }
 
 /**
@@ -228,7 +228,7 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 /**
  * crypt_pgp_check_traditional - Wrapper for CryptModuleSpecs::pgp_check_traditional()
  */
-int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
+int crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
     return (CRYPT_MOD_CALL(PGP, pgp_check_traditional))(fp, b, just_one);
@@ -250,10 +250,10 @@ struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *
 /**
  * crypt_pgp_make_key_attachment - Wrapper for CryptModuleSpecs::pgp_make_key_attachment()
  */
-struct Body *crypt_pgp_make_key_attachment(char *tempf)
+struct Body *crypt_pgp_make_key_attachment(void)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_make_key_attachment))
-    return (CRYPT_MOD_CALL(PGP, pgp_make_key_attachment))(tempf);
+    return (CRYPT_MOD_CALL(PGP, pgp_make_key_attachment))();
 
   return NULL;
 }
@@ -283,7 +283,7 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
+struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
     return (CRYPT_MOD_CALL(PGP, pgp_encrypt_message))(a, keylist, sign);
@@ -323,12 +323,12 @@ int crypt_pgp_send_menu(struct Header *msg)
 }
 
 /**
- * crypt_pgp_extract_keys_from_attachment_list - Wrapper for CryptModuleSpecs::pgp_extract_keys_from_attachment_list()
+ * crypt_pgp_extract_key_from_attachment - Wrapper for CryptModuleSpecs::pgp_extract_key_from_attachment()
  */
-void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_keys_from_attachment_list))
-    (CRYPT_MOD_CALL(PGP, pgp_extract_keys_from_attachment_list))(fp, tag, top);
+  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_key_from_attachment))
+    (CRYPT_MOD_CALL(PGP, pgp_extract_key_from_attachment))(fp, top);
 }
 
 /**

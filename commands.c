@@ -783,7 +783,8 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
  */
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
-  int need_passphrase = 0, app = 0;
+  bool need_passphrase = false;
+  int app = 0;
   char buf[PATH_MAX];
   const char *prompt = NULL;
   struct Context ctx;
@@ -812,7 +813,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   {
     if (WithCrypto)
     {
-      need_passphrase = h->security & ENCRYPT;
+      need_passphrase = (h->security & ENCRYPT);
       app = h->security;
     }
     mutt_message_hook(Context, h, MUTT_MESSAGEHOOK);
@@ -836,7 +837,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       mutt_default_save(buf, sizeof(buf), h);
       if (WithCrypto)
       {
-        need_passphrase = h->security & ENCRYPT;
+        need_passphrase = (h->security & ENCRYPT);
         app = h->security;
       }
       h = NULL;
@@ -1099,7 +1100,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   struct Message *msg = mx_msg_open(Context, h->msgno);
   if (!msg)
     return 0;
-  if (crypt_pgp_check_traditional(msg->fp, h->content, 0))
+  if (crypt_pgp_check_traditional(msg->fp, h->content, false))
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;

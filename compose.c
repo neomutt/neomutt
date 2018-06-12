@@ -1044,7 +1044,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-        new->content = crypt_pgp_make_key_attachment(NULL);
+        new->content = crypt_pgp_make_key_attachment();
         if (new->content)
         {
           update_idx(menu, actx, new);

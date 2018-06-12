@@ -35,9 +35,9 @@ struct ListHead;
 void pgp_class_invoke_import(const char *fname);
 void pgp_class_invoke_getkeys(struct Address *addr);
 
-pid_t pgp_invoke_decode     (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, short need_passphrase);
+pid_t pgp_invoke_decode     (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, bool need_passphrase);
 pid_t pgp_invoke_decrypt    (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname);
-pid_t pgp_invoke_encrypt    (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, const char *uids, int sign);
+pid_t pgp_invoke_encrypt    (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, const char *uids, bool sign);
 pid_t pgp_invoke_export     (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *uids);
 pid_t pgp_invoke_list_keys  (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, enum PgpRing keyring, struct ListHead *hints);
 pid_t pgp_invoke_sign       (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname);

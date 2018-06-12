@@ -70,10 +70,10 @@ struct CryptModuleSpecs crypt_mod_pgp_gpgme = {
   pgp_gpgme_encrypt_message,
   pgp_gpgme_make_key_attachment,
   pgp_gpgme_check_traditional,
-  NULL, /* pgp_traditional_encryptsign  */
-  NULL, /* pgp_invoke_getkeys  */
+  NULL, /* pgp_traditional_encryptsign */
+  NULL, /* pgp_invoke_getkeys */
   pgp_gpgme_invoke_import,
-  NULL, /* pgp_extract_keys_from_attachment_list  */
+  NULL, /* pgp_extract_key_from_attachment */
 
   NULL, /* smime_getkeys */
   NULL, /* smime_verify_sender */

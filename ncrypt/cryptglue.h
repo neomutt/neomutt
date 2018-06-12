@@ -27,7 +27,7 @@ struct Address;
 struct Body;
 struct State;
 
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign);
+struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, bool sign);
 char *       crypt_pgp_find_keys(struct Address *addrlist, bool oppenc_mode);
 void         crypt_pgp_invoke_import(const char *fname);
 void         crypt_pgp_set_sender(const char *sender);

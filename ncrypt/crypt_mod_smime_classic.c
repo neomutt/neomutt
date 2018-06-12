@@ -54,7 +54,7 @@ struct CryptModuleSpecs crypt_mod_smime_classic = {
   NULL, /* pgp_traditional_encryptsign */
   NULL, /* pgp_invoke_getkeys */
   NULL, /* pgp_invoke_import */
-  NULL, /* pgp_extract_keys_from_attachment_list */
+  NULL, /* pgp_extract_key_from_attachment */
 
   smime_class_getkeys,
   smime_class_verify_sender,

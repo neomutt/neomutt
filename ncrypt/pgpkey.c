@@ -742,11 +742,11 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 /**
  * pgp_class_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment()
  */
-struct Body *pgp_class_make_key_attachment(char *tempf)
+struct Body *pgp_class_make_key_attachment(void)
 {
   struct Body *att = NULL;
   char buf[LONG_STRING];
-  char tempfb[PATH_MAX], tmp[STRING];
+  char tempf[PATH_MAX], tmp[STRING];
   FILE *tempfp = NULL;
   FILE *devnull = NULL;
   struct stat sb;
@@ -762,13 +762,9 @@ struct Body *pgp_class_make_key_attachment(char *tempf)
   snprintf(tmp, sizeof(tmp), "0x%s", pgp_fpr_or_lkeyid(pgp_principal_key(key)));
   pgp_free_key(&key);
 
-  if (!tempf)
-  {
-    mutt_mktemp(tempfb, sizeof(tempfb));
-    tempf = tempfb;
-  }
+  mutt_mktemp(tempf, sizeof(tempf));
 
-  tempfp = mutt_file_fopen(tempf, tempf == tempfb ? "w" : "a");
+  tempfp = mutt_file_fopen(tempf, "w");
   if (!tempfp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -780,8 +776,7 @@ struct Body *pgp_class_make_key_attachment(char *tempf)
   {
     mutt_perror(_("Can't open /dev/null"));
     mutt_file_fclose(&tempfp);
-    if (tempf == tempfb)
-      unlink(tempf);
+    unlink(tempf);
     return NULL;
   }
 
