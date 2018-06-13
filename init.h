@@ -2810,8 +2810,8 @@ struct ConfigDef MuttVars[] = {
   { "pgp_self_encrypt",    DT_QUAD, R_NONE, &C_PgpSelfEncrypt, MUTT_YES },
   /*
   ** .pp
-  ** When \fIset\fP, PGP encrypted messages will also be encrypted
-  ** using the key in $$pgp_default_key.
+  ** When \fIset\fP, PGP encrypted messages that will be stored locally
+  ** by fcc, will also be encrypted using the key in $$pgp_default_key.
   ** (PGP only)
   */
   { "pgp_show_unusable", DT_BOOL, R_NONE, &C_PgpShowUnusable, true },
@@ -3986,8 +3986,8 @@ struct ConfigDef MuttVars[] = {
   { "smime_self_encrypt",    DT_QUAD, R_NONE, &C_SmimeSelfEncrypt, MUTT_YES },
   /*
   ** .pp
-  ** When \fIset\fP, S/MIME encrypted messages will also be encrypted
-  ** using the certificate in $$smime_default_key.
+  ** When \fIset\fP, S/MIME encrypted messages that will be stored locally
+  ** by fcc, will also be encrypted using the certificate in $$smime_default_key.
   ** (S/MIME only)
   */
   { "smime_sign_as",         DT_STRING, R_NONE, &C_SmimeSignAs, 0 },

@@ -935,9 +935,10 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
       *keylist = crypt_pgp_find_keys(addrlist, oppenc_mode);
-      if (!*keylist ||
+      q = MUTT_NO;
+      if (!*keylist || (msg->fcc && *msg->fcc &&
             (q = query_quadoption(C_PgpSelfEncrypt,
-              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT)
+              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT))
       {
         mutt_addr_free(&addrlist);
         return -1;
@@ -949,9 +950,10 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
     {
       *keylist = crypt_smime_find_keys(addrlist, oppenc_mode);
-      if (!*keylist ||
+      q = MUTT_NO;
+      if (!*keylist || (msg->fcc && *msg->fcc &&
             (q = query_quadoption(C_SmimeSelfEncrypt,
-              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT)
+              _("Do you want to be able to decrypt it yourself later?"))) == MUTT_ABORT))
       {
         mutt_addr_free(&addrlist);
         return -1;
