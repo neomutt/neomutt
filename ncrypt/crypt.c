@@ -911,8 +911,9 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(true);
-  char *self_encrypt = NULL;
+  char *self_encrypt = NULL, *keylist_from = NULL;
   int q;
+  struct Address *fromlist = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.  */
@@ -944,7 +945,22 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         return -1;
       }
       if (q == MUTT_YES)
-        self_encrypt = C_PgpDefaultKey;
+      {
+        if (C_PgpDefaultKey)
+          self_encrypt = C_PgpDefaultKey;
+        else
+        {
+          mutt_addr_append(&fromlist, msg->env->from, false);
+          keylist_from = crypt_pgp_find_keys(fromlist, oppenc_mode);
+          mutt_addr_free(&fromlist);
+          self_encrypt = keylist_from;
+        }
+        if (self_encrypt == NULL)
+        {
+          mutt_addr_free(&addrlist);
+          return -1;
+        }
+      }
       OptPgpCheckTrust = false;
     }
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
@@ -959,7 +975,22 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
         return -1;
       }
       if (q == MUTT_YES)
-        self_encrypt = C_SmimeDefaultKey;
+      {
+        if (C_SmimeDefaultKey)
+          self_encrypt = C_SmimeDefaultKey;
+        else
+        {
+          mutt_addr_append(&fromlist, msg->env->from, false);
+          keylist_from = crypt_smime_find_keys(fromlist, oppenc_mode);
+          mutt_addr_free(&fromlist);
+          self_encrypt = keylist_from;
+        }
+        if (self_encrypt == NULL)
+        {
+          mutt_addr_free(&addrlist);
+          return -1;
+        }
+      }
     }
   }
 
@@ -970,6 +1001,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
+  FREE(&keylist_from);
   mutt_addr_free(&addrlist);
 
   return 0;

@@ -2812,6 +2812,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, PGP encrypted messages that will be stored locally
   ** by fcc, will also be encrypted using the key in $$pgp_default_key.
+  ** If $$pgp_default_key is empty, keys will be searched using the addresses
+  ** in the From header.
   ** (PGP only)
   */
   { "pgp_show_unusable", DT_BOOL, R_NONE, &C_PgpShowUnusable, true },
@@ -3988,6 +3990,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, S/MIME encrypted messages that will be stored locally
   ** by fcc, will also be encrypted using the certificate in $$smime_default_key.
+  ** If $$smime_default_key is empty, keys will be searched using the addresses
+  ** in the From header.
   ** (S/MIME only)
   */
   { "smime_sign_as",         DT_STRING, R_NONE, &C_SmimeSignAs, 0 },
