@@ -91,6 +91,7 @@ struct Email
   int score;
   struct Envelope *env;      /**< envelope information */
   struct Body *content;      /**< list of MIME parts */
+  char *fcc;
   char *path;
 
   char *tree; /**< character string to print thread tree */

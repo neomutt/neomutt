@@ -1580,8 +1580,6 @@ static bool search_attach_keyword(char *filename)
 /**
  * save_fcc - Save an Email to a 'sent mail' folder
  * @param[in]  msg           Email to save
- * @param[in]  fcc           Folder to save to (can be comma-separated list)
- * @param[in]  fcc_len       Length of fcc buffer
  * @param[in]  clear_content Cleartext content of Email
  * @param[in]  pgpkeylist    List of pgp keys
  * @param[in]  flags         Send mode, see #SendFlags
@@ -1589,13 +1587,15 @@ static bool search_attach_keyword(char *filename)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *clear_content,
-                    char *pgpkeylist, SendFlags flags, char **finalpath)
+static int save_fcc(struct Email *msg, struct Body *clear_content, char
+		*pgpkeylist, SendFlags flags, char **finalpath)
 {
   int rc = 0;
   struct Body *save_content = NULL;
+  char fccpath[PATH_MAX];
 
-  mutt_expand_path(fcc, fcc_len);
+  mutt_str_strfcpy(fccpath, msg->fcc, sizeof(fccpath));
+  mutt_expand_path(fccpath, sizeof(fccpath));
 
   /* Don't save a copy when we are in batch-mode, and the FCC
    * folder is on an IMAP server: This would involve possibly lots
@@ -1606,15 +1606,15 @@ static int save_fcc(struct Email *msg, char *fcc, size_t fcc_len, struct Body *c
    * I'd like to think a bit more about this before including it.  */
 
 #ifdef USE_IMAP
-  if ((flags & SEND_BATCH) && (fcc[0] != '\0') && (imap_path_probe(fcc, NULL) == MUTT_IMAP))
+  if ((flags & SEND_BATCH) && (fccpath[0] != '\0') && (imap_path_probe(fccpath, NULL) == MUTT_IMAP))
   {
-    fcc[0] = '\0';
+    fccpath[0] = '\0';
     mutt_error(_("Fcc to an IMAP mailbox is not supported in batch mode"));
     return rc;
   }
 #endif
 
-  if (!(*fcc && mutt_str_strcmp("/dev/null", fcc)))
+  if (!(*fccpath && mutt_str_strcmp("/dev/null", fccpath)))
     return rc;
 
   struct Body *tmpbody = msg->content;
@@ -1674,7 +1674,7 @@ full_fcc:
      * the From_ line contains the current time instead of when the
      * message was first postponed.  */
     msg->received = time(NULL);
-    rc = mutt_write_multiple_fcc(fcc, msg, NULL, false, NULL, finalpath);
+    rc = mutt_write_multiple_fcc(fccpath, msg, NULL, false, NULL, finalpath);
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -1693,8 +1693,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mutt_enter_fname(_("Fcc mailbox"), fcc, fcc_len, true);
-          if ((rc == -1) || (fcc[0] == '\0'))
+          rc = mutt_enter_fname(_("Fcc mailbox"), fccpath, sizeof(fccpath), true);
+          if ((rc == -1) || (fccpath[0] == '\0'))
           {
             rc = 0;
             break;
@@ -1702,7 +1702,7 @@ full_fcc:
           /* fall through */
 
         case 1: /* (r)etry */
-          rc = mutt_write_multiple_fcc(fcc, msg, NULL, false, NULL, finalpath);
+          rc = mutt_write_multiple_fcc(fccpath, msg, NULL, false, NULL, finalpath);
           break;
 
         case -1: /* abort */
@@ -1809,7 +1809,7 @@ static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, Sen
 
   if (mutt_write_fcc(NONULL(C_Postponed), msg,
                      (cur && (flags & SEND_REPLY)) ? cur->env->message_id : NULL,
-                     true, fcc, NULL) < 0)
+                     true, msg->fcc, NULL) < 0)
   {
     if (clear_content)
     {
@@ -1846,7 +1846,6 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct EmailList *el)
 {
   char buf[1024];
-  char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;
@@ -1911,7 +1910,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
 
     if (flags == SEND_POSTPONED)
     {
-      rc = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc));
+      rc = mutt_get_postponed(ctx, msg, &cur);
       if (rc < 0)
       {
         flags = SEND_POSTPONED;
@@ -2197,7 +2196,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       else if (C_EditHeaders)
       {
         mutt_env_to_local(msg->env);
-        mutt_edit_headers(C_Editor, msg->content->filename, msg, fcc, sizeof(fcc));
+        mutt_edit_headers(C_Editor, msg->content->filename, msg);
         mutt_env_to_intl(msg->env, NULL, NULL);
       }
       else
@@ -2350,7 +2349,8 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && !(flags & SEND_POSTPONED_FCC) && (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
+  if ((!msg->fcc || !msg->fcc[0]) &&
+        !(flags & (SEND_POSTPONED_FCC)) && (!(flags & SEND_BATCH) || (C_Copy & 0x1)))
   {
     /* set the default FCC */
     if (!msg->env->from)
@@ -2359,7 +2359,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
       killfrom = true; /* no need to check $use_from because if the user specified
                        a from address it would have already been set by now */
     }
-    mutt_select_fcc(fcc, sizeof(fcc), msg);
+    mutt_select_fcc(msg);
     if (killfrom)
     {
       mutt_addr_free(&msg->env->from);
@@ -2372,8 +2372,9 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
   {
   main_loop:
 
-    mutt_pretty_mailbox(fcc, sizeof(fcc));
-    i = mutt_compose_menu(msg, fcc, sizeof(fcc), cur,
+    if (msg->fcc)
+      mutt_pretty_mailbox(msg->fcc, mutt_str_strlen(msg->fcc));
+    i = mutt_compose_menu(msg, cur,
                           ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
@@ -2388,7 +2389,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     }
     else if (i == 1)
     {
-      if (postpone_message(msg, cur, fcc, flags) != 0)
+      if (postpone_message(msg, cur, msg->fcc, flags) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;
@@ -2552,7 +2553,7 @@ int ci_send_message(SendFlags flags, struct Email *msg, const char *tempfile,
     }
   }
 
-  save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
+  save_fcc(msg, clear_content, pgpkeylist, flags, &finalpath);
 
   if (!OptNoCurses && !(flags & SEND_MAILX))
   {

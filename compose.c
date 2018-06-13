@@ -453,7 +453,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
  * @param msg Header of the message
  * @param fcc Fcc field
  */
-static void draw_envelope(struct Email *msg, char *fcc)
+static void draw_envelope(struct Email *msg)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -494,7 +494,7 @@ static void draw_envelope(struct Email *msg, char *fcc)
   mutt_window_mvprintw(MuttIndexWindow, HDR_FCC, 0, "%*s",
                        HeaderPadding[HDR_FCC], _(Prompts[HDR_FCC]));
   NORMAL_COLOR;
-  mutt_paddstr(W, fcc);
+  mutt_paddstr(W, NONULL(msg->fcc));
 
   if (WithCrypto)
     redraw_crypt_lines(msg);
@@ -661,15 +661,6 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
   menu->current = actx->vcount - 1;
 }
 
-/**
- * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
- */
-struct ComposeRedrawData
-{
-  struct Email *email;
-  char *fcc;
-};
-
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p);
 
@@ -678,16 +669,16 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  */
 static void compose_custom_redraw(struct Menu *menu)
 {
-  struct ComposeRedrawData *rd = menu->redraw_data;
+  struct Email *msg = (struct Email *) menu->redraw_data;
 
-  if (!rd)
+  if (!msg)
     return;
 
   if (menu->redraw & REDRAW_FULL)
   {
     menu_redraw_full(menu);
 
-    draw_envelope(rd->email, rd->fcc);
+    draw_envelope(msg);
     menu->offset = HDR_ATTACH;
     menu->pagelen = MuttIndexWindow->rows - HDR_ATTACH;
   }
@@ -873,15 +864,13 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 /**
  * mutt_compose_menu - Allow the user to edit the message envelope
  * @param msg    Message to fill
- * @param fcc    Buffer to save FCC
- * @param fcclen Length of FCC buffer
  * @param cur    Current message
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
+int mutt_compose_menu(struct Email *msg, struct Email *cur, int flags)
 {
   char helpstr[1024]; // This isn't copied by the help bar
   char buf[PATH_MAX];
@@ -889,15 +878,11 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
   int rc = -1;
   bool loop = true;
   bool fcc_set = false; /* has the user edited the Fcc: field ? */
-  struct ComposeRedrawData rd;
 #ifdef USE_NNTP
   bool news = OptNewsSend; /* is it a news article ? */
 #endif
 
   init_header_padding();
-
-  rd.email = msg;
-  rd.fcc = fcc;
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
@@ -910,7 +895,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 #endif
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
   menu->menu_custom_redraw = compose_custom_redraw;
-  menu->redraw_data = &rd;
+  menu->redraw_data = msg;
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
@@ -1050,13 +1035,14 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         break;
 
       case OP_COMPOSE_EDIT_FCC:
-        mutt_str_strfcpy(buf, fcc, sizeof(buf));
+        mutt_str_strfcpy(buf, NONULL(msg->fcc), sizeof(buf));
         if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          mutt_str_strfcpy(fcc, buf, fcclen);
-          mutt_pretty_mailbox(fcc, fcclen);
+          mutt_str_replace(&msg->fcc, buf);
+          if (msg->fcc)
+            mutt_pretty_mailbox(msg->fcc, mutt_str_strlen(msg->fcc));
           mutt_window_move(MuttIndexWindow, HDR_FCC, HDR_XOFFSET);
-          mutt_paddstr(W, fcc);
+          mutt_paddstr(W, NONULL(msg->fcc));
           fcc_set = true;
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
@@ -1080,7 +1066,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           const char *tag = NULL;
           char *err = NULL;
           mutt_env_to_local(msg->env);
-          mutt_edit_headers(NONULL(C_Editor), msg->content->filename, msg, fcc, fcclen);
+          mutt_edit_headers(NONULL(C_Editor), msg->content->filename, msg);
           if (mutt_env_to_intl(msg->env, &tag, &err))
           {
             mutt_error(_("Bad IDN in '%s': '%s'"), tag, err);
@@ -1651,14 +1637,14 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
           break;
 #endif
 
-        if (!fcc_set && *fcc)
+	if (!fcc_set && msg->fcc && *msg->fcc)
         {
           enum QuadOption ans =
               query_quadoption(C_Copy, _("Save a copy of this message?"));
           if (ans == MUTT_ABORT)
             break;
           else if (ans == MUTT_NO)
-            *fcc = '\0';
+            FREE(&msg->fcc);
         }
 
         loop = false;

@@ -46,6 +46,7 @@ void mutt_email_free(struct Email **e)
   mutt_body_free(&(*e)->content);
   FREE(&(*e)->maildir_flags);
   FREE(&(*e)->tree);
+  FREE(&(*e)->fcc);
   FREE(&(*e)->path);
 #ifdef MIXMASTER
   mutt_list_free(&(*e)->chain);

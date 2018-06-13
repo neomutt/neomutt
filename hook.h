@@ -75,7 +75,7 @@ void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
 enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-void  mutt_select_fcc(char *path, size_t pathlen, struct Email *e);
+void  mutt_select_fcc(struct Email *e);
 void  mutt_startup_shutdown_hook(HookFlags type);
 void  mutt_timeout_hook(void);
 

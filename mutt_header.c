@@ -168,8 +168,7 @@ int mutt_label_message(struct Mailbox *m, struct EmailList *el)
  * @param fcc    Buffer for the fcc field
  * @param fcclen Length of buffer
  */
-void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
-                       char *fcc, size_t fcclen)
+void mutt_edit_headers(const char *editor, const char *body, struct Email *msg)
 {
   char path[PATH_MAX]; /* tempfile used to edit headers + body */
   char buf[1024];
@@ -286,13 +285,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
     bool keep = true;
     size_t plen;
 
-    if (fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
+    if (msg->fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
-        mutt_str_strfcpy(fcc, p, fcclen);
-        mutt_pretty_mailbox(fcc, fcclen);
+        mutt_str_replace(&msg->fcc, p);
+        if (msg->fcc)
+          mutt_pretty_mailbox(msg->fcc, mutt_str_strlen(msg->fcc));
       }
       keep = false;
     }
