@@ -2052,8 +2052,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (query_quadoption(FccAttach, _("Save attachments in Fcc?")) != MUTT_YES &&
-        msg->content->type == TYPEMULTIPART)
+    if (msg->content->type == TYPEMULTIPART &&
+          query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
     {
       if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) &&
           ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
