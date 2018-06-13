@@ -1863,7 +1863,7 @@ msgstr "信件中一行也没有。\n"
 #: edit.c:483
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s：不明的编辑器命令(~? 求助)\n"
+msgstr "%s：未知的编辑器命令(~? 求助)\n"
 
 #: editmsg.c:91
 #, c-format
@@ -4617,7 +4617,7 @@ msgstr "编辑附件文件"
 
 #: opcodes.h:56
 msgid "edit the Followup-To field"
-msgstr "编辑 Followup-To 栏位"
+msgstr "编辑 Followup-To 域"
 
 #: opcodes.h:57
 msgid "edit the from field"
@@ -4645,7 +4645,7 @@ msgstr "编辑新闻组列表"
 
 #: opcodes.h:63
 msgid "edit the Reply-To field"
-msgstr "编辑 Reply-To 栏位"
+msgstr "编辑 Reply-To 域"
 
 #: opcodes.h:64
 msgid "edit the subject of this message"
@@ -4657,7 +4657,7 @@ msgstr "编辑 TO 列表"
 
 #: opcodes.h:66
 msgid "edit the X-Comment-To field"
-msgstr "编辑 X-Comment-To 栏位"
+msgstr "编辑 X-Comment-To 域"
 
 #: opcodes.h:67
 msgid "get a temporary copy of an attachment"
@@ -4693,7 +4693,7 @@ msgstr "保存信件以便稍后寄出"
 
 #: opcodes.h:75
 msgid "send attachment with a different name"
-msgstr "重命名附件"
+msgstr "使用另一个名字发送附件"
 
 #: opcodes.h:76
 msgid "rename/move an attached file"
@@ -4789,7 +4789,7 @@ msgstr "显示信件"
 
 #: opcodes.h:99
 msgid "delete the char in front of the cursor"
-msgstr "删除光标位置之前的字母"
+msgstr "删除光标位置之前的字符"
 
 #: opcodes.h:100
 msgid "move the cursor one character to the left"
@@ -4821,7 +4821,7 @@ msgstr "查询补全地址"
 
 #: opcodes.h:107
 msgid "delete the char under the cursor"
-msgstr "删除光标下的字母"
+msgstr "删除光标下的字符"
 
 #: opcodes.h:108
 msgid "convert the word to lower case"
@@ -4913,7 +4913,7 @@ msgstr "退出本菜单"
 
 #: opcodes.h:130
 msgid "filter attachment through a shell command"
-msgstr "透过 shell 指令来过滤附件"
+msgstr "使用 shell 命令过滤附件"
 
 #: opcodes.h:131
 msgid "move to the first entry"
