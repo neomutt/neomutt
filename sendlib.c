@@ -62,21 +62,18 @@
 #ifdef USE_NNTP
 #include "nntp.h"
 #endif
-
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else
 #define EX_OK 0
 #endif
 
-/* If you are debugging this file, comment out the following line. */
-#define NDEBUG
-#ifdef NDEBUG
-#define assert(x)
-#else
-#include <assert.h>
-#endif
-
+/**
+ * encode_quoted - Encode text as quoted printable
+ * @param fc     Cursor for converting a file's encoding
+ * @param fout   File to store the result
+ * @param istext Is the input text?
+ */
 static void encode_quoted(struct FgetConv *fc, FILE *fout, int istext)
 {
   int c, linelen = 0;
@@ -218,6 +215,11 @@ struct B64Context
   short linelen;
 };
 
+/**
+ * b64_init - Set up the base64 conversion
+ * @param ctx Cursor for the base64 conversion
+ * @retval 0 Always
+ */
 static int b64_init(struct B64Context *ctx)
 {
   memset(ctx->buffer, '\0', sizeof(ctx->buffer));
@@ -227,6 +229,11 @@ static int b64_init(struct B64Context *ctx)
   return 0;
 }
 
+/**
+ * b64_flush - Save the bytes to the file
+ * @param ctx  Cursor for the base64 conversion
+ * @param fout File to save the output
+ */
 static void b64_flush(struct B64Context *ctx, FILE *fout)
 {
   /* for some reasons, mutt_b64_encode expects the
@@ -256,6 +263,12 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
   ctx->size = 0;
 }
 
+/**
+ * b64_putc - Base64-encode one character
+ * @param ctx  Cursor for the base64 conversion
+ * @param c    Character to encode
+ * @param fout File to save the output
+ */
 static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 {
   if (ctx->size == 3)
@@ -264,6 +277,12 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
   ctx->buffer[ctx->size++] = c;
 }
 
+/**
+ * encode_base64 - Base64-encode some data
+ * @param fc     Cursor for converting a file's encoding
+ * @param fout   File to store the result
+ * @param istext Is the input text?
+ */
 static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
 {
   struct B64Context ctx;
@@ -287,6 +306,11 @@ static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
   fputc('\n', fout);
 }
 
+/**
+ * encode_8bit - Write the data as raw 8-bit data
+ * @param fc     Cursor for converting a file's encoding
+ * @param fout   File to store the result
+ */
 static void encode_8bit(struct FgetConv *fc, FILE *fout)
 {
   int ch;
@@ -414,12 +438,24 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   return (ferror(f) ? -1 : 0);
 }
 
+/**
+ * write_as_text_part - Should the Body be written as a text MIME part
+ * @param b Email to examine
+ * @retval true If the Body should be written as text
+ */
 static bool write_as_text_part(struct Body *b)
 {
   return (mutt_is_text_part(b) ||
           (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b)));
 }
 
+/**
+ * mutt_write_mime_body - Write a MIME part
+ * @param a Body to use
+ * @param f File to write to
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_write_mime_body(struct Body *a, FILE *f)
 {
   FILE *fpin = NULL;
@@ -498,8 +534,10 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   return (ferror(f) ? -1 : 0);
 }
 
-#undef write_as_text_part
-
+/**
+ * mutt_generate_boundary - Create a unique boundary id for a MIME part
+ * @param parm MIME part
+ */
 void mutt_generate_boundary(struct ParameterList *parm)
 {
   char rs[MUTT_RANDTAG_LEN + 1];
@@ -645,9 +683,6 @@ static void update_content_info(struct Content *info, struct ContentState *s,
   s->was_cr = was_cr;
 }
 
-/* Define as 1 if iconv sometimes returns -1(EILSEQ) instead of transcribing. */
-#define BUGGY_ICONV 1
-
 /**
  * convert_file_to - Change the encoding of a file
  * @param[in]  file       File to convert
@@ -713,10 +748,10 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     char *ob = bufu;
     size_t obl = sizeof(bufu);
     n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
-    assert(n == (size_t)(-1) || !n);
+    /* assert(n == (size_t)(-1) || !n); */
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
     {
-      assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi)));
+      /* assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi))); */
       ret = (size_t)(-1);
       break;
     }
@@ -734,7 +769,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
         n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
         if (n == (size_t)(-1))
         {
-          assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT)));
+          /* assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT))); */
           score[i] = (size_t)(-1);
         }
         else
@@ -891,6 +926,9 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
 
 /**
  * mutt_get_content_info - Analyze file to determine MIME encoding to use
+ * @param fname File to examine
+ * @param b     Body to update
+ * @retval ptr Newly allocated Content
  *
  * Also set the body charset, sometimes, or not.
  */
@@ -1002,17 +1040,14 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
   for (int count = 0; count < 4; count++)
   {
-    /*
-     * can't use strtok() because we use it in an inner loop below, so use
+    /* can't use strtok() because we use it in an inner loop below, so use
      * a switch statement here instead.
      */
     switch (count)
     {
       /* last file with last entry to match wins type/xtype */
       case 0:
-        /*
-         * check default unix mimetypes location first
-         */
+        /* check default unix mimetypes location first */
         mutt_str_strfcpy(buf, "/etc/mime.types", sizeof(buf));
         break;
       case 1:
@@ -1107,6 +1142,11 @@ bye:
   return type;
 }
 
+/**
+ * transform_to_7bit - Convert MIME parts to 7-bit
+ * @param a    Body of the email
+ * @param fpin File to read
+ */
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
   char buf[PATH_MAX];
@@ -1161,6 +1201,11 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
   }
 }
 
+/**
+ * mutt_message_to_7bit - Convert an email's MIME parts to 7-bit
+ * @param a  Body of the email
+ * @param fp File to read (OPTIONAL)
+ */
 void mutt_message_to_7bit(struct Body *a, FILE *fp)
 {
   char temp[PATH_MAX];
@@ -1293,6 +1338,10 @@ static void set_encoding(struct Body *b, struct Content *info)
   }
 }
 
+/**
+ * mutt_stamp_attachment - Timestamp an Attachment
+ * @param a Attachment
+ */
 void mutt_stamp_attachment(struct Body *a)
 {
   a->stamp = time(NULL);
@@ -1300,6 +1349,11 @@ void mutt_stamp_attachment(struct Body *a)
 
 /**
  * mutt_get_body_charset - Get a body's character set
+ * @param d    Buffer for the result
+ * @param dlen Length of the buffer
+ * @param b    Body to examine
+ * @retval ptr  Buffer containing character set
+ * @retval NULL On error, or if not a text type
  */
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 {
@@ -1321,6 +1375,7 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 
 /**
  * mutt_update_encoding - Update the encoding type
+ * @param a Body to update
  *
  * Assumes called from send mode where Body->filename points to actual file
  */
@@ -1347,6 +1402,14 @@ void mutt_update_encoding(struct Body *a)
   a->content = info;
 }
 
+/**
+ * mutt_make_message_attach - Create a message attachment
+ * @param ctx        Mailbox
+ * @param hdr        Header of email
+ * @param attach_msg true if attaching a message
+ * @retval ptr  Newly allocated Body
+ * @retval NULL Error
+ */
 struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg)
 {
   char buffer[LONG_STRING];
@@ -1436,6 +1499,12 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   return body;
 }
 
+/**
+ * run_mime_type_query - Run an external command to determine the MIME type
+ * @param att Attachment
+ *
+ * The command in $mime_type_query_command is run.
+ */
 static void run_mime_type_query(struct Body *att)
 {
   FILE *fp, *fperr;
@@ -1467,6 +1536,12 @@ static void run_mime_type_query(struct Body *att)
   mutt_wait_filter(thepid);
 }
 
+/**
+ * mutt_make_file_attach - Create a file attachment
+ * @param path File to attach
+ * @retval ptr  Newly allocated Body
+ * @retval NULL Error
+ */
 struct Body *mutt_make_file_attach(const char *path)
 {
   struct Body *att = mutt_body_new();
@@ -1498,8 +1573,7 @@ struct Body *mutt_make_file_attach(const char *path)
     if ((info->nulbin == 0) &&
         (info->lobin == 0 || (info->lobin + info->hibin + info->ascii) / info->lobin >= 10))
     {
-      /*
-       * Statistically speaking, there should be more than 10% "lobin"
+      /* Statistically speaking, there should be more than 10% "lobin"
        * chars if this is really a binary file...
        */
       att->type = TYPETEXT;
@@ -1517,6 +1591,11 @@ struct Body *mutt_make_file_attach(const char *path)
   return att;
 }
 
+/**
+ * get_toplevel_encoding - Find the most restrictive encoding type
+ * @param a Body to examine
+ * @retval num Encoding type, e.g. #ENC7BIT
+ */
 static int get_toplevel_encoding(struct Body *a)
 {
   int e = ENC7BIT;
@@ -1554,6 +1633,11 @@ static bool check_boundary(const char *boundary, struct Body *b)
   return false;
 }
 
+/**
+ * mutt_make_multipart - Create a multipart email
+ * @param b Body of email to start
+ * @retval ptr Newly allocated Body
+ */
 struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new = mutt_body_new();
@@ -1574,7 +1658,11 @@ struct Body *mutt_make_multipart(struct Body *b)
 }
 
 /**
- * mutt_remove_multipart - remove the multipart body if it exists
+ * mutt_remove_multipart - Extract the multipart body if it exists
+ * @param b Body to alter
+ * @retval ptr The parts of the Body
+ *
+ * @note The original Body is freed
  */
 struct Body *mutt_remove_multipart(struct Body *b)
 {
@@ -1635,9 +1723,6 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
   }
   fputc('\n', fp);
 }
-
-/* arbitrary number of elements to grow the array by */
-#define REF_INC 16
 
 /**
  * mutt_write_references - Add the message references to a list
@@ -1806,6 +1891,13 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   return 0;
 }
 
+/**
+ * unfold_header - Unfold a wrapped email header
+ * @param s String to process
+ * @retval ptr Unfolded string
+ *
+ * @note The string is altered in-place
+ */
 static char *unfold_header(char *s)
 {
   char *p = s, *q = s;
@@ -2011,7 +2103,6 @@ out:
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
  */
-
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, int mode, int privacy)
 {
@@ -2217,6 +2308,14 @@ static void encode_headers(struct ListHead *h)
   }
 }
 
+/**
+ * mutt_fqdn - Get the Fully-Qualified Domain Name
+ * @param may_hide_host If true, hide the hostname (leaving just the domain)
+ * @retval ptr  string pointer into Hostname
+ * @retval NULL Error, e.g no Hostname
+ *
+ * @warning Do not free the returned pointer
+ */
 const char *mutt_fqdn(short may_hide_host)
 {
   if (!Hostname || (Hostname[0] == '@'))
@@ -2241,6 +2340,12 @@ const char *mutt_fqdn(short may_hide_host)
   return p;
 }
 
+/**
+ * gen_msgid - Generate a unique Message ID
+ * @retval ptr Message ID
+ *
+ * @note The caller should free the string
+ */
 static char *gen_msgid(void)
 {
   char buf[SHORT_STRING];
@@ -2260,6 +2365,10 @@ static char *gen_msgid(void)
   return (mutt_str_strdup(buf));
 }
 
+/**
+ * alarm_handler - Async notification of an alarm signal
+ * @param sig Signal, (SIGALRM)
+ */
 static void alarm_handler(int sig)
 {
   SigAlrm = 1;
@@ -2437,6 +2546,14 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   return st;
 }
 
+/**
+ * add_args - Add an Address to a dynamic array
+ * @param args    Array to add to
+ * @param argslen Number of entries in array
+ * @param argsmax Allocated size of the array
+ * @param addr    Address to add
+ * @retval ptr Updated array
+ */
 static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
 {
   for (; addr; addr = addr->next)
@@ -2452,6 +2569,16 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
   return args;
 }
 
+/**
+ * add_option - Add a string to a dynamic array
+ * @param args    Array to add to
+ * @param argslen Number of entries in array
+ * @param argsmax Allocated size of the array
+ * @param s       string to add
+ * @retval ptr Updated array
+ *
+ * @note The array may be realloc()'d
+ */
 static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
 {
   if (*argslen == *argsmax)
@@ -2640,6 +2767,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
 
 /**
  * mutt_prepare_envelope - Prepare an email header
+ * @param env   Envelope to prepare
+ * @param final true if this email is going to be sent (not postponed)
+ *
+ * Encode all the headers prior to sending the email.
  *
  * For postponing (!final) do the necessary encodings only
  */
@@ -2688,6 +2819,13 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
   encode_headers(&env->userhdrs);
 }
 
+/**
+ * mutt_unprepare_envelope - Undo the encodings of mutt_prepare_envelope()
+ * @param env Envelope to unprepare
+ *
+ * Decode all the headers of an email, e.g. when the sending failed or was
+ * aborted.
+ */
 void mutt_unprepare_envelope(struct Envelope *env)
 {
   struct ListNode *item;
@@ -2784,8 +2922,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   resent_from[0] = '\0';
   struct Address *from = mutt_default_from();
 
-  /*
-   * mutt_default_from() does not use $realname if the real name is not set
+  /* mutt_default_from() does not use $realname if the real name is not set
    * in $from, so we add it here.  The reason it is not added in
    * mutt_default_from() is that during normal sending, we execute
    * send-hooks and set the realname last so that it can be changed based
@@ -2810,26 +2947,27 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   OptNewsSend = false;
 #endif
 
-  /*
-   * prepare recipient list. idna conversion appears to happen before this
+  /* prepare recipient list. idna conversion appears to happen before this
    * function is called, since the user receives confirmation of the address
    * list being bounced to.
    */
   struct Address *resent_to = mutt_addr_copy_list(to, false);
   rfc2047_encode_addrlist(resent_to, "Resent-To");
 
-  ret = bounce_message(fp, h, resent_to, resent_from, from);
+  int rc = bounce_message(fp, h, resent_to, resent_from, from);
 
   mutt_addr_free(&resent_to);
   mutt_addr_free(&from);
 
-  return ret;
+  return rc;
 }
 
 /**
  * mutt_remove_duplicates - Remove duplicate addresses
+ * @param addr Address list to de-dupe
+ * @retval ptr Updated Address list
  *
- * given a list of addresses, return a list of unique addresses
+ * Given a list of addresses, return a list of unique addresses
  */
 struct Address *mutt_remove_duplicates(struct Address *addr)
 {
@@ -2871,6 +3009,11 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
   return top;
 }
 
+/**
+ * set_noconv_flags - Set/reset the "x-mutt-noconv" flag
+ * @param b    Body of email
+ * @param flag If true, set the flag, otherwise remove it
+ */
 static void set_noconv_flags(struct Body *b, short flag)
 {
   for (; b; b = b->next)
