@@ -270,6 +270,7 @@ if {1} {
     sysexits.h
 
   cc-check-functions \
+    clock_gettime \
     fgetc_unlocked \
     futimens \
     getaddrinfo \
@@ -277,12 +278,21 @@ if {1} {
     iswblank \
     mkdtemp \
     strsep \
+    utimesnsat \
     vasprintf \
     wcscasecmp
 
   cc-check-function-in-lib gethostent nsl
   cc-check-function-in-lib setsockopt socket
   cc-check-function-in-lib getaddrinfo_a anl
+
+  cc-with {-includes time.h} {
+    cc-check-types "struct timespec"
+  }
+
+  cc-with {-includes sys/stat.h} {
+    cc-check-members "struct stat.st_atim.tv_nsec"
+  }
 }
 ###############################################################################
 

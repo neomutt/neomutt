@@ -56,15 +56,15 @@ struct Mailbox
   bool new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */
-  int msg_count;             /**< total number of messages */
-  int msg_unread;            /**< number of unread messages */
-  int msg_flagged;           /**< number of flagged messages */
+  int msg_count;   /**< total number of messages */
+  int msg_unread;  /**< number of unread messages */
+  int msg_flagged; /**< number of flagged messages */
 
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */
   bool newly_created;        /**< mbox or mmdf just popped into existence */
-  time_t last_visited;       /**< time of last exit from this mailbox */
-  time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
+  struct timespec last_visited; /**< time of last exit from this mailbox */
+  struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
 /**

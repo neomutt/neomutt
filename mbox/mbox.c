@@ -129,8 +129,8 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     mutt_perror(ctx->path);
     return -1;
   }
-  ctx->atime = sb.st_atime;
-  ctx->mtime = sb.st_mtime;
+  mutt_get_stat_timespec(&ctx->atime, &sb, MUTT_STAT_ATIME);
+  mutt_get_stat_timespec(&ctx->mtime, &sb, MUTT_STAT_MTIME);
   ctx->size = sb.st_size;
 
   buf[sizeof(buf) - 1] = '\0';
@@ -291,8 +291,8 @@ static int mbox_parse_mailbox(struct Context *ctx)
   }
 
   ctx->size = sb.st_size;
-  ctx->mtime = sb.st_mtime;
-  ctx->atime = sb.st_atime;
+  mutt_get_stat_timespec(&ctx->mtime, &sb, MUTT_STAT_MTIME);
+  mutt_get_stat_timespec(&ctx->atime, &sb, MUTT_STAT_ATIME);
 
   if (!ctx->readonly)
     ctx->readonly = access(ctx->path, W_OK) ? true : false;
@@ -828,13 +828,14 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (stat(ctx->path, &st) == 0)
   {
-    if (st.st_mtime == ctx->mtime && st.st_size == ctx->size)
+    if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mtime) == 0) &&
+        st.st_size == ctx->size)
       return 0;
 
     if (st.st_size == ctx->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
-      ctx->mtime = st.st_mtime;
+      mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
       return 0;
     }
 
@@ -1386,10 +1387,17 @@ int mbox_path_probe(const char *path, const struct stat *st)
      * only the type was accessed.  This is important, because detection
      * of "new mail" depends on those times set correctly.
      */
+#ifdef HAVE_UTIMENSAT
+    struct timespec ts[2];
+    mutt_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);
+    mutt_get_stat_timespec(&ts[1], &st, MUTT_STAT_MTIME);
+    utimensat(0, path, ts, 0);
+#else
     struct utimbuf times;
     times.actime = st->st_atime;
     times.modtime = st->st_mtime;
     utime(path, &times);
+#endif
   }
 
   return magic;

@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "mutt.h"
 #include "format_flags.h"
 
 struct Address;
@@ -64,6 +65,11 @@ void        mutt_safe_path(char *s, size_t l, struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, struct Address *a);
 void        mutt_sleep(short s);
+
+int mutt_timespec_compare(struct timespec *a, struct timespec *b);
+void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
+int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
+int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
 
 #define mutt_mktemp(a, b)               mutt_mktemp_pfx_sfx(a, b, "neomutt", NULL)
 #define mutt_mktemp_pfx_sfx(a, b, c, d) mutt_mktemp_full(a, b, c, d, __FILE__, __LINE__)
