@@ -110,6 +110,12 @@ enum MuttSetCommand
 /* This option is deprecated */
 bool IgnoreLinearWhiteSpace = false;
 
+int charset_validator  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+int hcache_validator   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+int pager_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+int reply_validator    (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+
 struct ConfigDef MuttVars[] = {
   /*++*/
 
@@ -169,7 +175,7 @@ struct ConfigDef MuttVars[] = {
   ** The default for this option is the currently used neomuttrc file, or
   ** ``~/.neomuttrc'' if no user neomuttrc was found.
   */
-  { "alias_format",     DT_STRING,  R_NONE, &AliasFormat, IP "%4n %2f %t %-10a   %r" },
+  { "alias_format",     DT_STRING|DT_NOT_EMPTY,  R_NONE, &AliasFormat, IP "%4n %2f %t %-10a   %r" },
   /*
   ** .pp
   ** Specifies the format of the data displayed for the ``$alias'' menu.  The
@@ -245,7 +251,7 @@ struct ConfigDef MuttVars[] = {
   ** If \fIset\fP, NeoMutt will prompt you for carbon-copy (Cc) recipients before
   ** editing the body of an outgoing message.
   */
-  { "assumed_charset", DT_STRING, R_NONE, &AssumedCharset, 0 },
+  { "assumed_charset", DT_STRING, R_NONE, &AssumedCharset, 0, charset_validator },
   /*
   ** .pp
   ** This variable is a colon-separated list of character encoding
@@ -262,7 +268,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** However, only the first content is valid for the message body.
   */
-  { "attach_charset",    DT_STRING,  R_NONE, &AttachCharset, 0 },
+  { "attach_charset",    DT_STRING,  R_NONE, &AttachCharset, 0, charset_validator },
   /*
   ** .pp
   ** This variable is a colon-separated list of character encoding
@@ -280,7 +286,7 @@ struct ConfigDef MuttVars[] = {
   ** Note: for Japanese users, ``iso-2022-*'' must be put at the head
   ** of the value as shown above if included.
   */
-  { "attach_format",    DT_STRING,  R_NONE, &AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
+  { "attach_format",    DT_STRING|DT_NOT_EMPTY,  R_NONE, &AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
   /*
   ** .pp
   ** This variable describes the format of the ``attachment'' menu.  The
@@ -452,7 +458,7 @@ struct ConfigDef MuttVars[] = {
   ** mailbox suggestion will start at the next folder in your ``$mailboxes''
   ** list, instead of starting at the first folder in the list.
   */
-  { "charset",          DT_STRING,  R_NONE, &Charset, 0 },
+  { "charset", DT_STRING|DT_NOT_EMPTY, R_NONE, &Charset, 0, charset_validator },
   /*
   ** .pp
   ** Character set your terminal uses to display and enter textual data.
@@ -509,7 +515,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIunset\fP, NeoMutt will not collapse a thread if it contains any
   ** unread messages.
   */
-  { "compose_format",   DT_STRING,  R_MENU, &ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
+  { "compose_format",   DT_STRING|DT_NOT_EMPTY,  R_MENU, &ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``compose''
@@ -525,7 +531,7 @@ struct ConfigDef MuttVars[] = {
   ** See the text describing the $$status_format option for more
   ** information on how to set $$compose_format.
   */
-  { "config_charset",   DT_STRING,  R_NONE, &ConfigCharset, 0 },
+  { "config_charset",   DT_STRING,  R_NONE, &ConfigCharset, 0, charset_validator },
   /*
   ** .pp
   ** When defined, NeoMutt will recode commands in rc files from this
@@ -702,7 +708,7 @@ struct ConfigDef MuttVars[] = {
   ** If \fI``no''\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
-  { "date_format",      DT_STRING,  R_MENU, &DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
+  { "date_format",      DT_STRING|DT_NOT_EMPTY,  R_MENU, &DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
   ** .pp
   ** This variable controls the format of the date printed by the ``%d''
@@ -728,7 +734,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** See also: \fC$$debug_level\fP
   */
-  { "debug_level", DT_NUMBER, R_NONE, &DebugLevel, 0 },
+  { "debug_level", DT_NUMBER, R_NONE, &DebugLevel, 0, level_validator },
   /*
   ** .pp
   ** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
@@ -838,7 +844,7 @@ struct ConfigDef MuttVars[] = {
   ** for DSN. For SMTP delivery, DSN support is auto-detected so that it
   ** depends on the server whether DSN will be used or not.
   */
-  { "duplicate_threads",        DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &DuplicateThreads, true },
+  { "duplicate_threads",        DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &DuplicateThreads, true, pager_validator },
   /*
   ** .pp
   ** This variable controls whether NeoMutt, when $$sort is set to \fIthreads\fP, threads
@@ -972,7 +978,7 @@ struct ConfigDef MuttVars[] = {
   ** you use ``+'' or ``='' for any other variables since expansion takes place
   ** when handling the ``$mailboxes'' command.
   */
-  { "folder_format",    DT_STRING,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
+  { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display to your
@@ -1086,7 +1092,7 @@ struct ConfigDef MuttVars[] = {
   ** placed in the editor when forwarding messages.  For those who always want
   ** to forward with no modification, use a setting of ``no''.
   */
-  { "forward_format",   DT_STRING,  R_NONE, &ForwardFormat, IP "[%a: %s]" },
+  { "forward_format",   DT_STRING|DT_NOT_EMPTY,  R_NONE, &ForwardFormat, IP "[%a: %s]" },
   /*
   ** .pp
   ** This variable controls the default subject when forwarding a message.
@@ -1156,7 +1162,7 @@ struct ConfigDef MuttVars[] = {
   ** ``Franklin'' to ``Franklin, Steve''.
   */
 #ifdef USE_NNTP
-  { "group_index_format", DT_STRING, R_BOTH, &GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
+  { "group_index_format", DT_STRING|DT_NOT_EMPTY, R_BOTH, &GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
   /*
   ** .pp
   ** This variable allows you to customize the newsgroup browser display to
@@ -1203,7 +1209,7 @@ struct ConfigDef MuttVars[] = {
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see ``$caching'' for details.
   */
-  { "header_cache_backend", DT_STRING, R_NONE, &HeaderCacheBackend, 0 },
+  { "header_cache_backend", DT_STRING, R_NONE, &HeaderCacheBackend, 0, hcache_validator },
   /*
   ** .pp
   ** This variable specifies the header cache backend.
@@ -1302,7 +1308,7 @@ struct ConfigDef MuttVars[] = {
   ** top of threads in the thread tree.  Note that when $$hide_missing is
   ** \fIset\fP, this option will have no effect.
   */
-  { "history",          DT_NUMBER,  R_NONE, &History, 10 },
+  { "history",          DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &History, 10 },
   /*
   ** .pp
   ** This variable controls the size (in number of strings remembered) of
@@ -1442,7 +1448,7 @@ struct ConfigDef MuttVars[] = {
   ** to NeoMutt's implementation. If your connection seems to freeze
   ** up periodically, try unsetting this.
   */
-  { "imap_keepalive",           DT_NUMBER,  R_NONE, &ImapKeepalive, 300 },
+  { "imap_keepalive",           DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &ImapKeepalive, 300 },
   /*
   ** .pp
   ** This variable specifies the maximum amount of time in seconds that NeoMutt
@@ -1495,7 +1501,7 @@ struct ConfigDef MuttVars[] = {
   ** but can make closing an IMAP folder somewhat slower. This option
   ** exists to appease speed freaks.
   */
-  { "imap_pipeline_depth", DT_NUMBER,  R_NONE, &ImapPipelineDepth, 15 },
+  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &ImapPipelineDepth, 15 },
   /*
   ** .pp
   ** Controls the number of IMAP commands that may be queued up before they
@@ -1506,7 +1512,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBNote:\fP Changes to this variable have no effect on open connections.
   */
-  { "imap_poll_timeout", DT_NUMBER,  R_NONE, &ImapPollTimeout, 15 },
+  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &ImapPollTimeout, 15 },
   /*
   ** .pp
   ** This variable specifies the maximum amount of time in seconds
@@ -1566,7 +1572,7 @@ struct ConfigDef MuttVars[] = {
   ** This option is a format string, please see the description of
   ** $$index_format for supported \fCprintf(3)\fP-style sequences.
   */
-  { "index_format",     DT_STRING,  R_BOTH, &IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
+  { "index_format",     DT_STRING|DT_NOT_EMPTY,  R_BOTH, &IndexFormat, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
   ** This variable allows you to customize the message index display to
@@ -1698,7 +1704,7 @@ struct ConfigDef MuttVars[] = {
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
-  { "mail_check",       DT_NUMBER,  R_NONE, &MailCheck, 5 },
+  { "mail_check",       DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &MailCheck, 5 },
   /*
   ** .pp
   ** This variable configures how often (in seconds) NeoMutt should look for
@@ -1728,7 +1734,7 @@ struct ConfigDef MuttVars[] = {
   ** Message statistics can also be explicitly calculated by invoking the
   ** \fC<check-stats>\fP function.
   */
-  { "mail_check_stats_interval", DT_NUMBER, R_NONE, &MailCheckStatsInterval, 60 },
+  { "mail_check_stats_interval", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &MailCheckStatsInterval, 60 },
   /*
   ** .pp
   ** When $$mail_check_stats is \fIset\fP, this variable configures
@@ -1806,7 +1812,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the $$smart_wrap variable.
   */
-  { "mask", DT_REGEX | DT_REGEX_MATCH_CASE | DT_REGEX_ALLOW_NOT, R_NONE, &Mask, IP "!^\\.[^.]" },
+  { "mask", DT_REGEX|DT_REGEX_MATCH_CASE|DT_REGEX_ALLOW_NOT, R_NONE, &Mask, IP "!^\\.[^.]" },
   /*
   ** .pp
   ** A regular expression used in the file browser, optionally preceded by
@@ -1829,7 +1835,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This can also be set using the \fC-m\fP command-line option.
   */
-  { "menu_context",     DT_NUMBER,  R_NONE, &MenuContext, 0 },
+  { "menu_context",     DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &MenuContext, 0 },
   /*
   ** .pp
   ** This variable controls the number of lines of context that are given
@@ -1873,7 +1879,7 @@ struct ConfigDef MuttVars[] = {
   ** Also see the $$message_cache_clean variable.
   */
 #endif
-  { "message_format",   DT_STRING,  R_NONE, &MessageFormat, IP "%s" },
+  { "message_format",   DT_STRING|DT_NOT_EMPTY,  R_NONE, &MessageFormat, IP "%s" },
   /*
   ** .pp
   ** This is the string displayed in the ``attachment'' menu for
@@ -1985,7 +1991,7 @@ struct ConfigDef MuttVars[] = {
   ** mime.types lookup.
   */
 #ifdef MIXMASTER
-  { "mix_entry_format", DT_STRING,  R_NONE, &MixEntryFormat, IP "%4n %c %-16s %a" },
+  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY,  R_NONE, &MixEntryFormat, IP "%4n %c %-16s %a" },
   /*
   ** .pp
   ** This variable describes the format of a remailer line on the mixmaster
@@ -2021,7 +2027,7 @@ struct ConfigDef MuttVars[] = {
   ** deeper threads to fit on the screen.
   */
 #ifdef USE_SOCKET
-  { "net_inc",  DT_NUMBER,  R_NONE, &NetInc, 10 },
+  { "net_inc",  DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &NetInc, 10 },
   /*
   ** .pp
   ** Operations that expect to transfer a large amount of data over the
@@ -2058,7 +2064,7 @@ struct ConfigDef MuttVars[] = {
   ** environment variable \fC$$$NNTPSERVER\fP, or putting the server name in the
   ** file ``/etc/nntpserver''.
   */
-  { "newsgroups_charset", DT_STRING, R_NONE, &NewsgroupsCharset, IP "utf-8" },
+  { "newsgroups_charset", DT_STRING, R_NONE, &NewsgroupsCharset, IP "utf-8", charset_validator },
   /*
   ** .pp
   ** Character set of newsgroups descriptions.
@@ -2080,7 +2086,7 @@ struct ConfigDef MuttVars[] = {
   */
 #endif
 #ifdef USE_NOTMUCH
-  { "nm_db_limit", DT_NUMBER, R_NONE, &NmDbLimit, 0 },
+  { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmDbLimit, 0 },
   /*
   ** .pp
   ** This variable specifies the default limit used in notmuch queries.
@@ -2097,7 +2103,7 @@ struct ConfigDef MuttVars[] = {
   ** The messages tagged with these tags are excluded and not loaded
   ** from notmuch DB to NeoMutt unless specified explicitly.
   */
-  { "nm_open_timeout", DT_NUMBER, R_NONE, &NmOpenTimeout, 5 },
+  { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmOpenTimeout, 5 },
   /*
   ** .pp
   ** This variable specifies the timeout for database open in seconds.
@@ -2118,7 +2124,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable sets the time duration of a windowed notmuch query.
   ** Accepted values all non negative integers. A value of 0 disables the feature.
   */
-  { "nm_query_window_duration", DT_NUMBER, R_NONE, &NmQueryWindowDuration, 0 },
+  { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmQueryWindowDuration, 0 },
   /*
   ** .pp
   ** This variable sets the time duration of a windowed notmuch query.
@@ -2170,7 +2176,7 @@ struct ConfigDef MuttVars[] = {
   ** the previous methods are unavailable. If a method is available but
   ** authentication fails, NeoMutt will not connect to the IMAP server.
   */
-  { "nntp_context",     DT_NUMBER, R_NONE, &NntpContext, 1000 },
+  { "nntp_context",     DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NntpContext, 1000 },
   /*
   ** .pp
   ** This variable defines number of articles which will be in index when
@@ -2196,7 +2202,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Your password for NNTP account.
   */
-  { "nntp_poll",        DT_NUMBER, R_NONE, &NntpPoll, 60 },
+  { "nntp_poll",        DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NntpPoll, 60 },
   /*
   ** .pp
   ** The time in seconds until any operations on newsgroup except post new
@@ -2225,7 +2231,7 @@ struct ConfigDef MuttVars[] = {
   ** directly from the pager, and screen resizes cause lines longer than
   ** the screen width to be badly formatted in the help menu.
   */
-  { "pager_context",    DT_NUMBER,  R_NONE, &PagerContext, 0 },
+  { "pager_context",    DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &PagerContext, 0 },
   /*
   ** .pp
   ** This variable controls the number of lines of context that are given
@@ -2237,7 +2243,7 @@ struct ConfigDef MuttVars[] = {
   ** results. If positive, this many lines will be given before a match,
   ** if 0, the match will be top-aligned.
   */
-  { "pager_format",     DT_STRING,  R_PAGER, &PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
+  { "pager_format",     DT_STRING|DT_NOT_EMPTY,  R_PAGER, &PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
   ** .pp
   ** This variable controls the format of the one-line message ``status''
@@ -2245,7 +2251,7 @@ struct ConfigDef MuttVars[] = {
   ** pager.  The valid sequences are listed in the $$index_format
   ** section.
   */
-  { "pager_index_lines",DT_NUMBER,  R_PAGER, &PagerIndexLines, 0 },
+  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE,  R_PAGER, &PagerIndexLines, 0 },
   /*
   ** .pp
   ** Determines the number of lines of a mini-index which is shown when in
@@ -2411,7 +2417,7 @@ struct ConfigDef MuttVars[] = {
   ** (PGP only)
   */
 #endif
-  { "pgp_entry_format", DT_STRING,  R_NONE, &PgpEntryFormat, IP "%4n %t%f %4l/0x%k %-4a %2c %u" },
+  { "pgp_entry_format", DT_STRING|DT_NOT_EMPTY,  R_NONE, &PgpEntryFormat, IP "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
   ** .pp
   ** This variable allows you to customize the PGP key selection menu to
@@ -2633,7 +2639,7 @@ struct ConfigDef MuttVars[] = {
   ** (PGP only)
   */
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "pgp_timeout",      DT_LONG,  R_NONE, &PgpTimeout, 300 },
+  { "pgp_timeout",      DT_LONG|DT_NOT_NEGATIVE,  R_NONE, &PgpTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
@@ -2717,7 +2723,7 @@ struct ConfigDef MuttVars[] = {
   ** set pop_authenticators="digest-md5:apop:user"
   ** .te
   */
-  { "pop_checkinterval", DT_NUMBER, R_NONE, &PopCheckinterval, 60 },
+  { "pop_checkinterval", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &PopCheckinterval, 60 },
   /*
   ** .pp
   ** This variable configures how often (in seconds) NeoMutt should look for
@@ -2902,7 +2908,7 @@ struct ConfigDef MuttVars[] = {
   ** the string, NeoMutt will append the user's query to the end of the string.
   ** See ``$query'' for more information.
   */
-  { "query_format",     DT_STRING, R_NONE, &QueryFormat, IP "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
+  { "query_format",     DT_STRING|DT_NOT_EMPTY, R_NONE, &QueryFormat, IP "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
   /*
   ** .pp
   ** This variable describes the format of the ``query'' menu. The
@@ -2945,7 +2951,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Match detection may be overridden by the $$smileys regular expression.
   */
-  { "read_inc",         DT_NUMBER,  R_NONE, &ReadInc, 10 },
+  { "read_inc",         DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &ReadInc, 10 },
   /*
   ** .pp
   ** If set to a value greater than 0, NeoMutt will display which message it
@@ -3030,7 +3036,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see $$wrap.
   */
-  { "reply_regex",     DT_REGEX,   R_INDEX|R_RESORT, &ReplyRegex, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
+  { "reply_regex",     DT_REGEX,   R_INDEX|R_RESORT, &ReplyRegex, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", reply_validator },
   /*
   ** .pp
   ** A regular expression used to recognize reply messages when threading
@@ -3178,7 +3184,7 @@ struct ConfigDef MuttVars[] = {
   ** \fBNote:\fP This only applies to mbox and MMDF folders, NeoMutt does not
   ** delete MH and Maildir directories.
   */
-  { "save_history",     DT_NUMBER,  R_NONE, &SaveHistory, 0 },
+  { "save_history",     DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &SaveHistory, 0 },
   /*
   ** .pp
   ** This variable controls the size of the history (per category) saved in the
@@ -3235,13 +3241,13 @@ struct ConfigDef MuttVars[] = {
   ** NeoMutt scores are always greater than or equal to zero, the default setting
   ** of this variable will never mark a message read.
   */
-  { "search_context",   DT_NUMBER,  R_NONE, &SearchContext, 0 },
+  { "search_context",   DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &SearchContext, 0 },
   /*
   ** .pp
   ** For the pager, this variable specifies the number of lines shown
   ** before search results. By default, search results will be top-aligned.
   */
-  { "send_charset",     DT_STRING,  R_NONE, &SendCharset, IP "us-ascii:iso-8859-1:utf-8" },
+  { "send_charset",     DT_STRING,  R_NONE, &SendCharset, IP "us-ascii:iso-8859-1:utf-8", charset_validator },
   /*
   ** .pp
   ** A colon-delimited list of character sets for outgoing messages. NeoMutt will use the
@@ -3288,7 +3294,7 @@ struct ConfigDef MuttVars[] = {
   ** Command to use when spawning a subshell.
   ** If not specified, then the user's login shell from \fC/etc/passwd\fP is used.
   */
-  { "show_multipart_alternative", DT_STRING, R_NONE, &ShowMultipartAlternative, 0 },
+  { "show_multipart_alternative", DT_STRING, R_NONE, &ShowMultipartAlternative, 0, multipart_validator },
   /*
   ** .pp
   ** When \fIset\fP to \fCinfo\fP, the multipart/alternative information is shown.
@@ -3356,7 +3362,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
-  { "sidebar_format", DT_STRING, R_SIDEBAR, &SidebarFormat, IP "%B%*  %n" },
+  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, R_SIDEBAR, &SidebarFormat, IP "%B%*  %n" },
   /*
   ** .pp
   ** This variable allows you to customize the sidebar display. This string is
@@ -3460,7 +3466,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_format, $$sidebar_width
   */
-  { "sidebar_width", DT_NUMBER, R_REFLOW, &SidebarWidth, 30 },
+  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, R_REFLOW, &SidebarWidth, 30 },
   /*
   ** .pp
   ** This controls the width of the sidebar.  It is measured in screen columns.
@@ -3506,13 +3512,13 @@ struct ConfigDef MuttVars[] = {
   ** replacing ``%s'' with the supplied string.
   ** For the default value, ``joe'' would be expanded to: ``~f joe | ~s joe''.
   */
-  { "skip_quoted_offset", DT_NUMBER, R_NONE, &SkipQuotedOffset, 0 },
+  { "skip_quoted_offset", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &SkipQuotedOffset, 0 },
   /*
   ** .pp
   ** Lines of quoted text that are displayed before the unquoted text after
   ** ``skip to quoted'' command (S)
   */
-  { "sleep_time",       DT_NUMBER, R_NONE, &SleepTime, 1 },
+  { "sleep_time",       DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &SleepTime, 1 },
   /*
   ** .pp
   ** Specifies time, in seconds, to pause while displaying certain informational
@@ -3749,7 +3755,7 @@ struct ConfigDef MuttVars[] = {
   ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
-  { "smime_timeout",            DT_LONG,  R_NONE, &SmimeTimeout, 300 },
+  { "smime_timeout",            DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &SmimeTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
@@ -3820,7 +3826,7 @@ struct ConfigDef MuttVars[] = {
   ** variable.
   */
 #endif /* USE_SMTP */
-  { "sort",             DT_SORT, R_INDEX|R_RESORT, &Sort, SORT_DATE },
+  { "sort",             DT_SORT, R_INDEX|R_RESORT, &Sort, SORT_DATE, pager_validator },
   /*
   ** .pp
   ** Specifies how to sort messages in the ``index'' menu.  Valid values
@@ -3898,7 +3904,7 @@ struct ConfigDef MuttVars[] = {
   ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
   ** order (example: ``\fCset sort_browser=reverse-date\fP'').
   */
-  { "sort_re",          DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, &SortRe, true },
+  { "sort_re",          DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, &SortRe, true, pager_validator },
   /*
   ** .pp
   ** This variable is only useful when sorting by mailboxes in sidebar. By default,
@@ -3971,7 +3977,7 @@ struct ConfigDef MuttVars[] = {
   ** option supersedes $$ssl_starttls.
   */
 #ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits", DT_NUMBER, R_NONE, &SslMinDhPrimeBits, 0 },
+  { "ssl_min_dh_prime_bits", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &SslMinDhPrimeBits, 0 },
   /*
   ** .pp
   ** This variable specifies the minimum acceptable prime size (in bits)
@@ -4082,7 +4088,7 @@ struct ConfigDef MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``index''
@@ -4163,7 +4169,7 @@ struct ConfigDef MuttVars[] = {
   ** the first line of the screen rather than near the bottom. If $$help
   ** is \fIset\fP, too it'll be placed at the bottom.
   */
-  { "strict_threads",   DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &StrictThreads, false },
+  { "strict_threads",   DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &StrictThreads, false, pager_validator },
   /*
   ** .pp
   ** If \fIset\fP, threading will only make use of the ``In-Reply-To'' and
@@ -4207,7 +4213,7 @@ struct ConfigDef MuttVars[] = {
   ** raw message received (for example quoted-printable encoded or with encoded
   ** headers) which may lead to incorrect search results.
   */
-  { "thread_received",  DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &ThreadReceived, false },
+  { "thread_received",  DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &ThreadReceived, false, pager_validator },
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt uses the date received rather than the date sent
@@ -4219,7 +4225,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIset\fP, the internal-pager will pad blank lines to the bottom of the
   ** screen with a tilde (``~'').
   */
-  { "time_inc",         DT_NUMBER,  R_NONE, &TimeInc, 0 },
+  { "time_inc",         DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &TimeInc, 0 },
   /*
   ** .pp
   ** Along with $$read_inc, $$write_inc, and $$net_inc, this
@@ -4230,7 +4236,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see the ``$tuning'' section of the manual for performance considerations.
   */
-  { "timeout",          DT_NUMBER,  R_NONE, &Timeout, 600 },
+  { "timeout",          DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &Timeout, 600 },
   /*
   ** .pp
   ** When NeoMutt is waiting for user input either idling in menus or
@@ -4387,7 +4393,7 @@ struct ConfigDef MuttVars[] = {
   ** them.
   */
 #ifdef USE_NOTMUCH
-  { "vfolder_format",   DT_STRING,  R_INDEX, &VfolderFormat, IP "%2C %?n?%4n/&     ?%4m %f" },
+  { "vfolder_format",   DT_STRING|DT_NOT_EMPTY,  R_INDEX, &VfolderFormat, IP "%2C %?n?%4n/&     ?%4m %f" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display for virtual
@@ -4440,7 +4446,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see $$reflow_wrap.
   */
-  { "wrap_headers",     DT_NUMBER,  R_PAGER, &WrapHeaders, 78 },
+  { "wrap_headers",     DT_NUMBER|DT_NOT_NEGATIVE,  R_PAGER, &WrapHeaders, 78 },
   /*
   ** .pp
   ** This option specifies the number of characters to use for wrapping
@@ -4468,7 +4474,7 @@ struct ConfigDef MuttVars[] = {
   ** option does nothing: NeoMutt will never write out the ``Bcc:'' header
   ** in this case.
   */
-  { "write_inc",        DT_NUMBER,  R_NONE, &WriteInc, 10 },
+  { "write_inc",        DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &WriteInc, 10 },
   /*
   ** .pp
   ** When writing a mailbox, a message will be printed every

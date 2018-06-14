@@ -319,3 +319,24 @@ int mutt_log_start(void)
 
   return 0;
 }
+
+/**
+ * level_validator - Validate the "debug_level" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                    intptr_t value, struct Buffer *err)
+{
+  if ((value < 0) || (value > LL_DEBUG5))
+  {
+    mutt_buffer_printf(err, _("Invalid value for option %s: %ld"), cdef->name, value);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}

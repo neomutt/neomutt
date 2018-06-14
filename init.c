@@ -3985,3 +3985,135 @@ struct ConfigSet *init_config(size_t size)
 
   return cs;
 }
+/**
+ * charset_validator - Validate the "charset" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                      intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  int rc = CSR_SUCCESS;
+  bool strict = (strcmp(cdef->name, "send_charset") == 0);
+  char *q = NULL;
+  char *s = mutt_str_strdup(str);
+
+  for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
+  {
+    if (!*p)
+      continue;
+    if (!mutt_ch_check_charset(p, strict))
+    {
+      rc = CSR_ERR_INVALID;
+      mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, p);
+      break;
+    }
+  }
+
+  FREE(&s);
+  return rc;
+}
+
+#ifdef USE_HCACHE
+/**
+ * hcache_validator - Validate the "header_cache_backend" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                     intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if (mutt_hcache_is_valid_backend(str))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+#endif
+
+/**
+ * pager_validator - Check for config variables that can't be set from the pager
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                    intptr_t value, struct Buffer *err)
+{
+  if (CurrentMenu == MENU_PAGER)
+  {
+    mutt_buffer_printf(err, _("Option %s may not be set or reset from the pager"),
+                       cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
+ * multipart_validator - Validate the "show_multipart_alternative" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                        intptr_t value, struct Buffer *err)
+{
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *str = (const char *) value;
+
+  if ((mutt_str_strcmp(str, "inline") == 0) || (mutt_str_strcmp(str, "info") == 0))
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
+  return CSR_ERR_INVALID;
+}
+
+/**
+ * reply_validator - Validate the "reply_regex" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
+int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                    intptr_t value, struct Buffer *err)
+{
+  if (pager_validator(cs, cdef, value, err) != CSR_SUCCESS)
+    return CSR_ERR_INVALID;
+
+  if (!OptAttachMsg)
+    return CSR_SUCCESS;
+
+  mutt_buffer_printf(err, _("Option %s may not be set when in attach-message mode"),
+                     cdef->name);
+  return CSR_ERR_INVALID;
+}
