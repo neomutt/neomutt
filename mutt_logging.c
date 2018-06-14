@@ -340,3 +340,22 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   return CSR_SUCCESS;
 }
+
+/**
+ * mutt_log_listener - Listen for config changes affecting the log file
+ * @param cs   Config items
+ * @param he   HashElem representing config item
+ * @param name Name of the config item
+ * @param ev   Event type, e.g. #CE_SET
+ * @retval true Continue notifying
+ */
+bool mutt_log_listener(const struct ConfigSet *cs, struct HashElem *he,
+                       const char *name, enum ConfigEvent ev)
+{
+  if (mutt_str_strcmp(name, "debug_file") == 0)
+    mutt_log_set_file(DebugFile, true);
+  else if (mutt_str_strcmp(name, "debug_level") == 0)
+    mutt_log_set_level(DebugLevel, true);
+
+  return true;
+}

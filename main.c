@@ -56,7 +56,9 @@
 #include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_curses.h"
+#include "mutt_history.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
 #include "muttlib.h"
@@ -736,6 +738,11 @@ int main(int argc, char *argv[], char *envp[])
   {
     goto main_ok; // TEST22: neomutt -B
   }
+
+  cs_add_listener(Config, mutt_hist_listener);
+  cs_add_listener(Config, mutt_log_listener);
+  cs_add_listener(Config, mutt_menu_listener);
+  cs_add_listener(Config, mutt_reply_listener);
 
   if (sendflags & SEND_POSTPONED)
   {
