@@ -686,6 +686,7 @@ void mutt_timeout_hook(void)
     if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
     {
       mutt_error("%s", err.data);
+      mutt_buffer_reset(&err);
 
       /* The hooks should be independent of each other, so even though this on
        * failed, we'll carry on with the others. */
@@ -720,6 +721,7 @@ void mutt_startup_shutdown_hook(int type)
     if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
     {
       mutt_error("%s", err.data);
+      mutt_buffer_reset(&err);
     }
   }
   FREE(&token.data);

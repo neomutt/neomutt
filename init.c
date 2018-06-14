@@ -1309,6 +1309,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (rc)
   {
     /* the neomuttrc source keyword */
+    mutt_buffer_reset(err);
     mutt_buffer_printf(err, (rc >= -MAXERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
                        rcfile);
     rc = -1;
@@ -2004,6 +2005,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     /* get the variable name */
     mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL);
 
+    mutt_buffer_reset(err);
     if (mutt_str_strncmp("my_", buf->data, 3) == 0)
       myvar = buf->data;
     else if ((idx = mutt_option_index(buf->data)) == -1 &&
