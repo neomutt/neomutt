@@ -2098,14 +2098,14 @@ struct Option MuttVars[] = {
   { "nm_query_window_duration", DT_NUMBER, R_NONE, &NmQueryWindowDuration, 0 },
   /*
   ** .pp
-  ** This variable sets the time base of a windowed notmuch query.
-  ** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
+  ** This variable sets the time duration of a windowed notmuch query.
+  ** Accepted values all non negative integers. A value of 0 disables the feature.
   */
   { "nm_query_window_timebase", DT_STRING, R_NONE, &NmQueryWindowTimebase, IP "week" },
   /*
   ** .pp
-  ** This variable sets the time duration of a windowed notmuch query.
-  ** Accepted values all non negative integers. A value of 0 disables the feature.
+  ** This variable sets the time base of a windowed notmuch query.
+  ** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
   */
   { "nm_record", DT_BOOL, R_NONE, &NmRecord, 0 },
   /*

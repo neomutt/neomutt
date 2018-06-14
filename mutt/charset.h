@@ -86,7 +86,7 @@ void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char 
 int              mutt_ch_chscmp(const char *cs1, const char *cs2);
 char *           mutt_ch_get_default_charset(void);
 char *           mutt_ch_get_langinfo_charset(void);
-void             mutt_ch_set_charset(char *charset);
+void             mutt_ch_set_charset(const char *charset);
 
 bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
 void             mutt_ch_lookup_remove(void);

@@ -165,9 +165,9 @@ const char *mutt_hcache_backend_list(void);
 /**
  * mutt_hcache_is_valid_backend - Is the string a valid hcache backend
  * @param s String identifying a backend
- * @retval 1 if s is recognized as a valid backend
- * @retval 0 otherwise
+ * @retval true  s is recognized as a valid backend
+ * @retval false otherwise
  */
-int mutt_hcache_is_valid_backend(const char *s);
+bool mutt_hcache_is_valid_backend(const char *s);
 
 #endif /* _MUTT_HCACHE_H */
