@@ -3,7 +3,7 @@
  * Match patterns to emails
  *
  * @authors
- * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>, and others
+ * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -64,6 +64,46 @@
 #include "mutt_notmuch.h"
 #endif
 
+/* The regexes in a modern format */
+#define RANGE_NUM_RX      "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
+#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_REL_RX      "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
+
+/* Almost the same, but no negative numbers allowed */
+#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_ABS_RX      "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
+
+/* First group is intentionally empty */
+#define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+#define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+
+/* Single group for min and max */
+#define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
+#define RANGE_RX_GROUPS 5
+
+#define KILO 1024
+#define MEGA 1048576
+#define HMSG(h) (((h)->msgno) + 1)
+#define CTX_MSGNO(c) (HMSG((c)->hdrs[(c)->v2r[(c)->menu->current]]))
+
+#define MUTT_MAXRANGE -1
+
+/* constants for parse_date_range() */
+#define MUTT_PDR_NONE     0x0000
+#define MUTT_PDR_MINUS    0x0001
+#define MUTT_PDR_PLUS     0x0002
+#define MUTT_PDR_WINDOW   0x0004
+#define MUTT_PDR_ABSOLUTE 0x0008
+#define MUTT_PDR_DONE     0x0010
+#define MUTT_PDR_ERROR    0x0100
+#define MUTT_PDR_ERRORDONE (MUTT_PDR_ERROR | MUTT_PDR_DONE)
+
+#define RANGE_DOT    '.'
+#define RANGE_CIRCUM '^'
+#define RANGE_DOLLAR '$'
+#define RANGE_LT     '<'
+#define RANGE_GT     '>'
+
 /**
  * enum EatRangeError - Error codes for eat_range_by_regex()
  */
@@ -74,6 +114,76 @@ enum EatRangeError
   RANGE_E_CTX,
 };
 
+/**
+ * struct RangeRegex - Regular expression representing a range
+ */
+struct RangeRegex
+{
+  const char *raw; /**< regex as string */
+  int lgrp;        /**< paren group matching the left side */
+  int rgrp;        /**< paren group matching the right side */
+  int ready;       /**< compiled yet? */
+  regex_t cooked;  /**< compiled form */
+};
+
+/**
+ * enum RangeType - Type of range
+ */
+enum RangeType
+{
+  RANGE_K_REL,
+  RANGE_K_ABS,
+  RANGE_K_LT,
+  RANGE_K_GT,
+  RANGE_K_BARE,
+  /* add new ones HERE */
+  RANGE_K_INVALID
+};
+
+/**
+ * enum RangeSide - Which side of the range
+ */
+enum RangeSide
+{
+  RANGE_S_LEFT,
+  RANGE_S_RIGHT
+};
+
+/**
+ * struct PatternFlags - Mapping between user character and internal constant
+ */
+struct PatternFlags
+{
+  int tag; /**< character used to represent this op */
+  int op;  /**< operation to perform */
+  int class; /**< Pattern class, e.g. #MUTT_FULL_MSG */
+  bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
+};
+
+/**
+ * range_regexes - Set of Regexes for various range types
+ *
+ * This array, will also contain the compiled regexes.
+ */
+static struct RangeRegex range_regexes[] = {
+  [RANGE_K_REL]  = { RANGE_REL_RX,  1, 3, 0 },
+  [RANGE_K_ABS]  = { RANGE_ABS_RX,  1, 3, 0 },
+  [RANGE_K_LT]   = { RANGE_LT_RX,   1, 2, 0 },
+  [RANGE_K_GT]   = { RANGE_GT_RX,   2, 1, 0 },
+  [RANGE_K_BARE] = { RANGE_BARE_RX, 1, 1, 0 },
+};
+
+static struct Pattern *SearchPattern = NULL; /**< current search pattern */
+static char LastSearch[STRING] = { 0 };      /**< last pattern searched for */
+static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSearch */
+
+/**
+ * eat_regex - Parse a regex
+ * @param pat  Pattern to match
+ * @param s   String to parse
+ * @param err Buffer for error messages
+ * @retval true If the pattern was read succesfully
+ */
 static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
@@ -125,11 +235,15 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
 /**
  * get_offset - Calculate a symbolic offset
+ * @param tm   Store the time here
+ * @param s    string to parse
+ * @param sign Sign of range, 1 for positive, -1 for negative
+ * @retval ptr Next char after parsed offset
  *
- * Ny   years
- * Nm   months
- * Nw   weeks
- * Nd   days
+ * - Ny years
+ * - Nm months
+ * - Nw weeks
+ * - Nd days
  */
 static const char *get_offset(struct tm *tm, const char *s, int sign)
 {
@@ -159,6 +273,22 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
   return (ps + 1);
 }
 
+/**
+ * get_date - Parse a (partial) date in dd/mm/yyyy format
+ * @param s   String to parse
+ * @param t   Store the time here
+ * @param err Buffer for error messages
+ * @retval ptr First character after the date
+ *
+ * This function parses a (partial) date separated by '/'.  The month and year
+ * are optional and if the year is less than 70 it's assumed to be after 2000.
+ *
+ * Examples:
+ * - "10"         = 23 of this month, this year
+ * - "10/12"      = 10 of December,   this year
+ * - "10/12/04"   = 10 of December,   2004
+ * - "10/12/2008" = 10 of December,   2008
+ */
 static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
@@ -199,94 +329,16 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
   return p;
 }
 
-/* The regexes in a modern format */
-#define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
-
-#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
-
-#define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
-
-/* Almost the same, but no negative numbers allowed */
-#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
-
-#define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
-
-/* First group is intentionally empty */
-#define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
-
-#define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
-
-/* Single group for min and max */
-#define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
-
-#define RANGE_RX_GROUPS 5
-
 /**
- * struct RangeRegex - Regular expression representing a range
+ * parse_date_range - Parse a date range
+ * @param pc       String to parse
+ * @param min      Earlier date
+ * @param max      Later date
+ * @param have_min Do we have a base minimum date?
+ * @param base_min Base minimum date
+ * @param err      Buffer for error messages
+ * @retval ptr First character after the date
  */
-struct RangeRegex
-{
-  const char *raw; /**< regex as string */
-  int lgrp;        /**< paren group matching the left side */
-  int rgrp;        /**< paren group matching the right side */
-  int ready;       /**< compiled yet? */
-  regex_t cooked;  /**< compiled form */
-};
-
-/**
- * enum RangeType - Type of range
- */
-enum RangeType
-{
-  RANGE_K_REL,
-  RANGE_K_ABS,
-  RANGE_K_LT,
-  RANGE_K_GT,
-  RANGE_K_BARE,
-  /* add new ones HERE */
-  RANGE_K_INVALID
-};
-
-static struct RangeRegex range_regexes[] = {
-  [RANGE_K_REL] = { .raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
-  [RANGE_K_ABS] = { .raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
-  [RANGE_K_LT] = { .raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0 },
-  [RANGE_K_GT] = { .raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0 },
-  [RANGE_K_BARE] = { .raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0 },
-};
-
-#define KILO 1024
-#define MEGA 1048576
-#define HMSG(h) (((h)->msgno) + 1)
-#define CTX_MSGNO(c) (HMSG((c)->hdrs[(c)->v2r[(c)->menu->current]]))
-
-#define MUTT_MAXRANGE -1
-
-/* constants for parse_date_range() */
-#define MUTT_PDR_NONE 0x0000
-#define MUTT_PDR_MINUS 0x0001
-#define MUTT_PDR_PLUS 0x0002
-#define MUTT_PDR_WINDOW 0x0004
-#define MUTT_PDR_ABSOLUTE 0x0008
-#define MUTT_PDR_DONE 0x0010
-#define MUTT_PDR_ERROR 0x0100
-#define MUTT_PDR_ERRORDONE (MUTT_PDR_ERROR | MUTT_PDR_DONE)
-
-#define RANGE_DOT '.'
-#define RANGE_CIRCUM '^'
-#define RANGE_DOLLAR '$'
-#define RANGE_LT '<'
-#define RANGE_GT '>'
-
-/**
- * enum RangeSide - Which side of the range
- */
-enum RangeSide
-{
-  RANGE_S_LEFT,
-  RANGE_S_RIGHT
-};
-
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
                                     int have_min, struct tm *base_min, struct Buffer *err)
 {
@@ -368,6 +420,11 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
   return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
 }
 
+/**
+ * adjust_date_range - Put a date range in the correct order
+ * @param[in,out] min Earlier date
+ * @param[in,out] max Later date
+ */
 static void adjust_date_range(struct tm *min, struct tm *max)
 {
   if (min->tm_year > max->tm_year ||
@@ -394,6 +451,13 @@ static void adjust_date_range(struct tm *min, struct tm *max)
   }
 }
 
+/**
+ * eat_date - Parse a date pattern
+ * @param pat Pattern to store the date in
+ * @param s   String to parse
+ * @param err Buffer for error messages
+ * @retval true If the pattern was read succesfully
+ */
 static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buffer;
@@ -532,14 +596,20 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   return true;
 }
 
+/**
+ * eat_range - Parse a number range
+ * @param pat Pattern to store the range in
+ * @param s   String to parse
+ * @param err Buffer for error messages
+ * @retval true If the pattern was read succesfully
+ */
 static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
   bool do_exclusive = false;
   bool skip_quote = false;
 
-  /*
-   * If simple_search is set to "~m %s", the range will have double quotes
+  /* If simple_search is set to "~m %s", the range will have double quotes
    * around it...
    */
   if (*s->dptr == '"')
@@ -617,6 +687,13 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   return true;
 }
 
+/**
+ * report_regerror - Create a regex error message
+ * @param regerr Regex error code
+ * @param preg   Regex pattern buffer
+ * @param err    Buffer for error messages
+ * @retval RANGE_E_SYNTAX Always
+ */
 static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 {
   size_t ds = err->dsize;
@@ -627,6 +704,15 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
   return RANGE_E_SYNTAX;
 }
 
+/**
+ * is_context_available - Do we need a Context for this Pattern?
+ * @param s      String to check
+ * @param pmatch Regex matches
+ * @param kind   Range type, e.g. #RANGE_K_REL
+ * @param err    Buffer for error messages
+ * @retval false If context is required, but not available
+ * @retval true  Otherwise
+ */
 static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
                                  int kind, struct Buffer *err)
 {
@@ -654,6 +740,14 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
   return false;
 }
 
+/**
+ * scan_range_num - Parse a number range
+ * @param s      String to parse
+ * @param pmatch Array of regex matches
+ * @param group  Index of regex match to use
+ * @param kind   Range type, e.g. #RANGE_K_REL
+ * @retval num Parse number
+ */
 static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int kind)
 {
   int num;
@@ -680,6 +774,15 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
   }
 }
 
+/**
+ * scan_range_slot - Parse a range of message numbers
+ * @param s      String to parse
+ * @param pmatch Regex matches
+ * @param grp    Which regex match to use
+ * @param side   Which side of the range is this?  #RANGE_S_LEFT or #RANGE_S_RIGHT
+ * @param kind   Range type, e.g. #RANGE_K_REL
+ * @retval num Index number for the message specified
+ */
 static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int side, int kind)
 {
   unsigned char c;
@@ -711,6 +814,10 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
   }
 }
 
+/**
+ * order_range - Put a range in order
+ * @param pat Pattern to check
+ */
 static void order_range(struct Pattern *pat)
 {
   int num;
@@ -722,6 +829,14 @@ static void order_range(struct Pattern *pat)
   pat->max = num;
 }
 
+/**
+ * eat_range_by_regex - Parse a range given as a regex
+ * @param pat  Pattern to store the range in
+ * @param s    String to parse
+ * @param kind Range type, e.g. #RANGE_K_REL
+ * @param err  Buffer for error messages
+ * @retval num EatRangeError code, e.g. #RANGE_E_OK
+ */
 static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
                               struct Buffer *err)
 {
@@ -771,6 +886,13 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   return RANGE_E_OK;
 }
 
+/**
+ * eat_message_range - Parse a range of message numbers
+ * @param pat Pattern to store the range in
+ * @param s   String to parse
+ * @param err Buffer for error messages
+ * @retval true If the pattern was read succesfully
+ */
 static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   bool skip_quote = false;
@@ -782,8 +904,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
     return false;
   }
 
-  /*
-   * If simple_search is set to "~m %s", the range will have double quotes
+  /* If simple_search is set to "~m %s", the range will have double quotes
    * around it...
    */
   if (*s->dptr == '"')
@@ -798,7 +919,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
     {
       case RANGE_E_CTX:
         /* This means it matched syntactically but lacked context.
-       * No point in continuing. */
+         * No point in continuing. */
         break;
       case RANGE_E_SYNTAX:
         /* Try another syntax, then */
@@ -814,71 +935,12 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
 }
 
 /**
- * struct PatternFlags - Mapping between user character and internal constant
+ * patmatch - Compare a string to a Pattern 
+ * @param pat Pattern to use
+ * @param buf String to compare
+ * @retval 0 Match
+ * @retval 1 No match
  */
-static const struct PatternFlags
-{
-  int tag; /**< character used to represent this op */
-  int op;  /**< operation to perform */
-  int class;
-  bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *);
-} Flags[] = {
-  { 'A', MUTT_ALL, 0, NULL },
-  { 'b', MUTT_BODY, MUTT_FULL_MSG, eat_regex },
-  { 'B', MUTT_WHOLE_MSG, MUTT_FULL_MSG, eat_regex },
-  { 'c', MUTT_CC, 0, eat_regex },
-  { 'C', MUTT_RECIPIENT, 0, eat_regex },
-  { 'd', MUTT_DATE, 0, eat_date },
-  { 'D', MUTT_DELETED, 0, NULL },
-  { 'e', MUTT_SENDER, 0, eat_regex },
-  { 'E', MUTT_EXPIRED, 0, NULL },
-  { 'f', MUTT_FROM, 0, eat_regex },
-  { 'F', MUTT_FLAG, 0, NULL },
-  { 'g', MUTT_CRYPT_SIGN, 0, NULL },
-  { 'G', MUTT_CRYPT_ENCRYPT, 0, NULL },
-  { 'h', MUTT_HEADER, MUTT_FULL_MSG, eat_regex },
-  { 'H', MUTT_HORMEL, 0, eat_regex },
-  { 'i', MUTT_ID, 0, eat_regex },
-  { 'k', MUTT_PGP_KEY, 0, NULL },
-  { 'l', MUTT_LIST, 0, NULL },
-  { 'L', MUTT_ADDRESS, 0, eat_regex },
-  { 'm', MUTT_MESSAGE, 0, eat_message_range },
-  { 'M', MUTT_MIMETYPE, MUTT_FULL_MSG, eat_regex },
-  { 'n', MUTT_SCORE, 0, eat_range },
-  { 'N', MUTT_NEW, 0, NULL },
-  { 'O', MUTT_OLD, 0, NULL },
-  { 'p', MUTT_PERSONAL_RECIP, 0, NULL },
-  { 'P', MUTT_PERSONAL_FROM, 0, NULL },
-  { 'Q', MUTT_REPLIED, 0, NULL },
-  { 'r', MUTT_DATE_RECEIVED, 0, eat_date },
-  { 'R', MUTT_READ, 0, NULL },
-  { 's', MUTT_SUBJECT, 0, eat_regex },
-  { 'S', MUTT_SUPERSEDED, 0, NULL },
-  { 't', MUTT_TO, 0, eat_regex },
-  { 'T', MUTT_TAG, 0, NULL },
-  { 'u', MUTT_SUBSCRIBED_LIST, 0, NULL },
-  { 'U', MUTT_UNREAD, 0, NULL },
-  { 'v', MUTT_COLLAPSED, 0, NULL },
-  { 'V', MUTT_CRYPT_VERIFIED, 0, NULL },
-#ifdef USE_NNTP
-  { 'w', MUTT_NEWSGROUPS, 0, eat_regex },
-#endif
-  { 'x', MUTT_REFERENCE, 0, eat_regex },
-  { 'X', MUTT_MIMEATTACH, 0, eat_range },
-  { 'y', MUTT_XLABEL, 0, eat_regex },
-  { 'Y', MUTT_DRIVER_TAGS, 0, eat_regex },
-  { 'z', MUTT_SIZE, 0, eat_range },
-  { '=', MUTT_DUPLICATED, 0, NULL },
-  { '$', MUTT_UNREFERENCED, 0, NULL },
-  { '#', MUTT_BROKEN, 0, NULL },
-  { '/', MUTT_SERVERSEARCH, 0, eat_regex },
-  { 0, 0, 0, NULL },
-};
-
-static struct Pattern *SearchPattern = NULL; /**< current search pattern */
-static char LastSearch[STRING] = { 0 };      /**< last pattern searched for */
-static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSearch */
-
 static int patmatch(const struct Pattern *pat, const char *buf)
 {
   if (pat->stringmatch)
@@ -889,6 +951,14 @@ static int patmatch(const struct Pattern *pat, const char *buf)
     return regexec(pat->p.regex, buf, 0, NULL, 0);
 }
 
+/**
+ * msg_search - Search an email
+ * @param ctx   Mailbox
+ * @param pat   Pattern to find
+ * @param msgno Message to search
+ * @retval 1 Pattern found
+ * @retval 0 Error or pattern not found
+ */
 static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
   int match = 0;
@@ -1039,6 +1109,67 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   return match;
 }
 
+/**
+ * Flags - Lookup table for all patterns
+ */
+static const struct PatternFlags Flags[] = {
+  { 'A', MUTT_ALL,             0,             NULL },
+  { 'b', MUTT_BODY,            MUTT_FULL_MSG, eat_regex },
+  { 'B', MUTT_WHOLE_MSG,       MUTT_FULL_MSG, eat_regex },
+  { 'c', MUTT_CC,              0,             eat_regex },
+  { 'C', MUTT_RECIPIENT,       0,             eat_regex },
+  { 'd', MUTT_DATE,            0,             eat_date },
+  { 'D', MUTT_DELETED,         0,             NULL },
+  { 'e', MUTT_SENDER,          0,             eat_regex },
+  { 'E', MUTT_EXPIRED,         0,             NULL },
+  { 'f', MUTT_FROM,            0,             eat_regex },
+  { 'F', MUTT_FLAG,            0,             NULL },
+  { 'g', MUTT_CRYPT_SIGN,      0,             NULL },
+  { 'G', MUTT_CRYPT_ENCRYPT,   0,             NULL },
+  { 'h', MUTT_HEADER,          MUTT_FULL_MSG, eat_regex },
+  { 'H', MUTT_HORMEL,          0,             eat_regex },
+  { 'i', MUTT_ID,              0,             eat_regex },
+  { 'k', MUTT_PGP_KEY,         0,             NULL },
+  { 'l', MUTT_LIST,            0,             NULL },
+  { 'L', MUTT_ADDRESS,         0,             eat_regex },
+  { 'm', MUTT_MESSAGE,         0,             eat_message_range },
+  { 'M', MUTT_MIMETYPE,        MUTT_FULL_MSG, eat_regex },
+  { 'n', MUTT_SCORE,           0,             eat_range },
+  { 'N', MUTT_NEW,             0,             NULL },
+  { 'O', MUTT_OLD,             0,             NULL },
+  { 'p', MUTT_PERSONAL_RECIP,  0,             NULL },
+  { 'P', MUTT_PERSONAL_FROM,   0,             NULL },
+  { 'Q', MUTT_REPLIED,         0,             NULL },
+  { 'r', MUTT_DATE_RECEIVED,   0,             eat_date },
+  { 'R', MUTT_READ,            0,             NULL },
+  { 's', MUTT_SUBJECT,         0,             eat_regex },
+  { 'S', MUTT_SUPERSEDED,      0,             NULL },
+  { 't', MUTT_TO,              0,             eat_regex },
+  { 'T', MUTT_TAG,             0,             NULL },
+  { 'u', MUTT_SUBSCRIBED_LIST, 0,             NULL },
+  { 'U', MUTT_UNREAD,          0,             NULL },
+  { 'v', MUTT_COLLAPSED,       0,             NULL },
+  { 'V', MUTT_CRYPT_VERIFIED,  0,             NULL },
+#ifdef USE_NNTP
+  { 'w', MUTT_NEWSGROUPS,      0,             eat_regex },
+#endif
+  { 'x', MUTT_REFERENCE,       0,             eat_regex },
+  { 'X', MUTT_MIMEATTACH,      0,             eat_range },
+  { 'y', MUTT_XLABEL,          0,             eat_regex },
+  { 'Y', MUTT_DRIVER_TAGS,     0,             eat_regex },
+  { 'z', MUTT_SIZE,            0,             eat_range },
+  { '=', MUTT_DUPLICATED,      0,             NULL },
+  { '$', MUTT_UNREFERENCED,    0,             NULL },
+  { '#', MUTT_BROKEN,          0,             NULL },
+  { '/', MUTT_SERVERSEARCH,    0,             eat_regex },
+  { 0,   0,                    0,             NULL },
+};
+
+/**
+ * lookup_tag - Lookup a pattern modifier
+ * @param tag Letter, e.g. 'b' for pattern '~b'
+ * @retval ptr Pattern data
+ */
 static const struct PatternFlags *lookup_tag(char tag)
 {
   for (int i = 0; Flags[i].tag; i++)
@@ -1047,6 +1178,12 @@ static const struct PatternFlags *lookup_tag(char tag)
   return NULL;
 }
 
+/**
+ * find_matching_paren - Find the matching parenthesis
+ * @param s string to search
+ * @retval ptr Matching close parenthesis
+ * @retval ptr End of string NUL, if not found
+ */
 static /* const */ char *find_matching_paren(/* const */ char *s)
 {
   int level = 1;
@@ -1065,6 +1202,10 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
   return s;
 }
 
+/**
+ * mutt_pattern_free - Free a Pattern
+ * @param pat Pattern to free
+ */
 void mutt_pattern_free(struct Pattern **pat)
 {
   struct Pattern *tmp = NULL;
@@ -1099,6 +1240,13 @@ struct Pattern *mutt_pattern_new(void)
   return mutt_mem_calloc(1, sizeof(struct Pattern));
 }
 
+/**
+ * mutt_pattern_comp - Create a Pattern
+ * @param s     Pattern string
+ * @param flags Flags, e.g. #MUTT_FULL_MSG
+ * @param err   Buffer for error messages
+ * @retval ptr Newly allocated Pattern
+ */
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
   struct Pattern *curlist = NULL;
@@ -1332,6 +1480,15 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   return curlist;
 }
 
+/**
+ * perform_and - Perform a logical AND on a set of Patterns
+ * @param pat   Patterns to test
+ * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param hdr   Header of email
+ * @param cache Cached Patterns
+ * @retval true If ALL of the Patterns evaluates to true
+ */
 static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
                         struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
@@ -1341,6 +1498,15 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
   return true;
 }
 
+/**
+ * perform_or - Perform a logical OR on a set of Patterns
+ * @param pat   Patterns to test
+ * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param hdr   Header of email
+ * @param cache Cached Patterns
+ * @retval true If ONE (or more) of the Patterns evaluates to true
+ */
 static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
@@ -1350,6 +1516,15 @@ static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
   return false;
 }
 
+/**
+ * match_addrlist - Match a Pattern against and Address list
+ * @param pat            Pattern to find
+ * @param match_personal If true, also match the pattern against the real name
+ * @param n              Number of Addresses supplied
+ * @param ...            Variable number of Addresses
+ * @retval true One Address matches (alladdr is false)
+ * @retval true All the Addresses match (alladdr is true)
+ */
 static int match_addrlist(struct Pattern *pat, int match_personal, int n, ...)
 {
   va_list ap;
@@ -1391,6 +1566,11 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 
 /**
  * mutt_is_list_recipient - Matches subscribed mailing lists
+ * @param alladdr If true, ALL Addresses must be on the subscribed list
+ * @param a1      First Address list
+ * @param a2      Second Address list
+ * @retval true One Address is subscribed (alladdr is false)
+ * @retval true All the Addresses are subscribed (alladdr is true)
  */
 int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
 {
@@ -1405,6 +1585,11 @@ int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
 
 /**
  * mutt_is_list_cc - Matches known mailing lists
+ * @param alladdr If true, ALL Addresses must be mailing lists
+ * @param a1      First Address list
+ * @param a2      Second Address list
+ * @retval true One Address is a mailing list (alladdr is false)
+ * @retval true All the Addresses are mailing lists (alladdr is true)
  *
  * The function name may seem a little bit misleading: It checks all
  * recipients in To and Cc for known mailing lists, subscribed or not.
@@ -1420,6 +1605,14 @@ int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2)
   return alladdr;
 }
 
+/**
+ * match_user - Matches the user's email Address
+ * @param alladdr If true, ALL Addresses must refer to the user
+ * @param a1      First Address list
+ * @param a2      Second Address list
+ * @retval true One Address refers to the user (alladdr is false)
+ * @retval true All the Addresses refer to the user (alladdr is true)
+ */
 static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
@@ -1431,6 +1624,19 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
   return alladdr;
 }
 
+/**
+ * match_threadcomplete - Match a Pattern against an email thread
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param t     Email thread
+ * @param left  Navigate to the previous email
+ * @param up    Navigate to the email's parent
+ * @param right Navigate to the next email
+ * @param down  Navigate to the email's children
+ * @retval 1  Success, match found
+ * @retval 0  No match
+ */
 static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
                                 struct Context *ctx, struct MuttThread *t,
                                 int left, int up, int right, int down)
@@ -1462,6 +1668,16 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
   return 0;
 }
 
+/**
+ * match_threadparent - Match Pattern against an email's parent
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param t     Thread of email
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ * @retval -1 Error
+ */
 static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
                               struct Context *ctx, struct MuttThread *t)
 {
@@ -1471,6 +1687,16 @@ static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
   return mutt_pattern_exec(pat, flags, ctx, t->parent->message, NULL);
 }
 
+/**
+ * match_threadchildren - Match Pattern against an email's children
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param t     Thread of email
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ * @retval -1 Error
+ */
 static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
                                 struct Context *ctx, struct MuttThread *t)
 {
@@ -1484,6 +1710,13 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
   return 0;
 }
 
+/**
+ * match_content_type - Match a Pattern against an Attachment's Content-Type
+ * @param pat   Pattern to match
+ * @param b     Attachment
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ */
 static int match_content_type(const struct Pattern *pat, struct Body *b)
 {
   char buffer[STRING];
@@ -1501,6 +1734,14 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
   return 0;
 }
 
+/**
+ * match_mime_content_type - Match a Pattern against an email's Content-Type
+ * @param pat   Pattern to match
+ * @param ctx   Mailbox
+ * @param hdr   Header of email
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ */
 static int match_mime_content_type(const struct Pattern *pat,
                                    struct Context *ctx, struct Header *hdr)
 {
@@ -1510,6 +1751,8 @@ static int match_mime_content_type(const struct Pattern *pat,
 
 /**
  * set_pattern_cache_value - Sets a value in the PatternCache cache entry
+ * @param cache_entry Cache entry to update
+ * @param value       Value to set
  *
  * Normalizes the "true" value to 2.
  */
@@ -1520,6 +1763,7 @@ static void set_pattern_cache_value(int *cache_entry, int value)
 
 /**
  * get_pattern_cache_value - Get pattern cache value
+ * @param cache_entry Cache entry to get
  * @retval 1 if the cache value is set and has a true value
  * @retval 0 otherwise (even if unset!)
  */
@@ -1528,6 +1772,11 @@ static int get_pattern_cache_value(int cache_entry)
   return (cache_entry == 2);
 }
 
+/**
+ * is_pattern_cache_set - Is a given Pattern cached?
+ * @param cache_entry Cache entry to check
+ * @retval true If it is cached
+ */
 static int is_pattern_cache_set(int cache_entry)
 {
   return (cache_entry != 0);
@@ -1535,6 +1784,14 @@ static int is_pattern_cache_set(int cache_entry)
 
 /**
  * mutt_pattern_exec - Match a pattern against an email header
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param ctx   Mailbox
+ * @param h     Header of the email
+ * @param cache Cache for common Patterns
+ * @retval  1 Success, pattern matched
+ * @retval  0 Pattern did not match
+ * @retval -1 Error
  *
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
@@ -1590,9 +1847,9 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_BODY:
     case MUTT_HEADER:
     case MUTT_WHOLE_MSG:
-      /*
-       * ctx can be NULL in certain cases, such as when replying to a message from the attachment menu and
-       * the user has a reply-hook using "~h" (bug #2190).
+      /* ctx can be NULL in certain cases, such as when replying to a message
+       * from the attachment menu and the user has a reply-hook using "~h" (bug
+       * #2190).
        * This is also the case when message scoring.
        */
       if (!ctx)
@@ -1794,6 +2051,12 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
   return -1;
 }
 
+/**
+ * quote_simple - Apply simple quoting to a string
+ * @param tmp Buffer for the result
+ * @param len Length of buffer
+ * @param p   String to quote
+ */
 static void quote_simple(char *tmp, size_t len, const char *p)
 {
   int i = 0;
@@ -1810,7 +2073,10 @@ static void quote_simple(char *tmp, size_t len, const char *p)
 }
 
 /**
- * mutt_check_simple - convert a simple search into a real request
+ * mutt_check_simple - Convert a simple search into a real request
+ * @param s      Buffer for the result
+ * @param len    Length of buffer
+ * @param simple Search string to convert
  */
 void mutt_check_simple(char *s, size_t len, const char *simple)
 {
@@ -1927,6 +2193,13 @@ bool mutt_limit_current_thread(struct Header *h)
   return true;
 }
 
+/**
+ * mutt_pattern_func - Perform some Pattern matching
+ * @param op     Operation to perform, e.g. MUTT_LIMIT
+ * @param prompt Prompt to show the user
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_pattern_func(int op, char *prompt)
 {
   struct Pattern *pat = NULL;
@@ -2047,6 +2320,13 @@ bail:
   return rc;
 }
 
+/**
+ * mutt_search_command - Perform a search
+ * @param cur Index number of current email
+ * @param op  Operation to perform, e.g. OP_SEARCH_NEXT
+ * @retval >= 0 Index of matching email
+ * @retval -1 No match, or error
+ */
 int mutt_search_command(int cur, int op)
 {
   struct Progress progress;
@@ -2183,3 +2463,4 @@ int mutt_search_command(int cur, int op)
   mutt_error(_("Not found."));
   return -1;
 }
+
