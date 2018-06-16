@@ -113,4 +113,14 @@ struct HcacheOps
     .backend = hcache_##_name##_backend,                                       \
   };
 
+
+#define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
+HCACHE_BACKEND(bdb)
+HCACHE_BACKEND(gdbm)
+HCACHE_BACKEND(kyotocabinet)
+HCACHE_BACKEND(lmdb)
+HCACHE_BACKEND(qdbm)
+HCACHE_BACKEND(tokyocabinet)
+#undef HCACHE_BACKEND
+
 #endif /* _MUTT_HCACHE_BACKEND_H */

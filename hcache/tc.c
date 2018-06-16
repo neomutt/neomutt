@@ -40,7 +40,7 @@
 /**
  * hcache_tokyocabinet_open - Implements HcacheOps::open()
  */
-static void *hcache_tokyocabinet_open(const char *path)
+void *hcache_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
   if (!db)
@@ -62,7 +62,7 @@ static void *hcache_tokyocabinet_open(const char *path)
 /**
  * hcache_tokyocabinet_fetch - Implements HcacheOps::fetch()
  */
-static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
+void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   int sp;
 
@@ -76,7 +76,7 @@ static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen
 /**
  * hcache_tokyocabinet_free - Implements HcacheOps::free()
  */
-static void hcache_tokyocabinet_free(void *ctx, void **data)
+void hcache_tokyocabinet_free(void *ctx, void **data)
 {
   FREE(data);
 }
@@ -84,8 +84,8 @@ static void hcache_tokyocabinet_free(void *ctx, void **data)
 /**
  * hcache_tokyocabinet_store - Implements HcacheOps::store()
  */
-static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
-                                     void *data, size_t dlen)
+int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
+                              void *data, size_t dlen)
 {
   if (!ctx)
     return -1;
@@ -102,7 +102,7 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
 /**
  * hcache_tokyocabinet_delete - Implements HcacheOps::delete()
  */
-static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
+int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;
@@ -119,7 +119,7 @@ static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 /**
  * hcache_tokyocabinet_close - Implements HcacheOps::close()
  */
-static void hcache_tokyocabinet_close(void **ctx)
+void hcache_tokyocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
     return;
@@ -136,7 +136,7 @@ static void hcache_tokyocabinet_close(void **ctx)
 /**
  * hcache_tokyocabinet_backend - Implements HcacheOps::backend()
  */
-static const char *hcache_tokyocabinet_backend(void)
+const char *hcache_tokyocabinet_backend(void)
 {
   return "tokyocabinet " _TC_VERSION;
 }

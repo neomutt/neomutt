@@ -83,15 +83,6 @@ union Validate {
   unsigned int uidvalidity;
 };
 
-#define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
-HCACHE_BACKEND(bdb)
-HCACHE_BACKEND(gdbm)
-HCACHE_BACKEND(kyotocabinet)
-HCACHE_BACKEND(lmdb)
-HCACHE_BACKEND(qdbm)
-HCACHE_BACKEND(tokyocabinet)
-#undef HCACHE_BACKEND
-
 #define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
 
 /**
