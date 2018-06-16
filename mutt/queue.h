@@ -493,7 +493,7 @@ struct {								\
 	if (LIST_NEXT((elm), field) != NULL &&				\
 	    LIST_NEXT((elm), field)->field.le_prev !=			\
 	     &((elm)->field.le_next))					\
-	     	panic("Bad link elm %p next->prev != elm", (elm));	\
+		panic("Bad link elm %p next->prev != elm", (elm));	\
 } while (0)
 
 /*
@@ -594,7 +594,7 @@ struct {								\
 	QMD_LIST_CHECK_NEXT(elm, field);				\
 	QMD_LIST_CHECK_PREV(elm, field);				\
 	if (LIST_NEXT((elm), field) != NULL)				\
-		LIST_NEXT((elm), field)->field.le_prev = 		\
+		LIST_NEXT((elm), field)->field.le_prev =		\
 		    (elm)->field.le_prev;				\
 	*(elm)->field.le_prev = LIST_NEXT((elm), field);		\
 	TRASHIT(*oldnext);						\
@@ -669,7 +669,7 @@ struct {								\
  */
 #define	QMD_TAILQ_CHECK_TAIL(head, field) do {				\
 	if (*(head)->tqh_last != NULL)					\
-	    	panic("Bad tailq NEXT(%p->tqh_last) != NULL", (head)); 	\
+		panic("Bad tailq NEXT(%p->tqh_last) != NULL", (head));	\
 } while (0)
 
 /*
@@ -765,7 +765,7 @@ struct {								\
 #define	TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
 	QMD_TAILQ_CHECK_NEXT(listelm, field);				\
 	if ((TAILQ_NEXT((elm), field) = TAILQ_NEXT((listelm), field)) != NULL)\
-		TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
+		TAILQ_NEXT((elm), field)->field.tqe_prev =		\
 		    &TAILQ_NEXT((elm), field);				\
 	else {								\
 		(head)->tqh_last = &TAILQ_NEXT((elm), field);		\
@@ -824,7 +824,7 @@ struct {								\
 	QMD_TAILQ_CHECK_NEXT(elm, field);				\
 	QMD_TAILQ_CHECK_PREV(elm, field);				\
 	if ((TAILQ_NEXT((elm), field)) != NULL)				\
-		TAILQ_NEXT((elm), field)->field.tqe_prev = 		\
+		TAILQ_NEXT((elm), field)->field.tqe_prev =		\
 		    (elm)->field.tqe_prev;				\
 	else {								\
 		(head)->tqh_last = (elm)->field.tqe_prev;		\
