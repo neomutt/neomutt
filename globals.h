@@ -49,7 +49,7 @@ WHERE char *Username;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
-WHERE const char *GitVer;
+extern const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
