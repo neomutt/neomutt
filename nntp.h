@@ -178,7 +178,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
                             const char *src, const char *prec, const char *if_str,
                             const char *else_str, unsigned long data, enum FormatFlag flags);
 
-struct NntpServer *CurrentNewsSrv;
+extern struct NntpServer *CurrentNewsSrv;
 
 #ifdef USE_HCACHE
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
