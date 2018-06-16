@@ -826,7 +826,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       FREE(&tags);
       break;
 
-    case 'G':;
+    case 'G':
+      ;
       char format[3];
       char *tag = NULL;
 
