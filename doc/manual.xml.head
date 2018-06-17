@@ -8918,7 +8918,7 @@ macro pager \cb |urlview\n
       <para>
         You can print messages to the message window using the "echo" command.
         This might be useful after a macro finishes executing. After printing
-        the message, echo will pause for the number of seconds specified by 
+        the message, echo will pause for the number of seconds specified by
         <link linkend="sleep-time">$sleep_time</link>.
       </para>
 
@@ -9908,7 +9908,7 @@ application/postscript; ps2ascii %s; copiousoutput
         kind of email is heavily used by many modern mail user agents to send
         HTML messages which contain an alternative plain text representation.
         You can read and write <literal>multipart/alternative</literal> emails
-        in NeoMutt. 
+        in NeoMutt.
       </para>
 
       <sect2 id="read-alternative-order">
