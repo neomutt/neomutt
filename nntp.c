@@ -64,6 +64,8 @@
 #include <sasl/saslutil.h>
 #endif
 
+struct NntpServer *CurrentNewsSrv;
+
 /**
  * nntp_connect_error - Signal a failed connection
  * @param nserv NNTP server
