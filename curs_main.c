@@ -1342,7 +1342,7 @@ int mutt_index_menu(void)
         }
         else if (mutt_str_atoi(buf, &i) < 0)
           mutt_error(_("Argument must be a message number."));
-        else if ((i < 1) || (i >= Context->msgcount))
+        else if ((i < 1) || (i > Context->msgcount))
           mutt_error(_("Invalid message number."));
         else if (!message_is_visible(Context, i - 1))
           mutt_error(_("That message is not visible."));
