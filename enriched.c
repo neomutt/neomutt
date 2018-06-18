@@ -115,6 +115,9 @@ struct EnrichedState
  */
 static void enriched_wrap(struct EnrichedState *stte)
 {
+  if (!stte)
+    return;
+
   int x;
 
   if (stte->line_len)
@@ -227,6 +230,9 @@ static void enriched_wrap(struct EnrichedState *stte)
  */
 static void enriched_flush(struct EnrichedState *stte, bool wrap)
 {
+  if (!stte)
+    return;
+
   if (!stte->tag_level[RICH_NOFILL] &&
       ((stte->line_len + stte->word_len) >
        (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) - stte->indent_len)))
@@ -260,6 +266,9 @@ static void enriched_flush(struct EnrichedState *stte, bool wrap)
  */
 static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
 {
+  if (!stte)
+    return;
+
   if (stte->tag_level[RICH_PARAM])
   {
     if (stte->tag_level[RICH_COLOR])
@@ -331,6 +340,9 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
  */
 static void enriched_puts(const char *s, struct EnrichedState *stte)
 {
+  if (!stte)
+    return;
+
   const char *c = NULL;
 
   if (stte->buf_len < (stte->buf_used + mutt_str_strlen(s)))
@@ -353,6 +365,9 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
  */
 static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
 {
+  if (!stte)
+    return;
+
   const wchar_t *tagptr = tag;
   int i, j;
 
