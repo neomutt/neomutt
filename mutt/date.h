@@ -47,5 +47,7 @@ int     mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
 void    mutt_date_normalize_time(struct tm *tm);
 time_t  mutt_date_parse_date(const char *s, struct Tz *tz_out);
 time_t  mutt_date_parse_imap(char *s);
+time_t  mutt_date_add_timeout(time_t now, long timeout);
+
 
 #endif /* _MUTT_DATE_H */

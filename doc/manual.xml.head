@@ -5915,6 +5915,14 @@ set spam_separator=", "
             </listitem>
           </varlistentry>
           <varlistentry>
+            <term>number (long)</term>
+            <listitem>
+              <para>
+                A signed integer number in the range -2147483648 to 2147483647.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
             <term>string</term>
             <listitem>
               <para>

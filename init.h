@@ -2599,7 +2599,7 @@ struct Option MuttVars[] = {
   ** this if you know what you are doing.
   ** (PGP only)
   */
-  { "pgp_timeout",      DT_NUMBER,  R_NONE, &PgpTimeout, 300 },
+  { "pgp_timeout",      DT_LONG,  R_NONE, &PgpTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
@@ -3705,7 +3705,7 @@ struct Option MuttVars[] = {
   ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
-  { "smime_timeout",            DT_NUMBER,  R_NONE, &SmimeTimeout, 300 },
+  { "smime_timeout",            DT_LONG,  R_NONE, &SmimeTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if

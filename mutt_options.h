@@ -30,7 +30,7 @@ struct Buffer;
 
 #define DT_MASK      0x0f
 #define DT_BOOL      1   /**< boolean option */
-#define DT_NUMBER    2   /**< a number */
+#define DT_NUMBER    2   /**< a number (short) */
 #define DT_STRING    3   /**< a string */
 #define DT_PATH      4   /**< a pathname */
 #define DT_QUAD      5   /**< quad-option (yes/no/ask-yes/ask-no) */
@@ -40,7 +40,8 @@ struct Buffer;
 #define DT_SYNONYM   9   /**< synonym for another variable */
 #define DT_ADDRESS  10   /**< e-mail address */
 #define DT_MBTABLE  11   /**< multibyte char table */
-#define DT_HCACHE   12   /**< header cache backend */
+#define DT_LONG     12   /* a number (long) */
+#define DT_HCACHE   13   /**< header cache backend */
 
 #define DTYPE(x) ((x) &DT_MASK)
 

@@ -148,7 +148,7 @@ int smime_class_valid_passphrase(void)
 
   if (mutt_get_password(_("Enter S/MIME passphrase:"), SmimePass, sizeof(SmimePass)) == 0)
   {
-    SmimeExptime = time(NULL) + SmimeTimeout;
+    SmimeExptime = mutt_date_add_timeout(time(NULL), SmimeTimeout);
     return 1;
   }
   else
