@@ -1458,7 +1458,11 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
   else
   {
     state_puts(_("KeyID "), s);
-    state_puts(sig->fpr, s);
+    if (sig->fpr)
+      state_puts(sig->fpr, s);
+    else
+      state_puts(_("Unknown"), s);
+
     state_puts("\n", s);
   }
 
