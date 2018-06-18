@@ -2173,7 +2173,7 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 int nm_nonctx_get_count(char *path, int *all, int *new)
 {
   struct UrlQueryString *item = NULL;
-  struct Url url = { 0 };
+  struct Url url = { U_UNKNOWN };
   char *url_holder = mutt_str_strdup(path);
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;

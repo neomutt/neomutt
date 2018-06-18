@@ -58,7 +58,7 @@ struct BodyCache
 static int bcache_path(struct Account *account, const char *mailbox, char *dst, size_t dstlen)
 {
   char host[STRING];
-  struct Url url = { 0 };
+  struct Url url = { U_UNKNOWN };
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || (dstlen == 0))
