@@ -31,6 +31,7 @@ struct Envelope;
  */
 enum UrlScheme
 {
+  U_UNKNOWN,
   U_FILE,
   U_POP,
   U_POPS,
@@ -42,9 +43,8 @@ enum UrlScheme
   U_SMTPS,
   U_MAILTO,
 #ifdef USE_NOTMUCH
-  U_NOTMUCH,
+  U_NOTMUCH
 #endif
-  U_UNKNOWN
 };
 
 #define U_DECODE_PASSWD (1 << 0)

@@ -989,8 +989,6 @@ const char *mutt_addr_for_display(struct Address *a)
   static char *buf = NULL;
   char *local_mailbox = NULL;
 
-  FREE(&buf);
-
   if (!a->mailbox || mutt_addr_is_local(a))
     return a->mailbox;
 
