@@ -3589,12 +3589,12 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       {
         /* recursively extract tokens to interpolate variables */
         mutt_extract_token(&cmd, tok,
-                           MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE |
-                               MUTT_TOKEN_COMMENT | MUTT_TOKEN_SEMICOLON);
+                           MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_COMMENT |
+                               MUTT_TOKEN_SEMICOLON | MUTT_TOKEN_NOSHELL);
       }
       else
       {
-          cmd.data = mutt_str_strdup(tok->dptr);
+        cmd.data = mutt_str_strdup(tok->dptr);
       }
       *pc = '`';
       pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
@@ -3647,12 +3647,20 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
       if (*tok->dptr == '{')
       {
-        tok->dptr++;
         pc = strchr(tok->dptr, '}');
         if (pc)
         {
-          var = mutt_str_substr_dup(tok->dptr, pc);
+          var = mutt_str_substr_dup(tok->dptr + 1, pc);
           tok->dptr = pc + 1;
+
+          if ((flags & MUTT_TOKEN_NOSHELL))
+          {
+            mutt_buffer_addch(dest, ch);
+            mutt_buffer_addch(dest, '{');
+            mutt_buffer_addstr(dest, var);
+            mutt_buffer_addch(dest, '}');
+            FREE(&var);
+          }
         }
       }
       else
@@ -3665,8 +3673,10 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       if (var)
       {
         int idx;
-        if ((env = mutt_str_getenv(var)) || (env = myvar_get(var)))
+        if ((env = myvar_get(var)))
+        {
           mutt_buffer_addstr(dest, env);
+        }
         else if ((idx = mutt_option_index(var)) != -1)
         {
           /* expand settable neomutt variables */
@@ -3674,6 +3684,15 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
           if (var_to_string(idx, val, sizeof(val)))
             mutt_buffer_addstr(dest, val);
+        }
+        else if (!(flags & MUTT_TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
+        {
+          mutt_buffer_addstr(dest, env);
+        }
+        else
+        {
+          mutt_buffer_addch(dest, ch);
+          mutt_buffer_addstr(dest, var);
         }
         FREE(&var);
       }
