@@ -25,8 +25,8 @@
 #ifndef _MUTT_SIDEBAR_H
 #define _MUTT_SIDEBAR_H
 
-struct Context;
 struct Buffy;
+struct Context;
 
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);

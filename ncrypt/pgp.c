@@ -190,6 +190,9 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
  */
 static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
+  if (!fpin || !fpout)
+    return -1;
+
   int rc = -1;
 
   if (PgpGoodSign && PgpGoodSign->regex)

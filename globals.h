@@ -49,11 +49,10 @@ WHERE char *Username;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
-WHERE const char *GitVer;
+extern const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
-WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 
 /* Lists of strings */
@@ -225,8 +224,6 @@ WHERE char *Trash;
 WHERE char *TsStatusFormat;
 WHERE char *TsIconFormat;
 WHERE char *Visual;
-
-WHERE char *HiddenTags;
 
 #ifdef USE_NNTP
 WHERE short NntpPoll;

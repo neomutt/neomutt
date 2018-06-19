@@ -187,10 +187,11 @@ int url_parse(struct Url *u, char *src)
 
   u->path = strchr(src, '/');
   if (u->path)
+  {
     *u->path++ = '\0';
-
-  if (u->path && url_pct_decode(u->path) < 0)
-    goto err;
+    if (url_pct_decode(u->path) < 0)
+      goto err;
+  }
 
   t = strrchr(src, '@');
   if (t)

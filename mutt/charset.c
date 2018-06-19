@@ -946,7 +946,7 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
  * @note This calls `bind_textdomain_codeset()` which will affect future
  * message translations.
  */
-void mutt_ch_set_charset(char *charset)
+void mutt_ch_set_charset(const char *charset)
 {
   char buffer[STRING];
 

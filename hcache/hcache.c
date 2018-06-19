@@ -1128,9 +1128,9 @@ const char *mutt_hcache_backend_list(void)
 /**
  * mutt_hcache_is_valid_backend - Is this a valid hcache backend name?
  * @param s Name to check
- * @retval num 1 if valid, 0 if not
+ * @retval true If valid
  */
-int mutt_hcache_is_valid_backend(const char *s)
+bool mutt_hcache_is_valid_backend(const char *s)
 {
   return (hcache_get_backend_ops(s) != NULL);
 }
