@@ -58,7 +58,6 @@ struct winsize mutt_get_winsize(void)
 #ifdef USE_SLANG_CURSES
 void mutt_resize_screen(void)
 {
-  const char *cp;
   struct winsize w = mutt_get_winsize();
 
   /* The following two variables are global to slang */
@@ -67,14 +66,14 @@ void mutt_resize_screen(void)
 
   if (SLtt_Screen_Rows <= 0)
   {
-    cp = mutt_str_getenv("LINES");
+    const char *cp = mutt_str_getenv("LINES");
     if (cp && (mutt_str_atoi(cp, &SLtt_Screen_Rows) < 0))
       SLtt_Screen_Rows = 24;
   }
 
   if (SLtt_Screen_Cols <= 0)
   {
-    cp = mutt_str_getenv("COLUMNS");
+    const char *cp = mutt_str_getenv("COLUMNS");
     if (cp && (mutt_str_atoi(cp, &SLtt_Screen_Cols) < 0))
       SLtt_Screen_Cols = 80;
   }
@@ -89,23 +88,21 @@ void mutt_resize_screen(void)
 #else
 void mutt_resize_screen(void)
 {
-  const char *cp;
   struct winsize w = mutt_get_winsize();
-  int screenrows, screencols;
 
-  screenrows = w.ws_row;
-  screencols = w.ws_col;
+  int screenrows = w.ws_row;
+  int screencols = w.ws_col;
 
   if (screenrows <= 0)
   {
-    cp = mutt_str_getenv("LINES");
+    const char *cp = mutt_str_getenv("LINES");
     if (cp && (mutt_str_atoi(cp, &screenrows) < 0))
       screenrows = 24;
   }
 
   if (screencols <= 0)
   {
-    cp = mutt_str_getenv("LINES");
+    const char *cp = mutt_str_getenv("LINES");
     if (cp && (mutt_str_atoi(cp, &screencols) < 0))
       screencols = 80;
   }
