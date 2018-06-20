@@ -33,10 +33,10 @@ struct Address
 {
   char *personal; /**< real name of address */
   char *mailbox;  /**< mailbox and host address */
-  int group;      /**< group mailbox? */
-  struct Address *next;
+  bool group : 1;      /**< group mailbox? */
   bool is_intl : 1;
   bool intl_checked : 1;
+  struct Address *next;
 };
 
 /**
