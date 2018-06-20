@@ -5569,13 +5569,13 @@ msgstr "Nächste Nachr."
 #. L10N: Status bar message: all the emails are visible in the index
 #: pager.c:2012 status.c:264
 msgid "all"
-msgstr ""
+msgstr "Alles"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #: pager.c:2014 status.c:262
 msgid "end"
-msgstr ""
+msgstr "Ende"
 
 #: pager.c:2357 pager.c:2388 pager.c:2424 pager.c:2746
 msgid "Bottom of message is shown."
