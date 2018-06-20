@@ -332,7 +332,7 @@ static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off
  */
 static void restore_address(struct Address **a, const unsigned char *d, int *off, bool convert)
 {
-  unsigned int counter;
+  unsigned int counter, g;
 
   restore_int(&counter, d, off);
 
@@ -341,7 +341,8 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
     *a = mutt_addr_new();
     restore_char(&(*a)->personal, d, off, convert);
     restore_char(&(*a)->mailbox, d, off, false);
-    restore_int((unsigned int *) &(*a)->group, d, off);
+    restore_int(g, d, off);
+    (*a)->group = g;
     a = &(*a)->next;
     counter--;
   }
