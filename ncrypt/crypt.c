@@ -946,15 +946,19 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       }
       if (q == MUTT_YES)
       {
-        if (C_PgpDefaultKey)
-          self_encrypt = C_PgpDefaultKey;
-        else
+        mutt_addr_append(&fromlist, msg->env->from, false);
+        keylist_from = crypt_pgp_find_keys(fromlist, 1);
+        self_encrypt = keylist_from;
+        if (!self_encrypt)
         {
-          mutt_addr_append(&fromlist, msg->env->from, false);
-          keylist_from = crypt_pgp_find_keys(fromlist, oppenc_mode);
-          mutt_addr_free(&fromlist);
-          self_encrypt = keylist_from;
+          self_encrypt = C_PgpDefaultKey;
+          if (!self_encrypt && !oppenc_mode)
+          {
+            keylist_from = crypt_pgp_find_keys(fromlist, oppenc_mode);
+            self_encrypt = keylist_from;
+          }
         }
+        mutt_addr_free(&fromlist);
         if (self_encrypt == NULL)
         {
           mutt_addr_free(&addrlist);
@@ -976,15 +980,19 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
       }
       if (q == MUTT_YES)
       {
-        if (C_SmimeDefaultKey)
-          self_encrypt = C_SmimeDefaultKey;
-        else
+        mutt_addr_append(&fromlist, msg->env->from, false);
+        keylist_from = crypt_smime_find_keys(fromlist, 1);
+        self_encrypt = keylist_from;
+        if (!self_encrypt)
         {
-          mutt_addr_append(&fromlist, msg->env->from, false);
-          keylist_from = crypt_smime_find_keys(fromlist, oppenc_mode);
-          mutt_addr_free(&fromlist);
-          self_encrypt = keylist_from;
+          self_encrypt = C_SmimeDefaultKey;
+          if (!self_encrypt && !oppenc_mode)
+          {
+            keylist_from = crypt_smime_find_keys(fromlist, oppenc_mode);
+            self_encrypt = keylist_from;
+          }
         }
+        mutt_addr_free(&fromlist);
         if (self_encrypt == NULL)
         {
           mutt_addr_free(&addrlist);
