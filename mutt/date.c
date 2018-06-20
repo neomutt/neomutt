@@ -682,3 +682,22 @@ time_t mutt_date_parse_imap(char *s)
 
   return (mutt_date_make_time(&t, 0) + tz);
 }
+
+/**
+ * mutt_date_add_timeout - Safely add a timeout to a given time_t value
+ * @param now     Time now
+ * @param timeout Timeout in seconds
+ * @retval num Unix time to timeout
+ *
+ * This will truncate instead of overflowing.
+ */
+time_t mutt_date_add_timeout(time_t now, long timeout)
+{
+  if (timeout < 0)
+    return now;
+
+  if ((TIME_T_MAX - now) < timeout)
+    return TIME_T_MAX;
+
+  return (now + timeout);
+}

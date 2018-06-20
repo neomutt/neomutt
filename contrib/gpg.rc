@@ -125,5 +125,7 @@ set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --w
 set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
 
 # Output pattern to verify a decryption occurred
-set pgp_decryption_okay="^\\[GNUPG:\\] DECRYPTION_OKAY"
+# This is now deprecated by pgp_check_gpg_decrypt_status_fd:
+# set pgp_decryption_okay="^\\[GNUPG:\\] DECRYPTION_OKAY"
+set pgp_check_gpg_decrypt_status_fd
 

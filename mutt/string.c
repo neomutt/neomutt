@@ -123,6 +123,7 @@ const char *mutt_str_sysexit(int e)
  * @param[out] dst Store the result
  * @retval  0 Success
  * @retval -1 Error
+ * @retval -2 Overflow
  *
  * This is a strtol() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
@@ -140,9 +141,12 @@ int mutt_str_atol(const char *str, long *dst)
     return 0;
   }
 
+  errno = 0;
   *res = strtol(str, &e, 10);
-  if (((*res == LONG_MAX) && (errno == ERANGE)) || (e && (*e != '\0')))
+  if (e && (*e != '\0'))
     return -1;
+  if (errno == ERANGE)
+    return -2;
   return 0;
 }
 

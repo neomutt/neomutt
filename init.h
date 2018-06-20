@@ -2282,6 +2282,20 @@ struct Option MuttVars[] = {
   ** subprocess failed.
   ** (PGP only)
   */
+  { "pgp_check_gpg_decrypt_status_fd", DT_BOOL, R_NONE, &PgpCheckGpgDecryptStatusFd, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, mutt will check the status file descriptor output
+  ** of $$pgp_decrypt_command for GnuPG status codes indicating
+  ** successful decryption.  This will check for the presence of
+  ** DECRYPTION_OKAY, absence of DECRYPTION_FAILED, and that all
+  ** PLAINTEXT occurs between the BEGIN_DECRYPTION and END_DECRYPTION
+  ** status codes.
+  ** .pp
+  ** If \fIunset\fP, mutt will instead match the status fd output
+  ** against $$pgp_decryption_okay.
+  ** (PGP only)
+  */
   { "pgp_clearsign_command",    DT_STRING, R_NONE, &PgpClearsignCommand, 0 },
   /*
   ** .pp
@@ -2335,6 +2349,9 @@ struct Option MuttVars[] = {
   ** protect against a spoofed encrypted message, with multipart/encrypted
   ** headers but containing a block that is not actually encrypted.
   ** (e.g. simply signed and ascii armored text).
+  ** .pp
+  ** Note that if $$pgp_check_gpg_decrypt_status_fd is set, this variable
+  ** is ignored.
   ** (PGP only)
   */
   { "pgp_default_key",    DT_STRING,   R_NONE, &PgpDefaultKey, 0 },
@@ -2582,7 +2599,7 @@ struct Option MuttVars[] = {
   ** this if you know what you are doing.
   ** (PGP only)
   */
-  { "pgp_timeout",      DT_NUMBER,  R_NONE, &PgpTimeout, 300 },
+  { "pgp_timeout",      DT_LONG,  R_NONE, &PgpTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
@@ -3688,7 +3705,7 @@ struct Option MuttVars[] = {
   ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
-  { "smime_timeout",            DT_NUMBER,  R_NONE, &SmimeTimeout, 300 },
+  { "smime_timeout",            DT_LONG,  R_NONE, &SmimeTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if

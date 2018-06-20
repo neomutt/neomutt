@@ -1116,6 +1116,9 @@ static void restore_default(struct Option *p)
       else
         *((short *) p->var) = p->initial;
       break;
+    case DT_LONG:
+      *((long *) p->var) = p->initial;
+      break;
     case DT_REGEX:
     {
       struct Regex **ptr = (struct Regex **) p->var;
@@ -2382,6 +2385,36 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           *ptr = 0;
       }
 #endif
+    }
+    else if (DTYPE(MuttVars[idx].type) == DT_LONG)
+    {
+      long *ptr = (long *) MuttVars[idx].var;
+      long val;
+
+      if (query || *s->dptr != '=')
+      {
+        val = *ptr;
+
+        /* user requested the value of this variable */
+        snprintf(err->data, err->dsize, "%s=%ld", MuttVars[idx].name, val);
+        break;
+      }
+
+      CHECK_PAGER;
+      s->dptr++;
+
+      mutt_extract_token(buf, s, 0);
+      int rc = mutt_str_atol(buf->data, (long *) &val);
+
+      if (rc < 0 || !*buf->data)
+      {
+        snprintf(err->data, err->dsize, _("%s: invalid value (%s)"), buf->data,
+                rc == -1 ? _("format error") : _("number overflow"));
+        r = -1;
+        break;
+      }
+      else
+        *ptr = val;
     }
     else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_QUAD))
     {
@@ -4431,6 +4464,12 @@ int var_to_string(int idx, char *val, size_t len)
       sval = sval > 0 ? 0 : -sval;
 
     snprintf(tmp, sizeof(tmp), "%d", sval);
+  }
+  else if (DTYPE(MuttVars[idx].type) == DT_LONG)
+  {
+    long sval = *((long *) MuttVars[idx].var);
+
+    snprintf(tmp, sizeof(tmp), "%ld", sval);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_SORT)
   {
