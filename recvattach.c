@@ -71,6 +71,23 @@ static const struct Mapping AttachHelp[] = {
   { N_("Print"), OP_PRINT }, { N_("Help"), OP_HELP }, { NULL, 0 },
 };
 
+static const char *Function_not_permitted =
+    N_("Function not permitted in attach-message mode.");
+
+#define CHECK_ATTACH                                                           \
+  if (OptAttachMsg)                                                            \
+  {                                                                            \
+    mutt_flushinp();                                                           \
+    mutt_error(_(Function_not_permitted));                                     \
+    break;                                                                     \
+  }
+
+/**
+ * mutt_update_v2r - Update the virtual list of attachments
+ * @param actx Attachment context
+ *
+ * Update the record of the number of attachments and the status of the tree.
+ */
 static void mutt_update_v2r(struct AttachCtx *actx)
 {
   int vindex, rindex, curlevel;
@@ -94,6 +111,10 @@ static void mutt_update_v2r(struct AttachCtx *actx)
   actx->vcount = vindex;
 }
 
+/**
+ * mutt_update_tree - Refresh the list of attachments
+ * @param actx Attachment context
+ */
 void mutt_update_tree(struct AttachCtx *actx)
 {
   char buf[STRING];
@@ -406,6 +427,13 @@ static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * mutt_tag_attach - Tag an attachment
+ * @param menu Menu listing attachments
+ * @param n    Index number of the attachment
+ * @param m    Action: 0 untag, 1 tag, -1 toggle
+ * @retval num Net change in number of tagged attachments
+ */
 int mutt_tag_attach(struct Menu *menu, int n, int m)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
@@ -433,6 +461,11 @@ bool mutt_is_message_type(int type, const char *subtype)
           (mutt_str_strcasecmp(subtype, "news") == 0));
 }
 
+/**
+ * prepend_curdir - Add './' to the beginning of a path
+ * @param dst    Buffer for the result
+ * @param dstlen Size of the buffer
+ */
 static void prepend_curdir(char *dst, size_t dstlen)
 {
   size_t l;
@@ -453,6 +486,15 @@ static void prepend_curdir(char *dst, size_t dstlen)
   dst[l + 2] = 0;
 }
 
+/**
+ * query_save_attachment - Ask the user if we should save the attachment
+ * @param[in]  fp        File handle to the attachment (OPTIONAL)
+ * @param[in]  body      Attachment
+ * @param[in]  hdr       Header of the email
+ * @param[out] directory Where the attachment was saved
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int query_save_attachment(FILE *fp, struct Body *body,
                                  struct Header *hdr, char **directory)
 {
@@ -540,6 +582,15 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   return 0;
 }
 
+/**
+ * mutt_save_attachment_list - Save a list of attachments
+ * @param actx Attachment context
+ * @param fp   File handle for the attachment (OPTIONAL)
+ * @param tag  If true, only save the tagged attachments
+ * @param top  First Attachment
+ * @param hdr  Header of the email
+ * @param menu Menu listing attachments
+ */
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, struct Header *hdr, struct Menu *menu)
 {
@@ -627,6 +678,13 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     mutt_message(_("Attachment saved."));
 }
 
+/**
+ * query_pipe_attachment - Ask the user if we should pipe the attachment
+ * @param command Command to pipe the attachment to
+ * @param fp      File handle to the attachment (OPTIONAL)
+ * @param body    Attachment
+ * @param filter  Is this command a filter?
+ */
 static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bool filter)
 {
   char tfile[PATH_MAX];
@@ -663,6 +721,12 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
   }
 }
 
+/**
+ * pipe_attachment - Pipe the attachment to a command
+ * @param fp    File handle to the attachment (OPTIONAL)
+ * @param b     Attachment
+ * @param state File state for decoding the attachment
+ */
 static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 {
   if (!state || !state->fpout)
@@ -690,6 +754,16 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   }
 }
 
+/**
+ * pipe_attachment_list - Pipe a list of attachments to a command
+ * @param command Command to pipe the attachment to
+ * @param actx    Attachment context
+ * @param fp      File handle to the attachment (OPTIONAL)
+ * @param tag     If true, only save the tagged attachments
+ * @param top     First Attachment
+ * @param filter  Is this command a filter?
+ * @param state   File state for decoding the attachments
+ */
 static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, bool tag,
                                  struct Body *top, bool filter, struct State *state)
 {
@@ -712,6 +786,14 @@ static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp
   }
 }
 
+/**
+ * mutt_pipe_attachment_list - Pipe a list of attachments to a command
+ * @param actx   Attachment context
+ * @param fp     File handle to the attachment (OPTIONAL)
+ * @param tag    If true, only save the tagged attachments
+ * @param top    First Attachment
+ * @param filter Is this command a filter?
+ */
 void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter)
 {
@@ -747,6 +829,13 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
 }
 
+/**
+ * can_print - Do we know how to print this attachment type?
+ * @param actx Attachment
+ * @param top  Body of email
+ * @param tag  Apply to all tagged Attachments
+ * @retval true If (all) the Attachment(s) are printable
+ */
 static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
   char type[STRING];
@@ -781,6 +870,14 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
   return true;
 }
 
+/**
+ * print_attachment_list - Print a list of Attachments
+ * @param actx  Attachment context
+ * @param fp    File handle to the attachment (OPTIONAL)
+ * @param tag   Apply to all tagged Attachments
+ * @param top   First Attachment
+ * @param state File state for decoding the attachments
+ */
 static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                   struct Body *top, struct State *state)
 {
@@ -840,6 +937,13 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   }
 }
 
+/**
+ * mutt_print_attachment_list - Print a list of Attachments
+ * @param actx Attachment context
+ * @param fp   File handle to the attachment (OPTIONAL)
+ * @param tag  Apply to all tagged Attachments
+ * @param top  First Attachment
+ */
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
   char prompt[SHORT_STRING];
@@ -876,6 +980,11 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     print_attachment_list(actx, fp, tag, top, &state);
 }
 
+/**
+ * recvattach_extract_pgp_keys - Extract PGP keys from attachments
+ * @param actx Attachment context
+ * @param menu Menu listing attachments
+ */
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
   if (!menu->tagprefix)
@@ -893,6 +1002,14 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
   }
 }
 
+/**
+ * recvattach_pgp_check_traditional - Is the Attachment inline PGP?
+ * @param actx Attachment to check
+ * @param menu Menu listing Attachments
+ * @retval 1 If the (tagged) Attachment(s) are inline PGP
+ *
+ * @note If the menu->tagprefix is set, all the tagged attachments will be checked.
+ */
 static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu)
 {
   int rc = 0;
@@ -909,6 +1026,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   return rc;
 }
 
+/**
+ * recvattach_edit_content_type - Edit the content type of an attachment
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ * @param hdr  Header of the email
+ */
 static void recvattach_edit_content_type(struct AttachCtx *actx,
                                          struct Menu *menu, struct Header *hdr)
 {
@@ -930,6 +1053,15 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   mutt_update_recvattach_menu(actx, menu, 1);
 }
 
+/**
+ * mutt_attach_display_loop - Event loop for the Attachment menu
+ * @param menu Menu listing Attachments
+ * @param op   Operation, e.g. OP_VIEW_ATTACH
+ * @param hdr  Header of the email
+ * @param actx Attachment context
+ * @param recv true if these are received attachments (rather than in compose)
+ * @retval num Operation performed
+ */
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
                              struct AttachCtx *actx, bool recv)
 {
@@ -1137,6 +1269,11 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
   menu->redraw |= REDRAW_INDEX;
 }
 
+/**
+ * attach_collapse - Close the tree of the current attachment
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ */
 static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 {
   int rindex, curlevel;
@@ -1164,17 +1301,10 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   }
 }
 
-static const char *Function_not_permitted =
-    N_("Function not permitted in attach-message mode.");
-
-#define CHECK_ATTACH                                                           \
-  if (OptAttachMsg)                                                            \
-  {                                                                            \
-    mutt_flushinp();                                                           \
-    mutt_error(_(Function_not_permitted));                                     \
-    break;                                                                     \
-  }
-
+/**
+ * mutt_view_attachments - Show the attachments in a Menu
+ * @param hdr Header of the email
+ */
 void mutt_view_attachments(struct Header *hdr)
 {
   char helpstr[LONG_STRING];
