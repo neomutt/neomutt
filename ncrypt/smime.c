@@ -1908,16 +1908,14 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
-    char tmptmpfname[PATH_MAX];
     if (out_file)
       fpout = out_file;
     else
     {
-      mutt_mktemp(tmptmpfname, sizeof(tmptmpfname));
-      fpout = mutt_file_fopen(tmptmpfname, "w+");
+      fpout = mutt_file_mkstemp();
       if (!fpout)
       {
-        mutt_perror(tmptmpfname);
+        mutt_perror("mutt_file_mkstemp() failed!");
         mutt_file_fclose(&smimeout);
         mutt_file_fclose(&smimeerr);
         return NULL;
@@ -1960,7 +1958,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     if (!out_file)
     {
       mutt_file_fclose(&fpout);
-      mutt_file_unlink(tmptmpfname);
     }
     fpout = NULL;
   }
