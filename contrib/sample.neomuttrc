@@ -79,7 +79,7 @@ set reverse_name		# use my address as it appears in the message
 				# i am replying to
 set nosave_empty		# remove files when no messages are left
 #set save_name			# save outgoing messages by recipient, if the
-#set sendmail="/usr/lib/sendmail -oi -oem"	# how to deliver mail
+#set sendmail="/usr/sbin/sendmail -oi -oem"	# how to deliver mail
 #set shell="/bin/zsh"		# program to use for shell escapes
 #set signature="~/.signature"	# file which contains my signature
 
