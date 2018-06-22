@@ -1691,7 +1691,7 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
  */
 int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char signedfile[PATH_MAX], smimeerrfile[PATH_MAX];
+  char signedfile[PATH_MAX];
   FILE *smimeout = NULL;
   pid_t thepid;
   int badsig = -1;
@@ -1738,11 +1738,10 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   sigbdy->type = orig_type;
 
-  mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  FILE *smimeerr = mutt_file_fopen(smimeerrfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(smimeerrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_unlink(signedfile);
     return -1;
   }
@@ -1783,7 +1782,6 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
 
   mutt_file_unlink(signedfile);
-  mutt_file_unlink(smimeerrfile);
 
   sigbdy->length = tmplength;
   sigbdy->offset = tmpoffset;
