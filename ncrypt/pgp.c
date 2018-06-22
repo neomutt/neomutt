@@ -1572,14 +1572,12 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   struct Body *b = NULL;
 
   char pgpoutfile[PATH_MAX];
-  char pgperrfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
 
   char body_charset[STRING];
   char *from_charset = NULL;
   const char *send_charset = NULL;
 
-  FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
   FILE *fp = NULL;
 
   bool empty = false;
@@ -1602,7 +1600,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   }
 
   mutt_mktemp(pgpinfile, sizeof(pgpinfile));
-  pgpin = mutt_file_fopen(pgpinfile, "w");
+  FILE *pgpin = mutt_file_fopen(pgpinfile, "w");
   if (!pgpin)
   {
     mutt_perror(pgpinfile);
@@ -1648,21 +1646,20 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   mutt_file_fclose(&pgpin);
 
   mutt_mktemp(pgpoutfile, sizeof(pgpoutfile));
-  mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  if ((pgpout = mutt_file_fopen(pgpoutfile, "w+")) == NULL ||
-      (pgperr = mutt_file_fopen(pgperrfile, "w+")) == NULL)
+  FILE *pgpout = mutt_file_fopen(pgpoutfile, "w+");
+  FILE *pgperr = mutt_file_mkstemp();
+  if (!pgpout || !pgperr)
   {
-    mutt_perror(pgpout ? pgperrfile : pgpoutfile);
+    mutt_perror(pgpout ? "mutt_file_mkstemp() failed!" : pgpoutfile);
     unlink(pgpinfile);
     if (pgpout)
     {
       mutt_file_fclose(&pgpout);
       unlink(pgpoutfile);
     }
+    mutt_file_fclose(&pgperr);
     return NULL;
   }
-
-  unlink(pgperrfile);
 
   thepid = pgp_invoke_traditional(&pgpin, NULL, NULL, -1, fileno(pgpout),
                                   fileno(pgperr), pgpinfile, keylist, flags);
