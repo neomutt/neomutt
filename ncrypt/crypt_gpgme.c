@@ -2122,7 +2122,6 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   /* there's no side-effect free way to view key data in GPGME,
    * so we import the key into a temporary keyring */
   char tmpdir[PATH_MAX];
-  char tmpfile[PATH_MAX];
   gpgme_ctx_t tmpctx;
   gpgme_error_t err;
   gpgme_engine_info_t engineinfo;
@@ -2177,14 +2176,12 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
     goto err_tmpdir;
   }
 
-  mutt_mktemp(tmpfile, sizeof(tmpfile));
-  *fp = mutt_file_fopen(tmpfile, "w+");
+  *fp = mutt_file_mkstemp();
   if (!*fp)
   {
-    mutt_perror(tmpfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     goto err_tmpdir;
   }
-  unlink(tmpfile);
 
   err = gpgme_op_keylist_start(tmpctx, NULL, 0);
   while (!err)
