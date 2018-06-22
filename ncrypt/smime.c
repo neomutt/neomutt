@@ -1226,27 +1226,23 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char tmpfname[PATH_MAX], *certfile = NULL, buf[STRING];
+  char *certfile = NULL, buf[STRING];
   FILE *smimein = NULL;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return;
   }
-  mutt_file_unlink(tmpfname);
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fpout = mutt_file_fopen(tmpfname, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return;
   }
-  mutt_file_unlink(tmpfname);
 
   buf[0] = '\0';
   if (SmimeAskCertLabel)
