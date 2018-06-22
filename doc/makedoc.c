@@ -970,7 +970,7 @@ struct VariableTypes
   { "DT_NONE", "-none-" },
   { "DT_BOOL", "boolean" },
   { "DT_NUMBER", "number" },
-  { "DT_LONG",  "number (long)"	},
+  { "DT_LONG",  "number (long)" },
   { "DT_STRING", "string" },
   { "DT_PATH", "path" },
   { "DT_QUAD", "quadoption" },

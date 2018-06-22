@@ -258,10 +258,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (menu->top + menu->pagelen >= menu->max)
       {
         cp = menu->top ?
-          /* L10N: Status bar message: the end of the list emails is visible in the index */
-          _("end") :
-          /* L10N: Status bar message: all the emails are visible in the index */
-          _("all");
+                 /* L10N: Status bar message: the end of the list emails is visible in the index */
+                 _("end") :
+                 /* L10N: Status bar message: all the emails are visible in the index */
+                 _("all");
       }
       else
       {

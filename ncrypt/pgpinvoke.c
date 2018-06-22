@@ -313,15 +313,15 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *uids)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false, NULL,
-                    NULL, uids, PgpExportCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids, PgpExportCommand);
 }
 
 pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                             int pgpoutfd, int pgperrfd, const char *uids)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false, NULL,
-                    NULL, uids, PgpVerifyKeyCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids, PgpVerifyKeyCommand);
 }
 
 /**
@@ -355,6 +355,7 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
     strcpy(uids, tmpuids);
   }
 
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false, NULL, NULL,
-                    uids, keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids,
+                    keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
 }

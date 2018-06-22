@@ -995,8 +995,7 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
     {
       if (actx->idx[i]->content->tagged)
       {
-        crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp,
-                                                    actx->idx[i]->content);
+        crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp, actx->idx[i]->content);
       }
     }
   }

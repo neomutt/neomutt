@@ -941,8 +941,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
   {
     struct Body *b = NULL;
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (b = crypt_pgp_make_key_attachment()) == NULL)
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (b = crypt_pgp_make_key_attachment()) == NULL)
     {
       return -1;
     }
@@ -2104,7 +2103,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
            (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
       {
         if (clear_content->type == TYPEMULTIPART &&
-              query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
+            query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
         {
           if (!(msg->security & ENCRYPT) && (msg->security & SIGN))
           {
