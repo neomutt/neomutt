@@ -1387,7 +1387,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[LONG_STRING], certfile[PATH_MAX];
-  char tempfile[PATH_MAX], smimeerrfile[PATH_MAX];
+  char tempfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
   char *cert_start, *cert_end;
   FILE *smimein = NULL;
@@ -1402,16 +1402,14 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     return NULL;
   }
 
-  mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  FILE *smimeerr = mutt_file_fopen(smimeerrfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(smimeerrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_unlink(tempfile);
     mutt_file_fclose(&fpout);
     return NULL;
   }
-  mutt_file_unlink(smimeerrfile);
 
   mutt_mktemp(smimeinfile, sizeof(smimeinfile));
   FILE *fptmp = mutt_file_fopen(smimeinfile, "w+");
