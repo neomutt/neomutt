@@ -407,7 +407,6 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
-  char pgpoutfile[PATH_MAX];
   char pgperrfile[PATH_MAX];
   char tmpfname[PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
@@ -510,16 +509,13 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       /* Invoke PGP if needed */
       if (!clearsign || (s->flags & MUTT_VERIFY))
       {
-        mutt_mktemp(pgpoutfile, sizeof(pgpoutfile));
-        pgpout = mutt_file_fopen(pgpoutfile, "w+");
+        pgpout = mutt_file_mkstemp();
         if (!pgpout)
         {
-          mutt_perror(pgpoutfile);
+          mutt_perror("mutt_file_mkstemp() failed!");
           rc = -1;
           goto out;
         }
-
-        unlink(pgpoutfile);
 
         mutt_mktemp(pgperrfile, sizeof(pgperrfile));
         if ((pgperr = mutt_file_fopen(pgperrfile, "w+")) == NULL)
