@@ -80,6 +80,9 @@ static void append_signature(FILE *f)
 
 /**
  * mutt_remove_xrefs - Remove cross-references
+ * @param a Reference list of Addresses
+ * @param b Address list to trim
+ * @retval ptr Updated Address list
  *
  * Remove addresses from "b" which are contained in "a"
  */
@@ -163,6 +166,12 @@ static struct Address *remove_user(struct Address *a, int leave_only)
   return top;
 }
 
+/**
+ * find_mailing_lists - Search Address lists for mailing lists
+ * @param t 'To' Address list
+ * @param c 'Cc' Address list
+ * @retval ptr Newly allocated Address list of all mailing list matches
+ */
 static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
 {
   struct Address *top = NULL, *ptr = NULL;
@@ -211,6 +220,13 @@ static int edit_address(struct Address **a, /* const */ char *field)
   return 0;
 }
 
+/**
+ * edit_envelope - Edit Envelope fields
+ * @param en    Envelope to edit
+ * @param flags Flags, e.g. #SENDLISTREPLY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int edit_envelope(struct Envelope *en, int flags)
 {
   char buf[HUGE_STRING];
@@ -301,6 +317,13 @@ static int edit_envelope(struct Envelope *en, int flags)
 }
 
 #ifdef USE_NNTP
+/**
+ * nntp_get_header - Get the trimmed header
+ * @param s Header line with leading whitespace
+ * @retval ptr Copy of string
+ *
+ * @note The caller should free the returned string.
+ */
 static char *nntp_get_header(const char *s)
 {
   SKIPWS(s);
@@ -958,8 +981,7 @@ void mutt_set_followup_to(struct Envelope *e)
   {
     if (mutt_is_list_cc(0, e->to, e->cc))
     {
-      /*
-       * this message goes to known mailing lists, so create a proper
+      /* this message goes to known mailing lists, so create a proper
        * mail-followup-to header
        */
 
@@ -970,8 +992,7 @@ void mutt_set_followup_to(struct Envelope *e)
     /* remove ourselves from the mail-followup-to header */
     e->mail_followup_to = remove_user(e->mail_followup_to, 0);
 
-    /*
-     * If we are not subscribed to any of the lists in question,
+    /* If we are not subscribed to any of the lists in question,
      * re-add ourselves to the mail-followup-to header.  The
      * mail-followup-to header generated is a no-op with group-reply,
      * but makes sure list-reply has the desired effect.
@@ -1003,8 +1024,11 @@ void mutt_set_followup_to(struct Envelope *e)
 
 /**
  * set_reverse_name - Try to set the 'from' field from the recipients
+ * @param env Envelope to use
+ * @retval ptr  Newly allocated Address
+ * @retval NULL A suitable Address wasn't found
  *
- * look through the recipients of the message we are replying to, and if we
+ * Look through the recipients of the message we are replying to, and if we
  * find an address that matches $alternates, we use that as the default from
  * field
  */
@@ -1031,7 +1055,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
   {
     tmp = mutt_addr_copy(tmp);
     /* when $reverse_realname is not set, clear the personal name so that it
-     * may be set vi a reply- or send-hook.
+     * may be set via a reply- or send-hook.
      */
     if (!ReverseRealname)
       FREE(&tmp->personal);
@@ -1039,14 +1063,17 @@ static struct Address *set_reverse_name(struct Envelope *env)
   return tmp;
 }
 
+/**
+ * mutt_default_from - Get a default 'from' Address
+ * @retval ptr Newly allocated Address
+ */
 struct Address *mutt_default_from(void)
 {
   struct Address *addr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
-  /*
-   * Note: We let $from override $realname here.  Is this the right
-   * thing to do?
+  /* Note: We let $from override $realname here.
+   *       Is this the right thing to do?
    */
 
   if (From)
@@ -1067,6 +1094,12 @@ struct Address *mutt_default_from(void)
   return addr;
 }
 
+/**
+ * send_message - Send an email
+ * @param msg Header of the email
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int send_message(struct Header *msg)
 {
   char tempfile[PATH_MAX];
@@ -1180,6 +1213,13 @@ static void fix_end_of_file(const char *data)
   mutt_file_fclose(&fp);
 }
 
+/**
+ * mutt_compose_to_sender - Compose an email to the sender
+ * @param hdr Header of original email
+ * @retval  0 Message was successfully sent
+ * @retval -1 Message was aborted or an error occurred
+ * @retval  1 Message was postponed
+ */
 int mutt_compose_to_sender(struct Header *hdr)
 {
   struct Header *msg = mutt_header_new();
@@ -1233,6 +1273,13 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
   return ci_send_message(SENDRESEND, msg, NULL, ctx, cur);
 }
 
+/**
+ * is_reply - Is one email a reply to another?
+ * @param reply Header of email to test
+ * @param orig  Header of original email
+ * @retval 1 It is a reply
+ * @retval 0 It is not a reply
+ */
 static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
@@ -1241,6 +1288,16 @@ static int is_reply(struct Header *reply, struct Header *orig)
          mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
+/**
+ * search_attach_keyword - Search an email for 'attachment' keywords
+ * @param filename Filename
+ * @retval true If the regex matches in the email
+ *
+ * Search an email for the regex in $abort_noattach_regex.
+ * A match might indicate that the user should have attached something.
+ *
+ * @note Quoted lines (as defined by $quote_regex) are ignored
+ */
 static bool search_attach_keyword(char *filename)
 {
   /* Search for the regex in AbortNoattachRegex within a file */
@@ -1273,7 +1330,7 @@ static bool search_attach_keyword(char *filename)
 
 /**
  * ci_send_message - Send an email
- * @param flags    send mode
+ * @param flags    send mode, e.g. #SENDRESEND
  * @param msg      template to use for new message
  * @param tempfile file specified by -i or -H
  * @param ctx      current mailbox
@@ -1349,8 +1406,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (flags < 0)
         goto cleanup;
 #ifdef USE_NNTP
-      /*
-       * If postponed message is a news article, it have
+      /* If postponed message is a news article, it have
        * a "Newsgroups:" header line, then set appropriate flag.
        */
       if (msg->env->newsgroups)
@@ -1518,8 +1574,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       /* change setting based upon message we are replying to */
       mutt_message_hook(ctx, cur, MUTT_REPLYHOOK);
 
-      /*
-       * set the replied flag for the message we are generating so that the
+      /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
        * being used.
        */
@@ -1530,8 +1585,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     mutt_message_hook(NULL, msg, MUTT_SENDHOOK);
 
-    /*
-     * Unset the replied flag from the message we are composing since it is
+    /* Unset the replied flag from the message we are composing since it is
      * no longer required.  This is done here because the FCC'd copy of
      * this message was erroneously get the 'R'eplied flag when stored in
      * a maildir-style mailbox.
@@ -1582,8 +1636,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-  /*
-   * This hook is even called for postponed messages, and can, e.g., be
+  /* This hook is even called for postponed messages, and can, e.g., be
    * used for setting the editor, the sendmail path, or the
    * envelope sender.
    */
@@ -1609,8 +1662,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     mutt_update_encoding(msg->content);
 
-    /*
-     * Select whether or not the user's editor should be called now.  We
+    /* Select whether or not the user's editor should be called now.  We
      * don't want to do this when:
      * 1) we are sending a key/cert
      * 2) we are forwarding a message and the user doesn't want to edit it.
@@ -1682,8 +1734,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-  /*
-   * Set the message security unless:
+  /* Set the message security unless:
    * 1) crypto support is not enabled (WithCrypto==0)
    * 2) pgp: header field was present during message editing with $edit_headers (msg->security != 0)
    * 3) we are resending a message
@@ -1718,8 +1769,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (msg->security || CryptOpportunisticEncrypt)
     {
-      /*
-       * When replying / forwarding, use the original message's
+      /* When replying / forwarding, use the original message's
        * crypto system.  According to the documentation,
        * smime_is_default should be disregarded here.
        *
@@ -1741,8 +1791,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         }
       }
 
-      /*
-       * No crypto mechanism selected? Use availability + smime_is_default
+      /* No crypto mechanism selected? Use availability + smime_is_default
        * for the decision.
        */
       if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
@@ -1871,8 +1920,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         }
       }
 
-      /*
-       * make sure the message is written to the right part of a maildir
+      /* make sure the message is written to the right part of a maildir
        * postponed folder.
        */
       msg->read = false;
@@ -1967,16 +2015,14 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   if (msg->content->next)
     msg->content = mutt_make_multipart(msg->content);
 
-  /*
-   * Ok, we need to do it this way instead of handling all fcc stuff in
+  /* Ok, we need to do it this way instead of handling all fcc stuff in
    * one place in order to avoid going to main_loop with encoded "env"
    * in case of error.  Ugh.
    */
 
   mutt_encode_descriptions(msg->content, 1);
 
-  /*
-   * Make sure that clear_content and free_clear_content are
+  /* Make sure that clear_content and free_clear_content are
    * properly initialized -- we may visit this particular place in
    * the code multiple times, including after a failed call to
    * mutt_protect().
@@ -2004,8 +2050,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       mutt_encode_descriptions(msg->content, 0);
     }
 
-    /*
-     * at this point, msg->content is one of the following three things:
+    /* at this point, msg->content is one of the following three things:
      * - multipart/signed.  In this case, clear_content is a child.
      * - multipart/encrypted.  In this case, clear_content exists
      *   independently
@@ -2101,9 +2146,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->received = time(NULL);
       if (mutt_write_multiple_fcc(fcc, msg, NULL, 0, NULL, &finalpath) == -1)
       {
-        /*
-         * Error writing FCC, we should abort sending.
-         */
+        /* Error writing FCC, we should abort sending.  */
         fcc_error = true;
       }
     }
@@ -2131,8 +2174,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-  /*
-   * Don't attempt to send the message if the FCC failed.  Just pretend
+  /* Don't attempt to send the message if the FCC failed.  Just pretend
    * the send failed as well so we give the user a chance to fix the
    * error.
    */
