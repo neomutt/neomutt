@@ -1912,7 +1912,6 @@ restart:
  */
 int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[PATH_MAX];
   struct State s = { 0 };
   struct Body *first_part = b;
   int is_signed = 0;
@@ -1944,14 +1943,12 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_offset = b->offset;
     saved_length = b->length;
 
-    mutt_mktemp(tempfile, sizeof(tempfile));
-    decoded_fp = mutt_file_fopen(tempfile, "w+");
+    decoded_fp = mutt_file_mkstemp();
     if (!decoded_fp)
     {
-      mutt_perror(tempfile);
+      mutt_perror("mutt_file_mkstemp() failed!");
       return -1;
     }
-    unlink(tempfile);
 
     fseeko(s.fpin, b->offset, SEEK_SET);
     s.fpout = decoded_fp;
@@ -1966,15 +1963,13 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     s.fpout = 0;
   }
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = mutt_file_fopen(tempfile, "w+");
+  *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     rc = -1;
     goto bail;
   }
-  unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, false, &is_signed);
   if (!*cur)
