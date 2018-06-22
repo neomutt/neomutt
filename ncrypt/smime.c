@@ -1057,18 +1057,15 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
 static char *smime_extract_certificate(char *infile)
 {
   char pk7out[PATH_MAX], certfile[PATH_MAX];
-  char tmpfname[PATH_MAX];
   pid_t thepid;
   int empty;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed");
     return NULL;
   }
-  mutt_file_unlink(tmpfname);
 
   mutt_mktemp(pk7out, sizeof(pk7out));
   FILE *fpout = mutt_file_fopen(pk7out, "w+");
