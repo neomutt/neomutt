@@ -915,19 +915,16 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
-  char pgperrfile[PATH_MAX];
   char pgptmpfile[PATH_MAX];
   pid_t thepid;
   int rv;
 
-  mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  FILE *pgperr = mutt_file_fopen(pgperrfile, "w+");
+  FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror(pgperrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return NULL;
   }
-  unlink(pgperrfile);
 
   mutt_mktemp(pgptmpfile, sizeof(pgptmpfile));
   pgptmp = mutt_file_fopen(pgptmpfile, "w");
