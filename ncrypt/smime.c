@@ -1789,9 +1789,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  char outfile[PATH_MAX], errfile[PATH_MAX];
+  char errfile[PATH_MAX];
   char tmpfname[PATH_MAX];
-  FILE *smimeout = NULL, *smimein = NULL, *smimeerr = NULL;
   FILE *tmpfp = NULL, *tmpfp_buffer = NULL, *fpout = NULL;
   struct stat info;
   struct Body *p = NULL;
@@ -1801,16 +1800,14 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   if (!(type & APPLICATION_SMIME))
     return NULL;
 
-  mutt_mktemp(outfile, sizeof(outfile));
-  smimeout = mutt_file_fopen(outfile, "w+");
+  FILE *smimeout = mutt_file_mkstemp();
   if (!smimeout)
   {
-    mutt_perror(outfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return NULL;
   }
 
-  mutt_mktemp(errfile, sizeof(errfile));
-  smimeerr = mutt_file_fopen(errfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
     mutt_perror(errfile);
@@ -1836,6 +1833,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   fflush(tmpfp);
   mutt_file_fclose(&tmpfp);
 
+  FILE *smimein = NULL;
   if ((type & ENCRYPT) &&
       (thepid = smime_invoke_decrypt(&smimein, NULL, NULL, -1, fileno(smimeout),
                                      fileno(smimeerr), tmpfname)) == -1)
@@ -1953,7 +1951,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     }
     mutt_file_fclose(&smimeout);
     smimeout = NULL;
-    mutt_file_unlink(outfile);
 
     if (!out_file)
     {
