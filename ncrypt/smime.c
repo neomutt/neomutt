@@ -1789,7 +1789,6 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  char errfile[PATH_MAX];
   char tmpfname[PATH_MAX];
   FILE *tmpfp = NULL, *tmpfp_buffer = NULL, *fpout = NULL;
   struct stat info;
@@ -1810,11 +1809,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(errfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_fclose(&smimeout);
     return NULL;
   }
-  mutt_file_unlink(errfile);
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
   tmpfp = mutt_file_fopen(tmpfname, "w+");
