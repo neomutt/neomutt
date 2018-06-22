@@ -119,7 +119,6 @@ enum GroupState
   GS_ADDR
 };
 
-
 /**
  * add_to_stailq - Add a string to a list
  * @param head String list
@@ -1593,7 +1592,7 @@ static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
  * If the 'finish' command is found, we should stop reading the current file.
  */
 static int parse_finish(struct Buffer *buf, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+                        unsigned long data, struct Buffer *err)
 {
   if (MoreArgs(s))
   {
@@ -2409,7 +2408,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       if (rc < 0 || !*buf->data)
       {
         snprintf(err->data, err->dsize, _("%s: invalid value (%s)"), buf->data,
-                rc == -1 ? _("format error") : _("number overflow"));
+                 rc == -1 ? _("format error") : _("number overflow"));
         r = -1;
         break;
       }

@@ -349,7 +349,7 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_s
   if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
   {
     if (mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
-                        &ctx) != NULL)
+                     &ctx) != NULL)
     {
       mailbox->msg_count = ctx.msgcount;
       mailbox->msg_unread = ctx.unread;

@@ -1,3 +1,30 @@
+2018-06-22  Richard Russon  <rich@flatcap.org>
+* Features
+  - Expand variables inside backticks
+  - Honour SASL-IR IMAP capability in SASL PLAIN
+* Bug Fixes
+  - Fix toggle-read
+  - Do not truncate shell commands on ; or #
+  - pager: index must be rebuilt on MUTT_REOPENED
+  - Handle a BAD response in AUTH PLAIN w/o initial response
+  - fcc_attach: Don't ask every time
+  - Enlarge path buffers PATH_MAX (4096)
+  - Move LSUB call from connection establishment to mailbox SELECTion
+* Translations
+  - Update Chinese (Simplified): 100%
+  - Update Czech: 100%
+  - Update German: 100%
+  - Update Lithuanian: 100%
+  - Update Portuguese (Brazil): 100%
+  - Update Slovak: 59%
+  - Reduce duplication of messages
+* Code
+  - Tidy up the mailbox API
+  - Tidy up the header cache API
+  - Tidy up the encryption API
+  - Add doxygen docs for more functions
+  - Refactor more structs to use STAILQ
+
 2018-05-12  Richard Russon  <rich@flatcap.org>
 * Features
   - echo command

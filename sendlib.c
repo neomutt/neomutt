@@ -2916,7 +2916,6 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 {
   const char *fqdn = mutt_fqdn(1);
   char resent_from[STRING];
-  int ret;
   char *err = NULL;
 
   resent_from[0] = '\0';

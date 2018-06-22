@@ -92,7 +92,6 @@ short pgp_get_abilities(unsigned char type)
   return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
 }
 
-
 static void pgp_free_uid(struct PgpUid **upp)
 {
   struct PgpUid *up = NULL, *q = NULL;
@@ -212,4 +211,3 @@ struct PgpKeyInfo *pgp_new_keyinfo(void)
 {
   return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
 }
-

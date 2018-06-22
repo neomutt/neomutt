@@ -64,6 +64,7 @@
 #include "mutt_notmuch.h"
 #endif
 
+// clang-format off
 /* The regexes in a modern format */
 #define RANGE_NUM_RX      "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
 #define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
@@ -103,6 +104,7 @@
 #define RANGE_DOLLAR '$'
 #define RANGE_LT     '<'
 #define RANGE_GT     '>'
+// clang-format on
 
 /**
  * enum EatRangeError - Error codes for eat_range_by_regex()
@@ -154,12 +156,13 @@ enum RangeSide
  */
 struct PatternFlags
 {
-  int tag; /**< character used to represent this op */
-  int op;  /**< operation to perform */
+  int tag;   /**< character used to represent this op */
+  int op;    /**< operation to perform */
   int class; /**< Pattern class, e.g. #MUTT_FULL_MSG */
   bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
 };
 
+// clang-format off
 /**
  * range_regexes - Set of Regexes for various range types
  *
@@ -172,6 +175,7 @@ static struct RangeRegex range_regexes[] = {
   [RANGE_K_GT]   = { RANGE_GT_RX,   2, 1, 0 },
   [RANGE_K_BARE] = { RANGE_BARE_RX, 1, 1, 0 },
 };
+// clang-format on
 
 static struct Pattern *SearchPattern = NULL; /**< current search pattern */
 static char LastSearch[STRING] = { 0 };      /**< last pattern searched for */
@@ -935,7 +939,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
 }
 
 /**
- * patmatch - Compare a string to a Pattern 
+ * patmatch - Compare a string to a Pattern
  * @param pat Pattern to use
  * @param buf String to compare
  * @retval 0 Match
@@ -1109,6 +1113,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   return match;
 }
 
+// clang-format off
 /**
  * Flags - Lookup table for all patterns
  */
@@ -1164,6 +1169,7 @@ static const struct PatternFlags Flags[] = {
   { '/', MUTT_SERVERSEARCH,    0,             eat_regex },
   { 0,   0,                    0,             NULL },
 };
+// clang-format on
 
 /**
  * lookup_tag - Lookup a pattern modifier
@@ -2463,4 +2469,3 @@ int mutt_search_command(int cur, int op)
   mutt_error(_("Not found."));
   return -1;
 }
-

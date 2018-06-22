@@ -58,9 +58,8 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
   mutt_message(_("Logging in..."));
 
   /* Prepare full AUTHENTICATE PLAIN message */
-  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd,
-      idata->conn->account.user, idata->conn->account.user,
-      idata->conn->account.pass);
+  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, idata->conn->account.user,
+                      idata->conn->account.user, idata->conn->account.pass);
 
   if (mutt_bit_isset(idata->capabilities, SASL_IR))
   {

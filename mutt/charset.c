@@ -681,14 +681,15 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
 {
   int rc = 0;
   iconv_t cd = mutt_ch_iconv_open(to, from, 0);
-  if (cd == (iconv_t)-1)
+  if (cd == (iconv_t) -1)
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
   char *out = mutt_mem_malloc(outlen + 1);
   char *saved_out = out;
 
-  const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
+  const size_t convlen =
+      iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
   if (convlen == -1)
     rc = errno;
 
@@ -1002,8 +1003,8 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    const int rc = (d != NULL) ? mutt_ch_convert_string(&s, fromcode, t, 0)
-                               : mutt_ch_check(s, ulen, fromcode, t);
+    const int rc = (d != NULL) ? mutt_ch_convert_string(&s, fromcode, t, 0) :
+                                 mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
     {
       FREE(&t);

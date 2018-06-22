@@ -1784,4 +1784,3 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   if (cd != (iconv_t)(-1))
     iconv_close(cd);
 }
-
