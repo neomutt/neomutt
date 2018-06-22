@@ -7,6 +7,7 @@
 # Weichung Chau <weichung@mail.cynix.com.tw>, 2001
 # Anthony Wong <ypwong@debian.org>, 2001
 # Deng Xiyue <manphiz@gmail.com>, 2009
+# lilydjwg <lilydjwg@gmail.com>, 2017
 # Bo Yu <tsu.yubo@gmail.com>, 2017-2018
 # Zero King <l2dy@macports.org>, 2018
 #
@@ -124,15 +125,15 @@ msgstr "执行 \"%s\" 时出错！"
 
 #: attach.c:150
 msgid "Failure to open file to parse headers."
-msgstr "打开文件时解析标头失败。"
+msgstr "为分析信件头而打开文件时失败。"
 
 #: attach.c:184
 msgid "Failure to open file to strip headers."
-msgstr "打开文件时去除标头失败。"
+msgstr "为去除信件头而打开文件时失败。"
 
 #: attach.c:194
 msgid "Failure to rename file."
-msgstr "将文件改名失败。"
+msgstr "重命名文件失败。"
 
 #: attach.c:205
 #, c-format
@@ -170,7 +171,7 @@ msgstr "---命令：%-20.20s 描述：%s"
 #: attach.c:520
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr "---命令：%-30.30s 描述：%s"
+msgstr "---命令：%-30.30s 附件：%s"
 
 #: attach.c:600
 #, c-format
@@ -227,7 +228,7 @@ msgstr "已订阅"
 
 #: browser.c:84
 msgid "Unsubscribe"
-msgstr "取消订阅"
+msgstr "退订"
 
 #: browser.c:85 curs_main.c:760
 msgid "Catchup"
@@ -272,7 +273,7 @@ msgstr "只有 IMAP 信箱才支持创建"
 
 #: browser.c:1647
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "只有 IMAP 信箱才支持改名"
+msgstr "只有 IMAP 信箱才支持重命名"
 
 #: browser.c:1668
 msgid "Delete is only supported for IMAP mailboxes"
@@ -346,7 +347,7 @@ msgstr "订阅模式："
 #: browser.c:2136
 #, c-format
 msgid "Unsubscribe pattern: "
-msgstr "取消订阅模式："
+msgstr "退订模式："
 
 #: browser.c:2155
 msgid "No newsgroups match the mask"
@@ -374,7 +375,7 @@ msgstr "%s：没有这个对象"
 #: color.c:526
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s：命令只对索引，正文，标头对象有效"
+msgstr "%s：命令只对索引，正文，信件头对象有效"
 
 #: color.c:533 color.c:724 color.c:750 color.c:782 color.c:793 color.c:817
 #: color.c:881 hook.c:105 hook.c:118 init.c:830 init.c:838 init.c:970
@@ -445,15 +446,15 @@ msgstr "命令："
 
 #: commands.c:273 commands.c:286 recvcmd.c:143 recvcmd.c:155
 msgid "Warning: message contains no From: header"
-msgstr "警告：信件未包含 From: 标头"
+msgstr "警告：信件未包含 From: 信件头"
 
 #: commands.c:296 recvcmd.c:164
 msgid "Bounce message to: "
-msgstr "退回信件至："
+msgstr "重发信件至："
 
 #: commands.c:298 recvcmd.c:166
 msgid "Bounce tagged messages to: "
-msgstr "退回已标记的信件至："
+msgstr "重发已标记的信件至："
 
 #: commands.c:307 recvcmd.c:175
 msgid "Error parsing address!"
@@ -463,17 +464,17 @@ msgstr "解析地址出错！"
 #, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
-msgstr[0] "退回信件至 %s"
+msgstr[0] "重发信件至 %s"
 
 #: commands.c:341 recvcmd.c:212
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
-msgstr[0] "信件未退回。"
+msgstr[0] "信件未重发。"
 
 #: commands.c:351 recvcmd.c:231
 msgid "Message bounced."
 msgid_plural "Messages bounced."
-msgstr[0] "信件已退回。"
+msgstr[0] "信件已重发。"
 
 #: commands.c:419 commands.c:461 commands.c:481
 msgid "Can't create filter process"
@@ -681,7 +682,7 @@ msgstr "寄出"
 
 #: compose.c:151 compose.c:167 remailer.c:477
 msgid "Abort"
-msgstr "中断"
+msgstr "中止"
 
 #. L10N: compose menu help line entry
 #: compose.c:153
@@ -874,7 +875,7 @@ msgstr "使用什么名字发送附件："
 
 #: compose.c:1654
 msgid "Rename to: "
-msgstr "改名为："
+msgstr "重命名为："
 
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
@@ -959,7 +960,7 @@ msgstr "没有找到对应信箱类型的操作 %d"
 #: compress.c:528 compress.c:810
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr "没有 append-hook 或者 close-hook 不能够追加 : %s"
+msgstr "没有 append-hook 或者 close-hook 无法追加 : %s"
 
 #: compress.c:549
 #, c-format
@@ -987,7 +988,7 @@ msgstr "错误。保留临时文件：%s"
 
 #: compress.c:852
 msgid "Can't sync a compressed file without a close-hook"
-msgstr "没有一个 close-hook 不能够同步一件压缩文件"
+msgstr "没有一个 close-hook 无法同步一件压缩文件"
 
 #: compress.c:874
 #, c-format
@@ -1335,7 +1336,7 @@ msgstr "退出 NeoMutt？"
 
 #: curs_lib.c:428
 msgid "Press any key to continue..."
-msgstr "按下任何一个键继续..."
+msgstr "按任意键继续..."
 
 #: curs_lib.c:471
 msgid " ('?' for list): "
@@ -1460,7 +1461,7 @@ msgstr "没有信件 ID。无法执行操作。"
 
 #: curs_main.c:1244 imap/message.c:785 nntp.c:1340 pop.c:331
 msgid "Fetching message headers..."
-msgstr "正在取回信件标头..."
+msgstr "正在取回信件信件头..."
 
 #: curs_main.c:1318
 msgid "No deleted messages found in the thread."
@@ -1489,7 +1490,7 @@ msgstr "这封信件不可见。"
 #.
 #: curs_main.c:1385 curs_main.c:2811 pager.c:2849
 msgid "Cannot delete messages"
-msgstr "不能够删除信件"
+msgstr "无法删除信件"
 
 #: curs_main.c:1388
 msgid "Delete messages matching: "
@@ -1540,7 +1541,7 @@ msgstr "反标记符合此模式的信件："
 
 #: curs_main.c:1665
 msgid "Logged out of IMAP servers."
-msgstr "正在退出 IMAP 服务器."
+msgstr "已从 IMAP 服务器退出。"
 
 #: curs_main.c:1765
 msgid "No virtual folder, aborting."
@@ -1626,16 +1627,16 @@ msgstr "线索有误"
 
 #: curs_main.c:2198
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr "线索不能够打破，信件不是该线索的一部分"
+msgstr "无法打破线索，信件不是该线索的一部分"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2209
 msgid "Cannot link threads"
-msgstr "不能够链接线索"
+msgstr "无法链接线索"
 
 #: curs_main.c:2214
 msgid "No Message-ID: header available to link thread"
-msgstr "无 Message-ID: 标头可用于链接线索"
+msgstr "无 Message-ID: 信件头可用于链接线索"
 
 #: curs_main.c:2216
 msgid "First, please tag a message to be linked here"
@@ -1688,12 +1689,12 @@ msgstr "搜寻从结尾重新开始。"
 #. L10N: CHECK_ACL
 #: curs_main.c:2507
 msgid "Cannot flag message"
-msgstr "不能够标记信件"
+msgstr "无法标记信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2548 pager.c:3141
 msgid "Cannot toggle new"
-msgstr "不能够处理新的"
+msgstr "无法切换新信件标记"
 
 #: curs_main.c:2625
 msgid "No more threads."
@@ -1710,7 +1711,7 @@ msgstr "线索中有尚未读取或者被标记的信件。"
 #. L10N: CHECK_ACL
 #: curs_main.c:2761 pager.c:2811
 msgid "Cannot delete message"
-msgstr "不能够删除信件"
+msgstr "无法删除信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2877
@@ -1739,7 +1740,7 @@ msgstr "没有标签改变。"
 #.
 #: curs_main.c:3049
 msgid "Cannot mark messages as read"
-msgstr "不能够标记信件为已读"
+msgstr "无法标记信件为已读"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -1760,7 +1761,7 @@ msgstr "信件热键"
 #: curs_main.c:3098
 #, c-format
 msgid "Message bound to %s."
-msgstr "信件已退回给 %s。"
+msgstr "信件已重发给 %s。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
@@ -1797,10 +1798,10 @@ msgstr ""
 "~b 用户         新增用户到 Bcc: 域\n"
 "~c 用户         新增用户到 Cc: 域\n"
 "~f 信件         包含信件\n"
-"~F 信件         类似 ~f，除了同时包含标头\n"
-"~h              编辑信件的标头\n"
+"~F 信件         类似 ~f，除了同时包含信件头\n"
+"~h              编辑信件的信件头\n"
 "~m 信件         包含并引用信件\n"
-"~M 信件         类似 ~m, 除了包含标头\n"
+"~M 信件         类似 ~m, 除了包含信件头\n"
 "~p              打印这封信件\n"
 
 #: edit.c:61
@@ -1862,7 +1863,7 @@ msgstr "信件中一行也没有。\n"
 #: edit.c:483
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s：不明的编辑器命令(~? 求助)\n"
+msgstr "%s：未知的编辑器命令(~? 求助)\n"
 
 #: editmsg.c:91
 #, c-format
@@ -2172,7 +2173,7 @@ msgstr "信箱快捷键扩展到空白的正则表达式"
 
 #: hook.c:158
 msgid "badly formatted command string"
-msgstr "坏的格式化命令字符串"
+msgstr "格式错误的命令字符串"
 
 #: hook.c:338
 msgid "unhook: Can't do unhook * from within a hook."
@@ -2222,11 +2223,11 @@ msgstr "LOGIN 在此服务器已禁用。"
 
 #: imap/auth_login.c:66 imap/auth_plain.c:58 pop_auth.c:283
 msgid "Logging in..."
-msgstr "登入中..."
+msgstr "登录中..."
 
 #: imap/auth_login.c:86 imap/auth_plain.c:97 pop_auth.c:323
 msgid "Login failed."
-msgstr "登入失败。"
+msgstr "登录失败。"
 
 #: imap/auth_sasl.c:125 nntp.c:413 nntp.c:479 smtp.c:387
 #, c-format
@@ -2269,16 +2270,16 @@ msgstr "无法重命名根文件夹"
 #: imap/browse.c:450
 #, c-format
 msgid "Rename mailbox %s to: "
-msgstr "将信箱 %s 改名为："
+msgstr "重命名信箱 %s 为："
 
 #: imap/browse.c:466
 #, c-format
 msgid "Rename failed: %s"
-msgstr "改名失败：%s"
+msgstr "重命名失败：%s"
 
 #: imap/browse.c:470
 msgid "Mailbox renamed."
-msgstr "信箱已改名。"
+msgstr "信箱已重命名。"
 
 #: imap/command.c:158
 #, c-format
@@ -2288,7 +2289,7 @@ msgstr "信箱 %s@%s 已关闭"
 #: imap/command.c:1115 imap/command.c:1209
 #, c-format
 msgid "Connection to %s timed out"
-msgstr "到 %s 的连接已关闭"
+msgstr "到 %s 的连接已超时"
 
 #: imap/imap.c:90
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -2297,7 +2298,7 @@ msgstr "这个 IMAP 服务器已过时，NeoMutt 无法与之工作。"
 #: imap/imap.c:464
 #, c-format
 msgid "Header search without header name: %s"
-msgstr "无标头名称的标头搜索：%s"
+msgstr "无信件头名的信件头搜索：%s"
 
 #: imap/imap.c:494
 #, c-format
@@ -2338,7 +2339,7 @@ msgstr "正在订阅 %s..."
 #: imap/imap.c:1742
 #, c-format
 msgid "Unsubscribing from %s..."
-msgstr "正在取消订阅 %s..."
+msgstr "正在退订 %s..."
 
 #: imap/imap.c:1752 init.c:2886
 #, c-format
@@ -2348,7 +2349,7 @@ msgstr "已订阅 %s"
 #: imap/imap.c:1754 init.c:3338
 #, c-format
 msgid "Unsubscribed from %s"
-msgstr "已取消订阅 %s"
+msgstr "已退订 %s"
 
 #: imap/imap.c:1933 imap/message.c:1452
 #, c-format
@@ -2413,11 +2414,11 @@ msgstr "无效的 IMAP 标记"
 
 #: imap/message.c:474 mx.c:1339
 msgid "Integer overflow -- can't allocate memory."
-msgstr "整数溢出 -- 无法分配到内存。"
+msgstr "整数溢出 -- 无法分配内存。"
 
 #: imap/message.c:645
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr "无法取回此版本的 IMAP 服务器的标头。"
+msgstr "无法取回此版本的 IMAP 服务器的信件头。"
 
 #: imap/message.c:655
 #, c-format
@@ -2470,7 +2471,7 @@ msgstr "-group：无组名称"
 
 #: init.c:718
 msgid "out of arguments"
-msgstr "参数不够用"
+msgstr "参数不够"
 
 #: init.c:881
 #, c-format
@@ -2536,7 +2537,7 @@ msgstr "%sgroup：警告：错误的 IDN '%s'。\n"
 
 #: init.c:1869
 msgid "invalid header field"
-msgstr "无效的标头域"
+msgstr "无效的信件头域"
 
 #: init.c:2015 init.c:2133
 #, c-format
@@ -2545,11 +2546,11 @@ msgstr "%s：未知的变量"
 
 #: init.c:2024
 msgid "prefix is illegal with reset"
-msgstr "带重置的前缀是非法的"
+msgstr "reset 不能与前缀一起使用"
 
 #: init.c:2030
 msgid "value is illegal with reset"
-msgstr "带重置的值是非法的"
+msgstr "reset 时不能指定值"
 
 #: init.c:2065 init.c:2077
 msgid "Usage: set variable=yes|no"
@@ -2651,7 +2652,7 @@ msgstr "去掉附件：无效的处理方式"
 #: init.c:3333
 #, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "无法取消订阅 %s"
+msgstr "无法退订 %s"
 
 #: init.c:4279
 #, c-format
@@ -2849,7 +2850,7 @@ msgstr "无法确定用户名"
 
 #: main.c:272
 msgid "unable to determine home directory"
-msgstr "无法确定 home 目录"
+msgstr "无法确定用户主目录"
 
 #: main.c:507
 #, c-format
@@ -2871,7 +2872,7 @@ msgstr "没有指定接收者。"
 
 #: main.c:773
 msgid "Cannot use -E flag with stdin"
-msgstr "不能够使用 -E 选项在stdin情况下"
+msgstr "无法使用 -E 选项在stdin情况下"
 
 #: main.c:859
 #, c-format
@@ -3060,11 +3061,11 @@ msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
-msgstr "整数溢出 -- 无法分配到内存！"
+msgstr "整数溢出 -- 无法分配内存！"
 
 #: mutt/memory.c:68 mutt/memory.c:109 mutt/memory.c:143 safe_asprintf.c:61
 msgid "Out of memory!"
-msgstr "内存用尽！"
+msgstr "内存不足！"
 
 #: mutt/regex.c:292
 #, c-format
@@ -3191,7 +3192,7 @@ msgstr "正在等待 notmuch 数据库...（已等待 %d 秒）"
 #: mutt_notmuch.c:585
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr "不能够打开 notmuch 数据库：%s：%s"
+msgstr "无法打开 notmuch 数据库：%s：%s"
 
 #: mutt_notmuch.c:586
 msgid "unknown reason"
@@ -4508,7 +4509,7 @@ msgstr "正在检查新新闻组..."
 
 #: nntp.c:2568
 msgid "Unable to find child articles because server does not support XPAT command."
-msgstr "不能够找到子帖因为服务器不支持 XPAT 命令。"
+msgstr "无法找到子帖因为服务器不支持 XPAT 命令。"
 
 #: opcodes.h:30
 msgid "null operation"
@@ -4556,7 +4557,7 @@ msgstr "切换查看 全部/已订阅 的信箱 (只适用于 IMAP)"
 
 #: opcodes.h:41
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "取消订阅当前信箱 (只适用于 IMAP/NNTP)"
+msgstr "退订当前信箱 (只适用于 IMAP/NNTP)"
 
 #: opcodes.h:42
 msgid "view file"
@@ -4616,7 +4617,7 @@ msgstr "编辑附件文件"
 
 #: opcodes.h:56
 msgid "edit the Followup-To field"
-msgstr "编辑 Followup-To 栏位"
+msgstr "编辑 Followup-To 域"
 
 #: opcodes.h:57
 msgid "edit the from field"
@@ -4624,7 +4625,7 @@ msgstr "编辑发件人域"
 
 #: opcodes.h:58
 msgid "edit the message with headers"
-msgstr "编辑有标头的信件"
+msgstr "编辑有信件头的信件"
 
 #: opcodes.h:59
 msgid "edit the Content-Language of the attachment"
@@ -4644,7 +4645,7 @@ msgstr "编辑新闻组列表"
 
 #: opcodes.h:63
 msgid "edit the Reply-To field"
-msgstr "编辑 Reply-To 栏位"
+msgstr "编辑 Reply-To 域"
 
 #: opcodes.h:64
 msgid "edit the subject of this message"
@@ -4656,7 +4657,7 @@ msgstr "编辑 TO 列表"
 
 #: opcodes.h:66
 msgid "edit the X-Comment-To field"
-msgstr "编辑 X-Comment-To 栏位"
+msgstr "编辑 X-Comment-To 域"
 
 #: opcodes.h:67
 msgid "get a temporary copy of an attachment"
@@ -4692,11 +4693,11 @@ msgstr "保存信件以便稍后寄出"
 
 #: opcodes.h:75
 msgid "send attachment with a different name"
-msgstr "重命名附件"
+msgstr "使用另一个名字发送附件"
 
 #: opcodes.h:76
 msgid "rename/move an attached file"
-msgstr "改名/移动 附件文件"
+msgstr "重命名/移动 附件文件"
 
 #: opcodes.h:77
 msgid "send the message"
@@ -4780,7 +4781,7 @@ msgstr "显示发件人的完整地址"
 
 #: opcodes.h:97
 msgid "display message and toggle header weeding"
-msgstr "显示信件并切换标头资料内容显示"
+msgstr "显示信件并切换信件头资料内容显示"
 
 #: opcodes.h:98
 msgid "display a message"
@@ -4788,7 +4789,7 @@ msgstr "显示信件"
 
 #: opcodes.h:99
 msgid "delete the char in front of the cursor"
-msgstr "删除光标位置之前的字母"
+msgstr "删除光标位置之前的字符"
 
 #: opcodes.h:100
 msgid "move the cursor one character to the left"
@@ -4820,7 +4821,7 @@ msgstr "查询补全地址"
 
 #: opcodes.h:107
 msgid "delete the char under the cursor"
-msgstr "删除光标下的字母"
+msgstr "删除光标下的字符"
 
 #: opcodes.h:108
 msgid "convert the word to lower case"
@@ -4912,7 +4913,7 @@ msgstr "退出本菜单"
 
 #: opcodes.h:130
 msgid "filter attachment through a shell command"
-msgstr "透过 shell 指令来过滤附件"
+msgstr "使用 shell 命令过滤附件"
 
 #: opcodes.h:131
 msgid "move to the first entry"
@@ -5256,7 +5257,7 @@ msgstr "{内部的}"
 
 #: opcodes.h:216
 msgid "rename the current mailbox (IMAP only)"
-msgstr "将当前信箱改名 (只适用于 IMAP)"
+msgstr "重命名当前信箱 (只适用于 IMAP)"
 
 #: opcodes.h:217
 msgid "reply to a message"
@@ -5368,7 +5369,7 @@ msgstr "反删除线索中的所有信件"
 
 #: opcodes.h:244
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "取消订阅符合某个模式的新闻组"
+msgstr "退订符合某个模式的新闻组"
 
 #: opcodes.h:245
 msgid "show the NeoMutt version number and date"
@@ -5695,7 +5696,7 @@ msgstr "服务器不支持 TOP 命令。"
 
 #: pop.c:157
 msgid "Can't write header to temporary file!"
-msgstr "无法将标头写入临时文件！"
+msgstr "无法将信件头写入临时文件！"
 
 #: pop.c:325 pop_lib.c:242
 msgid "Command UIDL is not supported by server."
@@ -5810,11 +5811,11 @@ msgstr "没有被延迟寄出的信件。"
 
 #: postpone.c:453
 msgid "Illegal S/MIME header"
-msgstr "非法的 S/MIME 标头"
+msgstr "非法的 S/MIME 信件头"
 
 #: postpone.c:484 postpone.c:510 postpone.c:519
 msgid "Illegal crypto header"
-msgstr "非法的加密(crypto)标头"
+msgstr "非法的加密(crypto)信件头"
 
 #: postpone.c:606 postpone.c:707 postpone.c:730
 msgid "Decrypting message..."
@@ -5943,12 +5944,12 @@ msgstr "只支持删除多段附件。"
 
 #: recvcmd.c:55
 msgid "You may only bounce message/rfc822 parts."
-msgstr "您只能退回 message/rfc822 的部分。"
+msgstr "您只能重发 message/rfc822 的部分。"
 
 #: recvcmd.c:233
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
-msgstr[0] "退回信件出错！"
+msgstr[0] "重发信件出错！"
 
 #: recvcmd.c:419
 #, c-format
@@ -6037,7 +6038,7 @@ msgstr "您已经选择了最后的链元素。"
 
 #: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)标头。"
+msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)信件头。"
 
 #: remailer.c:732
 msgid "Please set the hostname variable to a proper value when using mixmaster!"
@@ -6376,7 +6377,7 @@ msgstr "编译选项："
 #~ msgstr "%s 中有错误的 IDN：'%s'\n"
 
 #~ msgid "Cannot delete message(s)"
-#~ msgstr "不能够删除信件"
+#~ msgstr "无法删除信件"
 
 #~ msgid "Cannot undelete message(s)"
-#~ msgstr "不能够反删除信件"
+#~ msgstr "无法反删除信件"

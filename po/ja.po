@@ -215,7 +215,7 @@ msgstr "マスク"
 
 #: browser.c:82
 msgid "List"
-msgstr ""
+msgstr "リスト"
 
 #: browser.c:83
 #, fuzzy
@@ -1434,7 +1434,7 @@ msgstr "全員に返信"
 
 #: curs_main.c:758 pager.c:1723
 msgid "Post"
-msgstr ""
+msgstr "投稿"
 
 #: curs_main.c:759 pager.c:1724
 #, fuzzy
