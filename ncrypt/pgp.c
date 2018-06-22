@@ -799,8 +799,8 @@ int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
  */
 int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char sigfile[PATH_MAX], pgperrfile[PATH_MAX];
-  FILE *pgpout = NULL, *pgperr = NULL;
+  char sigfile[PATH_MAX];
+  FILE *pgpout = NULL;
   pid_t thepid;
   int badsig = -1;
 
@@ -817,11 +817,10 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   mutt_file_copy_bytes(s->fpin, fp, sigbdy->length);
   mutt_file_fclose(&fp);
 
-  mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  pgperr = mutt_file_fopen(pgperrfile, "w+");
+  FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror(pgperrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     unlink(sigfile);
     return -1;
   }
@@ -853,7 +852,6 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
 
   mutt_file_unlink(sigfile);
-  mutt_file_unlink(pgperrfile);
 
   mutt_debug(1, "returning %d.\n", badsig);
 
