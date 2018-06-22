@@ -2693,16 +2693,15 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
  */
 int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 {
-  char tempfile[PATH_MAX];
   int is_signed;
   int rc = 0;
 
   mutt_debug(2, "Entering handler\n");
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fpout = mutt_file_fopen(tempfile, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
+    mutt_perror("mutt_file_mkstemp() failed!");
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -2759,7 +2758,6 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   }
 
   mutt_file_fclose(&fpout);
-  mutt_file_unlink(tempfile);
   mutt_debug(2, "Leaving handler\n");
 
   return rc;
