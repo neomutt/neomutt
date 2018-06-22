@@ -119,7 +119,7 @@ static int lua_mutt_set(lua_State *l)
   mutt_debug(2, " * lua_mutt_set(%s)\n", param);
   struct Option opt;
   char err_str[LONG_STRING];
-  struct Buffer err;
+  struct Buffer err = { 0 };
   err.data = err_str;
   err.dsize = sizeof(err_str);
 

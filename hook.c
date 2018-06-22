@@ -674,6 +674,7 @@ void mutt_timeout_hook(void)
   struct Buffer err;
   char buf[STRING];
 
+  mutt_buffer_init(&err);
   err.data = buf;
   err.dsize = sizeof(buf);
   mutt_buffer_init(&token);
@@ -705,8 +706,8 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(int type)
 {
   struct Hook *hook = NULL;
-  struct Buffer token;
-  struct Buffer err;
+  struct Buffer token = { 0 };
+  struct Buffer err = { 0 };
   char buf[STRING];
 
   err.data = buf;

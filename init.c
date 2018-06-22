@@ -4104,11 +4104,11 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       case DT_REGEX:
       {
         char err_str[LONG_STRING] = "";
-        struct Buffer err2;
+        struct Buffer err2 = { 0 };
         err2.data = err_str;
         err2.dsize = sizeof(err_str);
 
-        struct Buffer tmp;
+        struct Buffer tmp = { 0 };
         tmp.data = (char *) val->var;
         tmp.dsize = strlen((char *) val->var);
 
