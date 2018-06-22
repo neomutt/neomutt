@@ -2018,12 +2018,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
  */
 int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[PATH_MAX];
   struct State s = { 0 };
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int orig_type = b->type;
-  FILE *tmpfp = NULL;
   int rc = 0;
 
   if (!mutt_is_application_smime(b))
@@ -2035,15 +2033,13 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  tmpfp = mutt_file_fopen(tempfile, "w+");
+  FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return -1;
   }
 
-  mutt_file_unlink(tempfile);
   s.fpout = tmpfp;
   mutt_decode_attachment(b, &s);
   fflush(tmpfp);
@@ -2053,15 +2049,13 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = tmpfp;
   s.fpout = 0;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = mutt_file_fopen(tempfile, "w+");
+  *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     rc = -1;
     goto bail;
   }
-  mutt_file_unlink(tempfile);
 
   *cur = smime_handle_entity(b, &s, *fpout);
   if (!*cur)
