@@ -1013,7 +1013,11 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     }
     case DT_BOOL:
     {
-      if (atoi(s))
+      if (strcasecmp(s, "true") == 0)
+        strncpy(t, "yes", l);
+      else if (strcasecmp(s, "false") == 0)
+        strncpy(t, "no", l);
+      else if (atoi(s))
         strncpy(t, "yes", l);
       else
         strncpy(t, "no", l);
