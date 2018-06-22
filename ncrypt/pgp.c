@@ -1119,15 +1119,14 @@ bail:
  */
 int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 {
-  char tempfile[PATH_MAX];
   FILE *fpin = NULL;
   struct Body *tattach = NULL;
   int rc = 0;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fpout = mutt_file_fopen(tempfile, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
+    mutt_perror("mutt_file_mkstemp() failed!");
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts(_("[-- Error: could not create temporary file! --]\n"), s);
     return -1;
@@ -1179,7 +1178,6 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   }
 
   mutt_file_fclose(&fpout);
-  mutt_file_unlink(tempfile);
 
   return rc;
 }
