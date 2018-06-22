@@ -1995,9 +1995,7 @@ bail:
  */
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[PATH_MAX];
   struct State s = { 0 };
-  FILE *tmpfp = NULL;
   int is_signed;
   LOFF_T saved_b_offset;
   size_t saved_b_length;
@@ -2018,14 +2016,12 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   saved_b_length = b->length;
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  tmpfp = mutt_file_fopen(tempfile, "w+");
+  FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return -1;
   }
-  mutt_file_unlink(tempfile);
 
   s.fpout = tmpfp;
   mutt_decode_attachment(b, &s);
@@ -2037,14 +2033,12 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   memset(&s, 0, sizeof(s));
   s.fpin = tmpfp;
   s.fpout = 0;
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = mutt_file_fopen(tempfile, "w+");
+  *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return -1;
   }
-  mutt_file_unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, true, &is_signed);
   if (*cur)
@@ -2074,34 +2068,30 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     memset(&s, 0, sizeof(s));
     s.fpin = *fpout;
     fseeko(s.fpin, bb->offset, SEEK_SET);
-    mutt_mktemp(tempfile, sizeof(tempfile));
-    tmpfp = mutt_file_fopen(tempfile, "w+");
-    if (!tmpfp)
+    FILE *tmpfp2 = mutt_file_mkstemp();
+    if (!tmpfp2)
     {
-      mutt_perror(tempfile);
+      mutt_perror("mutt_file_mkstemp() failed!");
       return -1;
     }
-    mutt_file_unlink(tempfile);
 
-    s.fpout = tmpfp;
+    s.fpout = tmpfp2;
     mutt_decode_attachment(bb, &s);
-    fflush(tmpfp);
+    fflush(tmpfp2);
     bb->length = ftello(s.fpout);
     bb->offset = 0;
-    rewind(tmpfp);
+    rewind(tmpfp2);
     mutt_file_fclose(fpout);
 
     memset(&s, 0, sizeof(s));
-    s.fpin = tmpfp;
+    s.fpin = tmpfp2;
     s.fpout = 0;
-    mutt_mktemp(tempfile, sizeof(tempfile));
-    *fpout = mutt_file_fopen(tempfile, "w+");
+    *fpout = mutt_file_mkstemp();
     if (!*fpout)
     {
-      mutt_perror(tempfile);
+      mutt_perror("mutt_file_mkstemp() failed!");
       return -1;
     }
-    mutt_file_unlink(tempfile);
 
     tmp_b = decrypt_part(bb, &s, *fpout, true, &is_signed);
     if (tmp_b)
@@ -2109,7 +2099,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
-    mutt_file_fclose(&tmpfp);
+    mutt_file_fclose(&tmpfp2);
     rewind(*fpout);
     mutt_body_free(cur);
     *cur = tmp_b;
