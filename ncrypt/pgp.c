@@ -1441,9 +1441,9 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 {
   char buf[LONG_STRING];
-  char tempfile[PATH_MAX], pgperrfile[PATH_MAX];
+  char tempfile[PATH_MAX];
   char pgpinfile[PATH_MAX];
-  FILE *pgpin = NULL, *pgperr = NULL, *fptmp = NULL;
+  FILE *pgpin = NULL, *fptmp = NULL;
   struct Body *t = NULL;
   int err = 0;
   int empty = 0;
@@ -1457,16 +1457,14 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
     return NULL;
   }
 
-  mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  pgperr = mutt_file_fopen(pgperrfile, "w+");
+  FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror(pgperrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     unlink(tempfile);
     mutt_file_fclose(&fpout);
     return NULL;
   }
-  unlink(pgperrfile);
 
   mutt_mktemp(pgpinfile, sizeof(pgpinfile));
   fptmp = mutt_file_fopen(pgpinfile, "w");
