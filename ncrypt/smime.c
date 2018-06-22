@@ -962,30 +962,25 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
                                    char ***buffer, int *num)
 {
-  char tmpfname[PATH_MAX];
   char email[STRING];
   int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return 1;
   }
-  mutt_file_unlink(tmpfname);
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fpout = mutt_file_fopen(tmpfname, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return 1;
   }
-  mutt_file_unlink(tmpfname);
 
   thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), certificate,
                         NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertEmailCommand);
