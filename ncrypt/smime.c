@@ -962,30 +962,25 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
 static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
                                    char ***buffer, int *num)
 {
-  char tmpfname[PATH_MAX];
   char email[STRING];
   int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return 1;
   }
-  mutt_file_unlink(tmpfname);
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fpout = mutt_file_fopen(tmpfname, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return 1;
   }
-  mutt_file_unlink(tmpfname);
 
   thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), certificate,
                         NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertEmailCommand);
@@ -1057,18 +1052,15 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
 static char *smime_extract_certificate(char *infile)
 {
   char pk7out[PATH_MAX], certfile[PATH_MAX];
-  char tmpfname[PATH_MAX];
   pid_t thepid;
   int empty;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed");
     return NULL;
   }
-  mutt_file_unlink(tmpfname);
 
   mutt_mktemp(pk7out, sizeof(pk7out));
   FILE *fpout = mutt_file_fopen(pk7out, "w+");
@@ -1162,18 +1154,15 @@ static char *smime_extract_certificate(char *infile)
 static char *smime_extract_signer_certificate(char *infile)
 {
   char certfile[PATH_MAX];
-  char tmpfname[PATH_MAX];
   pid_t thepid;
   int empty;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return NULL;
   }
-  mutt_file_unlink(tmpfname);
 
   mutt_mktemp(certfile, sizeof(certfile));
   FILE *fpout = mutt_file_fopen(certfile, "w+");
@@ -1226,27 +1215,23 @@ static char *smime_extract_signer_certificate(char *infile)
  */
 void smime_class_invoke_import(char *infile, char *mailbox)
 {
-  char tmpfname[PATH_MAX], *certfile = NULL, buf[STRING];
+  char *certfile = NULL, buf[STRING];
   FILE *smimein = NULL;
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fperr = mutt_file_fopen(tmpfname, "w+");
+  FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return;
   }
-  mutt_file_unlink(tmpfname);
 
-  mutt_mktemp(tmpfname, sizeof(tmpfname));
-  FILE *fpout = mutt_file_fopen(tmpfname, "w+");
+  FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror(tmpfname);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return;
   }
-  mutt_file_unlink(tmpfname);
 
   buf[0] = '\0';
   if (SmimeAskCertLabel)
@@ -1387,7 +1372,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[LONG_STRING], certfile[PATH_MAX];
-  char tempfile[PATH_MAX], smimeerrfile[PATH_MAX];
+  char tempfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
   char *cert_start, *cert_end;
   FILE *smimein = NULL;
@@ -1402,16 +1387,14 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
     return NULL;
   }
 
-  mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  FILE *smimeerr = mutt_file_fopen(smimeerrfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(smimeerrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_unlink(tempfile);
     mutt_file_fclose(&fpout);
     return NULL;
   }
-  mutt_file_unlink(smimeerrfile);
 
   mutt_mktemp(smimeinfile, sizeof(smimeinfile));
   FILE *fptmp = mutt_file_fopen(smimeinfile, "w+");
@@ -1697,7 +1680,7 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
  */
 int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
-  char signedfile[PATH_MAX], smimeerrfile[PATH_MAX];
+  char signedfile[PATH_MAX];
   FILE *smimeout = NULL;
   pid_t thepid;
   int badsig = -1;
@@ -1744,11 +1727,10 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
   sigbdy->type = orig_type;
 
-  mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  FILE *smimeerr = mutt_file_fopen(smimeerrfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(smimeerrfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_unlink(signedfile);
     return -1;
   }
@@ -1789,7 +1771,6 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   state_attach_puts(_("[-- End of OpenSSL output --]\n\n"), s);
 
   mutt_file_unlink(signedfile);
-  mutt_file_unlink(smimeerrfile);
 
   sigbdy->length = tmplength;
   sigbdy->offset = tmpoffset;
@@ -1808,9 +1789,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  char outfile[PATH_MAX], errfile[PATH_MAX];
   char tmpfname[PATH_MAX];
-  FILE *smimeout = NULL, *smimein = NULL, *smimeerr = NULL;
   FILE *tmpfp = NULL, *tmpfp_buffer = NULL, *fpout = NULL;
   struct stat info;
   struct Body *p = NULL;
@@ -1820,23 +1799,20 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   if (!(type & APPLICATION_SMIME))
     return NULL;
 
-  mutt_mktemp(outfile, sizeof(outfile));
-  smimeout = mutt_file_fopen(outfile, "w+");
+  FILE *smimeout = mutt_file_mkstemp();
   if (!smimeout)
   {
-    mutt_perror(outfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return NULL;
   }
 
-  mutt_mktemp(errfile, sizeof(errfile));
-  smimeerr = mutt_file_fopen(errfile, "w+");
+  FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror(errfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     mutt_file_fclose(&smimeout);
     return NULL;
   }
-  mutt_file_unlink(errfile);
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
   tmpfp = mutt_file_fopen(tmpfname, "w+");
@@ -1855,6 +1831,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   fflush(tmpfp);
   mutt_file_fclose(&tmpfp);
 
+  FILE *smimein = NULL;
   if ((type & ENCRYPT) &&
       (thepid = smime_invoke_decrypt(&smimein, NULL, NULL, -1, fileno(smimeout),
                                      fileno(smimeerr), tmpfname)) == -1)
@@ -1927,16 +1904,14 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
-    char tmptmpfname[PATH_MAX];
     if (out_file)
       fpout = out_file;
     else
     {
-      mutt_mktemp(tmptmpfname, sizeof(tmptmpfname));
-      fpout = mutt_file_fopen(tmptmpfname, "w+");
+      fpout = mutt_file_mkstemp();
       if (!fpout)
       {
-        mutt_perror(tmptmpfname);
+        mutt_perror("mutt_file_mkstemp() failed!");
         mutt_file_fclose(&smimeout);
         mutt_file_fclose(&smimeerr);
         return NULL;
@@ -1974,12 +1949,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     }
     mutt_file_fclose(&smimeout);
     smimeout = NULL;
-    mutt_file_unlink(outfile);
 
     if (!out_file)
     {
       mutt_file_fclose(&fpout);
-      mutt_file_unlink(tmptmpfname);
     }
     fpout = NULL;
   }
@@ -2020,12 +1993,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
  */
 int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
-  char tempfile[PATH_MAX];
   struct State s = { 0 };
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int orig_type = b->type;
-  FILE *tmpfp = NULL;
   int rc = 0;
 
   if (!mutt_is_application_smime(b))
@@ -2037,15 +2008,13 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  tmpfp = mutt_file_fopen(tempfile, "w+");
+  FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return -1;
   }
 
-  mutt_file_unlink(tempfile);
   s.fpout = tmpfp;
   mutt_decode_attachment(b, &s);
   fflush(tmpfp);
@@ -2055,15 +2024,13 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = tmpfp;
   s.fpout = 0;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = mutt_file_fopen(tempfile, "w+");
+  *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     rc = -1;
     goto bail;
   }
-  mutt_file_unlink(tempfile);
 
   *cur = smime_handle_entity(b, &s, *fpout);
   if (!*cur)
