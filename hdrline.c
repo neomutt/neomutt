@@ -302,7 +302,7 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_li
   snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
-static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_lists)
+static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool do_lists)
 {
   if (!hdr || !buf)
     return;
@@ -311,18 +311,18 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_l
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list_addr(hdr->to, buf, len))
+    if (check_for_mailing_list_addr(hdr->to, buf, buflen))
       return;
-    if (check_for_mailing_list_addr(hdr->cc, buf, len))
+    if (check_for_mailing_list_addr(hdr->cc, buf, buflen))
       return;
   }
 
   if (me && hdr->to)
-    snprintf(buf, len, "%s", hdr->to->mailbox);
+    snprintf(buf, buflen, "%s", hdr->to->mailbox);
   else if (me && hdr->cc)
-    snprintf(buf, len, "%s", hdr->cc->mailbox);
+    snprintf(buf, buflen, "%s", hdr->cc->mailbox);
   else if (hdr->from)
-    mutt_str_strfcpy(buf, hdr->from->mailbox, len);
+    mutt_str_strfcpy(buf, hdr->from->mailbox, buflen);
   else
     *buf = 0;
 }
@@ -1004,7 +1004,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'O':
       if (!optional)
       {
-        make_from_addr(hdr->env, tmp, sizeof(tmp), 1);
+        make_from_addr(hdr->env, tmp, sizeof(tmp), true);
         if (!SaveAddress && (p = strpbrk(tmp, "%@")))
           *p = 0;
         mutt_format_s(buf, buflen, prec, tmp);
