@@ -1926,7 +1926,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->old = false;
 
       mutt_encode_descriptions(msg->content, 1);
-      mutt_prepare_envelope(msg->env, 0);
+      mutt_prepare_envelope(msg->env, false);
       mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
       if (!Postponed || mutt_write_fcc(NONULL(Postponed), msg,
@@ -2066,7 +2066,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   if (!OptNoCurses && !(flags & SENDMAILX))
     mutt_message(_("Sending message..."));
 
-  mutt_prepare_envelope(msg->env, 1);
+  mutt_prepare_envelope(msg->env, true);
 
   /* save a copy of the message, if necessary. */
 

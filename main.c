@@ -966,7 +966,7 @@ int main(int argc, char *argv[], char *envp[])
           if (msg->content->next)
             msg->content = mutt_make_multipart(msg->content);
           mutt_encode_descriptions(msg->content, 1);
-          mutt_prepare_envelope(msg->env, 0);
+          mutt_prepare_envelope(msg->env, false);
           mutt_env_to_intl(msg->env, NULL, NULL);
         }
 

@@ -2774,7 +2774,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
  *
  * For postponing (!final) do the necessary encodings only
  */
-void mutt_prepare_envelope(struct Envelope *env, int final)
+void mutt_prepare_envelope(struct Envelope *env, bool final)
 {
   if (final)
   {

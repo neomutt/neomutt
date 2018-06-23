@@ -193,7 +193,7 @@ void mutt_paddstr(int n, const char *s);
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 void mutt_parse_part(FILE *fp, struct Body *b);
 void mutt_perror_debug(const char *s);
-void mutt_prepare_envelope(struct Envelope *env, int final);
+void mutt_prepare_envelope(struct Envelope *env, bool final);
 void mutt_unprepare_envelope(struct Envelope *env);
 void mutt_pretty_mailbox(char *s, size_t buflen);
 void mutt_pipe_message(struct Header *h);
