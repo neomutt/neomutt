@@ -896,7 +896,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
 
       if (cur)
       {
-        tmp = mutt_make_message_attach(ctx, cur, 0);
+        tmp = mutt_make_message_attach(ctx, cur, false);
         if (last)
           last->next = tmp;
         else
@@ -909,7 +909,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
           if (!message_is_tagged(ctx, i))
             continue;
 
-          tmp = mutt_make_message_attach(ctx, ctx->hdrs[i], 0);
+          tmp = mutt_make_message_attach(ctx, ctx->hdrs[i], false);
           if (last)
           {
             last->next = tmp;

@@ -106,7 +106,7 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 
 struct Body *mutt_make_file_attach(const char *path);
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg);
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, bool attach_msg);
 struct Body *mutt_remove_multipart(struct Body *b);
 struct Body *mutt_make_multipart(struct Body *b);
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);

@@ -1410,7 +1410,7 @@ void mutt_update_encoding(struct Body *a)
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg)
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, bool attach_msg)
 {
   char buffer[LONG_STRING];
   struct Body *body = NULL;
