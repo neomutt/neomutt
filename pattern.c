@@ -1578,7 +1578,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  * @retval true One Address is subscribed (alladdr is false)
  * @retval true All the Addresses are subscribed (alladdr is true)
  */
-int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
+int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_subscribed_list(a1))

@@ -997,7 +997,7 @@ void mutt_set_followup_to(struct Envelope *e)
      * but makes sure list-reply has the desired effect.
      */
 
-    if (e->mail_followup_to && !mutt_is_list_recipient(0, e->to, e->cc))
+    if (e->mail_followup_to && !mutt_is_list_recipient(false, e->to, e->cc))
     {
       if (e->reply_to)
         from = mutt_addr_copy_list(e->reply_to, false);
