@@ -245,7 +245,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * make_from - Generate a From: field (with optional prefix)
  * @param env      Envelope of the email
  * @param buf      Buffer to store the result
- * @param len      Size of the buffer
+ * @param buflen   Size of the buffer
  * @param do_lists Should we check for mailing lists?
  *
  * Generate the %F or %L field in $index_format.
@@ -254,7 +254,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
+static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists)
 {
   if (!env || !buf)
     return;
@@ -267,9 +267,9 @@ static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list(env->to, make_from_prefix(DISP_TO), buf, len))
+    if (check_for_mailing_list(env->to, make_from_prefix(DISP_TO), buf, buflen))
       return;
-    if (check_for_mailing_list(env->cc, make_from_prefix(DISP_CC), buf, len))
+    if (check_for_mailing_list(env->cc, make_from_prefix(DISP_CC), buf, buflen))
       return;
   }
 
@@ -299,10 +299,10 @@ static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
     return;
   }
 
-  snprintf(buf, len, "%s%s", make_from_prefix(disp), mutt_get_name(name));
+  snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
-static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_lists)
+static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool do_lists)
 {
   if (!hdr || !buf)
     return;
@@ -311,18 +311,18 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_l
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list_addr(hdr->to, buf, len))
+    if (check_for_mailing_list_addr(hdr->to, buf, buflen))
       return;
-    if (check_for_mailing_list_addr(hdr->cc, buf, len))
+    if (check_for_mailing_list_addr(hdr->cc, buf, buflen))
       return;
   }
 
   if (me && hdr->to)
-    snprintf(buf, len, "%s", hdr->to->mailbox);
+    snprintf(buf, buflen, "%s", hdr->to->mailbox);
   else if (me && hdr->cc)
-    snprintf(buf, len, "%s", hdr->cc->mailbox);
+    snprintf(buf, buflen, "%s", hdr->cc->mailbox);
   else if (hdr->from)
-    mutt_str_strfcpy(buf, hdr->from->mailbox, len);
+    mutt_str_strfcpy(buf, hdr->from->mailbox, buflen);
   else
     *buf = 0;
 }
@@ -805,7 +805,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, tmp, sizeof(tmp), 0);
+        make_from(hdr->env, tmp, sizeof(tmp), false);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
@@ -935,7 +935,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, tmp, sizeof(tmp), 1);
+        make_from(hdr->env, tmp, sizeof(tmp), true);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
@@ -1004,7 +1004,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'O':
       if (!optional)
       {
-        make_from_addr(hdr->env, tmp, sizeof(tmp), 1);
+        make_from_addr(hdr->env, tmp, sizeof(tmp), true);
         if (!SaveAddress && (p = strpbrk(tmp, "%@")))
           *p = 0;
         mutt_format_s(buf, buflen, prec, tmp);

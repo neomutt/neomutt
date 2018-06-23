@@ -344,7 +344,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
  * @retval ptr First character after the date
  */
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
-                                    int have_min, struct tm *base_min, struct Buffer *err)
+                                    bool have_min, struct tm *base_min, struct Buffer *err)
 {
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
@@ -540,7 +540,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     const char *pc = buffer.data;
 
-    int have_min = false;
+    bool have_min = false;
     int until_now = false;
     if (isdigit((unsigned char) *pc))
     {
@@ -1531,7 +1531,7 @@ static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
  * @retval true One Address matches (alladdr is false)
  * @retval true All the Addresses match (alladdr is true)
  */
-static int match_addrlist(struct Pattern *pat, int match_personal, int n, ...)
+static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
 {
   va_list ap;
 
@@ -1578,7 +1578,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
  * @retval true One Address is subscribed (alladdr is false)
  * @retval true All the Addresses are subscribed (alladdr is true)
  */
-int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
+int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_subscribed_list(a1))
@@ -1885,23 +1885,23 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_SENDER:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 1,
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
                                         h->env->sender));
     case MUTT_FROM:
       if (!h->env)
         return 0;
       return (pat->not ^
-              match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 1, h->env->from));
+              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->from));
     case MUTT_TO:
       if (!h->env)
         return 0;
       return (pat->not ^
-              match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 1, h->env->to));
+              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->to));
     case MUTT_CC:
       if (!h->env)
         return 0;
       return (pat->not ^
-              match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 1, h->env->cc));
+              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->cc));
     case MUTT_SUBJECT:
       if (!h->env)
         return 0;
@@ -1924,13 +1924,13 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_ADDRESS:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 4,
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 4,
                                         h->env->from, h->env->sender,
                                         h->env->to, h->env->cc));
     case MUTT_RECIPIENT:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 2,
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 2,
                                         h->env->to, h->env->cc));
     case MUTT_LIST: /* known list, subscribed or not */
       if (!h->env)
@@ -2059,23 +2059,23 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
 
 /**
  * quote_simple - Apply simple quoting to a string
- * @param tmp Buffer for the result
- * @param len Length of buffer
- * @param p   String to quote
+ * @param str    String to quote
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  */
-static void quote_simple(char *tmp, size_t len, const char *p)
+static void quote_simple(const char *str, char *buf, size_t buflen)
 {
   int i = 0;
 
-  tmp[i++] = '"';
-  while (*p && i < len - 3)
+  buf[i++] = '"';
+  while (*str && i < buflen - 3)
   {
-    if (*p == '\\' || *p == '"')
-      tmp[i++] = '\\';
-    tmp[i++] = *p++;
+    if (*str == '\\' || *str == '"')
+      buf[i++] = '\\';
+    buf[i++] = *str++;
   }
-  tmp[i++] = '"';
-  tmp[i] = 0;
+  buf[i++] = '"';
+  buf[i] = 0;
 }
 
 /**
@@ -2130,7 +2130,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     else
     {
       char tmp[LONG_STRING];
-      quote_simple(tmp, sizeof(tmp), s);
+      quote_simple(s, tmp, sizeof(tmp));
       mutt_expand_fmt(s, len, simple, tmp);
     }
   }

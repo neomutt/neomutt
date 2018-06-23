@@ -966,11 +966,11 @@ int main(int argc, char *argv[], char *envp[])
           if (msg->content->next)
             msg->content = mutt_make_multipart(msg->content);
           mutt_encode_descriptions(msg->content, 1);
-          mutt_prepare_envelope(msg->env, 0);
+          mutt_prepare_envelope(msg->env, false);
           mutt_env_to_intl(msg->env, NULL, NULL);
         }
 
-        mutt_rfc822_write_header(fout, msg->env, msg->content, -1, 0);
+        mutt_rfc822_write_header(fout, msg->env, msg->content, -1, false);
         if (ResumeEditedDraftFiles)
           fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fout);

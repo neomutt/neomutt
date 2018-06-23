@@ -340,7 +340,7 @@ static int smtp_helo(struct Connection *conn)
 #endif
   }
 
-  fqdn = mutt_fqdn(0);
+  fqdn = mutt_fqdn(false);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 

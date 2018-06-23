@@ -91,7 +91,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(struct Pattern **pat);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2);
+int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2);
 int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(int cur, int op);

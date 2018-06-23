@@ -52,7 +52,7 @@
 #include "rfc1524.h"
 #include "state.h"
 
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init);
+static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 
@@ -211,7 +211,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       if (!optional)
       {
         if (mutt_is_text_part(aptr->content) &&
-            mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+            mutt_body_get_charset(aptr->content, charset, sizeof(charset)))
         {
           mutt_format_s(buf, buflen, prec, charset);
         }
@@ -219,7 +219,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
           mutt_format_s(buf, buflen, prec, "");
       }
       else if (!mutt_is_text_part(aptr->content) ||
-               !mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+               !mutt_body_get_charset(aptr->content, charset, sizeof(charset)))
       {
         optional = 0;
       }
@@ -463,27 +463,25 @@ bool mutt_is_message_type(int type, const char *subtype)
 
 /**
  * prepend_curdir - Add './' to the beginning of a path
- * @param dst    Buffer for the result
- * @param dstlen Size of the buffer
+ * @param buf    Buffer for the result
+ * @param buflen Size of the buffer
  */
-static void prepend_curdir(char *dst, size_t dstlen)
+static void prepend_curdir(char *buf, size_t buflen)
 {
-  size_t l;
-
-  if (!dst || !*dst || *dst == '/' || dstlen < 3 ||
+  if (!buf || !*buf || (*buf == '/') || (buflen < 3) ||
       /* XXX bad modularization, these are special to mutt_expand_path() */
-      !strchr("~=+@<>!-^", *dst))
+      !strchr("~=+@<>!-^", *buf))
   {
     return;
   }
 
-  dstlen -= 3;
-  l = strlen(dst) + 2;
-  l = (l > dstlen ? dstlen : l);
-  memmove(dst + 2, dst, l);
-  dst[0] = '.';
-  dst[1] = '/';
-  dst[l + 2] = 0;
+  buflen -= 3;
+  size_t l = strlen(buf) + 2;
+  l = (l > buflen ? buflen : l);
+  memmove(buf + 2, buf, l);
+  buf[0] = '.';
+  buf[1] = '/';
+  buf[l + 2] = 0;
 }
 
 /**
@@ -1049,7 +1047,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->content = NULL;
   mutt_actx_free_entries(actx);
-  mutt_update_recvattach_menu(actx, menu, 1);
+  mutt_update_recvattach_menu(actx, menu, true);
 }
 
 /**
@@ -1248,7 +1246,7 @@ void mutt_attach_init(struct AttachCtx *actx)
   }
 }
 
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init)
+static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1330,7 +1328,7 @@ void mutt_view_attachments(struct Header *hdr)
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = hdr;
   actx->root_fp = msg->fp;
-  mutt_update_recvattach_menu(actx, menu, 1);
+  mutt_update_recvattach_menu(actx, menu, true);
 
   while (true)
   {
@@ -1363,7 +1361,7 @@ void mutt_view_attachments(struct Header *hdr)
           break;
         }
         attach_collapse(actx, menu);
-        mutt_update_recvattach_menu(actx, menu, 0);
+        mutt_update_recvattach_menu(actx, menu, false);
         break;
 
       case OP_FORGET_PASSPHRASE:

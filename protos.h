@@ -106,7 +106,7 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 
 struct Body *mutt_make_file_attach(const char *path);
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg);
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, bool attach_msg);
 struct Body *mutt_remove_multipart(struct Body *b);
 struct Body *mutt_make_multipart(struct Body *b);
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
@@ -129,7 +129,7 @@ char *mutt_expand_path(char *s, size_t slen);
 char *mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
-char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
+char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
@@ -137,7 +137,7 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 
 const char *mutt_make_version(void);
 
-const char *mutt_fqdn(short may_hide_host);
+const char *mutt_fqdn(bool may_hide_host);
 
 void mutt_account_hook(const char *url);
 void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
@@ -193,7 +193,7 @@ void mutt_paddstr(int n, const char *s);
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 void mutt_parse_part(FILE *fp, struct Body *b);
 void mutt_perror_debug(const char *s);
-void mutt_prepare_envelope(struct Envelope *env, int final);
+void mutt_prepare_envelope(struct Envelope *env, bool final);
 void mutt_unprepare_envelope(struct Envelope *env);
 void mutt_pretty_mailbox(char *s, size_t buflen);
 void mutt_pipe_message(struct Header *h);
@@ -326,7 +326,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f);
 int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, bool privacy);
 void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);
