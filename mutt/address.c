@@ -1078,23 +1078,18 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
   {
     if (buflen == 0)
       goto done;
-    if ((mutt_str_strcmp(addr->mailbox, "@") != 0) && !display)
+    if (mutt_str_strcmp(addr->mailbox, "@") != 0)
     {
-      mutt_str_strfcpy(pbuf, addr->mailbox, buflen);
+      const char *a = display ? mutt_addr_for_display(addr) : addr->mailbox;
+      mutt_str_strfcpy(pbuf, a, buflen);
       len = mutt_str_strlen(pbuf);
-    }
-    else if ((mutt_str_strcmp(addr->mailbox, "@") != 0) && display)
-    {
-      mutt_str_strfcpy(pbuf, mutt_addr_for_display(addr), buflen);
-      len = mutt_str_strlen(pbuf);
+      pbuf += len;
+      buflen -= len;
     }
     else
     {
       *pbuf = '\0';
-      len = 0;
     }
-    pbuf += len;
-    buflen -= len;
 
     if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
     {
