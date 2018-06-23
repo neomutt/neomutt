@@ -52,7 +52,7 @@
 #include "rfc1524.h"
 #include "state.h"
 
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init);
+static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 
@@ -1047,7 +1047,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
   for (int i = 0; i < actx->idxlen; i++)
     actx->idx[i]->content = NULL;
   mutt_actx_free_entries(actx);
-  mutt_update_recvattach_menu(actx, menu, 1);
+  mutt_update_recvattach_menu(actx, menu, true);
 }
 
 /**
@@ -1246,7 +1246,7 @@ void mutt_attach_init(struct AttachCtx *actx)
   }
 }
 
-static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init)
+static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -1328,7 +1328,7 @@ void mutt_view_attachments(struct Header *hdr)
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = hdr;
   actx->root_fp = msg->fp;
-  mutt_update_recvattach_menu(actx, menu, 1);
+  mutt_update_recvattach_menu(actx, menu, true);
 
   while (true)
   {
@@ -1361,7 +1361,7 @@ void mutt_view_attachments(struct Header *hdr)
           break;
         }
         attach_collapse(actx, menu);
-        mutt_update_recvattach_menu(actx, menu, 0);
+        mutt_update_recvattach_menu(actx, menu, false);
         break;
 
       case OP_FORGET_PASSPHRASE:
