@@ -463,27 +463,25 @@ bool mutt_is_message_type(int type, const char *subtype)
 
 /**
  * prepend_curdir - Add './' to the beginning of a path
- * @param dst    Buffer for the result
- * @param dstlen Size of the buffer
+ * @param buf    Buffer for the result
+ * @param buflen Size of the buffer
  */
-static void prepend_curdir(char *dst, size_t dstlen)
+static void prepend_curdir(char *buf, size_t buflen)
 {
-  size_t l;
-
-  if (!dst || !*dst || *dst == '/' || dstlen < 3 ||
+  if (!buf || !*buf || (*buf == '/') || (buflen < 3) ||
       /* XXX bad modularization, these are special to mutt_expand_path() */
-      !strchr("~=+@<>!-^", *dst))
+      !strchr("~=+@<>!-^", *buf))
   {
     return;
   }
 
-  dstlen -= 3;
-  l = strlen(dst) + 2;
-  l = (l > dstlen ? dstlen : l);
-  memmove(dst + 2, dst, l);
-  dst[0] = '.';
-  dst[1] = '/';
-  dst[l + 2] = 0;
+  buflen -= 3;
+  size_t l = strlen(buf) + 2;
+  l = (l > buflen ? buflen : l);
+  memmove(buf + 2, buf, l);
+  buf[0] = '.';
+  buf[1] = '/';
+  buf[l + 2] = 0;
 }
 
 /**
