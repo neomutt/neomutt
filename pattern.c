@@ -2059,23 +2059,23 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
 
 /**
  * quote_simple - Apply simple quoting to a string
- * @param tmp Buffer for the result
- * @param len Length of buffer
- * @param p   String to quote
+ * @param str    String to quote
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  */
-static void quote_simple(char *tmp, size_t len, const char *p)
+static void quote_simple(const char *str, char *buf, size_t buflen)
 {
   int i = 0;
 
-  tmp[i++] = '"';
-  while (*p && i < len - 3)
+  buf[i++] = '"';
+  while (*str && i < buflen - 3)
   {
-    if (*p == '\\' || *p == '"')
-      tmp[i++] = '\\';
-    tmp[i++] = *p++;
+    if (*str == '\\' || *str == '"')
+      buf[i++] = '\\';
+    buf[i++] = *str++;
   }
-  tmp[i++] = '"';
-  tmp[i] = 0;
+  buf[i++] = '"';
+  buf[i] = 0;
 }
 
 /**
@@ -2130,7 +2130,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     else
     {
       char tmp[LONG_STRING];
-      quote_simple(tmp, sizeof(tmp), s);
+      quote_simple(s, tmp, sizeof(tmp));
       mutt_expand_fmt(s, len, simple, tmp);
     }
   }
