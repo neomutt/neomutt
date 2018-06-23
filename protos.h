@@ -326,7 +326,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f);
 int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, bool privacy);
 void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);

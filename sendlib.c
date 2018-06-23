@@ -2099,12 +2099,12 @@ out:
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
  *
- * privacy != 0 => will omit any headers which may identify the user.
+ * privacy true => will omit any headers which may identify the user.
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
  */
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
-                             struct Body *attach, int mode, int privacy)
+                             struct Body *attach, int mode, bool privacy)
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
@@ -3126,7 +3126,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   /* post == 1 => postpone message. Set mode = -1 in mutt_rfc822_write_header()
    * post == 0 => Normal mode. Set mode = 0 in mutt_rfc822_write_header()
    * */
-  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
+  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -post : 0, false);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-

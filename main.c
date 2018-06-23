@@ -970,7 +970,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_env_to_intl(msg->env, NULL, NULL);
         }
 
-        mutt_rfc822_write_header(fout, msg->env, msg->content, -1, 0);
+        mutt_rfc822_write_header(fout, msg->env, msg->content, -1, false);
         if (ResumeEditedDraftFiles)
           fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fout);
