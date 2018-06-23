@@ -74,7 +74,7 @@
  * @param fout   File to store the result
  * @param istext Is the input text?
  */
-static void encode_quoted(struct FgetConv *fc, FILE *fout, int istext)
+static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
 {
   int c, linelen = 0;
   char line[77], savechar;
