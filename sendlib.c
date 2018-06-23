@@ -560,7 +560,7 @@ struct ContentState
 };
 
 static void update_content_info(struct Content *info, struct ContentState *s,
-                                char *d, size_t dlen)
+                                char *buf, size_t buflen)
 {
   bool from = s->from;
   int whitespace = s->whitespace;
@@ -568,7 +568,7 @@ static void update_content_info(struct Content *info, struct ContentState *s,
   int linelen = s->linelen;
   bool was_cr = s->was_cr;
 
-  if (!d) /* This signals EOF */
+  if (!buf) /* This signals EOF */
   {
     if (was_cr)
       info->binary = true;
@@ -578,9 +578,9 @@ static void update_content_info(struct Content *info, struct ContentState *s,
     return;
   }
 
-  for (; dlen; d++, dlen--)
+  for (; buflen; buf++, buflen--)
   {
-    char ch = *d;
+    char ch = *buf;
 
     if (was_cr)
     {
