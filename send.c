@@ -1069,7 +1069,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
 struct Address *mutt_default_from(void)
 {
   struct Address *addr = NULL;
-  const char *fqdn = mutt_fqdn(1);
+  const char *fqdn = mutt_fqdn(true);
 
   /* Note: We let $from override $realname here.
    *       Is this the right thing to do?

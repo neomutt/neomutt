@@ -4595,7 +4595,7 @@ static char *find_keys(struct Address *addrlist, unsigned int app, bool oppenc_m
   struct Address *addr = NULL;
   struct Address *p = NULL, *q = NULL;
   struct CryptKeyInfo *k_info = NULL;
-  const char *fqdn = mutt_fqdn(1);
+  const char *fqdn = mutt_fqdn(true);
   char buf[LONG_STRING];
   int forced_valid;
   int r;

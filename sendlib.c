@@ -2316,7 +2316,7 @@ static void encode_headers(struct ListHead *h)
  *
  * @warning Do not free the returned pointer
  */
-const char *mutt_fqdn(short may_hide_host)
+const char *mutt_fqdn(bool may_hide_host)
 {
   if (!Hostname || (Hostname[0] == '@'))
     return NULL;
@@ -2356,7 +2356,7 @@ static char *gen_msgid(void)
   rndid[MUTT_RANDTAG_LEN] = 0;
   now = time(NULL);
   struct tm *tm = gmtime(&now);
-  const char *fqdn = mutt_fqdn(0);
+  const char *fqdn = mutt_fqdn(false);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
@@ -2914,7 +2914,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
 
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 {
-  const char *fqdn = mutt_fqdn(1);
+  const char *fqdn = mutt_fqdn(true);
   char resent_from[STRING];
   char *err = NULL;
 

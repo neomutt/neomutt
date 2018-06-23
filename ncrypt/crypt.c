@@ -861,7 +861,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
 int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
 {
   struct Address *addrlist = NULL, *last = NULL;
-  const char *fqdn = mutt_fqdn(1);
+  const char *fqdn = mutt_fqdn(true);
   char *self_encrypt = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption

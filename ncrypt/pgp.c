@@ -1325,7 +1325,7 @@ char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   int r;
   bool key_selected;
 
-  const char *fqdn = mutt_fqdn(1);
+  const char *fqdn = mutt_fqdn(true);
 
   for (p = addrlist; p; p = p->next)
   {

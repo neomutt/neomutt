@@ -726,7 +726,7 @@ int mix_check_message(struct Header *msg)
 
   if (need_hostname)
   {
-    fqdn = mutt_fqdn(1);
+    fqdn = mutt_fqdn(true);
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "

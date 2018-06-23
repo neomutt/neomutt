@@ -137,7 +137,7 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 
 const char *mutt_make_version(void);
 
-const char *mutt_fqdn(short may_hide_host);
+const char *mutt_fqdn(bool may_hide_host);
 
 void mutt_account_hook(const char *url);
 void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
