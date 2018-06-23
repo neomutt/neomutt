@@ -344,7 +344,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
  * @retval ptr First character after the date
  */
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
-                                    int have_min, struct tm *base_min, struct Buffer *err)
+                                    bool have_min, struct tm *base_min, struct Buffer *err)
 {
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
@@ -540,7 +540,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     const char *pc = buffer.data;
 
-    int have_min = false;
+    bool have_min = false;
     int until_now = false;
     if (isdigit((unsigned char) *pc))
     {
