@@ -417,7 +417,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
   char *gpgcharset = NULL;
   char body_charset[STRING];
-  mutt_get_body_charset(body_charset, sizeof(body_charset), m);
+  mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
   rc = 0; /* silence false compiler warning if (s->flags & MUTT_DISPLAY) */
 
@@ -1609,7 +1609,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
    * we have to convert from $charset to utf-8.
    */
 
-  mutt_get_body_charset(body_charset, sizeof(body_charset), a);
+  mutt_body_get_charset(a, body_charset, sizeof(body_charset));
   if (a->noconv)
     from_charset = body_charset;
   else

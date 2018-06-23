@@ -129,7 +129,7 @@ char *mutt_expand_path(char *s, size_t slen);
 char *mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
-char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
+char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);

@@ -507,7 +507,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   {
     char send_charset[SHORT_STRING];
     fc = mutt_ch_fgetconv_open(
-        fpin, a->charset, mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
+        fpin, a->charset, mutt_body_get_charset(a, send_charset, sizeof(send_charset)), 0);
   }
   else
     fc = mutt_ch_fgetconv_open(fpin, 0, 0, 0);
@@ -1291,7 +1291,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   if (b->type == TYPETEXT)
   {
     char send_charset[SHORT_STRING];
-    char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
+    char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
         info->linemax > 990 || (info->from && EncodeFrom))
     {
@@ -1348,29 +1348,29 @@ void mutt_stamp_attachment(struct Body *a)
 }
 
 /**
- * mutt_get_body_charset - Get a body's character set
- * @param d    Buffer for the result
- * @param dlen Length of the buffer
- * @param b    Body to examine
+ * mutt_body_get_charset - Get a body's character set
+ * @param b      Body to examine
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
  * @retval ptr  Buffer containing character set
  * @retval NULL On error, or if not a text type
  */
-char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
+char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
 {
   char *p = NULL;
 
-  if (b && b->type != TYPETEXT)
+  if (b && (b->type != TYPETEXT))
     return NULL;
 
   if (b)
     p = mutt_param_get(&b->parameter, "charset");
 
   if (p)
-    mutt_ch_canonical_charset(d, dlen, p);
+    mutt_ch_canonical_charset(buf, buflen, p);
   else
-    mutt_str_strfcpy(d, "us-ascii", dlen);
+    mutt_str_strfcpy(buf, "us-ascii", buflen);
 
-  return d;
+  return buf;
 }
 
 /**
@@ -1385,7 +1385,7 @@ void mutt_update_encoding(struct Body *a)
   char chsbuf[STRING];
 
   /* override noconv when it's us-ascii */
-  if (mutt_ch_is_us_ascii(mutt_get_body_charset(chsbuf, sizeof(chsbuf), a)))
+  if (mutt_ch_is_us_ascii(mutt_body_get_charset(a, chsbuf, sizeof(chsbuf))))
     a->noconv = false;
 
   if (!a->force_charset && !a->noconv)

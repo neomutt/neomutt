@@ -211,7 +211,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       if (!optional)
       {
         if (mutt_is_text_part(aptr->content) &&
-            mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+            mutt_body_get_charset(aptr->content, charset, sizeof(charset)))
         {
           mutt_format_s(buf, buflen, prec, charset);
         }
@@ -219,7 +219,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
           mutt_format_s(buf, buflen, prec, "");
       }
       else if (!mutt_is_text_part(aptr->content) ||
-               !mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+               !mutt_body_get_charset(aptr->content, charset, sizeof(charset)))
       {
         optional = 0;
       }
