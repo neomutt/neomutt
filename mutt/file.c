@@ -1328,8 +1328,7 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
   mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 
   path = realpath(abs_path, path);
-
-  if (!path)
+  if (!path && (errno != ENOENT))
   {
     printf("Error: issue converting path to absolute (%s)", strerror(errno));
     return false;
