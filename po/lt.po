@@ -4091,9 +4091,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:673
-#, fuzzy
 msgid "PGP message was not encrypted."
-msgstr "PGP laiškas sėkmingai iššifruotas."
+msgstr "PGP laiškas nebuvo užšifruotas."
 
 #: ncrypt/pgp.c:905
 msgid "Internal error.  Please submit a bug report."
