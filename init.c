@@ -477,6 +477,7 @@ static void free_opt(struct Option *p)
       mutt_regex_free((struct Regex **) p->var);
       break;
     case DT_PATH:
+    case DT_COMMAND:
     case DT_STRING:
       FREE((char **) p->var);
       break;
@@ -1067,6 +1068,7 @@ static void restore_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
+    case DT_COMMAND:
       mutt_str_replace((char **) p->var, (char *) p->initial);
       break;
     case DT_MBTABLE:
@@ -1166,6 +1168,7 @@ static void set_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
+    case DT_COMMAND:
       if (!p->initial && *((char **) p->var))
         p->initial = (unsigned long) mutt_str_strdup(*((char **) p->var));
       break;
@@ -2097,6 +2100,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
     else if (myvar || ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
                                       (DTYPE(MuttVars[idx].type) == DT_PATH) ||
+                                      (DTYPE(MuttVars[idx].type) == DT_COMMAND) ||
                                       (DTYPE(MuttVars[idx].type) == DT_ADDRESS) ||
                                       (DTYPE(MuttVars[idx].type) == DT_MBTABLE))))
     {
@@ -2197,7 +2201,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
         }
-        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
+        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) || (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], buf->data) < 0) |
@@ -4223,6 +4227,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         break;
       }
       case DT_STRING:
+      case DT_COMMAND:
       {
         /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
          * so cast to 'void*' is okay */

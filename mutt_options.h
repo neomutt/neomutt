@@ -42,6 +42,7 @@ struct Buffer;
 #define DT_MBTABLE  11   /**< multibyte char table */
 #define DT_LONG     12   /* a number (long) */
 #define DT_HCACHE   13   /**< header cache backend */
+#define DT_COMMAND  14   /**< A command*/
 
 #define DTYPE(x) ((x) &DT_MASK)
 

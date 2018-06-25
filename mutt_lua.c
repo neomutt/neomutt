@@ -142,6 +142,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_MBTABLE:
     case DT_REGEX:
     case DT_PATH:
+    case DT_COMMAND:
     case DT_SORT:
     case DT_STRING:
       opt.var = mutt_str_strdup(lua_tostring(l, -1));
@@ -225,6 +226,7 @@ static int lua_mutt_get(lua_State *l)
         return 1;
       }
       case DT_PATH:
+      case DT_COMMAND:
       case DT_STRING:
         if (mutt_str_strncmp("my_", param, 3) == 0)
         {

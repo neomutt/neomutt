@@ -959,7 +959,8 @@ enum DataType
   DT_MAGIC,
   DT_SYNONYM,
   DT_ADDRESS,
-  DT_MBTABLE
+  DT_MBTABLE,
+  DT_COMMAND,
 };
 
 struct VariableTypes
@@ -980,6 +981,7 @@ struct VariableTypes
   { "DT_SYNONYM", NULL },
   { "DT_ADDRESS", "e-mail address" },
   { "DT_MBTABLE", "string" },
+  { "DT_COMMAND", "command" },
   { NULL, NULL },
 };
 
@@ -1051,6 +1053,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     case DT_REGEX:
     case DT_ADDRESS:
     case DT_PATH:
+    case DT_COMMAND:
     case DT_MBTABLE:
     {
       if (strcmp(s, "0") == 0)
@@ -1171,7 +1174,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     case F_CONF:
     {
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
@@ -1183,7 +1186,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1203,7 +1206,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1231,7 +1234,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         if (val && *val)
         {
