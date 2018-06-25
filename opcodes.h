@@ -142,6 +142,7 @@
   _fmt(OP_HALF_DOWN,                      N_("scroll down 1/2 page")) \
   _fmt(OP_HALF_UP,                        N_("scroll up 1/2 page")) \
   _fmt(OP_HELP,                           N_("this screen")) \
+  _fmt(OP_HELP_BOX,                       N_("open help mailbox")) \
   _fmt(OP_JUMP,                           N_("jump to an index number")) \
   _fmt(OP_LAST_ENTRY,                     N_("move to the last entry")) \
   _fmt(OP_LIMIT_CURRENT_THREAD,           N_("limit view to current thread")) \

@@ -103,6 +103,7 @@ WHERE char *C_DsnNotify;                     ///< Config: Request notification f
 WHERE char *C_DsnReturn;                     ///< Config: What to send as a notification of message delivery or delay
 WHERE char *C_Editor;                        ///< Config: External command to use as an email editor
 WHERE char *C_ExternalSearchCommand;         ///< Config: External search command
+WHERE char *C_HelpDocDir;
 WHERE char *C_Hostname;                      ///< Config: Fully-qualified domain name of this machine
 WHERE char *C_IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
