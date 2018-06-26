@@ -24,6 +24,7 @@
 #define _MUTT_MONITOR_H
 
 extern int MonitorFilesChanged;
+extern int MonitorContextChanged;
 
 struct Mailbox;
 

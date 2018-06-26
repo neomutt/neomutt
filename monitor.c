@@ -41,6 +41,7 @@
 #include "mx.h"
 
 int MonitorFilesChanged;
+int MonitorContextChanged;
 
 struct Monitor
 {
@@ -57,6 +58,8 @@ static struct Monitor *Monitor = NULL;
 static size_t PollFdsCount = 0;
 static size_t PollFdsLen = 0;
 static struct pollfd *PollFds;
+
+static int MonitorContextDescriptor = -1;
 
 struct MonitorInfo
 {
@@ -174,7 +177,7 @@ static void monitor_delete(struct Monitor *monitor)
 
 static int monitor_handle_ignore(int desc)
 {
-  int new_descr = -1;
+  int new_desc = -1;
   struct Monitor *iter = Monitor;
   struct stat sb;
 
@@ -185,7 +188,7 @@ static int monitor_handle_ignore(int desc)
   {
     if (iter->magic == MUTT_MH && stat(iter->mh_backup_path, &sb) == 0)
     {
-      if ((new_descr = inotify_add_watch(INotifyFd, iter->mh_backup_path,
+      if ((new_desc = inotify_add_watch(INotifyFd, iter->mh_backup_path,
                                          INOTIFY_MASK_FILE)) == -1)
       {
         mutt_debug(2, "inotify_add_watch failed for '%s', errno=%d %s\n",
@@ -196,7 +199,7 @@ static int monitor_handle_ignore(int desc)
         mutt_debug(3, "inotify_add_watch descriptor=%d for '%s'\n", desc, iter->mh_backup_path);
         iter->st_dev = sb.st_dev;
         iter->st_ino = sb.st_ino;
-        iter->desc = new_descr;
+        iter->desc = new_desc;
       }
     }
     else
@@ -204,14 +207,17 @@ static int monitor_handle_ignore(int desc)
       mutt_debug(3, "cleanup watch (implicitely removed) - descriptor=%d\n", desc);
     }
 
-    if (new_descr == -1)
+    if (MonitorContextDescriptor == desc)
+      MonitorContextDescriptor = new_desc;
+
+    if (new_desc == -1)
     {
       monitor_delete(iter);
       monitor_check_free();
     }
   }
 
-  return new_descr;
+  return new_desc;
 }
 
 #define EVENT_BUFLEN MAX(4096, sizeof(struct inotify_event) + NAME_MAX + 1)
@@ -285,6 +291,8 @@ int mutt_monitor_poll(void)
                            event->mask);
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);
+                else if (event->wd == MonitorContextDescriptor)
+                  MonitorContextChanged = 1;
                 ptr += sizeof(struct inotify_event) + event->len;
               }
             }
@@ -384,7 +392,11 @@ int mutt_monitor_add(struct Mailbox *mailbox)
 
   desc = monitor_resolve(&info, mailbox);
   if (desc != RESOLVERES_OK_NOTEXISTING)
+  {
+    if (!mailbox && (desc == RESOLVERES_OK_EXISTING))
+      MonitorContextDescriptor = info.monitor->desc;
     return desc == RESOLVERES_OK_EXISTING ? 0 : -1;
+  }
 
   mask = info.isdir ? INOTIFY_MASK_DIR : INOTIFY_MASK_FILE;
   if ((INotifyFd == -1 && monitor_init() == -1) ||
@@ -396,6 +408,9 @@ int mutt_monitor_add(struct Mailbox *mailbox)
   }
 
   mutt_debug(3, "inotify_add_watch descriptor=%d for '%s'\n", desc, info.path);
+  if (!mailbox)
+    MonitorContextDescriptor = desc;
+
   monitor_create(&info, desc);
   return 0;
 }
@@ -432,6 +447,9 @@ int mutt_monitor_remove(struct Mailbox *mailbox)
   inotify_rm_watch(info.monitor->desc, INotifyFd);
   mutt_debug(3, "inotify_rm_watch for '%s' descriptor=%d\n", info.path,
              info.monitor->desc);
+
+  if (!mailbox && (MonitorContextDescriptor == info.monitor->desc))
+    MonitorContextDescriptor = -1;
 
   monitor_delete(info.monitor);
   monitor_check_free();
