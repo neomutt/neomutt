@@ -333,17 +333,19 @@ int mx_get_magic(const char *path)
  */
 int mx_set_magic(const char *s)
 {
+  int type;
   if (mutt_str_strcasecmp(s, "mbox") == 0)
-    MboxType = MUTT_MBOX;
+    type = MUTT_MBOX;
   else if (mutt_str_strcasecmp(s, "mmdf") == 0)
-    MboxType = MUTT_MMDF;
+    type = MUTT_MMDF;
   else if (mutt_str_strcasecmp(s, "mh") == 0)
-    MboxType = MUTT_MH;
+    type = MUTT_MH;
   else if (mutt_str_strcasecmp(s, "maildir") == 0)
-    MboxType = MUTT_MAILDIR;
+    type = MUTT_MAILDIR;
   else
     return -1;
 
+  MboxType = type;
   return 0;
 }
 

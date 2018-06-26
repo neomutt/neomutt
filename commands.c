@@ -557,6 +557,7 @@ void mutt_print_message(struct Header *h)
 int mutt_select_sort(int reverse)
 {
   int method = Sort; /* save the current method in case of abort */
+  int new_sort = -1;
 
   switch (mutt_multi_choice(reverse ?
                                 /* L10N: The highlighted letters must match the "Sort" options */
@@ -574,52 +575,53 @@ int mutt_select_sort(int reverse)
       return -1;
 
     case 1: /* (d)ate */
-      Sort = SORT_DATE;
+      new_sort = SORT_DATE;
       break;
 
     case 2: /* (f)rm */
-      Sort = SORT_FROM;
+      new_sort = SORT_FROM;
       break;
 
     case 3: /* (r)ecv */
-      Sort = SORT_RECEIVED;
+      new_sort = SORT_RECEIVED;
       break;
 
     case 4: /* (s)ubj */
-      Sort = SORT_SUBJECT;
+      new_sort = SORT_SUBJECT;
       break;
 
     case 5: /* t(o) */
-      Sort = SORT_TO;
+      new_sort = SORT_TO;
       break;
 
     case 6: /* (t)hread */
-      Sort = SORT_THREADS;
+      new_sort = SORT_THREADS;
       break;
 
     case 7: /* (u)nsort */
-      Sort = SORT_ORDER;
+      new_sort = SORT_ORDER;
       break;
 
     case 8: /* si(z)e */
-      Sort = SORT_SIZE;
+      new_sort = SORT_SIZE;
       break;
 
     case 9: /* s(c)ore */
-      Sort = SORT_SCORE;
+      new_sort = SORT_SCORE;
       break;
 
     case 10: /* s(p)am */
-      Sort = SORT_SPAM;
+      new_sort = SORT_SPAM;
       break;
 
     case 11: /* (l)abel */
-      Sort = SORT_LABEL;
+      new_sort = SORT_LABEL;
       break;
   }
   if (reverse)
-    Sort |= SORT_REVERSE;
+    new_sort |= SORT_REVERSE;
 
+  Sort = new_sort;
   return (Sort != method ? 0 : -1); /* no need to resort if it's the same */
 }
 
