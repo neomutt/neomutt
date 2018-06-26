@@ -34,17 +34,21 @@
 #include "conn/conn.h"
 #include "mutt_account.h"
 #include "curs_lib.h"
+#include "filter.h"
 #include "globals.h"
 #include "options.h"
+#include "pop/pop.h"
 
 /* These Config Variables are only used in mutt_account.c */
 char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
+char *ImapOauthRefreshCmd;
 char *ImapPass; ///< Config: (imap) Password for the IMAP server
 char *NntpPass; ///< Config: (nntp) Password for the news server
 char *NntpUser; ///< Config: (nntp) Username for the news server
 char *PopPass;  ///< Config: (pop) Password of the POP server
 char *PopUser;  ///< Config: (pop) Username of the POP server
 char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
+char *SmtpOauthRefreshCmd;
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
@@ -329,4 +333,83 @@ int mutt_account_getpass(struct Account *account)
 void mutt_account_unsetpass(struct Account *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;
+}
+
+/* mutt_account_getoauthbearer: call external command to generate the
+ * oauth refresh token for this ACCOUNT, then create and encode the
+ * OAUTHBEARER token based on RFC 7628.  Returns NULL on failure.
+ * Resulting token is dynamically allocated and should be FREE'd by the
+ * caller.
+ */
+char *mutt_account_getoauthbearer(struct Account *account)
+{
+  FILE *fp;
+  char *cmd = NULL;
+  char *token = NULL;
+  size_t token_size = 0;
+  char *oauthbearer = NULL;
+  size_t oalen;
+  char *encoded_token = NULL;
+  size_t encoded_len;
+  pid_t pid;
+
+  /* The oauthbearer token includes the login */
+  if (mutt_account_getlogin(account))
+    return NULL;
+
+#ifdef USE_IMAP
+  if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapOauthRefreshCmd)
+    cmd = ImapOauthRefreshCmd;
+#endif
+#ifdef USE_POP
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopOauthRefreshCmd)
+    cmd = PopOauthRefreshCmd;
+#endif
+#ifdef USE_SMTP
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpOauthRefreshCmd)
+    cmd = SmtpOauthRefreshCmd;
+#endif
+
+  if (cmd == NULL)
+  {
+    mutt_error(
+        _("mutt_account_getoauthbearer: No OAUTH refresh command defined"));
+    return NULL;
+  }
+
+  if ((pid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
+  {
+    mutt_perror(
+        _("mutt_account_getoauthbearer: Unable to run refresh command"));
+    return NULL;
+  }
+
+  /* read line */
+  token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
+  mutt_file_fclose(&fp);
+  mutt_wait_filter(pid);
+
+  if (token == NULL || *token == '\0')
+  {
+    mutt_error(_("mutt_account_getoauthbearer: Command returned empty string"));
+    FREE(&token);
+    return NULL;
+  }
+
+  /* Determine the length of the keyed message digest, add 50 for
+   * overhead.
+   */
+  oalen = strlen(account->login) + strlen(account->host) + strlen(token) + 50;
+  oauthbearer = mutt_mem_malloc(oalen);
+
+  snprintf(oauthbearer, oalen, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
+           account->login, account->host, account->port, token);
+
+  FREE(&token);
+
+  encoded_len = strlen(oauthbearer) * 4 / 3 + 10;
+  encoded_token = mutt_mem_malloc(encoded_len);
+  mutt_b64_encode(oauthbearer, strlen(oauthbearer), encoded_token, encoded_len);
+  FREE(&oauthbearer);
+  return encoded_token;
 }

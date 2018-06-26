@@ -65,6 +65,9 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   const char *pc = NULL;
   unsigned int len = 0, olen = 0, client_start;
 
+  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+    return POP_A_FAILURE;
+
   if (mutt_sasl_client_new(pop_data->conn, &saslconn) < 0)
   {
     mutt_debug(1, "Error allocating SASL connection.\n");
@@ -233,6 +236,9 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   char hash[33];
   char buf[LONG_STRING];
 
+  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+    return POP_A_FAILURE;
+
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
 
@@ -281,6 +287,9 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
   if (!pop_data->cmd_user)
     return POP_A_UNAVAIL;
 
+  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+    return POP_A_FAILURE;
+
   mutt_message(_("Logging in..."));
 
   snprintf(buf, sizeof(buf), "USER %s\r\n", pop_data->conn->account.user);
@@ -326,13 +335,66 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
   return POP_A_FAILURE;
 }
 
+/* OAUTHBEARER authenticator */
+static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *method)
+{
+  char *oauthbearer = NULL;
+  char decoded_err[LONG_STRING];
+  char *err = NULL;
+  char *auth_cmd = NULL;
+  size_t auth_cmd_len;
+  int ret, len;
+
+  mutt_message(_("Authenticating (OAUTHBEARER)..."));
+
+  oauthbearer = mutt_account_getoauthbearer(&pop_data->conn->account);
+  if (oauthbearer == NULL)
+    return POP_A_FAILURE;
+
+  auth_cmd_len = strlen(oauthbearer) + 30;
+  auth_cmd = mutt_mem_malloc(auth_cmd_len);
+  snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
+  FREE(&oauthbearer);
+
+  ret = pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
+#ifdef DEBUG
+                    /* don't print the bearer token unless we're at the ungodly debugging level */
+                    DebugLevel < MUTT_SOCK_LOG_FULL ? "AUTH OAUTHBEARER *\r\n" :
+#endif
+                                                      NULL);
+  FREE(&auth_cmd);
+
+  switch (ret)
+  {
+    case 0:
+      return POP_A_SUCCESS;
+    case -1:
+      return POP_A_SOCKET;
+  }
+
+  /* The error response was a SASL continuation, so "continue" it.
+   * See RFC 7628 3.2.3
+   */
+  mutt_socket_send(pop_data->conn, "\001");
+
+  err = pop_data->err_msg;
+  len = mutt_b64_decode(pop_data->err_msg, decoded_err, sizeof(decoded_err) - 1);
+  if (len >= 0)
+  {
+    decoded_err[len] = '\0';
+    err = decoded_err;
+  }
+  mutt_error("%s %s", _("Authentication failed."), err);
+
+  return POP_A_FAILURE;
+}
+
 static const struct PopAuth pop_authenticators[] = {
+  { pop_auth_oauth, "oauthbearer" },
 #ifdef USE_SASL
   { pop_auth_sasl, NULL },
 #endif
-  { pop_auth_apop, "apop" },
-  { pop_auth_user, "user" },
-  { NULL, NULL },
+  { pop_auth_apop, "apop" },         { pop_auth_user, "user" }, { NULL, NULL },
 };
 
 /**
@@ -354,8 +416,7 @@ int pop_authenticate(struct PopData *pop_data)
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
-  if ((mutt_account_getuser(acct) < 0) || (acct->user[0] == '\0') ||
-      (mutt_account_getpass(acct) < 0) || (acct->pass[0] == '\0'))
+  if ((mutt_account_getuser(acct) < 0) || (acct->user[0] == '\0'))
   {
     return -3;
   }

@@ -30,12 +30,14 @@ struct Url;
 
 /* These Config Variables are only used in mutt_account.c */
 extern char *ImapLogin;
+extern char *ImapOauthRefreshCmd;
 extern char *ImapPass;
 extern char *NntpPass;
 extern char *NntpUser;
 extern char *PopPass;
 extern char *PopUser;
 extern char *SmtpPass;
+extern char *SmtpOauthRefreshCmd;
 
 /**
  * enum AccountType - account types
@@ -63,5 +65,6 @@ int mutt_account_getuser(struct Account *account);
 int mutt_account_getlogin(struct Account *account);
 int mutt_account_getpass(struct Account *account);
 void mutt_account_unsetpass(struct Account *account);
+char *mutt_account_getoauthbearer(struct Account *account);
 
 #endif /* _MUTT_ACCOUNT_H */

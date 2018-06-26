@@ -67,7 +67,8 @@ struct BodyCache;
 short PopCheckinterval; ///< Config: (pop) Interval between checks for new mail
 unsigned char PopDelete; ///< Config: (pop) After downloading POP messages, delete them on the server
 char *PopHost; ///< Config: (pop) Url of the POP server
-bool PopLast;  ///< Config: (pop) Use the 'LAST' command to fetch new mail
+char *PopOauthRefreshCmd;
+bool PopLast; ///< Config: (pop) Use the 'LAST' command to fetch new mail
 
 #ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */

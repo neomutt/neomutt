@@ -42,6 +42,7 @@
 extern short         PopCheckinterval;
 extern unsigned char PopDelete;
 extern char *        PopHost;
+extern char *PopOauthRefreshCmd;
 extern bool          PopLast;
 
 /* These Config Variables are only used in pop/pop_auth.c */
