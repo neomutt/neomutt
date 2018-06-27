@@ -292,7 +292,7 @@ int mutt_log_set_level(int level, bool verbose)
   if (log_file_set_level(level, verbose) != 0)
     return -1;
 
-  DebugLevel = level;
+  cs_str_native_set(Config, "debug_level", level, NULL);
   return 0;
 }
 

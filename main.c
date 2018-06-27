@@ -915,7 +915,7 @@ int main(int argc, char *argv[], char *envp[])
           if (mutt_str_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
           {
             if (ResumeEditedDraftFiles)
-              ResumeDraftFiles = true;
+              cs_str_native_set(Config, "resume_draft_files", true, NULL);
 
             STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
             FREE(&np->data);

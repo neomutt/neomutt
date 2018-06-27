@@ -1639,7 +1639,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
-        ImapListSubscribed = !ImapListSubscribed;
+        bool_str_toggle(Config, "imap_list_subscribed", NULL);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;
@@ -1830,77 +1830,56 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         break;
 
       case OP_ENTER_MASK:
-
+      {
         mutt_str_strfcpy(buf, NONULL(Mask ? Mask->pattern : NULL), sizeof(buf));
-        if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) == 0)
+        if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
+          break;
+
+        buffy = 0;
+        /* assume that the user wants to see everything */
+        if (!buf[0])
+          mutt_str_strfcpy(buf, ".", sizeof(buf));
+
+        struct Buffer errmsg = { 0 };
+        int rc = cs_str_string_set(Config, "mask", buf, NULL);
+        if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
-          regex_t *rx = mutt_mem_malloc(sizeof(regex_t));
-          char *s = buf;
-          int not = 0, err;
-
-          buffy = 0;
-          /* assume that the user wants to see everything */
-          if (!buf[0])
-            mutt_str_strfcpy(buf, ".", sizeof(buf));
-          SKIPWS(s);
-          if (*s == '!')
+          if (!mutt_buffer_is_empty(&errmsg))
           {
-            s++;
-            SKIPWS(s);
-            not = 1;
+            mutt_error("%s", errmsg.data);
+            FREE(&errmsg.data);
           }
+          break;
+        }
 
-          err = REGCOMP(rx, s, REG_NOSUB);
-          if (err != 0)
-          {
-            regerror(err, rx, buf, sizeof(buf));
-            FREE(&rx);
-            mutt_error("%s", buf);
-          }
-          else
-          {
-            if (Mask && Mask->regex)
-            {
-              regfree(Mask->regex);
-              FREE(&Mask->regex);
-            }
-            else
-            {
-              Mask = mutt_mem_calloc(1, sizeof(struct Regex));
-            }
-            mutt_str_replace(&Mask->pattern, buf);
-            Mask->regex = rx;
-            Mask->not = not;
-
-            destroy_state(&state);
+        destroy_state(&state);
 #ifdef USE_IMAP
-            if (state.imap_browse)
-            {
-              init_state(&state, NULL);
-              state.imap_browse = true;
-              imap_browse(LastDir, &state);
-              browser_sort(&state);
-              menu->data = state.entry;
-              init_menu(&state, menu, title, sizeof(title), buffy);
-            }
-            else
+        if (state.imap_browse)
+        {
+          init_state(&state, NULL);
+          state.imap_browse = true;
+          imap_browse(LastDir, &state);
+          browser_sort(&state);
+          menu->data = state.entry;
+          init_menu(&state, menu, title, sizeof(title), buffy);
+        }
+        else
 #endif
-                if (examine_directory(menu, &state, LastDir, NULL) == 0)
-              init_menu(&state, menu, title, sizeof(title), buffy);
-            else
-            {
-              mutt_error(_("Error scanning directory."));
-              goto bail;
-            }
-            kill_prefix = 0;
-            if (state.entrylen == 0)
-            {
-              mutt_error(_("No files match the file mask"));
-              break;
-            }
-          }
+            if (examine_directory(menu, &state, LastDir, NULL) == 0)
+          init_menu(&state, menu, title, sizeof(title), buffy);
+        else
+        {
+          mutt_error(_("Error scanning directory."));
+          goto bail;
+        }
+        kill_prefix = 0;
+        if (state.entrylen == 0)
+        {
+          mutt_error(_("No files match the file mask"));
+          break;
         }
         break;
+      }
 
       case OP_SORT:
       case OP_SORT_REVERSE:
@@ -1961,7 +1940,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           browser_highlight_default(&state, menu);
           menu->redraw = REDRAW_FULL;
         }
-        SortBrowser = sort;
+        cs_str_native_set(Config, "sort_browser", sort, NULL);
         break;
       }
 
@@ -2080,10 +2059,9 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         if (OptNews)
         {
           struct FolderFile *ff = &state.entry[menu->current];
-          int rc;
           struct NntpData *nntp_data = NULL;
 
-          rc = nntp_newsrc_parse(CurrentNewsSrv);
+          int rc = nntp_newsrc_parse(CurrentNewsSrv);
           if (rc < 0)
             break;
 
@@ -2149,7 +2127,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
           char *s = buf;
-          int rc, j = menu->current;
+          int j = menu->current;
 
           if (i == OP_SUBSCRIBE_PATTERN || i == OP_UNSUBSCRIBE_PATTERN)
           {
@@ -2183,7 +2161,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             break;
           }
 
-          rc = nntp_newsrc_parse(nserv);
+          int rc = nntp_newsrc_parse(nserv);
           if (rc < 0)
             break;
 

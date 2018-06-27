@@ -2373,7 +2373,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (query_quadoption(Quit, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
-          Quit = MUTT_YES;
+          cs_str_native_set(Config, "quit", MUTT_YES, NULL);
           ch = -1;
         }
         break;
@@ -3320,7 +3320,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        SidebarVisible = !SidebarVisible;
+        bool_str_toggle(Config, "sidebar_visible", NULL);
         mutt_window_reflow();
         break;
 #endif

@@ -648,7 +648,7 @@ int mutt_select_sort(int reverse)
   if (reverse)
     new_sort |= SORT_REVERSE;
 
-  Sort = new_sort;
+  cs_str_native_set(Config, "sort", new_sort, NULL);
   return (Sort != method) ? 0 : -1; /* no need to resort if it's the same */
 }
 

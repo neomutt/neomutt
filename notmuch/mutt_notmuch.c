@@ -353,7 +353,7 @@ static bool query_window_check_timebase(const char *timebase)
 static void query_window_reset(void)
 {
   mutt_debug(2, "entering\n");
-  NmQueryWindowCurrentPosition = 0;
+  cs_str_native_set(Config, "nm_query_window_current_position", 0, NULL);
 }
 
 /**
