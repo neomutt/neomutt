@@ -2961,7 +2961,7 @@ struct Option MuttVars[] = {
   ** command to create a ``Bcc:'' field with your email address in it.)
   ** .pp
   ** The value of \fI$$record\fP is overridden by the $$force_name and
-  ** $$save_name variables, and the ``$fcc-hook'' command.
+  ** $$save_name variables, and the ``$fcc-hook'' command.  Also see $$copy.
   */
   { "reflow_space_quotes",      DT_BOOL, R_NONE, &ReflowSpaceQuotes, true },
   /*
