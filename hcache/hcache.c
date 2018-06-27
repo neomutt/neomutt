@@ -132,7 +132,7 @@ static bool crc_matches(const char *d, unsigned int crc)
 
   unsigned int mycrc = *(unsigned int *) (d + sizeof(union Validate));
 
-  return (crc == mycrc);
+  return crc == mycrc;
 }
 
 /**
@@ -485,5 +485,5 @@ const char *mutt_hcache_backend_list(void)
  */
 bool mutt_hcache_is_valid_backend(const char *s)
 {
-  return (hcache_get_backend_ops(s) != NULL);
+  return hcache_get_backend_ops(s) != NULL;
 }

@@ -52,7 +52,7 @@ static const struct Binding *help_lookup_function(int op, int menu)
     /* first look in the generic map for the function */
     for (int i = 0; OpGeneric[i].name; i++)
       if (OpGeneric[i].op == op)
-        return (&OpGeneric[i]);
+        return &OpGeneric[i];
   }
 
   map = km_get_table(menu);
@@ -60,7 +60,7 @@ static const struct Binding *help_lookup_function(int op, int menu)
   {
     for (int i = 0; map[i].name; i++)
       if (map[i].op == op)
-        return (&map[i]);
+        return &map[i];
   }
 
   return NULL;
@@ -161,7 +161,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
       fprintf(f, "?");
     }
   }
-  return (maxwidth - n);
+  return maxwidth - n;
 }
 
 static int get_wrapped_width(const char *t, size_t wid)
@@ -207,7 +207,7 @@ static int pad(FILE *f, int col, int i)
     return i;
   }
   fputc(' ', f);
-  return (col + 1);
+  return col + 1;
 }
 
 static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3)

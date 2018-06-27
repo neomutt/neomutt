@@ -370,7 +370,7 @@ static size_t escape_string(char *buf, size_t buflen, const char *src)
     src++;
   }
   *p = '\0';
-  return (p - buf);
+  return p - buf;
 }
 
 /**
@@ -1353,7 +1353,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
  */
 static int toggle_quadoption(int opt)
 {
-  return (opt ^= 1);
+  return opt ^= 1;
 }
 
 /**
@@ -1363,8 +1363,9 @@ static int toggle_quadoption(int opt)
  */
 static bool valid_show_multipart_alternative(const char *val)
 {
-  return ((mutt_str_strcmp(val, "inline") == 0) ||
-          (mutt_str_strcmp(val, "info") == 0) || !val || (*val == 0));
+  return (mutt_str_strcmp(val, "inline") == 0) ||
+         (mutt_str_strcmp(val, "info")   == 0) ||
+         !val || (*val == 0);
 }
 
 /**
@@ -4098,9 +4099,9 @@ int mutt_option_index(const char *s)
   {
     if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
     {
-      return (MuttVars[i].type == DT_SYNONYM ?
+      return MuttVars[i].type == DT_SYNONYM ?
                   mutt_option_index((char *) MuttVars[i].initial) :
-                  i);
+                  i;
     }
   }
   return -1;

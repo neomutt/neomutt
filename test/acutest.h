@@ -309,7 +309,7 @@ test_check__(int cond, const char* file, int line, const char* fmt, ...)
         test_current_already_logged__++;
     }
 
-    return (cond != 0);
+    return cond != 0;
 }
 
 void

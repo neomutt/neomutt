@@ -1205,8 +1205,8 @@ bool mutt_is_message_type(int type, const char *subtype)
     return false;
 
   subtype = NONULL(subtype);
-  return ((mutt_str_strcasecmp(subtype, "rfc822") == 0) ||
-          (mutt_str_strcasecmp(subtype, "news") == 0));
+  return (mutt_str_strcasecmp(subtype, "rfc822") == 0) ||
+         (mutt_str_strcasecmp(subtype, "news") == 0);
 }
 
 /**

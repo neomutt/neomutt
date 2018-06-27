@@ -923,7 +923,7 @@ static int ssl_cache_trusted_cert(X509 *c)
   mutt_debug(1, "trusted\n");
   if (!SslSessionCerts)
     SslSessionCerts = sk_X509_new_null();
-  return (sk_X509_push(SslSessionCerts, X509_dup(c)));
+  return sk_X509_push(SslSessionCerts, X509_dup(c));
 }
 
 /**
@@ -1095,7 +1095,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   mutt_debug(2, "done=%d\n", done);
-  return (done == 2);
+  return done == 2;
 }
 
 /**

@@ -115,7 +115,7 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 1;
   }
 
-  return (r == 0);
+  return r == 0;
 }
 
 /**
@@ -903,7 +903,7 @@ int mutt_comp_valid_command(const char *cmd)
   if (!cmd)
     return 0;
 
-  return (strstr(cmd, "%f") && strstr(cmd, "%t"));
+  return strstr(cmd, "%f") && strstr(cmd, "%t");
 }
 
 // clang-format off

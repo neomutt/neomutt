@@ -66,7 +66,7 @@ static long micro_elapsed(const struct timeval *begin, const struct timeval *end
   if ((begin->tv_sec == 0) && (end->tv_sec != 0))
     return LONG_MAX;
 
-  return ((end->tv_sec - begin->tv_sec) * S_TO_US) + (end->tv_usec - begin->tv_usec);
+  return (end->tv_sec - begin->tv_sec) * S_TO_US + (end->tv_usec - begin->tv_usec);
 }
 
 /**

@@ -83,15 +83,15 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 #endif
 
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return (strcmp(a1->user, a2->user) == 0);
+    return strcmp(a1->user, a2->user) == 0;
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
     return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
 #endif
   if (a1->flags & MUTT_ACCT_USER)
-    return (strcmp(a1->user, user) == 0);
+    return strcmp(a1->user, user) == 0;
   if (a2->flags & MUTT_ACCT_USER)
-    return (strcmp(a2->user, user) == 0);
+    return strcmp(a2->user, user) == 0;
 
   return 1;
 }

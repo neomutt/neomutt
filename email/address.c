@@ -145,7 +145,7 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
         token[*tokenlen] = *s;
     }
     else if (*s == '"')
-      return (s + 1);
+      return s + 1;
     (*tokenlen)++;
     s++;
   }
@@ -171,7 +171,7 @@ static const char *next_token(const char *s, char *token, size_t *tokenlen, size
   {
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
-    return (s + 1);
+    return s + 1;
   }
   while (*s)
   {
@@ -1184,7 +1184,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
   }
 done:
   *pbuf = 0;
-  return (pbuf - buf);
+  return pbuf - buf;
 }
 
 /**

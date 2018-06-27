@@ -348,18 +348,18 @@ static int compare_key_address(const void *a, const void *b)
 
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
-    return (r > 0);
+    return r > 0;
   else
   {
-    return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
-                                pgp_fpr_or_lkeyid((*t)->parent)) > 0);
+    return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
+                               pgp_fpr_or_lkeyid((*t)->parent)) > 0;
   }
 }
 
 static int pgp_compare_address(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
-                                         compare_key_address(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
+                                         compare_key_address(a, b);
 }
 
 static int compare_keyid(const void *a, const void *b)
@@ -371,14 +371,14 @@ static int compare_keyid(const void *a, const void *b)
 
   r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
   if (r != 0)
-    return (r > 0);
+    return r > 0;
   else
-    return (mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0);
+    return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
 }
 
 static int pgp_compare_keyid(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b);
 }
 
 static int compare_key_date(const void *a, const void *b)
@@ -389,13 +389,13 @@ static int compare_key_date(const void *a, const void *b)
 
   r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
   if (r != 0)
-    return (r > 0);
-  return (mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0);
+    return r > 0;
+  return mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0;
 }
 
 static int pgp_compare_date(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b);
 }
 
 static int compare_key_trust(const void *a, const void *b)
@@ -408,27 +408,27 @@ static int compare_key_trust(const void *a, const void *b)
   r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS)) -
        ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)));
   if (r != 0)
-    return (r > 0);
+    return r > 0;
   r = ((*s)->trust - (*t)->trust);
   if (r != 0)
-    return (r < 0);
+    return r < 0;
   r = ((*s)->parent->keylen - (*t)->parent->keylen);
   if (r != 0)
-    return (r < 0);
+    return r < 0;
   r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
   if (r != 0)
-    return (r < 0);
+    return r < 0;
   r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
   if (r != 0)
-    return (r > 0);
-  return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
-                              pgp_fpr_or_lkeyid((*t)->parent)) > 0);
+    return r > 0;
+  return mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
+                             pgp_fpr_or_lkeyid((*t)->parent)) > 0;
 }
 
 static int pgp_compare_trust(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
-                                         compare_key_trust(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
+                                         compare_key_trust(a, b);
 }
 
 static bool pgp_key_is_valid(struct PgpKeyInfo *k)

@@ -1093,7 +1093,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
       (mutt_str_strcasecmp("application/postscript", type) == 0))
   {
-    return (mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL));
+    return mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL);
   }
   else if (mutt_can_decode(a))
   {

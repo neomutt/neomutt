@@ -139,7 +139,7 @@ struct MxOps *mx_get_ops(int magic)
  */
 static bool mutt_is_spool(const char *str)
 {
-  return (mutt_str_strcmp(Spoolfile, str) == 0);
+  return mutt_str_strcmp(Spoolfile, str) == 0;
 }
 
 #ifdef USE_IMAP

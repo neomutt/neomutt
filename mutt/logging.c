@@ -214,7 +214,7 @@ void log_file_set_version(const char *version)
  */
 bool log_file_running(void)
 {
-  return (LogFileFP != NULL);
+  return LogFileFP != NULL;
 }
 
 /**
