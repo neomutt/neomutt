@@ -2351,7 +2351,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   if (!changed)
     return 0; /* nothing to do */
 
-  /* Update the modification times on the mailbox.
+    /* Update the modification times on the mailbox.
    *
    * The monitor code notices changes in the open mailbox too quickly.
    * In practice, this sometimes leads to all the new messages not being
@@ -2363,8 +2363,8 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   else
 #endif
   {
-    mutt_get_stat_timespec (&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec (&ctx->mtime, &st_new, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mtime, &st_new, MUTT_STAT_MTIME);
   }
 
   /* do a fast scan of just the filenames in
@@ -2531,20 +2531,20 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   if (!modified)
     return 0;
 
-  /* Update the modification times on the mailbox.
-   *
-   * The monitor code notices changes in the open mailbox too quickly.
-   * In practice, this sometimes leads to all the new messages not being
-   * noticed during the SAME group of mtime stat updates.  To work around
-   * the problem, don't update the stat times for a monitor caused check. */
+    /* Update the modification times on the mailbox.
+     *
+     * The monitor code notices changes in the open mailbox too quickly.
+     * In practice, this sometimes leads to all the new messages not being
+     * noticed during the SAME group of mtime stat updates.  To work around
+     * the problem, don't update the stat times for a monitor caused check. */
 #ifdef USE_INOTIFY
   if (MonitorContextChanged)
     MonitorContextChanged = 0;
   else
 #endif
   {
-    mutt_get_stat_timespec (&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec (&ctx->mtime, &st, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
   }
 
   md = NULL;

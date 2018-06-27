@@ -189,7 +189,7 @@ static int monitor_handle_ignore(int desc)
     if (iter->magic == MUTT_MH && stat(iter->mh_backup_path, &sb) == 0)
     {
       if ((new_desc = inotify_add_watch(INotifyFd, iter->mh_backup_path,
-                                         INOTIFY_MASK_FILE)) == -1)
+                                        INOTIFY_MASK_FILE)) == -1)
       {
         mutt_debug(2, "inotify_add_watch failed for '%s', errno=%d %s\n",
                    iter->mh_backup_path, errno, strerror(errno));
@@ -429,6 +429,9 @@ int mutt_monitor_remove(struct Mailbox *mailbox)
   if (monitor_resolve(&info, mailbox) != RESOLVERES_OK_EXISTING)
     return 2;
 
+  if (!mailbox && (MonitorContextDescriptor == info.monitor->desc))
+    MonitorContextDescriptor = -1;
+
   if (Context)
   {
     if (mailbox)
@@ -447,9 +450,6 @@ int mutt_monitor_remove(struct Mailbox *mailbox)
   inotify_rm_watch(info.monitor->desc, INotifyFd);
   mutt_debug(3, "inotify_rm_watch for '%s' descriptor=%d\n", info.path,
              info.monitor->desc);
-
-  if (!mailbox && (MonitorContextDescriptor == info.monitor->desc))
-    MonitorContextDescriptor = -1;
 
   monitor_delete(info.monitor);
   monitor_check_free();
