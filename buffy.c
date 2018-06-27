@@ -889,7 +889,7 @@ void mutt_buffy_setnotified(const char *path)
  */
 bool mutt_buffy_notify(void)
 {
-  if (BuffyNotify && (mutt_buffy_check(false) != 0))
+  if (mutt_buffy_check(false) && BuffyNotify)
   {
     return mutt_buffy_list();
   }
