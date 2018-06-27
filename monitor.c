@@ -426,11 +426,14 @@ int mutt_monitor_remove(struct Mailbox *mailbox)
 {
   struct MonitorInfo info, info2;
 
+  if (!mailbox)
+  {
+    MonitorContextDescriptor = -1;
+    MonitorContextChanged = 0;
+  }
+
   if (monitor_resolve(&info, mailbox) != RESOLVERES_OK_EXISTING)
     return 2;
-
-  if (!mailbox && (MonitorContextDescriptor == info.monitor->desc))
-    MonitorContextDescriptor = -1;
 
   if (Context)
   {
