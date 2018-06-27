@@ -103,7 +103,6 @@ char *mutt_extract_message_id(const char *s, const char **saveptr);
 struct Address *mutt_default_from(void);
 struct Address *mutt_remove_duplicates(struct Address *addr);
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
-struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 
 struct Body *mutt_make_file_attach(const char *path);
 struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, bool attach_msg);
