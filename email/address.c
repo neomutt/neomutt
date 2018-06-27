@@ -906,7 +906,7 @@ bool mutt_addr_search(struct Address *a, struct Address *lst)
  */
 bool mutt_addr_is_intl(struct Address *a)
 {
-  return (a->intl_checked && a->is_intl);
+  return a->intl_checked && a->is_intl;
 }
 
 /**
@@ -916,7 +916,7 @@ bool mutt_addr_is_intl(struct Address *a)
  */
 bool mutt_addr_is_local(struct Address *a)
 {
-  return (a->intl_checked && !a->is_intl);
+  return a->intl_checked && !a->is_intl;
 }
 
 /**
