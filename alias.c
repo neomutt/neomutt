@@ -442,7 +442,7 @@ retry_name:
     mutt_alias_free(&new);
     return;
   }
-  new->addr->personal = mutt_str_strdup(buf);
+  mutt_str_replace(&new->addr->personal, buf);
 
   buf[0] = '\0';
   mutt_addr_write(buf, sizeof(buf), new->addr, true);
