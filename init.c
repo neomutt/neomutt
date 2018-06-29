@@ -58,6 +58,7 @@
 #include "pattern.h"
 #include "protos.h"
 #include "sidebar.h"
+#include "url.h"
 #include "version.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
@@ -2210,10 +2211,13 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
 
-          struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-          if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+          if (url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
           {
-            mutt_error("Error: impossible to build path of '%s'.", scratch);
+            struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+            if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+            {
+              mutt_error("Error: impossible to build path of '%s'.", scratch);
+            }
           }
 
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
@@ -4258,10 +4262,13 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
 
-        struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-        if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+        if (url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
         {
-          mutt_error("Error: impossible to build path of '%s'.", scratch);
+          struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+          if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+          {
+            mutt_error("Error: impossible to build path of '%s'.", scratch);
+          }
         }
 
         /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
