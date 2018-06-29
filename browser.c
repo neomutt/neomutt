@@ -774,7 +774,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       return -1;
     }
 
-    mutt_buffy_check(false);
+    mutt_buffy_check(0);
 
     dp = opendir(d);
     if (!dp)
@@ -834,7 +834,7 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   if (!tmp)
     return -1;
 
-  mutt_buffy_check(false);
+  mutt_buffy_check(0);
 
   init_state(state, menu);
 
@@ -885,7 +885,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
     if (!Incoming)
       return -1;
-    mutt_buffy_check(false);
+    mutt_buffy_check(0);
 
     do
     {
@@ -1071,7 +1071,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     if (buffy)
     {
       menu->is_mailbox_list = 1;
-      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check(false));
+      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check(0));
     }
     else
     {

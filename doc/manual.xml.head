@@ -2163,6 +2163,20 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <variablelist>
           <varlistentry>
             <term>
+              <literal>&lt;check-stats&gt;</literal>
+              <anchor id="check-stats" />
+            </term>
+            <listitem>
+              <para>
+                Calculate statistics for all monitored mailboxes declared using
+                the <command>mailboxes</command>command. It will calculate
+                statistics despite <link linkend="mail-check-stats">$mail_check_stats</link>
+                being unset.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <literal>&lt;create-alias&gt;</literal> (default: a)
               <anchor id="create-alias" />
             </term>

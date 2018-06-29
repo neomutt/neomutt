@@ -44,6 +44,7 @@
   _fmt(OP_CATCHUP,                        N_("mark all articles in newsgroup as read")) \
   _fmt(OP_CHANGE_DIRECTORY,               N_("change directories")) \
   _fmt(OP_CHECK_NEW,                      N_("check mailboxes for new mail")) \
+  _fmt(OP_CHECK_STATS,                    N_("calculate message statistics for all mailboxes")) \
   _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach files to this message")) \
   _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach messages to this message")) \
   _fmt(OP_COMPOSE_ATTACH_NEWS_MESSAGE,    N_("attach news articles to this message")) \

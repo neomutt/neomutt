@@ -648,7 +648,7 @@ void mutt_shell_escape(void)
 
   if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);
-  mutt_buffy_check(true);
+  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE);
 }
 
 /**
@@ -1126,4 +1126,9 @@ int mutt_check_traditional_pgp(struct Header *h, int *redraw)
     }
   }
   return rc;
+}
+
+void mutt_check_stats(void)
+{
+  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE | MUTT_BUFFY_CHECK_FORCE_STATS);
 }

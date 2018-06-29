@@ -120,9 +120,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_buffy_check(false));
+        snprintf(buf, buflen, fmt, mutt_buffy_check(0));
       }
-      else if (mutt_buffy_check(false) == 0)
+      else if (mutt_buffy_check(0) == 0)
         optional = 0;
       break;
 

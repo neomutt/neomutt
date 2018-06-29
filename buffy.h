@@ -78,6 +78,10 @@ void mutt_buffy_setnotified(const char *path);
 
 bool mh_buffy(struct Buffy *mailbox, bool check_stats);
 
+/* force flags passed to mutt_buffy_check() */
+#define MUTT_BUFFY_CHECK_FORCE       (1 << 0)
+#define MUTT_BUFFY_CHECK_FORCE_STATS (1 << 1)
+
 /* These variables are backing for config items */
 WHERE short MailCheck;
 WHERE short MailCheckStatsInterval;

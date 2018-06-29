@@ -750,12 +750,16 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
 
 /**
  * mutt_buffy_check - Check all Incoming for new mail
- * @param force If true, ignore MailCheck and check for new mail anyway
+ * @param force Force flags, see below
  * @retval num Number of mailboxes with new mail
+ *
+ * The force argument may be any combination of the following values:
+ * - MUTT_BUFFY_CHECK_FORCE        ignore BuffyTimeout and check for new mail
+ * - MUTT_BUFFY_CHECK_FORCE_STATS  ignore BuffyTimeout and calculate statistics
  *
  * Check all Incoming for new mail and total/new/flagged messages
  */
-int mutt_buffy_check(bool force)
+int mutt_buffy_check(int force)
 {
   struct stat contex_sb;
   time_t t;
@@ -765,7 +769,7 @@ int mutt_buffy_check(bool force)
 
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
-  if (force)
+  if (force & MUTT_BUFFY_CHECK_FORCE)
     mutt_update_num_postponed();
 #endif
 
@@ -777,7 +781,8 @@ int mutt_buffy_check(bool force)
   if (!force && (t - BuffyTime < MailCheck))
     return BuffyCount;
 
-  if (MailCheckStats && (t - BuffyStatsTime >= MailCheckStatsInterval))
+  if ((force & MUTT_BUFFY_CHECK_FORCE_STATS) ||
+      (MailCheckStats && ((t - BuffyStatsTime) >= MailCheckStatsInterval)))
   {
     check_stats = true;
     BuffyStatsTime = t;
@@ -889,7 +894,7 @@ void mutt_buffy_setnotified(const char *path)
  */
 bool mutt_buffy_notify(void)
 {
-  if (mutt_buffy_check(false) && BuffyNotify)
+  if (mutt_buffy_check(0) && BuffyNotify)
   {
     return mutt_buffy_list();
   }
@@ -907,7 +912,7 @@ void mutt_buffy(char *s, size_t slen)
 {
   mutt_expand_path(s, slen);
 
-  if (mutt_buffy_check(false))
+  if (mutt_buffy_check(0))
   {
     int found = 0;
     for (int pass = 0; pass < 2; pass++)
@@ -928,7 +933,7 @@ void mutt_buffy(char *s, size_t slen)
       }
     }
 
-    mutt_buffy_check(true); /* buffy was wrong - resync things */
+    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* buffy was wrong - resync things */
   }
 
   /* no folders with new mail */
@@ -943,7 +948,7 @@ void mutt_buffy(char *s, size_t slen)
  */
 void mutt_buffy_vfolder(char *buf, size_t buflen)
 {
-  if (mutt_buffy_check(false))
+  if (mutt_buffy_check(0))
   {
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
@@ -962,7 +967,7 @@ void mutt_buffy_vfolder(char *buf, size_t buflen)
       }
     }
 
-    mutt_buffy_check(true); /* buffy was wrong - resync things */
+    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* buffy was wrong - resync things */
   }
 
   /* no folders with new mail */

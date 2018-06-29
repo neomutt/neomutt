@@ -56,6 +56,7 @@ const struct Binding OpGeneric[] = { /* map: generic */
   ** </para>
   */
   { "bottom-page",     OP_BOTTOM_PAGE,          "L" },
+  { "check-stats",     OP_CHECK_STATS,          NULL },
   { "current-bottom",  OP_CURRENT_BOTTOM,       NULL },
   { "current-middle",  OP_CURRENT_MIDDLE,       NULL },
   { "current-top",     OP_CURRENT_TOP,          NULL },
@@ -253,6 +254,7 @@ const struct Binding OpPager[] = { /* map: pager */
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,          NULL },
 #endif
+  { "check-stats",               OP_CHECK_STATS,                  NULL },
   { "check-traditional-pgp",     OP_CHECK_TRADITIONAL,            "\033P" },
   { "clear-flag",                OP_MAIN_CLEAR_FLAG,              "W" },
   { "compose-to-sender",         OP_COMPOSE_TO_SENDER,            NULL },
