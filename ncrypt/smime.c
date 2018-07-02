@@ -2118,6 +2118,17 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
+    if (type & ENCRYPT)
+    {
+      /* void the passphrase, even if that wasn't the problem */
+      if (fgetc(smimeout) == EOF)
+      {
+        mutt_error(_("Decryption failed"));
+        smime_class_void_passphrase();
+      }
+      rewind(smimeout);
+    }
+
     if (out_file)
       fpout = out_file;
     else
