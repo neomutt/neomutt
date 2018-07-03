@@ -31,7 +31,6 @@
 #include "attach.h"
 #include "body.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
 #include "handler.h"
 #include "header.h"

@@ -37,7 +37,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

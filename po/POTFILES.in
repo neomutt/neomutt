@@ -26,7 +26,6 @@ edit.c
 editmsg.c
 enriched.c
 enter.c
-envelope.c
 filter.c
 flags.c
 from.c
@@ -68,6 +67,7 @@ mutt/base64.c
 mutt/buffer.c
 mutt/charset.c
 mutt/date.c
+mutt/envelope.c
 mutt/envlist.c
 mutt/exit.c
 mutt/file.c
@@ -86,7 +86,6 @@ mutt/rfc2047.c
 mutt/sha1.c
 mutt/signal.c
 mutt/string.c
-muttlib.c
 mutt_account.c
 mutt_logging.c
 mutt_lua.c
@@ -94,15 +93,16 @@ mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
 mutt_window.c
+muttlib.c
 mx.c
 ncrypt/crypt.c
-ncrypt/cryptglue.c
 ncrypt/crypt_gpgme.c
 ncrypt/crypt_mod.c
 ncrypt/crypt_mod_pgp_classic.c
 ncrypt/crypt_mod_pgp_gpgme.c
 ncrypt/crypt_mod_smime_classic.c
 ncrypt/crypt_mod_smime_gpgme.c
+ncrypt/cryptglue.c
 ncrypt/gnupgparse.c
 ncrypt/pgp.c
 ncrypt/pgpinvoke.c

@@ -47,7 +47,6 @@
 #include "alias.h"
 #include "body.h"
 #include "buffy.h"
-#include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"

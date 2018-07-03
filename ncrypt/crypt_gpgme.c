@@ -53,7 +53,6 @@
 #include "alias.h"
 #include "body.h"
 #include "crypt.h"
-#include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"

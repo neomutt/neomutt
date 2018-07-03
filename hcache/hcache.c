@@ -50,7 +50,6 @@
 #include "mutt/mutt.h"
 #include "backend.h"
 #include "body.h"
-#include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"

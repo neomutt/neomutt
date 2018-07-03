@@ -37,7 +37,6 @@
 #include "body.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "filter.h"
 #include "globals.h"
 #include "header.h"

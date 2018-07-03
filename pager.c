@@ -39,7 +39,6 @@
 #include "attach.h"
 #include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"

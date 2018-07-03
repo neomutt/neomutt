@@ -30,7 +30,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "remailer.h"
-#include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

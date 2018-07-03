@@ -33,7 +33,6 @@
 #include "conn/conn.h"
 #include "buffy.h"
 #include "context.h"
-#include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"

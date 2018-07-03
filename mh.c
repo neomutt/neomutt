@@ -44,7 +44,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"

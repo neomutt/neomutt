@@ -40,7 +40,6 @@
 #include "body.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
 #include "group.h"
 #include "handler.h"

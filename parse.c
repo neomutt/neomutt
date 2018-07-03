@@ -31,7 +31,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "body.h"
-#include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"

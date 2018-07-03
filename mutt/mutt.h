@@ -32,6 +32,7 @@
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
  * | mutt/date.c      | @subpage date      |
+ * | mutt/envelope.c  | @subpage envelope  |
  * | mutt/envlist.c   | @subpage envlist   |
  * | mutt/exit.c      | @subpage exit      |
  * | mutt/file.c      | @subpage file      |
@@ -63,8 +64,9 @@
 #include "buffer.h"
 #include "charset.h"
 #include "date.h"
-#include "exit.h"
+#include "envelope.h"
 #include "envlist.h"
+#include "exit.h"
 #include "file.h"
 #include "hash.h"
 #include "idna2.h"
