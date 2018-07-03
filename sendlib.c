@@ -39,7 +39,6 @@
 #include "mutt.h"
 #include "body.h"
 #include "buffy.h"
-#include "content.h"
 #include "context.h"
 #include "copy.h"
 #include "filter.h"

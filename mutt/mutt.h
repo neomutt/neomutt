@@ -63,6 +63,7 @@
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"
+#include "content.h"
 #include "date.h"
 #include "envelope.h"
 #include "envlist.h"

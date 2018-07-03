@@ -35,7 +35,6 @@
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
-#include "content.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
