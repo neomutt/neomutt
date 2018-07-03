@@ -52,7 +52,6 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
-#include "tags.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

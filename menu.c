@@ -39,7 +39,6 @@
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
-#include "tags.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

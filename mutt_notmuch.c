@@ -59,7 +59,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "tags.h"
 #include "thread.h"
 #include "url.h"
 

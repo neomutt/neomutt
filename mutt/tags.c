@@ -28,9 +28,13 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include <string.h>
-#include "mutt/mutt.h"
 #include "tags.h"
+#include "hash.h"
+#include "memory.h"
+#include "queue.h"
+#include "string2.h"
 
 char *HiddenTags; /**< Config: Private tags which should not be displayed */
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */

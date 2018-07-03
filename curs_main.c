@@ -51,7 +51,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "tags.h"
 #include "terminal.h"
 #include "thread.h"
 #ifdef USE_SIDEBAR

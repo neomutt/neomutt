@@ -24,7 +24,7 @@
 #define _MUTT_TAG_H
 
 #include <stdbool.h>
-#include "mutt/mutt.h"
+#include "queue.h"
 
 extern char *HiddenTags;
 extern struct Hash *TagTransforms;
@@ -46,8 +46,8 @@ STAILQ_HEAD(TagHead, TagNode);
 
 void  driver_tags_free(struct TagHead *head);
 char *driver_tags_get(struct TagHead *head);
-char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
 char *driver_tags_get_transformed(struct TagHead *head);
+char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
 char *driver_tags_get_with_hidden(struct TagHead *head);
 bool  driver_tags_replace(struct TagHead *head, char *tags);
 

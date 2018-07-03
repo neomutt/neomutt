@@ -54,7 +54,6 @@
 #include "hcache/hcversion.h"
 #include "header.h"
 #include "protos.h"
-#include "tags.h"
 
 static unsigned int hcachever = 0x0;
 

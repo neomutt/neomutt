@@ -53,7 +53,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "state.h"
-#include "tags.h"
 #include "thread.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"

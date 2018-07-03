@@ -42,7 +42,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "tags.h"
 #include "thread.h"
 
 /**

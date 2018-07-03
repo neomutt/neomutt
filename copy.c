@@ -47,7 +47,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "state.h"
-#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

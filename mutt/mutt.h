@@ -53,6 +53,7 @@
  * | mutt/sha1.c      | @subpage sha1      |
  * | mutt/signal.c    | @subpage signal    |
  * | mutt/string.c    | @subpage string    |
+ * | mutt/tags.c      | @subpage tags      |
  *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.
@@ -90,5 +91,6 @@
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"
+#include "tags.h"
 
 #endif /* _MUTT_MUTT_H */
