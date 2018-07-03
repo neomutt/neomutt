@@ -41,7 +41,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
-#include "body.h"
 #include "context.h"
 #include "copy.h"
 #include "cryptglue.h"

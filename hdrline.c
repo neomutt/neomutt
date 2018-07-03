@@ -31,7 +31,6 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "body.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

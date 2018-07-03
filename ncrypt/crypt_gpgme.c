@@ -51,7 +51,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
-#include "body.h"
 #include "crypt.h"
 #include "format_flags.h"
 #include "globals.h"

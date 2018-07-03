@@ -34,7 +34,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "copy.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "handler.h"

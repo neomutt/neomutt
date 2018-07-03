@@ -39,7 +39,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "mx.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"

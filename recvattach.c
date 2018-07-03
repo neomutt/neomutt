@@ -31,7 +31,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "attach.h"
-#include "body.h"
 #include "context.h"
 #include "filter.h"
 #include "format_flags.h"

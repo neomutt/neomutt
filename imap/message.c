@@ -40,7 +40,6 @@
 #include "mutt.h"
 #include "message.h"
 #include "bcache.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"

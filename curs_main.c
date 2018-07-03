@@ -32,7 +32,6 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"

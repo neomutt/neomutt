@@ -35,7 +35,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "handler.h"
-#include "body.h"
 #include "copy.h"
 #include "enriched.h"
 #include "filter.h"

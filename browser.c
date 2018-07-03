@@ -40,7 +40,6 @@
 #include "mutt.h"
 #include "browser.h"
 #include "attach.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"

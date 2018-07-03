@@ -37,7 +37,6 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pattern.h"
-#include "body.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"

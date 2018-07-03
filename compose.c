@@ -34,7 +34,6 @@
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"
-#include "body.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

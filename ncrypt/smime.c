@@ -39,7 +39,6 @@
 #include "mutt.h"
 #include "smime.h"
 #include "alias.h"
-#include "body.h"
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"

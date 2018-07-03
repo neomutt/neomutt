@@ -32,7 +32,6 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/mutt.h"
-#include "body.h"
 #include "mutt_window.h"
 #include "state.h"
 

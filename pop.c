@@ -39,7 +39,6 @@
 #include "mutt.h"
 #include "pop.h"
 #include "bcache.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"

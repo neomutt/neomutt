@@ -39,7 +39,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "rfc1524.h"
-#include "body.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"

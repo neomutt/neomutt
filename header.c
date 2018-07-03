@@ -31,7 +31,6 @@
 #include "mutt.h"
 #include "header.h"
 #include "alias.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "ncrypt/ncrypt.h"

@@ -26,7 +26,6 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "sort.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"

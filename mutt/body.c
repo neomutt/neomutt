@@ -30,10 +30,12 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
-#include "mutt/mutt.h"
 #include "body.h"
 #include "header.h"
-#include "protos.h"
+#include "logging.h"
+#include "memory.h"
+#include "mime.h"
+#include "string2.h"
 
 /**
  * mutt_body_new - Create a new Body
@@ -47,87 +49,6 @@ struct Body *mutt_body_new(void)
   p->use_disp = true;
   TAILQ_INIT(&p->parameter);
   return p;
-}
-
-/**
- * mutt_body_copy - Create a send-mode duplicate from a receive-mode body
- * @param[in]  fp  FILE pointer to attachments
- * @param[out] tgt New Body will be saved here
- * @param[in]  src Source Body to copy
- * @retval  0 Success
- * @retval -1 Failure
- */
-int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
-{
-  if (!tgt || !src)
-    return -1;
-
-  char tmp[PATH_MAX];
-  struct Body *b = NULL;
-
-  bool use_disp;
-
-  if (src->filename)
-  {
-    use_disp = true;
-    mutt_str_strfcpy(tmp, src->filename, sizeof(tmp));
-  }
-  else
-  {
-    use_disp = false;
-    tmp[0] = '\0';
-  }
-
-  mutt_adv_mktemp(tmp, sizeof(tmp));
-  if (mutt_save_attachment(fp, src, tmp, 0, NULL) == -1)
-    return -1;
-
-  *tgt = mutt_body_new();
-  b = *tgt;
-
-  memcpy(b, src, sizeof(struct Body));
-  TAILQ_INIT(&b->parameter);
-  b->parts = NULL;
-  b->next = NULL;
-
-  b->filename = mutt_str_strdup(tmp);
-  b->use_disp = use_disp;
-  b->unlink = true;
-
-  if (mutt_is_text_part(b))
-    b->noconv = true;
-
-  b->xtype = mutt_str_strdup(b->xtype);
-  b->subtype = mutt_str_strdup(b->subtype);
-  b->form_name = mutt_str_strdup(b->form_name);
-  b->d_filename = mutt_str_strdup(b->d_filename);
-  /* mutt_adv_mktemp() will mangle the filename in tmp,
-   * so preserve it in d_filename */
-  if (!b->d_filename && use_disp)
-    b->d_filename = mutt_str_strdup(src->filename);
-  b->description = mutt_str_strdup(b->description);
-
-  /*
-   * we don't seem to need the Header structure currently.
-   * XXX - this may change in the future
-   */
-
-  if (b->hdr)
-    b->hdr = NULL;
-
-  /* copy parameters */
-  struct Parameter *np, *new;
-  TAILQ_FOREACH(np, &src->parameter, entries)
-  {
-    new = mutt_param_new();
-    new->attribute = mutt_str_strdup(np->attribute);
-    new->value = mutt_str_strdup(np->value);
-    TAILQ_INSERT_HEAD(&b->parameter, new, entries);
-  }
-
-  mutt_stamp_attachment(b);
-
-  return 0;
 }
 
 /**
@@ -174,4 +95,22 @@ void mutt_body_free(struct Body **p)
   }
 
   *p = 0;
+}
+
+/**
+ * mutt_body_cmp_strict - Strictly compare two email Body's
+ * @param b1 First Body
+ * @param b2 Second Body
+ * @retval true Body's are strictly identical
+ */
+bool mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2)
+{
+  if ((b1->type != b2->type) || (b1->encoding != b2->encoding) ||
+      (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
+      (mutt_str_strcmp(b1->description, b2->description) != 0) ||
+      !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || (b1->length != b2->length))
+  {
+    return false;
+  }
+  return true;
 }

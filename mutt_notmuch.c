@@ -50,7 +50,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"

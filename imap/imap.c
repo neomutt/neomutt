@@ -44,7 +44,6 @@
 #include "imap.h"
 #include "auth.h"
 #include "bcache.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"

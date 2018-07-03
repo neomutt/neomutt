@@ -41,7 +41,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "pgpkey.h"
-#include "body.h"
 #include "crypt.h"
 #include "filter.h"
 #include "format_flags.h"

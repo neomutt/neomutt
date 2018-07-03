@@ -29,6 +29,7 @@
  * | :--------------- | :----------------- |
  * | mutt/address.c   | @subpage address   |
  * | mutt/base64.c    | @subpage base64    |
+ * | mutt/body.c      | @subpage base64    |
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
  * | mutt/date.c      | @subpage date      |
@@ -61,6 +62,7 @@
 
 #include "address.h"
 #include "base64.h"
+#include "body.h"
 #include "buffer.h"
 #include "charset.h"
 #include "content.h"

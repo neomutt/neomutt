@@ -43,7 +43,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
-#include "body.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

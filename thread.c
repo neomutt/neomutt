@@ -29,7 +29,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "thread.h"
-#include "body.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
