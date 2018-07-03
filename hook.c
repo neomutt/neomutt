@@ -36,7 +36,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

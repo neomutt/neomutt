@@ -45,7 +45,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"

@@ -46,7 +46,6 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"

@@ -44,7 +44,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_thread.h"
@@ -2529,7 +2528,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
     ctx->hdrs[i]->active = false;
 
     p = mutt_hash_find(fnames, ctx->hdrs[i]->path);
-    if (p && p->h && mbox_strict_cmp_headers(ctx->hdrs[i], p->h))
+    if (p && p->h && mutt_header_cmp_strict(ctx->hdrs[i], p->h))
     {
       ctx->hdrs[i]->active = true;
       /* found the right message */

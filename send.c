@@ -38,7 +38,6 @@
 #include "copy.h"
 #include "filter.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"

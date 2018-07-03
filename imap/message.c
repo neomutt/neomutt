@@ -42,7 +42,6 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "mutt_account.h"

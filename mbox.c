@@ -38,7 +38,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_thread.h"
@@ -596,37 +595,6 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
 }
 
 /**
- * mbox_strict_cmp_headers - Strictly compare message headers
- * @param h1 First Header
- * @param h2 Second Header
- * @retval true Headers are strictly identical
- */
-bool mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
-{
-  if (h1 && h2)
-  {
-    if ((h1->received != h2->received) || (h1->date_sent != h2->date_sent) ||
-        (h1->content->length != h2->content->length) ||
-        (h1->lines != h2->lines) || (h1->zhours != h2->zhours) ||
-        (h1->zminutes != h2->zminutes) || (h1->zoccident != h2->zoccident) ||
-        (h1->mime != h2->mime) || !mutt_env_cmp_strict(h1->env, h2->env) ||
-        !mutt_body_cmp_strict(h1->content, h2->content))
-    {
-      return false;
-    }
-    else
-      return true;
-  }
-  else
-  {
-    if (!h1 && !h2)
-      return true;
-    else
-      return false;
-  }
-}
-
-/**
  * reopen_mailbox - Close and reopen a mailbox
  * @param ctx        Mailbox
  * @param index_hint Current email
@@ -702,7 +670,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      cmp_headers = mbox_strict_cmp_headers;
+      cmp_headers = mutt_header_cmp_strict;
       mutt_file_fclose(&ctx->fp);
       ctx->fp = mutt_file_fopen(ctx->path, "r");
       if (!ctx->fp)

@@ -28,7 +28,6 @@
 #include "sort.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"

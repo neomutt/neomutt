@@ -37,7 +37,6 @@ hcache/lmdb.c
 hcache/qdbm.c
 hcache/tc.c
 hdrline.c
-header.c
 help.c
 history.c
 hook.c
@@ -72,6 +71,7 @@ mutt/envlist.c
 mutt/exit.c
 mutt/file.c
 mutt/hash.c
+mutt/header.c
 mutt/idna.c
 mutt/list.c
 mutt/logging.c
@@ -91,6 +91,7 @@ mutt/thread.c
 mutt_account.c
 mutt_attach.c
 mutt_body.c
+mutt_header.c
 mutt_logging.c
 mutt_lua.c
 mutt_notmuch.c
@@ -149,7 +150,6 @@ state.c
 status.c
 system.c
 terminal.c
-thread.c
 url.c
 version.c
 wcscasecmp.c

@@ -33,7 +33,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"

@@ -42,7 +42,6 @@
 #include "filter.h"
 #include "group.h"
 #include "hcache/hcache.h"
-#include "header.h"
 #include "history.h"
 #include "keymap.h"
 #include "mailbox.h"

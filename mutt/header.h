@@ -26,7 +26,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "list.h"
+#include "tags.h"
 
 /**
  * struct Header - The header/envelope of an email
@@ -55,9 +56,7 @@ struct Header
   bool recip_valid     : 1; /**< is_recipient is valid */
   bool active          : 1; /**< message is not to be removed */
   bool trash           : 1; /**< message is marked as trashed on disk.
-                             * This flag is used by the maildir_trash
-                             * option.
-                             */
+                             * This flag is used by the maildir_trash option. */
   bool xlabel_changed  : 1; /**< editable - used for syncing */
 
   /* timezone of the sender of this message */
@@ -117,9 +116,8 @@ struct Header
   char *maildir_flags; /**< unknown maildir flags */
 };
 
+bool           mutt_header_cmp_strict(const struct Header *h1, const struct Header *h2);
 void           mutt_header_free(struct Header **h);
 struct Header *mutt_header_new(void);
-
-bool mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
 #endif /* _MUTT_HEADER_H */

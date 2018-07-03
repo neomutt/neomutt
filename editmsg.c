@@ -40,7 +40,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mx.h"
 #include "options.h"

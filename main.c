@@ -47,7 +47,6 @@
 #include "alias.h"
 #include "buffy.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"

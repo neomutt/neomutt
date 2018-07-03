@@ -31,7 +31,6 @@
 #include "mutt_thread.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"

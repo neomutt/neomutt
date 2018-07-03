@@ -47,7 +47,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"

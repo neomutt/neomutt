@@ -34,7 +34,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

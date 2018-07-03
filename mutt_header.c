@@ -28,14 +28,117 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
-#include "header.h"
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "protos.h"
+
+static void label_ref_dec(struct Context *ctx, char *label)
+{
+  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  if (!elem)
+    return;
+
+  uintptr_t count = (uintptr_t) elem->data;
+  if (count <= 1)
+  {
+    mutt_hash_delete(ctx->label_hash, label, NULL);
+    return;
+  }
+
+  count--;
+  elem->data = (void *) count;
+}
+
+static void label_ref_inc(struct Context *ctx, char *label)
+{
+  uintptr_t count;
+
+  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  if (!elem)
+  {
+    count = 1;
+    mutt_hash_insert(ctx->label_hash, label, (void *) count);
+    return;
+  }
+
+  count = (uintptr_t) elem->data;
+  count++;
+  elem->data = (void *) count;
+}
+
+/**
+ * label_message - add an X-Label: field
+ */
+static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
+{
+  if (!hdr)
+    return false;
+  if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
+    return false;
+
+  if (hdr->env->x_label)
+    label_ref_dec(ctx, hdr->env->x_label);
+  mutt_str_replace(&hdr->env->x_label, new);
+  if (hdr->env->x_label)
+    label_ref_inc(ctx, hdr->env->x_label);
+
+  hdr->changed = true;
+  hdr->xlabel_changed = true;
+  return true;
+}
+
+int mutt_label_message(struct Header *hdr)
+{
+  char buf[LONG_STRING], *new = NULL;
+  int changed;
+
+  if (!Context || !Context->label_hash)
+    return 0;
+
+  *buf = '\0';
+  if (hdr != NULL && hdr->env->x_label != NULL)
+  {
+    mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
+  }
+
+  if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
+    return 0;
+
+  new = buf;
+  SKIPWS(new);
+  if (*new == '\0')
+    new = NULL;
+
+  changed = 0;
+  if (hdr)
+  {
+    if (label_message(Context, hdr, new))
+    {
+      changed++;
+      mutt_set_header_color(Context, hdr);
+    }
+  }
+  else
+  {
+    for (int i = 0; i < Context->msgcount; ++i)
+    {
+      if (!message_is_tagged(Context, i))
+        continue;
+
+      struct Header *h = Context->hdrs[i];
+      if (label_message(Context, h, new))
+      {
+        changed++;
+        mutt_set_flag(Context, h, MUTT_TAG, 0);
+        /* mutt_set_flag re-evals the header color */
+      }
+    }
+  }
+
+  return changed;
+}
 
 void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
                        char *fcc, size_t fcclen)
@@ -223,112 +326,6 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   }
 }
 
-static void label_ref_dec(struct Context *ctx, char *label)
-{
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
-  if (!elem)
-    return;
-
-  uintptr_t count = (uintptr_t) elem->data;
-  if (count <= 1)
-  {
-    mutt_hash_delete(ctx->label_hash, label, NULL);
-    return;
-  }
-
-  count--;
-  elem->data = (void *) count;
-}
-
-static void label_ref_inc(struct Context *ctx, char *label)
-{
-  uintptr_t count;
-
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
-  if (!elem)
-  {
-    count = 1;
-    mutt_hash_insert(ctx->label_hash, label, (void *) count);
-    return;
-  }
-
-  count = (uintptr_t) elem->data;
-  count++;
-  elem->data = (void *) count;
-}
-
-/**
- * label_message - add an X-Label: field
- */
-static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
-{
-  if (!hdr)
-    return false;
-  if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
-    return false;
-
-  if (hdr->env->x_label)
-    label_ref_dec(ctx, hdr->env->x_label);
-  mutt_str_replace(&hdr->env->x_label, new);
-  if (hdr->env->x_label)
-    label_ref_inc(ctx, hdr->env->x_label);
-
-  hdr->changed = true;
-  hdr->xlabel_changed = true;
-  return true;
-}
-
-int mutt_label_message(struct Header *hdr)
-{
-  char buf[LONG_STRING], *new = NULL;
-  int changed;
-
-  if (!Context || !Context->label_hash)
-    return 0;
-
-  *buf = '\0';
-  if (hdr != NULL && hdr->env->x_label != NULL)
-  {
-    mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
-  }
-
-  if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
-    return 0;
-
-  new = buf;
-  SKIPWS(new);
-  if (*new == '\0')
-    new = NULL;
-
-  changed = 0;
-  if (hdr)
-  {
-    if (label_message(Context, hdr, new))
-    {
-      changed++;
-      mutt_set_header_color(Context, hdr);
-    }
-  }
-  else
-  {
-    for (int i = 0; i < Context->msgcount; ++i)
-    {
-      if (!message_is_tagged(Context, i))
-        continue;
-
-      struct Header *h = Context->hdrs[i];
-      if (label_message(Context, h, new))
-      {
-        changed++;
-        mutt_set_flag(Context, h, MUTT_TAG, 0);
-        /* mutt_set_flag re-evals the header color */
-      }
-    }
-  }
-
-  return changed;
-}
-
 void mutt_make_label_hash(struct Context *ctx)
 {
   /* 131 is just a rough prime estimate of how many distinct
@@ -351,35 +348,4 @@ void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
     return;
   if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);
-}
-
-void mutt_header_free(struct Header **h)
-{
-  if (!h || !*h)
-    return;
-  mutt_env_free(&(*h)->env);
-  mutt_body_free(&(*h)->content);
-  FREE(&(*h)->maildir_flags);
-  FREE(&(*h)->tree);
-  FREE(&(*h)->path);
-#ifdef MIXMASTER
-  mutt_list_free(&(*h)->chain);
-#endif
-  driver_tags_free(&(*h)->tags);
-#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
-  if ((*h)->free_cb)
-    (*h)->free_cb(*h);
-  FREE(&(*h)->data);
-#endif
-  FREE(h);
-}
-
-struct Header *mutt_header_new(void)
-{
-  struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
-#ifdef MIXMASTER
-  STAILQ_INIT(&h->chain);
-#endif
-  STAILQ_INIT(&h->tags);
-  return h;
 }

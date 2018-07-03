@@ -33,7 +33,6 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

@@ -43,7 +43,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_thread.h"

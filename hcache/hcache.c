@@ -52,7 +52,6 @@
 #include "globals.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"
-#include "header.h"
 #include "protos.h"
 
 static unsigned int hcachever = 0x0;
