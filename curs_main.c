@@ -41,6 +41,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_thread.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -52,7 +53,6 @@
 #include "protos.h"
 #include "sort.h"
 #include "terminal.h"
-#include "thread.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

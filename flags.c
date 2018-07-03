@@ -41,7 +41,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 
 /**
  * mutt_set_flag_update - Set a flag on an email

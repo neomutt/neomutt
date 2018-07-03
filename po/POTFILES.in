@@ -87,6 +87,7 @@ mutt/sha1.c
 mutt/signal.c
 mutt/string.c
 mutt/tags.c
+mutt/thread.c
 mutt_account.c
 mutt_attach.c
 mutt_body.c
@@ -95,6 +96,7 @@ mutt_lua.c
 mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
+mutt_thread.c
 mutt_window.c
 muttlib.c
 mx.c

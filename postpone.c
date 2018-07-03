@@ -46,13 +46,13 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_menu.h"
+#include "mutt_thread.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
 #include "state.h"
-#include "thread.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

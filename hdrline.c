@@ -37,12 +37,12 @@
 #include "header.h"
 #include "mbtable.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mutt_window.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)

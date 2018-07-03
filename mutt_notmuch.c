@@ -56,10 +56,10 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "thread.h"
 #include "url.h"
 
 #ifdef LIBNOTMUCH_CHECK_VERSION

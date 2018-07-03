@@ -41,12 +41,12 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
