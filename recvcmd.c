@@ -28,7 +28,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
-#include "attach.h"
 #include "copy.h"
 #include "globals.h"
 #include "handler.h"

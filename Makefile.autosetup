@@ -61,12 +61,12 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	addrbook.o alias.o attach.o bcache.o browser.o buffy.o \
+NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o buffy.o \
 		color.o commands.o complete.o compose.o compress.o \
 		conststrings.o copy.o curs_lib.o curs_main.o edit.o editmsg.o \
 		enriched.o enter.o filter.o flags.o from.o group.o handler.o \
 		hdrline.o header.o help.o history.o hook.o init.o keymap.o \
-		main.o mbox.o menu.o mh.o muttlib.o mutt_account.o mutt_body.o \
+		main.o mbox.o menu.o mh.o muttlib.o mutt_account.o mutt_attach.o mutt_body.o \
 		mutt_logging.o mutt_signal.o mutt_socket.o mutt_window.o mx.o newsrc.o \
 		nntp.o pager.o parse.o pattern.o pop.o pop_auth.o pop_lib.o \
 		postpone.o progress.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
@@ -92,7 +92,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 ###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/address.o mutt/base64.o mutt/body.o mutt/buffer.o mutt/charset.o \
+LIBMUTTOBJS=	mutt/address.o mutt/attach.o mutt/base64.o mutt/body.o mutt/buffer.o mutt/charset.o \
 		mutt/date.o mutt/envelope.o mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
 		mutt/idna.o mutt/list.o mutt/logging.o mutt/mapping.o \
 		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/mime.o \

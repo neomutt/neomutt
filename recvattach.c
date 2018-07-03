@@ -30,7 +30,6 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "attach.h"
 #include "context.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -39,6 +38,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
@@ -47,6 +47,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "recvcmd.h"
 #include "rfc1524.h"
 #include "state.h"
 
@@ -1580,7 +1581,7 @@ void mutt_view_attachments(struct Header *hdr)
         if (hdr->attach_del)
           hdr->changed = true;
 
-        mutt_free_attach_context(&actx);
+        mutt_actx_free(&actx);
 
         mutt_menu_pop_current(menu);
         mutt_menu_destroy(&menu);

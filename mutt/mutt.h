@@ -28,6 +28,7 @@
  * | File             | Description        |
  * | :--------------- | :----------------- |
  * | mutt/address.c   | @subpage address   |
+ * | mutt/attach.c    | @subpage attach    |
  * | mutt/base64.c    | @subpage base64    |
  * | mutt/body.c      | @subpage base64    |
  * | mutt/buffer.c    | @subpage buffer    |
@@ -61,6 +62,7 @@
 #define _MUTT_MUTT_H
 
 #include "address.h"
+#include "attach.h"
 #include "base64.h"
 #include "body.h"
 #include "buffer.h"

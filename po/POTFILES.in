@@ -1,6 +1,5 @@
 addrbook.c
 alias.c
-attach.c
 bcache.c
 browser.c
 buffy.c
@@ -62,6 +61,7 @@ mbox.c
 menu.c
 mh.c
 mutt/address.c
+mutt/attach.c
 mutt/base64.c
 mutt/body.c
 mutt/buffer.c
@@ -87,6 +87,7 @@ mutt/sha1.c
 mutt/signal.c
 mutt/string.c
 mutt_account.c
+mutt_attach.c
 mutt_body.c
 mutt_logging.c
 mutt_lua.c
