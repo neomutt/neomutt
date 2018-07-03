@@ -1482,6 +1482,8 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
   {
     mutt_str_strfcpy(output, path, olen);
     int n = mutt_str_strlen(output);
+    if (n == 0)
+      return;
 
     /* remove any final trailing '/' */
     if (output[n - 1] == '/')
