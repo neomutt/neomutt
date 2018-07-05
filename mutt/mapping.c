@@ -27,6 +27,7 @@
  * Map a string to a constant and vice versa.
  */
 
+#include "config.h"
 #include <stddef.h>
 #include "mapping.h"
 #include "string2.h"

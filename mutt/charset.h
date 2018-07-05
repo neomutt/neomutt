@@ -83,30 +83,25 @@ enum LookupType
 extern const struct MimeNames PreferredMimeNames[];
 
 void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
+const char *     mutt_ch_charset_lookup(const char *chs);
+int              mutt_ch_check(const char *s, size_t slen, const char *from, const char *to);
+bool             mutt_ch_check_charset(const char *cs, bool strict);
+char *           mutt_ch_choose(const char *fromcode, const char *charsets, char *u, size_t ulen, char **d, size_t *dlen);
 int              mutt_ch_chscmp(const char *cs1, const char *cs2);
+int              mutt_ch_convert_nonmime_string(char **ps);
+int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
+int              mutt_ch_fgetconv(struct FgetConv *fc);
+void             mutt_ch_fgetconv_close(struct FgetConv **fc);
+struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags);
+char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 char *           mutt_ch_get_default_charset(void);
 char *           mutt_ch_get_langinfo_charset(void);
-void             mutt_ch_set_charset(const char *charset);
-
-bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
-void             mutt_ch_lookup_remove(void);
-const char *     mutt_ch_charset_lookup(const char *chs);
-
-iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags);
 size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl, int *iconverrno);
 const char *     mutt_ch_iconv_lookup(const char *chs);
-int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
-int              mutt_ch_convert_nonmime_string(char **ps);
-bool             mutt_ch_check_charset(const char *cs, bool strict);
-
-struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags);
-void             mutt_ch_fgetconv_close(struct FgetConv **fc);
-int              mutt_ch_fgetconv(struct FgetConv *fc);
-char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
-
-int              mutt_ch_check(const char *s, size_t slen, const char *from, const char *to);
-char *           mutt_ch_choose(const char *fromcode, const char *charsets,
-                                char *u, size_t ulen, char **d, size_t *dlen);
+iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags);
+bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
+void             mutt_ch_lookup_remove(void);
+void             mutt_ch_set_charset(const char *charset);
 
 #define mutt_ch_is_utf8(a)     mutt_ch_chscmp(a, "utf-8")
 #define mutt_ch_is_us_ascii(a) mutt_ch_chscmp(a, "us-ascii")

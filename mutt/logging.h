@@ -1,6 +1,6 @@
 /**
  * @file
- * Message logging
+ * Logging Dispatcher
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LOGGING_H
-#define _LOGGING_H
+#ifndef _MUTT_LOGGING_H
+#define _MUTT_LOGGING_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -76,9 +76,9 @@ STAILQ_HEAD(LogList, LogLine);
 #define mutt_error(...)        MuttLogger(0, __FILE__, __LINE__, __func__, LL_ERROR,   __VA_ARGS__)
 #define mutt_perror(...)       MuttLogger(0, __FILE__, __LINE__, __func__, LL_PERROR,  __VA_ARGS__)
 
-int log_disp_file    (time_t stamp, const char *file, int line, const char *function, int level, ...);
-int log_disp_queue   (time_t stamp, const char *file, int line, const char *function, int level, ...);
-int log_disp_terminal(time_t stamp, const char *file, int line, const char *function, int level, ...);
+int  log_disp_file(time_t stamp, const char *file, int line, const char *function, int level, ...);
+int  log_disp_queue(time_t stamp, const char *file, int line, const char *function, int level, ...);
+int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, int level, ...);
 
 int  log_queue_add(struct LogLine *ll);
 void log_queue_empty(void);
@@ -93,5 +93,4 @@ int  log_file_set_filename(const char *file, bool verbose);
 int  log_file_set_level(int level, bool verbose);
 void log_file_set_version(const char *version);
 
-#endif /* _LOGGING_H */
-
+#endif /* _MUTT_LOGGING_H */

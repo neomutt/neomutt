@@ -24,10 +24,10 @@
 #ifndef _MUTT_H
 #define _MUTT_H
 
+#include <stddef.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdio.h>
 #include "where.h"
 
@@ -292,8 +292,6 @@ struct AttachMatch
 int safe_asprintf(char **, const char *, ...);
 
 int mutt_inbox_cmp(const char *a, const char *b);
-
-const char *mutt_str_sysexit(int e);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 

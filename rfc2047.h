@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2047_H
-#define _MUTT_RFC2047_H
+#ifndef _MUTT_RFC2047_2_H
+#define _MUTT_RFC2047_2_H
 
 #include <stddef.h>
 
@@ -30,5 +30,5 @@ struct Address;
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
 void rfc2047_decode_addrlist(struct Address *a);
 
-#endif /* _MUTT_RFC2047_H */
+#endif /* _MUTT_RFC2047_2_H */
 

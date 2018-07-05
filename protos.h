@@ -142,7 +142,6 @@ void mutt_account_hook(const char *url);
 void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 void mutt_adv_mktemp(char *s, size_t l);
 void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases);
-void mutt_sig_allow_interrupt(int disposition);
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to);
 void mutt_buffy(char *s, size_t slen);
 bool mutt_buffy_list(void);

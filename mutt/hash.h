@@ -71,16 +71,16 @@ struct Hash
 struct Hash *    mutt_hash_create(size_t nelem, int flags);
 void             mutt_hash_delete(struct Hash *table, const char *strkey, const void *data);
 void             mutt_hash_destroy(struct Hash **ptr);
-struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey);
 void *           mutt_hash_find(const struct Hash *table, const char *strkey);
+struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data);
-void             mutt_hash_set_destructor(struct Hash *table, hash_destructor fn, intptr_t fn_data);
-struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
 struct Hash *    mutt_hash_int_create(size_t nelem, int flags);
 void             mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);
 void *           mutt_hash_int_find(const struct Hash *table, unsigned int intkey);
 struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data);
+void             mutt_hash_set_destructor(struct Hash *table, hash_destructor fn, intptr_t fn_data);
+struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
 
 /**
  * struct HashWalkState - Cursor to iterate through a Hash Table

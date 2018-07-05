@@ -22,10 +22,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_LIB_RFC2047_H
-#define _MUTT_LIB_RFC2047_H
+#ifndef _MUTT_RFC2047_H
+#define _MUTT_RFC2047_H
 
-void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 void mutt_rfc2047_decode(char **pd);
+void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 
-#endif /* _MUTT_LIB_RFC2047_H */
+#endif /* _MUTT_RFC2047_H */
