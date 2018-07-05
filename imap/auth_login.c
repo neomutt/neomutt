@@ -65,8 +65,8 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
 
   mutt_message(_("Logging in..."));
 
-  imap_quote_string(q_user, sizeof(q_user), idata->conn->account.user);
-  imap_quote_string(q_pass, sizeof(q_pass), idata->conn->account.pass);
+  imap_quote_string(q_user, sizeof(q_user), idata->conn->account.user, false);
+  imap_quote_string(q_pass, sizeof(q_pass), idata->conn->account.pass, false);
 
   /* don't print the password unless we're at the ungodly debugging level
    * of 5 or higher */

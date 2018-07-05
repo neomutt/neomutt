@@ -798,9 +798,12 @@ void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
  *
  * Surround string with quotes, escape " and \ with backslash
  */
-void imap_quote_string(char *dest, size_t dlen, const char *src)
+void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick)
 {
-  static const char quote[] = "\"\\";
+  const char *quote = "`\"\\";
+  if (!quote_backtick)
+    quote++;
+
   char *pt = dest;
   const char *s = src;
 
@@ -874,7 +877,7 @@ void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const
   char *buf = mutt_str_strdup(src);
   imap_utf_encode(idata, &buf);
 
-  imap_quote_string(dest, dlen, buf);
+  imap_quote_string(dest, dlen, buf, false);
 
   FREE(&buf);
 }

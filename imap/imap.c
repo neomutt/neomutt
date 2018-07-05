@@ -464,7 +464,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
           return -1;
         }
         *delim = '\0';
-        imap_quote_string(term, sizeof(term), pat->p.str);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         mutt_buffer_addch(buf, ' ');
 
@@ -472,17 +472,17 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
         *delim = ':';
         delim++;
         SKIPWS(delim);
-        imap_quote_string(term, sizeof(term), delim);
+        imap_quote_string(term, sizeof(term), delim, false);
         mutt_buffer_addstr(buf, term);
         break;
       case MUTT_BODY:
         mutt_buffer_addstr(buf, "BODY ");
-        imap_quote_string(term, sizeof(term), pat->p.str);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
       case MUTT_WHOLE_MSG:
         mutt_buffer_addstr(buf, "TEXT ");
-        imap_quote_string(term, sizeof(term), pat->p.str);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
       case MUTT_SERVERSEARCH:
@@ -495,7 +495,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
         }
       }
         mutt_buffer_addstr(buf, "X-GM-RAW ");
-        imap_quote_string(term, sizeof(term), pat->p.str);
+        imap_quote_string(term, sizeof(term), pat->p.str, false);
         mutt_buffer_addstr(buf, term);
         break;
     }

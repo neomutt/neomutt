@@ -499,7 +499,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   mutt_str_strfcpy(buf, "mailboxes \"", sizeof(buf));
   mutt_account_tourl(&idata->conn->account, &url);
   /* escape \ and " */
-  imap_quote_string(errstr, sizeof(errstr), list.name);
+  imap_quote_string(errstr, sizeof(errstr), list.name, true);
   url.path = errstr + 1;
   url.path[strlen(url.path) - 1] = '\0';
   if (mutt_str_strcmp(url.user, ImapUser) == 0)
