@@ -1905,6 +1905,10 @@ int mutt_index_menu(void)
         break;
       }
 
+      case OP_CHECK_STATS:
+        mutt_check_stats();
+        break;
+
 #ifdef USE_NOTMUCH
       case OP_MAIN_VFOLDER_FROM_QUERY:
         buf[0] = '\0';
@@ -1963,10 +1967,6 @@ int mutt_index_menu(void)
 
       case OP_MAIN_CHANGE_VFOLDER:
 #endif
-
-      case OP_CHECK_STATS:
-        mutt_check_stats();
-        break;
 
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
