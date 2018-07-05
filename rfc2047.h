@@ -23,8 +23,6 @@
 #ifndef _MUTT_RFC2047_2_H
 #define _MUTT_RFC2047_2_H
 
-#include <stddef.h>
-
 struct Address;
 
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag);

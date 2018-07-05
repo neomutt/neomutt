@@ -41,7 +41,6 @@
 #include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
-#include "mx.h"
 
 /**
  * struct HcacheDbCtx - Berkeley DB context

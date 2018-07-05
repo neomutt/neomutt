@@ -32,11 +32,13 @@
 #include "globals.h"
 #include "handler.h"
 #include "mutt_body.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "options.h"
 #include "protos.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /**
  * check_msg - Are we working with an RFC822 message

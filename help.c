@@ -30,7 +30,6 @@
 #include "mutt/mutt.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "opcodes.h"
 #include "options.h"

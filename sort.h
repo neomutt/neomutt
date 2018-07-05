@@ -26,7 +26,6 @@
 #include "where.h"
 #include "mutt/mutt.h"
 
-struct Address;
 struct Context;
 
 #define SORT_DATE     1 /**< the date the mail was sent. */

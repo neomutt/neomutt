@@ -23,6 +23,7 @@
 #ifndef _LOGGING2_H
 #define _LOGGING2_H
 
+#include <stdbool.h>
 #include <time.h>
 
 extern short DebugLevel;

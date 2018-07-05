@@ -23,6 +23,7 @@
 #ifndef _NCRYPT_PGPINVOKE_H
 #define _NCRYPT_PGPINVOKE_H
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "pgpkey.h"

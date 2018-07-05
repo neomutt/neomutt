@@ -67,9 +67,9 @@
 
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/ncurses.h>
-#elif HAVE_NCURSES_NCURSES_H
+#elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/ncurses.h>
-#elif HAVE_NCURSES_H
+#elif defined(HAVE_NCURSES_H)
 #include <ncurses.h>
 #else
 #include <curses.h>

@@ -24,7 +24,6 @@
 #define _MUTT_STATE_H
 
 #include <stdio.h>
-#include <stddef.h>
 
 /**
  * struct State - Keep track when processing files

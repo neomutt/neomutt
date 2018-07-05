@@ -28,10 +28,12 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "mutt.h"
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
 #include "ncrypt/ncrypt.h"
+#include "options.h"
 #include "protos.h"
 
 static void label_ref_dec(struct Context *ctx, char *label)

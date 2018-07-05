@@ -31,6 +31,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
@@ -43,7 +44,6 @@
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_account.h"
-#include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mutt_thread.h"

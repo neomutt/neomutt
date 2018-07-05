@@ -24,6 +24,7 @@
 #define _MUTT_HISTORY_H
 
 #include <stdbool.h>
+#include <stdio.h>
 
 extern short History;
 extern char *HistoryFile;

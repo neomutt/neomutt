@@ -47,7 +47,6 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
-#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "ncrypt.h"

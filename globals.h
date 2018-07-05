@@ -24,6 +24,7 @@
 #define _MUTT_GLOBALS_H
 
 #include <signal.h>
+#include <stdbool.h>
 #include "mutt/mutt.h"
 #include "where.h"
 

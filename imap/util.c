@@ -31,12 +31,12 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <time.h>
@@ -51,7 +51,6 @@
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
-#include "mutt_socket.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"

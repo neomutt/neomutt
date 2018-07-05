@@ -23,8 +23,6 @@
 #ifndef _MUTT_OPCODES_H
 #define _MUTT_OPCODES_H
 
-#include "config.h"
-
 // clang-format off
 #define OPS_CORE(_fmt) \
   _fmt(OP_NULL,                           N_("null operation")) \

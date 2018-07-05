@@ -29,15 +29,12 @@
 #include "config.h"
 #include <ctype.h>
 #include <iconv.h>
-#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "handler.h"
 #include "pgppacket.h"
-#include "protos.h"
 #include "state.h"
 
 static const struct

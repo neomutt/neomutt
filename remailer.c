@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,7 +32,6 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "handler.h"
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

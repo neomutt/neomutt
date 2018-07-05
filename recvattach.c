@@ -49,6 +49,9 @@
 #include "recvcmd.h"
 #include "rfc1524.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 

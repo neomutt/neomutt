@@ -23,8 +23,6 @@
 #ifndef _MUTT_MIME_H
 #define _MUTT_MIME_H
 
-#include <stdbool.h>
-
 /**
  * enum ContentType - Content-Type
  */

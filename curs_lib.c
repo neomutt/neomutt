@@ -29,12 +29,10 @@
 #include <langinfo.h>
 #include <limits.h>
 #include <regex.h>
-#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>

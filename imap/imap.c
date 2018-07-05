@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -50,7 +49,6 @@
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
-#include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -62,6 +60,9 @@
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 /**

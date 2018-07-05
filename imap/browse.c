@@ -28,19 +28,20 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "mutt_account.h"
 #include "options.h"
 #include "protos.h"
 

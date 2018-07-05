@@ -27,10 +27,10 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "globals.h"
 
 // clang-format off
 /**

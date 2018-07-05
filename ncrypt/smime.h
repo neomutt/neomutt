@@ -26,6 +26,7 @@
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;

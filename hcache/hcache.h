@@ -46,6 +46,7 @@
 #ifndef _MUTT_HCACHE_H
 #define _MUTT_HCACHE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 struct Header;

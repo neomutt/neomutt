@@ -30,7 +30,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "conn/conn.h"
 #include "bcache.h"
 #include "globals.h"
 #include "mutt_account.h"

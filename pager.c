@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -43,6 +42,7 @@
 #include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
+#include "mutt_header.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"
@@ -58,6 +58,9 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)

@@ -27,12 +27,16 @@
  */
 
 #include "config.h"
-#include <limits.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include "thread.h"
+#include "envelope.h"
+#include "header.h"
+#include "list.h"
+#include "memory.h"
+#include "queue.h"
+#include "string2.h"
 
 /**
  * is_descendant - Is one thread a descendant of another

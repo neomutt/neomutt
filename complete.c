@@ -33,7 +33,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "conn/conn.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"

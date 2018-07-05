@@ -32,6 +32,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <depot.h>
+#include <stdbool.h>
 #include <villa.h>
 #include "mutt/mutt.h"
 #include "backend.h"

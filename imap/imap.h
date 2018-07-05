@@ -47,14 +47,14 @@
 #define _IMAP_IMAP_H
 
 #include "conn/conn.h"
-#include "mutt_account.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <sys/types.h>
+#include "mx.h"
 
 struct BrowserState;
 struct Context;
 struct Header;
-struct Message;
 struct Pattern;
 
 /**

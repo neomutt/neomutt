@@ -36,20 +36,18 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <iconv.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "filter.h"
-#include "globals.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgplib.h"
-#include "protos.h"
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by

@@ -25,9 +25,14 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
+#include "mutt.h"
 #include "context.h"
 #include "copy.h"
 #include "filter.h"
@@ -37,6 +42,7 @@
 #include "mutt_curses.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
+#include "options.h"
 #include "pager.h"
 #include "protos.h"
 #include "rfc1524.h"

@@ -53,7 +53,6 @@
 #include "myvar.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
 #include "sidebar.h"
 #include "version.h"
@@ -62,6 +61,9 @@
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h" /* for imap_subscribe() */
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 #define CHECK_PAGER                                                                  \

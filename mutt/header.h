@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 #include "list.h"
 #include "tags.h"

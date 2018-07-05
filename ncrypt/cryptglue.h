@@ -23,6 +23,8 @@
 #ifndef _NCRYPT_CRYPTGLUE_H
 #define _NCRYPT_CRYPTGLUE_H
 
+#include <stdbool.h>
+
 struct Address;
 struct Body;
 struct State;

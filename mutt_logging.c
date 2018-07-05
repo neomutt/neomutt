@@ -28,15 +28,19 @@
 
 #include "config.h"
 #include <errno.h>
+#include <limits.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/time.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "mutt.h"
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "options.h"
 #include "protos.h"
 
 struct timeval LastError = { 0 };

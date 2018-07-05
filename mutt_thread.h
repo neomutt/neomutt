@@ -23,8 +23,11 @@
 #ifndef _MUTT_THREAD2_H
 #define _MUTT_THREAD2_H
 
-#include <stdbool.h>
 #include "mutt.h"
+
+struct Context;
+struct Header;
+struct MuttThread;
 
 int mutt_aside_thread(struct Header *hdr, short dir, short subthreads);
 #define mutt_next_thread(x)        mutt_aside_thread(x, 1, 0)

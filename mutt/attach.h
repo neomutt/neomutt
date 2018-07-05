@@ -26,7 +26,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-struct Header;
 struct Body;
 
 /**

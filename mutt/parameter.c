@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include "parameter.h"
 #include "memory.h"
 #include "queue.h"

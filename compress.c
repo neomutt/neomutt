@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -43,8 +44,6 @@
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
-
-struct Header;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.

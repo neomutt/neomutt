@@ -32,14 +32,12 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
-#include "protos.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

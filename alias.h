@@ -26,9 +26,6 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 
-struct Envelope;
-struct Address;
-
 /**
  * struct Alias - A shortcut for an email address
  */

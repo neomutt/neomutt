@@ -35,18 +35,14 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
-#include "globals.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
 
-struct Address;
-struct Body;
-struct Envelope;
-struct Header;
 struct State;
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP

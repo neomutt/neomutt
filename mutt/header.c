@@ -27,20 +27,14 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <time.h>
 #include "header.h"
 #include "body.h"
 #include "envelope.h"
-#include "file.h"
-#include "hash.h"
-#include "logging.h"
+#include "list.h"
 #include "memory.h"
-#include "string2.h"
+#include "queue.h"
+#include "tags.h"
 
 /**
  * mutt_header_free - Free an email Header

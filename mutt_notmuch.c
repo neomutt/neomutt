@@ -44,7 +44,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
@@ -54,7 +53,6 @@
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"

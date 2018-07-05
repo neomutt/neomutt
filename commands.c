@@ -56,6 +56,9 @@
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 static const char *ExtPagerProgress = "all";
 

@@ -30,6 +30,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,7 @@
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_account.h"
-#include "mutt_curses.h"
+#include "mutt_header.h"
 #include "mutt_socket.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -53,6 +54,9 @@
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 #ifdef USE_HCACHE

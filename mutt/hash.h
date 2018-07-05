@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /**
  * union HashKey - The data item stored in a HashElem

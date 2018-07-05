@@ -23,7 +23,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
-#include <limits.h>
 #include <regex.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -32,7 +31,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
-#include <unistd.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -43,7 +41,6 @@
 #include "group.h"
 #include "handler.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -54,9 +51,6 @@
 #include "state.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
-#endif
-#ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
 #endif
 
 // clang-format off

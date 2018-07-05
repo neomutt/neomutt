@@ -24,8 +24,6 @@
 #include <stddef.h>
 #include "mutt/mutt.h"
 
-struct Envelope;
-
 /**
  * enum UrlScheme - All recognised Url types
  */

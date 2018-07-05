@@ -30,8 +30,8 @@
 #include "config.h"
 #include <ctype.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "imap_private.h"
@@ -53,6 +53,9 @@
 #include "protos.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 struct BodyCache;

@@ -33,24 +33,19 @@
 #include <time.h>
 #include <wctype.h>
 #include "mutt.h"
-#include "mutt/mutt.h"
 #include "format_flags.h"
-#include "options.h"
 
 struct Address;
 struct Alias;
 struct AliasList;
 struct Body;
 struct Buffer;
-struct ColorLineHead;
 struct Context;
 struct EnterState;
 struct Envelope;
 struct Header;
 struct ListHead;
-struct Parameter;
-struct RegexList;
-struct State;
+struct ParameterList;
 
 struct stat;
 struct passwd;
@@ -155,12 +150,6 @@ void mutt_display_address(struct Envelope *env);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 int mutt_edit_content_type (struct Header *h, struct Body *b, FILE *fp);
 void mutt_edit_file(const char *editor, const char *data);
-void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
-                       char *fcc, size_t fcclen);
-int mutt_label_message(struct Header *hdr);
-void mutt_make_label_hash(struct Context *ctx);
-void mutt_label_hash_add(struct Context *ctx, struct Header *hdr);
-void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr);
 int mutt_label_complete(char *buf, size_t buflen, int numtabs);
 void mutt_encode_descriptions(struct Body *b, short recurse);
 void mutt_encode_path(char *dest, size_t dlen, const char *src);

@@ -25,11 +25,10 @@
 #ifndef _MUTT_ATTACH2_H
 #define _MUTT_ATTACH2_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/mutt.h"
 
+struct AttachCtx;
 struct Menu;
 struct Header;
 struct Body;

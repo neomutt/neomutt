@@ -70,19 +70,19 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "mutt.h"
 #include "history.h"
-#include "globals.h"
+#include "format_flags.h"
 #include "keymap.h"
-#include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 
 #define HC_FIRST HC_CMD

@@ -31,7 +31,6 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "globals.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "options.h"
 #include "protos.h"

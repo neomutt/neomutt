@@ -28,16 +28,13 @@
 #include <lualib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_lua.h"
-#include "globals.h"
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
-#include "options.h"
 #include "protos.h"
 
 static int handle_panic(lua_State *l)

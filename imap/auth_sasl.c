@@ -30,17 +30,16 @@
 #include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
-#include "protos.h"
 
 /**
  * imap_auth_sasl - Default authenticator if available

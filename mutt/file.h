@@ -23,6 +23,7 @@
 #ifndef _MUTT_FILE_H
 #define _MUTT_FILE_H
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>

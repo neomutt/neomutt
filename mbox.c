@@ -39,7 +39,7 @@
 #include "copy.h"
 #include "globals.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
+#include "mutt_header.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"

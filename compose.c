@@ -40,6 +40,7 @@
 #include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
+#include "mutt_header.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"
@@ -49,6 +50,9 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "sort.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif

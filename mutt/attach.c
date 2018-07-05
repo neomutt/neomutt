@@ -28,12 +28,6 @@
  */
 
 #include "config.h"
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include "attach.h"
 #include "body.h"
 #include "file.h"
@@ -59,7 +53,7 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 }
 
 /**
- * mutt_actx_add_fp - Save a File handle to the Attachment Context 
+ * mutt_actx_add_fp - Save a File handle to the Attachment Context
  * @param actx   Attachment context
  * @param new_fp File handle to save
  */

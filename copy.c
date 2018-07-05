@@ -38,7 +38,6 @@
 #include "globals.h"
 #include "handler.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

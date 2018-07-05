@@ -23,6 +23,12 @@
 #ifndef _MUTT_RECVCMD_H
 #define _MUTT_RECVCMD_H
 
+#include <stdio.h>
+
+struct AttachCtx;
+struct Body;
+struct Header;
+
 void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);

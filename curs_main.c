@@ -23,10 +23,10 @@
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"
@@ -39,6 +39,7 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_header.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
@@ -66,6 +67,9 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 static const char *No_mailbox_is_open = N_("No mailbox is open.");

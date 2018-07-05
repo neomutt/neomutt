@@ -31,8 +31,6 @@
  */
 
 #include <stdarg.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include "config.h"
 #include "mutt/mutt.h"
 

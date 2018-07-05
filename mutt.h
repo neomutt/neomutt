@@ -28,7 +28,6 @@
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include "where.h"
 
 struct ListHead;

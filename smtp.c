@@ -36,7 +36,6 @@
 #include "mutt.h"
 #include "globals.h"
 #include "mutt_account.h"
-#include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "progress.h"

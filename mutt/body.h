@@ -24,7 +24,6 @@
 #define _MUTT_BODY_H
 
 #include <stdbool.h>
-#include <stdio.h>
 #include <time.h>
 #include "parameter.h"
 

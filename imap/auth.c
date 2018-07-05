@@ -33,7 +33,6 @@
 #include "mutt/mutt.h"
 #include "auth.h"
 #include "globals.h"
-#include "protos.h"
 
 /**
  * imap_authenticators - Accepted authentication methods

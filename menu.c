@@ -43,8 +43,6 @@
 #include "sidebar.h"
 #endif
 
-struct Header;
-
 char *SearchBuffers[MENU_MAX];
 
 /* These are used to track the active menus, for redraw operations. */

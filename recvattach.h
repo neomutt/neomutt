@@ -24,6 +24,8 @@
 #ifndef _MUTT_RECVATTACH_H
 #define _MUTT_RECVATTACH_H
 
+struct AttachCtx;
+
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
 

@@ -25,10 +25,10 @@
 #define _MUTT_INIT_H
 
 #ifdef _MAKEDOC
-#include "config.h"
 #include "doc/makedoc_defs.h"
 #else
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"

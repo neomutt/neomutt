@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "hash.h"

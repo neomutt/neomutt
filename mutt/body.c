@@ -27,14 +27,15 @@
  */
 
 #include "config.h"
-#include <limits.h>
-#include <string.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include "body.h"
 #include "header.h"
 #include "logging.h"
 #include "memory.h"
 #include "mime.h"
+#include "parameter.h"
+#include "queue.h"
 #include "string2.h"
 
 /**

@@ -33,9 +33,7 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "filter.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
-#include "protos.h"
 
 /**
  * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)

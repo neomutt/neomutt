@@ -30,6 +30,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -45,6 +46,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_header.h"
 #include "mutt_thread.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -70,6 +72,9 @@
 #endif
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 /**

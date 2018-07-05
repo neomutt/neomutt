@@ -23,9 +23,9 @@
 #ifndef _NCRYPT_PGPKEY_H
 #define _NCRYPT_PGPKEY_H
 
+#include <stdbool.h>
+
 struct Address;
-struct Body;
-struct PgpKeyInfo;
 
 /**
  * enum PgpRing - PGP ring type
