@@ -262,16 +262,23 @@ git_ver.h: $(ALL_FILES)
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
 
-hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/mutt/address.h \
-			$(SRCDIR)/mutt/list.h $(SRCDIR)/mutt/buffer.h \
-			$(SRCDIR)/mutt/parameter.h $(SRCDIR)/mutt/body.h \
-			$(SRCDIR)/mutt/envelope.h $(SRCDIR)/mutt/header.h \
+hcache/hcversion.h:	$(SRCDIR)/mutt/address.h \
+			$(SRCDIR)/mutt/body.h \
+			$(SRCDIR)/mutt/buffer.h \
+			$(SRCDIR)/mutt/envelope.h \
+			$(SRCDIR)/mutt/header.h \
+			$(SRCDIR)/mutt/list.h \
+			$(SRCDIR)/mutt/parameter.h \
 			$(SRCDIR)/hcache/hcachever.sh
 	$(MKDIR_P) $(PWD)/hcache
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
-	echo '#include "mutt/address.h"'; echo '#include "mutt/list.h"'; \
-	echo '#include "mutt/buffer.h"'; echo '#include "mutt/parameter.h"'; \
-	echo '#include "mutt/header.h"';) | $(CPP) $(CFLAGS) - | \
+	( echo '#include "config.h"'; \
+	echo '#include "mutt/address.h"'; \
+	echo '#include "mutt/body.h"'; \
+	echo '#include "mutt/buffer.h"'; \
+	echo '#include "mutt/envelope.h"'; \
+	echo '#include "mutt/header.h"'; \
+	echo '#include "mutt/list.h"'; \
+	echo '#include "mutt/parameter.h"';) | $(CPP) $(CFLAGS) - | \
 	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
 
 # clean
