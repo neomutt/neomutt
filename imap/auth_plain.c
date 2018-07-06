@@ -48,7 +48,7 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
   int rc = IMAP_CMD_CONTINUE;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
   static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
-  char buf[STRING];
+  char buf[STRING] = { 0 };
 
   if (mutt_account_getuser(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
@@ -77,8 +77,8 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
     }
     if (rc == IMAP_CMD_RESPOND)
     {
+      mutt_str_strcat(buf + sizeof(auth_plain_cmd), sizeof(buf) - sizeof(auth_plain_cmd), "\r\n");
       mutt_socket_send(idata->conn, buf + sizeof(auth_plain_cmd));
-      mutt_socket_send(idata->conn, "\r\n");
     }
   }
 
