@@ -453,6 +453,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 static int main_change_folder(struct Menu *menu, int op, char *buf,
                               size_t buflen, int *oldcount, int *index_hint)
 {
+  struct Context *ctx_exist = NULL;
+
 #ifdef USE_NNTP
   if (OptNews)
   {
@@ -495,7 +497,8 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
       menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
-    FREE(&Context);
+    if (!KeepCtx)
+      FREE(&Context);
     FREE(&LastFolder);
     LastFolder = new_last_folder;
   }
@@ -513,8 +516,31 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
    * switch statement would need to be run. */
   mutt_folder_hook(buf);
 
-  Context = mx_mbox_open(
+  if (KeepCtx)
+  {
+    /* scan buffy list for existing context */
+    for (struct Buffy *b = Incoming; b; b = b->next)
+    {
+      if (mutt_str_strcmp(b->realpath, buf) == 0)
+      {
+        ctx_exist = b->ctx;
+        break;
+      }
+    }
+  }
+  else
+  {
+    /* somebody might have disabled keep_ctx during runtime */
+    for (struct Buffy *b = Incoming; b; b = b->next)
+      b->ctx = NULL;
+  }
+
+  if (ctx_exist)
+    Context = ctx_exist;
+  else
+    Context = mx_mbox_open(
       buf, (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0, NULL);
+
   if (Context)
   {
     menu->current = ci_first_message();

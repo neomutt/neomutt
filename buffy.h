@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <time.h>
+#include "context.h"
 #include "where.h"
 
 struct Buffer;
@@ -53,6 +54,7 @@ struct Buffy
   char *desc;
   off_t size;
   struct Buffy *next;
+  struct Context *ctx;       /**< store context for re-use */
   bool new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */

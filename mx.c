@@ -457,7 +457,17 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     return NULL;
 
   if (!ctx)
+  {
     ctx = mutt_mem_malloc(sizeof(struct Context));
+    if (KeepCtx)
+    {
+      for (struct Buffy *b = Incoming; b; b = b->next)
+      {
+        if (mutt_str_strcmp(b->realpath, path) == 0)
+          b->ctx = ctx;
+      }
+    }
+  }
   memset(ctx, 0, sizeof(struct Context));
 
   ctx->path = mutt_str_strdup(path);
@@ -575,6 +585,9 @@ void mx_fastclose_mailbox(struct Context *ctx)
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
     mutt_buffy_setnotified(ctx->path);
+
+  if (KeepCtx)
+    return;
 
   if (ctx->mx_ops)
     ctx->mx_ops->mbox_close(ctx);
@@ -973,6 +986,13 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     ctx->msgcount = orig_msgcount;
   }
 #endif
+
+  /* update ctx headers as we want to keep the context */
+  if (KeepCtx && (ctx->changed || ctx->deleted))
+  {
+      mx_update_tables(ctx, true);
+      mutt_sort_headers(ctx, 1);
+  }
 
   mx_fastclose_mailbox(ctx);
 
