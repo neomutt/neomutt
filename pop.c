@@ -476,12 +476,12 @@ static int pop_fetch_headers(struct Context *ctx)
 }
 
 /**
- * pop_open_mailbox - open POP mailbox, fetch only headers
+ * pop_mbox_open - open POP mailbox, fetch only headers
  * @param ctx Mailbox Context
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int pop_open_mailbox(struct Context *ctx)
+static int pop_mbox_open(struct Context *ctx)
 {
   char buf[PATH_MAX];
   struct Connection *conn = NULL;
@@ -571,11 +571,11 @@ static void pop_clear_cache(struct PopData *pop_data)
 }
 
 /**
- * pop_close_mailbox - close POP mailbox
+ * pop_mbox_close - close POP mailbox
  * @param ctx Mailbox Context
  * @retval 0 Always
  */
-static int pop_close_mailbox(struct Context *ctx)
+static int pop_mbox_close(struct Context *ctx)
 {
   struct PopData *pop_data = (struct PopData *) ctx->data;
 
@@ -601,14 +601,14 @@ static int pop_close_mailbox(struct Context *ctx)
 }
 
 /**
- * pop_fetch_message - fetch message from POP server
+ * pop_msg_open - fetch message from POP server
  * @param ctx   Mailbox Context
  * @param msg   Message
  * @param msgno Message number
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
+static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   void *uidl = NULL;
   char buf[LONG_STRING];
@@ -753,25 +753,25 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
 }
 
 /**
- * pop_close_message - Close POP Message
+ * pop_msg_close - Close POP Message
  * @param ctx Mailbox Context
  * @param msg Message
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-static int pop_close_message(struct Context *ctx, struct Message *msg)
+static int pop_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
 
 /**
- * pop_sync_mailbox - update POP mailbox, delete messages from server
+ * pop_mbox_sync - update POP mailbox, delete messages from server
  * @param ctx        Mailbox Context
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
+static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
@@ -849,13 +849,13 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * pop_check_mailbox - Check for new messages and fetch headers
+ * pop_mbox_check - Check for new messages and fetch headers
  * @param ctx        Mailbox Context
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int pop_check_mailbox(struct Context *ctx, int *index_hint)
+static int pop_mbox_check(struct Context *ctx, int *index_hint)
 {
   int ret;
   struct PopData *pop_data = (struct PopData *) ctx->data;
@@ -1063,15 +1063,15 @@ fail:
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
  */
 struct MxOps mx_pop_ops = {
-  .mbox_open        = pop_open_mailbox,
+  .mbox_open        = pop_mbox_open,
   .mbox_open_append = NULL,
-  .mbox_check       = pop_check_mailbox,
-  .mbox_sync        = pop_sync_mailbox,
-  .mbox_close       = pop_close_mailbox,
-  .msg_open         = pop_fetch_message,
+  .mbox_check       = pop_mbox_check,
+  .mbox_sync        = pop_mbox_sync,
+  .mbox_close       = pop_mbox_close,
+  .msg_open         = pop_msg_open,
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
-  .msg_close        = pop_close_message,
+  .msg_close        = pop_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
 };
