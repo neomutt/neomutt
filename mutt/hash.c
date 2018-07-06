@@ -28,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "hash.h"
 #include "memory.h"

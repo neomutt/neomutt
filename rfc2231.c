@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "rfc2231.h"
 #include "globals.h"
 #include "options.h"

@@ -39,6 +39,7 @@
 #include <time.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "buffy.h"
 #include "context.h"

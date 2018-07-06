@@ -29,6 +29,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "mailbox.h"

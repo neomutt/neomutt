@@ -22,9 +22,10 @@
  */
 
 #include "config.h"
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "group.h"
 #include "globals.h"
 #include "protos.h"

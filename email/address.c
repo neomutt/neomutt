@@ -31,10 +31,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "mutt/mutt.h"
 #include "address.h"
-#include "idna2.h"
-#include "memory.h"
-#include "string2.h"
 
 /**
  * AddressSpecials - Characters with special meaning for email addresses

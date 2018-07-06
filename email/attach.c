@@ -28,10 +28,9 @@
  */
 
 #include "config.h"
+#include "mutt/mutt.h"
 #include "attach.h"
 #include "body.h"
-#include "file.h"
-#include "memory.h"
 
 /**
  * mutt_actx_add_attach - Add an Attachment to an Attachment Context

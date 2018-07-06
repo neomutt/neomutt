@@ -30,8 +30,8 @@
  * version using it.
  */
 
-#include <stdarg.h>
 #include "config.h"
+#include <stdarg.h>
 #include "mutt/mutt.h"
 
 #ifdef HAVE_VASPRINTF

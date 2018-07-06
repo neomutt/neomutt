@@ -18,10 +18,12 @@ IncludeCategories:
     Priority:   -6
   - Regex:      '"mutt/.*\.h"'
     Priority:   -4
-  - Regex:      '"conn/.*\.h"'
+  - Regex:      '"email/.*\.h"'
     Priority:   -3
-  - Regex:      '"mutt\.h"'
+  - Regex:      '"conn/.*\.h"'
     Priority:   -2
+  - Regex:      '"mutt\.h"'
+    Priority:   -1
   # Main Header 0
   - Regex:      '".*"'
     Priority:   5

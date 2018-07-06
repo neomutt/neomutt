@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_ENVELOPE_H
-#define _MUTT_ENVELOPE_H
+#ifndef _EMAIL_ENVELOPE_H
+#define _EMAIL_ENVELOPE_H
 
 #include <stdbool.h>
-#include "list.h"
+#include "mutt/mutt.h"
 
 /**
  * struct Envelope - The header of an email
@@ -71,4 +71,4 @@ struct Envelope *mutt_env_new(void);
 int              mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
 void             mutt_env_to_local(struct Envelope *e);
 
-#endif /* _MUTT_ENVELOPE_H */
+#endif /* _EMAIL_ENVELOPE_H */

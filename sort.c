@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "sort.h"
 #include "context.h"
 #include "globals.h"

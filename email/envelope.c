@@ -29,13 +29,9 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "mutt/mutt.h"
 #include "envelope.h"
 #include "address.h"
-#include "buffer.h"
-#include "list.h"
-#include "memory.h"
-#include "queue.h"
-#include "string2.h"
 
 /**
  * mutt_env_new - Create a new Envelope

@@ -28,12 +28,10 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/mutt.h"
 #include "header.h"
 #include "body.h"
 #include "envelope.h"
-#include "list.h"
-#include "memory.h"
-#include "queue.h"
 #include "tags.h"
 
 /**

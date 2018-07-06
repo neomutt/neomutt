@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "context.h"
 #include "enter_state.h"

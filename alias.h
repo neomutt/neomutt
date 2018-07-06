@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 
 /**
  * struct Alias - A shortcut for an email address

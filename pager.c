@@ -32,6 +32,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "pager.h"
 #include "alias.h"

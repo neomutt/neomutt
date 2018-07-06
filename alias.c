@@ -31,6 +31,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
 #include "globals.h"

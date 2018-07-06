@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "mx.h"
 #include "buffy.h"

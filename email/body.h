@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BODY_H
-#define _MUTT_BODY_H
+#ifndef _EMAIL_BODY_H
+#define _EMAIL_BODY_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -102,4 +102,4 @@ bool         mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);
 void         mutt_body_free(struct Body **p);
 struct Body *mutt_body_new(void);
 
-#endif /* _MUTT_BODY_H */
+#endif /* _EMAIL_BODY_H */

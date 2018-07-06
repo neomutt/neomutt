@@ -23,6 +23,7 @@
 
 #include <stddef.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 
 /**
  * enum UrlScheme - All recognised Url types

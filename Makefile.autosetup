@@ -90,14 +90,22 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
+# libemail
+LIBEMAIL=	libemail.a
+LIBEMAILOBJS=	email/address.o email/attach.o email/body.o email/envelope.o \
+		email/header.o email/parameter.o email/tags.o email/thread.o
+CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
+MUTTLIBS+=	$(LIBEMAIL)
+ALLOBJS+=	$(LIBEMAILOBJS)
+
+###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/address.o mutt/attach.o mutt/base64.o mutt/body.o mutt/buffer.o mutt/charset.o \
-		mutt/date.o mutt/envelope.o mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
-		mutt/header.o mutt/idna.o mutt/list.o mutt/logging.o mutt/mapping.o \
-		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/mime.o \
-		mutt/parameter.o mutt/regex.o mutt/rfc2047.o mutt/sha1.o \
-		mutt/signal.o mutt/string.o mutt/tags.o mutt/thread.o
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
+		mutt/idna.o mutt/list.o mutt/logging.o mutt/mapping.o \
+		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/mime.o mutt/regex.o \
+		mutt/rfc2047.o mutt/sha1.o mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
@@ -220,6 +228,13 @@ $(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
 $(PWD)/mutt:
 	$(MKDIR_P) $(PWD)/mutt
 
+# libemail
+$(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
+	$(AR) cr $@ $(LIBEMAILOBJS)
+	$(RANLIB) $@
+$(PWD)/email:
+	$(MKDIR_P) $(PWD)/email
+
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
 	$(AR) cr $@ $(LIBNCRYPTOBJS)
@@ -262,23 +277,23 @@ git_ver.h: $(ALL_FILES)
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
 
-hcache/hcversion.h:	$(SRCDIR)/mutt/address.h \
-			$(SRCDIR)/mutt/body.h \
+hcache/hcversion.h:	$(SRCDIR)/email/address.h \
+			$(SRCDIR)/email/body.h \
+			$(SRCDIR)/email/envelope.h \
+			$(SRCDIR)/email/header.h \
+			$(SRCDIR)/email/parameter.h \
 			$(SRCDIR)/mutt/buffer.h \
-			$(SRCDIR)/mutt/envelope.h \
-			$(SRCDIR)/mutt/header.h \
 			$(SRCDIR)/mutt/list.h \
-			$(SRCDIR)/mutt/parameter.h \
 			$(SRCDIR)/hcache/hcachever.sh
 	$(MKDIR_P) $(PWD)/hcache
 	( echo '#include "config.h"'; \
-	echo '#include "mutt/address.h"'; \
-	echo '#include "mutt/body.h"'; \
+	echo '#include "email/address.h"'; \
+	echo '#include "email/body.h"'; \
+	echo '#include "email/envelope.h"'; \
+	echo '#include "email/header.h"'; \
+	echo '#include "email/parameter.h"'; \
 	echo '#include "mutt/buffer.h"'; \
-	echo '#include "mutt/envelope.h"'; \
-	echo '#include "mutt/header.h"'; \
-	echo '#include "mutt/list.h"'; \
-	echo '#include "mutt/parameter.h"';) | $(CPP) $(CFLAGS) - | \
+	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \
 	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
 
 # clean

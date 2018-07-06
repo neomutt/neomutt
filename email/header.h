@@ -20,14 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HEADER_H
-#define _MUTT_HEADER_H
+#ifndef _EMAIL_HEADER_H
+#define _EMAIL_HEADER_H
 
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "list.h"
+#include "mutt/mutt.h"
 #include "tags.h"
 
 /**
@@ -121,4 +121,4 @@ bool           mutt_header_cmp_strict(const struct Header *h1, const struct Head
 void           mutt_header_free(struct Header **h);
 struct Header *mutt_header_new(void);
 
-#endif /* _MUTT_HEADER_H */
+#endif /* _EMAIL_HEADER_H */

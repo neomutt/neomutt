@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CONTENT_H
-#define _MUTT_CONTENT_H
+#ifndef _EMAIL_CONTENT_H
+#define _EMAIL_CONTENT_H
 
 #include <stdbool.h>
 
@@ -45,4 +45,4 @@ struct Content
   bool cr : 1;     /**< has CR, even when in a CRLF pair */
 };
 
-#endif /* _MUTT_CONTENT_H */
+#endif /* _EMAIL_CONTENT_H */

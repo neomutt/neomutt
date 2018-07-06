@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_TAG_H
-#define _MUTT_TAG_H
+#ifndef _EMAIL_TAG_H
+#define _EMAIL_TAG_H
 
 #include <stdbool.h>
-#include "queue.h"
+#include "mutt/mutt.h"
 
 extern char *HiddenTags;
 extern struct Hash *TagTransforms;
@@ -51,4 +51,4 @@ char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
 char *driver_tags_get_with_hidden(struct TagHead *head);
 bool  driver_tags_replace(struct TagHead *head, char *tags);
 
-#endif /* _MUTT_TAG_H */
+#endif /* _EMAIL_TAG_H */

@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "email/email.h"
 
 /**
  * struct ImapHeaderData - IMAP-specific header data

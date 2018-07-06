@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"

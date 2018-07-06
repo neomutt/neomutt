@@ -29,14 +29,9 @@
 #include "config.h"
 #include <stdbool.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
 #include "body.h"
 #include "header.h"
-#include "logging.h"
-#include "memory.h"
-#include "mime.h"
-#include "parameter.h"
-#include "queue.h"
-#include "string2.h"
 
 /**
  * mutt_body_new - Create a new Body
