@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "pop_private.h"
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"

@@ -124,9 +124,9 @@ pager.c
 parse.c
 pattern.c
 pgpewrap.c
-pop.c
-pop_auth.c
-pop_lib.c
+pop/pop.c
+pop/pop_auth.c
+pop/pop_lib.c
 postpone.c
 progress.c
 query.c

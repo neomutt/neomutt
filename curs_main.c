@@ -58,7 +58,7 @@
 #include "sidebar.h"
 #endif
 #ifdef USE_POP
-#include "pop.h"
+#include "pop/pop.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h"

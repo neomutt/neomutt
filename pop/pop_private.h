@@ -20,12 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_POP_H
-#define _MUTT_POP_H
+#ifndef _POP_PRIVATE_H
+#define _POP_PRIVATE_H
 
 #include <stdbool.h>
 #include <time.h>
-#include "mx.h"
 
 struct Account;
 struct Context;
@@ -125,9 +124,5 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
 int pop_reconnect(struct Context *ctx);
 void pop_logout(struct Context *ctx);
 
-/* pop.c */
-void pop_fetch_mail(void);
 
-extern struct MxOps mx_pop_ops;
-
-#endif /* _MUTT_POP_H */
+#endif /* _POP_PRIVATE_H */

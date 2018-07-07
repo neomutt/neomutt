@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "pop_private.h"
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"
