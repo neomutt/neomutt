@@ -64,7 +64,7 @@ imap/util.c
 init.c
 keymap.c
 main.c
-mbox.c
+mbox/mbox.c
 menu.c
 mh.c
 mutt/base64.c

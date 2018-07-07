@@ -188,9 +188,7 @@ void mx_update_tables(struct Context *ctx, bool committing);
 
 struct MxOps *mx_get_ops(int magic);
 extern struct MxOps mx_maildir_ops;
-extern struct MxOps mx_mbox_ops;
 extern struct MxOps mx_mh_ops;
-extern struct MxOps mx_mmdf_ops;
 
 /* This variable is backing for a config item */
 WHERE short MboxType;

@@ -66,7 +66,7 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o buffy.o \
 		conststrings.o copy.o curs_lib.o curs_main.o edit.o editmsg.o \
 		enriched.o enter.o filter.o flags.o from.o group.o handler.o \
 		hdrline.o help.o history.o hook.o init.o keymap.o \
-		main.o mbox.o menu.o mh.o muttlib.o mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
+		main.o menu.o mh.o muttlib.o mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
 		mutt_logging.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o mx.o \
 		pager.o parse.o pattern.o \
 		postpone.o progress.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
@@ -113,6 +113,14 @@ LIBNNTPOBJS=	nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 MUTTLIBS+=	$(LIBNNTP)
 ALLOBJS+=	$(LIBNNTPOBJS)
+
+###############################################################################
+# libmbox
+LIBMBOX=	libmbox.a
+LIBMBOXOBJS=	mbox/mbox.o
+CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
+MUTTLIBS+=	$(LIBMBOX)
+ALLOBJS+=	$(LIBMBOXOBJS)
 
 ###############################################################################
 # libmutt
@@ -264,6 +272,13 @@ $(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
 	$(RANLIB) $@
 $(PWD)/nntp:
 	$(MKDIR_P) $(PWD)/nntp
+
+# libmbox
+$(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
+	$(AR) cr $@ $(LIBMBOXOBJS)
+	$(RANLIB) $@
+$(PWD)/mbox:
+	$(MKDIR_P) $(PWD)/mbox
 
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
