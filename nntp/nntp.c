@@ -35,6 +35,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include "nntp_private.h"
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"
@@ -53,6 +54,7 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
+#include "sort.h"
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -2592,6 +2594,26 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   ctx->quiet = quiet;
   FREE(&cc.child);
   return (rc < 0) ? -1 : 0;
+}
+
+/**
+ * nntp_compare_order - Sort to mailbox order
+ * @param a First Header to compare
+ * @param b First Header to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int nntp_compare_order(const void *a, const void *b)
+{
+  struct Header **ha = (struct Header **) a;
+  struct Header **hb = (struct Header **) b;
+
+  anum_t na = NHDR(*ha)->article_num;
+  anum_t nb = NHDR(*hb)->article_num;
+  int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
+  result = perform_auxsort(result, a, b);
+  return (SORTCODE(result));
 }
 
 // clang-format off

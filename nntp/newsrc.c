@@ -38,6 +38,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "nntp_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"

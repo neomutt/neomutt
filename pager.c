@@ -58,7 +58,7 @@
 #include "sidebar.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

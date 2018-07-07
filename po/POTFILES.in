@@ -117,8 +117,8 @@ ncrypt/pgplib.c
 ncrypt/pgpmicalg.c
 ncrypt/pgppacket.c
 ncrypt/smime.c
-newsrc.c
-nntp.c
+nntp/newsrc.c
+nntp/nntp.c
 opcodes.h
 pager.c
 parse.c

@@ -70,7 +70,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 
 #define MUTT_IGNORE (1 << 0)  /* -z */

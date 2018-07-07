@@ -34,15 +34,13 @@
 #include "protos.h"
 #ifdef USE_NNTP
 #include "mx.h"
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
-
-#define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
 
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
 
-static int perform_auxsort(int retval, const void *a, const void *b)
+int perform_auxsort(int retval, const void *a, const void *b)
 {
   /* If the items compared equal by the main sort
    * and we're not already doing an 'aux' sort...  */
@@ -164,19 +162,8 @@ static int compare_order(const void *a, const void *b)
   struct Header **ha = (struct Header **) a;
   struct Header **hb = (struct Header **) b;
 
-#ifdef USE_NNTP
-  if (Context && Context->magic == MUTT_NNTP)
-  {
-    anum_t na = NHDR(*ha)->article_num;
-    anum_t nb = NHDR(*hb)->article_num;
-    int result = na == nb ? 0 : na > nb ? 1 : -1;
-    result = perform_auxsort(result, a, b);
-    return (SORTCODE(result));
-  }
-  else
-#endif
-    /* no need to auxsort because you will never have equality here */
-    return (SORTCODE((*ha)->index - (*hb)->index));
+  /* no need to auxsort because you will never have equality here */
+  return (SORTCODE((*ha)->index - (*hb)->index));
 }
 
 static int compare_spam(const void *a, const void *b)
@@ -276,6 +263,11 @@ sort_t *mutt_get_sort_func(int method)
     case SORT_LABEL:
       return compare_label;
     case SORT_ORDER:
+#ifdef USE_NNTP
+      if (Context && (Context->magic == MUTT_NNTP))
+        return nntp_compare_order;
+      else
+#endif
       return compare_order;
     case SORT_RECEIVED:
       return compare_date_received;

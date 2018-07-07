@@ -50,7 +50,7 @@
 #include "url.h"
 #ifdef USE_NNTP
 #include "mx.h"
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef MIXMASTER
 #include "remailer.h"
