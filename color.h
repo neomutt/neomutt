@@ -1,6 +1,6 @@
 /**
  * @file
- * Mutt Logging
+ * Color and attribute parsing
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -20,23 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LOGGING2_H
-#define _LOGGING2_H
+#ifndef MUTT_COLOR_H
+#define MUTT_COLOR_H
 
-#include <stdbool.h>
-#include <time.h>
+struct Buffer;
 
-extern short DebugLevel;
-extern char *DebugFile;
-extern bool LogAllowDebugSet;
+int  mutt_alloc_color(int fg, int bg);
+int  mutt_combine_color(int fg_attr, int bg_attr);
+void mutt_free_color(int fg, int bg);
+void mutt_free_colors(void);
+int  mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int  mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int  mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int  mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
-int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
-
-int  mutt_log_start(void);
-void mutt_log_stop(void);
-int mutt_log_set_level(int level, bool verbose);
-int mutt_log_set_file(const char *file, bool verbose);
-
-void mutt_clear_error(void);
-
-#endif /* _LOGGING2_H */
+#endif /* MUTT_COLOR_H */

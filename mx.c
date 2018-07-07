@@ -50,6 +50,7 @@
 #include "maildir/maildir.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"

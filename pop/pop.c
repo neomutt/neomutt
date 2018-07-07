@@ -47,6 +47,7 @@
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

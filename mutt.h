@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include "where.h"
 
+struct Buffer;
 struct ListHead;
 struct Mapping;
 
@@ -290,9 +291,23 @@ struct AttachMatch
 
 int safe_asprintf(char **, const char *, ...);
 
-int mutt_inbox_cmp(const char *a, const char *b);
-
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
+
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
+void mutt_free_opts(void);
+int query_quadoption(int opt, const char *prompt);
+int mutt_label_complete(char *buf, size_t buflen, int numtabs);
+int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);
+int mutt_var_value_complete(char *buf, size_t buflen, int pos);
+void myvar_set(const char *var, const char *val);
+bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs);
+bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs);
+int mutt_dump_variables(bool hide_sensitive);
+int mutt_get_hook_type(const char *name);
+int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
+int mutt_query_variables(struct ListHead *queries);
+bool set_default_value(const char *name, intptr_t value);
+void reset_value(const char *name);
 
 /* All the variables below are backing for config items */
 

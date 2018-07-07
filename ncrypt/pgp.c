@@ -50,6 +50,7 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"
 #include "options.h"

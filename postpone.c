@@ -45,6 +45,7 @@
 #include "handler.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "ncrypt/ncrypt.h"

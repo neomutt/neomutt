@@ -48,6 +48,7 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "ncrypt.h"
@@ -58,6 +59,7 @@
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "sort.h"
 
 /**

@@ -33,9 +33,11 @@
 #include "globals.h"
 #include "handler.h"
 #include "mutt_body.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

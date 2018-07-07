@@ -57,7 +57,9 @@
 #include "globals.h"
 #include "handler.h"
 #include "keymap.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "ncrypt.h"
@@ -65,6 +67,7 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "sort.h"
 #include "state.h"
 #ifdef ENABLE_NLS

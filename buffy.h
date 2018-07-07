@@ -80,6 +80,13 @@ void mutt_buffy_setnotified(const char *path);
 #define MUTT_BUFFY_CHECK_FORCE       (1 << 0)
 #define MUTT_BUFFY_CHECK_FORCE_STATS (1 << 1)
 
+void mutt_buffy(char *s, size_t slen);
+bool mutt_buffy_list(void);
+int mutt_buffy_check(int force);
+bool mutt_buffy_notify(void);
+int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+
 /* These variables are backing for config items */
 WHERE short MailCheck;
 WHERE short MailCheckStatsInterval;

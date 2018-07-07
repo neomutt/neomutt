@@ -36,6 +36,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"

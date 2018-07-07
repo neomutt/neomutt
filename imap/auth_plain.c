@@ -33,6 +33,7 @@
 #include "conn/conn.h"
 #include "auth.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"

@@ -42,6 +42,7 @@
 #include "mutt.h"
 #include "rfc1524.h"
 #include "globals.h"
+#include "mutt_attach.h"
 #include "options.h"
 #include "protos.h"
 

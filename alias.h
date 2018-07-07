@@ -50,4 +50,10 @@ void            mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_expand_aliases(struct Address *a);
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
 
+bool mutt_addr_is_user(struct Address *addr);
+int mutt_alias_complete(char *buf, size_t buflen);
+void mutt_alias_add_reverse(struct Alias *t);
+void mutt_alias_delete_reverse(struct Alias *t);
+struct Address *mutt_alias_reverse_lookup(struct Address *a);
+
 #endif /* _MUTT_ALIAS_H */

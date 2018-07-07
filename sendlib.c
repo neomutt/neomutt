@@ -53,6 +53,7 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "state.h"

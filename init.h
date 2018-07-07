@@ -36,6 +36,7 @@
 #include "globals.h"
 #include "group.h"
 #include "history.h"
+#include "keymap.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
 #include "mutt_options.h"

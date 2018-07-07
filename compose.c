@@ -42,6 +42,7 @@
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"

@@ -33,6 +33,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
+#include "mutt_attach.h"
 #include "protos.h"
 
 /**

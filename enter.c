@@ -35,6 +35,9 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "alias.h"
+#include "browser.h"
+#include "buffy.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "history.h"

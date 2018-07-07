@@ -42,6 +42,7 @@
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
+#include "mutt_logging.h"
 #include "options.h"
 #include "protos.h"
 

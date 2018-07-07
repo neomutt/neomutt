@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

@@ -46,6 +46,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
+#include "browser.h"
 #include "buffy.h"
 #include "globals.h"
 #include "keymap.h"

@@ -78,4 +78,7 @@ struct BrowserState
 #endif
 };
 
+void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles);
+void mutt_browser_select_dir(char *f);
+
 #endif /* _MUTT_BROWSER_H */

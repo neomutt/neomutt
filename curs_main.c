@@ -33,6 +33,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
+#include "browser.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
@@ -41,6 +42,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
@@ -52,6 +54,7 @@
 #include "pattern.h"
 #include "progress.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "sort.h"
 #include "terminal.h"
 #ifdef USE_SIDEBAR

@@ -40,6 +40,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
 
 /**
  * struct Coord - Screen coordinates

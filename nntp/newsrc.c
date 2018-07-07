@@ -47,6 +47,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mutt_window.h"
 #include "mx.h"
