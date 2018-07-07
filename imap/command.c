@@ -892,7 +892,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
     mutt_debug(2, "Handling untagged NO\n");
 
     /* Display the warning message from the server */
-    mutt_error("%s", s + 3);
+    mutt_error("%s", s + 2);
   }
 
   return 0;
