@@ -158,37 +158,17 @@ enum MailboxFormat
 
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
 
-int mh_check_empty(const char *path);
-
-int maildir_check_empty(const char *path);
-
-struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, struct Header *h);
-struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *h);
-void maildir_parse_flags(struct Header *h, const char *path);
-bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
-void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
-
-#ifdef USE_HCACHE
-int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
-#else
-int mh_sync_mailbox_message(struct Context *ctx, int msgno);
-#endif
-
 #ifdef USE_NOTMUCH
 bool mx_is_notmuch(const char *p);
 #endif
 
 bool mx_tags_is_supported(struct Context *ctx);
 
-FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
-
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, bool committing);
 
 struct MxOps *mx_get_ops(int magic);
-extern struct MxOps mx_maildir_ops;
-extern struct MxOps mx_mh_ops;
 
 /* This variable is backing for a config item */
 WHERE short MboxType;

@@ -76,8 +76,6 @@ void mutt_buffy_cleanup(const char *path, struct stat *st);
 /** mark mailbox just left as already notified */
 void mutt_buffy_setnotified(const char *path);
 
-bool mh_buffy(struct Buffy *mailbox, bool check_stats);
-
 /* force flags passed to mutt_buffy_check() */
 #define MUTT_BUFFY_CHECK_FORCE       (1 << 0)
 #define MUTT_BUFFY_CHECK_FORCE_STATS (1 << 1)

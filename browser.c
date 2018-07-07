@@ -45,6 +45,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

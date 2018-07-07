@@ -63,10 +63,10 @@ imap/utf7.c
 imap/util.c
 init.c
 keymap.c
+maildir/mh.c
 main.c
 mbox/mbox.c
 menu.c
-mh.c
 mutt/base64.c
 mutt/buffer.c
 mutt/charset.c

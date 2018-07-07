@@ -54,6 +54,7 @@
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "progress.h"

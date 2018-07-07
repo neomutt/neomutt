@@ -35,6 +35,7 @@
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"
