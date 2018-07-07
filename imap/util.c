@@ -814,8 +814,8 @@ void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_back
   const char *s = src;
 
   *pt++ = '"';
-  /* save room for trailing quote-char */
-  dlen -= 2;
+  /* save room for quote-chars */
+  dlen -= 3;
 
   for (; *s && dlen; s++)
   {
