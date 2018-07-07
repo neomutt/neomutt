@@ -330,7 +330,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       }
       s++;
       ptmp = tmp;
-      while (*s && *s != '\"')
+      while (*s && (*s != '\"') && (ptmp != (tmp + sizeof(tmp) - 1)))
         *ptmp++ = *s++;
       if (*s != '\"')
         return -1;
@@ -343,7 +343,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       s += 11;
       SKIPWS(s);
       ptmp = tmp;
-      while (isdigit((unsigned char) *s))
+      while (isdigit((unsigned char) *s) && (ptmp != (tmp + sizeof(tmp) - 1)))
         *ptmp++ = *s++;
       *ptmp = '\0';
       if (mutt_str_atol(tmp, &h->content_length) < 0)
