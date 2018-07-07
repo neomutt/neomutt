@@ -202,6 +202,10 @@ static int fetch_uidl(char *line, void *data)
     endp++;
   memmove(line, endp, strlen(endp) + 1);
 
+  /* uid must be at least be 1 byte */
+  if (strlen(line) == 0)
+    return -1;
+
   for (i = 0; i < ctx->msgcount; i++)
     if (mutt_str_strcmp(line, ctx->hdrs[i]->data) == 0)
       break;
