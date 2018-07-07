@@ -821,9 +821,9 @@ void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_back
   {
     if (strchr(quote, *s))
     {
-      dlen -= 2;
-      if (dlen == 0)
+      if (dlen < 2)
         break;
+      dlen -= 2;
       *pt++ = '\\';
       *pt++ = *s;
     }
