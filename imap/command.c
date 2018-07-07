@@ -635,6 +635,13 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
       idata->status = IMAP_FATAL;
       return;
     }
+
+    if (strlen(idata->buf) < litlen)
+    {
+      mutt_debug(1, "Error parsing STATUS mailbox\n");
+      return;
+    }
+
     mailbox = idata->buf;
     s = mailbox + litlen;
     *s = '\0';
