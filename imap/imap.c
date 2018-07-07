@@ -1709,6 +1709,7 @@ int imap_subscribe(char *path, bool subscribe)
   char errstr[STRING];
   struct Buffer err, token;
   struct ImapMbox mx;
+  size_t len = 0;
 
   if (!mx_is_imap(path) || imap_parse_path(path, &mx) || !mx.mbox)
   {
@@ -1729,7 +1730,8 @@ int imap_subscribe(char *path, bool subscribe)
     mutt_buffer_init(&err);
     err.data = errstr;
     err.dsize = sizeof(errstr);
-    snprintf(mbox, sizeof(mbox), "%smailboxes \"%s\"", subscribe ? "" : "un", path);
+	len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
+	imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
     if (mutt_parse_rc_line(mbox, &token, &err))
       mutt_debug(1, "Error adding subscribed mailbox: %s\n", errstr);
     FREE(&token.data);
