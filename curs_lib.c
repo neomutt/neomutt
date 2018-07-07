@@ -53,7 +53,7 @@
 #include <wctype.h>
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 /* not possible to unget more than one char under some curses libs, and it

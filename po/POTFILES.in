@@ -95,7 +95,6 @@ mutt_body.c
 mutt_header.c
 mutt_logging.c
 mutt_lua.c
-mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
 mutt_thread.c
@@ -119,6 +118,7 @@ ncrypt/pgppacket.c
 ncrypt/smime.c
 nntp/newsrc.c
 nntp/nntp.c
+notmuch/mutt_notmuch.c
 opcodes.h
 pager.c
 parse.c

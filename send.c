@@ -56,7 +56,7 @@
 #include "remailer.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static void append_signature(FILE *f)

@@ -62,7 +62,7 @@
 #include "nntp/nntp.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static const struct Mapping FolderHelp[] = {

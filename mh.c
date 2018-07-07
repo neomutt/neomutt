@@ -53,7 +53,7 @@
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"

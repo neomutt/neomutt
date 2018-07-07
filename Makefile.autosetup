@@ -77,9 +77,6 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o buffy.o \
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
-@if USE_NOTMUCH
-NEOMUTTOBJS+=	mutt_notmuch.o
-@endif
 @if MIXMASTER
 NEOMUTTOBJS+=	remailer.o
 @endif
@@ -121,6 +118,16 @@ LIBMBOXOBJS=	mbox/mbox.o
 CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
 MUTTLIBS+=	$(LIBMBOX)
 ALLOBJS+=	$(LIBMBOXOBJS)
+
+###############################################################################
+# libnotmuch
+@if USE_NOTMUCH
+LIBNOTMUCH=	libnotmuch.a
+LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o
+CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
+MUTTLIBS+=	$(LIBNOTMUCH)
+ALLOBJS+=	$(LIBNOTMUCHOBJS)
+@endif
 
 ###############################################################################
 # libmutt
@@ -279,6 +286,13 @@ $(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
 	$(RANLIB) $@
 $(PWD)/mbox:
 	$(MKDIR_P) $(PWD)/mbox
+
+# libnotmuch
+$(LIBNOTMUCH): $(PWD)/notmuch $(LIBNOTMUCHOBJS)
+	$(AR) cr $@ $(LIBNOTMUCHOBJS)
+	$(RANLIB) $@
+$(PWD)/notmuch:
+	$(MKDIR_P) $(PWD)/notmuch
 
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)

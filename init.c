@@ -58,7 +58,7 @@
 #include "sidebar.h"
 #include "version.h"
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h" /* for imap_subscribe() */

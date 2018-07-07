@@ -64,7 +64,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"

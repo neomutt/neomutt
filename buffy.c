@@ -47,7 +47,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static time_t BuffyTime = 0; /**< last time we started checking for mail */
