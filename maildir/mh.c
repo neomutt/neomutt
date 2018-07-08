@@ -61,9 +61,9 @@
 #endif
 
 /* These Config Variables are only used in maildir/mh.c */
-bool  CheckNew;
-bool  MaildirHeaderCacheVerify;
-bool  MhPurge;
+bool CheckNew;
+bool MaildirHeaderCacheVerify;
+bool MhPurge;
 char *MhSeqFlagged;
 char *MhSeqReplied;
 char *MhSeqUnseen;

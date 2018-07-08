@@ -38,6 +38,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "globals.h"
+#include "hdrline.h"
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -51,8 +52,8 @@ struct Context;
 
 /* These Config Variables are only used in hook.c */
 char *DefaultHook;
-bool  ForceName;
-bool  SaveName;
+bool ForceName;
+bool SaveName;
 
 /**
  * struct Hook - A list of user hooks

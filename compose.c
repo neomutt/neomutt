@@ -35,16 +35,20 @@
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"
+#include "curs_lib.h"
+#include "curs_main.h"
+#include "edit.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -63,8 +67,8 @@
 #endif
 
 /* These Config Variables are only used in compose.c */
-char *        ComposeFormat;
-char *        Ispell;
+char *ComposeFormat;
+char *Ispell;
 unsigned char Postpone;
 
 static const char *There_are_no_attachments = N_("There are no attachments.");

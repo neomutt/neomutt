@@ -41,8 +41,8 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -58,12 +58,12 @@
 short SidebarComponentDepth;
 char *SidebarDelimChars;
 char *SidebarDividerChar;
-bool  SidebarFolderIndent;
+bool SidebarFolderIndent;
 char *SidebarFormat;
 char *SidebarIndentString;
-bool  SidebarNewMailOnly;
-bool  SidebarNextNewWrap;
-bool  SidebarShortPath;
+bool SidebarNewMailOnly;
+bool SidebarNextNewWrap;
+bool SidebarShortPath;
 short SidebarSortMethod;
 
 /* Previous values for some sidebar config */

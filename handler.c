@@ -56,11 +56,11 @@
 #endif
 
 /* These Config Variables are only used in handler.c */
-bool  HonorDisposition;
-bool  ImplicitAutoview;
-bool  IncludeOnlyfirst;
+bool HonorDisposition;
+bool ImplicitAutoview;
+bool IncludeOnlyfirst;
 char *PreferredLanguages;
-bool  ReflowText;
+bool ReflowText;
 char *ShowMultipartAlternative;
 
 #define BUFI_SIZE 1000

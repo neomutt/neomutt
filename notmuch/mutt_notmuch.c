@@ -52,6 +52,7 @@
 #include "mutt_notmuch.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_main.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
@@ -63,12 +64,12 @@
 #include "url.h"
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
-int   NmDbLimit;
+int NmDbLimit;
 char *NmDefaultUri;
 char *NmExcludeTags;
-int   NmOpenTimeout;
+int NmOpenTimeout;
 char *NmQueryType;
-int   NmQueryWindowCurrentPosition;
+int NmQueryWindowCurrentPosition;
 char *NmQueryWindowTimebase;
 char *NmRecordTags;
 char *NmUnreadTag;

@@ -23,7 +23,13 @@
 #ifndef MUTT_STATUS_H
 #define MUTT_STATUS_H
 
+#include <stdio.h>
+
+struct Menu;
+
 /* These Config Variables are only used in status.c */
 extern struct MbTable *StatusChars;
+
+void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
 
 #endif /* MUTT_STATUS_H */

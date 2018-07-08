@@ -28,28 +28,40 @@
 #include <wchar.h>
 
 struct Context;
+struct Pager;
 
 /* These Config Variables are only used in curs_lib.c */
 extern bool MetaKey; /**< interpret ALT-x as ESC-x */
 
-bool   message_is_tagged(struct Context *ctx, int index);
-bool   message_is_visible(struct Context *ctx, int index);
-int    mutt_addwch(wchar_t wc);
-int    mutt_any_key_to_continue(const char *s);
-void   mutt_edit_file(const char *editor, const char *data);
-int    mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy, int multiple, char ***files, int *numfiles, int flags);
-void   mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
-void   mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
-int    mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles);
-int    mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
-int    mutt_multi_choice(char *prompt, char *letters);
-void   mutt_paddstr(int n, const char *s);
-void   mutt_perror_debug(const char *s);
-void   mutt_query_exit(void);
-void   mutt_show_error(void);
-void   mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify, char pad_char, const char *s, size_t n, int arboreal);
-int    mutt_strwidth(const char *s);
-size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
-int    mutt_yesorno(const char *msg, int def);
+bool         message_is_tagged(struct Context *ctx, int index);
+bool         message_is_visible(struct Context *ctx, int index);
+int          mutt_addwch(wchar_t wc);
+int          mutt_any_key_to_continue(const char *s);
+int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
+void         mutt_edit_file(const char *editor, const char *data);
+void         mutt_endwin(void);
+int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy, int multiple, char ***files, int *numfiles, int flags);
+void         mutt_flushinp(void);
+void         mutt_flush_macro_to_endcond(void);
+void         mutt_flush_unget_to_endcond(void);
+void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
+void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
+struct Event mutt_getch(void);
+int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles);
+int          mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
+int          mutt_multi_choice(char *prompt, char *letters);
+void         mutt_need_hard_redraw(void);
+void         mutt_paddstr(int n, const char *s);
+void         mutt_perror_debug(const char *s);
+void         mutt_push_macro_event(int ch, int op);
+void         mutt_query_exit(void);
+void         mutt_refresh(void);
+void         mutt_show_error(void);
+void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify, char pad_char, const char *s, size_t n, int arboreal);
+int          mutt_strwidth(const char *s);
+void         mutt_unget_event(int ch, int op);
+void         mutt_unget_string(char *s);
+size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
+int          mutt_yesorno(const char *msg, int def);
 
 #endif /* MUTT_CURS_LIB_H */

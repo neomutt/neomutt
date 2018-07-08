@@ -23,8 +23,15 @@
 #ifndef MUTT_ADDRBOOK_H
 #define MUTT_ADDRBOOK_H
 
+#include <stdio.h>
+
+struct AliasList;
+
 /* These Config Variables are only used in addrbook.c */
 extern char *AliasFormat;
 extern short SortAlias;
 
+void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases);
+
 #endif /* MUTT_ADDRBOOK_H */
+

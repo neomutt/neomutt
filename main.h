@@ -23,7 +23,11 @@
 #ifndef MUTT_MAIN_H
 #define MUTT_MAIN_H
 
+#include <stdbool.h>
+
 /* These Config Variables are only used in main.c */
 extern bool ResumeEditedDraftFiles;
+
+void mutt_exit(int code);
 
 #endif /* MUTT_MAIN_H */

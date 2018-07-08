@@ -40,6 +40,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

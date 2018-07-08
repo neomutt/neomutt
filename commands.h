@@ -23,6 +23,7 @@
 #ifndef MUTT_COMMANDS_H
 #define MUTT_COMMANDS_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Body;
@@ -49,8 +50,9 @@ int  mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
 void mutt_pipe_message(struct Header *h);
 void mutt_print_message(struct Header *h);
-int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt, struct Context *ctx);
+int  mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt, struct Context *ctx);
 int  mutt_save_message(struct Header *h, int delete, int decode, int decrypt);
+int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
 void mutt_version(void);
 

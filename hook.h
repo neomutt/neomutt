@@ -23,6 +23,7 @@
 #ifndef MUTT_HOOK_H
 #define MUTT_HOOK_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;

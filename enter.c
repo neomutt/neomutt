@@ -38,6 +38,7 @@
 #include "alias.h"
 #include "browser.h"
 #include "buffy.h"
+#include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "history.h"
@@ -46,6 +47,7 @@
 #include "mutt_window.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "query.h"
 
 /**
  * enum RedrawFlags - redraw flags for mutt_enter_string_full()

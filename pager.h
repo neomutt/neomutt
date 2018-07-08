@@ -71,9 +71,7 @@ struct Pager
   struct AttachCtx *actx; /**< attachment information */
 };
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra);
-void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint);
 
 void mutt_clear_pager_position(void);
 

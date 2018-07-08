@@ -43,15 +43,17 @@
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "keymap.h"
+#include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
@@ -59,11 +61,11 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/smime.c */
-bool  SmimeAskCertLabel;
+bool SmimeAskCertLabel;
 char *SmimeCaLocation;
 char *SmimeCertificates;
 char *SmimeDecryptCommand;
-bool  SmimeDecryptUseDefaultKey;
+bool SmimeDecryptUseDefaultKey;
 char *SmimeEncryptCommand;
 char *SmimeGetCertCommand;
 char *SmimeGetCertEmailCommand;
@@ -73,7 +75,7 @@ char *SmimeKeys;
 char *SmimePk7outCommand;
 char *SmimeSignCommand;
 char *SmimeSignDigestAlg;
-long  SmimeTimeout;
+long SmimeTimeout;
 char *SmimeVerifyCommand;
 char *SmimeVerifyOpaqueCommand;
 

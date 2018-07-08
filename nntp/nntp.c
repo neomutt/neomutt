@@ -67,10 +67,10 @@
 /* These Config Variables are only used in nntp/nntp.c */
 char *NntpAuthenticators;
 short NntpContext;
-bool  NntpListgroup;
-bool  NntpLoadDescription;
+bool NntpListgroup;
+bool NntpLoadDescription;
 short NntpPoll;
-bool  ShowNewNews;
+bool ShowNewNews;
 
 struct NntpServer *CurrentNewsSrv;
 

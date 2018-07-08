@@ -23,6 +23,7 @@
 #ifndef MUTT_SEND_H
 #define MUTT_SEND_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;

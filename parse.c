@@ -33,6 +33,7 @@
 #include "mutt.h"
 #include "globals.h"
 #include "mailbox.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"

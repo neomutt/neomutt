@@ -23,8 +23,13 @@
 #ifndef MUTT_QUERY_H
 #define MUTT_QUERY_H
 
+#include <stdio.h>
+
 /* These Config Variables are only used in query.c */
 extern char *QueryCommand;
 extern char *QueryFormat;
+
+int  mutt_query_complete(char *buf, size_t buflen);
+void mutt_query_menu(char *buf, size_t buflen);
 
 #endif /* MUTT_QUERY_H */

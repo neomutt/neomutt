@@ -37,16 +37,20 @@
 #include "pager.h"
 #include "alias.h"
 #include "buffy.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
+#include "curs_main.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hdrline.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -56,6 +60,7 @@
 #include "recvattach.h"
 #include "recvcmd.h"
 #include "sort.h"
+#include "status.h"
 #include "terminal.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -68,16 +73,16 @@
 #endif
 
 /* These Config Variables are only used in pager.c */
-bool          AllowAnsi;
-bool          HeaderColorPartial;
-short         PagerContext;
-short         PagerIndexLines;
-bool          PagerStop;
-short         SearchContext;
-short         SkipQuotedOffset;
-bool          SmartWrap;
+bool AllowAnsi;
+bool HeaderColorPartial;
+short PagerContext;
+short PagerIndexLines;
+bool PagerStop;
+short SearchContext;
+short SkipQuotedOffset;
+bool SmartWrap;
 struct Regex *Smileys;
-bool          Tilde;
+bool Tilde;
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 

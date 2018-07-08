@@ -23,9 +23,25 @@
 #ifndef MUTT_HDRLINE_H
 #define MUTT_HDRLINE_H
 
+#include <stdbool.h>
+#include <stdio.h>
+#include "format_flags.h"
+
+struct Address;
+struct Context;
+struct Header;
+struct HdrFormatInfo;
+
 /* These Config Variables are only used in hdrline.c */
 extern struct MbTable *FlagChars;
 extern struct MbTable *FromChars;
 extern struct MbTable *ToChars;
+
+bool mutt_is_mail_list(struct Address *addr);
+bool mutt_is_subscribed_list(struct Address *addr);
+void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx, struct Header *hdr, enum FormatFlag flags);
+void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s, struct HdrFormatInfo *hfi, enum FormatFlag flags);
+
+#define mutt_make_string(A, B, C, D, E) mutt_make_string_flags(A, B, C, D, E, 0)
 
 #endif /* MUTT_HDRLINE_H */

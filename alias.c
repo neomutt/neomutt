@@ -35,6 +35,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "globals.h"
+#include "hdrline.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "protos.h"

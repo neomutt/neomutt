@@ -32,6 +32,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"
+#include "curs_main.h"
 #include "globals.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

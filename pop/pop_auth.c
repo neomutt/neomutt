@@ -47,7 +47,7 @@
 
 /* These Config Variables are only used in pop/pop_auth.c */
 char *PopAuthenticators;
-bool  PopAuthTryAll;
+bool PopAuthTryAll;
 
 #ifdef USE_SASL
 /**

@@ -25,6 +25,7 @@
 
 struct Buffer;
 
+void ci_start_color(void);
 int  mutt_alloc_color(int fg, int bg);
 int  mutt_combine_color(int fg_attr, int bg_attr);
 void mutt_free_color(int fg, int bg);
@@ -35,3 +36,4 @@ int  mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data
 int  mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* MUTT_COLOR_H */
+

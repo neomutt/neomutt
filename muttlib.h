@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "format_flags.h"
 
 struct Address;
 struct Body;
@@ -42,6 +43,7 @@ int         mutt_check_overwrite(const char *attname, const char *path, char *fn
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);
 void        mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
 void        mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
+void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, enum FormatFlag flags);
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
@@ -49,6 +51,7 @@ void        mutt_get_parent_path(char *output, char *path, size_t olen);
 int         mutt_inbox_cmp(const char *a, const char *b);
 bool        mutt_is_text_part(struct Body *b);
 const char *mutt_make_version(void);
+bool        mutt_matches_ignore(const char *s);
 void        mutt_mktemp_full(char *s, size_t slen, const char *prefix, const char *suffix, const char *src, int line);
 bool        mutt_needs_mailcap(struct Body *m);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);

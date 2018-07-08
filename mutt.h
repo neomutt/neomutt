@@ -28,7 +28,7 @@
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
-#include "where.h"
+#include <stdint.h>
 
 struct Buffer;
 struct ListHead;
@@ -259,8 +259,6 @@ enum QuadOptionResponse
 /* flags for parse_spam_list */
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
-
-bool mutt_matches_ignore(const char *s);
 
 int mutt_init(bool skip_sys_rc, struct ListHead *commands);
 

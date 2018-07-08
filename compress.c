@@ -42,6 +42,7 @@
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"

@@ -47,6 +47,7 @@
 #include "pgp.h"
 #include "crypt.h"
 #include "cryptglue.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
@@ -61,12 +62,12 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/pgp.c */
-bool          PgpCheckExit;
-bool          PgpCheckGpgDecryptStatusFd;
+bool PgpCheckExit;
+bool PgpCheckGpgDecryptStatusFd;
 struct Regex *PgpDecryptionOkay;
 struct Regex *PgpGoodSign;
-long          PgpTimeout;
-bool          PgpUseGpgAgent;
+long PgpTimeout;
+bool PgpUseGpgAgent;
 
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */

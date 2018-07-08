@@ -45,6 +45,7 @@
 #include "context.h"
 #include "copy.h"
 #include "cryptglue.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "handler.h"
 #include "mutt_curses.h"
@@ -54,14 +55,14 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/crypt.c */
-bool          CryptTimestamp;
+bool CryptTimestamp;
 unsigned char PgpEncryptSelf;
 unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
-bool          PgpRetainableSigs;
-bool          PgpSelfEncrypt;
-bool          PgpStrictEnc;
+bool PgpRetainableSigs;
+bool PgpSelfEncrypt;
+bool PgpStrictEnc;
 unsigned char SmimeEncryptSelf;
-bool          SmimeSelfEncrypt;
+bool SmimeSelfEncrypt;
 
 /**
  * crypt_current_time - Print the current time

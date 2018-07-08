@@ -57,6 +57,7 @@
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
+#include "score.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_SIDEBAR
@@ -83,9 +84,9 @@
 
 /* These Config Variables are only used in mx.c */
 unsigned char CatchupNewsgroup;
-bool          KeepFlagged;
+bool KeepFlagged;
 unsigned char Move;
-char *        Trash;
+char *Trash;
 
 /**
  * mx_get_ops - Get mailbox operations

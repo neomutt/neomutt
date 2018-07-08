@@ -34,6 +34,7 @@
 #include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
+#include "score.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/nntp.h"
@@ -273,7 +274,7 @@ sort_t *mutt_get_sort_func(int method)
         return nntp_compare_order;
       else
 #endif
-      return compare_order;
+        return compare_order;
     case SORT_RECEIVED:
       return compare_date_received;
     case SORT_SCORE:

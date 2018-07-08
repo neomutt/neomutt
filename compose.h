@@ -23,9 +23,16 @@
 #ifndef MUTT_COMPOSE_H
 #define MUTT_COMPOSE_H
 
+#include <stdio.h>
+
+struct Header;
+
 /* These Config Variables are only used in compose.c */
 extern char *        ComposeFormat;
 extern char *        Ispell;
 extern unsigned char Postpone;
 
+int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen, struct Header *cur, int flags);
+
 #endif /* MUTT_COMPOSE_H */
+

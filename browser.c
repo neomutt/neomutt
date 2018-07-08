@@ -41,14 +41,15 @@
 #include "browser.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -68,11 +69,11 @@
 #endif
 
 /* These Config Variables are only used in browser.c */
-bool  BrowserAbbreviateMailboxes;
+bool BrowserAbbreviateMailboxes;
 char *FolderFormat;
 char *GroupIndexFormat;
 char *NewsgroupsCharset;
-bool  ShowOnlyUnread;
+bool ShowOnlyUnread;
 short SortBrowser;
 char *VfolderFormat;
 

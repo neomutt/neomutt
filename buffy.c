@@ -36,7 +36,7 @@
 #include "globals.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "options.h"
@@ -53,9 +53,9 @@
 
 /* These Config Variables are only used in buffy.c */
 short MailCheck;
-bool  MailCheckStats;
+bool MailCheckStats;
 short MailCheckStatsInterval;
-bool  MaildirCheckCur;
+bool MaildirCheckCur;
 
 static time_t BuffyTime = 0; /**< last time we started checking for mail */
 static time_t BuffyStatsTime = 0; /**< last time we check performed mail_check_stats */

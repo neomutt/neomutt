@@ -35,10 +35,13 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
+#include "compose.h"
 #include "context.h"
 #include "copy.h"
+#include "edit.h"
 #include "filter.h"
 #include "globals.h"
+#include "hdrline.h"
 #include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_header.h"
@@ -48,6 +51,7 @@
 #include "pattern.h"
 #include "protos.h"
 #include "rfc3676.h"
+#include "smtp.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_NNTP
@@ -66,46 +70,46 @@ unsigned char AbortNoattach; /* forgotten attachment detector */
 struct Regex *AbortNoattachRegex;
 unsigned char AbortNosubject;
 unsigned char AbortUnmodified;
-bool          AskFollowUp;
-bool          AskXCommentTo;
-char *        ContentType;
-bool          CryptAutoencrypt;
-bool          CryptAutopgp;
-bool          CryptAutosign;
-bool          CryptAutosmime;
-bool          CryptReplyencrypt;
-bool          CryptReplysign;
-bool          CryptReplysignencrypted;
-char *        EmptySubject;
-bool          FastReply;
+bool AskFollowUp;
+bool AskXCommentTo;
+char *ContentType;
+bool CryptAutoencrypt;
+bool CryptAutopgp;
+bool CryptAutosign;
+bool CryptAutosmime;
+bool CryptReplyencrypt;
+bool CryptReplysign;
+bool CryptReplysignencrypted;
+char *EmptySubject;
+bool FastReply;
 unsigned char FccAttach;
-bool          FccClear;
-bool          FollowupTo;
-char *        ForwardAttributionIntro;
-char *        ForwardAttributionTrailer;
+bool FccClear;
+bool FollowupTo;
+char *ForwardAttributionIntro;
+char *ForwardAttributionTrailer;
 unsigned char ForwardEdit;
-char *        ForwardFormat;
-bool          ForwardReferences;
-bool          Hdrs;
+char *ForwardFormat;
+bool ForwardReferences;
+bool Hdrs;
 unsigned char HonorFollowupTo;
-bool          IgnoreListReplyTo;
+bool IgnoreListReplyTo;
 unsigned char Include;
-bool          Metoo;
-bool          NmRecord;
-bool          PgpReplyinline;
-char *        PostIndentString;
-bool          PostponeEncrypt;
-char *        PostponeEncryptAs;
+bool Metoo;
+bool NmRecord;
+bool PgpReplyinline;
+char *PostIndentString;
+bool PostponeEncrypt;
+char *PostponeEncryptAs;
 unsigned char Recall;
-bool          ReplySelf;
+bool ReplySelf;
 unsigned char ReplyTo;
-bool          ReplyWithXorig;
-bool          ReverseName;
-bool          ReverseRealname;
-bool          SigDashes;
-char *        Signature;
-bool          SigOnTop;
-bool          UseFrom;
+bool ReplyWithXorig;
+bool ReverseName;
+bool ReverseRealname;
+bool SigDashes;
+char *Signature;
+bool SigOnTop;
+bool UseFrom;
 
 static void append_signature(FILE *f)
 {

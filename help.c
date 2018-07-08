@@ -28,6 +28,7 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_window.h"

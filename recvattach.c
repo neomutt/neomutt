@@ -33,17 +33,20 @@
 #include "mutt.h"
 #include "recvattach.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
+#include "hdrline.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -58,8 +61,8 @@
 
 /* These Config Variables are only used in recvattach.c */
 char *AttachSep;
-bool  AttachSplit;
-bool  DigestCollapse;
+bool AttachSplit;
+bool DigestCollapse;
 char *MessageFormat;
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);

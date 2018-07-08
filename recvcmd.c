@@ -32,6 +32,7 @@
 #include "copy.h"
 #include "globals.h"
 #include "handler.h"
+#include "hdrline.h"
 #include "mutt_body.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"

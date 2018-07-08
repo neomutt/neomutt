@@ -23,9 +23,20 @@
 #ifndef MUTT_SCORE_H
 #define MUTT_SCORE_H
 
+#include <stdbool.h>
+
+struct Buffer;
+struct Header;
+struct Context;
+
 /* These Config Variables are only used in score.c */
 extern short ScoreThresholdDelete;
 extern short ScoreThresholdFlag;
 extern short ScoreThresholdRead;
+
+void mutt_check_rescore(struct Context *ctx);
+int  mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int  mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx);
 
 #endif /* MUTT_SCORE_H */

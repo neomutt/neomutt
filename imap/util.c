@@ -800,9 +800,10 @@ void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
 
 /**
  * imap_quote_string - quote string according to IMAP rules
- * @param dest Buffer for the result
- * @param dlen Length of the buffer
- * @param src  String to be quoted
+ * @param dest           Buffer for the result
+ * @param dlen           Length of the buffer
+ * @param src            String to be quoted
+ * @param quote_backtick If true, quote backticks too
  *
  * Surround string with quotes, escape " and \ with backslash
  */

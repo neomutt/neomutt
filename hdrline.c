@@ -40,6 +40,7 @@
 #include "mutt_curses.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"

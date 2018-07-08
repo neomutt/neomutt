@@ -58,4 +58,3 @@ extern bool SslUseTlsv11;
 extern bool SslUseTlsv12;
 extern bool SslVerifyDates;
 extern bool SslVerifyHost;
-

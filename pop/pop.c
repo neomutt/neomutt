@@ -63,10 +63,10 @@
 #endif
 
 /* These Config Variables are only used in pop/pop.c */
-short         PopCheckinterval;
+short PopCheckinterval;
 unsigned char PopDelete;
-char *        PopHost;
-bool          PopLast;
+char *PopHost;
+bool PopLast;
 
 #ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
