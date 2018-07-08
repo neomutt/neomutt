@@ -37,6 +37,16 @@ extern struct MbTable *FlagChars;
 extern struct MbTable *FromChars;
 extern struct MbTable *ToChars;
 
+/**
+ * struct HdrFormatInfo - Data passed to index_format_str()
+ */
+struct HdrFormatInfo
+{
+  struct Context *ctx;
+  struct Header *hdr;
+  const char *pager_progress;
+};
+
 bool mutt_is_mail_list(struct Address *addr);
 bool mutt_is_subscribed_list(struct Address *addr);
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx, struct Header *hdr, enum FormatFlag flags);

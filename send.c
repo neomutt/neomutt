@@ -34,6 +34,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "send.h"
 #include "alias.h"
 #include "compose.h"
 #include "context.h"

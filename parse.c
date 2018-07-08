@@ -31,6 +31,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "parse.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "muttlib.h"

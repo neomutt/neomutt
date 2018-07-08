@@ -121,13 +121,6 @@ struct Mapping;
 
 #define MUTT_SPECIAL_INDEX MUTT_TREE_MAX
 
-#define MUTT_THREAD_COLLAPSE    (1 << 0)
-#define MUTT_THREAD_UNCOLLAPSE  (1 << 1)
-#define MUTT_THREAD_GET_HIDDEN  (1 << 2)
-#define MUTT_THREAD_UNREAD      (1 << 3)
-#define MUTT_THREAD_NEXT_UNREAD (1 << 4)
-#define MUTT_THREAD_FLAGGED     (1 << 5)
-
 /**
  * enum MuttMisc - Unsorted flags
  */
@@ -232,38 +225,11 @@ enum QuadOptionResponse
   MUTT_ASKYES
 };
 
-/* flags to ci_send_message() */
-#define SENDREPLY        (1 << 0)
-#define SENDGROUPREPLY   (1 << 1)
-#define SENDLISTREPLY    (1 << 2)
-#define SENDFORWARD      (1 << 3)
-#define SENDPOSTPONED    (1 << 4)
-#define SENDBATCH        (1 << 5)
-#define SENDMAILX        (1 << 6)
-#define SENDKEY          (1 << 7)
-#define SENDRESEND       (1 << 8)
-#define SENDPOSTPONEDFCC (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SENDNOFREEHEADER (1 << 10) /**< Used by the -E flag */
-#define SENDDRAFTFILE    (1 << 11) /**< Used by the -H flag */
-#define SENDNEWS         (1 << 12)
-
-/* flags for mutt_compose_menu() */
-#define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
-
-/* flags to mutt_select_file() */
-#define MUTT_SEL_BUFFY   (1 << 0)
-#define MUTT_SEL_MULTI   (1 << 1)
-#define MUTT_SEL_FOLDER  (1 << 2)
-#define MUTT_SEL_VFOLDER (1 << 3)
-
 /* flags for parse_spam_list */
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
 int mutt_init(bool skip_sys_rc, struct ListHead *commands);
-
-/* flag to mutt_pattern_comp() */
-#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
 /**
  * struct AttachMatch - An attachment matching a regex
@@ -278,14 +244,7 @@ struct AttachMatch
   regex_t minor_regex;
 };
 
-#define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
-
 #define EXECSHELL "/bin/sh"
-
-/* For mutt_simple_format() justifications */
-#define FMT_LEFT   -1
-#define FMT_CENTER 0
-#define FMT_RIGHT  1
 
 int safe_asprintf(char **, const char *, ...);
 
@@ -306,7 +265,5 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
 int mutt_query_variables(struct ListHead *queries);
 bool set_default_value(const char *name, intptr_t value);
 void reset_value(const char *name);
-
-/* All the variables below are backing for config items */
 
 #endif /* _MUTT_H */

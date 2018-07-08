@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "hdrline.h"
 #include "alias.h"
 #include "context.h"
 #include "format_flags.h"

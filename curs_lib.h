@@ -33,6 +33,11 @@ struct Pager;
 /* These Config Variables are only used in curs_lib.c */
 extern bool MetaKey; /**< interpret ALT-x as ESC-x */
 
+/* For mutt_simple_format() justifications */
+#define FMT_LEFT   -1
+#define FMT_CENTER 0
+#define FMT_RIGHT  1
+
 bool         message_is_tagged(struct Context *ctx, int index);
 bool         message_is_visible(struct Context *ctx, int index);
 int          mutt_addwch(wchar_t wc);

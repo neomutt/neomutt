@@ -78,6 +78,21 @@ extern char *        Signature;
 extern bool          SigOnTop;
 extern bool          UseFrom;
 
+/* flags to ci_send_message() */
+#define SENDREPLY        (1 << 0)
+#define SENDGROUPREPLY   (1 << 1)
+#define SENDLISTREPLY    (1 << 2)
+#define SENDFORWARD      (1 << 3)
+#define SENDPOSTPONED    (1 << 4)
+#define SENDBATCH        (1 << 5)
+#define SENDMAILX        (1 << 6)
+#define SENDKEY          (1 << 7)
+#define SENDRESEND       (1 << 8)
+#define SENDPOSTPONEDFCC (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
+#define SENDNOFREEHEADER (1 << 10) /**< Used by the -E flag */
+#define SENDDRAFTFILE    (1 << 11) /**< Used by the -H flag */
+#define SENDNEWS         (1 << 12)
+
 int             ci_send_message(int flags, struct Header *msg, char *tempfile, struct Context *ctx, struct Header *cur);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 int             mutt_compose_to_sender(struct Header *hdr);

@@ -46,16 +46,6 @@ struct stat;
 struct passwd;
 
 /**
- * struct HdrFormatInfo - Data passed to index_format_str()
- */
-struct HdrFormatInfo
-{
-  struct Context *ctx;
-  struct Header *hdr;
-  const char *pager_progress;
-};
-
-/**
  * enum XdgType - XDG variable types
  */
 enum XdgType

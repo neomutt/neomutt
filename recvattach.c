@@ -54,6 +54,7 @@
 #include "protos.h"
 #include "recvcmd.h"
 #include "rfc1524.h"
+#include "send.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

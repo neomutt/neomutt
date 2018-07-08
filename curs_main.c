@@ -61,6 +61,7 @@
 #include "query.h"
 #include "recvattach.h"
 #include "score.h"
+#include "send.h"
 #include "sort.h"
 #include "status.h"
 #include "terminal.h"

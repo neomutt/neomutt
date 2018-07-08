@@ -30,6 +30,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -39,6 +40,7 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "send.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

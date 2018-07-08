@@ -61,6 +61,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
+#include "send.h"
 #include "terminal.h"
 #include "url.h"
 #include "version.h"

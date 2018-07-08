@@ -41,6 +41,13 @@ extern bool SortRe;
 extern bool StrictThreads;
 extern bool ThreadReceived;
 
+#define MUTT_THREAD_COLLAPSE    (1 << 0)
+#define MUTT_THREAD_UNCOLLAPSE  (1 << 1)
+#define MUTT_THREAD_GET_HIDDEN  (1 << 2)
+#define MUTT_THREAD_UNREAD      (1 << 3)
+#define MUTT_THREAD_NEXT_UNREAD (1 << 4)
+#define MUTT_THREAD_FLAGGED     (1 << 5)
+
 int mutt_aside_thread(struct Header *hdr, short dir, short subthreads);
 #define mutt_next_thread(x)        mutt_aside_thread(x, 1, 0)
 #define mutt_previous_thread(x)    mutt_aside_thread(x, 0, 0)
