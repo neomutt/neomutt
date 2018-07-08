@@ -33,6 +33,7 @@
 
 #include "config.h"
 #include "email/email.h"
+#include "muttlib.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
       defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC))

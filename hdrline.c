@@ -35,6 +35,7 @@
 #include "hdrline.h"
 #include "alias.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mbtable.h"
@@ -44,6 +45,7 @@
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #include "sort.h"
 

@@ -57,7 +57,10 @@
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
+#include "send.h"
+#include "sendlib.h"
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/smime.c */

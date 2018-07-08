@@ -44,6 +44,7 @@
 #include <unistd.h>
 #include "conn_globals.h"
 #include "connection.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"

@@ -39,6 +39,7 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
+#include "curs_lib.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"

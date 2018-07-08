@@ -57,6 +57,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
+#include "hook.h"
 #include "keymap.h"
 #include "menu.h"
 #include "mutt_attach.h"
@@ -68,8 +69,10 @@
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
+#include "parse.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "sendlib.h"
 #include "sort.h"
 #include "state.h"
 #ifdef ENABLE_NLS

@@ -32,6 +32,7 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "recvattach.h"
+#include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "filter.h"
@@ -39,6 +40,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
@@ -51,10 +53,12 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #include "recvcmd.h"
 #include "rfc1524.h"
 #include "send.h"
+#include "sendlib.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

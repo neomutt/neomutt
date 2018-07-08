@@ -41,6 +41,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"

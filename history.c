@@ -78,6 +78,7 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "history.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "keymap.h"
 #include "menu.h"

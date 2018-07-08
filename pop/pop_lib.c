@@ -39,6 +39,7 @@
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
+#include "muttlib.h"
 #include "options.h"
 #include "pop.h"
 #include "progress.h"

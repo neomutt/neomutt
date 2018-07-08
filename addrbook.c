@@ -34,6 +34,7 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"

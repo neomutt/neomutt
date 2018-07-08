@@ -52,6 +52,7 @@
 #include "mutt_notmuch.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
 #include "mailbox.h"

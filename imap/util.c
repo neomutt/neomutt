@@ -46,6 +46,7 @@
 #include "conn/conn.h"
 #include "bcache.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "mailbox.h"

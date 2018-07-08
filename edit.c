@@ -34,11 +34,13 @@
 #include "email/email.h"
 #include "alias.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
 

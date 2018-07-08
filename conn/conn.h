@@ -41,6 +41,8 @@
 #ifndef _CONN_CONN_H
 #define _CONN_CONN_H
 
+#include <stdio.h>
+
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
@@ -51,5 +53,7 @@
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
+
+int getdnsdomainname(char *d, size_t len);
 
 #endif /* _CONN_CONN_H */

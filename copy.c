@@ -47,6 +47,7 @@
 #include "options.h"
 #include "protos.h"
 #include "rfc2047.h"
+#include "sendlib.h"
 #include "state.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"

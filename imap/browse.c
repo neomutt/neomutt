@@ -40,9 +40,11 @@
 #include "browser.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "mutt_logging.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
 

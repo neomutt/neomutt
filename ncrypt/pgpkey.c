@@ -62,6 +62,7 @@
 #include "pgplib.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "sendlib.h"
 #include "sort.h"
 
 /**

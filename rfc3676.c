@@ -31,8 +31,10 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
 #include "state.h"

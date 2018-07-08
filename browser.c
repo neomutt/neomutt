@@ -56,6 +56,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "sendlib.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_IMAP

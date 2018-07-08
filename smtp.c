@@ -41,6 +41,7 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
+#include "sendlib.h"
 #include "url.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>

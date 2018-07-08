@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <wchar.h>
+#include "mutt.h"
 
 struct Context;
 struct Pager;
@@ -68,5 +69,10 @@ void         mutt_unget_event(int ch, int op);
 void         mutt_unget_string(char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 int          mutt_yesorno(const char *msg, int def);
+
+#define mutt_enter_fname(A, B, C, D)   mutt_enter_fname_full(A, B, C, D, 0, NULL, NULL, 0)
+#define mutt_enter_vfolder(A, B, C, D) mutt_enter_fname_full(A, B, C, D, 0, NULL, NULL, MUTT_SEL_VFOLDER)
+#define mutt_get_field(A, B, C, D)     mutt_get_field_full(A, B, C, D, 0, NULL, NULL)
+#define mutt_get_password(A, B, C)     mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
 
 #endif /* MUTT_CURS_LIB_H */

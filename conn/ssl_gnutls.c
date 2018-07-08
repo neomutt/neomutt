@@ -44,6 +44,7 @@
 #include "keymap.h"
 #include "menu.h"
 #include "mutt_account.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"

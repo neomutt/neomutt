@@ -39,6 +39,7 @@
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "menu.h"

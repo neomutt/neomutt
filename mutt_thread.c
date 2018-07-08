@@ -32,6 +32,7 @@
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"

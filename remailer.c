@@ -43,6 +43,7 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "sendlib.h"
 
 /* These Config Variables are only used in remailer.c */
 char *MixEntryFormat;

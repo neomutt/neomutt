@@ -49,6 +49,7 @@
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"

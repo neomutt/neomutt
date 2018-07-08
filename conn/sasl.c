@@ -53,6 +53,7 @@
 #include "sasl.h"
 #include "account.h"
 #include "connection.h"
+#include "curs_lib.h"
 #include "mutt_account.h"
 #include "options.h"
 #include "protos.h"

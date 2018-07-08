@@ -33,6 +33,7 @@
 #include "bcache.h"
 #include "globals.h"
 #include "mutt_account.h"
+#include "muttlib.h"
 #include "protos.h"
 #include "url.h"
 

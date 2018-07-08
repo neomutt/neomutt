@@ -43,13 +43,16 @@
 #include "handler.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parse.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "rfc1524.h"
+#include "sendlib.h"
 #include "state.h"
 
 int mutt_get_tmp_attachment(struct Body *a)

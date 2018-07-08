@@ -61,6 +61,7 @@
 #include "menu.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"

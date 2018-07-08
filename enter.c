@@ -45,6 +45,7 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "query.h"

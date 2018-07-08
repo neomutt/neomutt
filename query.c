@@ -30,6 +30,7 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -40,6 +41,7 @@
 #include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "send.h"
 
 /* These Config Variables are only used in query.c */
 char *QueryCommand;

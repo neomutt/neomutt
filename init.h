@@ -36,6 +36,7 @@
 #include "bcache.h"
 #include "browser.h"
 #include "buffy.h"
+#include "color.h"
 #include "commands.h"
 #include "compose.h"
 #include "curs_lib.h"

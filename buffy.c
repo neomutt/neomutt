@@ -31,6 +31,7 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
@@ -38,8 +39,10 @@
 #include "maildir/maildir.h"
 #include "menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"

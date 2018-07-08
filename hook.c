@@ -40,6 +40,7 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "mailbox.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"

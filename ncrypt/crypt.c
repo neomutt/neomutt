@@ -49,9 +49,13 @@
 #include "globals.h"
 #include "handler.h"
 #include "mutt_curses.h"
+#include "muttlib.h"
 #include "ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
+#include "send.h"
+#include "sendlib.h"
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/crypt.c */
