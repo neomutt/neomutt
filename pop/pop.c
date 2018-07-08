@@ -62,6 +62,12 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in pop/pop.c */
+short         PopCheckinterval;
+unsigned char PopDelete;
+char *        PopHost;
+bool          PopLast;
+
 #ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
 #define HC_FEXT "hcache"   /* extension for hcache as POP lacks paths */

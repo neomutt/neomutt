@@ -41,6 +41,9 @@
 #include "options.h"
 #include "protos.h"
 
+/* These Config Variables are only used in progress.c */
+short TimeInc;
+
 /**
  * message_bar - Draw a colourful progress bar
  * @param percent %age complete

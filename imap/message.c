@@ -62,6 +62,9 @@
 
 struct BodyCache;
 
+/* These Config Variables are only used in imap/message.c */
+char *ImapHeaders;
+
 /**
  * new_header_data - Create a new ImapHeaderData
  * @retval ptr New ImapHeaderData

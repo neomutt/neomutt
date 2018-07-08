@@ -35,6 +35,11 @@
 #include "protos.h"
 #include "sort.h"
 
+/* These Config Variables are only used in score.c */
+short ScoreThresholdDelete;
+short ScoreThresholdFlag;
+short ScoreThresholdRead;
+
 /**
  * struct Score - Scoring rule for email
  */

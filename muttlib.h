@@ -34,6 +34,9 @@ struct Body;
 struct passwd;
 struct stat;
 
+/* These Config Variables are only used in muttlib.c */
+extern struct Regex *GecosMask;
+
 void        mutt_adv_mktemp(char *s, size_t l);
 int         mutt_check_overwrite(const char *attname, const char *path, char *fname, size_t flen, int *append, char **directory);
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);

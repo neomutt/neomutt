@@ -44,6 +44,9 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in status.c */
+struct MbTable *StatusChars;
+
 /**
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string

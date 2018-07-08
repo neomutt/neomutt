@@ -62,6 +62,11 @@
 #include "nntp/nntp.h"
 #endif
 
+/* These Config Variables are only used in compose.c */
+char *        ComposeFormat;
+char *        Ispell;
+unsigned char Postpone;
+
 static const char *There_are_no_attachments = N_("There are no attachments.");
 
 #define CHECK_COUNT                                                            \

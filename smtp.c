@@ -47,6 +47,9 @@
 #include <sasl/saslutil.h>
 #endif
 
+/* These Config Variables are only used in smtp.c */
+char *SmtpAuthenticators;
+
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334
 #define SMTP_CONTINUE 354

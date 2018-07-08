@@ -43,6 +43,9 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in recvcmd.c */
+unsigned char MimeForwardRest;
+
 /**
  * check_msg - Are we working with an RFC822 message
  *

@@ -29,6 +29,18 @@ struct Context;
 struct Header;
 struct MuttThread;
 
+/* These Config Variables are only used in mutt_thread.c */
+extern bool DuplicateThreads;
+extern bool HideLimited;
+extern bool HideMissing;
+extern bool HideThreadSubject;
+extern bool HideTopLimited;
+extern bool HideTopMissing;
+extern bool NarrowTree;
+extern bool SortRe;
+extern bool StrictThreads;
+extern bool ThreadReceived;
+
 int mutt_aside_thread(struct Header *hdr, short dir, short subthreads);
 #define mutt_next_thread(x)        mutt_aside_thread(x, 1, 0)
 #define mutt_previous_thread(x)    mutt_aside_thread(x, 0, 0)

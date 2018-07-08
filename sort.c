@@ -39,6 +39,9 @@
 #include "nntp/nntp.h"
 #endif
 
+/* These Config Variables are only used in sort.c */
+bool ReverseAlias;
+
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
 

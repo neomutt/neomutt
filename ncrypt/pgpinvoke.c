@@ -48,6 +48,21 @@
 #include "pgpkey.h"
 #include "protos.h"
 
+/* These Config Variables are only used in ncrypt/pgpinvoke.c */
+char *PgpClearsignCommand;
+char *PgpDecodeCommand;
+char *PgpDecryptCommand;
+char *PgpEncryptOnlyCommand;
+char *PgpEncryptSignCommand;
+char *PgpExportCommand;
+char *PgpGetkeysCommand;
+char *PgpImportCommand;
+char *PgpListPubringCommand;
+char *PgpListSecringCommand;
+char *PgpSignCommand;
+char *PgpVerifyCommand;
+char *PgpVerifyKeyCommand;
+
 /**
  * struct PgpCommandContext - Data for a PGP command
  *

@@ -56,6 +56,9 @@
 #include "imap/imap.h"
 #endif
 
+/* These Config Variables are only used in pattern.c */
+bool ThoroughSearch;
+
 // clang-format off
 /* The regexes in a modern format */
 #define RANGE_NUM_RX      "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"

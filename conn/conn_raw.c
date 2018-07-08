@@ -48,6 +48,9 @@
 #include "options.h"
 #include "protos.h"
 
+/* These Config Variables are only used in conn/conn_raw.c */
+extern bool UseIpv6;
+
 /**
  * socket_connect - set up to connect to a socket fd
  * @param fd File descriptor to connect with

@@ -28,6 +28,15 @@
 struct Account;
 struct Url;
 
+/* These Config Variables are only used in mutt_account.c */
+extern char *ImapLogin;
+extern char *ImapPass;
+extern char *NntpPass;
+extern char *NntpUser;
+extern char *PopPass;
+extern char *PopUser;
+extern char *SmtpPass;
+
 /**
  * enum AccountType - account types
  */

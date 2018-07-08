@@ -54,6 +54,18 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in sidebar.c */
+short SidebarComponentDepth;
+char *SidebarDelimChars;
+char *SidebarDividerChar;
+bool  SidebarFolderIndent;
+char *SidebarFormat;
+char *SidebarIndentString;
+bool  SidebarNewMailOnly;
+bool  SidebarNextNewWrap;
+bool  SidebarShortPath;
+short SidebarSortMethod;
+
 /* Previous values for some sidebar config */
 static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
 

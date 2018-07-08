@@ -36,6 +36,12 @@ struct Context;
 struct Message;
 struct stat;
 
+/* These Config Variables are only used in mx.c */
+extern unsigned char CatchupNewsgroup;
+extern bool          KeepFlagged;
+extern unsigned char Move;
+extern char *        Trash;
+
 /**
  * struct MxOps - The Mailbox API
  *

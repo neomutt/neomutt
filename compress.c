@@ -39,6 +39,7 @@
 #include "compress.h"
 #include "context.h"
 #include "format_flags.h"
+#include "globals.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"

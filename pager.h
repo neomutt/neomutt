@@ -28,6 +28,18 @@
 struct Context;
 struct Menu;
 
+/* These Config Variables are only used in pager.c */
+extern bool          AllowAnsi;
+extern bool          HeaderColorPartial;
+extern short         PagerContext;
+extern short         PagerIndexLines;
+extern bool          PagerStop;
+extern short         SearchContext;
+extern short         SkipQuotedOffset;
+extern bool          SmartWrap;
+extern struct Regex *Smileys;
+extern bool          Tilde;
+
 /* dynamic internal flags */
 #define MUTT_SHOWFLAT  (1 << 0)
 #define MUTT_SHOWCOLOR (1 << 1)

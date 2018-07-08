@@ -45,6 +45,9 @@
 #include "protos.h"
 #include "url.h"
 
+/* These Config Variables are only used in pop/pop_lib.c */
+unsigned char PopReconnect;
+
 /**
  * pop_parse_path - Parse a POP mailbox name
  * @param path Path to parse

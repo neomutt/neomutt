@@ -66,6 +66,9 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in imap/imap.c */
+bool ImapIdle;
+
 /**
  * check_capabilities - Make sure we can log in to this server
  * @param idata Server data

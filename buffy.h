@@ -31,6 +31,12 @@
 
 struct stat;
 
+/* These Config Variables are only used in buffy.c */
+extern short MailCheck;
+extern bool  MailCheckStats;
+extern short MailCheckStatsInterval;
+extern bool  MaildirCheckCur;
+
 /* parameter to mutt_parse_mailboxes */
 #define MUTT_NAMED   1
 #define MUTT_VIRTUAL 2
@@ -86,9 +92,5 @@ int mutt_buffy_check(int force);
 bool mutt_buffy_notify(void);
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-
-/* These variables are backing for config items */
-WHERE short MailCheck;
-WHERE short MailCheckStatsInterval;
 
 #endif /* _MUTT_BUFFY_H */

@@ -49,6 +49,11 @@
 
 struct Context;
 
+/* These Config Variables are only used in hook.c */
+char *DefaultHook;
+bool  ForceName;
+bool  SaveName;
+
 /**
  * struct Hook - A list of user hooks
  */

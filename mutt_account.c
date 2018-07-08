@@ -37,6 +37,15 @@
 #include "protos.h"
 #include "url.h"
 
+/* These Config Variables are only used in mutt_account.c */
+char *ImapLogin;
+char *ImapPass;
+char *NntpPass;
+char *NntpUser;
+char *PopPass;
+char *PopUser;
+char *SmtpPass;
+
 /**
  * mutt_account_match - Compare account info (host/port/user)
  * @param a1 First Account

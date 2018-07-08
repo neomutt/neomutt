@@ -30,6 +30,17 @@
 struct Context;
 struct Header;
 
+/* These Config Variables are only used in notmuch/mutt_notmuch.c */
+extern int   NmDbLimit;
+extern char *NmDefaultUri;
+extern char *NmExcludeTags;
+extern int   NmOpenTimeout;
+extern char *NmQueryType;
+extern int   NmQueryWindowCurrentPosition;
+extern char *NmQueryWindowTimebase;
+extern char *NmRecordTags;
+extern char *NmUnreadTag;
+
 int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 
 char *nm_header_get_folder(struct Header *h);

@@ -36,6 +36,18 @@
 #include "protos.h"
 #include "sort.h"
 
+/* These Config Variables are only used in mutt_thread.c */
+bool DuplicateThreads;
+bool HideLimited;
+bool HideMissing;
+bool HideThreadSubject;
+bool HideTopLimited;
+bool HideTopMissing;
+bool NarrowTree;
+bool SortRe;
+bool StrictThreads;
+bool ThreadReceived;
+
 static bool is_visible(struct Header *hdr, struct Context *ctx)
 {
   return (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)));

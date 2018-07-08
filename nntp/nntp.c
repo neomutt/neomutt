@@ -64,6 +64,14 @@
 #include <sasl/saslutil.h>
 #endif
 
+/* These Config Variables are only used in nntp/nntp.c */
+char *NntpAuthenticators;
+short NntpContext;
+bool  NntpListgroup;
+bool  NntpLoadDescription;
+short NntpPoll;
+bool  ShowNewNews;
+
 struct NntpServer *CurrentNewsSrv;
 
 /**

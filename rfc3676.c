@@ -37,6 +37,10 @@
 #include "protos.h"
 #include "state.h"
 
+/* These Config Variables are only used in rfc3676.c */
+bool  ReflowSpaceQuotes;
+short ReflowWrap;
+
 #define FLOWED_MAX 72
 
 /**

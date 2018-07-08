@@ -30,6 +30,16 @@ struct Context;
 struct Envelope;
 struct Header;
 
+/* These Config Variables are only used in commands.c */
+extern unsigned char CryptVerifySig; /* verify PGP signatures */
+extern char *        DisplayFilter;
+extern bool          PipeDecode;
+extern char *        PipeSep;
+extern bool          PipeSplit;
+extern bool          PrintDecode;
+extern bool          PrintSplit;
+extern bool          PromptAfter;
+
 void ci_bounce_message(struct Header *h);
 void mutt_check_stats(void);
 int  mutt_check_traditional_pgp(struct Header *h, int *redraw);

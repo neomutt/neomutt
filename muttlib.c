@@ -58,6 +58,9 @@
 #include "imap/imap.h"
 #endif
 
+/* These Config Variables are only used in muttlib.c */
+struct Regex *GecosMask;
+
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
   [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",

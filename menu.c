@@ -45,6 +45,11 @@
 #include "sidebar.h"
 #endif
 
+/* These Config Variables are only used in menu.c */
+short MenuContext;
+bool  MenuMoveOff; /**< allow menu to scroll past last entry */
+bool  MenuScroll;  /**< scroll menu instead of implicit next-page */
+
 char *SearchBuffers[MENU_MAX];
 
 /* These are used to track the active menus, for redraw operations. */

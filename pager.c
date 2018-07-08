@@ -67,6 +67,18 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in pager.c */
+bool          AllowAnsi;
+bool          HeaderColorPartial;
+short         PagerContext;
+short         PagerIndexLines;
+bool          PagerStop;
+short         SearchContext;
+short         SkipQuotedOffset;
+bool          SmartWrap;
+struct Regex *Smileys;
+bool          Tilde;
+
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
 #define IsAttach(x) (x && (x)->bdy)

@@ -76,6 +76,16 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in curs_main.c */
+bool  ChangeFolderNext;
+bool  CollapseAll;
+bool  CollapseFlagged;
+bool  CollapseUnread;
+char *MarkMacroPrefix;
+bool  PgpAutoDecode;
+bool  UncollapseJump;
+bool  UncollapseNew;
+
 static const char *No_mailbox_is_open = N_("No mailbox is open.");
 static const char *There_are_no_messages = N_("There are no messages.");
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");

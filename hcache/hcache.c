@@ -54,6 +54,9 @@
 #include "hcache/hcversion.h"
 #include "protos.h"
 
+/* These Config Variables are only used in hcache/hcache.c */
+char *HeaderCacheBackend;
+
 static unsigned int hcachever = 0x0;
 
 /**

@@ -85,6 +85,12 @@
 #include "opcodes.h"
 #include "protos.h"
 
+/* These Config Variables are only used in history.c */
+short History;
+char *HistoryFile;
+bool  HistoryRemoveDups;
+short SaveHistory;
+
 #define HC_FIRST HC_CMD
 
 /**

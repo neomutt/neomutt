@@ -58,6 +58,9 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in curs_lib.c */
+bool MetaKey; /**< interpret ALT-x as ESC-x */
+
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.

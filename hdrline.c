@@ -45,6 +45,11 @@
 #include "protos.h"
 #include "sort.h"
 
+/* These Config Variables are only used in hdrline.c */
+struct MbTable *FlagChars;
+struct MbTable *FromChars;
+struct MbTable *ToChars;
+
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)
  */

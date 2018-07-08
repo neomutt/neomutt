@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+/* These Config Variables are only used in mutt/idna.c */
 extern bool IdnDecode;
 extern bool IdnEncode;
 

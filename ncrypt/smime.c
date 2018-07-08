@@ -58,6 +58,25 @@
 #include "protos.h"
 #include "state.h"
 
+/* These Config Variables are only used in ncrypt/smime.c */
+bool  SmimeAskCertLabel;
+char *SmimeCaLocation;
+char *SmimeCertificates;
+char *SmimeDecryptCommand;
+bool  SmimeDecryptUseDefaultKey;
+char *SmimeEncryptCommand;
+char *SmimeGetCertCommand;
+char *SmimeGetCertEmailCommand;
+char *SmimeGetSignerCertCommand;
+char *SmimeImportCertCommand;
+char *SmimeKeys;
+char *SmimePk7outCommand;
+char *SmimeSignCommand;
+char *SmimeSignDigestAlg;
+long  SmimeTimeout;
+char *SmimeVerifyCommand;
+char *SmimeVerifyOpaqueCommand;
+
 /**
  * struct SmimeCommandContext - Data for a SIME command
  */

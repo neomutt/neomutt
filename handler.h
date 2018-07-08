@@ -30,6 +30,14 @@
 struct Body;
 struct State;
 
+/* These Config Variables are only used in handler.c */
+extern bool  HonorDisposition;
+extern bool  ImplicitAutoview;
+extern bool  IncludeOnlyfirst;
+extern char *PreferredLanguages;
+extern bool  ReflowText;
+extern char *ShowMultipartAlternative;
+
 int  mutt_body_handler(struct Body *b, struct State *s);
 bool mutt_can_decode(struct Body *a);
 void mutt_decode_attachment(struct Body *b, struct State *s);

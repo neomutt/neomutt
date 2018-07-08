@@ -67,6 +67,15 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in browser.c */
+bool  BrowserAbbreviateMailboxes;
+char *FolderFormat;
+char *GroupIndexFormat;
+char *NewsgroupsCharset;
+bool  ShowOnlyUnread;
+short SortBrowser;
+char *VfolderFormat;
+
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },

@@ -51,6 +51,12 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in buffy.c */
+short MailCheck;
+bool  MailCheckStats;
+short MailCheckStatsInterval;
+bool  MaildirCheckCur;
+
 static time_t BuffyTime = 0; /**< last time we started checking for mail */
 static time_t BuffyStatsTime = 0; /**< last time we check performed mail_check_stats */
 time_t BuffyDoneTime = 0; /**< last time we knew for sure how much mail there was. */

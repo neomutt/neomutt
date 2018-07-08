@@ -36,6 +36,9 @@
 #include "protos.h"
 #include "url.h"
 
+/* These Config Variables are only used in bcache.c */
+char *MessageCachedir;
+
 /**
  * struct BodyCache - Local cache of email bodies
  */

@@ -28,6 +28,18 @@
 struct Buffy;
 struct Context;
 
+/* These Config Variables are only used in sidebar.c */
+extern short SidebarComponentDepth;
+extern char *SidebarDelimChars;
+extern char *SidebarDividerChar;
+extern bool  SidebarFolderIndent;
+extern char *SidebarFormat;
+extern char *SidebarIndentString;
+extern bool  SidebarNewMailOnly;
+extern bool  SidebarNextNewWrap;
+extern bool  SidebarShortPath;
+extern short SidebarSortMethod;
+
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 const char *mutt_sb_get_highlight(void);

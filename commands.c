@@ -63,6 +63,16 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in commands.c */
+unsigned char CryptVerifySig; /* verify PGP signatures */
+char *        DisplayFilter;
+bool          PipeDecode;
+char *        PipeSep;
+bool          PipeSplit;
+bool          PrintDecode;
+bool          PrintSplit;
+bool          PromptAfter;
+
 static const char *ExtPagerProgress = "all";
 
 /** The folder the user last saved to.  Used by ci_save_message() */

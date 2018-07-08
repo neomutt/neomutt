@@ -29,6 +29,9 @@ struct AttachCtx;
 struct Body;
 struct Header;
 
+/* These Config Variables are only used in recvcmd.c */
+extern unsigned char MimeForwardRest;
+
 void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);

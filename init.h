@@ -32,18 +32,56 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "addrbook.h"
+#include "bcache.h"
+#include "browser.h"
 #include "buffy.h"
+#include "commands.h"
+#include "compose.h"
+#include "curs_lib.h"
+#include "curs_main.h"
+#include "edit.h"
 #include "globals.h"
 #include "group.h"
+#include "handler.h"
+#include "hdrline.h"
 #include "history.h"
+#include "hook.h"
+#include "imap/imap.h"
 #include "keymap.h"
+#include "maildir/maildir.h"
+#include "menu.h"
+#include "mutt_account.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
 #include "mutt_options.h"
+#include "mutt_thread.h"
+#include "muttlib.h"
 #include "mx.h"
+#include "ncrypt/ncrypt.h"
+#include "nntp/nntp.h"
+#include "notmuch/mutt_notmuch.h"
 #include "options.h"
+#include "pager.h"
+#include "parse.h"
+#include "pattern.h"
+#include "pop/pop.h"
+#include "progress.h"
 #include "protos.h"
+#include "query.h"
+#include "recvattach.h"
+#include "recvcmd.h"
+#include "remailer.h"
+#include "rfc1524.h"
+#include "rfc2231.h"
+#include "rfc3676.h"
+#include "score.h"
+#include "send.h"
+#include "sendlib.h"
+#include "sidebar.h"
+#include "smtp.h"
 #include "sort.h"
+#include "status.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
@@ -2277,6 +2315,7 @@ struct Option MuttVars[] = {
   ** \fBdeprecated\fP.
   ** (PGP only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_check_exit",   DT_BOOL, R_NONE, &PgpCheckExit, true },
   /*
   ** .pp
@@ -2357,6 +2396,7 @@ struct Option MuttVars[] = {
   ** is ignored.
   ** (PGP only)
   */
+#endif
   { "pgp_default_key",    DT_STRING,   R_NONE, &PgpDefaultKey, 0 },
   /*
   ** .pp
@@ -2369,6 +2409,7 @@ struct Option MuttVars[] = {
   ** variable, and should no longer be used.
   ** (PGP only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_encrypt_only_command", DT_COMMAND, R_NONE, &PgpEncryptOnlyCommand, 0 },
   /*
   ** .pp
@@ -2387,6 +2428,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
+#endif
   { "pgp_entry_format", DT_STRING,  R_NONE, &PgpEntryFormat, IP "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
   ** .pp
@@ -2408,6 +2450,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** (PGP only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_export_command", DT_COMMAND, R_NONE, &PgpExportCommand, 0 },
   /*
   ** .pp
@@ -2437,6 +2480,7 @@ struct Option MuttVars[] = {
   ** even for bad signatures.
   ** (PGP only)
   */
+#endif
   { "pgp_ignore_subkeys", DT_BOOL, R_NONE, &PgpIgnoreSubkeys, true },
   /*
   ** .pp
@@ -2445,6 +2489,7 @@ struct Option MuttVars[] = {
   ** if you want to play interesting key selection games.
   ** (PGP only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_import_command", DT_COMMAND, R_NONE, &PgpImportCommand, 0 },
   /*
   ** .pp
@@ -2489,6 +2534,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
+#endif
   { "pgp_long_ids",     DT_BOOL, R_NONE, &PgpLongIds, true },
   /*
   ** .pp
@@ -2567,7 +2613,8 @@ struct Option MuttVars[] = {
   ** to specify your key (e.g. \fC0x00112233\fP).
   ** (PGP only)
   */
-  { "pgp_sign_command", DT_COMMAND, R_NONE, &PgpSignCommand, 0 },
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+{ "pgp_sign_command", DT_COMMAND, R_NONE, &PgpSignCommand, 0 },
   /*
   ** .pp
   ** This command is used to create the detached PGP signature for a
@@ -2577,6 +2624,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
+#endif
   { "pgp_sort_keys",    DT_SORT|DT_SORT_KEYS, R_NONE, &PgpSortKeys, SORT_ADDRESS },
   /*
   ** .pp
@@ -2602,6 +2650,7 @@ struct Option MuttVars[] = {
   ** this if you know what you are doing.
   ** (PGP only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
   { "pgp_timeout",      DT_LONG,  R_NONE, &PgpTimeout, 300 },
   /*
   ** .pp
@@ -2636,6 +2685,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
+#endif
   { "pipe_decode",      DT_BOOL, R_NONE, &PipeDecode, false },
   /*
   ** .pp
@@ -3504,6 +3554,7 @@ struct Option MuttVars[] = {
   ** a line quoted text if it also matches $$smileys. This mostly
   ** happens at the beginning of a line.
   */
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
   { "smime_ask_cert_label",     DT_BOOL, R_NONE, &SmimeAskCertLabel, true },
   /*
   ** .pp
@@ -3566,6 +3617,7 @@ struct Option MuttVars[] = {
   ** to determine the key to use. It will ask you to supply a key, if it can't find one.
   ** (S/MIME only)
   */
+#endif
   { "smime_default_key",                DT_STRING,  R_NONE, &SmimeDefaultKey, 0 },
   /*
   ** .pp
@@ -3584,6 +3636,7 @@ struct Option MuttVars[] = {
   ** variable, and should no longer be used.
   ** (S/MIME only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
   { "smime_encrypt_command", DT_COMMAND, R_NONE, &SmimeEncryptCommand, 0 },
   /*
   ** .pp
@@ -3598,6 +3651,7 @@ struct Option MuttVars[] = {
   ** Encrypt the message to $$smime_default_key too.
   ** (S/MIME only)
   */
+#endif
   { "smime_encrypt_with",       DT_STRING,  R_NONE, &SmimeEncryptWith, IP "aes256" },
   /*
   ** .pp
@@ -3605,6 +3659,7 @@ struct Option MuttVars[] = {
   ** Valid choices are ``aes128'', ``aes192'', ``aes256'', ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
   ** (S/MIME only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
   { "smime_get_cert_command", DT_COMMAND, R_NONE, &SmimeGetCertCommand, 0 },
   /*
   ** .pp
@@ -3646,6 +3701,7 @@ struct Option MuttVars[] = {
   ** to $$smime_sign_as if set, otherwise $$smime_default_key.
   ** (S/MIME only)
   */
+#endif
   { "smime_is_default", DT_BOOL,  R_NONE, &SmimeIsDefault, false },
   /*
   ** .pp
@@ -3656,6 +3712,7 @@ struct Option MuttVars[] = {
   ** message.  (Note that this variable can be overridden by unsetting $$crypt_autosmime.)
   ** (S/MIME only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
   { "smime_keys",               DT_PATH, R_NONE, &SmimeKeys, 0 },
   /*
   ** .pp
@@ -3677,6 +3734,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
+#endif
   { "smime_self_encrypt",    DT_BOOL, R_NONE, &SmimeSelfEncrypt, true },
   /*
   ** .pp
@@ -3691,6 +3749,7 @@ struct Option MuttVars[] = {
   ** to the signing key. Most people will only need to set $$smime_default_key.
   ** (S/MIME only)
   */
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
   { "smime_sign_command", DT_COMMAND, R_NONE, &SmimeSignCommand, 0 },
   /*
   ** .pp
@@ -3734,6 +3793,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
+#endif
 #ifdef USE_SMTP
   { "smtp_authenticators", DT_STRING, R_NONE, &SmtpAuthenticators, 0 },
   /*

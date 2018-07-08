@@ -57,6 +57,22 @@ struct Context;
 struct Header;
 struct Pattern;
 
+/* These Config Variables are only used in imap/auth.c */
+extern char *ImapAuthenticators;
+
+/* These Config Variables are only used in imap/imap.c */
+extern bool ImapIdle;
+
+/* These Config Variables are only used in imap/message.c */
+extern char *ImapHeaders;
+
+/* These Config Variables are only used in imap/command.c */
+extern bool ImapServernoise;
+
+/* These Config Variables are only used in imap/util.c */
+extern char *ImapDelimChars;
+extern short ImapPipelineDepth;
+
 /**
  * struct ImapMbox - An IMAP mailbox
  */

@@ -34,6 +34,25 @@ struct Header;
 struct ListHead;
 struct ParameterList;
 
+/* These Config Variables are only used in sendlib.c */
+extern bool  Allow8bit;
+extern char *AttachCharset;
+extern bool  BounceDelivered;
+extern bool  EncodeFrom;
+extern bool  ForwardDecrypt;
+extern bool  HiddenHost;
+extern char *Inews;
+extern bool  MimeForwardDecode;
+extern bool  MimeSubject; /**< encode subject line with RFC2047 */
+extern char *MimeTypeQueryCommand;
+extern bool  MimeTypeQueryFirst;
+extern char *Sendmail;
+extern short SendmailWait;
+extern bool  Use8bitmime;
+extern bool  UseEnvelopeFrom;
+extern bool  UserAgent;
+extern short WrapHeaders;
+
 char *          mutt_body_get_charset(struct Body *b, char *buf, size_t buflen);
 int             mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to);
 const char *    mutt_fqdn(bool may_hide_host);

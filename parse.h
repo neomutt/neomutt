@@ -31,6 +31,9 @@ struct Context;
 struct Envelope;
 struct Header;
 
+/* These Config Variables are only used in parse.c */
+extern char *SpamSeparator;
+
 int              mutt_check_encoding(const char *c);
 int              mutt_check_mime_type(const char *s);
 int              mutt_count_body_parts(struct Context *ctx, struct Header *hdr);

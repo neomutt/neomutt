@@ -55,6 +55,14 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in handler.c */
+bool  HonorDisposition;
+bool  ImplicitAutoview;
+bool  IncludeOnlyfirst;
+char *PreferredLanguages;
+bool  ReflowText;
+char *ShowMultipartAlternative;
+
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 

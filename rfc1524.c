@@ -46,6 +46,9 @@
 #include "options.h"
 #include "protos.h"
 
+/* These Config Variables are only used in rfc1524.c */
+bool MailcapSanitize;
+
 /**
  * rfc1524_expand_command - Expand expandos in a command
  * @param a        Email Body

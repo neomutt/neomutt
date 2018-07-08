@@ -40,6 +40,10 @@
 #include "opcodes.h"
 #include "protos.h"
 
+/* These Config Variables are only used in query.c */
+char *QueryCommand;
+char *QueryFormat;
+
 /**
  * struct Query - An entry from an external address-book
  */

@@ -32,6 +32,9 @@ struct Buffer;
 struct Header;
 struct Context;
 
+/* These Config Variables are only used in pattern.c */
+extern bool ThoroughSearch;
+
 /**
  * struct Pattern - A simple (non-regex) pattern
  */

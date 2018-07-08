@@ -25,8 +25,21 @@
 
 #include "mx.h"
 
-void pop_fetch_mail(void);
+/* These Config Variables are only used in pop/pop.c */
+extern short         PopCheckinterval;
+extern unsigned char PopDelete;
+extern char *        PopHost;
+extern bool          PopLast;
+
+/* These Config Variables are only used in pop/pop_auth.c */
+extern char *PopAuthenticators;
+extern bool  PopAuthTryAll;
+
+/* These Config Variables are only used in pop/pop_lib.c */
+extern unsigned char PopReconnect;
 
 extern struct MxOps mx_pop_ops;
+
+void pop_fetch_mail(void);
 
 #endif /* _POP_POP_H */

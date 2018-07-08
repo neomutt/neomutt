@@ -29,6 +29,9 @@
 
 struct Context;
 
+/* These Config Variables are only used in sort.c */
+extern bool ReverseAlias;
+
 #define SORT_DATE     1 /**< the date the mail was sent. */
 #define SORT_SIZE     2
 #define SORT_SUBJECT  3
@@ -81,11 +84,8 @@ extern const struct Mapping SortMethods[];
 const char *mutt_get_name(struct Address *a);
 
 /* These variables are backing for config items */
-WHERE short SortBrowser;
 WHERE short Sort;
 WHERE short SortAux; /* auxiliary sorting method */
-WHERE short SortAlias;
-WHERE short SidebarSortMethod;
 
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys;

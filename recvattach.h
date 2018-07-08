@@ -28,6 +28,12 @@
 
 struct AttachCtx;
 
+/* These Config Variables are only used in recvattach.c */
+extern char *AttachSep;
+extern bool  AttachSplit;
+extern bool  DigestCollapse;
+extern char *MessageFormat;
+
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
 

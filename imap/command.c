@@ -56,6 +56,9 @@
 #include "protos.h"
 #include "url.h"
 
+/* These Config Variables are only used in imap/command.c */
+bool ImapServernoise;
+
 #define IMAP_CMD_BUFSIZE 512
 
 /**

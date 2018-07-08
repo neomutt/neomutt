@@ -23,6 +23,8 @@
 #ifndef _CONN_GLOBALS_H
 #define _CONN_GLOBALS_H
 
+#include <stdbool.h>
+
 /* These variables are backing for config items */
 extern short ConnectTimeout;
 

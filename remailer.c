@@ -42,6 +42,10 @@
 #include "protos.h"
 #include "recvattach.h"
 
+/* These Config Variables are only used in remailer.c */
+char *MixEntryFormat;
+char *Mixmaster;
+
 /**
  * struct Coord - Screen coordinates
  */

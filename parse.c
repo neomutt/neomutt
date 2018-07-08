@@ -43,6 +43,9 @@
 
 struct Context;
 
+/* These Config Variables are only used in parse.c */
+char *SpamSeparator;
+
 /**
  * mutt_rfc822_read_line - Read a header line from a file
  *

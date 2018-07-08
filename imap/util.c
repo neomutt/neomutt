@@ -59,6 +59,10 @@
 #include "hcache/hcache.h"
 #endif
 
+/* These Config Variables are only used in imap/util.c */
+char *ImapDelimChars;
+short ImapPipelineDepth;
+
 /**
  * imap_expand_path - Canonicalise an IMAP path
  * @param path Buffer containing path

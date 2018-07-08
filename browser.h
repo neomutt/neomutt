@@ -27,6 +27,15 @@
 #include <sys/types.h>
 #include <time.h>
 
+/* These Config Variables are only used in browser.c */
+extern bool  BrowserAbbreviateMailboxes;
+extern char *FolderFormat;
+extern char *GroupIndexFormat;
+extern char *NewsgroupsCharset;
+extern bool  ShowOnlyUnread;
+extern short SortBrowser;
+extern char *VfolderFormat;
+
 /**
  * struct FolderFile - Browser entry representing a folder/dir
  */

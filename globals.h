@@ -103,225 +103,204 @@ WHERE struct Address *EnvelopeFromAddress;
 WHERE struct Address *From;
 
 WHERE char *AliasFile;
-WHERE char *AliasFormat;
-WHERE char *AttachSep;
 WHERE char *Attribution;
 WHERE char *AttributionLocale;
-WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
-WHERE char *ContentType;
-WHERE char *DefaultHook;
 WHERE char *DateFormat;
-WHERE char *DisplayFilter;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;
-WHERE char *EmptySubject;
-WHERE char *Escape;
-WHERE char *FolderFormat;
-WHERE char *ForwardAttributionIntro;
-WHERE char *ForwardAttributionTrailer;
-WHERE char *ForwardFormat;
 WHERE char *Hostname;
-WHERE struct MbTable *FromChars;
 WHERE char *IndexFormat;
 
 #ifdef USE_IMAP
-WHERE char *ImapAuthenticators;
-WHERE char *ImapDelimChars;
-WHERE char *ImapHeaders;
-WHERE char *ImapLogin;
-WHERE char *ImapPass;
 WHERE char *ImapUser;
 #endif
 WHERE char *Mbox;
-WHERE char *Ispell;
 WHERE char *MailcapPath;
 WHERE char *Folder;
-#if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
-WHERE char *MessageCachedir;
-#endif
 #ifdef USE_HCACHE
 WHERE char *HeaderCache;
-WHERE char *HeaderCacheBackend;
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
 WHERE char *HeaderCachePagesize;
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
-WHERE char *MarkMacroPrefix;
-WHERE char *MhSeqFlagged;
-WHERE char *MhSeqReplied;
-WHERE char *MhSeqUnseen;
-WHERE char *MimeTypeQueryCommand;
-WHERE char *MessageFormat;
 
 #ifdef USE_SOCKET
 WHERE short NetInc;
 #endif /* USE_SOCKET */
 
-#ifdef MIXMASTER
-WHERE char *Mixmaster;
-WHERE char *MixEntryFormat;
-#endif
-
 #ifdef USE_NNTP
-WHERE char *GroupIndexFormat;
-WHERE char *Inews;
-WHERE char *NewsCacheDir;
 WHERE char *NewsServer;
-WHERE char *NewsgroupsCharset;
-WHERE char *Newsrc;
-WHERE char *NntpAuthenticators;
-WHERE char *NntpUser;
-WHERE char *NntpPass;
 #endif
 WHERE char *Record;
 WHERE char *Pager;
 WHERE char *PagerFormat;
-WHERE char *PipeSep;
-#ifdef USE_POP
-WHERE char *PopAuthenticators;
-WHERE short PopCheckinterval;
-WHERE char *PopHost;
-WHERE char *PopPass;
-WHERE char *PopUser;
-#endif
-WHERE char *PostIndentString;
 WHERE char *Postponed;
-WHERE char *PostponeEncryptAs;
 WHERE char *IndentString;
 WHERE char *PrintCommand;
 WHERE char *NewMailCommand;
-WHERE char *QueryCommand;
-WHERE char *QueryFormat;
 WHERE char *Realname;
-WHERE short SearchContext;
 WHERE char *SendCharset;
-WHERE char *Sendmail;
 WHERE char *Shell;
-WHERE char *ShowMultipartAlternative;
-#ifdef USE_SIDEBAR
-WHERE char *SidebarDelimChars;
-WHERE char *SidebarDividerChar;
-WHERE char *SidebarFormat;
-WHERE char *SidebarIndentString;
-#endif
-WHERE char *Signature;
 WHERE char *SimpleSearch;
 #ifdef USE_SMTP
-WHERE char *SmtpAuthenticators;
-WHERE char *SmtpPass;
 WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
-WHERE char *SpamSeparator;
-WHERE struct MbTable *StatusChars;
 WHERE char *StatusFormat;
-WHERE struct MbTable *ToChars;
-WHERE struct MbTable *FlagChars;
-WHERE char *Trash;
 WHERE char *TsStatusFormat;
 WHERE char *TsIconFormat;
 WHERE char *Visual;
 
-#ifdef USE_NNTP
-WHERE short NntpPoll;
-WHERE short NntpContext;
-#endif
-
-WHERE short MenuContext;
-WHERE short PagerContext;
-WHERE short PagerIndexLines;
-WHERE char *PreferredLanguages;
 WHERE short ReadInc;
-WHERE short ReflowWrap;
-WHERE short SendmailWait;
 WHERE short SleepTime;
-WHERE short SkipQuotedOffset;
-WHERE short TimeInc;
 WHERE short Timeout;
 WHERE short Wrap;
-WHERE short WrapHeaders;
 WHERE short WriteInc;
 
-WHERE short ScoreThresholdDelete;
-WHERE short ScoreThresholdRead;
-WHERE short ScoreThresholdFlag;
-
 #ifdef USE_SIDEBAR
-WHERE short SidebarComponentDepth;
 WHERE short SidebarWidth;
 #endif
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
-WHERE short ImapPipelineDepth;
 WHERE short ImapPollTimeout;
 #endif
 
 /* -- formerly in pgp.h -- */
-WHERE struct Regex *PgpGoodSign;
-WHERE struct Regex *PgpDecryptionOkay;
 WHERE char *PgpDefaultKey;
 WHERE char *PgpSignAs;
-WHERE long  PgpTimeout;
 WHERE char *PgpEntryFormat;
-WHERE char *PgpClearsignCommand;
-WHERE char *PgpDecodeCommand;
-WHERE char *PgpVerifyCommand;
-WHERE char *PgpDecryptCommand;
-WHERE char *PgpSignCommand;
-WHERE char *PgpEncryptSignCommand;
-WHERE char *PgpEncryptOnlyCommand;
-WHERE char *PgpImportCommand;
-WHERE char *PgpExportCommand;
-WHERE char *PgpVerifyKeyCommand;
-WHERE char *PgpListSecringCommand;
-WHERE char *PgpListPubringCommand;
-WHERE char *PgpGetkeysCommand;
 
 /* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
 WHERE char *SmimeSignAs;
-WHERE long  SmimeTimeout;
-WHERE char *SmimeCertificates;
-WHERE char *SmimeKeys;
 WHERE char *SmimeEncryptWith;
-WHERE char *SmimeCaLocation;
-WHERE char *SmimeVerifyCommand;
-WHERE char *SmimeVerifyOpaqueCommand;
-WHERE char *SmimeDecryptCommand;
-WHERE char *SmimeSignCommand;
-WHERE char *SmimeSignDigestAlg;
-WHERE char *SmimeEncryptCommand;
-WHERE char *SmimeGetSignerCertCommand;
-WHERE char *SmimePk7outCommand;
-WHERE char *SmimeGetCertCommand;
-WHERE char *SmimeImportCertCommand;
-WHERE char *SmimeGetCertEmailCommand;
 
 #ifdef USE_NOTMUCH
-WHERE int NmOpenTimeout;
-WHERE char *NmDefaultUri;
-WHERE char *NmExcludeTags;
-WHERE char *NmUnreadTag;
-WHERE char *VfolderFormat;
-WHERE int NmDbLimit;
-WHERE char *NmQueryType;
-WHERE char *NmRecordTags;
 WHERE int NmQueryWindowDuration;
-WHERE char *NmQueryWindowTimebase;
-WHERE int NmQueryWindowCurrentPosition;
 WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
 /* These variables are backing for config items */
-WHERE struct Regex *AbortNoattachRegex;
-WHERE struct Regex *GecosMask;
 WHERE struct Regex *Mask;
 WHERE struct Regex *QuoteRegex;
 WHERE struct Regex *ReplyRegex;
-WHERE struct Regex *Smileys;
+
+/* Quad-options */
+WHERE unsigned char Bounce;
+WHERE unsigned char Copy;
+WHERE unsigned char Delete;
+WHERE unsigned char MimeForward;
+WHERE unsigned char Print;
+WHERE unsigned char Quit;
+#ifdef USE_SSL
+WHERE unsigned char SslStarttls;
+#endif
+#ifdef USE_NNTP
+WHERE unsigned char PostModerated;
+WHERE unsigned char FollowupToPoster;
+#endif
+
+WHERE bool ArrowCursor;
+WHERE bool AsciiChars;
+WHERE bool Askbcc;
+WHERE bool Askcc;
+WHERE bool Autoedit;
+WHERE bool AutoTag;
+WHERE bool Beep;
+WHERE bool BeepNew;
+WHERE bool BrailleFriendly;
+WHERE bool CheckMboxSize;
+WHERE bool Confirmappend;
+WHERE bool Confirmcreate;
+WHERE bool DeleteUntag;
+WHERE bool EditHeaders;
+WHERE bool FlagSafe;
+WHERE bool ForwardDecode;
+WHERE bool ForwardQuote;
+#ifdef USE_HCACHE
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
+WHERE bool HeaderCacheCompress;
+#endif /* HAVE_QDBM */
+#endif
+WHERE bool Header;
+WHERE bool Help;
+#ifdef USE_IMAP
+WHERE bool ImapCheckSubscribed;
+WHERE bool ImapListSubscribed;
+WHERE bool ImapPassive;
+WHERE bool ImapPeek;
+#endif
+#ifdef USE_SSL
+#ifndef USE_SSL_GNUTLS
+WHERE bool SslUsesystemcerts;
+WHERE bool SslUseSslv2;
+#endif /* USE_SSL_GNUTLS */
+WHERE bool SslUseSslv3;
+WHERE bool SslUseTlsv1;
+WHERE bool SslUseTlsv11;
+WHERE bool SslUseTlsv12;
+WHERE bool SslForceTls;
+WHERE bool SslVerifyDates;
+WHERE bool SslVerifyHost;
+#if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
+WHERE bool SslVerifyPartialChains;
+#endif /* USE_SSL_OPENSSL */
+#endif /* defined(USE_SSL) */
+WHERE bool MailCheckRecent;
+WHERE bool MaildirTrash;
+WHERE bool Markers;
+WHERE bool MarkOld;
+#if defined(USE_IMAP) || defined(USE_POP)
+WHERE bool MessageCacheClean;
+#endif
+WHERE bool ReadOnly;
+WHERE bool Resolve;
+WHERE bool ResumeDraftFiles;
+WHERE bool ResumeEditedDraftFiles;
+WHERE bool SaveAddress;
+WHERE bool SaveEmpty;
+WHERE bool Score;
+#ifdef USE_SIDEBAR
+WHERE bool SidebarVisible;
+WHERE bool SidebarOnRight;
+#endif
+WHERE bool StatusOnTop;
+WHERE bool Suspend;
+WHERE bool TextFlowed;
+WHERE bool TsEnabled;
+WHERE bool UseDomain;
+#ifdef HAVE_GETADDRINFO
+WHERE bool UseIpv6;
+#endif
+WHERE bool WaitKey;
+WHERE bool Weed;
+WHERE bool WrapSearch;
+WHERE bool WriteBcc; /**< write out a bcc header? */
+
+WHERE bool CryptUsePka;
+
+/* PGP options */
+
+WHERE bool CryptConfirmhook;
+WHERE bool CryptOpportunisticEncrypt;
+WHERE bool SmimeIsDefault;
+WHERE bool PgpIgnoreSubkeys;
+WHERE bool PgpLongIds;
+WHERE bool PgpShowUnusable;
+WHERE bool PgpAutoinline;
+
+/* news options */
+
+#ifdef USE_NNTP
+WHERE bool SaveUnsubscribed;
+WHERE bool XCommentTo;
+#endif
+
+#ifdef USE_NOTMUCH
+WHERE bool VirtualSpoolfile;
+#endif
 
 #endif /* _MUTT_GLOBALS_H */

@@ -29,6 +29,9 @@
 
 struct Context;
 
+/* These Config Variables are only used in curs_lib.c */
+extern bool MetaKey; /**< interpret ALT-x as ESC-x */
+
 bool   message_is_tagged(struct Context *ctx, int index);
 bool   message_is_visible(struct Context *ctx, int index);
 int    mutt_addwch(wchar_t wc);

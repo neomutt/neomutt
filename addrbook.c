@@ -44,6 +44,10 @@
 #include "protos.h"
 #include "sort.h"
 
+/* These Config Variables are only used in addrbook.c */
+char *AliasFormat;
+short SortAlias;
+
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
 
 static const struct Mapping AliasHelp[] = {

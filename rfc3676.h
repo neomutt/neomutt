@@ -29,6 +29,10 @@ struct Body;
 struct Header;
 struct State;
 
+/* These Config Variables are only used in rfc3676.c */
+extern bool  ReflowSpaceQuotes;
+extern short ReflowWrap;
+
 int rfc3676_handler(struct Body *a, struct State *s);
 void rfc3676_space_stuff(struct Header *hdr);
 

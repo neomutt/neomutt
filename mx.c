@@ -81,6 +81,12 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in mx.c */
+unsigned char CatchupNewsgroup;
+bool          KeepFlagged;
+unsigned char Move;
+char *        Trash;
+
 /**
  * mx_get_ops - Get mailbox operations
  * @param magic Mailbox magic number

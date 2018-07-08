@@ -60,6 +60,10 @@
 #include "hcache/hcache.h"
 #endif
 
+/* These Config Variables are only used in nntp/newsrc.c */
+char *NewsCacheDir;
+char *Newsrc;
+
 struct BodyCache;
 
 /**

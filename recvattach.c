@@ -56,6 +56,12 @@
 #include <libintl.h>
 #endif
 
+/* These Config Variables are only used in recvattach.c */
+char *AttachSep;
+bool  AttachSplit;
+bool  DigestCollapse;
+char *MessageFormat;
+
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");

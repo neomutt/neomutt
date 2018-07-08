@@ -60,6 +60,14 @@
 #include "hcache/hcache.h"
 #endif
 
+/* These Config Variables are only used in maildir/mh.c */
+bool  CheckNew;
+bool  MaildirHeaderCacheVerify;
+bool  MhPurge;
+char *MhSeqFlagged;
+char *MhSeqReplied;
+char *MhSeqUnseen;
+
 #define INS_SORT_THRESHOLD 6
 
 #define MH_SEQ_UNSEEN (1 << 0)

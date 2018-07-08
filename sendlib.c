@@ -66,6 +66,25 @@
 #define EX_OK 0
 #endif
 
+/* These Config Variables are only used in sendlib.c */
+bool  Allow8bit;
+char *AttachCharset;
+bool  BounceDelivered;
+bool  EncodeFrom;
+bool  ForwardDecrypt;
+bool  HiddenHost;
+char *Inews;
+bool  MimeForwardDecode;
+bool  MimeSubject; /**< encode subject line with RFC2047 */
+char *MimeTypeQueryCommand;
+bool  MimeTypeQueryFirst;
+char *Sendmail;
+short SendmailWait;
+bool  Use8bitmime;
+bool  UseEnvelopeFrom;
+bool  UserAgent;
+short WrapHeaders;
+
 /**
  * encode_quoted - Encode text as quoted printable
  * @param fc     Cursor for converting a file's encoding

@@ -31,6 +31,11 @@ struct Context;
 struct Header;
 struct ListHead;
 
+/* These Config Variables are only used in hook.c */
+extern char *DefaultHook;
+extern bool  ForceName;
+extern bool  SaveName;
+
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void  mutt_default_save(char *path, size_t pathlen, struct Header *hdr);

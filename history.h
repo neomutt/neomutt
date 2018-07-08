@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/* These Config Variables are only used in history.c */
 extern short History;
 extern char *HistoryFile;
 extern bool  HistoryRemoveDups;

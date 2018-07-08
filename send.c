@@ -61,6 +61,52 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in send.c */
+unsigned char AbortNoattach; /* forgotten attachment detector */
+struct Regex *AbortNoattachRegex;
+unsigned char AbortNosubject;
+unsigned char AbortUnmodified;
+bool          AskFollowUp;
+bool          AskXCommentTo;
+char *        ContentType;
+bool          CryptAutoencrypt;
+bool          CryptAutopgp;
+bool          CryptAutosign;
+bool          CryptAutosmime;
+bool          CryptReplyencrypt;
+bool          CryptReplysign;
+bool          CryptReplysignencrypted;
+char *        EmptySubject;
+bool          FastReply;
+unsigned char FccAttach;
+bool          FccClear;
+bool          FollowupTo;
+char *        ForwardAttributionIntro;
+char *        ForwardAttributionTrailer;
+unsigned char ForwardEdit;
+char *        ForwardFormat;
+bool          ForwardReferences;
+bool          Hdrs;
+unsigned char HonorFollowupTo;
+bool          IgnoreListReplyTo;
+unsigned char Include;
+bool          Metoo;
+bool          NmRecord;
+bool          PgpReplyinline;
+char *        PostIndentString;
+bool          PostponeEncrypt;
+char *        PostponeEncryptAs;
+unsigned char Recall;
+bool          ReplySelf;
+unsigned char ReplyTo;
+bool          ReplyWithXorig;
+bool          ReverseName;
+bool          ReverseRealname;
+bool          SigDashes;
+char *        Signature;
+bool          SigOnTop;
+bool          UseFrom;
+
 static void append_signature(FILE *f)
 {
   FILE *tmpfp = NULL;

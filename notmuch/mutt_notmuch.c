@@ -62,6 +62,17 @@
 #include "protos.h"
 #include "url.h"
 
+/* These Config Variables are only used in notmuch/mutt_notmuch.c */
+int   NmDbLimit;
+char *NmDefaultUri;
+char *NmExcludeTags;
+int   NmOpenTimeout;
+char *NmQueryType;
+int   NmQueryWindowCurrentPosition;
+char *NmQueryWindowTimebase;
+char *NmRecordTags;
+char *NmUnreadTag;
+
 #ifdef LIBNOTMUCH_CHECK_VERSION
 #undef LIBNOTMUCH_CHECK_VERSION
 #endif
