@@ -2318,8 +2318,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** If \fIset\fP, mutt will check the status file descriptor output
-  ** of $$pgp_decrypt_command for GnuPG status codes indicating
-  ** successful decryption.  This will check for the presence of
+  ** of $$pgp_decrypt_command and $$pgp_decode_command for GnuPG status codes
+  ** indicating successful decryption.  This will check for the presence of
   ** DECRYPTION_OKAY, absence of DECRYPTION_FAILED, and that all
   ** PLAINTEXT occurs between the BEGIN_DECRYPTION and END_DECRYPTION
   ** status codes.
