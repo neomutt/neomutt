@@ -25,6 +25,18 @@
 
 #include "mx.h"
 
+/**
+ * @page pop POP network mailbox
+ *
+ * POP network mailbox
+ *
+ * | File           | Description       |
+ * | :------------- | :---------------- |
+ * | pop/pop_auth.c | @subpage pop_auth |
+ * | pop/pop.c      | @subpage pop_pop  |
+ * | pop/pop_lib.c  | @subpage pop_lib  |
+ */
+
 /* These Config Variables are only used in pop/pop.c */
 extern short         PopCheckinterval;
 extern unsigned char PopDelete;

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page address Representation of an email address
+ * @page email_address Representation of an email address
  *
  * Representation of an email address
  */

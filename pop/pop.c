@@ -22,7 +22,7 @@
  */
 
 /**
- * @page pop POP network mailbox
+ * @page pop_pop POP network mailbox
  *
  * POP network mailbox
  */

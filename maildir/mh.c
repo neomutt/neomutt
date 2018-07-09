@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page maildir_maildir Maildir/MH local mailbox type
+ *
+ * Maildir/MH local mailbox type
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <dirent.h>

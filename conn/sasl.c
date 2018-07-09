@@ -706,7 +706,7 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 }
 
 /**
- * mutt_sasl_done - Invoke when processing is complete.
+ * mutt_sasl_done - Invoke when processing is complete
  *
  * This is a cleanup function, used to free all memory used by the library.
  * Invoke when processing is complete.

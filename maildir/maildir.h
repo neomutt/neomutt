@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page maildir Maildir local mailbox type
+ *
+ * Maildir local mailbox type
+ *
+ * | File         | Description              |
+ * | :----------- | :----------------------- |
+ * | maildir/mh.c | @subpage maildir_maildir |
+ */
+
 #ifndef _MAILDIR_MAILDIR_H
 #define _MAILDIR_MAILDIR_H
 

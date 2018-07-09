@@ -51,6 +51,8 @@
  *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.
+ *
+ * @image html libmutt.svg
  */
 
 #ifndef _MUTT_MUTT_H

@@ -20,7 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file contains code to parse ``mbox'' and ``mmdf'' style mailboxes */
+/**
+ * @page mbox_mbox Mbox local mailbox type
+ *
+ * Mbox local mailbox type
+ *
+ * This file contains code to parse 'mbox' and 'mmdf' style mailboxes.
+ */
 
 #include "config.h"
 #include <fcntl.h>

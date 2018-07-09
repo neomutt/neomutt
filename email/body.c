@@ -21,7 +21,7 @@
  */
 
 /**
- * @page body Representation of the body of an email
+ * @page email_body Representation of the body of an email
  *
  * Representation of the body of an email
  */

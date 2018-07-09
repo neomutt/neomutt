@@ -21,7 +21,7 @@
  */
 
 /**
- * @page header Representation of the email's header
+ * @page email_header Representation of the email's header
  *
  * Representation of the email's header
  */
