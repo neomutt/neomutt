@@ -245,6 +245,12 @@ header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
     FREE(&mx.mbox);
   }
 
+  if (strstr(mbox, "/../") || (strcmp(mbox, "..") == 0) || (strncmp(mbox, "../", 3) == 0))
+    return NULL;
+  size_t len = strlen(mbox);
+  if ((len > 3) && (strcmp(mbox + len - 3, "/..") == 0))
+    return NULL;
+
   mutt_account_tourl(&idata->conn->account, &url);
   url.path = mbox;
   url_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
