@@ -871,6 +871,11 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   memcpy(h, d + off, sizeof(struct Header));
   off += sizeof(struct Header);
 
+  STAILQ_INIT(&h->tags);
+#ifdef MIXMASTER
+  STAILQ_INIT(&h->chain);
+#endif
+
   h->env = mutt_env_new();
   restore_envelope(h->env, d, &off, convert);
 
