@@ -1030,7 +1030,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   if (!TAILQ_EMPTY(&b->parameter))
   {
     size_t l = strlen(buf);
-    struct Parameter *np;
+    struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &b->parameter, entries)
     {
       mutt_addr_cat(tmp, sizeof(tmp), np->value, MimeSpecials);

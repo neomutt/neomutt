@@ -2186,7 +2186,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
       if (hc)
       {
-        const char *key;
+        const char *key = NULL;
         size_t keylen;
         if (ctx->magic == MUTT_MH)
         {
@@ -2234,7 +2234,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
   if (hc && h->changed)
   {
-    const char *key;
+    const char *key = NULL;
     size_t keylen;
     if (ctx->magic == MUTT_MH)
     {

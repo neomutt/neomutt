@@ -161,7 +161,7 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
     mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
 
     const bool encoded = par->encoded;
-    char *valp;
+    char *valp = NULL;
     if (encoded)
       valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
     else

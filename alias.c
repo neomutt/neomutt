@@ -67,7 +67,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
       if (t)
       {
         i = false;
-        struct ListNode *np;
+        struct ListNode *np = NULL;
         STAILQ_FOREACH(np, expn, entries)
         {
           if (mutt_str_strcmp(a->mailbox, np->data) == 0) /* alias already found */

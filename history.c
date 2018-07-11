@@ -484,7 +484,7 @@ static void history_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  */
 static void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {
-  struct Menu *menu;
+  struct Menu *menu = NULL;
   int done = 0;
   char helpstr[LONG_STRING];
   char title[STRING];

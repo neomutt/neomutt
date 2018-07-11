@@ -516,9 +516,9 @@ static void generate_seqset(struct Buffer *b, struct ImapData *idata,
 {
   int chunks = 0;
   int state = 0; /* 1: single msn, 2: range of msn */
-  unsigned int msn, range_begin, range_end;
+  unsigned int range_begin, range_end;
 
-  for (msn = msn_begin; msn <= msn_end + 1; msn++)
+  for (unsigned int msn = msn_begin; msn <= msn_end + 1; msn++)
   {
     if (msn <= msn_end && !idata->msn_index[msn - 1])
     {

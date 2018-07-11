@@ -1397,7 +1397,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   char buf[LONG_STRING], certfile[PATH_MAX];
   char tempfile[PATH_MAX];
   char smimeinfile[PATH_MAX];
-  char *cert_start, *cert_end;
+  char *cert_end = NULL;
   FILE *smimein = NULL;
   int err = 0, empty, off;
   pid_t thepid;
@@ -1431,7 +1431,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   }
 
   *certfile = '\0';
-  for (cert_start = certlist; cert_start; cert_start = cert_end)
+  for (char *cert_start = certlist; cert_start; cert_start = cert_end)
   {
     cert_end = strchr(cert_start, ' ');
     if (cert_end)

@@ -512,7 +512,7 @@ void mix_make_chain(struct ListHead *chainhead)
 
   struct MixChain *chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
-  struct ListNode *p;
+  struct ListNode *p = NULL;
   STAILQ_FOREACH(p, chainhead, entries)
   {
     mix_chain_add(chain, p->data, type2_list);
@@ -764,7 +764,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
 
   snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_str_strfcpy(tmp, cmd, sizeof(tmp));

@@ -162,7 +162,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
    */
   if (flags & CH_REORDER)
   {
-    struct ListNode *np;
+    struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &HeaderOrderList, entries)
     {
       mutt_debug(3, "Reorder list: %s\n", np->data);
@@ -268,7 +268,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       /* Find x -- the array entry where this header is to be saved */
       if (flags & CH_REORDER)
       {
-        struct ListNode *np;
+        struct ListNode *np = NULL;
         x = 0;
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
@@ -427,7 +427,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   if ((flags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&h->env->in_reply_to))
   {
     fputs("In-Reply-To:", out);
-    struct ListNode *np;
+    struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &h->env->in_reply_to, entries)
     {
       fputc(' ', out);

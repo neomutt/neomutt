@@ -314,7 +314,7 @@ bailout:
  */
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
     const int i = mutt_str_strlen(np->data) - 1;

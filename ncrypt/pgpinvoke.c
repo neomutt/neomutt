@@ -366,7 +366,7 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
   *uids = '\0';
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
     mutt_file_quote_filename(quoted, sizeof(quoted), (char *) np->data);

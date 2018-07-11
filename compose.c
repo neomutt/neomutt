@@ -358,7 +358,7 @@ static void redraw_mix_line(struct ListHead *chain)
   }
 
   int c = 12;
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     t = np->data;

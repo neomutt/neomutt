@@ -758,7 +758,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
     if (*o == -1)
     {
       mutt_buffer_printf(err, _("%s: no such object"), buf->data);
-      return (-1);
+      return -1;
     }
   }
   else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)

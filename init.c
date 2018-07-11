@@ -134,7 +134,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
     return;
 
   /* check to make sure the item is not already on this list */
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
     if (mutt_str_strcasecmp(str, np->data) == 0)
@@ -387,7 +387,7 @@ static int execute_commands(struct ListHead *p)
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, p, entries)
   {
     if (mutt_parse_rc_line(np->data, &token, &err) == -1)
@@ -1022,7 +1022,7 @@ static void pretty_var(char *buf, size_t buflen, const char *option, const char 
  */
 static int print_attach_list(struct ListHead *h, char op, char *name)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     printf("attachments %c%s %s/%s\n", op, name,
@@ -3943,7 +3943,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   }
   else
   {
-    struct ListNode *np;
+    struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
       mutt_str_strfcpy(buffer, np->data, sizeof(buffer));
@@ -3998,7 +3998,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   }
 
   /* Read the user's initialization file.  */
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &Muttrc, entries)
   {
     if (np->data)
@@ -4361,7 +4361,7 @@ int mutt_query_variables(struct ListHead *queries)
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, queries, entries)
   {
     snprintf(command, sizeof(command), "set ?%s\n", np->data);

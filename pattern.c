@@ -1560,7 +1560,7 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
  */
 static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, refs, entries)
   {
     if (patmatch(pat, np->data) == 0)

@@ -199,7 +199,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
-      struct ListNode *np;
+      struct ListNode *np = NULL;
       while ((np = STAILQ_NEXT(ref, entries)) != NULL)
       {
         STAILQ_REMOVE_AFTER(&cur->message->env->references, ref, entries);

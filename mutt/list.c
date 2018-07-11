@@ -87,7 +87,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
  */
 struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     if (np->data == data || mutt_str_strcmp(np->data, data) == 0)
@@ -169,7 +169,7 @@ void mutt_list_clear(struct ListHead *h)
  */
 bool mutt_list_match(const char *s, struct ListHead *h)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))

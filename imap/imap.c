@@ -1145,7 +1145,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   if (STAILQ_EMPTY(flag_list))
     return false;
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, flag_list, entries)
   {
     if (mutt_str_strncasecmp(np->data, flag, strlen(np->data)) == 0)
@@ -1251,7 +1251,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
                                struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
-  char *tags;
+  char *tags = NULL;
   char uid[11];
 
   if (!compare_flags_for_copy(hdr))
@@ -1597,7 +1597,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   void *uidnext = NULL;
 #endif
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &idata->mboxcache, entries)
   {
     status = (struct ImapStatus *) np->data;
@@ -1654,7 +1654,7 @@ void imap_mboxcache_free(struct ImapData *idata)
 {
   struct ImapStatus *status = NULL;
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &idata->mboxcache, entries)
   {
     status = (struct ImapStatus *) np->data;
@@ -2160,7 +2160,7 @@ static int imap_mbox_open(struct Context *ctx)
       mutt_debug(3, "No folder flags found\n");
     else
     {
-      struct ListNode *np;
+      struct ListNode *np = NULL;
       struct Buffer flag_buffer;
       mutt_buffer_init(&flag_buffer);
       mutt_buffer_printf(&flag_buffer, "Mailbox flags: ");

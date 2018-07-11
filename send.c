@@ -349,7 +349,7 @@ static int edit_envelope(struct Envelope *en, int flags)
     const char *p = NULL;
 
     buf[0] = 0;
-    struct ListNode *uh;
+    struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
       if (mutt_str_strncasecmp("subject:", uh->data, 8) == 0)
@@ -388,7 +388,7 @@ static char *nntp_get_header(const char *s)
 
 static void process_user_recips(struct Envelope *env)
 {
-  struct ListNode *uh;
+  struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_str_strncasecmp("to:", uh->data, 3) == 0)
@@ -410,7 +410,7 @@ static void process_user_recips(struct Envelope *env)
 
 static void process_user_header(struct Envelope *env)
 {
-  struct ListNode *uh;
+  struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_str_strncasecmp("from:", uh->data, 5) == 0)
@@ -697,8 +697,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
  */
 static void add_references(struct ListHead *head, struct Envelope *e)
 {
-  struct ListHead *src;
-  struct ListNode *np;
+  struct ListHead *src = NULL;
+  struct ListNode *np = NULL;
 
   src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
