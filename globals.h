@@ -226,6 +226,7 @@ WHERE bool ImapCheckSubscribed;
 WHERE bool ImapListSubscribed;
 WHERE bool ImapPassive;
 WHERE bool ImapPeek;
+WHERE bool KeepCtx;
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS

@@ -1709,6 +1709,12 @@ struct Option MuttVars[] = {
   ** .pp
   ** How to invoke ispell (GNU's spell-checking software).
   */
+  { "keep_ctx", DT_BOOL, R_NONE, &KeepCtx, false },
+  /*
+  ** .pp
+  ** If \fIset\fP, mailbox contexts are kept in memory, instead of
+  ** being discarded on mailbox switch.
+  */
   { "keep_flagged", DT_BOOL, R_NONE, &KeepFlagged, false },
   /*
   ** .pp
