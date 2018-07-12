@@ -51,11 +51,9 @@ void mutt_header_free(struct Header **h)
   mutt_list_free(&(*h)->chain);
 #endif
   driver_tags_free(&(*h)->tags);
-#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
     (*h)->free_cb(*h);
   FREE(&(*h)->data);
-#endif
   FREE(h);
 }
 

@@ -837,9 +837,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
 #ifdef MIXMASTER
   STAILQ_INIT(&nh.chain);
 #endif
-#if defined(USE_POP) || defined(USE_IMAP)
   nh.data = NULL;
-#endif
 
   memcpy(d + *off, &nh, sizeof(struct Header));
   *off += sizeof(struct Header);
