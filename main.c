@@ -81,9 +81,6 @@
 #include "nntp/nntp.h"
 #endif
 
-/* These Config Variables are only used in main.c */
-extern bool ResumeEditedDraftFiles;
-
 #define MUTT_IGNORE (1 << 0)  /* -z */
 #define MUTT_BUFFY (1 << 1)   /* -Z */
 #define MUTT_NOSYSRC (1 << 2) /* -n */

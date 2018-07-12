@@ -88,10 +88,10 @@
 #include "protos.h"
 
 /* These Config Variables are only used in history.c */
-short History;
-char *HistoryFile;
-bool HistoryRemoveDups;
-short SaveHistory;
+short History;          /**< Number of history entries stored in memory */
+char *HistoryFile;      /**< File in which to store all the histories */
+bool HistoryRemoveDups; /**< Remove duplicate history entries */
+short SaveHistory; /**< Number of history entries, per category, stored on disk */
 
 #define HC_FIRST HC_CMD
 
@@ -116,11 +116,6 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /* global vars used for the string-history routines */
-
-short History;          /**< Number of history entries stored in memory */
-char *HistoryFile;      /**< File in which to store all the histories */
-bool HistoryRemoveDups; /**< Remove duplicate history entries */
-short SaveHistory; /**< Number of history entries, per category, stored on disk */
 
 static struct History Histories[HC_LAST];
 static int OldSize = 0;

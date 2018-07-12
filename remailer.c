@@ -49,6 +49,11 @@
 char *MixEntryFormat;
 char *Mixmaster;
 
+#define MIX_CAP_COMPRESS (1 << 0)
+#define MIX_CAP_MIDDLEMAN (1 << 1)
+#define MIX_CAP_NEWSPOST (1 << 2)
+#define MIX_CAP_NEWSMAIL (1 << 3)
+
 /**
  * struct Coord - Screen coordinates
  */
