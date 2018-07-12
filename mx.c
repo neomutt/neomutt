@@ -765,7 +765,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   if (read_msgs && Move != MUTT_NO)
   {
     int is_spool;
-    char *p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path);
+    char *p = mutt_find_hook(MUTT_MBOX_HOOK, ctx->path);
     if (p)
     {
       is_spool = 1;

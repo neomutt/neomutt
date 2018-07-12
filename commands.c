@@ -99,7 +99,7 @@ int mutt_display_message(struct Header *cur)
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(cur->content), cur->content->subtype);
 
   mutt_parse_mime_message(Context, cur);
-  mutt_message_hook(Context, cur, MUTT_MESSAGEHOOK);
+  mutt_message_hook(Context, cur, MUTT_MESSAGE_HOOK);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && cur->security)
@@ -420,7 +420,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
 
   if (h)
   {
-    mutt_message_hook(Context, h, MUTT_MESSAGEHOOK);
+    mutt_message_hook(Context, h, MUTT_MESSAGE_HOOK);
 
     if ((WithCrypto != 0) && decode)
     {
@@ -453,7 +453,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGE_HOOK);
         mutt_parse_mime_message(Context, Context->hdrs[i]);
         if (Context->hdrs[i]->security & ENCRYPT &&
             !crypt_valid_passphrase(Context->hdrs[i]->security))
@@ -470,7 +470,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -504,7 +504,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGE_HOOK);
         pipe_msg(Context->hdrs[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
@@ -835,7 +835,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       need_passphrase = (h->security & ENCRYPT);
       app = h->security;
     }
-    mutt_message_hook(Context, h, MUTT_MESSAGEHOOK);
+    mutt_message_hook(Context, h, MUTT_MESSAGE_HOOK);
     mutt_default_save(buf, sizeof(buf), h);
   }
   else
@@ -852,7 +852,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 
     if (h)
     {
-      mutt_message_hook(Context, h, MUTT_MESSAGEHOOK);
+      mutt_message_hook(Context, h, MUTT_MESSAGE_HOOK);
       mutt_default_save(buf, sizeof(buf), h);
       if (WithCrypto)
       {
@@ -959,7 +959,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGE_HOOK);
         rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx);
         if (rc != 0)
           break;

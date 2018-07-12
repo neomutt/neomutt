@@ -1330,7 +1330,7 @@ void mutt_view_attachments(struct Header *hdr)
   /* make sure we have parsed this message */
   mutt_parse_mime_message(Context, hdr);
 
-  mutt_message_hook(Context, hdr, MUTT_MESSAGEHOOK);
+  mutt_message_hook(Context, hdr, MUTT_MESSAGE_HOOK);
 
   struct Message *msg = mx_msg_open(Context, hdr->msgno);
   if (!msg)

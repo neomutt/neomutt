@@ -1538,7 +1538,7 @@ int mutt_index_menu(void)
 
           oldcount = Context ? Context->msgcount : 0;
 
-          mutt_startup_shutdown_hook(MUTT_SHUTDOWNHOOK);
+          mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
 
           if (!Context || (check = mx_mbox_close(Context, &index_hint)) == 0)
             done = true;
