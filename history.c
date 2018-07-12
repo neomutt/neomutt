@@ -559,7 +559,8 @@ void mutt_hist_free(void)
     if (!h->hist)
       continue;
 
-    for (int i = 0; i < History; i++)
+    /* The array has (History+1) elements */
+    for (int i = 0; i <= History; i++)
     {
       FREE(&h->hist[i]);
     }

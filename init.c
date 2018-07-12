@@ -1334,8 +1334,9 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
   {
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    FREE(&np->data);
     STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+    FREE(&np->data);
+    FREE(&np);
   }
 
   return rc;
