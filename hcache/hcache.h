@@ -29,6 +29,8 @@
  * This module defines the user-visible header cache API, which is used within
  * neomutt to cache and restore mail header data.
  *
+ * @subpage hc_serial
+ *
  * @subpage hc_hcache
  *
  * Backends:
@@ -48,11 +50,36 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <time.h>
 
 struct Header;
+
+/**
+ * struct HeaderCache - header cache structure
+ *
+ * This struct holds both the backend-agnostic and the backend-specific parts
+ * of the header cache. Backend code MUST initialize the fetch, store,
+ * delete and close function pointers in hcache_open, and MAY store
+ * backend-specific context in the ctx pointer.
+ */
+struct HeaderCache
+{
+  char *folder;
+  unsigned int crc;
+  void *ctx;
+};
+
 typedef struct HeaderCache header_cache_t;
 
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
+
+/**
+ * union Validate - Header cache validity
+ */
+union Validate {
+  struct timeval timeval;
+  unsigned int uidvalidity;
+};
 
 /* These Config Variables are only used in hcache/hcache.c */
 extern char *HeaderCacheBackend;

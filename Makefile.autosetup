@@ -210,7 +210,7 @@ ALLOBJS+=	$(LIBCONNOBJS)
 # libhcache
 @if USE_HCACHE
 LIBHCACHE=	libhcache.a
-LIBHCACHEOBJS=	hcache/hcache.o
+LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 MUTTLIBS+=	$(LIBHCACHE)
 ALLOBJS+=	$(LIBHCACHEOBJS)
