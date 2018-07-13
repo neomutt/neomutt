@@ -117,8 +117,9 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
 
 /**
  * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
- * @param out Output buffer for the raw bytes
- * @param in  Input  buffer for the null-terminated base64-encoded string
+ * @param out  Output buffer for the raw bytes
+ * @param in   Input  buffer for the null-terminated base64-encoded string
+ * @param olen Length of the output buffer
  * @retval num Success, bytes written
  * @retval -1  Error
  *
@@ -126,7 +127,7 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
  * null-terminated. If the input buffer contains invalid base64 characters,
  * this function returns -1.
  */
-int mutt_b64_decode(char *out, const char *in)
+int mutt_b64_decode(char *out, const char *in, size_t olen)
 {
   int len = 0;
   unsigned char digit4;
@@ -148,14 +149,20 @@ int mutt_b64_decode(char *out, const char *in)
     in += 4;
 
     /* digits are already sanity-checked */
+    if (len == olen)
+      return len;
     *out++ = (base64val(digit1) << 2) | (base64val(digit2) >> 4);
     len++;
     if (digit3 != '=')
     {
+      if (len == olen)
+        return len;
       *out++ = ((base64val(digit2) << 4) & 0xf0) | (base64val(digit3) >> 2);
       len++;
       if (digit4 != '=')
       {
+        if (len == olen)
+          return len;
         *out++ = ((base64val(digit3) << 6) & 0xc0) | base64val(digit4);
         len++;
       }
