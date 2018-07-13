@@ -3289,7 +3289,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (mx_msg_commit(&f, msg) != 0)
     rc = -1;
   else if (finalpath)
-    *finalpath = mutt_str_strdup(msg->commited_path);
+    *finalpath = mutt_str_strdup(msg->committed_path);
   mx_msg_close(&f, &msg);
   mx_mbox_close(&f, NULL);
 

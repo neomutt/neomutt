@@ -1345,7 +1345,7 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
     FREE(&(*msg)->path);
   }
 
-  FREE(&(*msg)->commited_path);
+  FREE(&(*msg)->committed_path);
   FREE(msg);
   return r;
 }

@@ -1874,7 +1874,7 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
 #endif
       if (hdr)
         mutt_str_replace(&hdr->path, path);
-      mutt_str_replace(&msg->commited_path, full);
+      mutt_str_replace(&msg->committed_path, full);
       FREE(&msg->path);
 
       return 0;
@@ -1966,7 +1966,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
     {
       if (hdr)
         mutt_str_replace(&hdr->path, tmp);
-      mutt_str_replace(&msg->commited_path, path);
+      mutt_str_replace(&msg->committed_path, path);
       FREE(&msg->path);
       break;
     }
