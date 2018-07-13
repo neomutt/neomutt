@@ -35,6 +35,7 @@
  * | mutt/exit.c      | @subpage exit      |
  * | mutt/file.c      | @subpage file      |
  * | mutt/hash.c      | @subpage hash      |
+ * | mutt/history.c   | @subpage history   |
  * | mutt/idna.c      | @subpage idna      |
  * | mutt/list.c      | @subpage list      |
  * | mutt/logging.c   | @subpage logging   |
@@ -66,6 +67,7 @@
 #include "exit.h"
 #include "file.h"
 #include "hash.h"
+#include "history.h"
 #include "idna2.h"
 #include "list.h"
 #include "logging.h"

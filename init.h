@@ -46,7 +46,7 @@
 #include "group.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "history.h"
+#include "mutt_history.h"
 #include "hook.h"
 #include "imap/imap.h"
 #include "keymap.h"
