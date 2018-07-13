@@ -44,8 +44,6 @@ enum XdgType
 
 int mutt_system(const char *cmd);
 
-int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
-
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);

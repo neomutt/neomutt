@@ -31,6 +31,7 @@
  * | email/attach.c    | @subpage email_attach    |
  * | email/body.c      | @subpage email_body      |
  * | email/envelope.c  | @subpage email_envelope  |
+ * | email/from.c      | @subpage email_from      |
  * | email/header.c    | @subpage email_header    |
  * | email/parameter.c | @subpage email_parameter |
  * | email/tags.c      | @subpage email_tags      |
@@ -45,6 +46,7 @@
 #include "body.h"
 #include "content.h"
 #include "envelope.h"
+#include "from.h"
 #include "header.h"
 #include "parameter.h"
 #include "tags.h"

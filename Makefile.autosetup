@@ -64,7 +64,7 @@ NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o buffy.o \
 		color.o commands.o complete.o compose.o compress.o \
 		conststrings.o copy.o curs_lib.o curs_main.o edit.o editmsg.o \
-		enriched.o enter.o filter.o flags.o from.o group.o handler.o \
+		enriched.o enter.o filter.o flags.o group.o handler.o \
 		hdrline.o help.o hook.o init.o keymap.o \
 		main.o menu.o muttlib.o mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
 		mutt_history.o mutt_logging.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_window.o mx.o \
@@ -90,7 +90,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libemail
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/address.o email/attach.o email/body.o email/envelope.o \
-		email/header.o email/parameter.o email/tags.o email/thread.o
+		email/from.o email/header.o email/parameter.o email/tags.o email/thread.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 MUTTLIBS+=	$(LIBEMAIL)
 ALLOBJS+=	$(LIBEMAILOBJS)
