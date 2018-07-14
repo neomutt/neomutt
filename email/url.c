@@ -45,6 +45,51 @@ static const struct Mapping UrlMap[] = {
 };
 
 /**
+ * parse_query_string - Parse a URL query string
+ * @param u Url to store the results
+ * @param src String to parse
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int parse_query_string(struct Url *u, char *src)
+{
+  struct UrlQueryString *qs = NULL;
+  char *k = NULL, *v = NULL;
+
+  while (src && *src)
+  {
+    qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
+    k = strchr(src, '&');
+    if (k)
+      *k = '\0';
+
+    v = strchr(src, '=');
+    if (v)
+    {
+      *v = '\0';
+      qs->value = v + 1;
+      if (url_pct_decode(qs->value) < 0)
+      {
+        FREE(&qs);
+        return -1;
+      }
+    }
+    qs->name = src;
+    if (url_pct_decode(qs->name) < 0)
+    {
+      FREE(&qs);
+      return -1;
+    }
+    STAILQ_INSERT_TAIL(&u->query_strings, qs, entries);
+
+    if (!k)
+      break;
+    src = k + 1;
+  }
+  return 0;
+}
+
+/**
  * url_pct_decode - Decode a percent-encoded string
  * @param s String to decode
  * @retval  0 Success
@@ -105,51 +150,6 @@ enum UrlScheme url_check_scheme(const char *s)
     return U_UNKNOWN;
   else
     return (enum UrlScheme) i;
-}
-
-/**
- * parse_query_string - Parse a URL query string
- * @param u Url to store the results
- * @param src String to parse
- * @retval  0 Success
- * @retval -1 Error
- */
-static int parse_query_string(struct Url *u, char *src)
-{
-  struct UrlQueryString *qs = NULL;
-  char *k = NULL, *v = NULL;
-
-  while (src && *src)
-  {
-    qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
-    k = strchr(src, '&');
-    if (k)
-      *k = '\0';
-
-    v = strchr(src, '=');
-    if (v)
-    {
-      *v = '\0';
-      qs->value = v + 1;
-      if (url_pct_decode(qs->value) < 0)
-      {
-        FREE(&qs);
-        return -1;
-      }
-    }
-    qs->name = src;
-    if (url_pct_decode(qs->name) < 0)
-    {
-      FREE(&qs);
-      return -1;
-    }
-    STAILQ_INSERT_TAIL(&u->query_strings, qs, entries);
-
-    if (!k)
-      break;
-    src = k + 1;
-  }
-  return 0;
 }
 
 /**

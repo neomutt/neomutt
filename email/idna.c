@@ -71,23 +71,6 @@ bool IdnEncode;
 
 #ifdef HAVE_LIBIDN
 /**
- * mutt_idna_to_ascii_lz - Convert a domain to Punycode
- * @param input  Domain
- * @param output Result
- * @param flags  Flags, e.g. IDNA_ALLOW_UNASSIGNED
- * @retval 0 Success
- * @retval >0 Failure, error code
- *
- * Convert a domain from the current locale to Punycode.
- *
- * @note The caller must free output
- */
-int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
-{
-  return idna_to_ascii_lz(input, output, flags);
-}
-
-/**
  * check_idn - Is domain in Punycode?
  * @param domain Domain to test
  * @retval true At least one part of domain is in Punycode
@@ -107,6 +90,23 @@ static bool check_idn(char *domain)
   }
 
   return false;
+}
+
+/**
+ * mutt_idna_to_ascii_lz - Convert a domain to Punycode
+ * @param input  Domain
+ * @param output Result
+ * @param flags  Flags, e.g. IDNA_ALLOW_UNASSIGNED
+ * @retval 0 Success
+ * @retval >0 Failure, error code
+ *
+ * Convert a domain from the current locale to Punycode.
+ *
+ * @note The caller must free output
+ */
+int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
+{
+  return idna_to_ascii_lz(input, output, flags);
 }
 #endif /* HAVE_LIBIDN */
 
