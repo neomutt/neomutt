@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "body.h"
 #include "header.h"
+#include "mime.h"
 
 /**
  * mutt_body_new - Create a new Body

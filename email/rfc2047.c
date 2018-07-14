@@ -23,7 +23,7 @@
  */
 
 /**
- * @page rfc2047 RFC2047 encoding / decoding functions
+ * @page email_rfc2047 RFC2047 encoding / decoding functions
  *
  * RFC2047 MIME extensions encoding / decoding routines.
  */
@@ -36,14 +36,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include "rfc2047.h"
-#include "base64.h"
-#include "buffer.h"
-#include "charset.h"
-#include "mbyte.h"
-#include "memory.h"
+#include "mutt/mutt.h"
 #include "mime.h"
-#include "regex3.h"
-#include "string2.h"
 
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */

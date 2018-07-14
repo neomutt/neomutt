@@ -20,12 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page email_url Parse and identify different URL schemes
+ *
+ * Parse and identify different URL schemes
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "url.h"
+#include "mime.h"
 
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },   { "imap", U_IMAP },     { "imaps", U_IMAPS },

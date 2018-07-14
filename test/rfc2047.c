@@ -3,8 +3,8 @@
 
 #include "mutt/charset.h"
 #include "mutt/memory.h"
-#include "mutt/rfc2047.h"
 #include "mutt/string2.h"
+#include "email/rfc2047.h"
 
 #include <locale.h>
 

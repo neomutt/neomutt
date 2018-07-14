@@ -36,24 +36,19 @@
  * | mutt/file.c      | @subpage file      |
  * | mutt/hash.c      | @subpage hash      |
  * | mutt/history.c   | @subpage history   |
- * | mutt/idna.c      | @subpage idna      |
  * | mutt/list.c      | @subpage list      |
  * | mutt/logging.c   | @subpage logging   |
  * | mutt/mapping.c   | @subpage mapping   |
  * | mutt/mbyte.c     | @subpage mbyte     |
  * | mutt/md5.c       | @subpage md5       |
  * | mutt/memory.c    | @subpage memory    |
- * | mutt/mime.c      | @subpage mime      |
  * | mutt/regex.c     | @subpage regex     |
- * | mutt/rfc2047.c   | @subpage rfc2047   |
  * | mutt/sha1.c      | @subpage sha1      |
  * | mutt/signal.c    | @subpage signal    |
  * | mutt/string.c    | @subpage string    |
  *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.
- *
- * @image html libmutt.svg
  */
 
 #ifndef _MUTT_MUTT_H
@@ -68,7 +63,6 @@
 #include "file.h"
 #include "hash.h"
 #include "history.h"
-#include "idna2.h"
 #include "list.h"
 #include "logging.h"
 #include "mapping.h"
@@ -76,10 +70,8 @@
 #include "md5.h"
 #include "memory.h"
 #include "message.h"
-#include "mime.h"
 #include "queue.h"
 #include "regex3.h"
-#include "rfc2047.h"
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"

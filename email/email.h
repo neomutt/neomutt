@@ -33,7 +33,10 @@
  * | email/envelope.c  | @subpage email_envelope  |
  * | email/from.c      | @subpage email_from      |
  * | email/header.c    | @subpage email_header    |
+ * | email/idna.c      | @subpage email_idna      |
  * | email/parameter.c | @subpage email_parameter |
+ * | email/mime.c      | @subpage email_mime      |
+ * | email/rfc2047.c   | @subpage email_rfc2047   |
  * | email/tags.c      | @subpage email_tags      |
  * | email/thread.c    | @subpage email_thread    |
  * | email/url.c       | @subpage email_url       |
@@ -49,7 +52,10 @@
 #include "envelope.h"
 #include "from.h"
 #include "header.h"
+#include "idna2.h"
+#include "mime.h"
 #include "parameter.h"
+#include "rfc2047.h"
 #include "tags.h"
 #include "thread.h"
 #include "url.h"

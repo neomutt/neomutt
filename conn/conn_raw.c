@@ -42,6 +42,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
+#include "email/email.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "curs_lib.h"
