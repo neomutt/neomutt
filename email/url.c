@@ -34,6 +34,9 @@
 #include "url.h"
 #include "mime.h"
 
+/**
+ * UrlMap - Constants for URL protocols, e.g. 'imap://'
+ */
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },   { "imap", U_IMAP },     { "imaps", U_IMAPS },
   { "pop", U_POP },     { "pops", U_POPS },     { "news", U_NNTP },
@@ -41,6 +44,15 @@ static const struct Mapping UrlMap[] = {
   { "smtp", U_SMTP },   { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
 };
 
+/**
+ * url_pct_decode - Decode a percent-encoded string
+ * @param s String to decode
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * e.g. turn "hello%20world" into "hello world"
+ * The string is decoded in-place.
+ */
 int url_pct_decode(char *s)
 {
   char *d = NULL;
@@ -68,6 +80,11 @@ int url_pct_decode(char *s)
   return 0;
 }
 
+/**
+ * url_check_scheme - Check the protocol of a URL
+ * @param s String to check
+ * @retval num Url type, e.g. #U_IMAPS
+ */
 enum UrlScheme url_check_scheme(const char *s)
 {
   char sbuf[STRING];
@@ -90,6 +107,13 @@ enum UrlScheme url_check_scheme(const char *s)
     return (enum UrlScheme) i;
 }
 
+/**
+ * parse_query_string - Parse a URL query string
+ * @param u Url to store the results
+ * @param src String to parse
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_query_string(struct Url *u, char *src)
 {
   struct UrlQueryString *qs = NULL;
@@ -253,6 +277,12 @@ err:
   return -1;
 }
 
+/**
+ * url_free - Free the contents of a URL
+ * @param u Url to empty
+ *
+ * @note The Url itself is not freed
+ */
 void url_free(struct Url *u)
 {
   struct UrlQueryString *np = STAILQ_FIRST(&u->query_strings), *next = NULL;
@@ -267,6 +297,14 @@ void url_free(struct Url *u)
   STAILQ_INIT(&u->query_strings);
 }
 
+/**
+ * url_pct_encode - Percent-encode a string
+ * @param dst Buffer for the result
+ * @param l   Length of buffer
+ * @param src String to encode
+ *
+ * e.g. turn "hello world" into "hello%20world"
+ */
 void url_pct_encode(char *dst, size_t l, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
@@ -294,7 +332,13 @@ void url_pct_encode(char *dst, size_t l, const char *src)
 }
 
 /**
- * url_tostring - output the URL string for a given Url object
+ * url_tostring - Output the URL string for a given Url object
+ * @param u     Url to turn into a string
+ * @param dest  Buffer for the result
+ * @param len   Length of buffer
+ * @param flags Flags, e.g. #U_DECODE_PASSWD
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {

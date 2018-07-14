@@ -21,7 +21,7 @@
  */
 
 /**
- * @page email_parse
+ * @page email_parse Miscellaneous email parsing routines
  *
  * Miscellaneous email parsing routines
  */
@@ -45,14 +45,21 @@
 
 /**
  * mutt_matches_ignore - Does the string match the ignore list
+ * @param s String to check
+ * @retval true If string matches
  *
- * checks Ignore and UnIgnore using mutt_list_match
+ * Checks Ignore and UnIgnore using mutt_list_match
  */
 bool mutt_matches_ignore(const char *s)
 {
   return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
 }
 
+/**
+ * mutt_check_mime_type - Check a MIME type string
+ * @param s String to check
+ * @retval num MIME type, e.g. #TYPETEXT
+ */
 int mutt_check_mime_type(const char *s)
 {
   if (mutt_str_strcasecmp("text", s) == 0)
@@ -85,9 +92,13 @@ int mutt_check_mime_type(const char *s)
 
 /**
  * mutt_extract_message_id - Find a message-id
+ * @param s String to parse
+ * @param saveptr Save result here
+ * @retval ptr  First character after message-id
+ * @retval NULL No more message ids
  *
- * extract the first substring that looks like a message-id.
- * call back with NULL for more (like strtok).
+ * Extract the first substring that looks like a message-id.
+ * Call back with NULL for more (like strtok).
  */
 char *mutt_extract_message_id(const char *s, const char **saveptr)
 {
@@ -149,6 +160,11 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   return NULL;
 }
 
+/**
+ * mutt_check_encoding - Check the encoding type
+ * @param c String to check
+ * @retval num Encoding type, e.g. #ENCQUOTEDPRINTABLE
+ */
 int mutt_check_encoding(const char *c)
 {
   if (mutt_str_strncasecmp("7bit", c, sizeof("7bit") - 1) == 0)
@@ -173,6 +189,11 @@ int mutt_check_encoding(const char *c)
     return ENCOTHER;
 }
 
+/**
+ * parse_parameters - Parse a list of Parameters
+ * @param param Parameter list for the results
+ * @param s String to parse
+ */
 static void parse_parameters(struct ParameterList *param, const char *s)
 {
   struct Parameter *new = NULL;
@@ -290,6 +311,13 @@ bail:
   rfc2231_decode_parameters(param);
 }
 
+/**
+ * parse_content_disposition - Parse a content disposition
+ * @param s String to parse
+ * @param ct Body to save the result
+ *
+ * e.g. parse a string "inline" and set #DISPINLINE.
+ */
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
   struct ParameterList parms;
@@ -349,6 +377,13 @@ static void mutt_parse_content_language(char *s, struct Body *ct)
   ct->language = mutt_str_strdup(s);
 }
 
+/**
+ * mutt_parse_content_type - Parse a content type
+ * @param s String to parse
+ * @param ct Body to save the result
+ *
+ * e.g. parse a string "inline" and set #DISPINLINE.
+ */
 void mutt_parse_content_type(char *s, struct Body *ct)
 {
   FREE(&ct->subtype);
@@ -439,6 +474,21 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   }
 }
 
+/**
+ * mutt_rfc822_parse_line - Parse an email header
+ * @param e         Envelope of the email
+ * @param hdr       Header of the email
+ * @param line      Header field, e.g. 'to'
+ * @param p         Header value, e.g. 'john@example.com'
+ * @param user_hdrs If true, save into the Envelope's userhdrs
+ * @param weed      If true, perform header weeding (filtering)
+ * @param do_2047   If true, perform RFC2047 decoding of the field
+ * @retval 1 If the field is recognised
+ * @retval 0 If not
+ *
+ * Process a line from an email header.  Each line that is recognised is parsed
+ * and the information put in the Envelope or Header.
+ */
 int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
                            char *p, short user_hdrs, short weed, short do_2047)
 {
@@ -581,10 +631,9 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         if (hdr)
         {
-          /*
-         * HACK - neomutt has, for a very short time, produced negative
-         * Lines header values.  Ignore them.
-         */
+          /* HACK - neomutt has, for a very short time, produced negative
+           * Lines header values.  Ignore them.
+           */
           if (mutt_str_atoi(p, &hdr->lines) < 0 || hdr->lines < 0)
             hdr->lines = 0;
         }
@@ -825,6 +874,10 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
 
 /**
  * mutt_rfc822_read_line - Read a header line from a file
+ * @param f       File to read from
+ * @param line    Buffer to store the result
+ * @param linelen Length of buffer
+ * @retval ptr Line read from file
  *
  * Reads an arbitrarily long header field, and looks ahead for continuation
  * lines.  ``line'' must point to a dynamically allocated string; it is
@@ -1154,6 +1207,11 @@ bool mutt_is_message_type(int type, const char *subtype)
           (mutt_str_strcasecmp(subtype, "news") == 0));
 }
 
+/**
+ * mutt_parse_part - Parse a MIME part
+ * @param fp File to read from
+ * @param b  Body to store the results in
+ */
 void mutt_parse_part(FILE *fp, struct Body *b)
 {
   char *bound = NULL;
@@ -1267,9 +1325,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
               break;
         }
 #endif
-
-        /*
-         * Consistency checking - catch
+        /* Consistency checking - catch
          * bad attachment end boundaries
          */
 

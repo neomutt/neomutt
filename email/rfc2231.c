@@ -20,8 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Yet another MIME encoding for header data.  This time, it's parameters,
- * specified in RFC2231, and modeled after the encoding used in URLs.
+/**
+ * @page email_rfc2231 RFC2231 MIME Charset routines
+ *
+ * RFC2231 MIME Charset routines
+ *
+ * Yet another MIME encoding for header data.  This time, it's parameters,
+ * specified in RFC2231, and modelled after the encoding used in URLs.
  *
  * Additionally, continuations and encoding are mixed in an, errrm, interesting
  * manner.
@@ -54,6 +59,10 @@ struct Rfc2231Parameter
   struct Rfc2231Parameter *next;
 };
 
+/**
+ * purge_empty_parameters - Remove any ill-formed Parameters from a list
+ * @param p Parameter List to check
+ */
 static void purge_empty_parameters(struct ParameterList *p)
 {
   struct Parameter *np, *tmp;
@@ -67,6 +76,13 @@ static void purge_empty_parameters(struct ParameterList *p)
   }
 }
 
+/**
+ * rfc2231_get_charset - Get the charset from an RFC2231 header
+ * @param value   Header string
+ * @param charset Buffer for the result
+ * @param chslen  Length of buffer
+ * @retval ptr First character after charset
+ */
 static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 {
   char *t = strchr(value, '\'');
@@ -86,6 +102,11 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
     return (t + 1);
 }
 
+/**
+ * rfc2231_decode_one - Decode one percent-encoded character
+ * @param[out] dest Where to save the result
+ * @param[in]  src  Source string
+ */
 static void rfc2231_decode_one(char *dest, char *src)
 {
   char *d = NULL;
@@ -105,13 +126,19 @@ static void rfc2231_decode_one(char *dest, char *src)
   *d = '\0';
 }
 
+/**
+ * rfc2231_new_parameter - Create a new Rfc2231Parameter
+ * @retval ptr Newly allocated Rfc2231Parameter
+ */
 static struct Rfc2231Parameter *rfc2231_new_parameter(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
 }
 
 /**
- * rfc2231_list_insert - insert parameter into an ordered list
+ * rfc2231_list_insert - Insert parameter into an ordered list
+ * @param list List to insert into
+ * @param par  Paramter to insert
  *
  * Primary sorting key: attribute
  * Secondary sorting key: index
@@ -135,6 +162,10 @@ static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Pa
   *last = par;
 }
 
+/**
+ * rfc2231_free_parameter - Free an Rfc2231Parameter
+ * @param p Rfc2231Parameter to free
+ */
 static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
 {
   if (*p)
@@ -146,7 +177,9 @@ static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
 }
 
 /**
- * rfc2231_join_continuations - process continuation parameters
+ * rfc2231_join_continuations - Process continuation parameters
+ * @param p   Parameter List for the results
+ * @param par Continuation Parameter
  */
 static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
 {
@@ -195,6 +228,10 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
   }
 }
 
+/**
+ * rfc2231_decode_parameters - Decode a Parameter list
+ * @param p List to decode
+ */
 void rfc2231_decode_parameters(struct ParameterList *p)
 {
   struct Rfc2231Parameter *conthead = NULL;
@@ -276,17 +313,22 @@ void rfc2231_decode_parameters(struct ParameterList *p)
     purge_empty_parameters(p);
 }
 
+/**
+ * rfc2231_encode_string - Encode a string to be suitable for an RFC2231 header
+ * @param pd String to encode
+ * @retval 1 If string was encoded
+ * @retval 0 If no
+ *
+ * The string is encoded in-place.
+ */
 int rfc2231_encode_string(char **pd)
 {
   int ext = 0, encode = 0;
   char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;
   size_t slen, dlen = 0;
 
-  /*
-   * A shortcut to detect pure 7bit data.
-   *
-   * This should prevent the worst when character set handling
-   * is flawed.
+  /* A shortcut to detect pure 7bit data.
+   * This should prevent the worst when character set handling is flawed.
    */
 
   for (s = *pd; *s; s++)
