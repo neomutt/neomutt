@@ -30,12 +30,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "bcache.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "muttlib.h"
 #include "protos.h"
-#include "email/email.h"
 
 /* These Config Variables are only used in bcache.c */
 char *MessageCachedir;

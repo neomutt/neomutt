@@ -70,7 +70,7 @@ NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o buffy.o \
 		mutt_history.o mutt_logging.o mutt_signal.o mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o \
 		pager.o parse.o pattern.o \
 		postpone.o progress.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
-		rfc2047.o rfc2231.o rfc3676.o safe_asprintf.o score.o send.o \
+		rfc3676.o safe_asprintf.o score.o send.o \
 		sendlib.o sidebar.o smtp.o sort.o state.o status.o system.o \
 		terminal.o version.o
 
@@ -90,7 +90,9 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libemail
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/address.o email/attach.o email/body.o email/envelope.o \
-		email/from.o email/header.o email/idna.o email/mime.o email/parameter.o email/rfc2047.o email/tags.o email/thread.o email/url.o
+		email/from.o email/email_globals.o email/header.o email/idna.o \
+		email/mime.o email/parameter.o email/rfc2047.o email/rfc2231.o email/tags.o \
+		email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 MUTTLIBS+=	$(LIBEMAIL)
 ALLOBJS+=	$(LIBEMAILOBJS)

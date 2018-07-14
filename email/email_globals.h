@@ -1,9 +1,9 @@
 /**
  * @file
- * RFC2231 MIME Charset routines
+ * Email Global Variables
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,15 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2231_H
-#define _MUTT_RFC2231_H
+#ifndef _EMAIL_GLOBALS_H
+#define _EMAIL_GLOBALS_H
 
-struct ParameterList;
+extern char *SendCharset;
 
-/* These Config Variables are only used in rfc2231.c */
-extern bool Rfc2047Parameters;
-
-void rfc2231_decode_parameters(struct ParameterList *p);
-int rfc2231_encode_string(char **pd);
-
-#endif /* _MUTT_RFC2231_H */
+#endif /* _EMAIL_GLOBALS_H */

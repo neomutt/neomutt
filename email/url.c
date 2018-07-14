@@ -350,4 +350,3 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 
   return 0;
 }
-

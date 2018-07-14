@@ -58,8 +58,6 @@
 #include "parse.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "rfc2047.h"
-#include "rfc2231.h"
 #include "send.h"
 #include "smtp.h"
 #include "state.h"
@@ -2322,7 +2320,7 @@ static void encode_headers(struct ListHead *h)
     if (!tmp)
       continue;
 
-    mutt_rfc2047_encode(&tmp, NULL, i + 2, SendCharset);
+    rfc2047_encode(&tmp, NULL, i + 2, SendCharset);
     mutt_mem_realloc(&np->data, i + 2 + mutt_str_strlen(tmp) + 1);
 
     sprintf(np->data + i + 2, "%s", tmp);
@@ -2837,7 +2835,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
     if (!OptNewsSend || MimeSubject)
 #endif
     {
-      mutt_rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
+      rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
     }
   encode_headers(&env->userhdrs);
 }
@@ -2854,7 +2852,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   struct ListNode *item = NULL;
   STAILQ_FOREACH(item, &env->userhdrs, entries)
   {
-    mutt_rfc2047_decode(&item->data);
+    rfc2047_decode(&item->data);
   }
 
   mutt_addr_free(&env->mail_followup_to);
@@ -2865,7 +2863,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   rfc2047_decode_addrlist(env->bcc);
   rfc2047_decode_addrlist(env->from);
   rfc2047_decode_addrlist(env->reply_to);
-  mutt_rfc2047_decode(&env->subject);
+  rfc2047_decode(&env->subject);
 }
 
 static int bounce_message(FILE *fp, struct Header *h, struct Address *to,

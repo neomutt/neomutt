@@ -39,8 +39,6 @@
 #include "options.h"
 #include "protos.h"
 #include "recvattach.h"
-#include "rfc2047.h"
-#include "rfc2231.h"
 
 struct Context;
 
@@ -484,7 +482,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       else if (mutt_str_strcasecmp("description", line + 8) == 0)
       {
         mutt_str_replace(&p->description, c);
-        mutt_rfc2047_decode(&p->description);
+        rfc2047_decode(&p->description);
       }
     }
 #ifdef SUN_ATTACHMENT
@@ -499,7 +497,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
       {
         mutt_str_replace(&p->description, c);
-        mutt_rfc2047_decode(&p->description);
+        rfc2047_decode(&p->description);
       }
     }
 #endif
@@ -851,7 +849,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
           if (hdr)
           {
             mutt_str_replace(&hdr->content->description, p);
-            mutt_rfc2047_decode(&hdr->content->description);
+            rfc2047_decode(&hdr->content->description);
           }
           matched = 1;
         }
@@ -1159,7 +1157,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
     {
       struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, mutt_str_strdup(line));
       if (do_2047)
-        mutt_rfc2047_decode(&np->data);
+        rfc2047_decode(&np->data);
     }
   }
 
@@ -1304,7 +1302,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
     {
       regmatch_t pmatch[1];
 
-      mutt_rfc2047_decode(&e->subject);
+      rfc2047_decode(&e->subject);
 
       if (ReplyRegex && ReplyRegex->regex &&
           (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))

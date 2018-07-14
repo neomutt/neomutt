@@ -142,7 +142,6 @@ WHERE char *IndentString;
 WHERE char *PrintCommand;
 WHERE char *NewMailCommand;
 WHERE char *Realname;
-WHERE char *SendCharset;
 WHERE char *Shell;
 WHERE char *SimpleSearch;
 #ifdef USE_SMTP

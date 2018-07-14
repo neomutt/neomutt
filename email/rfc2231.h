@@ -1,9 +1,9 @@
 /**
  * @file
- * RFC2047 MIME extensions routines
+ * RFC2231 MIME Charset routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2047_2_H
-#define _MUTT_RFC2047_2_H
+#ifndef _EMAIL_RFC2231_H
+#define _EMAIL_RFC2231_H
 
-struct Address;
+struct ParameterList;
 
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
-void rfc2047_decode_addrlist(struct Address *a);
+/* These Config Variables are only used in rfc2231.c */
+extern bool Rfc2047Parameters;
 
-#endif /* _MUTT_RFC2047_2_H */
+void rfc2231_decode_parameters(struct ParameterList *p);
+int rfc2231_encode_string(char **pd);
 
+#endif /* _EMAIL_RFC2231_H */

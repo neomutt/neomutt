@@ -1,11 +1,9 @@
 /**
  * @file
- * RFC2047 MIME extensions encoding / decoding routines
+ * Email Global Variables
  *
  * @authors
- * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
- * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,15 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_RFC2047_H
-#define _EMAIL_RFC2047_H
+/**
+ * @page email_globals Email Global Variables
+ *
+ * These global variables are private to the email library.
+ */
 
-struct Address;
+#include "config.h"
 
-void rfc2047_decode(char **pd);
-void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
-
-void rfc2047_decode_addrlist(struct Address *a);
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
-
-#endif /* _EMAIL_RFC2047_H */
+char *SendCharset;

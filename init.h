@@ -74,7 +74,6 @@
 #include "recvcmd.h"
 #include "remailer.h"
 #include "rfc1524.h"
-#include "rfc2231.h"
 #include "rfc3676.h"
 #include "score.h"
 #include "send.h"

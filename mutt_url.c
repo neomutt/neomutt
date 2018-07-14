@@ -28,7 +28,6 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "globals.h"
-#include "rfc2047.h"
 #include "parse.h"
 
 int url_parse_mailto(struct Envelope *e, char **body, const char *src)
@@ -112,8 +111,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   rfc2047_decode_addrlist(e->mail_followup_to);
   rfc2047_decode_addrlist(e->return_path);
   rfc2047_decode_addrlist(e->sender);
-  mutt_rfc2047_decode(&e->x_label);
-  mutt_rfc2047_decode(&e->subject);
+  rfc2047_decode(&e->x_label);
+  rfc2047_decode(&e->subject);
 
   rc = 0;
 

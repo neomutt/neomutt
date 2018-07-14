@@ -226,7 +226,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
        */
 
       if (Rfc2047Parameters && np->value && strstr(np->value, "=?"))
-        mutt_rfc2047_decode(&np->value);
+        rfc2047_decode(&np->value);
       else if (AssumedCharset && *AssumedCharset)
         mutt_ch_convert_nonmime_string(&np->value);
     }
