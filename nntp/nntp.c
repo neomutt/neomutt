@@ -58,7 +58,6 @@
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

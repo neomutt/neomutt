@@ -53,7 +53,6 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
-#include "url.h"
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
 #endif

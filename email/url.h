@@ -3,6 +3,8 @@
  * Parse and identify different URL schemes
  *
  * @authors
+ * Copyright (C) 2000-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -18,12 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_URL_H
-#define _MUTT_URL_H
+#ifndef _EMAIL_URL_H
+#define _EMAIL_URL_H
 
 #include <stddef.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
 
 /**
  * enum UrlScheme - All recognised Url types
@@ -41,9 +42,7 @@ enum UrlScheme
   U_SMTP,
   U_SMTPS,
   U_MAILTO,
-#ifdef USE_NOTMUCH
-  U_NOTMUCH
-#endif
+  U_NOTMUCH,
 };
 
 #define U_DECODE_PASSWD (1 << 0)
@@ -77,11 +76,10 @@ struct Url
 };
 
 enum UrlScheme url_check_scheme(const char *s);
-int url_parse(struct Url *u, char *src);
-void url_free(struct Url *u);
-int url_tostring(struct Url *u, char *dest, size_t len, int flags);
-int url_parse_mailto(struct Envelope *e, char **body, const char *src);
-int url_pct_decode(char *s);
-void url_pct_encode(char *dst, size_t l, const char *src);
+void           url_free(struct Url *u);
+int            url_parse(struct Url *u, char *src);
+int            url_pct_decode(char *s);
+void           url_pct_encode(char *dst, size_t l, const char *src);
+int            url_tostring(struct Url *u, char *dest, size_t len, int flags);
 
-#endif /* _MUTT_URL_H */
+#endif /* _EMAIL_URL_H */

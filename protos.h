@@ -31,6 +31,7 @@
 
 struct Context;
 struct EnterState;
+struct Envelope;
 struct Header;
 
 /**
@@ -65,6 +66,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 int mutt_num_postponed(int force);
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread);
 void mutt_update_num_postponed(void);
+int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp(const wchar_t *a, const wchar_t *b);

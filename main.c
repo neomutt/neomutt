@@ -66,7 +66,6 @@
 #include "send.h"
 #include "sendlib.h"
 #include "terminal.h"
-#include "url.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

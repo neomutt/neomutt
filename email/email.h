@@ -36,6 +36,7 @@
  * | email/parameter.c | @subpage email_parameter |
  * | email/tags.c      | @subpage email_tags      |
  * | email/thread.c    | @subpage email_thread    |
+ * | email/url.c       | @subpage email_url       |
  */
 
 #ifndef _EMAIL_EMAIL_H
@@ -51,5 +52,6 @@
 #include "parameter.h"
 #include "tags.h"
 #include "thread.h"
+#include "url.h"
 
 #endif /* _EMAIL_EMAIL_H */

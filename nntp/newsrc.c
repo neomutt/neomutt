@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include "nntp_private.h"
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "bcache.h"
@@ -56,7 +57,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

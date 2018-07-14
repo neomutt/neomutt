@@ -41,7 +41,6 @@
 #include "recvattach.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-#include "url.h"
 
 struct Context;
 

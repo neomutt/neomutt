@@ -35,7 +35,7 @@
 #include "mutt_account.h"
 #include "muttlib.h"
 #include "protos.h"
-#include "url.h"
+#include "email/email.h"
 
 /* These Config Variables are only used in bcache.c */
 char *MessageCachedir;

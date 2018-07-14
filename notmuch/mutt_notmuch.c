@@ -68,7 +68,6 @@
 #include "mx.h"
 #include "progress.h"
 #include "protos.h"
-#include "url.h"
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 int NmDbLimit;

@@ -59,7 +59,6 @@
 #include "sendlib.h"
 #include "smtp.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/nntp.h"
