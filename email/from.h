@@ -26,6 +26,6 @@
 #include <stdio.h>
 #include <time.h>
 
-int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
+bool is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
 #endif /* _EMAIL_FROM_H */
