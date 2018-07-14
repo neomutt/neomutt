@@ -77,13 +77,13 @@ static void purge_empty_parameters(struct ParameterList *p)
 }
 
 /**
- * rfc2231_get_charset - Get the charset from an RFC2231 header
+ * get_charset - Get the charset from an RFC2231 header
  * @param value   Header string
  * @param charset Buffer for the result
  * @param chslen  Length of buffer
  * @retval ptr First character after charset
  */
-static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
+static char *get_charset(char *value, char *charset, size_t chslen)
 {
   char *t = strchr(value, '\'');
   if (!t)
@@ -103,17 +103,17 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 }
 
 /**
- * rfc2231_decode_one - Decode one percent-encoded character
+ * decode_one - Decode one percent-encoded character
  * @param[out] dest Where to save the result
  * @param[in]  src  Source string
  */
-static void rfc2231_decode_one(char *dest, char *src)
+static void decode_one(char *dest, char *src)
 {
   char *d = NULL;
 
   for (d = dest; *src; src++)
   {
-    if (*src == '%' && isxdigit((unsigned char) *(src + 1)) &&
+    if ((*src == '%') && isxdigit((unsigned char) *(src + 1)) &&
         isxdigit((unsigned char) *(src + 2)))
     {
       *d++ = (hexval(*(src + 1)) << 4) | (hexval(*(src + 2)));
@@ -127,23 +127,23 @@ static void rfc2231_decode_one(char *dest, char *src)
 }
 
 /**
- * rfc2231_new_parameter - Create a new Rfc2231Parameter
+ * new_parameter - Create a new Rfc2231Parameter
  * @retval ptr Newly allocated Rfc2231Parameter
  */
-static struct Rfc2231Parameter *rfc2231_new_parameter(void)
+static struct Rfc2231Parameter *new_parameter(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
 }
 
 /**
- * rfc2231_list_insert - Insert parameter into an ordered list
+ * list_insert - Insert parameter into an ordered list
  * @param list List to insert into
  * @param par  Paramter to insert
  *
  * Primary sorting key: attribute
  * Secondary sorting key: index
  */
-static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter *par)
+static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter *par)
 {
   struct Rfc2231Parameter **last = list;
   struct Rfc2231Parameter *p = *list;
@@ -151,7 +151,7 @@ static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Pa
   while (p)
   {
     const int c = strcmp(par->attribute, p->attribute);
-    if ((c < 0) || (c == 0 && par->index <= p->index))
+    if ((c < 0) || ((c == 0) && (par->index <= p->index)))
       break;
 
     last = &p->next;
@@ -163,25 +163,25 @@ static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Pa
 }
 
 /**
- * rfc2231_free_parameter - Free an Rfc2231Parameter
+ * free_parameter - Free an Rfc2231Parameter
  * @param p Rfc2231Parameter to free
  */
-static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
+static void free_parameter(struct Rfc2231Parameter **p)
 {
-  if (*p)
-  {
-    FREE(&(*p)->attribute);
-    FREE(&(*p)->value);
-    FREE(p);
-  }
+  if (!p || !*p)
+    return;
+
+  FREE(&(*p)->attribute);
+  FREE(&(*p)->value);
+  FREE(p);
 }
 
 /**
- * rfc2231_join_continuations - Process continuation parameters
+ * join_continuations - Process continuation parameters
  * @param p   Parameter List for the results
  * @param par Continuation Parameter
  */
-static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
+static void join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
 {
   char attribute[STRING];
   char charset[STRING];
@@ -196,14 +196,14 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
     const bool encoded = par->encoded;
     char *valp = NULL;
     if (encoded)
-      valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
+      valp = get_charset(par->value, charset, sizeof(charset));
     else
       valp = par->value;
 
     do
     {
       if (encoded && par->encoded)
-        rfc2231_decode_one(par->value, valp);
+        decode_one(par->value, valp);
 
       const size_t vl = strlen(par->value);
 
@@ -212,7 +212,7 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
       l += vl;
 
       struct Rfc2231Parameter *q = par->next;
-      rfc2231_free_parameter(&par);
+      free_parameter(&par);
       par = q;
       if (par)
         valp = par->value;
@@ -242,8 +242,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
   bool encoded;
   int index;
-  bool dirty = false; /* set to 1 when we may have created
-                       * empty parameters. */
+  bool dirty = false; /* set when we may have created empty parameters. */
   if (!p)
     return;
 
@@ -255,8 +254,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
     s = strchr(np->attribute, '*');
     if (!s)
     {
-      /*
-       * Using RFC2047 encoding in MIME parameters is explicitly
+      /* Using RFC2047 encoding in MIME parameters is explicitly
        * forbidden by that document.  Nevertheless, it's being
        * generated by some software, including certain Lotus Notes to
        * Internet Gateways.  So we actually decode it.
@@ -271,8 +269,8 @@ void rfc2231_decode_parameters(struct ParameterList *p)
     {
       *s = '\0';
 
-      s = rfc2231_get_charset(np->value, charset, sizeof(charset));
-      rfc2231_decode_one(np->value, s);
+      s = get_charset(np->value, charset, sizeof(charset));
+      decode_one(np->value, s);
       mutt_ch_convert_string(&np->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       mutt_mb_filter_unprintable(&np->value);
       dirty = true;
@@ -288,7 +286,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       index = atoi(s);
 
-      conttmp = rfc2231_new_parameter();
+      conttmp = new_parameter();
       conttmp->attribute = np->attribute;
       conttmp->value = np->value;
       conttmp->encoded = encoded;
@@ -299,13 +297,13 @@ void rfc2231_decode_parameters(struct ParameterList *p)
       TAILQ_REMOVE(p, np, entries);
       FREE(&np);
 
-      rfc2231_list_insert(&conthead, conttmp);
+      list_insert(&conthead, conttmp);
     }
   }
 
   if (conthead)
   {
-    rfc2231_join_continuations(p, conthead);
+    join_continuations(p, conthead);
     dirty = true;
   }
 
@@ -352,7 +350,7 @@ int rfc2231_encode_string(char **pd)
 
   for (s = d, slen = dlen; slen; s++, slen--)
   {
-    if (*s < 0x20 || *s >= 0x7f)
+    if ((*s < 0x20) || (*s >= 0x7f))
     {
       encode = 1;
       ext++;
@@ -368,7 +366,7 @@ int rfc2231_encode_string(char **pd)
     t = e + strlen(e);
     for (s = d, slen = dlen; slen; s++, slen--)
     {
-      if (*s < 0x20 || *s >= 0x7f || strchr(MimeSpecials, *s) || strchr("*'%", *s))
+      if ((*s < 0x20) || (*s >= 0x7f) || strchr(MimeSpecials, *s) || strchr("*'%", *s))
       {
         sprintf(t, "%%%02X", (unsigned char) *s);
         t += 3;
