@@ -46,6 +46,25 @@ const char AddressSpecials[] = "@.,:;<>[]\\\"()";
 #define is_special(x) strchr(AddressSpecials, x)
 
 /**
+ * AddressError - An out-of-band error code
+ *
+ * Many of the Address functions set this variable on error.
+ * Its values are defined in #AddressError.
+ * Text for the errors can be looked up using #AddressErrors.
+ */
+int AddressError = 0;
+
+/**
+ * AddressErrors - Messages for the error codes in #AddressError
+ *
+ * These must defined in the same order as enum AddressError.
+ */
+const char *const AddressErrors[] = {
+  "out of memory",   "mismatched parenthesis", "mismatched quotes",
+  "bad route in <>", "bad address in <>",      "bad address spec",
+};
+
+/**
  * free_address - Free a single Address
  * @param a Address to free
  *
@@ -94,7 +113,7 @@ static const char *parse_comment(const char *s, char *comment, size_t *commentle
       comment[(*commentlen)++] = *s;
     s++;
   }
-  if (level)
+  if (level != 0)
   {
     AddressError = ERR_MISMATCH_PAREN;
     return NULL;
@@ -145,9 +164,9 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
 static const char *next_token(const char *s, char *token, size_t *tokenlen, size_t tokenmax)
 {
   if (*s == '(')
-    return (parse_comment(s + 1, token, tokenlen, tokenmax));
+    return parse_comment(s + 1, token, tokenlen, tokenmax);
   if (*s == '"')
-    return (parse_quote(s + 1, token, tokenlen, tokenmax));
+    return parse_quote(s + 1, token, tokenlen, tokenmax);
   if (*s && is_special(*s))
   {
     if (*tokenlen < tokenmax)
@@ -202,12 +221,12 @@ static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
     if (!*s)
       return s;
 
-    if (strchr(nonspecial, *s) == NULL && is_special(*s))
+    if (!strchr(nonspecial, *s) && is_special(*s))
       return s;
 
     if (*s == '(')
     {
-      if (*commentlen && *commentlen < commentmax)
+      if (*commentlen && (*commentlen < commentmax))
         comment[(*commentlen)++] = ' ';
       ps = next_token(s, comment, commentlen, commentmax);
     }
@@ -285,27 +304,27 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
   /* find the end of the route */
   if (*s == '@')
   {
-    while (s && *s == '@')
+    while (s && (*s == '@'))
     {
-      if (tokenlen < sizeof(token) - 1)
+      if (tokenlen < (sizeof(token) - 1))
         token[tokenlen++] = '@';
       s = parse_mailboxdomain(s + 1, ",.\\[](", token, &tokenlen,
                               sizeof(token) - 1, comment, commentlen, commentmax);
     }
-    if (!s || *s != ':')
+    if (!s || (*s != ':'))
     {
       AddressError = ERR_BAD_ROUTE;
       return NULL; /* invalid route */
     }
 
-    if (tokenlen < sizeof(token) - 1)
+    if (tokenlen < (sizeof(token) - 1))
       token[tokenlen++] = ':';
     s++;
   }
 
   s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment, commentlen,
                     commentmax, addr);
-  if (s == NULL)
+  if (!s)
     return NULL;
 
   if (*s != '>')
@@ -338,7 +357,7 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
 
   s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment, commentlen,
                     commentmax, addr);
-  if (s && *s && *s != ',' && *s != ';')
+  if (s && *s && (*s != ',') && (*s != ';'))
   {
     AddressError = ERR_BAD_ADDR_SPEC;
     return NULL;
@@ -360,7 +379,7 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
 {
   struct Address *cur = mutt_addr_new();
 
-  if (parse_addr_spec(phrase, comment, commentlen, commentmax, cur) == NULL)
+  if (!parse_addr_spec(phrase, comment, commentlen, commentmax, cur))
   {
     mutt_addr_free(&cur);
     return;
@@ -372,25 +391,6 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
     *top = cur;
   *last = cur;
 }
-
-/**
- * AddressError - An out-of-band error code
- *
- * Many of the Address functions set this variable on error.
- * Its values are defined in #AddressError.
- * Text for the errors can be looked up using #AddressErrors.
- */
-int AddressError = 0;
-
-/**
- * AddressErrors - Messages for the error codes in #AddressError
- *
- * These must defined in the same order as enum AddressError.
- */
-const char *const AddressErrors[] = {
-  "out of memory",   "mismatched parenthesis", "mismatched quotes",
-  "bad route in <>", "bad address in <>",      "bad address spec",
-};
 
 /**
  * mutt_addr_new - Create a new Address
@@ -483,12 +483,12 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   {
     if (*s == ',')
     {
-      if (phraselen)
+      if (phraselen != 0)
       {
         terminate_buffer(phrase, phraselen);
         add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
       }
-      else if (commentlen && last && !last->personal)
+      else if ((commentlen != 0) && last && !last->personal)
       {
         terminate_buffer(comment, commentlen);
         last->personal = mutt_str_strdup(comment);
@@ -500,7 +500,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     }
     else if (*s == '(')
     {
-      if (commentlen && commentlen < sizeof(comment) - 1)
+      if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
         comment[commentlen++] = ' ';
       ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
       if (!ps)
@@ -512,7 +512,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     }
     else if (*s == '"')
     {
-      if (phraselen && phraselen < sizeof(phrase) - 1)
+      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)))
         phrase[phraselen++] = ' ';
       ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
       if (!ps)
@@ -541,12 +541,12 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     }
     else if (*s == ';')
     {
-      if (phraselen)
+      if (phraselen != 0)
       {
         terminate_buffer(phrase, phraselen);
         add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
       }
-      else if (commentlen && last && !last->personal)
+      else if ((commentlen != 0) && last && !last->personal)
       {
         terminate_buffer(comment, commentlen);
         last->personal = mutt_str_strdup(comment);
@@ -568,7 +568,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     {
       terminate_buffer(phrase, phraselen);
       cur = mutt_addr_new();
-      if (phraselen)
+      if (phraselen != 0)
         cur->personal = mutt_str_strdup(phrase);
       ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
       if (!ps)
@@ -590,7 +590,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     }
     else
     {
-      if (phraselen && phraselen < sizeof(phrase) - 1 && ws_pending)
+      if ((phraselen != 0) && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
         phrase[phraselen++] = ' ';
       ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
       if (!ps)
@@ -604,13 +604,13 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     s = mutt_str_skip_email_wsp(s);
   }
 
-  if (phraselen)
+  if (phraselen != 0)
   {
     terminate_buffer(phrase, phraselen);
     terminate_buffer(comment, commentlen);
     add_addrspec(&top, &last, phrase, comment, &commentlen, sizeof(comment) - 1);
   }
-  else if (commentlen && last && !last->personal)
+  else if ((commentlen != 0) && last && !last->personal)
   {
     terminate_buffer(comment, commentlen);
     last->personal = mutt_str_strdup(comment);
@@ -659,13 +659,11 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
  */
 void mutt_addr_qualify(struct Address *addr, const char *host)
 {
-  char *p = NULL;
-
   for (; addr; addr = addr->next)
   {
-    if (!addr->group && addr->mailbox && strchr(addr->mailbox, '@') == NULL)
+    if (!addr->group && addr->mailbox && !strchr(addr->mailbox, '@'))
     {
-      p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
+      char *p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
       sprintf(p, "%s@%s", addr->mailbox, host);
       FREE(&addr->mailbox);
       addr->mailbox = p;
@@ -688,9 +686,9 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
     size_t tmplen = sizeof(tmp) - 3;
 
     *pc++ = '"';
-    for (; *value && tmplen > 1; value++)
+    for (; *value && (tmplen > 1); value++)
     {
-      if (*value == '\\' || *value == '"')
+      if ((*value == '\\') || (*value == '"'))
       {
         *pc++ = '\\';
         tmplen--;
@@ -806,15 +804,13 @@ bool mutt_addr_valid_msgid(const char *msgid)
    * domain-literal = "[" *(dtext / quoted-pair) "]"
    */
 
-  size_t l;
-
   if (!msgid || !*msgid)
     return false;
 
-  l = mutt_str_strlen(msgid);
+  size_t l = mutt_str_strlen(msgid);
   if (l < 5) /* <atom@atom> */
     return false;
-  if (msgid[0] != '<' || msgid[l - 1] != '>')
+  if ((msgid[0] != '<') || (msgid[l - 1] != '>'))
     return false;
   if (!(strrchr(msgid, '@')))
     return false;
@@ -1033,9 +1029,9 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
         goto done;
       *pbuf++ = '"';
       buflen--;
-      for (pc = addr->personal; *pc && buflen > 0; pc++)
+      for (pc = addr->personal; *pc && (buflen > 0); pc++)
       {
-        if (*pc == '"' || *pc == '\\')
+        if ((*pc == '"') || (*pc == '\\'))
         {
           *pbuf++ = '\\';
           buflen--;
@@ -1066,7 +1062,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
     buflen--;
   }
 
-  if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
+  if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
   {
     if (buflen == 0)
       goto done;
@@ -1091,7 +1087,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
       *pbuf = '\0';
     }
 
-    if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
+    if (addr->personal || (addr->mailbox && (*addr->mailbox == '@')))
     {
       if (buflen == 0)
         goto done;
@@ -1160,7 +1156,7 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
     buflen--;
   }
 
-  for (; addr && buflen > 0; addr = addr->next)
+  for (; addr && (buflen > 0); addr = addr->next)
   {
     /* use buflen+1 here because we already saved space for the trailing
        nul char, and the subroutine can make use of it */
