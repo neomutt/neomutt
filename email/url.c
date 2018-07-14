@@ -65,7 +65,7 @@ int url_pct_decode(char *s)
     if (*s == '%')
     {
       if (s[1] && s[2] && isxdigit((unsigned char) s[1]) &&
-          isxdigit((unsigned char) s[2]) && hexval(s[1]) >= 0 && hexval(s[2]) >= 0)
+          isxdigit((unsigned char) s[2]) && (hexval(s[1]) >= 0) && (hexval(s[2]) >= 0))
       {
         *d++ = (hexval(s[1]) << 4) | (hexval(s[2]));
         s += 2;
@@ -93,7 +93,7 @@ enum UrlScheme url_check_scheme(const char *s)
 
   if (!s || !(t = strchr(s, ':')))
     return U_UNKNOWN;
-  if ((size_t)(t - s) >= sizeof(sbuf) - 1)
+  if ((size_t)(t - s) >= (sizeof(sbuf) - 1))
     return U_UNKNOWN;
 
   mutt_str_strfcpy(sbuf, s, t - s + 1);
@@ -250,7 +250,7 @@ int url_parse(struct Url *u, char *src)
   {
     int num;
     *p++ = '\0';
-    if (mutt_str_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
+    if ((mutt_str_atoi(p, &num) < 0) || (num < 0) || (num > 0xffff))
       goto err;
     u->port = (unsigned short) num;
   }
