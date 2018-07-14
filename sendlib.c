@@ -409,7 +409,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   if (a->description)
     fprintf(f, "Content-Description: %s\n", a->description);
 
-  if (a->disposition != DISPNONE)
+  if (a->disposition != DISP_NONE)
   {
     const char *dispstr[] = { "inline", "attachment", "form-data" };
 
@@ -417,7 +417,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
     {
       fprintf(f, "Content-Disposition: %s", dispstr[a->disposition]);
 
-      if (a->use_disp && (a->disposition != DISPINLINE))
+      if (a->use_disp && (a->disposition != DISP_INLINE))
       {
         char *fn = a->d_filename;
         if (!fn)
@@ -452,7 +452,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
     }
   }
 
-  if (a->encoding != ENC7BIT)
+  if (a->encoding != ENC_7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
   /* Do NOT add the terminator here!!! */
@@ -482,7 +482,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   FILE *fpin = NULL;
   struct FgetConv *fc = NULL;
 
-  if (a->type == TYPEMULTIPART)
+  if (a->type == TYPE_MULTIPART)
   {
     /* First, find the boundary to use */
     const char *p = mutt_param_get(&a->parameter, "boundary");
@@ -509,7 +509,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   /* This is pretty gross, but it's the best solution for now... */
-  if (((WithCrypto & APPLICATION_PGP) != 0) && a->type == TYPEAPPLICATION &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) && a->type == TYPE_APPLICATION &&
       (mutt_str_strcmp(a->subtype, "pgp-encrypted") == 0))
   {
     fputs("Version: 1\n", f);
@@ -524,7 +524,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     return -1;
   }
 
-  if (a->type == TYPETEXT && (!a->noconv))
+  if (a->type == TYPE_TEXT && (!a->noconv))
   {
     char send_charset[SHORT_STRING];
     fc = mutt_ch_fgetconv_open(
@@ -534,11 +534,11 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     fc = mutt_ch_fgetconv_open(fpin, 0, 0, 0);
 
   mutt_sig_allow_interrupt(1);
-  if (a->encoding == ENCQUOTEDPRINTABLE)
+  if (a->encoding == ENC_QUOTED_PRINTABLE)
     encode_quoted(fc, f, write_as_text_part(a));
-  else if (a->encoding == ENCBASE64)
+  else if (a->encoding == ENC_BASE64)
     encode_base64(fc, f, write_as_text_part(a));
-  else if (a->type == TYPETEXT && (!a->noconv))
+  else if (a->type == TYPE_TEXT && (!a->noconv))
     encode_8bit(fc, f);
   else
     mutt_file_copy_stream(fpin, f);
@@ -989,7 +989,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
 
-  if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
+  if (b != NULL && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_param_get(&b->parameter, "charset");
     char *fchs = b->use_disp ?
@@ -1020,7 +1020,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   mutt_file_fclose(&fp);
 
-  if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
+  if (b != NULL && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ? "us-ascii" :
@@ -1034,7 +1034,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * mutt_lookup_mime_type - Find the MIME type for an attachment
  * @param att  Email with attachment
  * @param path Path to attachment
- * @retval num MIME type, e.g. #TYPEIMAGE
+ * @retval num MIME type, e.g. #TYPE_IMAGE
  *
  * Given a file at `path`, see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to ``d''.  First look
@@ -1054,7 +1054,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
   *subtype = '\0';
   *xtype = '\0';
-  type = TYPEOTHER;
+  type = TYPE_OTHER;
   cur_sze = 0;
 
   szf = mutt_str_strlen(path);
@@ -1133,7 +1133,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
             mutt_str_substr_cpy(subtype, p, q, sizeof(subtype));
 
             type = mutt_check_mime_type(ct);
-            if (type == TYPEOTHER)
+            if (type == TYPE_OTHER)
               mutt_str_strfcpy(xtype, ct, sizeof(xtype));
 
             cur_sze = sze;
@@ -1153,7 +1153,7 @@ bye:
     mutt_error(_("Could not find any mime.types file."));
   }
 
-  if (type != TYPEOTHER || *xtype != '\0')
+  if (type != TYPE_OTHER || *xtype != '\0')
   {
     att->type = type;
     mutt_str_replace(&att->subtype, subtype);
@@ -1176,10 +1176,10 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
 
   for (; a; a = a->next)
   {
-    if (a->type == TYPEMULTIPART)
+    if (a->type == TYPE_MULTIPART)
     {
-      if (a->encoding != ENC7BIT)
-        a->encoding = ENC7BIT;
+      if (a->encoding != ENC_7BIT)
+        a->encoding = ENC_7BIT;
 
       transform_to_7bit(a->parts, fpin);
     }
@@ -1214,10 +1214,10 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->length = sb.st_size;
 
       mutt_update_encoding(a);
-      if (a->encoding == ENC8BIT)
-        a->encoding = ENCQUOTEDPRINTABLE;
-      else if (a->encoding == ENCBINARY)
-        a->encoding = ENCBASE64;
+      if (a->encoding == ENC_8BIT)
+        a->encoding = ENC_QUOTED_PRINTABLE;
+      else if (a->encoding == ENC_BINARY)
+        a->encoding = ENC_BASE64;
     }
   }
 }
@@ -1287,7 +1287,7 @@ cleanup:
   else
     return;
 
-  a->encoding = ENC7BIT;
+  a->encoding = ENC_7BIT;
   FREE(&a->d_filename);
   a->d_filename = a->filename;
   if (a->filename && a->unlink)
@@ -1309,40 +1309,40 @@ cleanup:
  */
 static void set_encoding(struct Body *b, struct Content *info)
 {
-  if (b->type == TYPETEXT)
+  if (b->type == TYPE_TEXT)
   {
     char send_charset[SHORT_STRING];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
     if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
         info->linemax > 990 || (info->from && EncodeFrom))
     {
-      b->encoding = ENCQUOTEDPRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
     else if (info->hibin)
     {
-      b->encoding = Allow8bit ? ENC8BIT : ENCQUOTEDPRINTABLE;
+      b->encoding = Allow8bit ? ENC_8BIT : ENC_QUOTED_PRINTABLE;
     }
     else
     {
-      b->encoding = ENC7BIT;
+      b->encoding = ENC_7BIT;
     }
   }
-  else if (b->type == TYPEMESSAGE || b->type == TYPEMULTIPART)
+  else if (b->type == TYPE_MESSAGE || b->type == TYPE_MULTIPART)
   {
     if (info->lobin || info->hibin)
     {
       if (Allow8bit && !info->lobin)
-        b->encoding = ENC8BIT;
+        b->encoding = ENC_8BIT;
       else
         mutt_message_to_7bit(b, NULL);
     }
     else
-      b->encoding = ENC7BIT;
+      b->encoding = ENC_7BIT;
   }
-  else if (b->type == TYPEAPPLICATION &&
+  else if (b->type == TYPE_APPLICATION &&
            (mutt_str_strcasecmp(b->subtype, "pgp-keys") == 0))
   {
-    b->encoding = ENC7BIT;
+    b->encoding = ENC_7BIT;
   }
   else
   {
@@ -1350,11 +1350,11 @@ static void set_encoding(struct Body *b, struct Content *info)
     if (1.33 * (float) (info->lobin + info->hibin + info->ascii) <
         3.0 * (float) (info->lobin + info->hibin) + (float) info->ascii)
     {
-      b->encoding = ENCBASE64;
+      b->encoding = ENC_BASE64;
     }
     else
     {
-      b->encoding = ENCQUOTEDPRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
   }
 }
@@ -1380,7 +1380,7 @@ char *mutt_body_get_charset(struct Body *b, char *buf, size_t buflen)
 {
   char *p = NULL;
 
-  if (b && (b->type != TYPETEXT))
+  if (b && (b->type != TYPE_TEXT))
     return NULL;
 
   if (b)
@@ -1454,12 +1454,12 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, b
     return NULL;
 
   body = mutt_body_new();
-  body->type = TYPEMESSAGE;
+  body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_strdup("rfc822");
   body->filename = mutt_str_strdup(buffer);
   body->unlink = true;
   body->use_disp = false;
-  body->disposition = DISPINLINE;
+  body->disposition = DISP_INLINE;
   body->noconv = true;
 
   mutt_parse_mime_message(ctx, hdr);
@@ -1597,12 +1597,12 @@ struct Body *mutt_make_file_attach(const char *path)
       /* Statistically speaking, there should be more than 10% "lobin"
        * chars if this is really a binary file...
        */
-      att->type = TYPETEXT;
+      att->type = TYPE_TEXT;
       att->subtype = mutt_str_strdup("plain");
     }
     else
     {
-      att->type = TYPEAPPLICATION;
+      att->type = TYPE_APPLICATION;
       att->subtype = mutt_str_strdup("octet-stream");
     }
   }
@@ -1615,18 +1615,18 @@ struct Body *mutt_make_file_attach(const char *path)
 /**
  * get_toplevel_encoding - Find the most restrictive encoding type
  * @param a Body to examine
- * @retval num Encoding type, e.g. #ENC7BIT
+ * @retval num Encoding type, e.g. #ENC_7BIT
  */
 static int get_toplevel_encoding(struct Body *a)
 {
-  int e = ENC7BIT;
+  int e = ENC_7BIT;
 
   for (; a; a = a->next)
   {
-    if (a->encoding == ENCBINARY)
-      return ENCBINARY;
-    else if (a->encoding == ENC8BIT)
-      e = ENC8BIT;
+    if (a->encoding == ENC_BINARY)
+      return ENC_BINARY;
+    else if (a->encoding == ENC_8BIT)
+      e = ENC_8BIT;
   }
 
   return e;
@@ -1662,7 +1662,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
 struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new = mutt_body_new();
-  new->type = TYPEMULTIPART;
+  new->type = TYPE_MULTIPART;
   new->subtype = mutt_str_strdup("mixed");
   new->encoding = get_toplevel_encoding(b);
   do
@@ -1672,7 +1672,7 @@ struct Body *mutt_make_multipart(struct Body *b)
       mutt_param_delete(&new->parameter, "boundary");
   } while (!mutt_param_get(&new->parameter, "boundary"));
   new->use_disp = false;
-  new->disposition = DISPINLINE;
+  new->disposition = DISP_INLINE;
   new->parts = b;
 
   return new;
@@ -2920,11 +2920,11 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     }
 #ifdef USE_SMTP
     if (SmtpUrl)
-      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC_8BIT);
     else
 #endif /* USE_SMTP */
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
-                                h->content->encoding == ENC8BIT);
+                                h->content->encoding == ENC_8BIT);
   }
 
   if (msg)
@@ -3038,9 +3038,9 @@ static void set_noconv_flags(struct Body *b, short flag)
 {
   for (; b; b = b->next)
   {
-    if (b->type == TYPEMESSAGE || b->type == TYPEMULTIPART)
+    if (b->type == TYPE_MESSAGE || b->type == TYPE_MULTIPART)
       set_noconv_flags(b->parts, flag);
-    else if (b->type == TYPETEXT && b->noconv)
+    else if (b->type == TYPE_TEXT && b->noconv)
     {
       if (flag)
         mutt_param_set(&b->parameter, "x-mutt-noconv", "yes");

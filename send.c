@@ -1213,12 +1213,12 @@ static int send_message(struct Header *msg)
     if (SmtpUrl)
     {
       return mutt_smtp_send(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
-                            tempfile, (msg->content->encoding == ENC8BIT));
+                            tempfile, (msg->content->encoding == ENC_8BIT));
     }
 #endif /* USE_SMTP */
 
   i = mutt_invoke_sendmail(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
-                           tempfile, (msg->content->encoding == ENC8BIT));
+                           tempfile, (msg->content->encoding == ENC_8BIT));
   return i;
 }
 
@@ -1518,7 +1518,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       FREE(&ctype);
       msg->content->unlink = true;
       msg->content->use_disp = false;
-      msg->content->disposition = DISPINLINE;
+      msg->content->disposition = DISP_INLINE;
 
       if (!tempfile)
       {
@@ -1649,7 +1649,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (!(flags & SENDKEY))
     {
-      if (TextFlowed && msg->content->type == TYPETEXT &&
+      if (TextFlowed && msg->content->type == TYPE_TEXT &&
           (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0))
       {
         mutt_param_set(&msg->content->parameter, "format", "flowed");
@@ -1761,7 +1761,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (TextFlowed && msg->content->type == TYPETEXT &&
+      if (TextFlowed && msg->content->type == TYPE_TEXT &&
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
         char *p = mutt_param_get(&msg->content->parameter, "format");
@@ -2053,7 +2053,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 #endif
 
   if (!(flags & SENDBATCH) && (AbortNoattach != MUTT_NO) &&
-      !msg->content->next && (msg->content->type == TYPETEXT) &&
+      !msg->content->next && (msg->content->type == TYPE_TEXT) &&
       (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0) &&
       search_attach_keyword(msg->content->filename) &&
       query_quadoption(AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
@@ -2152,13 +2152,13 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (msg->content->type == TYPEMULTIPART)
+    if (msg->content->type == TYPE_MULTIPART)
     {
       if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) &&
           ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
            (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
       {
-        if (clear_content->type == TYPEMULTIPART &&
+        if (clear_content->type == TYPE_MULTIPART &&
             query_quadoption(FccAttach, _("Save attachments in Fcc?")) == MUTT_NO)
         {
           if (!(msg->security & ENCRYPT) && (msg->security & SIGN))
@@ -2240,12 +2240,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (!WithCrypto)
         ;
       else if ((msg->security & ENCRYPT) ||
-               ((msg->security & SIGN) && msg->content->type == TYPEAPPLICATION))
+               ((msg->security & SIGN) && msg->content->type == TYPE_APPLICATION))
       {
         mutt_body_free(&msg->content); /* destroy PGP data */
         msg->content = clear_content;  /* restore clear text. */
       }
-      else if ((msg->security & SIGN) && msg->content->type == TYPEMULTIPART)
+      else if ((msg->security & SIGN) && msg->content->type == TYPE_MULTIPART)
       {
         mutt_body_free(&msg->content->parts->next); /* destroy sig */
         msg->content = mutt_remove_multipart(msg->content);

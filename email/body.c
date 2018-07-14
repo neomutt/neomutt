@@ -42,7 +42,7 @@ struct Body *mutt_body_new(void)
 {
   struct Body *p = mutt_mem_calloc(1, sizeof(struct Body));
 
-  p->disposition = DISPATTACH;
+  p->disposition = DISP_ATTACH;
   p->use_disp = true;
   TAILQ_INIT(&p->parameter);
   return p;

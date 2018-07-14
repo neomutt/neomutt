@@ -732,7 +732,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   short enc = 0;
   short key = 0;
 
-  if (b->type != TYPETEXT)
+  if (b->type != TYPE_TEXT)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -791,7 +791,7 @@ int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one)
   {
     if (!just_one && is_multipart(b))
       rc = pgp_class_check_traditional(fp, b->parts, false) || rc;
-    else if (b->type == TYPETEXT)
+    else if (b->type == TYPE_TEXT)
     {
       r = mutt_is_application_pgp(b);
       if (r)
@@ -1294,11 +1294,11 @@ struct Body *pgp_class_sign_message(struct Body *a)
   }
 
   t = mutt_body_new();
-  t->type = TYPEMULTIPART;
+  t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("signed");
-  t->encoding = ENC7BIT;
+  t->encoding = ENC_7BIT;
   t->use_disp = false;
-  t->disposition = DISPINLINE;
+  t->disposition = DISP_INLINE;
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-signature");
@@ -1309,12 +1309,12 @@ struct Body *pgp_class_sign_message(struct Body *a)
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
-  t->type = TYPEAPPLICATION;
+  t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("pgp-signature");
   t->filename = mutt_str_strdup(sigfile);
   t->use_disp = false;
-  t->disposition = DISPNONE;
-  t->encoding = ENC7BIT;
+  t->disposition = DISP_NONE;
+  t->encoding = ENC_7BIT;
   t->unlink = true; /* ok to remove this file after sending. */
   mutt_param_set(&t->parameter, "name", "signature.asc");
 
@@ -1545,27 +1545,27 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   }
 
   t = mutt_body_new();
-  t->type = TYPEMULTIPART;
+  t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("encrypted");
-  t->encoding = ENC7BIT;
+  t->encoding = ENC_7BIT;
   t->use_disp = false;
-  t->disposition = DISPINLINE;
+  t->disposition = DISP_INLINE;
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
 
   t->parts = mutt_body_new();
-  t->parts->type = TYPEAPPLICATION;
+  t->parts->type = TYPE_APPLICATION;
   t->parts->subtype = mutt_str_strdup("pgp-encrypted");
-  t->parts->encoding = ENC7BIT;
+  t->parts->encoding = ENC_7BIT;
 
   t->parts->next = mutt_body_new();
-  t->parts->next->type = TYPEAPPLICATION;
+  t->parts->next->type = TYPE_APPLICATION;
   t->parts->next->subtype = mutt_str_strdup("octet-stream");
-  t->parts->next->encoding = ENC7BIT;
+  t->parts->next->encoding = ENC_7BIT;
   t->parts->next->filename = mutt_str_strdup(tempfile);
   t->parts->next->use_disp = true;
-  t->parts->next->disposition = DISPATTACH;
+  t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
   t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime can save */
 
@@ -1595,7 +1595,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   pid_t thepid;
 
-  if (a->type != TYPETEXT)
+  if (a->type != TYPE_TEXT)
     return NULL;
   if (mutt_str_strcasecmp(a->subtype, "plain") != 0)
     return NULL;
@@ -1725,9 +1725,9 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   b = mutt_body_new();
 
-  b->encoding = ENC7BIT;
+  b->encoding = ENC_7BIT;
 
-  b->type = TYPETEXT;
+  b->type = TYPE_TEXT;
   b->subtype = mutt_str_strdup("plain");
 
   mutt_param_set(&b->parameter, "x-action", (flags & ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
@@ -1735,7 +1735,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 
   b->filename = mutt_str_strdup(pgpoutfile);
 
-  b->disposition = DISPNONE;
+  b->disposition = DISP_NONE;
   b->unlink = true;
 
   b->noconv = true;

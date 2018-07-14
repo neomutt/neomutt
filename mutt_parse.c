@@ -50,7 +50,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 
   do
   {
-    if (cur->content->type != TYPEMESSAGE && cur->content->type != TYPEMULTIPART)
+    if (cur->content->type != TYPE_MESSAGE && cur->content->type != TYPE_MULTIPART)
       break; /* nothing to do */
 
     if (cur->content->parts)
@@ -94,7 +94,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
     a = (struct AttachMatch *) np->data;
     mutt_debug(5, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
-    if ((a->major_int == TYPEANY || a->major_int == b->type) &&
+    if ((a->major_int == TYPE_ANY || a->major_int == b->type) &&
         (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
     {
       mutt_debug(5, "yes\n");
@@ -127,7 +127,7 @@ static int count_body_parts(struct Body *body, int flags)
                bp->filename ? bp->filename : bp->d_filename ? bp->d_filename : "(none)",
                bp->type, bp->subtype ? bp->subtype : "*");
 
-    if (bp->type == TYPEMESSAGE)
+    if (bp->type == TYPE_MESSAGE)
     {
       shallrecurse = true;
 
@@ -139,7 +139,7 @@ static int count_body_parts(struct Body *body, int flags)
       if (flags & MUTT_PARTS_TOPLEVEL)
         shallcount = false; // top-level message/*
     }
-    else if (bp->type == TYPEMULTIPART)
+    else if (bp->type == TYPE_MULTIPART)
     {
       /* Always recurse multiparts, except multipart/alternative. */
       shallrecurse = true;
@@ -151,8 +151,8 @@ static int count_body_parts(struct Body *body, int flags)
         shallcount = false; /* top-level multipart */
     }
 
-    if (bp->disposition == DISPINLINE && bp->type != TYPEMULTIPART &&
-        bp->type != TYPEMESSAGE && bp == body)
+    if (bp->disposition == DISP_INLINE && bp->type != TYPE_MULTIPART &&
+        bp->type != TYPE_MESSAGE && bp == body)
     {
       shallcount = false; /* ignore fundamental inlines */
     }
@@ -167,7 +167,7 @@ static int count_body_parts(struct Body *body, int flags)
        * inlines vs. attachments.
        */
 
-      if (bp->disposition == DISPATTACH)
+      if (bp->disposition == DISP_ATTACH)
       {
         if (!count_body_parts_check(&AttachAllow, bp, true))
           shallcount = false; /* attach not allowed */

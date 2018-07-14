@@ -28,16 +28,16 @@
  */
 enum ContentType
 {
-  TYPEOTHER,
-  TYPEAUDIO,
-  TYPEAPPLICATION,
-  TYPEIMAGE,
-  TYPEMESSAGE,
-  TYPEMODEL,
-  TYPEMULTIPART,
-  TYPETEXT,
-  TYPEVIDEO,
-  TYPEANY
+  TYPE_OTHER,
+  TYPE_AUDIO,
+  TYPE_APPLICATION,
+  TYPE_IMAGE,
+  TYPE_MESSAGE,
+  TYPE_MODEL,
+  TYPE_MULTIPART,
+  TYPE_TEXT,
+  TYPE_VIDEO,
+  TYPE_ANY
 };
 
 /**
@@ -45,13 +45,13 @@ enum ContentType
  */
 enum ContentEncoding
 {
-  ENCOTHER,
-  ENC7BIT,
-  ENC8BIT,
-  ENCQUOTEDPRINTABLE,
-  ENCBASE64,
-  ENCBINARY,
-  ENCUUENCODED
+  ENC_OTHER,
+  ENC_7BIT,
+  ENC_8BIT,
+  ENC_QUOTED_PRINTABLE,
+  ENC_BASE64,
+  ENC_BINARY,
+  ENC_UUENCODED
 };
 
 /**
@@ -59,10 +59,10 @@ enum ContentEncoding
  */
 enum ContentDisposition
 {
-  DISPINLINE,
-  DISPATTACH,
-  DISPFORMDATA,
-  DISPNONE /* no preferred disposition */
+  DISP_INLINE,
+  DISP_ATTACH,
+  DISP_FORM_DATA,
+  DISP_NONE /* no preferred disposition */
 };
 
 /* MIME encoding/decoding global vars */
@@ -75,12 +75,12 @@ extern const char MimeSpecials[];
 #define hexval(c) IndexHex[(unsigned int) (c)]
 
 #define is_multipart(x)                                                             \
-  (((x)->type == TYPEMULTIPART) || (((x)->type == TYPEMESSAGE) && ((x)->subtype) && \
+  (((x)->type == TYPE_MULTIPART) || (((x)->type == TYPE_MESSAGE) && ((x)->subtype) && \
                                     ((strcasecmp((x)->subtype, "rfc822") == 0) ||   \
                                      (strcasecmp((x)->subtype, "news") == 0))))
 
 #define TYPE(X)                                                                \
-  ((X->type == TYPEOTHER) && (X->xtype != NULL) ? X->xtype : BodyTypes[(X->type)])
+  ((X->type == TYPE_OTHER) && (X->xtype != NULL) ? X->xtype : BodyTypes[(X->type)])
 #define ENCODING(X) BodyEncodings[(X)]
 
 #endif /* _EMAIL_MIME_H */

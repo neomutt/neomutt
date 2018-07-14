@@ -650,7 +650,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
    *
    */
 
-  if (newhdr->content->type == TYPEMULTIPART)
+  if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
   s.fpin = bfp;
@@ -678,7 +678,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     s.flags = 0;
 
-    if (b->type == TYPETEXT)
+    if (b->type == TYPE_TEXT)
     {
       if (mutt_str_strcasecmp("yes",
                               mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
@@ -717,7 +717,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       newhdr->security |= sec_type;
 
-      b->type = TYPETEXT;
+      b->type = TYPE_TEXT;
       mutt_str_replace(&b->subtype, "plain");
       mutt_param_delete(&b->parameter, "x-action");
     }
@@ -739,7 +739,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       }
 
       newhdr->security |= sec_type;
-      b->type = TYPETEXT;
+      b->type = TYPE_TEXT;
       mutt_str_replace(&b->subtype, "plain");
     }
     else

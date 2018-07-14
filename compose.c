@@ -384,7 +384,7 @@ static int check_attachments(struct AttachCtx *actx)
 
   for (int i = 0; i < actx->idxlen; i++)
   {
-    if (actx->idx[i]->content->type == TYPEMULTIPART)
+    if (actx->idx[i]->content->type == TYPE_MULTIPART)
       continue;
     mutt_str_strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
     if (stat(actx->idx[i]->content->filename, &st) != 0)
@@ -549,7 +549,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
 
   for (; m; m = m->next)
   {
-    if (m->type == TYPEMULTIPART && m->parts &&
+    if (m->type == TYPE_MULTIPART && m->parts &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
     {
       mutt_gen_compose_attach_list(actx, m->parts, m->type, level);
@@ -719,10 +719,10 @@ static unsigned long cum_attachs_size(struct Menu *menu)
     {
       switch (b->encoding)
       {
-        case ENCQUOTEDPRINTABLE:
+        case ENC_QUOTED_PRINTABLE:
           s += 3 * (info->lobin + info->hibin) + info->ascii + info->crlf;
           break;
-        case ENCBASE64:
+        case ENC_BASE64:
           s += (4 * (info->lobin + info->hibin + info->ascii + info->crlf)) / 3;
           break;
         default:
@@ -1117,9 +1117,9 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
 
         struct Body *group = mutt_body_new();
-        group->type = TYPEMULTIPART;
+        group->type = TYPE_MULTIPART;
         group->subtype = mutt_str_strdup("alternative");
-        group->disposition = DISPINLINE;
+        group->disposition = DISP_INLINE;
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/alternative */
@@ -1129,7 +1129,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (bptr->tagged)
           {
             bptr->tagged = false;
-            bptr->disposition = DISPINLINE;
+            bptr->disposition = DISP_INLINE;
 
             /* for first match, set group desc according to match */
 #define ALTS_TAG "Alternatives for \"%s\""
@@ -1215,9 +1215,9 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
 
         struct Body *group = mutt_body_new();
-        group->type = TYPEMULTIPART;
+        group->type = TYPE_MULTIPART;
         group->subtype = mutt_str_strdup("multilingual");
-        group->disposition = DISPINLINE;
+        group->disposition = DISP_INLINE;
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/multilingual */
@@ -1227,7 +1227,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (bptr->tagged)
           {
             bptr->tagged = false;
-            bptr->disposition = DISPINLINE;
+            bptr->disposition = DISP_INLINE;
 
             /* for first match, set group desc according to match */
 #define LINGUAL_TAG "Multilingual part for \"%s\""
@@ -1525,7 +1525,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
       case OP_COMPOSE_TOGGLE_DISPOSITION:
         /* toggle the content-disposition between inline/attachment */
         CURATTACH->content->disposition =
-            (CURATTACH->content->disposition == DISPINLINE) ? DISPATTACH : DISPINLINE;
+            (CURATTACH->content->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
         menu->redraw = REDRAW_CURRENT;
         break;
 
@@ -1564,7 +1564,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
         {
           i = mutt_check_encoding(buf);
-          if ((i != ENCOTHER) && (i != ENCUUENCODED))
+          if ((i != ENC_OTHER) && (i != ENC_UUENCODED))
           {
             CURATTACH->content->encoding = i;
             menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1721,7 +1721,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
         *p++ = 0;
         itype = mutt_check_mime_type(type);
-        if (itype == TYPEOTHER)
+        if (itype == TYPE_OTHER)
         {
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;

@@ -168,8 +168,8 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
 
   /* Encoding: either Q or B */
   *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
-             ENCQUOTEDPRINTABLE :
-             ENCBASE64;
+             ENC_QUOTED_PRINTABLE :
+             ENC_BASE64;
 
   *text = str + match[3].rm_so;
   *textlen = match[3].rm_eo - match[3].rm_so;
@@ -372,7 +372,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
   const char *it = s;
   const char *end = s + len;
 
-  if (enc == ENCQUOTEDPRINTABLE)
+  if (enc == ENC_QUOTED_PRINTABLE)
   {
     struct Buffer buf = { 0 };
     for (; it < end; ++it)
@@ -395,7 +395,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
     mutt_buffer_addch(&buf, '\0');
     return buf.data;
   }
-  else if (enc == ENCBASE64)
+  else if (enc == ENC_BASE64)
   {
     const int olen = 3 * len / 4 + 1;
     char *out = mutt_mem_malloc(olen);
@@ -655,7 +655,7 @@ void rfc2047_decode(char **pd)
   struct Buffer buf = { 0 }; /* Output buffer                          */
   char *s = *pd;             /* Read pointer                           */
   char *beg = NULL;          /* Begin of encoded word                  */
-  enum ContentEncoding enc;  /* ENCBASE64 or ENCQUOTEDPRINTABLE        */
+  enum ContentEncoding enc;  /* ENC_BASE64 or ENC_QUOTED_PRINTABLE        */
   char *charset = NULL;      /* Which charset                          */
   size_t charsetlen;         /* Length of the charset                  */
   char *text = NULL;         /* Encoded text                           */

@@ -805,7 +805,7 @@ struct Body *pgp_class_make_key_attachment(void)
   att->filename = mutt_str_strdup(tempf);
   att->unlink = true;
   att->use_disp = false;
-  att->type = TYPEAPPLICATION;
+  att->type = TYPE_APPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
   snprintf(buf, sizeof(buf), _("PGP Key %s."), tmp);
   att->description = mutt_str_strdup(buf);

@@ -248,9 +248,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
         snprintf(buf, buflen, fmt,
-                 aptr->content->type != TYPETEXT || aptr->content->noconv ? 'n' : 'c');
+                 aptr->content->type != TYPE_TEXT || aptr->content->noconv ? 'n' : 'c');
       }
-      else if (aptr->content->type != TYPETEXT || aptr->content->noconv)
+      else if (aptr->content->type != TYPE_TEXT || aptr->content->noconv)
         optional = 0;
       break;
     case 'd':
@@ -512,7 +512,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
-  else if (body->hdr && body->encoding != ENCBASE64 && body->encoding != ENCQUOTEDPRINTABLE &&
+  else if (body->hdr && body->encoding != ENC_BASE64 && body->encoding != ENC_QUOTED_PRINTABLE &&
            mutt_is_message_type(body->type, body->subtype))
   {
     mutt_default_save(buf, sizeof(buf), body->hdr);
@@ -534,8 +534,8 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    const int is_message = (fp && body->hdr && body->encoding != ENCBASE64 &&
-                            body->encoding != ENCQUOTEDPRINTABLE &&
+    const int is_message = (fp && body->hdr && body->encoding != ENC_BASE64 &&
+                            body->encoding != ENC_QUOTED_PRINTABLE &&
                             mutt_is_message_type(body->type, body->subtype));
 
     if (is_message)
@@ -1199,7 +1199,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       mutt_error(_("Can't decrypt encrypted message!"));
 
     /* Strip out the top level multipart */
-    if (m->type == TYPEMULTIPART && m->parts && !need_secured &&
+    if (m->type == TYPE_MULTIPART && m->parts && !need_secured &&
         (parent_type == -1 && mutt_str_strcasecmp("alternative", m->subtype)))
     {
       mutt_generate_recvattach_list(actx, hdr, m->parts, fp, m->type, level, decrypted);
@@ -1216,7 +1216,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       new->level = level;
       new->decrypted = decrypted;
 
-      if (m->type == TYPEMULTIPART)
+      if (m->type == TYPE_MULTIPART)
         mutt_generate_recvattach_list(actx, hdr, m->parts, fp, m->type, level + 1, decrypted);
       else if (mutt_is_message_type(m->type, m->subtype))
       {
@@ -1242,7 +1242,7 @@ void mutt_attach_init(struct AttachCtx *actx)
     actx->idx[i]->content->collapsed =
         (DigestCollapse &&
          (digest ||
-          ((actx->idx[i]->content->type == TYPEMULTIPART) &&
+          ((actx->idx[i]->content->type == TYPE_MULTIPART) &&
            (mutt_str_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
   }
 }
@@ -1286,7 +1286,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
-    if (DigestCollapse && actx->idx[rindex]->content->type == TYPEMULTIPART &&
+    if (DigestCollapse && actx->idx[rindex]->content->type == TYPE_MULTIPART &&
         !mutt_str_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
     {
       actx->idx[rindex]->content->collapsed = true;
@@ -1440,7 +1440,7 @@ void mutt_view_attachments(struct Header *hdr)
         }
         if (!menu->tagprefix)
         {
-          if (CURATTACH->parent_type == TYPEMULTIPART)
+          if (CURATTACH->parent_type == TYPE_MULTIPART)
           {
             CURATTACH->content->deleted = true;
             if (Resolve && menu->current < menu->max - 1)
@@ -1463,7 +1463,7 @@ void mutt_view_attachments(struct Header *hdr)
           {
             if (actx->idx[i]->content->tagged)
             {
-              if (actx->idx[i]->parent_type == TYPEMULTIPART)
+              if (actx->idx[i]->parent_type == TYPE_MULTIPART)
               {
                 actx->idx[i]->content->deleted = true;
                 menu->redraw = REDRAW_INDEX;

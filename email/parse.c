@@ -58,36 +58,36 @@ bool mutt_matches_ignore(const char *s)
 /**
  * mutt_check_mime_type - Check a MIME type string
  * @param s String to check
- * @retval num MIME type, e.g. #TYPETEXT
+ * @retval num MIME type, e.g. #TYPE_TEXT
  */
 int mutt_check_mime_type(const char *s)
 {
   if (mutt_str_strcasecmp("text", s) == 0)
-    return TYPETEXT;
+    return TYPE_TEXT;
   else if (mutt_str_strcasecmp("multipart", s) == 0)
-    return TYPEMULTIPART;
+    return TYPE_MULTIPART;
 #ifdef SUN_ATTACHMENT
   else if (mutt_str_strcasecmp("x-sun-attachment", s) == 0)
-    return TYPEMULTIPART;
+    return TYPE_MULTIPART;
 #endif
   else if (mutt_str_strcasecmp("application", s) == 0)
-    return TYPEAPPLICATION;
+    return TYPE_APPLICATION;
   else if (mutt_str_strcasecmp("message", s) == 0)
-    return TYPEMESSAGE;
+    return TYPE_MESSAGE;
   else if (mutt_str_strcasecmp("image", s) == 0)
-    return TYPEIMAGE;
+    return TYPE_IMAGE;
   else if (mutt_str_strcasecmp("audio", s) == 0)
-    return TYPEAUDIO;
+    return TYPE_AUDIO;
   else if (mutt_str_strcasecmp("video", s) == 0)
-    return TYPEVIDEO;
+    return TYPE_VIDEO;
   else if (mutt_str_strcasecmp("model", s) == 0)
-    return TYPEMODEL;
+    return TYPE_MODEL;
   else if (mutt_str_strcasecmp("*", s) == 0)
-    return TYPEANY;
+    return TYPE_ANY;
   else if (mutt_str_strcasecmp(".*", s) == 0)
-    return TYPEANY;
+    return TYPE_ANY;
   else
-    return TYPEOTHER;
+    return TYPE_OTHER;
 }
 
 /**
@@ -163,30 +163,30 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 /**
  * mutt_check_encoding - Check the encoding type
  * @param c String to check
- * @retval num Encoding type, e.g. #ENCQUOTEDPRINTABLE
+ * @retval num Encoding type, e.g. #ENC_QUOTED_PRINTABLE
  */
 int mutt_check_encoding(const char *c)
 {
   if (mutt_str_strncasecmp("7bit", c, sizeof("7bit") - 1) == 0)
-    return ENC7BIT;
+    return ENC_7BIT;
   else if (mutt_str_strncasecmp("8bit", c, sizeof("8bit") - 1) == 0)
-    return ENC8BIT;
+    return ENC_8BIT;
   else if (mutt_str_strncasecmp("binary", c, sizeof("binary") - 1) == 0)
-    return ENCBINARY;
+    return ENC_BINARY;
   else if (mutt_str_strncasecmp("quoted-printable", c, sizeof("quoted-printable") - 1) == 0)
   {
-    return ENCQUOTEDPRINTABLE;
+    return ENC_QUOTED_PRINTABLE;
   }
   else if (mutt_str_strncasecmp("base64", c, sizeof("base64") - 1) == 0)
-    return ENCBASE64;
+    return ENC_BASE64;
   else if (mutt_str_strncasecmp("x-uuencode", c, sizeof("x-uuencode") - 1) == 0)
-    return ENCUUENCODED;
+    return ENC_UUENCODED;
 #ifdef SUN_ATTACHMENT
   else if (mutt_str_strncasecmp("uuencode", c, sizeof("uuencode") - 1) == 0)
-    return ENCUUENCODED;
+    return ENC_UUENCODED;
 #endif
   else
-    return ENCOTHER;
+    return ENC_OTHER;
 }
 
 /**
@@ -316,7 +316,7 @@ bail:
  * @param s String to parse
  * @param ct Body to save the result
  *
- * e.g. parse a string "inline" and set #DISPINLINE.
+ * e.g. parse a string "inline" and set #DISP_INLINE.
  */
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
@@ -324,11 +324,11 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   TAILQ_INIT(&parms);
 
   if (mutt_str_strncasecmp("inline", s, 6) == 0)
-    ct->disposition = DISPINLINE;
+    ct->disposition = DISP_INLINE;
   else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
-    ct->disposition = DISPFORMDATA;
+    ct->disposition = DISP_FORM_DATA;
   else
-    ct->disposition = DISPATTACH;
+    ct->disposition = DISP_ATTACH;
 
   /* Check to see if a default filename was given */
   s = strchr(s, ';');
@@ -382,7 +382,7 @@ static void mutt_parse_content_language(char *s, struct Body *ct)
  * @param s String to parse
  * @param ct Body to save the result
  *
- * e.g. parse a string "inline" and set #DISPINLINE.
+ * e.g. parse a string "inline" and set #DISP_INLINE.
  */
 void mutt_parse_content_type(char *s, struct Body *ct)
 {
@@ -432,7 +432,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     ct->subtype = mutt_str_strdup("x-sun-attachment");
 #endif
 
-  if (ct->type == TYPEOTHER)
+  if (ct->type == TYPE_OTHER)
   {
     ct->xtype = mutt_str_strdup(s);
   }
@@ -442,17 +442,17 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
      * field, so we can attempt to convert the type to Body here.
      */
-    if (ct->type == TYPETEXT)
+    if (ct->type == TYPE_TEXT)
       ct->subtype = mutt_str_strdup("plain");
-    else if (ct->type == TYPEAUDIO)
+    else if (ct->type == TYPE_AUDIO)
       ct->subtype = mutt_str_strdup("basic");
-    else if (ct->type == TYPEMESSAGE)
+    else if (ct->type == TYPE_MESSAGE)
       ct->subtype = mutt_str_strdup("rfc822");
-    else if (ct->type == TYPEOTHER)
+    else if (ct->type == TYPE_OTHER)
     {
       char buffer[SHORT_STRING];
 
-      ct->type = TYPEAPPLICATION;
+      ct->type = TYPE_APPLICATION;
       snprintf(buffer, sizeof(buffer), "x-%s", s);
       ct->subtype = mutt_str_strdup(buffer);
     }
@@ -461,7 +461,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   }
 
   /* Default character set for text types. */
-  if (ct->type == TYPETEXT)
+  if (ct->type == TYPE_TEXT)
   {
     pc = mutt_param_get(&ct->parameter, "charset");
     if (!pc)
@@ -971,13 +971,13 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
       hdr->content = mutt_body_new();
 
       /* set the defaults from RFC1521 */
-      hdr->content->type = TYPETEXT;
+      hdr->content->type = TYPE_TEXT;
       hdr->content->subtype = mutt_str_strdup("plain");
-      hdr->content->encoding = ENC7BIT;
+      hdr->content->encoding = ENC_7BIT;
       hdr->content->length = -1;
 
       /* RFC2183 says this is arbitrary */
-      hdr->content->disposition = DISPINLINE;
+      hdr->content->disposition = DISP_INLINE;
     }
   }
 
@@ -1122,9 +1122,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 
   p->hdr_offset = ftello(fp);
 
-  p->encoding = ENC7BIT; /* default from RFC1521 */
-  p->type = digest ? TYPEMESSAGE : TYPETEXT;
-  p->disposition = DISPINLINE;
+  p->encoding = ENC_7BIT; /* default from RFC1521 */
+  p->type = digest ? TYPE_MESSAGE : TYPE_TEXT;
+  p->disposition = DISP_INLINE;
 
   while (*(line = mutt_rfc822_read_line(fp, line, &linelen)) != 0)
   {
@@ -1180,9 +1180,9 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 #endif
   }
   p->offset = ftello(fp); /* Mark the start of the real data */
-  if (p->type == TYPETEXT && !p->subtype)
+  if (p->type == TYPE_TEXT && !p->subtype)
     p->subtype = mutt_str_strdup("plain");
-  else if (p->type == TYPEMESSAGE && !p->subtype)
+  else if (p->type == TYPE_MESSAGE && !p->subtype)
     p->subtype = mutt_str_strdup("rfc822");
 
   FREE(&line);
@@ -1199,7 +1199,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
  */
 bool mutt_is_message_type(int type, const char *subtype)
 {
-  if (type != TYPEMESSAGE)
+  if (type != TYPE_MESSAGE)
     return false;
 
   subtype = NONULL(subtype);
@@ -1218,7 +1218,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
 
   switch (b->type)
   {
-    case TYPEMULTIPART:
+    case TYPE_MULTIPART:
 #ifdef SUN_ATTACHMENT
       if (mutt_str_strcasecmp(b->subtype, "x-sun-attachment") == 0)
         bound = "--------";
@@ -1231,7 +1231,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
                                       (mutt_str_strcasecmp("digest", b->subtype) == 0));
       break;
 
-    case TYPEMESSAGE:
+    case TYPE_MESSAGE:
       if (b->subtype)
       {
         fseeko(fp, b->offset, SEEK_SET);
@@ -1251,7 +1251,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
   /* try to recover from parsing error */
   if (!b->parts)
   {
-    b->type = TYPETEXT;
+    b->type = TYPE_TEXT;
     mutt_str_replace(&b->subtype, "plain");
   }
 }

@@ -1496,13 +1496,13 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   }
 
   struct Body *t = mutt_body_new();
-  t->type = TYPEAPPLICATION;
+  t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
-  t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
+  t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
-  t->disposition = DISPATTACH;
+  t->disposition = DISP_ATTACH;
   t->d_filename = mutt_str_strdup("smime.p7m");
   t->filename = mutt_str_strdup(tempfile);
   t->unlink = true; /* delete after sending the message */
@@ -1645,11 +1645,11 @@ struct Body *smime_class_sign_message(struct Body *a)
   }
 
   struct Body *t = mutt_body_new();
-  t->type = TYPEMULTIPART;
+  t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("signed");
-  t->encoding = ENC7BIT;
+  t->encoding = ENC_7BIT;
   t->use_disp = false;
-  t->disposition = DISPINLINE;
+  t->disposition = DISP_INLINE;
 
   mutt_generate_boundary(&t->parameter);
 
@@ -1664,13 +1664,13 @@ struct Body *smime_class_sign_message(struct Body *a)
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
-  t->type = TYPEAPPLICATION;
+  t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-signature");
   t->filename = mutt_str_strdup(signedfile);
   t->d_filename = mutt_str_strdup("smime.p7s");
   t->use_disp = true;
-  t->disposition = DISPATTACH;
-  t->encoding = ENCBASE64;
+  t->disposition = DISP_ATTACH;
+  t->encoding = ENC_BASE64;
   t->unlink = true; /* ok to remove this file after sending. */
 
   return a;
