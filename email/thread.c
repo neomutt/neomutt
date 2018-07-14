@@ -39,17 +39,17 @@
  * is_descendant - Is one thread a descendant of another
  * @param a Parent thread
  * @param b Child thread
- * @retval 1 If b is a descendent of a (child, grandchild, etc)
+ * @retval true If b is a descendent of a (child, grandchild, etc)
  */
-int is_descendant(struct MuttThread *a, struct MuttThread *b)
+bool is_descendant(struct MuttThread *a, struct MuttThread *b)
 {
   while (a)
   {
     if (a == b)
-      return 1;
+      return true;
     a = a->parent;
   }
-  return 0;
+  return false;
 }
 
 /**
@@ -75,7 +75,7 @@ void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 
   if (cur->sort_key)
   {
-    for (tmp = cur->parent; tmp && tmp->sort_key == cur->sort_key; tmp = tmp->parent)
+    for (tmp = cur->parent; tmp && (tmp->sort_key == cur->sort_key); tmp = tmp->parent)
       tmp->sort_key = NULL;
   }
 }
@@ -121,7 +121,7 @@ struct Header *find_virtual(struct MuttThread *cur, int reverse)
 {
   struct MuttThread *top = NULL;
 
-  if (cur->message && cur->message->virtual >= 0)
+  if (cur->message && (cur->message->virtual >= 0))
     return cur->message;
 
   top = cur;
@@ -134,7 +134,7 @@ struct Header *find_virtual(struct MuttThread *cur, int reverse)
 
   while (true)
   {
-    if (cur->message && cur->message->virtual >= 0)
+    if (cur->message && (cur->message->virtual >= 0))
       return cur->message;
 
     if (cur->child)
@@ -220,7 +220,9 @@ void mutt_break_thread(struct Header *hdr)
 {
   mutt_list_free(&hdr->env->in_reply_to);
   mutt_list_free(&hdr->env->references);
-  hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
+  hdr->env->irt_changed = true;
+  hdr->env->refs_changed = true;
+  hdr->changed = true;
 
   clean_references(hdr->thread, hdr->thread->child);
 }
