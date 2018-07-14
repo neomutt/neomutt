@@ -1509,7 +1509,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, b
   body->hdr = mutt_header_new();
   body->hdr->offset = 0;
   /* we don't need the user headers here */
-  body->hdr->env = mutt_rfc822_read_header(fp, body->hdr, 0, 0);
+  body->hdr->env = mutt_rfc822_read_header(fp, body->hdr, false, false);
   if (WithCrypto)
     body->hdr->security = pgp;
   mutt_update_encoding(body);

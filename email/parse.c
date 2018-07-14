@@ -489,9 +489,9 @@ void mutt_parse_content_type(char *s, struct Body *ct)
  * and the information put in the Envelope or Header.
  */
 int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
-                           char *p, short user_hdrs, short weed, short do_2047)
+                           char *p, bool user_hdrs, bool weed, bool do_2047)
 {
-  int matched = 0;
+  bool matched = false;
 
   switch (tolower(line[0]))
   {
@@ -499,12 +499,12 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
         e->to = mutt_addr_parse_list(e->to, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "pparently-from") == 0)
       {
         e->from = mutt_addr_parse_list(e->from, p);
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -512,7 +512,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
         e->bcc = mutt_addr_parse_list(e->bcc, p);
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -520,7 +520,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
         e->cc = mutt_addr_parse_list(e->cc, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strncasecmp(line + 1, "ontent-", 7) == 0)
       {
@@ -528,19 +528,19 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
         {
           if (hdr)
             mutt_parse_content_type(p, hdr->content);
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 8, "language") == 0)
         {
           if (hdr)
             parse_content_language(p, hdr->content);
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 8, "transfer-encoding") == 0)
         {
           if (hdr)
             hdr->content->encoding = mutt_check_encoding(p);
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 8, "length") == 0)
         {
@@ -550,7 +550,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             if (hdr->content->length < 0)
               hdr->content->length = -1;
           }
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 8, "description") == 0)
         {
@@ -559,13 +559,13 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             mutt_str_replace(&hdr->content->description, p);
             rfc2047_decode(&hdr->content->description);
           }
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 8, "disposition") == 0)
         {
           if (hdr)
             parse_content_disposition(p, hdr->content);
-          matched = 1;
+          matched = true;
         }
       }
       break;
@@ -585,7 +585,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             hdr->zoccident = tz.zoccident;
           }
         }
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -601,7 +601,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
         e->from = mutt_addr_parse_list(e->from, p);
-        matched = 1;
+        matched = true;
       }
 #ifdef USE_NNTP
       else if (mutt_str_strcasecmp(line + 1, "ollowup-to") == 0)
@@ -611,7 +611,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
           mutt_str_remove_trailing_ws(p);
           e->followup_to = mutt_str_strdup(mutt_str_skip_whitespace(p));
         }
-        matched = 1;
+        matched = true;
       }
 #endif
       break;
@@ -621,7 +621,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         mutt_list_free(&e->in_reply_to);
         parse_references(&e->in_reply_to, p);
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -637,7 +637,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             hdr->lines = 0;
         }
 
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "ist-Post") == 0)
       {
@@ -661,7 +661,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             }
           }
         }
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -670,14 +670,14 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         if (hdr)
           hdr->mime = true;
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "essage-id") == 0)
       {
         /* We add a new "Message-ID:" when building a message */
         FREE(&e->message_id);
         e->message_id = mutt_extract_message_id(p, NULL);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strncasecmp(line + 1, "ail-", 4) == 0)
       {
@@ -686,12 +686,12 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
           /* override the Reply-To: field */
           mutt_addr_free(&e->reply_to);
           e->reply_to = mutt_addr_parse_list(e->reply_to, p);
-          matched = 1;
+          matched = true;
         }
         else if (mutt_str_strcasecmp(line + 5, "followup-to") == 0)
         {
           e->mail_followup_to = mutt_addr_parse_list(e->mail_followup_to, p);
-          matched = 1;
+          matched = true;
         }
       }
       break;
@@ -703,7 +703,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
         FREE(&e->newsgroups);
         mutt_str_remove_trailing_ws(p);
         e->newsgroups = mutt_str_strdup(mutt_str_skip_whitespace(p));
-        matched = 1;
+        matched = true;
       }
       break;
 #endif
@@ -722,17 +722,17 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         mutt_list_free(&e->references);
         parse_references(&e->references, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eply-to") == 0)
       {
         e->reply_to = mutt_addr_parse_list(e->reply_to, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eturn-path") == 0)
       {
         e->return_path = mutt_addr_parse_list(e->return_path, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "eceived") == 0)
       {
@@ -751,12 +751,12 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         if (!e->subject)
           e->subject = mutt_str_strdup(p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "ender") == 0)
       {
         e->sender = mutt_addr_parse_list(e->sender, p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "tatus") == 0)
       {
@@ -779,7 +779,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             p++;
           }
         }
-        matched = 1;
+        matched = true;
       }
       else if (((mutt_str_strcasecmp("upersedes", line + 1) == 0) ||
                 (mutt_str_strcasecmp("upercedes", line + 1) == 0)) &&
@@ -794,7 +794,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
         e->to = mutt_addr_parse_list(e->to, p);
-        matched = 1;
+        matched = true;
       }
       break;
 
@@ -822,32 +822,32 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
             p++;
           }
         }
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "-label") == 0)
       {
         FREE(&e->x_label);
         e->x_label = mutt_str_strdup(p);
-        matched = 1;
+        matched = true;
       }
 #ifdef USE_NNTP
       else if (mutt_str_strcasecmp(line + 1, "-comment-to") == 0)
       {
         if (!e->x_comment_to)
           e->x_comment_to = mutt_str_strdup(p);
-        matched = 1;
+        matched = true;
       }
       else if (mutt_str_strcasecmp(line + 1, "ref") == 0)
       {
         if (!e->xref)
           e->xref = mutt_str_strdup(p);
-        matched = 1;
+        matched = true;
       }
 #endif
       else if (mutt_str_strcasecmp(line + 1, "-original-to") == 0)
       {
         e->x_original_to = mutt_addr_parse_list(e->x_original_to, p);
-        matched = 1;
+        matched = true;
       }
 
     default:
@@ -954,7 +954,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
  * Caller should free the Envelope using mutt_env_free().
  */
 struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
-                                         short user_hdrs, short weed)
+                                         bool user_hdrs, bool weed)
 {
   struct Envelope *e = mutt_env_new();
   char *line = mutt_mem_malloc(LONG_STRING);
@@ -1053,7 +1053,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
     if (!*p)
       continue; /* skip empty header fields */
 
-    mutt_rfc822_parse_line(e, hdr, line, p, user_hdrs, weed, 1);
+    mutt_rfc822_parse_line(e, hdr, line, p, user_hdrs, weed, true);
   }
 
   FREE(&line);
@@ -1367,7 +1367,7 @@ struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {
   parent->hdr = mutt_header_new();
   parent->hdr->offset = ftello(fp);
-  parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, 0, 0);
+  parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, false, false);
   struct Body *msg = parent->hdr->content;
 
   /* ignore the length given in the content-length since it could be wrong

@@ -188,7 +188,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       else
         hdr->received = t - mutt_date_local_tz(t);
 
-      hdr->env = mutt_rfc822_read_header(ctx->fp, hdr, 0, 0);
+      hdr->env = mutt_rfc822_read_header(ctx->fp, hdr, false, false);
 
       loc = ftello(ctx->fp);
       if (loc < 0)
@@ -335,7 +335,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;
 
-      curhdr->env = mutt_rfc822_read_header(ctx->fp, curhdr, 0, 0);
+      curhdr->env = mutt_rfc822_read_header(ctx->fp, curhdr, false, false);
 
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will

@@ -1298,7 +1298,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 {
   struct Header *msg = mutt_header_new();
 
-  if (mutt_prepare_template(fp, ctx, msg, cur, 1) < 0)
+  if (mutt_prepare_template(fp, ctx, msg, cur, true) < 0)
   {
     mutt_header_free(&msg);
     return -1;

@@ -319,7 +319,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, h, 0) < 0)
+  if (mutt_prepare_template(NULL, PostContext, hdr, h, false) < 0)
   {
     mx_fastclose_mailbox(PostContext);
     FREE(&PostContext);
@@ -559,7 +559,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @retval -1 Error
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
-                          struct Header *hdr, short resend)
+                          struct Header *hdr, bool resend)
 {
   struct Message *msg = NULL;
   char file[PATH_MAX];
@@ -582,7 +582,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   fseeko(fp, hdr->offset, SEEK_SET);
   newhdr->offset = hdr->offset;
   /* enable header weeding for resent messages */
-  newhdr->env = mutt_rfc822_read_header(fp, newhdr, 1, resend);
+  newhdr->env = mutt_rfc822_read_header(fp, newhdr, true, resend);
   newhdr->content->length = hdr->content->length;
   mutt_parse_part(fp, newhdr->content);
 

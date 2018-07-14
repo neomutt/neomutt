@@ -321,7 +321,8 @@ void rfc2231_decode_parameters(struct ParameterList *p)
  */
 int rfc2231_encode_string(char **pd)
 {
-  int ext = 0, encode = 0;
+  int ext = 0;
+  bool encode = false;
   char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;
   size_t slen, dlen = 0;
 
@@ -346,13 +347,13 @@ int rfc2231_encode_string(char **pd)
   }
 
   if (!mutt_ch_is_us_ascii(charset))
-    encode = 1;
+    encode = true;
 
   for (s = d, slen = dlen; slen; s++, slen--)
   {
     if ((*s < 0x20) || (*s >= 0x7f))
     {
-      encode = 1;
+      encode = true;
       ext++;
     }
     else if (strchr(MimeSpecials, *s) || strchr("*'%", *s))

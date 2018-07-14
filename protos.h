@@ -57,7 +57,7 @@ int mutt_change_flag(struct Header *h, int bf);
 int mutt_complete(char *buf, size_t buflen);
 int mutt_edit_message(struct Context *ctx, struct Header *hdr);
 int mutt_view_message(struct Context *ctx, struct Header *hdr);
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, short resend);
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, bool resend);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int multiple,
                        char ***files, int *numfiles, struct EnterState *state);

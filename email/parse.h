@@ -38,9 +38,9 @@ void             mutt_parse_content_type(char *s, struct Body *ct);
 struct Body *    mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
 void             mutt_parse_part(FILE *fp, struct Body *b);
 struct Body *    mutt_read_mime_header(FILE *fp, bool digest);
-int              mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line, char *p, short user_hdrs, short weed, short do_2047);
+int              mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line, char *p, bool user_hdrs, bool weed, bool do_2047);
 struct Body *    mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
-struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, short user_hdrs, short weed);
+struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_hdrs, bool weed);
 char *           mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen);
 
 #endif /* _EMAIL_PARSE_H */
