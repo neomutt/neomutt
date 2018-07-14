@@ -106,16 +106,6 @@ void mutt_adv_mktemp(char *s, size_t l)
   }
 }
 
-/**
- * mutt_matches_ignore - Does the string match the ignore list
- *
- * checks Ignore and UnIgnore using mutt_list_match
- */
-bool mutt_matches_ignore(const char *s)
-{
-  return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
-}
-
 char *mutt_expand_path(char *s, size_t slen)
 {
   return mutt_expand_path_regex(s, slen, false);

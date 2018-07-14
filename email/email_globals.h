@@ -23,6 +23,20 @@
 #ifndef _EMAIL_GLOBALS_H
 #define _EMAIL_GLOBALS_H
 
-extern char *SendCharset;
+#include <stdbool.h>
+#include "mutt/mutt.h"
+
+/* Config items */
+extern bool                MarkOld;
+extern struct Regex *      ReplyRegex;
+extern char *              SendCharset;
+extern char *              SpamSeparator;
+extern bool                Weed;
+
+/* Global variables */
+extern struct ListHead     Ignore;
+extern struct RegexList *  NoSpamList;
+extern struct ReplaceList *SpamList;
+extern struct ListHead     UnIgnore;
 
 #endif /* _EMAIL_GLOBALS_H */

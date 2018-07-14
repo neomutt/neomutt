@@ -60,14 +60,12 @@ WHERE struct Hash *TagFormats;
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
 WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
-WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
 WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
 WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 #ifdef USE_SIDEBAR
 WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
 #endif
-WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
 WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
 /* Lists of AttachMatch */
@@ -82,8 +80,6 @@ WHERE struct RegexList *MailLists;
 WHERE struct RegexList *UnMailLists;
 WHERE struct RegexList *SubscribedLists;
 WHERE struct RegexList *UnSubscribedLists;
-WHERE struct ReplaceList *SpamList;
-WHERE struct RegexList *NoSpamList;
 WHERE struct ReplaceList *SubjectRegexList;
 
 WHERE unsigned short Counter;
@@ -185,7 +181,6 @@ WHERE char *NmQueryWindowCurrentSearch;
 /* These variables are backing for config items */
 WHERE struct Regex *Mask;
 WHERE struct Regex *QuoteRegex;
-WHERE struct Regex *ReplyRegex;
 
 /* Quad-options */
 WHERE unsigned char Bounce;
@@ -251,7 +246,6 @@ WHERE bool SslVerifyPartialChains;
 WHERE bool MailCheckRecent;
 WHERE bool MaildirTrash;
 WHERE bool Markers;
-WHERE bool MarkOld;
 #if defined(USE_IMAP) || defined(USE_POP)
 WHERE bool MessageCacheClean;
 #endif
@@ -275,7 +269,6 @@ WHERE bool UseDomain;
 WHERE bool UseIpv6;
 #endif
 WHERE bool WaitKey;
-WHERE bool Weed;
 WHERE bool WrapSearch;
 WHERE bool WriteBcc; /**< write out a bcc header? */
 

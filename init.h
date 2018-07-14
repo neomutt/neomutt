@@ -64,7 +64,6 @@
 #include "notmuch/mutt_notmuch.h"
 #include "options.h"
 #include "pager.h"
-#include "parse.h"
 #include "pattern.h"
 #include "pop/pop.h"
 #include "progress.h"

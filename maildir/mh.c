@@ -57,7 +57,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"

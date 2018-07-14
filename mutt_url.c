@@ -28,7 +28,6 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "globals.h"
-#include "parse.h"
 
 int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 {

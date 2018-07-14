@@ -1,6 +1,6 @@
 /**
  * @file
- * Email Global Variables
+ * Miscellaneous email parsing routines
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -20,25 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page email_globals Email Global Variables
- *
- * These global variables are private to the email library.
- */
+#ifndef MUTT_PARSE_H
+#define MUTT_PARSE_H
 
-#include "config.h"
-#include <stdbool.h>
-#include "mutt/mutt.h"
+struct Context;
+struct Header;
 
-/* Config items */
-bool MarkOld;
-struct Regex *ReplyRegex;
-char *SendCharset;
-char *SpamSeparator;
-bool Weed;
+int  mutt_count_body_parts(struct Context *ctx, struct Header *hdr);
+void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 
-/* Global variables */
-struct RegexList *NoSpamList;
-struct ReplaceList *SpamList;
-struct ListHead Ignore = STAILQ_HEAD_INITIALIZER(Ignore);
-struct ListHead UnIgnore = STAILQ_HEAD_INITIALIZER(UnIgnore);
+#endif /* MUTT_PARSE_H */

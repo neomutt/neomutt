@@ -36,6 +36,7 @@
  * | email/idna.c      | @subpage email_idna      |
  * | email/parameter.c | @subpage email_parameter |
  * | email/mime.c      | @subpage email_mime      |
+ * | email/parse.c     | @subpage email_parse     |
  * | email/rfc2047.c   | @subpage email_rfc2047   |
  * | email/rfc2231.c   | @subpage email_rfc2231   |
  * | email/tags.c      | @subpage email_tags      |
@@ -56,6 +57,7 @@
 #include "header.h"
 #include "idna2.h"
 #include "mime.h"
+#include "parse.h"
 #include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"

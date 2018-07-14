@@ -53,7 +53,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #ifdef USE_HCACHE

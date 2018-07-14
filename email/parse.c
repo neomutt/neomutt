@@ -3,7 +3,7 @@
  * Miscellaneous email parsing routines
  *
  * @authors
- * Copyright (C) 1996-2000,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,111 +20,133 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page email_parse
+ *
+ * Miscellaneous email parsing routines
+ */
+
 #include "config.h"
-#include <ctype.h>
-#include <regex.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
-#include "mutt.h"
 #include "parse.h"
-#include "globals.h"
-#include "mailbox.h"
-#include "muttlib.h"
-#include "ncrypt/ncrypt.h"
-#include "options.h"
-#include "protos.h"
-#include "recvattach.h"
-
-struct Context;
-
-/* These Config Variables are only used in parse.c */
-char *SpamSeparator;
+#include "address.h"
+#include "body.h"
+#include "email_globals.h"
+#include "envelope.h"
+#include "from.h"
+#include "header.h"
+#include "mime.h"
+#include "rfc2047.h"
+#include "rfc2231.h"
+#include "url.h"
 
 /**
- * mutt_rfc822_read_line - Read a header line from a file
+ * mutt_matches_ignore - Does the string match the ignore list
  *
- * Reads an arbitrarily long header field, and looks ahead for continuation
- * lines.  ``line'' must point to a dynamically allocated string; it is
- * increased if more space is required to fit the whole line.
+ * checks Ignore and UnIgnore using mutt_list_match
  */
-char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
+bool mutt_matches_ignore(const char *s)
 {
-  char *buf = line;
-  int ch;
-  size_t offset = 0;
+  return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
+}
 
-  while (true)
-  {
-    if (fgets(buf, *linelen - offset, f) == NULL || /* end of file or */
-        (ISSPACE(*line) && !offset))                /* end of headers */
-    {
-      *line = 0;
-      return line;
-    }
-
-    const size_t len = mutt_str_strlen(buf);
-    if (!len)
-      return line;
-
-    buf += len - 1;
-    if (*buf == '\n')
-    {
-      /* we did get a full line. remove trailing space */
-      while (ISSPACE(*buf))
-      {
-        *buf-- = 0; /* we cannot come beyond line's beginning because
-                     * it begins with a non-space */
-      }
-
-      /* check to see if the next line is a continuation line */
-      ch = fgetc(f);
-      if ((ch != ' ') && (ch != '\t'))
-      {
-        ungetc(ch, f);
-        return line; /* next line is a separate header field or EOH */
-      }
-
-      /* eat tabs and spaces from the beginning of the continuation line */
-      while ((ch = fgetc(f)) == ' ' || ch == '\t')
-        ;
-      ungetc(ch, f);
-      *++buf = ' '; /* string is still terminated because we removed
-                       at least one whitespace char above */
-    }
-
-    buf++;
-    offset = buf - line;
-    if (*linelen < offset + STRING)
-    {
-      /* grow the buffer */
-      *linelen += STRING;
-      mutt_mem_realloc(&line, *linelen);
-      buf = line + offset;
-    }
-  }
-  /* not reached */
+int mutt_check_mime_type(const char *s)
+{
+  if (mutt_str_strcasecmp("text", s) == 0)
+    return TYPETEXT;
+  else if (mutt_str_strcasecmp("multipart", s) == 0)
+    return TYPEMULTIPART;
+#ifdef SUN_ATTACHMENT
+  else if (mutt_str_strcasecmp("x-sun-attachment", s) == 0)
+    return TYPEMULTIPART;
+#endif
+  else if (mutt_str_strcasecmp("application", s) == 0)
+    return TYPEAPPLICATION;
+  else if (mutt_str_strcasecmp("message", s) == 0)
+    return TYPEMESSAGE;
+  else if (mutt_str_strcasecmp("image", s) == 0)
+    return TYPEIMAGE;
+  else if (mutt_str_strcasecmp("audio", s) == 0)
+    return TYPEAUDIO;
+  else if (mutt_str_strcasecmp("video", s) == 0)
+    return TYPEVIDEO;
+  else if (mutt_str_strcasecmp("model", s) == 0)
+    return TYPEMODEL;
+  else if (mutt_str_strcasecmp("*", s) == 0)
+    return TYPEANY;
+  else if (mutt_str_strcasecmp(".*", s) == 0)
+    return TYPEANY;
+  else
+    return TYPEOTHER;
 }
 
 /**
- * parse_references - Parse references from an email header
- * @param head List to receive the references
- * @param s    String to parse
+ * mutt_extract_message_id - Find a message-id
+ *
+ * extract the first substring that looks like a message-id.
+ * call back with NULL for more (like strtok).
  */
-static void parse_references(struct ListHead *head, char *s)
+char *mutt_extract_message_id(const char *s, const char **saveptr)
 {
-  char *m = NULL;
-  const char *sp = NULL;
+  const char *o = NULL, *onull = NULL, *p = NULL;
+  char *ret = NULL;
 
-  while ((m = mutt_extract_message_id(s, &sp)))
+  if (s)
+    p = s;
+  else if (saveptr)
+    p = *saveptr;
+  else
+    return NULL;
+
+  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")) != NULL; ++p)
   {
-    mutt_list_insert_head(head, m);
-    s = NULL;
+    if (*p == '<')
+    {
+      s = p;
+      o = onull = NULL;
+      continue;
+    }
+
+    if (!s)
+      continue;
+
+    if (*p == '>')
+    {
+      size_t olen = onull - o, slen = p - s + 1;
+      ret = mutt_mem_malloc(olen + slen + 1);
+      if (o)
+        memcpy(ret, o, olen);
+      memcpy(ret + olen, s, slen);
+      ret[olen + slen] = '\0';
+      if (saveptr)
+        *saveptr = p + 1; /* next call starts after '>' */
+      return ret;
+    }
+
+    /* some idiotic clients break their message-ids between lines */
+    if (s == p)
+    {
+      /* step past another whitespace */
+      s = p + 1;
+    }
+    else if (o)
+    {
+      /* more than two lines, give up */
+      s = o = onull = NULL;
+    }
+    else
+    {
+      /* remember the first line, start looking for the second */
+      o = s;
+      onull = p;
+      s = p + 1;
+    }
   }
+
+  return NULL;
 }
 
 int mutt_check_encoding(const char *c)
@@ -268,34 +290,63 @@ bail:
   rfc2231_decode_parameters(param);
 }
 
-int mutt_check_mime_type(const char *s)
+static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  if (mutt_str_strcasecmp("text", s) == 0)
-    return TYPETEXT;
-  else if (mutt_str_strcasecmp("multipart", s) == 0)
-    return TYPEMULTIPART;
-#ifdef SUN_ATTACHMENT
-  else if (mutt_str_strcasecmp("x-sun-attachment", s) == 0)
-    return TYPEMULTIPART;
-#endif
-  else if (mutt_str_strcasecmp("application", s) == 0)
-    return TYPEAPPLICATION;
-  else if (mutt_str_strcasecmp("message", s) == 0)
-    return TYPEMESSAGE;
-  else if (mutt_str_strcasecmp("image", s) == 0)
-    return TYPEIMAGE;
-  else if (mutt_str_strcasecmp("audio", s) == 0)
-    return TYPEAUDIO;
-  else if (mutt_str_strcasecmp("video", s) == 0)
-    return TYPEVIDEO;
-  else if (mutt_str_strcasecmp("model", s) == 0)
-    return TYPEMODEL;
-  else if (mutt_str_strcasecmp("*", s) == 0)
-    return TYPEANY;
-  else if (mutt_str_strcasecmp(".*", s) == 0)
-    return TYPEANY;
+  struct ParameterList parms;
+  TAILQ_INIT(&parms);
+
+  if (mutt_str_strncasecmp("inline", s, 6) == 0)
+    ct->disposition = DISPINLINE;
+  else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
+    ct->disposition = DISPFORMDATA;
   else
-    return TYPEOTHER;
+    ct->disposition = DISPATTACH;
+
+  /* Check to see if a default filename was given */
+  s = strchr(s, ';');
+  if (s)
+  {
+    s = mutt_str_skip_email_wsp(s + 1);
+    parse_parameters(&parms, s);
+    s = mutt_param_get(&parms, "filename");
+    if (s)
+      mutt_str_replace(&ct->filename, s);
+    s = mutt_param_get(&parms, "name");
+    if (s)
+      ct->form_name = mutt_str_strdup(s);
+    mutt_param_free(&parms);
+  }
+}
+
+/**
+ * parse_references - Parse references from an email header
+ * @param head List to receive the references
+ * @param s    String to parse
+ */
+static void parse_references(struct ListHead *head, char *s)
+{
+  char *m = NULL;
+  const char *sp = NULL;
+
+  while ((m = mutt_extract_message_id(s, &sp)))
+  {
+    mutt_list_insert_head(head, m);
+    s = NULL;
+  }
+}
+
+/**
+ * mutt_parse_content_language - Read the content's language
+ * @param s  Language string
+ * @param ct Body of the email
+ */
+static void mutt_parse_content_language(char *s, struct Body *ct)
+{
+  if (!s || !ct)
+    return;
+
+  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
+  ct->language = mutt_str_strdup(s);
 }
 
 void mutt_parse_content_type(char *s, struct Body *ct)
@@ -386,398 +437,6 @@ void mutt_parse_content_type(char *s, struct Body *ct)
                          "us-ascii");
     }
   }
-}
-
-/**
- * mutt_parse_content_language - Read the content's language
- * @param s  Language string
- * @param ct Body of the email
- */
-static void mutt_parse_content_language(char *s, struct Body *ct)
-{
-  if (!s || !ct)
-    return;
-
-  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
-  ct->language = mutt_str_strdup(s);
-}
-
-static void parse_content_disposition(const char *s, struct Body *ct)
-{
-  struct ParameterList parms;
-  TAILQ_INIT(&parms);
-
-  if (mutt_str_strncasecmp("inline", s, 6) == 0)
-    ct->disposition = DISPINLINE;
-  else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
-    ct->disposition = DISPFORMDATA;
-  else
-    ct->disposition = DISPATTACH;
-
-  /* Check to see if a default filename was given */
-  s = strchr(s, ';');
-  if (s)
-  {
-    s = mutt_str_skip_email_wsp(s + 1);
-    parse_parameters(&parms, s);
-    s = mutt_param_get(&parms, "filename");
-    if (s)
-      mutt_str_replace(&ct->filename, s);
-    s = mutt_param_get(&parms, "name");
-    if (s)
-      ct->form_name = mutt_str_strdup(s);
-    mutt_param_free(&parms);
-  }
-}
-
-/**
- * mutt_read_mime_header - Parse a MIME header
- * @param fp      stream to read from
- * @param digest  true if reading subparts of a multipart/digest
- * @retval ptr New Body containing parsed structure
- */
-struct Body *mutt_read_mime_header(FILE *fp, bool digest)
-{
-  struct Body *p = mutt_body_new();
-  char *c = NULL;
-  char *line = mutt_mem_malloc(LONG_STRING);
-  size_t linelen = LONG_STRING;
-
-  p->hdr_offset = ftello(fp);
-
-  p->encoding = ENC7BIT; /* default from RFC1521 */
-  p->type = digest ? TYPEMESSAGE : TYPETEXT;
-  p->disposition = DISPINLINE;
-
-  while (*(line = mutt_rfc822_read_line(fp, line, &linelen)) != 0)
-  {
-    /* Find the value of the current header */
-    c = strchr(line, ':');
-    if (c)
-    {
-      *c = 0;
-      c = mutt_str_skip_email_wsp(c + 1);
-      if (!*c)
-      {
-        mutt_debug(1, "skipping empty header field: %s\n", line);
-        continue;
-      }
-    }
-    else
-    {
-      mutt_debug(1, "bogus MIME header: %s\n", line);
-      break;
-    }
-
-    if (mutt_str_strncasecmp("content-", line, 8) == 0)
-    {
-      if (mutt_str_strcasecmp("type", line + 8) == 0)
-        mutt_parse_content_type(c, p);
-      else if (mutt_str_strcasecmp("language", line + 8) == 0)
-        mutt_parse_content_language(c, p);
-      else if (mutt_str_strcasecmp("transfer-encoding", line + 8) == 0)
-        p->encoding = mutt_check_encoding(c);
-      else if (mutt_str_strcasecmp("disposition", line + 8) == 0)
-        parse_content_disposition(c, p);
-      else if (mutt_str_strcasecmp("description", line + 8) == 0)
-      {
-        mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
-      }
-    }
-#ifdef SUN_ATTACHMENT
-    else if (mutt_str_strncasecmp("x-sun-", line, 6) == 0)
-    {
-      if (mutt_str_strcasecmp("data-type", line + 6) == 0)
-        mutt_parse_content_type(c, p);
-      else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
-        p->encoding = mutt_check_encoding(c);
-      else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
-        mutt_param_set(&p->parameter, "content-lines", c);
-      else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
-      {
-        mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
-      }
-    }
-#endif
-  }
-  p->offset = ftello(fp); /* Mark the start of the real data */
-  if (p->type == TYPETEXT && !p->subtype)
-    p->subtype = mutt_str_strdup("plain");
-  else if (p->type == TYPEMESSAGE && !p->subtype)
-    p->subtype = mutt_str_strdup("rfc822");
-
-  FREE(&line);
-
-  return p;
-}
-
-void mutt_parse_part(FILE *fp, struct Body *b)
-{
-  char *bound = NULL;
-
-  switch (b->type)
-  {
-    case TYPEMULTIPART:
-#ifdef SUN_ATTACHMENT
-      if (mutt_str_strcasecmp(b->subtype, "x-sun-attachment") == 0)
-        bound = "--------";
-      else
-#endif
-        bound = mutt_param_get(&b->parameter, "boundary");
-
-      fseeko(fp, b->offset, SEEK_SET);
-      b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
-                                      (mutt_str_strcasecmp("digest", b->subtype) == 0));
-      break;
-
-    case TYPEMESSAGE:
-      if (b->subtype)
-      {
-        fseeko(fp, b->offset, SEEK_SET);
-        if (mutt_is_message_type(b->type, b->subtype))
-          b->parts = mutt_rfc822_parse_message(fp, b);
-        else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
-          b->parts = mutt_read_mime_header(fp, 0);
-        else
-          return;
-      }
-      break;
-
-    default:
-      return;
-  }
-
-  /* try to recover from parsing error */
-  if (!b->parts)
-  {
-    b->type = TYPETEXT;
-    mutt_str_replace(&b->subtype, "plain");
-  }
-}
-
-/**
- * mutt_rfc822_parse_message - parse a Message/RFC822 body
- * @param fp     stream to read from
- * @param parent info about the message/rfc822 body part
- * @retval ptr New Body containing parsed message
- *
- * NOTE: this assumes that `parent->length' has been set!
- */
-struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
-{
-  parent->hdr = mutt_header_new();
-  parent->hdr->offset = ftello(fp);
-  parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, 0, 0);
-  struct Body *msg = parent->hdr->content;
-
-  /* ignore the length given in the content-length since it could be wrong
-     and we already have the info to calculate the correct length */
-  /* if (msg->length == -1) */
-  msg->length = parent->length - (msg->offset - parent->offset);
-
-  /* if body of this message is empty, we can end up with a negative length */
-  if (msg->length < 0)
-    msg->length = 0;
-
-  mutt_parse_part(fp, msg);
-  return msg;
-}
-
-/**
- * mutt_parse_multipart - parse a multipart structure
- * @param fp       stream to read from
- * @param boundary body separator
- * @param end_off  length of the multipart body (used when the final
- *                 boundary is missing to avoid reading too far)
- * @param digest   true if reading a multipart/digest
- * @retval ptr New Body containing parsed structure
- */
-struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
-{
-  char buffer[LONG_STRING];
-  struct Body *head = NULL, *last = NULL, *new = NULL;
-  bool final = false; /* did we see the ending boundary? */
-
-  if (!boundary)
-  {
-    mutt_error(_("multipart message has no boundary parameter!"));
-    return NULL;
-  }
-
-  const size_t blen = mutt_str_strlen(boundary);
-  while (ftello(fp) < end_off && fgets(buffer, LONG_STRING, fp) != NULL)
-  {
-    const size_t len = mutt_str_strlen(buffer);
-
-    const size_t crlf = (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
-
-    if (buffer[0] == '-' && buffer[1] == '-' &&
-        (mutt_str_strncmp(buffer + 2, boundary, blen) == 0))
-    {
-      if (last)
-      {
-        last->length = ftello(fp) - last->offset - len - 1 - crlf;
-        if (last->parts && last->parts->length == 0)
-          last->parts->length = ftello(fp) - last->parts->offset - len - 1 - crlf;
-        /* if the body is empty, we can end up with a -1 length */
-        if (last->length < 0)
-          last->length = 0;
-      }
-
-      if (len > 0)
-      {
-        /* Remove any trailing whitespace, up to the length of the boundary */
-        for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
-          buffer[i] = 0;
-      }
-
-      /* Check for the end boundary */
-      if (mutt_str_strcmp(buffer + blen + 2, "--") == 0)
-      {
-        final = true;
-        break; /* done parsing */
-      }
-      else if (buffer[2 + blen] == 0)
-      {
-        new = mutt_read_mime_header(fp, digest);
-
-#ifdef SUN_ATTACHMENT
-        if (mutt_param_get(&new->parameter, "content-lines"))
-        {
-          int lines;
-          if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
-            lines = 0;
-          for (; lines; lines--)
-            if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)
-              break;
-        }
-#endif
-
-        /*
-         * Consistency checking - catch
-         * bad attachment end boundaries
-         */
-
-        if (new->offset > end_off)
-        {
-          mutt_body_free(&new);
-          break;
-        }
-        if (head)
-        {
-          last->next = new;
-          last = new;
-        }
-        else
-          last = head = new;
-      }
-    }
-  }
-
-  /* in case of missing end boundary, set the length to something reasonable */
-  if (last && last->length == 0 && !final)
-    last->length = end_off - last->offset;
-
-  /* parse recursive MIME parts */
-  for (last = head; last; last = last->next)
-    mutt_parse_part(fp, last);
-
-  return head;
-}
-
-/**
- * mutt_extract_message_id - Find a message-id
- *
- * extract the first substring that looks like a message-id.
- * call back with NULL for more (like strtok).
- */
-char *mutt_extract_message_id(const char *s, const char **saveptr)
-{
-  const char *o = NULL, *onull = NULL, *p = NULL;
-  char *ret = NULL;
-
-  if (s)
-    p = s;
-  else if (saveptr)
-    p = *saveptr;
-  else
-    return NULL;
-
-  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")) != NULL; ++p)
-  {
-    if (*p == '<')
-    {
-      s = p;
-      o = onull = NULL;
-      continue;
-    }
-
-    if (!s)
-      continue;
-
-    if (*p == '>')
-    {
-      size_t olen = onull - o, slen = p - s + 1;
-      ret = mutt_mem_malloc(olen + slen + 1);
-      if (o)
-        memcpy(ret, o, olen);
-      memcpy(ret + olen, s, slen);
-      ret[olen + slen] = '\0';
-      if (saveptr)
-        *saveptr = p + 1; /* next call starts after '>' */
-      return ret;
-    }
-
-    /* some idiotic clients break their message-ids between lines */
-    if (s == p)
-    {
-      /* step past another whitespace */
-      s = p + 1;
-    }
-    else if (o)
-    {
-      /* more than two lines, give up */
-      s = o = onull = NULL;
-    }
-    else
-    {
-      /* remember the first line, start looking for the second */
-      o = s;
-      onull = p;
-      s = p + 1;
-    }
-  }
-
-  return NULL;
-}
-
-void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
-{
-  struct Message *msg = NULL;
-
-  do
-  {
-    if (cur->content->type != TYPEMESSAGE && cur->content->type != TYPEMULTIPART)
-      break; /* nothing to do */
-
-    if (cur->content->parts)
-      break; /* The message was parsed earlier. */
-
-    msg = mx_msg_open(ctx, cur->msgno);
-    if (msg)
-    {
-      mutt_parse_part(msg->fp, cur->content);
-
-      if (WithCrypto)
-        cur->security = crypt_query(cur->content);
-
-      mx_msg_close(ctx, &msg);
-    }
-  } while (0);
-
-  cur->attach_valid = false;
 }
 
 int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
@@ -1165,6 +824,71 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
 }
 
 /**
+ * mutt_rfc822_read_line - Read a header line from a file
+ *
+ * Reads an arbitrarily long header field, and looks ahead for continuation
+ * lines.  ``line'' must point to a dynamically allocated string; it is
+ * increased if more space is required to fit the whole line.
+ */
+char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
+{
+  char *buf = line;
+  int ch;
+  size_t offset = 0;
+
+  while (true)
+  {
+    if (fgets(buf, *linelen - offset, f) == NULL || /* end of file or */
+        (ISSPACE(*line) && !offset))                /* end of headers */
+    {
+      *line = 0;
+      return line;
+    }
+
+    const size_t len = mutt_str_strlen(buf);
+    if (!len)
+      return line;
+
+    buf += len - 1;
+    if (*buf == '\n')
+    {
+      /* we did get a full line. remove trailing space */
+      while (ISSPACE(*buf))
+      {
+        *buf-- = 0; /* we cannot come beyond line's beginning because
+                     * it begins with a non-space */
+      }
+
+      /* check to see if the next line is a continuation line */
+      ch = fgetc(f);
+      if ((ch != ' ') && (ch != '\t'))
+      {
+        ungetc(ch, f);
+        return line; /* next line is a separate header field or EOH */
+      }
+
+      /* eat tabs and spaces from the beginning of the continuation line */
+      while ((ch = fgetc(f)) == ' ' || ch == '\t')
+        ;
+      ungetc(ch, f);
+      *++buf = ' '; /* string is still terminated because we removed
+                       at least one whitespace char above */
+    }
+
+    buf++;
+    offset = buf - line;
+    if (*linelen < offset + STRING)
+    {
+      /* grow the buffer */
+      *linelen += STRING;
+      mutt_mem_realloc(&line, *linelen);
+      buf = line + offset;
+    }
+  }
+  /* not reached */
+}
+
+/**
  * mutt_rfc822_read_header - parses an RFC822 header
  * @param f         Stream to read from
  * @param hdr       Header structure of current message (optional)
@@ -1331,160 +1055,275 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
 }
 
 /**
- * count_body_parts_check - Compares mime types to the ok and except lists
- * @param checklist List of AttachMatch
- * @param b         Email Body
- * @param dflt      Log whether the matches are OK, or Excluded
- * @retval true Attachment should be counted
+ * mutt_read_mime_header - Parse a MIME header
+ * @param fp      stream to read from
+ * @param digest  true if reading subparts of a multipart/digest
+ * @retval ptr New Body containing parsed structure
  */
-static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)
+struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 {
-  struct AttachMatch *a = NULL;
+  struct Body *p = mutt_body_new();
+  char *c = NULL;
+  char *line = mutt_mem_malloc(LONG_STRING);
+  size_t linelen = LONG_STRING;
 
-  /* If list is null, use default behavior. */
-  if (!checklist || STAILQ_EMPTY(checklist))
-  {
-    return false;
-  }
+  p->hdr_offset = ftello(fp);
 
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, checklist, entries)
+  p->encoding = ENC7BIT; /* default from RFC1521 */
+  p->type = digest ? TYPEMESSAGE : TYPETEXT;
+  p->disposition = DISPINLINE;
+
+  while (*(line = mutt_rfc822_read_line(fp, line, &linelen)) != 0)
   {
-    a = (struct AttachMatch *) np->data;
-    mutt_debug(5, "%s %d/%s ?? %s/%s [%d]... ", dflt ? "[OK]   " : "[EXCL] ", b->type,
-               b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
-    if ((a->major_int == TYPEANY || a->major_int == b->type) &&
-        (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
+    /* Find the value of the current header */
+    c = strchr(line, ':');
+    if (c)
     {
-      mutt_debug(5, "yes\n");
-      return true;
+      *c = 0;
+      c = mutt_str_skip_email_wsp(c + 1);
+      if (!*c)
+      {
+        mutt_debug(1, "skipping empty header field: %s\n", line);
+        continue;
+      }
     }
     else
     {
-      mutt_debug(5, "no\n");
+      mutt_debug(1, "bogus MIME header: %s\n", line);
+      break;
     }
-  }
 
-  return false;
+    if (mutt_str_strncasecmp("content-", line, 8) == 0)
+    {
+      if (mutt_str_strcasecmp("type", line + 8) == 0)
+        mutt_parse_content_type(c, p);
+      else if (mutt_str_strcasecmp("language", line + 8) == 0)
+        mutt_parse_content_language(c, p);
+      else if (mutt_str_strcasecmp("transfer-encoding", line + 8) == 0)
+        p->encoding = mutt_check_encoding(c);
+      else if (mutt_str_strcasecmp("disposition", line + 8) == 0)
+        parse_content_disposition(c, p);
+      else if (mutt_str_strcasecmp("description", line + 8) == 0)
+      {
+        mutt_str_replace(&p->description, c);
+        rfc2047_decode(&p->description);
+      }
+    }
+#ifdef SUN_ATTACHMENT
+    else if (mutt_str_strncasecmp("x-sun-", line, 6) == 0)
+    {
+      if (mutt_str_strcasecmp("data-type", line + 6) == 0)
+        mutt_parse_content_type(c, p);
+      else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
+        p->encoding = mutt_check_encoding(c);
+      else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
+        mutt_param_set(&p->parameter, "content-lines", c);
+      else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
+      {
+        mutt_str_replace(&p->description, c);
+        rfc2047_decode(&p->description);
+      }
+    }
+#endif
+  }
+  p->offset = ftello(fp); /* Mark the start of the real data */
+  if (p->type == TYPETEXT && !p->subtype)
+    p->subtype = mutt_str_strdup("plain");
+  else if (p->type == TYPEMESSAGE && !p->subtype)
+    p->subtype = mutt_str_strdup("rfc822");
+
+  FREE(&line);
+
+  return p;
 }
 
-static int count_body_parts(struct Body *body, int flags)
+/**
+ * mutt_is_message_type - Determine if a mime type matches a message or not
+ * @param type    Message type enum value
+ * @param subtype Message subtype
+ * @retval true  Type is message/news or message/rfc822
+ * @retval false Otherwise
+ */
+bool mutt_is_message_type(int type, const char *subtype)
 {
-  int count = 0;
+  if (type != TYPEMESSAGE)
+    return false;
 
-  if (!body)
-    return 0;
+  subtype = NONULL(subtype);
+  return ((mutt_str_strcasecmp(subtype, "rfc822") == 0) ||
+          (mutt_str_strcasecmp(subtype, "news") == 0));
+}
 
-  for (struct Body *bp = body; bp != NULL; bp = bp->next)
+void mutt_parse_part(FILE *fp, struct Body *b)
+{
+  char *bound = NULL;
+
+  switch (b->type)
   {
-    /* Initial disposition is to count and not to recurse this part. */
-    bool shallcount = true; /* default */
-    bool shallrecurse = false;
-
-    mutt_debug(5, "desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
-               bp->description ? bp->description : ("none"),
-               bp->filename ? bp->filename : bp->d_filename ? bp->d_filename : "(none)",
-               bp->type, bp->subtype ? bp->subtype : "*");
-
-    if (bp->type == TYPEMESSAGE)
-    {
-      shallrecurse = true;
-
-      /* If it's an external body pointer, don't recurse it. */
-      if (mutt_str_strcasecmp(bp->subtype, "external-body") == 0)
-        shallrecurse = false;
-
-      /* Don't count containers if they're top-level. */
-      if (flags & MUTT_PARTS_TOPLEVEL)
-        shallcount = false; // top-level message/*
-    }
-    else if (bp->type == TYPEMULTIPART)
-    {
-      /* Always recurse multiparts, except multipart/alternative. */
-      shallrecurse = true;
-      if (mutt_str_strcasecmp(bp->subtype, "alternative") == 0)
-        shallrecurse = false;
-
-      /* Don't count containers if they're top-level. */
-      if (flags & MUTT_PARTS_TOPLEVEL)
-        shallcount = false; /* top-level multipart */
-    }
-
-    if (bp->disposition == DISPINLINE && bp->type != TYPEMULTIPART &&
-        bp->type != TYPEMESSAGE && bp == body)
-    {
-      shallcount = false; /* ignore fundamental inlines */
-    }
-
-    /* If this body isn't scheduled for enumeration already, don't bother
-     * profiling it further.
-     */
-    if (shallcount)
-    {
-      /* Turn off shallcount if message type is not in ok list,
-       * or if it is in except list. Check is done separately for
-       * inlines vs. attachments.
-       */
-
-      if (bp->disposition == DISPATTACH)
-      {
-        if (!count_body_parts_check(&AttachAllow, bp, true))
-          shallcount = false; /* attach not allowed */
-        if (count_body_parts_check(&AttachExclude, bp, false))
-          shallcount = false; /* attach excluded */
-      }
+    case TYPEMULTIPART:
+#ifdef SUN_ATTACHMENT
+      if (mutt_str_strcasecmp(b->subtype, "x-sun-attachment") == 0)
+        bound = "--------";
       else
+#endif
+        bound = mutt_param_get(&b->parameter, "boundary");
+
+      fseeko(fp, b->offset, SEEK_SET);
+      b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
+                                      (mutt_str_strcasecmp("digest", b->subtype) == 0));
+      break;
+
+    case TYPEMESSAGE:
+      if (b->subtype)
       {
-        if (!count_body_parts_check(&InlineAllow, bp, true))
-          shallcount = false; /* inline not allowed */
-        if (count_body_parts_check(&InlineExclude, bp, false))
-          shallcount = false; /* excluded */
+        fseeko(fp, b->offset, SEEK_SET);
+        if (mutt_is_message_type(b->type, b->subtype))
+          b->parts = mutt_rfc822_parse_message(fp, b);
+        else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
+          b->parts = mutt_read_mime_header(fp, 0);
+        else
+          return;
       }
-    }
+      break;
 
-    if (shallcount)
-      count++;
-    bp->attach_qualifies = shallcount ? true : false;
-
-    mutt_debug(5, "%p shallcount = %d\n", (void *) bp, shallcount);
-
-    if (shallrecurse)
-    {
-      mutt_debug(5, "%p pre count = %d\n", (void *) bp, count);
-      bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
-      count += bp->attach_count;
-      mutt_debug(5, "%p post count = %d\n", (void *) bp, count);
-    }
+    default:
+      return;
   }
 
-  mutt_debug(5, "return %d\n", count < 0 ? 0 : count);
-  return (count < 0) ? 0 : count;
+  /* try to recover from parsing error */
+  if (!b->parts)
+  {
+    b->type = TYPETEXT;
+    mutt_str_replace(&b->subtype, "plain");
+  }
 }
 
-int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
+/**
+ * mutt_parse_multipart - parse a multipart structure
+ * @param fp       stream to read from
+ * @param boundary body separator
+ * @param end_off  length of the multipart body (used when the final
+ *                 boundary is missing to avoid reading too far)
+ * @param digest   true if reading a multipart/digest
+ * @retval ptr New Body containing parsed structure
+ */
+struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest)
 {
-  bool keep_parts = false;
+  char buffer[LONG_STRING];
+  struct Body *head = NULL, *last = NULL, *new = NULL;
+  bool final = false; /* did we see the ending boundary? */
 
-  if (hdr->attach_valid)
-    return hdr->attach_total;
-
-  if (hdr->content->parts)
-    keep_parts = true;
-  else
-    mutt_parse_mime_message(ctx, hdr);
-
-  if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
-      !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
+  if (!boundary)
   {
-    hdr->attach_total = count_body_parts(hdr->content, MUTT_PARTS_TOPLEVEL);
+    mutt_error(_("multipart message has no boundary parameter!"));
+    return NULL;
   }
-  else
-    hdr->attach_total = 0;
 
-  hdr->attach_valid = true;
+  const size_t blen = mutt_str_strlen(boundary);
+  while (ftello(fp) < end_off && fgets(buffer, LONG_STRING, fp) != NULL)
+  {
+    const size_t len = mutt_str_strlen(buffer);
 
-  if (!keep_parts)
-    mutt_body_free(&hdr->content->parts);
+    const size_t crlf = (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
 
-  return hdr->attach_total;
+    if (buffer[0] == '-' && buffer[1] == '-' &&
+        (mutt_str_strncmp(buffer + 2, boundary, blen) == 0))
+    {
+      if (last)
+      {
+        last->length = ftello(fp) - last->offset - len - 1 - crlf;
+        if (last->parts && last->parts->length == 0)
+          last->parts->length = ftello(fp) - last->parts->offset - len - 1 - crlf;
+        /* if the body is empty, we can end up with a -1 length */
+        if (last->length < 0)
+          last->length = 0;
+      }
+
+      if (len > 0)
+      {
+        /* Remove any trailing whitespace, up to the length of the boundary */
+        for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
+          buffer[i] = 0;
+      }
+
+      /* Check for the end boundary */
+      if (mutt_str_strcmp(buffer + blen + 2, "--") == 0)
+      {
+        final = true;
+        break; /* done parsing */
+      }
+      else if (buffer[2 + blen] == 0)
+      {
+        new = mutt_read_mime_header(fp, digest);
+
+#ifdef SUN_ATTACHMENT
+        if (mutt_param_get(&new->parameter, "content-lines"))
+        {
+          int lines;
+          if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
+            lines = 0;
+          for (; lines; lines--)
+            if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)
+              break;
+        }
+#endif
+
+        /*
+         * Consistency checking - catch
+         * bad attachment end boundaries
+         */
+
+        if (new->offset > end_off)
+        {
+          mutt_body_free(&new);
+          break;
+        }
+        if (head)
+        {
+          last->next = new;
+          last = new;
+        }
+        else
+          last = head = new;
+      }
+    }
+  }
+
+  /* in case of missing end boundary, set the length to something reasonable */
+  if (last && last->length == 0 && !final)
+    last->length = end_off - last->offset;
+
+  /* parse recursive MIME parts */
+  for (last = head; last; last = last->next)
+    mutt_parse_part(fp, last);
+
+  return head;
+}
+
+/**
+ * mutt_rfc822_parse_message - parse a Message/RFC822 body
+ * @param fp     stream to read from
+ * @param parent info about the message/rfc822 body part
+ * @retval ptr New Body containing parsed message
+ *
+ * NOTE: this assumes that 'parent->length' has been set!
+ */
+struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
+{
+  parent->hdr = mutt_header_new();
+  parent->hdr->offset = ftello(fp);
+  parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, 0, 0);
+  struct Body *msg = parent->hdr->content;
+
+  /* ignore the length given in the content-length since it could be wrong
+     and we already have the info to calculate the correct length */
+  /* if (msg->length == -1) */
+  msg->length = parent->length - (msg->offset - parent->offset);
+
+  /* if body of this message is empty, we can end up with a negative length */
+  if (msg->length < 0)
+    msg->length = 0;
+
+  mutt_parse_part(fp, msg);
+  return msg;
 }
