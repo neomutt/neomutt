@@ -44,6 +44,194 @@
 #include "url.h"
 
 /**
+ * parse_parameters - Parse a list of Parameters
+ * @param param Parameter list for the results
+ * @param s String to parse
+ */
+static void parse_parameters(struct ParameterList *param, const char *s)
+{
+  struct Parameter *new = NULL;
+  char buffer[LONG_STRING];
+  const char *p = NULL;
+  size_t i;
+
+  mutt_debug(2, "'%s'\n", s);
+
+  while (*s)
+  {
+    p = strpbrk(s, "=;");
+    if (!p)
+    {
+      mutt_debug(1, "malformed parameter: %s\n", s);
+      goto bail;
+    }
+
+    /* if we hit a ; now the parameter has no value, just skip it */
+    if (*p != ';')
+    {
+      i = p - s;
+      /* remove whitespace from the end of the attribute name */
+      while (i > 0 && mutt_str_is_email_wsp(s[i - 1]))
+        i--;
+
+      /* the check for the missing parameter token is here so that we can skip
+       * over any quoted value that may be present.
+       */
+      if (i == 0)
+      {
+        mutt_debug(1, "missing attribute: %s\n", s);
+        new = NULL;
+      }
+      else
+      {
+        new = mutt_param_new();
+        new->attribute = mutt_str_substr_dup(s, s + i);
+      }
+
+      s = mutt_str_skip_email_wsp(p + 1); /* skip over the = */
+
+      if (*s == '"')
+      {
+        bool state_ascii = true;
+        s++;
+        for (i = 0; *s && (i < (sizeof(buffer) - 1)); i++, s++)
+        {
+          if (AssumedCharset && *AssumedCharset)
+          {
+            /* As iso-2022-* has a character of '"' with non-ascii state,
+             * ignore it. */
+            if ((*s == 0x1b) && (i < (sizeof(buffer) - 2)))
+            {
+              if ((s[1] == '(') && ((s[2] == 'B') || (s[2] == 'J')))
+                state_ascii = true;
+              else
+                state_ascii = false;
+            }
+          }
+          if (state_ascii && (*s == '"'))
+            break;
+          if (*s == '\\')
+          {
+            /* Quote the next character */
+            buffer[i] = s[1];
+            if (!*++s)
+              break;
+          }
+          else
+            buffer[i] = *s;
+        }
+        buffer[i] = 0;
+        if (*s)
+          s++; /* skip over the " */
+      }
+      else
+      {
+        for (i = 0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buffer) - 1)); i++, s++)
+          buffer[i] = *s;
+        buffer[i] = 0;
+      }
+
+      /* if the attribute token was missing, 'new' will be NULL */
+      if (new)
+      {
+        new->value = mutt_str_strdup(buffer);
+
+        mutt_debug(2, "parse_parameter: '%s' = `%s'\n",
+                   new->attribute ? new->attribute : "", new->value ? new->value : "");
+
+        /* Add this parameter to the list */
+        TAILQ_INSERT_HEAD(param, new, entries);
+      }
+    }
+    else
+    {
+      mutt_debug(1, "parameter with no value: %s\n", s);
+      s = p;
+    }
+
+    /* Find the next parameter */
+    if ((*s != ';') && (s = strchr(s, ';')) == NULL)
+      break; /* no more parameters */
+
+    do
+    {
+      /* Move past any leading whitespace. the +1 skips over the semicolon */
+      s = mutt_str_skip_email_wsp(s + 1);
+    } while (*s == ';'); /* skip empty parameters */
+  }
+
+bail:
+
+  rfc2231_decode_parameters(param);
+}
+
+/**
+ * parse_content_disposition - Parse a content disposition
+ * @param s String to parse
+ * @param ct Body to save the result
+ *
+ * e.g. parse a string "inline" and set #DISP_INLINE.
+ */
+static void parse_content_disposition(const char *s, struct Body *ct)
+{
+  struct ParameterList parms;
+  TAILQ_INIT(&parms);
+
+  if (mutt_str_strncasecmp("inline", s, 6) == 0)
+    ct->disposition = DISP_INLINE;
+  else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
+    ct->disposition = DISP_FORM_DATA;
+  else
+    ct->disposition = DISP_ATTACH;
+
+  /* Check to see if a default filename was given */
+  s = strchr(s, ';');
+  if (s)
+  {
+    s = mutt_str_skip_email_wsp(s + 1);
+    parse_parameters(&parms, s);
+    s = mutt_param_get(&parms, "filename");
+    if (s)
+      mutt_str_replace(&ct->filename, s);
+    s = mutt_param_get(&parms, "name");
+    if (s)
+      ct->form_name = mutt_str_strdup(s);
+    mutt_param_free(&parms);
+  }
+}
+
+/**
+ * parse_references - Parse references from an email header
+ * @param head List to receive the references
+ * @param s    String to parse
+ */
+static void parse_references(struct ListHead *head, char *s)
+{
+  char *m = NULL;
+  const char *sp = NULL;
+
+  while ((m = mutt_extract_message_id(s, &sp)))
+  {
+    mutt_list_insert_head(head, m);
+    s = NULL;
+  }
+}
+
+/**
+ * parse_content_language - Read the content's language
+ * @param s  Language string
+ * @param ct Body of the email
+ */
+static void parse_content_language(char *s, struct Body *ct)
+{
+  if (!s || !ct)
+    return;
+
+  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
+  ct->language = mutt_str_strdup(s);
+}
+
+/**
  * mutt_matches_ignore - Does the string match the ignore list
  * @param s String to check
  * @retval true If string matches
@@ -126,7 +314,8 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 
     if (*p == '>')
     {
-      size_t olen = onull - o, slen = p - s + 1;
+      size_t olen = onull - o;
+      size_t slen = p - s + 1;
       ret = mutt_mem_malloc(olen + slen + 1);
       if (o)
         memcpy(ret, o, olen);
@@ -174,9 +363,7 @@ int mutt_check_encoding(const char *c)
   else if (mutt_str_strncasecmp("binary", c, sizeof("binary") - 1) == 0)
     return ENC_BINARY;
   else if (mutt_str_strncasecmp("quoted-printable", c, sizeof("quoted-printable") - 1) == 0)
-  {
     return ENC_QUOTED_PRINTABLE;
-  }
   else if (mutt_str_strncasecmp("base64", c, sizeof("base64") - 1) == 0)
     return ENC_BASE64;
   else if (mutt_str_strncasecmp("x-uuencode", c, sizeof("x-uuencode") - 1) == 0)
@@ -187,194 +374,6 @@ int mutt_check_encoding(const char *c)
 #endif
   else
     return ENC_OTHER;
-}
-
-/**
- * parse_parameters - Parse a list of Parameters
- * @param param Parameter list for the results
- * @param s String to parse
- */
-static void parse_parameters(struct ParameterList *param, const char *s)
-{
-  struct Parameter *new = NULL;
-  char buffer[LONG_STRING];
-  const char *p = NULL;
-  size_t i;
-
-  mutt_debug(2, "'%s'\n", s);
-
-  while (*s)
-  {
-    p = strpbrk(s, "=;");
-    if (!p)
-    {
-      mutt_debug(1, "malformed parameter: %s\n", s);
-      goto bail;
-    }
-
-    /* if we hit a ; now the parameter has no value, just skip it */
-    if (*p != ';')
-    {
-      i = p - s;
-      /* remove whitespace from the end of the attribute name */
-      while (i > 0 && mutt_str_is_email_wsp(s[i - 1]))
-        i--;
-
-      /* the check for the missing parameter token is here so that we can skip
-       * over any quoted value that may be present.
-       */
-      if (i == 0)
-      {
-        mutt_debug(1, "missing attribute: %s\n", s);
-        new = NULL;
-      }
-      else
-      {
-        new = mutt_param_new();
-        new->attribute = mutt_str_substr_dup(s, s + i);
-      }
-
-      s = mutt_str_skip_email_wsp(p + 1); /* skip over the = */
-
-      if (*s == '"')
-      {
-        bool state_ascii = true;
-        s++;
-        for (i = 0; *s && i < sizeof(buffer) - 1; i++, s++)
-        {
-          if (AssumedCharset && *AssumedCharset)
-          {
-            /* As iso-2022-* has a character of '"' with non-ascii state,
-             * ignore it. */
-            if (*s == 0x1b && i < sizeof(buffer) - 2)
-            {
-              if (s[1] == '(' && (s[2] == 'B' || s[2] == 'J'))
-                state_ascii = true;
-              else
-                state_ascii = false;
-            }
-          }
-          if (state_ascii && *s == '"')
-            break;
-          if (*s == '\\')
-          {
-            /* Quote the next character */
-            buffer[i] = s[1];
-            if (!*++s)
-              break;
-          }
-          else
-            buffer[i] = *s;
-        }
-        buffer[i] = 0;
-        if (*s)
-          s++; /* skip over the " */
-      }
-      else
-      {
-        for (i = 0; *s && *s != ' ' && *s != ';' && i < sizeof(buffer) - 1; i++, s++)
-          buffer[i] = *s;
-        buffer[i] = 0;
-      }
-
-      /* if the attribute token was missing, 'new' will be NULL */
-      if (new)
-      {
-        new->value = mutt_str_strdup(buffer);
-
-        mutt_debug(2, "parse_parameter: '%s' = `%s'\n",
-                   new->attribute ? new->attribute : "", new->value ? new->value : "");
-
-        /* Add this parameter to the list */
-        TAILQ_INSERT_HEAD(param, new, entries);
-      }
-    }
-    else
-    {
-      mutt_debug(1, "parameter with no value: %s\n", s);
-      s = p;
-    }
-
-    /* Find the next parameter */
-    if (*s != ';' && (s = strchr(s, ';')) == NULL)
-      break; /* no more parameters */
-
-    do
-    {
-      /* Move past any leading whitespace. the +1 skips over the semicolon */
-      s = mutt_str_skip_email_wsp(s + 1);
-    } while (*s == ';'); /* skip empty parameters */
-  }
-
-bail:
-
-  rfc2231_decode_parameters(param);
-}
-
-/**
- * parse_content_disposition - Parse a content disposition
- * @param s String to parse
- * @param ct Body to save the result
- *
- * e.g. parse a string "inline" and set #DISP_INLINE.
- */
-static void parse_content_disposition(const char *s, struct Body *ct)
-{
-  struct ParameterList parms;
-  TAILQ_INIT(&parms);
-
-  if (mutt_str_strncasecmp("inline", s, 6) == 0)
-    ct->disposition = DISP_INLINE;
-  else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
-    ct->disposition = DISP_FORM_DATA;
-  else
-    ct->disposition = DISP_ATTACH;
-
-  /* Check to see if a default filename was given */
-  s = strchr(s, ';');
-  if (s)
-  {
-    s = mutt_str_skip_email_wsp(s + 1);
-    parse_parameters(&parms, s);
-    s = mutt_param_get(&parms, "filename");
-    if (s)
-      mutt_str_replace(&ct->filename, s);
-    s = mutt_param_get(&parms, "name");
-    if (s)
-      ct->form_name = mutt_str_strdup(s);
-    mutt_param_free(&parms);
-  }
-}
-
-/**
- * parse_references - Parse references from an email header
- * @param head List to receive the references
- * @param s    String to parse
- */
-static void parse_references(struct ListHead *head, char *s)
-{
-  char *m = NULL;
-  const char *sp = NULL;
-
-  while ((m = mutt_extract_message_id(s, &sp)))
-  {
-    mutt_list_insert_head(head, m);
-    s = NULL;
-  }
-}
-
-/**
- * mutt_parse_content_language - Read the content's language
- * @param s  Language string
- * @param ct Body of the email
- */
-static void mutt_parse_content_language(char *s, struct Body *ct)
-{
-  if (!s || !ct)
-    return;
-
-  mutt_debug(2, "RFC8255 >> Content-Language set to %s\n", s);
-  ct->language = mutt_str_strdup(s);
 }
 
 /**
@@ -418,7 +417,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   if (subtype)
   {
     *subtype++ = '\0';
-    for (pc = subtype; *pc && !ISSPACE(*pc) && *pc != ';'; pc++)
+    for (pc = subtype; *pc && !ISSPACE(*pc) && (*pc != ';'); pc++)
       ;
     *pc = '\0';
     ct->subtype = mutt_str_strdup(subtype);
@@ -534,7 +533,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
         else if (mutt_str_strcasecmp(line + 8, "language") == 0)
         {
           if (hdr)
-            mutt_parse_content_language(p, hdr->content);
+            parse_content_language(p, hdr->content);
           matched = 1;
         }
         else if (mutt_str_strcasecmp(line + 8, "transfer-encoding") == 0)
@@ -634,7 +633,7 @@ int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
           /* HACK - neomutt has, for a very short time, produced negative
            * Lines header values.  Ignore them.
            */
-          if (mutt_str_atoi(p, &hdr->lines) < 0 || hdr->lines < 0)
+          if (mutt_str_atoi(p, &hdr->lines) < 0 || (hdr->lines < 0))
             hdr->lines = 0;
         }
 
@@ -891,8 +890,8 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
   while (true)
   {
-    if (fgets(buf, *linelen - offset, f) == NULL || /* end of file or */
-        (ISSPACE(*line) && !offset))                /* end of headers */
+    if (!fgets(buf, *linelen - offset, f) || /* end of file or */
+        (ISSPACE(*line) && !offset))         /* end of headers */
     {
       *line = 0;
       return line;
@@ -921,7 +920,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
       }
 
       /* eat tabs and spaces from the beginning of the continuation line */
-      while ((ch = fgetc(f)) == ' ' || ch == '\t')
+      while (((ch = fgetc(f)) == ' ') || (ch == '\t'))
         ;
       ungetc(ch, f);
       *++buf = ' '; /* string is still terminated because we removed
@@ -930,7 +929,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 
     buf++;
     offset = buf - line;
-    if (*linelen < offset + STRING)
+    if (*linelen < (offset + STRING))
     {
       /* grow the buffer */
       *linelen += STRING;
@@ -1151,7 +1150,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       if (mutt_str_strcasecmp("type", line + 8) == 0)
         mutt_parse_content_type(c, p);
       else if (mutt_str_strcasecmp("language", line + 8) == 0)
-        mutt_parse_content_language(c, p);
+        parse_content_language(c, p);
       else if (mutt_str_strcasecmp("transfer-encoding", line + 8) == 0)
         p->encoding = mutt_check_encoding(c);
       else if (mutt_str_strcasecmp("disposition", line + 8) == 0)
@@ -1278,13 +1277,13 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   }
 
   const size_t blen = mutt_str_strlen(boundary);
-  while (ftello(fp) < end_off && fgets(buffer, LONG_STRING, fp) != NULL)
+  while ((ftello(fp) < end_off) && fgets(buffer, LONG_STRING, fp))
   {
     const size_t len = mutt_str_strlen(buffer);
 
-    const size_t crlf = (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
+    const size_t crlf = ((len > 1) && (buffer[len - 2] == '\r')) ? 1 : 0;
 
-    if (buffer[0] == '-' && buffer[1] == '-' &&
+    if ((buffer[0] == '-') && (buffer[1] == '-') &&
         (mutt_str_strncmp(buffer + 2, boundary, blen) == 0))
     {
       if (last)
@@ -1300,7 +1299,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       if (len > 0)
       {
         /* Remove any trailing whitespace, up to the length of the boundary */
-        for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
+        for (size_t i = len - 1; ISSPACE(buffer[i]) && (i >= (blen + 2)); i--)
           buffer[i] = 0;
       }
 
@@ -1321,7 +1320,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
-            if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)
+            if ((ftello(fp) >= end_off) || !fgets(buffer, LONG_STRING, fp))
               break;
         }
 #endif
@@ -1346,7 +1345,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   }
 
   /* in case of missing end boundary, set the length to something reasonable */
-  if (last && last->length == 0 && !final)
+  if (last && (last->length == 0) && !final)
     last->length = end_off - last->offset;
 
   /* parse recursive MIME parts */
