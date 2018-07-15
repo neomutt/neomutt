@@ -45,6 +45,9 @@
 #include "imap/imap.h"
 #endif
 
+/**
+ * Menus - Menu name lookup table
+ */
 const struct Mapping Menus[] = {
   { "alias", MENU_ALIAS },
   { "attach", MENU_ATTACH },
@@ -60,16 +63,17 @@ const struct Mapping Menus[] = {
   { "key_select_pgp", MENU_KEY_SELECT_PGP },
   { "key_select_smime", MENU_KEY_SELECT_SMIME },
 #endif
-
 #ifdef MIXMASTER
   { "mix", MENU_MIX },
 #endif
-
   { "query", MENU_QUERY },
   { "generic", MENU_GENERIC },
   { NULL, 0 },
 };
 
+/**
+ * KeyNames - Key name lookup table
+ */
 static struct Mapping KeyNames[] = {
   { "<PageUp>", KEY_PPAGE },
   { "<PageDown>", KEY_NPAGE },
@@ -129,11 +133,16 @@ static struct Mapping KeyNames[] = {
   { NULL, 0 },
 };
 
-/* contains the last key the user pressed */
-int LastKey;
+int LastKey; /**< contains the last key the user pressed */
 
 struct Keymap *Keymaps[MENU_MAX];
 
+/**
+ * alloc_keys - Allocate space for a sequence of keys
+ * @param len  Number of keys
+ * @param keys Array of keys
+ * @retval ptr Sequence of keys
+ */
 static struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
   struct Keymap *p = mutt_mem_calloc(1, sizeof(struct Keymap));
@@ -143,6 +152,13 @@ static struct Keymap *alloc_keys(size_t len, keycode_t *keys)
   return p;
 }
 
+/**
+ * parse_fkey - Parse a function key string
+ * @param s String to parse
+ * @retval num Number of the key
+ *
+ * Given "<f8>", it will return 8.
+ */
 static int parse_fkey(char *s)
 {
   char *t = NULL;
@@ -165,6 +181,8 @@ static int parse_fkey(char *s)
 
 /**
  * parse_keycode - Parse a numeric keycode
+ * @param s String to parse
+ * @retval num Number of the key
  *
  * This function parses the string `<NNN>` and uses the octal value as the key
  * to bind.
@@ -185,6 +203,13 @@ static int parse_keycode(const char *s)
   return result;
 }
 
+/**
+ * parsekeys - Parse a key string into key codes
+ * @param str Key string
+ * @param d   Array for key codes
+ * @param max Maximum length of key sequence
+ * @retval num Length of key sequence
+ */
 static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
   int n;
@@ -239,6 +264,14 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 
 /**
  * km_bind_err - Set up a key binding
+ * @param s     Key string
+ * @param menu  Menu id, e.g. #MENU_EDITOR
+ * @param op    Operation, e.g. OP_DELETE
+ * @param macro Macro string
+ * @param descr Description of macro (OPTIONAL)
+ * @param err   Buffer for error message
+ * @retval  0 Success
+ * @retval -2 Error
  *
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
@@ -338,21 +371,55 @@ static int km_bind_err(char *s, int menu, int op, char *macro, char *descr, stru
   return retval;
 }
 
+/**
+ * km_bind - Bind a key to a macro
+ * @param s     Key string
+ * @param menu  Menu id, e.g. #MENU_EDITOR
+ * @param op    Operation, e.g. OP_DELETE
+ * @param macro Macro string
+ * @param descr Description of macro (OPTIONAL)
+ * @retval  0 Success
+ * @retval -2 Error
+ */
 int km_bind(char *s, int menu, int op, char *macro, char *descr)
 {
   return km_bind_err(s, menu, op, macro, descr, NULL);
 }
 
+/**
+ * km_bindkey_err - Bind a key in a Menu to an operation (with error message)
+ * @param s    Key string
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param op   Operation, e.g. OP_DELETE
+ * @param err  Buffer for error message
+ * @retval  0 Success
+ * @retval -2 Error
+ */
 static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
 
+/**
+ * km_bindkey - Bind a key in a Menu to an operation
+ * @param s    Key string
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param op   Operation, e.g. OP_DELETE
+ * @retval  0 Success
+ * @retval -2 Error
+ */
 static int km_bindkey(char *s, int menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
 
+/**
+ * get_op - Get the function by its name
+ * @param bindings Key bindings table
+ * @param start    Name of function to find
+ * @param len      Length of string to match
+ * @retval num Operation, e.g. OP_DELETE
+ */
 static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   for (int i = 0; bindings[i].name; i++)
@@ -367,6 +434,15 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   return OP_NULL;
 }
 
+/**
+ * get_func - Get the name of a function
+ * @param bindings Key bindings table
+ * @param op       Operation, e.g. OP_DELETE
+ * @retval ptr  Name of function
+ * @retval NULL Operation not found
+ *
+ * @note This returns a static string.
+ */
 static char *get_func(const struct Binding *bindings, int op)
 {
   for (int i = 0; bindings[i].name; i++)
@@ -380,6 +456,8 @@ static char *get_func(const struct Binding *bindings, int op)
 
 /**
  * generic_tokenize_push_string - Parse and queue a 'push' command
+ * @param s            String to push into the key queue
+ * @param generic_push Callback function to add events to macro queue
  *
  * Parses s for `<function>` syntax and adds the whole sequence to either the
  * macro or unget buffer.  This function is invoked by the next two defines
@@ -448,6 +526,14 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
   }
 }
 
+/**
+ * retry_generic - Try to find the key in the generic menu bindings
+ * @param menu    Menu id, e.g. #MENU_PAGER
+ * @param keys    Array of keys to return to the input queue
+ * @param keyslen Number of keys in the array
+ * @param lastkey Last key pressed (to return to input queue)
+ * @retval num Operation, e.g. OP_DELETE
+ */
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
@@ -610,6 +696,11 @@ int km_dokey(int menu)
   /* not reached */
 }
 
+/**
+ * create_bindings - Attach a set of keybindings to a Menu
+ * @param map  Key bindings
+ * @param menu Menu id, e.g. #MENU_PAGER
+ */
 static void create_bindings(const struct Binding *map, int menu)
 {
   for (int i = 0; map[i].name; i++)
@@ -617,6 +708,13 @@ static void create_bindings(const struct Binding *map, int menu)
       km_bindkey(map[i].seq, menu, map[i].op);
 }
 
+/**
+ * km_keyname - Get the human name for a key
+ * @param c Key code
+ * @retval ptr Name of the key
+ *
+ * @note This returns a pointer to a static buffer.
+ */
 static const char *km_keyname(int c)
 {
   static char buf[10];
@@ -648,6 +746,14 @@ static const char *km_keyname(int c)
   return buf;
 }
 
+/**
+ * km_expand_key - Get the key string bound to a Keymap
+ * @param s   Buffer for the key string
+ * @param len Length of buffer
+ * @param map Keybinding map
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 int km_expand_key(char *s, size_t len, struct Keymap *map)
 {
   int p = 0;
@@ -670,6 +776,12 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
   /* not reached */
 }
 
+/**
+ * km_find_func - Find a function's mapping in a Menu
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param func Function, e.g. OP_DELETE
+ * @retval ptr Keymap for the function
+ */
 struct Keymap *km_find_func(int menu, int func)
 {
   struct Keymap *map = Keymaps[menu];
@@ -681,7 +793,6 @@ struct Keymap *km_find_func(int menu, int func)
 }
 
 #ifdef NCURSES_VERSION
-
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
  */
@@ -729,8 +840,12 @@ static const struct Extkey ExtKeys[] = {
 
 /**
  * find_ext_name - Find the curses name for a key
+ * @param key Key name
+ * @retval ptr Curses name
  *
- * Look up NeoMutt's name for a key and find the ncurses extended name for it
+ * Look up NeoMutt's name for a key and find the ncurses extended name for it.
+ *
+ * @note This returns a static string.
  */
 static const char *find_ext_name(const char *key)
 {
@@ -780,6 +895,9 @@ void init_extended_keys(void)
 #endif
 }
 
+/**
+ * km_init - Initialise all the menu keybindings
+ */
 void km_init(void)
 {
   memset(Keymaps, 0, sizeof(struct Keymap *) * MENU_MAX);
@@ -899,6 +1017,10 @@ void km_init(void)
   km_bindkey("T", MENU_COMPOSE, OP_TAG);
 }
 
+/**
+ * km_error_key - Handle an unbound key sequence
+ * @param menu Menu id, e.g. #MENU_PAGER
+ */
 void km_error_key(int menu)
 {
   char buf[SHORT_STRING];
@@ -980,8 +1102,17 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 /**
  * parse_keymap - Parse a user-config key binding
+ * @param menu     Array for results
+ * @param s        Buffer containing config string
+ * @param maxmenus Total number of menus
+ * @param nummenus Number of menus this config applies to
+ * @param err      Buffer for error messages
+ * @param bind     If true 'bind', otherwise 'macro'
+ * @retval ptr Key string for the binding
  *
  * Expects to see: <menu-string>,<menu-string>,... <key-string>
+ *
+ * @note Caller needs to free the returned string
  */
 static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
                           int *nummenus, struct Buffer *err, bool bind)
@@ -1035,6 +1166,17 @@ error:
   return NULL;
 }
 
+/**
+ * try_bind - Try to make a key binding
+ * @param key      Key name
+ * @param menu     Menu id, e.g. #MENU_PAGER
+ * @param func     Function name
+ * @param bindings Key bindings table
+ * @param err      Buffer for error message
+ * @retval  0 Success
+ * @retval -1 Unknown function
+ * @retval -2 Error
+ */
 static int try_bind(char *key, int menu, char *func,
                     const struct Binding *bindings, struct Buffer *err)
 {
@@ -1053,6 +1195,11 @@ static int try_bind(char *key, int menu, char *func,
   return -1; /* Couldn't find an existing function with this name */
 }
 
+/**
+ * km_get_table - Lookup a menu's keybindings
+ * @param menu Menu id, e.g. #MENU_EDITOR
+ * @retval ptr Array of keybindings
+ */
 const struct Binding *km_get_table(int menu)
 {
   switch (menu)
