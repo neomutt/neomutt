@@ -436,7 +436,7 @@ int main(int argc, char *argv[], char *envp[])
           flags |= MUTT_NOSYSRC;
           break;
         case 'p':
-          sendflags |= SENDPOSTPONED;
+          sendflags |= SEND_POSTPONED;
           break;
         case 'Q':
           mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
@@ -454,7 +454,7 @@ int main(int argc, char *argv[], char *envp[])
           version++;
           break;
         case 'x': /* mailx compatible send mode */
-          sendflags |= SENDMAILX;
+          sendflags |= SEND_MAILX;
           break;
         case 'y': /* My special hack mode */
           flags |= MUTT_SELECT;
@@ -552,7 +552,7 @@ int main(int argc, char *argv[], char *envp[])
       dump_variables || batch_mode)
   {
     OptNoCurses = true;
-    sendflags = SENDBATCH;
+    sendflags = SEND_BATCH;
     MuttLogger = log_disp_terminal;
     log_queue_flush(log_disp_terminal);
   }
@@ -707,11 +707,11 @@ int main(int argc, char *argv[], char *envp[])
     goto main_ok; // TEST22: neomutt -B
   }
 
-  if (sendflags & SENDPOSTPONED)
+  if (sendflags & SEND_POSTPONED)
   {
     if (!OptNoCurses)
       mutt_flushinp();
-    if (ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL) == 0)
+    if (ci_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL) == 0)
       rc = 0;
     // TEST23: neomutt -p (postponed message, cancel)
     // TEST24: neomutt -p (no postponed message)
@@ -837,10 +837,10 @@ int main(int argc, char *argv[], char *envp[])
        * it doesn't get unlinked, and we can rebuild the draft_file
        */
       else
-        sendflags |= SENDNOFREEHEADER;
+        sendflags |= SEND_NO_FREE_HEADER;
 
       /* Parse the draft_file into the full Header/Body structure.
-       * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
+       * Set SEND_DRAFT_FILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
       if (draft_file)
@@ -848,7 +848,7 @@ int main(int argc, char *argv[], char *envp[])
         struct Envelope *opts_env = msg->env;
         struct stat st;
 
-        sendflags |= SENDDRAFTFILE;
+        sendflags |= SEND_DRAFT_FILE;
 
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.
@@ -896,7 +896,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_header_free(&context_hdr);
       }
       /* Editing the include_file: pass it directly in.
-       * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
+       * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.
        */
       else if (edit_infile)
         bodyfile = expanded_infile;

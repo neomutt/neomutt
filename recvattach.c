@@ -1529,7 +1529,7 @@ void mutt_view_attachments(struct Header *hdr)
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
         mutt_attach_forward(CURATTACH->fp, hdr, actx,
-                            menu->tagprefix ? NULL : CURATTACH->content, SENDNEWS);
+                            menu->tagprefix ? NULL : CURATTACH->content, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1544,7 +1544,7 @@ void mutt_view_attachments(struct Header *hdr)
         {
           mutt_attach_reply(CURATTACH->fp, hdr, actx,
                             menu->tagprefix ? NULL : CURATTACH->content,
-                            SENDNEWS | SENDREPLY);
+                            SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
           break;
         }
@@ -1556,8 +1556,8 @@ void mutt_view_attachments(struct Header *hdr)
 
         CHECK_ATTACH;
 
-        flags = SENDREPLY | (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
-                (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
+        flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
+                (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
         mutt_attach_reply(CURATTACH->fp, hdr, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;

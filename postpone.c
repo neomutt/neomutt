@@ -277,13 +277,13 @@ static struct Header *select_msg(void)
  * @param fcclen  max length of fcc
  * @retval -1         Error/no messages
  * @retval 0          Normal exit
- * @retval #SENDREPLY Recalled message is a reply
+ * @retval #SEND_REPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
                        struct Header **cur, char *fcc, size_t fcclen)
 {
   struct Header *h = NULL;
-  int code = SENDPOSTPONED;
+  int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
 
@@ -356,7 +356,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         *cur = mutt_hash_find(ctx->id_hash, p);
       }
       if (*cur)
-        code |= SENDREPLY;
+        code |= SEND_REPLY;
     }
     else if (mutt_str_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
     {
@@ -369,7 +369,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
        * user to not make a copy if the header field is present, but empty.
        * see http://dev.mutt.org/trac/ticket/3653
        */
-      code |= SENDPOSTPONEDFCC;
+      code |= SEND_POSTPONED_FCC;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              ((mutt_str_strncmp("Pgp:", np->data, 4) == 0) /* this is generated

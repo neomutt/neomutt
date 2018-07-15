@@ -728,7 +728,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   }
 
 #ifdef USE_NNTP
-  if ((flags & SENDNEWS))
+  if ((flags & SEND_NEWS))
   {
     /* in case followup set Newsgroups: with Followup-To: if it present */
     if (!env->newsgroups && curenv &&
@@ -757,7 +757,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       }
     }
 
-    if ((flags & SENDLISTREPLY) && !env->to)
+    if ((flags & SEND_LIST_REPLY) && !env->to)
     {
       mutt_error(_("No mailing lists found!"));
       return -1;
@@ -821,7 +821,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   char prefix[SHORT_STRING];
 
 #ifdef USE_NNTP
-  if (flags & SENDNEWS)
+  if (flags & SEND_NEWS)
     OptNewsSend = true;
   else
     OptNewsSend = false;
