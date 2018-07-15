@@ -1730,8 +1730,8 @@ int imap_subscribe(char *path, bool subscribe)
     mutt_buffer_init(&err);
     err.data = errstr;
     err.dsize = sizeof(errstr);
-	len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
-	imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
+    len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
+    imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
     if (mutt_parse_rc_line(mbox, &token, &err))
       mutt_debug(1, "Error adding subscribed mailbox: %s\n", errstr);
     FREE(&token.data);

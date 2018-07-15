@@ -1885,13 +1885,13 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_SENDER:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1,
-                                        h->env->sender));
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
+                                        1, h->env->sender));
     case MUTT_FROM:
       if (!h->env)
         return 0;
-      return (pat->not ^
-              match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->from));
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
+                                        1, h->env->from));
     case MUTT_TO:
       if (!h->env)
         return 0;
@@ -1924,14 +1924,14 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_ADDRESS:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 4,
-                                        h->env->from, h->env->sender,
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
+                                        4, h->env->from, h->env->sender,
                                         h->env->to, h->env->cc));
     case MUTT_RECIPIENT:
       if (!h->env)
         return 0;
-      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 2,
-                                        h->env->to, h->env->cc));
+      return (pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
+                                        2, h->env->to, h->env->cc));
     case MUTT_LIST: /* known list, subscribed or not */
       if (!h->env)
         return 0;

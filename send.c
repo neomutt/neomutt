@@ -1076,7 +1076,8 @@ struct Address *mutt_default_from(void)
 
   if (From)
     addr = mutt_addr_copy(From);
-  else {
+  else
+  {
     addr = mutt_addr_new();
     if (UseDomain)
     {
