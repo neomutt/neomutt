@@ -1684,8 +1684,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       goto cleanup;
     }
 
-    if (!SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) && Editor &&
-        (mutt_str_strcmp(Editor, "builtin") != 0))
+    if (!SigOnTop && !(flags & (SEND_MAILX | SEND_KEY | SEND_BATCH)) &&
+        Editor && (mutt_str_strcmp(Editor, "builtin") != 0))
     {
       append_signature(tempfp);
     }

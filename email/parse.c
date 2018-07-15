@@ -953,8 +953,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
  *
  * Caller should free the Envelope using mutt_env_free().
  */
-struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
-                                         bool user_hdrs, bool weed)
+struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_hdrs, bool weed)
 {
   struct Envelope *e = mutt_env_new();
   char *line = mutt_mem_malloc(LONG_STRING);

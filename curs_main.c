@@ -2951,7 +2951,8 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, Context,
+                        tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -2987,7 +2988,8 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
+                        tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 

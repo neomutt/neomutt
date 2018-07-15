@@ -2999,7 +2999,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SEND_NEWS);
         else
-          ci_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx, extra->hdr);
+          ci_send_message(SEND_NEWS | SEND_FORWARD, NULL, NULL, extra->ctx,
+                          extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3027,7 +3028,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                               SEND_NEWS | SEND_REPLY);
           }
           else
-            ci_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx, extra->hdr);
+            ci_send_message(SEND_NEWS | SEND_REPLY, NULL, NULL, extra->ctx,
+                            extra->hdr);
           pager_menu->redraw = REDRAW_FULL;
           break;
         }

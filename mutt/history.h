@@ -59,4 +59,3 @@ void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 int   mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches);
 
 #endif /* _MUTT_HISTORY_H */
-

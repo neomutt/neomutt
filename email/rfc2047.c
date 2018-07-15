@@ -425,9 +425,8 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
  * @param specials Special characters to be encoded
  * @retval 0 Success
  */
-static int encode(const char *d, size_t dlen, int col,
-                           const char *fromcode, const char *charsets, char **e,
-                           size_t *elen, const char *specials)
+static int encode(const char *d, size_t dlen, int col, const char *fromcode,
+                  const char *charsets, char **e, size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;

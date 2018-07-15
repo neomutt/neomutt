@@ -39,10 +39,10 @@ extern struct Hash *TagTransforms;
  */
 struct TagNode
 {
-    char *name;
-    char *transformed;
-    bool hidden;
-    STAILQ_ENTRY(TagNode) entries;
+  char *name;
+  char *transformed;
+  bool hidden;
+  STAILQ_ENTRY(TagNode) entries;
 };
 STAILQ_HEAD(TagHead, TagNode);
 

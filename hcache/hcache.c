@@ -132,7 +132,7 @@ static bool crc_matches(const char *d, unsigned int crc)
   if (!d)
     return false;
 
-  unsigned int mycrc = *(unsigned int *)(d + sizeof(union Validate));
+  unsigned int mycrc = *(unsigned int *) (d + sizeof(union Validate));
 
   return (crc == mycrc);
 }
