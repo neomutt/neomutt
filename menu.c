@@ -1116,7 +1116,7 @@ void mutt_menu_set_redraw_full(int menu_type)
 /**
  * mutt_menu_current_redraw - Redraw the current menu
  */
-void mutt_menu_current_redraw()
+void mutt_menu_current_redraw(void)
 {
   struct Menu *current_menu = get_current_menu();
   if (current_menu)

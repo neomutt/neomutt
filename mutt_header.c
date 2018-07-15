@@ -77,6 +77,10 @@ static void label_ref_inc(struct Context *ctx, char *label)
 
 /**
  * label_message - add an X-Label: field
+ * @param[in]  ctx Mailbox
+ * @param[in]  hdr Header of email
+ * @param[out] new Set to true if this is a new label
+ * @retval true If the label was added
  */
 static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
 {

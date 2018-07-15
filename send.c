@@ -116,6 +116,10 @@ char *Signature;
 bool SigOnTop;
 bool UseFrom;
 
+/**
+ * append_signature - Append a signature to an email
+ * @param f File to write to
+ */
 static void append_signature(FILE *f)
 {
   FILE *tmpfp = NULL;
@@ -249,6 +253,13 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
   return top;
 }
 
+/**
+ * edit_address - Edit an email address
+ * @param a     Address to edit
+ * @param field Prompt for user
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int edit_address(struct Address **a, /* const */ char *field)
 {
   char buf[HUGE_STRING];
@@ -385,6 +396,10 @@ static char *nntp_get_header(const char *s)
 }
 #endif
 
+/**
+ * process_user_recips - Process the user headers
+ * @param env Envelope to populate
+ */
 static void process_user_recips(struct Envelope *env)
 {
   struct ListNode *uh = NULL;
@@ -407,6 +422,10 @@ static void process_user_recips(struct Envelope *env)
   }
 }
 
+/**
+ * process_user_header - Process the user headers
+ * @param env Envelope to populate
+ */
 static void process_user_header(struct Envelope *env)
 {
   struct ListNode *uh = NULL;
@@ -451,6 +470,12 @@ static void process_user_header(struct Envelope *env)
   }
 }
 
+/**
+ * mutt_forward_intro - Add the "start of forwarded message" text
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param fp  File to write to
+ */
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 {
   if (!ForwardAttributionIntro || !fp)
@@ -464,6 +489,12 @@ void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
   fputs("\n\n", fp);
 }
 
+/**
+ * mutt_forward_trailer - Add a "end of forwarded message" text
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param fp  File to write to
+ */
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 {
   if (!ForwardAttributionTrailer || !fp)
@@ -478,6 +509,14 @@ void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
   fputc('\n', fp);
 }
 
+/**
+ * include_forward - Write out a forwarded message
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param out File to write to
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
@@ -515,6 +554,12 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
   return 0;
 }
 
+/**
+ * mutt_make_attribution - Add "on DATE, PERSON wrote" header
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param out File to write to
+ */
 void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 {
   if (!Attribution || !out)
@@ -528,6 +573,12 @@ void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
   fputc('\n', out);
 }
 
+/**
+ * mutt_make_post_indent - Add suffix to replied email text
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param out File to write to
+ */
 void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 {
   if (!PostIndentString || !out)
@@ -539,6 +590,14 @@ void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
   fputc('\n', out);
 }
 
+/**
+ * include_reply - Generate the reply text for an email
+ * @param ctx Mailbox
+ * @param cur Header of email
+ * @param out File to write to
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
@@ -571,6 +630,15 @@ static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
   return 0;
 }
 
+/**
+ * default_to - Generate default email addresses
+ * @param to      'To' address
+ * @param env     Envelope to populate
+ * @param flags   Flags, e.g. #SEND_LIST_REPLY
+ * @param hmfupto If true, add 'followup-to' address to 'to' address
+ * @retval  0 Success
+ * @retval -1 Aborted
+ */
 static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
 {
   char prompt[STRING];
@@ -646,6 +714,14 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   return 0;
 }
 
+/**
+ * mutt_fetch_recips - Generate recpients for a reply email
+ * @param out   Envelope to populate
+ * @param in    Envelope of source email
+ * @param flags Flags, e.g. SENDLISTREPLY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 {
   struct Address *tmp = NULL;
@@ -719,6 +795,10 @@ static void add_message_id(struct ListHead *head, struct Envelope *e)
   }
 }
 
+/**
+ * mutt_fix_reply_recipients - Remove duplicate recipients
+ * @param env Envelope to fix
+ */
 void mutt_fix_reply_recipients(struct Envelope *env)
 {
   if (!Metoo)
@@ -742,6 +822,12 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   }
 }
 
+/**
+ * mutt_make_forward_subject - Create a subject for a forwarded email
+ * @param env Envelope for result
+ * @param ctx Mailbox
+ * @param cur Header of email
+ */
 void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur)
 {
   if (!env)
@@ -754,6 +840,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   mutt_str_replace(&env->subject, buffer);
 }
 
+/**
+ * mutt_make_misc_reply_headers - Set subject for a reply
+ * @param env    Envelope for result
+ * @param curenv Envelope of source email
+ */
 void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
 {
   if (!env || !curenv)
@@ -772,6 +863,11 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
     env->subject = mutt_str_strdup(EmptySubject);
 }
 
+/**
+ * mutt_add_to_reference_headers - Generate references for a reply email
+ * @param env    Envelope for result
+ * @param curenv Envelope of source email
+ */
 void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv)
 {
   add_references(&env->references, curenv);
@@ -784,6 +880,12 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 #endif
 }
 
+/**
+ * make_reference_headers - Generate reference headers for an email
+ * @param curenv Envelope of source email
+ * @param env    Envelope for result
+ * @param ctx    Mailbox
+ */
 static void make_reference_headers(struct Envelope *curenv,
                                    struct Envelope *env, struct Context *ctx)
 {
@@ -811,6 +913,15 @@ static void make_reference_headers(struct Envelope *curenv,
   }
 }
 
+/**
+ * envelope_defaults - Fill in some defaults for a new email
+ * @param env   Envelope for result
+ * @param ctx   Mailbox
+ * @param cur   Header of email
+ * @param flags Flags, e.g. #SEND_REPLY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
                              struct Header *cur, int flags)
 {
@@ -1009,13 +1120,16 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
   return 0;
 }
 
+/**
+ * mutt_set_followup_to - Set followup-to field
+ * @param e Envelope to modify
+ */
 void mutt_set_followup_to(struct Envelope *e)
 {
   struct Address *t = NULL;
   struct Address *from = NULL;
 
-  /*
-   * Only generate the Mail-Followup-To if the user has requested it, and
+  /* Only generate the Mail-Followup-To if the user has requested it, and
    * it hasn't already been set
    */
 
@@ -1224,6 +1338,8 @@ static int send_message(struct Header *msg)
 
 /**
  * mutt_encode_descriptions - rfc2047 encode the content-descriptions
+ * @param b       Body of email
+ * @param recurse If true, encode children parts
  */
 void mutt_encode_descriptions(struct Body *b, short recurse)
 {
@@ -1240,6 +1356,7 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
 
 /**
  * decode_descriptions - rfc2047 decode them in case of an error
+ * @param b MIME parts to decode
  */
 static void decode_descriptions(struct Body *b)
 {
@@ -1254,6 +1371,10 @@ static void decode_descriptions(struct Body *b)
   }
 }
 
+/**
+ * fix_end_of_file - Ensure a file ends with a linefeed
+ * @param data Name of file to fix
+ */
 static void fix_end_of_file(const char *data)
 {
   FILE *fp = mutt_file_fopen(data, "a+");
@@ -1294,6 +1415,15 @@ int mutt_compose_to_sender(struct Header *hdr)
   return ci_send_message(0, msg, NULL, NULL, NULL);
 }
 
+/**
+ * mutt_resend_message - Resend an email
+ * @param fp  File containing email
+ * @param ctx Mailbox
+ * @param cur Header of email to resend
+ * @retval  0 Message was successfully sent
+ * @retval -1 Message was aborted or an error occurred
+ * @retval  1 Message was postponed
+ */
 int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 {
   struct Header *msg = mutt_header_new();

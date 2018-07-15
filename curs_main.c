@@ -247,6 +247,7 @@ static int ci_previous_undeleted(int msgno)
 
 /**
  * ci_first_message - Get index of first new message
+ * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
@@ -289,6 +290,9 @@ static int ci_first_message(void)
 
 /**
  * mx_toggle_write - Toggle the mailbox's readonly flag
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * This should be in mx.c, but it only gets used here.
  */
@@ -841,6 +845,7 @@ static void index_menu_redraw(struct Menu *menu)
 
 /**
  * mutt_index_menu - Display a list of emails
+ * @retval num How the menu was finished, e.g. OP_QUIT, OP_EXIT
  *
  * This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
@@ -1049,8 +1054,7 @@ int mutt_index_menu(void)
         mutt_resize_screen();
         SigWinch = 0;
         menu->top = 0; /* so we scroll the right amount */
-        /*
-         * force a real complete redraw.  clrtobot() doesn't seem to be able
+        /* force a real complete redraw.  clrtobot() doesn't seem to be able
          * to handle every case without this.
          */
         clearok(stdscr, true);
@@ -1741,9 +1745,7 @@ int mutt_index_menu(void)
           else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
             update_index(menu, Context, check, oc, index_hint);
 
-          /*
-           * do a sanity check even if mx_mbox_sync failed.
-           */
+          /* do a sanity check even if mx_mbox_sync failed.  */
 
           if (menu->current < 0 || menu->current >= Context->vcount)
             menu->current = ci_first_message();
@@ -2126,8 +2128,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        /*
-         * toggle the weeding of headers so that a user can press the key
+        /* toggle the weeding of headers so that a user can press the key
          * again while reading the message.
          */
         if (op == OP_DISPLAY_HEADERS)

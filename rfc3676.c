@@ -69,6 +69,8 @@ static int get_quote_level(const char *line)
 
 /**
  * space_quotes - Should we add spaces between quote levels
+ * @param s State to use
+ * @retval true If spaces should be added
  *
  * Determines whether to add spacing between/after each quote level:
  * `   >>>foo`
@@ -88,6 +90,9 @@ static int space_quotes(struct State *s)
 
 /**
  * add_quote_suffix - Should we add a trailing space to quotes
+ * @param s  State to use
+ * @param ql Quote level
+ * @retval true If spaces should be added
  *
  * Determines whether to add a trailing space to quotes:
  * `   >>> foo`
@@ -156,6 +161,9 @@ static void flush_par(struct State *s, struct FlowedState *fst)
 
 /**
  * quote_width - Calculate the paragraph width based upon the quote level
+ * @param s  State to use
+ * @param ql Quote level
+ * @retval int Paragraph width
  *
  * The start of a quoted line will be ">>> ", so we need to subtract the space
  * required for the prefix from the terminal width.
@@ -265,7 +273,10 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
 }
 
 /**
- * rfc3676_handler - body handler implementing RFC3676 for format=flowed
+ * rfc3676_handler - Body handler implementing RFC3676 for format=flowed
+ * @param a Body to handle
+ * @param s State to use
+ * @retval 0 Always
  */
 int rfc3676_handler(struct Body *a, struct State *s)
 {
@@ -336,6 +347,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
 /**
  * rfc3676_space_stuff - Perform required RFC3676 space stuffing
+ * @param hdr Header of email
  *
  * Space stuffing means that we have to add leading spaces to
  * certain lines:

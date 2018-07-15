@@ -80,13 +80,6 @@ bool pgp_cansign(unsigned char type)
   }
 }
 
-/* return values:
-
- * 1 = sign only
- * 2 = encrypt only
- * 3 = both
- */
-
 short pgp_get_abilities(unsigned char type)
 {
   return (pgp_canencrypt(type) << 1) | pgp_cansign(type);

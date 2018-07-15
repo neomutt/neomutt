@@ -46,8 +46,7 @@
 /* These Config Variables are only used in edit.c */
 char *Escape;
 
-/*
- * SLcurses_waddnstr() can't take a "const char *", so this is only
+/* SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
  */
 static char *EditorHelp1 =

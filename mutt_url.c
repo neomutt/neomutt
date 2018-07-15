@@ -30,6 +30,14 @@
 #include "mutt.h"
 #include "globals.h"
 
+/**
+ * url_parse_mailto - Parse a mailto:// url
+ * @param[in]  e    Envelope to fill
+ * @param[out] body Body to
+ * @param[in]  src  String to parse
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
   char *p = NULL;

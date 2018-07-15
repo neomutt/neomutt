@@ -115,9 +115,12 @@ static bool check_for_mailing_list(struct Address *addr, const char *pfx, char *
 
 /**
  * check_for_mailing_list_addr - Check an address list for a mailing list
+ * @param addr   Address list
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @retval true Mailing list found
  *
- * If one is found, print the address of the list into buf, then return 1.
- * Otherwise, simply return 0.
+ * If one is found, print the address of the list into buf.
  */
 static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buflen)
 {
@@ -342,6 +345,7 @@ static bool user_in_addr(struct Address *a)
 
 /**
  * user_is_recipient - Is the user a recipient of the message
+ * @param h Header of email to test
  * @retval 0 User is not in list
  * @retval 1 User is unique recipient
  * @retval 2 User is in the TO list

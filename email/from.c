@@ -179,8 +179,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     if (!*s)
       return false;
 
-    /*
-     * some places have two timezone fields after the time, e.g.
+    /* some places have two timezone fields after the time, e.g.
      *      From xxxx@yyyyyyy.fr Wed Aug  2 00:39:12 MET DST 1995
      */
     if (isalpha((unsigned char) *s))

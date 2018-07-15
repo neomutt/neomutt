@@ -107,8 +107,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
             ctx->changed = true;
         }
 #endif
-        /*
-         * If the user undeletes a message which is marked as
+        /* If the user undeletes a message which is marked as
          * "trash" in the maildir folder on disk, the folder has
          * been changed, and is marked accordingly.  However, we do
          * _not_ mark the message itself changed, because trashing

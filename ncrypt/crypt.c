@@ -69,6 +69,8 @@ bool SmimeSelfEncrypt;
 
 /**
  * crypt_current_time - Print the current time
+ * @param s        State to use
+ * @param app_name App name, e.g. "PGP"
  *
  * print the current time to avoid spoofing of the signature output
  */
@@ -130,6 +132,9 @@ static void disable_coredumps(void)
 
 /**
  * crypt_valid_passphrase - Check that we have a usable passphrase, ask if not
+ * @param flags Flags, e.g. #APPLICATION_PGP
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int crypt_valid_passphrase(int flags)
 {
@@ -411,6 +416,9 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 
 /**
  * mutt_is_malformed_multipart_pgp_encrypted - Check for malformed layout
+ * @param b Body of email
+ * @retval PGPENCRYPT Success
+ * @retval 0          Error
  *
  * This checks for the malformed layout caused by MS Exchange in
  * some cases:
@@ -586,6 +594,9 @@ int mutt_is_application_smime(struct Body *m)
 
 /**
  * crypt_query - Check out the type of encryption used
+ * @param m Body of email
+ * @retval num Flags, e.g. #GOODSIGN
+ * @retval 0   Error
  *
  * Set the cached status values if there are any.
  */
@@ -652,6 +663,11 @@ int crypt_query(struct Body *m)
 
 /**
  * crypt_write_signed - Write the message body/part
+ * @param a        Body to write
+ * @param s        State to use
+ * @param tempfile File to write to
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * Body/part A described by state S to the given TEMPFILE.
  */
@@ -862,6 +878,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
 
 /**
  * crypt_get_keys - Check we have all the keys we need
+ * @param[in]  msg         Message with addresses to match
+ * @param[out] keylist     Keys needed
+ * @param[in]  oppenc_mode If true, use opportunistic encryption
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * Do a quick check to make sure that we can find all of the
  * encryption keys if the user has requested this service.
@@ -936,6 +957,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
 
 /**
  * crypt_opportunistic_encrypt - Can all recipients be determined
+ * @param msg Header of email
  *
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
@@ -983,6 +1005,10 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 
 /**
  * mutt_signed_handler - Verify a "multipart/signed" body
+ * @param a Body to verify
+ * @param s State to use
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
@@ -1207,6 +1233,8 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
 
 /**
  * crypt_is_numerical_keyid - Is this a numerical keyid
+ * @param s Key to test
+ * @retval true If keyid is numeric
  *
  * Check if a crypt-hook value is a key id.
  */

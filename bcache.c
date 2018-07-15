@@ -67,8 +67,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 
   /* make up a Url we can turn into a string */
   mutt_account_tourl(account, &url);
-  /*
-   * mutt_account_tourl() just sets up some pointers;
+  /* mutt_account_tourl() just sets up some pointers;
    * if this ever changes, we have a memleak here
    */
   url.path = NULL;

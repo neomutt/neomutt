@@ -184,8 +184,33 @@ int smime_class_valid_passphrase(void)
 
 /**
  * fmt_smime_command - Format an SMIME command
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
  * This is almost identical to pgp's invoking interface.
+ *
+ * fmt_smime_command() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:-----------------------------------------------------------------
+ * | \%a     | Algorithm used for encryption
+ * | \%C     | CA location: Depending on whether $smime_ca_location points to a directory or file
+ * | \%c     | One or more certificate IDs
+ * | \%d     | Message digest algorithm specified with $smime_sign_digest_alg
+ * | \%f     | File containing a message
+ * | \%i     | Intermediate certificates
+ * | \%k     | The key-pair specified with $smime_default_key
+ * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
  */
 static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
@@ -679,6 +704,9 @@ static struct SmimeKey *smime_get_candidates(char *search, short public)
 
 /**
  * smime_get_key_by_hash - Find a key by its hash
+ * @param hash   Hash to find
+ * @param public If true, only get the public keys
+ * @retval ptr Matching key
  *
  * Returns the first matching key record, without prompting or checking of
  * abilities or trust.
@@ -838,6 +866,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
 
 /**
  * getkeys - Get the keys for a mailbox
+ * @param mailbox Email address
  *
  * This sets the '*ToUse' variables for an upcoming decryption, where the
  * required key is different from SmimeDefaultKey.
@@ -1512,11 +1541,15 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
 /**
  * openssl_md_to_smime_micalg - Change the algorithm names
+ * @param md OpenSSL message digest name
+ * @retval ptr SMIME Message Integrity Check algorithm
  *
  * The openssl -md doesn't want hyphens:
  *   md5, sha1,  sha224,  sha256,  sha384,  sha512
  * However, the micalg does:
  *   md5, sha-1, sha-224, sha-256, sha-384, sha-512
+ *
+ * @note The caller should free the returned string
  */
 static char *openssl_md_to_smime_micalg(char *md)
 {
@@ -1805,6 +1838,10 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 
 /**
  * smime_handle_entity - Handle type application/pkcs7-mime
+ * @param m        Body to handle
+ * @param s        State to use
+ * @param out_file File for the result
+ * @retval ptr Body for parsed MIME part
  *
  * This can either be a signed or an encrypted message.
  */
@@ -2096,8 +2133,7 @@ int smime_class_send_menu(struct Header *msg)
 
   msg->security |= APPLICATION_SMIME;
 
-  /*
-   * Opportunistic encrypt is controlling encryption.
+  /* Opportunistic encrypt is controlling encryption.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
@@ -2110,8 +2146,7 @@ int smime_class_send_menu(struct Header *msg)
     letters = _("swaco");
     choices = "SwaCo";
   }
-  /*
-   * Opportunistic encryption option is set, but is toggled off
+  /* Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
   else if (CryptOpportunisticEncrypt)
@@ -2123,9 +2158,7 @@ int smime_class_send_menu(struct Header *msg)
     letters = _("eswabco");
     choices = "eswabcO";
   }
-  /*
-   * Opportunistic encryption is unset
-   */
+  /* Opportunistic encryption is unset */
   else
   {
     /* L10N: S/MIME options */

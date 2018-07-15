@@ -395,8 +395,7 @@ static int pop_fetch_headers(struct Context *ctx)
         char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
         int refno = ctx->hdrs[i]->refno;
         int index = ctx->hdrs[i]->index;
-        /*
-         * - POP dynamically numbers headers and relies on h->refno
+        /* - POP dynamically numbers headers and relies on h->refno
          *   to map messages; so restore header and overwrite restored
          *   refno with current refno, same for index
          * - h->data needs to a separate pointer as it's driver-specific
@@ -426,8 +425,7 @@ static int pop_fetch_headers(struct Context *ctx)
       }
 #endif
 
-      /*
-       * faked support for flags works like this:
+      /* faked support for flags works like this:
        * - if 'hcached' is true, we have the message in our hcache:
        *        - if we also have a body: read
        *        - if we don't have a body: old
@@ -633,8 +631,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (msg->fp)
     return 0;
 
-  /*
-   * see if we already have the message in our cache in
+  /* see if we already have the message in our cache in
    * case $message_cachedir is unset
    */
   cache = &pop_data->cache[h->index % POP_CACHE_LEN];

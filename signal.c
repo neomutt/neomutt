@@ -46,8 +46,7 @@ static void exit_handler(int sig)
   curs_set(1);
   endwin(); /* just to be safe */
 
-  /*
-   * if sys_siglist is not defined, HAVE_DECL_SYS_SIGLIST will be set to 0
+  /* if sys_siglist is not defined, HAVE_DECL_SYS_SIGLIST will be set to 0
    * so we must check it with #if and not #ifdef
    */
 #if HAVE_DECL_SYS_SIGLIST

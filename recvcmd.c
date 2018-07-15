@@ -52,6 +52,9 @@ unsigned char MimeForwardRest;
 
 /**
  * check_msg - Are we working with an RFC822 message
+ * @param b   Body of email
+ * @param err If true, display a message if this isn't an RFC822 message
+ * @retval true This is an RFC822 message
  *
  * some helper functions to verify that we are exclusively operating on
  * message/rfc822 attachments
@@ -86,7 +89,10 @@ static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 }
 
 /**
- * check_can_decode - can we decode all tagged attachments?
+ * check_can_decode - Can we decode all tagged attachments?
+ * @param actx Attachment context
+ * @param cur  Body of email
+ * @retval true All tagged attachments are decodable
  */
 static bool check_can_decode(struct AttachCtx *actx, struct Body *cur)
 {
@@ -112,6 +118,9 @@ static short count_tagged(struct AttachCtx *actx)
 
 /**
  * count_tagged_children - tagged children below a multipart/message attachment
+ * @param actx Attachment context
+ * @param i    Index of first attachment
+ * @retval num Number of tagged attachments
  */
 static short count_tagged_children(struct AttachCtx *actx, short i)
 {
@@ -127,6 +136,9 @@ static short count_tagged_children(struct AttachCtx *actx, short i)
 
 /**
  * mutt_attach_bounce - Bounce function, from the attachment menu
+ * @param fp   Handle of message
+ * @param actx Attachment context
+ * @param cur  Body of email
  */
 void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
@@ -199,9 +211,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   mutt_addr_write(buf, sizeof(buf), addr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
-  /*
-   * See commands.c.
-   */
+  /* See commands.c.  */
   snprintf(prompt, sizeof(prompt) - 4,
            ngettext("Bounce message to %s", "Bounce messages to %s", p), buf);
 
@@ -246,6 +256,9 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
+ * @param fp   File containing email
+ * @param actx Attachment context
+ * @param cur  Attachment
  */
 void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
@@ -268,6 +281,10 @@ void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 
 /**
  * find_common_parent - find a common parent message for the tagged attachments
+ * @param actx    Attachment context
+ * @param nattach Number of tagged attachments
+ * @retval ptr Parent attachment
+ * @retval NULL Failure, no common parent
  */
 static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattach)
 {
@@ -293,6 +310,10 @@ static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattac
 
 /**
  * is_parent - Check whether one attachment is the parent of another
+ * @param i    Index of parent Attachment
+ * @param actx Attachment context
+ * @param cur  Potential child Attachemnt
+ * @retval true Attachment
  *
  * check whether attachment i is a parent of the attachment pointed to by cur
  *
@@ -364,6 +385,10 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
 
 /**
  * copy_problematic_attachments - Attach the body parts which can't be decoded
+ * @param[out] last  Body pointer to update
+ * @param[in]  actx  Attachment context
+ * @param[in]  force If true, attach parts that can't be decoded
+ * @retval ptr Pointer to last Body part
  *
  * This code is shared by forwarding and replying.
  */
@@ -384,6 +409,11 @@ static struct Body **copy_problematic_attachments(struct Body **last,
 
 /**
  * attach_forward_bodies - forward one or several MIME bodies
+ * @param fp      File to read from
+ * @param hdr     Header of email
+ * @param actx    Attachment Context
+ * @param cur     Body of email
+ * @param nattach Number of tagged attachments
  *
  * (non-message types)
  */
@@ -398,12 +428,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   char prefix[STRING];
   int rc = 0;
 
-  /*
-   * First, find the parent message.
+  /* First, find the parent message.
    * Note: This could be made an option by just
    * putting the following lines into an if block.
    */
-
   struct AttachPtr *parent = find_parent(actx, cur, nattach);
   if (parent)
   {
@@ -446,14 +474,12 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   include_header(ForwardQuote, parent_fp, parent_hdr, tmpfp, prefix);
 
-  /*
-   * Now, we have prepared the first part of the message body: The
+  /* Now, we have prepared the first part of the message body: The
    * original message's header.
    *
    * The next part is more interesting: either include the message bodies,
    * or attach them.
    */
-
   if ((!cur || mutt_can_decode(cur)) &&
       (rc = query_quadoption(MimeForward, _("Forward as attachments?"))) == MUTT_YES)
   {
@@ -464,11 +490,9 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     goto bail;
   }
 
-  /*
-   * shortcut MIMEFWDREST when there is only one attachment.  Is
-   * this intuitive?
+  /* shortcut MIMEFWDREST when there is only one attachment.
+   * Is this intuitive?
    */
-
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
     rc = query_quadoption(
@@ -552,6 +576,10 @@ bail:
 
 /**
  * attach_forward_msgs - Forward one or several message-type attachments
+ * @param fp    File handle to attachment
+ * @param actx  Attachment Context
+ * @param cur   Attachment to forward (OPTIONAL)
+ * @param flags Send mode, e.g. #SEND_RESEND
  *
  * This is different from the previous function since we want to mimic the
  * index menu's behavior.
@@ -685,6 +713,12 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
 /**
  * attach_reply_envelope_defaults - Create the envelope defaults for a reply
+ * @param env    Envelope to fill in
+ * @param actx   Attachment Context
+ * @param parent Header of parent email
+ * @param flags  Flags, e.g. #SEND_LIST_REPLY
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * This function can be invoked in two ways.
  *
@@ -782,6 +816,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 
 /**
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
+ * @param fp    File handle to attachment
+ * @param tmpfp File handle to temporary file
+ * @param cur   Header of email
  */
 static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
 {

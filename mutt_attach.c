@@ -51,6 +51,12 @@
 #include "sendlib.h"
 #include "state.h"
 
+/**
+ * mutt_get_tmp_attachment - Get a temporary copy of an attachment
+ * @param a Attachment to copy
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[STRING];
@@ -93,6 +99,7 @@ int mutt_get_tmp_attachment(struct Body *a)
 
 /**
  * mutt_compose_attachment - Create an attachment
+ * @param a Body of email
  * @retval 1 if require full screen redraw
  * @retval 0 otherwise
  */
@@ -587,7 +594,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     {
       /* Use built-in handler */
       OptViewAttach = true; /* disable the "use 'v' to view this part"
-                                   * message in case of error */
+                             * message in case of error */
       if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
       {
         OptViewAttach = false;
@@ -644,6 +651,10 @@ return_error:
 
 /**
  * mutt_pipe_attachment - Pipe an attachment to a command
+ * @param fp      File to pipe into the command
+ * @param b       Attachment
+ * @param path    Path to command
+ * @param outfile File to save output to
  * @retval 1 Success
  * @retval 0 Error
  */
@@ -731,9 +742,7 @@ bail:
   if (outfile && *outfile)
     close(out);
 
-  /*
-   * check for error exit from child process
-   */
+  /* check for error exit from child process */
   if (mutt_wait_filter(thepid) != 0)
     rc = 0;
 
@@ -742,6 +751,12 @@ bail:
   return rc;
 }
 
+/**
+ * save_attachment_open - Open a file to write an attachment to
+ * @param path  Path to file to open
+ * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @retval ptr File handle to attachment file
+ */
 static FILE *save_attachment_open(char *path, int flags)
 {
   if (flags == MUTT_SAVE_APPEND)
@@ -879,6 +894,11 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
 /**
  * mutt_decode_save_attachment - Decode, then save an attachment
+ * @param fp         File to read from (OPTIONAL)
+ * @param m          Attachment
+ * @param path       Path to save the Attachment to
+ * @param displaying Flags, e.g. #MUTT_DISPLAY
+ * @param flags      Flags, e.g. #MUTT_SAVE_APPEND
  * @retval 0  Success
  * @retval -1 Error
  */
@@ -969,6 +989,10 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 
 /**
  * mutt_print_attachment - Print out an attachment
+ * @param fp File to write to
+ * @param a  Attachment
+ * @retval 1 Success
+ * @retval 0 Error
  *
  * Ok, the difference between send and receive:
  * recv: Body->filename is a suggested name, and Context|Header points

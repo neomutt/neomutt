@@ -36,6 +36,11 @@ struct Context;
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
+/**
+ * mutt_parse_mime_message - Parse a MIME email
+ * @param ctx Mailbox
+ * @param cur Header of email
+ */
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 {
   struct Message *msg = NULL;
@@ -101,6 +106,12 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
   return false;
 }
 
+/**
+ * count_body_parts - Count the MIME Body parts
+ * @param body  Body of email
+ * @param flags Flags, e.g. #MUTT_PARTS_TOPLEVEL
+ * @retval num Number of MIME Body parts
+ */
 static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
@@ -194,6 +205,12 @@ static int count_body_parts(struct Body *body, int flags)
   return (count < 0) ? 0 : count;
 }
 
+/**
+ * mutt_count_body_parts - Count the MIME Body parts
+ * @param ctx Mailbox
+ * @param hdr Header of email
+ * @retval num Number of MIME Body parts
+ */
 int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
 {
   bool keep_parts = false;

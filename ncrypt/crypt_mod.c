@@ -35,15 +35,16 @@
  *
  * A type of a variable to keep track of registered crypto modules.
  */
+static STAILQ_HEAD(CryptModuleHead, CryptModule) CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 struct CryptModule
 {
   struct CryptModuleSpecs *specs;
   STAILQ_ENTRY(CryptModule) entries;
 };
-static STAILQ_HEAD(, CryptModule) CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 
 /**
  * crypto_module_register - Register a new crypto module
+ * @param specs API functions
  */
 void crypto_module_register(struct CryptModuleSpecs *specs)
 {
@@ -54,8 +55,9 @@ void crypto_module_register(struct CryptModuleSpecs *specs)
 
 /**
  * crypto_module_lookup - Lookup a crypto module by name
+ * @param identifier Name, e.g. #APPLICATION_PGP
+ * @retval ptr Crypto module
  *
- * Return the crypto module specs for IDENTIFIER.
  * This function is usually used via the CRYPT_MOD_CALL[_CHECK] macros.
  */
 struct CryptModuleSpecs *crypto_module_lookup(int identifier)

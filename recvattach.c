@@ -1125,6 +1125,16 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
   return op;
 }
 
+/**
+ * mutt_generate_recvattach_list - Create a list of attachments
+ * @param actx        Attachment context
+ * @param hdr         Header of the email
+ * @param m           Body of email
+ * @param fp          File to read from
+ * @param parent_type Type, e.g. #TYPE_MULTIPART
+ * @param level       Attachment depth
+ * @param decrypted   True if attachment has been decrypted
+ */
 static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header *hdr,
                                           struct Body *m, FILE *fp,
                                           int parent_type, int level, int decrypted)
@@ -1226,6 +1236,10 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
   }
 }
 
+/**
+ * mutt_attach_init - Create a new Attachment context
+ * @param actx Attachment context
+ */
 void mutt_attach_init(struct AttachCtx *actx)
 {
   /* Collapse the attachments if '$digest_collapse' is set AND if...
@@ -1245,6 +1259,12 @@ void mutt_attach_init(struct AttachCtx *actx)
   }
 }
 
+/**
+ * mutt_update_recvattach_menu - Update the Attachment Menu
+ * @param actx Attachment context
+ * @param menu Menu listing Attachments
+ * @param init If true, create a new Attachments context
+ */
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)

@@ -1200,6 +1200,9 @@ bail:
 
 /**
  * imap_msg_close - Close an email
+ * @param ctx Mailbox
+ * @param msg Message to close
+ * @retval 0 Success
  *
  * @note May also return EOF Failure, see errno
  */

@@ -48,9 +48,6 @@ struct Progress
 
 void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, size_t size);
-/* If percent is positive, it is displayed as percentage, otherwise
- * percentage is calculated from progress->size and pos if progress
- * was initialized with positive size, otherwise no percentage is shown */
 void mutt_progress_update(struct Progress *progress, long pos, int percent);
 
 #endif /* _MUTT_PROGRESS_H */

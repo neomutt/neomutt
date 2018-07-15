@@ -248,8 +248,7 @@ int mutt_yesorno(const char *msg, int def)
   reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
             (REGCOMP(&reno, expr, REG_NOSUB) == 0);
 
-  /*
-   * In order to prevent the default answer to the question to wrapped
+  /* In order to prevent the default answer to the question to wrapped
    * around the screen in the even the question is wider than the screen,
    * ensure there is enough room for the answer and truncate the question
    * to fit.
@@ -545,6 +544,8 @@ void mutt_unget_string(char *s)
 
 /**
  * mutt_push_macro_event - Add the character/operation to the macro buffer
+ * @param ch Character to add
+ * @param op Operation to add
  *
  * Adds the ch/op to the macro buffer.
  * This should be used for macros, push, and exec commands only.
@@ -701,6 +702,9 @@ int mutt_multi_choice(char *prompt, char *letters)
 
 /**
  * mutt_addwch - addwch would be provided by an up-to-date curses library
+ * @param wc Wide char to display
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_addwch(wchar_t wc)
 {

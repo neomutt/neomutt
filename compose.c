@@ -1654,10 +1654,9 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         ret = mutt_get_field(_("Send attachment with name: "), fname, sizeof(fname), MUTT_FILE);
         if (ret == 0)
         {
-          /*
-             * As opposed to RENAME_FILE, we don't check fname[0] because it's
-             * valid to set an empty string here, to erase what was set
-             */
+          /* As opposed to RENAME_FILE, we don't check fname[0] because it's
+           * valid to set an empty string here, to erase what was set
+           */
           mutt_str_replace(&CURATTACH->content->d_filename, fname);
           menu->redraw = REDRAW_CURRENT;
         }

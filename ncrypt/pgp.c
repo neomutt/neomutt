@@ -179,6 +179,8 @@ static char *pgp_fingerprint(struct PgpKeyInfo *k)
 
 /**
  * pgp_fpr_or_lkeyid - Get the fingerprint or long keyid
+ * @param k PGP key
+ * @retval ptr String fingerprint or long keyid
  *
  * Grab the longest key identifier available: fingerprint or else
  * the long keyid.
@@ -198,6 +200,10 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
 
 /**
  * pgp_copy_checksig - Copy PGP output and look for signs of a good signature
+ * @param fpin  File to read from
+ * @param fpout File to write to
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
@@ -241,6 +247,9 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 
 /**
  * pgp_check_decryption_okay - Check PGP output to look for successful outcome
+ * @param fpin File to read from
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * Checks PGP output messages to look for the $pgp_decryption_okay message.
  * This protects against messages with multipart/encrypted headers but which
@@ -278,7 +287,16 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
   return rc;
 }
 
-/* Checks GnuPGP status fd output for various status codes indicating
+/**
+ * pgp_check_decryption_okay - Check GPG output for status codes
+ * @param fpin File to read from
+ * @retval  1 - no patterns were matched (if delegated to decryption_okay_regexp)
+ * @retval  0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside.
+ * @retval -1 - No decryption status codes were encountered
+ * @retval -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters.
+ * @retval -3 - DECRYPTION_FAILED was encountered
+ *
+ * Checks GnuPGP status fd output for various status codes indicating
  * an issue.  If $pgp_check_gpg_decrypt_status_fd is unset, it falls
  * back to the old behavior of just scanning for $pgp_decryption_okay.
  *
@@ -288,13 +306,6 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
  * On the other hand, for pgp_application_pgp_handler(), a
  * "BEGIN PGP MESSAGE" could indicate a signed and armored message.
  * For that we allow -1 and -2 as "valid" (with a warning).
- *
- * Returns:
- *   1 - no patterns were matched (if delegated to decryption_okay_regexp)
- *   0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside.
- *  -1 - No decryption status codes were encountered
- *  -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters.
- *  -3 - DECRYPTION_FAILED was encountered
  */
 static int pgp_check_decryption_okay(FILE *fpin)
 {
@@ -349,6 +360,9 @@ static int pgp_check_decryption_okay(FILE *fpin)
 
 /**
  * pgp_copy_clearsigned - Copy a clearsigned message, stripping the signature
+ * @param fpin    File to read from
+ * @param s       State to use
+ * @param charset Charset of file
  *
  * XXX charset handling: We assume that it is safe to do character set
  * decoding first, dash decoding second here, while we do it the other way
@@ -584,8 +598,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
             if (rc == 0)
               have_any_sigs = true;
-            /*
-             * Sig is bad if
+            /* Sig is bad if
              * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
              * Sig _is_ correct if
              *  gpg_good_sign="" && pgp_decode_command returned 0
@@ -621,10 +634,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         }
       }
 
-      /*
-       * Now, copy cleartext to the screen.
-       */
-
+      /* Now, copy cleartext to the screen.  */
       if (s->flags & MUTT_DISPLAY)
       {
         if (needpass)
@@ -657,8 +667,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         mutt_ch_fgetconv_close(&fc);
       }
 
-      /*
-       * Multiple PGP blocks can exist, so these need to be closed and
+      /* Multiple PGP blocks can exist, so these need to be closed and
        * unlinked inside the loop.
        */
       mutt_file_fclose(&tmpfp);
@@ -871,6 +880,8 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 
 /**
  * pgp_extract_keys_from_attachment - Extract pgp keys from messages/attachments
+ * @param fp  File to read from
+ * @param top Top Attachment
  */
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
@@ -1029,14 +1040,11 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   tattach = mutt_read_mime_header(fpout, 0);
   if (tattach)
   {
-    /*
-     * Need to set the length of this body part.
-     */
+    /* Need to set the length of this body part.  */
     fstat(fileno(fpout), &info);
     tattach->length = info.st_size - tattach->offset;
 
     /* See if we need to recurse on this MIME part.  */
-
     mutt_parse_part(fpout, tattach);
   }
 
@@ -1155,13 +1163,10 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
     rc = mutt_body_handler(tattach, s);
     s->fpin = fpin;
 
-    /*
-     * if a multipart/signed is the _only_ sub-part of a
+    /* if a multipart/signed is the _only_ sub-part of a
      * multipart/encrypted, cache signature verification
      * status.
-     *
      */
-
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
 
@@ -1244,8 +1249,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   fputc('\n', pgpin);
   mutt_file_fclose(&pgpin);
 
-  /*
-   * Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
+  /* Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
    * recommended for future releases of PGP.
    */
   while (fgets(buffer, sizeof(buffer) - 1, pgpout) != NULL)
@@ -1780,8 +1784,7 @@ int pgp_class_send_menu(struct Header *msg)
              One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("(i)nline");
   }
-  /*
-   * Opportunistic encrypt is controlling encryption.  Allow to toggle
+  /* Opportunistic encrypt is controlling encryption.  Allow to toggle
    * between inline and mime, but not turn encryption on or off.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
@@ -1810,8 +1813,7 @@ int pgp_class_send_menu(struct Header *msg)
       choices = "SaCo";
     }
   }
-  /*
-   * Opportunistic encryption option is set, but is toggled off
+  /* Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
   else if (CryptOpportunisticEncrypt)
@@ -1842,9 +1844,7 @@ int pgp_class_send_menu(struct Header *msg)
       choices = "esabcO";
     }
   }
-  /*
-   * Opportunistic encryption is unset
-   */
+  /* Opportunistic encryption is unset */
   else
   {
     if (msg->security & (ENCRYPT | SIGN))

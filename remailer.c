@@ -130,6 +130,8 @@ static void mix_free_remailer(struct Remailer **r)
 
 /**
  * mix_type2_list - parse the type2.list as given by mixmaster -T
+ * @param[out] l Length of list
+ * @retval ptr type2.list
  */
 static struct Remailer **mix_type2_list(size_t *l)
 {
@@ -706,6 +708,9 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
+ * @param msg Header of email
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mix_check_message(struct Header *msg)
 {

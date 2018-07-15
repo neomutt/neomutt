@@ -793,8 +793,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     }
   }
 
-  /*
-   * There is no point in asking whether or not to purge if we are
+  /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
   if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && MaildirTrash))

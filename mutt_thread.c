@@ -54,6 +54,9 @@ static bool is_visible(struct Header *hdr, struct Context *ctx)
 
 /**
  * need_display_subject - Determines whether to display a message's subject
+ * @param ctx Mailbox
+ * @param hdr Header of email
+ * @retval true If the subject should be displayed
  */
 static int need_display_subject(struct Context *ctx, struct Header *hdr)
 {
@@ -132,6 +135,8 @@ static void linearize_tree(struct Context *ctx)
 
 /**
  * calculate_visibility - Are tree nodes visible
+ * @param ctx       Mailbox
+ * @param max_depth Maximum depth to check
  *
  * this calculates whether a node is the root of a subtree that has visible
  * nodes, whether a node itself is visible, whether, if invisible, it has
@@ -244,6 +249,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
 
 /**
  * mutt_draw_tree - Draw a tree of threaded emails
+ * @param ctx Mailbox
  *
  * Since the graphics characters have a value >255, I have to resort to using
  * escape sequences to pass the information to print_enriched_string().  These
@@ -480,6 +486,7 @@ static struct Hash *make_subj_hash(struct Context *ctx)
 
 /**
  * pseudo_threads - Thread messages by subject
+ * @param ctx Mailbox
  *
  * Thread by subject things that didn't get threaded by message-id
  */
@@ -1268,6 +1275,10 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 
 /**
  * mutt_messages_in_thread - Count the messages in a thread
+ * @param ctx  Mailbox
+ * @param hdr  Header of email
+ * @param flag Flag, see notes below
+ * @retval num Number of message / Our position
  *
  * If flag is 0, we want to know how many messages are in the thread.
  * If flag is 1, we want to know our position in the thread.

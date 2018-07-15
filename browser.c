@@ -112,6 +112,7 @@ static char LastDir[PATH_MAX] = "";
 
 /**
  * destroy_state - Free the BrowserState
+ * @param state State to free
  *
  * Frees up the memory allocated for the local-global variables.
  */
@@ -204,6 +205,11 @@ static int browser_compare_count_new(const void *a, const void *b)
 
 /**
  * browser_compare - Sort the items in the browser
+ * @param a First item
+ * @param b Second item
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
@@ -239,6 +245,7 @@ static int browser_compare(const void *a, const void *b)
 
 /**
  * browser_sort - Sort the entries in the browser
+ * @param state Browser state
  *
  * Call to qsort using browser_compare function.
  * Some specific sort methods are not used via NNTP.
@@ -724,7 +731,13 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
 }
 
 /**
- * examine_directory - get list of all files/newsgroups with mask
+ * examine_directory - Get list of all files/newsgroups with mask
+ * @param menu   Current Menu
+ * @param state  State of browser
+ * @param d      Directory
+ * @param prefix Files/newsgroups must match this prefix
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int examine_directory(struct Menu *menu, struct BrowserState *state,
                              char *d, const char *prefix)
@@ -863,6 +876,10 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 
 /**
  * examine_mailboxes - Get list of mailboxes/subscribed newsgroups
+ * @param menu  Current menu
+ * @param state State of browser
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
@@ -1026,6 +1043,8 @@ static void vfolder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 /**
  * browser_highlight_default - Decide which browser item should be highlighted
+ * @param state Browser state
+ * @param menu  Current Menu
  *
  * This function takes a menu and a state and defines the current entry that
  * should be highlighted.
@@ -1154,6 +1173,7 @@ static int file_tag(struct Menu *menu, int n, int m)
 
 /**
  * mutt_browser_select_dir - Remember the last directory selected
+ * @param f Directory name to save
  *
  * This function helps the browser to know which directory has been selected.
  * It should be called anywhere a confirm hit is done to open a new

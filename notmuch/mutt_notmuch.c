@@ -976,8 +976,7 @@ static int init_header(struct Header *h, const char *path, notmuch_message_t *ms
   h->data = mutt_mem_calloc(1, sizeof(struct NmHdrData));
   h->free_cb = deinit_header;
 
-  /*
-   * Notmuch ensures that message Id exists (if not notmuch Notmuch will
+  /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Header->env->id
    */
   ((struct NmHdrData *) h->data)->virtual_id = mutt_str_strdup(id);
@@ -1598,8 +1597,7 @@ static int remove_filename(struct NmCtxData *data, const char *path)
   if (trans < 0)
     return -1;
 
-  /*
-   * note that unlink() is probably unnecessary here, it's already removed
+  /* note that unlink() is probably unnecessary here, it's already removed
    * by mh_sync_mailbox_message(), but for sure...
    */
   st = notmuch_database_remove_message(db, path);

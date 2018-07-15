@@ -495,6 +495,11 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 
 /**
  * pop_fetch_data - Read Headers with callback function
+ * @param pop_data    POP data
+ * @param query       POP query to send to server
+ * @param progressbar Progress bar
+ * @param funct       Function called for each header read
+ * @param data        Data to pass to the callback
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error

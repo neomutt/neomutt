@@ -652,10 +652,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
         /* update the total size of the mailbox to reflect this deletion */
         Context->size -= body->length - new_length;
-        /*
-         * if the message is visible, update the visible size of the mailbox
-         * as well.
-         */
+        /* if the message is visible, update the visible size of the mailbox as well.  */
         if (Context->v2r[hdr->msgno] != -1)
           Context->vsize -= body->length - new_length;
 

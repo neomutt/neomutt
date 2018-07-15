@@ -89,9 +89,8 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
     b->d_filename = mutt_str_strdup(src->filename);
   b->description = mutt_str_strdup(b->description);
 
-  /*
-   * we don't seem to need the Header structure currently.
-   * XXX - this may change in the future
+  /* we don't seem to need the Header structure currently.
+   * XXX this may change in the future
    */
 
   if (b->hdr)

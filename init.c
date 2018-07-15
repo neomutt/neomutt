@@ -1945,9 +1945,7 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    /*
-     * Check for deletion of entire list
-     */
+    /* Check for deletion of entire list */
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
       mutt_list_free((struct ListHead *) data);
@@ -3272,9 +3270,7 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    /*
-     * Check for deletion of entire list
-     */
+    /* Check for deletion of entire list */
     if (mutt_str_strcmp(buf->data, "*") == 0)
     {
       mutt_list_free((struct ListHead *) data);

@@ -328,6 +328,7 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
 
 /**
  * mutt_socket_free - remove connection from connection list and free it
+ * @param conn Connection to free
  */
 void mutt_socket_free(struct Connection *conn)
 {

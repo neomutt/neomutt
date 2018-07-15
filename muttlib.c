@@ -73,6 +73,8 @@ static const char *xdg_defaults[] = {
 
 /**
  * mutt_adv_mktemp - Advanced mktemp(3)
+ * @param s Buffer for result
+ * @param l Length of buffer
  *
  * Modified by blong to accept a "suggestion" for file name.  If that file
  * exists, then construct one with unique name but keep any extension.  This
@@ -285,6 +287,10 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
 
 /**
  * mutt_gecos_name - Lookup a user's real name in /etc/passwd
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param pw      Passwd entry
+ * @retval ptr Result buffer on success
  *
  * Extract the real name from /etc/passwd's GECOS field.  When set, honor the
  * regular expression in GecosMask, otherwise assume that the GECOS field is a
@@ -479,6 +485,8 @@ void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
 
 /**
  * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
+ * @param s      Buffer containing string to shorten
+ * @param buflen Length of buffer
  *
  * Collapse the pathname using ~ or = when possible
  */
@@ -614,6 +622,12 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
 
 /**
  * mutt_check_overwrite - Ask the user if overwriting is necessary
+ * @param[in]  attname   Attachment name
+ * @param[in]  path      Path to save the file
+ * @param[out] fname     Buffer for filename
+ * @param[out] flen      Length of buffer
+ * @param[out] append    Flags set to #MUTT_SAVE_APPEND or #MUTT_SAVE_OVERWRITE
+ * @param[out] directory Directory to save under (OPTIONAL)
  * @retval  0 Success
  * @retval -1 Abort
  * @retval  1 Error
@@ -1240,6 +1254,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
 /**
  * mutt_open_read - Run a command to read from
+ * @param[in]  path   Path to command
+ * @param[out] thepid PID of the command
+ * @retval ptr File containing output of command
  *
  * This function allows the user to specify a command to read stdout from in
  * place of a normal file.  If the last character in the string is a pipe (|),
@@ -1284,6 +1301,8 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
 /**
  * mutt_save_confirm - Ask the user to save
+ * @param s  Save location
+ * @param st Timestamp
  * @retval  0 if OK to proceed
  * @retval -1 to abort
  * @retval  1 to retry

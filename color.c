@@ -493,6 +493,13 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_uncolor - Parse an 'uncolor' command
+ * @param buf           Temporary Buffer space
+ * @param s             Buffer containing string to be parsed
+ * @param data          Flags associated with the command
+ * @param err           Buffer for error messages
+ * @param parse_uncolor If true, 'uncolor', else 'unmono'
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * usage:
  * * uncolor index pattern [pattern...]
@@ -853,6 +860,14 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 
 /**
  * parse_color - Parse a "color" command
+ * @param buf      Temporary Buffer space
+ * @param s        Buffer containing string to be parsed
+ * @param err      Buffer for error messages
+ * @param callback Function to handle command
+ * @param dry_run  If true, test the command, but don't apply it
+ * @param color    If true "color", else "mono"
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * usage: color OBJECT FG BG [ REGEX ]
  *        mono  OBJECT ATTR [ REGEX ]

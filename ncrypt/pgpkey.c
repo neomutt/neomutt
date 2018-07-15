@@ -123,20 +123,6 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
     return key;
 }
 
-/*
- * Format an entry on the PGP key selection menu.
- *
- * %n   number
- * %k   key id          %K      key id of the principal key
- * %u   user id
- * %a   algorithm       %A      algorithm of the princ. key
- * %l   length          %L      length of the princ. key
- * %f   flags           %F      flags of the princ. key
- * %c   capabilities    %C      capabilities of the princ. key
- * %t   trust/validity of the key-uid association
- * %[...] date of key using strftime(3)
- */
-
 /**
  * struct PgpEntry - An entry in a PGP key menu
  */
@@ -146,6 +132,40 @@ struct PgpEntry
   struct PgpUid *uid;
 };
 
+/**
+ * pgp_entry_fmt - Format an entry on the PGP key selection menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * pgp_entry_fmt() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Algorithm      
+ * | \%A     | Algorithm of the princ. key
+ * | \%c     | Capabilities   
+ * | \%C     | Capabilities of the princ. key
+ * | \%f     | Flags          
+ * | \%F     | Flags of the princ. key
+ * | \%k     | Key id
+ * | \%K     | Key id of the principal key
+ * | \%l     | Length         
+ * | \%L     | Length of the princ. key
+ * | \%n     | Number
+ * | \%t     | Trust/validity of the key-uid association
+ * | \%u     | User id
+ * | \%[...] | Date of key using strftime(3)
+ */
 static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  char op, const char *src, const char *prec,
                                  const char *if_str, const char *else_str,
@@ -955,9 +975,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
     }
     else if (the_strong_valid_key && !multi)
     {
-      /*
-       * There was precisely one strong match on a valid ID.
-       *
+      /* There was precisely one strong match on a valid ID.
        * Proceed without asking the user.
        */
       pgp_remove_key(&matches, the_strong_valid_key);
@@ -965,9 +983,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
     }
     else
     {
-      /*
-       * Else: Ask the user.
-       */
+      /* Else: Ask the user.  */
       k = pgp_select_key(matches, a, NULL);
       if (k)
         pgp_remove_key(&matches, k);

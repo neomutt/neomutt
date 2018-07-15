@@ -616,11 +616,9 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_clear_error();
   }
 
-  /*
-   * remove a potential multipart/signed layer - useful when
+  /* remove a potential multipart/signed layer - useful when
    * resending messages
    */
-
   if ((WithCrypto != 0) && mutt_is_multipart_signed(newhdr->content))
   {
     newhdr->security |= SIGN;
@@ -639,16 +637,13 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     newhdr->content = mutt_remove_multipart(newhdr->content);
   }
 
-  /*
-   * We don't need no primary multipart.
+  /* We don't need no primary multipart.
    * Note: We _do_ preserve messages!
    *
    * XXX - we don't handle multipart/alternative in any
    * smart way when sending messages.  However, one may
    * consider this a feature.
-   *
    */
-
   if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 

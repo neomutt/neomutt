@@ -261,6 +261,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
 /**
  * mbox_parse_mailbox - Read a mailbox from disk
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Error
+ * @retval -2 Aborted
  *
  * Note that this function is also called when new mail is appended to the
  * currently open folder, and NOT just when the mailbox is initially read.
@@ -355,8 +359,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
         if ((tmploc > 0) && (tmploc < ctx->size))
         {
-          /*
-           * check to see if the content-length looks valid.  we expect to
+          /* check to see if the content-length looks valid.  we expect to
            * to see a valid message separator at this point in the stream
            */
           if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 ||
@@ -426,8 +429,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
     loc = ftello(ctx->fp);
   }
 
-  /*
-   * Only set the content-length of the previous message if we have read more
+  /* Only set the content-length of the previous message if we have read more
    * than one message during _this_ invocation.  If this routine is called
    * when new mail is received, we need to make sure not to clobber what
    * previously was the last message since the headers may be sorted.
@@ -832,8 +834,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
         unlock = 1;
       }
 
-      /*
-       * Check to make sure that the only change to the mailbox is that
+      /* Check to make sure that the only change to the mailbox is that
        * message(s) were appended to this file.  My heuristic is that we should
        * see the message separator at *exactly* what used to be the end of the
        * folder.
@@ -917,6 +918,8 @@ static bool mbox_has_new(struct Context *ctx)
 
 /**
  * mbox_reset_atime - Reset the access time on the mailbox file
+ * @param ctx Mailbox
+ * @param st  Timestamp
  *
  * if mailbox has at least 1 new message, sets mtime > atime of mailbox so
  * buffy check reports new mail
@@ -936,8 +939,7 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
   utimebuf.actime = st->st_atime;
   utimebuf.modtime = st->st_mtime;
 
-  /*
-   * When $mbox_check_recent is set, existing new mail is ignored, so do not
+  /* When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
   if (!MailCheckRecent && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
@@ -1073,8 +1075,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     if (!ctx->quiet)
       mutt_progress_update(&progress, i, (int) (ftello(ctx->fp) / (ctx->size / 100 + 1)));
-    /*
-     * back up some information which is needed to restore offsets when
+    /* back up some information which is needed to restore offsets when
      * something fails.
      */
 

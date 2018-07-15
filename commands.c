@@ -407,6 +407,14 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 
 /**
  * pipe_message - Pipe message to a command
+ * @param h      Header of email
+ * @param cmd    Command to pipe to
+ * @param decode Should the message be decrypted
+ * @param print  True if this is a print job
+ * @param split  Should a separator be send between messages?
+ * @param sep    Separator string
+ * @retval  0 Success
+ * @retval  1 Error
  *
  * The following code is shared between printing and piping.
  */
@@ -712,8 +720,7 @@ void mutt_display_address(struct Envelope *env)
   if (!addr)
     return;
 
-  /*
-   * Note: We don't convert IDNA to local representation this time.
+  /* Note: We don't convert IDNA to local representation this time.
    * That is intentional, so the user has an opportunity to copy &
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.
@@ -796,6 +803,10 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
 
 /**
  * mutt_save_message - Save an email
+ * @param h       Header of email
+ * @param delete  If true, delete the original (save)
+ * @param decode  If true, decode the message
+ * @param decrypt If true, decrypt the message
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
@@ -1004,11 +1015,15 @@ void mutt_version(void)
   mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
 }
 
-/*
- * Returns:
- *   1 when a structural change is made.
- *     recvattach requires this to know when to regenerate the actx.
- *   0 otherwise.
+/**
+ * mutt_edit_content_type - Edit the content type of an attachment
+ * @param h  Header of email
+ * @param b  Attachment
+ * @param fp File handle to the attachment
+ * @retval 1 A structural change is made
+ * @retval 0 Otherwise
+ *
+ * recvattach requires the return code to know when to regenerate the actx.
  */
 int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 {

@@ -52,7 +52,6 @@ enum UrlScheme
  * struct UrlQueryString - Parsed Query String
  *
  * The arguments in a URL are saved in a linked list.
- *
  */
 struct UrlQueryString
 {

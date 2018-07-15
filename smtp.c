@@ -245,6 +245,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 
 /**
  * address_uses_unicode - Do any addresses use Unicode
+ * @param a Address list to check
  * @retval true if any of the string of addresses use 8-bit characters
  */
 static bool address_uses_unicode(const char *a)
@@ -264,6 +265,7 @@ static bool address_uses_unicode(const char *a)
 
 /**
  * addresses_use_unicode - Do any of a list of addresses use Unicode
+ * @param a Address list to check
  * @retval true if any use 8-bit characters
  */
 static bool addresses_use_unicode(const struct Address *a)

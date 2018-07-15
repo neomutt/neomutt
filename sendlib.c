@@ -342,6 +342,13 @@ static void encode_8bit(struct FgetConv *fc, FILE *fout)
   }
 }
 
+/**
+ * mutt_write_mime_header - Create a MIME header
+ * @param a Body part
+ * @param f File to write to
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
   fprintf(f, "Content-Type: %s/%s", TYPE(a), a->subtype);
@@ -575,6 +582,13 @@ struct ContentState
   bool was_cr;
 };
 
+/**
+ * update_content_info - Cache some info about an email
+ * @param info   Info about an Attachment
+ * @param s      Info about the Body of an email
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ */
 static void update_content_info(struct Content *info, struct ContentState *s,
                                 char *buf, size_t buflen)
 {
@@ -858,6 +872,14 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
 /**
  * convert_file_from_to - Convert a file between encodings
+ * @param[in]  file      File to read from
+ * @param[in]  fromcodes Charsets to try converting FROM
+ * @param[in]  tocodes   Charsets to try converting TO
+ * @param[out] fromcode  From charset selected
+ * @param[out] tocode    To charset selected
+ * @param[out] info      Info about the file
+ * @retval num Characters converted
+ * @retval -1  Error (as a size_t)
  *
  * Find the first of the fromcodes that gives a valid conversion and the best
  * charset conversion of the file into one of the tocodes. If successful, set
@@ -1301,6 +1323,8 @@ cleanup:
 
 /**
  * set_encoding - determine which Content-Transfer-Encoding to use
+ * @param[in]  b    Body of email
+ * @param[out] info Info about the email
  */
 static void set_encoding(struct Body *b, struct Content *info)
 {
@@ -1629,6 +1653,8 @@ static int get_toplevel_encoding(struct Body *a)
 
 /**
  * check_boundary - check for duplicate boundary
+ * @param boundary Boundary to look for
+ * @param b        Body parts to check
  * @retval true if duplicate found
  */
 static bool check_boundary(const char *boundary, struct Body *b)
@@ -1696,6 +1722,10 @@ struct Body *mutt_remove_multipart(struct Body *b)
 
 /**
  * mutt_write_address_list - wrapper around mutt_write_address()
+ * @param addr    Address list
+ * @param fp      File to write to
+ * @param linelen Line length to use
+ * @param display True if these addresses will be displayed to the user
  *
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
@@ -1782,6 +1812,16 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
   FREE(&ref);
 }
 
+/**
+ * print_val - Add pieces to an email header, wrapping where necessary
+ * @param fp    File to write to
+ * @param pfx   Prefix for headers
+ * @param value Text to be added
+ * @param flags Flags, e.g. #CH_DISPLAY
+ * @param col   Column that this text starts at
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int print_val(FILE *fp, const char *pfx, const char *value, int flags, size_t col)
 {
   while (value && *value)
@@ -1816,6 +1856,17 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
   return 0;
 }
 
+/**
+ * fold_one_header - Fold one header line
+ * @param fp      File to write to
+ * @param tag     Header key, e.g. "From"
+ * @param value   Header value
+ * @param pfx     Prefix for header
+ * @param wraplen Column to wrap at
+ * @param flags   Flags, e.g. #CH_DISPLAY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, int flags)
 {
@@ -1884,7 +1935,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
      * even none) on a line if the trailing spaces are located at our
      * current line width
      * XXX this covers ASCII space only, for display we probably
-     * XXX want something like iswspace() here */
+     * want something like iswspace() here */
     const char *sp = next;
     while (*sp && (*sp == ' ' || *sp == '\t'))
       sp++;
@@ -1943,6 +1994,19 @@ static char *unfold_header(char *s)
   return s;
 }
 
+/**
+ * write_one_header - Write out one header line
+ * @param fp      File to write to
+ * @param pfxw    Width of prefix string
+ * @param max     Max width
+ * @param wraplen Column to wrap at
+ * @param pfx     Prefix for header
+ * @param start   Start of header line
+ * @param end     End of header line
+ * @param flags   Flags, e.g. #CH_DISPLAY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char *pfx,
                             const char *start, const char *end, int flags)
 {
@@ -2022,6 +2086,14 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
 /**
  * mutt_write_one_header - Write one header line to a file
+ * @param fp      File to write to
+ * @param tag     Header key, e.g. "From"
+ * @param value   Header value
+ * @param pfx     Prefix for header
+ * @param wraplen Column to wrap at
+ * @param flags   Flags, e.g. #CH_DISPLAY
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * split several headers into individual ones and call write_one_header
  * for each one
@@ -2105,13 +2177,23 @@ out:
   return rc;
 }
 
-/* Note: all RFC2047 encoding should be done outside of this routine, except
+/**
+ * mutt_rfc822_write_header - Write out one RFC822 header line
+ * @param fp      File to write to
+ * @param env     Envelope of email
+ * @param attach  Attachment
+ * @param mode    Mode, see notes below
+ * @param privacy If true, remove headers that might identify the user
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
  * once, if necessary.
  *
  * Likewise, all IDN processing should happen outside of this routine.
  *
- * mode == 1  => "lite" mode (used for edit_headers)
+ * mode == 1  => "light" mode (used for edit_headers)
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
  *
@@ -2861,6 +2943,16 @@ void mutt_unprepare_envelope(struct Envelope *env)
   rfc2047_decode(&env->subject);
 }
 
+/**
+ * bounce_message - Bounce an email message
+ * @param fp          Handle of message
+ * @param h           Header of email
+ * @param to          Address to bounce to
+ * @param resent_from Address of new sender
+ * @param env_from    Envelope of original sender
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
@@ -2928,6 +3020,14 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
   return rc;
 }
 
+/**
+ * mutt_bounce_message - Bounce an email message
+ * @param fp Handle of message
+ * @param h  Header of the email
+ * @param to Address to bounce to
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 {
   const char *fqdn = mutt_fqdn(true);
@@ -3047,6 +3147,14 @@ static void set_noconv_flags(struct Body *b, short flag)
 
 /**
  * mutt_write_multiple_fcc - Handle FCC with multiple, comma separated entries
+ * @param[in]  path      Path to mailboxes (comma separated)
+ * @param[in]  hdr       Header of the email
+ * @param[in]  msgid     Message id
+ * @param[in]  post      If true, postpone message
+ * @param[in]  fcc       fcc setting to save (postpone only)
+ * @param[out] finalpath Final path of email
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid,
                             int post, char *fcc, char **finalpath)
@@ -3084,6 +3192,17 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
   return 0;
 }
 
+/**
+ * mutt_write_fcc - Write email to FCC mailbox
+ * @param[in]  path      Path to mailbox
+ * @param[in]  hdr       Header of the email
+ * @param[in]  msgid     Message id
+ * @param[in]  post      If true, postpone message
+ * @param[in]  fcc       fcc setting to save (postpone only)
+ * @param[out] finalpath Final path of email
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
                    int post, char *fcc, char **finalpath)
 {
@@ -3251,7 +3370,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_msg_commit(&f, msg); /* XXX - really? */
+      mx_msg_commit(&f, msg); /* XXX really? */
       mx_msg_close(&f, &msg);
       mx_mbox_close(&f, NULL);
       goto done;

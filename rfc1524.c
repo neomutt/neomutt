@@ -319,8 +319,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         }
         else if (mutt_str_strncasecmp(field, "test", 4) == 0)
         {
-          /*
-           * This routine executes the given test command to determine
+          /* This routine executes the given test command to determine
            * if this is the right entry.
            */
           char *test_command = NULL;

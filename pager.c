@@ -1147,6 +1147,9 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 
 /**
  * trim_incomplete_mbyte - Remove an incomplete character
+ * @param buf Buffer containing string
+ * @param len Length of buffer
+ * @retval num Number of bytes remaining
  *
  * trim tail of buf so that it contains complete multibyte characters
  */
@@ -1676,8 +1679,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   if (special || (col != pager_window->cols && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
     resolve_color(*line_info, n, vch, flags, 0, &a);
 
-  /*
-   * Fill the blank space at the end of the line with the prevailing color.
+  /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do addch('\n') so we have
    * to make sure to reset the color *after* that
    */
@@ -1695,8 +1697,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   if (col < pager_window->cols)
     mutt_window_clrtoeol(pager_window);
 
-  /*
-   * reset the color back to normal.  This *must* come after the
+  /* reset the color back to normal.  This *must* come after the
    * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.
    */
@@ -2089,6 +2090,12 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
 /**
  * mutt_pager - Display a file, or help, in a window
+ * @param banner Title to display in status bar
+ * @param fname  Name of file to read
+ * @param flags  Flags, e.g. #MUTT_SHOWCOLOR
+ * @param extra  Info about email to display
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * This pager is actually not so simple as it once was.  It now operates in two
  * modes: one for viewing messages and the other for viewing help.  These can
