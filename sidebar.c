@@ -39,11 +39,13 @@
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
@@ -52,6 +54,18 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+
+/* These Config Variables are only used in sidebar.c */
+short SidebarComponentDepth;
+char *SidebarDelimChars;
+char *SidebarDividerChar;
+bool SidebarFolderIndent;
+char *SidebarFormat;
+char *SidebarIndentString;
+bool SidebarNewMailOnly;
+bool SidebarNextNewWrap;
+bool SidebarShortPath;
+short SidebarSortMethod;
 
 /* Previous values for some sidebar config */
 static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */

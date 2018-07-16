@@ -32,18 +32,26 @@
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "curs_main.h"
 #include "alias.h"
+#include "browser.h"
 #include "buffy.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hdrline.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -52,7 +60,12 @@
 #include "pattern.h"
 #include "progress.h"
 #include "protos.h"
+#include "query.h"
+#include "recvattach.h"
+#include "score.h"
+#include "send.h"
 #include "sort.h"
+#include "status.h"
 #include "terminal.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -72,6 +85,16 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in curs_main.c */
+bool ChangeFolderNext;
+bool CollapseAll;
+bool CollapseFlagged;
+bool CollapseUnread;
+char *MarkMacroPrefix;
+bool PgpAutoDecode;
+bool UncollapseJump;
+bool UncollapseNew;
 
 static const char *No_mailbox_is_open = N_("No mailbox is open.");
 static const char *There_are_no_messages = N_("There are no messages.");

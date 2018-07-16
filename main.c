@@ -46,17 +46,25 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
+#include "browser.h"
 #include "buffy.h"
+#include "color.h"
+#include "curs_lib.h"
+#include "curs_main.h"
 #include "globals.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
+#include "send.h"
+#include "sendlib.h"
 #include "terminal.h"
 #include "url.h"
 #include "version.h"
@@ -72,6 +80,9 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+
+/* These Config Variables are only used in main.c */
+extern bool ResumeEditedDraftFiles;
 
 #define MUTT_IGNORE (1 << 0)  /* -z */
 #define MUTT_BUFFY (1 << 1)   /* -Z */

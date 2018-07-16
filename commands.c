@@ -37,19 +37,27 @@
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hdrline.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parse.h"
 #include "protos.h"
+#include "recvattach.h"
+#include "sendlib.h"
 #include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -60,6 +68,16 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in commands.c */
+unsigned char CryptVerifySig; /* verify PGP signatures */
+char *DisplayFilter;
+bool PipeDecode;
+char *PipeSep;
+bool PipeSplit;
+bool PrintDecode;
+bool PrintSplit;
+bool PromptAfter;
 
 static const char *ExtPagerProgress = "all";
 

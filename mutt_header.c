@@ -32,10 +32,15 @@
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"
+#include "curs_lib.h"
+#include "curs_main.h"
 #include "globals.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
+#include "sendlib.h"
 
 static void label_ref_dec(struct Context *ctx, char *label)
 {

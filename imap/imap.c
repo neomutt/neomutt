@@ -45,13 +45,16 @@
 #include "auth.h"
 #include "bcache.h"
 #include "buffy.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
 #include "pattern.h"
@@ -65,6 +68,9 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in imap/imap.c */
+bool ImapIdle;
 
 /**
  * check_capabilities - Make sure we can log in to this server

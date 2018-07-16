@@ -39,11 +39,15 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "crypt_mod.h"
+#include "curs_lib.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
 
 struct State;
+
+/* These Config Variables are only used in ncrypt/cryptglue.c */
+bool CryptUseGpgme;
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 extern struct CryptModuleSpecs crypt_mod_pgp_classic;

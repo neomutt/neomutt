@@ -46,4 +46,13 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachCtx *actx);
 
+void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
+int mutt_compose_attachment(struct Body *a);
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags);
+int mutt_edit_attachment(struct Body *a);
+int mutt_get_tmp_attachment(struct Body *a);
+int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
+int mutt_print_attachment(FILE *fp, struct Body *a);
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
+
 #endif /* _MUTT_ATTACH2_H */

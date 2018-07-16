@@ -42,12 +42,21 @@
 #include "conn_globals.h"
 #include "connection.h"
 #include "keymap.h"
+#include "menu.h"
 #include "mutt_account.h"
-#include "mutt_menu.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "socket.h"
+
+/* These Config Variables are only used in conn/ssl_gnutls.c */
+bool SslUseSslv3;
+bool SslUseTlsv1;
+bool SslUseTlsv11;
+bool SslUseTlsv12;
+bool SslVerifyDates;
+bool SslVerifyHost;
 
 /* certificate error bitmap values */
 #define CERTERR_VALID 0

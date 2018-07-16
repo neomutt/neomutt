@@ -43,15 +43,18 @@
 #include "nntp.h"
 #include "bcache.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mutt_thread.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
@@ -63,6 +66,14 @@
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #endif
+
+/* These Config Variables are only used in nntp/nntp.c */
+char *NntpAuthenticators;
+short NntpContext;
+bool NntpListgroup;
+bool NntpLoadDescription;
+short NntpPoll;
+bool ShowNewNews;
 
 struct NntpServer *CurrentNewsSrv;
 

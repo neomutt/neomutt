@@ -33,6 +33,7 @@
 
 #include "config.h"
 #include "email/email.h"
+#include "muttlib.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
       defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC))
@@ -53,6 +54,9 @@
 #include "hcache.h"
 #include "hcache/hcversion.h"
 #include "protos.h"
+
+/* These Config Variables are only used in hcache/hcache.c */
+char *HeaderCacheBackend;
 
 static unsigned int hcachever = 0x0;
 

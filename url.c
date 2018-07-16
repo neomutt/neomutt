@@ -29,6 +29,7 @@
 #include "mutt.h"
 #include "url.h"
 #include "globals.h"
+#include "parse.h"
 #include "protos.h"
 #include "rfc2047.h"
 

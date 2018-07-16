@@ -50,6 +50,7 @@
 #include <idn/idna.h>
 #endif
 
+/* These Config Variables are only used in mutt/idna.c */
 #ifdef HAVE_LIBIDN
 bool IdnDecode;
 bool IdnEncode;

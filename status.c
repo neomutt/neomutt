@@ -29,12 +29,14 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mbtable.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
@@ -42,6 +44,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+
+/* These Config Variables are only used in status.c */
+struct MbTable *StatusChars;
 
 /**
  * get_sort_str - Get the sort method as a string

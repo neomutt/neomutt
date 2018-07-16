@@ -38,9 +38,11 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "sendlib.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -48,13 +50,18 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parse.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
+#include "send.h"
+#include "smtp.h"
 #include "state.h"
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
@@ -64,6 +71,25 @@
 #else
 #define EX_OK 0
 #endif
+
+/* These Config Variables are only used in sendlib.c */
+bool Allow8bit;
+char *AttachCharset;
+bool BounceDelivered;
+bool EncodeFrom;
+bool ForwardDecrypt;
+bool HiddenHost;
+char *Inews;
+bool MimeForwardDecode;
+bool MimeSubject; /**< encode subject line with RFC2047 */
+char *MimeTypeQueryCommand;
+bool MimeTypeQueryFirst;
+char *Sendmail;
+short SendmailWait;
+bool Use8bitmime;
+bool UseEnvelopeFrom;
+bool UserAgent;
+short WrapHeaders;
 
 /**
  * encode_quoted - Encode text as quoted printable

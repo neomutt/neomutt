@@ -58,6 +58,61 @@ struct Envelope;
 struct Header;
 struct State;
 
+/* These Config Variables are only used in ncrypt/crypt.c */
+extern bool          CryptTimestamp;
+extern unsigned char PgpEncryptSelf;
+extern unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+extern bool          PgpRetainableSigs;
+extern bool          PgpSelfEncrypt;
+extern bool          PgpStrictEnc;
+extern unsigned char SmimeEncryptSelf;
+extern bool          SmimeSelfEncrypt;
+
+/* These Config Variables are only used in ncrypt/cryptglue.c */
+extern bool CryptUseGpgme;
+
+/* These Config Variables are only used in ncrypt/pgp.c */
+extern bool          PgpCheckExit;
+extern bool          PgpCheckGpgDecryptStatusFd;
+extern struct Regex *PgpDecryptionOkay;
+extern struct Regex *PgpGoodSign;
+extern long          PgpTimeout;
+extern bool          PgpUseGpgAgent;
+
+/* These Config Variables are only used in ncrypt/pgpinvoke.c */
+extern char *PgpClearsignCommand;
+extern char *PgpDecodeCommand;
+extern char *PgpDecryptCommand;
+extern char *PgpEncryptOnlyCommand;
+extern char *PgpEncryptSignCommand;
+extern char *PgpExportCommand;
+extern char *PgpGetkeysCommand;
+extern char *PgpImportCommand;
+extern char *PgpListPubringCommand;
+extern char *PgpListSecringCommand;
+extern char *PgpSignCommand;
+extern char *PgpVerifyCommand;
+extern char *PgpVerifyKeyCommand;
+
+/* These Config Variables are only used in ncrypt/smime.c */
+extern bool  SmimeAskCertLabel;
+extern char *SmimeCaLocation;
+extern char *SmimeCertificates;
+extern char *SmimeDecryptCommand;
+extern bool  SmimeDecryptUseDefaultKey;
+extern char *SmimeEncryptCommand;
+extern char *SmimeGetCertCommand;
+extern char *SmimeGetCertEmailCommand;
+extern char *SmimeGetSignerCertCommand;
+extern char *SmimeImportCertCommand;
+extern char *SmimeKeys;
+extern char *SmimePk7outCommand;
+extern char *SmimeSignCommand;
+extern char *SmimeSignDigestAlg;
+extern long  SmimeTimeout;
+extern char *SmimeVerifyCommand;
+extern char *SmimeVerifyOpaqueCommand;
+
 /* FIXME: They should be pointer to anonymous structures for better
    information hiding. */
 

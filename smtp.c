@@ -41,11 +41,15 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
+#include "sendlib.h"
 #include "url.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #endif
+
+/* These Config Variables are only used in smtp.c */
+char *SmtpAuthenticators;
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334

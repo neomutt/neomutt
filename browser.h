@@ -27,6 +27,21 @@
 #include <sys/types.h>
 #include <time.h>
 
+/* These Config Variables are only used in browser.c */
+extern bool  BrowserAbbreviateMailboxes;
+extern char *FolderFormat;
+extern char *GroupIndexFormat;
+extern char *NewsgroupsCharset;
+extern bool  ShowOnlyUnread;
+extern short SortBrowser;
+extern char *VfolderFormat;
+
+/* flags to mutt_select_file() */
+#define MUTT_SEL_BUFFY   (1 << 0)
+#define MUTT_SEL_MULTI   (1 << 1)
+#define MUTT_SEL_FOLDER  (1 << 2)
+#define MUTT_SEL_VFOLDER (1 << 3)
+
 /**
  * struct FolderFile - Browser entry representing a folder/dir
  */
@@ -77,5 +92,8 @@ struct BrowserState
   bool unmarked : 1;
 #endif
 };
+
+void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles);
+void mutt_browser_select_dir(char *f);
 
 #endif /* _MUTT_BROWSER_H */

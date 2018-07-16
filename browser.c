@@ -41,19 +41,22 @@
 #include "browser.h"
 #include "buffy.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "sendlib.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_IMAP
@@ -65,6 +68,15 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+
+/* These Config Variables are only used in browser.c */
+bool BrowserAbbreviateMailboxes;
+char *FolderFormat;
+char *GroupIndexFormat;
+char *NewsgroupsCharset;
+bool ShowOnlyUnread;
+short SortBrowser;
+char *VfolderFormat;
 
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },

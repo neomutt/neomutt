@@ -35,10 +35,15 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "progress.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "options.h"
 #include "protos.h"
+
+/* These Config Variables are only used in progress.c */
+short TimeInc;
 
 /**
  * message_bar - Draw a colourful progress bar

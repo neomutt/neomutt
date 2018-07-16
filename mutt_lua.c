@@ -36,6 +36,7 @@
 #include "mbtable.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
+#include "muttlib.h"
 #include "protos.h"
 
 static int handle_panic(lua_State *l)

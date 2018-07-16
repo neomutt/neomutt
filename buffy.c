@@ -31,15 +31,18 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -50,6 +53,12 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+
+/* These Config Variables are only used in buffy.c */
+short MailCheck;
+bool MailCheckStats;
+short MailCheckStatsInterval;
+bool MaildirCheckCur;
 
 static time_t BuffyTime = 0; /**< last time we started checking for mail */
 static time_t BuffyStatsTime = 0; /**< last time we check performed mail_check_stats */

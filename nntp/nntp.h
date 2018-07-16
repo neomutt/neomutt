@@ -41,6 +41,18 @@ struct Account;
 struct Header;
 struct Context;
 
+/* These Config Variables are only used in nntp/nntp.c */
+extern char *NntpAuthenticators;
+extern short NntpContext;
+extern bool  NntpListgroup;
+extern bool  NntpLoadDescription;
+extern short NntpPoll;
+extern bool  ShowNewNews;
+
+/* These Config Variables are only used in nntp/newsrc.c */
+extern char *NewsCacheDir;
+extern char *Newsrc;
+
 /* article number type and format */
 #define anum_t uint32_t
 #define ANUM "%u"

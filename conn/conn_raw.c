@@ -44,9 +44,13 @@
 #include <unistd.h>
 #include "conn_globals.h"
 #include "connection.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
+
+/* These Config Variables are only used in conn/conn_raw.c */
+extern bool UseIpv6;
 
 /**
  * socket_connect - set up to connect to a socket fd

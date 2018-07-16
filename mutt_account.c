@@ -32,10 +32,20 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
 #include "url.h"
+
+/* These Config Variables are only used in mutt_account.c */
+char *ImapLogin;
+char *ImapPass;
+char *NntpPass;
+char *NntpUser;
+char *PopPass;
+char *PopUser;
+char *SmtpPass;
 
 /**
  * mutt_account_match - Compare account info (host/port/user)

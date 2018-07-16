@@ -30,16 +30,26 @@
 #include "mutt.h"
 #include "alias.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "handler.h"
+#include "hdrline.h"
 #include "mutt_body.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
+#include "send.h"
+#include "sendlib.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in recvcmd.c */
+unsigned char MimeForwardRest;
 
 /**
  * check_msg - Are we working with an RFC822 message

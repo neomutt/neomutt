@@ -111,18 +111,7 @@ struct Event
   int op; /**< function op */
 };
 
-struct Event mutt_getch(void);
-
-void mutt_endwin(void);
-void mutt_flushinp(void);
-void mutt_refresh(void);
 void mutt_resize_screen(void);
-void mutt_unget_event(int ch, int op);
-void mutt_unget_string(char *s);
-void mutt_push_macro_event(int ch, int op);
-void mutt_flush_macro_to_endcond(void);
-void mutt_flush_unget_to_endcond(void);
-void mutt_need_hard_redraw(void);
 
 /* ----------------------------------------------------------------------------
  * Support for color
@@ -213,8 +202,6 @@ extern struct ColorLineHead ColorIndexAuthorList;
 extern struct ColorLineHead ColorIndexFlagsList;
 extern struct ColorLineHead ColorIndexSubjectList;
 extern struct ColorLineHead ColorIndexTagList;
-
-void ci_start_color(void);
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the

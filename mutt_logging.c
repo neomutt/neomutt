@@ -37,9 +37,11 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
 

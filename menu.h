@@ -1,9 +1,9 @@
 /**
  * @file
- * GUI handling of selectable lists
+ * GUI present the user with a selectable list
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,12 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MENU_H
-#define _MUTT_MENU_H
+#ifndef MUTT_MENU_H
+#define MUTT_MENU_H
 
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+/* These Config Variables are only used in menu.c */
+extern short MenuContext;
+extern bool  MenuMoveOff; /**< allow menu to scroll past last entry */
+extern bool  MenuScroll;  /**< scroll menu instead of implicit next-page */
 
 #define REDRAW_INDEX          (1 << 0)
 #define REDRAW_MOTION         (1 << 1)
@@ -95,32 +100,30 @@ struct Menu
   int tagged;     /**< number of tagged entries */
 };
 
-int  menu_redraw(struct Menu *menu);
-void menu_bottom_page(struct Menu *menu);
-void menu_check_recenter(struct Menu *menu);
-void menu_current_bottom(struct Menu *menu);
-void menu_current_middle(struct Menu *menu);
-void menu_current_top(struct Menu *menu);
-void menu_first_entry(struct Menu *menu);
-void menu_half_down(struct Menu *menu);
-void menu_half_up(struct Menu *menu);
-void menu_last_entry(struct Menu *menu);
-void menu_middle_page(struct Menu *menu);
-void menu_next_line(struct Menu *menu);
-void menu_next_page(struct Menu *menu);
-void menu_prev_line(struct Menu *menu);
-void menu_prev_page(struct Menu *menu);
-void menu_redraw_current(struct Menu *menu);
-void menu_redraw_full(struct Menu *menu);
-void menu_redraw_index(struct Menu *menu);
-void menu_redraw_motion(struct Menu *menu);
+void         menu_bottom_page(struct Menu *menu);
+void         menu_check_recenter(struct Menu *menu);
+void         menu_current_bottom(struct Menu *menu);
+void         menu_current_middle(struct Menu *menu);
+void         menu_current_top(struct Menu *menu);
+void         menu_first_entry(struct Menu *menu);
+void         menu_half_down(struct Menu *menu);
+void         menu_half_up(struct Menu *menu);
+void         menu_last_entry(struct Menu *menu);
+void         menu_middle_page(struct Menu *menu);
+void         menu_next_line(struct Menu *menu);
+void         menu_next_page(struct Menu *menu);
+void         menu_prev_line(struct Menu *menu);
+void         menu_prev_page(struct Menu *menu);
+void         menu_redraw_current(struct Menu *menu);
+void         menu_redraw_full(struct Menu *menu);
+void         menu_redraw_index(struct Menu *menu);
+void         menu_redraw_motion(struct Menu *menu);
 #ifdef USE_SIDEBAR
-void menu_redraw_sidebar(struct Menu *menu);
+void         menu_redraw_sidebar(struct Menu *menu);
 #endif
-void menu_redraw_status(struct Menu *menu);
-void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
-void menu_top_page(struct Menu *menu);
-
+void         menu_redraw_status(struct Menu *menu);
+int          menu_redraw(struct Menu *menu);
+void         menu_top_page(struct Menu *menu);
 void         mutt_menu_current_redraw(void);
 void         mutt_menu_destroy(struct Menu **p);
 void         mutt_menu_init(void);
@@ -133,8 +136,4 @@ void         mutt_menu_set_current_redraw(int redraw);
 void         mutt_menu_set_redraw_full(int menu_type);
 void         mutt_menu_set_redraw(int menu_type, int redraw);
 
-/* used in both the index and pager index to make an entry. */
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num);
-int index_color(int index_no);
-
-#endif /* _MUTT_MENU_H */
+#endif /* MUTT_MENU_H */

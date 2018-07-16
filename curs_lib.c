@@ -39,12 +39,17 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "curs_lib.h"
+#include "browser.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
@@ -55,6 +60,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+
+/* These Config Variables are only used in curs_lib.c */
+bool MetaKey; /**< interpret ALT-x as ESC-x */
 
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input

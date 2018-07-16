@@ -34,10 +34,15 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
+#include "addrbook.h"
+#include "curs_lib.h"
 #include "globals.h"
+#include "hdrline.h"
 #include "mutt_curses.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
+#include "sendlib.h"
 
 /**
  * expand_aliases_r - Expand aliases, recursively

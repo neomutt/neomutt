@@ -41,19 +41,24 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "message.h"
 #include "mutt_account.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
 #include "url.h"
+
+/* These Config Variables are only used in imap/command.c */
+bool ImapServernoise;
 
 #define IMAP_CMD_BUFSIZE 512
 

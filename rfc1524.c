@@ -42,8 +42,13 @@
 #include "mutt.h"
 #include "rfc1524.h"
 #include "globals.h"
+#include "mutt_attach.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
+
+/* These Config Variables are only used in rfc1524.c */
+bool MailcapSanitize;
 
 /**
  * rfc1524_expand_command - Expand expandos in a command

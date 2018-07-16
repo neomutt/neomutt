@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt_socket.h"
+#include "hook.h"
 #include "mutt_account.h"
 #include "protos.h"
 #include "url.h"

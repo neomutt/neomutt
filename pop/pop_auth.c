@@ -45,6 +45,10 @@
 #include <sasl/saslutil.h>
 #endif
 
+/* These Config Variables are only used in pop/pop_auth.c */
+char *PopAuthenticators;
+bool PopAuthTryAll;
+
 #ifdef USE_SASL
 /**
  * pop_auth_sasl - POP SASL authenticator

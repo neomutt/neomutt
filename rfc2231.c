@@ -39,6 +39,9 @@
 #include "globals.h"
 #include "options.h"
 
+/* These Config Variables are only used in rfc2231.c */
+bool Rfc2047Parameters;
+
 /**
  * struct Rfc2231Parameter - MIME section parameter
  */

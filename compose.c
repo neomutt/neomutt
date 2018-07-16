@@ -33,23 +33,34 @@
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "compose.h"
 #include "alias.h"
+#include "browser.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
+#include "curs_main.h"
+#include "edit.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #include "recvattach.h"
+#include "sendlib.h"
 #include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -60,6 +71,11 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+
+/* These Config Variables are only used in compose.c */
+char *ComposeFormat;
+char *Ispell;
+unsigned char Postpone;
 
 static const char *There_are_no_attachments = N_("There are no attachments.");
 

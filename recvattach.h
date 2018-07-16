@@ -24,9 +24,21 @@
 #ifndef _MUTT_RECVATTACH_H
 #define _MUTT_RECVATTACH_H
 
+#include "format_flags.h"
+
 struct AttachCtx;
+
+/* These Config Variables are only used in recvattach.c */
+extern char *AttachSep;
+extern bool  AttachSplit;
+extern bool  DigestCollapse;
+extern char *MessageFormat;
 
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
+
+const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, enum FormatFlag flags);
+void mutt_view_attachments(struct Header *hdr);
+bool mutt_is_message_type(int type, const char *subtype);
 
 #endif /* _MUTT_RECVATTACH_H */

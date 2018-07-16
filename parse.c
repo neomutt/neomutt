@@ -31,16 +31,22 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "parse.h"
 #include "globals.h"
 #include "mailbox.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
 
 struct Context;
+
+/* These Config Variables are only used in parse.c */
+char *SpamSeparator;
 
 /**
  * mutt_rfc822_read_line - Read a header line from a file

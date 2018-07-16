@@ -33,7 +33,10 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
+#include "mutt_attach.h"
+#include "muttlib.h"
 #include "protos.h"
+#include "sendlib.h"
 
 /**
  * mutt_body_copy - Create a send-mode duplicate from a receive-mode body

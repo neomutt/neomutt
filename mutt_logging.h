@@ -37,4 +37,6 @@ void mutt_log_stop(void);
 int mutt_log_set_level(int level, bool verbose);
 int mutt_log_set_file(const char *file, bool verbose);
 
+void mutt_clear_error(void);
+
 #endif /* _LOGGING2_H */

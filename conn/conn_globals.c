@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 
 short ConnectTimeout = 0; /**< Config: Timeout for a network connection (for IMAP, POP or SMTP) */
@@ -46,3 +47,14 @@ short SslMinDhPrimeBits = 0; /**< Config: Minimum keysize for Diffie-Hellman key
 const char *Preconnect = NULL; /**< Config: Shell command to run before making a connection */
 const char *Tunnel = NULL; /**< Config: Shell command to establish a tunnel */
 #endif
+
+/* These Config Variables are only used in conn/conn_raw.c */
+extern bool UseIpv6;
+
+/* These Config Variables are only used in conn/ssl_gnutls.c */
+extern bool SslUseSslv3;
+extern bool SslUseTlsv1;
+extern bool SslUseTlsv11;
+extern bool SslUseTlsv12;
+extern bool SslVerifyDates;
+extern bool SslVerifyHost;

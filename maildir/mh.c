@@ -48,8 +48,10 @@
 #include "mailbox.h"
 #include "maildir.h"
 #include "mutt_thread.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
+#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
@@ -59,6 +61,14 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+/* These Config Variables are only used in maildir/mh.c */
+bool CheckNew;
+bool MaildirHeaderCacheVerify;
+bool MhPurge;
+char *MhSeqFlagged;
+char *MhSeqReplied;
+char *MhSeqUnseen;
 
 #define INS_SORT_THRESHOLD 6
 

@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "backend.h"
+#include "globals.h"
 #include "options.h"
 
 /**

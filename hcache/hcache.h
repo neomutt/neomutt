@@ -54,6 +54,9 @@ typedef struct HeaderCache header_cache_t;
 
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
 
+/* These Config Variables are only used in hcache/hcache.c */
+extern char *HeaderCacheBackend;
+
 /**
  * mutt_hcache_open - open the connection to the header cache
  * @param path   Location of the header cache (often as specified by the user)

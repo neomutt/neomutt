@@ -32,17 +32,27 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "hdrline.h"
+#include "alias.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
 #include "sort.h"
+
+/* These Config Variables are only used in hdrline.c */
+struct MbTable *FlagChars;
+struct MbTable *FromChars;
+struct MbTable *ToChars;
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)

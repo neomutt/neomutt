@@ -78,12 +78,20 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "history.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "keymap.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
+
+/* These Config Variables are only used in history.c */
+short History;
+char *HistoryFile;
+bool HistoryRemoveDups;
+short SaveHistory;
 
 #define HC_FIRST HC_CMD
 

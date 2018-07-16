@@ -42,14 +42,18 @@
 #include "message.h"
 #include "bcache.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
+#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #ifdef USE_HCACHE
@@ -60,6 +64,9 @@
 #endif
 
 struct BodyCache;
+
+/* These Config Variables are only used in imap/message.c */
+char *ImapHeaders;
 
 /**
  * new_header_data - Create a new ImapHeaderData

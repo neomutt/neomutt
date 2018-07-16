@@ -30,12 +30,17 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "menu.h"
+#include "color.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
@@ -43,6 +48,11 @@
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
+
+/* These Config Variables are only used in menu.c */
+short MenuContext;
+bool MenuMoveOff; /**< allow menu to scroll past last entry */
+bool MenuScroll;  /**< scroll menu instead of implicit next-page */
 
 char *SearchBuffers[MENU_MAX];
 

@@ -33,7 +33,9 @@
 #include "mutt/mutt.h"
 #include "tags.h"
 
-char *HiddenTags; /**< Config: Private tags which should not be displayed */
+/* These Config Variables are only used in email/tags.c */
+char *HiddenTags;
+
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
 /**

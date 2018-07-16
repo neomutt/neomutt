@@ -26,14 +26,20 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "score.h"
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+
+/* These Config Variables are only used in score.c */
+short ScoreThresholdDelete;
+short ScoreThresholdFlag;
+short ScoreThresholdRead;
 
 /**
  * struct Score - Scoring rule for email

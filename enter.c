@@ -35,14 +35,20 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "alias.h"
+#include "browser.h"
+#include "buffy.h"
+#include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "history.h"
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "query.h"
 
 /**
  * enum RedrawFlags - redraw flags for mutt_enter_string_full()

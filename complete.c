@@ -34,6 +34,7 @@
 #include <sys/stat.h>
 #include "mutt/mutt.h"
 #include "globals.h"
+#include "muttlib.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP

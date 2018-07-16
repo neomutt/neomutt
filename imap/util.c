@@ -46,6 +46,7 @@
 #include "conn/conn.h"
 #include "bcache.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
 #include "mailbox.h"
@@ -58,6 +59,10 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+/* These Config Variables are only used in imap/util.c */
+char *ImapDelimChars;
+short ImapPipelineDepth;
 
 /**
  * imap_expand_path - Canonicalise an IMAP path
@@ -796,9 +801,10 @@ void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
 
 /**
  * imap_quote_string - quote string according to IMAP rules
- * @param dest Buffer for the result
- * @param dlen Length of the buffer
- * @param src  String to be quoted
+ * @param dest           Buffer for the result
+ * @param dlen           Length of the buffer
+ * @param src            String to be quoted
+ * @param quote_backtick If true, quote backticks too
  *
  * Surround string with quotes, escape " and \ with backslash
  */

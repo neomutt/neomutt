@@ -32,6 +32,12 @@ struct Buffer;
 struct Header;
 struct Context;
 
+/* These Config Variables are only used in pattern.c */
+extern bool ThoroughSearch;
+
+/* flag to mutt_pattern_comp() */
+#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
+
 /**
  * struct Pattern - A simple (non-regex) pattern
  */

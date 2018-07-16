@@ -41,16 +41,29 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mutt_attach.h"
+#include "mutt_logging.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "parse.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in handler.c */
+bool HonorDisposition;
+bool ImplicitAutoview;
+bool IncludeOnlyfirst;
+char *PreferredLanguages;
+bool ReflowText;
+char *ShowMultipartAlternative;
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000

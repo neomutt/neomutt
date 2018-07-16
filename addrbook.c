@@ -34,15 +34,21 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+
+/* These Config Variables are only used in addrbook.c */
+char *AliasFormat;
+short SortAlias;
 
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
 

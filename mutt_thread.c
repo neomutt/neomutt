@@ -32,9 +32,22 @@
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+
+/* These Config Variables are only used in mutt_thread.c */
+bool DuplicateThreads;
+bool HideLimited;
+bool HideMissing;
+bool HideThreadSubject;
+bool HideTopLimited;
+bool HideTopMissing;
+bool NarrowTree;
+bool SortRe;
+bool StrictThreads;
+bool ThreadReceived;
 
 static bool is_visible(struct Header *hdr, struct Context *ctx)
 {

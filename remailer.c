@@ -30,16 +30,24 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "remailer.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
+#include "sendlib.h"
+
+/* These Config Variables are only used in remailer.c */
+char *MixEntryFormat;
+char *Mixmaster;
 
 /**
  * struct Coord - Screen coordinates

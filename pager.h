@@ -28,6 +28,18 @@
 struct Context;
 struct Menu;
 
+/* These Config Variables are only used in pager.c */
+extern bool          AllowAnsi;
+extern bool          HeaderColorPartial;
+extern short         PagerContext;
+extern short         PagerIndexLines;
+extern bool          PagerStop;
+extern short         SearchContext;
+extern short         SkipQuotedOffset;
+extern bool          SmartWrap;
+extern struct Regex *Smileys;
+extern bool          Tilde;
+
 /* dynamic internal flags */
 #define MUTT_SHOWFLAT  (1 << 0)
 #define MUTT_SHOWCOLOR (1 << 1)
@@ -59,8 +71,8 @@ struct Pager
   struct AttachCtx *actx; /**< attachment information */
 };
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra);
-void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint);
+
+void mutt_clear_pager_position(void);
 
 #endif /* _MUTT_PAGER_H */

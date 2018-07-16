@@ -36,23 +36,32 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pattern.h"
+#include "alias.h"
 #include "context.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "group.h"
 #include "handler.h"
+#include "hdrline.h"
 #include "mailbox.h"
-#include "mutt_menu.h"
+#include "menu.h"
+#include "mutt_logging.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "state.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+
+/* These Config Variables are only used in pattern.c */
+bool ThoroughSearch;
 
 // clang-format off
 /* The regexes in a modern format */

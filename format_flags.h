@@ -45,8 +45,4 @@ typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              const char *if_str, const char *else_str,
                              unsigned long data, enum FormatFlag flags);
 
-void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols,
-                         const char *src, format_t *callback,
-                         unsigned long data, enum FormatFlag flags);
-
 #endif /* _MUTT_FORMAT_FLAGS_H */

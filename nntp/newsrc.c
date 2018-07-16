@@ -47,8 +47,10 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "nntp.h"
 #include "options.h"
@@ -58,6 +60,10 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+/* These Config Variables are only used in nntp/newsrc.c */
+char *NewsCacheDir;
+char *Newsrc;
 
 struct BodyCache;
 

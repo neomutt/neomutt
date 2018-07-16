@@ -29,6 +29,9 @@
 struct Account;
 struct BodyCache;
 
+/* These Config Variables are only used in bcache.c */
+extern char *MessageCachedir;
+
 /**
  * Callback function for mutt_bcache_list
  */

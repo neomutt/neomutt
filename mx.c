@@ -45,17 +45,21 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "maildir/maildir.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_thread.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
+#include "score.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_SIDEBAR
@@ -79,6 +83,12 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in mx.c */
+unsigned char CatchupNewsgroup;
+bool KeepFlagged;
+unsigned char Move;
+char *Trash;
 
 /**
  * mx_get_ops - Get mailbox operations

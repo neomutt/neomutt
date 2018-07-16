@@ -34,6 +34,14 @@ struct Buffy;
 struct Context;
 struct Header;
 
+/* These Config Variables are only used in maildir/mh.c */
+extern bool  CheckNew;
+extern bool  MaildirHeaderCacheVerify;
+extern bool  MhPurge;
+extern char *MhSeqFlagged;
+extern char *MhSeqReplied;
+extern char *MhSeqUnseen;
+
 extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mh_ops;
 

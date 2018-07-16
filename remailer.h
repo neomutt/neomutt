@@ -23,12 +23,16 @@
 #ifndef _MUTT_REMAILER_H
 #define _MUTT_REMAILER_H
 
+#ifdef MIXMASTER
+
 #include <stddef.h>
 
 struct ListHead;
 struct Header;
 
-#ifdef MIXMASTER
+/* These Config Variables are only used in remailer.c */
+extern char *MixEntryFormat;
+extern char *Mixmaster;
 
 #define MIX_CAP_COMPRESS  (1 << 0)
 #define MIX_CAP_MIDDLEMAN (1 << 1)

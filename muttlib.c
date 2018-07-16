@@ -39,10 +39,13 @@
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "muttlib.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -57,6 +60,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+
+/* These Config Variables are only used in muttlib.c */
+struct Regex *GecosMask;
 
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",

@@ -27,15 +27,21 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "sort.h"
+#include "alias.h"
 #include "context.h"
 #include "globals.h"
+#include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
+#include "score.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/nntp.h"
 #endif
+
+/* These Config Variables are only used in sort.c */
+bool ReverseAlias;
 
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
@@ -268,7 +274,7 @@ sort_t *mutt_get_sort_func(int method)
         return nntp_compare_order;
       else
 #endif
-      return compare_order;
+        return compare_order;
     case SORT_RECEIVED:
       return compare_date_received;
     case SORT_SCORE:

@@ -47,10 +47,13 @@
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "url.h"
@@ -60,6 +63,12 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+/* These Config Variables are only used in pop/pop.c */
+short PopCheckinterval;
+unsigned char PopDelete;
+char *PopHost;
+bool PopLast;
 
 #ifdef USE_HCACHE
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
