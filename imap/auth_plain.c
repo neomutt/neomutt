@@ -77,7 +77,8 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
     }
     if (rc == IMAP_CMD_RESPOND)
     {
-      mutt_str_strcat(buf + sizeof(auth_plain_cmd), sizeof(buf) - sizeof(auth_plain_cmd), "\r\n");
+      mutt_str_strcat(buf + sizeof(auth_plain_cmd),
+                      sizeof(buf) - sizeof(auth_plain_cmd), "\r\n");
       mutt_socket_send(idata->conn, buf + sizeof(auth_plain_cmd));
     }
   }

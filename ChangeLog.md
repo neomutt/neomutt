@@ -1,3 +1,9 @@
+2018-07-16  Richard Russon  <rich@flatcap.org>
+* Features
+  - <check-stats> function
+* Bug Fixes
+  - Lots
+
 2018-06-22  Richard Russon  <rich@flatcap.org>
 * Features
   - Expand variables inside backticks

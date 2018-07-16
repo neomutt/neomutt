@@ -601,7 +601,8 @@ int nntp_add_group(char *line, void *data)
     return 0;
 
   /* These sscanf limits must match the sizes of the group and desc arrays */
-  if (sscanf(line, "%1023s " ANUM " " ANUM " %c %8191[^\n]", group, &last, &first, &mod, desc) < 4)
+  if (sscanf(line, "%1023s " ANUM " " ANUM " %c %8191[^\n]", group, &last,
+             &first, &mod, desc) < 4)
   {
     mutt_debug(4, "Cannot parse server line: %s\n", line);
     return 0;

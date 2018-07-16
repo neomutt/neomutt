@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-127-orange.svg)](#contributors "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-132-orange.svg)](#contributors "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/COPYRIGHT.md "Copyright Statement")
 [![Code build](https://img.shields.io/travis/neomutt/neomutt.svg?label=code)](https://travis-ci.org/neomutt/neomutt "Latest Automatic Code Build")
@@ -137,6 +137,7 @@ Here's a list of everyone who's helped NeoMutt:
 [Jasper Adriaanse](https://github.com/jasperla "jasperla"),
 [Jelle van der Waa](https://github.com/jelly "jelly"),
 [Jenya Sovetkin](https://github.com/esovetkin "esovetkin"),
+[JerikoOne](https://github.com/jeriko-one "jeriko-one"),
 [Joey Pabalinas](https://github.com/alyptik "alyptik"),
 [Johannes Frankenau](https://github.com/tsuflux "tsuflux"),
 [Johannes Weißl](https://github.com/weisslj "weisslj"),
@@ -156,6 +157,7 @@ Here's a list of everyone who's helped NeoMutt:
 [Manos Pitsidianakis](https://github.com/epilys "epilys"),
 [Marcin Rajner](https://github.com/mrajner "mrajner"),
 [Marco Hinz](https://github.com/mhinz "mhinz"),
+[Marco Sirabella](https://github.com/mjsir911 "mjsir911"),
 [Marius Gedminas](https://github.com/mgedmin "mgedmin"),
 [Mateusz Piotrowski](https://github.com/0mp "0mp"),
 [Matteo Vescovi](https://github.com/mfvescovi "mfvescovi"),
