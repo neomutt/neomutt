@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page maildir_maildir Maildir/MH local mailbox type
+ *
+ * Maildir/MH local mailbox type
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <dirent.h>
@@ -1868,7 +1874,7 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
 #endif
       if (hdr)
         mutt_str_replace(&hdr->path, path);
-      mutt_str_replace(&msg->commited_path, full);
+      mutt_str_replace(&msg->committed_path, full);
       FREE(&msg->path);
 
       return 0;
@@ -1960,7 +1966,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
     {
       if (hdr)
         mutt_str_replace(&hdr->path, tmp);
-      mutt_str_replace(&msg->commited_path, path);
+      mutt_str_replace(&msg->committed_path, path);
       FREE(&msg->path);
       break;
     }
@@ -2180,7 +2186,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
       if (hc)
       {
-        const char *key;
+        const char *key = NULL;
         size_t keylen;
         if (ctx->magic == MUTT_MH)
         {
@@ -2228,7 +2234,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
   if (hc && h->changed)
   {
-    const char *key;
+    const char *key = NULL;
     size_t keylen;
     if (ctx->magic == MUTT_MH)
     {

@@ -35,6 +35,12 @@
  *   (or parse URI from another resource)
  */
 
+/**
+ * @page nm_notmuch Notmuch virtual mailbox type
+ *
+ * Notmuch virtual mailbox type
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>

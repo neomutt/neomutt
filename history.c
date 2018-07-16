@@ -88,10 +88,10 @@
 #include "protos.h"
 
 /* These Config Variables are only used in history.c */
-short History;
-char *HistoryFile;
-bool HistoryRemoveDups;
-short SaveHistory;
+short History;          /**< Number of history entries stored in memory */
+char *HistoryFile;      /**< File in which to store all the histories */
+bool HistoryRemoveDups; /**< Remove duplicate history entries */
+short SaveHistory; /**< Number of history entries, per category, stored on disk */
 
 #define HC_FIRST HC_CMD
 
@@ -116,11 +116,6 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /* global vars used for the string-history routines */
-
-short History;          /**< Number of history entries stored in memory */
-char *HistoryFile;      /**< File in which to store all the histories */
-bool HistoryRemoveDups; /**< Remove duplicate history entries */
-short SaveHistory; /**< Number of history entries, per category, stored on disk */
 
 static struct History Histories[HC_LAST];
 static int OldSize = 0;
@@ -222,8 +217,7 @@ static int dup_hash_inc(struct Hash *dup_hash, char *str)
  */
 static void shrink_histfile(void)
 {
-  char tmpfname[PATH_MAX];
-  FILE *tmp = NULL;
+  FILE *tmpfp = NULL;
   int n[HC_LAST] = { 0 };
   int line, hclass, read;
   char *linebuf = NULL, *p = NULL;
@@ -274,11 +268,10 @@ static void shrink_histfile(void)
 
   if (regen_file)
   {
-    mutt_mktemp(tmpfname, sizeof(tmpfname));
-    tmp = mutt_file_fopen(tmpfname, "w+");
-    if (!tmp)
+    tmpfp = mutt_file_mkstemp();
+    if (!tmpfp)
     {
-      mutt_perror(tmpfname);
+      mutt_perror("mutt_file_mkstemp() failed!");
       goto cleanup;
     }
     rewind(f);
@@ -300,23 +293,22 @@ static void shrink_histfile(void)
       }
       *p = '|';
       if (n[hclass]-- <= SaveHistory)
-        fprintf(tmp, "%s\n", linebuf);
+        fprintf(tmpfp, "%s\n", linebuf);
     }
   }
 
 cleanup:
   mutt_file_fclose(&f);
   FREE(&linebuf);
-  if (tmp)
+  if (tmpfp)
   {
-    if (fflush(tmp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
+    if (fflush(tmpfp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
     {
-      rewind(tmp);
-      mutt_file_copy_stream(tmp, f);
+      rewind(tmpfp);
+      mutt_file_copy_stream(tmpfp, f);
       mutt_file_fclose(&f);
     }
-    mutt_file_fclose(&tmp);
-    unlink(tmpfname);
+    mutt_file_fclose(&tmpfp);
   }
   if (HistoryRemoveDups)
     for (hclass = 0; hclass < HC_LAST; hclass++)
@@ -484,7 +476,7 @@ static void history_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  */
 static void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {
-  struct Menu *menu;
+  struct Menu *menu = NULL;
   int done = 0;
   char helpstr[LONG_STRING];
   char title[STRING];
@@ -559,7 +551,8 @@ void mutt_hist_free(void)
     if (!h->hist)
       continue;
 
-    for (int i = 0; i < History; i++)
+    /* The array has (History+1) elements */
+    for (int i = 0; i <= History; i++)
     {
       FREE(&h->hist[i]);
     }

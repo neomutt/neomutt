@@ -80,29 +80,6 @@ struct Mapping;
 #define MUTT_TOKEN_BACKTICK_VARS (1<<7)  /**< expand variables within backticks */
 #define MUTT_TOKEN_NOSHELL       (1<<8)  /**< don't expand environment variables */
 
-/* types for mutt_add_hook() */
-#define MUTT_FOLDERHOOK   (1 << 0)
-#define MUTT_MBOXHOOK     (1 << 1)
-#define MUTT_SENDHOOK     (1 << 2)
-#define MUTT_FCCHOOK      (1 << 3)
-#define MUTT_SAVEHOOK     (1 << 4)
-#define MUTT_CHARSETHOOK  (1 << 5)
-#define MUTT_ICONVHOOK    (1 << 6)
-#define MUTT_MESSAGEHOOK  (1 << 7)
-#define MUTT_CRYPTHOOK    (1 << 8)
-#define MUTT_ACCOUNTHOOK  (1 << 9)
-#define MUTT_REPLYHOOK    (1 << 10)
-#define MUTT_SEND2HOOK    (1 << 11)
-#ifdef USE_COMPRESSED
-#define MUTT_OPENHOOK     (1 << 12)
-#define MUTT_APPENDHOOK   (1 << 13)
-#define MUTT_CLOSEHOOK    (1 << 14)
-#endif
-#define MUTT_TIMEOUTHOOK  (1 << 15)
-#define MUTT_STARTUPHOOK  (1 << 16)
-#define MUTT_SHUTDOWNHOOK (1 << 17)
-#define MUTT_GLOBALHOOK   (1 << 18)
-
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER 1
 #define MUTT_TREE_ULCORNER 2

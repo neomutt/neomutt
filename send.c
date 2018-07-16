@@ -349,7 +349,7 @@ static int edit_envelope(struct Envelope *en, int flags)
     const char *p = NULL;
 
     buf[0] = 0;
-    struct ListNode *uh;
+    struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
       if (mutt_str_strncasecmp("subject:", uh->data, 8) == 0)
@@ -388,7 +388,7 @@ static char *nntp_get_header(const char *s)
 
 static void process_user_recips(struct Envelope *env)
 {
-  struct ListNode *uh;
+  struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_str_strncasecmp("to:", uh->data, 3) == 0)
@@ -410,7 +410,7 @@ static void process_user_recips(struct Envelope *env)
 
 static void process_user_header(struct Envelope *env)
 {
-  struct ListNode *uh;
+  struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_str_strncasecmp("from:", uh->data, 5) == 0)
@@ -484,7 +484,7 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
   int chflags = CH_DECODE, cmflags = 0;
 
   mutt_parse_mime_message(ctx, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGEHOOK);
+  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
 
   if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
   {
@@ -553,7 +553,7 @@ static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
   }
 
   mutt_parse_mime_message(ctx, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGEHOOK);
+  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(ctx, cur, out);
 
@@ -697,8 +697,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
  */
 static void add_references(struct ListHead *head, struct Envelope *e)
 {
-  struct ListHead *src;
-  struct ListNode *np;
+  struct ListHead *src = NULL;
+  struct ListNode *np = NULL;
 
   src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
@@ -1628,7 +1628,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if ((flags & SENDREPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(ctx, cur, MUTT_REPLYHOOK);
+      mutt_message_hook(ctx, cur, MUTT_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
@@ -1639,7 +1639,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     /* change settings based upon recipients */
 
-    mutt_message_hook(NULL, msg, MUTT_SENDHOOK);
+    mutt_message_hook(NULL, msg, MUTT_SEND_HOOK);
 
     /* Unset the replied flag from the message we are composing since it is
      * no longer required.  This is done here because the FCC'd copy of
@@ -1696,7 +1696,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
    * used for setting the editor, the sendmail path, or the
    * envelope sender.
    */
-  mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+  mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
 
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
@@ -1770,7 +1770,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
           rfc3676_space_stuff(msg);
       }
 
-      mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+      mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
     }
 
     if (!(flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND | SENDDRAFTFILE)))

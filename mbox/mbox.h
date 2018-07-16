@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mbox Mbox local mailbox type
+ *
+ * Mbox local mailbox type
+ *
+ * | File        | Description        |
+ * | :---------- | :----------------- |
+ * | mbox/mbox.c | @subpage mbox_mbox |
+ */
+
 #ifndef _MBOX_MBOX_H
 #define _MBOX_MBOX_H
 

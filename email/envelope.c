@@ -21,7 +21,7 @@
  */
 
 /**
- * @page envelope Representation of an email header (envelope)
+ * @page email_envelope Representation of an email header (envelope)
  *
  * Representation of an email header (envelope)
  */

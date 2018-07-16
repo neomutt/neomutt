@@ -657,11 +657,11 @@ void mutt_rfc2047_decode(char **pd)
 
   struct Buffer buf = { 0 }; /* Output buffer                          */
   char *s = *pd;             /* Read pointer                           */
-  char *beg;                 /* Begin of encoded word                  */
+  char *beg = NULL;          /* Begin of encoded word                  */
   enum ContentEncoding enc;  /* ENCBASE64 or ENCQUOTEDPRINTABLE        */
-  char *charset;             /* Which charset                          */
+  char *charset = NULL;      /* Which charset                          */
   size_t charsetlen;         /* Length of the charset                  */
-  char *text;                /* Encoded text                           */
+  char *text = NULL;         /* Encoded text                           */
   size_t textlen;            /* Length of encoded text                 */
 
   /* Keep some state in case the next decoded word is using the same charset
@@ -714,7 +714,7 @@ void mutt_rfc2047_decode(char **pd)
       /* Some encoded text was found */
       text[textlen] = '\0';
       char *decoded = rfc2047_decode_word(text, textlen, enc);
-      if (decoded == NULL)
+      if (!decoded)
       {
         return;
       }

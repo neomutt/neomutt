@@ -81,9 +81,6 @@
 #include "nntp/nntp.h"
 #endif
 
-/* These Config Variables are only used in main.c */
-extern bool ResumeEditedDraftFiles;
-
 #define MUTT_IGNORE (1 << 0)  /* -z */
 #define MUTT_BUFFY (1 << 1)   /* -Z */
 #define MUTT_NOSYSRC (1 << 2) /* -n */
@@ -649,7 +646,7 @@ int main(int argc, char *argv[], char *envp[])
     struct Address *a = NULL;
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
-    struct ListNode *np;
+    struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
       a = mutt_alias_lookup(np->data);
@@ -922,7 +919,7 @@ int main(int argc, char *argv[], char *envp[])
       while (a && a->next)
         a = a->next;
 
-      struct ListNode *np;
+      struct ListNode *np = NULL;
       STAILQ_FOREACH(np, &attach, entries)
       {
         if (a)
@@ -1079,7 +1076,7 @@ int main(int argc, char *argv[], char *envp[])
     }
 
     mutt_folder_hook(folder);
-    mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
+    mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;
     Context = mx_mbox_open(folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);

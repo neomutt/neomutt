@@ -1276,7 +1276,7 @@ int mutt_index_menu(void)
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
-            struct ListNode *ref;
+            struct ListNode *ref = NULL;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
               if (mutt_hash_find(Context->id_hash, ref->data) == NULL)
@@ -1538,7 +1538,7 @@ int mutt_index_menu(void)
 
           oldcount = Context ? Context->msgcount : 0;
 
-          mutt_startup_shutdown_hook(MUTT_SHUTDOWNHOOK);
+          mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
 
           if (!Context || (check = mx_mbox_close(Context, &index_hint)) == 0)
             done = true;

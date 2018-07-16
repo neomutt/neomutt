@@ -366,7 +366,7 @@ static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off
 
   d = dump_int(0xdeadbeef, d, off);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, l, entries)
   {
     d = dump_char(np->data, d, off, convert);
@@ -391,7 +391,7 @@ static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
 
   restore_int(&counter, d, off);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   while (counter)
   {
     np = mutt_list_insert_tail(l, NULL);
@@ -470,7 +470,7 @@ static unsigned char *dump_parameter(struct ParameterList *p, unsigned char *d,
 
   d = dump_int(0xdeadbeef, d, off);
 
-  struct Parameter *np;
+  struct Parameter *np = NULL;
   TAILQ_FOREACH(np, p, entries)
   {
     d = dump_char(np->attribute, d, off, false);
@@ -497,7 +497,7 @@ static void restore_parameter(struct ParameterList *p, const unsigned char *d,
 
   restore_int(&counter, d, off);
 
-  struct Parameter *np;
+  struct Parameter *np = NULL;
   while (counter)
   {
     np = mutt_param_new();
@@ -837,9 +837,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
 #ifdef MIXMASTER
   STAILQ_INIT(&nh.chain);
 #endif
-#if defined(USE_POP) || defined(USE_IMAP)
   nh.data = NULL;
-#endif
 
   memcpy(d + *off, &nh, sizeof(struct Header));
   *off += sizeof(struct Header);

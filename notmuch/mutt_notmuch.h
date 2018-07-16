@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page notmuch Notmuch virtual mailbox type
+ *
+ * Notmuch virtual mailbox type
+ *
+ * | File                   | Description         |
+ * | :--------------------- | :------------------ |
+ * | notmuch/mutt_notmuch.c | @subpage nm_notmuch |
+ */
+
 #ifndef _MUTT_NOTMUCH_H
 #define _MUTT_NOTMUCH_H
 

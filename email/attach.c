@@ -22,7 +22,7 @@
  */
 
 /**
- * @page attach Handling of email attachments
+ * @page email_attach Handling of email attachments
  *
  * Handling of email attachments
  */

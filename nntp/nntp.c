@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nntp Usenet network mailbox type; talk to an NNTP server
+ * @page nntp_nntp Usenet network mailbox type; talk to an NNTP server
  *
  * Usenet network mailbox type; talk to an NNTP server
  */
@@ -1211,7 +1211,7 @@ static int parse_overview_line(char *line, void *data)
       mutt_header_free(&hdr);
       ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
       mutt_hcache_free(fc->hc, &hdata);
-      hdr->data = 0;
+      hdr->data = NULL;
       hdr->read = false;
       hdr->old = false;
 
@@ -1380,7 +1380,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
       mutt_hcache_free(fc.hc, &hdata);
-      hdr->data = 0;
+      hdr->data = NULL;
 
       /* skip header marked as deleted in cache */
       if (hdr->deleted && !restore)
@@ -1990,7 +1990,7 @@ static int check_mailbox(struct Context *ctx)
           mutt_debug(2, "#1 mutt_hcache_fetch %s\n", buf);
           hdr = mutt_hcache_restore(hdata);
           mutt_hcache_free(hc, &hdata);
-          hdr->data = 0;
+          hdr->data = NULL;
           deleted = hdr->deleted;
           flagged = hdr->flagged;
           mutt_header_free(&hdr);
@@ -2037,7 +2037,7 @@ static int check_mailbox(struct Context *ctx)
 
         ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
         mutt_hcache_free(hc, &hdata);
-        hdr->data = 0;
+        hdr->data = NULL;
         if (hdr->deleted)
         {
           mutt_header_free(&hdr);

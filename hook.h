@@ -37,6 +37,29 @@ extern char *DefaultHook;
 extern bool  ForceName;
 extern bool  SaveName;
 
+/* types for mutt_parse_hook() */
+#define MUTT_FOLDER_HOOK   (1 << 0)
+#define MUTT_MBOX_HOOK     (1 << 1)
+#define MUTT_SEND_HOOK     (1 << 2)
+#define MUTT_FCC_HOOK      (1 << 3)
+#define MUTT_SAVE_HOOK     (1 << 4)
+#define MUTT_CHARSET_HOOK  (1 << 5)
+#define MUTT_ICONV_HOOK    (1 << 6)
+#define MUTT_MESSAGE_HOOK  (1 << 7)
+#define MUTT_CRYPT_HOOK    (1 << 8)
+#define MUTT_ACCOUNT_HOOK  (1 << 9)
+#define MUTT_REPLY_HOOK    (1 << 10)
+#define MUTT_SEND2_HOOK    (1 << 11)
+#ifdef USE_COMPRESSED
+#define MUTT_OPEN_HOOK     (1 << 12)
+#define MUTT_APPEND_HOOK   (1 << 13)
+#define MUTT_CLOSE_HOOK    (1 << 14)
+#endif
+#define MUTT_TIMEOUT_HOOK  (1 << 15)
+#define MUTT_STARTUP_HOOK  (1 << 16)
+#define MUTT_SHUTDOWN_HOOK (1 << 17)
+#define MUTT_GLOBAL_HOOK   (1 << 18)
+
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
 void  mutt_default_save(char *path, size_t pathlen, struct Header *hdr);

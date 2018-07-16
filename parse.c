@@ -1350,7 +1350,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
     return false;
   }
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, checklist, entries)
   {
     a = (struct AttachMatch *) np->data;

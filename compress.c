@@ -213,7 +213,7 @@ static void store_size(const struct Context *ctx)
 
 /**
  * find_hook - Find a hook to match a path
- * @param type Type of hook, e.g. #MUTT_CLOSEHOOK
+ * @param type Type of hook, e.g. #MUTT_CLOSE_HOOK
  * @param path Filename to test
  * @retval ptr  Matching hook command
  * @retval NULL No matches
@@ -225,7 +225,7 @@ static void store_size(const struct Context *ctx)
  *      open-hook '\.gz$' "gzip -cd '%f' > '%t'"
  *
  * Call:
- *      find_hook (#MUTT_OPENHOOK, "myfile.gz");
+ *      find_hook (#MUTT_OPEN_HOOK, "myfile.gz");
  */
 static const char *find_hook(int type, const char *path)
 {
@@ -256,12 +256,12 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
     return ctx->compress_info;
 
   /* Open is compulsory */
-  const char *o = find_hook(MUTT_OPENHOOK, ctx->path);
+  const char *o = find_hook(MUTT_OPEN_HOOK, ctx->path);
   if (!o)
     return NULL;
 
-  const char *c = find_hook(MUTT_CLOSEHOOK, ctx->path);
-  const char *a = find_hook(MUTT_APPENDHOOK, ctx->path);
+  const char *c = find_hook(MUTT_CLOSE_HOOK, ctx->path);
+  const char *a = find_hook(MUTT_APPEND_HOOK, ctx->path);
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
@@ -829,7 +829,7 @@ bool mutt_comp_can_read(const char *path)
   if (!path)
     return false;
 
-  if (find_hook(MUTT_OPENHOOK, path))
+  if (find_hook(MUTT_OPEN_HOOK, path))
     return true;
   else
     return false;

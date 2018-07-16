@@ -358,7 +358,7 @@ static void redraw_mix_line(struct ListHead *chain)
   }
 
   int c = 12;
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     t = np->data;
@@ -883,7 +883,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
     {
       case OP_COMPOSE_EDIT_FROM:
         edit_address_list(HDR_FROM, &msg->env->from);
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_TO:
 #ifdef USE_NNTP
@@ -896,7 +896,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_BCC:
 #ifdef USE_NNTP
@@ -909,7 +909,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_CC:
 #ifdef USE_NNTP
@@ -922,7 +922,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
@@ -994,11 +994,11 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           else
             mutt_window_clrtoeol(MuttIndexWindow);
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_REPLY_TO:
         edit_address_list(HDR_REPLYTO, &msg->env->reply_to);
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_FCC:
         mutt_str_strfcpy(buf, fcc, sizeof(buf));
@@ -1010,7 +1010,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_paddstr(W, fcc);
           fcc_set = 1;
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
         if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !EditHeaders)
@@ -1018,7 +1018,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
           menu->redraw = REDRAW_FULL;
-          mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+          mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
           break;
         }
       /* fallthrough */
@@ -1055,7 +1055,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
 
         menu->redraw = REDRAW_FULL;
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_ATTACH_KEY:
@@ -1073,7 +1073,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         menu->redraw |= REDRAW_STATUS;
 
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_MOVE_UP:
@@ -1330,7 +1330,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_ATTACH_MESSAGE:
@@ -1455,7 +1455,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         Sort = old_sort;
         SortAux = old_sort_aux;
       }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_DELETE:
@@ -1468,7 +1468,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (menu->current == 0)
           msg->content = actx->idx[0]->content;
 
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_TOGGLE_RECODE:
@@ -1485,7 +1485,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         else
           mutt_message(_("The current attachment will be converted."));
         menu->redraw = REDRAW_CURRENT;
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
       }
 
@@ -1500,7 +1500,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_str_replace(&CURATTACH->content->description, buf);
           menu->redraw = REDRAW_CURRENT;
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_UPDATE_ENCODING:
@@ -1520,7 +1520,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_update_encoding(CURATTACH->content);
           menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_TOGGLE_DISPOSITION:
@@ -1540,7 +1540,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
           menu->redraw = REDRAW_CURRENT;
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_LANGUAGE:
@@ -1556,7 +1556,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
         else
           mutt_warning(_("Empty Content-Language"));
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_ENCODING:
@@ -1574,7 +1574,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           else
             mutt_error(_("Invalid encoding."));
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_SEND_MESSAGE:
@@ -1612,7 +1612,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         mutt_edit_file(NONULL(Editor), CURATTACH->content->filename);
         mutt_update_encoding(CURATTACH->content);
         menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_TOGGLE_UNLINK:
@@ -1690,7 +1690,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (CURATTACH->content->stamp >= st.st_mtime)
             mutt_stamp_attachment(CURATTACH->content);
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_NEW_MIME:
@@ -1758,7 +1758,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           menu->redraw = REDRAW_FULL;
         }
       }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_COMPOSE_EDIT_MIME:
@@ -1768,7 +1768,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_update_encoding(CURATTACH->content);
           menu->redraw = REDRAW_FULL;
         }
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_VIEW_ATTACH:
@@ -1800,7 +1800,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (op == OP_FILTER) /* cte might have changed */
           menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_EXIT:
@@ -1906,7 +1906,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
         msg->security = crypt_pgp_send_menu(msg);
         redraw_crypt_lines(msg);
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
       case OP_FORGET_PASSPHRASE:
@@ -1940,14 +1940,14 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
         msg->security = crypt_smime_send_menu(msg);
         redraw_crypt_lines(msg);
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
 
         mix_make_chain(&msg->chain);
-        mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
+        mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
 #endif
     }

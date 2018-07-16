@@ -21,23 +21,20 @@
  */
 
 /**
- * @page mutt Structs that make up an email
+ * @page email Structs that make up an email
  *
  * Structs that make up an email
  *
- * | File              | Description        |
- * | :---------------- | :----------------- |
- * | email/address.c   | @subpage address   |
- * | email/attach.c    | @subpage attach    |
- * | email/body.c      | @subpage body      |
- * | email/envelope.c  | @subpage envelope  |
- * | email/header.c    | @subpage header    |
- * | email/parameter.c | @subpage parameter |
- * | email/tags.c      | @subpage tags      |
- * | email/thread.c    | @subpage thread    |
- *
- * @note The library is self-contained -- some files may depend on others in
- *       the library, but none depends on source from outside.
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | email/address.c   | @subpage email_address   |
+ * | email/attach.c    | @subpage email_attach    |
+ * | email/body.c      | @subpage email_body      |
+ * | email/envelope.c  | @subpage email_envelope  |
+ * | email/header.c    | @subpage email_header    |
+ * | email/parameter.c | @subpage email_parameter |
+ * | email/tags.c      | @subpage email_tags      |
+ * | email/thread.c    | @subpage email_thread    |
  */
 
 #ifndef _EMAIL_EMAIL_H

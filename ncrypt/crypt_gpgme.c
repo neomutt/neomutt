@@ -702,7 +702,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
 
 static void free_recipient_set(gpgme_key_t **p_rset)
 {
-  gpgme_key_t *rset;
+  gpgme_key_t *rset = NULL;
 
   if (!p_rset)
     return;
@@ -3896,7 +3896,7 @@ static char *list_to_pattern(struct ListHead *list)
   size_t n;
 
   n = 0;
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)
   {
     for (s = np->data; *s; s++)
@@ -3982,7 +3982,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
     size_t n = 0;
-    struct ListNode *np;
+    struct ListNode *np = NULL;
     STAILQ_FOREACH(np, hints, entries)
     {
       if (np->data && *np->data)

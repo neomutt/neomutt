@@ -357,7 +357,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   {
     size_t len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
 
-    struct Parameter *np;
+    struct Parameter *np = NULL;
     TAILQ_FOREACH(np, &a->parameter, entries)
     {
       char *tmp = NULL;
@@ -1758,7 +1758,7 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
  */
 void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   size_t length = 0;
 
   STAILQ_FOREACH(np, r, entries)
@@ -2254,7 +2254,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
 
   /* Add any user defined headers */
-  struct ListNode *tmp;
+  struct ListNode *tmp = NULL;
   STAILQ_FOREACH(tmp, &env->userhdrs, entries)
   {
     p = strchr(tmp->data, ':');
@@ -2308,7 +2308,7 @@ static void encode_headers(struct ListHead *h)
   char *p = NULL;
   int i;
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     p = strchr(np->data, ':');
@@ -2851,7 +2851,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
  */
 void mutt_unprepare_envelope(struct Envelope *env)
 {
-  struct ListNode *item;
+  struct ListNode *item = NULL;
   STAILQ_FOREACH(item, &env->userhdrs, entries)
   {
     mutt_rfc2047_decode(&item->data);
@@ -3224,7 +3224,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (post && !STAILQ_EMPTY(&hdr->chain))
   {
     fputs("X-Mutt-Mix:", msg->fp);
-    struct ListNode *p;
+    struct ListNode *p = NULL;
     STAILQ_FOREACH(p, &hdr->chain, entries)
     {
       fprintf(msg->fp, " %s", (char *) p->data);
@@ -3289,7 +3289,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (mx_msg_commit(&f, msg) != 0)
     rc = -1;
   else if (finalpath)
-    *finalpath = mutt_str_strdup(msg->commited_path);
+    *finalpath = mutt_str_strdup(msg->committed_path);
   mx_msg_close(&f, &msg);
   mx_mbox_close(&f, NULL);
 

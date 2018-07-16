@@ -516,9 +516,9 @@ static void generate_seqset(struct Buffer *b, struct ImapData *idata,
 {
   int chunks = 0;
   int state = 0; /* 1: single msn, 2: range of msn */
-  unsigned int msn, range_begin, range_end;
+  unsigned int range_begin, range_end;
 
-  for (msn = msn_begin; msn <= msn_end + 1; msn++)
+  for (unsigned int msn = msn_begin; msn <= msn_end + 1; msn++)
   {
     if (msn <= msn_end && !idata->msn_index[msn - 1])
     {
@@ -612,8 +612,6 @@ static void set_changed_flag(struct Context *ctx, struct Header *h,
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end)
 {
   char *hdrreq = NULL;
-  FILE *fp = NULL;
-  char tempfile[PATH_MAX];
   int msgno, idx;
   struct ImapHeader h;
   struct ImapStatus *status = NULL;
@@ -655,14 +653,12 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = mutt_file_fopen(tempfile, "w+");
+  FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_error(_("Could not create temporary file %s"), tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     goto error_out_0;
   }
-  unlink(tempfile);
 
   /* make sure context has room to hold the mailbox */
   while (msn_end > ctx->hdrmax)

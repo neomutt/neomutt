@@ -1307,7 +1307,7 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
  */
 static int ssl_setup(struct Connection *conn)
 {
-  struct SslSockData *ssldata;
+  struct SslSockData *ssldata = NULL;
   int maxbits;
 
   ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));

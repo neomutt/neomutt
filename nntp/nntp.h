@@ -22,6 +22,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page nntp Usenet network mailbox type; talk to an NNTP server
+ *
+ * Usenet network mailbox type; talk to an NNTP server
+ *
+ * | File          | Description          |
+ * | :------------ | :------------------- |
+ * | nntp/newsrc.c | @subpage nntp_newsrc |
+ * | nntp/nntp.c   | @subpage nntp_nntp   |
+ */
+
 #ifndef _NNTP_NNTP_H
 #define _NNTP_NNTP_H
 

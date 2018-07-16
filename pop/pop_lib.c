@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page pop_lib POP helper routines
+ *
+ * POP helper routines
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <netdb.h>

@@ -400,7 +400,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     env = cur->message->env;
     if (env->real_subj && ((env->real_subj != env->subject) || (!SortRe)))
     {
-      struct ListNode *np;
+      struct ListNode *np = NULL;
       STAILQ_FOREACH(np, subjects, entries)
       {
         rc = mutt_str_strcmp(env->real_subj, np->data);
@@ -441,7 +441,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
 
   make_subject_list(&subjects, cur, &date);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &subjects, entries)
   {
     for (ptr = mutt_hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)

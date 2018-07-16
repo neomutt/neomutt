@@ -21,7 +21,7 @@
  */
 
 /**
- * @page tags Driver based email tags
+ * @page email_tags Driver based email tags
  *
  * Driver based email tags
  */
@@ -55,7 +55,7 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
     return NULL;
 
   char *tags = NULL;
-  struct TagNode *np;
+  struct TagNode *np = NULL;
   STAILQ_FOREACH(np, head, entries)
   {
     if (filter && mutt_str_strcmp(np->name, filter) != 0)
@@ -197,7 +197,7 @@ bool driver_tags_replace(struct TagHead *head, char *tags)
 
   if (tags)
   {
-    char *tag;
+    char *tag = NULL;
     while ((tag = strsep(&tags, " ")))
       driver_tags_add(head, tag);
     FREE(&tags);
