@@ -93,9 +93,7 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
  */
 void mutt_actx_free_entries(struct AttachCtx *actx)
 {
-  int i;
-
-  for (i = 0; i < actx->idxlen; i++)
+  for (int i = 0; i < actx->idxlen; i++)
   {
     if (actx->idx[i]->content)
       actx->idx[i]->content->aptr = NULL;
@@ -105,11 +103,11 @@ void mutt_actx_free_entries(struct AttachCtx *actx)
   actx->idxlen = 0;
   actx->vcount = 0;
 
-  for (i = 0; i < actx->fp_len; i++)
+  for (int i = 0; i < actx->fp_len; i++)
     mutt_file_fclose(&actx->fp_idx[i]);
   actx->fp_len = 0;
 
-  for (i = 0; i < actx->body_len; i++)
+  for (int i = 0; i < actx->body_len; i++)
     mutt_body_free(&actx->body_idx[i]);
   actx->body_len = 0;
 }

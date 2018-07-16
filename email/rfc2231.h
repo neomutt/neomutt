@@ -23,12 +23,14 @@
 #ifndef _EMAIL_RFC2231_H
 #define _EMAIL_RFC2231_H
 
+#include <stdbool.h>
+
 struct ParameterList;
 
 /* These Config Variables are only used in rfc2231.c */
 extern bool Rfc2047Parameters;
 
 void rfc2231_decode_parameters(struct ParameterList *p);
-int rfc2231_encode_string(char **pd);
+int  rfc2231_encode_string(char **pd);
 
 #endif /* _EMAIL_RFC2231_H */

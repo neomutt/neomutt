@@ -42,8 +42,6 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
-#include "protos.h"
 #include "sort.h"
 
 /* These Config Variables are only used in addrbook.c */

@@ -43,13 +43,10 @@
 #include "keymap.h"
 #include "mutt_attach.h"
 #include "mutt_logging.h"
-#include "mutt_parse.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
-#include "recvattach.h"
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
@@ -701,8 +698,8 @@ static int message_handler(struct Body *a, struct State *s)
   if (off_start < 0)
     return -1;
 
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     fstat(fileno(s->fpin), &st);
     b = mutt_body_new();
@@ -730,8 +727,8 @@ static int message_handler(struct Body *a, struct State *s)
     rc = mutt_body_handler(b->parts, s);
   }
 
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     mutt_body_free(&b);
   }
@@ -925,8 +922,8 @@ static int alternative_handler(struct Body *a, struct State *s)
   bool mustfree = false;
   int rc = 0;
 
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     struct stat st;
     mustfree = true;
@@ -1008,7 +1005,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     int type = 0;
     while (b)
     {
-      if (b->type == TYPETEXT)
+      if (b->type == TYPE_TEXT)
       {
         if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && (type <= TXTPLAIN))
         {
@@ -1113,8 +1110,8 @@ static int multilingual_handler(struct Body *a, struct State *s)
   char *lang = NULL;
 
   mutt_debug(2, "RFC8255 >> entering in handler multilingual handler\n");
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     struct stat st;
     mustfree = true;
@@ -1211,8 +1208,8 @@ static int multipart_handler(struct Body *a, struct State *s)
   int count;
   int rc = 0;
 
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     fstat(fileno(s->fpin), &st);
     b = mutt_body_new();
@@ -1264,8 +1261,8 @@ static int multipart_handler(struct Body *a, struct State *s)
     }
   }
 
-  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
-      (a->encoding == ENCUUENCODED))
+  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
+      (a->encoding == ENC_UUENCODED))
   {
     mutt_body_free(&b);
   }
@@ -1303,8 +1300,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 #endif
 
   /* see if we need to decode this part before processing it */
-  if ((b->encoding == ENCBASE64) || (b->encoding == ENCQUOTEDPRINTABLE) ||
-      (b->encoding == ENCUUENCODED) || (plaintext || mutt_is_text_part(b)))
+  if ((b->encoding == ENC_BASE64) || (b->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b->encoding == ENC_UUENCODED) || (plaintext || mutt_is_text_part(b)))
   /* text subtypes may require character set conversion even with 8bit encoding */
   {
     const int orig_type = b->type;
@@ -1348,7 +1345,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       decode = 1;
     }
     else
-      b->type = TYPETEXT;
+      b->type = TYPE_TEXT;
 
     mutt_decode_attachment(b, s);
 
@@ -1541,7 +1538,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     handler = autoview_handler;
     s->flags &= ~MUTT_CHARCONV;
   }
-  else if (b->type == TYPETEXT)
+  else if (b->type == TYPE_TEXT)
   {
     if (mutt_str_strcasecmp("plain", b->subtype) == 0)
     {
@@ -1566,7 +1563,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     else /* text body type without a handler */
       plaintext = false;
   }
-  else if (b->type == TYPEMESSAGE)
+  else if (b->type == TYPE_MESSAGE)
   {
     if (mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
@@ -1575,7 +1572,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     else if (mutt_str_strcasecmp("external-body", b->subtype) == 0)
       handler = external_body_handler;
   }
-  else if (b->type == TYPEMULTIPART)
+  else if (b->type == TYPE_MULTIPART)
   {
     if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
@@ -1606,13 +1603,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
     if (!handler)
       handler = multipart_handler;
 
-    if ((b->encoding != ENC7BIT) && (b->encoding != ENC8BIT) && (b->encoding != ENCBINARY))
+    if ((b->encoding != ENC_7BIT) && (b->encoding != ENC_8BIT) && (b->encoding != ENC_BINARY))
     {
       mutt_debug(1, "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
-      b->encoding = ENC7BIT;
+      b->encoding = ENC_7BIT;
     }
   }
-  else if ((WithCrypto != 0) && (b->type == TYPEAPPLICATION))
+  else if ((WithCrypto != 0) && (b->type == TYPE_APPLICATION))
   {
     if (OptDontHandlePgpKeys && (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
     {
@@ -1627,14 +1624,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!HonorDisposition || ((b->disposition != DISPATTACH) || OptViewAttach)) &&
+  if ((!HonorDisposition || ((b->disposition != DISP_ATTACH) || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
-  else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISPATTACH) && !OptViewAttach &&
+  else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISP_ATTACH) && !OptViewAttach &&
                                          HonorDisposition && (plaintext || handler)))
   {
     const char *str = NULL;
@@ -1646,7 +1643,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
-        if (HonorDisposition && b->disposition == DISPATTACH)
+        if (HonorDisposition && b->disposition == DISP_ATTACH)
         {
           /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
              not be used in this translation!
@@ -1667,7 +1664,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       }
       else
       {
-        if (HonorDisposition && (b->disposition == DISPATTACH))
+        if (HonorDisposition && (b->disposition == DISP_ATTACH))
         {
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
                   "key!) --]\n");
@@ -1682,7 +1679,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
     else
     {
-      if (HonorDisposition && (b->disposition == DISPATTACH))
+      if (HonorDisposition && (b->disposition == DISP_ATTACH))
         str = _("[-- This is an attachment --]\n");
       else
       {
@@ -1712,11 +1709,11 @@ bool mutt_can_decode(struct Body *a)
 {
   if (is_autoview(a))
     return true;
-  else if (a->type == TYPETEXT)
+  else if (a->type == TYPE_TEXT)
     return true;
-  else if (a->type == TYPEMESSAGE)
+  else if (a->type == TYPE_MESSAGE)
     return true;
-  else if (a->type == TYPEMULTIPART)
+  else if (a->type == TYPE_MULTIPART)
   {
     if (WithCrypto)
     {
@@ -1733,7 +1730,7 @@ bool mutt_can_decode(struct Body *a)
         return true;
     }
   }
-  else if ((WithCrypto != 0) && a->type == TYPEAPPLICATION)
+  else if ((WithCrypto != 0) && a->type == TYPE_APPLICATION)
   {
     if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
       return true;
@@ -1768,19 +1765,19 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   fseeko(s->fpin, b->offset, SEEK_SET);
   switch (b->encoding)
   {
-    case ENCQUOTEDPRINTABLE:
+    case ENC_QUOTED_PRINTABLE:
       decode_quoted(s, b->length,
                     istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                mutt_is_application_pgp(b)),
                     cd);
       break;
-    case ENCBASE64:
+    case ENC_BASE64:
       mutt_decode_base64(s, b->length,
                          istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                     mutt_is_application_pgp(b)),
                          cd);
       break;
-    case ENCUUENCODED:
+    case ENC_UUENCODED:
       decode_uuencoded(s, b->length,
                        istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
                                   mutt_is_application_pgp(b)),

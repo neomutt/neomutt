@@ -27,13 +27,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "mutt/list.h"
+#include "mutt/mutt.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 
 struct Account;
-struct Buffer;
 struct Context;
 struct Header;
 struct ImapHeaderData;

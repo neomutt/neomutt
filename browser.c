@@ -36,6 +36,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
@@ -49,13 +50,11 @@
 #include "maildir/maildir.h"
 #include "menu.h"
 #include "mutt_attach.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
 #include "sendlib.h"
 #include "sort.h"
 #ifdef USE_IMAP

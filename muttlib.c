@@ -22,7 +22,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -32,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -47,11 +47,9 @@
 #include "globals.h"
 #include "hook.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "protos.h"
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
@@ -343,19 +341,19 @@ bool mutt_needs_mailcap(struct Body *m)
 {
   switch (m->type)
   {
-    case TYPETEXT:
+    case TYPE_TEXT:
       if (mutt_str_strcasecmp("plain", m->subtype) == 0)
         return false;
       break;
-    case TYPEAPPLICATION:
+    case TYPE_APPLICATION:
       if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
         return false;
       if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
         return false;
       break;
 
-    case TYPEMULTIPART:
-    case TYPEMESSAGE:
+    case TYPE_MULTIPART:
+    case TYPE_MESSAGE:
       return false;
   }
 
@@ -370,16 +368,16 @@ bool mutt_is_text_part(struct Body *b)
   if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
     return false;
 
-  if (t == TYPETEXT)
+  if (t == TYPE_TEXT)
     return true;
 
-  if (t == TYPEMESSAGE)
+  if (t == TYPE_MESSAGE)
   {
     if (mutt_str_strcasecmp("delivery-status", s) == 0)
       return true;
   }
 
-  if (((WithCrypto & APPLICATION_PGP) != 0) && t == TYPEAPPLICATION)
+  if (((WithCrypto & APPLICATION_PGP) != 0) && t == TYPE_APPLICATION)
   {
     if (mutt_str_strcasecmp("pgp-keys", s) == 0)
       return true;

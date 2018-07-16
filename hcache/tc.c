@@ -36,7 +36,6 @@
 #include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
-#include "options.h"
 
 /**
  * hcache_tokyocabinet_open - Implements HcacheOps::open()

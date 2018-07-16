@@ -2934,7 +2934,7 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_FORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -2951,7 +2951,8 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY | SEND_GROUP_REPLY, NULL, NULL, Context,
+                        tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -2987,7 +2988,8 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY | SEND_LIST_REPLY, NULL, NULL, Context,
+                        tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3002,7 +3004,7 @@ int mutt_index_menu(void)
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         CHECK_ATTACH;
-        ci_send_message(SENDKEY, NULL, NULL, NULL, NULL);
+        ci_send_message(SEND_KEY, NULL, NULL, NULL, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3142,7 +3144,7 @@ int mutt_index_menu(void)
       case OP_RECALL_MESSAGE:
 
         CHECK_ATTACH;
-        ci_send_message(SENDPOSTPONED, NULL, NULL, Context, NULL);
+        ci_send_message(SEND_POSTPONED, NULL, NULL, Context, NULL);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -3186,11 +3188,11 @@ int mutt_index_menu(void)
             break;
           }
           if (op == OP_POST)
-            ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
+            ci_send_message(SEND_NEWS, NULL, NULL, Context, NULL);
           else
           {
             CHECK_MSGCOUNT;
-            ci_send_message((op == OP_FOLLOWUP ? SENDREPLY : SENDFORWARD) | SENDNEWS,
+            ci_send_message((op == OP_FOLLOWUP ? SEND_REPLY : SEND_FORWARD) | SEND_NEWS,
                             NULL, NULL, Context, tag ? NULL : CURHDR);
           }
           menu->redraw = REDRAW_FULL;
@@ -3207,7 +3209,7 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_REPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 

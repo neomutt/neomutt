@@ -45,16 +45,14 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "backend.h"
-#include "globals.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"
-#include "protos.h"
 
 /* These Config Variables are only used in hcache/hcache.c */
 char *HeaderCacheBackend;
@@ -132,7 +130,7 @@ static bool crc_matches(const char *d, unsigned int crc)
   if (!d)
     return false;
 
-  unsigned int mycrc = *(unsigned int *)(d + sizeof(union Validate));
+  unsigned int mycrc = *(unsigned int *) (d + sizeof(union Validate));
 
   return (crc == mycrc);
 }

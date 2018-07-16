@@ -41,9 +41,11 @@
 #include "crypt_mod.h"
 #include "curs_lib.h"
 #include "ncrypt.h"
-#include "options.h"
-#include "protos.h"
 
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
 struct State;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */

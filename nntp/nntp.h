@@ -41,12 +41,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
-#include "email/email.h"
 #include "format_flags.h"
 #include "mx.h"
-#ifdef USE_HCACHE
-#include "hcache/hcache.h"
-#endif
 
 struct Account;
 struct Header;

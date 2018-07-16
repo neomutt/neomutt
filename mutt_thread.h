@@ -23,7 +23,7 @@
 #ifndef _MUTT_THREAD2_H
 #define _MUTT_THREAD2_H
 
-#include "mutt.h"
+#include <stdbool.h>
 
 struct Context;
 struct Header;

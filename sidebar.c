@@ -35,7 +35,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"
@@ -48,8 +47,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "options.h"
-#include "protos.h"
 #include "sort.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"

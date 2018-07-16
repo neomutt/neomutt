@@ -35,8 +35,6 @@
 #include "globals.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "options.h"
-#include "protos.h"
 #include "state.h"
 
 /* These Config Variables are only used in rfc3676.c */

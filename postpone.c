@@ -48,7 +48,6 @@
 #include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
-#include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
@@ -277,13 +276,13 @@ static struct Header *select_msg(void)
  * @param fcclen  max length of fcc
  * @retval -1         Error/no messages
  * @retval 0          Normal exit
- * @retval #SENDREPLY Recalled message is a reply
+ * @retval #SEND_REPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
                        struct Header **cur, char *fcc, size_t fcclen)
 {
   struct Header *h = NULL;
-  int code = SENDPOSTPONED;
+  int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
 
@@ -319,7 +318,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, h, 0) < 0)
+  if (mutt_prepare_template(NULL, PostContext, hdr, h, false) < 0)
   {
     mx_fastclose_mailbox(PostContext);
     FREE(&PostContext);
@@ -356,7 +355,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         *cur = mutt_hash_find(ctx->id_hash, p);
       }
       if (*cur)
-        code |= SENDREPLY;
+        code |= SEND_REPLY;
     }
     else if (mutt_str_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
     {
@@ -369,7 +368,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
        * user to not make a copy if the header field is present, but empty.
        * see http://dev.mutt.org/trac/ticket/3653
        */
-      code |= SENDPOSTPONEDFCC;
+      code |= SEND_POSTPONED_FCC;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              ((mutt_str_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
@@ -559,7 +558,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @retval -1 Error
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
-                          struct Header *hdr, short resend)
+                          struct Header *hdr, bool resend)
 {
   struct Message *msg = NULL;
   char file[PATH_MAX];
@@ -582,7 +581,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   fseeko(fp, hdr->offset, SEEK_SET);
   newhdr->offset = hdr->offset;
   /* enable header weeding for resent messages */
-  newhdr->env = mutt_rfc822_read_header(fp, newhdr, 1, resend);
+  newhdr->env = mutt_rfc822_read_header(fp, newhdr, true, resend);
   newhdr->content->length = hdr->content->length;
   mutt_parse_part(fp, newhdr->content);
 
@@ -650,7 +649,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
    *
    */
 
-  if (newhdr->content->type == TYPEMULTIPART)
+  if (newhdr->content->type == TYPE_MULTIPART)
     newhdr->content = mutt_remove_multipart(newhdr->content);
 
   s.fpin = bfp;
@@ -678,7 +677,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     s.flags = 0;
 
-    if (b->type == TYPETEXT)
+    if (b->type == TYPE_TEXT)
     {
       if (mutt_str_strcasecmp("yes",
                               mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
@@ -717,7 +716,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       newhdr->security |= sec_type;
 
-      b->type = TYPETEXT;
+      b->type = TYPE_TEXT;
       mutt_str_replace(&b->subtype, "plain");
       mutt_param_delete(&b->parameter, "x-action");
     }
@@ -739,7 +738,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       }
 
       newhdr->security |= sec_type;
-      b->type = TYPETEXT;
+      b->type = TYPE_TEXT;
       mutt_str_replace(&b->subtype, "plain");
     }
     else

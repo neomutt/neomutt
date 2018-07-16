@@ -44,8 +44,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
-#include "protos.h"
 #include "sendlib.h"
 #include "state.h"
 #ifdef USE_NOTMUCH
@@ -707,7 +705,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     FILE *fp = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & MUTT_CM_DECODE_PGP) &&
-        (hdr->security & APPLICATION_PGP) && hdr->content->type == TYPEMULTIPART)
+        (hdr->security & APPLICATION_PGP) && hdr->content->type == TYPE_MULTIPART)
     {
       if (crypt_pgp_decrypt_mime(fpin, &fp, hdr->content, &cur))
         return -1;
@@ -715,7 +713,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (flags & MUTT_CM_DECODE_SMIME) &&
-        (hdr->security & APPLICATION_SMIME) && hdr->content->type == TYPEAPPLICATION)
+        (hdr->security & APPLICATION_SMIME) && hdr->content->type == TYPE_APPLICATION)
     {
       if (crypt_smime_decrypt_mime(fpin, &fp, hdr->content, &cur))
         return -1;

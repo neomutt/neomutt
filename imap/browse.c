@@ -45,8 +45,6 @@
 #include "imap/imap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "options.h"
-#include "protos.h"
 
 /**
  * add_folder - Format and add an IMAP folder to the browser

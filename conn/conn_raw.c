@@ -35,6 +35,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/select.h>
@@ -42,13 +43,14 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
 #include "email/email.h"
+#include "conn/account.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
-#include "protos.h"
 
 /**
  * socket_connect - set up to connect to a socket fd

@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stdio.h>
 
 short ConnectTimeout = 0; /**< Config: Timeout for a network connection (for IMAP, POP or SMTP) */

@@ -56,7 +56,6 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "sendlib.h"
 #include "sort.h"
 #ifdef USE_IMAP
@@ -1054,7 +1053,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   /* if in send mode, check for conversion - current setting is default. */
 
-  if (!h && b->type == TYPETEXT && charset_changed)
+  if (!h && b->type == TYPE_TEXT && charset_changed)
   {
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
@@ -1069,7 +1068,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   if (type_changed)
     mutt_message(_("Content-Type changed to %s."), tmp);
-  if (b->type == TYPETEXT && charset_changed)
+  if (b->type == TYPE_TEXT && charset_changed)
   {
     if (type_changed)
       mutt_sleep(1);

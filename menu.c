@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>

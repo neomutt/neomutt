@@ -222,7 +222,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  n = mutt_rfc822_read_header(ifp, NULL, 1, 0);
+  n = mutt_rfc822_read_header(ifp, NULL, true, false);
   while ((i = fread(buffer, 1, sizeof(buffer), ifp)) > 0)
     fwrite(buffer, 1, i, ofp);
   mutt_file_fclose(&ofp);

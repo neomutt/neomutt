@@ -40,8 +40,6 @@
 #include "hdrline.h"
 #include "mutt_curses.h"
 #include "muttlib.h"
-#include "options.h"
-#include "protos.h"
 #include "sendlib.h"
 
 /**

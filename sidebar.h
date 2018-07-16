@@ -25,6 +25,8 @@
 #ifndef _MUTT_SIDEBAR_H
 #define _MUTT_SIDEBAR_H
 
+#include <stdbool.h>
+
 struct Buffy;
 struct Context;
 

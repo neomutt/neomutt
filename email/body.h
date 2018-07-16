@@ -39,22 +39,22 @@ struct Body
   char *description;            /**< content-description */
   char *form_name;              /**< Content-Disposition form-data name param */
   long hdr_offset;              /**< offset in stream where the headers begin.
-                                 * this info is used when invoking metamail,
-                                 * where we need to send the headers of the
-                                 * attachment */
+                            * this info is used when invoking metamail,
+                            * where we need to send the headers of the
+                            * attachment */
   LOFF_T offset;                /**< offset where the actual data begins */
   LOFF_T length;                /**< length (in bytes) of attachment */
   char *filename;               /**< when sending a message, this is the file
-                                 * to which this structure refers */
+                            * to which this structure refers */
   char *d_filename;             /**< filename to be used for the
-                                 * content-disposition header.
-                                 * If NULL, filename is used
-                                 * instead.  */
+                            * content-disposition header.
+                            * If NULL, filename is used
+                            * instead.  */
   char *charset;                /**< charset of attached file */
   struct Content *content;      /**< structure used to store detailed info about
-                                 * the content of the attachment.  this is used
-                                 * to determine what content-transfer-encoding
-                                 * is required when sending mail.  */
+                            * the content of the attachment.  this is used
+                            * to determine what content-transfer-encoding
+                            * is required when sending mail.  */
   struct Body *next;            /**< next attachment in the list */
   struct Body *parts;           /**< parts of a multipart or message/rfc822 */
   struct Header *hdr;           /**< header information for message/rfc822 */
@@ -95,7 +95,6 @@ struct Body
 
   bool collapsed : 1;           /**< used by recvattach */
   bool attach_qualifies : 1;
-
 };
 
 bool         mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);

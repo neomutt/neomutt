@@ -45,6 +45,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
@@ -61,15 +62,12 @@
 #include "keymap.h"
 #include "menu.h"
 #include "mutt_attach.h"
-#include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_parse.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "sendlib.h"
@@ -1054,11 +1052,11 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
   }
 
   t = mutt_body_new();
-  t->type = TYPEMULTIPART;
+  t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("signed");
-  t->encoding = ENC7BIT;
+  t->encoding = ENC_7BIT;
   t->use_disp = false;
-  t->disposition = DISPINLINE;
+  t->disposition = DISP_INLINE;
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol",
@@ -1076,14 +1074,14 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
-  t->type = TYPEAPPLICATION;
+  t->type = TYPE_APPLICATION;
   if (use_smime)
   {
     t->subtype = mutt_str_strdup("pkcs7-signature");
     mutt_param_set(&t->parameter, "name", "smime.p7s");
-    t->encoding = ENCBASE64;
+    t->encoding = ENC_BASE64;
     t->use_disp = true;
-    t->disposition = DISPATTACH;
+    t->disposition = DISP_ATTACH;
     t->d_filename = mutt_str_strdup("smime.p7s");
   }
   else
@@ -1091,8 +1089,8 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
     t->subtype = mutt_str_strdup("pgp-signature");
     mutt_param_set(&t->parameter, "name", "signature.asc");
     t->use_disp = false;
-    t->disposition = DISPNONE;
-    t->encoding = ENC7BIT;
+    t->disposition = DISP_NONE;
+    t->encoding = ENC_7BIT;
   }
   t->filename = sigfile;
   t->unlink = true; /* ok to remove this file after sending. */
@@ -1141,27 +1139,27 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
     return NULL;
 
   struct Body *t = mutt_body_new();
-  t->type = TYPEMULTIPART;
+  t->type = TYPE_MULTIPART;
   t->subtype = mutt_str_strdup("encrypted");
-  t->encoding = ENC7BIT;
+  t->encoding = ENC_7BIT;
   t->use_disp = false;
-  t->disposition = DISPINLINE;
+  t->disposition = DISP_INLINE;
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
 
   t->parts = mutt_body_new();
-  t->parts->type = TYPEAPPLICATION;
+  t->parts->type = TYPE_APPLICATION;
   t->parts->subtype = mutt_str_strdup("pgp-encrypted");
-  t->parts->encoding = ENC7BIT;
+  t->parts->encoding = ENC_7BIT;
 
   t->parts->next = mutt_body_new();
-  t->parts->next->type = TYPEAPPLICATION;
+  t->parts->next->type = TYPE_APPLICATION;
   t->parts->next->subtype = mutt_str_strdup("octet-stream");
-  t->parts->next->encoding = ENC7BIT;
+  t->parts->next->encoding = ENC_7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = true;
-  t->parts->next->disposition = DISPATTACH;
+  t->parts->next->disposition = DISP_ATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
   t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime
                                                            can save */
@@ -1196,13 +1194,13 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
     return NULL;
 
   struct Body *t = mutt_body_new();
-  t->type = TYPEAPPLICATION;
+  t->type = TYPE_APPLICATION;
   t->subtype = mutt_str_strdup("pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
   mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
-  t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
+  t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
-  t->disposition = DISPATTACH;
+  t->disposition = DISP_ATTACH;
   t->d_filename = mutt_str_strdup("smime.p7m");
   t->filename = outfile;
   t->unlink = true; /* delete after sending the message */
@@ -2273,7 +2271,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   short sgn = 0;
   short enc = 0;
 
-  if (b->type != TYPETEXT)
+  if (b->type != TYPE_TEXT)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -2331,7 +2329,7 @@ int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
   {
     if (!just_one && is_multipart(b))
       rc = (pgp_gpgme_check_traditional(fp, b->parts, false) || rc);
-    else if (b->type == TYPETEXT)
+    else if (b->type == TYPE_TEXT)
     {
       r = mutt_is_application_pgp(b);
       if (r != 0)
@@ -4773,7 +4771,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   att->filename = tempf;
   att->unlink = true;
   att->use_disp = false;
-  att->type = TYPEAPPLICATION;
+  att->type = TYPE_APPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
   /* L10N:
      MIME description for exported (attached) keys.

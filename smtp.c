@@ -40,7 +40,6 @@
 #include "mutt_socket.h"
 #include "options.h"
 #include "progress.h"
-#include "protos.h"
 #include "sendlib.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>

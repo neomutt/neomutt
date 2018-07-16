@@ -54,7 +54,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
@@ -1191,7 +1190,7 @@ static int parse_overview_line(char *line, void *data)
 
   /* parse header */
   hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
-  hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
   mutt_file_fclose(&fp);
@@ -1451,7 +1450,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
       /* parse header */
       hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
-      hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
+      hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
     }
@@ -1732,7 +1731,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
-  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
 
   if (ctx->id_hash && hdr->env->message_id)
     mutt_hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
@@ -2475,7 +2474,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
     mx_alloc_memory(ctx);
   struct Header *hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-  hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   mutt_file_fclose(&fp);
 
   /* get article number */

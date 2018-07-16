@@ -52,7 +52,7 @@ struct MuttThread
 void           clean_references(struct MuttThread *brk, struct MuttThread *cur);
 struct Header *find_virtual(struct MuttThread *cur, int reverse);
 void           insert_message(struct MuttThread **new, struct MuttThread *newparent, struct MuttThread *cur);
-int            is_descendant(struct MuttThread *a, struct MuttThread *b);
+bool           is_descendant(struct MuttThread *a, struct MuttThread *b);
 void           mutt_break_thread(struct Header *hdr);
 void           thread_hash_destructor(int type, void *obj, intptr_t data);
 void           unlink_message(struct MuttThread **old, struct MuttThread *cur);

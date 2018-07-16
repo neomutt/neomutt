@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "pop_private.h"
 #include "mutt/mutt.h"
@@ -52,15 +53,15 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "progress.h"
-#include "protos.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+struct BodyCache;
 
 /* These Config Variables are only used in pop/pop.c */
 short PopCheckinterval;
@@ -164,7 +165,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     case 0:
     {
       rewind(f);
-      h->env = mutt_rfc822_read_header(f, h, 0, 0);
+      h->env = mutt_rfc822_read_header(f, h, false, false);
       h->content->length = length - h->content->offset + 1;
       rewind(f);
       while (!feof(f))
@@ -734,7 +735,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_remove(ctx, h);
   mutt_env_free(&h->env);
-  h->env = mutt_rfc822_read_header(msg->fp, h, 0, 0);
+  h->env = mutt_rfc822_read_header(msg->fp, h, false, false);
   if (ctx->subj_hash && h->env->real_subj)
     mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_add(ctx, h);

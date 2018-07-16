@@ -33,7 +33,6 @@
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"
-#include "protos.h"
 #include "score.h"
 #ifdef USE_NNTP
 #include "mx.h"

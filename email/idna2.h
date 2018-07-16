@@ -36,5 +36,4 @@ char *      mutt_idna_local_to_intl(const char *user, const char *domain);
 const char *mutt_idna_print_version(void);
 int         mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
 
-
 #endif /* _EMAIL_IDNA_H */

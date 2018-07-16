@@ -47,11 +47,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/file.h"
-#include "mutt/memory.h"
-#include "mutt/message.h"
-#include "mutt/string2.h"
-#include "email/idna2.h"
+#include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "ssl.h"
 #include "account.h"

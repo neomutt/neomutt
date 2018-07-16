@@ -168,8 +168,8 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
 
   /* Encoding: either Q or B */
   *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
-             ENCQUOTEDPRINTABLE :
-             ENCBASE64;
+             ENC_QUOTED_PRINTABLE :
+             ENC_BASE64;
 
   *text = str + match[3].rm_so;
   *textlen = match[3].rm_eo - match[3].rm_so;
@@ -319,7 +319,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
 static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
                            const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  const int utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
+  const bool utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
 
   size_t n = dlen;
   while (true)
@@ -359,7 +359,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
 }
 
 /**
- * rfc2047_decode_word - Decode an RFC2047-encoded string
+ * decode_word - Decode an RFC2047-encoded string
  * @param s   String to decode
  * @param len Length of the string
  * @param enc Encoding type
@@ -367,12 +367,12 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
  *
  * @note The caller must free the returned string
  */
-static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding enc)
+static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 {
   const char *it = s;
   const char *end = s + len;
 
-  if (enc == ENCQUOTEDPRINTABLE)
+  if (enc == ENC_QUOTED_PRINTABLE)
   {
     struct Buffer buf = { 0 };
     for (; it < end; ++it)
@@ -395,7 +395,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
     mutt_buffer_addch(&buf, '\0');
     return buf.data;
   }
-  else if (enc == ENCBASE64)
+  else if (enc == ENC_BASE64)
   {
     const int olen = 3 * len / 4 + 1;
     char *out = mutt_mem_malloc(olen);
@@ -414,7 +414,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
 }
 
 /**
- * rfc2047_encode2 - RFC2047-encode a string
+ * encode - RFC2047-encode a string
  * @param d        String to convert
  * @param dlen     Length of string
  * @param col      Starting column to convert
@@ -425,9 +425,8 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
  * @param specials Special characters to be encoded
  * @retval 0 Success
  */
-static int rfc2047_encode2(const char *d, size_t dlen, int col,
-                           const char *fromcode, const char *charsets, char **e,
-                           size_t *elen, const char *specials)
+static int encode(const char *d, size_t dlen, int col, const char *fromcode,
+                  const char *charsets, char **e, size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;
@@ -562,13 +561,13 @@ static int rfc2047_encode2(const char *d, size_t dlen, int col,
       if (icode)
         while (CONTINUATION_BYTE(t[n]))
           n--;
-      if (!n)
+      if (n == 0)
       {
         /* This should only happen in the really stupid case where the
-           only word that needs encoding is one character long, but
-           there is too much us-ascii stuff after it to use a single
-           encoded word. We add the next word to the encoded region
-           and try again. */
+         * only word that needs encoding is one character long, but
+         * there is too much us-ascii stuff after it to use a single
+         * encoded word. We add the next word to the encoded region
+         * and try again. */
         assert(t1 < (u + ulen));
         for (t1++; (t1 < (u + ulen)) && !HSPACE(*t1); t1++)
           ;
@@ -624,16 +623,15 @@ static int rfc2047_encode2(const char *d, size_t dlen, int col,
  */
 void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
-  char *e = NULL;
-  size_t elen;
-
   if (!Charset || !*pd)
     return;
 
   if (!charsets || !*charsets)
     charsets = "utf-8";
 
-  rfc2047_encode2(*pd, strlen(*pd), col, Charset, charsets, &e, &elen, specials);
+  char *e = NULL;
+  size_t elen = 0;
+  encode(*pd, strlen(*pd), col, Charset, charsets, &e, &elen, specials);
 
   FREE(pd);
   *pd = e;
@@ -655,7 +653,7 @@ void rfc2047_decode(char **pd)
   struct Buffer buf = { 0 }; /* Output buffer                          */
   char *s = *pd;             /* Read pointer                           */
   char *beg = NULL;          /* Begin of encoded word                  */
-  enum ContentEncoding enc;  /* ENCBASE64 or ENCQUOTEDPRINTABLE        */
+  enum ContentEncoding enc;  /* ENC_BASE64 or ENC_QUOTED_PRINTABLE        */
   char *charset = NULL;      /* Which charset                          */
   size_t charsetlen;         /* Length of the charset                  */
   char *text = NULL;         /* Encoded text                           */
@@ -710,7 +708,7 @@ void rfc2047_decode(char **pd)
     {
       /* Some encoded text was found */
       text[textlen] = '\0';
-      char *decoded = rfc2047_decode_word(text, textlen, enc);
+      char *decoded = decode_word(text, textlen, enc);
       if (!decoded)
       {
         return;
@@ -774,7 +772,7 @@ void rfc2047_decode_addrlist(struct Address *a)
     {
       rfc2047_decode(&a->personal);
     }
-    else if (a->group && a->mailbox && (strstr(a->mailbox, "=?") != NULL))
+    else if (a->group && a->mailbox && strstr(a->mailbox, "=?"))
       rfc2047_decode(&a->mailbox);
     a = a->next;
   }

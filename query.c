@@ -40,7 +40,6 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "protos.h"
 #include "send.h"
 
 /* These Config Variables are only used in query.c */

@@ -23,6 +23,7 @@
 #ifndef _POP_POP_H
 #define _POP_POP_H
 
+#include <stdbool.h>
 #include "mx.h"
 
 /**

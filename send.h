@@ -79,19 +79,19 @@ extern bool          SigOnTop;
 extern bool          UseFrom;
 
 /* flags to ci_send_message() */
-#define SENDREPLY        (1 << 0)
-#define SENDGROUPREPLY   (1 << 1)
-#define SENDLISTREPLY    (1 << 2)
-#define SENDFORWARD      (1 << 3)
-#define SENDPOSTPONED    (1 << 4)
-#define SENDBATCH        (1 << 5)
-#define SENDMAILX        (1 << 6)
-#define SENDKEY          (1 << 7)
-#define SENDRESEND       (1 << 8)
-#define SENDPOSTPONEDFCC (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SENDNOFREEHEADER (1 << 10) /**< Used by the -E flag */
-#define SENDDRAFTFILE    (1 << 11) /**< Used by the -H flag */
-#define SENDNEWS         (1 << 12)
+#define SEND_REPLY          (1 << 0)
+#define SEND_GROUP_REPLY    (1 << 1)
+#define SEND_LIST_REPLY     (1 << 2)
+#define SEND_FORWARD        (1 << 3)
+#define SEND_POSTPONED      (1 << 4)
+#define SEND_BATCH          (1 << 5)
+#define SEND_MAILX          (1 << 6)
+#define SEND_KEY            (1 << 7)
+#define SEND_RESEND         (1 << 8)
+#define SEND_POSTPONED_FCC  (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
+#define SEND_NO_FREE_HEADER (1 << 10) /**< Used by the -E flag */
+#define SEND_DRAFT_FILE     (1 << 11) /**< Used by the -H flag */
+#define SEND_NEWS           (1 << 12)
 
 int             ci_send_message(int flags, struct Header *msg, char *tempfile, struct Context *ctx, struct Header *cur);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);

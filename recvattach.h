@@ -24,9 +24,12 @@
 #ifndef _MUTT_RECVATTACH_H
 #define _MUTT_RECVATTACH_H
 
+#include <stddef.h>
+#include <stdbool.h>
 #include "format_flags.h"
 
 struct AttachCtx;
+struct Header;
 
 /* These Config Variables are only used in recvattach.c */
 extern char *AttachSep;

@@ -28,7 +28,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
@@ -42,14 +41,12 @@
 #include "globals.h"
 #include "handler.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "rfc1524.h"
 #include "sendlib.h"
 #include "state.h"
@@ -282,7 +279,7 @@ int mutt_edit_attachment(struct Body *a)
       }
     }
   }
-  else if (a->type == TYPETEXT)
+  else if (a->type == TYPE_TEXT)
   {
     /* On text, default to editor */
     mutt_edit_file(NONULL(Editor), a->filename);
@@ -324,21 +321,21 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
       struct Body tmp = { 0 };
       int n;
       n = mutt_lookup_mime_type(&tmp, b->filename);
-      if (n != TYPEOTHER)
+      if (n != TYPE_OTHER)
       {
         snprintf(type, len, "%s/%s",
-                 n == TYPEAUDIO ? "audio" :
-                                  n == TYPEAPPLICATION ?
-                                  "application" :
-                                  n == TYPEIMAGE ?
-                                  "image" :
-                                  n == TYPEMESSAGE ?
-                                  "message" :
-                                  n == TYPEMODEL ?
-                                  "model" :
-                                  n == TYPEMULTIPART ?
-                                  "multipart" :
-                                  n == TYPETEXT ? "text" : n == TYPEVIDEO ? "video" : "other",
+                 n == TYPE_AUDIO ? "audio" :
+                                   n == TYPE_APPLICATION ?
+                                   "application" :
+                                   n == TYPE_IMAGE ?
+                                   "image" :
+                                   n == TYPE_MESSAGE ?
+                                   "message" :
+                                   n == TYPE_MODEL ?
+                                   "model" :
+                                   n == TYPE_MULTIPART ?
+                                   "multipart" :
+                                   n == TYPE_TEXT ? "text" : n == TYPE_VIDEO ? "video" : "other",
                  tmp.subtype);
         mutt_debug(1, "\"%s\" -> %s\n", b->filename, type);
       }
@@ -774,7 +771,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
   {
     /* recv mode */
 
-    if (hdr && m->hdr && m->encoding != ENCBASE64 && m->encoding != ENCQUOTEDPRINTABLE &&
+    if (hdr && m->hdr && m->encoding != ENC_BASE64 && m->encoding != ENC_QUOTED_PRINTABLE &&
         mutt_is_message_type(m->type, m->subtype))
     {
       /* message type attachments are written to mail folders. */
@@ -930,7 +927,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 
     saved_encoding = m->encoding;
     if (!is_multipart(m))
-      m->encoding = ENC8BIT;
+      m->encoding = ENC_8BIT;
 
     m->length = st.st_size;
     m->offset = 0;

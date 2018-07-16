@@ -44,7 +44,6 @@
 #include "globals.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
-#include "options.h"
 #include "protos.h"
 
 /* These Config Variables are only used in rfc1524.c */

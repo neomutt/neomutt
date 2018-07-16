@@ -37,7 +37,6 @@
 #include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
-#include "options.h"
 
 /**
  * hcache_qdbm_open - Implements HcacheOps::open()

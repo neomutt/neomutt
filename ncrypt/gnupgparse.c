@@ -46,7 +46,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "ncrypt.h"
-#include "options.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgplib.h"

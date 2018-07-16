@@ -37,7 +37,6 @@
 #include "mutt_curses.h"
 #include "options.h"
 #include "pattern.h"
-#include "protos.h"
 
 /* globals */
 int *ColorQuote = NULL;

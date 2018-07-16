@@ -53,8 +53,6 @@
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
-#include "options.h"
-#include "protos.h"
 
 /* These Config Variables are only used in imap/command.c */
 bool ImapServernoise;

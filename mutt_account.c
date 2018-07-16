@@ -36,7 +36,6 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
-#include "protos.h"
 
 /* These Config Variables are only used in mutt_account.c */
 char *ImapLogin;

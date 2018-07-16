@@ -39,7 +39,6 @@
 #include "auth.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
 
 /**
  * imap_auth_sasl - Default authenticator if available

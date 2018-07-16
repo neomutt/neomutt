@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
@@ -41,7 +42,6 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -132,7 +132,7 @@ static bool test_last_status_new(FILE *f)
     return false;
 
   hdr = mutt_header_new();
-  tmp_envelope = mutt_rfc822_read_header(f, hdr, 0, 0);
+  tmp_envelope = mutt_rfc822_read_header(f, hdr, false, false);
   if (!(hdr->read || hdr->old))
     result = true;
 

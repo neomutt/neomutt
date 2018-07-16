@@ -27,7 +27,7 @@
 #include <stddef.h>
 #include <time.h>
 
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 
 enum ConnectionType
 {

@@ -29,7 +29,6 @@
 #include "email/email.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
-#include "protos.h"
 #include "sendlib.h"
 
 /**

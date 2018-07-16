@@ -56,7 +56,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
@@ -890,7 +889,7 @@ struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname,
 
   if (!h)
     h = mutt_header_new();
-  h->env = mutt_rfc822_read_header(f, h, 0, 0);
+  h->env = mutt_rfc822_read_header(f, h, false, false);
 
   fstat(fileno(f), &st);
 

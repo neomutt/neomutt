@@ -43,9 +43,7 @@
 #include "mailbox.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "pattern.h"
-#include "protos.h"
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif

@@ -23,10 +23,8 @@
 #ifndef _MUTT_PAGER_H
 #define _MUTT_PAGER_H
 
+#include <stdbool.h>
 #include <stdio.h>
-
-struct Context;
-struct Menu;
 
 /* These Config Variables are only used in pager.c */
 extern bool          AllowAnsi;
