@@ -27,7 +27,7 @@ void test_base64_encode(void)
 void test_base64_decode(void)
 {
   char buffer[16];
-  int len = mutt_b64_decode(buffer, encoded);
+  int len = mutt_b64_decode(buffer, encoded, sizeof(buffer));
   if (!TEST_CHECK(len == sizeof(clear) - 1))
   {
     TEST_MSG("Expected: %zu", sizeof(clear) - 1);
@@ -59,7 +59,7 @@ void test_base64_lengths(void)
 
   /* Decoding a zero-length string should fail, too */
   out1[0] = '\0';
-  declen = mutt_b64_decode(out2, out1);
+  declen = mutt_b64_decode(out2, out1, sizeof(out2));
   if (!TEST_CHECK(declen == -1))
   {
     TEST_MSG("Expected: %zu", -1);
@@ -76,7 +76,7 @@ void test_base64_lengths(void)
       TEST_MSG("Expected: %zu", exp);
       TEST_MSG("Actual  : %zu", enclen);
     }
-    declen = mutt_b64_decode(out2, out1);
+    declen = mutt_b64_decode(out2, out1, sizeof(out2));
     if (!TEST_CHECK(declen == i))
     {
       TEST_MSG("Expected: %zu", i);

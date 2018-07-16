@@ -399,8 +399,9 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
   }
   else if (enc == ENCBASE64)
   {
-    char *out = mutt_mem_malloc(3 * len / 4 + 1);
-    int dlen = mutt_b64_decode(out, it);
+    const int olen = 3 * len / 4 + 1;
+    char *out = mutt_mem_malloc(olen);
+    int dlen = mutt_b64_decode(out, it, olen);
     if (dlen == -1)
     {
       FREE(&out);

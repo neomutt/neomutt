@@ -203,7 +203,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
       goto bail;
     }
 
-    request_buf.length = mutt_b64_decode(buf2, idata->buf + 2);
+    request_buf.length = mutt_b64_decode(buf2, idata->buf + 2, sizeof(buf2));
     request_buf.value = buf2;
     sec_token = &request_buf;
 
@@ -238,7 +238,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     mutt_debug(1, "#2 Error receiving server response.\n");
     goto bail;
   }
-  request_buf.length = mutt_b64_decode(buf2, idata->buf + 2);
+  request_buf.length = mutt_b64_decode(buf2, idata->buf + 2, sizeof(buf2));
   request_buf.value = buf2;
 
   maj_stat = gss_unwrap(&min_stat, context, &request_buf, &send_token, &cflags, &quality);

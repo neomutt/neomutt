@@ -274,17 +274,22 @@ void url_pct_encode(char *dst, size_t l, const char *src)
 
   *dst = 0;
   l--;
-  while (src && *src && l)
+  while (src && *src && (l != 0))
   {
-    if (strchr("/:&%", *src) && l > 3)
+    if (strchr("/:&%", *src))
     {
+      if (l < 3)
+        break;
+
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];
       *dst++ = alph[*src & 0xf];
       src++;
+      l -= 3;
       continue;
     }
     *dst++ = *src++;
+    l--;
   }
   *dst = 0;
 }

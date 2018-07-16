@@ -635,6 +635,13 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
       idata->status = IMAP_FATAL;
       return;
     }
+
+    if (strlen(idata->buf) < litlen)
+    {
+      mutt_debug(1, "Error parsing STATUS mailbox\n");
+      return;
+    }
+
     mailbox = idata->buf;
     s = mailbox + litlen;
     *s = '\0';
@@ -892,7 +899,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
     mutt_debug(2, "Handling untagged NO\n");
 
     /* Display the warning message from the server */
-    mutt_error("%s", s + 3);
+    mutt_error("%s", s + 2);
   }
 
   return 0;
