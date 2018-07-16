@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
@@ -57,7 +58,7 @@
 #include "remailer.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 
 static const char *There_are_no_attachments = N_("There are no attachments.");

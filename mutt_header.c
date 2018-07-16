@@ -28,6 +28,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "alias.h"
 #include "context.h"

@@ -30,6 +30,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "globals.h"
 #include "mutt_window.h"
 #include "options.h"

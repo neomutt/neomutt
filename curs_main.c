@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
@@ -57,16 +58,16 @@
 #include "sidebar.h"
 #endif
 #ifdef USE_POP
-#include "pop.h"
+#include "pop/pop.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

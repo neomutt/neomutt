@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "copy.h"
 #include "context.h"
@@ -46,7 +47,7 @@
 #include "rfc2047.h"
 #include "state.h"
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static int address_header_decode(char **h);

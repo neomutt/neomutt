@@ -36,6 +36,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"

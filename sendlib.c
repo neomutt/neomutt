@@ -36,6 +36,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "buffy.h"
 #include "context.h"
@@ -56,7 +57,7 @@
 #include "rfc2231.h"
 #include "state.h"
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
@@ -54,7 +55,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

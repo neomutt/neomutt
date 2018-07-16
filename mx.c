@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "mx.h"
 #include "buffy.h"
@@ -46,6 +47,8 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
+#include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "ncrypt/ncrypt.h"
@@ -65,13 +68,13 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_POP
-#include "pop.h"
+#include "pop/pop.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

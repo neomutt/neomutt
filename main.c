@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
@@ -69,7 +70,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 
 #define MUTT_IGNORE (1 << 0)  /* -z */

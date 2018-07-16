@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"

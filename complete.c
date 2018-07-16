@@ -41,7 +41,7 @@
 #include "mailbox.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 
 /**

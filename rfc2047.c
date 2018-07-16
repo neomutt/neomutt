@@ -23,6 +23,7 @@
 
 #include "config.h"
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "globals.h"
 
 #include <string.h>

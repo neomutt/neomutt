@@ -30,10 +30,12 @@
 #include <sys/stat.h>
 #include <utime.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
 #include "mx.h"
@@ -46,7 +48,7 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static time_t BuffyTime = 0; /**< last time we started checking for mail */

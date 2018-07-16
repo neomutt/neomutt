@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "context.h"
 #include "enter_state.h"
@@ -52,7 +53,7 @@
 #include <wctype.h>
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 /* not possible to unget more than one char under some curses libs, and it

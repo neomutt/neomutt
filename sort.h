@@ -23,8 +23,9 @@
 #ifndef _MUTT_SORT_H
 #define _MUTT_SORT_H
 
-#include "where.h"
 #include "mutt/mutt.h"
+#include "email/email.h"
+#include "where.h"
 
 struct Context;
 
@@ -66,11 +67,14 @@ struct Context;
 #define SORT_REVERSE (1 << 8)
 #define SORT_LAST    (1 << 9)
 
+#define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
+
 typedef int sort_t(const void *a, const void *b);
 sort_t *mutt_get_sort_func(int method);
 
 void mutt_sort_headers(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
+int perform_auxsort(int retval, const void *a, const void *b);
 
 extern const struct Mapping SortMethods[];
 

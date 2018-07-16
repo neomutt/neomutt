@@ -28,6 +28,7 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "context.h"

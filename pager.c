@@ -32,6 +32,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "pager.h"
 #include "alias.h"
@@ -57,7 +58,7 @@
 #include "sidebar.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>

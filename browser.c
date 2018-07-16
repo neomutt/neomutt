@@ -45,6 +45,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -59,10 +60,10 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
 static const struct Mapping FolderHelp[] = {
