@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180622\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-06-22 14:03+0100\n"
-"PO-Revision-Date: 2018-06-20 23:35+0200\n"
+"PO-Revision-Date: 2018-06-29 23:35+0200\n"
 "Last-Translator: Floyd Anderson <f.a@31c0.net>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -4076,9 +4076,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:673
-#, fuzzy
 msgid "PGP message was not encrypted."
-msgstr "PGP-Nachricht erfolgreich entschlüsselt."
+msgstr "PGP-Nachricht war nicht verschlüsselt."
 
 #: ncrypt/pgp.c:905
 msgid "Internal error.  Please submit a bug report."

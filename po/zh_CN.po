@@ -4055,9 +4055,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:673
-#, fuzzy
 msgid "PGP message was not encrypted."
-msgstr "PGP 信件成功解密。"
+msgstr "PGP 信件未加密。"
 
 #: ncrypt/pgp.c:905
 msgid "Internal error.  Please submit a bug report."
