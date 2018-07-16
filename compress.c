@@ -35,7 +35,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "compress.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -46,8 +45,9 @@
 #include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
+
+struct Header;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.

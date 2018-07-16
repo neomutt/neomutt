@@ -35,7 +35,6 @@
 #include "auth.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
 
 #define MD5_BLOCK_LEN 64
 #define MD5_DIGEST_LEN 16

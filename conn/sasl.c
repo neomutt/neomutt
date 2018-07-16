@@ -46,17 +46,13 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <time.h>
-#include "mutt/logging.h"
-#include "mutt/memory.h"
-#include "mutt/message.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "sasl.h"
 #include "account.h"
 #include "connection.h"
 #include "curs_lib.h"
 #include "mutt_account.h"
 #include "options.h"
-#include "protos.h"
 
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated

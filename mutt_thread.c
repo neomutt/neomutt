@@ -23,7 +23,6 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -33,7 +32,6 @@
 #include "mutt_thread.h"
 #include "context.h"
 #include "curs_lib.h"
-#include "options.h"
 #include "protos.h"
 #include "sort.h"
 

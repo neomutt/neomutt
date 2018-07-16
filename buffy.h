@@ -29,6 +29,7 @@
 #include <time.h>
 #include "where.h"
 
+struct Buffer;
 struct stat;
 
 /* These Config Variables are only used in buffy.c */

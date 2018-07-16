@@ -22,7 +22,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -32,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -47,11 +47,9 @@
 #include "globals.h"
 #include "hook.h"
 #include "mailbox.h"
-#include "mutt_curses.h"
 #include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "protos.h"
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>

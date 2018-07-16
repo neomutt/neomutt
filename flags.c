@@ -40,7 +40,6 @@
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #include "sort.h"
 

@@ -32,7 +32,6 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "auth.h"
-#include "globals.h"
 
 /* These Config Variables are only used in imap/auth.c */
 char *ImapAuthenticators;

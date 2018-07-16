@@ -39,10 +39,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
 #include "rfc2231.h"
-#include "globals.h"
-#include "options.h"
+#include "email_globals.h"
+#include "mime.h"
+#include "parameter.h"
+#include "rfc2047.h"
 
 /* These Config Variables are only used in rfc2231.c */
 bool Rfc2047Parameters;

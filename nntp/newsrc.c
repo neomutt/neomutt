@@ -54,7 +54,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp.h"
-#include "options.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_HCACHE

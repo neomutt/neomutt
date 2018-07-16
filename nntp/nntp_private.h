@@ -28,7 +28,6 @@
 #endif
 
 struct Context;
-struct Header;
 struct NntpData;
 struct NntpServer;
 

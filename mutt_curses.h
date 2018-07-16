@@ -26,7 +26,6 @@
 
 #include <regex.h>
 #include "mutt/mutt.h"
-#include "options.h"
 
 #ifdef USE_SLANG_CURSES
 

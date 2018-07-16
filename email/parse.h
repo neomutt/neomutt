@@ -23,6 +23,7 @@
 #ifndef _EMAIL_PARSE_H
 #define _EMAIL_PARSE_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Body;

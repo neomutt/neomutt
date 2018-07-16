@@ -23,9 +23,12 @@
 #ifndef _MUTT_ALIAS_H
 #define _MUTT_ALIAS_H
 
+#include <stddef.h>
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+
+struct Address;
+struct Envelope;
 
 /**
  * struct Alias - A shortcut for an email address

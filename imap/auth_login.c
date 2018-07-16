@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
@@ -34,8 +35,6 @@
 #include "auth.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
-#include "options.h"
-#include "protos.h"
 
 /**
  * imap_auth_login - Plain LOGIN support

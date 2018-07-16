@@ -36,7 +36,6 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "options.h"
-#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #include "mailbox.h"

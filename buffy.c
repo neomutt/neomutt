@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
@@ -41,7 +42,6 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"

@@ -40,7 +40,6 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

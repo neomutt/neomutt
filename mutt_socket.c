@@ -35,7 +35,6 @@
 #include "mutt_socket.h"
 #include "hook.h"
 #include "mutt_account.h"
-#include "protos.h"
 
 /**
  * mutt_conn_find - Find a connection from a list

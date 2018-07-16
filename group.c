@@ -28,7 +28,6 @@
 #include "email/email.h"
 #include "group.h"
 #include "globals.h"
-#include "protos.h"
 #include "send.h"
 
 struct Group *mutt_pattern_group(const char *k)

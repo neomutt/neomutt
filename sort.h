@@ -23,10 +23,11 @@
 #ifndef _MUTT_SORT_H
 #define _MUTT_SORT_H
 
+#include <stdbool.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
 #include "where.h"
 
+struct Address;
 struct Context;
 
 /* These Config Variables are only used in sort.c */

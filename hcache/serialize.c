@@ -30,11 +30,14 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include "mutt/mutt.h"
 #include "email/email.h"
 #include "hcache.h"
-#include "muttlib.h"
 
 /**
  * lazy_malloc - Allocate some memory

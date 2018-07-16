@@ -41,7 +41,6 @@
 #include "mutt_header.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "options.h"
 #include "protos.h"
 
 /* These Config Variables are only used in edit.c */

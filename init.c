@@ -2203,7 +2203,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
         }
-        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) || (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
+        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
+                                (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], buf->data) < 0) |

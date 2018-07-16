@@ -34,9 +34,7 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
 #include "pager.h"
-#include "protos.h"
 
 static const char *HelpStrings[] = {
 #define DEFINE_HELP_MESSAGE(opcode, help_string) help_string,

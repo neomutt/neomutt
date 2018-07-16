@@ -54,7 +54,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"

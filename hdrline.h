@@ -30,7 +30,6 @@
 struct Address;
 struct Context;
 struct Header;
-struct HdrFormatInfo;
 
 /* These Config Variables are only used in hdrline.c */
 extern struct MbTable *FlagChars;

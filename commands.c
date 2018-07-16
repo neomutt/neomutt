@@ -56,7 +56,6 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "sendlib.h"
 #include "sort.h"
 #ifdef USE_IMAP

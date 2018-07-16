@@ -33,7 +33,6 @@
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
-#include "globals.h"
 #include "keymap.h"
 #include "menu.h"
 #include "mutt_curses.h"

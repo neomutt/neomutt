@@ -42,14 +42,10 @@
 #include "context.h"
 #include "globals.h"
 #include "mutt_account.h"
-#include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
-#include "options.h"
-#include "pop.h"
 #include "progress.h"
-#include "protos.h"
 
 /* These Config Variables are only used in pop/pop_lib.c */
 unsigned char PopReconnect;

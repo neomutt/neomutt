@@ -53,7 +53,6 @@
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "options.h"
-#include "protos.h"
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"

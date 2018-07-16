@@ -48,7 +48,6 @@
 #include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
-#include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"

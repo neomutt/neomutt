@@ -25,6 +25,8 @@
 #ifndef _MUTT_RFC3676_H
 #define _MUTT_RFC3676_H
 
+#include <stdbool.h>
+
 struct Body;
 struct Header;
 struct State;

@@ -21,24 +21,16 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "mutt_parse.h"
 #include "globals.h"
 #include "mailbox.h"
-#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
-#include "protos.h"
-#include "recvattach.h"
 
 struct Context;
 

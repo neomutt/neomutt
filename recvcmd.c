@@ -40,7 +40,6 @@
 #include "muttlib.h"
 #include "options.h"
 #include "protos.h"
-#include "recvattach.h"
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"

@@ -23,6 +23,8 @@
 #ifndef _EMAIL_RFC2231_H
 #define _EMAIL_RFC2231_H
 
+#include <stdbool.h>
+
 struct ParameterList;
 
 /* These Config Variables are only used in rfc2231.c */

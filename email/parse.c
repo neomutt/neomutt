@@ -27,9 +27,12 @@
  */
 
 #include "config.h"
+#include <ctype.h>
+#include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "mutt/mutt.h"
 #include "parse.h"
 #include "address.h"
@@ -39,6 +42,7 @@
 #include "from.h"
 #include "header.h"
 #include "mime.h"
+#include "parameter.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"

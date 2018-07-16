@@ -34,12 +34,9 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "conn/conn.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "options.h"
-#include "pop.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

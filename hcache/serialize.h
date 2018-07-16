@@ -26,6 +26,8 @@
 #ifndef _MUTT_HCACHE_SERIALIZE_H
 #define _MUTT_HCACHE_SERIALIZE_H
 
+#include <stdbool.h>
+#include <sys/types.h>
 #include "hcache.h"
 
 struct Address;

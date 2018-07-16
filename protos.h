@@ -27,7 +27,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 
 struct Context;
 struct EnterState;

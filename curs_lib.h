@@ -23,10 +23,11 @@
 #ifndef MUTT_CURS_LIB_H
 #define MUTT_CURS_LIB_H
 
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <wchar.h>
 #include "mutt.h"
+#include "browser.h"
 
 struct Context;
 struct Pager;

@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "pop_private.h"
 #include "mutt/mutt.h"
@@ -52,15 +53,15 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "progress.h"
-#include "protos.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+
+struct BodyCache;
 
 /* These Config Variables are only used in pop/pop.c */
 short PopCheckinterval;

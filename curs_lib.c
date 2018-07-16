@@ -42,7 +42,6 @@
 #include "curs_lib.h"
 #include "browser.h"
 #include "context.h"
-#include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "menu.h"

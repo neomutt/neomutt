@@ -56,7 +56,6 @@
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgplib.h"

@@ -45,6 +45,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
@@ -61,15 +62,12 @@
 #include "keymap.h"
 #include "menu.h"
 #include "mutt_attach.h"
-#include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_parse.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "protos.h"
 #include "recvattach.h"
 #include "sendlib.h"

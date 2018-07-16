@@ -56,7 +56,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
