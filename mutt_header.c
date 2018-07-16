@@ -38,7 +38,6 @@
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parse.h"
 #include "protos.h"
 #include "sendlib.h"
 

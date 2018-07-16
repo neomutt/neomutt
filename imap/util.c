@@ -43,6 +43,7 @@
 #include <unistd.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "bcache.h"
 #include "context.h"
@@ -55,7 +56,6 @@
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
-#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

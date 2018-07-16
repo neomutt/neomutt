@@ -55,7 +55,6 @@
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
-#include "url.h"
 
 /* These Config Variables are only used in imap/command.c */
 bool ImapServernoise;

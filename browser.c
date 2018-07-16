@@ -58,7 +58,6 @@
 #include "protos.h"
 #include "sendlib.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

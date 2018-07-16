@@ -49,17 +49,16 @@
 #include "mutt_attach.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
+#include "mutt_parse.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parse.h"
 #include "pattern.h"
 #include "protos.h"
 #include "rfc3676.h"
 #include "sendlib.h"
 #include "smtp.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp/nntp.h"
@@ -1232,7 +1231,7 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
   {
     if (t->description)
     {
-      mutt_rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), SendCharset);
+      rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), SendCharset);
     }
     if (recurse && t->parts)
       mutt_encode_descriptions(t->parts, recurse);
@@ -1248,7 +1247,7 @@ static void decode_descriptions(struct Body *b)
   {
     if (t->description)
     {
-      mutt_rfc2047_decode(&t->description);
+      rfc2047_decode(&t->description);
     }
     if (t->parts)
       decode_descriptions(t->parts);

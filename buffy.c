@@ -42,7 +42,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "options.h"
-#include "parse.h"
 #include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"

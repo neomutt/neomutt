@@ -24,9 +24,8 @@
 #define _MUTT_HISTORY_H
 
 #include <stdbool.h>
-#include <stdio.h>
 
-/* These Config Variables are only used in history.c */
+/* These Config Variables are only used in mutt/history.c */
 extern short History;
 extern char *HistoryFile;
 extern bool  HistoryRemoveDups;
@@ -57,6 +56,7 @@ char *mutt_hist_prev(enum HistoryClass hclass);
 void  mutt_hist_read_file(void);
 void  mutt_hist_reset_state(enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-void  mutt_history_complete(char *buf, size_t buflen, enum HistoryClass hclass);
+int   mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches);
 
 #endif /* _MUTT_HISTORY_H */
+

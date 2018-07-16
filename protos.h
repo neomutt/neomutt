@@ -31,6 +31,7 @@
 
 struct Context;
 struct EnterState;
+struct Envelope;
 struct Header;
 
 /**
@@ -43,8 +44,6 @@ enum XdgType
 };
 
 int mutt_system(const char *cmd);
-
-int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
@@ -67,6 +66,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 int mutt_num_postponed(int force);
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread);
 void mutt_update_num_postponed(void);
+int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp(const wchar_t *a, const wchar_t *b);

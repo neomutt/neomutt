@@ -21,7 +21,7 @@
  */
 
 /**
- * @page idna Handling of international domain names
+ * @page email_idna Handling of international domain names
  *
  * Handling of international domain names
  */
@@ -30,11 +30,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "charset.h"
+#include "mutt/mutt.h"
 #include "idna2.h"
-#include "logging.h"
-#include "memory.h"
-#include "string2.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)

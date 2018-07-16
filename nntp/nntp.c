@@ -48,17 +48,16 @@
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
+#include "mutt_parse.h"
 #include "mutt_socket.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parse.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

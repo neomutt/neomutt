@@ -20,27 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page email_url Parse and identify different URL schemes
+ *
+ * Parse and identify different URL schemes
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
-#include "mutt.h"
 #include "url.h"
-#include "globals.h"
-#include "parse.h"
-#include "protos.h"
-#include "rfc2047.h"
+#include "mime.h"
 
 static const struct Mapping UrlMap[] = {
-  { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
-  { "pop", U_POP },         { "pops", U_POPS },     { "news", U_NNTP },
-  { "snews", U_NNTPS },     { "mailto", U_MAILTO },
-#ifdef USE_NOTMUCH
-  { "notmuch", U_NOTMUCH },
-#endif
-  { "smtp", U_SMTP },       { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
+  { "file", U_FILE },   { "imap", U_IMAP },     { "imaps", U_IMAPS },
+  { "pop", U_POP },     { "pops", U_POPS },     { "news", U_NNTP },
+  { "snews", U_NNTPS }, { "mailto", U_MAILTO }, { "notmuch", U_NOTMUCH },
+  { "smtp", U_SMTP },   { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
 };
 
 int url_pct_decode(char *s)
@@ -351,95 +349,4 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
     mutt_str_strcat(dest, len, u->path);
 
   return 0;
-}
-
-int url_parse_mailto(struct Envelope *e, char **body, const char *src)
-{
-  char *p = NULL;
-  char *tag = NULL, *value = NULL;
-
-  int rc = -1;
-
-  char *t = strchr(src, ':');
-  if (!t)
-    return -1;
-
-  /* copy string for safe use of strtok() */
-  char *tmp = mutt_str_strdup(t + 1);
-  if (!tmp)
-    return -1;
-
-  char *headers = strchr(tmp, '?');
-  if (headers)
-    *headers++ = '\0';
-
-  if (url_pct_decode(tmp) < 0)
-    goto out;
-
-  e->to = mutt_addr_parse_list(e->to, tmp);
-
-  tag = headers ? strtok_r(headers, "&", &p) : NULL;
-
-  for (; tag; tag = strtok_r(NULL, "&", &p))
-  {
-    value = strchr(tag, '=');
-    if (value)
-      *value++ = '\0';
-    if (!value || !*value)
-      continue;
-
-    if (url_pct_decode(tag) < 0)
-      goto out;
-    if (url_pct_decode(value) < 0)
-      goto out;
-
-    /* Determine if this header field is on the allowed list.  Since NeoMutt
-     * interprets some header fields specially (such as
-     * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
-     * only safe fields are allowed.
-     *
-     * RFC2368, "4. Unsafe headers"
-     * The user agent interpreting a mailto URL SHOULD choose not to create
-     * a message if any of the headers are considered dangerous; it may also
-     * choose to create a message with only a subset of the headers given in
-     * the URL.
-     */
-    if (mutt_list_match(tag, &MailToAllow))
-    {
-      if (mutt_str_strcasecmp(tag, "body") == 0)
-      {
-        if (body)
-          mutt_str_replace(body, value);
-      }
-      else
-      {
-        char *scratch = NULL;
-        size_t taglen = mutt_str_strlen(tag);
-
-        safe_asprintf(&scratch, "%s: %s", tag, value);
-        scratch[taglen] = 0; /* overwrite the colon as mutt_rfc822_parse_line expects */
-        value = mutt_str_skip_email_wsp(&scratch[taglen + 1]);
-        mutt_rfc822_parse_line(e, NULL, scratch, value, 1, 0, 1);
-        FREE(&scratch);
-      }
-    }
-  }
-
-  /* RFC2047 decode after the RFC822 parsing */
-  rfc2047_decode_addrlist(e->from);
-  rfc2047_decode_addrlist(e->to);
-  rfc2047_decode_addrlist(e->cc);
-  rfc2047_decode_addrlist(e->bcc);
-  rfc2047_decode_addrlist(e->reply_to);
-  rfc2047_decode_addrlist(e->mail_followup_to);
-  rfc2047_decode_addrlist(e->return_path);
-  rfc2047_decode_addrlist(e->sender);
-  mutt_rfc2047_decode(&e->x_label);
-  mutt_rfc2047_decode(&e->subject);
-
-  rc = 0;
-
-out:
-  FREE(&tmp);
-  return rc;
 }

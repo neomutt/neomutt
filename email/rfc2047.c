@@ -23,7 +23,7 @@
  */
 
 /**
- * @page rfc2047 RFC2047 encoding / decoding functions
+ * @page email_rfc2047 RFC2047 encoding / decoding functions
  *
  * RFC2047 MIME extensions encoding / decoding routines.
  */
@@ -35,15 +35,11 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <string.h>
+#include "mutt/mutt.h"
 #include "rfc2047.h"
-#include "base64.h"
-#include "buffer.h"
-#include "charset.h"
-#include "mbyte.h"
-#include "memory.h"
+#include "address.h"
+#include "email_globals.h"
 #include "mime.h"
-#include "regex3.h"
-#include "string2.h"
 
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
@@ -418,7 +414,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
 }
 
 /**
- * rfc2047_encode - RFC2047-encode a string
+ * rfc2047_encode2 - RFC2047-encode a string
  * @param d        String to convert
  * @param dlen     Length of string
  * @param col      Starting column to convert
@@ -429,8 +425,9 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
  * @param specials Special characters to be encoded
  * @retval 0 Success
  */
-static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromcode,
-                          const char *charsets, char **e, size_t *elen, const char *specials)
+static int rfc2047_encode2(const char *d, size_t dlen, int col,
+                           const char *fromcode, const char *charsets, char **e,
+                           size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;
@@ -619,13 +616,13 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
 }
 
 /**
- * mutt_rfc2047_encode - RFC-2047-encode a string
+ * rfc2047_encode - RFC-2047-encode a string
  * @param[in,out] pd       String to be encoded, and resulting encoded string
  * @param[in]     specials Special characters to be encoded
  * @param[in]     col      Starting index in string
  * @param[in]     charsets List of charsets to choose from
  */
-void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
+void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets)
 {
   char *e = NULL;
   size_t elen;
@@ -636,21 +633,21 @@ void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *c
   if (!charsets || !*charsets)
     charsets = "utf-8";
 
-  rfc2047_encode(*pd, strlen(*pd), col, Charset, charsets, &e, &elen, specials);
+  rfc2047_encode2(*pd, strlen(*pd), col, Charset, charsets, &e, &elen, specials);
 
   FREE(pd);
   *pd = e;
 }
 
 /**
- * mutt_rfc2047_decode - Decode any RFC2047-encoded header fields
+ * rfc2047_decode - Decode any RFC2047-encoded header fields
  * @param[in,out] pd  String to be decoded, and resulting decoded string
  *
  * Try to decode anything that looks like a valid RFC2047 encoded header field,
  * ignoring RFC822 parsing rules. If decoding fails, for example due to an
  * invalid base64 string, the original input is left untouched.
  */
-void mutt_rfc2047_decode(char **pd)
+void rfc2047_decode(char **pd)
 {
   if (!pd || !*pd)
     return;
@@ -742,4 +739,43 @@ void mutt_rfc2047_decode(char **pd)
 
   mutt_buffer_addch(&buf, '\0');
   *pd = buf.data;
+}
+
+/**
+ * rfc2047_encode_addrlist - Encode any RFC2047 headers, where required, in an Address list
+ * @param addr Address list
+ * @param tag  Header tag (used for wrapping calculation)
+ */
+void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
+{
+  struct Address *ptr = addr;
+  int col = tag ? strlen(tag) + 2 : 32;
+
+  while (ptr)
+  {
+    if (ptr->personal)
+      rfc2047_encode(&ptr->personal, AddressSpecials, col, SendCharset);
+    else if (ptr->group && ptr->mailbox)
+      rfc2047_encode(&ptr->mailbox, AddressSpecials, col, SendCharset);
+    ptr = ptr->next;
+  }
+}
+
+/**
+ * rfc2047_decode_addrlist - Decode any RFC2047 headers in an Address list
+ * @param a Address list
+ */
+void rfc2047_decode_addrlist(struct Address *a)
+{
+  while (a)
+  {
+    if (a->personal &&
+        ((strstr(a->personal, "=?") != NULL) || (AssumedCharset && *AssumedCharset)))
+    {
+      rfc2047_decode(&a->personal);
+    }
+    else if (a->group && a->mailbox && (strstr(a->mailbox, "=?") != NULL))
+      rfc2047_decode(&a->mailbox);
+    a = a->next;
+  }
 }

@@ -41,9 +41,9 @@
 #include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
-#include "history.h"
 #include "keymap.h"
 #include "mutt_curses.h"
+#include "mutt_history.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "opcodes.h"
@@ -295,7 +295,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
         case OP_EDITOR_HISTORY_SEARCH:
           state->curpos = state->lastchar;
           mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
-          mutt_history_complete(buf, buflen, hclass);
+          mutt_hist_complete(buf, buflen, hclass);
           replace_part(state, 0, buf);
           rc = 1;
           goto bye;

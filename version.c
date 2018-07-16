@@ -35,6 +35,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt_curses.h"
 
 /* #include "protos.h" */

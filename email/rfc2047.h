@@ -22,10 +22,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2047_H
-#define _MUTT_RFC2047_H
+#ifndef _EMAIL_RFC2047_H
+#define _EMAIL_RFC2047_H
 
-void mutt_rfc2047_decode(char **pd);
-void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+struct Address;
 
-#endif /* _MUTT_RFC2047_H */
+void rfc2047_decode(char **pd);
+void rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+
+void rfc2047_decode_addrlist(struct Address *a);
+void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
+
+#endif /* _EMAIL_RFC2047_H */

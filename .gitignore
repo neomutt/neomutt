@@ -16,6 +16,7 @@ test/neomutt-test
 *.o
 *.Po
 *.Tpo
+html
 lib*.a
 po/*.mo
 po/neomutt.pot

@@ -3,8 +3,8 @@
 
 #include "mutt/charset.h"
 #include "mutt/memory.h"
-#include "mutt/rfc2047.h"
 #include "mutt/string2.h"
+#include "email/rfc2047.h"
 
 #include <locale.h>
 
@@ -74,7 +74,7 @@ void test_rfc2047(void)
   {
     /* decode the original string */
     char *s = mutt_str_strdup(test_data[i].original);
-    mutt_rfc2047_decode(&s);
+    rfc2047_decode(&s);
     if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);
@@ -85,7 +85,7 @@ void test_rfc2047(void)
 
     /* encode the expected result */
     s = mutt_str_strdup(test_data[i].decoded);
-    mutt_rfc2047_encode(&s, NULL, 0, "utf-8");
+    rfc2047_encode(&s, NULL, 0, "utf-8");
     if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);
@@ -96,7 +96,7 @@ void test_rfc2047(void)
 
     /* decode the encoded result */
     s = mutt_str_strdup(test_data[i].encoded);
-    mutt_rfc2047_decode(&s);
+    rfc2047_decode(&s);
     if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);

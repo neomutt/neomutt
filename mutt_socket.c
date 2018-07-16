@@ -30,12 +30,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt_socket.h"
 #include "hook.h"
 #include "mutt_account.h"
 #include "protos.h"
-#include "url.h"
 
 /**
  * mutt_conn_find - Find a connection from a list

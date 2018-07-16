@@ -40,12 +40,12 @@
 #include "globals.h"
 #include "mbtable.h"
 #include "mutt_curses.h"
+#include "mutt_parse.h"
 #include "mutt_thread.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parse.h"
 #include "protos.h"
 #include "sort.h"
 

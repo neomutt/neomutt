@@ -47,13 +47,13 @@
 #include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
+#include "mutt_parse.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "parse.h"
 #include "protos.h"
 #include "recvcmd.h"
 #include "rfc1524.h"
@@ -460,23 +460,6 @@ int mutt_tag_attach(struct Menu *menu, int n, int m)
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
   return (cur->tagged - ot);
-}
-
-/**
- * mutt_is_message_type - Determine if a mime type matches a message or not
- * @param type    Message type enum value
- * @param subtype Message subtype
- * @retval true  Type is message/news or message/rfc822
- * @retval false Otherwise
- */
-bool mutt_is_message_type(int type, const char *subtype)
-{
-  if (type != TYPEMESSAGE)
-    return false;
-
-  subtype = NONULL(subtype);
-  return ((mutt_str_strcasecmp(subtype, "rfc822") == 0) ||
-          (mutt_str_strcasecmp(subtype, "news") == 0));
 }
 
 /**

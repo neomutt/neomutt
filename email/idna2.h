@@ -1,9 +1,9 @@
 /**
  * @file
- * RFC2047 MIME extensions routines
+ * Handling of international domain names
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2003,2005 Thomas Roessler <roessler@does-not-exist.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2047_2_H
-#define _MUTT_RFC2047_2_H
+#ifndef _EMAIL_IDNA_H
+#define _EMAIL_IDNA_H
 
-struct Address;
+#include <stdbool.h>
 
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
-void rfc2047_decode_addrlist(struct Address *a);
+/* These Config Variables are only used in mutt/idna.c */
+extern bool IdnDecode;
+extern bool IdnEncode;
 
-#endif /* _MUTT_RFC2047_2_H */
+#define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 
+char *      mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
+char *      mutt_idna_local_to_intl(const char *user, const char *domain);
+const char *mutt_idna_print_version(void);
+int         mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
+
+
+#endif /* _EMAIL_IDNA_H */

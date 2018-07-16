@@ -30,13 +30,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
-#include "url.h"
 
 /* These Config Variables are only used in mutt_account.c */
 char *ImapLogin;

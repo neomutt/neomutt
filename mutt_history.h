@@ -1,9 +1,9 @@
 /**
  * @file
- * RFC2231 MIME Charset routines
+ * Read/write command history from/to a file
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,15 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2231_H
-#define _MUTT_RFC2231_H
+#ifndef _MUTT_HISTORY2_H
+#define _MUTT_HISTORY2_H
 
-struct ParameterList;
+#include <stdio.h>
+#include "mutt/mutt.h"
 
-/* These Config Variables are only used in rfc2231.c */
-extern bool Rfc2047Parameters;
+void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
 
-void rfc2231_decode_parameters(struct ParameterList *p);
-int rfc2231_encode_string(char **pd);
+#endif /* _MUTT_HISTORY2_H */
 
-#endif /* _MUTT_RFC2231_H */

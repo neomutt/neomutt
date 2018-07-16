@@ -61,7 +61,6 @@
 #include "protos.h"
 #include "score.h"
 #include "sort.h"
-#include "url.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

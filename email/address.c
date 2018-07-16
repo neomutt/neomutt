@@ -33,6 +33,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "address.h"
+#include "idna2.h"
 
 /**
  * AddressSpecials - Characters with special meaning for email addresses

@@ -53,9 +53,4 @@ WHERE bool OptSortSubthreads;      /**< (pseudo) used when $sort_aux changes */
 WHERE bool OptSysSignalsBlocked;  /**< (pseudo) using by mutt_block_signals_system () */
 WHERE bool OptViewAttach;          /**< (pseudo) signals that we are viewing attachments */
 
-#define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
-#define mutt_bit_unset(v, n)  v[n / 8] &= ~(1 << (n % 8))
-#define mutt_bit_toggle(v, n) v[n / 8] ^= (1 << (n % 8))
-#define mutt_bit_isset(v, n)  (v[n / 8] & (1 << (n % 8)))
-
 #endif /* _MUTT_OPTIONS_H_ */

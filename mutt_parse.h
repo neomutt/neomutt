@@ -1,9 +1,9 @@
 /**
  * @file
- * Handling of international domain names
+ * Miscellaneous email parsing routines
  *
  * @authors
- * Copyright (C) 2003,2005 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,21 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_IDNA_H
-#define _MUTT_IDNA_H
+#ifndef MUTT_PARSE_H
+#define MUTT_PARSE_H
 
-#include <stdbool.h>
+struct Context;
+struct Header;
 
-/* These Config Variables are only used in mutt/idna.c */
-extern bool IdnDecode;
-extern bool IdnEncode;
+int  mutt_count_body_parts(struct Context *ctx, struct Header *hdr);
+void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 
-#define MI_MAY_BE_IRREVERSIBLE (1 << 0)
-
-char *      mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
-char *      mutt_idna_local_to_intl(const char *user, const char *domain);
-const char *mutt_idna_print_version(void);
-int         mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
-
-
-#endif /* _MUTT_IDNA_H */
+#endif /* MUTT_PARSE_H */

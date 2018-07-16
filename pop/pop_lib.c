@@ -50,7 +50,6 @@
 #include "pop.h"
 #include "progress.h"
 #include "protos.h"
-#include "url.h"
 
 /* These Config Variables are only used in pop/pop_lib.c */
 unsigned char PopReconnect;
