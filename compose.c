@@ -33,16 +33,12 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
-#include "attach.h"
-#include "body.h"
-#include "content.h"
 #include "context.h"
-#include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
@@ -51,6 +47,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
 #include "sort.h"
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -1943,7 +1940,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   else
     msg->content = NULL;
 
-  mutt_free_attach_context(&actx);
+  mutt_actx_free(&actx);
 
   return r;
 }

@@ -26,14 +26,11 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "sort.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
+#include "mutt_thread.h"
 #include "options.h"
 #include "protos.h"
-#include "thread.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp.h"

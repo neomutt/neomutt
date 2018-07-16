@@ -42,7 +42,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "message.h"

@@ -40,11 +40,8 @@
 #include "mutt.h"
 #include "message.h"
 #include "bcache.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "mutt_account.h"
@@ -54,7 +51,6 @@
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
-#include "tags.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

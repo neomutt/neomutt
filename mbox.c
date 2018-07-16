@@ -34,21 +34,18 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -598,55 +595,6 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
 }
 
 /**
- * strict_cmp_bodies - Strictly compare two email Body's
- * @param b1 First Body
- * @param b2 Second Body
- * @retval true Body's are strictly identical
- */
-static bool strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
-{
-  if ((b1->type != b2->type) || (b1->encoding != b2->encoding) ||
-      (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
-      (mutt_str_strcmp(b1->description, b2->description) != 0) ||
-      !mutt_param_cmp_strict(&b1->parameter, &b2->parameter) || (b1->length != b2->length))
-  {
-    return false;
-  }
-  return true;
-}
-
-/**
- * mbox_strict_cmp_headers - Strictly compare message headers
- * @param h1 First Header
- * @param h2 Second Header
- * @retval true Headers are strictly identical
- */
-bool mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
-{
-  if (h1 && h2)
-  {
-    if ((h1->received != h2->received) || (h1->date_sent != h2->date_sent) ||
-        (h1->content->length != h2->content->length) ||
-        (h1->lines != h2->lines) || (h1->zhours != h2->zhours) ||
-        (h1->zminutes != h2->zminutes) || (h1->zoccident != h2->zoccident) ||
-        (h1->mime != h2->mime) || !mutt_env_cmp_strict(h1->env, h2->env) ||
-        !strict_cmp_bodies(h1->content, h2->content))
-    {
-      return false;
-    }
-    else
-      return true;
-  }
-  else
-  {
-    if (!h1 && !h2)
-      return true;
-    else
-      return false;
-  }
-}
-
-/**
  * reopen_mailbox - Close and reopen a mailbox
  * @param ctx        Mailbox
  * @param index_hint Current email
@@ -722,7 +670,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      cmp_headers = mbox_strict_cmp_headers;
+      cmp_headers = mutt_header_cmp_strict;
       mutt_file_fclose(&ctx->fp);
       ctx->fp = mutt_file_fopen(ctx->path, "r");
       if (!ctx->fp)

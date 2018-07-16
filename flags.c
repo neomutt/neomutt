@@ -33,7 +33,6 @@
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_window.h"
@@ -41,7 +40,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 
 /**
  * mutt_set_flag_update - Set a flag on an email

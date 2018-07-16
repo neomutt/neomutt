@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "mutt/mutt.h"
+#include "parameter.h"
 
 /**
  * struct Body - The body of an email
@@ -99,7 +99,7 @@ struct Body
 
 };
 
-int          mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src);
+bool         mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);
 void         mutt_body_free(struct Body **p);
 struct Body *mutt_body_new(void);
 

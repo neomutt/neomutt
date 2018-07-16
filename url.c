@@ -27,7 +27,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
-#include "envelope.h"
 #include "globals.h"
 #include "protos.h"
 #include "rfc2047.h"

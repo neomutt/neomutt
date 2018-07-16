@@ -49,14 +49,10 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "backend.h"
-#include "body.h"
-#include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"
-#include "header.h"
 #include "protos.h"
-#include "tags.h"
 
 static unsigned int hcachever = 0x0;
 

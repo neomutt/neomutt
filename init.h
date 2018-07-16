@@ -43,7 +43,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "tags.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif

@@ -40,21 +40,18 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mx.h"
 #include "options.h"
 #include "progress.h"
 #include "protos.h"
 #include "sort.h"
-#include "thread.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
@@ -2531,7 +2528,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
     ctx->hdrs[i]->active = false;
 
     p = mutt_hash_find(fnames, ctx->hdrs[i]->path);
-    if (p && p->h && mbox_strict_cmp_headers(ctx->hdrs[i], p->h))
+    if (p && p->h && mutt_header_cmp_strict(ctx->hdrs[i], p->h))
     {
       ctx->hdrs[i]->active = true;
       /* found the right message */

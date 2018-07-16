@@ -43,12 +43,9 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
-#include "body.h"
-#include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -56,7 +53,6 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
-#include "tags.h"
 #include "url.h"
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>

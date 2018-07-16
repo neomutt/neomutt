@@ -32,11 +32,8 @@
 #include <sys/stat.h>
 #include "mutt/mutt.h"
 #include "alias.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "options.h"

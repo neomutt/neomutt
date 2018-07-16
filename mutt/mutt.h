@@ -28,14 +28,18 @@
  * | File             | Description        |
  * | :--------------- | :----------------- |
  * | mutt/address.c   | @subpage address   |
+ * | mutt/attach.c    | @subpage attach    |
  * | mutt/base64.c    | @subpage base64    |
+ * | mutt/body.c      | @subpage base64    |
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
  * | mutt/date.c      | @subpage date      |
+ * | mutt/envelope.c  | @subpage envelope  |
  * | mutt/envlist.c   | @subpage envlist   |
  * | mutt/exit.c      | @subpage exit      |
  * | mutt/file.c      | @subpage file      |
  * | mutt/hash.c      | @subpage hash      |
+ * | mutt/header.c    | @subpage header    |
  * | mutt/idna.c      | @subpage idna      |
  * | mutt/list.c      | @subpage list      |
  * | mutt/logging.c   | @subpage logging   |
@@ -50,6 +54,8 @@
  * | mutt/sha1.c      | @subpage sha1      |
  * | mutt/signal.c    | @subpage signal    |
  * | mutt/string.c    | @subpage string    |
+ * | mutt/tags.c      | @subpage tags      |
+ * | mutt/thread.c    | @subpage thread    |
  *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.
@@ -59,14 +65,19 @@
 #define _MUTT_MUTT_H
 
 #include "address.h"
+#include "attach.h"
 #include "base64.h"
+#include "body.h"
 #include "buffer.h"
 #include "charset.h"
+#include "content.h"
 #include "date.h"
-#include "exit.h"
+#include "envelope.h"
 #include "envlist.h"
+#include "exit.h"
 #include "file.h"
 #include "hash.h"
+#include "header.h"
 #include "idna2.h"
 #include "list.h"
 #include "logging.h"
@@ -83,5 +94,7 @@
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"
+#include "tags.h"
+#include "thread.h"
 
 #endif /* _MUTT_MUTT_H */

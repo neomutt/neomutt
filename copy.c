@@ -34,12 +34,9 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "copy.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "globals.h"
 #include "handler.h"
-#include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -49,7 +46,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "state.h"
-#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

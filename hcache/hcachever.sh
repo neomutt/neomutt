@@ -46,7 +46,7 @@ getstruct () {
   done
 
   case $STRUCT in
-    Address|ListNode|Buffer|Parameter|Body|Envelope|Header)
+    Address|Body|Buffer|Envelope|Header|ListNode|Parameter)
       BODY=`cleanbody "$BODY"`
       echo "$STRUCT: $BODY"
     ;;

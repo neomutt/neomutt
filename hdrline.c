@@ -31,21 +31,17 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "mbtable.h"
 #include "mutt_curses.h"
+#include "mutt_thread.h"
 #include "mutt_window.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#include "tags.h"
-#include "thread.h"
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)

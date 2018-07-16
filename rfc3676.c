@@ -30,9 +30,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "body.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "options.h"
