@@ -25,6 +25,7 @@
 #define _MUTT_INIT_H
 
 #ifdef _MAKEDOC
+#include "config.h"
 #include "doc/makedoc_defs.h"
 #else
 #include <stddef.h>
