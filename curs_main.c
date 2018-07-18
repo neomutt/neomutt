@@ -2390,11 +2390,11 @@ int mutt_index_menu(void)
       case OP_DECODE_SAVE:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (mutt_save_message(tag ? NULL : CURHDR,
-                              (op == OP_DECRYPT_SAVE) || (op == OP_SAVE) || (op == OP_DECODE_SAVE),
-                              (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
-                              (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) || 0) == 0 &&
-            (op == OP_SAVE || op == OP_DECODE_SAVE || op == OP_DECRYPT_SAVE))
+        if ((mutt_save_message(tag ? NULL : CURHDR,
+                               (op == OP_DECRYPT_SAVE) || (op == OP_SAVE) || (op == OP_DECODE_SAVE),
+                               (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
+                               (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY)) == 0) &&
+            ((op == OP_SAVE) || (op == OP_DECODE_SAVE) || (op == OP_DECRYPT_SAVE)))
         {
           menu->redraw |= REDRAW_STATUS;
           if (tag)

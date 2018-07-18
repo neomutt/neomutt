@@ -1368,7 +1368,7 @@ fail:
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
+int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete)
 {
   struct Buffer cmd, sync_cmd;
   char mbox[PATH_MAX];

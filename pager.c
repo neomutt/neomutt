@@ -3125,11 +3125,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
         CHECK_MODE(IsHeader(extra));
-        if (mutt_save_message(
-                extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
-                (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-                (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) || 0) == 0 &&
-            (ch == OP_SAVE || ch == OP_DECODE_SAVE || ch == OP_DECRYPT_SAVE))
+        if ((mutt_save_message(
+                 extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+                 (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+                 (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
+            ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)))
         {
           if (Resolve)
           {

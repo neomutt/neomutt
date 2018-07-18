@@ -775,7 +775,7 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
   }
 }
 
-int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
+int mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decrypt,
                           struct Context *ctx)
 {
   int cmflags, chflags;
@@ -810,7 +810,7 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
-int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
+int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 {
   bool need_passphrase = false;
   int app = 0;

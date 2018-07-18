@@ -843,7 +843,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
         }
       }
 
-      i = imap_copy_messages(ctx, NULL, mbox, 1);
+      i = imap_copy_messages(ctx, NULL, mbox, true);
     }
 
     if (i == 0) /* success */
