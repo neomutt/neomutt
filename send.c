@@ -2117,7 +2117,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
       if (!Postponed || mutt_write_fcc(NONULL(Postponed), msg,
                                        (cur && (flags & SEND_REPLY)) ? cur->env->message_id : NULL,
-                                       1, fcc, NULL) < 0)
+                                       true, fcc, NULL) < 0)
       {
         msg->content = mutt_remove_multipart(msg->content);
         decode_descriptions(msg->content);
@@ -2329,7 +2329,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
        * message was first postponed.
        */
       msg->received = time(NULL);
-      if (mutt_write_multiple_fcc(fcc, msg, NULL, 0, NULL, &finalpath) == -1)
+      if (mutt_write_multiple_fcc(fcc, msg, NULL, false, NULL, &finalpath) == -1)
       {
         /* Error writing FCC, we should abort sending.  */
         fcc_error = true;

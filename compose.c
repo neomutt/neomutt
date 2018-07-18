@@ -1870,7 +1870,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (msg->content->next)
             msg->content = mutt_make_multipart(msg->content);
 
-          if (mutt_write_fcc(fname, msg, NULL, 0, NULL, NULL) < 0)
+          if (mutt_write_fcc(fname, msg, NULL, false, NULL, NULL) < 0)
             msg->content = mutt_remove_multipart(msg->content);
           else
             mutt_message(_("Message written."));
