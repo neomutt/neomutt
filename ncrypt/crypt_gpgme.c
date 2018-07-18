@@ -3286,14 +3286,14 @@ static int crypt_compare_trust(const void *a, const void *b)
  * @param fp  File to write to
  * @param dn  Distinguished Name
  * @param key Key string
- * @retval 1 If any DN keys match the given key string
- * @retval 0 Otherwise
+ * @retval true  If any DN keys match the given key string
+ * @retval false Otherwise
  *
  * Print the X.500 Distinguished Name part KEY from the array of parts DN to FP.
  */
-static int print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
+bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
 {
-  int any = 0;
+  bool any = false;
 
   for (; dn->key; dn++)
   {
@@ -3302,7 +3302,7 @@ static int print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
       if (any)
         fputs(" + ", fp);
       print_utf8(fp, dn->value, strlen(dn->value));
-      any = 1;
+      any = true;
     }
   }
   return any;
@@ -3318,9 +3318,10 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
   static const char *const stdpart[] = {
     "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
   };
-  int any = 0, any2 = 0, i;
+  bool any = false;
+  bool any2 = false;
 
-  for (i = 0; stdpart[i]; i++)
+  for (int i = 0; stdpart[i]; i++)
   {
     if (any)
       fputs(", ", fp);
@@ -3329,6 +3330,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
   /* now print the rest without any specific ordering */
   for (; dn->key; dn++)
   {
+    int i;
     for (i = 0; stdpart[i]; i++)
     {
       if (strcmp(dn->key, stdpart[i]) == 0)
@@ -3341,7 +3343,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
       if (!any2)
         fputs("(", fp);
       any = print_dn_part(fp, dn, dn->key);
-      any2 = 1;
+      any2 = true;
     }
   }
   if (any2)
