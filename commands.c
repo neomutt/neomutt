@@ -385,7 +385,7 @@ static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
     *cmflags |= MUTT_CM_PRINTING;
 }
 
-static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
+static void pipe_msg(struct Header *h, FILE *fp, bool decode, bool print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
@@ -418,8 +418,8 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Header *h, char *cmd, int decode, int print,
-                        int split, char *sep)
+static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
+                        bool split, char *sep)
 {
   int rc = 0;
   pid_t thepid;
@@ -541,7 +541,7 @@ void mutt_pipe_message(struct Header *h)
   }
 
   mutt_expand_path(buffer, sizeof(buffer));
-  pipe_message(h, buffer, PipeDecode, 0, PipeSplit, PipeSep);
+  pipe_message(h, buffer, PipeDecode, false, PipeSplit, PipeSep);
 }
 
 void mutt_print_message(struct Header *h)
@@ -571,7 +571,7 @@ void mutt_print_message(struct Header *h)
     return;
   }
 
-  if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
+  if (pipe_message(h, PrintCommand, PrintDecode, true, PrintSplit, "\f") == 0)
     mutt_message(ngettext("Message printed", "Messages printed", msgcount));
   else
   {
