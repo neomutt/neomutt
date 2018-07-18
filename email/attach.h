@@ -39,8 +39,8 @@ struct AttachPtr
   char *tree;
   int level;
   int num;
-  bool unowned : 1;           /**< don't unlink on detach */
-  unsigned int decrypted : 1; /**< not part of message as stored in the hdr->content. */
+  bool unowned : 1;   /**< don't unlink on detach */
+  bool decrypted : 1; /**< not part of message as stored in the hdr->content. */
 };
 
 /**
