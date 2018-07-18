@@ -97,7 +97,7 @@ int             ci_send_message(int flags, struct Header *msg, char *tempfile, s
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 int             mutt_compose_to_sender(struct Header *hdr);
 struct Address *mutt_default_from(void);
-void            mutt_encode_descriptions(struct Body *b, short recurse);
+void            mutt_encode_descriptions(struct Body *b, bool recurse);
 int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);
 void            mutt_fix_reply_recipients(struct Envelope *env);
 void            mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);

@@ -1341,7 +1341,7 @@ static int send_message(struct Header *msg)
  * @param b       Body of email
  * @param recurse If true, encode children parts
  */
-void mutt_encode_descriptions(struct Body *b, short recurse)
+void mutt_encode_descriptions(struct Body *b, bool recurse)
 {
   for (struct Body *t = b; t; t = t->next)
   {
@@ -2111,7 +2111,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->read = false;
       msg->old = false;
 
-      mutt_encode_descriptions(msg->content, 1);
+      mutt_encode_descriptions(msg->content, true);
       mutt_prepare_envelope(msg->env, false);
       mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
@@ -2205,7 +2205,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
    * in case of error.  Ugh.
    */
 
-  mutt_encode_descriptions(msg->content, 1);
+  mutt_encode_descriptions(msg->content, true);
 
   /* Make sure that clear_content and free_clear_content are
    * properly initialized -- we may visit this particular place in
@@ -2232,7 +2232,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         decode_descriptions(msg->content);
         goto main_loop;
       }
-      mutt_encode_descriptions(msg->content, 0);
+      mutt_encode_descriptions(msg->content, false);
     }
 
     /* at this point, msg->content is one of the following three things:
