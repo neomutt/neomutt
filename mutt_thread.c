@@ -58,17 +58,17 @@ static bool is_visible(struct Header *hdr, struct Context *ctx)
  * @param hdr Header of email
  * @retval true If the subject should be displayed
  */
-static int need_display_subject(struct Context *ctx, struct Header *hdr)
+bool need_display_subject(struct Context *ctx, struct Header *hdr)
 {
   struct MuttThread *tmp = NULL, *tree = hdr->thread;
 
   /* if the user disabled subject hiding, display it */
   if (!HideThreadSubject)
-    return 1;
+    return true;
 
   /* if our subject is different from our parent's, display it */
   if (hdr->subject_changed)
-    return 1;
+    return true;
 
   /* if our subject is different from that of our closest previously displayed
    * sibling, display the subject */
@@ -78,7 +78,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
     if (hdr && is_visible(hdr, ctx))
     {
       if (hdr->subject_changed)
-        return 1;
+        return true;
       else
         break;
     }
@@ -92,14 +92,14 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
     if (hdr)
     {
       if (is_visible(hdr, ctx))
-        return 0;
+        return false;
       else if (hdr->subject_changed)
-        return 1;
+        return true;
     }
   }
 
   /* if we have no visible parent or previous sibling, display the subject */
-  return 1;
+  return true;
 }
 
 static void linearize_tree(struct Context *ctx)
