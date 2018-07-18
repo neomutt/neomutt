@@ -78,7 +78,6 @@ enum SmtpCapability
   CAPMAX
 };
 
-static int Esmtp = 0;
 static char *AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7) / 8];
 
@@ -326,21 +325,21 @@ static int smtp_fill_account(struct Account *account)
   return 0;
 }
 
-static int smtp_helo(struct Connection *conn)
+static int smtp_helo(struct Connection *conn, bool esmtp)
 {
   char buf[LONG_STRING];
   const char *fqdn = NULL;
 
   memset(Capabilities, 0, sizeof(Capabilities));
 
-  if (!Esmtp)
+  if (!esmtp)
   {
     /* if TLS or AUTH are requested, use EHLO */
     if (conn->account.flags & MUTT_ACCT_USER)
-      Esmtp = 1;
+      esmtp = true;
 #ifdef USE_SSL
     if (SslForceTls || SslStarttls != MUTT_NO)
-      Esmtp = 1;
+      esmtp = true;
 #endif
   }
 
@@ -348,7 +347,7 @@ static int smtp_helo(struct Connection *conn)
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
-  snprintf(buf, sizeof(buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", fqdn);
+  snprintf(buf, sizeof(buf), "%s %s\r\n", esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
    * repeatedly calls conn->write until all data is sent.  This
    * currently doesn't check for a short write.
@@ -568,7 +567,7 @@ error:
 }
 #endif /* USE_SASL */
 
-static int smtp_open(struct Connection *conn)
+static int smtp_open(struct Connection *conn, bool esmtp)
 {
   int rc;
 
@@ -580,7 +579,7 @@ static int smtp_open(struct Connection *conn)
   if (rc != 0)
     return rc;
 
-  rc = smtp_helo(conn);
+  rc = smtp_helo(conn, esmtp);
   if (rc != 0)
     return rc;
 
@@ -611,7 +610,7 @@ static int smtp_open(struct Connection *conn)
     }
 
     /* re-EHLO to get authentication mechanisms */
-    rc = smtp_helo(conn);
+    rc = smtp_helo(conn, esmtp);
     if (rc != 0)
       return rc;
   }
@@ -637,7 +636,7 @@ static int smtp_open(struct Connection *conn)
 
 int mutt_smtp_send(const struct Address *from, const struct Address *to,
                    const struct Address *cc, const struct Address *bcc,
-                   const char *msgfile, int eightbit)
+                   const char *msgfile, bool eightbit)
 {
   struct Connection *conn = NULL;
   struct Account account;
@@ -664,12 +663,10 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   if (!conn)
     return -1;
 
-  Esmtp = eightbit;
-
   do
   {
     /* send our greeting */
-    rc = smtp_open(conn);
+    rc = smtp_open(conn, eightbit);
     if (rc != 0)
       break;
     FREE(&AuthMechs);
