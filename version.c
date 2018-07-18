@@ -37,6 +37,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt_curses.h"
+#include "ncrypt/crypt_gpgme.h"
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);
@@ -381,6 +382,10 @@ void print_version(void)
 
 #ifdef HAVE_LIBIDN
   printf("\n%s", mutt_idna_print_version());
+#endif
+
+#ifdef CRYPT_BACKEND_GPGME
+  printf("\nGPGme: %s", mutt_gpgme_print_version());
 #endif
 
 #ifdef USE_HCACHE

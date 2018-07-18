@@ -56,4 +56,6 @@ struct Body *smime_gpgme_sign_message(struct Body *a);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 int          smime_gpgme_verify_sender(struct Header *h);
 
+const char  *mutt_gpgme_print_version(void);
+
 #endif /* _NCRYPT_CRYPT_GPGME_H */
