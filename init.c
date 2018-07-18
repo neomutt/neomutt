@@ -1069,13 +1069,13 @@ static void restore_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
-    case DT_COMMAND:
       mutt_str_replace((char **) p->var, (char *) p->initial);
       break;
     case DT_MBTABLE:
       free_mbtable((struct MbTable **) p->var);
       *((struct MbTable **) p->var) = parse_mbtable((char *) p->initial);
       break;
+    case DT_COMMAND:
     case DT_PATH:
     {
       char *init = (char *) p->initial;
@@ -1169,11 +1169,11 @@ static void set_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
-    case DT_COMMAND:
       if (!p->initial && *((char **) p->var))
         p->initial = (unsigned long) mutt_str_strdup(*((char **) p->var));
       break;
     case DT_PATH:
+    case DT_COMMAND:
       if (!p->initial && *((char **) p->var))
       {
         char *cp = mutt_str_strdup(*((char **) p->var));
@@ -2146,7 +2146,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                           *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_PATH)
+        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_COMMAND))
         {
           tmp2[0] = '\0';
           mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
@@ -2184,7 +2184,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           FREE(&myvar);
           myvar = "don't resort";
         }
-        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_PATH))
+        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_PATH) ||
+                                (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
         {
           char scratch[PATH_MAX];
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
@@ -2201,8 +2202,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
         }
-        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
-                                (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
+        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], buf->data) < 0) |
