@@ -667,7 +667,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   return key;
 }
 
-static struct SmimeKey *smime_get_candidates(char *search, short public)
+static struct SmimeKey *smime_get_candidates(char *search, bool public)
 {
   char index_file[PATH_MAX];
   char buf[LONG_STRING];
@@ -711,7 +711,7 @@ static struct SmimeKey *smime_get_candidates(char *search, short public)
  * Returns the first matching key record, without prompting or checking of
  * abilities or trust.
  */
-static struct SmimeKey *smime_get_key_by_hash(char *hash, short public)
+static struct SmimeKey *smime_get_key_by_hash(char *hash, bool public)
 {
   struct SmimeKey *match = NULL;
   struct SmimeKey *results = smime_get_candidates(hash, public);
@@ -730,7 +730,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, short public)
 }
 
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
-                                              short public, short may_ask)
+                                              bool public, bool may_ask)
 {
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
@@ -801,7 +801,7 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
   return return_key;
 }
 
-static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, short public)
+static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool public)
 {
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;
@@ -840,7 +840,7 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, short p
   return return_key;
 }
 
-static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short public)
+static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, bool public)
 {
   struct SmimeKey *key = NULL;
   char resp[SHORT_STRING];
@@ -875,13 +875,13 @@ static void getkeys(char *mailbox)
 {
   char *k = NULL;
 
-  struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, 0, 1);
+  struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, false, true);
 
   if (!key)
   {
     char buf[STRING];
     snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
-    key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, 0);
+    key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
   }
 
   if (key)
@@ -983,12 +983,12 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   {
     q = p;
 
-    key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, 1, !oppenc_mode);
+    key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, true, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
       char buf[LONG_STRING];
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
-      key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, 1);
+      key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
     if (!key)
     {
@@ -2175,7 +2175,7 @@ int smime_class_send_menu(struct Header *msg)
     switch (choices[choice - 1])
     {
       case 'a': /* sign (a)s */
-        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
+        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, false);
         if (key)
         {
           mutt_str_replace(&SmimeSignAs, key->hash);
