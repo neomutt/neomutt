@@ -383,6 +383,10 @@ void print_version(void)
   printf("\n%s", mutt_idna_print_version());
 #endif
 
+#ifdef CRYPT_BACKEND_GPGME
+  printf("\nGPGme: %s", mutt_gpgme_print_version());
+#endif
+
 #ifdef USE_HCACHE
   const char *backends = mutt_hcache_backend_list();
   printf("\nhcache backends: %s", backends);
