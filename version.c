@@ -37,6 +37,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt_curses.h"
+#include "ncrypt/crypt_gpgme.h"
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);

@@ -5199,7 +5199,7 @@ void pgp_gpgme_set_sender(const char *sender)
   current_sender = mutt_str_strdup(sender);
 }
 
-const char *mutt_gpgme_print_version()
+const char *mutt_gpgme_print_version(void)
 {
   return GPGME_VERSION;
 }
