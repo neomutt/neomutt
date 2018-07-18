@@ -5201,5 +5201,5 @@ void pgp_gpgme_set_sender(const char *sender)
 
 const char *mutt_gpgme_print_version()
 {
-    return GPGME_VERSION;
+  return GPGME_VERSION;
 }
