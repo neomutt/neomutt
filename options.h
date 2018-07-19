@@ -48,9 +48,7 @@ WHERE bool OptRedrawTree;          /**< (pseudo) redraw the thread tree */
 WHERE bool OptResortInit;          /**< (pseudo) used to force the next resort to be from scratch */
 WHERE bool OptSearchInvalid;       /**< (pseudo) used to invalidate the search pat */
 WHERE bool OptSearchReverse;       /**< (pseudo) used by ci_search_command */
-WHERE bool OptSignalsBlocked;      /**< (pseudo) using by mutt_block_signals () */
 WHERE bool OptSortSubthreads;      /**< (pseudo) used when $sort_aux changes */
-WHERE bool OptSysSignalsBlocked;  /**< (pseudo) using by mutt_block_signals_system () */
 WHERE bool OptViewAttach;          /**< (pseudo) signals that we are viewing attachments */
 
 #endif /* _MUTT_OPTIONS_H_ */
