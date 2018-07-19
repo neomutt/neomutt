@@ -498,18 +498,18 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
  * @param pop_data    POP data
  * @param query       POP query to send to server
  * @param progressbar Progress bar
- * @param funct       Function called for each header read
+ * @param func        Function called for each header read
  * @param data        Data to pass to the callback
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
- * @retval -3 Error in funct(*line, *data)
+ * @retval -3 Error in func(*line, *data)
  *
- * This function calls  funct(*line, *data)  for each received line,
- * funct(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
+ * This function calls  func(*line, *data)  for each received line,
+ * func(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  */
 int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
-                   int (*funct)(char *, void *), void *data)
+                   int (*func)(char *, void *), void *data)
 {
   char buf[LONG_STRING];
   long pos = 0;
@@ -553,7 +553,7 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
     {
       if (progressbar)
         mutt_progress_update(progressbar, pos, -1);
-      if (ret == 0 && funct(inbuf, data) < 0)
+      if (ret == 0 && func(inbuf, data) < 0)
         ret = -3;
       lenbuf = 0;
     }
