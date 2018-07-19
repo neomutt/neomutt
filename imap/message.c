@@ -654,7 +654,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     goto error_out_0;
   }
 

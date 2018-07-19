@@ -1417,7 +1417,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       FILE *fp = mutt_file_mkstemp();
       if (!fp)
       {
-        mutt_perror("mutt_file_mkstemp() failed!");
+        mutt_perror(_("Can't create temporary file"));
         rc = -1;
         break;
       }
@@ -2452,7 +2452,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 

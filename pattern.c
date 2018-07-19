@@ -998,7 +998,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     s.fpout = mutt_file_mkstemp();
     if (!s.fpout)
     {
-      mutt_perror("mutt_file_mkstemp() failed");
+      mutt_perror(_("Can't create temporary file"));
       return 0;
     }
 #endif

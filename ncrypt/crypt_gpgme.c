@@ -1999,7 +1999,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     decoded_fp = mutt_file_mkstemp();
     if (!decoded_fp)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2019,7 +2019,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
@@ -2072,7 +2072,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
@@ -2089,7 +2089,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
@@ -2124,7 +2124,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     FILE *tmpfp2 = mutt_file_mkstemp();
     if (!tmpfp2)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2142,7 +2142,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     *fpout = mutt_file_mkstemp();
     if (!*fpout)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2222,7 +2222,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   *fp = mutt_file_mkstemp();
   if (!*fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     goto err_tmpdir;
   }
 
@@ -2742,7 +2742,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -2818,7 +2818,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(_("[-- Error: could not create temporary file! "

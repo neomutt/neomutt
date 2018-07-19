@@ -1020,7 +1020,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return 1;
   }
 
@@ -1028,7 +1028,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return 1;
   }
 
@@ -1108,7 +1108,7 @@ static char *smime_extract_certificate(char *infile)
   FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed");
+    mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
@@ -1210,7 +1210,7 @@ static char *smime_extract_signer_certificate(char *infile)
   FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
@@ -1271,7 +1271,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
   FILE *fperr = mutt_file_mkstemp();
   if (!fperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return;
   }
 
@@ -1279,7 +1279,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
   if (!fpout)
   {
     mutt_file_fclose(&fperr);
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return;
   }
 
@@ -1440,7 +1440,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     mutt_file_unlink(tempfile);
     mutt_file_fclose(&fpout);
     return NULL;
@@ -1784,7 +1784,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tem
   FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     mutt_file_unlink(signedfile);
     return -1;
   }
@@ -1860,14 +1860,14 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   FILE *smimeout = mutt_file_mkstemp();
   if (!smimeout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
   FILE *smimeerr = mutt_file_mkstemp();
   if (!smimeerr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     mutt_file_fclose(&smimeout);
     return NULL;
   }
@@ -1969,7 +1969,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       fpout = mutt_file_mkstemp();
       if (!fpout)
       {
-        mutt_perror("mutt_file_mkstemp() failed!");
+        mutt_perror(_("Can't create temporary file"));
         mutt_file_fclose(&smimeout);
         mutt_file_fclose(&smimeerr);
         return NULL;
@@ -2069,7 +2069,7 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
@@ -2085,7 +2085,7 @@ int smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
