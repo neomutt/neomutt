@@ -3163,8 +3163,8 @@ static int compare_key_address(const void *a, const void *b)
 
 static int crypt_compare_address(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
-                                         compare_key_address(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
+                                        compare_key_address(a, b);
 }
 
 /**
@@ -3277,8 +3277,8 @@ static int compare_key_trust(const void *a, const void *b)
 
 static int crypt_compare_trust(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
-                                         compare_key_trust(a, b));
+  return (PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
+                                        compare_key_trust(a, b);
 }
 
 /**
