@@ -567,6 +567,11 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   const notmuch_database_mode_t mode =
       writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
 
+  const struct timespec wait = {
+    .tv_sec = 0,
+    .tv_nsec = 500000000, /* Half a second */
+  };
+
   do
   {
 #if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
@@ -581,7 +586,7 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
 
     if (verbose && ct && ((ct % 2) == 0))
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
-    usleep(500000);
+    nanosleep(&wait, NULL);
     ct++;
   } while (true);
 
