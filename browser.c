@@ -138,7 +138,7 @@ static int browser_compare_subject(const void *a, const void *b)
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
     r = mutt_str_strcoll(pa->name, pb->name);
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 static int browser_compare_desc(const void *a, const void *b)
@@ -148,7 +148,7 @@ static int browser_compare_desc(const void *a, const void *b)
 
   int r = mutt_str_strcoll(pa->desc, pb->desc);
 
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 static int browser_compare_date(const void *a, const void *b)
@@ -158,7 +158,7 @@ static int browser_compare_date(const void *a, const void *b)
 
   int r = pa->mtime - pb->mtime;
 
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 static int browser_compare_size(const void *a, const void *b)
@@ -168,7 +168,7 @@ static int browser_compare_size(const void *a, const void *b)
 
   int r = pa->size - pb->size;
 
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 static int browser_compare_count(const void *a, const void *b)
@@ -184,7 +184,7 @@ static int browser_compare_count(const void *a, const void *b)
   else
     r = 1;
 
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 static int browser_compare_count_new(const void *a, const void *b)
@@ -200,7 +200,7 @@ static int browser_compare_count_new(const void *a, const void *b)
   else
     r = 1;
 
-  return ((SortBrowser & SORT_REVERSE) ? -r : r);
+  return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
 /**
@@ -278,7 +278,7 @@ static int link_is_dir(const char *folder, const char *path)
   mutt_file_concat_path(fullpath, folder, path, sizeof(fullpath));
 
   if (stat(fullpath, &st) == 0)
-    return (S_ISDIR(st.st_mode));
+    return S_ISDIR(st.st_mode);
   else
     return 0;
 }
@@ -979,15 +979,15 @@ static int select_file_search(struct Menu *menu, regex_t *re, int n)
 {
 #ifdef USE_NNTP
   if (OptNews)
-    return (regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0));
+    return regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0);
 #endif
-  return (regexec(re, ((struct FolderFile *) menu->data)[n].name, 0, NULL, 0));
+  return regexec(re, ((struct FolderFile *) menu->data)[n].name, 0, NULL, 0);
 }
 
 #ifdef USE_NOTMUCH
 static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 {
-  return (regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0));
+  return regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0);
 }
 #endif
 
@@ -1168,7 +1168,7 @@ static int file_tag(struct Menu *menu, int n, int m)
   bool ot = ff->tagged;
   ff->tagged = (m >= 0 ? m : !ff->tagged);
 
-  return (ff->tagged - ot);
+  return ff->tagged - ot;
 }
 
 /**

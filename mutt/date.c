@@ -165,7 +165,7 @@ static int is_leap_year_feb(struct tm *tm)
     return 0;
 
   int y = tm->tm_year + 1900;
-  return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
+  return ((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0));
 }
 
 /**
@@ -222,7 +222,7 @@ time_t mutt_date_local_tz(time_t t)
   /* need to make a copy because gmtime/localtime return a pointer to
      static memory (grr!) */
   memcpy(&utc, ptm, sizeof(utc));
-  return (compute_tz(t, &utc));
+  return compute_tz(t, &utc);
 }
 
 /**
@@ -681,7 +681,7 @@ time_t mutt_date_parse_imap(char *s)
   if (s[0] == '+')
     tz = -tz;
 
-  return (mutt_date_make_time(&t, 0) + tz);
+  return mutt_date_make_time(&t, 0) + tz;
 }
 
 /**
@@ -700,5 +700,5 @@ time_t mutt_date_add_timeout(time_t now, long timeout)
   if ((TIME_T_MAX - now) < timeout)
     return TIME_T_MAX;
 
-  return (now + timeout);
+  return now + timeout;
 }

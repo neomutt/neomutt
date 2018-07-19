@@ -49,7 +49,7 @@ bool ThreadReceived;
 
 static bool is_visible(struct Header *hdr, struct Context *ctx)
 {
-  return (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)));
+  return hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited));
 }
 
 /**
@@ -574,8 +574,8 @@ static int compare_threads(const void *a, const void *b)
 
   if (a && b)
   {
-    return ((*sort_func)(&(*((struct MuttThread **) a))->sort_key,
-                         &(*((struct MuttThread **) b))->sort_key));
+    return (*sort_func)(&(*((struct MuttThread **) a))->sort_key,
+                        &(*((struct MuttThread **) b))->sort_key);
   }
   /* a hack to let us reset sort_func even though we can't
    * have extra arguments because of qsort
@@ -583,7 +583,7 @@ static int compare_threads(const void *a, const void *b)
   else
   {
     sort_func = mutt_get_sort_func(Sort);
-    return (sort_func ? 1 : 0);
+    return sort_func ? 1 : 0;
   }
 }
 
@@ -1171,7 +1171,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       return final;
     else if (flag & MUTT_THREAD_UNREAD)
-      return ((old && new) ? new : (old ? old : new));
+      return (old && new) ? new : (old ? old : new);
     else if (flag & MUTT_THREAD_GET_HIDDEN)
       return num_hidden;
     else if (flag & MUTT_THREAD_NEXT_UNREAD)
@@ -1261,9 +1261,9 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
   if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return final;
   else if (flag & MUTT_THREAD_UNREAD)
-    return ((old && new) ? new : (old ? old : new));
+    return (old && new) ? new : (old ? old : new);
   else if (flag & MUTT_THREAD_GET_HIDDEN)
-    return (num_hidden + 1);
+    return num_hidden + 1;
   else if (flag & MUTT_THREAD_NEXT_UNREAD)
     return min_unread;
   else if (flag & MUTT_THREAD_FLAGGED)

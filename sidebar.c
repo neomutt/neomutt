@@ -589,7 +589,7 @@ static int select_page_down(void)
   if (Entries[HilIndex]->is_hidden)
     select_prev();
 
-  return (orig_hil_index != HilIndex);
+  return orig_hil_index != HilIndex;
 }
 
 /**
@@ -610,7 +610,7 @@ static int select_page_up(void)
   if (Entries[HilIndex]->is_hidden)
     select_next();
 
-  return (orig_hil_index != HilIndex);
+  return orig_hil_index != HilIndex;
 }
 
 /**

@@ -458,7 +458,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
 
   /* Do NOT add the terminator here!!! */
-  return (ferror(f) ? -1 : 0);
+  return ferror(f) ? -1 : 0;
 }
 
 /**
@@ -468,8 +468,8 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
  */
 static bool write_as_text_part(struct Body *b)
 {
-  return (mutt_is_text_part(b) ||
-          (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b)));
+  return mutt_is_text_part(b) ||
+          (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b));
 }
 
 /**
@@ -507,7 +507,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
         return -1;
     }
     fprintf(f, "\n--%s--\n", boundary);
-    return (ferror(f) ? -1 : 0);
+    return ferror(f) ? -1 : 0;
   }
 
   /* This is pretty gross, but it's the best solution for now... */
@@ -554,7 +554,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     SigInt = 0;
     return -1;
   }
-  return (ferror(f) ? -1 : 0);
+  return ferror(f) ? -1 : 0;
 }
 
 /**
@@ -2368,7 +2368,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
   }
 
-  return (ferror(fp) == 0 ? 0 : -1);
+  return ferror(fp) == 0 ? 0 : -1;
 }
 
 /**
@@ -2460,7 +2460,7 @@ static char *gen_msgid(void)
 
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm->tm_year + 1900,
            tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, rndid, fqdn);
-  return (mutt_str_strdup(buf));
+  return mutt_str_strdup(buf);
 }
 
 /**

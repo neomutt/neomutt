@@ -479,7 +479,7 @@ static int pop_fetch_headers(struct Context *ctx)
     mutt_bcache_list(pop_data->bcache, msg_cache_check, (void *) ctx);
 
   mutt_clear_error();
-  return (new_count - old_count);
+  return new_count - old_count;
 }
 
 /**

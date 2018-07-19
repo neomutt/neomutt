@@ -48,7 +48,7 @@
 char *AliasFormat;
 short SortAlias;
 
-#define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
+#define RSORT(x) ((SortAlias & SORT_REVERSE) ? -x : x)
 
 static const struct Mapping AliasHelp[] = {
   { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },
@@ -145,7 +145,7 @@ static int alias_tag(struct Menu *menu, int n, int m)
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
 
-  return (cur->tagged - ot);
+  return cur->tagged - ot;
 }
 
 /**
@@ -162,7 +162,7 @@ static int alias_sort_alias(const void *a, const void *b)
   struct Alias *pb = *(struct Alias **) b;
   int r = mutt_str_strcasecmp(pa->name, pb->name);
 
-  return (RSORT(r));
+  return RSORT(r);
 }
 
 /**
@@ -196,7 +196,7 @@ static int alias_sort_address(const void *a, const void *b)
     r = -1;
   else
     r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
-  return (RSORT(r));
+  return RSORT(r);
 }
 
 /**

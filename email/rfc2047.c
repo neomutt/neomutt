@@ -85,7 +85,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
 
   memcpy(str, "?=", 2);
   str += 2;
-  return (str - s0);
+  return str - s0;
 }
 
 /**
@@ -123,7 +123,7 @@ static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *t
   }
   memcpy(str, "?=", 2);
   str += 2;
-  return (str - s0);
+  return str - s0;
 }
 
 /**
@@ -173,7 +173,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
 
   *text = str + match[3].rm_so;
   *textlen = match[3].rm_eo - match[3].rm_so;
-  return (str + match[0].rm_so);
+  return str + match[0].rm_so;
 }
 
 /**
@@ -225,7 +225,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   else
   {
     if (dlen > (sizeof(buf) - strlen(tocode)))
-      return (sizeof(buf) - strlen(tocode) + 1);
+      return sizeof(buf) - strlen(tocode) + 1;
     memcpy(buf, d, dlen);
     ob = buf + dlen;
   }

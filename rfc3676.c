@@ -146,7 +146,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
   if (space_quotes(s))
     ql *= 2;
 
-  return (ql + add_suffix + wid);
+  return ql + add_suffix + wid;
 }
 
 static void flush_par(struct State *s, struct FlowedState *fst)

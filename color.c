@@ -251,7 +251,7 @@ int mutt_alloc_color(int fg, int bg)
     if (p->fg == fg && p->bg == bg)
     {
       (p->count)++;
-      return (COLOR_PAIR(p->index));
+      return COLOR_PAIR(p->index);
     }
     p = p->next;
   }
@@ -304,7 +304,7 @@ int mutt_alloc_color(int fg, int bg)
 
   mutt_debug(3, "Color pairs used so far: %d\n", UserColors);
 
-  return (COLOR_PAIR(p->index));
+  return COLOR_PAIR(p->index);
 }
 
 static int mutt_lookup_color(short pair, short *fg, short *bg)

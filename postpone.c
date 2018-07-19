@@ -157,7 +157,7 @@ int mutt_num_postponed(int force)
     LastModify = st.st_mtime;
 
     if (access(Postponed, R_OK | F_OK) != 0)
-      return (PostCount = 0);
+      return PostCount = 0;
 #ifdef USE_NNTP
     if (optnews)
       OptNews = false;
@@ -264,7 +264,7 @@ static struct Header *select_msg(void)
   Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  return (r > -1 ? PostContext->hdrs[r] : NULL);
+  return r > -1 ? PostContext->hdrs[r] : NULL;
 }
 
 /**

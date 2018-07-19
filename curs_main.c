@@ -282,7 +282,7 @@ static int ci_first_message(void)
   }
   else
   {
-    return (Context->vcount ? Context->vcount - 1 : 0);
+    return Context->vcount ? Context->vcount - 1 : 0;
   }
 
   return 0;

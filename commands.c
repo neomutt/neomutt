@@ -648,7 +648,7 @@ int mutt_select_sort(int reverse)
     new_sort |= SORT_REVERSE;
 
   Sort = new_sort;
-  return (Sort != method ? 0 : -1); /* no need to resort if it's the same */
+  return (Sort != method) ? 0 : -1; /* no need to resort if it's the same */
 }
 
 /**

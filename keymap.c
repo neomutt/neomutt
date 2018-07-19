@@ -258,7 +258,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
     len--;
   }
 
-  return (max - len);
+  return max - len;
 }
 
 /**
@@ -541,7 +541,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
       mutt_unget_event(lastkey, 0);
     for (; keyslen; keyslen--)
       mutt_unget_event(keys[keyslen - 1], 0);
-    return (km_dokey(MENU_GENERIC));
+    return km_dokey(MENU_GENERIC);
   }
   if (menu != MENU_EDITOR)
   {
@@ -567,7 +567,7 @@ int km_dokey(int menu)
   int n = 0;
 
   if (!map)
-    return (retry_generic(menu, NULL, 0, 0));
+    return retry_generic(menu, NULL, 0, 0);
 
   while (true)
   {
@@ -661,12 +661,12 @@ int km_dokey(int menu)
     while (LastKey > map->keys[pos])
     {
       if (pos > map->eq || !map->next)
-        return (retry_generic(menu, map->keys, pos, LastKey));
+        return retry_generic(menu, map->keys, pos, LastKey);
       map = map->next;
     }
 
     if (LastKey != map->keys[pos])
-      return (retry_generic(menu, map->keys, pos, LastKey));
+      return retry_generic(menu, map->keys, pos, LastKey);
 
     if (++pos == map->len)
     {

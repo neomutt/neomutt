@@ -1557,7 +1557,9 @@ int mutt_inbox_cmp(const char *a, const char *b)
   {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
-               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
+               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ?
+                   1 :
+                   0;
   }
 
   const char *a_end = strrchr(a, '/');

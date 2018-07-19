@@ -124,7 +124,7 @@ int mutt_complete(char *buf, size_t buflen)
     }
 
     mutt_str_strfcpy(buf, filepart, buflen);
-    return (init ? 0 : -1);
+    return init ? 0 : -1;
   }
 #endif
 
@@ -279,5 +279,5 @@ int mutt_complete(char *buf, size_t buflen)
   else
     mutt_str_strfcpy(buf, filepart, buflen);
 
-  return (init ? 0 : -1);
+  return init ? 0 : -1;
 }

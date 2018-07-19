@@ -1057,7 +1057,7 @@ static int is_ansi(unsigned char *buf)
 {
   while (*buf && (isdigit(*buf) || *buf == ';'))
     buf++;
-  return (*buf == 'm');
+  return *buf == 'm';
 }
 
 static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
@@ -3372,5 +3372,5 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   FREE(&rd.pager_status_window);
   FREE(&rd.pager_window);
 
-  return (rc != -1 ? rc : 0);
+  return rc != -1 ? rc : 0;
 }

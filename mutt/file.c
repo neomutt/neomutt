@@ -73,8 +73,9 @@ static const char safe_chars[] =
  */
 static bool compare_stat(struct stat *osb, struct stat *nsb)
 {
-  return ((osb->st_dev == nsb->st_dev) && (osb->st_ino == nsb->st_ino) &&
-          (osb->st_rdev == nsb->st_rdev));
+  return (osb->st_dev  == nsb->st_dev ) &&
+         (osb->st_ino  == nsb->st_ino ) &&
+         (osb->st_rdev == nsb->st_rdev);
 }
 
 /**
@@ -534,10 +535,10 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
     if (fd < 0)
       return NULL;
 
-    return (fdopen(fd, mode));
+    return fdopen(fd, mode);
   }
   else
-    return (fopen(path, mode));
+    return fopen(path, mode);
 }
 
 /**
@@ -787,7 +788,7 @@ const char *mutt_file_basename(const char *f)
 {
   const char *p = strrchr(f, '/');
   if (p)
-    return (p + 1);
+    return p + 1;
   else
     return f;
 }
@@ -1385,5 +1386,5 @@ int mutt_file_check_empty(const char *path)
   if (stat(path, &st) == -1)
     return -1;
 
-  return ((st.st_size == 0));
+  return st.st_size == 0;
 }

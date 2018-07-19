@@ -98,9 +98,9 @@ static char *get_charset(char *value, char *charset, size_t chslen)
 
   char *u = strchr(t + 1, '\'');
   if (u)
-    return (u + 1);
+    return u + 1;
   else
-    return (t + 1);
+    return t + 1;
 }
 
 /**

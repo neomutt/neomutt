@@ -637,7 +637,7 @@ bool mutt_hist_at_scratch(enum HistoryClass hclass)
   if (!History || !h)
     return false; /* disabled */
 
-  return (h->cur == h->last);
+  return h->cur == h->last;
 }
 
 /**

@@ -862,7 +862,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
 
-  return (done == 2);
+  return done == 2;
 }
 
 /**

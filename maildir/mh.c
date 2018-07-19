@@ -283,7 +283,7 @@ static inline mode_t mh_umask(struct Context *ctx)
     return 077;
   }
 
-  return (0777 & ~st.st_mode);
+  return 0777 & ~st.st_mode;
 }
 
 /**
@@ -301,7 +301,7 @@ static int mh_sequences_changed(struct Buffy *b)
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (sb.st_mtime > b->last_visited);
+    return sb.st_mtime > b->last_visited;
   }
   return -1;
 }
@@ -322,7 +322,7 @@ static int mh_already_notified(struct Buffy *b, int msgno)
   if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (sb.st_mtime <= b->last_visited);
+    return sb.st_mtime <= b->last_visited;
   }
   return -1;
 }
@@ -1099,7 +1099,7 @@ static size_t maildir_hcache_keylen(const char *fn)
  */
 static int md_cmp_inode(struct Maildir *a, struct Maildir *b)
 {
-  return (a->inode - b->inode);
+  return a->inode - b->inode;
 }
 
 /**

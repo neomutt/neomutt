@@ -162,7 +162,7 @@ struct Event mutt_getch(void)
 
   ret.ch = ch;
   ret.op = 0;
-  return (ch == ctrl('G') ? err : ret);
+  return ch == ctrl('G') ? err : ret;
 }
 
 int mutt_get_field_full(const char *field, char *buf, size_t buflen,
@@ -1054,7 +1054,7 @@ bool message_is_visible(struct Context *ctx, int index)
   if (!ctx || !ctx->hdrs || (index >= ctx->msgcount))
     return false;
 
-  return (!ctx->pattern || ctx->hdrs[index]->limited);
+  return !ctx->pattern || ctx->hdrs[index]->limited;
 }
 
 /**

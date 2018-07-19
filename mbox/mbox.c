@@ -785,7 +785,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 
   ctx->quiet = false;
 
-  return ((ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL);
+  return (ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL;
 }
 
 /**

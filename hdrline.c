@@ -406,14 +406,14 @@ static char *apply_subject_mods(struct Envelope *env)
 
 static bool thread_is_new(struct Context *ctx, struct Header *hdr)
 {
-  return (hdr->collapsed && (hdr->num_hidden > 1) &&
-          (mutt_thread_contains_unread(ctx, hdr) == 1));
+  return hdr->collapsed && (hdr->num_hidden > 1) &&
+         (mutt_thread_contains_unread(ctx, hdr) == 1);
 }
 
 static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 {
-  return (hdr->collapsed && (hdr->num_hidden > 1) &&
-          (mutt_thread_contains_unread(ctx, hdr) == 2));
+  return hdr->collapsed && (hdr->num_hidden > 1) &&
+         (mutt_thread_contains_unread(ctx, hdr) == 2);
 }
 
 /**

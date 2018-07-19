@@ -542,7 +542,7 @@ int mutt_is_application_smime(struct Body *m)
       if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
         return SMIMEENCRYPT;
       else if (mutt_str_strcasecmp(t, "signed-data") == 0)
-        return (SMIMESIGN | SMIMEOPAQUE);
+        return SMIMESIGN | SMIMEOPAQUE;
       else
         return 0;
     }
@@ -583,10 +583,10 @@ int mutt_is_application_smime(struct Body *m)
     {
       /* Not sure if this is the correct thing to do, but
         it's required for compatibility with Outlook */
-      return (SMIMESIGN | SMIMEOPAQUE);
+      return SMIMESIGN | SMIMEOPAQUE;
     }
     else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
-      return (SMIMESIGN | SMIMEOPAQUE);
+      return SMIMESIGN | SMIMEOPAQUE;
   }
 
   return 0;
