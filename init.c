@@ -1233,7 +1233,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!mutt_file_to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
-      mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
+      mutt_error(_("Error: impossible to build path of '%s'."), rcfile_path);
       return -1;
     }
 
@@ -1250,7 +1250,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     else
     {
-      mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
+      mutt_error(_("Error: Cyclic sourcing of configuration file '%s'."), rcfile);
       return -1;
     }
   }
@@ -1783,7 +1783,7 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
     int rc = mutt_parse_rc_line(buf->data, &token, err);
     if (rc == -1)
     {
-      mutt_error("Error: %s", err->data);
+      mutt_error(_("Error: %s"), err->data);
       FREE(&token.data);
       return -1;
     }
