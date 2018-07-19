@@ -536,7 +536,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         pgpout = mutt_file_mkstemp();
         if (!pgpout)
         {
-          mutt_perror("mutt_file_mkstemp() failed!");
+          mutt_perror(_("Can't create temporary file"));
           rc = -1;
           goto out;
         }
@@ -544,7 +544,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
         pgperr = mutt_file_mkstemp();
         if (!pgperr)
         {
-          mutt_perror("mutt_file_mkstemp() failed!");
+          mutt_perror(_("Can't create temporary file"));
           rc = -1;
           goto out;
         }
@@ -840,7 +840,7 @@ int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     unlink(sigfile);
     return -1;
   }
@@ -944,7 +944,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
@@ -1086,7 +1086,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     decoded_fp = mutt_file_mkstemp();
     if (!decoded_fp)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -1106,7 +1106,7 @@ int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
@@ -1140,7 +1140,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts(_("[-- Error: could not create temporary file! --]\n"), s);
     return -1;
@@ -1470,7 +1470,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
   FILE *pgperr = mutt_file_mkstemp();
   if (!pgperr)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     unlink(tempfile);
     mutt_file_fclose(&fpout);
     return NULL;
@@ -1660,7 +1660,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
   FILE *pgperr = mutt_file_mkstemp();
   if (!pgpout || !pgperr)
   {
-    mutt_perror(pgpout ? "mutt_file_mkstemp() failed!" : pgpoutfile);
+    mutt_perror(pgpout ? "Can't create temporary file" : pgpoutfile);
     unlink(pgpinfile);
     if (pgpout)
     {

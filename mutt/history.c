@@ -258,7 +258,7 @@ static void shrink_histfile(void)
     tmpfp = mutt_file_mkstemp();
     if (!tmpfp)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       goto cleanup;
     }
     rewind(f);

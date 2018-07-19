@@ -161,7 +161,7 @@ static short pgp_find_hash(const char *fname)
   FILE *out = mutt_file_mkstemp();
   if (!out)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     goto bye;
   }
 

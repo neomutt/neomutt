@@ -72,10 +72,10 @@ void            mutt_stamp_attachment(struct Body *a);
 void            mutt_unprepare_envelope(struct Envelope *env);
 void            mutt_update_encoding(struct Body *a);
 void            mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool display);
-int             mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, int post, char *fcc, char **finalpath);
+int             mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, bool post, char *fcc, char **finalpath);
 int             mutt_write_mime_body(struct Body *a, FILE *f);
 int             mutt_write_mime_header(struct Body *a, FILE *f);
-int             mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid, int post, char *fcc, char **finalpath);
+int             mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid, bool post, char *fcc, char **finalpath);
 int             mutt_write_one_header(FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, int flags);
 void            mutt_write_references(const struct ListHead *r, FILE *f, size_t trim);
 

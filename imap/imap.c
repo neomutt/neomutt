@@ -2441,7 +2441,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else
-          mutt_save_message_ctx(h, 1, 0, 0, appendctx);
+          mutt_save_message_ctx(h, true, false, false, appendctx);
         h->xlabel_changed = false;
       }
     }

@@ -864,18 +864,18 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
  * @param query     Query to match
  * @param qlen      Length of query
  * @param msg       Progess message (OPTIONAL)
- * @param funct     Callback function
+ * @param func      Callback function
  * @param data      Data for callback function
  * @retval  0 Success
  * @retval  1 Bad response (answer in query buffer)
  * @retval -1 Connection lost
- * @retval -2 Error in funct(*line, *data)
+ * @retval -2 Error in func(*line, *data)
  *
- * This function calls funct(*line, *data) for each received line,
- * funct(NULL, *data) if rewind(*data) needs, exits when fail or done:
+ * This function calls func(*line, *data) for each received line,
+ * func(NULL, *data) if rewind(*data) needs, exits when fail or done:
  */
 static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen,
-                            const char *msg, int (*funct)(char *, void *), void *data)
+                            const char *msg, int (*func)(char *, void *), void *data)
 {
   int done = false;
   int rc;
@@ -935,7 +935,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
         if (msg)
           mutt_progress_update(&progress, ++lines, -1);
 
-        if (rc == 0 && funct(line, data) < 0)
+        if (rc == 0 && func(line, data) < 0)
           rc = -2;
         off = 0;
       }
@@ -943,7 +943,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
       mutt_mem_realloc(&line, off + sizeof(buf));
     }
     FREE(&line);
-    funct(NULL, data);
+    func(NULL, data);
   }
   return rc;
 }
@@ -1417,7 +1417,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       FILE *fp = mutt_file_mkstemp();
       if (!fp)
       {
-        mutt_perror("mutt_file_mkstemp() failed!");
+        mutt_perror(_("Can't create temporary file"));
         rc = -1;
         break;
       }
@@ -2452,7 +2452,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 

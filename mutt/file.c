@@ -1331,7 +1331,7 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
 
   if (!path)
   {
-    printf("Error: issue converting path to absolute (%s)", strerror(errno));
+    mutt_perror(_("Error: converting path to absolute"));
     return false;
   }
 

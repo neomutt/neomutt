@@ -127,7 +127,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   FILE *f = mutt_file_mkstemp();
   if (!f)
   {
-    mutt_perror("mutt_file_mkstemp failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -3;
   }
 

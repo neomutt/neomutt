@@ -1147,21 +1147,21 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 
 /**
  * trim_incomplete_mbyte - Remove an incomplete character
- * @param buf Buffer containing string
- * @param len Length of buffer
+ * @param buf    Buffer containing string
+ * @param buflen Length of buffer
  * @retval num Number of bytes remaining
  *
  * trim tail of buf so that it contains complete multibyte characters
  */
-static int trim_incomplete_mbyte(unsigned char *buf, size_t len)
+static int trim_incomplete_mbyte(unsigned char *buf, size_t buflen)
 {
   mbstate_t mbstate;
   size_t k;
 
   memset(&mbstate, 0, sizeof(mbstate));
-  for (; len > 0; buf += k, len -= k)
+  for (; buflen > 0; buf += k, buflen -= k)
   {
-    k = mbrtowc(NULL, (char *) buf, len, &mbstate);
+    k = mbrtowc(NULL, (char *) buf, buflen, &mbstate);
     if (k == (size_t)(-2))
       break;
     else if (k == (size_t)(-1) || k == 0)
@@ -1173,7 +1173,7 @@ static int trim_incomplete_mbyte(unsigned char *buf, size_t len)
   }
   *buf = '\0';
 
-  return len;
+  return buflen;
 }
 
 static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
@@ -3125,11 +3125,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
         CHECK_MODE(IsHeader(extra));
-        if (mutt_save_message(
-                extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
-                (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-                (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) || 0) == 0 &&
-            (ch == OP_SAVE || ch == OP_DECODE_SAVE || ch == OP_DECRYPT_SAVE))
+        if ((mutt_save_message(
+                 extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+                 (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+                 (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY)) == 0) &&
+            ((ch == OP_SAVE) || (ch == OP_DECODE_SAVE) || (ch == OP_DECRYPT_SAVE)))
         {
           if (Resolve)
           {

@@ -267,7 +267,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * @param menu  Menu id, e.g. #MENU_EDITOR
  * @param op    Operation, e.g. OP_DELETE
  * @param macro Macro string
- * @param descr Description of macro (OPTIONAL)
+ * @param desc Description of macro (OPTIONAL)
  * @param err   Buffer for error message
  * @retval  0 Success
  * @retval -2 Error
@@ -275,7 +275,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buffer *err)
+static int km_bind_err(char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
 {
   int retval = 0;
   struct Keymap *last = NULL, *next = NULL;
@@ -287,7 +287,7 @@ static int km_bind_err(char *s, int menu, int op, char *macro, char *descr, stru
   struct Keymap *map = alloc_keys(len, buf);
   map->op = op;
   map->macro = mutt_str_strdup(macro);
-  map->descr = mutt_str_strdup(descr);
+  map->desc = mutt_str_strdup(desc);
 
   struct Keymap *tmp = Keymaps[menu];
 
@@ -331,7 +331,7 @@ static int km_bind_err(char *s, int menu, int op, char *macro, char *descr, stru
         next = tmp->next;
         FREE(&tmp->macro);
         FREE(&tmp->keys);
-        FREE(&tmp->descr);
+        FREE(&tmp->desc);
         FREE(&tmp);
         tmp = next;
       } while (tmp && len >= pos);
@@ -376,13 +376,13 @@ static int km_bind_err(char *s, int menu, int op, char *macro, char *descr, stru
  * @param menu  Menu id, e.g. #MENU_EDITOR
  * @param op    Operation, e.g. OP_DELETE
  * @param macro Macro string
- * @param descr Description of macro (OPTIONAL)
+ * @param desc Description of macro (OPTIONAL)
  * @retval  0 Success
  * @retval -2 Error
  */
-int km_bind(char *s, int menu, int op, char *macro, char *descr)
+int km_bind(char *s, int menu, int op, char *macro, char *desc)
 {
-  return km_bind_err(s, menu, op, macro, descr, NULL);
+  return km_bind_err(s, menu, op, macro, desc, NULL);
 }
 
 /**
@@ -1451,7 +1451,7 @@ void mutt_free_keys(void)
       next = map->next;
 
       FREE(&map->macro);
-      FREE(&map->descr);
+      FREE(&map->desc);
       FREE(&map->keys);
       FREE(&map);
     }

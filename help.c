@@ -309,10 +309,10 @@ static void dump_menu(FILE *f, int menu)
 
       if (map->op == OP_MACRO)
       {
-        if (!map->descr)
+        if (!map->desc)
           format_line(f, -1, buf, "macro", map->macro);
         else
-          format_line(f, 1, buf, map->macro, map->descr);
+          format_line(f, 1, buf, map->macro, map->desc);
       }
       else
       {

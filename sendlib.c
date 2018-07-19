@@ -3157,7 +3157,7 @@ static void set_noconv_flags(struct Body *b, short flag)
  * @retval -1 Failure
  */
 int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid,
-                            int post, char *fcc, char **finalpath)
+                            bool post, char *fcc, char **finalpath)
 {
   char fcc_tok[PATH_MAX];
   char fcc_expanded[PATH_MAX];
@@ -3204,7 +3204,7 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
  * @retval -1 Failure
  */
 int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
-                   int post, char *fcc, char **finalpath)
+                   bool post, char *fcc, char **finalpath)
 {
   struct Context f;
   struct Message *msg = NULL;
@@ -3260,8 +3260,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 
   /* post == 1 => postpone message. Set mode = -1 in mutt_rfc822_write_header()
    * post == 0 => Normal mode. Set mode = 0 in mutt_rfc822_write_header()
-   * */
-  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -post : 0, false);
+   */
+  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -1 : 0, false);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-

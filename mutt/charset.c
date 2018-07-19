@@ -365,18 +365,18 @@ out:
  * mutt_ch_chscmp - Are the names of two character sets equivalent?
  * @param cs1 First character set
  * @param cs2 Second character set
- * @retval 1 Names are equivalent
- * @retval 0 Names differ
+ * @retval true  Names are equivalent
+ * @retval false Names differ
  *
  * Charsets may have extensions that mutt_ch_canonical_charset() leaves intact;
  * we expect 'cs2' to originate from neomutt code, not user input (i.e. 'cs2'
  * does _not_ have any extension) we simply check if the shorter string is a
  * prefix for the longer.
  */
-int mutt_ch_chscmp(const char *cs1, const char *cs2)
+bool mutt_ch_chscmp(const char *cs1, const char *cs2)
 {
   if (!cs1 || !cs2)
-    return 0;
+    return false;
 
   char buffer[STRING];
 

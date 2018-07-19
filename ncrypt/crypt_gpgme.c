@@ -1999,7 +1999,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     decoded_fp = mutt_file_mkstemp();
     if (!decoded_fp)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2019,7 +2019,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     rc = -1;
     goto bail;
   }
@@ -2072,7 +2072,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   FILE *tmpfp = mutt_file_mkstemp();
   if (!tmpfp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
@@ -2089,7 +2089,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   *fpout = mutt_file_mkstemp();
   if (!*fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     return -1;
   }
 
@@ -2124,7 +2124,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     FILE *tmpfp2 = mutt_file_mkstemp();
     if (!tmpfp2)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2142,7 +2142,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     *fpout = mutt_file_mkstemp();
     if (!*fpout)
     {
-      mutt_perror("mutt_file_mkstemp() failed!");
+      mutt_perror(_("Can't create temporary file"));
       return -1;
     }
 
@@ -2222,7 +2222,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   *fp = mutt_file_mkstemp();
   if (!*fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     goto err_tmpdir;
   }
 
@@ -2742,7 +2742,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -2818,7 +2818,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   FILE *fpout = mutt_file_mkstemp();
   if (!fpout)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -3286,14 +3286,14 @@ static int crypt_compare_trust(const void *a, const void *b)
  * @param fp  File to write to
  * @param dn  Distinguished Name
  * @param key Key string
- * @retval 1 If any DN keys match the given key string
- * @retval 0 Otherwise
+ * @retval true  If any DN keys match the given key string
+ * @retval false Otherwise
  *
  * Print the X.500 Distinguished Name part KEY from the array of parts DN to FP.
  */
-static int print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
+bool print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
 {
-  int any = 0;
+  bool any = false;
 
   for (; dn->key; dn++)
   {
@@ -3302,7 +3302,7 @@ static int print_dn_part(FILE *fp, struct DnArray *dn, const char *key)
       if (any)
         fputs(" + ", fp);
       print_utf8(fp, dn->value, strlen(dn->value));
-      any = 1;
+      any = true;
     }
   }
   return any;
@@ -3318,9 +3318,10 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
   static const char *const stdpart[] = {
     "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
   };
-  int any = 0, any2 = 0, i;
+  bool any = false;
+  bool any2 = false;
 
-  for (i = 0; stdpart[i]; i++)
+  for (int i = 0; stdpart[i]; i++)
   {
     if (any)
       fputs(", ", fp);
@@ -3329,6 +3330,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
   /* now print the rest without any specific ordering */
   for (; dn->key; dn++)
   {
+    int i;
     for (i = 0; stdpart[i]; i++)
     {
       if (strcmp(dn->key, stdpart[i]) == 0)
@@ -3341,7 +3343,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
       if (!any2)
         fputs("(", fp);
       any = print_dn_part(fp, dn, dn->key);
-      any2 = 1;
+      any2 = true;
     }
   }
   if (any2)

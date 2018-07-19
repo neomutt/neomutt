@@ -373,7 +373,7 @@ static bool lua_init(lua_State **l)
 
   if (!*l)
   {
-    mutt_error("Error: Couldn't load the lua interpreter.");
+    mutt_error(_("Error: Couldn't load the lua interpreter."));
     return false;
   }
 
@@ -449,7 +449,7 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
 
   if (luaL_dofile(Lua, path))
   {
-    mutt_error("Couldn't source lua source: %s", lua_tostring(Lua, -1));
+    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(Lua, -1));
     lua_pop(Lua, 1);
     return -1;
   }

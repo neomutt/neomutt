@@ -393,7 +393,7 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
  * This code is shared by forwarding and replying.
  */
 static struct Body **copy_problematic_attachments(struct Body **last,
-                                                  struct AttachCtx *actx, short force)
+                                                  struct AttachCtx *actx, bool force)
 {
   for (short i = 0; i < actx->idxlen; i++)
   {
@@ -975,7 +975,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     mutt_make_post_indent(Context, parent_hdr, tmpfp);
 
     if (mime_reply_any && !cur &&
-        copy_problematic_attachments(&tmphdr->content, actx, 0) == NULL)
+        copy_problematic_attachments(&tmphdr->content, actx, false) == NULL)
     {
       mutt_header_free(&tmphdr);
       mutt_file_fclose(&tmpfp);

@@ -654,7 +654,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_perror("mutt_file_mkstemp() failed!");
+    mutt_perror(_("Can't create temporary file"));
     goto error_out_0;
   }
 
@@ -1368,7 +1368,7 @@ fail:
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
+int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete)
 {
   struct Buffer cmd, sync_cmd;
   char mbox[PATH_MAX];

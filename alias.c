@@ -499,7 +499,7 @@ retry_name:
     write_safe_address(rc, buf);
     fputc('\n', rc);
     if (mutt_file_fsync_close(&rc) != 0)
-      mutt_message("Trouble adding alias: %s.", strerror(errno));
+      mutt_perror(_("Trouble adding alias"));
     else
       mutt_message(_("Alias added."));
   }
