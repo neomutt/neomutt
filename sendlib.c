@@ -1492,9 +1492,9 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, b
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     if (WithCrypto & APPLICATION_PGP)
-      pgp &= ~PGPENCRYPT;
+      pgp &= ~PGP_ENCRYPT;
     if (WithCrypto & APPLICATION_SMIME)
-      pgp &= ~SMIMEENCRYPT;
+      pgp &= ~SMIME_ENCRYPT;
   }
   else if ((WithCrypto != 0) && ForwardDecrypt && (hdr->security & ENCRYPT))
   {
@@ -1502,21 +1502,21 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, b
     {
       chflags |= CH_MIME | CH_NONEWLINE;
       cmflags = MUTT_CM_DECODE_PGP;
-      pgp &= ~PGPENCRYPT;
+      pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             ((mutt_is_application_pgp(hdr->content) & PGPENCRYPT) == PGPENCRYPT))
+             ((mutt_is_application_pgp(hdr->content) & PGP_ENCRYPT) == PGP_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      pgp &= ~PGPENCRYPT;
+      pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             ((mutt_is_application_smime(hdr->content) & SMIMEENCRYPT) == SMIMEENCRYPT))
+             ((mutt_is_application_smime(hdr->content) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      pgp &= ~SMIMEENCRYPT;
+      pgp &= ~SMIME_ENCRYPT;
     }
   }
 

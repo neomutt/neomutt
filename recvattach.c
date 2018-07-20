@@ -1161,7 +1161,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       secured = !crypt_smime_decrypt_mime(fp, &new_fp, m, &new_body);
 
       /* S/MIME nesting */
-      if ((mutt_is_application_smime(new_body) & SMIMEOPAQUE) == SMIMEOPAQUE)
+      if ((mutt_is_application_smime(new_body) & SMIME_OPAQUE) == SMIME_OPAQUE)
       {
         struct Body *outer_new_body = new_body;
         FILE *outer_fp = new_fp;
@@ -1176,7 +1176,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       }
 
       if (secured)
-        hdr->security |= SMIMEENCRYPT;
+        hdr->security |= SMIME_ENCRYPT;
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
@@ -1190,7 +1190,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       secured = !crypt_pgp_decrypt_mime(fp, &new_fp, m, &new_body);
 
       if (secured)
-        hdr->security |= PGPENCRYPT;
+        hdr->security |= PGP_ENCRYPT;
     }
 
     if (need_secured && secured)

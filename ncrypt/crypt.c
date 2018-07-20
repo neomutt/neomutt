@@ -179,7 +179,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   if ((msg->security & SIGN) && !crypt_valid_passphrase(msg->security))
     return -1;
 
-  if (((WithCrypto & APPLICATION_PGP) != 0) && ((msg->security & PGPINLINE) == PGPINLINE))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && ((msg->security & PGP_INLINE) == PGP_INLINE))
   {
     if ((msg->content->type != TYPE_TEXT) ||
         (mutt_str_strcasecmp(msg->content->subtype, "plain") != 0))
@@ -350,7 +350,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 /**
  * mutt_is_multipart_signed - Is a message signed?
  * @param b Body of email
- * @retval >0 Message is signed, e.g. #PGPSIGN
+ * @retval >0 Message is signed, e.g. #PGP_SIGN
  * @retval  0 Message is not signed
  */
 int mutt_is_multipart_signed(struct Body *b)
@@ -373,18 +373,18 @@ int mutt_is_multipart_signed(struct Body *b)
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       !(mutt_str_strcasecmp(p, "application/pgp-signature") != 0))
   {
-    return PGPSIGN;
+    return PGP_SIGN;
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       !(mutt_str_strcasecmp(p, "application/x-pkcs7-signature") != 0))
   {
-    return SMIMESIGN;
+    return SMIME_SIGN;
   }
   if (((WithCrypto & APPLICATION_SMIME) != 0) &&
       !(mutt_str_strcasecmp(p, "application/pkcs7-signature") != 0))
   {
-    return SMIMESIGN;
+    return SMIME_SIGN;
   }
 
   return 0;
@@ -393,7 +393,7 @@ int mutt_is_multipart_signed(struct Body *b)
 /**
  * mutt_is_multipart_encrypted - Does the message have encrypted parts?
  * @param b Body of email
- * @retval >0 Message has got encrypted parts, e.g. #PGPENCRYPT
+ * @retval >0 Message has got encrypted parts, e.g. #PGP_ENCRYPT
  * @retval  0 Message hasn't got encrypted parts
  */
 int mutt_is_multipart_encrypted(struct Body *b)
@@ -411,13 +411,13 @@ int mutt_is_multipart_encrypted(struct Body *b)
     return 0;
   }
 
-  return PGPENCRYPT;
+  return PGP_ENCRYPT;
 }
 
 /**
  * mutt_is_valid_multipart_pgp_encrypted - Is this a valid multi-part encrypted message?
  * @param b Body of email
- * @retval >0 Message is valid, with encrypted parts, e.g. #PGPENCRYPT
+ * @retval >0 Message is valid, with encrypted parts, e.g. #PGP_ENCRYPT
  * @retval  0 Message hasn't got encrypted parts
  */
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
@@ -439,13 +439,13 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
     return 0;
   }
 
-  return PGPENCRYPT;
+  return PGP_ENCRYPT;
 }
 
 /**
  * mutt_is_malformed_multipart_pgp_encrypted - Check for malformed layout
  * @param b Body of email
- * @retval PGPENCRYPT Success
+ * @retval PGP_ENCRYPT Success
  * @retval 0          Error
  *
  * This checks for the malformed layout caused by MS Exchange in
@@ -494,13 +494,13 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
   if (b)
     return 0;
 
-  return PGPENCRYPT;
+  return PGP_ENCRYPT;
 }
 
 /**
  * mutt_is_application_pgp - Does the message use PGP?
  * @param m Body of email
- * @retval >0 Message uses PGP, e.g. #PGPENCRYPT
+ * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
  * @retval  0 Message doesn't use PGP
  */
 int mutt_is_application_pgp(struct Body *m)
@@ -517,24 +517,24 @@ int mutt_is_application_pgp(struct Body *m)
       if (p && ((mutt_str_strcasecmp(p, "sign") == 0) ||
                 (mutt_str_strcasecmp(p, "signclear") == 0)))
       {
-        t |= PGPSIGN;
+        t |= PGP_SIGN;
       }
 
       p = mutt_param_get(&m->parameter, "format");
       if (p && (mutt_str_strcasecmp(p, "keys-only") == 0))
       {
-        t |= PGPKEY;
+        t |= PGP_KEY;
       }
 
       if (!t)
-        t |= PGPENCRYPT; /* not necessarily correct, but... */
+        t |= PGP_ENCRYPT; /* not necessarily correct, but... */
     }
 
     if (mutt_str_strcasecmp(m->subtype, "pgp-signed") == 0)
-      t |= PGPSIGN;
+      t |= PGP_SIGN;
 
     if (mutt_str_strcasecmp(m->subtype, "pgp-keys") == 0)
-      t |= PGPKEY;
+      t |= PGP_KEY;
   }
   else if (m->type == TYPE_TEXT && (mutt_str_strcasecmp("plain", m->subtype) == 0))
   {
@@ -543,15 +543,15 @@ int mutt_is_application_pgp(struct Body *m)
          (p = mutt_param_get(&m->parameter, "action"))) &&
         (mutt_str_strncasecmp("pgp-sign", p, 8) == 0))
     {
-      t |= PGPSIGN;
+      t |= PGP_SIGN;
     }
     else if (p && (mutt_str_strncasecmp("pgp-encrypt", p, 11) == 0))
-      t |= PGPENCRYPT;
+      t |= PGP_ENCRYPT;
     else if (p && (mutt_str_strncasecmp("pgp-keys", p, 7) == 0))
-      t |= PGPKEY;
+      t |= PGP_KEY;
   }
   if (t)
-    t |= PGPINLINE;
+    t |= PGP_INLINE;
 
   return t;
 }
@@ -559,7 +559,7 @@ int mutt_is_application_pgp(struct Body *m)
 /**
  * mutt_is_application_smime - Does the message use S/MIME?
  * @param m Body of email
- * @retval >0 Message uses S/MIME, e.g. #SMIMEENCRYPT
+ * @retval >0 Message uses S/MIME, e.g. #SMIME_ENCRYPT
  * @retval  0 Message doesn't use S/MIME
  */
 int mutt_is_application_smime(struct Body *m)
@@ -580,9 +580,9 @@ int mutt_is_application_smime(struct Body *m)
     if (t)
     {
       if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
-        return SMIMEENCRYPT;
+        return SMIME_ENCRYPT;
       else if (mutt_str_strcasecmp(t, "signed-data") == 0)
-        return SMIMESIGN | SMIMEOPAQUE;
+        return SMIME_SIGN | SMIME_OPAQUE;
       else
         return 0;
     }
@@ -591,7 +591,7 @@ int mutt_is_application_smime(struct Body *m)
       * instead of Content-Type parameter
       */
     if (mutt_str_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
-      return SMIMEENCRYPT;
+      return SMIME_ENCRYPT;
     complain = true;
   }
   else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
@@ -623,10 +623,10 @@ int mutt_is_application_smime(struct Body *m)
     {
       /* Not sure if this is the correct thing to do, but
         it's required for compatibility with Outlook */
-      return SMIMESIGN | SMIMEOPAQUE;
+      return SMIME_SIGN | SMIME_OPAQUE;
     }
     else if (mutt_str_strcasecmp((t + len), "p7s") == 0)
-      return SMIMESIGN | SMIMEOPAQUE;
+      return SMIME_SIGN | SMIME_OPAQUE;
   }
 
   return 0;
@@ -1104,14 +1104,14 @@ int mutt_signed_handler(struct Body *a, struct State *s)
           inconsistent = true;
         }
         break;
-      case PGPSIGN:
+      case PGP_SIGN:
         if (a->next->type != TYPE_APPLICATION ||
             (mutt_str_strcasecmp(a->next->subtype, "pgp-signature") != 0))
         {
           inconsistent = true;
         }
         break;
-      case SMIMESIGN:
+      case SMIME_SIGN:
         if (a->next->type != TYPE_APPLICATION ||
             ((mutt_str_strcasecmp(a->next->subtype, "x-pkcs7-signature") != 0) &&
              (mutt_str_strcasecmp(a->next->subtype, "pkcs7-signature") != 0)))
