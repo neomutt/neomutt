@@ -364,30 +364,92 @@ static void resort_index(struct Menu *menu)
 }
 
 /**
- * update_index - Update the index
- * @param menu       Current Menu
- * @param ctx        Mailbox
- * @param check      Flags, e.g. #MUTT_REOPENED
- * @param oldcount   How many items are currently in the index
- * @param index_hint Remember our place in the index
+ * update_index_threaded - Update the index (if threaded)
+ * @param ctx      Mailbox
+ * @param check    Flags, e.g. #MUTT_REOPENED
+ * @param oldcount How many items are currently in the index
  */
-void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint)
+static void update_index_threaded(struct Context *ctx, int check, int oldcount)
 {
-  /* store pointers to the newly added messages */
   struct Header **save_new = NULL;
 
-  if (!menu || !ctx)
-    return;
-
-  /* take note of the current message */
-  if (oldcount)
+  /* save the list of new messages */
+  if ((check != MUTT_REOPENED) && oldcount && (ctx->pattern || UncollapseNew))
   {
-    if (menu->current < ctx->vcount)
-      menu->oldcurrent = index_hint;
-    else
-      oldcount = 0; /* invalid message number! */
+    save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
+    for (int i = oldcount; i < ctx->msgcount; i++)
+      save_new[i - oldcount] = ctx->hdrs[i];
   }
 
+  /* Sort first to thread the new messages, because some patterns
+   * require the threading information.
+   *
+   * If the mailbox was reopened, need to rethread from scratch. */
+  mutt_sort_headers(ctx, (check == MUTT_REOPENED));
+
+  if (ctx->pattern)
+  {
+    for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->msgcount; i++)
+    {
+      struct Header *h = NULL;
+
+      if ((check != MUTT_REOPENED) && oldcount)
+        h = save_new[i - oldcount];
+      else
+        h = ctx->hdrs[i];
+
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, h, NULL))
+      {
+        /* virtual will get properly set by mutt_set_virtual(), which
+         * is called by mutt_sort_headers() just below. */
+        h->virtual = 1;
+        h->limited = true;
+      }
+    }
+    /* Need a second sort to set virtual numbers and redraw the tree */
+    mutt_sort_headers(ctx, false);
+  }
+
+  /* uncollapse threads with new mail */
+  if (UncollapseNew)
+  {
+    if (check == MUTT_REOPENED)
+    {
+      ctx->collapsed = false;
+
+      for (struct MuttThread *h = ctx->tree; h; h = h->next)
+      {
+        struct MuttThread *j = h;
+        for (; !j->message; j = j->child)
+          ;
+        mutt_uncollapse_thread(ctx, j->message);
+      }
+      mutt_set_virtual(ctx);
+    }
+    else if (oldcount)
+    {
+      for (int j = 0; j < (ctx->msgcount - oldcount); j++)
+      {
+        if (!ctx->pattern || save_new[j]->limited)
+        {
+          mutt_uncollapse_thread(ctx, save_new[j]);
+        }
+      }
+      mutt_set_virtual(ctx);
+    }
+  }
+
+  FREE(&save_new);
+}
+
+/**
+ * update_index_unthreaded - Update the index (if unthreaded)
+ * @param ctx      Mailbox
+ * @param check    Flags, e.g. #MUTT_REOPENED
+ * @param oldcount How many items are currently in the index
+ */
+static void update_index_unthreaded(struct Context *ctx, int check, int oldcount)
+{
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
    * they will be visible in the limited view */
@@ -412,49 +474,36 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     }
   }
 
-  /* save the list of new messages */
-  if (UncollapseNew && oldcount && check != MUTT_REOPENED && ((Sort & SORT_MASK) == SORT_THREADS))
-  {
-    save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
-    for (int i = oldcount; i < ctx->msgcount; i++)
-      save_new[i - oldcount] = ctx->hdrs[i];
-  }
-
   /* if the mailbox was reopened, need to rethread from scratch */
   mutt_sort_headers(ctx, (check == MUTT_REOPENED));
+}
 
-  /* uncollapse threads with new mail */
-  if (UncollapseNew && ((Sort & SORT_MASK) == SORT_THREADS))
+/**
+ * update_index - Update the index
+ * @param menu       Current Menu
+ * @param ctx        Mailbox
+ * @param check      Flags, e.g. #MUTT_REOPENED
+ * @param oldcount   How many items are currently in the index
+ * @param index_hint Remember our place in the index
+ */
+void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint)
+{
+  if (!menu || !ctx)
+    return;
+
+  /* take note of the current message */
+  if (oldcount)
   {
-    if (check == MUTT_REOPENED)
-    {
-      struct MuttThread *h = NULL, *k = NULL;
-
-      ctx->collapsed = false;
-
-      for (h = ctx->tree; h; h = h->next)
-      {
-        for (k = h; !k->message; k = k->child)
-          ;
-        mutt_uncollapse_thread(ctx, k->message);
-      }
-      mutt_set_virtual(ctx);
-    }
-    else if (oldcount)
-    {
-      for (int i = 0; i < ctx->msgcount - oldcount; i++)
-      {
-        for (int k = 0; k < ctx->msgcount; k++)
-        {
-          struct Header *h = ctx->hdrs[k];
-          if (h == save_new[i] && (!ctx->pattern || h->limited))
-            mutt_uncollapse_thread(ctx, h);
-        }
-      }
-      FREE(&save_new);
-      mutt_set_virtual(ctx);
-    }
+    if (menu->current < ctx->vcount)
+      menu->oldcurrent = index_hint;
+    else
+      oldcount = 0; /* invalid message number! */
   }
+
+  if ((Sort & SORT_MASK) == SORT_THREADS)
+    update_index_threaded(ctx, check, oldcount);
+  else
+    update_index_unthreaded(ctx, check, oldcount);
 
   menu->current = -1;
   if (oldcount)
