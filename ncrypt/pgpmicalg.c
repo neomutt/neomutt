@@ -23,7 +23,7 @@
 /**
  * @page crypt_pgpmicalg Identify the hash algorithm from a PGP signature
  *
- * Identify the hash algorithm from a PGP signature
+ * Identify the Message Integrity Check algorithm (micalg) from a PGP signature
  */
 
 #include "config.h"
@@ -47,6 +47,11 @@ static const struct
   { 11, "pgp-sha224" }, { -1, NULL },
 };
 
+/**
+ * pgp_hash_to_micalg - Lookup a hash name, given its id
+ * @param id ID
+ * @retval ptr Name of hash algorithm
+ */
 static const char *pgp_hash_to_micalg(short id)
 {
   for (int i = 0; HashAlgorithms[i].id >= 0; i++)
@@ -55,6 +60,11 @@ static const char *pgp_hash_to_micalg(short id)
   return "x-unknown";
 }
 
+/**
+ * pgp_dearmor - Unwrap an armoured PGP block
+ * @param in  File to read from
+ * @param out File to write to
+ */
 static void pgp_dearmor(FILE *in, FILE *out)
 {
   char line[HUGE_STRING];
@@ -127,6 +137,12 @@ static void pgp_dearmor(FILE *in, FILE *out)
   mutt_decode_base64(&state, end - start, false, (iconv_t) -1);
 }
 
+/**
+ * pgp_mic_from_packet - Get the hash algorithm from a PGP packet
+ * @param p   PGP packet
+ * @param len Length of packet
+ * @retval num Hash algorithm id
+ */
 static short pgp_mic_from_packet(unsigned char *p, size_t len)
 {
   /* is signature? */
@@ -153,6 +169,11 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
   }
 }
 
+/**
+ * pgp_find_hash - Find the hash algorithm of a file
+ * @param fname File to read
+ * @retval num Hash algorithm id
+ */
 static short pgp_find_hash(const char *fname)
 {
   size_t l;
@@ -193,6 +214,11 @@ bye:
   return rc;
 }
 
+/**
+ * pgp_micalg - Find the hash algorithm of a file
+ * @param fname File to read
+ * @retval ptr Name of hash algorithm
+ */
 const char *pgp_micalg(const char *fname)
 {
   return pgp_hash_to_micalg(pgp_find_hash(fname));

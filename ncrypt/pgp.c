@@ -115,6 +115,12 @@ int pgp_class_valid_passphrase(void)
   return 0;
 }
 
+/**
+ * pgp_use_gpg_agent - Does the user want to use the gpg agent?
+ * @retval true If they do
+ *
+ * @note This functions sets the environment variable `$GPG_TTY`
+ */
 bool pgp_use_gpg_agent(void)
 {
   char *tty = NULL;
@@ -133,6 +139,11 @@ bool pgp_use_gpg_agent(void)
   return true;
 }
 
+/**
+ * key_parent - Find a key's parent (if it's a subkey)
+ * @param k PGP key
+ * @retval ptr Parent key
+ */
 static struct PgpKeyInfo *key_parent(struct PgpKeyInfo *k)
 {
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && PgpIgnoreSubkeys)
@@ -141,6 +152,11 @@ static struct PgpKeyInfo *key_parent(struct PgpKeyInfo *k)
   return k;
 }
 
+/**
+ * pgp_long_keyid - Get a key's long id
+ * @param k PGP key
+ * @retval ptr Long key id string
+ */
 char *pgp_long_keyid(struct PgpKeyInfo *k)
 {
   k = key_parent(k);
@@ -148,6 +164,11 @@ char *pgp_long_keyid(struct PgpKeyInfo *k)
   return k->keyid;
 }
 
+/**
+ * pgp_short_keyid - Get a key's short id
+ * @param k PGP key
+ * @retval ptr Short key id string
+ */
 char *pgp_short_keyid(struct PgpKeyInfo *k)
 {
   k = key_parent(k);
@@ -155,6 +176,13 @@ char *pgp_short_keyid(struct PgpKeyInfo *k)
   return k->keyid + 8;
 }
 
+/**
+ * pgp_this_keyid - Get the ID of this key
+ * @param k PGP key
+ * @retval ptr Long/Short key id string
+ *
+ * @note The string returned depends on `$pgp_long_ids`
+ */
 char *pgp_this_keyid(struct PgpKeyInfo *k)
 {
   if (PgpLongIds)
@@ -163,6 +191,11 @@ char *pgp_this_keyid(struct PgpKeyInfo *k)
     return k->keyid + 8;
 }
 
+/**
+ * pgp_keyid - Get the ID of the main (parent) key
+ * @param k PGP key
+ * @retval ptr Long/Short key id string
+ */
 char *pgp_keyid(struct PgpKeyInfo *k)
 {
   k = key_parent(k);
@@ -170,6 +203,11 @@ char *pgp_keyid(struct PgpKeyInfo *k)
   return pgp_this_keyid(k);
 }
 
+/**
+ * pgp_fingerprint - Get the key's fingerprint
+ * @param k PGP key
+ * @retval ptr Fingerprint string
+ */
 static char *pgp_fingerprint(struct PgpKeyInfo *k)
 {
   k = key_parent(k);
@@ -246,7 +284,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 }
 
 /**
- * pgp_check_decryption_okay - Check PGP output to look for successful outcome
+ * pgp_check_pgp_decryption_okay_regex - Check PGP output to look for successful outcome
  * @param fpin File to read from
  * @retval  0 Success
  * @retval -1 Error
@@ -729,6 +767,13 @@ out:
   return rc;
 }
 
+/**
+ * pgp_check_traditional_one_body - Check the body of an inline PGP message
+ * @param fp File to read
+ * @param b  Body to populate
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
@@ -927,6 +972,14 @@ void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top)
   OptDontHandlePgpKeys = false;
 }
 
+/**
+ * pgp_decrypt_part - Decrypt part of a PGP message
+ * @param a     Body of attachment
+ * @param s     State to use
+ * @param fpout File to write to
+ * @param p     Body of parent (main email)
+ * @retval ptr New Body for the attachment
+ */
 static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
                                      FILE *fpout, struct Body *p)
 {

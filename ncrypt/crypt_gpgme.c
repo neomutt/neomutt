@@ -5201,6 +5201,10 @@ void pgp_gpgme_set_sender(const char *sender)
   current_sender = mutt_str_strdup(sender);
 }
 
+/**
+ * mutt_gpgme_print_version - Get version of GPGME
+ * @retval ptr GPGME version string
+ */
 const char *mutt_gpgme_print_version(void)
 {
   return GPGME_VERSION;

@@ -166,7 +166,7 @@ static const char *NoVisible = N_("No visible messages.");
   ((CollapseUnread || !UNREAD(header)) && (CollapseFlagged || !FLAGGED(header)))
 
 /**
- * collapse/uncollapse all threads
+ * collapse_all - Collapse/uncollapse all threads
  * @param menu   current menu
  * @param toggle toggle collapsed state
  *

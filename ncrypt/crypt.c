@@ -117,6 +117,9 @@ void crypt_forget_passphrase(void)
 
 #ifndef DEBUG
 #include <sys/resource.h>
+/**
+ * disable_coredumps - Prevent coredumps if neomutt were to crash
+ */
 static void disable_coredumps(void)
 {
   struct rlimit rl = { 0, 0 };
@@ -153,6 +156,13 @@ int crypt_valid_passphrase(int flags)
   return rc;
 }
 
+/**
+ * mutt_protect - Encrypt and/or sign a message
+ * @param msg     Header of the message
+ * @param keylist List of keys to encrypt to (space-separated)
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_protect(struct Header *msg, char *keylist)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
@@ -337,6 +347,12 @@ int mutt_protect(struct Header *msg, char *keylist)
   return 0;
 }
 
+/**
+ * mutt_is_multipart_signed - Is a message signed?
+ * @param b Body of email
+ * @retval >0 Message is signed, e.g. #PGPSIGN
+ * @retval  0 Message is not signed
+ */
 int mutt_is_multipart_signed(struct Body *b)
 {
   char *p = NULL;
@@ -374,6 +390,12 @@ int mutt_is_multipart_signed(struct Body *b)
   return 0;
 }
 
+/**
+ * mutt_is_multipart_encrypted - Does the message have encrypted parts?
+ * @param b Body of email
+ * @retval >0 Message has got encrypted parts, e.g. #PGPENCRYPT
+ * @retval  0 Message hasn't got encrypted parts
+ */
 int mutt_is_multipart_encrypted(struct Body *b)
 {
   if ((WithCrypto & APPLICATION_PGP) == 0)
@@ -392,6 +414,12 @@ int mutt_is_multipart_encrypted(struct Body *b)
   return PGPENCRYPT;
 }
 
+/**
+ * mutt_is_valid_multipart_pgp_encrypted - Is this a valid multi-part encrypted message?
+ * @param b Body of email
+ * @retval >0 Message is valid, with encrypted parts, e.g. #PGPENCRYPT
+ * @retval  0 Message hasn't got encrypted parts
+ */
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
   if (mutt_is_multipart_encrypted(b) == 0)
@@ -469,6 +497,12 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
   return PGPENCRYPT;
 }
 
+/**
+ * mutt_is_application_pgp - Does the message use PGP?
+ * @param m Body of email
+ * @retval >0 Message uses PGP, e.g. #PGPENCRYPT
+ * @retval  0 Message doesn't use PGP
+ */
 int mutt_is_application_pgp(struct Body *m)
 {
   int t = 0;
@@ -522,6 +556,12 @@ int mutt_is_application_pgp(struct Body *m)
   return t;
 }
 
+/**
+ * mutt_is_application_smime - Does the message use S/MIME?
+ * @param m Body of email
+ * @retval >0 Message uses S/MIME, e.g. #SMIMEENCRYPT
+ * @retval  0 Message doesn't use S/MIME
+ */
 int mutt_is_application_smime(struct Body *m)
 {
   if (!m)
@@ -715,6 +755,10 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   return 0;
 }
 
+/**
+ * crypt_convert_to_7bit - Convert an email to 7bit encoding
+ * @param a Body of email to convert
+ */
 void crypt_convert_to_7bit(struct Body *a)
 {
   if (!WithCrypto)
@@ -751,6 +795,12 @@ void crypt_convert_to_7bit(struct Body *a)
   }
 }
 
+/**
+ * crypt_extract_keys_from_messages - Extract keys from a message
+ * @param h Header of email
+ *
+ * The extracted keys will be added to the user's keyring.
+ */
 void crypt_extract_keys_from_messages(struct Header *h)
 {
   char tempfname[PATH_MAX], *mbox = NULL;
@@ -984,6 +1034,12 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   }
 }
 
+/**
+ * crypt_fetch_signatures - Create an array of an emails parts
+ * @param[out] signatures Array of Body parts
+ * @param[in]  a          Body part to examine
+ * @param[out] n          Cumulative count of parts
+ */
 static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, int *n)
 {
   if (!WithCrypto)
