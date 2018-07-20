@@ -106,11 +106,28 @@ void mutt_adv_mktemp(char *buf, size_t buflen)
   }
 }
 
+/**
+ * mutt_expand_path - Create the canonical path
+ * @param s    Buffer with path
+ * @param slen Length of buffer
+ * @retval ptr The expanded string
+ *
+ * @note The path is expanded in-place
+ */
 char *mutt_expand_path(char *s, size_t slen)
 {
   return mutt_expand_path_regex(s, slen, false);
 }
 
+/**
+ * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
+ * @param s     Buffer with path
+ * @param slen  Length of buffer
+ * @param regex If true, escape any regex characters
+ * @retval ptr The expanded string
+ *
+ * @note The path is expanded in-place
+ */
 char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
 {
   char p[PATH_MAX] = "";
@@ -366,6 +383,11 @@ bool mutt_needs_mailcap(struct Body *m)
   return true;
 }
 
+/**
+ * mutt_is_text_part - Is this part of an email in plain text?
+ * @param b Part of an email
+ * @retval true If part is in plain text
+ */
 bool mutt_is_text_part(struct Body *b)
 {
   int t = b->type;
@@ -394,6 +416,13 @@ bool mutt_is_text_part(struct Body *b)
 
 static FILE *frandom;
 
+/**
+ * mutt_randbuf - Fill a buffer with randomness
+ * @param out Buffer for result
+ * @param len Size of buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_randbuf(void *out, size_t len)
 {
   if (len > 1048576)
@@ -434,6 +463,11 @@ int mutt_randbuf(void *out, size_t len)
 
 static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
+/**
+ * mutt_rand_base32 - Fill a buffer with a base32-encoded random string
+ * @param out Buffer for result
+ * @param len Length of buffer
+ */
 void mutt_rand_base32(void *out, size_t len)
 {
   uint8_t *p = out;
@@ -444,6 +478,10 @@ void mutt_rand_base32(void *out, size_t len)
     p[pos] = base32[p[pos] % 32];
 }
 
+/**
+ * mutt_rand32 - Create a 32-bit random number
+ * @retval num Random number
+ */
 uint32_t mutt_rand32(void)
 {
   uint32_t ret = 0;
@@ -453,6 +491,10 @@ uint32_t mutt_rand32(void)
   return ret;
 }
 
+/**
+ * mutt_rand64 - Create a 64-bit random number
+ * @retval num Random number
+ */
 uint64_t mutt_rand64(void)
 {
   uint64_t ret = 0;
@@ -462,6 +504,17 @@ uint64_t mutt_rand64(void)
   return ret;
 }
 
+/**
+ * mutt_mktemp_full - Create a temporary filename
+ * @param s      Buffer for result
+ * @param slen   Length of buffer
+ * @param prefix Prefix for filename
+ * @param suffix Suffix for filename
+ * @param src    Source file of caller
+ * @param line   Source line number of caller
+ *
+ * @note This doesn't create the file, only the name
+ */
 void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
@@ -563,6 +616,15 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   }
 }
 
+/**
+ * mutt_expand_file_fmt - Replace `%s` with a filename in a string
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param fmt     printf-like format string
+ * @param src     Filename to substitute
+ *
+ * This function also quotes the file to prevent shell problems.
+ */
 void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
   char tmp[PATH_MAX];
@@ -571,6 +633,13 @@ void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const cha
   mutt_expand_fmt(dest, destlen, fmt, tmp);
 }
 
+/**
+ * mutt_expand_fmt - Replace `%s` with a filename in a string
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param fmt     printf-like format string
+ * @param src     Filename to substitute
+ */
 void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
   const char *p = NULL;
@@ -710,6 +779,15 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
   return 0;
 }
 
+/**
+ * mutt_save_path - Turn an email address into a filename (for saving)
+ * @param d     Buffer for the result
+ * @param dsize Length of buffer
+ * @param a     Email address to use
+ *
+ * If the user hasn't set `$save_address` the name will be trucated to the '@'
+ * character.
+ */
 void mutt_save_path(char *d, size_t dsize, struct Address *a)
 {
   if (a && a->mailbox)
@@ -727,6 +805,14 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
     *d = 0;
 }
 
+/**
+ * mutt_safe_path - Make a safe filename from an email address
+ * @param s Buffer for the result
+ * @param l Length of buffer
+ * @param a Address to use
+ *
+ * The filename will be stripped of '/', space, etc to make it safe.
+ */
 void mutt_safe_path(char *s, size_t l, struct Address *a)
 {
   mutt_save_path(s, l, a);
@@ -1397,6 +1483,12 @@ int mutt_save_confirm(const char *s, struct stat *st)
   return ret;
 }
 
+/**
+ * mutt_sleep - Sleep for a while
+ * @param s Number of seconds to sleep
+ *
+ * If the user config `SleepTime` is larger, sleep that long instead.
+ */
 void mutt_sleep(short s)
 {
   if (SleepTime > s)
@@ -1405,6 +1497,12 @@ void mutt_sleep(short s)
     sleep(s);
 }
 
+/**
+ * mutt_make_version - Generate the NeoMutt version string
+ * @retval ptr Version string
+ *
+ * @note This returns a pointer to a static buffer
+ */
 const char *mutt_make_version(void)
 {
   static char vstring[STRING];
@@ -1412,6 +1510,14 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
+/**
+ * mutt_encode_path - Convert a path into the user's preferred character set
+ * @param dest Buffer for the result
+ * @param dlen Length of buffer
+ * @param src  Path to convert (OPTIONAL)
+ *
+ * If `src` is NULL, the path in `dest` will be converted in-place.
+ */
 void mutt_encode_path(char *dest, size_t dlen, const char *src)
 {
   char *p = mutt_str_strdup(src);
@@ -1472,6 +1578,12 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
   return rc;
 }
 
+/**
+ * mutt_get_parent_path - Find the parent of a path (or mailbox)
+ * @param output Buffer for the result
+ * @param path   Path to use
+ * @param olen   Length of buffer
+ */
 void mutt_get_parent_path(char *output, char *path, size_t olen)
 {
 #ifdef USE_IMAP

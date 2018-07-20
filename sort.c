@@ -45,6 +45,15 @@ bool ReverseAlias;
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
 
+/**
+ * perform_auxsort - Compare two emails using the auxilliary sort method
+ * @param retval Result of normal sort method
+ * @param a      First email
+ * @param b      Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int perform_auxsort(int retval, const void *a, const void *b)
 {
   /* If the items compared equal by the main sort
@@ -62,6 +71,14 @@ int perform_auxsort(int retval, const void *a, const void *b)
   return retval;
 }
 
+/**
+ * compare_score - Compare two emails using their scores
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_score(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
@@ -71,6 +88,14 @@ static int compare_score(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_size - Compare the size of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_size(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
@@ -80,6 +105,14 @@ static int compare_size(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_date_sent - Compare the sent date of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_date_sent(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
@@ -89,6 +122,14 @@ static int compare_date_sent(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_subject - Compare the subject of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_subject(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
@@ -110,6 +151,16 @@ static int compare_subject(const void *a, const void *b)
   return SORTCODE(rc);
 }
 
+/**
+ * mutt_get_name - Pick the best name to display from an address
+ * @param a Address to use
+ * @retval ptr Display name
+ *
+ * This function uses:
+ * 1. Alias for email address
+ * 2. Personal name
+ * 3. Email address
+ */
 const char *mutt_get_name(struct Address *a)
 {
   struct Address *ali = NULL;
@@ -127,6 +178,14 @@ const char *mutt_get_name(struct Address *a)
   return "";
 }
 
+/**
+ * compare_to - Compare the 'to' fields of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_to(const void *a, const void *b)
 {
   struct Header **ppa = (struct Header **) a;
@@ -140,6 +199,14 @@ static int compare_to(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_from - Compare the 'from' fields of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_from(const void *a, const void *b)
 {
   struct Header **ppa = (struct Header **) a;
@@ -153,6 +220,14 @@ static int compare_from(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_date_received - Compare the date received of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_date_received(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
@@ -162,6 +237,14 @@ static int compare_date_received(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_order - Restore the 'unsorted' order of emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_order(const void *a, const void *b)
 {
   struct Header **ha = (struct Header **) a;
@@ -171,6 +254,14 @@ static int compare_order(const void *a, const void *b)
   return SORTCODE((*ha)->index - (*hb)->index);
 }
 
+/**
+ * compare_spam - Compare the spam values of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_spam(const void *a, const void *b)
 {
   struct Header **ppa = (struct Header **) a;
@@ -227,6 +318,14 @@ static int compare_spam(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * compare_label - Compare the labels of two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_label(const void *a, const void *b)
 {
   struct Header **ppa = (struct Header **) a;
@@ -257,6 +356,11 @@ static int compare_label(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * mutt_get_sort_func - Get the sort function for a given sort id
+ * @param method Sort id, e.g. #SORT_DATE
+ * @retval ptr qsort-compatible sort function
+ */
 sort_t *mutt_get_sort_func(int method)
 {
   switch (method & SORT_MASK)
@@ -292,6 +396,11 @@ sort_t *mutt_get_sort_func(int method)
   /* not reached */
 }
 
+/**
+ * mutt_sort_headers - Sort emails by their headers
+ * @param ctx  Mailbox
+ * @param init If true, rebuild the thread
+ */
 void mutt_sort_headers(struct Context *ctx, int init)
 {
   struct Header *h = NULL;

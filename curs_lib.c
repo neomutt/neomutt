@@ -82,6 +82,9 @@ static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static struct Event *UngetKeyEvents;
 
+/**
+ * mutt_refresh - Force a refresh of the screen
+ */
 void mutt_refresh(void)
 {
   /* don't refresh when we are waiting for a child. */
@@ -111,6 +114,19 @@ void mutt_need_hard_redraw(void)
   mutt_menu_set_current_redraw_full();
 }
 
+/**
+ * mutt_getch - Read a character from the input buffer
+ * @retval obj Event to process
+ *
+ * The priority for reading events is:
+ * 1. UngetKeyEvents buffer
+ * 2. MacroEvents buffer
+ * 3. Keyboard
+ *
+ * This function can return:
+ * - Error `{ -1, OP_NULL }`
+ * - Timeout `{ -2, OP_NULL }`
+ */
 struct Event mutt_getch(void)
 {
   int ch;
@@ -165,6 +181,19 @@ struct Event mutt_getch(void)
   return ch == ctrl('G') ? err : ret;
 }
 
+/**
+ * mutt_get_field_full - Ask the user for a string
+ * @param[in]  field    Prompt
+ * @param[in]  buf      Buffer for the result
+ * @param[in]  buflen   Length of buffer
+ * @param[in]  complete Flags for completion, e.g. #MUTT_FILE
+ * @param[in]  multiple Allow multiple selections
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @retval 1  Redraw the screen and call the function again
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ */
 int mutt_get_field_full(const char *field, char *buf, size_t buflen,
                         int complete, int multiple, char ***files, int *numfiles)
 {
@@ -196,6 +225,16 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
   return ret;
 }
 
+/**
+ * mutt_get_field_unbuffered - Ask the user for a string (ignoring macro buffer)
+ * @param msg    Prompt
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param flags  Flags for completion, e.g. #MUTT_FILE
+ * @retval 1  Redraw the screen and call the function again
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ */
 int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
 {
   int rc;
@@ -207,12 +246,17 @@ int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
   return rc;
 }
 
-void mutt_edit_file(const char *editor, const char *data)
+/**
+ * mutt_edit_file - Let the user edit a file
+ * @param editor User's editor config
+ * @param file   File to edit
+ */
+void mutt_edit_file(const char *editor, const char *file)
 {
   char cmd[HUGE_STRING];
 
   mutt_endwin();
-  mutt_expand_file_fmt(cmd, sizeof(cmd), editor, data);
+  mutt_expand_file_fmt(cmd, sizeof(cmd), editor, file);
   if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
@@ -223,6 +267,12 @@ void mutt_edit_file(const char *editor, const char *data)
   clearok(stdscr, true);
 }
 
+/**
+ * mutt_yesorno - Ask the user a Yes/No question
+ * @param msg Prompt
+ * @param def Default answer, e.g. #MUTT_YES
+ * @retval num Selection made, e.g. #MUTT_NO
+ */
 int mutt_yesorno(const char *msg, int def)
 {
   struct Event ch;
@@ -376,6 +426,9 @@ void mutt_query_exit(void)
   SigInt = 0;
 }
 
+/**
+ * mutt_show_error - Show the user an error message
+ */
 void mutt_show_error(void)
 {
   if (OptKeepQuiet || !ErrorBufMessage)
@@ -387,6 +440,9 @@ void mutt_show_error(void)
   mutt_window_clrtoeol(MuttMessageWindow);
 }
 
+/**
+ * mutt_endwin - Shutdown curses/slang
+ */
 void mutt_endwin(void)
 {
   if (OptNoCurses)
@@ -402,6 +458,10 @@ void mutt_endwin(void)
   errno = e;
 }
 
+/**
+ * mutt_perror_debug - Show the user an 'errno' message
+ * @param s Additional text to show
+ */
 void mutt_perror_debug(const char *s)
 {
   char *p = strerror(errno);
@@ -410,6 +470,12 @@ void mutt_perror_debug(const char *s)
   mutt_error("%s: %s (errno = %d)", s, p ? p : _("unknown error"), errno);
 }
 
+/**
+ * mutt_any_key_to_continue - Prompt the user to 'press any key' and wait
+ * @param s Message prompt
+ * @retval num Key pressed
+ * @retval EOF Error, or prompt aborted
+ */
 int mutt_any_key_to_continue(const char *s)
 {
   struct termios t;
@@ -440,6 +506,15 @@ int mutt_any_key_to_continue(const char *s)
   return (ch >= 0) ? ch : EOF;
 }
 
+/**
+ * mutt_do_pager - Display some page-able text to the user
+ * @param banner   Message for status bar
+ * @param tempfile File to display
+ * @param do_color Flags, e.g. #MUTT_PAGER_MESSAGE
+ * @param info     Info about current mailbox (OPTIONAL)
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info)
 {
   int rc;
@@ -465,6 +540,19 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
   return rc;
 }
 
+/**
+ * mutt_enter_fname_full - Ask the user to select a file
+ * @param[in]  prompt   Prompt
+ * @param[in]  buf      Buffer for the result
+ * @param[in]  blen     Length of the buffer
+ * @param[in]  buffy    If true, select mailboxes
+ * @param[in]  multiple Allow multiple selections
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @param[in]  flags    Flags, e.g. #MUTT_SEL_FOLDER
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
                           int multiple, char ***files, int *numfiles, int flags)
 {
@@ -519,6 +607,13 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
   return 0;
 }
 
+/**
+ * mutt_unget_event - Return a keystroke to the input buffer
+ * @param ch Key press
+ * @param op Operation, e.g. OP_DELETE
+ *
+ * This puts events into the `UngetKeyEvents` buffer
+ */
 void mutt_unget_event(int ch, int op)
 {
   struct Event tmp;
@@ -532,6 +627,12 @@ void mutt_unget_event(int ch, int op)
   UngetKeyEvents[UngetCount++] = tmp;
 }
 
+/**
+ * mutt_unget_string - Return a string to the input buffer
+ * @param s String to return
+ *
+ * This puts events into the `UngetKeyEvents` buffer
+ */
 void mutt_unget_string(char *s)
 {
   char *p = s + mutt_str_strlen(s) - 1;
@@ -563,6 +664,12 @@ void mutt_push_macro_event(int ch, int op)
   MacroEvents[MacroBufferCount++] = tmp;
 }
 
+/**
+ * mutt_flush_macro_to_endcond - Drop a macro from the input buffer
+ *
+ * All the macro text is deleted until an OP_END_COND command,
+ * or the buffer is empty.
+ */
 void mutt_flush_macro_to_endcond(void)
 {
   UngetCount = 0;
@@ -589,6 +696,9 @@ void mutt_flush_unget_to_endcond(void)
   }
 }
 
+/**
+ * mutt_flushinp - Empty all the keyboard buffers
+ */
 void mutt_flushinp(void)
 {
   UngetCount = 0;
@@ -621,6 +731,13 @@ void mutt_curs_set(int cursor)
 }
 #endif
 
+/**
+ * mutt_multi_choice - Offer the user a multiple choice question
+ * @param prompt  Message prompt
+ * @param letters Allowable selection keys
+ * @retval >=0 0-based user selection
+ * @retval  -1 Selection aborted
+ */
 int mutt_multi_choice(char *prompt, char *letters)
 {
   struct Event ch;

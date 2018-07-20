@@ -169,9 +169,9 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
  * @param[out] state    Current state (if function is called repeatedly)
- * @retval 1  need to redraw the screen and call me again
- * @retval 0  if input was given
- * @retval -1 if abort
+ * @retval 1  Redraw the screen and call the function again
+ * @retval 0  Selection made
+ * @retval -1 Aborted
  */
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int multiple,
                            char ***files, int *numfiles, struct EnterState *state)

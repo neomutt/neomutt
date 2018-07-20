@@ -43,6 +43,13 @@ static const char *HelpStrings[] = {
       NULL,
 };
 
+/**
+ * help_lookup_function - Find a keybinding for an operation
+ * @param op   Operation, e.g. OP_DELETE
+ * @param menu Current Menu
+ * @retval ptr  Key binding
+ * @retval NULL If none
+ */
 static const struct Binding *help_lookup_function(int op, int menu)
 {
   const struct Binding *map = NULL;
@@ -66,6 +73,16 @@ static const struct Binding *help_lookup_function(int op, int menu)
   return NULL;
 }
 
+/**
+ * mutt_make_help - Create one entry for the help bar
+ * @param d    Buffer for the result
+ * @param dlen Length of buffer
+ * @param txt  Text part, e.g. "delete"
+ * @param menu Current Menu
+ * @param op   Operation, e.g. OP_DELETE
+ *
+ * This will return something like: "d:delete"
+ */
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
 {
   char buf[SHORT_STRING];
@@ -81,6 +98,14 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
   }
 }
 
+/**
+ * mutt_compile_help - Create the text for the help menu
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param menu   Current Menu
+ * @param items  Map of functions to display in the help bar
+ * @retval ptr Buffer containing result
+ */
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
 {
   char *pbuf = buf;
@@ -101,6 +126,15 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping
   return buf;
 }
 
+/**
+ * print_macro - Print a macro string to a file
+ * @param[in]  f        File to write to
+ * @param[in]  maxwidth Maximum width in screen columns
+ * @param[out] macro    Macro string
+ * @retval num Number of screen columns used
+ *
+ * The `macro` pointer is move past the string we've printed
+ */
 static int print_macro(FILE *f, int maxwidth, const char **macro)
 {
   int n = maxwidth;
@@ -164,6 +198,14 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
   return maxwidth - n;
 }
 
+/**
+ * get_wrapped_width - Wrap a string at a sensible place
+ * @param t   String to wrap
+ * @param wid Maximum width
+ * @retval num Break after this many characters
+ *
+ * If the string's too long, look for some whitespace to break at.
+ */
 static int get_wrapped_width(const char *t, size_t wid)
 {
   wchar_t wc;
@@ -197,6 +239,14 @@ static int get_wrapped_width(const char *t, size_t wid)
   return n;
 }
 
+/**
+ * pad - Write some padding to a file
+ * @param f   File to write to
+ * @param col Current screen column
+ * @param i   Screen column to pad until
+ * @retval col Padding was added
+ * @retval i   Content was already wider than col
+ */
 static int pad(FILE *f, int col, int i)
 {
   if (col < i)
@@ -210,6 +260,21 @@ static int pad(FILE *f, int col, int i)
   return col + 1;
 }
 
+/**
+ * format_line - Write a formatted line to a file
+ * @param f       File to write to
+ * @param ismacro Layout mode, see below
+ * @param t1      Text part 1
+ * @param t2      Text part 2
+ * @param t3      Text part 3
+ *
+ * Assemble the three columns of text.
+ *
+ * `ismacro` can be:
+ * *  1 : Macro with a description
+ * *  0 : Non-macro
+ * * -1 : Macro with no description
+ */
 static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3)
 {
   int col;
@@ -294,6 +359,11 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   fputc('\n', f);
 }
 
+/**
+ * dump_menu - Write all the key bindings to a file
+ * @param f    File to write to
+ * @param menu Current Menu
+ */
 static void dump_menu(FILE *f, int menu)
 {
   struct Keymap *map = NULL;
@@ -324,6 +394,12 @@ static void dump_menu(FILE *f, int menu)
   }
 }
 
+/**
+ * is_bound - Does a function have a keybinding?
+ * @param map Keymap to examine
+ * @param op  Operation, e.g. OP_DELETE
+ * @retval true If a key is bound to that operation
+ */
 static bool is_bound(struct Keymap *map, int op)
 {
   for (; map; map = map->next)
@@ -332,6 +408,13 @@ static bool is_bound(struct Keymap *map, int op)
   return false;
 }
 
+/**
+ * dump_unbound - Write out all the operations with no key bindings
+ * @param f     File to write to
+ * @param funcs All the bindings for the current menu
+ * @param map   First key map to consider
+ * @param aux   Second key map to consider
+ */
 static void dump_unbound(FILE *f, const struct Binding *funcs,
                          struct Keymap *map, struct Keymap *aux)
 {
@@ -342,6 +425,10 @@ static void dump_unbound(FILE *f, const struct Binding *funcs,
   }
 }
 
+/**
+ * mutt_help - Display the help menu
+ * @param menu Current Menu
+ */
 void mutt_help(int menu)
 {
   char t[PATH_MAX];

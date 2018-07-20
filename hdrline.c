@@ -70,6 +70,11 @@ enum FlagChars
   FlagCharZEmpty
 };
 
+/**
+ * mutt_is_mail_list - Is this the email address of a mailing list?
+ * @param addr Address to test
+ * @retval true If it's a mailing list
+ */
 bool mutt_is_mail_list(struct Address *addr)
 {
   if (!mutt_regexlist_match(UnMailLists, addr->mailbox))
@@ -77,6 +82,11 @@ bool mutt_is_mail_list(struct Address *addr)
   return false;
 }
 
+/**
+ * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list?
+ * @param addr Address to test
+ * @retval true If it's a subscribed mailing list
+ */
 bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_regexlist_match(UnMailLists, addr->mailbox) &&
@@ -136,6 +146,13 @@ static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buf
   return false;
 }
 
+/**
+ * first_mailing_list - Get the first mailing list in the list of addresses
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param a      Address list
+ * @retval true If a mailing list was found
+ */
 static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
   for (; a; a = a->next)
@@ -310,6 +327,13 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_li
   snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
+/**
+ * make_from_addr - Create a 'from' address for a reply email
+ * @param hdr      Envelope of current email
+ * @param buf      Buffer for the result
+ * @param buflen   Length of buffer
+ * @param do_lists If true, check for mailing lists
+ */
 static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool do_lists)
 {
   if (!hdr || !buf)
@@ -335,6 +359,11 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool 
     *buf = 0;
 }
 
+/**
+ * user_in_addr - Do any of the addresses refer to the user?
+ * @param a Address list
+ * @retval true If any of the addresses match one of the user's addresses
+ */
 static bool user_in_addr(struct Address *a)
 {
   for (; a; a = a->next)
@@ -386,6 +415,12 @@ static int user_is_recipient(struct Header *h)
   return h->recipient;
 }
 
+/**
+ * apply_subject_mods - Apply regex modifications to the subject
+ * @param env Envelope of email
+ * @retval ptr  Modified subject
+ * @retval NULL No modification made
+ */
 static char *apply_subject_mods(struct Envelope *env)
 {
   if (!env)
@@ -404,12 +439,24 @@ static char *apply_subject_mods(struct Envelope *env)
   return env->disp_subj;
 }
 
+/**
+ * thread_is_new - Does the email thread contain any new emails?
+ * @param ctx Mailbox
+ * @param hdr Header of an email
+ * @retval true If thread contains new mail
+ */
 static bool thread_is_new(struct Context *ctx, struct Header *hdr)
 {
   return hdr->collapsed && (hdr->num_hidden > 1) &&
          (mutt_thread_contains_unread(ctx, hdr) == 1);
 }
 
+/**
+ * thread_is_old - Does the email thread contain any unread emails?
+ * @param ctx Mailbox
+ * @param hdr Header of an email
+ * @retval true If thread contains unread mail
+ */
 static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 {
   return hdr->collapsed && (hdr->num_hidden > 1) &&
@@ -1379,6 +1426,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   return src;
 }
 
+/**
+ * mutt_make_string_flags - Create formatted strings using mailbox expandos
+ * @param buf    Buffer for the result
+ * @param buflen Buffer length
+ * @param s      printf-line format string
+ * @param ctx    Mailbox
+ * @param hdr    Header of email
+ * @param flags  Format flags
+ */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                             struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
 {
@@ -1392,6 +1448,15 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                       index_format_str, (unsigned long) &hfi, flags);
 }
 
+/**
+ * mutt_make_string_info - Create pager status bar string
+ * @param buf    Buffer for the result
+ * @param buflen Buffer length
+ * @param cols   Number of screen columns
+ * @param s      printf-line format string
+ * @param hfi    Mailbox data to pass to the formatter
+ * @param flags  Format flags
+ */
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {

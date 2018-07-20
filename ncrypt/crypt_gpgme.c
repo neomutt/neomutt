@@ -133,6 +133,11 @@ static char *current_sender = NULL;
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 
+/**
+ * is_pka_notation - Is this the standard pka email address
+ * @param notation GPGME notation
+ * @retval true If it is
+ */
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
   return mutt_str_strcmp(notation->name, PKA_NOTATION_NAME) == 0;
@@ -446,7 +451,7 @@ static int crypt_id_is_valid(struct CryptKeyInfo *key)
 }
 
 /**
- * crypt_id_matches_addr - Does key ID match the address
+ * crypt_id_matches_addr - Does the key ID match the address
  * @param addr   First email address
  * @param u_addr Second email address
  * @param key    Key to use
@@ -727,6 +732,10 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
   return mutt_str_strdup(tempf);
 }
 
+/**
+ * free_recipient_set - Free a set of recipients
+ * @param p_rset Set of GPGME keys
+ */
 static void free_recipient_set(gpgme_key_t **p_rset)
 {
   gpgme_key_t *rset = NULL;
@@ -870,6 +879,11 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
   return 0;
 }
 
+/**
+ * set_pka_sig_notation - Set the signature notation
+ * @param ctx GPGME context
+ * @retval num GPGME error code, e.g. GPG_ERR_NO_ERROR
+ */
 static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 {
   gpgme_error_t err;
@@ -946,6 +960,10 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
   return outfile;
 }
 
+/**
+ * strlower - Lower-case a string
+ * @param s String to alter
+ */
 static void strlower(char *s)
 {
   for (; *s; ++s)
@@ -997,6 +1015,11 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
   return *buf ? 0 : -1;
 }
 
+/**
+ * print_time - Print the date/time according to the locale
+ * @param t Timestamp
+ * @param s State to write to
+ */
 static void print_time(time_t t, struct State *s)
 {
   char p[STRING];
@@ -1382,6 +1405,11 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
   return severe;
 }
 
+/**
+ * show_fingerprint - Write a key's fingerprint
+ * @param key   GPGME key
+ * @param state State to write to
+ */
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
   const char *s = NULL;
@@ -1475,6 +1503,13 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
     state_puts(txt, s);
 }
 
+/**
+ * print_smime_keyinfo - Print key info about an SMIME key
+ * @param msg Prefix message to write
+ * @param sig GPGME signature
+ * @param key GPGME key
+ * @param s   State to write to
+ */
 static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
                                 gpgme_key_t key, struct State *s)
 {
@@ -2160,6 +2195,14 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   return *cur ? 0 : -1;
 }
 
+/**
+ * pgp_gpgme_extract_keys - Write PGP keys to a file
+ * @param[in]  keydata GPGME key data
+ * @param[out] fp      Temporary file created with key info
+ * @param[in]  dryrun  If true, don't save the key to the user's keyring
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 {
   /* there's no side-effect free way to view key data in GPGME,
@@ -2308,6 +2351,13 @@ static int line_compare(const char *a, size_t n, const char *b)
 #define BEGIN_PGP_SIGNATURE(_y)                                                \
   _LINE_COMPARE("-----BEGIN PGP SIGNATURE-----", _y)
 
+/**
+ * pgp_check_traditional_one_body - Check one inline PGP body part
+ * @param fp File to read from
+ * @param b  Body of the email
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[PATH_MAX];
@@ -3161,6 +3211,14 @@ static int compare_key_address(const void *a, const void *b)
     return mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0;
 }
 
+/**
+ * crypt_compare_address - Compare the addresses of two keys
+ * @param a First key
+ * @param b Second key
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int crypt_compare_address(const void *a, const void *b)
 {
   return (PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
@@ -3188,6 +3246,14 @@ static int compare_keyid(const void *a, const void *b)
     return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
 }
 
+/**
+ * crypt_compare_keyid - Compare the IDs of two keys
+ * @param a First key ID
+ * @param b Second key ID
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int crypt_compare_keyid(const void *a, const void *b)
 {
   return (PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b);
@@ -3220,6 +3286,14 @@ static int compare_key_date(const void *a, const void *b)
   return mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0;
 }
 
+/**
+ * crypt_compare_date - Compare the dates of two keys
+ * @param a First key
+ * @param b Second key
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int crypt_compare_date(const void *a, const void *b)
 {
   return (PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b);
@@ -3275,6 +3349,14 @@ static int compare_key_trust(const void *a, const void *b)
   return mutt_str_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0;
 }
 
+/**
+ * crypt_compare_trust - Compare the trust levels of two keys
+ * @param a First key
+ * @param b Second key
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int crypt_compare_trust(const void *a, const void *b)
 {
   return (PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
@@ -3559,6 +3641,12 @@ enum KeyCap
   KEY_CAP_CAN_CERTIFY
 };
 
+/**
+ * key_check_cap - Check the capabilities of a key
+ * @param key GPGME key
+ * @param cap Flags, e.g. #KEY_CAP_CAN_ENCRYPT
+ * @retval >0 Key has the capabilities
+ */
 static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
 {
   gpgme_subkey_t subkey = NULL;
@@ -4415,6 +4503,15 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   return k;
 }
 
+/**
+ * crypt_getkeybyaddr - Find a key by email address
+ * @param[in]  a            Address to match
+ * @param[in]  abilities    Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param[in]  app          Application type, e.g. #APPLICATION_PGP
+ * @param[out] forced_valid Set to true if user overrode key's validity
+ * @param[in]  oppenc_mode  If true, use opportunistic encryption
+ * @retval ptr Matching key
+ */
 static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
                                                short abilities, unsigned int app,
                                                int *forced_valid, bool oppenc_mode)
@@ -4537,6 +4634,14 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   return k;
 }
 
+/**
+ * crypt_getkeybystr - Find a key by string
+ * @param[in]  p            String to match
+ * @param[in]  abilities    Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param[in]  app          Application type, e.g. #APPLICATION_PGP
+ * @param[out] forced_valid Set to true if user overrode key's validity
+ * @retval ptr Matching key
+ */
 static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
                                               unsigned int app, int *forced_valid)
 {
@@ -4903,6 +5008,9 @@ static void init_common(void)
   has_run = true;
 }
 
+/**
+ * init_pgp - Initialise the PGP crypto backend
+ */
 static void init_pgp(void)
 {
   if (gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP) != GPG_ERR_NO_ERROR)
@@ -4911,6 +5019,9 @@ static void init_pgp(void)
   }
 }
 
+/**
+ * init_smime - Initialise the SMIME crypto backend
+ */
 static void init_smime(void)
 {
   if (gpgme_engine_check_version(GPGME_PROTOCOL_CMS) != GPG_ERR_NO_ERROR)
@@ -4937,6 +5048,12 @@ void smime_gpgme_init(void)
   init_smime();
 }
 
+/**
+ * gpgme_send_menu - Show the user the encryption/signing menu
+ * @param msg      Header of email
+ * @param is_smime True if an SMIME message
+ * @retval num Flags, e.g. #APPLICATION_SMIME | #ENCRYPT
+ */
 static int gpgme_send_menu(struct Header *msg, int is_smime)
 {
   struct CryptKeyInfo *p = NULL;
@@ -5109,6 +5226,11 @@ int smime_gpgme_send_menu(struct Header *msg)
   return gpgme_send_menu(msg, 1);
 }
 
+/**
+ * verify_sender - Verify the sender of a message
+ * @param h Header of the email
+ * @retval true If sender is verified
+ */
 static int verify_sender(struct Header *h)
 {
   struct Address *sender = NULL;

@@ -101,6 +101,10 @@ static char SmimeKeyToUse[PATH_MAX] = { 0 };
 static char SmimeCertToUse[PATH_MAX];
 static char SmimeIntermediateToUse[PATH_MAX];
 
+/**
+ * smime_free_key - Free a list of SMIME keys
+ * @param keylist List of keys to free
+ */
 static void smime_free_key(struct SmimeKey **keylist)
 {
   struct SmimeKey *key = NULL;
@@ -121,6 +125,11 @@ static void smime_free_key(struct SmimeKey **keylist)
   }
 }
 
+/**
+ * smime_copy_key - Copy an SMIME key
+ * @param key Key to copy
+ * @retval ptr Newly allocated SMIME key
+ */
 static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 {
   struct SmimeKey *copy = NULL;
@@ -343,6 +352,13 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
   return src;
 }
 
+/**
+ * smime_command - Format an SMIME command string
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param cctx   Data to pass to the formatter
+ * @param fmt    printf-like formatting string
+ */
 static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
@@ -403,6 +419,13 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
  *    Key and certificate handling.
  */
 
+/**
+ * smime_key_flags - Turn SMIME key flags into a string
+ * @param flags Flags, e.g. #KEYFLAG_CANENCRYPT
+ * @retval ptr Flag string
+ *
+ * Note: The string is statically allocated.
+ */
 static char *smime_key_flags(int flags)
 {
   static char buf[3];
@@ -510,6 +533,12 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
            smime_key_flags(this->flags), truststate, this->email, this->label);
 }
 
+/**
+ * smime_select_key - Get the user to select a key
+ * @param keys  List of keys to select from
+ * @param query String to match
+ * @retval ptr Key selected by user
+ */
 static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 {
   struct SmimeKey **table = NULL;
@@ -608,6 +637,12 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   return selected_key;
 }
 
+/**
+ * smime_parse_key - Parse an SMIME key block
+ * @param buf String to parse
+ * @retval ptr  SMIME key
+ * @retval NULL Error
+ */
 static struct SmimeKey *smime_parse_key(char *buf)
 {
   char *pend = NULL, *p = NULL;
@@ -687,6 +722,12 @@ static struct SmimeKey *smime_parse_key(char *buf)
   return key;
 }
 
+/**
+ * smime_get_candidates - Find keys matching a string
+ * @param search String to match
+ * @param public If true, only get the public keys
+ * @retval ptr Matching key
+ */
 static struct SmimeKey *smime_get_candidates(char *search, bool public)
 {
   char index_file[PATH_MAX];
@@ -749,6 +790,14 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, bool public)
   return match;
 }
 
+/**
+ * smime_get_key_by_addr - Find an SIME key by address
+ * @param mailbox   Email address to match
+ * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param public    If true, only get the public keys
+ * @param may_ask   If true, the user may be asked to select a key
+ * @retval ptr Matching key
+ */
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
                                               bool public, bool may_ask)
 {
@@ -821,6 +870,13 @@ static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
   return return_key;
 }
 
+/**
+ * smime_get_key_by_str - Find an SMIME key by string
+ * @param str       String to match
+ * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param public    If true, only get the public keys
+ * @retval ptr Matching key
+ */
 static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool public)
 {
   struct SmimeKey *results = NULL, *result = NULL;
@@ -860,6 +916,13 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, bool pu
   return return_key;
 }
 
+/**
+ * smime_ask_for_key - Ask the user to select a key
+ * @param prompt    Prompt to show the user
+ * @param abilities Abilities to match, e.g. #KEYFLAG_CANENCRYPT
+ * @param public    If true, only get the public keys
+ * @retval ptr Selected SMIME key
+ */
 static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, bool public)
 {
   struct SmimeKey *key = NULL;
@@ -1029,6 +1092,17 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
   return keylist;
 }
 
+/**
+ * smime_handle_cert_email - Process an email containing certificates
+ * @param[in]  certificate Email with certificates
+ * @param[in]  mailbox     Email address
+ * @param[in]  copy        If true, save the certificates to buffer
+ * @param[out] buffer      Buffer allocated to hold certificates
+ * @param[out] num         Number of certificates in buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ * @retval -2 Error
+ */
 static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
                                    char ***buffer, int *num)
 {
@@ -1119,6 +1193,11 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   return rc;
 }
 
+/**
+ * smime_extract_certificate - Extract an SMIME certificate from a file
+ * @param infile File to read
+ * @retval ptr Filename of temporary file containing certificate
+ */
 static char *smime_extract_certificate(char *infile)
 {
   char pk7out[PATH_MAX], certfile[PATH_MAX];
@@ -1221,6 +1300,11 @@ static char *smime_extract_certificate(char *infile)
   return mutt_str_strdup(certfile);
 }
 
+/**
+ * smime_extract_signer_certificate - Extract the signer's certificate
+ * @param infile File to read
+ * @retval ptr Name of temporary file containing certificate
+ */
 static char *smime_extract_signer_certificate(char *infile)
 {
   char certfile[PATH_MAX];
