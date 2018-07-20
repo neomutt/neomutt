@@ -196,7 +196,7 @@ void mutt_sig_block_system(void)
  * mutt_sig_unblock_system - Restore previously blocked signals
  * @param catch If true, restore previous SIGINT, SIGQUIT behaviour
  */
-void mutt_sig_unblock_system(int catch)
+void mutt_sig_unblock_system(bool catch)
 {
   if (!SysSignalsBlocked)
     return;

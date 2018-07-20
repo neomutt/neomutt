@@ -553,8 +553,8 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, int buffy,
-                          int multiple, char ***files, int *numfiles, int flags)
+int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool buffy,
+                          bool multiple, char ***files, int *numfiles, int flags)
 {
   struct Event ch;
 

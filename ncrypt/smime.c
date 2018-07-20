@@ -1103,7 +1103,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
  * @retval -1 Error
  * @retval -2 Error
  */
-static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
+static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
                                    char ***buffer, int *num)
 {
   char email[STRING];
@@ -1479,7 +1479,7 @@ int smime_class_verify_sender(struct Header *h)
     if (certfile)
     {
       mutt_file_unlink(tempfname);
-      if (smime_handle_cert_email(certfile, mbox, 0, NULL, NULL))
+      if (smime_handle_cert_email(certfile, mbox, false, NULL, NULL))
       {
         if (isendwin())
           mutt_any_key_to_continue(NULL);

@@ -77,7 +77,7 @@ int mutt_system(const char *cmd)
     act.sa_flags = 0;
 
     /* reset signals for the child; not really needed, but... */
-    mutt_sig_unblock_system(0);
+    mutt_sig_unblock_system(false);
     act.sa_handler = SIG_DFL;
     act.sa_flags = 0;
     sigemptyset(&act.sa_mask);
@@ -99,7 +99,7 @@ int mutt_system(const char *cmd)
   sigaction(SIGTSTP, &oldtstp, NULL);
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
-  mutt_sig_unblock_system(1);
+  mutt_sig_unblock_system(true);
 
   rc = (thepid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
 

@@ -2639,7 +2639,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   else
     st = S_ERR; /* error */
 
-  mutt_sig_unblock_system(1);
+  mutt_sig_unblock_system(true);
 
   return st;
 }

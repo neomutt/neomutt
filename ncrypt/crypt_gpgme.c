@@ -2203,7 +2203,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
  * @retval  0 Success
  * @retval -1 Error
  */
-static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
+static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
 {
   /* there's no side-effect free way to view key data in GPGME,
    * so we import the key into a temporary keyring */
@@ -2462,7 +2462,7 @@ void pgp_gpgme_invoke_import(const char *fname)
     return;
   }
 
-  if (pgp_gpgme_extract_keys(keydata, &out, 0))
+  if (pgp_gpgme_extract_keys(keydata, &out, false))
   {
     mutt_error(_("Error extracting key data!\n"));
   }
@@ -2613,7 +2613,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
-        pgp_gpgme_extract_keys(armored_data, &pgpout, 1);
+        pgp_gpgme_extract_keys(armored_data, &pgpout, true);
       }
       else if (!clearsign || (s->flags & MUTT_VERIFY))
       {
@@ -5231,10 +5231,10 @@ int smime_gpgme_send_menu(struct Header *msg)
  * @param h Header of the email
  * @retval true If sender is verified
  */
-static int verify_sender(struct Header *h)
+static bool verify_sender(struct Header *h)
 {
   struct Address *sender = NULL;
-  unsigned int rc = 1;
+  bool rc = true;
 
   if (h->env->from)
   {
@@ -5264,7 +5264,7 @@ static int verify_sender(struct Header *h)
           if (!at_sign)
           {
             if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
-              rc = 0;
+              rc = false;
           }
           else
           {
@@ -5285,7 +5285,7 @@ static int verify_sender(struct Header *h)
             domainname_match =
                 (strncasecmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
-              rc = 0;
+              rc = false;
           }
         }
       }

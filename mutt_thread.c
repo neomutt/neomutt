@@ -587,7 +587,7 @@ static int compare_threads(const void *a, const void *b)
   }
 }
 
-struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
+struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
 {
   struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
   struct Header *oldsort_key = NULL;
@@ -717,7 +717,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
   }
 }
 
-static void check_subjects(struct Context *ctx, int init)
+static void check_subjects(struct Context *ctx, bool init)
 {
   struct Header *cur = NULL;
   struct MuttThread *tmp = NULL;
@@ -751,7 +751,7 @@ static void check_subjects(struct Context *ctx, int init)
   }
 }
 
-void mutt_sort_threads(struct Context *ctx, int init)
+void mutt_sort_threads(struct Context *ctx, bool init)
 {
   struct Header *cur = NULL;
   int i, oldsort, using_refs = 0;
@@ -767,7 +767,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   Sort = SortAux;
 
   if (!ctx->thread_hash)
-    init = 1;
+    init = true;
 
   if (init)
   {

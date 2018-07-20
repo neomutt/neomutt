@@ -47,7 +47,7 @@ int          mutt_any_key_to_continue(const char *s);
 int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
-int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy, int multiple, char ***files, int *numfiles, int flags);
+int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, bool buffy, bool multiple, char ***files, int *numfiles, int flags);
 void         mutt_flushinp(void);
 void         mutt_flush_macro_to_endcond(void);
 void         mutt_flush_unget_to_endcond(void);
@@ -71,8 +71,8 @@ void         mutt_unget_string(char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 int          mutt_yesorno(const char *msg, int def);
 
-#define mutt_enter_fname(A, B, C, D)   mutt_enter_fname_full(A, B, C, D, 0, NULL, NULL, 0)
-#define mutt_enter_vfolder(A, B, C, D) mutt_enter_fname_full(A, B, C, D, 0, NULL, NULL, MUTT_SEL_VFOLDER)
+#define mutt_enter_fname(A, B, C, D)   mutt_enter_fname_full(A, B, C, D, false, NULL, NULL, 0)
+#define mutt_enter_vfolder(A, B, C, D) mutt_enter_fname_full(A, B, C, D, false, NULL, NULL, MUTT_SEL_VFOLDER)
 #define mutt_get_field(A, B, C, D)     mutt_get_field_full(A, B, C, D, 0, NULL, NULL)
 #define mutt_get_password(A, B, C)     mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
 

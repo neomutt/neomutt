@@ -1293,7 +1293,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         char **files = NULL;
         fname[0] = 0;
 
-        if (mutt_enter_fname_full(prompt, fname, sizeof(fname), 0, 1, &files,
+        if (mutt_enter_fname_full(prompt, fname, sizeof(fname), false, true, &files,
                                   &numfiles, MUTT_SEL_MULTI) == -1 ||
             *fname == '\0')
         {
