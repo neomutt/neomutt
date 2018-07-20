@@ -75,26 +75,26 @@ static const struct Binding *help_lookup_function(int op, int menu)
 
 /**
  * mutt_make_help - Create one entry for the help bar
- * @param d    Buffer for the result
- * @param dlen Length of buffer
- * @param txt  Text part, e.g. "delete"
- * @param menu Current Menu
- * @param op   Operation, e.g. OP_DELETE
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param txt    Text part, e.g. "delete"
+ * @param menu   Current Menu
+ * @param op     Operation, e.g. OP_DELETE
  *
- * This will return something like: "d:delete"
+ * This will return something like: "buf:delete"
  */
-void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
+void mutt_make_help(char *buf, size_t buflen, const char *txt, int menu, int op)
 {
-  char buf[SHORT_STRING];
+  char tmp[SHORT_STRING];
 
-  if (km_expand_key(buf, sizeof(buf), km_find_func(menu, op)) ||
-      km_expand_key(buf, sizeof(buf), km_find_func(MENU_GENERIC, op)))
+  if (km_expand_key(tmp, sizeof(tmp), km_find_func(menu, op)) ||
+      km_expand_key(tmp, sizeof(tmp), km_find_func(MENU_GENERIC, op)))
   {
-    snprintf(d, dlen, "%s:%s", buf, txt);
+    snprintf(buf, buflen, "%s:%s", tmp, txt);
   }
   else
   {
-    d[0] = '\0';
+    buf[0] = '\0';
   }
 }
 

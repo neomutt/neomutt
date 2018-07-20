@@ -544,7 +544,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
  * mutt_enter_fname_full - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  buf      Buffer for the result
- * @param[in]  blen     Length of the buffer
+ * @param[in]  buflen   Length of the buffer
  * @param[in]  buffy    If true, select mailboxes
  * @param[in]  multiple Allow multiple selections
  * @param[out] files    List of files selected
@@ -553,7 +553,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
+int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, int buffy,
                           int multiple, char ***files, int *numfiles, int flags)
 {
   struct Event ch;
@@ -584,7 +584,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
       flags |= MUTT_SEL_MULTI;
     if (buffy)
       flags |= MUTT_SEL_BUFFY;
-    mutt_select_file(buf, blen, flags, files, numfiles);
+    mutt_select_file(buf, buflen, flags, files, numfiles);
   }
   else
   {
@@ -592,7 +592,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (mutt_get_field_full(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+    if (mutt_get_field_full(pc, buf, buflen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                             multiple, files, numfiles) != 0)
     {
       buf[0] = '\0';
@@ -600,7 +600,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
     FREE(&pc);
 #ifdef USE_NOTMUCH
     if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))
-      nm_description_to_path(buf, buf, blen);
+      nm_description_to_path(buf, buf, buflen);
 #endif
   }
 

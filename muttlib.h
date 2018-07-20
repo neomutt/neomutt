@@ -49,7 +49,7 @@ void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, 
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *s, size_t slen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
-void        mutt_get_parent_path(char *output, char *path, size_t olen);
+void        mutt_get_parent_path(char *path, char *buf, size_t buflen);
 int         mutt_inbox_cmp(const char *a, const char *b);
 bool        mutt_is_text_part(struct Body *b);
 const char *mutt_make_version(void);
