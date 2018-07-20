@@ -2116,8 +2116,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           free_mbtable((struct MbTable **) MuttVars[idx].var);
         else
         {
-          /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-           * so cast to 'void*' is okay */
           FREE((void *) MuttVars[idx].var);
         }
       }
@@ -2197,8 +2195,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           }
           else
           {
-            /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-             * so cast to 'void*' is okay */
             FREE((void *) MuttVars[idx].var);
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
@@ -4220,8 +4216,6 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         char scratch[LONG_STRING];
         mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
-        /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-         * so cast to 'void*' is okay */
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
         break;
@@ -4229,8 +4223,6 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       case DT_STRING:
       case DT_COMMAND:
       {
-        /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-         * so cast to 'void*' is okay */
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup((char *) val->var);
       }

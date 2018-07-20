@@ -213,7 +213,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
     }
     mutt_window_clearline(MuttMessageWindow, 0);
     SETCOLOR(MT_COLOR_PROMPT);
-    addstr((char *) field); /* cast to get around bad prototypes */
+    addstr(field);
     NORMAL_COLOR;
     mutt_refresh();
     mutt_window_getxy(MuttMessageWindow, &x, NULL);

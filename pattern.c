@@ -756,8 +756,6 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
   int num;
   unsigned char c;
 
-  /* this cast looks dangerous, but is already all over this code
-   * (explicit or not) */
   num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
   c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
   if (toupper(c) == 'K')

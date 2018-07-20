@@ -242,8 +242,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
 
-  /* Prevent an integer overflow.
-   * The time_t cast is an attempt to silence a clang range warning. */
+  /* Prevent an integer overflow. */
   if ((time_t) t->tm_year > (TM_YEAR_MAX - 1900))
     return TIME_T_MAX;
   if ((time_t) t->tm_year < (TM_YEAR_MIN - 1900))
