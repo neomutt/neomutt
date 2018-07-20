@@ -2158,7 +2158,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                           *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
-        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_COMMAND))
+        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) ||
+                 (DTYPE(MuttVars[idx].type) == DT_COMMAND))
         {
           tmp2[0] = '\0';
           mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
@@ -2213,9 +2214,12 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           bool ispipe;
           {
             size_t scratchlen = mutt_str_strlen(scratch);
-            if (scratchlen == 0) {
+            if (scratchlen == 0)
+            {
               ispipe = true;
-            } else {
+            }
+            else
+            {
               ispipe = scratch[scratchlen - 1] == '|';
             }
           }
@@ -4269,9 +4273,12 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         bool ispipe;
         {
           size_t scratchlen = mutt_str_strlen(scratch);
-          if (scratchlen == 0) {
+          if (scratchlen == 0)
+          {
             ispipe = true;
-          } else {
+          }
+          else
+          {
             ispipe = scratch[scratchlen - 1] == '|';
           }
         }
