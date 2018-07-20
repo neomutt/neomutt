@@ -2212,7 +2212,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
           bool ispipe;
           {
-            size_t scratchlen = strlen(scratch);
+            size_t scratchlen = mutt_str_strlen(scratch);
             if (scratchlen == 0) {
               ispipe = true;
             } else {
@@ -4268,7 +4268,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         bool ispipe;
         {
-          size_t scratchlen = strlen(scratch);
+          size_t scratchlen = mutt_str_strlen(scratch);
           if (scratchlen == 0) {
             ispipe = true;
           } else {
