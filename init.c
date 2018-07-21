@@ -2166,13 +2166,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           mutt_pretty_mailbox(tmp2, sizeof(tmp2));
           val = tmp2;
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_COMMAND)
-        {
-          tmp2[0] = '\0';
-          mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
-          mutt_pretty_mailbox(tmp2, sizeof(tmp2));
-          val = tmp2;
-        }
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
           struct MbTable *mbt = (*((struct MbTable **) MuttVars[idx].var));
@@ -2243,14 +2236,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             FREE((void *) MuttVars[idx].var);
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
-        }
-        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_COMMAND))
-        {
-          char scratch[PATH_MAX];
-          mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
-          mutt_expand_path(scratch, sizeof(scratch));
-          FREE((void *) MuttVars[idx].var);
-          *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
         }
         else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
         {
