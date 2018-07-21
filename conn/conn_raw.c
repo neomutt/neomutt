@@ -52,6 +52,11 @@
 #include "globals.h"
 #include "options.h"
 
+/* These Config Variables are only used in conn/conn_raw.c */
+#ifdef HAVE_GETADDRINFO
+bool UseIpv6;
+#endif
+
 /**
  * socket_connect - set up to connect to a socket fd
  * @param fd File descriptor to connect with
