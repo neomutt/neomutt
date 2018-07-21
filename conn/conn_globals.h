@@ -45,14 +45,17 @@ extern const char *Tunnel;
 #endif
 
 /* These Config Variables are only used in conn/conn_raw.c */
+#ifdef HAVE_GETADDRINFO
 extern bool UseIpv6;
+#endif
 
-/* These Config Variables are only used in conn/ssl_gnutls.c */
+#ifdef USE_SSL
 extern bool SslUseSslv3;
 extern bool SslUseTlsv1;
 extern bool SslUseTlsv11;
 extern bool SslUseTlsv12;
 extern bool SslVerifyDates;
 extern bool SslVerifyHost;
+#endif
 
 #endif /* _CONN_GLOBALS_H */

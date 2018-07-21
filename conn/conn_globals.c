@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 
 short ConnectTimeout = 0; /**< Config: Timeout for a network connection (for IMAP, POP or SMTP) */
@@ -45,4 +46,13 @@ short SslMinDhPrimeBits = 0; /**< Config: Minimum keysize for Diffie-Hellman key
 #ifdef USE_SOCKET
 const char *Preconnect = NULL; /**< Config: Shell command to run before making a connection */
 const char *Tunnel = NULL; /**< Config: Shell command to establish a tunnel */
+#endif
+
+#ifdef USE_SSL
+bool SslUseSslv3;
+bool SslUseTlsv1;
+bool SslUseTlsv11;
+bool SslUseTlsv12;
+bool SslVerifyDates;
+bool SslVerifyHost;
 #endif

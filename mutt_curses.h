@@ -29,9 +29,9 @@
 
 #ifdef USE_SLANG_CURSES
 
-#ifndef unix /* this symbol is not defined by the hp-ux compiler (sigh) */
+#ifndef unix /* this symbol is not defined by the hp-ux compiler */
 #define unix
-#endif /* unix */
+#endif
 
 #include <slang.h> /* in addition to slcurses.h, we need slang.h for the version
                       number to test for 2.x having UTF-8 support in main.c */

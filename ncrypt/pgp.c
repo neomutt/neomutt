@@ -466,7 +466,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   bool pgp_keyblock = false;
   bool clearsign = false;
   int rv, rc;
-  int c = 1; /* silence GCC warning */
+  int c = 1;
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
@@ -482,7 +482,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
   char body_charset[STRING];
   mutt_body_get_charset(m, body_charset, sizeof(body_charset));
 
-  rc = 0; /* silence false compiler warning if (s->flags & MUTT_DISPLAY) */
+  rc = 0;
 
   fseeko(s->fpin, m->offset, SEEK_SET);
   last_pos = m->offset;

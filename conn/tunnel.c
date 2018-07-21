@@ -88,7 +88,7 @@ static int tunnel_socket_open(struct Connection *conn)
   int pid = fork();
   if (pid == 0)
   {
-    mutt_sig_unblock_system(0);
+    mutt_sig_unblock_system(false);
     const int devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
@@ -107,7 +107,7 @@ static int tunnel_socket_open(struct Connection *conn)
     execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist_getlist());
     _exit(127);
   }
-  mutt_sig_unblock_system(1);
+  mutt_sig_unblock_system(true);
 
   if (pid == -1)
   {

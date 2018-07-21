@@ -232,13 +232,7 @@ WHERE bool ImapPeek;
 WHERE bool SslUsesystemcerts;
 WHERE bool SslUseSslv2;
 #endif /* USE_SSL_GNUTLS */
-WHERE bool SslUseSslv3;
-WHERE bool SslUseTlsv1;
-WHERE bool SslUseTlsv11;
-WHERE bool SslUseTlsv12;
 WHERE bool SslForceTls;
-WHERE bool SslVerifyDates;
-WHERE bool SslVerifyHost;
 #if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
 WHERE bool SslVerifyPartialChains;
 #endif /* USE_SSL_OPENSSL */
@@ -252,7 +246,6 @@ WHERE bool MessageCacheClean;
 WHERE bool ReadOnly;
 WHERE bool Resolve;
 WHERE bool ResumeDraftFiles;
-WHERE bool ResumeEditedDraftFiles;
 WHERE bool SaveAddress;
 WHERE bool SaveEmpty;
 WHERE bool Score;
@@ -265,9 +258,6 @@ WHERE bool Suspend;
 WHERE bool TextFlowed;
 WHERE bool TsEnabled;
 WHERE bool UseDomain;
-#ifdef HAVE_GETADDRINFO
-WHERE bool UseIpv6;
-#endif
 WHERE bool WaitKey;
 WHERE bool WrapSearch;
 WHERE bool WriteBcc; /**< write out a bcc header? */

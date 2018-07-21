@@ -575,7 +575,7 @@ int text_enriched_handler(struct Body *a, struct State *s)
         state = DONE;
         break;
 
-      case DONE: /* not reached, but gcc complains if this is absent */
+      case DONE: /* not reached */
         break;
     }
   }

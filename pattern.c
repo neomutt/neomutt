@@ -756,8 +756,6 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
   int num;
   unsigned char c;
 
-  /* this cast looks dangerous, but is already all over this code
-   * (explicit or not) */
   num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
   c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
   if (toupper(c) == 'K')
@@ -2010,7 +2008,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
         break;
-      return pat->not ^ ((h->security & PGPKEY) == PGPKEY);
+      return pat->not ^ ((h->security & PGP_KEY) == PGP_KEY);
     case MUTT_XLABEL:
       if (!h->env)
         return 0;

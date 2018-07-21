@@ -108,27 +108,27 @@ void mutt_adv_mktemp(char *buf, size_t buflen)
 
 /**
  * mutt_expand_path - Create the canonical path
- * @param s    Buffer with path
- * @param slen Length of buffer
+ * @param buf    Buffer with path
+ * @param buflen Length of buffer
  * @retval ptr The expanded string
  *
  * @note The path is expanded in-place
  */
-char *mutt_expand_path(char *s, size_t slen)
+char *mutt_expand_path(char *buf, size_t buflen)
 {
-  return mutt_expand_path_regex(s, slen, false);
+  return mutt_expand_path_regex(buf, buflen, false);
 }
 
 /**
  * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
- * @param s     Buffer with path
- * @param slen  Length of buffer
+ * @param buf     Buffer with path
+ * @param buflen  Length of buffer
  * @param regex If true, escape any regex characters
  * @retval ptr The expanded string
  *
  * @note The path is expanded in-place
  */
-char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
+char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 {
   char p[PATH_MAX] = "";
   char q[PATH_MAX] = "";
@@ -143,23 +143,23 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
   {
     recurse = false;
 
-    switch (*s)
+    switch (*buf)
     {
       case '~':
       {
-        if (*(s + 1) == '/' || *(s + 1) == 0)
+        if (*(buf + 1) == '/' || *(buf + 1) == 0)
         {
           mutt_str_strfcpy(p, NONULL(HomeDir), sizeof(p));
-          tail = s + 1;
+          tail = buf + 1;
         }
         else
         {
           struct passwd *pw = NULL;
-          t = strchr(s + 1, '/');
+          t = strchr(buf + 1, '/');
           if (t)
             *t = 0;
 
-          pw = getpwnam(s + 1);
+          pw = getpwnam(buf + 1);
           if (pw)
           {
             mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));
@@ -177,7 +177,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
             if (t)
               *t = '/';
             *p = '\0';
-            tail = s;
+            tail = buf;
           }
         }
       }
@@ -205,7 +205,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
         else
           snprintf(p, sizeof(p), "%s/", NONULL(Folder));
 
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
@@ -213,7 +213,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
 
       case '@':
       {
-        struct Address *alias = mutt_alias_lookup(s + 1);
+        struct Address *alias = mutt_alias_lookup(buf + 1);
         if (alias)
         {
           struct Header *h = mutt_header_new();
@@ -234,28 +234,28 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
       case '>':
       {
         mutt_str_strfcpy(p, NONULL(Mbox), sizeof(p));
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
       case '<':
       {
         mutt_str_strfcpy(p, NONULL(Record), sizeof(p));
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
       case '!':
       {
-        if (*(s + 1) == '!')
+        if (*(buf + 1) == '!')
         {
           mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
-          tail = s + 2;
+          tail = buf + 2;
         }
         else
         {
           mutt_str_strfcpy(p, NONULL(Spoolfile), sizeof(p));
-          tail = s + 1;
+          tail = buf + 1;
         }
       }
       break;
@@ -263,21 +263,21 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
       case '-':
       {
         mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
       case '^':
       {
         mutt_str_strfcpy(p, NONULL(CurrentFolder), sizeof(p));
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
       default:
       {
         *p = '\0';
-        tail = s;
+        tail = buf;
       }
     }
 
@@ -289,17 +289,17 @@ char *mutt_expand_path_regex(char *s, size_t slen, bool regex)
     else
       snprintf(tmp, sizeof(tmp), "%s%s", p, tail);
 
-    mutt_str_strfcpy(s, tmp, slen);
+    mutt_str_strfcpy(buf, tmp, buflen);
   } while (recurse);
 
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
-   * folders. May possibly fail, in which case s should be the same. */
-  if (mx_is_imap(s))
-    imap_expand_path(s, slen);
+   * folders. May possibly fail, in which case buf should be the same. */
+  if (mx_is_imap(buf))
+    imap_expand_path(buf, buflen);
 #endif
 
-  return s;
+  return buf;
 }
 
 /**
@@ -418,16 +418,16 @@ static FILE *frandom;
 
 /**
  * mutt_randbuf - Fill a buffer with randomness
- * @param out Buffer for result
- * @param len Size of buffer
+ * @param buf    Buffer for result
+ * @param buflen Size of buffer
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_randbuf(void *out, size_t len)
+int mutt_randbuf(void *buf, size_t buflen)
 {
-  if (len > 1048576)
+  if (buflen > 1048576)
   {
-    mutt_error(_("mutt_randbuf len=%zu"), len);
+    mutt_error(_("mutt_randbuf buflen=%zu"), buflen);
     return -1;
   }
 /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
@@ -435,9 +435,9 @@ int mutt_randbuf(void *out, size_t len)
   long ret;
   do
   {
-    ret = syscall(SYS_getrandom, out, len, 0, 0, 0, 0);
+    ret = syscall(SYS_getrandom, buf, buflen, 0, 0, 0, 0);
   } while ((ret == -1) && (errno == EINTR));
-  if (ret == len)
+  if (ret == buflen)
     return 0;
 #endif
   /* let's try urandom in case we're on an old kernel, or the user has
@@ -452,7 +452,7 @@ int mutt_randbuf(void *out, size_t len)
     }
     setbuf(frandom, NULL);
   }
-  if (fread(out, 1, len, frandom) != len)
+  if (fread(buf, 1, buflen, frandom) != buflen)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
     return -1;
@@ -465,16 +465,16 @@ static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
 /**
  * mutt_rand_base32 - Fill a buffer with a base32-encoded random string
- * @param out Buffer for result
- * @param len Length of buffer
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
  */
-void mutt_rand_base32(void *out, size_t len)
+void mutt_rand_base32(void *buf, size_t buflen)
 {
-  uint8_t *p = out;
+  uint8_t *p = buf;
 
-  if (mutt_randbuf(p, len) < 0)
+  if (mutt_randbuf(p, buflen) < 0)
     mutt_exit(1);
-  for (size_t pos = 0; pos < len; pos++)
+  for (size_t pos = 0; pos < buflen; pos++)
     p[pos] = base32[p[pos] % 32];
 }
 
@@ -506,8 +506,8 @@ uint64_t mutt_rand64(void)
 
 /**
  * mutt_mktemp_full - Create a temporary filename
- * @param s      Buffer for result
- * @param slen   Length of buffer
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
  * @param prefix Prefix for filename
  * @param suffix Suffix for filename
  * @param src    Source file of caller
@@ -515,23 +515,23 @@ uint64_t mutt_rand64(void)
  *
  * @note This doesn't create the file, only the name
  */
-void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
+void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
-  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
+  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                       (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
-  if (n >= slen)
+  if (n >= buflen)
   {
     mutt_debug(1,
                "%s:%d: ERROR: insufficient buffer space to hold temporary "
-               "filename! slen=%zu but need %zu\n",
-               src, line, slen, n);
+               "filename! buflen=%zu but need %zu\n",
+               src, line, buflen, n);
   }
-  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s);
-  if (unlink(s) && errno != ENOENT)
+  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
+  if (unlink(buf) && errno != ENOENT)
   {
-    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s,
+    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, buf,
                strerror(errno), errno);
   }
 }
@@ -781,42 +781,42 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
 
 /**
  * mutt_save_path - Turn an email address into a filename (for saving)
- * @param d     Buffer for the result
- * @param dsize Length of buffer
- * @param a     Email address to use
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param addr   Email address to use
  *
  * If the user hasn't set `$save_address` the name will be trucated to the '@'
  * character.
  */
-void mutt_save_path(char *d, size_t dsize, struct Address *a)
+void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
 {
-  if (a && a->mailbox)
+  if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(d, a->mailbox, dsize);
+    mutt_str_strfcpy(buf, addr->mailbox, buflen);
     if (!SaveAddress)
     {
-      char *p = strpbrk(d, "%@");
+      char *p = strpbrk(buf, "%@");
       if (p)
         *p = 0;
     }
-    mutt_str_strlower(d);
+    mutt_str_strlower(buf);
   }
   else
-    *d = 0;
+    *buf = 0;
 }
 
 /**
  * mutt_safe_path - Make a safe filename from an email address
- * @param s Buffer for the result
- * @param l Length of buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  * @param a Address to use
  *
  * The filename will be stripped of '/', space, etc to make it safe.
  */
-void mutt_safe_path(char *s, size_t l, struct Address *a)
+void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 {
-  mutt_save_path(s, l, a);
-  for (char *p = s; *p; p++)
+  mutt_save_path(buf, buflen, a);
+  for (char *p = buf; *p; p++)
     if ((*p == '/') || ISSPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
@@ -1512,25 +1512,25 @@ const char *mutt_make_version(void)
 
 /**
  * mutt_encode_path - Convert a path into the user's preferred character set
- * @param dest Buffer for the result
- * @param dlen Length of buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  * @param src  Path to convert (OPTIONAL)
  *
- * If `src` is NULL, the path in `dest` will be converted in-place.
+ * If `src` is NULL, the path in `buf` will be converted in-place.
  */
-void mutt_encode_path(char *dest, size_t dlen, const char *src)
+void mutt_encode_path(char *buf, size_t buflen, const char *src)
 {
   char *p = mutt_str_strdup(src);
   int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
-  size_t len = mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
+  size_t len = mutt_str_strfcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src), buflen);
 
   /* convert the path to POSIX "Portable Filename Character Set" */
   for (size_t i = 0; i < len; ++i)
   {
-    if (!isalnum(dest[i]) && !strchr("/.-_", dest[i]))
+    if (!isalnum(buf[i]) && !strchr("/.-_", buf[i]))
     {
-      dest[i] = '_';
+      buf[i] = '_';
     }
   }
   FREE(&p);
@@ -1580,42 +1580,42 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 
 /**
  * mutt_get_parent_path - Find the parent of a path (or mailbox)
- * @param output Buffer for the result
  * @param path   Path to use
- * @param olen   Length of buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  */
-void mutt_get_parent_path(char *output, char *path, size_t olen)
+void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
 #ifdef USE_IMAP
   if (mx_is_imap(path))
-    imap_get_parent_path(output, path, olen);
+    imap_get_parent_path(buf, path, buflen);
   else
 #endif
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(path))
-    mutt_str_strfcpy(output, NONULL(Folder), olen);
+    mutt_str_strfcpy(buf, NONULL(Folder), buflen);
   else
 #endif
   {
-    mutt_str_strfcpy(output, path, olen);
-    int n = mutt_str_strlen(output);
+    mutt_str_strfcpy(buf, path, buflen);
+    int n = mutt_str_strlen(buf);
     if (n == 0)
       return;
 
     /* remove any final trailing '/' */
-    if (output[n - 1] == '/')
-      output[n - 1] = '\0';
+    if (buf[n - 1] == '/')
+      buf[n - 1] = '\0';
 
     /* Remove everything until the next slash */
-    for (n--; ((n >= 0) && (output[n] != '/')); n--)
+    for (n--; ((n >= 0) && (buf[n] != '/')); n--)
       ;
 
     if (n > 0)
-      output[n] = '\0';
+      buf[n] = '\0';
     else
     {
-      output[0] = '/';
-      output[1] = '\0';
+      buf[0] = '/';
+      buf[1] = '\0';
     }
   }
 }

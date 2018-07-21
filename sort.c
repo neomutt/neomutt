@@ -452,7 +452,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
       int i = Sort;
       Sort = SortAux;
       if (ctx->tree)
-        ctx->tree = mutt_sort_subthreads(ctx->tree, 1);
+        ctx->tree = mutt_sort_subthreads(ctx->tree, true);
       Sort = i;
       OptSortSubthreads = false;
     }

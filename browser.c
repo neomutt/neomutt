@@ -1187,7 +1187,7 @@ void mutt_browser_select_dir(char *f)
 
   /* Method that will fetch the parent path depending on the
      type of the path. */
-  mutt_get_parent_path(LastDir, OldLastDir, sizeof(LastDir));
+  mutt_get_parent_path(OldLastDir, LastDir, sizeof(LastDir));
 }
 
 void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)

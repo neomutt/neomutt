@@ -52,6 +52,7 @@
 #include "imap/imap.h"
 #include "keymap.h"
 #include "maildir/maildir.h"
+#include "main.h"
 #include "menu.h"
 #include "mutt_account.h"
 #include "mutt_commands.h"
