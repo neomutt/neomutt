@@ -2204,15 +2204,10 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
 
-          bool ispipe;
           size_t scratchlen = mutt_str_strlen(scratch);
-          if (scratchlen == 0)
+          if (scratchlen != 0)
           {
-            ispipe = true;
-          }
-          else
-          {
-            ispipe = scratch[scratchlen - 1] == '|';
+            bool ispipe = scratch[scratchlen - 1] == '|';
             if ((url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
                 && !ispipe) /* Is this a file or a command meant to be run? */
             {
@@ -4252,15 +4247,10 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
 
-        bool ispipe;
         size_t scratchlen = mutt_str_strlen(scratch);
-        if (scratchlen == 0)
+        if (scratchlen != 0)
         {
-          ispipe = true;
-        }
-        else
-        {
-          ispipe = scratch[scratchlen - 1] == '|';
+          bool ispipe = scratch[scratchlen - 1] == '|';
           if ((url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
               && !ispipe) /* Is this a file or a command meant to be run? */
           {
