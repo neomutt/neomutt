@@ -2207,9 +2207,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           size_t scratchlen = mutt_str_strlen(scratch);
           if (scratchlen != 0)
           {
-            bool ispipe = scratch[scratchlen - 1] == '|';
             if ((url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
-                && !ispipe) /* Is this a file or a command meant to be run? */
+                && (scratch[scratchlen - 1] != '|')) /* Is this a file or a command meant to be run? */
             {
               struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
               if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
@@ -4250,9 +4249,8 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         size_t scratchlen = mutt_str_strlen(scratch);
         if (scratchlen != 0)
         {
-          bool ispipe = scratch[scratchlen - 1] == '|';
           if ((url_check_scheme(scratch) == U_UNKNOWN) /* probably a local file */
-              && !ispipe) /* Is this a file or a command meant to be run? */
+              && (scratch[scratchlen - 1] != '|')) /* Is this a file or a command meant to be run? */
           {
             struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
             if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
