@@ -1075,7 +1075,6 @@ static void restore_default(struct Option *p)
       free_mbtable((struct MbTable **) p->var);
       *((struct MbTable **) p->var) = parse_mbtable((char *) p->initial);
       break;
-    case DT_COMMAND:
     case DT_PATH:
     {
       char *init = (char *) p->initial;
@@ -1129,6 +1128,20 @@ static void restore_default(struct Option *p)
         mutt_regex_free(ptr);
 
       *ptr = mutt_regex_create((const char *) p->initial, p->type, NULL);
+      break;
+    }
+    case DT_COMMAND:
+    {
+      char *init = (char *) p->initial;
+      FREE((char **) p->var);
+      if (init)
+      {
+        char command[LONG_STRING];
+        mutt_str_strfcpy(command, init, sizeof(command));
+        mutt_expand_path(command, sizeof(command));
+        *((char **) p->var) = mutt_str_strdup(command);
+      }
+
       break;
     }
   }
@@ -2145,7 +2158,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                           *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
-        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_COMMAND))
+        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) ||
+                 (DTYPE(MuttVars[idx].type) == DT_COMMAND))
         {
           tmp2[0] = '\0';
           mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
@@ -2189,6 +2203,21 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           char scratch[PATH_MAX];
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
+
+          size_t scratchlen = mutt_str_strlen(scratch);
+          if (scratchlen != 0)
+          {
+            if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
+                (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
+            {
+              struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+              if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+              {
+                mutt_error(_("Error: impossible to build path of '%s'."), scratch);
+              }
+            }
+          }
+
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
           {
             mutt_log_set_file(scratch, true);
@@ -4216,12 +4245,36 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         char scratch[LONG_STRING];
         mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
+
+        size_t scratchlen = mutt_str_strlen(scratch);
+        if (scratchlen != 0)
+        {
+          if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
+              (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
+          {
+            struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+            if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+            {
+              mutt_error(_("Error: impossible to build path of '%s'."), scratch);
+            }
+          }
+        }
+
+        FREE((void *) MuttVars[idx].var);
+        *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
+        break;
+      }
+      case DT_COMMAND:
+      {
+        char scratch[LONG_STRING];
+        mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
+        mutt_expand_path(scratch, sizeof(scratch));
+
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
         break;
       }
       case DT_STRING:
-      case DT_COMMAND:
       {
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup((char *) val->var);
@@ -4447,7 +4500,8 @@ int var_to_string(int idx, char *val, size_t len)
 
   tmp[0] = '\0';
 
-  if ((DTYPE(MuttVars[idx].type) == DT_STRING) || (DTYPE(MuttVars[idx].type) == DT_PATH))
+  if ((DTYPE(MuttVars[idx].type) == DT_STRING) || (DTYPE(MuttVars[idx].type) == DT_PATH) ||
+      (DTYPE(MuttVars[idx].type) == DT_COMMAND))
   {
     mutt_str_strfcpy(tmp, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp));
     if (DTYPE(MuttVars[idx].type) == DT_PATH)
