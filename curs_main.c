@@ -458,7 +458,10 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->msgcount; i++)
     {
       if (!i)
+      {
         ctx->vcount = 0;
+        ctx->vsize = 0;
+      }
 
       if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx,
                             ctx->hdrs[i], NULL))
