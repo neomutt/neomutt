@@ -2314,7 +2314,10 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
-    if (mutt_str_strcmp(buf, "~A") != 0)
+    char *pbuf = buf;
+    while (*pbuf == ' ')
+      pbuf++;
+    if (mutt_str_strcmp(pbuf, "~A") != 0)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
