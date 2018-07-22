@@ -2202,18 +2202,23 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         {
           char scratch[PATH_MAX];
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
-          mutt_expand_path(scratch, sizeof(scratch));
 
-          size_t scratchlen = mutt_str_strlen(scratch);
-          if (scratchlen != 0)
+          if ((mutt_str_strcmp(MuttVars[idx].name, "pager") != 0) ||
+              (mutt_str_strcmp(buf->data, "builtin") != 0))
           {
-            if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
-                (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
+            mutt_expand_path(scratch, sizeof(scratch));
+
+            size_t scratchlen = mutt_str_strlen(scratch);
+            if (scratchlen != 0)
             {
-              struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-              if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+              if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
+                  (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
               {
-                mutt_error(_("Error: impossible to build path of '%s'."), scratch);
+                struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+                if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+                {
+                  mutt_error(_("Error: impossible to build path of '%s'."), scratch);
+                }
               }
             }
           }
