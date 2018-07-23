@@ -1,9 +1,9 @@
 /**
  * @file
- * Structure for managing a table of multibyte characters
+ * An inherited config item
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,22 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MBTABLE_H
-#define _MUTT_MBTABLE_H
+#ifndef _CONFIG_INHERITANCE_H
+#define _CONFIG_INHERITANCE_H
+
+#include <stdint.h>
 
 /**
- * struct MbTable - multibyte character table
- *
- * Allows for direct access to the individual multibyte characters in a
- * string.  This is used for the FlagChars, FromChars, StatusChars and ToChars
- * option types.
+ * struct Inheritance - An inherited config item
  */
-struct MbTable
+struct Inheritance
 {
-  int len;             /**< number of characters */
-  char **chars;        /**< the array of multibyte character strings */
-  char *segmented_str; /**< each chars entry points inside this string */
-  char *orig_str;
+  struct HashElem *parent; /**< HashElem of parent config item */
+  const char *name;        /**< Name of this config item */
+  struct Account *ac;      /**< Account holding this config item */
+  intptr_t var;            /**< (Pointer to) value, of config item */
 };
 
-#endif /* _MUTT_MBTABLE_H */
+#endif /* _CONFIG_INHERITANCE_H */

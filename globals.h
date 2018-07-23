@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "where.h"
+#include "config/lib.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
@@ -35,6 +36,8 @@
 #include "ncrypt/ncrypt.h"
 #include "sort.h"
 #endif /* MAIN_C */
+
+WHERE struct ConfigSet *Config;
 
 WHERE struct Context *Context;
 

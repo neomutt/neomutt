@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -2132,7 +2133,7 @@ int mutt_index_menu(void)
          * again while reading the message.
          */
         if (op == OP_DISPLAY_HEADERS)
-          Weed = !Weed;
+          bool_str_toggle(Config, "weed", NULL);
 
         OptNeedResort = false;
 
@@ -3342,7 +3343,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        SidebarVisible = !SidebarVisible;
+        bool_str_toggle(Config, "sidebar_visible", NULL);
         mutt_window_reflow();
         break;
 
@@ -3393,4 +3394,43 @@ void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
     }
   }
   curhdr->pair = ColorDefs[MT_COLOR_NORMAL];
+}
+
+/**
+ * mutt_reply_listener - Listen for config changes to "reply_regex"
+ * @param cs   Config items
+ * @param he   HashElem representing config item
+ * @param name Name of the config item
+ * @param ev   Event type, e.g. #CE_SET
+ * @retval true Continue notifying
+ */
+bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
+                         const char *name, enum ConfigEvent ev)
+{
+  if (mutt_str_strcmp(name, "reply_regex") != 0)
+    return true;
+
+  if (!Context)
+    return true;
+
+  regmatch_t pmatch[1];
+
+  for (int i = 0; i < Context->msgcount; i++)
+  {
+    struct Envelope *e = Context->hdrs[i]->env;
+    if (!e || !e->subject)
+      continue;
+
+    if (ReplyRegex && ReplyRegex->regex &&
+        (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
+    {
+      e->real_subj = e->subject + pmatch[0].rm_eo;
+      continue;
+    }
+
+    e->real_subj = e->subject;
+  }
+
+  OptResortInit = true; /* trigger a redraw of the index */
+  return true;
 }

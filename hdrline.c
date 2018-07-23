@@ -30,6 +30,7 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "hdrline.h"
@@ -38,7 +39,6 @@
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_parse.h"
 #include "mutt_thread.h"

@@ -27,6 +27,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
+#include "config/lib.h"
 
 struct Context;
 struct EnterState;
@@ -70,5 +72,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
+
+bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
+                         const char *name, enum ConfigEvent ev);
 
 #endif /* _MUTT_PROTOS_H */

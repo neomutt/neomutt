@@ -29,14 +29,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "mutt_lua.h"
+#include "globals.h"
 #include "mailbox.h"
-#include "mbtable.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
 #include "muttlib.h"
+#include "myvar.h"
 
 static int handle_panic(lua_State *l)
 {
@@ -112,14 +114,8 @@ static int lua_mutt_call(lua_State *l)
 
 static int lua_mutt_set(lua_State *l)
 {
-  int rc = -1;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * lua_mutt_set(%s)\n", param);
-  struct Option opt;
-  char err_str[LONG_STRING];
-  struct Buffer err = { 0 };
-  err.data = err_str;
-  err.dsize = sizeof(err_str);
 
   if (mutt_str_strncmp("my_", param, 3) == 0)
   {
@@ -127,14 +123,20 @@ static int lua_mutt_set(lua_State *l)
     myvar_set(param, val);
     return 0;
   }
-  else if (!mutt_option_get(param, &opt))
+
+  struct HashElem *he = cs_get_elem(Config, param);
+  if (!he)
   {
-    luaL_error(l, "Error getting parameter %s", param);
+    luaL_error(l, "NeoMutt parameter not found %s", param);
     return -1;
   }
 
-  rc = 0;
-  switch (DTYPE(opt.type))
+  struct ConfigDef *cdef = he->data;
+
+  int rc = 0;
+  struct Buffer *err = mutt_buffer_alloc(STRING);
+
+  switch (DTYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_MBTABLE:
@@ -143,60 +145,38 @@ static int lua_mutt_set(lua_State *l)
     case DT_COMMAND:
     case DT_SORT:
     case DT_STRING:
-      opt.var = mutt_str_strdup(lua_tostring(l, -1));
-      rc = mutt_option_set(&opt, &err);
-      FREE(&opt.var);
-      break;
-    case DT_QUAD:
+    case DT_MAGIC:
     {
-      long num = lua_tointeger(l, -1);
-      opt.var = (void *) num;
-      if ((num != MUTT_YES) && (num != MUTT_NO) && (num != MUTT_ASKYES) && (num != MUTT_ASKNO))
-      {
-        luaL_error(l,
-                   "Invalid opt for quad option %s (one of "
-                   "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
-                   "mutt.QUAD_ASKNO",
-                   param);
+      const char *value = lua_tostring(l, -1);
+      int rv = cs_he_string_set(Config, he, value, err);
+      if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
-      }
-      else
-      {
-        rc = mutt_option_set(&opt, &err);
-      }
       break;
     }
-    case DT_MAGIC:
-      if (mx_set_magic(lua_tostring(l, -1)))
-      {
-        luaL_error(l, "Invalid mailbox type: %s", opt.var);
-        rc = -1;
-      }
-      break;
     case DT_NUMBER:
+    case DT_QUAD:
     {
-      lua_Integer i = lua_tointeger(l, -1);
-      if ((i > SHRT_MIN) && (i < SHRT_MAX))
-      {
-        opt.var = (void *) lua_tointeger(l, -1);
-        rc = mutt_option_set(&opt, &err);
-      }
-      else
-      {
-        luaL_error(l, "Integer overflow of %d, not in %d-%d", i, SHRT_MIN, SHRT_MAX);
+      const intptr_t value = lua_tointeger(l, -1);
+      int rv = cs_he_native_set(Config, he, value, err);
+      if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
-      }
       break;
     }
     case DT_BOOL:
-      *(bool *) opt.var = lua_toboolean(l, -1);
+    {
+      const intptr_t value = lua_toboolean(l, -1);
+      int rv = cs_he_native_set(Config, he, value, err);
+      if (CSR_RESULT(rv) != CSR_SUCCESS)
+        rc = -1;
       break;
+    }
     default:
-      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", opt.type, param);
+      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", DTYPE(cdef->type), param);
       rc = -1;
       break;
   }
 
+  mutt_buffer_free(&err);
   return rc;
 }
 
@@ -204,69 +184,69 @@ static int lua_mutt_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
   mutt_debug(2, " * lua_mutt_get(%s)\n", param);
-  struct Option opt;
 
-  if (mutt_option_get(param, &opt))
+  if (mutt_str_strncmp("my_", param, 3) == 0)
   {
-    switch (DTYPE(opt.type))
+    const char *mv = myvar_get(param);
+    if (!mv)
     {
-      case DT_ADDRESS:
-      {
-        char value[LONG_STRING] = "";
-        mutt_addr_write(value, LONG_STRING, *((struct Address **) opt.var), false);
-        lua_pushstring(l, value);
-        return 1;
-      }
-      case DT_MBTABLE:
-      {
-        struct MbTable *tbl = *(struct MbTable **) opt.var;
-        lua_pushstring(l, tbl->orig_str);
-        return 1;
-      }
-      case DT_PATH:
-      case DT_COMMAND:
-      case DT_STRING:
-        if (mutt_str_strncmp("my_", param, 3) == 0)
-        {
-          char *value = (char *) opt.initial;
-          lua_pushstring(l, value);
-        }
-        else
-        {
-          char *value = NONULL(*((char **) opt.var));
-          lua_pushstring(l, value);
-        }
-        return 1;
-      case DT_QUAD:
-        lua_pushinteger(l, *(unsigned char *) opt.var);
-        return 1;
-      case DT_REGEX:
-      case DT_MAGIC:
-      case DT_SORT:
-      {
-        char buf[LONG_STRING];
-        if (!mutt_option_to_string(&opt, buf, LONG_STRING))
-        {
-          luaL_error(l, "Couldn't load %s", param);
-          return -1;
-        }
-        lua_pushstring(l, buf);
-        return 1;
-      }
-      case DT_NUMBER:
-        lua_pushinteger(l, (signed short) *((unsigned long *) opt.var));
-        return 1;
-      case DT_BOOL:
-        lua_pushboolean(l, *((bool *) opt.var));
-        return 1;
-      default:
-        luaL_error(l, "NeoMutt parameter type %d unknown for %s", opt.type, param);
-        return -1;
+      luaL_error(l, "NeoMutt parameter not found %s", param);
+      return -1;
     }
+
+    lua_pushstring(l, mv);
+    return 1;
   }
-  mutt_debug(2, " * error\n");
-  luaL_error(l, "NeoMutt parameter not found %s", param);
-  return -1;
+
+  struct HashElem *he = cs_get_elem(Config, param);
+  if (!he)
+  {
+    mutt_debug(2, " * error\n");
+    luaL_error(l, "NeoMutt parameter not found %s", param);
+    return -1;
+  }
+
+  struct ConfigDef *cdef = he->data;
+
+  switch (DTYPE(cdef->type))
+  {
+    case DT_ADDRESS:
+    case DT_COMMAND:
+    case DT_MAGIC:
+    case DT_MBTABLE:
+    case DT_PATH:
+    case DT_REGEX:
+    case DT_SORT:
+    case DT_STRING:
+    {
+      struct Buffer *value = mutt_buffer_alloc(STRING);
+      int rc = cs_he_string_get(Config, he, value);
+      if (CSR_RESULT(rc) != CSR_SUCCESS)
+      {
+        mutt_buffer_free(&value);
+        return -1;
+      }
+
+      struct Buffer *escaped = mutt_buffer_alloc(STRING);
+      escape_string(escaped, value->data);
+      lua_pushstring(l, escaped->data);
+      mutt_buffer_free(&value);
+      mutt_buffer_free(&escaped);
+      return 1;
+    }
+    case DT_QUAD:
+      lua_pushinteger(l, *(unsigned char *) cdef->var);
+      return 1;
+    case DT_NUMBER:
+      lua_pushinteger(l, (signed short) *((unsigned long *) cdef->var));
+      return 1;
+    case DT_BOOL:
+      lua_pushboolean(l, *((bool *) cdef->var));
+      return 1;
+    default:
+      luaL_error(l, "NeoMutt parameter type %d unknown for %s", cdef->type, param);
+      return -1;
+  }
 }
 
 static int lua_mutt_enter(lua_State *l)

@@ -144,22 +144,6 @@ struct MxOps
   int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
 };
 
-/**
- * enum MailboxFormat - Supported mailbox formats
- */
-enum MailboxFormat
-{
-  MUTT_MBOX = 1,
-  MUTT_MMDF,
-  MUTT_MH,
-  MUTT_MAILDIR,
-  MUTT_NNTP,
-  MUTT_IMAP,
-  MUTT_NOTMUCH,
-  MUTT_POP,
-  MUTT_COMPRESSED,
-};
-
 #define MMDF_SEP "\001\001\001\001\n"
 
 void mbox_reset_atime(struct Context *ctx, struct stat *st);

@@ -1571,3 +1571,51 @@ int mutt_menu_loop(struct Menu *menu)
   }
   /* not reached */
 }
+
+/**
+ * mutt_menu_listener - Listen for config changes affecting the menu
+ * @param cs   Config items
+ * @param he   HashElem representing config item
+ * @param name Name of the config item
+ * @param ev   Event type, e.g. #CE_SET
+ * @retval true Continue notifying
+ */
+bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he,
+                        const char *name, enum ConfigEvent ev)
+{
+  const struct ConfigDef *cdef = he->data;
+  int flags = cdef->flags;
+
+  if (flags == 0)
+    return true;
+
+  if (flags & R_INDEX)
+    mutt_menu_set_redraw_full(MENU_MAIN);
+  if (flags & R_PAGER)
+    mutt_menu_set_redraw_full(MENU_PAGER);
+  if (flags & R_PAGER_FLOW)
+  {
+    mutt_menu_set_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+  }
+
+  if (flags & R_RESORT_SUB)
+    OptSortSubthreads = true;
+  if (flags & R_RESORT)
+    OptNeedResort = true;
+  if (flags & R_RESORT_INIT)
+    OptResortInit = true;
+  if (flags & R_TREE)
+    OptRedrawTree = true;
+
+  if (flags & R_REFLOW)
+    mutt_window_reflow();
+#ifdef USE_SIDEBAR
+  if (flags & R_SIDEBAR)
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
+#endif
+  if (flags & R_MENU)
+    mutt_menu_set_current_redraw_full();
+
+  return true;
+}

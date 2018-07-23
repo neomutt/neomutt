@@ -26,11 +26,16 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "config/lib.h"
 
 /* These Config Variables are only used in menu.c */
 extern short MenuContext;
 extern bool  MenuMoveOff; /**< allow menu to scroll past last entry */
 extern bool  MenuScroll;  /**< scroll menu instead of implicit next-page */
+
+struct ConfigSet;
+struct HashElem;
+enum ConfigEvent;
 
 #define REDRAW_INDEX          (1 << 0)
 #define REDRAW_MOTION         (1 << 1)
@@ -135,5 +140,7 @@ void         mutt_menu_set_current_redraw_full(void);
 void         mutt_menu_set_current_redraw(int redraw);
 void         mutt_menu_set_redraw_full(int menu_type);
 void         mutt_menu_set_redraw(int menu_type, int redraw);
+
+bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 
 #endif /* MUTT_MENU_H */

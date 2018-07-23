@@ -30,6 +30,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -647,7 +648,7 @@ int mutt_select_sort(int reverse)
   if (reverse)
     new_sort |= SORT_REVERSE;
 
-  Sort = new_sort;
+  cs_str_native_set(Config, "sort", new_sort, NULL);
   return (Sort != method) ? 0 : -1; /* no need to resort if it's the same */
 }
 
@@ -694,6 +695,7 @@ void mutt_enter_command(void)
   mutt_buffer_init(&err);
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
+  err.dptr = err.data;
   mutt_buffer_init(&token);
   r = mutt_parse_rc_line(buffer, &token, &err);
   FREE(&token.data);

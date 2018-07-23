@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "recvattach.h"
@@ -1066,7 +1067,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
     switch (op)
     {
       case OP_DISPLAY_HEADERS:
-        Weed = !Weed;
+        bool_str_toggle(Config, "weed", NULL);
         /* fallthrough */
 
       case OP_VIEW_ATTACH:

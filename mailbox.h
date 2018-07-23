@@ -91,7 +91,7 @@ int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *t
 void mx_fastclose_mailbox(struct Context *ctx);
 
 int mx_get_magic(const char *path);
-int mx_set_magic(const char *s);
+int mx_check_mailbox(struct Context *ctx, int *index_hint);
 #ifdef USE_IMAP
 bool mx_is_imap(const char *p);
 #endif

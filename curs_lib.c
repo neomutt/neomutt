@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "curs_lib.h"
@@ -53,6 +54,7 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
+#include "sidebar.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif
