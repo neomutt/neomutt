@@ -1069,6 +1069,7 @@ static void restore_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
+    case DT_COMMAND:
       mutt_str_replace((char **) p->var, (char *) p->initial);
       break;
     case DT_MBTABLE:
@@ -1130,20 +1131,6 @@ static void restore_default(struct Option *p)
       *ptr = mutt_regex_create((const char *) p->initial, p->type, NULL);
       break;
     }
-    case DT_COMMAND:
-    {
-      char *init = (char *) p->initial;
-      FREE((char **) p->var);
-      if (init)
-      {
-        char command[LONG_STRING];
-        mutt_str_strfcpy(command, init, sizeof(command));
-        mutt_expand_path(command, sizeof(command));
-        *((char **) p->var) = mutt_str_strdup(command);
-      }
-
-      break;
-    }
   }
 
   if (p->flags & R_INDEX)
@@ -1182,11 +1169,11 @@ static void set_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
+    case DT_COMMAND:
       if (!p->initial && *((char **) p->var))
         p->initial = (unsigned long) mutt_str_strdup(*((char **) p->var));
       break;
     case DT_PATH:
-    case DT_COMMAND:
       if (!p->initial && *((char **) p->var))
       {
         char *cp = mutt_str_strdup(*((char **) p->var));
@@ -2158,8 +2145,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                           *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
-        else if ((DTYPE(MuttVars[idx].type) == DT_PATH) ||
-                 (DTYPE(MuttVars[idx].type) == DT_COMMAND))
+        else if (DTYPE(MuttVars[idx].type) == DT_PATH)
         {
           tmp2[0] = '\0';
           mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
@@ -2197,28 +2183,22 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           FREE(&myvar);
           myvar = "don't resort";
         }
-        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_PATH) ||
-                                (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
+        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_PATH))
         {
           char scratch[PATH_MAX];
           mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
+          mutt_expand_path(scratch, sizeof(scratch));
 
-          if ((mutt_str_strcmp(MuttVars[idx].name, "pager") != 0) ||
-              (mutt_str_strcmp(buf->data, "builtin") != 0))
+          size_t scratchlen = mutt_str_strlen(scratch);
+          if (scratchlen != 0)
           {
-            mutt_expand_path(scratch, sizeof(scratch));
-
-            size_t scratchlen = mutt_str_strlen(scratch);
-            if (scratchlen != 0)
+            if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
+                (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
             {
-              if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
-                  (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
+              struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+              if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
               {
-                struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-                if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
-                {
-                  mutt_error(_("Error: impossible to build path of '%s'."), scratch);
-                }
+                mutt_error(_("Error: impossible to build path of '%s'."), scratch);
               }
             }
           }
@@ -2233,7 +2213,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
           }
         }
-        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
+        else if ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
+                                (DTYPE(MuttVars[idx].type) == DT_COMMAND)))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], buf->data) < 0) |
