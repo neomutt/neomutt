@@ -23,7 +23,6 @@
 #ifndef _CONFIG_REGEX_H
 #define _CONFIG_REGEX_H
 
-#include <features.h>
 #include <regex.h>
 #include <stdbool.h>
 
