@@ -364,7 +364,6 @@ $(PWD)/hcache:
 $(PGPEWRAP): $(PGPEWRAPOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
 
-
 # generated
 git_ver.h: $(ALL_FILES)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | \
@@ -423,6 +422,9 @@ distclean: clean
 	$(RM) $(DEPFILES) .clang_complete autosetup/jimsh0 config.h config.log \
 		conststrings.c contrib/Makefile doc/Makefile doc/neomutt.1 \
 		html Makefile po/Makefile test/Makefile
+
+# Tests for the config code
+config-test: libmutt.a libemail.a libconfig.a
 
 ##############################################################################
 # include generated dependency files

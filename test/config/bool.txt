@@ -1,0 +1,118 @@
+---- bool_test ---------------------------------------------
+---- set_list ----------------------------------------------
+boolean Apple = no
+boolean Banana = yes
+boolean Cherry = no
+boolean Damson = no
+boolean Elderberry = no
+boolean Fig = no
+boolean Guava = no
+boolean Hawthorn = no
+boolean Ilama = no
+boolean Jackfruit = no
+boolean Kumquat = no
+boolean Lemon = no
+boolean Mango = no
+boolean Nectarine = no
+quad Olive = no
+---- test_initial_values -----------------------------------
+Apple = 0
+Banana = 1
+Event: Apple has been set to 'yes'
+Event: Banana has been set to 'no'
+Apple = 'yes'
+Apple's initial value is 'no'
+Banana = 'no'
+Banana's initial value is 'yes'
+Event: Cherry has been initial-set to 'yes'
+Cherry = 'no'
+Cherry's initial value is 'yes'
+---- test_string_set ---------------------------------------
+Event: Damson has been set to 'no'
+Damson = 0, set by 'no'
+Event: Damson has been set to 'yes'
+Damson = 1, set by 'yes'
+Event: Damson has been set to 'no'
+Damson = 0, set by 'n'
+Event: Damson has been set to 'yes'
+Damson = 1, set by 'y'
+Event: Damson has been set to 'no'
+Damson = 0, set by 'false'
+Event: Damson has been set to 'yes'
+Damson = 1, set by 'true'
+Event: Damson has been set to 'no'
+Damson = 0, set by '0'
+Event: Damson has been set to 'yes'
+Damson = 1, set by '1'
+Event: Damson has been set to 'no'
+Damson = 0, set by 'off'
+Event: Damson has been set to 'yes'
+Damson = 1, set by 'on'
+Value of Damson wasn't changed
+Expected error: Invalid boolean value: nope
+Expected error: Invalid boolean value: ye
+Expected error: Invalid boolean value: 
+Expected error: 
+---- test_string_get ---------------------------------------
+Elderberry = 0, no
+Elderberry = 1, yes
+Expect error for next test
+Variable has an invalid value: 3
+---- test_native_set ---------------------------------------
+Event: Fig has been set to 'yes'
+Fig = 1, set to '1'
+Value of Fig wasn't changed
+Expected error: Invalid boolean value: -1
+Expected error: Invalid boolean value: 2
+---- test_native_get ---------------------------------------
+Guava = 1
+---- test_reset --------------------------------------------
+Event: Hawthorn has been reset to 'no'
+Reset: Hawthorn = 0
+Initial: Ilama = 0
+Event: Ilama has been set to 'yes'
+Set: Ilama = 1
+Expected error: validator_fail: Ilama, 0
+Reset: Ilama = 1
+---- test_validator ----------------------------------------
+Event: Jackfruit has been set to 'yes'
+validator_succeed: Jackfruit, 1
+String: Jackfruit = 1
+Event: Jackfruit has been set to 'yes'
+validator_succeed: Jackfruit, 1
+Native: Jackfruit = 1
+Event: Kumquat has been set to 'yes'
+validator_warn: Kumquat, 1
+String: Kumquat = 1
+Event: Kumquat has been set to 'yes'
+validator_warn: Kumquat, 1
+Native: Kumquat = 1
+Expected error: validator_fail: Lemon, 1
+String: Lemon = 0
+Expected error: validator_fail: Lemon, 1
+Native: Lemon = 0
+---- test_inherit ------------------------------------------
+Event: Mango has been set to 'yes'
+          Mango = 1
+    fruit:Mango = 1
+Value of Mango wasn't changed
+          Mango = 1
+    fruit:Mango = 0
+Event: fruit:Mango has been reset to 'yes'
+          Mango = 1
+    fruit:Mango = 1
+Event: Mango has been reset to 'no'
+          Mango = 0
+    fruit:Mango = 0
+---- test_toggle -------------------------------------------
+test 0
+Event: Nectarine has been set to 'yes'
+test 1
+Event: Nectarine has been set to 'no'
+test 0
+Event: Nectarine has been set to 'yes'
+test 1
+Event: Nectarine has been set to 'no'
+Expected error: Invalid boolean value: 8
+Expected error: 
+Expected error: Unknown var 'unknown'

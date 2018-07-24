@@ -1,0 +1,112 @@
+---- regex_test --------------------------------------------
+---- set_list ----------------------------------------------
+regex Apple = apple.*
+regex Banana = banana.*
+regex Cherry = cherry.*
+regex Damson = 
+regex Elderberry = elderberry.*
+regex Fig = 
+regex Guava = guava.*
+regex Hawthorn = 
+regex Ilama = 
+regex Jackfruit = jackfruit.*
+regex Kumquat = kumquat.*
+regex Lemon = 
+regex Mango = mango.*
+regex Nectarine = 
+regex Olive = olive.*
+regex Papaya = papaya.*
+regex Quince = quince.*
+regex Raspberry = raspberry.*
+regex Strawberry = 
+---- test_initial_values -----------------------------------
+Apple = apple.*
+Banana = banana.*
+Event: Apple has been set to 'car*'
+Event: Banana has been set to 'train*'
+Apple = 'car*'
+Apple's initial value is apple.*
+Banana = 'train*'
+Banana's initial value is banana.*
+Event: Cherry has been initial-set to 'up.*'
+Event: Cherry has been initial-set to 'down.*'
+Cherry = 'cherry.*'
+Cherry's initial value is 'down.*'
+---- test_string_set ---------------------------------------
+Event: Damson has been set to 'hello.*'
+Damson = 'hello.*', set by 'hello.*'
+Event: Damson has been set to 'world.*'
+Damson = 'world.*', set by 'world.*'
+Value of Damson wasn't changed
+Event: Damson has been set to ''
+Damson = '', set by ''
+Event: Damson has been set to ''
+Damson = '', set by ''
+Event: Elderberry has been set to 'hello.*'
+Elderberry = 'hello.*', set by 'hello.*'
+Event: Elderberry has been set to 'world.*'
+Elderberry = 'world.*', set by 'world.*'
+Value of Elderberry wasn't changed
+Event: Elderberry has been set to ''
+Elderberry = '', set by ''
+Event: Elderberry has been set to ''
+Elderberry = '', set by ''
+Expected error: Invalid back reference
+---- test_string_get ---------------------------------------
+Fig = '', ''
+Guava = 'guava.*', 'guava.*'
+Event: Hawthorn has been set to 'hawthorn'
+Hawthorn = 'hawthorn', 'hawthorn'
+---- test_native_set ---------------------------------------
+Event: Ilama has been set to 'hello.*'
+Ilama = 'hello.*', set by 'hello.*'
+Event: Ilama has been set to '!world.*'
+'!world.*', not flag set to 1
+Event: Jackfruit has been set to ''
+Jackfruit = '', set by NULL
+Expected error: Invalid back reference
+---- test_native_get ---------------------------------------
+Event: Lemon has been set to 'lemon.*'
+Lemon = 'lemon.*', 'lemon.*'
+---- test_reset --------------------------------------------
+Initial: Mango = 'mango.*'
+Event: Mango has been set to 'hello.*'
+Set: Mango = 'hello.*'
+Event: Mango has been reset to 'mango.*'
+Reset: Mango = 'mango.*'
+Expected error: Invalid back reference
+Initial: Olive = 'olive.*'
+Event: Olive has been set to 'hel*o'
+Set: Olive = 'hel*o'
+Expected error: validator_fail: Olive, (ptr)
+Reset: Olive = 'hel*o'
+---- test_validator ----------------------------------------
+Event: Papaya has been set to 'hello.*'
+validator_succeed: Papaya, (ptr)
+Regex: Papaya = hello.*
+Event: Papaya has been set to 'world.*'
+validator_succeed: Papaya, (ptr)
+Native: Papaya = world.*
+Event: Quince has been set to 'hello.*'
+validator_warn: Quince, (ptr)
+Regex: Quince = hello.*
+Event: Quince has been set to 'world.*'
+validator_warn: Quince, (ptr)
+Native: Quince = world.*
+Expected error: validator_fail: Raspberry, (ptr)
+Regex: Raspberry = raspberry.*
+Expected error: validator_fail: Raspberry, (ptr)
+Native: Raspberry = raspberry.*
+---- test_inherit ------------------------------------------
+Event: Strawberry has been set to 'hello.*'
+     Strawberry = hello.*
+fruit:Strawberry = hello.*
+Event: fruit:Strawberry has been set to 'world.*'
+     Strawberry = hello.*
+fruit:Strawberry = world.*
+Event: fruit:Strawberry has been reset to 'hello.*'
+     Strawberry = hello.*
+fruit:Strawberry = hello.*
+Event: Strawberry has been reset to ''
+     Strawberry = 
+fruit:Strawberry = 

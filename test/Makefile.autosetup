@@ -4,16 +4,44 @@ TEST_OBJS   = test/main.o \
 	      test/rfc2047.o \
 	      test/string.o
 
+
+CONFIG_OBJS	= test/config/main.o test/config/account.o \
+		  test/config/address.o test/config/bool.o \
+		  test/config/command.o test/config/common.o \
+		  test/config/dump/data.o test/config/dump/dump.o \
+		  test/config/dump/vars.o test/config/initial.o \
+		  test/config/long.o test/config/magic.o \
+		  test/config/mbtable.o test/config/number.o \
+		  test/config/path.o test/config/quad.o test/config/regex.o \
+		  test/config/set.o test/config/sort.o test/config/string.o \
+		  test/config/synonym.o
+
+CFLAGS	+= -Itest
+
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
+TEST_CONFIG = test/config-test$(EXEEXT)
+
 .PHONY: test
-test: $(TEST_BINARY)
+test: $(TEST_BINARY) $(TEST_CONFIG)
 	$(TEST_BINARY)
+	@for i in set account initial synonym address bool command long magic mbtable number path quad regex sort string; do \
+		$(TEST_CONFIG) $$i > test/config/$$i.txt.tmp; \
+		if cmp -s test/config/$$i.txt test/config/$$i.txt.tmp; then \
+			echo "Config test: '$$i' passed";  \
+			rm -f test/config/$$i.txt.tmp; \
+		else \
+			echo "Config test: '$$i' failed";  \
+		fi; \
+	done
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
-all-test: $(TEST_BINARY)
+$(TEST_CONFIG): $(CONFIG_OBJS) $(MUTT_LIBS)
+	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS) libemail.a libmutt.a
+
+all-test: $(TEST_BINARY) $(TEST_CONFIG)
 
 clean-test:
 	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)
@@ -23,5 +51,8 @@ uninstall-test:
 
 TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
 -include $(TEST_DEPFILES)
+
+CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
+-include $(CONFIG_DEPFILES)
 
 # vim: set ts=8 noexpandtab:

@@ -276,8 +276,8 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
           mutt_buffer_addstr(value, "***");
         }
 
-        if (type == DT_PATH)
-          mutt_pretty_mailbox(value->data, value->dsize);
+        // if (type == DT_PATH)
+        //   mutt_pretty_mailbox(value->data, value->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_QUAD) &&
             !(flags & CS_DUMP_NO_ESCAPING))
@@ -298,8 +298,8 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
           break;
         }
 
-        if (type == DT_PATH)
-          mutt_pretty_mailbox(value->data, value->dsize);
+        // if (type == DT_PATH)
+        //   mutt_pretty_mailbox(value->data, value->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_QUAD) &&
             !(flags & CS_DUMP_NO_ESCAPING))

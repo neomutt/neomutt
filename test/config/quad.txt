@@ -1,0 +1,107 @@
+---- quad_test ---------------------------------------------
+---- set_list ----------------------------------------------
+boolean Olive = no
+quad Apple = no
+quad Banana = ask-yes
+quad Cherry = no
+quad Damson = no
+quad Elderberry = no
+quad Fig = no
+quad Guava = no
+quad Hawthorn = no
+quad Ilama = no
+quad Jackfruit = no
+quad Kumquat = no
+quad Lemon = no
+quad Mango = no
+quad Nectarine = no
+---- test_initial_values -----------------------------------
+Apple = 0
+Banana = 3
+Event: Apple has been set to 'ask-yes'
+Event: Banana has been set to 'ask-no'
+Apple = 3
+Apple's initial value is 'no'
+Banana = 2
+Banana's initial value is 'ask-yes'
+Event: Cherry has been initial-set to 'ask-yes'
+Cherry = 'no'
+Cherry's initial value is 'ask-yes'
+---- test_string_set ---------------------------------------
+Event: Damson has been set to 'no'
+Damson = 0, set by 'no'
+Event: Damson has been set to 'yes'
+Damson = 1, set by 'yes'
+Event: Damson has been set to 'ask-no'
+Damson = 2, set by 'ask-no'
+Value of Damson wasn't changed
+Event: Damson has been set to 'ask-yes'
+Damson = 3, set by 'ask-yes'
+Expected error: Invalid quad value: nope
+Expected error: Invalid quad value: ye
+Expected error: Invalid quad value: 
+Expected error: 
+---- test_string_get ---------------------------------------
+Elderberry = 0, no
+Elderberry = 1, yes
+Elderberry = 2, ask-no
+Elderberry = 3, ask-yes
+Expect error for next test
+Variable has an invalid value: 4
+---- test_native_set ---------------------------------------
+Event: Fig has been set to 'yes'
+Fig = 1, set to '1'
+Value of Fig wasn't changed
+Expected error: Invalid quad value: -1
+Expected error: Invalid quad value: 4
+---- test_native_get ---------------------------------------
+Guava = 1
+---- test_reset --------------------------------------------
+Event: Hawthorn has been reset to 'no'
+Reset: Hawthorn = 0
+Initial: Ilama = 0
+Event: Ilama has been set to 'ask-yes'
+Set: Ilama = 3
+Expected error: validator_fail: Ilama, 0
+Reset: Ilama = 3
+---- test_validator ----------------------------------------
+Event: Jackfruit has been set to 'yes'
+validator_succeed: Jackfruit, 1
+String: Jackfruit = 1
+Event: Jackfruit has been set to 'yes'
+validator_succeed: Jackfruit, 1
+Native: Jackfruit = 1
+Event: Kumquat has been set to 'yes'
+validator_warn: Kumquat, 1
+String: Kumquat = 1
+Event: Kumquat has been set to 'yes'
+validator_warn: Kumquat, 1
+Native: Kumquat = 1
+Expected error: validator_fail: Lemon, 1
+String: Lemon = 0
+Expected error: validator_fail: Lemon, 1
+Native: Lemon = 0
+---- test_inherit ------------------------------------------
+Event: Mango has been set to 'yes'
+          Mango = 1
+    fruit:Mango = 1
+Value of Mango wasn't changed
+          Mango = 1
+    fruit:Mango = 0
+Event: fruit:Mango has been reset to 'yes'
+          Mango = 1
+    fruit:Mango = 1
+Event: Mango has been reset to 'no'
+          Mango = 0
+    fruit:Mango = 0
+---- test_toggle -------------------------------------------
+test 0
+Event: Nectarine has been set to 'yes'
+test 1
+Event: Nectarine has been set to 'no'
+test 2
+Event: Nectarine has been set to 'ask-yes'
+test 3
+Event: Nectarine has been set to 'ask-no'
+Expected error: Invalid quad value: 8
+Expected error: 

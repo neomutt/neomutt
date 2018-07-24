@@ -1,0 +1,100 @@
+---- long_test ---------------------------------------------
+---- set_list ----------------------------------------------
+long Apple = -42
+long Banana = 99
+long Cherry = 33
+long Damson = 0
+long Elderberry = 0
+long Fig = 0
+long Guava = 0
+long Hawthorn = 0
+long Ilama = 0
+long Jackfruit = 99
+long Kumquat = 33
+long Lemon = 0
+long Mango = 0
+long Nectarine = 0
+long Olive = 0
+---- test_initial_values -----------------------------------
+Apple = -42
+Banana = 99
+Event: Apple has been set to '2001'
+Event: Banana has been set to '1999'
+Apple = 2001
+Apple's initial value is '-42'
+Banana = 1999
+Banana's initial value is '99'
+Event: Cherry has been initial-set to '123'
+Cherry = 33
+Cherry's initial value is 123
+---- test_string_set ---------------------------------------
+Event: Damson has been set to '-123'
+Damson = -123, set by '-123'
+Event: Damson has been set to '0'
+Damson = 0, set by '0'
+Value of Damson wasn't changed
+Event: Damson has been set to '456'
+Damson = 456, set by '456'
+
+Event: Damson has been set to '0'
+Damson = 0, set by '-2147483648'
+This test should have failed
+Event: Damson has been set to '0'
+Damson = 0, set by '2147483648'
+This test should have failed
+Expected error: Invalid long: junk
+Expected error: Invalid long: 
+Expected error: Invalid long: (null)
+Expected error: Option Elderberry may not be negative
+---- test_string_get ---------------------------------------
+Fig = 123, 123
+Fig = -789, -789
+---- test_native_set ---------------------------------------
+Event: Guava has been set to '12345'
+Guava = 12345, set to '12345'
+Value of Guava wasn't changed
+Expected error: Option Hawthorn may not be negative
+Expected error: Option Hawthorn may not be negative
+Event: Hawthorn has been set to '-32768'
+Hawthorn = 123, set by '32768'
+This test should have failed
+---- test_native_get ---------------------------------------
+Ilama = 3456
+---- test_reset --------------------------------------------
+Event: Jackfruit has been reset to '99'
+Reset: Jackfruit = 99
+Initial: Kumquat = 33
+Event: Kumquat has been set to '99'
+Set: Kumquat = 99
+Expected error: validator_fail: Kumquat, 33
+Reset: Kumquat = 99
+---- test_validator ----------------------------------------
+Event: Lemon has been set to '456'
+validator_succeed: Lemon, 456
+String: Lemon = 456
+Event: Lemon has been set to '123'
+validator_succeed: Lemon, 123
+Native: Lemon = 123
+Event: Mango has been set to '456'
+validator_warn: Mango, 456
+String: Mango = 456
+Event: Mango has been set to '123'
+validator_warn: Mango, 123
+Native: Mango = 123
+Expected error: validator_fail: Nectarine, 456
+String: Nectarine = 123
+Expected error: validator_fail: Nectarine, 123
+Native: Nectarine = 456
+---- test_inherit ------------------------------------------
+Event: Olive has been set to '456'
+          Olive = 456
+    fruit:Olive = 456
+Event: fruit:Olive has been set to '-99'
+          Olive = 456
+    fruit:Olive = -99
+Event: fruit:Olive has been reset to '456'
+          Olive = 456
+    fruit:Olive = 456
+Event: Olive has been reset to '0'
+          Olive = 0
+    fruit:Olive = 0

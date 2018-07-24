@@ -1,0 +1,13 @@
+---- set_test ----------------------------------------------
+Listener was already registered
+Listener wasn't registered
+Expected error
+Expected error
+Variable 'Apple' has an invalid type 8
+Expected error
+Expected error: Unknown var 'Unknown'
+Expected error: Unknown var 'Unknown'
+Expected error: Unknown var 'Unknown'
+Expected error: Unknown var 'Unknown'
+---- set_list ----------------------------------------------
+boolean Banana = yes

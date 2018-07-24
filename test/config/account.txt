@@ -1,0 +1,25 @@
+---- account_test ------------------------------------------
+---- set_list ----------------------------------------------
+number Apple = 0
+number Banana = 0
+number Cherry = 0
+Pineapple doesn't exist
+reset failed for damaged:Pineapple: Unknown var 'damaged:Pineapple'
+Expected error:
+Expect error for next test
+failed to create damaged:Apple
+reset failed for damaged:Apple: Unknown var 'damaged:Apple'
+Event: Apple has been set to '33'
+Expected error: 
+Apple = 33
+Cherry = 0
+Expected error
+fruit:Apple = '33'
+Event: Apple has been set to '42'
+Set fruit:Apple
+Variable 'Apple' is inherited type.
+Expected error
+Expected error
+Event: Apple has been set to '42'
+Set Apple
+Event: fruit:Apple has been reset to '42'
