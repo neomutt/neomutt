@@ -96,6 +96,71 @@ bool ResumeEditedDraftFiles;
 #endif
 
 /**
+ * test_parse_set - Test the config parsing
+ */
+static void test_parse_set(void)
+{
+  char *vars[] = {
+    "from",        // ADDRESS
+    "beep",        // BOOL
+    "ispell",      // COMMAND
+    "mbox_type",   // MAGIC
+    "to_chars",    // MBTABLE
+    "net_inc",     // NUMBER
+    "signature",   // PATH
+    "print",       // QUAD
+    "mask",        // REGEX
+    "sort",        // SORT
+    "attribution", // STRING
+    "zzz",         // UNKNOWN
+    "my_var",      // MY_VAR
+  };
+
+  char *commands[] = {
+    "set",
+    "toggle",
+    "reset",
+    "unset",
+  };
+
+  char *tests[] = {
+    "%s %s",       "%s %s=42",  "%s %s?",     "%s ?%s",    "%s ?%s=42",
+    "%s ?%s?",     "%s no%s",   "%s no%s=42", "%s no%s?",  "%s inv%s",
+    "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
+  };
+
+  struct Buffer *tmp = mutt_buffer_alloc(STRING);
+  struct Buffer *err = mutt_buffer_alloc(STRING);
+  char line[64];
+
+  for (size_t v = 0; v < mutt_array_size(vars); v++)
+  {
+    // printf("--------------------------------------------------------------------------------\n");
+    // printf("VARIABLE %s\n", vars[v]);
+    for (size_t c = 0; c < mutt_array_size(commands); c++)
+    {
+      // printf("----------------------------------------\n");
+      // printf("COMMAND %s\n", commands[c]);
+      for (size_t t = 0; t < mutt_array_size(tests); t++)
+      {
+        mutt_buffer_reset(tmp);
+        mutt_buffer_reset(err);
+
+        snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
+        printf("%-26s", line);
+        int rc = mutt_parse_rc_line(line, tmp, err);
+        printf("%2d %s\n", rc, NONULL(err->data));
+      }
+      printf("\n");
+    }
+    // printf("\n");
+  }
+
+  mutt_buffer_free(&tmp);
+  mutt_buffer_free(&err);
+}
+
+/**
  * reset_tilde - Temporary measure
  */
 static void reset_tilde(struct ConfigSet *cs)
@@ -357,6 +422,7 @@ int main(int argc, char *argv[], char *envp[])
   bool hide_sensitive = false;
   bool batch_mode = false;
   bool edit_infile = false;
+  bool test_config = false;
   extern char *optarg;
   extern int optind;
   int double_dash = argc, nargc = 1;
@@ -405,7 +471,7 @@ int main(int argc, char *argv[], char *envp[])
     }
 
     /* USE_NNTP 'g:G' */
-    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:s:i:hm:npQ:RSvxyzZ");
+    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:i:hm:npQ:RSs:TvxyzZ");
     if (i != EOF)
     {
       switch (i)
@@ -482,6 +548,9 @@ int main(int argc, char *argv[], char *envp[])
         case 's':
           subject = optarg;
           break;
+        case 'T':
+          test_config = true;
+          break;
         case 'v':
           version++;
           break;
@@ -528,6 +597,15 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!get_user_info(Config))
     goto main_exit;
+
+  if (test_config)
+  {
+    cs_str_initial_set(Config, "from", "rich@flatcap.org", NULL);
+    cs_str_reset(Config, "from", NULL);
+    myvar_set("my_var", "foo");
+    test_parse_set();
+    goto main_ok;
+  }
 
   reset_tilde(Config);
 
