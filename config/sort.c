@@ -145,11 +145,17 @@ const struct Mapping SortSidebarMethods[] = {
 static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef || !value)
+  if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   intptr_t id = -1;
   int flags = 0;
+
+  if (!value || !value[0])
+  {
+    mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
+    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+  }
 
   if (mutt_str_strncmp("reverse-", value, 8) == 0)
   {

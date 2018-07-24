@@ -1652,14 +1652,18 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       s->dptr++;
     }
 
-    if (!bq && (inv || unset))
+    if (!bq && (inv || (unset && prefix)))
     {
       if (data == MUTT_SET_SET)
+      {
         mutt_buffer_printf(err, "ERR06 prefixes 'no' and 'inv' may only be "
                                 "used with bool/quad variables");
+      }
       else
+      {
         mutt_buffer_printf(err, "ERR07 command '%s' can only be used with bool/quad variables",
                            set_commands[data]);
+      }
       return -1;
     }
 
@@ -1737,7 +1741,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             size_t scratchlen = mutt_str_strlen(scratch);
             if (scratchlen != 0)
             {
-              if ((scratch[scratchlen - 1] != '|') &&       /* not a command */
+              if ((scratch[scratchlen - 1] != '|') && /* not a command */
                   (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
               {
                 struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
@@ -1747,7 +1751,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                 }
               }
             }
-
           }
           rc = cs_he_string_set(Config, he, buf->data, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
@@ -1801,7 +1804,11 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
     }
 
-    if (bq)
+    if (my)
+    {
+      myvar_del(buf->data);
+    }
+    else if (bq)
     {
       if (inv)
       {
@@ -1818,6 +1825,13 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         if (CSR_RESULT(rc) != CSR_SUCCESS)
           return -1;
       }
+      continue;
+    }
+    else
+    {
+      rc = cs_str_string_set(Config, buf->data, NULL, err);
+      if (CSR_RESULT(rc) != CSR_SUCCESS)
+        return -1;
     }
   }
 

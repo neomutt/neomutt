@@ -52,10 +52,16 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
   if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
-  int num = 0;
-  if (!value || !value[0] || (mutt_str_atoi(value, &num) < 0))
+  if (!value || !value[0])
   {
-    mutt_buffer_printf(err, "Invalid number: %s", value);
+    mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
+    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+  }
+
+  int num = 0;
+  if (mutt_str_atoi(value, &num) < 0)
+  {
+    mutt_buffer_printf(err, "Invalid number: %s", NONULL(value));
     return (CSR_ERR_INVALID | CSR_INV_TYPE);
   }
 

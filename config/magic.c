@@ -58,8 +58,14 @@ const char *magic_values[] = {
 static int magic_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef || !value)
+  if (!cs || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
+
+  if (!value || !value[0])
+  {
+    mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
+    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+  }
 
   int num = -1;
   for (size_t i = 1; magic_values[i]; i++)
