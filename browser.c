@@ -130,6 +130,14 @@ static void destroy_state(struct BrowserState *state)
   FREE(&state->entry);
 }
 
+/**
+ * browser_compare_subject - Compare the subject of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_subject(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -142,6 +150,14 @@ static int browser_compare_subject(const void *a, const void *b)
   return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
+/**
+ * browser_compare_desc - Compare the descriptions of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_desc(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -152,6 +168,14 @@ static int browser_compare_desc(const void *a, const void *b)
   return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
+/**
+ * browser_compare_date - Compare the date of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_date(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -162,6 +186,14 @@ static int browser_compare_date(const void *a, const void *b)
   return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
+/**
+ * browser_compare_size - Compare the size of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_size(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -172,6 +204,14 @@ static int browser_compare_size(const void *a, const void *b)
   return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
+/**
+ * browser_compare_count - Compare the message count of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_count(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -188,6 +228,14 @@ static int browser_compare_count(const void *a, const void *b)
   return (SortBrowser & SORT_REVERSE) ? -r : r;
 }
 
+/**
+ * browser_compare_count_new - Compare the new count of two browser entries
+ * @param a First browser entry
+ * @param b Second browser entry
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int browser_compare_count_new(const void *a, const void *b)
 {
   struct FolderFile *pa = (struct FolderFile *) a;
@@ -271,6 +319,13 @@ static void browser_sort(struct BrowserState *state)
   qsort(state->entry, state->entrylen, sizeof(struct FolderFile), browser_compare);
 }
 
+/**
+ * link_is_dir - Does this symlink point to a directory?
+ * @param folder Folder
+ * @param path   Link name
+ * @retval 1 Links to a directory
+ * @retval 0 Otherwise
+ */
 static int link_is_dir(const char *folder, const char *path)
 {
   struct stat st;
@@ -719,6 +774,11 @@ static void add_folder(struct Menu *m, struct BrowserState *state, const char *n
   (state->entrylen)++;
 }
 
+/**
+ * init_state - Initilise a browser state
+ * @param state BrowserState to initialise
+ * @param menu  Current menu
+ */
 static void init_state(struct BrowserState *state, struct Menu *menu)
 {
   state->entrylen = 0;
@@ -851,6 +911,13 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 }
 
 #ifdef USE_NOTMUCH
+/**
+ * examine_vfolders - Get a list of virtual folders
+ * @param menu   Current menu
+ * @param state  State of browser
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
   struct Buffy *tmp = Incoming;
@@ -976,6 +1043,14 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   return 0;
 }
 
+/**
+ * select_file_search - Menu search callback for matching files
+ * @param menu Current menu
+ * @param re   Regex to match
+ * @param n    Index of menu entry to match
+ * @retval 0 Success
+ * @retval 1 No match
+ */
 static int select_file_search(struct Menu *menu, regex_t *re, int n)
 {
 #ifdef USE_NNTP
@@ -986,6 +1061,14 @@ static int select_file_search(struct Menu *menu, regex_t *re, int n)
 }
 
 #ifdef USE_NOTMUCH
+/**
+ * select_vfolder_search - Menu search callback for virtual folders
+ * @param menu Current menu
+ * @param re   Regex to match
+ * @param n    Index of menu entry to match
+ * @retval 0 Success
+ * @retval 1 No match
+ */
 static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 {
   return regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0);
@@ -1069,6 +1152,14 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
   }
 }
 
+/**
+ * init_menu - Set up a new menu
+ * @param state    Browser state
+ * @param menu     Current menu
+ * @param title    Buffer for the title
+ * @param titlelen Length of buffer
+ * @param buffy    If true, select mailboxes
+ */
 static void init_menu(struct BrowserState *state, struct Menu *menu,
                       char *title, size_t titlelen, bool buffy)
 {
@@ -1157,6 +1248,13 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   menu->redraw = REDRAW_FULL;
 }
 
+/**
+ * file_tag - Tag an entry in the menu
+ * @param menu Current menu
+ * @param n    Index of menu entry to tag
+ * @param m    If >=0 then multiple tags are allowed
+ * @retval num Number of tagged menu items
+ */
 static int file_tag(struct Menu *menu, int n, int m)
 {
   struct FolderFile *ff = &(((struct FolderFile *) menu->data)[n]);
@@ -1191,6 +1289,14 @@ void mutt_browser_select_dir(char *f)
   mutt_get_parent_path(OldLastDir, LastDir, sizeof(LastDir));
 }
 
+/**
+ * mutt_select_file - Let the user select a file
+ * @param[in]  f        Buffer for the result
+ * @param[in]  flen     Length of buffer
+ * @param[in]  flags    Flags, e.g. MUTT_SEL_MULTI
+ * @param[out] files    Array of selected files
+ * @param[out] numfiles Number of selected files
+ */
 void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)
 {
   char buf[PATH_MAX];

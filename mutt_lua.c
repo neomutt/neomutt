@@ -40,6 +40,11 @@
 #include "muttlib.h"
 #include "myvar.h"
 
+/**
+ * handle_panic - Handle a panic in the Lua interpreter
+ * @param l Lua State
+ * @retval -1 Always
+ */
 static int handle_panic(lua_State *l)
 {
   mutt_debug(1, "lua runtime panic: %s\n", lua_tostring(l, -1));
@@ -48,6 +53,11 @@ static int handle_panic(lua_State *l)
   return -1;
 }
 
+/**
+ * handle_error - Handle an error in the Lua interpreter
+ * @param l Lua State
+ * @retval -1 Always
+ */
 static int handle_error(lua_State *l)
 {
   mutt_debug(1, "lua runtime error: %s\n", lua_tostring(l, -1));
@@ -56,6 +66,12 @@ static int handle_error(lua_State *l)
   return -1;
 }
 
+/**
+ * lua_mutt_call - Call a NeoMutt command by name
+ * @param l Lua State
+ * @retval >=0 Success
+ * @retval -1 Error
+ */
 static int lua_mutt_call(lua_State *l)
 {
   mutt_debug(2, " * lua_mutt_call()\n");
@@ -112,6 +128,12 @@ static int lua_mutt_call(lua_State *l)
   return rc;
 }
 
+/**
+ * lua_mutt_set - Set a NeoMutt variable
+ * @param l Lua State
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int lua_mutt_set(lua_State *l)
 {
   const char *param = lua_tostring(l, -2);
@@ -180,6 +202,12 @@ static int lua_mutt_set(lua_State *l)
   return rc;
 }
 
+/**
+ * lua_mutt_get - Get a NeoMutt variable
+ * @param l Lua State
+ * @retval  1 Success
+ * @retval -1 Error
+ */
 static int lua_mutt_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
@@ -249,6 +277,12 @@ static int lua_mutt_get(lua_State *l)
   }
 }
 
+/**
+ * lua_mutt_enter - Execute NeoMutt config from Lua
+ * @param l Lua State
+ * @retval >=0 Success
+ * @retval -1  Error
+ */
 static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(2, " * lua_mutt_enter()\n");
@@ -281,6 +315,11 @@ static int lua_mutt_enter(lua_State *l)
   return rc;
 }
 
+/**
+ * lua_mutt_message - Display a message in Neomutt
+ * @param l Lua State
+ * @retval 0 Always
+ */
 static int lua_mutt_message(lua_State *l)
 {
   mutt_debug(2, " * lua_mutt_message()\n");
@@ -290,6 +329,11 @@ static int lua_mutt_message(lua_State *l)
   return 0;
 }
 
+/**
+ * lua_mutt_error - Display an error in Neomutt
+ * @param l Lua State
+ * @retval 0 Always
+ */
 static int lua_mutt_error(lua_State *l)
 {
   mutt_debug(2, " * lua_mutt_error()\n");
@@ -299,6 +343,11 @@ static int lua_mutt_error(lua_State *l)
   return 0;
 }
 
+/**
+ * lua_expose_command - Expose a NeoMutt command to the Lua interpreter
+ * @param p   Lua state
+ * @param cmd NeoMutt Command
+ */
 static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
@@ -320,6 +369,11 @@ static const luaL_Reg luaMuttDecl[] = {
   DATATYPE_HANDLER(LUA, VALUE);                                                \
   lua_settable(LUA, TABLE);
 
+/**
+ * luaopen_mutt_decl - Declare some NeoMutt types to the Lua interpreter
+ * @param l Lua State
+ * @retval 1 Always
+ */
 static int luaopen_mutt_decl(lua_State *l)
 {
   mutt_debug(2, " * luaopen_mutt()\n");
@@ -334,6 +388,10 @@ static int luaopen_mutt_decl(lua_State *l)
   return 1;
 }
 
+/**
+ * luaopen_mutt - Expose a 'Mutt' object to the Lua interpreter
+ * @param l Lua State
+ */
 static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
@@ -341,6 +399,11 @@ static void luaopen_mutt(lua_State *l)
   mutt_commands_apply((void *) l, &lua_expose_command);
 }
 
+/**
+ * lua_init - Initialise a Lua State
+ * @param l Lua State
+ * @retval true If successful
+ */
 static bool lua_init(lua_State **l)
 {
   if (!l)

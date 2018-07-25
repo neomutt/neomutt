@@ -71,6 +71,17 @@ static char *EditorHelp2 =
        "~?              this message\n"
        ".               on a line by itself ends input\n");
 
+/**
+ * be_snarf_data - Read data from a file into a buffer
+ * @param[in]  f      File to read from
+ * @param[out] buf    Buffer allocated to save data
+ * @param[out] bufmax Allocated size of buffer
+ * @param[out] buflen Bytes of buffer used
+ * @param[in]  offset Start reading at this file offset
+ * @param[in]  bytes  Read this many bytes
+ * @param[in]  prefix If true, prefix the lines with the IndentString
+ * @retval ptr Pointer to allocated buffer
+ */
 static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
                             LOFF_T offset, int bytes, int prefix)
 {
@@ -106,6 +117,15 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   return buf;
 }
 
+/**
+ * be_snarf_file - Read a file into a buffer
+ * @param[in]  path    File to read
+ * @param[out] buf     Buffer allocated to save data
+ * @param[out] max     Allocated size of buffer
+ * @param[out] len     Bytes of buffer used
+ * @param[in]  verbose If true, report the file and bytes read
+ * @retval ptr Pointer to allocated buffer
+ */
 static char **be_snarf_file(const char *path, char **buf, int *max, int *len, int verbose)
 {
   char tmp[LONG_STRING];
@@ -131,6 +151,14 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
   return buf;
 }
 
+/**
+ * be_barf_file - Write a buffer to a file
+ * @param path   Path to write to
+ * @param buf    Buffer to read from
+ * @param buflen Length of buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int be_barf_file(const char *path, char **buf, int buflen)
 {
   FILE *f = fopen(path, "w");
@@ -148,6 +176,11 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   return -1;
 }
 
+/**
+ * be_free_memory - Free an array of buffers
+ * @param buf    Buffer to free
+ * @param buflen Number of buffers to free
+ */
 static void be_free_memory(char **buf, int buflen)
 {
   while (buflen-- > 0)
@@ -156,6 +189,16 @@ static void be_free_memory(char **buf, int buflen)
     FREE(&buf);
 }
 
+/**
+ * be_include_messages - Gather the contents of some messages
+ * @param[in]  msg      List of message numbers (space or comma separated)
+ * @param[out] buf      Buffer allocated to save data
+ * @param[out] bufmax   Allocated size of buffer
+ * @param[out] buflen   Bytes of buffer used
+ * @param[in]  pfx      Prefix
+ * @param[in]  inc_hdrs If true, include the message headers
+ * @retval ptr Pointer to allocated buffer
+ */
 static char **be_include_messages(char *msg, char **buf, int *bufmax,
                                   int *buflen, int pfx, int inc_hdrs)
 {
@@ -205,6 +248,10 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   return buf;
 }
 
+/**
+ * be_print_header - Print a message Header
+ * @param env Envelope to print
+ */
 static void be_print_header(struct Envelope *env)
 {
   char tmp[HUGE_STRING];
@@ -329,6 +376,14 @@ static void be_edit_header(struct Envelope *e, int force)
   }
 }
 
+/**
+ * mutt_builtin_editor - Show the user the built-in editor
+ * @param path File to read
+ * @param msg  Header of new message
+ * @param cur  Header of current message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
 {
   char **buf = NULL;

@@ -3471,7 +3471,13 @@ bool set_default_value(const char *name, intptr_t value)
 }
 
 /**
- * var_to_string2 - XXX
+ * var_to_string2 - Convert a config variable to a string
+ * @param name    Name of config item
+ * @param quote   If true, quote the result
+ * @param result  Buffer for the result
+ * @param err     Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int var_to_string2(const char *name, bool quote, struct Buffer *result, struct Buffer *err)
 {

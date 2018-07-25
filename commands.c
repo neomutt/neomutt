@@ -84,6 +84,12 @@ static const char *ExtPagerProgress = "all";
 /** The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[PATH_MAX] = "";
 
+/**
+ * mutt_display_message - Display a message in the pager
+ * @param cur Header of current message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_display_message(struct Header *cur)
 {
   char tempfile[PATH_MAX], buf[LONG_STRING];
@@ -270,6 +276,10 @@ int mutt_display_message(struct Header *cur)
   return rc;
 }
 
+/**
+ * ci_bounce_message - Bounce an email
+ * @param h Header of email to bounce
+ */
 void ci_bounce_message(struct Header *h)
 {
   char prompt[SHORT_STRING];
@@ -368,6 +378,13 @@ void ci_bounce_message(struct Header *h)
     mutt_message(ngettext("Message bounced.", "Messages bounced.", msgcount));
 }
 
+/**
+ * pipe_set_flags - Generate flags for copy header/message
+ * @param[in]  decode  If true decode the message
+ * @param[in]  print   If true, mark the message for printing
+ * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
+ * @param[out] chflags Copy header flags, e.g. CH_DECODE
+ */
 static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
 {
   if (decode)
@@ -386,6 +403,13 @@ static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
     *cmflags |= MUTT_CM_PRINTING;
 }
 
+/**
+ * pipe_msg - Pipe a message
+ * @param h      Header of message
+ * @param fp     File to write to
+ * @param decode If true, decode the message
+ * @param print  If true, message is for printing
+ */
 static void pipe_msg(struct Header *h, FILE *fp, bool decode, bool print)
 {
   int cmflags = 0;
@@ -530,6 +554,10 @@ static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
   return rc;
 }
 
+/**
+ * mutt_pipe_message - Pipe a message
+ * @param h Header of message to pipe
+ */
 void mutt_pipe_message(struct Header *h)
 {
   char buffer[LONG_STRING];
@@ -545,6 +573,10 @@ void mutt_pipe_message(struct Header *h)
   pipe_message(h, buffer, PipeDecode, false, PipeSplit, PipeSep);
 }
 
+/**
+ * mutt_print_message - Print a message
+ * @param h Header of message to print
+ */
 void mutt_print_message(struct Header *h)
 {
   int i;
@@ -581,6 +613,11 @@ void mutt_print_message(struct Header *h)
   }
 }
 
+/**
+ * mutt_select_sort - Ask the user for a sort method
+ * @param reverse If true make it a reverse sort
+ * @retval num Sort type, e.g. #SORT_DATE
+ */
 int mutt_select_sort(int reverse)
 {
   int method = Sort; /* save the current method in case of abort */
@@ -713,6 +750,10 @@ void mutt_enter_command(void)
   FREE(&err.data);
 }
 
+/**
+ * mutt_display_address - Display the address of a message
+ * @param env Envelope containing address
+ */
 void mutt_display_address(struct Envelope *env)
 {
   char *pfx = NULL;
@@ -733,6 +774,14 @@ void mutt_display_address(struct Envelope *env)
   mutt_message("%s: %s", pfx, buf);
 }
 
+/**
+ * set_copy_flags - Set the flags for a message copy
+ * @param[in]  hdr     Header of email
+ * @param[in]  decode  If true, decode the message
+ * @param[in]  decrypt If true, decrypt the message
+ * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
+ * @param[out] chflags Copy header flags, e.g. CH_DECODE
+ */
 static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
                            int *cmflags, int *chflags)
 {
@@ -777,6 +826,16 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
   }
 }
 
+/**
+ * mutt_save_message_ctx - Save a message to a given mailbox
+ * @param h       Header of message
+ * @param delete  If true, delete the original
+ * @param decode  If true, decode the message
+ * @param decrypt If true, decrypt the message
+ * @param ctx     Mailbox to save to
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decrypt,
                           struct Context *ctx)
 {
@@ -1012,6 +1071,9 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   return -1;
 }
 
+/**
+ * mutt_version - Generate the NeoMutt version string
+ */
 void mutt_version(void)
 {
   mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
@@ -1125,6 +1187,12 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   return structure_changed;
 }
 
+/**
+ * check_traditional_pgp - Check for an inline PGP content
+ * @param[in]  h      Header of message to check
+ * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
+ * @retval true If message contains inline PGP content
+ */
 static int check_traditional_pgp(struct Header *h, int *redraw)
 {
   int rc = 0;
@@ -1147,6 +1215,12 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   return rc;
 }
 
+/**
+ * mutt_check_traditional_pgp - Check if a message has inline PGP content
+ * @param[in]  h      Header of message to check
+ * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
+ * @retval true If message contains inline PGP content
+ */
 int mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
   int rc = 0;
@@ -1165,6 +1239,9 @@ int mutt_check_traditional_pgp(struct Header *h, int *redraw)
   return rc;
 }
 
+/**
+ * mutt_check_stats - Forcibly update mailbox stats
+ */
 void mutt_check_stats(void)
 {
   mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE | MUTT_BUFFY_CHECK_FORCE_STATS);

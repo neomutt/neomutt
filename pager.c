@@ -207,6 +207,14 @@ static struct Resize
 
 #define NUM_SIG_LINES 4
 
+/**
+ * check_sig - Check for an email signature
+ * @param s    Text to examine
+ * @param info Line info array to update
+ * @param n    First line to check
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int check_sig(const char *s, struct Line *info, int n)
 {
   int count = 0;
@@ -238,6 +246,15 @@ static int check_sig(const char *s, struct Line *info, int n)
   return 0;
 }
 
+/**
+ * resolve_color - Set the colour for a line of text
+ * @param line_info Line info array
+ * @param n         Line Number (index into line_info)
+ * @param cnt       If true, this is a continuation line
+ * @param flags     Flags, e.g. #MUTT_PAGER_LOGS
+ * @param special   Flags, e.g. A_BOLD
+ * @param a         ANSI attributes
+ */
 static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
                           int special, struct AnsiAttr *a)
 {
@@ -376,6 +393,12 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   }
 }
 
+/**
+ * append_line - Add a new Line to the array
+ * @param line_info Array of Line info
+ * @param n         Line number to add
+ * @param cnt       true, if line is a continuation
+ */
 static void append_line(struct Line *line_info, int n, int cnt)
 {
   int m;
@@ -394,12 +417,24 @@ static void append_line(struct Line *line_info, int n, int cnt)
       (line_info[n].continuation) ? cnt + (line_info[n].syntax)[0].last : cnt;
 }
 
+/**
+ * new_class_color - Create a new quoting colour
+ * @param[in]     class   Class of quoted text
+ * @param[in,out] q_level Quote level
+ */
 static void new_class_color(struct QClass *class, int *q_level)
 {
   class->index = (*q_level)++;
   class->color = ColorQuote[class->index % ColorQuoteUsed];
 }
 
+/**
+ * shift_class_colors - Insert a new quote colour class into a list
+ * @param[in]     quote_list List of quote colours
+ * @param[in]     new_class  New quote colour to inset
+ * @param[in]     index      Index to insert at
+ * @param[in,out] q_level    Quote level
+ */
 static void shift_class_colors(struct QClass *quote_list,
                                struct QClass *new_class, int index, int *q_level)
 {
@@ -435,6 +470,10 @@ static void shift_class_colors(struct QClass *quote_list,
   (*q_level)++;
 }
 
+/**
+ * cleanup_quote - Free a quote list
+ * @param quote_list Quote list to free
+ */
 static void cleanup_quote(struct QClass **quote_list)
 {
   struct QClass *ptr = NULL;
@@ -453,6 +492,15 @@ static void cleanup_quote(struct QClass **quote_list)
   return;
 }
 
+/**
+ * classify_quote - Find a style for a string
+ * @param[in]  quote_list   List of quote colours
+ * @param[in]  qptr         String to classify
+ * @param[in]  length       Length of string
+ * @param[out] force_redraw Set to true if a screen redraw is needed
+ * @param[out] q_level      Quoting level
+ * @retval ptr Quoting style
+ */
 static struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
                                      size_t length, int *force_redraw, int *q_level)
 {
@@ -474,8 +522,6 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     }
     return *quote_list;
   }
-
-  /* Did I mention how much I like emulating Lisp in C? */
 
   /* classify quoting prefix */
   while (q_list)
@@ -765,6 +811,11 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 static int braille_line = -1;
 static int braille_col = -1;
 
+/**
+ * check_attachment_marker - Check that the unique marker is present
+ * @param p String to check
+ * @retval num Offset of marker
+ */
 static int check_attachment_marker(char *p)
 {
   char *q = AttachmentMarker;
@@ -774,6 +825,18 @@ static int check_attachment_marker(char *p)
   return (int) (*p - *q);
 }
 
+/**
+ * resolve_types - Determine the style for a line of text
+ * @param buf          Formatted text
+ * @param raw          Raw text
+ * @param line_info    Line info array
+ * @param n            Line number (index into line_info)
+ * @param last         Last line
+ * @param quote_list   List of quote colours
+ * @param q_level      Quote level
+ * @param force_redraw Set to true if a screen redraw is needed
+ * @param q_classify   If true, style the text
+ */
 static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           int last, struct QClass **quote_list, int *q_level,
                           int *force_redraw, int q_classify)
@@ -1054,6 +1117,11 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
 }
 
+/**
+ * is_ansi - Is this an ANSI escape sequence?
+ * @param buf String to check
+ * @retval true If it is
+ */
 static int is_ansi(unsigned char *buf)
 {
   while (*buf && (isdigit(*buf) || *buf == ';'))
@@ -1061,6 +1129,13 @@ static int is_ansi(unsigned char *buf)
   return *buf == 'm';
 }
 
+/**
+ * grok_ansi - Parse an ANSI escape sequence
+ * @param buf String to parse
+ * @param pos Starting position in string
+ * @param a   AnsiAttr for the result
+ * @retval num Index of first character after the escape sequence
+ */
 static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 {
   int x = pos;
@@ -1177,6 +1252,18 @@ static int trim_incomplete_mbyte(unsigned char *buf, size_t buflen)
   return buflen;
 }
 
+/**
+ * fill_buffer - Fill a buffer from a file
+ * @param[in]     f         File to read from
+ * @param[in,out] last_pos  End of last read
+ * @param[in]     offset    Position start reading from
+ * @param[out]    buf       Buffer to fill
+ * @param[out]    fmt       Copy of buffer, stripped of attributes
+ * @param[out]    blen      Length of the buffer
+ * @param[in,out] buf_ready true if the buffer already has data in it
+ * @retval >=0 Bytes read
+ * @retval -1  Error
+ */
 static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
@@ -1241,6 +1328,21 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   return b_read;
 }
 
+/**
+ * format_line - Display a line of text in the pager
+ * @param[in]  line_info    Line info
+ * @param[in]  n            Line number (index into line_info)
+ * @param[in]  buf          Text to display
+ * @param[in]  flags        Flags, e.g. #MUTT_PAGER_NOWRAP
+ * @param[out] pa           ANSI attributes used
+ * @param[in]  cnt          Length of text buffer
+ * @param[out] pspace       Index of last whitespace character
+ * @param[out] pvch         Number of bytes read
+ * @param[out] pcol         Number of columns used
+ * @param[out] pspecial     Attribute flags, e.g. A_UNDERLINE
+ * @param[in]  pager_window Window to write to
+ * @retval num Number of characters displayed
+ */
 static int format_line(struct Line **line_info, int n, unsigned char *buf, int flags,
                        struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
                        int *pcol, int *pspecial, struct MuttWindow *pager_window)
@@ -1717,6 +1819,14 @@ out:
   return rc;
 }
 
+/**
+ * up_n_lines - Reposition the pager's view up by n lines
+ * @param nlines Number of lines to move
+ * @param info   Line info array
+ * @param cur    Current line number
+ * @param hiding true if lines have been hidden
+ * @retval num New current line number
+ */
 static int up_n_lines(int nlines, struct Line *info, int cur, int hiding)
 {
   while (cur > 0 && nlines > 0)
@@ -1754,6 +1864,9 @@ static struct Mapping PagerNewsHelpExtra[] = {
 };
 #endif
 
+/**
+ * mutt_clear_pager_position - Reset the pager's viewing position
+ */
 void mutt_clear_pager_position(void)
 {
   TopLine = 0;
@@ -1799,6 +1912,10 @@ struct PagerRedrawData
   struct stat sb;
 };
 
+/**
+ * pager_menu_redraw - Redraw the pager window
+ * @param pager_menu Pager Menu
+ */
 static void pager_menu_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;

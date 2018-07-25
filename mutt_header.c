@@ -41,6 +41,11 @@
 #include "protos.h"
 #include "sendlib.h"
 
+/**
+ * label_ref_dec - Decrease the refcount of a label
+ * @param ctx   Mailbox
+ * @param label Label
+ */
 static void label_ref_dec(struct Context *ctx, char *label)
 {
   struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
@@ -58,6 +63,11 @@ static void label_ref_dec(struct Context *ctx, char *label)
   elem->data = (void *) count;
 }
 
+/**
+ * label_ref_inc - Increase the refcount of a label
+ * @param ctx   Mailbox
+ * @param label Label
+ */
 static void label_ref_inc(struct Context *ctx, char *label)
 {
   uintptr_t count;
@@ -100,6 +110,13 @@ static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
   return true;
 }
 
+/**
+ * mutt_label_message - Let the user label a message
+ * @param hdr Header of the message (OPTIONAL)
+ * @retval num Number of messages changed
+ *
+ * If hdr isn't given, then tagged messages will be labelled.
+ */
 int mutt_label_message(struct Header *hdr)
 {
   char buf[LONG_STRING], *new = NULL;
@@ -151,6 +168,14 @@ int mutt_label_message(struct Header *hdr)
   return changed;
 }
 
+/**
+ * mutt_edit_headers - Let the user edit the message header and body
+ * @param editor Editor command
+ * @param body   File containing message body
+ * @param msg    Header of the message
+ * @param fcc    Buffer for the fcc field
+ * @param fcclen Length of buffer
+ */
 void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
                        char *fcc, size_t fcclen)
 {
@@ -233,10 +258,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   mutt_file_fclose(&ifp);
   mutt_file_unlink(path);
 
-/* in case the user modifies/removes the In-Reply-To header with
-     $edit_headers set, we remove References: as they're likely invalid;
-     we can simply compare strings as we don't generate References for
-     multiple Message-Ids in IRT anyways */
+  /* in case the user modifies/removes the In-Reply-To header with
+   * $edit_headers set, we remove References: as they're likely invalid;
+   * we can simply compare strings as we don't generate References for
+   * multiple Message-Ids in IRT anyways */
 #ifdef USE_NNTP
   if (!OptNewsSend)
 #endif
@@ -337,6 +362,10 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   }
 }
 
+/**
+ * mutt_make_label_hash - Create a Hash Table to store the labels
+ * @param ctx Mailbox
+ */
 void mutt_make_label_hash(struct Context *ctx)
 {
   /* 131 is just a rough prime estimate of how many distinct
@@ -345,6 +374,11 @@ void mutt_make_label_hash(struct Context *ctx)
   ctx->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
+/**
+ * mutt_label_hash_add - Add a message's labels to the Hash Table
+ * @param ctx Mailbox
+ * @param hdr Header of message
+ */
 void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
 {
   if (!ctx || !ctx->label_hash)
@@ -353,6 +387,11 @@ void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
     label_ref_inc(ctx, hdr->env->x_label);
 }
 
+/**
+ * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
+ * @param ctx Mailbox
+ * @param hdr Header of message
+ */
 void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
 {
   if (!ctx || !ctx->label_hash)

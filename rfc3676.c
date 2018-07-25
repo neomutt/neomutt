@@ -53,6 +53,11 @@ struct FlowedState
   int delsp;
 };
 
+/**
+ * get_quote_level - Get the quote level of a line
+ * @param line Text to examine
+ * @retval num Quote level
+ */
 static int get_quote_level(const char *line)
 {
   int quoted = 0;
@@ -117,6 +122,13 @@ static bool add_quote_suffix(struct State *s, int ql)
   return true;
 }
 
+/**
+ * print_indent - Print indented text
+ * @param ql         Quote level
+ * @param s          State to work with
+ * @param add_suffix If true, write a trailing space character
+ * @retval num Number of characters written
+ */
 static size_t print_indent(int ql, struct State *s, int add_suffix)
 {
   size_t wid = 0;
@@ -149,6 +161,11 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
   return ql + add_suffix + wid;
 }
 
+/**
+ * flush_par - Write out the paragraph
+ * @param s   State to work with
+ * @param fst The state of the flowed text
+ */
 static void flush_par(struct State *s, struct FlowedState *fst)
 {
   if (fst->width > 0)
@@ -169,7 +186,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
  * required for the prefix from the terminal width.
  */
 static int quote_width(struct State *s, int ql)
-{
+              {
   int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
   if (TextFlowed && (s->flags & MUTT_REPLYING))
   {
@@ -191,6 +208,14 @@ static int quote_width(struct State *s, int ql)
   return width;
 }
 
+/**
+ * print_flowed_line - Print a format-flowed line
+ * @param line Text to print
+ * @param s    State to work with
+ * @param ql   Quote level
+ * @param fst  The state of the flowed text
+ * @param term If true, terminate with a new line
+ */
 static void print_flowed_line(char *line, struct State *s, int ql,
                               struct FlowedState *fst, int term)
 {
@@ -261,6 +286,13 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     flush_par(s, fst);
 }
 
+/**
+ * print_fixed_line - Print a fixed format line
+ * @param line Text to print
+ * @param s    State to work with
+ * @param ql   Quote level
+ * @param fst  The state of the flowed text
+ */
 static void print_fixed_line(const char *line, struct State *s, int ql, struct FlowedState *fst)
 {
   print_indent(ql, s, add_quote_suffix(s, ql));

@@ -120,7 +120,7 @@ void mutt_regex_free(struct Regex **r)
  * mutt_regexlist_add - Compile a regex string and add it to a list
  * @param rl    RegexList to add to
  * @param str   String to compile into a regex
- * @param flags Flags
+ * @param flags Flags, e.g. REG_ICASE
  * @param err   Buffer for error messages
  * @retval 0  Success, Regex compiled and added to the list
  * @retval -1 Error, see message in 'err'

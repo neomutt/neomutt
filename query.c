@@ -77,6 +77,11 @@ static const struct Mapping QueryHelp[] = {
   { NULL, 0 },
 };
 
+/**
+ * result_to_addr - Turn a Query into an Address
+ * @param r Query to use
+ * @retval ptr Newly allocaated Address
+ */
 static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
@@ -92,6 +97,10 @@ static struct Address *result_to_addr(struct Query *r)
   return tmp;
 }
 
+/**
+ * free_query - Free a Query
+ * @param query Query to free
+ */
 static void free_query(struct Query **query)
 {
   struct Query *p = NULL;
@@ -111,6 +120,12 @@ static void free_query(struct Query **query)
   }
 }
 
+/**
+ * run_query - Run an external program to find Addresses
+ * @param s     String to match
+ * @param quiet If true, don't print progress messages
+ * @retval ptr Query List of results
+ */
 static struct Query *run_query(char *s, int quiet)
 {
   FILE *fp = NULL;
@@ -182,6 +197,16 @@ static struct Query *run_query(char *s, int quiet)
   return first;
 }
 
+/**
+ * query_search - Search a Address menu item
+ * @param m  Current Menu
+ * @param re Regex to match
+ * @param n  Index of menu item to test
+ * @retval  0 Success
+ * @retval -1 Error, or no match
+ *
+ * Try to match various Address fields.
+ */
 static int query_search(struct Menu *m, regex_t *re, int n)
 {
   struct Entry *table = (struct Entry *) m->data;
@@ -301,6 +326,13 @@ static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * query_tag - Tag an entry in the Query Menu
+ * @param menu Current Menu
+ * @param n    Index of menu entry to tag
+ * @param m    If >=0 then multiple tags are allowed
+ * @retval num Number of tagged menu items
+ */
 static int query_tag(struct Menu *menu, int n, int m)
 {
   struct Entry *cur = &((struct Entry *) menu->data)[n];
@@ -310,6 +342,13 @@ static int query_tag(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
+/**
+ * query_menu - Get the user to enter an Address Query
+ * @param buf     Buffer for the query
+ * @param buflen  Length of buffer
+ * @param results Query List
+ * @param retbuf  If true, populate the results
+ */
 static void query_menu(char *buf, size_t buflen, struct Query *results, int retbuf)
 {
   struct Menu *menu = NULL;
@@ -541,6 +580,12 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
   }
 }
 
+/**
+ * mutt_query_complete - Perform auto-complete using an Address Query
+ * @param buf    Buffer for completion
+ * @param buflen Length of buffer
+ * @retval 0 Always
+ */
 int mutt_query_complete(char *buf, size_t buflen)
 {
   struct Query *results = NULL;
@@ -573,6 +618,11 @@ int mutt_query_complete(char *buf, size_t buflen)
   return 0;
 }
 
+/**
+ * mutt_query_menu - Show the user the results of a Query
+ * @param buf    Buffer for the query
+ * @param buflen Length of buffer
+ */
 void mutt_query_menu(char *buf, size_t buflen)
 {
   if (!QueryCommand)

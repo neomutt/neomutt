@@ -192,6 +192,12 @@ static struct Mapping ComposeNewsHelp[] = {
 };
 #endif
 
+/**
+ * calc_header_width_padding - Calculate the width needed for the compose labels
+ * @param idx      Store the result at this index of HeaderPadding
+ * @param header   Header string
+ * @param calc_max If true, calculate the maximum width
+ */
 static void calc_header_width_padding(int idx, const char *header, int calc_max)
 {
   int width;
@@ -251,6 +257,10 @@ static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * redraw_crypt_lines - Update the encryption info in the compose window
+ * @param msg Header of message
+ */
 static void redraw_crypt_lines(struct Header *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
@@ -336,7 +346,6 @@ static void redraw_crypt_lines(struct Header *msg)
 }
 
 #ifdef MIXMASTER
-
 /**
  * redraw_mix_line - Redraw the Mixmaster chain
  * @param chain List of chain links
@@ -377,6 +386,12 @@ static void redraw_mix_line(struct ListHead *chain)
 }
 #endif /* MIXMASTER */
 
+/**
+ * check_attachments - Check if any attachments have changed or been deleted
+ * @param actx Attachment context
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int check_attachments(struct AttachCtx *actx)
 {
   int r;
@@ -411,6 +426,11 @@ static int check_attachments(struct AttachCtx *actx)
   return 0;
 }
 
+/**
+ * draw_envelope_addr - Write addresses to the compose window
+ * @param line Line to write to (index into Prompts)
+ * @param addr Address list to write
+ */
 static void draw_envelope_addr(int line, struct Address *addr)
 {
   char buf[LONG_STRING];
@@ -424,6 +444,11 @@ static void draw_envelope_addr(int line, struct Address *addr)
   mutt_paddstr(W, buf);
 }
 
+/**
+ * draw_envelope - Write the email headers to the compose window
+ * @param msg Header of the message
+ * @param fcc Fcc field
+ */
 static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
@@ -481,6 +506,11 @@ static void draw_envelope(struct Header *msg, char *fcc)
   NORMAL_COLOR;
 }
 
+/**
+ * edit_address_list - Let the user edit the address list
+ * @param[in]     line Index into the Prompts lists
+ * @param[in,out] addr Address list to edit
+ */
 static void edit_address_list(int line, struct Address **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
@@ -509,6 +539,13 @@ static void edit_address_list(int line, struct Address **addr)
   mutt_paddstr(W, buf);
 }
 
+/**
+ * delete_attachment - Delete an attachment
+ * @param actx Attachment context
+ * @param x    Index number of attachment
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int delete_attachment(struct AttachCtx *actx, int x)
 {
   struct AttachPtr **idx = actx->idx;
@@ -543,6 +580,13 @@ static int delete_attachment(struct AttachCtx *actx, int x)
   return 0;
 }
 
+/**
+ * mutt_gen_compose_attach_list - Generate the attachment list for the compose screen
+ * @param actx        Attachment context
+ * @param m           Attachment
+ * @param parent_type Attachment type, e.g TYPE_MULTIPART
+ * @param level       Nesting depth of attachment
+ */
 static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
                                          int parent_type, int level)
 {
@@ -569,6 +613,12 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
   }
 }
 
+/**
+ * mutt_update_compose_menu - Redraw the compose window
+ * @param actx Attachment context
+ * @param menu Current menu
+ * @param init If true, initialise the attachment list
+ */
 static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, int init)
 {
   if (init)
@@ -592,6 +642,12 @@ static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, 
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
+/**
+ * update_idx - Add a new attchment to the message
+ * @param menu Current menu
+ * @param actx Attachment context
+ * @param new  Attachment to add
+ */
 static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachPtr *new)
 {
   new->level = (actx->idxlen > 0) ? actx->idx[actx->idxlen - 1]->level : 0;
@@ -612,10 +668,13 @@ struct ComposeRedrawData
   char *fcc;
 };
 
-/* prototype for use below */
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p);
 
+/**
+ * compose_menu_redraw - Redraw the compose menu
+ * @param menu Current menu
+ */
 static void compose_menu_redraw(struct Menu *menu)
 {
   struct ComposeRedrawData *rd = menu->redraw_data;
@@ -809,10 +868,19 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   return src;
 }
 
+/**
+ * compose_status_line - Compose the string for the status bar
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  col    Starting column
+ * @param[in]  cols   Number of screen columns
+ * @param[in]  menu   Current menu
+ * @param[in]  src    Printf-like format string
+ */
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                struct Menu *menu, const char *p)
+                                struct Menu *menu, const char *src)
 {
-  mutt_expando_format(buf, buflen, col, cols, p, compose_format_str,
+  mutt_expando_format(buf, buflen, col, cols, src, compose_format_str,
                       (unsigned long) menu, 0);
 }
 
@@ -1040,9 +1108,9 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         else
         {
           /* this is grouped with OP_COMPOSE_EDIT_HEADERS because the
-             attachment list could change if the user invokes ~v to edit
-             the message with headers, in which we need to execute the
-             code below to regenerate the index array */
+           * attachment list could change if the user invokes ~v to edit
+           * the message with headers, in which we need to execute the
+           * code below to regenerate the index array */
           mutt_builtin_editor(msg->content->filename, msg, cur);
         }
         mutt_update_encoding(msg->content);

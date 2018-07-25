@@ -230,6 +230,12 @@ static void collapse_all(struct Menu *menu, int toggle)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
+/**
+ * ci_next_undeleted - Find the next undeleted email
+ * @param msgno Message number to start at
+ * @retval >=0 Message number of next undeleted email
+ * @retval  -1 No more undeleted messages
+ */
 static int ci_next_undeleted(int msgno)
 {
   for (int i = msgno + 1; i < Context->vcount; i++)
@@ -238,6 +244,12 @@ static int ci_next_undeleted(int msgno)
   return -1;
 }
 
+/**
+ * ci_previous_undeleted - Find the previous undeleted email
+ * @param msgno Message number to start at
+ * @retval >=0 Message number of next undeleted email
+ * @retval  -1 No more undeleted messages
+ */
 static int ci_previous_undeleted(int msgno)
 {
   for (int i = msgno - 1; i >= 0; i--)
@@ -322,6 +334,10 @@ static int mx_toggle_write(struct Context *ctx)
   return 0;
 }
 
+/**
+ * resort_index - Resort the index
+ * @param menu Current Menu
+ */
 static void resort_index(struct Menu *menu)
 {
   struct Header *current = CURHDR;
@@ -348,6 +364,14 @@ static void resort_index(struct Menu *menu)
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
+/**
+ * update_index - Update the index
+ * @param menu       Current Menu
+ * @param ctx        Mailbox
+ * @param check      Flags, e.g. #MUTT_REOPENED
+ * @param oldcount   How many items are currently in the index
+ * @param index_hint Remember our place in the index
+ */
 void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */
@@ -451,6 +475,17 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     menu->current = ci_first_message();
 }
 
+/**
+ * main_change_folder - Change to a different mailbox
+ * @param menu       Current Menu
+ * @param op         Operation, e.g. OP_MAIN_CHANGE_FOLDER_READONLY
+ * @param buf        Folder to change to
+ * @param buflen     Length of buffer
+ * @param oldcount   How many items are currently in the index
+ * @param index_hint Remember our place in the index
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int main_change_folder(struct Menu *menu, int op, char *buf,
                               size_t buflen, int *oldcount, int *index_hint)
 {
@@ -614,6 +649,12 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
   mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, h, flag);
 }
 
+/**
+ * index_color - Calculate the colour for a line of the index
+ * @param index_no Index line number
+ * @retval >0 Colour pair
+ * @retval  0 No colour
+ */
 int index_color(int index_no)
 {
   if (!Context || (index_no < 0))
@@ -792,6 +833,10 @@ struct Mapping IndexNewsHelp[] = {
 };
 #endif
 
+/**
+ * index_menu_redraw - Redraw the index
+ * @param menu Current Menu
+ */
 static void index_menu_redraw(struct Menu *menu)
 {
   if (menu->redraw & REDRAW_FULL)
@@ -3377,6 +3422,11 @@ int mutt_index_menu(void)
   return close;
 }
 
+/**
+ * mutt_set_header_color - Select a colour for a message
+ * @param ctx    Mailbox
+ * @param curhdr Header of message
+ */
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
   struct ColorLine *color = NULL;

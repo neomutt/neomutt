@@ -62,6 +62,11 @@ struct Coord
   short c; /**< column */
 };
 
+/**
+ * mix_get_caps - Get Mixmaster Capabilities
+ * @param capstr Capability string to parse
+ * @retval num Capabilities, e.g. #MIX_CAP_COMPRESS
+ */
 static int mix_get_caps(const char *capstr)
 {
   int caps = 0;
@@ -100,6 +105,13 @@ static int mix_get_caps(const char *capstr)
   return caps;
 }
 
+/**
+ * mix_add_entry - Add an entry to the Remailer list
+ * @param[in]  type2_list Remailer list to add to
+ * @param[in]  entry      Remailer to add
+ * @param[out] slots      Total number of slots
+ * @param[out] used       Number of slots used
+ */
 static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
                           size_t *slots, size_t *used)
 {
@@ -114,11 +126,19 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
     entry->num = *used;
 }
 
+/**
+ * mix_new_remailer - Create a new Remailer
+ * @retval ptr Newly allocated Remailer
+ */
 static struct Remailer *mix_new_remailer(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Remailer));
 }
 
+/**
+ * mix_free_remailer - Free a Remailer
+ * @param r Remailer to free
+ */
 static void mix_free_remailer(struct Remailer **r)
 {
   FREE(&(*r)->shortname);
@@ -217,6 +237,10 @@ static struct Remailer **mix_type2_list(size_t *l)
   return type2_list;
 }
 
+/**
+ * mix_free_type2_list - Free a Remailer List
+ * @param ttlp Remailer List to free
+ */
 static void mix_free_type2_list(struct Remailer ***ttlp)
 {
   struct Remailer **type2_list = *ttlp;
@@ -231,6 +255,13 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 #define MIX_VOFFSET (MuttIndexWindow->rows - 4)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
 
+/**
+ * mix_screen_coordinates - Get the screen coordinates to place a chain
+ * @param type2_list Remailer List
+ * @param coordsp    On screen coordinates
+ * @param chain      Chain
+ * @param i          Index in chain
+ */
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
 {
@@ -270,6 +301,14 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
   }
 }
 
+/**
+ * mix_redraw_ce - Redraw the Remailer chain
+ * @param type2_list Remailer List
+ * @param coords     Screen Coordinates
+ * @param chain      Chain
+ * @param i          Index in chain
+ * @param selected   true, if this item is selected
+ */
 static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
                           struct MixChain *chain, int i, short selected)
 {
@@ -292,6 +331,13 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
   }
 }
 
+/**
+ * mix_redraw_chain - Redraw the chain on screen
+ * @param type2_list Remailer List
+ * @param coords     Where to draw the list on screen
+ * @param chain      Chain to display
+ * @param cur        Chain index of current selection
+ */
 static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
                              struct MixChain *chain, int cur)
 {
@@ -305,6 +351,10 @@ static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
     mix_redraw_ce(type2_list, coords, chain, i, i == cur);
 }
 
+/**
+ * mix_redraw_head - Redraw the Chain info
+ * @param chain Chain
+ */
 static void mix_redraw_head(struct MixChain *chain)
 {
   SETCOLOR(MT_COLOR_STATUS);
@@ -314,6 +364,13 @@ static void mix_redraw_head(struct MixChain *chain)
   NORMAL_COLOR;
 }
 
+/**
+ * mix_format_caps - Turn flags into a MixMaster capability string
+ * @param r Remailer to use
+ * @retval ptr Capability string
+ *
+ * @note The string is a static buffer
+ */
 static const char *mix_format_caps(struct Remailer *r)
 {
   static char capbuf[10];
@@ -453,6 +510,14 @@ static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * mix_chain_add - Add a host to the chain
+ * @param chain      Chain to add to
+ * @param s          Hostname
+ * @param type2_list Remailer List
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer **type2_list)
 {
   int i;

@@ -146,6 +146,10 @@ static const struct Mapping ComposeFields[] = {
 
 #define COLOR_QUOTE_INIT 8
 
+/**
+ * new_color_line - Create a new ColorLine
+ * @retval ptr Newly allocated ColorLine
+ */
 static struct ColorLine *new_color_line(void)
 {
   struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
@@ -155,6 +159,11 @@ static struct ColorLine *new_color_line(void)
   return p;
 }
 
+/**
+ * free_color_line - Free a ColorLine
+ * @param tmp         ColorLine to free
+ * @param free_colors If true, free its colours too
+ */
 static void free_color_line(struct ColorLine *tmp, int free_colors)
 {
   if (!tmp)
@@ -175,6 +184,9 @@ static void free_color_line(struct ColorLine *tmp, int free_colors)
   FREE(&tmp);
 }
 
+/**
+ * ci_start_color - Set up the default colours
+ */
 void ci_start_color(void)
 {
   memset(ColorDefs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
@@ -203,6 +215,13 @@ void ci_start_color(void)
 #ifdef HAVE_COLOR
 
 #ifdef USE_SLANG_CURSES
+/**
+ * get_color_name - Get a colour's name from its ID
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param val     Colour ID to look up
+ * @retval ptr Pointer to the results buffer
+ */
 static char *get_color_name(char *dest, size_t destlen, int val)
 {
   static const char *const missing[3] = { "brown", "lightgray", "default" };
@@ -240,6 +259,12 @@ static char *get_color_name(char *dest, size_t destlen, int val)
 }
 #endif
 
+/**
+ * mutt_alloc_color - Allocate a colour pair
+ * @param fg Foreground colour ID
+ * @param bg Background colour ID
+ * @retval num Combined colour pair
+ */
 int mutt_alloc_color(int fg, int bg)
 {
   struct ColorList *p = ColorList;
@@ -307,6 +332,14 @@ int mutt_alloc_color(int fg, int bg)
   return COLOR_PAIR(p->index);
 }
 
+/**
+ * mutt_lookup_color - Get the colours from a colour pair
+ * @param[in]  pair Colour pair
+ * @param[out] fg   Foreground colour (OPTIONAL)
+ * @param[out] bg   Background colour (OPTIONAL)
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int mutt_lookup_color(short pair, short *fg, short *bg)
 {
   struct ColorList *p = ColorList;
@@ -326,6 +359,12 @@ static int mutt_lookup_color(short pair, short *fg, short *bg)
   return -1;
 }
 
+/**
+ * mutt_combine_color - Combine two colours
+ * @param fg_attr Colour pair of foreground to use
+ * @param bg_attr Colour pair of background to use
+ * @retval num Colour pair of combined colour
+ */
 int mutt_combine_color(int fg_attr, int bg_attr)
 {
   short fg, bg;
@@ -338,6 +377,13 @@ int mutt_combine_color(int fg_attr, int bg_attr)
   return mutt_alloc_color(fg, bg);
 }
 
+/**
+ * mutt_free_color - Free a colour
+ * @param fg Foreground colour ID
+ * @param bg Background colour ID
+ *
+ * If there are no more users, the resource will be freed.
+ */
 void mutt_free_color(int fg, int bg)
 {
   struct ColorList *q = NULL;
@@ -381,6 +427,18 @@ void mutt_free_color(int fg, int bg)
 
 #ifdef HAVE_COLOR
 
+/**
+ * parse_color_name - Parse a colour name
+ * @param[in]  s     String to parse
+ * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] attr  Attribute flags, e.g. A_BOLD
+ * @param[in]  is_fg true if this is a foreground colour
+ * @param[out] err   Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * Parse a colour name, such as "red", "brightgreen", "color123".
+ */
 static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
@@ -443,6 +501,14 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 
 #endif
 
+/**
+ * do_uncolor - Parse the "uncolor" or "unmono" command
+ * @param[in]     buf           Buffer for temporary storage
+ * @param[in]     s             Buffer containing the uncolor command
+ * @param[in]     cl            List of existing colours
+ * @param[in,out] do_cache      Set to true if colours were freed
+ * @param[in]     parse_uncolor If true, 'uncolor', else 'unmono'
+ */
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
                        struct ColorLineHead *cl, int *do_cache, bool parse_uncolor)
 {
@@ -627,6 +693,20 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return parse_uncolor(buf, s, data, err, 0);
 }
 
+/**
+ * add_pattern - Associate a colour to a pattern
+ * @param top       List of existing colours
+ * @param s         String to match
+ * @param sensitive true if the pattern case-sensitive
+ * @param fg        Foreground colour ID
+ * @param bg        Background colour ID
+ * @param attr      Attribute flags, e.g. A_BOLD
+ * @param err       Buffer for error messages
+ * @param is_index  true of this is for the index
+ * @param match     Number of regex subexpression to match (0 for entire pattern)
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, int fg,
                        int bg, int attr, struct Buffer *err, int is_index, int match)
 {
@@ -723,6 +803,16 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
   return 0;
 }
 
+/**
+ * parse_object - Parse a colour config line
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s   Buffer containing string to be parsed
+ * @param[out] o   Index into the fields map
+ * @param[out] ql  Quote level
+ * @param[out] err Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
                         struct Buffer *err)
 {
@@ -781,6 +871,17 @@ typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
 
 #ifdef HAVE_COLOR
 
+/**
+ * parse_color_pair - Parse a pair of colours
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s    Buffer containing string to be parsed
+ * @param[out] fg   Foreground colour
+ * @param[out] bg   Background colour
+ * @param[out] attr Attribute flags
+ * @param[out] err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
                             int *bg, int *attr, struct Buffer *err)
 {
@@ -811,6 +912,17 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
 
 #endif
 
+/**
+ * parse_attr_spec - Parse an attribute description
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s    Buffer containing string to be parsed
+ * @param[out] fg   Foreground colour (set to -1)
+ * @param[out] bg   Background colour (set to -1)
+ * @param[out] attr Attribute flags
+ * @param[out] err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
                            int *bg, int *attr, struct Buffer *err)
 {
@@ -848,6 +960,13 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
   return 0;
 }
 
+/**
+ * fgbgattr_to_color - Convert a foreground, background, attribute triplet into a colour
+ * @param fg Foreground colour ID
+ * @param bg Background colour ID
+ * @param attr Attribute flags, e.g. A_BOLD
+ * @retval num Combined colour pair
+ */
 static int fgbgattr_to_color(int fg, int bg, int attr)
 {
 #ifdef HAVE_COLOR
@@ -1086,6 +1205,9 @@ static void mutt_free_color_list(struct ColorLineHead *head)
   }
 }
 
+/**
+ * mutt_free_colors - Free all the colours (on shutdown)
+ */
 void mutt_free_colors(void)
 {
   mutt_free_color_list(&ColorAttachList);

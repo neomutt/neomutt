@@ -48,6 +48,13 @@ bool SortRe;
 bool StrictThreads;
 bool ThreadReceived;
 
+
+/**
+ * is_visible - Is the message visible?
+ * @param hdr Header of message
+ * @param ctx Mailbox
+ * @retval true If the message is not hidden in some way
+ */
 static bool is_visible(struct Header *hdr, struct Context *ctx)
 {
   return hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited));
@@ -103,6 +110,10 @@ bool need_display_subject(struct Context *ctx, struct Header *hdr)
   return true;
 }
 
+/**
+ * linearize_tree - Flatten an email thread
+ * @param ctx Mailbox
+ */
 static void linearize_tree(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree;
@@ -471,6 +482,11 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
   return last;
 }
 
+/**
+ * make_subj_hash - Create a Hash Table for the email subjects
+ * @param ctx Mailbox
+ * @retval ptr Newly allocated Hash Table
+ */
 static struct Hash *make_subj_hash(struct Context *ctx)
 {
   struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
@@ -552,6 +568,10 @@ static void pseudo_threads(struct Context *ctx)
   ctx->tree = top;
 }
 
+/**
+ * mutt_clear_threads - Clear the threading of message in a mailbox
+ * @param ctx Mailbox
+ */
 void mutt_clear_threads(struct Context *ctx)
 {
   for (int i = 0; i < ctx->msgcount; i++)
@@ -569,6 +589,14 @@ void mutt_clear_threads(struct Context *ctx)
     mutt_hash_destroy(&ctx->thread_hash);
 }
 
+/**
+ * compare_threads - Sorting function for email threads
+ * @param a First thread to compare
+ * @param b Second thread to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_threads(const void *a, const void *b)
 {
   static sort_t *sort_func = NULL;
@@ -588,6 +616,12 @@ static int compare_threads(const void *a, const void *b)
   }
 }
 
+/**
+ * mutt_sort_subthreads - Sort the children of a thread
+ * @param thread Thread to start at
+ * @param init   If true, rebuild the thread
+ * @retval ptr Sorted threads
+ */
 struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
 {
   struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
@@ -718,6 +752,11 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
   }
 }
 
+/**
+ * check_subjects - Find out which emails' subjects differ from their parent's
+ * @param ctx  Mailbox
+ * @param init If true, rebuild the thread
+ */
 static void check_subjects(struct Context *ctx, bool init)
 {
   struct Header *cur = NULL;
@@ -752,6 +791,11 @@ static void check_subjects(struct Context *ctx, bool init)
   }
 }
 
+/**
+ * mutt_sort_threads - Sort email threads
+ * @param ctx  Mailbox
+ * @param init If true, rebuild the thread
+ */
 void mutt_sort_threads(struct Context *ctx, bool init)
 {
   struct Header *cur = NULL;
@@ -1046,6 +1090,14 @@ int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
   return tmp->virtual;
 }
 
+/**
+ * mutt_parent_message - Find the parent of a message
+ * @param ctx       Mailbox
+ * @param hdr       Header of current message
+ * @param find_root If true, find the root message
+ * @retval >=0 Virtual index number of parent/root message
+ * @retval -1 Error
+ */
 int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 {
   struct MuttThread *thread = NULL;
@@ -1088,6 +1140,10 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
   return parent->virtual;
 }
 
+/**
+ * mutt_set_virtual - Set the virtual index number of all the messages in a mailbox
+ * @param ctx Mailbox
+ */
 void mutt_set_virtual(struct Context *ctx)
 {
   struct Header *cur = NULL;
@@ -1109,6 +1165,13 @@ void mutt_set_virtual(struct Context *ctx)
   }
 }
 
+/**
+ * mutt_traverse_thread - Recurse through an email thread, matching messages
+ * @param ctx  Mailbox
+ * @param cur  Header of current message
+ * @param flag Flag to set, e.g. #MUTT_THREAD_NEXT_UNREAD
+ * @retval num Number of matches
+ */
 int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
@@ -1318,6 +1381,11 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
   return rc;
 }
 
+/**
+ * mutt_make_id_hash - Create a Hash Table for message-ids
+ * @param ctx Mailbox
+ * @retval ptr Newly allocated Hash Table
+ */
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
   struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, 0);
@@ -1332,6 +1400,13 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
   return hash;
 }
 
+/**
+ * link_threads - Forcibly link messages together
+ * @param parent Header of parent message
+ * @param child  Header of child message
+ * @param ctx    Mailbox
+ * @retval true On success
+ */
 static bool link_threads(struct Header *parent, struct Header *child, struct Context *ctx)
 {
   if (child == parent)
@@ -1345,6 +1420,15 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
   return true;
 }
 
+/**
+ * mutt_link_threads - Forcibly link threads together
+ * @param cur  Header of current message
+ * @param last Header of thread to link (OPTIONAL)
+ * @param ctx  Mailbox
+ * @retval true On success
+ *
+ * if last is omitted, all the tagged threads will be used.
+ */
 int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx)
 {
   bool changed = false;

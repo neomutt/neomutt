@@ -71,6 +71,13 @@ static bool check_msg(struct Body *b, bool err)
   return true;
 }
 
+/**
+ * check_all_msg - Are all the Attachments RFC822 messages?
+ * @param actx Attachment context
+ * @param cur  Current message
+ * @param err  If true, report errors
+ * @retval true If all parts are RFC822 messages
+ */
 static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {
   if (cur && !check_msg(cur, err))
@@ -107,6 +114,11 @@ static bool check_can_decode(struct AttachCtx *actx, struct Body *cur)
   return true;
 }
 
+/**
+ * count_tagged - Count the number of tagged attachments
+ * @param actx Attachment context
+ * @retval num Number of tagged attachments
+ */
 static short count_tagged(struct AttachCtx *actx)
 {
   short count = 0;
@@ -334,6 +346,14 @@ static int is_parent(short i, struct AttachCtx *actx, struct Body *cur)
   return false;
 }
 
+/**
+ * find_parent - Find the parent of an Attachment
+ * @param actx    Attachment context
+ * @param cur     Attachment (OPTIONAL)
+ * @param nattach Use the nth attachment
+ * @retval ptr  Parent attachment
+ * @retval NULL No parent exists
+ */
 static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, short nattach)
 {
   struct AttachPtr *parent = NULL;
@@ -358,6 +378,14 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
   return parent;
 }
 
+/**
+ * include_header - Write an email header to a file, optionally quoting it
+ * @param quote  If true, prefix the lines
+ * @param ifp    File to read from
+ * @param hdr    Header of email
+ * @param ofp    File to write to
+ * @param prefix Prefix for each line (OPTIONAL)
+ */
 static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
@@ -696,6 +724,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   ci_send_message(flags, tmphdr, *tmpbody ? tmpbody : NULL, NULL, curhdr);
 }
 
+/**
+ * mutt_attach_forward - Forward an Attachment
+ * @param fp    Handle to the attachmenT
+ * @param hdr   Header of message
+ * @param actx  Attachment Context
+ * @param cur   Current message
+ * @param flags Send mode, e.g. #SEND_RESEND
+ */
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
                          struct Body *cur, int flags)
 {
@@ -840,6 +876,14 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
   mutt_make_post_indent(Context, cur, tmpfp);
 }
 
+/**
+ * mutt_attach_reply - Attach a reply
+ * @param fp    File handle to reply
+ * @param hdr   Header of message
+ * @param actx  Attachment Context
+ * @param cur   Current message
+ * @param flags Send mode, e.g. #SEND_RESEND
+ */
 void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
                        struct Body *cur, int flags)
 {

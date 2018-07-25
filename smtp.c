@@ -82,6 +82,13 @@ enum SmtpCapability
 static char *AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7) / 8];
 
+/**
+ * valid_smtp_code - Is the is a valid SMTP return code?
+ * @param[in]  buf String to check
+ * @param[in]  len Length of string
+ * @param[out] n   Numeric value of code
+ * @retval true Valid number
+ */
 static bool valid_smtp_code(char *buf, size_t len, int *n)
 {
   char code[4];
@@ -144,6 +151,13 @@ static int smtp_get_resp(struct Connection *conn)
   return -1;
 }
 
+/**
+ * smtp_rcpt_to - Set the recipient to an Address
+ * @param conn Server Connection
+ * @param a    Address to use
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_ERR_WRITE
+ */
 static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
 {
   char buf[1024];
@@ -172,6 +186,13 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
   return 0;
 }
 
+/**
+ * smtp_data - Send data to an SMTP server
+ * @param conn    SMTP Connection
+ * @param msgfile Filename containing data
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_ERR_WRITE
+ */
 static int smtp_data(struct Connection *conn, const char *msgfile)
 {
   char buf[1024];
@@ -279,6 +300,12 @@ static bool addresses_use_unicode(const struct Address *a)
   return false;
 }
 
+/**
+ * smtp_fill_account - Create Account object from SMTP Url
+ * @param account Account to populate
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int smtp_fill_account(struct Account *account)
 {
   struct Url url;
@@ -326,6 +353,13 @@ static int smtp_fill_account(struct Account *account)
   return 0;
 }
 
+/**
+ * smtp_helo - Say hello to an SMTP Server
+ * @param conn  SMTP Connection
+ * @param esmtp If true, use ESMTP
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_ERR_WRITE
+ */
 static int smtp_helo(struct Connection *conn, bool esmtp)
 {
   char buf[LONG_STRING];
@@ -359,6 +393,13 @@ static int smtp_helo(struct Connection *conn, bool esmtp)
 }
 
 #ifdef USE_SASL
+/**
+ * smtp_auth_sasl - Authenticate using SASL
+ * @param conn     SMTP Connection
+ * @param mechlist List of mechanisms to use
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ */
 static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 {
   sasl_conn_t *saslconn = NULL;
@@ -461,6 +502,12 @@ fail:
   return SMTP_AUTH_FAIL;
 }
 
+/**
+ * smtp_auth - Authenticate to an SMTP server
+ * @param conn SMTP Connection
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ */
 static int smtp_auth(struct Connection *conn)
 {
   int r = SMTP_AUTH_UNAVAIL;
@@ -513,6 +560,12 @@ static int smtp_auth(struct Connection *conn)
 
 #else  /* USE_SASL */
 
+/**
+ * smtp_auth_plain - Authenticate using plain text
+ * @param conn SMTP Connection
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ */
 static int smtp_auth_plain(struct Connection *conn)
 {
   char buf[LONG_STRING];
@@ -568,6 +621,13 @@ error:
 }
 #endif /* USE_SASL */
 
+/**
+ * smtp_open - Open an SMTP Connection
+ * @param conn  SMTP Connection
+ * @param esmtp If true, use ESMTP
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int smtp_open(struct Connection *conn, bool esmtp)
 {
   int rc;
@@ -635,6 +695,17 @@ static int smtp_open(struct Connection *conn, bool esmtp)
   return 0;
 }
 
+/**
+ * mutt_smtp_send - Send a message using SMTP
+ * @param from     From Address
+ * @param to       To Address
+ * @param cc       Cc Address
+ * @param bcc      Bcc Address
+ * @param msgfile  Message to send to the server
+ * @param eightbit If true, try for an 8-bit friendly connection
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_smtp_send(const struct Address *from, const struct Address *to,
                    const struct Address *cc, const struct Address *bcc,
                    const char *msgfile, bool eightbit)
