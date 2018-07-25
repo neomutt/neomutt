@@ -1007,7 +1007,6 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
-    need_sort = i;
     rc = i;
     goto bail;
   }
