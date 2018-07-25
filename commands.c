@@ -836,8 +836,8 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decrypt,
-                          struct Context *ctx)
+int mutt_save_message_ctx(struct Header *h, bool delete, bool decode,
+                          bool decrypt, struct Context *ctx)
 {
   int cmflags, chflags;
   int rc;

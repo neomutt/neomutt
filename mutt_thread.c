@@ -48,7 +48,6 @@ bool SortRe;
 bool StrictThreads;
 bool ThreadReceived;
 
-
 /**
  * is_visible - Is the message visible?
  * @param hdr Header of message

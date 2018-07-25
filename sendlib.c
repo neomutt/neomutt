@@ -470,7 +470,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 static bool write_as_text_part(struct Body *b)
 {
   return mutt_is_text_part(b) ||
-          (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b));
+         (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b));
 }
 
 /**

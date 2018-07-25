@@ -569,8 +569,7 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
       writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
 
   const struct timespec wait = {
-    .tv_sec = 0,
-    .tv_nsec = 500000000, /* Half a second */
+    .tv_sec = 0, .tv_nsec = 500000000, /* Half a second */
   };
 
   do

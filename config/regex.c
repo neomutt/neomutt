@@ -194,7 +194,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const int flags = orig->not ? DT_REGEX_ALLOW_NOT : 0;
+    const int flags = orig->not? DT_REGEX_ALLOW_NOT : 0;
     r = regex_create(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;

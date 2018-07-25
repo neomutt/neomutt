@@ -1549,10 +1549,10 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * * #MUTT_PAGER_NSKIP, keeps leading whitespace
  * * #MUTT_PAGER_MARKER, eventually show markers
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
-                        int n, int *last, int *max, int flags,
-                        struct QClass **quote_list, int *q_level, bool *force_redraw,
-                        regex_t *search_re, struct MuttWindow *pager_window)
+static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int n,
+                        int *last, int *max, int flags, struct QClass **quote_list,
+                        int *q_level, bool *force_redraw, regex_t *search_re,
+                        struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;

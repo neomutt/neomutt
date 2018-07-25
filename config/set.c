@@ -241,7 +241,9 @@ bool cs_register_type(struct ConfigSet *cs, unsigned int type, const struct Conf
 
   if (!cst->name || !cst->string_set || !cst->string_get || !cst->reset ||
       !cst->native_set || !cst->native_get)
+  {
     return false;
+  }
 
   if (type >= mutt_array_size(cs->types))
     return false;

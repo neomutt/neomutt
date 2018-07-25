@@ -186,7 +186,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
  * required for the prefix from the terminal width.
  */
 static int quote_width(struct State *s, int ql)
-              {
+{
   int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
   if (TextFlowed && (s->flags & MUTT_REPLYING))
   {
