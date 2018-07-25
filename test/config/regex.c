@@ -402,11 +402,10 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   char *name = "Mango";
-  char *regex = NULL;
 
   mutt_buffer_reset(err);
 
-  regex = VarMango ? VarMango->pattern : NULL;
+  char *regex = VarMango ? VarMango->pattern : NULL;
   printf("Initial: %s = '%s'\n", name, NONULL(regex));
   int rc = cs_str_string_set(cs, name, "hello.*", err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)

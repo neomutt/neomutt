@@ -775,12 +775,10 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
       char pretty_size[10];
-      long size = 0;
-
       char *length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
-        size = strtol(length, NULL, 10);
+        long size = strtol(length, NULL, 10);
         mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
         if (expire != -1)
         {

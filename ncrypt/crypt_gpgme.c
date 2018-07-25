@@ -689,11 +689,10 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
 {
   int err;
   char tempf[PATH_MAX];
-  FILE *fp = NULL;
   ssize_t nread = 0;
 
   mutt_mktemp(tempf, sizeof(tempf));
-  fp = mutt_file_fopen(tempf, "w+");
+  FILE *fp = mutt_file_fopen(tempf, "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));

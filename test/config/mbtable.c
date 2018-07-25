@@ -362,11 +362,10 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   char *name = "Lemon";
-  char *mb = NULL;
 
   mutt_buffer_reset(err);
 
-  mb = VarLemon ? VarLemon->orig_str : NULL;
+  char *mb = VarLemon ? VarLemon->orig_str : NULL;
   printf("Initial: %s = '%s'\n", name, NONULL(mb));
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
