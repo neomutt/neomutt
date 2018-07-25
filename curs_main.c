@@ -3354,7 +3354,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_VERSION:
-        mutt_version();
+        mutt_message(mutt_make_version());
         break;
 
       case OP_BUFFY_LIST:

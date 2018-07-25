@@ -345,8 +345,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'v':
-      snprintf(fmt, sizeof(fmt), "NeoMutt %%s%%s");
-      snprintf(buf, buflen, fmt, PACKAGE_VERSION, GitVer);
+      snprintf(buf, buflen, "%s", mutt_make_version());
       break;
 
     case 'V':

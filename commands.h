@@ -54,6 +54,5 @@ int  mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decr
 int  mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
-void mutt_version(void);
 
 #endif /* MUTT_COMMANDS_H */

@@ -1072,14 +1072,6 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 }
 
 /**
- * mutt_version - Generate the NeoMutt version string
- */
-void mutt_version(void)
-{
-  mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
-}
-
-/**
  * mutt_edit_content_type - Edit the content type of an attachment
  * @param h  Header of email
  * @param b  Attachment

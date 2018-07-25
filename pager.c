@@ -55,6 +55,7 @@
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -3353,7 +3354,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_VERSION:
-        mutt_version();
+        mutt_message(mutt_make_version());
         break;
 
       case OP_BUFFY_LIST:
