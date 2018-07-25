@@ -16,7 +16,7 @@ CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/set.o test/config/sort.o test/config/string.o \
 		  test/config/synonym.o
 
-CFLAGS	+= -Itest
+CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
@@ -27,7 +27,7 @@ test: $(TEST_BINARY) $(TEST_CONFIG)
 	$(TEST_BINARY)
 	@for i in set account initial synonym address bool command long magic mbtable number path quad regex sort string; do \
 		$(TEST_CONFIG) $$i > test/config/$$i.txt.tmp; \
-		if cmp -s test/config/$$i.txt test/config/$$i.txt.tmp; then \
+		if cmp -s $(SRCDIR)/test/config/$$i.txt test/config/$$i.txt.tmp; then \
 			echo "Config test: '$$i' passed";  \
 			rm -f test/config/$$i.txt.tmp; \
 		else \
@@ -38,13 +38,16 @@ test: $(TEST_BINARY) $(TEST_CONFIG)
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
-$(TEST_CONFIG): $(CONFIG_OBJS) $(MUTT_LIBS)
-	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS) libemail.a libmutt.a
+$(TEST_CONFIG): $(PWD)/test/config/dump $(CONFIG_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(PWD)/test/config/dump:
+	$(MKDIR_P) $(PWD)/test/config/dump
 
 all-test: $(TEST_BINARY) $(TEST_CONFIG)
 
 clean-test:
-	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)
+	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po)
 
 install-test:
 uninstall-test:

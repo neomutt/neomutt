@@ -87,18 +87,6 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
-# libemail
-LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
-		email/email_globals.o email/envelope.o email/from.o \
-		email/header.o email/idna.o email/mime.o email/parameter.o \
-		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
-		email/thread.o email/url.o
-CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
-MUTTLIBS+=	$(LIBEMAIL)
-ALLOBJS+=	$(LIBEMAILOBJS)
-
-###############################################################################
 # libpop
 LIBPOP=	libpop.a
 LIBPOPOBJS=	pop/pop_auth.o pop/pop.o pop/pop_lib.o
@@ -139,18 +127,6 @@ LIBMAILDIROBJS=	maildir/mh.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 MUTTLIBS+=	$(LIBMAILDIR)
 ALLOBJS+=	$(LIBMAILDIROBJS)
-
-###############################################################################
-# libmutt
-LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
-		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
-		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/regex.o mutt/sha1.o \
-		mutt/signal.o mutt/string.o
-CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
-MUTTLIBS+=	$(LIBMUTT)
-ALLOBJS+=	$(LIBMUTTOBJS)
 
 ###############################################################################
 # libncrypt
@@ -208,18 +184,6 @@ MUTTLIBS+=	$(LIBCONN)
 ALLOBJS+=	$(LIBCONNOBJS)
 
 ###############################################################################
-# libconfig
-LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
-		config/long.o config/magic.o config/mbtable.o config/number.o \
-		config/path.o config/quad.o config/regex.o config/set.o \
-		config/sort.o config/string.o
-
-CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
-MUTTLIBS+=	$(LIBCONFIG)
-ALLOBJS+=	$(LIBCONFIGOBJS)
-
-###############################################################################
 # libhcache
 @if USE_HCACHE
 LIBHCACHE=	libhcache.a
@@ -253,6 +217,42 @@ PGPEWRAP=	pgpewrap$(EXEEXT)
 PGPEWRAPOBJS=	pgpewrap.o
 CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
 ALLOBJS+=	$(PGPEWRAPOBJS)
+
+###############################################################################
+# libconfig
+LIBCONFIG=	libconfig.a
+LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
+		config/long.o config/magic.o config/mbtable.o config/number.o \
+		config/path.o config/quad.o config/regex.o config/set.o \
+		config/sort.o config/string.o
+
+CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
+MUTTLIBS+=	$(LIBCONFIG)
+ALLOBJS+=	$(LIBCONFIGOBJS)
+
+###############################################################################
+# libemail
+LIBEMAIL=	libemail.a
+LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
+		email/email_globals.o email/envelope.o email/from.o \
+		email/header.o email/idna.o email/mime.o email/parameter.o \
+		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
+		email/thread.o email/url.o
+CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
+MUTTLIBS+=	$(LIBEMAIL)
+ALLOBJS+=	$(LIBEMAILOBJS)
+
+###############################################################################
+# libmutt
+LIBMUTT=	libmutt.a
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
+		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
+		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/regex.o mutt/sha1.o \
+		mutt/signal.o mutt/string.o
+CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
+MUTTLIBS+=	$(LIBMUTT)
+ALLOBJS+=	$(LIBMUTTOBJS)
 
 ###############################################################################
 # generated
