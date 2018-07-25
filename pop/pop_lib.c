@@ -447,7 +447,6 @@ void pop_logout(struct Context *ctx)
   }
 
   pop_data->status = POP_DISCONNECTED;
-  return;
 }
 
 /**

@@ -488,8 +488,6 @@ static void cleanup_quote(struct QClass **quote_list)
     FREE(quote_list);
     *quote_list = ptr;
   }
-
-  return;
 }
 
 /**

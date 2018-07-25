@@ -585,7 +585,6 @@ void mutt_update_mailbox(struct Buffy *b)
     b->size = (off_t) sb.st_size;
   else
     b->size = 0;
-  return;
 }
 
 /**

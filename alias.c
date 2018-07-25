@@ -512,7 +512,6 @@ retry_name:
 fseek_err:
   mutt_perror(_("Error seeking in alias file"));
   mutt_file_fclose(&rc);
-  return;
 }
 
 /**
