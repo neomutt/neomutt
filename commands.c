@@ -1193,9 +1193,9 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-static int check_traditional_pgp(struct Header *h, int *redraw)
+static bool check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rc = 0;
+  bool rc = false;
 
   h->security |= PGP_TRADITIONAL_CHECKED;
 
@@ -1207,7 +1207,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;
-    rc = 1;
+    rc = true;
   }
 
   h->security |= PGP_TRADITIONAL_CHECKED;
@@ -1221,9 +1221,9 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-int mutt_check_traditional_pgp(struct Header *h, int *redraw)
+bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rc = 0;
+  bool rc = false;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
     rc = check_traditional_pgp(h, redraw);
   else

@@ -1120,7 +1120,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
  * @param buf String to check
  * @retval true If it is
  */
-static int is_ansi(unsigned char *buf)
+static bool is_ansi(unsigned char *buf)
 {
   while (*buf && (isdigit(*buf) || *buf == ';'))
     buf++;

@@ -92,10 +92,10 @@ int mutt_group_context_clear(struct GroupContext **ctx)
  * @param g Group to test
  * @retval true If the Group is empty
  */
-static int empty_group(struct Group *g)
+static bool empty_group(struct Group *g)
 {
   if (!g)
-    return -1;
+    return true;
   return !g->as && !g->rs;
 }
 

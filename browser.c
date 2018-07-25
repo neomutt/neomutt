@@ -323,10 +323,10 @@ static void browser_sort(struct BrowserState *state)
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
  * @param path   Link name
- * @retval 1 Links to a directory
- * @retval 0 Otherwise
+ * @retval true  Links to a directory
+ * @retval false Otherwise
  */
-static int link_is_dir(const char *folder, const char *path)
+static bool link_is_dir(const char *folder, const char *path)
 {
   struct stat st;
   char fullpath[PATH_MAX];
@@ -335,8 +335,8 @@ static int link_is_dir(const char *folder, const char *path)
 
   if (stat(fullpath, &st) == 0)
     return S_ISDIR(st.st_mode);
-  else
-    return 0;
+
+  return false;
 }
 
 /**

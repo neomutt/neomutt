@@ -43,7 +43,7 @@ extern bool          PromptAfter;
 
 void ci_bounce_message(struct Header *h);
 void mutt_check_stats(void);
-int  mutt_check_traditional_pgp(struct Header *h, int *redraw);
+bool mutt_check_traditional_pgp(struct Header *h, int *redraw);
 void mutt_display_address(struct Envelope *env);
 int  mutt_display_message(struct Header *cur);
 int  mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp);
