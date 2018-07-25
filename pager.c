@@ -201,8 +201,8 @@ static short InHelp = 0;
 static struct Resize
 {
   int line;
-  int search_compiled;
-  int search_back;
+  bool search_compiled;
+  bool search_back;
 } *Resize = NULL;
 
 #define NUM_SIG_LINES 4
@@ -500,7 +500,7 @@ static void cleanup_quote(struct QClass **quote_list)
  * @retval ptr Quoting style
  */
 static struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
-                                     size_t length, int *force_redraw, int *q_level)
+                                     size_t length, bool *force_redraw, int *q_level)
 {
   struct QClass *q_list = *quote_list;
   struct QClass *class = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
@@ -607,7 +607,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         }
 
         /* we found a shorter prefix, so certain quotes have changed classes */
-        *force_redraw = 1;
+        *force_redraw = true;
         continue;
       }
       else
@@ -712,7 +712,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
               }
 
               /* we found a shorter prefix, so we need a redraw */
-              *force_redraw = 1;
+              *force_redraw = true;
               continue;
             }
             else
@@ -837,7 +837,7 @@ static int check_attachment_marker(char *p)
  */
 static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           int last, struct QClass **quote_list, int *q_level,
-                          int *force_redraw, bool q_classify)
+                          bool *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
@@ -897,7 +897,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                 line_info[j].type = line_info[n].type;
                 line_info[j].syntax[0].color = line_info[n].syntax[0].color;
               }
-              *force_redraw = 1; /* the previous lines have already been drawn on the screen */
+              *force_redraw = true; /* the previous lines have already been drawn on the screen */
             }
             break;
           }
@@ -1550,7 +1550,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  */
 static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
                         int n, int *last, int *max, int flags,
-                        struct QClass **quote_list, int *q_level, int *force_redraw,
+                        struct QClass **quote_list, int *q_level, bool *force_redraw,
                         regex_t *search_re, struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
@@ -1886,7 +1886,7 @@ struct PagerRedrawData
   int last_line;
   int curline;
   int topline;
-  int force_redraw;
+  bool force_redraw;
   int has_types;
   int hide_quoted;
   int q_level;
@@ -1899,9 +1899,9 @@ struct PagerRedrawData
   struct MuttWindow *pager_window;
   struct Menu *index; /**< the Pager Index (PI) */
   regex_t search_re;
-  int search_compiled;
+  bool search_compiled;
   int search_flag;
-  int search_back;
+  bool search_back;
   const char *banner;
   char *helpstr;
   char *searchbuf;
@@ -1991,7 +1991,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
         {
           regerror(err, &rd->search_re, buffer, sizeof(buffer));
           mutt_error("%s", buffer);
-          rd->search_compiled = 0;
+          rd->search_compiled = false;
         }
         else
         {
@@ -2096,7 +2096,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       mutt_window_move(rd->pager_window, 0, 0);
       rd->curline = rd->oldtopline = rd->topline;
       rd->lines = 0;
-      rd->force_redraw = 0;
+      rd->force_redraw = false;
 
       while (rd->lines < rd->pager_window->rows &&
              rd->line_info[rd->curline].offset <= rd->sb.st_size - 1)
@@ -2590,8 +2590,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             searchctx = 0;
 
         search_next:
-          if ((!rd.search_back && ch == OP_SEARCH_NEXT) ||
-              (rd.search_back && ch == OP_SEARCH_OPPOSITE))
+          if ((!rd.search_back && (ch == OP_SEARCH_NEXT)) ||
+              (rd.search_back && (ch == OP_SEARCH_OPPOSITE)))
           {
             /* searching forward */
             for (i = wrapped ? 0 : rd.topline + searchctx + 1; i < rd.last_line; i++)
@@ -2684,9 +2684,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)
-          rd.search_back = 0;
+          rd.search_back = false;
         else if (ch == OP_SEARCH_REVERSE)
-          rd.search_back = 1;
+          rd.search_back = true;
 
         if (rd.search_compiled)
         {
@@ -2713,11 +2713,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             rd.line_info[i].search_cnt = -1;
           }
           rd.search_flag = 0;
-          rd.search_compiled = 0;
+          rd.search_compiled = false;
         }
         else
         {
-          rd.search_compiled = 1;
+          rd.search_compiled = true;
           /* update the search pointers */
           i = 0;
           while (display_line(rd.fp, &rd.last_pos, &rd.line_info, i, &rd.last_line, &rd.max_line,
@@ -3475,7 +3475,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (rd.search_compiled)
   {
     regfree(&rd.search_re);
-    rd.search_compiled = 0;
+    rd.search_compiled = false;
   }
   FREE(&rd.line_info);
   mutt_menu_pop_current(pager_menu);
