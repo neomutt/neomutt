@@ -142,17 +142,17 @@ int state_printf(struct State *s, const char *fmt, ...)
 
 /**
  * state_prefix_put - Write a prefixed fixed-string to the State
- * @param d    String to write
- * @param dlen Lenth of string
+ * @param buf    String to write
+ * @param buflen Lenth of string
  * @param s    State to write to
  */
-void state_prefix_put(const char *d, size_t dlen, struct State *s)
+void state_prefix_put(const char *buf, size_t buflen, struct State *s)
 {
   if (s->prefix)
   {
-    while (dlen--)
-      state_prefix_putc(*d++, s);
+    while (buflen--)
+      state_prefix_putc(*buf++, s);
   }
   else
-    fwrite(d, dlen, 1, s->fpout);
+    fwrite(buf, buflen, 1, s->fpout);
 }
