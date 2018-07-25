@@ -64,7 +64,7 @@ static int magic_string_set(const struct ConfigSet *cs, void *var, struct Config
   if (!value || !value[0])
   {
     mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   int num = -1;
@@ -80,20 +80,20 @@ static int magic_string_set(const struct ConfigSet *cs, void *var, struct Config
   if (num < 1)
   {
     mutt_buffer_printf(err, "Invalid magic value: %s", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (var)
   {
     if (num == (*(short *) var))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
     }
 
     *(short *) var = num;
@@ -132,7 +132,7 @@ static int magic_string_get(const struct ConfigSet *cs, void *var,
   if ((value < 1) || (value >= (mutt_array_size(magic_values) - 1)))
   {
     mutt_debug(1, "Variable has an invalid value: %d\n", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   mutt_buffer_addstr(result, magic_values[value]);
@@ -157,18 +157,18 @@ static int magic_native_set(const struct ConfigSet *cs, void *var,
   if ((value < 1) || (value >= (mutt_array_size(magic_values) - 1)))
   {
     mutt_buffer_printf(err, "Invalid magic value: %ld", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = value;
@@ -207,14 +207,14 @@ static int magic_reset(const struct ConfigSet *cs, void *var,
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   if (cdef->initial == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = cdef->initial;

@@ -132,7 +132,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
   {
     struct MbTable *curval = *(struct MbTable **) var;
     if (curval && (mutt_str_strcmp(value, curval->orig_str) == 0))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     table = mbtable_parse(value);
 
@@ -143,7 +143,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
         mbtable_free(&table);
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
       }
     }
 
@@ -188,7 +188,7 @@ static int mbtable_string_get(const struct ConfigSet *cs, void *var,
   {
     struct MbTable *table = *(struct MbTable **) var;
     if (!table || !table->orig_str)
-      return (CSR_SUCCESS | CSR_SUC_EMPTY); /* empty string */
+      return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
     str = table->orig_str;
   }
   else
@@ -238,7 +238,7 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
     rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   mbtable_free(var);
@@ -297,7 +297,7 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
     rc |= CSR_SUC_EMPTY;
 
   if (mutt_str_strcmp(initial, curval) == 0)
-    return (rc | CSR_SUC_NO_CHANGE);
+    return rc | CSR_SUC_NO_CHANGE;
 
   if (initial)
     table = mbtable_parse(initial);
@@ -309,7 +309,7 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       mbtable_destroy(cs, &table, cdef);
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
     }
   }
 

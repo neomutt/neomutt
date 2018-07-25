@@ -154,7 +154,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (!value || !value[0])
   {
     mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (mutt_str_strncmp("reverse-", value, 8) == 0)
@@ -198,7 +198,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (id < 0)
   {
     mutt_buffer_printf(err, "Invalid sort name: %s", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   id |= flags;
@@ -206,14 +206,14 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (var)
   {
     if (id == (*(short *) var))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) id, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
     }
 
     *(short *) var = id;
@@ -288,7 +288,7 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
   {
     mutt_debug(1, "Variable has an invalid value: %d/%d\n",
                cdef->type & DT_SUBTYPE_MASK, sort);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   mutt_buffer_addstr(result, str);
@@ -341,18 +341,18 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
   if (!str)
   {
     mutt_buffer_printf(err, "Invalid sort type: %ld", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = value;
@@ -391,14 +391,14 @@ static int sort_reset(const struct ConfigSet *cs, void *var,
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   if (cdef->initial == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = cdef->initial;
