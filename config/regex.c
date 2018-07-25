@@ -88,7 +88,7 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
   {
     struct Regex *curval = *(struct Regex **) var;
     if (curval && (mutt_str_strcmp(value, curval->pattern) == 0))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (value)
     {
@@ -104,7 +104,7 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
         regex_free(&r);
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
       }
     }
 
@@ -157,7 +157,7 @@ static int regex_string_get(const struct ConfigSet *cs, void *var,
   }
 
   if (!str)
-    return (CSR_SUCCESS | CSR_SUC_EMPTY); /* empty string */
+    return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
 
   mutt_buffer_addstr(result, str);
   return CSR_SUCCESS;
@@ -185,7 +185,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
     rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   rc = CSR_SUCCESS;
@@ -194,7 +194,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const int flags = orig->not ? DT_REGEX_ALLOW_NOT : 0;
+    const int flags = orig->not? DT_REGEX_ALLOW_NOT : 0;
     r = regex_create(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;
@@ -257,7 +257,7 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
     rc |= CSR_SUC_EMPTY;
 
   if (mutt_str_strcmp(initial, curval) == 0)
-    return (rc | CSR_SUC_NO_CHANGE);
+    return rc | CSR_SUC_NO_CHANGE;
 
   if (initial)
   {
@@ -273,7 +273,7 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       regex_destroy(cs, &r, cdef);
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
     }
   }
 

@@ -43,7 +43,7 @@ extern bool          PromptAfter;
 
 void ci_bounce_message(struct Header *h);
 void mutt_check_stats(void);
-int  mutt_check_traditional_pgp(struct Header *h, int *redraw);
+bool mutt_check_traditional_pgp(struct Header *h, int *redraw);
 void mutt_display_address(struct Envelope *env);
 int  mutt_display_message(struct Header *cur);
 int  mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp);
@@ -54,6 +54,5 @@ int  mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decr
 int  mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
-void mutt_version(void);
 
 #endif /* MUTT_COMMANDS_H */

@@ -55,39 +55,39 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
   if (!value || !value[0])
   {
     mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   int num = 0;
   if (mutt_str_atoi(value, &num) < 0)
   {
-    mutt_buffer_printf(err, "Invalid number: %s", NONULL(value));
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    mutt_buffer_printf(err, "Invalid number: %s", value);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < SHRT_MIN) || (num > SHRT_MAX))
   {
     mutt_buffer_printf(err, "Number is too big: %s", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
     mutt_buffer_printf(err, "Option %s may not be negative", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_VALIDATOR);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (var)
   {
     if (num == (*(short *) var))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
     }
 
     *(short *) var = num;
@@ -146,24 +146,24 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
   if ((value < SHRT_MIN) || (value > SHRT_MAX))
   {
     mutt_buffer_printf(err, "Invalid number: %ld", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
   {
     mutt_buffer_printf(err, "Option %s may not be negative", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_VALIDATOR);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (value == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = value;
@@ -202,14 +202,14 @@ static int number_reset(const struct ConfigSet *cs, void *var,
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   if (cdef->initial == (*(short *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(short *) var = cdef->initial;

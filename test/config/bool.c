@@ -583,7 +583,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
   {
     bool before = tests[i].before;
     bool after = tests[i].after;
-    printf("test %zd\n", i);
+    printf("test %zu\n", i);
 
     VarNectarine = before;
     mutt_buffer_reset(err);
@@ -619,7 +619,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
   {
     bool before = tests[i].before;
     bool after = tests[i].after;
-    printf("test %zd\n", i);
+    printf("test %zu\n", i);
 
     VarNectarine = before;
     mutt_buffer_reset(err);

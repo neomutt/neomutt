@@ -85,7 +85,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (!value && (cdef->type & DT_NOT_EMPTY))
   {
     mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_VALIDATOR);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   int rc = CSR_SUCCESS;
@@ -93,14 +93,14 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (var)
   {
     if (mutt_str_strcmp(value, (*(char **) var)) == 0)
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) value, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
     }
 
     path_destroy(cs, var, cdef);
@@ -151,7 +151,7 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
     str = (char *) cdef->initial;
 
   if (!str)
-    return (CSR_SUCCESS | CSR_SUC_EMPTY); /* empty string */
+    return CSR_SUCCESS | CSR_SUC_EMPTY; /* empty string */
 
   mutt_buffer_addstr(result, str);
   return CSR_SUCCESS;
@@ -181,11 +181,11 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
   if ((value == 0) && (cdef->type & DT_NOT_EMPTY))
   {
     mutt_buffer_printf(err, "Option %s may not be empty", cdef->name);
-    return (CSR_ERR_INVALID | CSR_INV_VALIDATOR);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (mutt_str_strcmp((const char *) value, (*(char **) var)) == 0)
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc;
 
@@ -194,7 +194,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
     rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   path_destroy(cs, var, cdef);
@@ -248,14 +248,14 @@ static int path_reset(const struct ConfigSet *cs, void *var,
     rc |= CSR_SUC_EMPTY;
 
   if (mutt_str_strcmp(path, (*(char **) var)) == 0)
-    return (rc | CSR_SUC_NO_CHANGE);
+    return rc | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   path_destroy(cs, var, cdef);

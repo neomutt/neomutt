@@ -385,7 +385,7 @@ void ci_bounce_message(struct Header *h)
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
  * @param[out] chflags Copy header flags, e.g. CH_DECODE
  */
-static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
+static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
 {
   if (decode)
   {
@@ -836,8 +836,8 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decrypt,
-                          struct Context *ctx)
+int mutt_save_message_ctx(struct Header *h, bool delete, bool decode,
+                          bool decrypt, struct Context *ctx)
 {
   int cmflags, chflags;
   int rc;
@@ -1072,14 +1072,6 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 }
 
 /**
- * mutt_version - Generate the NeoMutt version string
- */
-void mutt_version(void)
-{
-  mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
-}
-
-/**
  * mutt_edit_content_type - Edit the content type of an attachment
  * @param h  Header of email
  * @param b  Attachment
@@ -1193,9 +1185,9 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-static int check_traditional_pgp(struct Header *h, int *redraw)
+static bool check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rc = 0;
+  bool rc = false;
 
   h->security |= PGP_TRADITIONAL_CHECKED;
 
@@ -1207,7 +1199,7 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;
-    rc = 1;
+    rc = true;
   }
 
   h->security |= PGP_TRADITIONAL_CHECKED;
@@ -1221,9 +1213,9 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-int mutt_check_traditional_pgp(struct Header *h, int *redraw)
+bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rc = 0;
+  bool rc = false;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
     rc = check_traditional_pgp(h, redraw);
   else

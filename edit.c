@@ -126,7 +126,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
  * @param[in]  verbose If true, report the file and bytes read
  * @retval ptr Pointer to allocated buffer
  */
-static char **be_snarf_file(const char *path, char **buf, int *max, int *len, int verbose)
+static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bool verbose)
 {
   char tmp[LONG_STRING];
   struct stat sb;
@@ -399,7 +399,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   addstr(_("(End message with a . on a line by itself)\n"));
 
-  buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
+  buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
   tmp[0] = '\0';
   while (!done)
@@ -478,7 +478,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           {
             strncpy(tmp, p, sizeof(tmp));
             mutt_expand_path(tmp, sizeof(tmp));
-            buf = be_snarf_file(tmp, buf, &bufmax, &buflen, 1);
+            buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }
           else
             addstr(_("missing filename.\n"));
@@ -525,7 +525,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             else
               mutt_edit_file(NONULL(Visual), path);
 
-            buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
+            buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
             addstr(_("(continue)\n"));
           }

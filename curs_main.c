@@ -356,7 +356,7 @@ static void resort_index(struct Menu *menu)
   }
 
   if ((Sort & SORT_MASK) == SORT_THREADS && menu->current < 0)
-    menu->current = mutt_parent_message(Context, current, 0);
+    menu->current = mutt_parent_message(Context, current, false);
 
   if (menu->current < 0)
     menu->current = ci_first_message();
@@ -3354,7 +3354,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_VERSION:
-        mutt_version();
+        mutt_message(mutt_make_version());
         break;
 
       case OP_BUFFY_LIST:

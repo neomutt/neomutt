@@ -323,10 +323,10 @@ static void browser_sort(struct BrowserState *state)
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
  * @param path   Link name
- * @retval 1 Links to a directory
- * @retval 0 Otherwise
+ * @retval true  Links to a directory
+ * @retval false Otherwise
  */
-static int link_is_dir(const char *folder, const char *path)
+static bool link_is_dir(const char *folder, const char *path)
 {
   struct stat st;
   char fullpath[PATH_MAX];
@@ -335,8 +335,8 @@ static int link_is_dir(const char *folder, const char *path)
 
   if (stat(fullpath, &st) == 0)
     return S_ISDIR(st.st_mode);
-  else
-    return 0;
+
+  return false;
 }
 
 /**
@@ -1291,13 +1291,13 @@ void mutt_browser_select_dir(char *f)
 
 /**
  * mutt_select_file - Let the user select a file
- * @param[in]  f        Buffer for the result
- * @param[in]  flen     Length of buffer
+ * @param[in]  file     Buffer for the result
+ * @param[in]  filelen  Length of buffer
  * @param[in]  flags    Flags, e.g. MUTT_SEL_MULTI
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
  */
-void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)
+void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int *numfiles)
 {
   char buf[PATH_MAX];
   char prefix[PATH_MAX] = "";
@@ -1321,8 +1321,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (*f)
-      mutt_str_strfcpy(prefix, f, sizeof(prefix));
+    if (*file)
+      mutt_str_strfcpy(prefix, file, sizeof(prefix));
     else
     {
       struct NntpServer *nserv = CurrentNewsSrv;
@@ -1342,15 +1342,15 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
   }
   else
 #endif
-      if (*f)
+      if (*file)
   {
-    mutt_expand_path(f, flen);
+    mutt_expand_path(file, filelen);
 #ifdef USE_IMAP
-    if (mx_is_imap(f))
+    if (mx_is_imap(file))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
-      if (imap_browse(f, &state) == 0)
+      if (imap_browse(file, &state) == 0)
       {
         mutt_str_strfcpy(LastDir, state.folder, sizeof(LastDir));
         browser_sort(&state);
@@ -1359,36 +1359,36 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
     else
     {
 #endif
-      for (i = mutt_str_strlen(f) - 1; i > 0 && f[i] != '/'; i--)
+      for (i = mutt_str_strlen(file) - 1; i > 0 && file[i] != '/'; i--)
         ;
       if (i > 0)
       {
-        if (f[0] == '/')
+        if (file[0] == '/')
         {
           if (i > sizeof(LastDir) - 1)
             i = sizeof(LastDir) - 1;
-          strncpy(LastDir, f, i);
+          strncpy(LastDir, file, i);
           LastDir[i] = 0;
         }
         else
         {
           getcwd(LastDir, sizeof(LastDir));
           mutt_str_strcat(LastDir, sizeof(LastDir), "/");
-          mutt_str_strncat(LastDir, sizeof(LastDir), f, i);
+          mutt_str_strncat(LastDir, sizeof(LastDir), file, i);
         }
       }
       else
       {
-        if (f[0] == '/')
+        if (file[0] == '/')
           strcpy(LastDir, "/");
         else
           getcwd(LastDir, sizeof(LastDir));
       }
 
-      if (i <= 0 && f[0] != '/')
-        mutt_str_strfcpy(prefix, f, sizeof(prefix));
+      if (i <= 0 && file[0] != '/')
+        mutt_str_strfcpy(prefix, file, sizeof(prefix));
       else
-        mutt_str_strfcpy(prefix, f + i + 1, sizeof(prefix));
+        mutt_str_strfcpy(prefix, file + i + 1, sizeof(prefix));
       kill_prefix = 1;
 #ifdef USE_IMAP
     }
@@ -1494,7 +1494,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
     }
   }
 
-  *f = 0;
+  *file = 0;
 
 #ifdef USE_NOTMUCH
   if (flags & MUTT_SEL_VFOLDER)
@@ -1687,19 +1687,19 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 
         if (buffy || OptNews) /* USE_NNTP */
         {
-          mutt_str_strfcpy(f, state.entry[menu->current].name, flen);
-          mutt_expand_path(f, flen);
+          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
+          mutt_expand_path(file, filelen);
         }
 #ifdef USE_IMAP
         else if (state.imap_browse)
-          mutt_str_strfcpy(f, state.entry[menu->current].name, flen);
+          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
 #ifdef USE_NOTMUCH
         else if (mx_is_notmuch(state.entry[menu->current].name))
-          mutt_str_strfcpy(f, state.entry[menu->current].name, flen);
+          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
         else
-          mutt_file_concat_path(f, LastDir, state.entry[menu->current].name, flen);
+          mutt_file_concat_path(file, LastDir, state.entry[menu->current].name, filelen);
         /* fallthrough */
 
       case OP_EXIT:
@@ -1725,12 +1725,12 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             }
             *files = tfiles;
           }
-          else if (f[0]) /* no tagged entries. return selected entry */
+          else if (file[0]) /* no tagged entries. return selected entry */
           {
             *numfiles = 1;
             tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
-            mutt_expand_path(f, flen);
-            tfiles[0] = mutt_str_strdup(f);
+            mutt_expand_path(file, filelen);
+            tfiles[0] = mutt_str_strdup(file);
             *files = tfiles;
           }
         }
@@ -2112,7 +2112,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         snprintf(buf, sizeof(buf), "%s/", LastDir);
         if (mutt_get_field(_("New file name: "), buf, sizeof(buf), MUTT_FILE) == 0)
         {
-          mutt_str_strfcpy(f, buf, flen);
+          mutt_str_strfcpy(file, buf, filelen);
           destroy_state(&state);
           goto bail;
         }
@@ -2128,7 +2128,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #ifdef USE_IMAP
         if (state.entry[menu->current].selectable)
         {
-          mutt_str_strfcpy(f, state.entry[menu->current].name, flen);
+          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
           destroy_state(&state);
           goto bail;
         }

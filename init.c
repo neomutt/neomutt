@@ -3320,8 +3320,8 @@ int mutt_option_index(const char *s)
     if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
     {
       return MuttVars[i].type == DT_SYNONYM ?
-                  mutt_option_index((char *) MuttVars[i].initial) :
-                  i;
+                 mutt_option_index((char *) MuttVars[i].initial) :
+                 i;
     }
   }
   return -1;

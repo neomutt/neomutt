@@ -73,8 +73,7 @@ static const char safe_chars[] =
  */
 static bool compare_stat(struct stat *osb, struct stat *nsb)
 {
-  return (osb->st_dev  == nsb->st_dev ) &&
-         (osb->st_ino  == nsb->st_ino ) &&
+  return (osb->st_dev == nsb->st_dev) && (osb->st_ino == nsb->st_ino) &&
          (osb->st_rdev == nsb->st_rdev);
 }
 

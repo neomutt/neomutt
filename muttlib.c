@@ -532,8 +532,8 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
   mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
   if (unlink(buf) && errno != ENOENT)
   {
-    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, buf,
-               strerror(errno), errno);
+    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+               buf, strerror(errno), errno);
   }
 }
 
@@ -1670,9 +1670,7 @@ int mutt_inbox_cmp(const char *a, const char *b)
   {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
-               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ?
-                   1 :
-                   0;
+               (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
   }
 
   const char *a_end = strrchr(a, '/');

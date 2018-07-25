@@ -78,20 +78,20 @@ static int bool_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (num < 0)
   {
     mutt_buffer_printf(err, "Invalid boolean value: %s", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (var)
   {
     if (num == (*(bool *) var))
-      return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
-        return (rc | CSR_INV_VALIDATOR);
+        return rc | CSR_INV_VALIDATOR;
     }
 
     *(bool *) var = num;
@@ -130,7 +130,7 @@ static int bool_string_get(const struct ConfigSet *cs, void *var,
   if (index > 1)
   {
     mutt_debug(1, "Variable has an invalid value: %d\n", index);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   mutt_buffer_addstr(result, bool_values[index]);
@@ -155,18 +155,18 @@ static int bool_native_set(const struct ConfigSet *cs, void *var,
   if ((value < 0) || (value > 1))
   {
     mutt_buffer_printf(err, "Invalid boolean value: %ld", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(bool *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(bool *) var = value;
@@ -205,14 +205,14 @@ static int bool_reset(const struct ConfigSet *cs, void *var,
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   if (cdef->initial == (*(bool *) var))
-    return (CSR_SUCCESS | CSR_SUC_NO_CHANGE);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
-      return (rc | CSR_INV_VALIDATOR);
+      return rc | CSR_INV_VALIDATOR;
   }
 
   *(bool *) var = cdef->initial;
@@ -259,7 +259,7 @@ int bool_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
   if ((value < 0) || (value > 1))
   {
     mutt_buffer_printf(err, "Invalid boolean value: %ld", value);
-    return (CSR_ERR_INVALID | CSR_INV_TYPE);
+    return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   *(char *) var = !value;

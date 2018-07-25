@@ -2602,7 +2602,7 @@ struct ConfigDef MuttVars[] = {
   ** (PGP only)
   */
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-{ "pgp_sign_command", DT_COMMAND, R_NONE, &PgpSignCommand, 0 },
+  { "pgp_sign_command", DT_COMMAND, R_NONE, &PgpSignCommand, 0 },
   /*
   ** .pp
   ** This command is used to create the detached PGP signature for a
