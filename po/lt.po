@@ -4620,9 +4620,8 @@ msgid "check mailboxes for new mail"
 msgstr "tikrinti, ar dėžutėse yra naujo pašto"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "išsaugoti laišką/priedą į dėžutę/bylą"
+msgstr "suskaičiuoti laiškų statistiką visoms dėžutėms"
 
 #: opcodes.h:48
 msgid "attach files to this message"
