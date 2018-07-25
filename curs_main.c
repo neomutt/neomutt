@@ -1783,8 +1783,11 @@ int mutt_index_menu(void)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (Context && Context->magic == MUTT_IMAP)
         {
-          if (mx_mbox_close(&Context, &index_hint) != 0)
+          int check = mx_mbox_close(&Context, &index_hint);
+          if (check != 0)
           {
+            if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
+              update_index(menu, Context, check, oldcount, index_hint);
             OptSearchInvalid = true;
             menu->redraw = REDRAW_FULL;
             break;
