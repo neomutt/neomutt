@@ -215,7 +215,8 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
   if (flags & CS_DUMP_SHOW_DEFAULTS)
   {
     const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
-    printf("# %s %s %s\n", cst->name, name, value->data);
+    if (cst)
+      printf("# %s %s %s\n", cst->name, name, value->data);
   }
 }
 
@@ -252,8 +253,8 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
       continue;
 
-    if ((type == DT_DISABLED) && !(flags & CS_DUMP_SHOW_DISABLED))
-      continue;
+    // if ((type == DT_DISABLED) && !(flags & CS_DUMP_SHOW_DISABLED))
+    //   continue;
 
     if (type != DT_SYNONYM)
     {
