@@ -310,7 +310,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
  * @param selected   true, if this item is selected
  */
 static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
-                          struct MixChain *chain, int i, short selected)
+                          struct MixChain *chain, int i, bool selected)
 {
   if (!coords || !chain)
     return;
@@ -625,8 +625,8 @@ void mix_make_chain(struct ListHead *chainhead)
     }
     else if (c_cur != c_old)
     {
-      mix_redraw_ce(type2_list, coords, chain, c_old, 0);
-      mix_redraw_ce(type2_list, coords, chain, c_cur, 1);
+      mix_redraw_ce(type2_list, coords, chain, c_old, false);
+      mix_redraw_ce(type2_list, coords, chain, c_cur, true);
     }
 
     c_old = c_cur;

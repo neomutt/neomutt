@@ -837,7 +837,7 @@ static int check_attachment_marker(char *p)
  */
 static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           int last, struct QClass **quote_list, int *q_level,
-                          int *force_redraw, int q_classify)
+                          int *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
@@ -1825,7 +1825,7 @@ out:
  * @param hiding true if lines have been hidden
  * @retval num New current line number
  */
-static int up_n_lines(int nlines, struct Line *info, int cur, int hiding)
+static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
 {
   while (cur > 0 && nlines > 0)
   {

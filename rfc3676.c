@@ -217,7 +217,7 @@ static int quote_width(struct State *s, int ql)
  * @param term If true, terminate with a new line
  */
 static void print_flowed_line(char *line, struct State *s, int ql,
-                              struct FlowedState *fst, int term)
+                              struct FlowedState *fst, bool term)
 {
   size_t width, w, words = 0;
   char *p = NULL;
@@ -352,7 +352,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    const int fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
+    const bool fixed = (buf_len == buf_off) || (buf[buf_len - 1] != ' ') || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */

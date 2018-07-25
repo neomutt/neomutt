@@ -198,7 +198,7 @@ static struct Mapping ComposeNewsHelp[] = {
  * @param header   Header string
  * @param calc_max If true, calculate the maximum width
  */
-static void calc_header_width_padding(int idx, const char *header, int calc_max)
+static void calc_header_width_padding(int idx, const char *header, bool calc_max)
 {
   int width;
 
@@ -226,12 +226,12 @@ static void init_header_padding(void)
   done = 1;
 
   for (int i = 0; i <= HDR_XCOMMENTTO; i++)
-    calc_header_width_padding(i, _(Prompts[i]), 1);
+    calc_header_width_padding(i, _(Prompts[i]), true);
 
   /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
    * doesn't show up by default, and so can make the indentation of
    * the other fields look funny. */
-  calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), 0);
+  calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), false);
 
   for (int i = 0; i <= HDR_XCOMMENTTO; i++)
   {
@@ -619,7 +619,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
  * @param menu Current menu
  * @param init If true, initialise the attachment list
  */
-static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, int init)
+static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 {
   if (init)
   {
@@ -655,7 +655,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
     actx->idx[actx->idxlen - 1]->content->next = new->content;
   new->content->aptr = new;
   mutt_actx_add_attach(actx, new);
-  mutt_update_compose_menu(actx, menu, 0);
+  mutt_update_compose_menu(actx, menu, false);
   menu->current = actx->vcount - 1;
 }
 
@@ -939,7 +939,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = msg;
-  mutt_update_compose_menu(actx, menu, 1);
+  mutt_update_compose_menu(actx, menu, true);
 
   while (loop)
   {
@@ -1119,7 +1119,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (actx->idxlen && actx->idx[actx->idxlen - 1]->content->next)
         {
           mutt_actx_free_entries(actx);
-          mutt_update_compose_menu(actx, menu, 1);
+          mutt_update_compose_menu(actx, menu, true);
         }
 
         menu->redraw = REDRAW_FULL;
@@ -1532,7 +1532,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           CURATTACH->content->unlink = 0;
         if (delete_attachment(actx, menu->current) == -1)
           break;
-        mutt_update_compose_menu(actx, menu, 0);
+        mutt_update_compose_menu(actx, menu, false);
         if (menu->current == 0)
           msg->content = actx->idx[0]->content;
 

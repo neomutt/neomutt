@@ -385,7 +385,7 @@ void ci_bounce_message(struct Header *h)
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
  * @param[out] chflags Copy header flags, e.g. CH_DECODE
  */
-static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
+static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
 {
   if (decode)
   {

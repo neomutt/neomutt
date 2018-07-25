@@ -386,7 +386,7 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
  * @param ofp    File to write to
  * @param prefix Prefix for each line (OPTIONAL)
  */
-static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
+static void include_header(bool quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
   char prefix2[SHORT_STRING];
@@ -991,7 +991,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
       st.flags |= MUTT_WEED;
 
     if (Header)
-      include_header(1, parent_fp, parent_hdr, tmpfp, prefix);
+      include_header(true, parent_fp, parent_hdr, tmpfp, prefix);
 
     if (cur)
     {

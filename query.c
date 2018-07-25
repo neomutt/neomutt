@@ -349,7 +349,7 @@ static int query_tag(struct Menu *menu, int n, int m)
  * @param results Query List
  * @param retbuf  If true, populate the results
  */
-static void query_menu(char *buf, size_t buflen, struct Query *results, int retbuf)
+static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
   struct Header *msg = NULL;
@@ -613,7 +613,7 @@ int mutt_query_complete(char *buf, size_t buflen)
       return 0;
     }
     /* multiple results, choose from query menu */
-    query_menu(buf, buflen, results, 1);
+    query_menu(buf, buflen, results, true);
   }
   return 0;
 }
@@ -635,10 +635,10 @@ void mutt_query_menu(char *buf, size_t buflen)
   {
     char buffer[STRING] = "";
 
-    query_menu(buffer, sizeof(buffer), NULL, 0);
+    query_menu(buffer, sizeof(buffer), NULL, false);
   }
   else
   {
-    query_menu(buf, buflen, NULL, 1);
+    query_menu(buf, buflen, NULL, true);
   }
 }

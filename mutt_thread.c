@@ -1098,7 +1098,7 @@ int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error
  */
-int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
+int mutt_parent_message(struct Context *ctx, struct Header *hdr, bool find_root)
 {
   struct MuttThread *thread = NULL;
   struct Header *parent = NULL;
