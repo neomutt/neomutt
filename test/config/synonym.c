@@ -70,13 +70,13 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, value, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     return false;
   }
 
-  if (mutt_str_strcmp(VarApple, value) != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(VarApple, value) == 0))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -93,7 +93,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   int rc = cs_str_string_get(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -112,13 +112,13 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     return false;
   }
 
-  if (mutt_str_strcmp(VarElderberry, value) != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(VarElderberry, value) == 0))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -134,12 +134,12 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   const char *name = "Hawthorn";
 
   int rc = cs_str_string_set(cs, name, "tree", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
   mutt_buffer_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (mutt_str_strcmp(VarGuava, (const char *) value) != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(VarGuava, (const char *) value) == 0))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -158,19 +158,19 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 
   TEST_MSG("Initial: %s = '%s'\n", name, NONULL(VarIlama));
   int rc = cs_str_string_set(cs, name, "hello", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   TEST_MSG("Set: %s = '%s'\n", name, VarIlama);
 
   mutt_buffer_reset(err);
   rc = cs_str_reset(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     return false;
   }
 
-  if (mutt_str_strcmp(VarIlama, "iguana") != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(VarIlama, "iguana") == 0))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -211,16 +211,11 @@ void config_synonym(void)
 
   set_list(cs);
 
-  if (!test_string_set(cs, &err))
-    return;
-  if (!test_string_get(cs, &err))
-    return;
-  if (!test_native_set(cs, &err))
-    return;
-  if (!test_native_get(cs, &err))
-    return;
-  if (!test_reset(cs, &err))
-    return;
+  TEST_CHECK(test_string_set(cs, &err));
+  TEST_CHECK(test_string_get(cs, &err));
+  TEST_CHECK(test_native_set(cs, &err));
+  TEST_CHECK(test_native_get(cs, &err));
+  TEST_CHECK(test_reset(cs, &err));
 
   cs_free(&cs);
   FREE(&err.data);

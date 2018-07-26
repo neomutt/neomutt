@@ -109,6 +109,7 @@ void set_list(const struct ConfigSet *cs)
 {
   log_line(__func__);
   cs_dump_set(cs);
+  log_line(__func__);
 }
 
 int sort_list_cb(const void *a, const void *b)

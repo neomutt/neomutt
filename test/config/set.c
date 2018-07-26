@@ -46,32 +46,27 @@ static struct ConfigDef Vars[] = {
 };
 // clang-format on
 
-static int dummy_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
-                            const char *value, struct Buffer *err)
+static int dummy_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_string_get(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, struct Buffer *result)
+static int dummy_string_get(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_native_set(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+static int dummy_native_set(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var,
-                                 const struct ConfigDef *cdef, struct Buffer *err)
+static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   return INT_MIN;
 }
 
-static int dummy_reset(const struct ConfigSet *cs, void *var,
-                       const struct ConfigDef *cdef, struct Buffer *err)
+static int dummy_reset(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
@@ -91,7 +86,7 @@ void config_set(void)
   mutt_buffer_reset(&err);
 
   struct ConfigSet *cs = cs_create(30);
-  if (!cs)
+  if (!TEST_CHECK(cs != NULL))
     return;
 
   cs_add_listener(cs, log_listener);
@@ -103,7 +98,7 @@ void config_set(void)
     "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
-  if (!cs_register_type(cs, DT_STRING, &cst_dummy))
+  if (TEST_CHECK(!cs_register_type(cs, DT_STRING, &cst_dummy)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -118,7 +113,7 @@ void config_set(void)
     dummy_native_get, dummy_reset,      dummy_destroy,
   };
 
-  if (!cs_register_type(cs, 25, &cst_dummy2))
+  if (TEST_CHECK(!cs_register_type(cs, 25, &cst_dummy2)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -131,7 +126,7 @@ void config_set(void)
   bool_init(cs);
   bool_init(cs); /* second one should fail */
 
-  if (!cs_register_variables(cs, Vars, 0))
+  if (TEST_CHECK(!cs_register_variables(cs, Vars, 0)))
   {
     TEST_MSG("Expected error\n");
   }
@@ -143,7 +138,7 @@ void config_set(void)
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", &err);
-  if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
@@ -154,7 +149,7 @@ void config_set(void)
   }
 
   result = cs_str_string_get(cs, name, &err);
-  if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
@@ -165,7 +160,7 @@ void config_set(void)
   }
 
   result = cs_str_native_set(cs, name, IP "hello", &err);
-  if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
@@ -176,7 +171,7 @@ void config_set(void)
   }
 
   intptr_t native = cs_str_native_get(cs, name, &err);
-  if (native == INT_MIN)
+  if (TEST_CHECK(native == INT_MIN))
   {
     TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
@@ -187,15 +182,16 @@ void config_set(void)
   }
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
-  if (!he)
+  if (!TEST_CHECK(he != NULL))
     return;
 
   set_list(cs);
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, 15);
-  if (cst)
+  if (!TEST_CHECK(!cst))
     return;
 
   cs_free(&cs);
   FREE(&err.data);
+  log_line(__func__);
 }

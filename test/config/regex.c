@@ -87,8 +87,13 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Apple = %s\n", VarApple->pattern);
   TEST_MSG("Banana = %s\n", VarBanana->pattern);
 
-  if ((mutt_str_strcmp(VarApple->pattern, "apple.*") != 0) ||
-      (mutt_str_strcmp(VarBanana->pattern, "banana.*") != 0))
+  if (!TEST_CHECK(mutt_str_strcmp(VarApple->pattern, "apple.*") == 0))
+  {
+    TEST_MSG("Error: initial values were wrong\n");
+    return false;
+  }
+
+  if (!TEST_CHECK(mutt_str_strcmp(VarBanana->pattern, "banana.*") == 0))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -107,14 +112,14 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(&value);
   rc = cs_str_initial_get(cs, "Apple", &value);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", value.data);
     FREE(&value.data);
     return false;
   }
 
-  if (mutt_str_strcmp(value.data, "apple.*") != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(value.data, "apple.*") == 0))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'\n", value.data);
     FREE(&value.data);
@@ -125,14 +130,14 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(&value);
   rc = cs_str_initial_get(cs, "Banana", &value);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", value.data);
     FREE(&value.data);
     return false;
   }
 
-  if (mutt_str_strcmp(value.data, "banana.*") != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(value.data, "banana.*") == 0))
   {
     TEST_MSG("Banana's initial value is wrong: %s\n", value.data);
     FREE(&value.data);
@@ -143,7 +148,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(&value);
   rc = cs_str_initial_set(cs, "Cherry", "up.*", &value);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", value.data);
     FREE(&value.data);
@@ -152,7 +157,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(&value);
   rc = cs_str_initial_set(cs, "Cherry", "down.*", &value);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", value.data);
     FREE(&value.data);
@@ -161,7 +166,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(&value);
   rc = cs_str_initial_get(cs, "Cherry", &value);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", value.data);
     FREE(&value.data);
@@ -172,6 +177,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Cherry's initial value is '%s'\n", NONULL(value.data));
 
   FREE(&value.data);
+  log_line(__func__);
   return true;
 }
 
@@ -188,7 +194,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   {
     mutt_buffer_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("%s\n", err->data);
       return false;
@@ -201,7 +207,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     regex = VarDamson ? VarDamson->pattern : NULL;
-    if (mutt_str_strcmp(regex, valid[i]) != 0)
+    if (!TEST_CHECK(mutt_str_strcmp(regex, valid[i]) == 0))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -214,7 +220,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   {
     mutt_buffer_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
       TEST_MSG("%s\n", err->data);
       return false;
@@ -227,7 +233,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     }
 
     regex = VarElderberry ? VarElderberry->pattern : NULL;
-    if (mutt_str_strcmp(regex, valid[i]) != 0)
+    if (!TEST_CHECK(mutt_str_strcmp(regex, valid[i]) == 0))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
@@ -237,7 +243,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_string_set(cs, name, "\\1", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -247,6 +253,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
+  log_line(__func__);
   return true;
 }
 
@@ -258,7 +265,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   int rc = cs_str_string_get(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -269,7 +276,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   name = "Guava";
   mutt_buffer_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -279,12 +286,12 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 
   name = "Hawthorn";
   rc = cs_str_string_set(cs, name, "hawthorn", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
   mutt_buffer_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -292,6 +299,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   regex = VarHawthorn ? VarHawthorn->pattern : NULL;
   TEST_MSG("%s = '%s', '%s'\n", name, NONULL(regex), err->data);
 
+  log_line(__func__);
   return true;
 }
 
@@ -306,14 +314,14 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) r, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     goto tns_out;
   }
 
   regex = VarIlama ? VarIlama->pattern : NULL;
-  if (mutt_str_strcmp(regex, r->pattern) != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(regex, r->pattern) == 0))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -326,7 +334,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, (intptr_t) r, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     goto tns_out;
@@ -336,13 +344,13 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   name = "Jackfruit";
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, 0, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     goto tns_out;
   }
 
-  if (VarJackfruit != NULL)
+  if (!TEST_CHECK(VarJackfruit == NULL))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;
@@ -358,7 +366,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, (intptr_t) r, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -368,6 +376,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     goto tns_out;
   }
 
+  log_line(__func__);
   result = true;
 tns_out:
   regex_free(&r);
@@ -380,14 +389,14 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   char *name = "Lemon";
 
   int rc = cs_str_string_set(cs, name, "lemon.*", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
   mutt_buffer_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
   struct Regex *r = (struct Regex *) value;
 
-  if (VarLemon != r)
+  if (!TEST_CHECK(VarLemon == r))
   {
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
@@ -396,6 +405,7 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   char *regex2 = r ? r->pattern : NULL;
   TEST_MSG("%s = '%s', '%s'\n", name, NONULL(regex1), NONULL(regex2));
 
+  log_line(__func__);
   return true;
 }
 
@@ -410,20 +420,20 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   char *regex = VarMango ? VarMango->pattern : NULL;
   TEST_MSG("Initial: %s = '%s'\n", name, NONULL(regex));
   int rc = cs_str_string_set(cs, name, "hello.*", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   regex = VarMango ? VarMango->pattern : NULL;
   TEST_MSG("Set: %s = '%s'\n", name, NONULL(regex));
 
   rc = cs_str_reset(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
     return false;
   }
 
   regex = VarMango ? VarMango->pattern : NULL;
-  if (mutt_str_strcmp(regex, "mango.*") != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(regex, "mango.*") == 0))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
@@ -432,7 +442,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Reset: %s = '%s'\n", name, NONULL(regex));
 
   rc = cs_str_reset(cs, "Nectarine", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -448,13 +458,13 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("Initial: %s = '%s'\n", name, VarOlive->pattern);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "hel*o", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   TEST_MSG("Set: %s = '%s'\n", name, VarOlive->pattern);
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -464,7 +474,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  if (mutt_str_strcmp(VarOlive->pattern, "hel*o") != 0)
+  if (!TEST_CHECK(mutt_str_strcmp(VarOlive->pattern, "hel*o") == 0))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;
@@ -472,6 +482,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 
   TEST_MSG("Reset: %s = '%s'\n", name, VarOlive->pattern);
 
+  log_line(__func__);
   return true;
 }
 
@@ -486,7 +497,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   char *name = "Papaya";
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "hello.*", err);
-  if (CSR_RESULT(rc) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
   }
@@ -500,7 +511,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, IP r, err);
-  if (CSR_RESULT(rc) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
   }
@@ -515,7 +526,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   name = "Quince";
   mutt_buffer_reset(err);
   rc = cs_str_string_set(cs, name, "hello.*", err);
-  if (CSR_RESULT(rc) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
   }
@@ -529,7 +540,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, IP r, err);
-  if (CSR_RESULT(rc) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err->data);
   }
@@ -544,7 +555,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   name = "Raspberry";
   mutt_buffer_reset(err);
   rc = cs_str_string_set(cs, name, "hello.*", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -558,7 +569,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 
   mutt_buffer_reset(err);
   rc = cs_str_native_set(cs, name, IP r, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
   }
@@ -573,6 +584,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   result = true;
 tv_out:
   regex_free(&r);
+  log_line(__func__);
   return result;
 }
 
@@ -610,7 +622,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set parent
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, parent, "hello.*", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Error: %s\n", err->data);
     goto ti_out;
@@ -620,7 +632,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set child
   mutt_buffer_reset(err);
   rc = cs_str_string_set(cs, child, "world.*", err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Error: %s\n", err->data);
     goto ti_out;
@@ -630,7 +642,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset child
   mutt_buffer_reset(err);
   rc = cs_str_reset(cs, child, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Error: %s\n", err->data);
     goto ti_out;
@@ -640,13 +652,14 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset parent
   mutt_buffer_reset(err);
   rc = cs_str_reset(cs, parent, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Error: %s\n", err->data);
     goto ti_out;
   }
   dump_native(cs, parent, child);
 
+  log_line(__func__);
   result = true;
 ti_out:
   ac_free(cs, &ac);
@@ -655,8 +668,6 @@ ti_out:
 
 void config_regex(void)
 {
-  log_line(__func__);
-
   struct Buffer err;
   mutt_buffer_init(&err);
   err.data = mutt_mem_calloc(1, STRING);
@@ -675,14 +686,14 @@ void config_regex(void)
 
   set_list(cs);
 
-  test_initial_values(cs, &err);
-  test_string_set(cs, &err);
-  test_string_get(cs, &err);
-  test_native_set(cs, &err);
-  test_native_get(cs, &err);
-  test_reset(cs, &err);
-  test_validator(cs, &err);
-  test_inherit(cs, &err);
+  TEST_CHECK(test_initial_values(cs, &err));
+  TEST_CHECK(test_string_set(cs, &err));
+  TEST_CHECK(test_string_get(cs, &err));
+  TEST_CHECK(test_native_set(cs, &err));
+  TEST_CHECK(test_native_get(cs, &err));
+  TEST_CHECK(test_reset(cs, &err));
+  TEST_CHECK(test_validator(cs, &err));
+  TEST_CHECK(test_inherit(cs, &err));
 
   cs_free(&cs);
   FREE(&err.data);

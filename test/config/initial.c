@@ -53,38 +53,39 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
 
   name = "Apple";
   struct HashElem *he_a = cs_get_elem(cs, name);
-  if (!he_a)
+  if (!TEST_CHECK(he_a != NULL))
     return false;
 
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     TEST_MSG("Expected error: %s\n", err->data);
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
-  if (!he_b)
+  if (!TEST_CHECK(he_b != NULL))
     return false;
 
   const char *bval = "split";
   rc = cs_he_initial_set(cs, he_b, bval, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
   name = "Cherry";
   struct HashElem *he_c = cs_get_elem(cs, name);
-  if (!he_c)
+  if (!TEST_CHECK(he_c != NULL))
     return false;
 
   const char *cval = "blossom";
   rc = cs_str_initial_set(cs, name, cval, err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
 
   TEST_MSG("Apple = %s\n", VarApple);
   TEST_MSG("Banana = %s\n", VarBanana);
   TEST_MSG("Cherry = %s\n", VarCherry);
 
+  log_line(__func__);
   return ((mutt_str_strcmp(VarApple, aval) != 0) &&
           (mutt_str_strcmp(VarBanana, bval) != 0) &&
           (mutt_str_strcmp(VarCherry, cval) != 0));
@@ -110,7 +111,7 @@ void config_initial(void)
 
   set_list(cs);
 
-  if (!test_set_initial(cs, &err))
+  if (!TEST_CHECK(test_set_initial(cs, &err)))
   {
     cs_free(&cs);
     FREE(&err.data);

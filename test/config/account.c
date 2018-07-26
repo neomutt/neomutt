@@ -57,8 +57,7 @@ static struct ConfigDef Vars[] = {
  * @param var_names List of config items (NULL terminated)
  * @retval ptr New Account object
  */
-struct Account *ac_create(const struct ConfigSet *cs, const char *name,
-                          const char *var_names[])
+struct Account *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[])
 {
   if (!cs || !name || !var_names)
     return NULL; /* LCOV_EXCL_LINE */
@@ -193,7 +192,7 @@ void config_account(void)
   struct ConfigSet *cs = cs_create(30);
 
   number_init(cs);
-  if (!cs_register_variables(cs, Vars, 0))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
     return;
 
   set_list(cs);
@@ -206,7 +205,7 @@ void config_account(void)
   };
 
   struct Account *ac = ac_create(cs, account, BrokenVarStr);
-  if (!ac)
+  if (TEST_CHECK(!ac))
   {
     TEST_MSG("Expected error:\n");
   }
@@ -223,7 +222,7 @@ void config_account(void)
 
   TEST_MSG("Expect error for next test\n");
   ac = ac_create(cs, account, AccountVarStr2);
-  if (ac)
+  if (!TEST_CHECK(!ac))
   {
     ac_free(cs, &ac);
     TEST_MSG("This test should have failed\n");
@@ -236,20 +235,20 @@ void config_account(void)
   };
 
   ac = ac_create(cs, account, AccountVarStr);
-  if (!ac)
+  if (!TEST_CHECK(ac != NULL))
     return;
 
   size_t index = 0;
   mutt_buffer_reset(&err);
   int rc = ac_set_value(ac, index, 33, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
 
   mutt_buffer_reset(&err);
   rc = ac_set_value(ac, 99, 42, &err);
-  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: %s\n", err.data);
   }
@@ -261,7 +260,7 @@ void config_account(void)
 
   mutt_buffer_reset(&err);
   rc = ac_get_value(ac, index, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
@@ -273,7 +272,7 @@ void config_account(void)
   index++;
   mutt_buffer_reset(&err);
   rc = ac_get_value(ac, index, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s\n", err.data);
   }
@@ -284,7 +283,7 @@ void config_account(void)
 
   mutt_buffer_reset(&err);
   rc = ac_get_value(ac, 99, &err);
-  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error\n");
   }
@@ -297,7 +296,7 @@ void config_account(void)
   const char *name = "fruit:Apple";
   mutt_buffer_reset(&err);
   int result = cs_str_string_get(cs, name, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
     TEST_MSG("%s = '%s'\n", name, err.data);
   }
@@ -309,7 +308,7 @@ void config_account(void)
 
   mutt_buffer_reset(&err);
   result = cs_str_native_set(cs, name, 42, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }
@@ -320,12 +319,12 @@ void config_account(void)
   }
 
   struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
+  if (!TEST_CHECK(he != NULL))
     return;
 
   mutt_buffer_reset(&err);
   result = cs_str_initial_set(cs, name, "42", &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error\n");
   }
@@ -337,7 +336,7 @@ void config_account(void)
 
   mutt_buffer_reset(&err);
   result = cs_str_initial_get(cs, name, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error\n");
   }
@@ -349,12 +348,12 @@ void config_account(void)
 
   name = "Apple";
   he = cs_get_elem(cs, name);
-  if (!he)
+  if (!TEST_CHECK(he != NULL))
     return;
 
   mutt_buffer_reset(&err);
   result = cs_he_native_set(cs, he, 42, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
+  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }
@@ -367,4 +366,5 @@ void config_account(void)
   ac_free(cs, &ac);
   cs_free(&cs);
   FREE(&err.data);
+  log_line(__func__);
 }
