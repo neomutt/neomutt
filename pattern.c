@@ -2217,7 +2217,7 @@ int mutt_pattern_func(int op, char *prompt)
   struct Pattern *pat = NULL;
   char buf[LONG_STRING] = "", *simple = NULL;
   struct Buffer err;
-  int rc = -1;
+  int rc = -1, padding;
   struct Progress progress;
 
   mutt_str_strfcpy(buf, Context->pattern, sizeof(buf));
@@ -2254,6 +2254,7 @@ int mutt_pattern_func(int op, char *prompt)
     Context->vcount = 0;
     Context->vsize = 0;
     Context->collapsed = false;
+    padding = mx_msg_padding_size(Context);
 
     for (int i = 0; i < Context->msgcount; i++)
     {
@@ -2270,7 +2271,7 @@ int mutt_pattern_func(int op, char *prompt)
         Context->v2r[Context->vcount] = i;
         Context->vcount++;
         struct Body *b = Context->hdrs[i]->content;
-        Context->vsize += b->length + b->offset - b->hdr_offset;
+        Context->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
   }

@@ -455,6 +455,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
+    int padding = mx_msg_padding_size(ctx);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->msgcount; i++)
     {
       if (!i)
@@ -472,7 +473,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->hdrs[i]->limited = true;
         ctx->vcount++;
         struct Body *b = ctx->hdrs[i]->content;
-        ctx->vsize += b->length + b->offset - b->hdr_offset;
+        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
   }

@@ -775,7 +775,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
  */
 void mx_update_tables(struct Context *ctx, bool committing)
 {
-  int i, j;
+  int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
   ctx->vcount = 0;
@@ -786,6 +786,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   ctx->unread = 0;
   ctx->changed = false;
   ctx->flagged = 0;
+  padding = mx_msg_padding_size(ctx);
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
@@ -803,7 +804,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
         ctx->v2r[ctx->vcount] = j;
         ctx->hdrs[j]->virtual = ctx->vcount++;
         struct Body *b = ctx->hdrs[j]->content;
-        ctx->vsize += b->length + b->offset - b->hdr_offset;
+        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
       if (committing)

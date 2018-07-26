@@ -904,7 +904,7 @@ static int comp_msg_padding_size(struct Context *ctx)
   if (!ci)
     return 0;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops || !ops->msg_padding_size)
     return 0;
 
