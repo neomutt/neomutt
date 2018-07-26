@@ -1,3 +1,26 @@
+/**
+ * @file
+ * Tests for the config code
+ *
+ * @authors
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "acutest.h"
 #include "config.h"
 #include <errno.h>
 #include <stdarg.h>
@@ -5,7 +28,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/logging.h"
-#include "dump/dump.h"
 #include "test/config/account2.h"
 #include "test/config/address.h"
 #include "test/config/bool.h"
@@ -23,93 +45,37 @@
 #include "test/config/string4.h"
 #include "test/config/synonym.h"
 
-typedef bool (*test_fn)(void);
+/******************************************************************************
+ * Add your test cases to this list.
+ *****************************************************************************/
+#define NEOMUTT_TEST_LIST                                                      \
+  NEOMUTT_TEST_ITEM(config_set)                                                \
+  NEOMUTT_TEST_ITEM(config_account)                                            \
+  NEOMUTT_TEST_ITEM(config_initial)                                            \
+  NEOMUTT_TEST_ITEM(config_synonym)                                            \
+  NEOMUTT_TEST_ITEM(config_address)                                            \
+  NEOMUTT_TEST_ITEM(config_bool)                                               \
+  NEOMUTT_TEST_ITEM(config_command)                                            \
+  NEOMUTT_TEST_ITEM(config_long)                                               \
+  NEOMUTT_TEST_ITEM(config_magic)                                              \
+  NEOMUTT_TEST_ITEM(config_mbtable)                                            \
+  NEOMUTT_TEST_ITEM(config_number)                                             \
+  NEOMUTT_TEST_ITEM(config_path)                                               \
+  NEOMUTT_TEST_ITEM(config_quad)                                               \
+  NEOMUTT_TEST_ITEM(config_regex)                                              \
+  NEOMUTT_TEST_ITEM(config_sort)                                               \
+  NEOMUTT_TEST_ITEM(config_string)
 
-int log_disp_stdout(time_t stamp, const char *file, int line,
-                    const char *function, int level, ...)
-{
-  int err = errno;
+/******************************************************************************
+ * You probably don't need to touch what follows.
+ *****************************************************************************/
+#define NEOMUTT_TEST_ITEM(x) void x(void);
+NEOMUTT_TEST_LIST
+#undef NEOMUTT_TEST_ITEM
 
-  va_list ap;
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  int ret = vprintf(fmt, ap);
-  va_end(ap);
-
-  if (level == LL_PERROR)
-    ret += printf("%s", strerror(err));
-
-  return ret;
-}
-
-struct Test
-{
-  const char *name;
-  test_fn function;
+TEST_LIST = {
+#define NEOMUTT_TEST_ITEM(x) { #x, x },
+  NEOMUTT_TEST_LIST
+#undef NEOMUTT_TEST_ITEM
+  { 0 }
 };
-
-// clang-format off
-struct Test test[] = {
-  { "set",       set_test       },
-  { "account",   account_test   },
-  { "initial",   initial_test   },
-  { "synonym",   synonym_test   },
-  { "address",   address_test   },
-  { "bool",      bool_test      },
-  { "command",   command_test   },
-  { "long",      long_test      },
-  { "magic",     magic_test     },
-  { "mbtable",   mbtable_test   },
-  { "number",    number_test    },
-  { "path",      path_test      },
-  { "quad",      quad_test      },
-  { "regex",     regex_test     },
-  { "sort",      sort_test      },
-  { "string",    string_test    },
-  { "dump",      dump_test      },
-  { NULL },
-};
-// clang-format on
-
-int main(int argc, char *argv[])
-{
-  int result = 0;
-
-  if (argc < 2)
-  {
-    printf("Usage: %s TEST ...\n", argv[0]);
-    for (int i = 0; test[i].name; i++)
-      printf("    %s\n", test[i].name);
-    return 1;
-  }
-
-  MuttLogger = log_disp_stdout;
-
-  for (; --argc > 0; argv++)
-  {
-    struct Test *t = NULL;
-
-    for (int i = 0; test[i].name; i++)
-    {
-      if (strcmp(argv[1], test[i].name) == 0)
-      {
-        t = &test[i];
-        break;
-      }
-    }
-    if (!t)
-    {
-      printf("Unknown test '%s'\n", argv[1]);
-      result = 1;
-      continue;
-    }
-
-    if (!t->function())
-    {
-      printf("%s_test() failed\n", t->name);
-      result = 1;
-    }
-  }
-
-  return result;
-}

@@ -3,7 +3,7 @@
  * Test code for pre-setting initial values
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "acutest.h"
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
 #include "mutt/string2.h"
+#include "config/common.h"
 #include "config/set.h"
 #include "config/string3.h"
 #include "config/types.h"
-#include "config/common.h"
 
 static char *VarApple;
 static char *VarBanana;
@@ -57,7 +59,7 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    printf("Expected error: %s\n", err->data);
+    TEST_MSG("Expected error: %s\n", err->data);
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
@@ -79,16 +81,16 @@ static bool test_set_initial(struct ConfigSet *cs, struct Buffer *err)
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return false;
 
-  printf("Apple = %s\n", VarApple);
-  printf("Banana = %s\n", VarBanana);
-  printf("Cherry = %s\n", VarCherry);
+  TEST_MSG("Apple = %s\n", VarApple);
+  TEST_MSG("Banana = %s\n", VarBanana);
+  TEST_MSG("Cherry = %s\n", VarCherry);
 
   return ((mutt_str_strcmp(VarApple, aval) != 0) &&
           (mutt_str_strcmp(VarBanana, bval) != 0) &&
           (mutt_str_strcmp(VarCherry, cval) != 0));
 }
 
-bool initial_test(void)
+void config_initial(void)
 {
   log_line(__func__);
 
@@ -102,7 +104,7 @@ bool initial_test(void)
 
   string_init(cs);
   if (!cs_register_variables(cs, Vars, 0))
-    return false;
+    return;
 
   cs_add_listener(cs, log_listener);
 
@@ -112,11 +114,9 @@ bool initial_test(void)
   {
     cs_free(&cs);
     FREE(&err.data);
-    return false;
+    return;
   }
 
   cs_free(&cs);
   FREE(&err.data);
-
-  return true;
 }

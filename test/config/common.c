@@ -3,7 +3,7 @@
  * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "acutest.h"
 #include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -40,8 +42,7 @@ const char *line = "----------------------------------------"
 
 bool dont_fail = false;
 
-int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                   intptr_t value, struct Buffer *result)
+int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (dont_fail)
     return CSR_SUCCESS;
@@ -53,8 +54,7 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   return CSR_ERR_INVALID;
 }
 
-int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                   intptr_t value, struct Buffer *result)
+int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -63,8 +63,7 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
-int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                      intptr_t value, struct Buffer *result)
+int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -75,12 +74,16 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 void log_line(const char *fn)
 {
-  int len = 54 - mutt_str_strlen(fn);
-  printf("---- %s %.*s\n", fn, len, line);
+  int len = 44 - mutt_str_strlen(fn);
+  TEST_MSG("\033[36m---- %s %.*s\033[m\n", fn, len, line);
 }
 
-bool log_listener(const struct ConfigSet *cs, struct HashElem *he,
-                  const char *name, enum ConfigEvent ev)
+void short_line(void)
+{
+  TEST_MSG("%s\n", line + 40);
+}
+
+bool log_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev)
 {
   struct Buffer result;
   mutt_buffer_init(&result);
@@ -96,7 +99,7 @@ bool log_listener(const struct ConfigSet *cs, struct HashElem *he,
   else
     cs_he_initial_get(cs, he, &result);
 
-  printf("Event: %s has been %s to '%s'\n", name, events[ev - 1], result.data);
+  TEST_MSG("Event: %s has been %s to '%s'\n", name, events[ev - 1], result.data);
 
   FREE(&result.data);
   return true;
@@ -106,40 +109,6 @@ void set_list(const struct ConfigSet *cs)
 {
   log_line(__func__);
   cs_dump_set(cs);
-  // hash_dump(cs->hash);
-}
-
-void hash_dump(struct Hash *table)
-{
-  if (!table)
-    return;
-
-  struct HashElem *he = NULL;
-
-  for (int i = 0; i < table->nelem; i++)
-  {
-    he = table->table[i];
-    if (!he)
-      continue;
-
-    if (he->type == DT_SYNONYM)
-      continue;
-
-    printf("%03d ", i);
-    for (; he; he = he->next)
-    {
-      if (he->type & DT_INHERITED)
-      {
-        struct Inheritance *inh = he->data;
-        printf("\033[1;32m[%s]\033[m ", inh->name);
-      }
-      else
-      {
-        printf("%s ", *(char **) he->data);
-      }
-    }
-    printf("\n");
-  }
 }
 
 int sort_list_cb(const void *a, const void *b)
@@ -210,9 +179,10 @@ void cs_dump_set(const struct ConfigSet *cs)
   qsort(list, index, sizeof(list[0]), sort_list_cb);
   for (i = 0; list[i]; i++)
   {
-    puts(list[i]);
+    TEST_MSG("%s\n", list[i]);
     FREE(&list[i]);
   }
 
   FREE(&result.data);
 }
+

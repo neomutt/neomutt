@@ -3,7 +3,7 @@
  * Test code for the Account object
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "acutest.h"
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -30,10 +32,10 @@
 #include "mutt/string2.h"
 #include "config/account.h"
 #include "config/common.h"
+#include "config/inheritance.h"
 #include "config/number.h"
 #include "config/set.h"
 #include "config/types.h"
-#include "config/inheritance.h"
 
 static short VarApple;
 static short VarBanana;
@@ -47,197 +49,6 @@ static struct ConfigDef Vars[] = {
   { NULL },
 };
 // clang-format on
-
-bool account_test(void)
-{
-  log_line(__func__);
-
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.data = mutt_mem_calloc(1, STRING);
-  err.dsize = STRING;
-  mutt_buffer_reset(&err);
-
-  struct ConfigSet *cs = cs_create(30);
-
-  number_init(cs);
-  if (!cs_register_variables(cs, Vars, 0))
-    return false;
-
-  set_list(cs);
-
-  cs_add_listener(cs, log_listener);
-
-  const char *account = "damaged";
-  const char *BrokenVarStr[] = {
-    "Pineapple", NULL,
-  };
-
-  struct Account *ac = ac_create(cs, account, BrokenVarStr);
-  if (!ac)
-  {
-    printf("Expected error:\n");
-  }
-  else
-  {
-    ac_free(cs, &ac);
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  const char *AccountVarStr2[] = {
-    "Apple", "Apple", NULL,
-  };
-
-  printf("Expect error for next test\n");
-  ac = ac_create(cs, account, AccountVarStr2);
-  if (ac)
-  {
-    ac_free(cs, &ac);
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  account = "fruit";
-  const char *AccountVarStr[] = {
-    "Apple", "Cherry", NULL,
-  };
-
-  ac = ac_create(cs, account, AccountVarStr);
-  if (!ac)
-    return false;
-
-  unsigned int index = 0;
-  mutt_buffer_reset(&err);
-  int rc = ac_set_value(ac, index, 33, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
-  {
-    printf("%s\n", err.data);
-  }
-
-  mutt_buffer_reset(&err);
-  rc = ac_set_value(ac, 99, 42, &err);
-  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
-  {
-    printf("Expected error: %s\n", err.data);
-  }
-  else
-  {
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  mutt_buffer_reset(&err);
-  rc = ac_get_value(ac, index, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
-  {
-    printf("%s\n", err.data);
-  }
-  else
-  {
-    printf("%s = %s\n", AccountVarStr[index], err.data);
-  }
-
-  index++;
-  mutt_buffer_reset(&err);
-  rc = ac_get_value(ac, index, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
-  {
-    printf("%s\n", err.data);
-  }
-  else
-  {
-    printf("%s = %s\n", AccountVarStr[index], err.data);
-  }
-
-  mutt_buffer_reset(&err);
-  rc = ac_get_value(ac, 99, &err);
-  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
-  {
-    printf("Expected error\n");
-  }
-  else
-  {
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  const char *name = "fruit:Apple";
-  mutt_buffer_reset(&err);
-  int result = cs_str_string_get(cs, name, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
-  {
-    printf("%s = '%s'\n", name, err.data);
-  }
-  else
-  {
-    printf("%s\n", err.data);
-    return false;
-  }
-
-  mutt_buffer_reset(&err);
-  result = cs_str_native_set(cs, name, 42, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
-  {
-    printf("Set %s\n", name);
-  }
-  else
-  {
-    printf("%s\n", err.data);
-    return false;
-  }
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-    return false;
-
-  mutt_buffer_reset(&err);
-  result = cs_str_initial_set(cs, name, "42", &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
-  {
-    printf("Expected error\n");
-  }
-  else
-  {
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  mutt_buffer_reset(&err);
-  result = cs_str_initial_get(cs, name, &err);
-  if (CSR_RESULT(rc) != CSR_SUCCESS)
-  {
-    printf("Expected error\n");
-  }
-  else
-  {
-    printf("This test should have failed\n");
-    return false;
-  }
-
-  name = "Apple";
-  he = cs_get_elem(cs, name);
-  if (!he)
-    return false;
-
-  mutt_buffer_reset(&err);
-  result = cs_he_native_set(cs, he, 42, &err);
-  if (CSR_RESULT(result) == CSR_SUCCESS)
-  {
-    printf("Set %s\n", name);
-  }
-  else
-  {
-    printf("%s\n", err.data);
-    return false;
-  }
-
-  ac_free(cs, &ac);
-  cs_free(&cs);
-  FREE(&err.data);
-
-  return true;
-}
 
 /**
  * ac_create - Create an Account
@@ -333,7 +144,7 @@ void ac_free(const struct ConfigSet *cs, struct Account **ac)
  * @param err   Buffer for error messages
  * @retval int Result, e.g. #CSR_SUCCESS
  */
-int ac_set_value(const struct Account *ac, unsigned int vid, intptr_t value, struct Buffer *err)
+int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Buffer *err)
 {
   if (!ac)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
@@ -351,7 +162,7 @@ int ac_set_value(const struct Account *ac, unsigned int vid, intptr_t value, str
  * @param result Buffer for results or error messages
  * @retval int Result, e.g. #CSR_SUCCESS
  */
-int ac_get_value(const struct Account *ac, unsigned int vid, struct Buffer *result)
+int ac_get_value(const struct Account *ac, size_t vid, struct Buffer *result)
 {
   if (!ac)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
@@ -367,4 +178,193 @@ int ac_get_value(const struct Account *ac, unsigned int vid, struct Buffer *resu
   }
 
   return cs_he_string_get(ac->cs, he, result);
+}
+
+void config_account(void)
+{
+  log_line(__func__);
+
+  struct Buffer err;
+  mutt_buffer_init(&err);
+  err.data = mutt_mem_calloc(1, STRING);
+  err.dsize = STRING;
+  mutt_buffer_reset(&err);
+
+  struct ConfigSet *cs = cs_create(30);
+
+  number_init(cs);
+  if (!cs_register_variables(cs, Vars, 0))
+    return;
+
+  set_list(cs);
+
+  cs_add_listener(cs, log_listener);
+
+  const char *account = "damaged";
+  const char *BrokenVarStr[] = {
+    "Pineapple", NULL,
+  };
+
+  struct Account *ac = ac_create(cs, account, BrokenVarStr);
+  if (!ac)
+  {
+    TEST_MSG("Expected error:\n");
+  }
+  else
+  {
+    ac_free(cs, &ac);
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  const char *AccountVarStr2[] = {
+    "Apple", "Apple", NULL,
+  };
+
+  TEST_MSG("Expect error for next test\n");
+  ac = ac_create(cs, account, AccountVarStr2);
+  if (ac)
+  {
+    ac_free(cs, &ac);
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  account = "fruit";
+  const char *AccountVarStr[] = {
+    "Apple", "Cherry", NULL,
+  };
+
+  ac = ac_create(cs, account, AccountVarStr);
+  if (!ac)
+    return;
+
+  size_t index = 0;
+  mutt_buffer_reset(&err);
+  int rc = ac_set_value(ac, index, 33, &err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+
+  mutt_buffer_reset(&err);
+  rc = ac_set_value(ac, 99, 42, &err);
+  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
+  {
+    TEST_MSG("Expected error: %s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  rc = ac_get_value(ac, index, &err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+  }
+
+  index++;
+  mutt_buffer_reset(&err);
+  rc = ac_get_value(ac, index, &err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  {
+    TEST_MSG("%s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+  }
+
+  mutt_buffer_reset(&err);
+  rc = ac_get_value(ac, 99, &err);
+  if (CSR_RESULT(rc) == CSR_ERR_UNKNOWN)
+  {
+    TEST_MSG("Expected error\n");
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  const char *name = "fruit:Apple";
+  mutt_buffer_reset(&err);
+  int result = cs_str_string_get(cs, name, &err);
+  if (CSR_RESULT(result) == CSR_SUCCESS)
+  {
+    TEST_MSG("%s = '%s'\n", name, err.data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err.data);
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  result = cs_str_native_set(cs, name, 42, &err);
+  if (CSR_RESULT(result) == CSR_SUCCESS)
+  {
+    TEST_MSG("Set %s\n", name);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err.data);
+    return;
+  }
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+    return;
+
+  mutt_buffer_reset(&err);
+  result = cs_str_initial_set(cs, name, "42", &err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  {
+    TEST_MSG("Expected error\n");
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  result = cs_str_initial_get(cs, name, &err);
+  if (CSR_RESULT(rc) != CSR_SUCCESS)
+  {
+    TEST_MSG("Expected error\n");
+  }
+  else
+  {
+    TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  name = "Apple";
+  he = cs_get_elem(cs, name);
+  if (!he)
+    return;
+
+  mutt_buffer_reset(&err);
+  result = cs_he_native_set(cs, he, 42, &err);
+  if (CSR_RESULT(result) == CSR_SUCCESS)
+  {
+    TEST_MSG("Set %s\n", name);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err.data);
+    return;
+  }
+
+  ac_free(cs, &ac);
+  cs_free(&cs);
+  FREE(&err.data);
 }

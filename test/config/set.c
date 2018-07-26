@@ -3,7 +3,7 @@
  * Test code for the ConfigSet object
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "acutest.h"
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -29,9 +31,9 @@
 #include "mutt/memory.h"
 #include "mutt/string2.h"
 #include "config/bool.h"
+#include "config/common.h"
 #include "config/set.h"
 #include "config/types.h"
-#include "config/common.h"
 
 static short VarApple;
 static bool VarBanana;
@@ -78,7 +80,7 @@ void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef
 {
 }
 
-bool set_test(void)
+void config_set(void)
 {
   log_line(__func__);
 
@@ -90,7 +92,7 @@ bool set_test(void)
 
   struct ConfigSet *cs = cs_create(30);
   if (!cs)
-    return false;
+    return;
 
   cs_add_listener(cs, log_listener);
   cs_add_listener(cs, log_listener); /* dupe */
@@ -103,12 +105,12 @@ bool set_test(void)
 
   if (!cs_register_type(cs, DT_STRING, &cst_dummy))
   {
-    printf("Expected error\n");
+    TEST_MSG("Expected error\n");
   }
   else
   {
-    printf("This test should have failed\n");
-    return false;
+    TEST_MSG("This test should have failed\n");
+    return;
   }
 
   const struct ConfigSetType cst_dummy2 = {
@@ -118,12 +120,12 @@ bool set_test(void)
 
   if (!cs_register_type(cs, 25, &cst_dummy2))
   {
-    printf("Expected error\n");
+    TEST_MSG("Expected error\n");
   }
   else
   {
-    printf("This test should have failed\n");
-    return false;
+    TEST_MSG("This test should have failed\n");
+    return;
   }
 
   bool_init(cs);
@@ -131,71 +133,69 @@ bool set_test(void)
 
   if (!cs_register_variables(cs, Vars, 0))
   {
-    printf("Expected error\n");
+    TEST_MSG("Expected error\n");
   }
   else
   {
-    printf("This test should have failed\n");
-    return false;
+    TEST_MSG("This test should have failed\n");
+    return;
   }
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", &err);
   if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
   {
-    printf("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
   else
   {
-    printf("This should have failed 1\n");
-    return false;
+    TEST_MSG("This should have failed 1\n");
+    return;
   }
 
   result = cs_str_string_get(cs, name, &err);
   if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
   {
-    printf("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
   else
   {
-    printf("This should have failed 2\n");
-    return false;
+    TEST_MSG("This should have failed 2\n");
+    return;
   }
 
   result = cs_str_native_set(cs, name, IP "hello", &err);
   if (CSR_RESULT(result) == CSR_ERR_UNKNOWN)
   {
-    printf("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
   else
   {
-    printf("This should have failed 3\n");
-    return false;
+    TEST_MSG("This should have failed 3\n");
+    return;
   }
 
   intptr_t native = cs_str_native_get(cs, name, &err);
   if (native == INT_MIN)
   {
-    printf("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'\n", name);
   }
   else
   {
-    printf("This should have failed 4\n");
-    return false;
+    TEST_MSG("This should have failed 4\n");
+    return;
   }
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
   if (!he)
-    return false;
+    return;
 
   set_list(cs);
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, 15);
   if (cst)
-    return false;
+    return;
 
   cs_free(&cs);
   FREE(&err.data);
-
-  return true;
 }

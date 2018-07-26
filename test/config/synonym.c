@@ -3,7 +3,7 @@
  * Test code for Config Synonyms
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "acutest.h"
 #include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -27,10 +29,10 @@
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
 #include "mutt/string2.h"
+#include "config/common.h"
 #include "config/set.h"
 #include "config/string3.h"
 #include "config/types.h"
-#include "config/common.h"
 
 static char *VarApple;
 static char *VarCherry;
@@ -70,16 +72,16 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, value, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    printf("%s\n", err->data);
+    TEST_MSG("%s\n", err->data);
     return false;
   }
 
   if (mutt_str_strcmp(VarApple, value) != 0)
   {
-    printf("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
   }
-  printf("%s = %s, set by '%s'\n", name, NONULL(VarApple), value);
+  TEST_MSG("%s = %s, set by '%s'\n", name, NONULL(VarApple), value);
 
   return true;
 }
@@ -93,10 +95,10 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_get(cs, name, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    printf("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", err->data);
     return false;
   }
-  printf("%s = '%s', '%s'\n", name, NONULL(VarCherry), err->data);
+  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarCherry), err->data);
 
   return true;
 }
@@ -112,16 +114,16 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    printf("%s\n", err->data);
+    TEST_MSG("%s\n", err->data);
     return false;
   }
 
   if (mutt_str_strcmp(VarElderberry, value) != 0)
   {
-    printf("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
   }
-  printf("%s = %s, set by '%s'\n", name, NONULL(VarElderberry), value);
+  TEST_MSG("%s = %s, set by '%s'\n", name, NONULL(VarElderberry), value);
 
   return true;
 }
@@ -139,10 +141,10 @@ static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
   intptr_t value = cs_str_native_get(cs, name, err);
   if (mutt_str_strcmp(VarGuava, (const char *) value) != 0)
   {
-    printf("Get failed: %s\n", err->data);
+    TEST_MSG("Get failed: %s\n", err->data);
     return false;
   }
-  printf("%s = '%s', '%s'\n", name, VarGuava, (const char *) value);
+  TEST_MSG("%s = '%s', '%s'\n", name, VarGuava, (const char *) value);
 
   return true;
 }
@@ -154,32 +156,32 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   char *name = "Jackfruit";
   mutt_buffer_reset(err);
 
-  printf("Initial: %s = '%s'\n", name, NONULL(VarIlama));
+  TEST_MSG("Initial: %s = '%s'\n", name, NONULL(VarIlama));
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return false;
-  printf("Set: %s = '%s'\n", name, VarIlama);
+  TEST_MSG("Set: %s = '%s'\n", name, VarIlama);
 
   mutt_buffer_reset(err);
   rc = cs_str_reset(cs, name, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    printf("%s\n", err->data);
+    TEST_MSG("%s\n", err->data);
     return false;
   }
 
   if (mutt_str_strcmp(VarIlama, "iguana") != 0)
   {
-    printf("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
   }
 
-  printf("Reset: %s = '%s'\n", name, VarIlama);
+  TEST_MSG("Reset: %s = '%s'\n", name, VarIlama);
 
   return true;
 }
 
-bool synonym_test(void)
+void config_synonym(void)
 {
   log_line(__func__);
 
@@ -193,16 +195,16 @@ bool synonym_test(void)
 
   string_init(cs);
   if (!cs_register_variables(cs, Vars, 0))
-    return false;
+    return;
 
   if (!cs_register_variables(cs, Vars2, 0))
   {
-    printf("Expected error\n");
+    TEST_MSG("Expected error\n");
   }
   else
   {
-    printf("Test should have failed\n");
-    return false;
+    TEST_MSG("Test should have failed\n");
+    return;
   }
 
   cs_add_listener(cs, log_listener);
@@ -210,18 +212,16 @@ bool synonym_test(void)
   set_list(cs);
 
   if (!test_string_set(cs, &err))
-    return false;
+    return;
   if (!test_string_get(cs, &err))
-    return false;
+    return;
   if (!test_native_set(cs, &err))
-    return false;
+    return;
   if (!test_native_get(cs, &err))
-    return false;
+    return;
   if (!test_reset(cs, &err))
-    return false;
+    return;
 
   cs_free(&cs);
   FREE(&err.data);
-
-  return true;
 }

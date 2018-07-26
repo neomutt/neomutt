@@ -8,6 +8,8 @@ ColumnLimit:       80
 BreakBeforeBraces: Allman
 
 IncludeCategories:
+  - Regex:      '"acutest\.h"'
+    Priority:   -12
   - Regex:      '"config\.h"'
     Priority:   -10
   - Regex:      '<stddef\.h>'

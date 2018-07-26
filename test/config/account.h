@@ -36,14 +36,14 @@ struct Account
   char *name;                 /**< Name of Account */
   const struct ConfigSet *cs; /**< Parent ConfigSet */
   const char **var_names;     /**< Array of the names of local config items */
-  int num_vars;               /**< Number of local config items */
+  size_t num_vars;            /**< Number of local config items */
   struct HashElem **vars;     /**< Array of the HashElems of local config items */
 };
 
 struct Account *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[]);
 void ac_free(const struct ConfigSet *cs, struct Account **ac);
 
-int ac_set_value(const struct Account *ac, unsigned int vid, intptr_t value, struct Buffer *err);
-int ac_get_value(const struct Account *ac, unsigned int vid, struct Buffer *err);
+int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Buffer *err);
+int ac_get_value(const struct Account *ac, size_t vid, struct Buffer *err);
 
 #endif /* _CONFIG_ACCOUNT_H */

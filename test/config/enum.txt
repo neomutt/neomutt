@@ -1,9 +1,0 @@
----- enum_test ---------------------------------------------
----- set_list ----------------------------------------------
-enum Apple = Dingo
----- test_initial_values -----------------------------------
-Apple = 40
-Event: Apple has been set to 'Antelope'
-Apple = 1, 
-Event: Apple has been set to 'Echidna'
-Apple = 41, 
