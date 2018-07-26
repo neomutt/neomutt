@@ -1488,3 +1488,17 @@ int mx_path_parent(char *buf, size_t buflen)
 
   return 0;
 }
+
+/* mx_msg_padding_size: Returns the padding size between messages for the
+ * mailbox type pointed to by ctx.
+ *
+ * mmdf and mbox add separators, which leads a small discrepancy when computing
+ * vsize for a limited view.
+ */
+int mx_msg_padding_size(struct Context *ctx)
+{
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_padding_size)
+    return 0;
+
+  return ctx->mx_ops->msg_padding_size(ctx);
+}

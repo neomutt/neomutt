@@ -604,6 +604,16 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   return 0;
 }
 
+static int mbox_msg_padding_size(struct Context *ctx)
+{
+  return 1;
+}
+
+static int mmdf_msg_padding_size(struct Context *ctx)
+{
+  return 10;
+}
+
 /**
  * reopen_mailbox - Close and reopen a mailbox
  * @param ctx        Mailbox
@@ -1449,6 +1459,7 @@ struct MxOps mx_mbox_ops = {
   .msg_open_new     = mbox_msg_open_new,
   .msg_commit       = mbox_msg_commit,
   .msg_close        = mbox_msg_close,
+  .msg_padding_size = mbox_msg_padding_size,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
@@ -1472,6 +1483,7 @@ struct MxOps mx_mmdf_ops = {
   .msg_open_new     = mbox_msg_open_new,
   .msg_commit       = mmdf_msg_commit,
   .msg_close        = mbox_msg_close,
+  .msg_padding_size = mmdf_msg_padding_size,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,

@@ -180,6 +180,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    */
+  int (*msg_padding_size)(struct Context *ctx);
   int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
   /**
    * tags_edit - Prompt and validate new messages tags
@@ -228,20 +229,21 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check  (struct Context *ctx, int *index_hint);
-int             mx_mbox_close  (struct Context **pctx, int *index_hint);
-struct Context *mx_mbox_open   (const char *path, int flags);
-int             mx_mbox_sync   (struct Context *ctx, int *index_hint);
-int             mx_msg_close   (struct Context *ctx, struct Message **msg);
-int             mx_msg_commit  (struct Context *ctx, struct Message *msg);
-struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags);
-struct Message *mx_msg_open    (struct Context *ctx, int msgno);
-int             mx_path_canon  (char *buf, size_t buflen, const char *folder);
-int             mx_path_parent (char *buf, size_t buflen);
-int             mx_path_pretty (char *buf, size_t buflen, const char *folder);
-int             mx_path_probe  (const char *path, const struct stat *st);
-int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
-int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+int             mx_mbox_check      (struct Context *ctx, int *index_hint);
+int             mx_mbox_close      (struct Context **pctx, int *index_hint);
+struct Context *mx_mbox_open       (const char *path, int flags);
+int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
+int             mx_msg_close       (struct Context *ctx, struct Message **msg);
+int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
+struct Message *mx_msg_open_new    (struct Context *ctx, struct Header *hdr, int flags);
+struct Message *mx_msg_open        (struct Context *ctx, int msgno);
+int             mx_msg_padding_size(struct Context *ctx);
+int             mx_path_canon      (char *buf, size_t buflen, const char *folder);
+int             mx_path_parent     (char *buf, size_t buflen);
+int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
+int             mx_path_probe      (const char *path, const struct stat *st);
+int             mx_tags_commit     (struct Context *ctx, struct Header *hdr, char *tags);
+int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 int                 mx_access(const char *path, int flags);
 void                mx_alloc_memory(struct Context *ctx);
