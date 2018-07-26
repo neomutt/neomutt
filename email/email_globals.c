@@ -31,14 +31,14 @@
 #include "mutt/mutt.h"
 
 /* Config items */
-bool MarkOld;
-struct Regex *ReplyRegex;
-char *SendCharset;
-char *SpamSeparator;
-bool Weed;
+bool MarkOld = false;
+struct Regex *ReplyRegex = NULL;
+char *SendCharset = NULL;
+char *SpamSeparator = NULL;
+bool Weed = false;
 
 /* Global variables */
-struct RegexList *NoSpamList;
-struct ReplaceList *SpamList;
+struct RegexList *NoSpamList = NULL;
+struct ReplaceList *SpamList = NULL;
 struct ListHead Ignore = STAILQ_HEAD_INITIALIZER(Ignore);
 struct ListHead UnIgnore = STAILQ_HEAD_INITIALIZER(UnIgnore);
