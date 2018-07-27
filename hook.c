@@ -502,7 +502,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
       if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
           hook->regex.not)
       {
-        mutt_make_string(path, pathlen, hook->command, ctx, e);
+        mutt_make_string_flags(path, pathlen, hook->command, ctx, e, MUTT_FORMAT_PLAIN);
         return 0;
       }
     }
