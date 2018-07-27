@@ -259,16 +259,6 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   }
   TEST_MSG("%s = %d, %s\n", name, VarElderberry, err->data);
 
-  VarElderberry = 3;
-  mutt_buffer_reset(err);
-  TEST_MSG("Expect error for next test\n");
-  rc = cs_str_string_get(cs, name, err);
-  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
-  {
-    TEST_MSG("Get failed\n");
-    // return false;
-  }
-
   log_line(__func__);
   return true;
 }
