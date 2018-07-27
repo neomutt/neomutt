@@ -213,6 +213,7 @@ enum FieldType
   DISP_CC,
   DISP_BCC,
   DISP_FROM,
+  DISP_PLAIN,
   DISP_NUM
 };
 
@@ -250,10 +251,8 @@ static const char *make_from_prefix(enum FieldType disp)
   /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
   static const char *long_prefixes[DISP_NUM] = {
-    [DISP_TO] = "To ",
-    [DISP_CC] = "Cc ",
-    [DISP_BCC] = "Bcc ",
-    [DISP_FROM] = "",
+    [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ",
+    [DISP_FROM] = "",  [DISP_PLAIN] = "",
   };
 
   if (!FromChars || !FromChars->chars || (FromChars->len == 0))
@@ -280,7 +279,8 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists)
+static void make_from(struct Envelope *env, char *buf, size_t buflen,
+                      bool do_lists, enum FormatFlag flags)
 {
   if (!env || !buf)
     return;
@@ -301,7 +301,7 @@ static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_li
 
   if (me && env->to)
   {
-    disp = DISP_TO;
+    disp = (flags & MUTT_FORMAT_PLAIN) ? DISP_PLAIN : DISP_TO;
     name = env->to;
   }
   else if (me && env->cc)
@@ -480,6 +480,7 @@ static bool thread_is_old(struct Context *ctx, struct Email *e)
  * | \%e     | Current message number in thread
  * | \%E     | Number of messages in current thread
  * | \%F     | Author name, or recipient name if the message is from you
+ * | \%Fp    | Like %F, but plain. No contextual formatting is applied to recipient name
  * | \%f     | Sender (address + real name), either From: or Return-Path:
  * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
@@ -845,13 +846,19 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'F':
       if (!optional)
       {
+        const bool is_plain = (src[0] == 'p');
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(e->env, tmp, sizeof(tmp), false);
+        make_from(e->env, tmp, sizeof(tmp), false, (is_plain ? MUTT_FORMAT_PLAIN : 0));
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
+
+        if (is_plain)
+          src++;
       }
       else if (mutt_addr_is_user(e->env->from))
+      {
         optional = 0;
+      }
       break;
 
     case 'g':
@@ -975,7 +982,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(e->env, tmp, sizeof(tmp), true);
+        make_from(e->env, tmp, sizeof(tmp), true, flags);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }

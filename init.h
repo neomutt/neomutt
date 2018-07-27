@@ -1628,6 +1628,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %e .dd Current message number in thread
   ** .dt %E .dd Number of messages in current thread
   ** .dt %F .dd Author name, or recipient name if the message is from you
+  ** .dt %Fp .dd Like %F, but plain. No contextual formatting is applied to recipient name
   ** .dt %f .dd Sender (address + real name), either From: or Return-Path:
   ** .dt %g .dd Newsgroup name (if compiled with NNTP support)
   ** .dt %g .dd Message tags (e.g. notmuch tags/imap flags)
