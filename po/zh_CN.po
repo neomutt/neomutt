@@ -4584,9 +4584,8 @@ msgid "check mailboxes for new mail"
 msgstr "检查信箱是否有新信件"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "保存 信件/附件 到 信箱/文件"
+msgstr "计算所有信箱的信件统计数据"
 
 #: opcodes.h:48
 msgid "attach files to this message"
