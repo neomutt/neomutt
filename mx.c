@@ -1258,6 +1258,16 @@ int mx_check_empty(const char *path)
       return mh_check_empty(path);
     case MUTT_MAILDIR:
       return maildir_check_empty(path);
+#ifdef USE_IMAP
+    case MUTT_IMAP:
+    {
+      bool passive = ImapPassive;
+      ImapPassive = false;
+      int rv = imap_status(path, 0);
+      ImapPassive = passive;
+      return (rv <= 0);
+    }
+#endif
     default:
       errno = EINVAL;
       return -1;

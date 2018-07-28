@@ -1527,7 +1527,7 @@ int imap_mailbox_check(bool check_stats)
  * If queue is true, the command will be sent now and be expected to have been
  * run on the next call (for pipelining the postponed count).
  */
-int imap_status(char *path, bool queue)
+int imap_status(const char *path, bool queue)
 {
   static int queued = 0;
 
