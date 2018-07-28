@@ -27,14 +27,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
 #include "config/common.h"
-#include "config/number.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static short VarApple;
 static short VarBanana;
@@ -540,7 +536,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarStr[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarStr);

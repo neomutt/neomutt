@@ -25,7 +25,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "config/set.h"
+#include "config/lib.h"
 
 struct Buffer;
 struct Hash;

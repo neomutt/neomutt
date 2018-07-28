@@ -27,13 +27,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
-#include "config/bool.h"
+#include "mutt/mutt.h"
 #include "config/common.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static short VarApple;
 static bool VarBanana;
@@ -46,27 +42,32 @@ static struct ConfigDef Vars[] = {
 };
 // clang-format on
 
-static int dummy_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef, const char *value, struct Buffer *err)
+static int dummy_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
+                            const char *value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_string_get(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *result)
+static int dummy_string_get(const struct ConfigSet *cs, void *var,
+                            const struct ConfigDef *cdef, struct Buffer *result)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_native_set(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+static int dummy_native_set(const struct ConfigSet *cs, void *var,
+                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err)
+static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var,
+                                 const struct ConfigDef *cdef, struct Buffer *err)
 {
   return INT_MIN;
 }
 
-static int dummy_reset(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, struct Buffer *err)
+static int dummy_reset(const struct ConfigSet *cs, void *var,
+                       const struct ConfigDef *cdef, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }

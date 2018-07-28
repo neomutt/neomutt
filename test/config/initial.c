@@ -25,13 +25,9 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/common.h"
-#include "config/set.h"
-#include "config/string3.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static char *VarApple;
 static char *VarBanana;

@@ -26,14 +26,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
 #include "config/common.h"
-#include "config/mbtable.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static struct MbTable *VarApple;
 static struct MbTable *VarBanana;
@@ -563,7 +559,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarMb[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarMb);
@@ -608,10 +605,10 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   }
   dump_native(cs, parent, child);
 
+  log_line(__func__);
   result = true;
 ti_out:
   ac_free(cs, &ac);
-  log_line(__func__);
   return result;
 }
 

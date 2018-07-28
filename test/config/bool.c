@@ -27,15 +27,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
-#include "config/bool.h"
 #include "config/common.h"
-#include "config/quad.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static bool VarApple;
 static bool VarBanana;
@@ -172,7 +167,10 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     "no", "yes", "n", "y", "false", "true", "0", "1", "off", "on",
   };
   const char *invalid[] = {
-    "nope", "ye", "", NULL,
+    "nope",
+    "ye",
+    "",
+    NULL,
   };
   char *name = "Damson";
 
@@ -524,7 +522,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarStr[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarStr);

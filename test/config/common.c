@@ -28,13 +28,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/buffer.h"
-#include "mutt/hash.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
-#include "config/inheritance.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "mutt/mutt.h"
+#include "config/lib.h"
 #include "common.h"
 
 const char *line = "----------------------------------------"
@@ -42,7 +37,8 @@ const char *line = "----------------------------------------"
 
 bool dont_fail = false;
 
-int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
+int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                   intptr_t value, struct Buffer *result)
 {
   if (dont_fail)
     return CSR_SUCCESS;
@@ -54,7 +50,8 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef, int
   return CSR_ERR_INVALID;
 }
 
-int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
+int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                   intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -63,7 +60,8 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef, int
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
-int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
+int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                      intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     mutt_buffer_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -83,7 +81,8 @@ void short_line(void)
   TEST_MSG("%s\n", line + 40);
 }
 
-bool log_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev)
+bool log_listener(const struct ConfigSet *cs, struct HashElem *he,
+                  const char *name, enum ConfigEvent ev)
 {
   struct Buffer result;
   mutt_buffer_init(&result);
@@ -186,4 +185,3 @@ void cs_dump_set(const struct ConfigSet *cs)
 
   FREE(&result.data);
 }
-

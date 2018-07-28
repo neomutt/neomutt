@@ -27,15 +27,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
-#include "config/bool.h"
 #include "config/common.h"
-#include "config/quad.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static char VarApple;
 static char VarBanana;
@@ -170,7 +165,10 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
 
   const char *valid[] = { "no", "yes", "ask-no", "ask-yes" };
   const char *invalid[] = {
-    "nope", "ye", "", NULL,
+    "nope",
+    "ye",
+    "",
+    NULL,
   };
   char *name = "Damson";
 
@@ -531,7 +529,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarStr[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarStr);
@@ -601,7 +600,10 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
   };
 
   struct ToggleTest tests[] = {
-    { MUTT_NO, MUTT_YES }, { MUTT_YES, MUTT_NO }, { MUTT_ASKNO, MUTT_ASKYES }, { MUTT_ASKYES, MUTT_ASKNO },
+    { MUTT_NO, MUTT_YES },
+    { MUTT_YES, MUTT_NO },
+    { MUTT_ASKNO, MUTT_ASKYES },
+    { MUTT_ASKYES, MUTT_ASKNO },
   };
 
   char *name = "Nectarine";

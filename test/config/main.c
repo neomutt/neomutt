@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/logging.h"
+#include "mutt/mutt.h"
 #include "test/config/account2.h"
 #include "test/config/address.h"
 #include "test/config/bool.h"

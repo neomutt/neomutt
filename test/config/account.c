@@ -25,17 +25,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/hash.h"
-#include "mutt/logging.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
 #include "config/common.h"
-#include "config/inheritance.h"
-#include "config/number.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static short VarApple;
 static short VarBanana;
@@ -57,7 +50,8 @@ static struct ConfigDef Vars[] = {
  * @param var_names List of config items (NULL terminated)
  * @retval ptr New Account object
  */
-struct Account *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[])
+struct Account *ac_create(const struct ConfigSet *cs, const char *name,
+                          const char *var_names[])
 {
   if (!cs || !name || !var_names)
     return NULL; /* LCOV_EXCL_LINE */
@@ -201,7 +195,8 @@ void config_account(void)
 
   const char *account = "damaged";
   const char *BrokenVarStr[] = {
-    "Pineapple", NULL,
+    "Pineapple",
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, BrokenVarStr);
@@ -217,7 +212,9 @@ void config_account(void)
   }
 
   const char *AccountVarStr2[] = {
-    "Apple", "Apple", NULL,
+    "Apple",
+    "Apple",
+    NULL,
   };
 
   TEST_MSG("Expect error for next test\n");
@@ -231,7 +228,9 @@ void config_account(void)
 
   account = "fruit";
   const char *AccountVarStr[] = {
-    "Apple", "Cherry", NULL,
+    "Apple",
+    "Cherry",
+    NULL,
   };
 
   ac = ac_create(cs, account, AccountVarStr);

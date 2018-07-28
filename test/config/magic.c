@@ -27,14 +27,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
 #include "config/common.h"
-#include "config/magic.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static short VarApple;
 static short VarBanana;
@@ -197,8 +193,8 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   }
   else
   {
-      TEST_MSG("This test should have failed\n");
-      return false;
+    TEST_MSG("This test should have failed\n");
+    return false;
   }
 
   for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
@@ -287,8 +283,8 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   }
   else
   {
-      TEST_MSG("This test should have failed\n");
-      return false;
+    TEST_MSG("This test should have failed\n");
+    return false;
   }
 
   int invalid[] = { 0, 5 };
@@ -512,7 +508,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarStr[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarStr);

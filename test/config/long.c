@@ -27,14 +27,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "config/account.h"
 #include "config/common.h"
-#include "config/long.h"
-#include "config/set.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 static long VarApple;
 static long VarBanana;
@@ -76,8 +72,8 @@ static struct ConfigDef Vars[] = {
 static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  TEST_MSG("Apple = %d\n", VarApple);
-  TEST_MSG("Banana = %d\n", VarBanana);
+  TEST_MSG("Apple = %ld\n", VarApple);
+  TEST_MSG("Banana = %ld\n", VarBanana);
 
   if (!TEST_CHECK(VarApple == -42))
   {
@@ -116,7 +112,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     FREE(&value.data);
     return false;
   }
-  TEST_MSG("Apple = %d\n", VarApple);
+  TEST_MSG("Apple = %ld\n", VarApple);
   TEST_MSG("Apple's initial value is '%s'\n", value.data);
 
   mutt_buffer_reset(&value);
@@ -134,7 +130,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     FREE(&value.data);
     return false;
   }
-  TEST_MSG("Banana = %d\n", VarBanana);
+  TEST_MSG("Banana = %ld\n", VarBanana);
   TEST_MSG("Banana's initial value is '%s'\n", NONULL(value.data));
 
   mutt_buffer_reset(&value);
@@ -155,7 +151,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("Cherry = %d\n", VarCherry);
+  TEST_MSG("Cherry = %ld\n", VarCherry);
   TEST_MSG("Cherry's initial value is %s\n", value.data);
 
   FREE(&value.data);
@@ -198,7 +194,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
     }
-    TEST_MSG("%s = %d, set by '%s'\n", name, VarDamson, valid[i]);
+    TEST_MSG("%s = %ld, set by '%s'\n", name, VarDamson, valid[i]);
     short_line();
   }
 
@@ -251,7 +247,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
   }
-  TEST_MSG("%s = %d, %s\n", name, VarFig, err->data);
+  TEST_MSG("%s = %ld, %s\n", name, VarFig, err->data);
 
   VarFig = -789;
   mutt_buffer_reset(err);
@@ -261,7 +257,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("Get failed: %s\n", err->data);
     return false;
   }
-  TEST_MSG("%s = %d, %s\n", name, VarFig, err->data);
+  TEST_MSG("%s = %ld, %s\n", name, VarFig, err->data);
 
   log_line(__func__);
   return true;
@@ -289,7 +285,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("%s = %d, set to '%d'\n", name, VarGuava, value);
+  TEST_MSG("%s = %ld, set to '%ld'\n", name, VarGuava, value);
 
   short_line();
   TEST_MSG("Setting %s to %d\n", name, value);
@@ -364,7 +360,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("Reset: %s = %d\n", name, VarJackfruit);
+  TEST_MSG("Reset: %s = %ld\n", name, VarJackfruit);
 
   short_line();
   name = "Kumquat";
@@ -375,7 +371,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "99", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
-  TEST_MSG("Set: %s = %d\n", name, VarKumquat);
+  TEST_MSG("Set: %s = %ld\n", name, VarKumquat);
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
@@ -395,7 +391,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("Reset: %s = %d\n", name, VarKumquat);
+  TEST_MSG("Reset: %s = %ld\n", name, VarKumquat);
 
   log_line(__func__);
   return true;
@@ -418,7 +414,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("String: %s = %d\n", name, VarLemon);
+  TEST_MSG("String: %s = %ld\n", name, VarLemon);
   short_line();
 
   VarLemon = 456;
@@ -433,7 +429,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("Native: %s = %d\n", name, VarLemon);
+  TEST_MSG("Native: %s = %ld\n", name, VarLemon);
   short_line();
 
   name = "Mango";
@@ -449,7 +445,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("String: %s = %d\n", name, VarMango);
+  TEST_MSG("String: %s = %ld\n", name, VarMango);
   short_line();
 
   VarMango = 456;
@@ -464,7 +460,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("Native: %s = %d\n", name, VarMango);
+  TEST_MSG("Native: %s = %ld\n", name, VarMango);
   short_line();
 
   name = "Nectarine";
@@ -480,7 +476,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("String: %s = %d\n", name, VarNectarine);
+  TEST_MSG("String: %s = %ld\n", name, VarNectarine);
   short_line();
 
   VarNectarine = 456;
@@ -495,7 +491,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
     TEST_MSG("%s\n", err->data);
     return false;
   }
-  TEST_MSG("Native: %s = %d\n", name, VarNectarine);
+  TEST_MSG("Native: %s = %ld\n", name, VarNectarine);
 
   log_line(__func__);
   return true;
@@ -521,7 +517,8 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
   const char *AccountVarStr[] = {
-    parent, NULL,
+    parent,
+    NULL,
   };
 
   struct Account *ac = ac_create(cs, account, AccountVarStr);
