@@ -2369,6 +2369,15 @@ struct ConfigDef MuttVars[] = {
   ** This is a format string, see the $$pgp_decode_command command for
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
+  ** .pp
+  ** Note: When decrypting messages using \fCgpg\fP, a pinentry program needs to
+  ** be invoked unless the password is cached within \fCgpg-agent\fP.
+  ** Currently, the \fCpinentry-tty\fP program (usually distributed with
+  ** \fCgpg\fP) isn't suitable for being invoked by NeoMutt.  You are encouraged
+  ** to use a different pinentry-program when running NeoMutt in order to avoid
+  ** problems.
+  ** .pp
+  ** See also: https://github.com/neomutt/neomutt/issues/1014
   */
   { "pgp_decryption_okay",      DT_REGEX,  R_NONE, &PgpDecryptionOkay, 0 },
   /*
