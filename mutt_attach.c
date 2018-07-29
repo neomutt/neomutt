@@ -633,13 +633,16 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
 return_error:
 
-  //lolpatch for program that return promptly
-  sleep(1);
-
   if (entry)
     rfc1524_free_entry(&entry);
   if (fp && tempfile[0])
   {
+    /* Give programs which return directly (i.e. chrome or firefox if they open
+     * the attachment in a new tab) a chance to read the soon-to-be unlinked
+     * file. 0.25 seconds seems to be a good time to wait...
+     */
+    usleep(250000);
+
     /* Restore write permission so mutt_file_unlink can open the file for writing */
     mutt_file_chmod_add(tempfile, S_IWUSR);
     mutt_file_unlink(tempfile);
