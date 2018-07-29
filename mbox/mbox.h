@@ -21,7 +21,7 @@
  */
 
 /**
- * @page mbox Mbox local mailbox type
+ * @page mbox MBOX: Local mailbox type
  *
  * Mbox local mailbox type
  *

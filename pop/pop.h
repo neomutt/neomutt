@@ -27,7 +27,7 @@
 #include "mx.h"
 
 /**
- * @page pop POP network mailbox
+ * @page pop POP: Network mailbox
  *
  * POP network mailbox
  *

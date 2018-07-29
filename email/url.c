@@ -35,7 +35,7 @@
 #include "mime.h"
 
 /**
- * UrlMap - Constants for URL protocols, e.g. 'imap://'
+ * UrlMap - Constants for URL protocols
  */
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },   { "imap", U_IMAP },     { "imaps", U_IMAPS },

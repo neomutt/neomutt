@@ -21,27 +21,30 @@
  */
 
 /**
- * @page email Structs that make up an email
+ * @page email EMAIL: Structs that make up an email
  *
  * Structs that make up an email
  *
- * | File              | Description              |
- * | :---------------- | :----------------------- |
- * | email/address.c   | @subpage email_address   |
- * | email/attach.c    | @subpage email_attach    |
- * | email/body.c      | @subpage email_body      |
- * | email/envelope.c  | @subpage email_envelope  |
- * | email/from.c      | @subpage email_from      |
- * | email/header.c    | @subpage email_header    |
- * | email/idna.c      | @subpage email_idna      |
- * | email/parameter.c | @subpage email_parameter |
- * | email/mime.c      | @subpage email_mime      |
- * | email/parse.c     | @subpage email_parse     |
- * | email/rfc2047.c   | @subpage email_rfc2047   |
- * | email/rfc2231.c   | @subpage email_rfc2231   |
- * | email/tags.c      | @subpage email_tags      |
- * | email/thread.c    | @subpage email_thread    |
- * | email/url.c       | @subpage email_url       |
+ * | File                   | Description              |
+ * | :--------------------- | :----------------------- |
+ * | email/address.c        | @subpage email_address   |
+ * | email/attach.c         | @subpage email_attach    |
+ * | email/body.c           | @subpage email_body      |
+ * | email/email_globals.c  | @subpage email_globals   |
+ * | email/envelope.c       | @subpage email_envelope  |
+ * | email/from.c           | @subpage email_from      |
+ * | email/header.c         | @subpage email_header    |
+ * | email/idna.c           | @subpage email_idna      |
+ * | email/mime.c           | @subpage email_mime      |
+ * | email/parameter.c      | @subpage email_parameter |
+ * | email/parse.c          | @subpage email_parse     |
+ * | email/rfc2047.c        | @subpage email_rfc2047   |
+ * | email/rfc2231.c        | @subpage email_rfc2231   |
+ * | email/tags.c           | @subpage email_tags      |
+ * | email/thread.c         | @subpage email_thread    |
+ * | email/url.c            | @subpage email_url       |
+ *
+ * @image html libemail.svg
  */
 
 #ifndef _EMAIL_EMAIL_H
