@@ -633,6 +633,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
 return_error:
 
+  //lolpatch for program that return promptly
+  sleep(1);
+
   if (entry)
     rfc1524_free_entry(&entry);
   if (fp && tempfile[0])
