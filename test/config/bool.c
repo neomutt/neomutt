@@ -289,7 +289,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   mutt_buffer_reset(err);
   TEST_MSG("Setting %s to %d\n", name, value);
   rc = cs_str_native_set(cs, name, value, err);
-  if (!TEST_CHECK(rc & CSR_SUC_NO_CHANGE) != 0)
+  if (!TEST_CHECK((rc & CSR_SUC_NO_CHANGE) != 0))
   {
     TEST_MSG("%s\n", err->data);
     return false;

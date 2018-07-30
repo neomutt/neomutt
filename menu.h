@@ -35,7 +35,6 @@ extern bool  MenuScroll;  /**< scroll menu instead of implicit next-page */
 
 struct ConfigSet;
 struct HashElem;
-enum ConfigEvent;
 
 #define REDRAW_INDEX          (1 << 0)
 #define REDRAW_MOTION         (1 << 1)
