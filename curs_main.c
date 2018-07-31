@@ -89,9 +89,9 @@
 
 /* These Config Variables are only used in curs_main.c */
 bool ChangeFolderNext;
-bool CollapseAll;
-bool CollapseFlagged;
-bool CollapseUnread;
+bool CollapseAll; ///< Config: Collapse all threads when entering a folder
+bool CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
+bool CollapseUnread; ///< Config: Prevent the collapse of threads with unread emails
 char *MarkMacroPrefix;
 bool PgpAutoDecode;
 bool UncollapseJump;

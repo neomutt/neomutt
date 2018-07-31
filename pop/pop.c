@@ -66,8 +66,8 @@ struct BodyCache;
 
 /* These Config Variables are only used in pop/pop.c */
 short PopCheckinterval;
-unsigned char PopDelete;
-char *PopHost;
+unsigned char PopDelete; ///< Config: (pop) After downloading POP messages, delete them on the server
+char *PopHost; ///< Config: (pop) Url of the POP server
 bool PopLast;
 
 #ifdef USE_HCACHE

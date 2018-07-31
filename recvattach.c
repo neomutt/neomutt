@@ -67,7 +67,7 @@
 char *AttachSep;
 bool AttachSplit;
 bool DigestCollapse;
-char *MessageFormat;
+char *MessageFormat; ///< Config: printf-like format string for listing attached messages
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 

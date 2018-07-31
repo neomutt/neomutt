@@ -44,7 +44,7 @@
 
 /* These Config Variables are only used in query.c */
 char *QueryCommand;
-char *QueryFormat;
+char *QueryFormat; ///< Config: printf-like format string for the query menu (address book)
 
 /**
  * struct Query - An entry from an external address-book

@@ -61,8 +61,8 @@
 #endif
 
 /* These Config Variables are only used in nntp/newsrc.c */
-char *NewsCacheDir;
-char *Newsrc;
+char *NewsCacheDir; ///< Config: (nntp) Directory for cached news articles
+char *Newsrc; ///< Config: (nntp) File containing list of subscribed newsgroups
 
 struct BodyCache;
 

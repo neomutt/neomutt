@@ -43,7 +43,7 @@ bool HideMissing;
 bool HideThreadSubject;
 bool HideTopLimited;
 bool HideTopMissing;
-bool NarrowTree;
+bool NarrowTree; ///< Config: Draw a narrower thread tree in the index
 bool SortRe;
 bool StrictThreads;
 bool ThreadReceived;

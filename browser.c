@@ -70,12 +70,12 @@
 
 /* These Config Variables are only used in browser.c */
 bool BrowserAbbreviateMailboxes;
-char *FolderFormat;
-char *GroupIndexFormat;
-char *NewsgroupsCharset;
+char *FolderFormat; ///< Config: printf-like format string for the browser's display of folders
+char *GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
+char *NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
 bool ShowOnlyUnread;
 short SortBrowser;
-char *VfolderFormat;
+char *VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
 
 static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },

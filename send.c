@@ -76,8 +76,8 @@ unsigned char AbortNoattach; /* forgotten attachment detector */
 struct Regex *AbortNoattachRegex;
 unsigned char AbortNosubject;
 unsigned char AbortUnmodified;
-bool AskFollowUp;
-bool AskXCommentTo;
+bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
+bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
 char *ContentType;
 bool CryptAutoencrypt;
 bool CryptAutopgp;
@@ -86,20 +86,20 @@ bool CryptAutosmime;
 bool CryptReplyencrypt;
 bool CryptReplysign;
 bool CryptReplysignencrypted;
-char *EmptySubject;
-bool FastReply;
-unsigned char FccAttach;
-bool FccClear;
+char *EmptySubject; ///< Config: Subject to use when replying to an email with none
+bool FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
+unsigned char FccAttach; ///< Config: Save send message with all their attachments
+bool FccClear; ///< Config: Save sent messages unencrypted and unsigned
 bool FollowupTo;
 char *ForwardAttributionIntro;
 char *ForwardAttributionTrailer;
 unsigned char ForwardEdit;
-char *ForwardFormat;
+char *ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
 bool ForwardReferences;
 bool Hdrs;
 unsigned char HonorFollowupTo;
 bool IgnoreListReplyTo;
-unsigned char Include;
+unsigned char Include; ///< Config: Include a copy of the email that's being replied to
 bool Metoo;
 bool NmRecord;
 bool PgpReplyinline;

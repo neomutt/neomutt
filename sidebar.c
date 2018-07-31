@@ -58,7 +58,7 @@ short SidebarComponentDepth;
 char *SidebarDelimChars;
 char *SidebarDividerChar;
 bool SidebarFolderIndent;
-char *SidebarFormat;
+char *SidebarFormat; ///< Config: (sidebar) printf-like format string for the sidebar panel
 char *SidebarIndentString;
 bool SidebarNewMailOnly;
 bool SidebarNextNewWrap;

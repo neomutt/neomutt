@@ -85,8 +85,8 @@
 
 /* These Config Variables are only used in mx.c */
 unsigned char CatchupNewsgroup;
-bool KeepFlagged;
-unsigned char Move;
+bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
+unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;
 
 /**

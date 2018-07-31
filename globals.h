@@ -101,24 +101,24 @@ WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases));
 WHERE struct Address *EnvelopeFromAddress;
 WHERE struct Address *From;
 
-WHERE char *AliasFile;
+WHERE char *AliasFile; ///< Config: Save new aliases to this file
 WHERE char *Attribution;
 WHERE char *AttributionLocale;
-WHERE char *AttachFormat;
-WHERE char *ConfigCharset;
-WHERE char *DateFormat;
+WHERE char *AttachFormat; ///< Config: printf-like format string for the attachment menu
+WHERE char *ConfigCharset; ///< Config: Character set that the config files are in
+WHERE char *DateFormat; ///< Config: strftime format string for the `%d` expando
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
-WHERE char *Editor;
-WHERE char *Hostname;
-WHERE char *IndexFormat;
+WHERE char *Editor; ///< Config: External command to use as an email editor
+WHERE char *Hostname; ///< Config: Fully-qualified domain name of this machine
+WHERE char *IndexFormat; ///< Config: printf-like format string for the index menu (emails)
 
 #ifdef USE_IMAP
-WHERE char *ImapUser;
+WHERE char *ImapUser; ///< Config: (imap) Username for the IMAP server
 #endif
-WHERE char *Mbox;
+WHERE char *Mbox; ///< Config: Folder that receives read emails (see Move)
 WHERE char *MailcapPath;
-WHERE char *Folder;
+WHERE char *Folder; ///< Config: Base folder for a set of mailboxes
 #ifdef USE_HCACHE
 WHERE char *HeaderCache;
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
@@ -127,19 +127,19 @@ WHERE char *HeaderCachePagesize;
 #endif /* USE_HCACHE */
 
 #ifdef USE_SOCKET
-WHERE short NetInc;
+WHERE short NetInc; ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
 #endif /* USE_SOCKET */
 
 #ifdef USE_NNTP
-WHERE char *NewsServer;
+WHERE char *NewsServer; ///< Config: (nntp) Url of the news server
 #endif
 WHERE char *Record;
 WHERE char *Pager;
-WHERE char *PagerFormat;
+WHERE char *PagerFormat; ///< Config: printf-like format string for the pager's status bar
 WHERE char *Postponed;
-WHERE char *IndentString;
+WHERE char *IndentString; ///< Config: String used to indent 'reply' text
 WHERE char *PrintCommand;
-WHERE char *NewMailCommand;
+WHERE char *NewMailCommand; ///< Config: External command to run when new mail arrives
 WHERE char *Realname;
 WHERE char *Shell;
 WHERE char *SimpleSearch;
@@ -147,16 +147,16 @@ WHERE char *SimpleSearch;
 WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
-WHERE char *StatusFormat;
-WHERE char *TsStatusFormat;
-WHERE char *TsIconFormat;
-WHERE char *Visual;
+WHERE char *StatusFormat; ///< Config: printf-like format string for the index's status line
+WHERE char *TsStatusFormat; ///< Config: printf-like format string for the terminal's status (window title)
+WHERE char *TsIconFormat; ///< Config: printf-like format string for the terminal's icon title
+WHERE char *Visual; ///< Config: Editor to use when '~v' is given in the built-in editor
 
-WHERE short ReadInc;
+WHERE short ReadInc; ///< Config: Update the progress bar after this many records read (0 to disable)
 WHERE short SleepTime;
 WHERE short Timeout;
 WHERE short Wrap;
-WHERE short WriteInc;
+WHERE short WriteInc; ///< Config: Update the progress bar after this many records written (0 to disable)
 
 #ifdef USE_SIDEBAR
 WHERE short SidebarWidth;
@@ -169,7 +169,7 @@ WHERE short ImapPollTimeout;
 /* -- formerly in pgp.h -- */
 WHERE char *PgpDefaultKey;
 WHERE char *PgpSignAs;
-WHERE char *PgpEntryFormat;
+WHERE char *PgpEntryFormat; ///< Config: printf-like format string for the PGP key selection menu
 
 /* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
@@ -187,11 +187,11 @@ WHERE struct Regex *QuoteRegex;
 
 /* Quad-options */
 WHERE unsigned char Bounce;
-WHERE unsigned char Copy;
+WHERE unsigned char Copy; ///< Config: Save outgoing emails to $record
 WHERE unsigned char Delete;
 WHERE unsigned char MimeForward;
 WHERE unsigned char Print;
-WHERE unsigned char Quit;
+WHERE unsigned char Quit; ///< Config: Prompt before exiting NeoMutt
 #ifdef USE_SSL
 WHERE unsigned char SslStarttls;
 #endif
@@ -200,21 +200,21 @@ WHERE unsigned char PostModerated;
 WHERE unsigned char FollowupToPoster;
 #endif
 
-WHERE bool ArrowCursor;
-WHERE bool AsciiChars;
-WHERE bool Askbcc;
-WHERE bool Askcc;
+WHERE bool ArrowCursor; ///< Config: Use an arrow '->' instead of highlighting in the index
+WHERE bool AsciiChars; ///< Config: Use plain ASCII characters, when drawing email threads
+WHERE bool Askbcc; ///< Config: Ask the user for the blind-carbon-copy recipients
+WHERE bool Askcc; ///< Config: Ask the user for the carbon-copy recipients
 WHERE bool Autoedit;
 WHERE bool AutoTag;
-WHERE bool Beep;
-WHERE bool BeepNew;
+WHERE bool Beep; ///< Config: Make a noise when an error occurs
+WHERE bool BeepNew; ///< Config: Make a noise when new mail arrives
 WHERE bool BrailleFriendly;
-WHERE bool CheckMboxSize;
-WHERE bool Confirmappend;
-WHERE bool Confirmcreate;
+WHERE bool CheckMboxSize; ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
+WHERE bool Confirmappend; ///< Config: Confirm before appending emails to a mailbox
+WHERE bool Confirmcreate; ///< Config: Confirm before creating a new mailbox
 WHERE bool DeleteUntag;
-WHERE bool EditHeaders;
-WHERE bool FlagSafe;
+WHERE bool EditHeaders; ///< Config: Let the user edit the email headers whilst editing an email
+WHERE bool FlagSafe; ///< Config: Protect flagged messages from deletion
 WHERE bool ForwardDecode;
 WHERE bool ForwardQuote;
 #ifdef USE_HCACHE
@@ -223,9 +223,9 @@ WHERE bool HeaderCacheCompress;
 #endif /* HAVE_QDBM */
 #endif
 WHERE bool Header;
-WHERE bool Help;
+WHERE bool Help; ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
-WHERE bool ImapCheckSubscribed;
+WHERE bool ImapCheckSubscribed; ///< Config: (imap) Ask the IMAP server for a list of subscribed folders
 WHERE bool ImapListSubscribed;
 WHERE bool ImapPassive;
 WHERE bool ImapPeek;
@@ -250,7 +250,7 @@ WHERE bool ReadOnly;
 WHERE bool Resolve;
 WHERE bool ResumeDraftFiles;
 WHERE bool SaveAddress;
-WHERE bool SaveEmpty;
+WHERE bool SaveEmpty; ///< Config: (mbox,mmdf) Preserve empty mailboxes
 WHERE bool Score;
 #ifdef USE_SIDEBAR
 WHERE bool SidebarVisible;

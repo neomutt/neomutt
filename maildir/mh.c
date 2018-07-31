@@ -67,7 +67,7 @@
 #endif
 
 /* These Config Variables are only used in maildir/mh.c */
-bool CheckNew;
+bool CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
 bool MaildirHeaderCacheVerify;
 bool MhPurge;
 char *MhSeqFlagged;

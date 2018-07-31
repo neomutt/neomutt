@@ -83,10 +83,10 @@
 #include "string2.h"
 
 /* These Config Variables are only used in history.c */
-short History;          /**< Number of history entries stored in memory */
-char *HistoryFile;      /**< File in which to store all the histories */
-bool HistoryRemoveDups; /**< Remove duplicate history entries */
-short SaveHistory; /**< Number of history entries, per category, stored on disk */
+short History; ///< Config: Number of history entries to keep in memory per category
+char *HistoryFile;      ///< Config: File to save history in
+bool HistoryRemoveDups; ///< Config: Remove duplicate entries from the history
+short SaveHistory; ///< Config: Number of history entries to save per category
 
 #define HC_FIRST HC_CMD
 

@@ -79,7 +79,7 @@
 /* These Config Variables are only used in pager.c */
 bool AllowAnsi;
 bool HeaderColorPartial;
-short PagerContext;
+short PagerContext; ///< Config: Number of lines of overlap when changing pages in the pager
 short PagerIndexLines;
 bool PagerStop;
 short SearchContext;

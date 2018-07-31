@@ -55,7 +55,7 @@
 #endif
 
 /* These Config Variables are only used in buffy.c */
-short MailCheck;
+short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
 bool MailCheckStats;
 short MailCheckStatsInterval;
 bool MaildirCheckCur;

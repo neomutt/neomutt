@@ -32,7 +32,7 @@
 /**
  * struct Header - The header/envelope of an email
  */
-struct Header
+struct Header ///< Config: Include the message headers in the reply email (Weed applies)
 {
   unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.
                                  see: mutt_crypt.h pgplib.h, smime.h */

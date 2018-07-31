@@ -67,7 +67,7 @@
 
 /* These Config Variables are only used in nntp/nntp.c */
 char *NntpAuthenticators;
-short NntpContext;
+short NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
 bool NntpListgroup;
 bool NntpLoadDescription;
 short NntpPoll;

@@ -48,8 +48,8 @@
 #include "sort.h"
 
 /* These Config Variables are only used in hdrline.c */
-struct MbTable *FlagChars;
-struct MbTable *FromChars;
+struct MbTable *FlagChars; ///< Config: User-configurable index flags, e.g. tagged, new, etc
+struct MbTable *FromChars; ///< Config: User-configurable index flags, e.g. to address, cc address, etc
 struct MbTable *ToChars;
 
 /**

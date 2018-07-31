@@ -73,7 +73,7 @@ bool BounceDelivered;
 bool EncodeFrom;
 bool ForwardDecrypt;
 bool HiddenHost;
-char *Inews;
+char *Inews; ///< Config: (nntp) External command to post news articles
 bool MimeForwardDecode;
 bool MimeSubject; /**< encode subject line with RFC2047 */
 char *MimeTypeQueryCommand;
@@ -82,7 +82,7 @@ char *Sendmail;
 short SendmailWait;
 bool Use8bitmime;
 bool UseEnvelopeFrom;
-bool UserAgent;
+bool UserAgent; ///< Config: Add a 'User-Agent' head to outgoing mail
 short WrapHeaders;
 
 /**

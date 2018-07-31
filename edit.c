@@ -44,7 +44,7 @@
 #include "protos.h"
 
 /* These Config Variables are only used in edit.c */
-char *Escape;
+char *Escape; ///< Config: Escape character to use for functions in the built-in editor.
 
 /* SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)

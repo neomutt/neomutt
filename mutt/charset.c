@@ -48,8 +48,8 @@
 #define EILSEQ EINVAL
 #endif
 
-char *AssumedCharset; /**< Config: Encoding schemes for messages without indication */
-char *Charset;        /**< Config: User's choice of character set */
+char *AssumedCharset; ///< Config: Encoding schemes for messages without indication
+char *Charset; ///< Config: Default character set for displaying text on screen
 
 /**
  * ReplacementChar - When a Unicode character can't be displayed, use this instead

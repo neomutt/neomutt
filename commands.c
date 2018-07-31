@@ -71,10 +71,10 @@
 
 /* These Config Variables are only used in commands.c */
 unsigned char CryptVerifySig; /* verify PGP signatures */
-char *DisplayFilter;
-bool PipeDecode;
-char *PipeSep;
-bool PipeSplit;
+char *DisplayFilter; ///< Config: External command to pre-process an email before display
+bool PipeDecode; ///< Config: Decode the message when piping it
+char *PipeSep;   ///< Config: Separator to add between multiple piped messages
+bool PipeSplit;  ///< Config: Run the pipe command on each message separately
 bool PrintDecode;
 bool PrintSplit;
 bool PromptAfter;

@@ -34,7 +34,7 @@
 #include "auth.h"
 
 /* These Config Variables are only used in imap/auth.c */
-char *ImapAuthenticators;
+char *ImapAuthenticators; ///< Config: (imap) List of allowed IMAP authentication methods
 
 /**
  * imap_authenticators - Accepted authentication methods

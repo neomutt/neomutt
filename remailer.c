@@ -45,7 +45,7 @@
 #include "sendlib.h"
 
 /* These Config Variables are only used in remailer.c */
-char *MixEntryFormat;
+char *MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
 char *Mixmaster;
 
 #define MIX_CAP_COMPRESS (1 << 0)

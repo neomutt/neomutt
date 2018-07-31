@@ -60,7 +60,7 @@
 #endif
 
 /* These Config Variables are only used in muttlib.c */
-struct Regex *GecosMask;
+struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
 
 static const char *xdg_env_vars[] = {
   [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",

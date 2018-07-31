@@ -38,12 +38,12 @@
 #include "options.h"
 
 /* These Config Variables are only used in mutt_account.c */
-char *ImapLogin;
-char *ImapPass;
-char *NntpPass;
-char *NntpUser;
-char *PopPass;
-char *PopUser;
+char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
+char *ImapPass; ///< Config: (imap) Password for the IMAP server
+char *NntpPass; ///< Config: (nntp) Password for the news server
+char *NntpUser; ///< Config: (nntp) Username for the news server
+char *PopPass;  ///< Config: (pop) Password of the POP server
+char *PopUser;  ///< Config: (pop) Username of the POP server
 char *SmtpPass;
 
 /**

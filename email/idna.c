@@ -49,8 +49,8 @@
 
 /* These Config Variables are only used in mutt/idna.c */
 #ifdef HAVE_LIBIDN
-bool IdnDecode;
-bool IdnEncode;
+bool IdnDecode; ///< Config: (idn) Decode internation domain names
+bool IdnEncode; ///< Config: (idn) Encode international domain names
 #endif
 
 #ifdef HAVE_LIBIDN

@@ -46,7 +46,7 @@
 #include "sort.h"
 
 /* These Config Variables are only used in addrbook.c */
-char *AliasFormat;
+char *AliasFormat; ///< Config: printf-like format string for the alias menu
 short SortAlias;
 
 #define RSORT(x) ((SortAlias & SORT_REVERSE) ? -x : x)

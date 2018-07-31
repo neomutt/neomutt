@@ -61,7 +61,7 @@
 #endif
 
 /* These Config Variables are only used in imap/util.c */
-char *ImapDelimChars;
+char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
 short ImapPipelineDepth;
 
 /**
