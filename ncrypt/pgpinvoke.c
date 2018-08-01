@@ -50,19 +50,19 @@
 #include "protos.h"
 
 /* These Config Variables are only used in ncrypt/pgpinvoke.c */
-char *PgpClearsignCommand;
-char *PgpDecodeCommand;
-char *PgpDecryptCommand;
-char *PgpEncryptOnlyCommand;
-char *PgpEncryptSignCommand;
-char *PgpExportCommand;
-char *PgpGetkeysCommand;
-char *PgpImportCommand;
-char *PgpListPubringCommand;
-char *PgpListSecringCommand;
-char *PgpSignCommand;
-char *PgpVerifyCommand;
-char *PgpVerifyKeyCommand;
+char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a messsage
+char *PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
+char *PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
+char *PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message
+char *PgpEncryptSignCommand; ///< Config: (pgp) External command to encrypt and sign a message
+char *PgpExportCommand; ///< Config: (pgp) External command to export a public key from the user's keyring
+char *PgpGetkeysCommand; ///< Config: (pgp) External command to download a key for an email address
+char *PgpImportCommand; ///< Config: (pgp) External command to import a key into the user's keyring
+char *PgpListPubringCommand; ///< Config: (pgp) External command to list the public keys in a user's keyring
+char *PgpListSecringCommand; ///< Config: (pgp) External command to list the private keys in a user's keyring
+char *PgpSignCommand; ///< Config: (pgp) External command to create a detached PGP signature
+char *PgpVerifyCommand; ///< Config: (pgp) External command to verify PGP signatures
+char *PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key information
 
 /**
  * struct PgpCommandContext - Data for a PGP command

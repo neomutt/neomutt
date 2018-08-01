@@ -75,8 +75,8 @@ bool ForwardDecrypt;
 bool HiddenHost;
 char *Inews; ///< Config: (nntp) External command to post news articles
 bool MimeForwardDecode;
-bool MimeSubject; /**< encode subject line with RFC2047 */
-char *MimeTypeQueryCommand;
+bool MimeSubject; ///< encode subject line with RFC2047
+char *MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
 bool MimeTypeQueryFirst;
 char *Sendmail;
 short SendmailWait;

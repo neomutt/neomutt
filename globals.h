@@ -138,7 +138,7 @@ WHERE char *Pager;
 WHERE char *PagerFormat; ///< Config: printf-like format string for the pager's status bar
 WHERE char *Postponed;
 WHERE char *IndentString; ///< Config: String used to indent 'reply' text
-WHERE char *PrintCommand;
+WHERE char *PrintCommand; ///< Config: External command to print a message
 WHERE char *NewMailCommand; ///< Config: External command to run when new mail arrives
 WHERE char *Realname;
 WHERE char *Shell;
@@ -222,7 +222,7 @@ WHERE bool ForwardQuote;
 WHERE bool HeaderCacheCompress;
 #endif /* HAVE_QDBM */
 #endif
-WHERE bool Header;
+WHERE bool Header; ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool Help; ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
 WHERE bool ImapCheckSubscribed; ///< Config: (imap) Ask the IMAP server for a list of subscribed folders

@@ -43,7 +43,7 @@
 #include "send.h"
 
 /* These Config Variables are only used in query.c */
-char *QueryCommand;
+char *QueryCommand; ///< Config: External command to query and external address book
 char *QueryFormat; ///< Config: printf-like format string for the query menu (address book)
 
 /**

@@ -78,7 +78,7 @@ unsigned char AbortNosubject;
 unsigned char AbortUnmodified;
 bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
 bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
-char *ContentType;
+char *ContentType; ///< Config: Default "Content-Type" for newly composed messages
 bool CryptAutoencrypt;
 bool CryptAutopgp;
 bool CryptAutosign;

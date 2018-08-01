@@ -26,7 +26,7 @@
 /**
  * enum ContentType - Content-Type
  */
-enum ContentType ///< Config: Default "Content-Type" for newly composed messages
+enum ContentType
 {
   TYPE_OTHER,
   TYPE_AUDIO,
