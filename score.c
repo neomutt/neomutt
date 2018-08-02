@@ -38,9 +38,9 @@
 #include "sort.h"
 
 /* These Config Variables are only used in score.c */
-short ScoreThresholdDelete;
-short ScoreThresholdFlag;
-short ScoreThresholdRead;
+short ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted
+short ScoreThresholdFlag; ///< Config: Messages with a greater score will be automatically flagged
+short ScoreThresholdRead; ///< Config: Messages with a lower score will be automatically marked read
 
 /**
  * struct Score - Scoring rule for email

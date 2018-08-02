@@ -31,11 +31,11 @@
 #include "mutt/mutt.h"
 
 /* Config items */
-bool MarkOld = false; ///< Config: If set, mark mail old when leaving mailbox
-struct Regex *ReplyRegex = NULL; ///< Config: Regex to match reply marker "Re:"
-char *SendCharset = NULL;        ///< Config: Character sets for outgoing mail
+bool MarkOld = false; ///< Config: Mark new emails as old when leaving the mailbox
+struct Regex *ReplyRegex = NULL; ///< Config: Regex to match message reply subjects like "re: "
+char *SendCharset = NULL;   ///< Config: Character sets for outgoing mail
 char *SpamSeparator = NULL; ///< Config: Separator for multiple spam headers
-bool Weed = false; ///< Config: If set, filter the displayed email headers
+bool Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
 
 /* Global variables */
 struct RegexList *NoSpamList = NULL;

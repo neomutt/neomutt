@@ -66,7 +66,7 @@
 #endif
 
 /* These Config Variables are only used in nntp/nntp.c */
-char *NntpAuthenticators;
+char *NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods
 short NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
 bool NntpListgroup;
 bool NntpLoadDescription;

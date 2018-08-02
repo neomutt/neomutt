@@ -74,7 +74,7 @@ char *FolderFormat; ///< Config: printf-like format string for the browser's dis
 char *GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
 char *NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
 bool ShowOnlyUnread;
-short SortBrowser;
+short SortBrowser;   ///< Config: Sort method for the browser
 char *VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
 
 static const struct Mapping FolderHelp[] = {

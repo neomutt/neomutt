@@ -55,7 +55,7 @@
 #include "hcache/hcversion.h"
 
 /* These Config Variables are only used in hcache/hcache.c */
-char *HeaderCacheBackend;
+char *HeaderCacheBackend; ///< Config: (hcache) Header cache backend to use
 
 static unsigned int hcachever = 0x0;
 

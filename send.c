@@ -72,9 +72,9 @@
 #endif
 
 /* These Config Variables are only used in send.c */
-unsigned char AbortNoattach; /* forgotten attachment detector */
-struct Regex *AbortNoattachRegex;
-unsigned char AbortNosubject;
+unsigned char AbortNoattach; /* forgotten attachment detector */ ///< Config: Abort sending the email if attachments are missing
+struct Regex *AbortNoattachRegex; ///< Config: Regex to match text indicating attachments are expected
+unsigned char AbortNosubject; ///< Config: Abort creating the email if subject is missing
 unsigned char AbortUnmodified;
 bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
 bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
@@ -93,9 +93,9 @@ bool FccClear; ///< Config: Save sent messages unencrypted and unsigned
 bool FollowupTo;
 char *ForwardAttributionIntro;
 char *ForwardAttributionTrailer;
-unsigned char ForwardEdit;
+unsigned char ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
 char *ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
-bool ForwardReferences;
+bool ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
 bool Hdrs;
 unsigned char HonorFollowupTo;
 bool IgnoreListReplyTo;
@@ -104,16 +104,16 @@ bool Metoo;
 bool NmRecord;
 bool PgpReplyinline;
 char *PostIndentString;
-bool PostponeEncrypt;
-char *PostponeEncryptAs;
-unsigned char Recall;
+bool PostponeEncrypt; ///< Config: Self-encrypt postponed messages
+char *PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
+unsigned char Recall; ///< Config: Recall postponed mesaages when asked to compose a message
 bool ReplySelf;
 unsigned char ReplyTo;
 bool ReplyWithXorig;
 bool ReverseName;
 bool ReverseRealname;
 bool SigDashes;
-char *Signature;
+char *Signature; ///< Config: File containing a signature to append to all mail
 bool SigOnTop;
 bool UseFrom;
 

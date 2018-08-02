@@ -87,7 +87,7 @@
 unsigned char CatchupNewsgroup;
 bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
 unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
-char *Trash;
+char *Trash;        ///< Config: Folder to put deleted emails
 
 /**
  * mx_get_ops - Get mailbox operations

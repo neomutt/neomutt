@@ -48,7 +48,7 @@
 #define EILSEQ EINVAL
 #endif
 
-char *AssumedCharset; ///< Config: Encoding schemes for messages without indication
+char *AssumedCharset; ///< Config: If a message is missing a character set, assume this character set
 char *Charset; ///< Config: Default character set for displaying text on screen
 
 /**

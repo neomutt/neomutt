@@ -99,11 +99,11 @@ WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases));
 /* All the variables below are backing for config items */
 
 WHERE struct Address *EnvelopeFromAddress;
-WHERE struct Address *From;
+WHERE struct Address *From;  ///< Config: Default 'From' address to use, if isn't otherwise set
 
 WHERE char *AliasFile; ///< Config: Save new aliases to this file
-WHERE char *Attribution;
-WHERE char *AttributionLocale;
+WHERE char *Attribution;  ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
+WHERE char *AttributionLocale;  ///< Config: Locale for dates in the attribution message
 WHERE char *AttachFormat; ///< Config: printf-like format string for the attachment menu
 WHERE char *ConfigCharset; ///< Config: Character set that the config files are in
 WHERE char *DateFormat; ///< Config: strftime format string for the `%d` expando
@@ -117,12 +117,12 @@ WHERE char *IndexFormat; ///< Config: printf-like format string for the index me
 WHERE char *ImapUser; ///< Config: (imap) Username for the IMAP server
 #endif
 WHERE char *Mbox; ///< Config: Folder that receives read emails (see Move)
-WHERE char *MailcapPath;
+WHERE char *MailcapPath;  ///< Config: Colon-separated list of mailcap files
 WHERE char *Folder; ///< Config: Base folder for a set of mailboxes
 #ifdef USE_HCACHE
-WHERE char *HeaderCache;
+WHERE char *HeaderCache;  ///< Config: (hcache) Directory/file for the header cache database
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-WHERE char *HeaderCachePagesize;
+WHERE char *HeaderCachePagesize;  ///< Config: (hcache) Database page size (gdbm,bdb4)
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 
@@ -133,18 +133,18 @@ WHERE short NetInc; ///< Config: (socket) Update the progress bar after this man
 #ifdef USE_NNTP
 WHERE char *NewsServer; ///< Config: (nntp) Url of the news server
 #endif
-WHERE char *Record;
-WHERE char *Pager;
+WHERE char *Record;  ///< Config: Folder to save 'sent' messages
+WHERE char *Pager;  ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
 WHERE char *PagerFormat; ///< Config: printf-like format string for the pager's status bar
-WHERE char *Postponed;
+WHERE char *Postponed;  ///< Config: Folder to store postponed messages
 WHERE char *IndentString; ///< Config: String used to indent 'reply' text
 WHERE char *PrintCommand; ///< Config: External command to print a message
 WHERE char *NewMailCommand; ///< Config: External command to run when new mail arrives
-WHERE char *Realname;
-WHERE char *Shell;
-WHERE char *SimpleSearch;
+WHERE char *Realname;  ///< Config: Real name of the user
+WHERE char *Shell;  ///< Config: External command to run subshells in
+WHERE char *SimpleSearch;  ///< Config: Pattern to search for when search doesn't contain ~'s
 #ifdef USE_SMTP
-WHERE char *SmtpUrl;
+WHERE char *SmtpUrl;  ///< Config: (smtp) Url of the SMTP server
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
 WHERE char *StatusFormat; ///< Config: printf-like format string for the index's status line
@@ -153,13 +153,13 @@ WHERE char *TsIconFormat; ///< Config: printf-like format string for the termina
 WHERE char *Visual; ///< Config: Editor to use when '~v' is given in the built-in editor
 
 WHERE short ReadInc; ///< Config: Update the progress bar after this many records read (0 to disable)
-WHERE short SleepTime;
+WHERE short SleepTime;  ///< Config: Time to pause after certain info messages
 WHERE short Timeout;
 WHERE short Wrap;
 WHERE short WriteInc; ///< Config: Update the progress bar after this many records written (0 to disable)
 
 #ifdef USE_SIDEBAR
-WHERE short SidebarWidth;
+WHERE short SidebarWidth;  ///< Config: (sidebar) Width of the sidebar
 #endif
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
@@ -182,15 +182,15 @@ WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
 /* These variables are backing for config items */
-WHERE struct Regex *Mask;
-WHERE struct Regex *QuoteRegex;
+WHERE struct Regex *Mask;  ///< Config: Only display files/dirs matching this regex in the browser
+WHERE struct Regex *QuoteRegex;  ///< Config: Regex to match quoted text in a reply
 
 /* Quad-options */
 WHERE unsigned char Bounce;
 WHERE unsigned char Copy; ///< Config: Save outgoing emails to $record
-WHERE unsigned char Delete;
+WHERE unsigned char Delete;  ///< Config: Really delete messages, when the mailbox is closed
 WHERE unsigned char MimeForward;
-WHERE unsigned char Print;
+WHERE unsigned char Print;  ///< Config: Confirm before printing a message
 WHERE unsigned char Quit; ///< Config: Prompt before exiting NeoMutt
 #ifdef USE_SSL
 WHERE unsigned char SslStarttls;
@@ -208,18 +208,18 @@ WHERE bool Autoedit;
 WHERE bool AutoTag;
 WHERE bool Beep; ///< Config: Make a noise when an error occurs
 WHERE bool BeepNew; ///< Config: Make a noise when new mail arrives
-WHERE bool BrailleFriendly;
+WHERE bool BrailleFriendly;  ///< Config: Move the cursor to the beginning of the line
 WHERE bool CheckMboxSize; ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
 WHERE bool Confirmappend; ///< Config: Confirm before appending emails to a mailbox
 WHERE bool Confirmcreate; ///< Config: Confirm before creating a new mailbox
 WHERE bool DeleteUntag;
 WHERE bool EditHeaders; ///< Config: Let the user edit the email headers whilst editing an email
 WHERE bool FlagSafe; ///< Config: Protect flagged messages from deletion
-WHERE bool ForwardDecode;
-WHERE bool ForwardQuote;
+WHERE bool ForwardDecode;  ///< Config: Decode the message when forwarding it
+WHERE bool ForwardQuote;  ///< Config: Automatically quote a forwarded message using IndentString
 #ifdef USE_HCACHE
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-WHERE bool HeaderCacheCompress;
+WHERE bool HeaderCacheCompress;  ///< Config: (hcache) Enable database compression (qdbm,tokyocabinet,kyotocabinet)
 #endif /* HAVE_QDBM */
 #endif
 WHERE bool Header; ///< Config: Include the message headers in the reply email (Weed applies)
@@ -241,27 +241,27 @@ WHERE bool SslVerifyPartialChains;
 #endif /* USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
 WHERE bool MailCheckRecent;
-WHERE bool MaildirTrash;
-WHERE bool Markers;
+WHERE bool MaildirTrash;  ///< Config: Use the maildir 'trashed' flag, rather than deleting
+WHERE bool Markers;  ///< Config: Display a '+' at the beginning of wrapped lines in the pager
 #if defined(USE_IMAP) || defined(USE_POP)
-WHERE bool MessageCacheClean;
+WHERE bool MessageCacheClean;  ///< Config: (imap/pop) Clean out obsolete entries from the message cache
 #endif
-WHERE bool ReadOnly;
+WHERE bool ReadOnly;  ///< Config: Open folders in read-only mode
 WHERE bool Resolve;
 WHERE bool ResumeDraftFiles;
 WHERE bool SaveAddress;
 WHERE bool SaveEmpty; ///< Config: (mbox,mmdf) Preserve empty mailboxes
-WHERE bool Score;
+WHERE bool Score;  ///< Config: Use message scoring
 #ifdef USE_SIDEBAR
-WHERE bool SidebarVisible;
-WHERE bool SidebarOnRight;
+WHERE bool SidebarVisible;  ///< Config: (sidebar) Show the sidebar
+WHERE bool SidebarOnRight;  ///< Config: (sidebar) Display the sidebar on the right
 #endif
-WHERE bool StatusOnTop;
+WHERE bool StatusOnTop;  ///< Config: Display the status bar at the top
 WHERE bool Suspend;
 WHERE bool TextFlowed;
 WHERE bool TsEnabled;
 WHERE bool UseDomain;
-WHERE bool WaitKey;
+WHERE bool WaitKey;  ///< Config: Prompt to press a key after running external commands
 WHERE bool WrapSearch;
 WHERE bool WriteBcc; /**< write out a bcc header? */
 

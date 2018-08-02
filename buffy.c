@@ -56,9 +56,9 @@
 
 /* These Config Variables are only used in buffy.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
-bool MailCheckStats;
-short MailCheckStatsInterval;
-bool MaildirCheckCur;
+bool MailCheckStats;          ///< Config: Periodically check for new mail
+short MailCheckStatsInterval; ///< Config: How often to check for new mail
+bool MaildirCheckCur; ///< Config: Check both 'new' and 'cur' directories for new mail
 
 static time_t BuffyTime = 0; /**< last time we started checking for mail */
 static time_t BuffyStatsTime = 0; /**< last time we check performed mail_check_stats */

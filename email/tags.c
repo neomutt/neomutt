@@ -34,7 +34,7 @@
 #include "tags.h"
 
 /* These Config Variables are only used in email/tags.c */
-char *HiddenTags;
+char *HiddenTags; ///< Config: Tags that shouldn't be displayed on screen
 
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 

@@ -38,13 +38,13 @@
 
 /* These Config Variables are only used in mutt_thread.c */
 bool DuplicateThreads;
-bool HideLimited;
-bool HideMissing;
-bool HideThreadSubject;
-bool HideTopLimited;
-bool HideTopMissing;
+bool HideLimited; ///< Config: Don't indicate hidden messages, in the thread tree
+bool HideMissing; ///< Config: Don't indicate missing messages, in the thread tree
+bool HideThreadSubject; ///< Config: Hide subjects that are similar to that of the parent message
+bool HideTopLimited; ///< Config: Don't indicate hidden top message, in the thread tree
+bool HideTopMissing; ///< Config: Don't indicate missing top message, in the thread tree
 bool NarrowTree; ///< Config: Draw a narrower thread tree in the index
-bool SortRe;
+bool SortRe;     ///< Config: Sort method for the sidebar
 bool StrictThreads;
 bool ThreadReceived;
 

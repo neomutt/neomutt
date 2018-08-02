@@ -44,7 +44,7 @@ char *NntpPass; ///< Config: (nntp) Password for the news server
 char *NntpUser; ///< Config: (nntp) Username for the news server
 char *PopPass;  ///< Config: (pop) Password of the POP server
 char *PopUser;  ///< Config: (pop) Username of the POP server
-char *SmtpPass;
+char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
  * mutt_account_match - Compare account info (host/port/user)

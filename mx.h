@@ -161,6 +161,6 @@ void mx_update_tables(struct Context *ctx, bool committing);
 struct MxOps *mx_get_ops(int magic);
 
 /* This variable is backing for a config item */
-WHERE short MboxType;
+WHERE short MboxType;  ///< Config: Default type for creating new mailboxes
 
 #endif /* _MUTT_MX_H */

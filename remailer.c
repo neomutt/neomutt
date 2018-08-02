@@ -46,7 +46,7 @@
 
 /* These Config Variables are only used in remailer.c */
 char *MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
-char *Mixmaster;
+char *Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
 
 #define MIX_CAP_COMPRESS (1 << 0)
 #define MIX_CAP_MIDDLEMAN (1 << 1)

@@ -72,12 +72,12 @@
 /* These Config Variables are only used in commands.c */
 unsigned char CryptVerifySig; /* verify PGP signatures */
 char *DisplayFilter; ///< Config: External command to pre-process an email before display
-bool PipeDecode; ///< Config: Decode the message when piping it
-char *PipeSep;   ///< Config: Separator to add between multiple piped messages
-bool PipeSplit;  ///< Config: Run the pipe command on each message separately
-bool PrintDecode;
-bool PrintSplit;
-bool PromptAfter;
+bool PipeDecode;  ///< Config: Decode the message when piping it
+char *PipeSep;    ///< Config: Separator to add between multiple piped messages
+bool PipeSplit;   ///< Config: Run the pipe command on each message separately
+bool PrintDecode; ///< Config: Decode message before printing it
+bool PrintSplit;  ///< Config: Print multiple messages separately
+bool PromptAfter; ///< Config: Pause after running an external pager
 
 static const char *ExtPagerProgress = "all";
 

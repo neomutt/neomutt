@@ -55,15 +55,15 @@
 
 /* These Config Variables are only used in sidebar.c */
 short SidebarComponentDepth;
-char *SidebarDelimChars;
-char *SidebarDividerChar;
-bool SidebarFolderIndent;
+char *SidebarDelimChars; ///< Config: (sidebar) Characters that separate nested folders
+char *SidebarDividerChar; ///< Config: (sidebar) Character to draw between the sidebar and index
+bool SidebarFolderIndent; ///< Config: (sidebar) Indent nested folders
 char *SidebarFormat; ///< Config: (sidebar) printf-like format string for the sidebar panel
-char *SidebarIndentString;
-bool SidebarNewMailOnly;
+char *SidebarIndentString; ///< Config: (sidebar) Indent nested folders using this string
+bool SidebarNewMailOnly; ///< Config: (sidebar) Only show folders with new/flagged mail
 bool SidebarNextNewWrap;
-bool SidebarShortPath;
-short SidebarSortMethod;
+bool SidebarShortPath; ///< Config: (sidebar) Abbreviate the paths using the Folder variable
+short SidebarSortMethod; ///< Config: (sidebar) Method to sort the sidebar
 
 /* Previous values for some sidebar config */
 static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */

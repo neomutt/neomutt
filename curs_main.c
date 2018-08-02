@@ -94,8 +94,8 @@ bool CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged 
 bool CollapseUnread; ///< Config: Prevent the collapse of threads with unread emails
 char *MarkMacroPrefix;
 bool PgpAutoDecode;
-bool UncollapseJump;
-bool UncollapseNew;
+bool UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
+bool UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
 
 static const char *No_mailbox_is_open = N_("No mailbox is open.");
 static const char *There_are_no_messages = N_("There are no messages.");

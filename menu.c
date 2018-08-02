@@ -49,9 +49,9 @@
 #endif
 
 /* These Config Variables are only used in menu.c */
-short MenuContext;
-bool MenuMoveOff; /**< allow menu to scroll past last entry */
-bool MenuScroll;  /**< scroll menu instead of implicit next-page */
+short MenuContext; ///< Config: Number of lines of overlap when changing pages in the index
+bool MenuMoveOff; /**< allow menu to scroll past last entry */ ///< Config: Allow the last menu item to move off the bottom of the screen
+bool MenuScroll; /**< scroll menu instead of implicit next-page */ ///< Config: Scroll the menu/index by one line, rather than a page
 
 char *SearchBuffers[MENU_MAX];
 

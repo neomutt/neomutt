@@ -72,9 +72,9 @@
 #include "protos.h"
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
-int NmDbLimit;
-char *NmDefaultUri;
-char *NmExcludeTags;
+int NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
+char *NmDefaultUri;  ///< Config: (notmuch) Path to the Notmuch database
+char *NmExcludeTags; ///< Config: (notmuch) Exclude messages with these tags
 int NmOpenTimeout;
 char *NmQueryType;
 int NmQueryWindowCurrentPosition;

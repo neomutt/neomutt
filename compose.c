@@ -74,8 +74,8 @@
 
 /* These Config Variables are only used in compose.c */
 char *ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
-char *Ispell; ///< Config: External command to perform spell-checking
-unsigned char Postpone;
+char *Ispell;           ///< Config: External command to perform spell-checking
+unsigned char Postpone; ///< Config: Save messages to the Postponed folder
 
 static const char *There_are_no_attachments = N_("There are no attachments.");
 

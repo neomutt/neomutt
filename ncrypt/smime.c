@@ -66,20 +66,20 @@
 bool SmimeAskCertLabel;
 char *SmimeCaLocation;
 char *SmimeCertificates;
-char *SmimeDecryptCommand;  ///< Config: (smime) External command to decrypt an SMIME message
+char *SmimeDecryptCommand; ///< Config: (smime) External command to decrypt an SMIME message
 bool SmimeDecryptUseDefaultKey;
-char *SmimeEncryptCommand;  ///< Config: (smime) External command to encrypt a message
-char *SmimeGetCertCommand;  ///< Config: (smime) External command to extract a certificate from a message
-char *SmimeGetCertEmailCommand;  ///< Config: (smime) External command to get a certificate for an email
-char *SmimeGetSignerCertCommand;  ///< Config: (smime) External command to extract a certificate from an email
-char *SmimeImportCertCommand;  ///< Config: (smime) External command to import a certificate
+char *SmimeEncryptCommand; ///< Config: (smime) External command to encrypt a message
+char *SmimeGetCertCommand; ///< Config: (smime) External command to extract a certificate from a message
+char *SmimeGetCertEmailCommand; ///< Config: (smime) External command to get a certificate for an email
+char *SmimeGetSignerCertCommand; ///< Config: (smime) External command to extract a certificate from an email
+char *SmimeImportCertCommand; ///< Config: (smime) External command to import a certificate
 char *SmimeKeys;
-char *SmimePk7outCommand;  ///< Config: (smime) External command to extract a public certificate
-char *SmimeSignCommand;  ///< Config: (smime) External command to sign a message
+char *SmimePk7outCommand; ///< Config: (smime) External command to extract a public certificate
+char *SmimeSignCommand; ///< Config: (smime) External command to sign a message
 char *SmimeSignDigestAlg;
 long SmimeTimeout;
-char *SmimeVerifyCommand;  ///< Config: (smime) External command to verify a signed message
-char *SmimeVerifyOpaqueCommand;  ///< Config: (smime) External command to verify a signature
+char *SmimeVerifyCommand; ///< Config: (smime) External command to verify a signed message
+char *SmimeVerifyOpaqueCommand; ///< Config: (smime) External command to verify a signature
 
 /**
  * struct SmimeCommandContext - Data for a SIME command

@@ -35,7 +35,7 @@ short ConnectTimeout = 0; ///< Config: Timeout for making network connections (-
 #ifdef USE_SSL
 const char *CertificateFile = NULL; ///< Config: File containing trusted certificates
 const char *EntropyFile = NULL; ///< Config: (ssl) File/device containing random data to initialise SSL
-const char *SslCiphers = NULL;  ///< Config: Ciphers to use when using SSL
+const char *SslCiphers = NULL;    ///< Config: Ciphers to use when using SSL
 const char *SslClientCert = NULL; ///< Config: File containing client certificates
 #ifdef USE_SSL_GNUTLS
 const char *SslCaCertificatesFile = NULL; ///< Config: File containing trusted CA certificates
@@ -44,7 +44,7 @@ short SslMinDhPrimeBits = 0; ///< Config: Minimum keysize for Diffie-Hellman key
 #endif
 
 #ifdef USE_SOCKET
-const char *Preconnect = NULL; ///< Config: Shell command to run before making a connection
+const char *Preconnect = NULL; ///< Config: (socket) External command to run prior to opening a socket
 const char *Tunnel = NULL; ///< Config: Shell command to establish a tunnel
 #endif
 

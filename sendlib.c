@@ -68,17 +68,17 @@
 
 /* These Config Variables are only used in sendlib.c */
 bool Allow8bit;
-char *AttachCharset;
+char *AttachCharset; ///< Config: When attaching files, use one of these character sets
 bool BounceDelivered;
 bool EncodeFrom;
-bool ForwardDecrypt;
-bool HiddenHost;
-char *Inews; ///< Config: (nntp) External command to post news articles
+bool ForwardDecrypt; ///< Config: Decrypt the message when forwarding it
+bool HiddenHost; ///< Config: Don't use the hostname, just the domain, when generating the message id
+char *Inews;     ///< Config: (nntp) External command to post news articles
 bool MimeForwardDecode;
 bool MimeSubject; ///< encode subject line with RFC2047
 char *MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
 bool MimeTypeQueryFirst;
-char *Sendmail;
+char *Sendmail; ///< Config: External command to send email
 short SendmailWait;
 bool Use8bitmime;
 bool UseEnvelopeFrom;

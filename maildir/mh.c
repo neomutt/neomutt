@@ -70,9 +70,9 @@
 bool CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
 bool MaildirHeaderCacheVerify;
 bool MhPurge;
-char *MhSeqFlagged;
-char *MhSeqReplied;
-char *MhSeqUnseen;
+char *MhSeqFlagged; ///< Config: MH sequence for flagged message
+char *MhSeqReplied; ///< Config: MH sequence to tag replied messages
+char *MhSeqUnseen;  ///< Config: MH sequence for unseen messages
 
 #define INS_SORT_THRESHOLD 6
 

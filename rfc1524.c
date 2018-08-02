@@ -47,7 +47,7 @@
 #include "protos.h"
 
 /* These Config Variables are only used in rfc1524.c */
-bool MailcapSanitize;
+bool MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
  * rfc1524_expand_command - Expand expandos in a command

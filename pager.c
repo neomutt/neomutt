@@ -77,11 +77,11 @@
 #endif
 
 /* These Config Variables are only used in pager.c */
-bool AllowAnsi;
+bool AllowAnsi; ///< Config: Allow ANSI colour codes in rich text messages
 bool HeaderColorPartial;
 short PagerContext; ///< Config: Number of lines of overlap when changing pages in the pager
 short PagerIndexLines;
-bool PagerStop;
+bool PagerStop; ///< Config: Don't automatically open the next message when at the end of a message
 short SearchContext;
 short SkipQuotedOffset;
 bool SmartWrap;

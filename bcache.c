@@ -36,7 +36,7 @@
 #include "muttlib.h"
 
 /* These Config Variables are only used in bcache.c */
-char *MessageCachedir;
+char *MessageCachedir; ///< Config: (imap/pop) Directory for the message cache
 
 /**
  * struct BodyCache - Local cache of email bodies
