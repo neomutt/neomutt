@@ -1738,6 +1738,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           {
             mutt_expand_path(buf->data, buf->dsize);
             char scratch[PATH_MAX];
+            mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
             size_t scratchlen = mutt_str_strlen(scratch);
             if (scratchlen != 0)
             {
