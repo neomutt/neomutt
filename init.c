@@ -1762,7 +1762,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           {
             char scratch[PATH_MAX];
             mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
-            
+
             if (mutt_str_strcmp(buf->data, "builtin") != 0)
             {
               mutt_expand_path(scratch, sizeof(scratch));
@@ -3310,11 +3310,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    for (struct Buffy *b = Incoming; b; b = b->next)
+    struct BuffyNode *bp = NULL;
+    STAILQ_FOREACH(bp, &BuffyList, entries)
     {
-      if (b->magic == MUTT_NOTMUCH)
+      if (bp->b->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", bp->b->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }

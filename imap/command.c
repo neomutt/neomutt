@@ -621,7 +621,6 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
 static void cmd_parse_status(struct ImapData *idata, char *s)
 {
   char *value = NULL;
-  struct Buffy *inc = NULL;
   struct ImapMbox mx;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
@@ -713,14 +712,15 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   mutt_debug(3, "Running default STATUS handler\n");
 
   /* should perhaps move this code back to imap_buffy_check */
-  for (inc = Incoming; inc; inc = inc->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (inc->magic != MUTT_IMAP)
+    if (np->b->magic != MUTT_IMAP)
       continue;
 
-    if (imap_parse_path(inc->path, &mx) < 0)
+    if (imap_parse_path(np->b->path, &mx) < 0)
     {
-      mutt_debug(1, "Error parsing mailbox %s, skipping\n", inc->path);
+      mutt_debug(1, "Error parsing mailbox %s, skipping\n", np->b->path);
       continue;
     }
 
@@ -759,18 +759,18 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
           new = (status->unseen > 0);
 
 #ifdef USE_SIDEBAR
-        if ((inc->new != new) || (inc->msg_count != status->messages) ||
-            (inc->msg_unread != status->unseen))
+        if ((np->b->new != new) || (np->b->msg_count != status->messages) ||
+            (np->b->msg_unread != status->unseen))
         {
           mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
         }
 #endif
-        inc->new = new;
+        np->b->new = new;
         if (new_msg_count)
-          inc->msg_count = status->messages;
-        inc->msg_unread = status->unseen;
+          np->b->msg_count = status->messages;
+        np->b->msg_unread = status->unseen;
 
-        if (inc->new)
+        if (np->b->new)
         {
           /* force back to keep detecting new mail until the mailbox is
              opened */

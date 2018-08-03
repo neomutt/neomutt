@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <time.h>
+#include "mutt/mutt.h"
 #include "where.h"
 
 struct Buffer;
@@ -52,7 +53,6 @@ struct Buffy
                             * comparison, and the sidebar */
   char *desc;
   off_t size;
-  struct Buffy *next;
   bool new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */
@@ -67,7 +67,15 @@ struct Buffy
   time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
-WHERE struct Buffy *Incoming;
+struct BuffyNode
+{
+  struct Buffy *b;
+  STAILQ_ENTRY(BuffyNode) entries;
+};
+
+STAILQ_HEAD(BuffyList, BuffyNode);
+
+extern struct BuffyList BuffyList;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *buf, size_t buflen);

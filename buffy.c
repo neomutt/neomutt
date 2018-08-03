@@ -66,6 +66,8 @@ time_t BuffyDoneTime = 0; /**< last time we knew for sure how much mail there wa
 static short BuffyCount = 0;  /**< how many boxes with new mail */
 static short BuffyNotify = 0; /**< # of unnotified new boxes */
 
+struct BuffyList BuffyList = STAILQ_HEAD_INITIALIZER(BuffyList);
+
 /**
  * fseek_last_message - Find the last message in the file
  * @param f File to search
@@ -182,7 +184,6 @@ static struct Buffy *buffy_new(const char *path)
   mutt_str_strfcpy(buffy->path, path, sizeof(buffy->path));
   char *r = realpath(path, rp);
   mutt_str_strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));
-  buffy->next = NULL;
   buffy->magic = 0;
 
   return buffy;
@@ -490,23 +491,21 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
  */
 static struct Buffy *buffy_get(const char *path)
 {
-  struct Buffy *cur = NULL;
-  char *epath = NULL;
-
   if (!path)
     return NULL;
 
-  epath = mutt_str_strdup(path);
+  char *epath = mutt_str_strdup(path);
   mutt_expand_path(epath, mutt_str_strlen(epath));
 
-  for (cur = Incoming; cur; cur = cur->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
     /* must be done late because e.g. IMAP delimiter may change */
-    mutt_expand_path(cur->path, sizeof(cur->path));
-    if (mutt_str_strcmp(cur->path, path) == 0)
+    mutt_expand_path(np->b->path, sizeof(np->b->path));
+    if (mutt_str_strcmp(np->b->path, path) == 0)
     {
       FREE(&epath);
-      return cur;
+      return np->b;
     }
   }
 
@@ -553,20 +552,25 @@ void mutt_buffy_cleanup(const char *path, struct stat *st)
  */
 struct Buffy *mutt_find_mailbox(const char *path)
 {
+  if (!path)
+    return NULL;
+
   struct stat sb;
   struct stat tmp_sb;
 
   if (stat(path, &sb) != 0)
     return NULL;
 
-  for (struct Buffy *b = Incoming; b; b = b->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (stat(b->path, &tmp_sb) == 0 && sb.st_dev == tmp_sb.st_dev &&
-        sb.st_ino == tmp_sb.st_ino)
+    if ((stat(np->b->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
+        (sb.st_ino == tmp_sb.st_ino))
     {
-      return b;
+      return np->b;
     }
   }
+
   return NULL;
 }
 
@@ -601,7 +605,6 @@ void mutt_update_mailbox(struct Buffy *b)
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  struct Buffy **b = NULL;
   char buf[PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
@@ -639,32 +642,33 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     /* avoid duplicates */
     p = realpath(buf, f1);
-    for (b = &Incoming; *b; b = &((*b)->next))
+    struct BuffyNode *np = NULL;
+    STAILQ_FOREACH(np, &BuffyList, entries)
     {
-      if (mutt_str_strcmp(p ? p : buf, (*b)->realpath) == 0)
+      if (mutt_str_strcmp(p ? p : buf, np->b->realpath) == 0)
       {
-        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, (*b)->path);
+        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, np->b->path);
         break;
       }
     }
 
-    if (*b)
+    if (np)
     {
       FREE(&desc);
       continue;
     }
 
-    *b = buffy_new(buf);
+    struct Buffy *b = buffy_new(buf);
 
-    (*b)->new = false;
-    (*b)->notified = true;
-    (*b)->newly_created = false;
-    (*b)->desc = desc;
+    b->new = false;
+    b->notified = true;
+    b->newly_created = false;
+    b->desc = desc;
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch((*b)->path))
+    if (mx_is_notmuch(b->path))
     {
-      (*b)->magic = MUTT_NOTMUCH;
-      (*b)->size = 0;
+      b->magic = MUTT_NOTMUCH;
+      b->size = 0;
     }
     else
 #endif
@@ -673,17 +677,21 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
        * reading it), the size is set to 0 so that later when we check we see
        * that it increased. without check_mbox_size we probably don't care.
        */
-      if (CheckMboxSize && stat((*b)->path, &sb) == 0 && !test_new_folder((*b)->path))
+      if (CheckMboxSize && stat(b->path, &sb) == 0 && !test_new_folder(b->path))
       {
         /* some systems out there don't have an off_t type */
-        (*b)->size = (off_t) sb.st_size;
+        b->size = (off_t) sb.st_size;
       }
       else
-        (*b)->size = 0;
+        b->size = 0;
     }
 
+    struct BuffyNode *bn = mutt_mem_calloc(1, sizeof(*bn));
+    bn->b = b;
+    STAILQ_INSERT_TAIL(&BuffyList, bn, entries);
+
 #ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(*b, 1);
+    mutt_sb_notify_mailbox(b, 1);
 #endif
   }
   return 0;
@@ -729,33 +737,33 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       }
     }
 
-    for (struct Buffy **b = &Incoming; *b;)
+    struct BuffyNode *np = NULL;
+    struct BuffyNode *tmp = NULL;
+    STAILQ_FOREACH_SAFE(np, &BuffyList, entries, tmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
-      bool virt = (((*b)->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
-      bool norm = (((*b)->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
+      bool virt = ((np->b->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
+      bool norm = ((np->b->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
-      if (clear_this || (mutt_str_strcasecmp(buf, (*b)->path) == 0) ||
-          (mutt_str_strcasecmp(buf, (*b)->desc) == 0))
+      if (clear_this || (mutt_str_strcasecmp(buf, np->b->path) == 0) ||
+          (mutt_str_strcasecmp(buf, np->b->desc) == 0))
       {
-        struct Buffy *next = (*b)->next;
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*b, 0);
+        mutt_sb_notify_mailbox(np->b, 0);
 #endif
-        buffy_free(b);
-        *b = next;
+        STAILQ_REMOVE(&BuffyList, np, BuffyNode, entries);
+        buffy_free(&np->b);
+        FREE(&np);
         continue;
       }
-
-      b = &((*b)->next);
     }
   }
   return 0;
 }
 
 /**
- * mutt_buffy_check - Check all Incoming for new mail
+ * mutt_buffy_check - Check all BuffyList for new mail
  * @param force Force flags, see below
  * @retval num Number of mailboxes with new mail
  *
@@ -763,7 +771,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
  * - MUTT_BUFFY_CHECK_FORCE        ignore BuffyTimeout and check for new mail
  * - MUTT_BUFFY_CHECK_FORCE_STATS  ignore BuffyTimeout and calculate statistics
  *
- * Check all Incoming for new mail and total/new/flagged messages
+ * Check all BuffyList for new mail and total/new/flagged messages
  */
 int mutt_buffy_check(int force)
 {
@@ -780,7 +788,7 @@ int mutt_buffy_check(int force)
 #endif
 
   /* fastest return if there are no mailboxes */
-  if (!Incoming)
+  if (STAILQ_EMPTY(&BuffyList))
     return 0;
 
   t = time(NULL);
@@ -813,8 +821,11 @@ int mutt_buffy_check(int force)
     contex_sb.st_ino = 0;
   }
 
-  for (struct Buffy *b = Incoming; b; b = b->next)
-    buffy_check(b, &contex_sb, check_stats);
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
+  {
+    buffy_check(np->b, &contex_sb, check_stats);
+  }
 
   BuffyDoneTime = BuffyTime;
   return BuffyCount;
@@ -826,7 +837,6 @@ int mutt_buffy_check(int force)
  */
 bool mutt_buffy_list(void)
 {
-  struct Buffy *b = NULL;
   char path[PATH_MAX];
   char buffylist[2 * STRING];
   size_t pos = 0;
@@ -836,13 +846,14 @@ bool mutt_buffy_list(void)
 
   buffylist[0] = '\0';
   pos += strlen(strncat(buffylist, _("New mail in "), sizeof(buffylist) - 1 - pos));
-  for (b = Incoming; b; b = b->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
     /* Is there new mail in this mailbox? */
-    if (!b->new || (have_unnotified && b->notified))
+    if (!np->b->new || (have_unnotified && np->b->notified))
       continue;
 
-    mutt_str_strfcpy(path, b->path, sizeof(path));
+    mutt_str_strfcpy(path, np->b->path, sizeof(path));
     mutt_pretty_mailbox(path, sizeof(path));
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
@@ -855,16 +866,17 @@ bool mutt_buffy_list(void)
       pos += strlen(strncat(buffylist + pos, ", ", sizeof(buffylist) - 1 - pos));
 
     /* Prepend an asterisk to mailboxes not already notified */
-    if (!b->notified)
+    if (!np->b->notified)
     {
       /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos)); */
-      b->notified = true;
+      np->b->notified = true;
       BuffyNotify--;
     }
     pos += strlen(strncat(buffylist + pos, path, sizeof(buffylist) - 1 - pos));
     first = 0;
   }
-  if (!first && b)
+
+  if (!first && np)
   {
     strncat(buffylist + pos, ", ...", sizeof(buffylist) - 1 - pos);
   }
@@ -923,18 +935,19 @@ void mutt_buffy(char *s, size_t slen)
     int found = 0;
     for (int pass = 0; pass < 2; pass++)
     {
-      for (struct Buffy *b = Incoming; b; b = b->next)
+      struct BuffyNode *np = NULL;
+      STAILQ_FOREACH(np, &BuffyList, entries)
       {
-        if (b->magic == MUTT_NOTMUCH) /* only match real mailboxes */
+        if (np->b->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
-        mutt_expand_path(b->path, sizeof(b->path));
-        if ((found || pass) && b->new)
+        mutt_expand_path(np->b->path, sizeof(np->b->path));
+        if ((found || pass) && np->b->new)
         {
-          mutt_str_strfcpy(s, b->path, slen);
+          mutt_str_strfcpy(s, np->b->path, slen);
           mutt_pretty_mailbox(s, slen);
           return;
         }
-        if (mutt_str_strcmp(s, b->path) == 0)
+        if (mutt_str_strcmp(s, np->b->path) == 0)
           found = 1;
       }
     }
@@ -959,16 +972,17 @@ void mutt_buffy_vfolder(char *buf, size_t buflen)
     bool found = false;
     for (int pass = 0; pass < 2; pass++)
     {
-      for (struct Buffy *b = Incoming; b; b = b->next)
+      struct BuffyNode *np = NULL;
+      STAILQ_FOREACH(np, &BuffyList, entries)
       {
-        if (b->magic != MUTT_NOTMUCH)
+        if (np->b->magic != MUTT_NOTMUCH)
           continue;
-        if ((found || pass) && b->new)
+        if ((found || pass) && np->b->new)
         {
-          mutt_str_strfcpy(buf, b->desc, buflen);
+          mutt_str_strfcpy(buf, np->b->desc, buflen);
           return;
         }
-        if (mutt_str_strcmp(buf, b->path) == 0)
+        if (mutt_str_strcmp(buf, np->b->path) == 0)
           found = true;
       }
     }

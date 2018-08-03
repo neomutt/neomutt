@@ -420,13 +420,16 @@ static void update_entries_visibility(void)
  */
 static void unsort_entries(void)
 {
-  struct Buffy *cur = Incoming;
   int i = 0;
 
-  while (cur && (i < EntryCount))
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
+    if (i >= EntryCount)
+      break;
+
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->buffy != cur))
+    while ((j < EntryCount) && (Entries[j]->buffy != np->b))
       j++;
     if (j < EntryCount)
     {
@@ -438,7 +441,6 @@ static void unsort_entries(void)
       }
       i++;
     }
-    cur = cur->next;
   }
 }
 
@@ -815,7 +817,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
  * On the first run they'll be NULL, so we display the top of NeoMutt's list
- * (Incoming).
+ * (BuffyList).
  *
  * * TopBuffy - first visible mailbox
  * * BotBuffy - last  visible mailbox
@@ -1000,8 +1002,13 @@ void mutt_sb_draw(void)
   int div_width = draw_divider(num_rows, num_cols);
 
   if (!Entries)
-    for (struct Buffy *b = Incoming; b; b = b->next)
-      mutt_sb_notify_mailbox(b, 1);
+  {
+    struct BuffyNode *np = NULL;
+    STAILQ_FOREACH(np, &BuffyList, entries)
+    {
+      mutt_sb_notify_mailbox(np->b, 1);
+    }
+  }
 
   if (!prepare_sidebar(num_rows))
   {
@@ -1076,19 +1083,18 @@ void mutt_sb_change_mailbox(int op)
  */
 void mutt_sb_set_buffystats(const struct Context *ctx)
 {
-  /* Even if the sidebar's hidden,
-   * we should take note of the new data. */
-  struct Buffy *b = Incoming;
-  if (!ctx || !b)
+  if (!ctx)
     return;
 
-  for (; b; b = b->next)
+  /* Even if the sidebar's hidden, we should take note of the new data. */
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (mutt_str_strcmp(b->realpath, ctx->realpath) == 0)
+    if (mutt_str_strcmp(np->b->realpath, ctx->realpath) == 0)
     {
-      b->msg_unread = ctx->unread;
-      b->msg_count = ctx->msgcount;
-      b->msg_flagged = ctx->flagged;
+      np->b->msg_unread = ctx->unread;
+      np->b->msg_count = ctx->msgcount;
+      np->b->msg_flagged = ctx->flagged;
       break;
     }
   }
@@ -1223,13 +1229,14 @@ void mutt_sb_toggle_virtual(void)
   EntryCount = 0;
   FREE(&Entries);
   EntryLen = 0;
-  for (struct Buffy *b = Incoming; b; b = b->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
     /* and reintroduce the ones that are visible */
-    if (((b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    if (((np->b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((np->b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
     {
-      mutt_sb_notify_mailbox(b, true);
+      mutt_sb_notify_mailbox(np->b, true);
     }
   }
 

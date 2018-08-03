@@ -832,7 +832,6 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     DIR *dp = NULL;
     struct dirent *de = NULL;
     char buffer[PATH_MAX + SHORT_STRING];
-    struct Buffy *tmp = NULL;
 
     while (stat(d, &s) == -1)
     {
@@ -894,15 +893,19 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       else if (!S_ISREG(s.st_mode))
         continue;
 
-      tmp = Incoming;
-      while (tmp && (mutt_str_strcmp(buffer, tmp->path) != 0))
-        tmp = tmp->next;
-      if (tmp && Context && (mutt_str_strcmp(tmp->realpath, Context->realpath) == 0))
+      struct BuffyNode *np = NULL;
+      STAILQ_FOREACH(np, &BuffyList, entries)
       {
-        tmp->msg_count = Context->msgcount;
-        tmp->msg_unread = Context->unread;
+        if (mutt_str_strcmp(buffer, np->b->path) != 0)
+          break;
       }
-      add_folder(menu, state, de->d_name, NULL, &s, tmp, NULL);
+
+      if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
+      {
+        np->b->msg_count = Context->msgcount;
+        np->b->msg_unread = Context->unread;
+      }
+      add_folder(menu, state, de->d_name, NULL, &s, np->b, NULL);
     }
     closedir(dp);
   }
@@ -920,23 +923,24 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
  */
 static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
-  struct Buffy *tmp = Incoming;
-  if (!tmp)
+  if (STAILQ_EMPTY(&BuffyList))
     return -1;
 
   mutt_buffy_check(0);
 
   init_state(state, menu);
 
-  do
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (mx_is_notmuch(tmp->path))
+    if (mx_is_notmuch(np->b->path))
     {
-      nm_nonctx_get_count(tmp->path, &tmp->msg_count, &tmp->msg_unread);
-      add_folder(menu, state, tmp->path, tmp->desc, NULL, tmp, NULL);
+      nm_nonctx_get_count(np->b->path, &np->b->msg_count, &np->b->msg_unread);
+      add_folder(menu, state, np->b->path, np->b->desc, NULL, np->b, NULL);
       continue;
     }
-  } while ((tmp = tmp->next));
+  }
+
   browser_sort(state);
   return 0;
 }
@@ -973,71 +977,70 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   else
 #endif
   {
-    struct Buffy *tmp = Incoming;
-
     init_state(state, menu);
 
-    if (!Incoming)
+    if (STAILQ_EMPTY(&BuffyList))
       return -1;
     mutt_buffy_check(0);
 
-    do
+    struct BuffyNode *np = NULL;
+    STAILQ_FOREACH(np, &BuffyList, entries)
     {
-      if (Context && (mutt_str_strcmp(tmp->realpath, Context->realpath) == 0))
+      if (Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
       {
-        tmp->msg_count = Context->msgcount;
-        tmp->msg_unread = Context->unread;
+        np->b->msg_count = Context->msgcount;
+        np->b->msg_unread = Context->unread;
       }
 
       char buffer[PATH_MAX];
-      mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
+      mutt_str_strfcpy(buffer, np->b->path, sizeof(buffer));
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
-      if (mx_is_imap(tmp->path))
+      if (mx_is_imap(np->b->path))
       {
-        add_folder(menu, state, buffer, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_POP
-      if (mx_is_pop(tmp->path))
+      if (mx_is_pop(np->b->path))
       {
-        add_folder(menu, state, buffer, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_NNTP
-      if (mx_is_nntp(tmp->path))
+      if (mx_is_nntp(np->b->path))
       {
-        add_folder(menu, state, tmp->path, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, np->b->path, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
-      if (lstat(tmp->path, &s) == -1)
+      if (lstat(np->b->path, &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (mx_is_maildir(tmp->path))
+      if (mx_is_maildir(np->b->path))
       {
         struct stat st2;
         char md[PATH_MAX];
 
-        snprintf(md, sizeof(md), "%s/new", tmp->path);
+        snprintf(md, sizeof(md), "%s/new", np->b->path);
         if (stat(md, &s) < 0)
           s.st_mtime = 0;
-        snprintf(md, sizeof(md), "%s/cur", tmp->path);
+        snprintf(md, sizeof(md), "%s/cur", np->b->path);
         if (stat(md, &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > s.st_mtime)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buffer, NULL, &s, tmp, NULL);
-    } while ((tmp = tmp->next));
+      add_folder(menu, state, buffer, NULL, &s, np->b, NULL);
+    }
   }
   browser_sort(state);
   return 0;

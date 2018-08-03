@@ -64,7 +64,6 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   char tmp[PATH_MAX];
   char relpath[PATH_MAX];
   struct ImapMbox mx;
-  struct Buffy *b = NULL;
 
   if (imap_parse_path(state->folder, &mx))
     return;
@@ -114,20 +113,24 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
-  b = Incoming;
-  while (b && (mutt_str_strcmp(tmp, b->path) != 0))
-    b = b->next;
-  if (b)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (Context && (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
+    if (mutt_str_strcmp(tmp, np->b->path) == 0)
+      break;
+  }
+
+  if (np)
+  {
+    if (Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
     {
-      b->msg_count = Context->msgcount;
-      b->msg_unread = Context->unread;
+      np->b->msg_count = Context->msgcount;
+      np->b->msg_unread = Context->unread;
     }
     (state->entry)[state->entrylen].has_buffy = true;
-    (state->entry)[state->entrylen].new = b->new;
-    (state->entry)[state->entrylen].msg_count = b->msg_count;
-    (state->entry)[state->entrylen].msg_unread = b->msg_unread;
+    (state->entry)[state->entrylen].new = np->b->new;
+    (state->entry)[state->entrylen].msg_count = np->b->msg_count;
+    (state->entry)[state->entrylen].msg_unread = np->b->msg_unread;
   }
 
   (state->entrylen)++;

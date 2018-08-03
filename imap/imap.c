@@ -538,24 +538,24 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
  */
 static int complete_hosts(char *buf, size_t buflen)
 {
-  struct Buffy *mailbox = NULL;
   struct Connection *conn = NULL;
   int rc = -1;
   size_t matchlen;
 
   matchlen = mutt_str_strlen(buf);
-  for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (mutt_str_strncmp(buf, mailbox->path, matchlen) == 0)
+    if (mutt_str_strncmp(buf, np->b->path, matchlen) != 0)
+      continue;
+
+    if (rc)
     {
-      if (rc)
-      {
-        mutt_str_strfcpy(buf, mailbox->path, buflen);
-        rc = 0;
-      }
-      else
-        longest_common_prefix(buf, mailbox->path, matchlen, buflen);
+      mutt_str_strfcpy(buf, np->b->path, buflen);
+      rc = 0;
     }
+    else
+      longest_common_prefix(buf, np->b->path, matchlen, buflen);
   }
 
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
@@ -1426,27 +1426,27 @@ int imap_buffy_check(int check_stats)
 {
   struct ImapData *idata = NULL;
   struct ImapData *lastdata = NULL;
-  struct Buffy *mailbox = NULL;
   char name[LONG_STRING];
   char command[LONG_STRING];
   char munged[LONG_STRING];
   int buffies = 0;
 
-  for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
     /* Init newly-added mailboxes */
-    if (!mailbox->magic)
+    if (!np->b->magic)
     {
-      if (mx_is_imap(mailbox->path))
-        mailbox->magic = MUTT_IMAP;
+      if (mx_is_imap(np->b->path))
+        np->b->magic = MUTT_IMAP;
     }
 
-    if (mailbox->magic != MUTT_IMAP)
+    if (np->b->magic != MUTT_IMAP)
       continue;
 
-    if (get_mailbox(mailbox->path, &idata, name, sizeof(name)) < 0)
+    if (get_mailbox(np->b->path, &idata, name, sizeof(name)) < 0)
     {
-      mailbox->new = false;
+      np->b->new = false;
       continue;
     }
 
@@ -1456,7 +1456,7 @@ int imap_buffy_check(int check_stats)
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
     if (idata->mailbox && (imap_mxcmp(name, idata->mailbox) == 0))
     {
-      mailbox->new = false;
+      np->b->new = false;
       continue;
     }
 
@@ -1506,9 +1506,9 @@ int imap_buffy_check(int check_stats)
   }
 
   /* collect results */
-  for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if (mailbox->magic == MUTT_IMAP && mailbox->new)
+    if ((np->b->magic == MUTT_IMAP) && np->b->new)
       buffies++;
   }
 

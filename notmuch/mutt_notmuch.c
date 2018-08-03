@@ -2277,15 +2277,18 @@ done:
  */
 char *nm_get_description(struct Context *ctx)
 {
-  for (struct Buffy *b = Incoming; b; b = b->next)
-    if (b->desc && (strcmp(b->path, ctx->path) == 0))
-      return b->desc;
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
+  {
+    if (np->b->desc && (strcmp(np->b->path, ctx->path) == 0))
+      return np->b->desc;
+  }
 
   return NULL;
 }
 
 /**
- * nm_description_to_path - Find a path from a folder's description
+ * nm_desc&ription_to_path - Find a path from a folder's description
  * @param desc   Description
  * @param buf    Buffer for path
  * @param buflen Length of buffer
@@ -2297,11 +2300,12 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   if (!desc || !buf || (buflen == 0))
     return -EINVAL;
 
-  for (struct Buffy *b = Incoming; b; b = b->next)
+  struct BuffyNode *np = NULL;
+  STAILQ_FOREACH(np, &BuffyList, entries)
   {
-    if ((b->magic == MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
+    if ((np->b->magic == MUTT_NOTMUCH) && np->b->desc && (strcmp(desc, np->b->desc) == 0))
     {
-      strncpy(buf, b->path, buflen);
+      strncpy(buf, np->b->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }

@@ -1140,7 +1140,7 @@ int main(int argc, char *argv[], char *envp[])
       }
       else
 #endif
-          if (!Incoming)
+          if (STAILQ_EMPTY(&BuffyList))
       {
         mutt_error(_("No incoming mailboxes defined."));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
