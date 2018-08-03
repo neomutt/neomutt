@@ -95,7 +95,7 @@ const struct Binding OpGeneric[] = { /* map: generic */
 const struct Binding OpMain[] = { /* map: index */
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
-  { "buffy-list",                OP_BUFFY_LIST,                     "." },
+  { "buffy-list",                OP_MAILBOX_LIST,                   "." },
 #ifdef USE_NNTP
   { "catchup",                   OP_CATCHUP,                        NULL },
 #endif
@@ -244,7 +244,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "bottom",                    OP_PAGER_BOTTOM,                 NULL },
   { "bounce-message",            OP_BOUNCE_MESSAGE,               "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,            "#" },
-  { "buffy-list",                OP_BUFFY_LIST,                   "." },
+  { "buffy-list",                OP_MAILBOX_LIST,                 "." },
   { "change-folder",             OP_MAIN_CHANGE_FOLDER,           "c" },
   { "change-folder-readonly",    OP_MAIN_CHANGE_FOLDER_READONLY,  "\033c" },
 #ifdef USE_NNTP
@@ -495,7 +495,7 @@ const struct Binding OpAlias[] = { /* map: alias */
 
 /* The file browser */
 const struct Binding OpBrowser[] = { /* map: browser */
-  { "buffy-list",            OP_BUFFY_LIST,                  "." },
+  { "buffy-list",            OP_MAILBOX_LIST,                "." },
 #ifdef USE_NNTP
   { "catchup",               OP_CATCHUP,                     NULL },
 #endif
@@ -555,7 +555,7 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "backward-char",         OP_EDITOR_BACKWARD_CHAR,        "\002" },
   { "backward-word",         OP_EDITOR_BACKWARD_WORD,        "\033b" },
   { "bol",                   OP_EDITOR_BOL,                  "\001" },
-  { "buffy-cycle",           OP_EDITOR_BUFFY_CYCLE,          " " },
+  { "buffy-cycle",           OP_EDITOR_MAILBOX_CYCLE,        " " },
   { "capitalize-word",       OP_EDITOR_CAPITALIZE_WORD,      "\033c" },
   { "complete",              OP_EDITOR_COMPLETE,             "\t" },
   { "complete-query",        OP_EDITOR_COMPLETE_QUERY,       "\024" },

@@ -90,8 +90,8 @@ void mutt_buffy_cleanup(const char *path, struct stat *st);
 void mutt_buffy_setnotified(const char *path);
 
 /* force flags passed to mutt_buffy_check() */
-#define MUTT_BUFFY_CHECK_FORCE       (1 << 0)
-#define MUTT_BUFFY_CHECK_FORCE_STATS (1 << 1)
+#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
+#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
 
 void mutt_buffy(char *s, size_t slen);
 bool mutt_buffy_list(void);

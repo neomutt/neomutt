@@ -3356,7 +3356,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         mutt_message(mutt_make_version());
         break;
 
-      case OP_BUFFY_LIST:
+      case OP_MAILBOX_LIST:
         mutt_buffy_list();
         break;
 

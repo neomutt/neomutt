@@ -565,7 +565,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 #endif
 
   mutt_clear_error();
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* force the buffy check after we have changed the folder */
+  mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE); /* force the buffy check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
   OptSearchInvalid = true;
 
@@ -928,7 +928,7 @@ int mutt_index_menu(void)
   if (!attach_msg)
   {
     /* force the buffy check after we enter the folder */
-    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE);
+    mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE);
   }
 
   if (((Sort & SORT_MASK) == SORT_THREADS) && CollapseAll)
@@ -3356,7 +3356,7 @@ int mutt_index_menu(void)
         mutt_message(mutt_make_version());
         break;
 
-      case OP_BUFFY_LIST:
+      case OP_MAILBOX_LIST:
         mutt_buffy_list();
         break;
 

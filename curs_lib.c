@@ -585,7 +585,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool buf
     if (multiple)
       flags |= MUTT_SEL_MULTI;
     if (buffy)
-      flags |= MUTT_SEL_BUFFY;
+      flags |= MUTT_SEL_MAILBOX;
     mutt_select_file(buf, buflen, flags, files, numfiles);
   }
   else

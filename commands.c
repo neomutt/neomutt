@@ -713,7 +713,7 @@ void mutt_shell_escape(void)
 
   if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE);
+  mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE);
 }
 
 /**
@@ -1235,5 +1235,5 @@ bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
  */
 void mutt_check_stats(void)
 {
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE | MUTT_BUFFY_CHECK_FORCE_STATS);
+  mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }

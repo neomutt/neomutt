@@ -1312,14 +1312,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   int i, kill_prefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;
   int folder = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
-  int buffy = (flags & MUTT_SEL_BUFFY) ? 1 : 0;
+  int mailbox = (flags & MUTT_SEL_MAILBOX) ? 1 : 0;
 
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (Folder)
    */
   char GotoSwapper[PATH_MAX] = "";
 
-  buffy = buffy && folder;
+  mailbox = mailbox && folder;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -1331,13 +1331,13 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       struct NntpServer *nserv = CurrentNewsSrv;
 
       /* default state for news reader mode is browse subscribed newsgroups */
-      buffy = 0;
+      mailbox = 0;
       for (unsigned int j = 0; j < nserv->groups_num; j++)
       {
         struct NntpData *nntp_data = nserv->groups_list[j];
         if (nntp_data && nntp_data->subscribed)
         {
-          buffy = 1;
+          mailbox = 1;
           break;
         }
       }
@@ -1479,7 +1479,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     }
 
 #ifdef USE_IMAP
-    if (!buffy && mx_is_imap(LastDir))
+    if (!mailbox && mx_is_imap(LastDir))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1507,7 +1507,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   }
   else
 #endif
-      if (buffy)
+      if (mailbox)
   {
     examine_mailboxes(NULL, &state);
   }
@@ -1544,7 +1544,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                                            FolderHelp);
   mutt_menu_push_current(menu);
 
-  init_menu(&state, menu, title, sizeof(title), buffy);
+  init_menu(&state, menu, title, sizeof(title), mailbox);
 
   while (true)
   {
@@ -1567,7 +1567,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         )
         {
           /* make sure this isn't a MH or maildir mailbox */
-          if (buffy)
+          if (mailbox)
           {
             mutt_str_strfcpy(buf, state.entry[menu->current].name, sizeof(buf));
             mutt_expand_path(buf, sizeof(buf));
@@ -1612,7 +1612,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 }
               }
             }
-            else if (buffy)
+            else if (mailbox)
             {
               mutt_str_strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               mutt_expand_path(LastDir, sizeof(LastDir));
@@ -1652,7 +1652,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               prefix[0] = 0;
               kill_prefix = 0;
             }
-            buffy = 0;
+            mailbox = 0;
 #ifdef USE_IMAP
             if (state.imap_browse)
             {
@@ -1681,14 +1681,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             }
 
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
             if (GotoSwapper[0])
               GotoSwapper[0] = '\0';
             break;
           }
         }
 
-        if (buffy || OptNews) /* USE_NNTP */
+        if (mailbox || OptNews) /* USE_NNTP */
         {
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
           mutt_expand_path(file, filelen);
@@ -1771,7 +1771,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           browser_sort(&state);
           menu->data = state.entry;
           browser_highlight_default(&state, menu);
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         /* else leave error on screen */
         break;
@@ -1792,7 +1792,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             browser_sort(&state);
             menu->data = state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
         }
         break;
@@ -1834,7 +1834,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               memset(&state.entry[state.entrylen - 1], 0, sizeof(struct FolderFile));
               state.entrylen--;
               mutt_message(_("Mailbox deleted."));
-              init_menu(&state, menu, title, sizeof(title), buffy);
+              init_menu(&state, menu, title, sizeof(title), mailbox);
             }
             else
               mutt_error(_("Mailbox deletion failed."));
@@ -1879,7 +1879,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
         if (buf[0])
         {
-          buffy = 0;
+          mailbox = 0;
           mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_IMAP
           if (mx_is_imap(buf))
@@ -1892,7 +1892,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             browser_sort(&state);
             menu->data = state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
           else
 #endif
@@ -1927,7 +1927,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                   }
                 }
                 browser_highlight_default(&state, menu);
-                init_menu(&state, menu, title, sizeof(title), buffy);
+                init_menu(&state, menu, title, sizeof(title), mailbox);
               }
               else
                 mutt_error(_("%s is not a directory."), buf);
@@ -1944,7 +1944,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 
-        buffy = 0;
+        mailbox = 0;
         /* assume that the user wants to see everything */
         if (!buf[0])
           mutt_str_strfcpy(buf, ".", sizeof(buf));
@@ -1970,12 +1970,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           imap_browse(LastDir, &state);
           browser_sort(&state);
           menu->data = state.entry;
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         else
 #endif
             if (examine_directory(menu, &state, LastDir, NULL) == 0)
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         else
         {
           mutt_error(_("Error scanning directory."));
@@ -2057,7 +2057,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
         if (i == OP_TOGGLE_MAILBOXES)
-          buffy = 1 - buffy;
+          mailbox = 1 - mailbox;
 
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
@@ -2087,7 +2087,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         prefix[0] = 0;
         kill_prefix = 0;
 
-        if (buffy)
+        if (mailbox)
         {
           examine_mailboxes(menu, &state);
         }
@@ -2103,10 +2103,10 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif
         else if (examine_directory(menu, &state, LastDir, prefix) == -1)
           goto bail;
-        init_menu(&state, menu, title, sizeof(title), buffy);
+        init_menu(&state, menu, title, sizeof(title), mailbox);
         break;
 
-      case OP_BUFFY_LIST:
+      case OP_MAILBOX_LIST:
         mutt_buffy_list();
         break;
 
@@ -2211,14 +2211,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           nntp_newsrc_close(nserv);
 
           destroy_state(&state);
-          if (buffy)
+          if (mailbox)
             examine_mailboxes(menu, &state);
           else
           {
             if (examine_directory(menu, &state, NULL, NULL) == -1)
               break;
           }
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         break;
 #endif /* USE_NNTP */
@@ -2308,7 +2308,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 }
               }
             }
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
           if (rc > 0)
             menu->redraw = REDRAW_FULL;

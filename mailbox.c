@@ -766,8 +766,8 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
  * @retval num Number of mailboxes with new mail
  *
  * The force argument may be any combination of the following values:
- * - MUTT_BUFFY_CHECK_FORCE        ignore MailboxTime and check for new mail
- * - MUTT_BUFFY_CHECK_FORCE_STATS  ignore MailboxTime and calculate statistics
+ * - MUTT_MAILBOX_CHECK_FORCE        ignore MailboxTime and check for new mail
+ * - MUTT_MAILBOX_CHECK_FORCE_STATS  ignore MailboxTime and calculate statistics
  *
  * Check all AllMailboxes for new mail and total/new/flagged messages
  */
@@ -781,7 +781,7 @@ int mutt_buffy_check(int force)
 
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
-  if (force & MUTT_BUFFY_CHECK_FORCE)
+  if (force & MUTT_MAILBOX_CHECK_FORCE)
     mutt_update_num_postponed();
 #endif
 
@@ -793,7 +793,7 @@ int mutt_buffy_check(int force)
   if (!force && (t - MailboxTime < MailCheck))
     return MailboxCount;
 
-  if ((force & MUTT_BUFFY_CHECK_FORCE_STATS) ||
+  if ((force & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
       (MailCheckStats && ((t - MailboxStatsTime) >= MailCheckStatsInterval)))
   {
     check_stats = true;
@@ -949,7 +949,7 @@ void mutt_buffy(char *s, size_t slen)
       }
     }
 
-    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* buffy was wrong - resync things */
+    mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE); /* buffy was wrong - resync things */
   }
 
   /* no folders with new mail */
@@ -984,7 +984,7 @@ void mutt_buffy_vfolder(char *buf, size_t buflen)
       }
     }
 
-    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* Mailbox was wrong - resync things */
+    mutt_buffy_check(MUTT_MAILBOX_CHECK_FORCE); /* Mailbox was wrong - resync things */
   }
 
   /* no folders with new mail */

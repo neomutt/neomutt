@@ -363,7 +363,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
  *
  * For each SbEntry in the Entries array, check whether we should display it.
- * This is determined by several criteria.  If the Buffy:
+ * This is determined by several criteria.  If the Mailbox:
  * * is the currently open mailbox
  * * is the currently highlighted mailbox
  * * has unread messages
@@ -416,7 +416,7 @@ static void update_entries_visibility(void)
 }
 
 /**
- * unsort_entries - Restore Entries array order to match Buffy list order
+ * unsort_entries - Restore Entries array order to match Mailbox list order
  */
 static void unsort_entries(void)
 {
@@ -815,14 +815,14 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  * @param div_width  Width in screen characters taken by the divider
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
- * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
+ * depend on our index markers: TopMailbox, OpnMailbox, HilMailbox, BotMailbox.
  * On the first run they'll be NULL, so we display the top of NeoMutt's list
  * (AllMailboxes).
  *
- * * TopBuffy - first visible mailbox
- * * BotBuffy - last  visible mailbox
- * * OpnBuffy - mailbox shown in NeoMutt's Index Panel
- * * HilBuffy - Unselected mailbox (the paging follows this)
+ * * TopMailbox - first visible mailbox
+ * * BotMailbox - last  visible mailbox
+ * * OpnMailbox - mailbox shown in NeoMutt's Index Panel
+ * * HilMailbox - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:
  * "sidebar_short_path", indented: "sidebar_folder_indent",
@@ -981,7 +981,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  * mutt_sb_draw - Completely redraw the sidebar
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
- * each Buffy, call make_sidebar_entry; finally blank out any remaining space.
+ * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
  */
 void mutt_sb_draw(void)
 {
@@ -1027,7 +1027,7 @@ void mutt_sb_draw(void)
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
  * with new mail". The operations are listed in opcodes.h.
  *
- * If the operation is successful, HilBuffy will be set to the new mailbox.
+ * If the operation is successful, HilMailbox will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.
  *
  * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW,
@@ -1075,10 +1075,10 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_set_buffystats - Update the Buffy's message counts from the Context
+ * mutt_sb_set_buffystats - Update the Mailbox's message counts from the Context
  * @param ctx  A mailbox Context
  *
- * Given a mailbox Context, find a matching mailbox Buffy and copy the message
+ * Given a mailbox Context, find a matching mailbox Mailbox and copy the message
  * counts into it.
  */
 void mutt_sb_set_buffystats(const struct Context *ctx)
@@ -1101,7 +1101,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 }
 
 /**
- * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
+ * mutt_sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @retval ptr Mailbox path
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
@@ -1118,10 +1118,10 @@ const char *mutt_sb_get_highlight(void)
 }
 
 /**
- * mutt_sb_set_open_buffy - Set the OpnBuffy based on the global Context
+ * mutt_sb_set_open_buffy - Set the OpnMailbox based on the global Context
  *
- * Search through the list of mailboxes.  If a Buffy has a matching path, set
- * OpnBuffy to it.
+ * Search through the list of mailboxes.  If a Mailbox has a matching path, set
+ * OpnMailbox to it.
  */
 void mutt_sb_set_open_buffy(void)
 {
@@ -1142,13 +1142,13 @@ void mutt_sb_set_open_buffy(void)
 }
 
 /**
- * mutt_sb_notify_mailbox - The state of a Buffy is about to change
+ * mutt_sb_notify_mailbox - The state of a Mailbox is about to change
  * @param b       Folder
  * @param created True if folder created, false if deleted
  *
  * We receive a notification:
- *      After a new Buffy has been created
- *      Before a Buffy is deleted
+ * - After a new Mailbox has been created
+ * - Before a Mailbox is deleted
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */

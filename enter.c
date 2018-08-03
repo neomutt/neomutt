@@ -484,7 +484,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           state->lastchar += state->curpos - i;
           break;
 
-        case OP_EDITOR_BUFFY_CYCLE:
+        case OP_EDITOR_MAILBOX_CYCLE:
           if (flags & MUTT_EFILE)
           {
             first = 1; /* clear input if user types a real key later */
