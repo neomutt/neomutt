@@ -78,25 +78,25 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 extern struct MailboxList AllMailboxes;
 
 #ifdef USE_NOTMUCH
-void mutt_buffy_vfolder(char *buf, size_t buflen);
+void mutt_mailbox_vfolder(char *buf, size_t buflen);
 #endif
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 void mutt_update_mailbox(struct Mailbox *b);
 
-void mutt_buffy_cleanup(const char *path, struct stat *st);
+void mutt_mailbox_cleanup(const char *path, struct stat *st);
 
 /** mark mailbox just left as already notified */
-void mutt_buffy_setnotified(const char *path);
+void mutt_mailbox_setnotified(const char *path);
 
-/* force flags passed to mutt_buffy_check() */
+/* force flags passed to mutt_mailbox_check() */
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
 #define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1)
 
-void mutt_buffy(char *s, size_t slen);
-bool mutt_buffy_list(void);
-int mutt_buffy_check(int force);
-bool mutt_buffy_notify(void);
+void mutt_mailbox(char *s, size_t slen);
+bool mutt_mailbox_list(void);
+int mutt_mailbox_check(int force);
+bool mutt_mailbox_notify(void);
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 

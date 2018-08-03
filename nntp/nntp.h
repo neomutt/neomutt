@@ -162,7 +162,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid);
 int nntp_check_children(struct Context *ctx, const char *msgid);
 int nntp_newsrc_parse(struct NntpServer *nserv);
 void nntp_newsrc_close(struct NntpServer *nserv);
-void nntp_buffy(char *buf, size_t len);
+void nntp_mailbox(char *buf, size_t len);
 void nntp_expand_path(char *line, size_t len, struct Account *acct);
 void nntp_clear_cache(struct NntpServer *nserv);
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,

@@ -347,12 +347,12 @@ static bool mh_valid_message(const char *s)
 }
 
 /**
- * mh_buffy - Check for new mail for a mh mailbox
+ * mh_mailbox - Check for new mail for a mh mailbox
  * @param mailbox     Mailbox to check
  * @param check_stats Also count total, new, and flagged messages
  * @retval true if the mailbox has new mail
  */
-bool mh_buffy(struct Mailbox *mailbox, bool check_stats)
+bool mh_mailbox(struct Mailbox *mailbox, bool check_stats)
 {
   struct MhSequences mhs = { 0 };
   bool check_new = true;

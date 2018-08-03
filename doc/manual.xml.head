@@ -8801,7 +8801,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         </para>
         <para>
           For the pager, index and directory browser menus, NeoMutt contains
-          the <literal>&lt;buffy-list&gt;</literal> function (bound to
+          the <literal>&lt;mailbox-list&gt;</literal> function (bound to
           <quote>.</quote> by default) which will print a list of folders with
           new mail in the command line at the bottom of the screen.
         </para>
@@ -15829,7 +15829,7 @@ set sidebar_on_right = no
 <emphasis role="comment"># The character to use as the divider between the Sidebar and the other NeoMutt</emphasis>
 <emphasis role="comment"># panels.</emphasis>
 set sidebar_divider_char = '|'
-<emphasis role="comment"># Enable extended buffy mode to calculate total, new, and flagged</emphasis>
+<emphasis role="comment"># Enable extended mailbox mode to calculate total, new, and flagged</emphasis>
 <emphasis role="comment"># message counts for each mailbox.</emphasis>
 set mail_check_stats
 <emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>

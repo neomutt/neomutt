@@ -539,7 +539,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (!ctx)
     return;
 
-  /* fix up the times so buffy won't get confused */
+  /* fix up the times so mailbox won't get confused */
   if (ctx->peekonly && ctx->path && (ctx->mtime > ctx->atime))
   {
     ut.actime = ctx->atime;
@@ -550,7 +550,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
-    mutt_buffy_setnotified(ctx->path);
+    mutt_mailbox_setnotified(ctx->path);
 
   if (ctx->mx_ops)
     ctx->mx_ops->mbox_close(ctx);
@@ -945,7 +945,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
         ctx->flagged--;
     }
     ctx->msgcount -= ctx->deleted;
-    mutt_sb_set_buffystats(ctx);
+    mutt_sb_set_mailbox_stats(ctx);
     ctx->msgcount = orig_msgcount;
   }
 #endif

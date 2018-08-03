@@ -47,7 +47,7 @@ int          mutt_any_key_to_continue(const char *s);
 int          mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
-int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, bool buffy, bool multiple, char ***files, int *numfiles, int flags);
+int          mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, bool mailbox, bool multiple, char ***files, int *numfiles, int flags);
 void         mutt_flushinp(void);
 void         mutt_flush_macro_to_endcond(void);
 void         mutt_flush_unget_to_endcond(void);

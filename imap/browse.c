@@ -127,7 +127,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
       np->b->msg_count = Context->msgcount;
       np->b->msg_unread = Context->unread;
     }
-    (state->entry)[state->entrylen].has_buffy = true;
+    (state->entry)[state->entrylen].has_mailbox = true;
     (state->entry)[state->entrylen].new = np->b->new;
     (state->entry)[state->entrylen].msg_count = np->b->msg_count;
     (state->entry)[state->entrylen].msg_unread = np->b->msg_unread;

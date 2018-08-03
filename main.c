@@ -1119,13 +1119,13 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_MAILBOX)
     {
-      if (mutt_buffy_check(0) == 0)
+      if (mutt_mailbox_check(0) == 0)
       {
         mutt_message(_("No mailbox with new mail."));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       folder[0] = '\0';
-      mutt_buffy(folder, sizeof(folder));
+      mutt_mailbox(folder, sizeof(folder));
     }
     else if (flags & MUTT_SELECT)
     {
@@ -1197,7 +1197,7 @@ int main(int argc, char *argv[], char *envp[])
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      mutt_sb_set_open_buffy();
+      mutt_sb_set_open_mailbox();
 #endif
       mutt_index_menu();
       if (Context)

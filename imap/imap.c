@@ -1413,7 +1413,7 @@ int imap_check(struct ImapData *idata, int force)
 }
 
 /**
- * imap_buffy_check - Check for new mail in subscribed folders
+ * imap_mailbox_check - Check for new mail in subscribed folders
  * @param check_stats Check for message stats too
  * @retval num Number of mailboxes with new mail
  * @retval 0   Failure
@@ -1421,7 +1421,7 @@ int imap_check(struct ImapData *idata, int force)
  * Given a list of mailboxes rather than called once for each so that it can
  * batch the commands and save on round trips.
  */
-int imap_buffy_check(int check_stats)
+int imap_mailbox_check(int check_stats)
 {
   struct ImapData *idata = NULL;
   struct ImapData *lastdata = NULL;
@@ -1468,7 +1468,7 @@ int imap_buffy_check(int check_stats)
 
     if (lastdata && idata != lastdata)
     {
-      /* Send commands to previous server. Sorting the buffy list
+      /* Send commands to previous server. Sorting the mailbox list
        * may prevent some infelicitous interleavings */
       if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
         mutt_debug(1, "#1 Error polling mailboxes\n");

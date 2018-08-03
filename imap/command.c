@@ -614,8 +614,8 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
  * @param idata Server data
  * @param s     Command string with status info
  *
- * first cut: just do buffy update. Later we may wish to cache all mailbox
- * information, even that not desired by buffy
+ * first cut: just do mailbox update. Later we may wish to cache all mailbox
+ * information, even that not desired by mailbox
  */
 static void cmd_parse_status(struct ImapData *idata, char *s)
 {
@@ -710,7 +710,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
   mutt_debug(3, "Running default STATUS handler\n");
 
-  /* should perhaps move this code back to imap_buffy_check */
+  /* should perhaps move this code back to imap_mailbox_check */
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
@@ -736,8 +736,8 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
       if (value && (imap_mxcmp(mailbox, value) == 0))
       {
-        mutt_debug(3, "Found %s in buffy list (OV: %u ON: %u U: %d)\n", mailbox,
-                   olduv, oldun, status->unseen);
+        mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
+                   mailbox, olduv, oldun, status->unseen);
 
         if (MailCheckRecent)
         {

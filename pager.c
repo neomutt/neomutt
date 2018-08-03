@@ -2422,7 +2422,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
       }
 
-      if (mutt_buffy_notify() || do_new_mail)
+      if (mutt_mailbox_notify() || do_new_mail)
       {
         if (BeepNew)
           beep();
@@ -3357,7 +3357,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_MAILBOX_LIST:
-        mutt_buffy_list();
+        mutt_mailbox_list();
         break;
 
       case OP_VIEW_ATTACHMENTS:

@@ -217,9 +217,9 @@ static int browser_compare_count(const void *a, const void *b)
   struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
-  if (pa->has_buffy && pb->has_buffy)
+  if (pa->has_mailbox && pb->has_mailbox)
     r = pa->msg_count - pb->msg_count;
-  else if (pa->has_buffy)
+  else if (pa->has_mailbox)
     r = -1;
   else
     r = 1;
@@ -241,9 +241,9 @@ static int browser_compare_count_new(const void *a, const void *b)
   struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
-  if (pa->has_buffy && pb->has_buffy)
+  if (pa->has_mailbox && pb->has_mailbox)
     r = pa->msg_unread - pb->msg_unread;
-  else if (pa->has_buffy)
+  else if (pa->has_mailbox)
     r = -1;
   else
     r = 1;
@@ -516,7 +516,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'm':
       if (!optional)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_mailbox)
         {
           snprintf(fmt, sizeof(fmt), "%%%sd", prec);
           snprintf(buf, buflen, fmt, folder->ff->msg_count);
@@ -536,7 +536,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'n':
       if (!optional)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_mailbox)
         {
           snprintf(fmt, sizeof(fmt), "%%%sd", prec);
           snprintf(buf, buflen, fmt, folder->ff->msg_unread);
@@ -756,7 +756,7 @@ static void add_folder(struct Menu *m, struct BrowserState *state,
 
   if (b)
   {
-    (state->entry)[state->entrylen].has_buffy = true;
+    (state->entry)[state->entrylen].has_mailbox = true;
     (state->entry)[state->entrylen].new = b->new;
     (state->entry)[state->entrylen].msg_count = b->msg_count;
     (state->entry)[state->entrylen].msg_unread = b->msg_unread;
@@ -856,7 +856,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       return -1;
     }
 
-    mutt_buffy_check(0);
+    mutt_mailbox_check(0);
 
     dp = opendir(d);
     if (!dp)
@@ -926,7 +926,7 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   if (STAILQ_EMPTY(&AllMailboxes))
     return -1;
 
-  mutt_buffy_check(0);
+  mutt_mailbox_check(0);
 
   init_state(state, menu);
 
@@ -981,7 +981,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
     if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
-    mutt_buffy_check(0);
+    mutt_mailbox_check(0);
 
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
@@ -1161,10 +1161,10 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
  * @param menu     Current menu
  * @param title    Buffer for the title
  * @param titlelen Length of buffer
- * @param buffy    If true, select mailboxes
+ * @param mailbox  If true, select mailboxes
  */
 static void init_menu(struct BrowserState *state, struct Menu *menu,
-                      char *title, size_t titlelen, bool buffy)
+                      char *title, size_t titlelen, bool mailbox)
 {
   menu->max = state->entrylen;
 
@@ -1180,7 +1180,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (buffy)
+    if (mailbox)
       snprintf(title, titlelen, _("Subscribed newsgroups"));
     else
     {
@@ -1191,10 +1191,10 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   else
 #endif
   {
-    if (buffy)
+    if (mailbox)
     {
       menu->is_mailbox_list = 1;
-      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check(0));
+      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_mailbox_check(0));
     }
     else
     {
@@ -2107,7 +2107,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         break;
 
       case OP_MAILBOX_LIST:
-        mutt_buffy_list();
+        mutt_mailbox_list();
         break;
 
       case OP_BROWSER_NEW_FILE:

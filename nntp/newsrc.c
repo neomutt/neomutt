@@ -1398,11 +1398,11 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 }
 
 /**
- * nntp_buffy - Get first newsgroup with new messages
+ * nntp_mailbox - Get first newsgroup with new messages
  * @param buf Buffer for result
  * @param len Length of buffer
  */
-void nntp_buffy(char *buf, size_t len)
+void nntp_mailbox(char *buf, size_t len)
 {
   for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
   {

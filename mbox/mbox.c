@@ -921,7 +921,7 @@ static bool mbox_has_new(struct Context *ctx)
  * @param st  Timestamp
  *
  * if mailbox has at least 1 new message, sets mtime > atime of mailbox so
- * buffy check reports new mail
+ * mailbox check reports new mail
  */
 void mbox_reset_atime(struct Context *ctx, struct stat *st)
 {

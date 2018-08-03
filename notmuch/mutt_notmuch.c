@@ -448,7 +448,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
  *
  * @note The window parameter here is here to decide contextually whether we
  * want to return a search query with window applied (for the actual search
- * result in buffy) or not (for the count in the sidebar). It is not aimed at
+ * result in mailbox) or not (for the count in the sidebar). It is not aimed at
  * enabling/disabling the feature.
  */
 static char *get_query_string(struct NmCtxData *data, bool window)
@@ -1954,7 +1954,7 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
  * by building a notmuch context object from the original search string, and
  * building a new from the notmuch context object.
  *
- * It's aimed to be used by buffy when parsing the virtual_mailboxes to make the
+ * It's aimed to be used by mailbox when parsing the virtual_mailboxes to make the
  * parsed user written search strings comparable to the internally generated ones.
  */
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
@@ -2231,7 +2231,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   }
 
   /* don't be verbose about connection, as we're called from
-   * sidebar/buffy very often */
+   * sidebar/mailbox very often */
   db = do_database_open(db_filename, false, false);
   if (!db)
     goto done;

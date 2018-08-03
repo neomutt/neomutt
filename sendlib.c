@@ -3211,7 +3211,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   char tempfile[PATH_MAX];
   FILE *tempfp = NULL;
   int rc = -1;
-  bool need_buffy_cleanup = false;
+  bool need_mailbox_cleanup = false;
   struct stat st;
   char buf[SHORT_STRING];
   int onm_flags;
@@ -3242,7 +3242,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       goto done;
     }
     /* remember new mail status before appending message */
-    need_buffy_cleanup = true;
+    need_mailbox_cleanup = true;
     stat(path, &st);
   }
 
@@ -3405,8 +3405,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   mx_msg_close(&f, &msg);
   mx_mbox_close(&f, NULL);
 
-  if (!post && need_buffy_cleanup)
-    mutt_buffy_cleanup(path, &st);
+  if (!post && need_mailbox_cleanup)
+    mutt_mailbox_cleanup(path, &st);
 
   if (post)
     set_noconv_flags(hdr->content, 0);
