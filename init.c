@@ -1746,13 +1746,31 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                   (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
               {
                 struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-                if (!mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+                if (mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+                {
+                  mutt_buffer_reset(buf);
+                  mutt_buffer_addstr(buf, scratch);
+                }
+                else
                 {
                   mutt_error(_("Error: impossible to build path of '%s'."), scratch);
                 }
               }
             }
           }
+          else if (DTYPE(he->type) == DT_COMMAND)
+          {
+            char scratch[PATH_MAX];
+            mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
+            
+            if (mutt_str_strcmp(buf->data, "builtin") != 0)
+            {
+              mutt_expand_path(scratch, sizeof(scratch));
+            }
+            mutt_buffer_reset(buf);
+            mutt_buffer_addstr(buf, scratch);
+          }
+
           rc = cs_he_string_set(Config, he, buf->data, err);
           if (CSR_RESULT(rc) != CSR_SUCCESS)
             return -1;
