@@ -63,7 +63,6 @@
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "maildir/maildir.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"

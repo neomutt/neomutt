@@ -42,7 +42,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"

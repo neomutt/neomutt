@@ -37,7 +37,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "maildir/maildir.h"
 #include "menu.h"
 #include "mutt_window.h"

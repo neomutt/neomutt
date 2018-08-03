@@ -46,7 +46,6 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

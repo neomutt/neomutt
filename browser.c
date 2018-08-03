@@ -47,7 +47,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "maildir/maildir.h"
 #include "menu.h"
 #include "mutt_attach.h"

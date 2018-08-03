@@ -45,7 +45,6 @@
 #include "group.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"

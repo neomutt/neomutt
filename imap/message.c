@@ -46,7 +46,6 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"

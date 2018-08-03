@@ -45,7 +45,6 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"

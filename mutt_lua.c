@@ -34,10 +34,10 @@
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "myvar.h"
 
 /**

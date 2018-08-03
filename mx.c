@@ -47,7 +47,6 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "maildir/maildir.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"

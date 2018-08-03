@@ -48,7 +48,6 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"

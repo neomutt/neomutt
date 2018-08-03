@@ -47,7 +47,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
-#include "mailbox.h"
 #include "mutt_parse.h"
 #include "mutt_window.h"
 #include "muttlib.h"

@@ -45,7 +45,6 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"

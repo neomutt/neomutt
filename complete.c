@@ -38,7 +38,7 @@
 #include "options.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
-#include "mailbox.h"
+#include "mx.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/nntp.h"

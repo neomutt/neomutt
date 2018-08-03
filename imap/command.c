@@ -47,7 +47,6 @@
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "message.h"
 #include "mutt_account.h"

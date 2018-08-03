@@ -43,7 +43,6 @@
 #include "copy.h"
 #include "curs_lib.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

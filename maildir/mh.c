@@ -51,7 +51,6 @@
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
-#include "mailbox.h"
 #include "maildir.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
