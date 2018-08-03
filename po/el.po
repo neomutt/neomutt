@@ -282,7 +282,7 @@ msgstr "Διαγραφή στο %s..."
 msgid "No newsgroups match the mask"
 msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Νέα αλληλογραφία στο "
 

@@ -275,7 +275,7 @@ msgstr "Avslutar prenumeration på %s"
 msgid "No newsgroups match the mask"
 msgstr "Inga filer matchar filmasken"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nytt brev i "
 

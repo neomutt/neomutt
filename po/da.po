@@ -276,7 +276,7 @@ msgstr "Afmeldt fra %s"
 msgid "No newsgroups match the mask"
 msgstr "Ingen filer passer til filmasken"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Ny post i "
 

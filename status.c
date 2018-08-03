@@ -29,10 +29,10 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"

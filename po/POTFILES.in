@@ -2,7 +2,6 @@ addrbook.c
 alias.c
 bcache.c
 browser.c
-buffy.c
 color.c
 commands.c
 complete.c
@@ -84,6 +83,7 @@ imap/utf7.c
 imap/util.c
 init.c
 keymap.c
+mailbox.c
 maildir/mh.c
 main.c
 mbox/mbox.c

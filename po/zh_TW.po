@@ -280,7 +280,7 @@ msgstr "取消訂閱 %s…"
 msgid "No newsgroups match the mask"
 msgstr "沒有檔案與檔案遮罩相符"
 
-#: buffy.c:838
+#: mailbox.c:838
 #, fuzzy
 msgid "New mail in "
 msgstr "在 %s 有新信件。"

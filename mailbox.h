@@ -33,7 +33,7 @@
 struct Buffer;
 struct stat;
 
-/* These Config Variables are only used in buffy.c */
+/* These Config Variables are only used in mailbox.c */
 extern short MailCheck;
 extern bool  MailCheckStats;
 extern short MailCheckStatsInterval;

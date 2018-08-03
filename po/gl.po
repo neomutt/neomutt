@@ -278,7 +278,7 @@ msgstr "Borrando a subscripción con %s..."
 msgid "No newsgroups match the mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
 
-#: buffy.c:838
+#: mailbox.c:838
 #, fuzzy
 msgid "New mail in "
 msgstr "Novo correo en %s."

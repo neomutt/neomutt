@@ -38,11 +38,11 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
-#include "buffy.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
+#include "mailbox.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 

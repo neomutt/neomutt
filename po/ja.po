@@ -273,7 +273,7 @@ msgstr "%s の購読を取り消した"
 msgid "No newsgroups match the mask"
 msgstr "マスクに一致するニュースグループがない"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "新着メールあり: "
 

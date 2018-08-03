@@ -319,7 +319,7 @@ msgid "No newsgroups match the mask"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 
 # Vaja, no hi ha com posar-li cometes…  ivb
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Hi ha correu nou a "
 

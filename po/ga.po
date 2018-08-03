@@ -277,7 +277,7 @@ msgstr "Díliostáilte ó %s"
 msgid "No newsgroups match the mask"
 msgstr "Níl aon chomhad comhoiriúnach leis an mhasc chomhaid"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Post nua i "
 

@@ -275,7 +275,7 @@ msgstr "Malabonis %s"
 msgid "No newsgroups match the mask"
 msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nova mesaĝo en "
 

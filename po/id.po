@@ -278,7 +278,7 @@ msgstr "Berhenti langganan dari %s"
 msgid "No newsgroups match the mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Surat baru di "
 

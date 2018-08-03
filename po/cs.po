@@ -277,7 +277,7 @@ msgstr "Odhlásit odběr zpráv dle vzoru: "
 msgid "No newsgroups match the mask"
 msgstr "Masce nevyhovují žádné diskusní skupiny"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nová pošta ve složce "
 

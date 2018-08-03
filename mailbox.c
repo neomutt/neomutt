@@ -34,7 +34,7 @@
 #include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "buffy.h"
+#include "mailbox.h"
 #include "context.h"
 #include "globals.h"
 #include "maildir/maildir.h"
@@ -53,7 +53,7 @@
 #include "notmuch/mutt_notmuch.h"
 #endif
 
-/* These Config Variables are only used in buffy.c */
+/* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
 bool MailCheckStats;          ///< Config: Periodically check for new mail
 short MailCheckStatsInterval; ///< Config: How often to check for new mail

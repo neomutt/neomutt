@@ -270,7 +270,7 @@ msgstr "Odsubskrybuj wzorzec: "
 msgid "No newsgroups match the mask"
 msgstr "Żadna grupa dyskusyjna nie pasuje do wzorca"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nowa poczta w "
 
