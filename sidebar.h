@@ -27,7 +27,7 @@
 
 #include <stdbool.h>
 
-struct Buffy;
+struct Mailbox;
 struct Context;
 
 /* These Config Variables are only used in sidebar.c */
@@ -45,7 +45,7 @@ extern short SidebarSortMethod;
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 const char *mutt_sb_get_highlight(void);
-void mutt_sb_notify_mailbox(struct Buffy *b, int created);
+void mutt_sb_notify_mailbox(struct Mailbox *b, int created);
 void mutt_sb_set_buffystats(const struct Context *ctx);
 void mutt_sb_set_open_buffy(void);
 void mutt_sb_toggle_virtual(void);

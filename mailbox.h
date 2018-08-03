@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BUFFY_H
-#define _MUTT_BUFFY_H
+#ifndef _MUTT_MAILBOX_H
+#define _MUTT_MAILBOX_H
 
 #include <limits.h>
 #include <stdbool.h>
@@ -44,9 +44,9 @@ extern bool  MaildirCheckCur;
 #define MUTT_VIRTUAL 2
 
 /**
- * struct Buffy - A mailbox
+ * struct Mailbox - A mailbox
  */
-struct Buffy
+struct Mailbox
 {
   char path[PATH_MAX];
   char realpath[PATH_MAX]; /**< used for duplicate detection, context
@@ -67,24 +67,22 @@ struct Buffy
   time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
-struct BuffyNode
+struct MailboxNode
 {
-  struct Buffy *b;
-  STAILQ_ENTRY(BuffyNode) entries;
+  struct Mailbox *b;
+  STAILQ_ENTRY(MailboxNode) entries;
 };
 
-STAILQ_HEAD(BuffyList, BuffyNode);
+STAILQ_HEAD(MailboxList, MailboxNode);
 
-extern struct BuffyList BuffyList;
+extern struct MailboxList AllMailboxes;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *buf, size_t buflen);
 #endif
 
-extern time_t BuffyDoneTime; /**< last time we knew for sure how much mail there was */
-
-struct Buffy *mutt_find_mailbox(const char *path);
-void mutt_update_mailbox(struct Buffy *b);
+struct Mailbox *mutt_find_mailbox(const char *path);
+void mutt_update_mailbox(struct Mailbox *b);
 
 void mutt_buffy_cleanup(const char *path, struct stat *st);
 
@@ -102,4 +100,4 @@ bool mutt_buffy_notify(void);
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 
-#endif /* _MUTT_BUFFY_H */
+#endif /* _MUTT_MAILBOX_H */

@@ -40,7 +40,7 @@
 #include "hcache/hcache.h"
 #endif
 
-struct Buffy;
+struct Mailbox;
 struct Context;
 struct Header;
 
@@ -63,7 +63,7 @@ struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, 
 struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *h);
 bool           maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
 
-bool           mh_buffy(struct Buffy *mailbox, bool check_stats);
+bool           mh_buffy(struct Mailbox *mailbox, bool check_stats);
 int            mh_check_empty(const char *path);
 
 bool           mx_is_maildir(const char *path);

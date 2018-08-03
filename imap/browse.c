@@ -113,8 +113,8 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (mutt_str_strcmp(tmp, np->b->path) == 0)
       break;

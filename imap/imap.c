@@ -542,8 +542,8 @@ static int complete_hosts(char *buf, size_t buflen)
   size_t matchlen;
 
   matchlen = mutt_str_strlen(buf);
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (mutt_str_strncmp(buf, np->b->path, matchlen) != 0)
       continue;
@@ -1430,8 +1430,8 @@ int imap_buffy_check(int check_stats)
   char munged[LONG_STRING];
   int buffies = 0;
 
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* Init newly-added mailboxes */
     if (!np->b->magic)
@@ -1505,7 +1505,7 @@ int imap_buffy_check(int check_stats)
   }
 
   /* collect results */
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if ((np->b->magic == MUTT_IMAP) && np->b->new)
       buffies++;

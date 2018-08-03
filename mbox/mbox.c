@@ -967,7 +967,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   FILE *fp = NULL;
   struct Progress progress;
   char msgbuf[PATH_MAX + 64];
-  struct Buffy *tmp = NULL;
+  struct Mailbox *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)

@@ -711,8 +711,8 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   mutt_debug(3, "Running default STATUS handler\n");
 
   /* should perhaps move this code back to imap_buffy_check */
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (np->b->magic != MUTT_IMAP)
       continue;

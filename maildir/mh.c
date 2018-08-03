@@ -292,7 +292,7 @@ static inline mode_t mh_umask(struct Context *ctx)
  * @retval 0 modification time is older
  * @retval -1 Error
  */
-static int mh_sequences_changed(struct Buffy *b)
+static int mh_sequences_changed(struct Mailbox *b)
 {
   char path[PATH_MAX];
   struct stat sb;
@@ -313,7 +313,7 @@ static int mh_sequences_changed(struct Buffy *b)
  * @retval 0 Modification time on the message file is newer
  * @retval -1 Error
  */
-static int mh_already_notified(struct Buffy *b, int msgno)
+static int mh_already_notified(struct Mailbox *b, int msgno)
 {
   char path[PATH_MAX];
   struct stat sb;
@@ -352,7 +352,7 @@ static bool mh_valid_message(const char *s)
  * @param check_stats Also count total, new, and flagged messages
  * @retval true if the mailbox has new mail
  */
-bool mh_buffy(struct Buffy *mailbox, bool check_stats)
+bool mh_buffy(struct Mailbox *mailbox, bool check_stats)
 {
   struct MhSequences mhs = { 0 };
   bool check_new = true;

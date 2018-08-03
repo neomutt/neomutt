@@ -727,8 +727,9 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
 }
 #endif /* USE_NNTP */
 
-static void add_folder(struct Menu *m, struct BrowserState *state, const char *name,
-                       const char *desc, const struct stat *s, struct Buffy *b, void *data)
+static void add_folder(struct Menu *m, struct BrowserState *state,
+                       const char *name, const char *desc, const struct stat *s,
+                       struct Mailbox *b, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
@@ -892,8 +893,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       else if (!S_ISREG(s.st_mode))
         continue;
 
-      struct BuffyNode *np = NULL;
-      STAILQ_FOREACH(np, &BuffyList, entries)
+      struct MailboxNode *np = NULL;
+      STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
         if (mutt_str_strcmp(buffer, np->b->path) != 0)
           break;
@@ -922,15 +923,15 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
  */
 static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
-  if (STAILQ_EMPTY(&BuffyList))
+  if (STAILQ_EMPTY(&AllMailboxes))
     return -1;
 
   mutt_buffy_check(0);
 
   init_state(state, menu);
 
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (mx_is_notmuch(np->b->path))
     {
@@ -978,12 +979,12 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   {
     init_state(state, menu);
 
-    if (STAILQ_EMPTY(&BuffyList))
+    if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
     mutt_buffy_check(0);
 
-    struct BuffyNode *np = NULL;
-    STAILQ_FOREACH(np, &BuffyList, entries)
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
       if (Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
       {

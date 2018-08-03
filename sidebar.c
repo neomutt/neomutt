@@ -73,9 +73,9 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[STRING];    /**< formatted mailbox name */
-  struct Buffy *buffy; /**< Mailbox this represents */
-  bool is_hidden;      /**< Don't show, e.g. $sidebar_new_mail_only */
+  char box[STRING];      /**< formatted mailbox name */
+  struct Mailbox *buffy; /**< Mailbox this represents */
+  bool is_hidden;        /**< Don't show, e.g. $sidebar_new_mail_only */
 };
 
 static int EntryCount = 0;
@@ -149,7 +149,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   buf[0] = 0; /* Just in case there's nothing to do */
 
-  struct Buffy *b = sbe->buffy;
+  struct Mailbox *b = sbe->buffy;
   if (!b)
     return src;
 
@@ -316,8 +316,8 @@ static int cb_qsort_sbe(const void *a, const void *b)
 {
   const struct SbEntry *sbe1 = *(const struct SbEntry **) a;
   const struct SbEntry *sbe2 = *(const struct SbEntry **) b;
-  struct Buffy *b1 = sbe1->buffy;
-  struct Buffy *b2 = sbe2->buffy;
+  struct Mailbox *b1 = sbe1->buffy;
+  struct Mailbox *b2 = sbe2->buffy;
 
   int result = 0;
 
@@ -422,8 +422,8 @@ static void unsort_entries(void)
 {
   int i = 0;
 
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (i >= EntryCount)
       break;
@@ -817,7 +817,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
  * On the first run they'll be NULL, so we display the top of NeoMutt's list
- * (BuffyList).
+ * (AllMailboxes).
  *
  * * TopBuffy - first visible mailbox
  * * BotBuffy - last  visible mailbox
@@ -832,7 +832,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
   struct SbEntry *entry = NULL;
-  struct Buffy *b = NULL;
+  struct Mailbox *b = NULL;
   if (TopIndex < 0)
     return;
 
@@ -1003,8 +1003,8 @@ void mutt_sb_draw(void)
 
   if (!Entries)
   {
-    struct BuffyNode *np = NULL;
-    STAILQ_FOREACH(np, &BuffyList, entries)
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
       mutt_sb_notify_mailbox(np->b, 1);
     }
@@ -1087,8 +1087,8 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
     return;
 
   /* Even if the sidebar's hidden, we should take note of the new data. */
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (mutt_str_strcmp(np->b->realpath, ctx->realpath) == 0)
     {
@@ -1152,7 +1152,7 @@ void mutt_sb_set_open_buffy(void)
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(struct Buffy *b, int created)
+void mutt_sb_notify_mailbox(struct Mailbox *b, int created)
 {
   if (!b)
     return;
@@ -1229,8 +1229,8 @@ void mutt_sb_toggle_virtual(void)
   EntryCount = 0;
   FREE(&Entries);
   EntryLen = 0;
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* and reintroduce the ones that are visible */
     if (((np->b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||

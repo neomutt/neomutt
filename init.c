@@ -3309,12 +3309,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    struct BuffyNode *bp = NULL;
-    STAILQ_FOREACH(bp, &BuffyList, entries)
+    struct MailboxNode *mp = NULL;
+    STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (bp->b->magic == MUTT_NOTMUCH)
+      if (mp->b->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", bp->b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->b->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }

@@ -2276,8 +2276,8 @@ done:
  */
 char *nm_get_description(struct Context *ctx)
 {
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (np->b->desc && (strcmp(np->b->path, ctx->path) == 0))
       return np->b->desc;
@@ -2299,8 +2299,8 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   if (!desc || !buf || (buflen == 0))
     return -EINVAL;
 
-  struct BuffyNode *np = NULL;
-  STAILQ_FOREACH(np, &BuffyList, entries)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if ((np->b->magic == MUTT_NOTMUCH) && np->b->desc && (strcmp(desc, np->b->desc) == 0))
     {
