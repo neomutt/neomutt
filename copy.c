@@ -40,7 +40,6 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "mailbox.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"

@@ -275,7 +275,7 @@ msgstr "%s-ra harpidetzaz ezabaturik"
 msgid "No newsgroups match the mask"
 msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Posta berria "
 

@@ -276,7 +276,7 @@ msgstr "Sottoscrizione rimossa da %s..."
 msgid "No newsgroups match the mask"
 msgstr "Non ci sono file corrispondenti alla maschera"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nuova posta in "
 

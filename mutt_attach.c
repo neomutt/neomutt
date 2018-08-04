@@ -41,7 +41,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
-#include "mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

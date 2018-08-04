@@ -45,7 +45,6 @@
 #include "group.h"
 #include "handler.h"
 #include "hdrline.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"

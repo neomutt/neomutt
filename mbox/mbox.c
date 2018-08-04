@@ -41,7 +41,6 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "buffy.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -922,7 +921,7 @@ static bool mbox_has_new(struct Context *ctx)
  * @param st  Timestamp
  *
  * if mailbox has at least 1 new message, sets mtime > atime of mailbox so
- * buffy check reports new mail
+ * mailbox check reports new mail
  */
 void mbox_reset_atime(struct Context *ctx, struct stat *st)
 {
@@ -968,7 +967,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   FILE *fp = NULL;
   struct Progress progress;
   char msgbuf[PATH_MAX + 64];
-  struct Buffy *tmp = NULL;
+  struct Mailbox *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)

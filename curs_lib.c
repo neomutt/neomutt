@@ -547,7 +547,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
  * @param[in]  prompt   Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  buflen   Length of the buffer
- * @param[in]  buffy    If true, select mailboxes
+ * @param[in]  mailbox  If true, select mailboxes
  * @param[in]  multiple Allow multiple selections
  * @param[out] files    List of files selected
  * @param[out] numfiles Number of files selected
@@ -555,7 +555,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool buffy,
+int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mailbox,
                           bool multiple, char ***files, int *numfiles, int flags)
 {
   struct Event ch;
@@ -584,8 +584,8 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool buf
       flags = MUTT_SEL_FOLDER;
     if (multiple)
       flags |= MUTT_SEL_MULTI;
-    if (buffy)
-      flags |= MUTT_SEL_BUFFY;
+    if (mailbox)
+      flags |= MUTT_SEL_MAILBOX;
     mutt_select_file(buf, buflen, flags, files, numfiles);
   }
   else
@@ -594,7 +594,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool buf
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (mutt_get_field_full(pc, buf, buflen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+    if (mutt_get_field_full(pc, buf, buflen, (mailbox ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                             multiple, files, numfiles) != 0)
     {
       buf[0] = '\0';

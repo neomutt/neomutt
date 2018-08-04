@@ -45,7 +45,6 @@
 #include "group.h"
 #include "hcache/hcache.h"
 #include "keymap.h"
-#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -1762,7 +1761,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           {
             char scratch[PATH_MAX];
             mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
-            
+
             if (mutt_str_strcmp(buf->data, "builtin") != 0)
             {
               mutt_expand_path(scratch, sizeof(scratch));
@@ -3310,11 +3309,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
-    for (struct Buffy *b = Incoming; b; b = b->next)
+    struct MailboxNode *mp = NULL;
+    STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (b->magic == MUTT_NOTMUCH)
+      if (mp->b->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->b->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }

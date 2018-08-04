@@ -275,7 +275,7 @@ msgstr "Abonnement op %s opgezegd"
 msgid "No newsgroups match the mask"
 msgstr "Geen bestanden waarop het masker past gevonden."
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nieuw bericht in "
 

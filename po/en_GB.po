@@ -267,7 +267,7 @@ msgstr "Unsubscribe pattern: "
 msgid "No newsgroups match the mask"
 msgstr "No newsgroups match the mask"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "New mail in "
 

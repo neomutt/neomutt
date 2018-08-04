@@ -54,7 +54,7 @@ enum AclRights
 struct Context
 {
   char *path;
-  char *realpath; /**< used for buffy comparison and the sidebar */
+  char *realpath; /**< used for mailbox comparison and the sidebar */
   FILE *fp;
   time_t atime;
   time_t mtime;

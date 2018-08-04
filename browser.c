@@ -41,7 +41,6 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "browser.h"
-#include "buffy.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "format_flags.h"
@@ -218,9 +217,9 @@ static int browser_compare_count(const void *a, const void *b)
   struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
-  if (pa->has_buffy && pb->has_buffy)
+  if (pa->has_mailbox && pb->has_mailbox)
     r = pa->msg_count - pb->msg_count;
-  else if (pa->has_buffy)
+  else if (pa->has_mailbox)
     r = -1;
   else
     r = 1;
@@ -242,9 +241,9 @@ static int browser_compare_count_new(const void *a, const void *b)
   struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
-  if (pa->has_buffy && pb->has_buffy)
+  if (pa->has_mailbox && pb->has_mailbox)
     r = pa->msg_unread - pb->msg_unread;
-  else if (pa->has_buffy)
+  else if (pa->has_mailbox)
     r = -1;
   else
     r = 1;
@@ -517,7 +516,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'm':
       if (!optional)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_mailbox)
         {
           snprintf(fmt, sizeof(fmt), "%%%sd", prec);
           snprintf(buf, buflen, fmt, folder->ff->msg_count);
@@ -537,7 +536,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'n':
       if (!optional)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_mailbox)
         {
           snprintf(fmt, sizeof(fmt), "%%%sd", prec);
           snprintf(buf, buflen, fmt, folder->ff->msg_unread);
@@ -728,8 +727,9 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
 }
 #endif /* USE_NNTP */
 
-static void add_folder(struct Menu *m, struct BrowserState *state, const char *name,
-                       const char *desc, const struct stat *s, struct Buffy *b, void *data)
+static void add_folder(struct Menu *m, struct BrowserState *state,
+                       const char *name, const char *desc, const struct stat *s,
+                       struct Mailbox *b, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
@@ -756,7 +756,7 @@ static void add_folder(struct Menu *m, struct BrowserState *state, const char *n
 
   if (b)
   {
-    (state->entry)[state->entrylen].has_buffy = true;
+    (state->entry)[state->entrylen].has_mailbox = true;
     (state->entry)[state->entrylen].new = b->new;
     (state->entry)[state->entrylen].msg_count = b->msg_count;
     (state->entry)[state->entrylen].msg_unread = b->msg_unread;
@@ -832,7 +832,6 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
     DIR *dp = NULL;
     struct dirent *de = NULL;
     char buffer[PATH_MAX + SHORT_STRING];
-    struct Buffy *tmp = NULL;
 
     while (stat(d, &s) == -1)
     {
@@ -857,7 +856,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       return -1;
     }
 
-    mutt_buffy_check(0);
+    mutt_mailbox_check(0);
 
     dp = opendir(d);
     if (!dp)
@@ -894,15 +893,19 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       else if (!S_ISREG(s.st_mode))
         continue;
 
-      tmp = Incoming;
-      while (tmp && (mutt_str_strcmp(buffer, tmp->path) != 0))
-        tmp = tmp->next;
-      if (tmp && Context && (mutt_str_strcmp(tmp->realpath, Context->realpath) == 0))
+      struct MailboxNode *np = NULL;
+      STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        tmp->msg_count = Context->msgcount;
-        tmp->msg_unread = Context->unread;
+        if (mutt_str_strcmp(buffer, np->b->path) != 0)
+          break;
       }
-      add_folder(menu, state, de->d_name, NULL, &s, tmp, NULL);
+
+      if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
+      {
+        np->b->msg_count = Context->msgcount;
+        np->b->msg_unread = Context->unread;
+      }
+      add_folder(menu, state, de->d_name, NULL, &s, np->b, NULL);
     }
     closedir(dp);
   }
@@ -920,23 +923,24 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
  */
 static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
-  struct Buffy *tmp = Incoming;
-  if (!tmp)
+  if (STAILQ_EMPTY(&AllMailboxes))
     return -1;
 
-  mutt_buffy_check(0);
+  mutt_mailbox_check(0);
 
   init_state(state, menu);
 
-  do
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mx_is_notmuch(tmp->path))
+    if (mx_is_notmuch(np->b->path))
     {
-      nm_nonctx_get_count(tmp->path, &tmp->msg_count, &tmp->msg_unread);
-      add_folder(menu, state, tmp->path, tmp->desc, NULL, tmp, NULL);
+      nm_nonctx_get_count(np->b->path, &np->b->msg_count, &np->b->msg_unread);
+      add_folder(menu, state, np->b->path, np->b->desc, NULL, np->b, NULL);
       continue;
     }
-  } while ((tmp = tmp->next));
+  }
+
   browser_sort(state);
   return 0;
 }
@@ -973,71 +977,70 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   else
 #endif
   {
-    struct Buffy *tmp = Incoming;
-
     init_state(state, menu);
 
-    if (!Incoming)
+    if (STAILQ_EMPTY(&AllMailboxes))
       return -1;
-    mutt_buffy_check(0);
+    mutt_mailbox_check(0);
 
-    do
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (Context && (mutt_str_strcmp(tmp->realpath, Context->realpath) == 0))
+      if (Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
       {
-        tmp->msg_count = Context->msgcount;
-        tmp->msg_unread = Context->unread;
+        np->b->msg_count = Context->msgcount;
+        np->b->msg_unread = Context->unread;
       }
 
       char buffer[PATH_MAX];
-      mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
+      mutt_str_strfcpy(buffer, np->b->path, sizeof(buffer));
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
-      if (mx_is_imap(tmp->path))
+      if (mx_is_imap(np->b->path))
       {
-        add_folder(menu, state, buffer, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_POP
-      if (mx_is_pop(tmp->path))
+      if (mx_is_pop(np->b->path))
       {
-        add_folder(menu, state, buffer, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_NNTP
-      if (mx_is_nntp(tmp->path))
+      if (mx_is_nntp(np->b->path))
       {
-        add_folder(menu, state, tmp->path, NULL, NULL, tmp, NULL);
+        add_folder(menu, state, np->b->path, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
-      if (lstat(tmp->path, &s) == -1)
+      if (lstat(np->b->path, &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (mx_is_maildir(tmp->path))
+      if (mx_is_maildir(np->b->path))
       {
         struct stat st2;
         char md[PATH_MAX];
 
-        snprintf(md, sizeof(md), "%s/new", tmp->path);
+        snprintf(md, sizeof(md), "%s/new", np->b->path);
         if (stat(md, &s) < 0)
           s.st_mtime = 0;
-        snprintf(md, sizeof(md), "%s/cur", tmp->path);
+        snprintf(md, sizeof(md), "%s/cur", np->b->path);
         if (stat(md, &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > s.st_mtime)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buffer, NULL, &s, tmp, NULL);
-    } while ((tmp = tmp->next));
+      add_folder(menu, state, buffer, NULL, &s, np->b, NULL);
+    }
   }
   browser_sort(state);
   return 0;
@@ -1158,10 +1161,10 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
  * @param menu     Current menu
  * @param title    Buffer for the title
  * @param titlelen Length of buffer
- * @param buffy    If true, select mailboxes
+ * @param mailbox  If true, select mailboxes
  */
 static void init_menu(struct BrowserState *state, struct Menu *menu,
-                      char *title, size_t titlelen, bool buffy)
+                      char *title, size_t titlelen, bool mailbox)
 {
   menu->max = state->entrylen;
 
@@ -1177,7 +1180,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    if (buffy)
+    if (mailbox)
       snprintf(title, titlelen, _("Subscribed newsgroups"));
     else
     {
@@ -1188,10 +1191,10 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
   else
 #endif
   {
-    if (buffy)
+    if (mailbox)
     {
       menu->is_mailbox_list = 1;
-      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check(0));
+      snprintf(title, titlelen, _("Mailboxes [%d]"), mutt_mailbox_check(0));
     }
     else
     {
@@ -1309,14 +1312,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   int i, kill_prefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;
   int folder = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
-  int buffy = (flags & MUTT_SEL_BUFFY) ? 1 : 0;
+  int mailbox = (flags & MUTT_SEL_MAILBOX) ? 1 : 0;
 
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (Folder)
    */
   char GotoSwapper[PATH_MAX] = "";
 
-  buffy = buffy && folder;
+  mailbox = mailbox && folder;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -1328,13 +1331,13 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       struct NntpServer *nserv = CurrentNewsSrv;
 
       /* default state for news reader mode is browse subscribed newsgroups */
-      buffy = 0;
+      mailbox = 0;
       for (unsigned int j = 0; j < nserv->groups_num; j++)
       {
         struct NntpData *nntp_data = nserv->groups_list[j];
         if (nntp_data && nntp_data->subscribed)
         {
-          buffy = 1;
+          mailbox = 1;
           break;
         }
       }
@@ -1476,7 +1479,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     }
 
 #ifdef USE_IMAP
-    if (!buffy && mx_is_imap(LastDir))
+    if (!mailbox && mx_is_imap(LastDir))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1504,7 +1507,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   }
   else
 #endif
-      if (buffy)
+      if (mailbox)
   {
     examine_mailboxes(NULL, &state);
   }
@@ -1541,7 +1544,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                                            FolderHelp);
   mutt_menu_push_current(menu);
 
-  init_menu(&state, menu, title, sizeof(title), buffy);
+  init_menu(&state, menu, title, sizeof(title), mailbox);
 
   while (true)
   {
@@ -1564,7 +1567,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         )
         {
           /* make sure this isn't a MH or maildir mailbox */
-          if (buffy)
+          if (mailbox)
           {
             mutt_str_strfcpy(buf, state.entry[menu->current].name, sizeof(buf));
             mutt_expand_path(buf, sizeof(buf));
@@ -1609,7 +1612,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 }
               }
             }
-            else if (buffy)
+            else if (mailbox)
             {
               mutt_str_strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               mutt_expand_path(LastDir, sizeof(LastDir));
@@ -1649,7 +1652,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               prefix[0] = 0;
               kill_prefix = 0;
             }
-            buffy = 0;
+            mailbox = 0;
 #ifdef USE_IMAP
             if (state.imap_browse)
             {
@@ -1678,14 +1681,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             }
 
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
             if (GotoSwapper[0])
               GotoSwapper[0] = '\0';
             break;
           }
         }
 
-        if (buffy || OptNews) /* USE_NNTP */
+        if (mailbox || OptNews) /* USE_NNTP */
         {
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
           mutt_expand_path(file, filelen);
@@ -1768,7 +1771,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           browser_sort(&state);
           menu->data = state.entry;
           browser_highlight_default(&state, menu);
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         /* else leave error on screen */
         break;
@@ -1789,7 +1792,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             browser_sort(&state);
             menu->data = state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
         }
         break;
@@ -1831,7 +1834,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               memset(&state.entry[state.entrylen - 1], 0, sizeof(struct FolderFile));
               state.entrylen--;
               mutt_message(_("Mailbox deleted."));
-              init_menu(&state, menu, title, sizeof(title), buffy);
+              init_menu(&state, menu, title, sizeof(title), mailbox);
             }
             else
               mutt_error(_("Mailbox deletion failed."));
@@ -1876,7 +1879,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
         if (buf[0])
         {
-          buffy = 0;
+          mailbox = 0;
           mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_IMAP
           if (mx_is_imap(buf))
@@ -1889,7 +1892,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             browser_sort(&state);
             menu->data = state.entry;
             browser_highlight_default(&state, menu);
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
           else
 #endif
@@ -1924,7 +1927,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                   }
                 }
                 browser_highlight_default(&state, menu);
-                init_menu(&state, menu, title, sizeof(title), buffy);
+                init_menu(&state, menu, title, sizeof(title), mailbox);
               }
               else
                 mutt_error(_("%s is not a directory."), buf);
@@ -1941,7 +1944,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 
-        buffy = 0;
+        mailbox = 0;
         /* assume that the user wants to see everything */
         if (!buf[0])
           mutt_str_strfcpy(buf, ".", sizeof(buf));
@@ -1967,12 +1970,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           imap_browse(LastDir, &state);
           browser_sort(&state);
           menu->data = state.entry;
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         else
 #endif
             if (examine_directory(menu, &state, LastDir, NULL) == 0)
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         else
         {
           mutt_error(_("Error scanning directory."));
@@ -2054,7 +2057,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
         if (i == OP_TOGGLE_MAILBOXES)
-          buffy = 1 - buffy;
+          mailbox = 1 - mailbox;
 
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
@@ -2084,7 +2087,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         prefix[0] = 0;
         kill_prefix = 0;
 
-        if (buffy)
+        if (mailbox)
         {
           examine_mailboxes(menu, &state);
         }
@@ -2100,11 +2103,11 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif
         else if (examine_directory(menu, &state, LastDir, prefix) == -1)
           goto bail;
-        init_menu(&state, menu, title, sizeof(title), buffy);
+        init_menu(&state, menu, title, sizeof(title), mailbox);
         break;
 
-      case OP_BUFFY_LIST:
-        mutt_buffy_list();
+      case OP_MAILBOX_LIST:
+        mutt_mailbox_list();
         break;
 
       case OP_BROWSER_NEW_FILE:
@@ -2208,14 +2211,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           nntp_newsrc_close(nserv);
 
           destroy_state(&state);
-          if (buffy)
+          if (mailbox)
             examine_mailboxes(menu, &state);
           else
           {
             if (examine_directory(menu, &state, NULL, NULL) == -1)
               break;
           }
-          init_menu(&state, menu, title, sizeof(title), buffy);
+          init_menu(&state, menu, title, sizeof(title), mailbox);
         }
         break;
 #endif /* USE_NNTP */
@@ -2305,7 +2308,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 }
               }
             }
-            init_menu(&state, menu, title, sizeof(title), buffy);
+            init_menu(&state, menu, title, sizeof(title), mailbox);
           }
           if (rc > 0)
             menu->redraw = REDRAW_FULL;

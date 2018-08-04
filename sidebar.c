@@ -37,11 +37,11 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "sidebar.h"
-#include "buffy.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -73,9 +73,9 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[STRING];    /**< formatted mailbox name */
-  struct Buffy *buffy; /**< Mailbox this represents */
-  bool is_hidden;      /**< Don't show, e.g. $sidebar_new_mail_only */
+  char box[STRING];        /**< formatted mailbox name */
+  struct Mailbox *mailbox; /**< Mailbox this represents */
+  bool is_hidden;          /**< Don't show, e.g. $sidebar_new_mail_only */
 };
 
 static int EntryCount = 0;
@@ -149,7 +149,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   buf[0] = 0; /* Just in case there's nothing to do */
 
-  struct Buffy *b = sbe->buffy;
+  struct Mailbox *b = sbe->mailbox;
   if (!b)
     return src;
 
@@ -316,8 +316,8 @@ static int cb_qsort_sbe(const void *a, const void *b)
 {
   const struct SbEntry *sbe1 = *(const struct SbEntry **) a;
   const struct SbEntry *sbe2 = *(const struct SbEntry **) b;
-  struct Buffy *b1 = sbe1->buffy;
-  struct Buffy *b2 = sbe2->buffy;
+  struct Mailbox *b1 = sbe1->mailbox;
+  struct Mailbox *b2 = sbe2->mailbox;
 
   int result = 0;
 
@@ -363,7 +363,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
  *
  * For each SbEntry in the Entries array, check whether we should display it.
- * This is determined by several criteria.  If the Buffy:
+ * This is determined by several criteria.  If the Mailbox:
  * * is the currently open mailbox
  * * is the currently highlighted mailbox
  * * has unread messages
@@ -381,8 +381,8 @@ static void update_entries_visibility(void)
     sbe->is_hidden = false;
 
 #ifdef USE_NOTMUCH
-    if (((sbe->buffy->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((sbe->buffy->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    if (((sbe->mailbox->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((sbe->mailbox->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
     {
       sbe->is_hidden = true;
       continue;
@@ -392,20 +392,20 @@ static void update_entries_visibility(void)
     if (!new_only)
       continue;
 
-    if ((i == OpnIndex) || (sbe->buffy->msg_unread > 0) || sbe->buffy->new ||
-        (sbe->buffy->msg_flagged > 0))
+    if ((i == OpnIndex) || (sbe->mailbox->msg_unread > 0) ||
+        sbe->mailbox->new || (sbe->mailbox->msg_flagged > 0))
     {
       continue;
     }
 
-    if (Context && (mutt_str_strcmp(sbe->buffy->realpath, Context->realpath) == 0))
+    if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->realpath) == 0))
     {
       /* Spool directory */
       continue;
     }
 
-    if (mutt_list_find(&SidebarWhitelist, sbe->buffy->path) ||
-        mutt_list_find(&SidebarWhitelist, sbe->buffy->desc))
+    if (mutt_list_find(&SidebarWhitelist, sbe->mailbox->path) ||
+        mutt_list_find(&SidebarWhitelist, sbe->mailbox->desc))
     {
       /* Explicitly asked to be visible */
       continue;
@@ -416,17 +416,20 @@ static void update_entries_visibility(void)
 }
 
 /**
- * unsort_entries - Restore Entries array order to match Buffy list order
+ * unsort_entries - Restore Entries array order to match Mailbox list order
  */
 static void unsort_entries(void)
 {
-  struct Buffy *cur = Incoming;
   int i = 0;
 
-  while (cur && (i < EntryCount))
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
+    if (i >= EntryCount)
+      break;
+
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->buffy != cur))
+    while ((j < EntryCount) && (Entries[j]->mailbox != np->b))
       j++;
     if (j < EntryCount)
     {
@@ -438,7 +441,6 @@ static void unsort_entries(void)
       }
       i++;
     }
-    cur = cur->next;
   }
 }
 
@@ -511,7 +513,7 @@ static int select_next_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->buffy->new && !Entries[entry]->buffy->msg_unread);
+  } while (!Entries[entry]->mailbox->new && !Entries[entry]->mailbox->msg_unread);
 
   HilIndex = entry;
   return true;
@@ -566,7 +568,7 @@ static bool select_prev_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->buffy->new && !Entries[entry]->buffy->msg_unread);
+  } while (!Entries[entry]->mailbox->new && !Entries[entry]->mailbox->msg_unread);
 
   HilIndex = entry;
   return true;
@@ -813,14 +815,14 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  * @param div_width  Width in screen characters taken by the divider
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
- * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
+ * depend on our index markers: TopMailbox, OpnMailbox, HilMailbox, BotMailbox.
  * On the first run they'll be NULL, so we display the top of NeoMutt's list
- * (Incoming).
+ * (AllMailboxes).
  *
- * * TopBuffy - first visible mailbox
- * * BotBuffy - last  visible mailbox
- * * OpnBuffy - mailbox shown in NeoMutt's Index Panel
- * * HilBuffy - Unselected mailbox (the paging follows this)
+ * * TopMailbox - first visible mailbox
+ * * BotMailbox - last  visible mailbox
+ * * OpnMailbox - mailbox shown in NeoMutt's Index Panel
+ * * HilMailbox - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:
  * "sidebar_short_path", indented: "sidebar_folder_indent",
@@ -830,7 +832,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
   struct SbEntry *entry = NULL;
-  struct Buffy *b = NULL;
+  struct Mailbox *b = NULL;
   if (TopIndex < 0)
     return;
 
@@ -841,7 +843,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     entry = Entries[entryidx];
     if (entry->is_hidden)
       continue;
-    b = entry->buffy;
+    b = entry->mailbox;
 
     if (entryidx == OpnIndex)
     {
@@ -979,7 +981,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  * mutt_sb_draw - Completely redraw the sidebar
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
- * each Buffy, call make_sidebar_entry; finally blank out any remaining space.
+ * each Mailbox, call make_sidebar_entry; finally blank out any remaining space.
  */
 void mutt_sb_draw(void)
 {
@@ -1000,8 +1002,13 @@ void mutt_sb_draw(void)
   int div_width = draw_divider(num_rows, num_cols);
 
   if (!Entries)
-    for (struct Buffy *b = Incoming; b; b = b->next)
-      mutt_sb_notify_mailbox(b, 1);
+  {
+    struct MailboxNode *np = NULL;
+    STAILQ_FOREACH(np, &AllMailboxes, entries)
+    {
+      mutt_sb_notify_mailbox(np->b, 1);
+    }
+  }
 
   if (!prepare_sidebar(num_rows))
   {
@@ -1020,7 +1027,7 @@ void mutt_sb_draw(void)
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
  * with new mail". The operations are listed in opcodes.h.
  *
- * If the operation is successful, HilBuffy will be set to the new mailbox.
+ * If the operation is successful, HilMailbox will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.
  *
  * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW,
@@ -1068,34 +1075,33 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_set_buffystats - Update the Buffy's message counts from the Context
+ * mutt_sb_set_mailbox_stats - Update the Mailbox's message counts from the Context
  * @param ctx  A mailbox Context
  *
- * Given a mailbox Context, find a matching mailbox Buffy and copy the message
+ * Given a mailbox Context, find a matching mailbox Mailbox and copy the message
  * counts into it.
  */
-void mutt_sb_set_buffystats(const struct Context *ctx)
+void mutt_sb_set_mailbox_stats(const struct Context *ctx)
 {
-  /* Even if the sidebar's hidden,
-   * we should take note of the new data. */
-  struct Buffy *b = Incoming;
-  if (!ctx || !b)
+  if (!ctx)
     return;
 
-  for (; b; b = b->next)
+  /* Even if the sidebar's hidden, we should take note of the new data. */
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strcmp(b->realpath, ctx->realpath) == 0)
+    if (mutt_str_strcmp(np->b->realpath, ctx->realpath) == 0)
     {
-      b->msg_unread = ctx->unread;
-      b->msg_count = ctx->msgcount;
-      b->msg_flagged = ctx->flagged;
+      np->b->msg_unread = ctx->unread;
+      np->b->msg_count = ctx->msgcount;
+      np->b->msg_flagged = ctx->flagged;
       break;
     }
   }
 }
 
 /**
- * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
+ * mutt_sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @retval ptr Mailbox path
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
@@ -1108,16 +1114,16 @@ const char *mutt_sb_get_highlight(void)
   if (!EntryCount || HilIndex < 0)
     return NULL;
 
-  return Entries[HilIndex]->buffy->path;
+  return Entries[HilIndex]->mailbox->path;
 }
 
 /**
- * mutt_sb_set_open_buffy - Set the OpnBuffy based on the global Context
+ * mutt_sb_set_open_mailbox - Set the OpnMailbox based on the global Context
  *
- * Search through the list of mailboxes.  If a Buffy has a matching path, set
- * OpnBuffy to it.
+ * Search through the list of mailboxes.  If a Mailbox has a matching path, set
+ * OpnMailbox to it.
  */
-void mutt_sb_set_open_buffy(void)
+void mutt_sb_set_open_mailbox(void)
 {
   OpnIndex = -1;
 
@@ -1126,7 +1132,7 @@ void mutt_sb_set_open_buffy(void)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->buffy->realpath, Context->realpath) == 0)
+    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, Context->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1136,17 +1142,17 @@ void mutt_sb_set_open_buffy(void)
 }
 
 /**
- * mutt_sb_notify_mailbox - The state of a Buffy is about to change
+ * mutt_sb_notify_mailbox - The state of a Mailbox is about to change
  * @param b       Folder
  * @param created True if folder created, false if deleted
  *
  * We receive a notification:
- *      After a new Buffy has been created
- *      Before a Buffy is deleted
+ * - After a new Mailbox has been created
+ * - Before a Mailbox is deleted
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(struct Buffy *b, int created)
+void mutt_sb_notify_mailbox(struct Mailbox *b, int created)
 {
   if (!b)
     return;
@@ -1162,7 +1168,7 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
       mutt_mem_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
     Entries[EntryCount] = mutt_mem_calloc(1, sizeof(struct SbEntry));
-    Entries[EntryCount]->buffy = b;
+    Entries[EntryCount]->mailbox = b;
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
@@ -1177,7 +1183,7 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
   {
     int del_index;
     for (del_index = 0; del_index < EntryCount; del_index++)
-      if (Entries[del_index]->buffy == b)
+      if (Entries[del_index]->mailbox == b)
         break;
     if (del_index == EntryCount)
       return;
@@ -1223,13 +1229,14 @@ void mutt_sb_toggle_virtual(void)
   EntryCount = 0;
   FREE(&Entries);
   EntryLen = 0;
-  for (struct Buffy *b = Incoming; b; b = b->next)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* and reintroduce the ones that are visible */
-    if (((b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    if (((np->b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((np->b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
     {
-      mutt_sb_notify_mailbox(b, true);
+      mutt_sb_notify_mailbox(np->b, true);
     }
   }
 

@@ -346,7 +346,7 @@
   - Updated French translation
   - Fix imap sync segfault due to inactive headers during an expunge
   - Close the imap socket for the selected mailbox on error
-  - Add missing IMAP_CMD_POLL flag in imap buffy check
+  - Add missing IMAP_CMD_POLL flag in imap mailbox check
   - Change maildir and mh check_mailbox to use dynamic sized hash
   - Fix uses of context->changed as a counter
   - Make cmd_parse_fetch() more precise about setting reopen/check flags
@@ -485,7 +485,7 @@
 * Tidy
   - drop VirtIncoming
   - split mutt_parse_mailboxes into mutt_parse_unmailboxes
-  - tidy some buffy code
+  - tidy some mailbox code
   - tidy the version strings
 * Upstream
   - Add ~<() and ~>() immediate parent/children patterns
@@ -970,7 +970,7 @@
   - Add option for missing subject replacement
   - notmuch: Allow <modify-labels> to toggle labels
   - Support for aborting mailbox loading
-  - Do a buffy check after shell escape
+  - Do a mailbox check after shell escape
   - Support of relative paths sourcing and cyclic source detection
   - Support of multiple config files as CLI arguments
   - Extend the ~m pattern to allow relative ranges
@@ -1375,14 +1375,14 @@
   - Add sidebar_format flag '%n' to display 'N' on new mail.
   - fix index_format truncation problem
   - Fix compiler warnings due to always true condition
-  - Change sidebar next/prev-new to look at buffy->new too.
+  - Change sidebar next/prev-new to look at mailbox->new too.
   - Change the default for sidebar_format to use %n.
-  - sidebar "unsorted" order to match Buffy list order.
+  - sidebar "unsorted" order to match Mailbox list order.
   - Include ncurses tinfo library if found.
   - Sidebar width problem
   - sidebar crash for non-existent mailbox
   - Temporary compatibility workaround
-  - Reset buffy->new for the current mailbox in IMAP.
+  - Reset mailbox->new for the current mailbox in IMAP.
   - version.sh regression
   - crash when notmuch tries to read a message
   - status line wrapping
@@ -1413,7 +1413,7 @@
   - Single quote at line beginning misinterpreted by groff
   - Setting $sidebar_width to more than 128 would cause bad things to happen.
   - Fix alignment in the compose menu.
-  - Fix sidebar buffy stats updating on mailbox close.
+  - Fix sidebar mailbox stats updating on mailbox close.
 * Build Changes
   - Sync whitespace to mutt/default
   - Alter ChangeLog date format to simplify Makefiles

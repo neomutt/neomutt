@@ -272,7 +272,7 @@ msgstr "%s aboneliği iptal ediliyor..."
 msgid "No newsgroups match the mask"
 msgstr "Tabire uyan haber grubu bulunamaz"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Yeni posta: "
 

@@ -36,7 +36,6 @@
 #include "curs_main.h"
 #include "alias.h"
 #include "browser.h"
-#include "buffy.h"
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -562,11 +561,11 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
     collapse_all(menu, 0);
 
 #ifdef USE_SIDEBAR
-  mutt_sb_set_open_buffy();
+  mutt_sb_set_open_mailbox();
 #endif
 
   mutt_clear_error();
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE); /* force the buffy check after we have changed the folder */
+  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE); /* force the mailbox check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
   OptSearchInvalid = true;
 
@@ -848,7 +847,7 @@ static void index_menu_redraw(struct Menu *menu)
 #ifdef USE_SIDEBAR
   if (menu->redraw & REDRAW_SIDEBAR)
   {
-    mutt_sb_set_buffystats(Context);
+    mutt_sb_set_mailbox_stats(Context);
     menu_redraw_sidebar(menu);
   }
 #endif
@@ -909,7 +908,7 @@ int mutt_index_menu(void)
   int rc = -1;
   char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
-  bool do_buffy_notify = true;
+  bool do_mailbox_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OptAttachMsg;
 
@@ -928,8 +927,8 @@ int mutt_index_menu(void)
 
   if (!attach_msg)
   {
-    /* force the buffy check after we enter the folder */
-    mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE);
+    /* force the mailbox check after we enter the folder */
+    mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE);
   }
 
   if (((Sort & SORT_MASK) == SORT_THREADS) && CollapseAll)
@@ -1022,8 +1021,8 @@ int mutt_index_menu(void)
         else if (check == MUTT_FLAGS)
           mutt_message(_("Mailbox was externally modified."));
 
-        /* avoid the message being overwritten by buffy */
-        do_buffy_notify = false;
+        /* avoid the message being overwritten by mailbox */
+        do_mailbox_notify = false;
 
         bool q = Context->quiet;
         Context->quiet = true;
@@ -1041,12 +1040,12 @@ int mutt_index_menu(void)
     {
       /* check for new mail in the incoming folders */
       oldcount = newcount;
-      newcount = mutt_buffy_check(0);
+      newcount = mutt_mailbox_check(0);
       if (newcount != oldcount)
         menu->redraw |= REDRAW_STATUS;
-      if (do_buffy_notify)
+      if (do_mailbox_notify)
       {
-        if (mutt_buffy_notify())
+        if (mutt_mailbox_notify())
         {
           menu->redraw |= REDRAW_STATUS;
           if (BeepNew)
@@ -1061,7 +1060,7 @@ int mutt_index_menu(void)
         }
       }
       else
-        do_buffy_notify = true;
+        do_mailbox_notify = true;
     }
 
     if (op >= 0)
@@ -2074,7 +2073,7 @@ int mutt_index_menu(void)
         {
           mutt_str_strfcpy(buf, Context->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
-          mutt_buffy(buf, sizeof(buf));
+          mutt_mailbox(buf, sizeof(buf));
           if (!buf[0])
           {
             mutt_error(_("No mailboxes have new mail"));
@@ -2099,7 +2098,7 @@ int mutt_index_menu(void)
           if (Context && (Context->magic == MUTT_NOTMUCH))
           {
             mutt_str_strfcpy(buf, Context->path, sizeof(buf));
-            mutt_buffy_vfolder(buf, sizeof(buf));
+            mutt_mailbox_vfolder(buf, sizeof(buf));
           }
           mutt_enter_vfolder(cp, buf, sizeof(buf), 1);
           if (!buf[0])
@@ -2127,13 +2126,13 @@ int mutt_index_menu(void)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_buffy(buf, sizeof(buf));
+            nntp_mailbox(buf, sizeof(buf));
           }
           else
 #endif
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
-            mutt_buffy(buf, sizeof(buf));
+            mutt_mailbox(buf, sizeof(buf));
 
           if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)
           {
@@ -2158,14 +2157,14 @@ int mutt_index_menu(void)
 
         main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP
-        /* mutt_buffy_check() must be done with mail-reader mode! */
+        /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
             helpstr, sizeof(helpstr), MENU_MAIN,
             (Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp : IndexHelp);
 #endif
         mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_SIDEBAR
-        mutt_sb_set_open_buffy();
+        mutt_sb_set_open_mailbox();
 #endif
         break;
 
@@ -3357,8 +3356,8 @@ int mutt_index_menu(void)
         mutt_message(mutt_make_version());
         break;
 
-      case OP_BUFFY_LIST:
-        mutt_buffy_list();
+      case OP_MAILBOX_LIST:
+        mutt_mailbox_list();
         break;
 
       case OP_VIEW_ATTACHMENTS:

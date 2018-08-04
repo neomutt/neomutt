@@ -273,7 +273,7 @@ msgstr "Abbestellen mittels Muster: "
 msgid "No newsgroups match the mask"
 msgstr "Es gibt keine zur Maske passenden Newsgroups"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Neue Nachrichten in "
 

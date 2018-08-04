@@ -43,7 +43,6 @@
 #include "email/email.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
@@ -615,13 +614,12 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
  * @param idata Server data
  * @param s     Command string with status info
  *
- * first cut: just do buffy update. Later we may wish to cache all mailbox
- * information, even that not desired by buffy
+ * first cut: just do mailbox update. Later we may wish to cache all mailbox
+ * information, even that not desired by mailbox
  */
 static void cmd_parse_status(struct ImapData *idata, char *s)
 {
   char *value = NULL;
-  struct Buffy *inc = NULL;
   struct ImapMbox mx;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
@@ -712,15 +710,16 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
   mutt_debug(3, "Running default STATUS handler\n");
 
-  /* should perhaps move this code back to imap_buffy_check */
-  for (inc = Incoming; inc; inc = inc->next)
+  /* should perhaps move this code back to imap_mailbox_check */
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (inc->magic != MUTT_IMAP)
+    if (np->b->magic != MUTT_IMAP)
       continue;
 
-    if (imap_parse_path(inc->path, &mx) < 0)
+    if (imap_parse_path(np->b->path, &mx) < 0)
     {
-      mutt_debug(1, "Error parsing mailbox %s, skipping\n", inc->path);
+      mutt_debug(1, "Error parsing mailbox %s, skipping\n", np->b->path);
       continue;
     }
 
@@ -737,8 +736,8 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
       if (value && (imap_mxcmp(mailbox, value) == 0))
       {
-        mutt_debug(3, "Found %s in buffy list (OV: %u ON: %u U: %d)\n", mailbox,
-                   olduv, oldun, status->unseen);
+        mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
+                   mailbox, olduv, oldun, status->unseen);
 
         if (MailCheckRecent)
         {
@@ -759,18 +758,18 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
           new = (status->unseen > 0);
 
 #ifdef USE_SIDEBAR
-        if ((inc->new != new) || (inc->msg_count != status->messages) ||
-            (inc->msg_unread != status->unseen))
+        if ((np->b->new != new) || (np->b->msg_count != status->messages) ||
+            (np->b->msg_unread != status->unseen))
         {
           mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
         }
 #endif
-        inc->new = new;
+        np->b->new = new;
         if (new_msg_count)
-          inc->msg_count = status->messages;
-        inc->msg_unread = status->unseen;
+          np->b->msg_count = status->messages;
+        np->b->msg_unread = status->unseen;
 
-        if (inc->new)
+        if (np->b->new)
         {
           /* force back to keep detecting new mail until the mailbox is
              opened */

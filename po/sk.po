@@ -269,7 +269,7 @@ msgstr "Neodoberať podľa vzoru: "
 msgid "No newsgroups match the mask"
 msgstr "Žiadne diskusné skupiny nezodpovedajú maske"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nová pošta v zložke "
 

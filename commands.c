@@ -35,7 +35,6 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
-#include "buffy.h"
 #include "context.h"
 #include "copy.h"
 #include "curs_lib.h"
@@ -714,7 +713,7 @@ void mutt_shell_escape(void)
 
   if ((rc != 0) || WaitKey)
     mutt_any_key_to_continue(NULL);
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE);
+  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE);
 }
 
 /**
@@ -992,7 +991,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #ifdef USE_COMPRESSED
     /* If we're saving to a compressed mailbox, the stats won't be updated
      * until the next open.  Until then, improvise. */
-    struct Buffy *cm = NULL;
+    struct Mailbox *cm = NULL;
     if (ctx.compress_info)
       cm = mutt_find_mailbox(ctx.realpath);
     /* We probably haven't been opened yet */
@@ -1057,12 +1056,12 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       }
     }
 
-    const int need_buffy_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
+    const int need_mailbox_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
 
     mx_mbox_close(&ctx, NULL);
 
-    if (need_buffy_cleanup)
-      mutt_buffy_cleanup(buf, &st);
+    if (need_mailbox_cleanup)
+      mutt_mailbox_cleanup(buf, &st);
 
     mutt_clear_error();
     return 0;
@@ -1236,5 +1235,5 @@ bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
  */
 void mutt_check_stats(void)
 {
-  mutt_buffy_check(MUTT_BUFFY_CHECK_FORCE | MUTT_BUFFY_CHECK_FORCE_STATS);
+  mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }

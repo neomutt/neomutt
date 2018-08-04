@@ -29,7 +29,7 @@
 #include "mutt.h"
 #include "mutt_parse.h"
 #include "globals.h"
-#include "mailbox.h"
+#include "mx.h"
 #include "ncrypt/ncrypt.h"
 
 struct Context;

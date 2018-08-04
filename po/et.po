@@ -278,7 +278,7 @@ msgstr "Loobun kaustast %s..."
 msgid "No newsgroups match the mask"
 msgstr "Maskile vastavaid faile ei ole"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Uus kiri kaustas "
 

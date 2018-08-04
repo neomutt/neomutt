@@ -37,11 +37,11 @@
 #include "mutt.h"
 #include "alias.h"
 #include "browser.h"
-#include "buffy.h"
 #include "curs_lib.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
 #include "mutt_window.h"
@@ -484,12 +484,12 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           state->lastchar += state->curpos - i;
           break;
 
-        case OP_EDITOR_BUFFY_CYCLE:
+        case OP_EDITOR_MAILBOX_CYCLE:
           if (flags & MUTT_EFILE)
           {
             first = 1; /* clear input if user types a real key later */
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
-            mutt_buffy(buf, buflen);
+            mutt_mailbox(buf, buflen);
             state->curpos = state->lastchar =
                 mutt_mb_mbstowcs(&state->wbuf, &state->wbuflen, 0, buf);
             break;

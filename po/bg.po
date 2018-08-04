@@ -282,7 +282,7 @@ msgstr "Отписване от %s..."
 msgid "No newsgroups match the mask"
 msgstr "Няма файлове, отговарящи на маската"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Нови писма в "
 

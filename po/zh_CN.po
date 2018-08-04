@@ -274,7 +274,7 @@ msgstr "退订模式："
 msgid "No newsgroups match the mask"
 msgstr "没有新闻组与掩码相符"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "有新信件在 "
 

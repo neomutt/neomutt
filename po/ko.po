@@ -280,7 +280,7 @@ msgstr "%s에서 가입 탈퇴 중..."
 msgid "No newsgroups match the mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "새 메일 도착 "
 

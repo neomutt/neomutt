@@ -29,10 +29,10 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"
@@ -122,9 +122,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_buffy_check(0));
+        snprintf(buf, buflen, fmt, mutt_mailbox_check(0));
       }
-      else if (mutt_buffy_check(0) == 0)
+      else if (mutt_mailbox_check(0) == 0)
         optional = 0;
       break;
 

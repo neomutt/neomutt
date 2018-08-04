@@ -95,7 +95,6 @@ const struct Binding OpGeneric[] = { /* map: generic */
 const struct Binding OpMain[] = { /* map: index */
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
-  { "buffy-list",                OP_BUFFY_LIST,                     "." },
 #ifdef USE_NNTP
   { "catchup",                   OP_CATCHUP,                        NULL },
 #endif
@@ -162,6 +161,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "list-reply",                OP_LIST_REPLY,                     "L" },
   { "mail",                      OP_MAIL,                           "m" },
   { "mail-key",                  OP_MAIL_KEY,                       "\033k" },
+  { "mailbox-list",              OP_MAILBOX_LIST,                   "." },
   { "mark-message",              OP_MARK_MSG,                       "~" },
   { "modify-labels",             OP_MAIN_MODIFY_TAGS,               NULL }, // NOTE(sileht): kept for backward compatibility
   { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,     NULL }, // NOTE(sileht): kept for backward compatibility
@@ -237,6 +237,8 @@ const struct Binding OpMain[] = { /* map: index */
 #endif
   { "view-attachments",          OP_VIEW_ATTACHMENTS,               "v" },
   { "view-raw-message",          OP_VIEW_RAW_MESSAGE,               NULL },
+  /* This is deprecated.  Leave it last so it doesn't show up in the help. */
+  { "buffy-list",                OP_MAILBOX_LIST,                   NULL },
   { NULL,                        0,                                 NULL },
 };
 
@@ -244,7 +246,6 @@ const struct Binding OpPager[] = { /* map: pager */
   { "bottom",                    OP_PAGER_BOTTOM,                 NULL },
   { "bounce-message",            OP_BOUNCE_MESSAGE,               "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,            "#" },
-  { "buffy-list",                OP_BUFFY_LIST,                   "." },
   { "change-folder",             OP_MAIN_CHANGE_FOLDER,           "c" },
   { "change-folder-readonly",    OP_MAIN_CHANGE_FOLDER_READONLY,  "\033c" },
 #ifdef USE_NNTP
@@ -302,6 +303,7 @@ const struct Binding OpPager[] = { /* map: pager */
   { "list-reply",                OP_LIST_REPLY,                   "L" },
   { "mail",                      OP_MAIL,                         "m" },
   { "mail-key",                  OP_MAIL_KEY,                     "\033k" },
+  { "mailbox-list",              OP_MAILBOX_LIST,                 "." },
   { "mark-as-new",               OP_TOGGLE_NEW,                   "N" },
   { "modify-labels",             OP_MAIN_MODIFY_TAGS,             NULL }, // NOTE(sileht): kept for backward compatibility
   { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL }, // NOTE(sileht): kept for backward compatibility
@@ -383,6 +385,8 @@ const struct Binding OpPager[] = { /* map: pager */
   { "view-attachments",          OP_VIEW_ATTACHMENTS,             "v" },
   { "view-raw-message",          OP_VIEW_RAW_MESSAGE,             NULL },
   { "what-key",                  OP_WHAT_KEY,                     NULL },
+  /* This is deprecated.  Leave it last so it doesn't show up in the help. */
+  { "buffy-list",                OP_MAILBOX_LIST,                 NULL },
   { NULL,                        0,                               NULL },
 };
 
@@ -495,7 +499,6 @@ const struct Binding OpAlias[] = { /* map: alias */
 
 /* The file browser */
 const struct Binding OpBrowser[] = { /* map: browser */
-  { "buffy-list",            OP_BUFFY_LIST,                  "." },
 #ifdef USE_NNTP
   { "catchup",               OP_CATCHUP,                     NULL },
 #endif
@@ -509,6 +512,7 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "enter-mask",            OP_ENTER_MASK,                  "m" },
   { "goto-folder",           OP_BROWSER_GOTO_FOLDER,         "=" },
   { "goto-parent",           OP_GOTO_PARENT,                 "p" },
+  { "mailbox-list",          OP_MAILBOX_LIST,                "." },
 #ifdef USE_NNTP
   { "reload-active",         OP_LOAD_ACTIVE,                 NULL },
 #endif
@@ -538,6 +542,8 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { "unsubscribe-pattern",   OP_UNSUBSCRIBE_PATTERN,         NULL },
 #endif
   { "view-file",             OP_BROWSER_VIEW_FILE,           " " },
+  /* This is deprecated.  Leave it last so it doesn't show up in the help. */
+  { "buffy-list",            OP_MAILBOX_LIST,                NULL },
   { NULL,                    0,                              NULL },
 };
 
@@ -555,7 +561,6 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "backward-char",         OP_EDITOR_BACKWARD_CHAR,        "\002" },
   { "backward-word",         OP_EDITOR_BACKWARD_WORD,        "\033b" },
   { "bol",                   OP_EDITOR_BOL,                  "\001" },
-  { "buffy-cycle",           OP_EDITOR_BUFFY_CYCLE,          " " },
   { "capitalize-word",       OP_EDITOR_CAPITALIZE_WORD,      "\033c" },
   { "complete",              OP_EDITOR_COMPLETE,             "\t" },
   { "complete-query",        OP_EDITOR_COMPLETE_QUERY,       "\024" },
@@ -571,9 +576,12 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "kill-eow",              OP_EDITOR_KILL_EOW,             "\033d" },
   { "kill-line",             OP_EDITOR_KILL_LINE,            "\025" },
   { "kill-word",             OP_EDITOR_KILL_WORD,            "\027" },
+  { "mailbox-cycle",         OP_EDITOR_MAILBOX_CYCLE,        " " },
   { "quote-char",            OP_EDITOR_QUOTE_CHAR,           "\026" },
   { "transpose-chars",       OP_EDITOR_TRANSPOSE_CHARS,      NULL },
   { "upcase-word",           OP_EDITOR_UPCASE_WORD,          "\033u" },
+  /* This is deprecated.  Leave it last so it doesn't show up in the help. */
+  { "buffy-cycle",           OP_EDITOR_MAILBOX_CYCLE,        NULL },
   { NULL,                    0,                              NULL },
 };
 

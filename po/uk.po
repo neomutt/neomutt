@@ -275,7 +275,7 @@ msgstr "Відписано від %s..."
 msgid "No newsgroups match the mask"
 msgstr "Немає файлів, що відповідають масці"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Нова пошта в "
 

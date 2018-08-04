@@ -46,7 +46,6 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
-#include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

@@ -58,7 +58,6 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
-#include "buffy.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "curs_main.h"
@@ -449,7 +448,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
  *
  * @note The window parameter here is here to decide contextually whether we
  * want to return a search query with window applied (for the actual search
- * result in buffy) or not (for the count in the sidebar). It is not aimed at
+ * result in mailbox) or not (for the count in the sidebar). It is not aimed at
  * enabling/disabling the feature.
  */
 static char *get_query_string(struct NmCtxData *data, bool window)
@@ -1955,7 +1954,7 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
  * by building a notmuch context object from the original search string, and
  * building a new from the notmuch context object.
  *
- * It's aimed to be used by buffy when parsing the virtual_mailboxes to make the
+ * It's aimed to be used by mailbox when parsing the virtual_mailboxes to make the
  * parsed user written search strings comparable to the internally generated ones.
  */
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
@@ -2232,7 +2231,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   }
 
   /* don't be verbose about connection, as we're called from
-   * sidebar/buffy very often */
+   * sidebar/mailbox very often */
   db = do_database_open(db_filename, false, false);
   if (!db)
     goto done;
@@ -2277,15 +2276,18 @@ done:
  */
 char *nm_get_description(struct Context *ctx)
 {
-  for (struct Buffy *b = Incoming; b; b = b->next)
-    if (b->desc && (strcmp(b->path, ctx->path) == 0))
-      return b->desc;
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (np->b->desc && (strcmp(np->b->path, ctx->path) == 0))
+      return np->b->desc;
+  }
 
   return NULL;
 }
 
 /**
- * nm_description_to_path - Find a path from a folder's description
+ * nm_desc&ription_to_path - Find a path from a folder's description
  * @param desc   Description
  * @param buf    Buffer for path
  * @param buflen Length of buffer
@@ -2297,11 +2299,12 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   if (!desc || !buf || (buflen == 0))
     return -EINVAL;
 
-  for (struct Buffy *b = Incoming; b; b = b->next)
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((b->magic == MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
+    if ((np->b->magic == MUTT_NOTMUCH) && np->b->desc && (strcmp(desc, np->b->desc) == 0))
     {
-      strncpy(buf, b->path, buflen);
+      strncpy(buf, np->b->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }

@@ -279,7 +279,7 @@ msgstr "%s leírása..."
 msgid "No newsgroups match the mask"
 msgstr "Nincs a fájlmaszknak megfelelő fájl"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Új levél: "
 

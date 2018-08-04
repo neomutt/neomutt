@@ -269,7 +269,7 @@ msgstr "Padrão para desinscrição: "
 msgid "No newsgroups match the mask"
 msgstr "Nenhum grupo de notícias coincide com a máscara"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nova mensagem em "
 

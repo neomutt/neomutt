@@ -38,7 +38,6 @@
   _fmt(OP_BROWSER_TOGGLE_LSUB,            N_("toggle view all/subscribed mailboxes (IMAP only)")) \
   _fmt(OP_BROWSER_UNSUBSCRIBE,            N_("unsubscribe from current mbox (IMAP/NNTP only)")) \
   _fmt(OP_BROWSER_VIEW_FILE,              N_("view file")) \
-  _fmt(OP_BUFFY_LIST,                     N_("list mailboxes with new mail")) \
   _fmt(OP_CATCHUP,                        N_("mark all articles in newsgroup as read")) \
   _fmt(OP_CHANGE_DIRECTORY,               N_("change directories")) \
   _fmt(OP_CHECK_NEW,                      N_("check mailboxes for new mail")) \
@@ -99,7 +98,6 @@
   _fmt(OP_EDITOR_BACKWARD_CHAR,           N_("move the cursor one character to the left")) \
   _fmt(OP_EDITOR_BACKWARD_WORD,           N_("move the cursor to the beginning of the word")) \
   _fmt(OP_EDITOR_BOL,                     N_("jump to the beginning of the line")) \
-  _fmt(OP_EDITOR_BUFFY_CYCLE,             N_("cycle among incoming mailboxes")) \
   _fmt(OP_EDITOR_CAPITALIZE_WORD,         N_("capitalize the word")) \
   _fmt(OP_EDITOR_COMPLETE,                N_("complete filename or alias")) \
   _fmt(OP_EDITOR_COMPLETE_QUERY,          N_("complete address with query")) \
@@ -115,6 +113,7 @@
   _fmt(OP_EDITOR_KILL_EOW,                N_("delete chars from the cursor to the end of the word")) \
   _fmt(OP_EDITOR_KILL_LINE,               N_("delete all chars on the line")) \
   _fmt(OP_EDITOR_KILL_WORD,               N_("delete the word in front of the cursor")) \
+  _fmt(OP_EDITOR_MAILBOX_CYCLE,           N_("cycle among incoming mailboxes")) \
   _fmt(OP_EDITOR_QUOTE_CHAR,              N_("quote the next typed key")) \
   _fmt(OP_EDITOR_TRANSPOSE_CHARS,         N_("transpose character under cursor with previous")) \
   _fmt(OP_EDITOR_UPCASE_WORD,             N_("convert the word to upper case")) \
@@ -148,6 +147,7 @@
   _fmt(OP_LOAD_ACTIVE,                    N_("load list of all newsgroups from NNTP server")) \
   _fmt(OP_MACRO,                          N_("execute a macro")) \
   _fmt(OP_MAIL,                           N_("compose a new mail message")) \
+  _fmt(OP_MAILBOX_LIST,                   N_("list mailboxes with new mail")) \
   _fmt(OP_MAIN_BREAK_THREAD,              N_("break the thread in two")) \
   _fmt(OP_MAIN_CHANGE_FOLDER,             N_("open a different folder")) \
   _fmt(OP_MAIN_CHANGE_FOLDER_READONLY,    N_("open a different folder in read only mode")) \

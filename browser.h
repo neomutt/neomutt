@@ -37,7 +37,7 @@ extern short SortBrowser;
 extern char *VfolderFormat;
 
 /* flags to mutt_select_file() */
-#define MUTT_SEL_BUFFY   (1 << 0)
+#define MUTT_SEL_MAILBOX (1 << 0)
 #define MUTT_SEL_MULTI   (1 << 1)
 #define MUTT_SEL_FOLDER  (1 << 2)
 #define MUTT_SEL_VFOLDER (1 << 3)
@@ -68,7 +68,7 @@ struct FolderFile
   bool selectable : 1;
   bool inferiors : 1;
 #endif
-  bool has_buffy : 1;
+  bool has_mailbox : 1;
   bool local : 1; /**< folder is on local filesystem */
   bool tagged : 1;
 #ifdef USE_NNTP

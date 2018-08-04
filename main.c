@@ -48,7 +48,6 @@
 #include "mutt.h"
 #include "alias.h"
 #include "browser.h"
-#include "buffy.h"
 #include "color.h"
 #include "curs_lib.h"
 #include "curs_main.h"
@@ -87,7 +86,7 @@
 bool ResumeEditedDraftFiles;
 
 #define MUTT_IGNORE (1 << 0)  /* -z */
-#define MUTT_BUFFY (1 << 1)   /* -Z */
+#define MUTT_MAILBOX (1 << 1) /* -Z */
 #define MUTT_NOSYSRC (1 << 2) /* -n */
 #define MUTT_RO (1 << 3)      /* -R */
 #define MUTT_SELECT (1 << 4)  /* -y */
@@ -561,7 +560,7 @@ int main(int argc, char *argv[], char *envp[])
           flags |= MUTT_SELECT;
           break;
         case 'Z':
-          flags |= MUTT_BUFFY | MUTT_IGNORE;
+          flags |= MUTT_MAILBOX | MUTT_IGNORE;
           break;
         case 'z':
           flags |= MUTT_IGNORE;
@@ -1118,15 +1117,15 @@ int main(int argc, char *argv[], char *envp[])
   }
   else
   {
-    if (flags & MUTT_BUFFY)
+    if (flags & MUTT_MAILBOX)
     {
-      if (mutt_buffy_check(0) == 0)
+      if (mutt_mailbox_check(0) == 0)
       {
         mutt_message(_("No mailbox with new mail."));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       folder[0] = '\0';
-      mutt_buffy(folder, sizeof(folder));
+      mutt_mailbox(folder, sizeof(folder));
     }
     else if (flags & MUTT_SELECT)
     {
@@ -1140,13 +1139,14 @@ int main(int argc, char *argv[], char *envp[])
       }
       else
 #endif
-          if (!Incoming)
+          if (STAILQ_EMPTY(&AllMailboxes))
       {
         mutt_error(_("No incoming mailboxes defined."));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
       folder[0] = '\0';
-      mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
+      mutt_select_file(folder, sizeof(folder),
+                       MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL);
       if (folder[0] == '\0')
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)
@@ -1197,7 +1197,7 @@ int main(int argc, char *argv[], char *envp[])
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      mutt_sb_set_open_buffy();
+      mutt_sb_set_open_mailbox();
 #endif
       mutt_index_menu();
       if (Context)

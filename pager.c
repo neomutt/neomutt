@@ -37,7 +37,6 @@
 #include "mutt.h"
 #include "pager.h"
 #include "alias.h"
-#include "buffy.h"
 #include "color.h"
 #include "commands.h"
 #include "context.h"
@@ -2423,7 +2422,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         }
       }
 
-      if (mutt_buffy_notify() || do_new_mail)
+      if (mutt_mailbox_notify() || do_new_mail)
       {
         if (BeepNew)
           beep();
@@ -3357,8 +3356,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         mutt_message(mutt_make_version());
         break;
 
-      case OP_BUFFY_LIST:
-        mutt_buffy_list();
+      case OP_MAILBOX_LIST:
+        mutt_mailbox_list();
         break;
 
       case OP_VIEW_ATTACHMENTS:

@@ -40,8 +40,8 @@
 #include "alias.h"
 #include "globals.h"
 #include "hdrline.h"
-#include "mailbox.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "pattern.h"
 #ifdef USE_COMPRESSED

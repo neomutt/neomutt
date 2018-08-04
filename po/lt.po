@@ -270,7 +270,7 @@ msgstr "Atsisakymo pattern'as: "
 msgid "No newsgroups match the mask"
 msgstr "Nė viena naujienų grupė neatitinka kaukės"
 
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Naujas paštas dėžutėje "
 

@@ -300,7 +300,7 @@ msgid "No newsgroups match the mask"
 msgstr "Aucun fichier ne correspond au masque"
 
 # , c-format
-#: buffy.c:838
+#: mailbox.c:838
 msgid "New mail in "
 msgstr "Nouveau(x) message(s) dans "
 
