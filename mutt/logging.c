@@ -328,7 +328,7 @@ void log_queue_empty(void)
 
 /**
  * log_queue_flush - Replay the log queue
- * @param disp Log dispatcher
+ * @param disp Log dispatcher - Implements ::log_dispatcher_t
  *
  * Pass all of the log entries in the queue to the log dispatcher provided.
  * The queue will be emptied afterwards.
@@ -375,14 +375,7 @@ int log_queue_save(FILE *fp)
 }
 
 /**
- * log_disp_queue - Save a log line to an internal queue
- * @param stamp    Unix time
- * @param file     Source file
- * @param line     Source line
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval >0 Success, number of characters written
+ * log_disp_queue - Save a log line to an internal queue - Implements ::log_dispatcher_t
  *
  * This log dispatcher saves a line of text to a queue.
  * The format string and parameters are expanded and the other parameters are
@@ -424,16 +417,7 @@ int log_disp_queue(time_t stamp, const char *file, int line,
 }
 
 /**
- * log_disp_terminal - Save a log line to the terminal
- * @param stamp    Unix time (optional)
- * @param file     Source file (UNUSED)
- * @param line     Source line (UNUSED)
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval -1 Error
- * @retval  0 Success, filtered
- * @retval >0 Success, number of characters written
+ * log_disp_terminal - Save a log line to the terminal - Implements ::log_dispatcher_t
  *
  * This log dispatcher saves a line of text to the terminal.
  * The format is:

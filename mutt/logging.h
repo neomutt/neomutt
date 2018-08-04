@@ -28,6 +28,18 @@
 #include <time.h>
 #include "queue.h"
 
+/**
+ * log_dispatcher_t - Prototype for a logging function
+ * @param stamp    Unix time (optional)
+ * @param file     Source file
+ * @param line     Source line
+ * @param function Source function
+ * @param level    Logging level, e.g. #LL_WARNING
+ * @param ...      Format string and parameters, like printf()
+ * @retval -1 Error
+ * @retval  0 Success, filtered
+ * @retval >0 Success, number of characters written
+ */
 typedef int (*log_dispatcher_t)(time_t stamp, const char *file, int line, const char *function, int level, ...);
 
 extern log_dispatcher_t MuttLogger;

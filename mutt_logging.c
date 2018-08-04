@@ -150,14 +150,7 @@ void mutt_clear_error(void)
 }
 
 /**
- * log_disp_curses - Display a log line in the message line
- * @param stamp    Unix time
- * @param file     Source file
- * @param line     Source line
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval >0 Success, number of characters written
+ * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t
  */
 int log_disp_curses(time_t stamp, const char *file, int line,
                     const char *function, int level, ...)
