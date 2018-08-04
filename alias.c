@@ -462,7 +462,7 @@ retry_name:
 
   TAILQ_INSERT_TAIL(&Aliases, new, entries);
 
-  mutt_str_strfcpy(buf, NONULL(AliasFile), sizeof(buf));
+  mutt_str_strfcpy(buf, AliasFile, sizeof(buf));
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));

@@ -1456,7 +1456,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             case MUTT_MH:
             case MUTT_MMDF:
               if (Folder)
-                mutt_str_strfcpy(LastDir, NONULL(Folder), sizeof(LastDir));
+                mutt_str_strfcpy(LastDir, Folder, sizeof(LastDir));
               else if (Spoolfile)
                 mutt_browser_select_dir(Spoolfile);
               break;
@@ -1671,7 +1671,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 mutt_str_strfcpy(LastDir, OldLastDir, sizeof(LastDir));
                 if (examine_directory(menu, &state, LastDir, prefix) == -1)
                 {
-                  mutt_str_strfcpy(LastDir, NONULL(HomeDir), sizeof(LastDir));
+                  mutt_str_strfcpy(LastDir, HomeDir, sizeof(LastDir));
                   goto bail;
                 }
               }
@@ -1940,7 +1940,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
       case OP_ENTER_MASK:
       {
-        mutt_str_strfcpy(buf, NONULL(Mask ? Mask->pattern : NULL), sizeof(buf));
+        mutt_str_strfcpy(buf, Mask ? Mask->pattern : NULL, sizeof(buf));
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 

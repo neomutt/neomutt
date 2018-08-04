@@ -385,7 +385,7 @@ int imap_mailbox_create(const char *folder)
     goto fail;
   }
 
-  mutt_str_strfcpy(buf, NONULL(mx.mbox), sizeof(buf));
+  mutt_str_strfcpy(buf, mx.mbox, sizeof(buf));
 
   /* append a delimiter if necessary */
   n = mutt_str_strlen(buf);

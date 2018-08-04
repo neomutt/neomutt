@@ -92,7 +92,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    mutt_str_strfcpy(tmp, NONULL(IndentString), sizeof(tmp));
+    mutt_str_strfcpy(tmp, IndentString, sizeof(tmp));
     tmplen = mutt_str_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;

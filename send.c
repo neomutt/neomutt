@@ -1255,7 +1255,7 @@ struct Address *mutt_default_from(void)
     }
     else
     {
-      addr->mailbox = mutt_str_strdup(NONULL(Username));
+      addr->mailbox = mutt_str_strdup(Username);
     }
   }
 
@@ -1894,7 +1894,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
         char *p = mutt_param_get(&msg->content->parameter, "format");
-        if (mutt_str_strcasecmp("flowed", NONULL(p)) != 0)
+        if (mutt_str_strcasecmp("flowed", p) != 0)
           rfc3676_space_stuff(msg);
       }
 

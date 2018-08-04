@@ -840,7 +840,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
     {
       if (mutt_str_strcasecmp(whatfor, l->what) == 0)
       {
-        mutt_str_strfcpy(resp, NONULL(l->dflt), sizeof(resp));
+        mutt_str_strfcpy(resp, l->dflt, sizeof(resp));
         break;
       }
     }

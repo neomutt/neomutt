@@ -1426,7 +1426,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
 #endif
           {
-            mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
+            mutt_str_strfcpy(fname, Context->path, sizeof(fname));
             mutt_pretty_mailbox(fname, sizeof(fname));
           }
 
@@ -1924,7 +1924,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         fname[0] = '\0';
         if (Context)
         {
-          mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
+          mutt_str_strfcpy(fname, Context->path, sizeof(fname));
           mutt_pretty_mailbox(fname, sizeof(fname));
         }
         if (actx->idxlen)

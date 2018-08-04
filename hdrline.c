@@ -1073,7 +1073,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'P':
-      mutt_str_strfcpy(buf, NONULL(hfi->pager_progress), buflen);
+      mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
       break;
 
 #ifdef USE_NNTP

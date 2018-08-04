@@ -977,7 +977,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  if (mx_mbox_open(NONULL(Spoolfile), MUTT_APPEND, &ctx) == NULL)
+  if (mx_mbox_open(Spoolfile, MUTT_APPEND, &ctx) == NULL)
     goto finish;
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));

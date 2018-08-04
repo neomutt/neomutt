@@ -368,7 +368,7 @@ static int nntp_auth(struct NntpServer *nserv)
       mutt_str_strfcpy(authenticators, NntpAuthenticators, sizeof(authenticators));
     else if (nserv->hasCAPABILITIES)
     {
-      mutt_str_strfcpy(authenticators, NONULL(nserv->authenticators), sizeof(authenticators));
+      mutt_str_strfcpy(authenticators, nserv->authenticators, sizeof(authenticators));
       p = authenticators;
       while (*p)
       {
