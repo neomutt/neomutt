@@ -2979,8 +2979,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 }
 
 /**
- * mutt_free_attachmatch - Free an AttachMatch
- * @param am AttachMatch to free
+ * mutt_free_attachmatch - Free an AttachMatch - Implements ::list_free_t
  *
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.

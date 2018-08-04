@@ -36,7 +36,16 @@ extern bool ReverseAlias;
 
 #define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
 
+/**
+ * sort_t - Prototype for a function to compare two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 typedef int sort_t(const void *a, const void *b);
+
 sort_t *mutt_get_sort_func(int method);
 
 void mutt_sort_headers(struct Context *ctx, int init);

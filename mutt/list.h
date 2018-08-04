@@ -44,6 +44,10 @@ struct ListNode
  */
 STAILQ_HEAD(ListHead, ListNode);
 
+/**
+ * list_free_t - Prototype for a function to free List data
+ * @param ptr Data to free
+ */
 typedef void (*list_free_t)(void **ptr);
 
 void             mutt_list_clear(struct ListHead *h);
