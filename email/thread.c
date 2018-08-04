@@ -101,10 +101,7 @@ void insert_message(struct MuttThread **new, struct MuttThread *newparent,
 }
 
 /**
- * thread_hash_destructor - Hash Destructor callback
- * @param type Hash Type
- * @param obj  Object to free
- * @param data Data associated with the Hash
+ * thread_hash_destructor - Hash Destructor callback - Implements ::hash_destructor_t
  */
 void thread_hash_destructor(int type, void *obj, intptr_t data)
 {

@@ -171,10 +171,7 @@ static int msg_cache_commit(struct ImapData *idata, struct Header *h)
 }
 
 /**
- * msg_cache_clean_cb - Delete an entry from the message cache
- * @param id     ID of entry to delete
- * @param bcache BodyCache
- * @param data   Server data
+ * msg_cache_clean_cb - Delete an entry from the message cache - Implements ::bcache_list_t
  * @retval 0 Always
  */
 static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)

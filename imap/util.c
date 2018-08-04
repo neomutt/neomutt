@@ -211,11 +211,7 @@ void imap_clean_path(char *path, size_t plen)
 
 #ifdef USE_HCACHE
 /**
- * imap_hcache_namer - Generate a filename for the header cache
- * @param path Path for the header cache file
- * @param dest Buffer for result
- * @param dlen Length of buffer
- * @retval num Chars written to dest
+ * imap_hcache_namer - Generate a filename for the header cache - Implements ::hcache_namer_t
  */
 static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
 {

@@ -242,12 +242,7 @@ static int fetch_uidl(char *line, void *data)
 }
 
 /**
- * msg_cache_check - Check the Body Cache for an ID
- * @param id     Cache ID
- * @param bcache Body cache
- * @param data   Mailbox Context
- * @retval  0 Success
- * @retval -1 Failure
+ * msg_cache_check - Check the Body Cache for an ID - Implements ::bcache_list_t
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
@@ -279,11 +274,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
 #ifdef USE_HCACHE
 /**
- * pop_hcache_namer - Create a header cache filename for a POP mailbox
- * @param path    Path of mailbox
- * @param dest    Buffer for filename
- * @param destlen Length of buffer
- * @retval num Characters written to buffer
+ * pop_hcache_namer - Create a header cache filename for a POP mailbox - Implements ::hcache_namer_t
  */
 static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
 {

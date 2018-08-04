@@ -71,6 +71,13 @@ struct HeaderCache
 
 typedef struct HeaderCache header_cache_t;
 
+/**
+ * hcache_namer_t - Prototype for function to compose hcache file names
+ * @param path    Path of message
+ * @param dest    Buffer for filename
+ * @param destlen Length of buffer
+ * @retval num Characters written to buffer
+ */
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
 
 /**
