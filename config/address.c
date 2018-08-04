@@ -39,10 +39,7 @@
 #include "types.h"
 
 /**
- * address_destroy - Destroy an Address object
- * @param cs   Config items
- * @param var  Variable to destroy
- * @param cdef Variable definition
+ * address_destroy - Destroy an Address object - Implements ::cst_destroy
  */
 static void address_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -57,15 +54,7 @@ static void address_destroy(const struct ConfigSet *cs, void *var, const struct 
 }
 
 /**
- * address_string_set - Set an Address by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
+ * address_string_set - Set an Address by string - Implements ::cst_string_set
  */
 static int address_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
@@ -118,14 +107,7 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
 }
 
 /**
- * address_string_get - Get an Address as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
+ * address_string_get - Get an Address as a string - Implements ::cst_string_get
  */
 static int address_string_get(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, struct Buffer *result)
@@ -174,13 +156,7 @@ static struct Address *address_dup(struct Address *addr)
 }
 
 /**
- * address_native_set - Set an Address config item by Address object
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Address pointer
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * address_native_set - Set an Address config item by Address object - Implements ::cst_native_set
  */
 static int address_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
@@ -212,12 +188,7 @@ static int address_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * address_native_get - Get an Address object from an Address config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t Address pointer
+ * address_native_get - Get an Address object from an Address config item - Implements ::cst_native_get
  */
 static intptr_t address_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
@@ -231,12 +202,7 @@ static intptr_t address_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * address_reset - Reset an Address to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * address_reset - Reset an Address to its initial value - Implements ::cst_regex
  */
 static int address_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)
