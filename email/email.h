@@ -43,8 +43,6 @@
  * | email/tags.c           | @subpage email_tags      |
  * | email/thread.c         | @subpage email_thread    |
  * | email/url.c            | @subpage email_url       |
- *
- * @image html libemail.svg
  */
 
 #ifndef _EMAIL_EMAIL_H
