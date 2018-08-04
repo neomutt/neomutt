@@ -828,7 +828,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
  * @param[in]  col      Starting column
  * @param[in]  cols     Number of screen columns
  * @param[in]  src      Printf-like format string
- * @param[in]  callback Callback for processing
+ * @param[in]  callback Callback - Implements ::format_t
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  */
