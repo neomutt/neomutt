@@ -69,7 +69,24 @@ enum CsListenerAction
   CSLA_STOP,         /**< Stop notifying listeners */
 };
 
+/**
+ * cs_listener - Listen for config changes
+ * @param cs   Config items
+ * @param he   HashElem representing config item
+ * @param name Name of the config item
+ * @param ev   Event type, e.g. #CE_SET
+ * @retval true Continue notifying
+ */
 typedef bool    (*cs_listener)   (const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
+/**
+ * cs_validator - Validate the "charset" config variable
+ * @param cs    Config items
+ * @param cdef  Config definition
+ * @param value Native value
+ * @param err   Message for the user
+ * @retval CSR_SUCCESS     Success
+ * @retval CSR_ERR_INVALID Failure
+ */
 typedef int     (*cs_validator)  (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
 typedef int     (*cst_string_set)(const struct ConfigSet *cs, void *var,       struct ConfigDef *cdef, const char *value, struct Buffer *err);

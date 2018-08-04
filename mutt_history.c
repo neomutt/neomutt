@@ -142,12 +142,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_listener - Listen for config changes affecting the history
- * @param cs   Config items
- * @param he   HashElem representing config item
- * @param name Name of the config item
- * @param ev   Event type, e.g. #CE_SET
- * @retval true Continue notifying
+ * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener
  */
 bool mutt_hist_listener(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)

@@ -4024,14 +4024,9 @@ struct ConfigSet *init_config(size_t size)
 
   return cs;
 }
+
 /**
- * charset_validator - Validate the "charset" config variable
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * charset_validator - Validate the "charset" config variable - Implements ::cs_validator
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -4064,13 +4059,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * hcache_validator - Validate the "header_cache_backend" config variable - Implements ::cs_validator
  */
 int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                      intptr_t value, struct Buffer *err)
@@ -4089,13 +4078,7 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 #endif
 
 /**
- * pager_validator - Check for config variables that can't be set from the pager
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator
  */
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -4111,13 +4094,7 @@ int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * multipart_validator - Validate the "show_multipart_alternative" config variable
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ::cs_validator
  */
 int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                         intptr_t value, struct Buffer *err)
@@ -4135,13 +4112,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable
- * @param cs    Config items
- * @param cdef  Config definition
- * @param value Native value
- * @param err   Message for the user
- * @retval CSR_SUCCESS     Success
- * @retval CSR_ERR_INVALID Failure
+ * reply_validator - Validate the "reply_regex" config variable - Implements ::cs_validator
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
