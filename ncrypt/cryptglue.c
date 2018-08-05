@@ -50,7 +50,7 @@ struct Header;
 struct State;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */
-bool CryptUseGpgme;
+bool CryptUseGpgme; ///< Config: Use GPGME crypto backend
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 extern struct CryptModuleSpecs crypt_mod_pgp_classic;

@@ -63,21 +63,21 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/smime.c */
-bool SmimeAskCertLabel;
-char *SmimeCaLocation;
-char *SmimeCertificates;
+bool SmimeAskCertLabel; ///< Config: Prompt the user for a label for SMIME certificates
+char *SmimeCaLocation;   ///< Config: File containing trusted certificates
+char *SmimeCertificates; ///< Config: File containing user's public certificates
 char *SmimeDecryptCommand; ///< Config: (smime) External command to decrypt an SMIME message
-bool SmimeDecryptUseDefaultKey;
+bool SmimeDecryptUseDefaultKey; ///< Config: Use the default key for decryption
 char *SmimeEncryptCommand; ///< Config: (smime) External command to encrypt a message
 char *SmimeGetCertCommand; ///< Config: (smime) External command to extract a certificate from a message
 char *SmimeGetCertEmailCommand; ///< Config: (smime) External command to get a certificate for an email
 char *SmimeGetSignerCertCommand; ///< Config: (smime) External command to extract a certificate from an email
 char *SmimeImportCertCommand; ///< Config: (smime) External command to import a certificate
-char *SmimeKeys;
+char *SmimeKeys; ///< Config: File containing user's private certificates
 char *SmimePk7outCommand; ///< Config: (smime) External command to extract a public certificate
 char *SmimeSignCommand; ///< Config: (smime) External command to sign a message
-char *SmimeSignDigestAlg;
-long SmimeTimeout;
+char *SmimeSignDigestAlg; ///< Config: Digest algorithm
+long SmimeTimeout;        ///< Config: Time in seconds to cache a passphrase
 char *SmimeVerifyCommand; ///< Config: (smime) External command to verify a signed message
 char *SmimeVerifyOpaqueCommand; ///< Config: (smime) External command to verify a signature
 

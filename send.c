@@ -78,13 +78,13 @@ unsigned char AbortUnmodified;
 bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
 bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
 char *ContentType; ///< Config: Default "Content-Type" for newly composed messages
-bool CryptAutoencrypt;
-bool CryptAutopgp;
-bool CryptAutosign;
-bool CryptAutosmime;
-bool CryptReplyencrypt;
-bool CryptReplysign;
-bool CryptReplysignencrypted;
+bool CryptAutoencrypt; ///< Config: Automatically PGP encrypt all outgoing mail
+bool CryptAutopgp; ///< Config: Allow automatic PGP functions
+bool CryptAutosign; ///< Config: Automatically PGP sign all outgoing mail
+bool CryptAutosmime; ///< Config: Allow automatic SMIME functions
+bool CryptReplyencrypt; ///< Config: Encrypt replies to encrypted messages
+bool CryptReplysign; ///< Config: Sign replies to signed messages
+bool CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
 char *EmptySubject; ///< Config: Subject to use when replying to an email with none
 bool FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
 unsigned char FccAttach; ///< Config: Save send message with all their attachments
@@ -101,7 +101,7 @@ bool IgnoreListReplyTo;
 unsigned char Include; ///< Config: Include a copy of the email that's being replied to
 bool Metoo;
 bool NmRecord;
-bool PgpReplyinline;
+bool PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
 char *PostIndentString;
 bool PostponeEncrypt; ///< Config: Self-encrypt postponed messages
 char *PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages

@@ -167,14 +167,14 @@ WHERE short ImapPollTimeout;
 #endif
 
 /* -- formerly in pgp.h -- */
-WHERE char *PgpDefaultKey;
-WHERE char *PgpSignAs;
+WHERE char *PgpDefaultKey; ///< Config: Default key to use for PGP operations
+WHERE char *PgpSignAs; ///< Config: Use this alternative key for signing messages
 WHERE char *PgpEntryFormat; ///< Config: printf-like format string for the PGP key selection menu
 
 /* -- formerly in smime.h -- */
-WHERE char *SmimeDefaultKey;
-WHERE char *SmimeSignAs;
-WHERE char *SmimeEncryptWith;
+WHERE char *SmimeDefaultKey; ///< Config: Default key for SMIME operations
+WHERE char *SmimeSignAs; ///< Config: Use this alternative key for signing messages
+WHERE char *SmimeEncryptWith; ///< Config: Algorithm for encryption
 
 #ifdef USE_NOTMUCH
 WHERE int NmQueryWindowDuration;
@@ -265,17 +265,17 @@ WHERE bool WaitKey;  ///< Config: Prompt to press a key after running external c
 WHERE bool WrapSearch;
 WHERE bool WriteBcc; /**< write out a bcc header? */
 
-WHERE bool CryptUsePka;
+WHERE bool CryptUsePka; ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
 
 /* PGP options */
 
-WHERE bool CryptConfirmhook;
-WHERE bool CryptOpportunisticEncrypt;
-WHERE bool SmimeIsDefault;
-WHERE bool PgpIgnoreSubkeys;
-WHERE bool PgpLongIds;
-WHERE bool PgpShowUnusable;
-WHERE bool PgpAutoinline;
+WHERE bool CryptConfirmhook; ///< Config: Prompt the user to confirm keys before use
+WHERE bool CryptOpportunisticEncrypt; ///< Config: Enable encryption when the recipient's key is available
+WHERE bool SmimeIsDefault; ///< Config: Use SMIME rather than PGP by default
+WHERE bool PgpIgnoreSubkeys; ///< Config: Only use the principal PGP key
+WHERE bool PgpLongIds; ///< Config: Display long PGP key IDs to the user
+WHERE bool PgpShowUnusable; ///< Config: Show non-usable keys in the key selection
+WHERE bool PgpAutoinline; ///< Config: Use old-style inline PGP messages (not recommended)
 
 /* news options */
 

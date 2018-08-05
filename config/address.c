@@ -202,7 +202,7 @@ static intptr_t address_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * address_reset - Reset an Address to its initial value - Implements ::cst_regex
+ * address_reset - Reset an Address to its initial value - Implements ::cst_reset
  */
 static int address_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)

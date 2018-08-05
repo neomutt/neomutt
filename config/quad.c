@@ -164,7 +164,7 @@ static intptr_t quad_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * quad_reset - Reset a Quad-option to its initial value - Implements ::cst_regex
+ * quad_reset - Reset a Quad-option to its initial value - Implements ::cst_reset
  */
 static int quad_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

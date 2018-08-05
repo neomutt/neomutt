@@ -59,14 +59,14 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/crypt.c */
-bool CryptTimestamp;
+bool CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
 unsigned char PgpEncryptSelf;
-unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
-bool PgpRetainableSigs;
-bool PgpSelfEncrypt;
-bool PgpStrictEnc;
+unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */ ///< Config: Prompt the user to use MIME if inline PGP fails
+bool PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
+bool PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to PgpDefaultKey too
+bool PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)
 unsigned char SmimeEncryptSelf;
-bool SmimeSelfEncrypt;
+bool SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to SmimeDefaultKey too
 
 /**
  * crypt_current_time - Print the current time

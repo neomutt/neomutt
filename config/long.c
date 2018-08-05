@@ -143,7 +143,7 @@ static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * long_reset - Reset a Long to its initial value - Implements ::cst_regex
+ * long_reset - Reset a Long to its initial value - Implements ::cst_reset
  */
 static int long_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

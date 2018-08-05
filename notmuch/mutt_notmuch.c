@@ -2287,7 +2287,7 @@ char *nm_get_description(struct Context *ctx)
 }
 
 /**
- * nm_desc&ription_to_path - Find a path from a folder's description
+ * nm_description_to_path - Find a path from a folder's description
  * @param desc   Description
  * @param buf    Buffer for path
  * @param buflen Length of buffer

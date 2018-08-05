@@ -244,7 +244,7 @@ static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_reset - Reset an MbTable to its initial value - Implements ::cst_regex
+ * mbtable_reset - Reset an MbTable to its initial value - Implements ::cst_reset
  */
 static int mbtable_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)

@@ -65,12 +65,12 @@
 #include "state.h"
 
 /* These Config Variables are only used in ncrypt/pgp.c */
-bool PgpCheckExit;
-bool PgpCheckGpgDecryptStatusFd;
-struct Regex *PgpDecryptionOkay;
-struct Regex *PgpGoodSign;
-long PgpTimeout;
-bool PgpUseGpgAgent;
+bool PgpCheckExit; ///< Config: Check the exit code of PGP subprocess
+bool PgpCheckGpgDecryptStatusFd; ///< Config: File descriptor used for status info
+struct Regex *PgpDecryptionOkay; ///< Config: Text indicating a successful decryption
+struct Regex *PgpGoodSign; ///< Config: Text indicating a good signature
+long PgpTimeout; ///< Config: Time in seconds to cache a passphrase
+bool PgpUseGpgAgent; ///< Config: Use a PGP agent for caching passwords
 
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */

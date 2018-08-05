@@ -60,6 +60,6 @@ WHERE short Sort;  ///< Config: Sort method for the index
 WHERE short SortAux; /* auxiliary sorting method */  ///< Config: Secondary sort method for the index
 
 /* FIXME: This one does not belong to here */
-WHERE short PgpSortKeys;
+WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys
 
 #endif /* _MUTT_SORT_H */

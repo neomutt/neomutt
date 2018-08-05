@@ -204,7 +204,7 @@ static intptr_t regex_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * regex_reset - Reset a Regex to its initial value - Implements ::cst_regex
+ * regex_reset - Reset a Regex to its initial value - Implements ::cst_reset
  */
 static int regex_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)

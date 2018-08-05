@@ -351,7 +351,7 @@ static intptr_t sort_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * sort_reset - Reset a Sort to its initial value - Implements ::cst_regex
+ * sort_reset - Reset a Sort to its initial value - Implements ::cst_reset
  */
 static int sort_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

@@ -200,7 +200,7 @@ static intptr_t string_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_reset - Reset a String to its initial value - Implements ::cst_regex
+ * string_reset - Reset a String to its initial value - Implements ::cst_reset
  */
 static int string_reset(const struct ConfigSet *cs, void *var,
                         const struct ConfigDef *cdef, struct Buffer *err)
