@@ -41,6 +41,7 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
+#include "mbox.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"

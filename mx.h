@@ -145,10 +145,6 @@ struct MxOps
   int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
 };
 
-#define MMDF_SEP "\001\001\001\001\n"
-
-void mbox_reset_atime(struct Context *ctx, struct stat *st);
-
 #ifdef USE_NOTMUCH
 bool mx_is_notmuch(const char *p);
 #endif

@@ -39,6 +39,8 @@ struct stat;
 extern struct MxOps mx_mbox_ops;
 extern struct MxOps mx_mmdf_ops;
 
+#define MMDF_SEP "\001\001\001\001\n"
+
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
 
 #endif /* _MBOX_MBOX_H */
