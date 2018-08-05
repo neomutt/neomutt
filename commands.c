@@ -1092,7 +1092,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short structure_changed = 0;
 
   char *cp = mutt_param_get(&b->parameter, "charset");
-  mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
+  mutt_str_strfcpy(charset, cp, sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
   mutt_str_strfcpy(obuf, buf, sizeof(obuf));

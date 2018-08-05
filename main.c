@@ -1156,9 +1156,9 @@ int main(int argc, char *argv[], char *envp[])
     if (!folder[0])
     {
       if (Spoolfile)
-        mutt_str_strfcpy(folder, NONULL(Spoolfile), sizeof(folder));
+        mutt_str_strfcpy(folder, Spoolfile, sizeof(folder));
       else if (Folder)
-        mutt_str_strfcpy(folder, NONULL(Folder), sizeof(folder));
+        mutt_str_strfcpy(folder, Folder, sizeof(folder));
       /* else no folder */
     }
 

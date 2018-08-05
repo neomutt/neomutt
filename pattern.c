@@ -2211,7 +2211,7 @@ int mutt_pattern_func(int op, char *prompt)
   int rc = -1;
   struct Progress progress;
 
-  mutt_str_strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
+  mutt_str_strfcpy(buf, Context->pattern, sizeof(buf));
   if (prompt || op != MUTT_LIMIT)
     if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
       return -1;

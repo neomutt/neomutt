@@ -193,21 +193,7 @@ int smime_class_valid_passphrase(void)
  */
 
 /**
- * fmt_smime_command - Format an SMIME command
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * fmt_smime_command() is a callback function for mutt_expando_format().
+ * fmt_smime_command - Format an SMIME command - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -239,7 +225,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         char buf1[LONG_STRING], buf2[LONG_STRING];
         struct stat sb;
 
-        mutt_str_strfcpy(path, NONULL(SmimeCaLocation), sizeof(path));
+        mutt_str_strfcpy(path, SmimeCaLocation, sizeof(path));
         mutt_expand_path(path, sizeof(path));
         mutt_file_quote_filename(buf1, sizeof(buf1), path);
 

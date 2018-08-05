@@ -339,21 +339,7 @@ static bool link_is_dir(const char *folder, const char *path)
 }
 
 /**
- * folder_format_str - Format a string for the folder browser
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * folder_format_str() is a callback function for mutt_expando_format().
+ * folder_format_str - Format a string for the folder browser - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -596,21 +582,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
 #ifdef USE_NNTP
 /**
- * group_index_format_str - Format a string for the newsgroup menu
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * group_index_format_str() is a callback function for mutt_expando_format().
+ * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -1456,7 +1428,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             case MUTT_MH:
             case MUTT_MMDF:
               if (Folder)
-                mutt_str_strfcpy(LastDir, NONULL(Folder), sizeof(LastDir));
+                mutt_str_strfcpy(LastDir, Folder, sizeof(LastDir));
               else if (Spoolfile)
                 mutt_browser_select_dir(Spoolfile);
               break;
@@ -1671,7 +1643,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 mutt_str_strfcpy(LastDir, OldLastDir, sizeof(LastDir));
                 if (examine_directory(menu, &state, LastDir, prefix) == -1)
                 {
-                  mutt_str_strfcpy(LastDir, NONULL(HomeDir), sizeof(LastDir));
+                  mutt_str_strfcpy(LastDir, HomeDir, sizeof(LastDir));
                   goto bail;
                 }
               }
@@ -1940,7 +1912,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
       case OP_ENTER_MASK:
       {
-        mutt_str_strfcpy(buf, NONULL(Mask ? Mask->pattern : NULL), sizeof(buf));
+        mutt_str_strfcpy(buf, Mask ? Mask->pattern : NULL, sizeof(buf));
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 

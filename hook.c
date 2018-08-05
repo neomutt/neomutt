@@ -575,10 +575,10 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
       mutt_safe_path(buf, sizeof(buf), addr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!ForceName && mx_access(path, W_OK) != 0)
-        mutt_str_strfcpy(path, NONULL(Record), pathlen);
+        mutt_str_strfcpy(path, Record, pathlen);
     }
     else
-      mutt_str_strfcpy(path, NONULL(Record), pathlen);
+      mutt_str_strfcpy(path, Record, pathlen);
   }
   mutt_pretty_mailbox(path, pathlen);
 }

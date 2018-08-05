@@ -1061,11 +1061,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 }
 
 /**
- * mutt_signed_handler - Verify a "multipart/signed" body
- * @param a Body to verify
- * @param s State to use
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {

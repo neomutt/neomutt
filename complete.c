@@ -151,9 +151,9 @@ int mutt_complete(char *buf, size_t buflen)
     dirpart[0] = *buf;
     dirpart[1] = '\0';
     if (*buf == '!')
-      mutt_str_strfcpy(exp_dirpart, NONULL(Spoolfile), sizeof(exp_dirpart));
+      mutt_str_strfcpy(exp_dirpart, Spoolfile, sizeof(exp_dirpart));
     else
-      mutt_str_strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
+      mutt_str_strfcpy(exp_dirpart, Folder, sizeof(exp_dirpart));
     p = strrchr(buf, '/');
     if (p)
     {

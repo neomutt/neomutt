@@ -149,7 +149,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       {
         if (*(buf + 1) == '/' || *(buf + 1) == 0)
         {
-          mutt_str_strfcpy(p, NONULL(HomeDir), sizeof(p));
+          mutt_str_strfcpy(p, HomeDir, sizeof(p));
           tail = buf + 1;
         }
         else
@@ -188,20 +188,20 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(NONULL(Folder)) &&
+        if (mx_is_imap(Folder) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         }
         else
 #endif
 #ifdef USE_NOTMUCH
-            if (mx_is_notmuch(NONULL(Folder)))
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+            if (mx_is_notmuch(Folder))
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         else
 #endif
             if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         else
           snprintf(p, sizeof(p), "%s/", NONULL(Folder));
 
@@ -233,14 +233,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
       case '>':
       {
-        mutt_str_strfcpy(p, NONULL(Mbox), sizeof(p));
+        mutt_str_strfcpy(p, Mbox, sizeof(p));
         tail = buf + 1;
       }
       break;
 
       case '<':
       {
-        mutt_str_strfcpy(p, NONULL(Record), sizeof(p));
+        mutt_str_strfcpy(p, Record, sizeof(p));
         tail = buf + 1;
       }
       break;
@@ -249,12 +249,12 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       {
         if (*(buf + 1) == '!')
         {
-          mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
+          mutt_str_strfcpy(p, LastFolder, sizeof(p));
           tail = buf + 2;
         }
         else
         {
-          mutt_str_strfcpy(p, NONULL(Spoolfile), sizeof(p));
+          mutt_str_strfcpy(p, Spoolfile, sizeof(p));
           tail = buf + 1;
         }
       }
@@ -262,14 +262,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 
       case '-':
       {
-        mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
+        mutt_str_strfcpy(p, LastFolder, sizeof(p));
         tail = buf + 1;
       }
       break;
 
       case '^':
       {
-        mutt_str_strfcpy(p, NONULL(CurrentFolder), sizeof(p));
+        mutt_str_strfcpy(p, CurrentFolder, sizeof(p));
         tail = buf + 1;
       }
       break;
@@ -828,7 +828,7 @@ void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
  * @param[in]  col      Starting column
  * @param[in]  cols     Number of screen columns
  * @param[in]  src      Printf-like format string
- * @param[in]  callback Callback for processing
+ * @param[in]  callback Callback - Implements ::format_t
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  */
@@ -1523,7 +1523,7 @@ void mutt_encode_path(char *buf, size_t buflen, const char *src)
   char *p = mutt_str_strdup(src);
   int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
-  size_t len = mutt_str_strfcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src), buflen);
+  size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
 
   /* convert the path to POSIX "Portable Filename Character Set" */
   for (size_t i = 0; i < len; ++i)
@@ -1593,7 +1593,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 #endif
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(path))
-    mutt_str_strfcpy(buf, NONULL(Folder), buflen);
+    mutt_str_strfcpy(buf, Folder, buflen);
   else
 #endif
   {

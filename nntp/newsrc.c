@@ -133,12 +133,9 @@ void nntp_data_free(void *data)
 }
 
 /**
- * nntp_hash_destructor - Free our hash table data
- * @param type Type (UNUSED)
- * @param obj  NNTP data
- * @param data Data (UNUSED)
+ * nntp_hash_destructor_t - Free our hash table data - Implements ::hash_destructor_t
  */
-void nntp_hash_destructor(int type, void *obj, intptr_t data)
+void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 {
   nntp_data_free(obj);
 }
@@ -710,13 +707,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
 
 #ifdef USE_HCACHE
 /**
- * nntp_hcache_namer - Compose hcache file names
- * @param path    Path of message
- * @param dest    Buffer for filename
- * @param destlen Length of buffer
- * @retval num Characters written to buffer
- *
- * Used by mutt_hcache_open() to compose hcache file name
+ * nntp_hcache_namer - Compose hcache file names - Implements ::hcache_namer_t
  */
 static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 {
@@ -808,10 +799,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 #endif
 
 /**
- * nntp_bcache_delete - Remove bcache file
- * @param id     Body cache ID
- * @param bcache Body cache
- * @param data   NNTP data
+ * nntp_bcache_delete - Remove bcache file - Implements ::bcache_list_t
  * @retval 0 Always
  */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
@@ -942,21 +930,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
 }
 
 /**
- * nntp_format_str - Expand the newsrc filename
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * nntp_format_str() is a callback function for mutt_expando_format().
+ * nntp_format_str - Expand the newsrc filename - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -1112,7 +1086,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   nserv = mutt_mem_calloc(1, sizeof(struct NntpServer));
   nserv->conn = conn;
   nserv->groups_hash = mutt_hash_create(1009, 0);
-  mutt_hash_set_destructor(nserv->groups_hash, nntp_hash_destructor, 0);
+  mutt_hash_set_destructor(nserv->groups_hash, nntp_hash_destructor_t, 0);
   nserv->groups_max = 16;
   nserv->groups_list = mutt_mem_malloc(nserv->groups_max * sizeof(nntp_data));
 

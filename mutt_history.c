@@ -41,21 +41,7 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_format_str - Format a string for the history list
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * history_format_str() is a callback function for mutt_expando_format().
+ * history_format_str - Format a string for the history list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------
@@ -156,12 +142,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_listener - Listen for config changes affecting the history
- * @param cs   Config items
- * @param he   HashElem representing config item
- * @param name Name of the config item
- * @param ev   Event type, e.g. #CE_SET
- * @retval true Continue notifying
+ * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener
  */
 bool mutt_hist_listener(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)

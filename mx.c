@@ -748,7 +748,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     }
     else
     {
-      mutt_str_strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
+      mutt_str_strfcpy(mbox, Mbox, sizeof(mbox));
       is_spool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 

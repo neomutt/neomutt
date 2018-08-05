@@ -1814,7 +1814,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   imap_cmd_start(idata, tmp);
 
   /* and see what the results are */
-  mutt_str_strfcpy(completion, NONULL(mx.mbox), sizeof(completion));
+  mutt_str_strfcpy(completion, mx.mbox, sizeof(completion));
   idata->cmdtype = IMAP_CT_LIST;
   idata->cmddata = &listresp;
   do

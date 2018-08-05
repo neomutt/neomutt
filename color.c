@@ -755,7 +755,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
     if (is_index)
     {
       char buf[LONG_STRING];
-      mutt_str_strfcpy(buf, NONULL(s), sizeof(buf));
+      mutt_str_strfcpy(buf, s, sizeof(buf));
       mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
       tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err);
       if (!tmp->color_pattern)
@@ -867,21 +867,24 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   return 0;
 }
 
+/**
+ * parser_callback_t - Prototype for a function to parse color config
+ * @param[in]  buf Temporary Buffer space
+ * @param[in]  s    Buffer containing string to be parsed
+ * @param[out] fg   Foreground colour (set to -1)
+ * @param[out] bg   Background colour (set to -1)
+ * @param[out] attr Attribute flags
+ * @param[out] err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
                                  int *bg, int *attr, struct Buffer *err);
 
 #ifdef HAVE_COLOR
 
 /**
- * parse_color_pair - Parse a pair of colours
- * @param[in]  buf Temporary Buffer space
- * @param[in]  s    Buffer containing string to be parsed
- * @param[out] fg   Foreground colour
- * @param[out] bg   Background colour
- * @param[out] attr Attribute flags
- * @param[out] err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
  */
 static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
                             int *bg, int *attr, struct Buffer *err)
@@ -914,15 +917,7 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
 #endif
 
 /**
- * parse_attr_spec - Parse an attribute description
- * @param[in]  buf Temporary Buffer space
- * @param[in]  s    Buffer containing string to be parsed
- * @param[out] fg   Foreground colour (set to -1)
- * @param[out] bg   Background colour (set to -1)
- * @param[out] attr Attribute flags
- * @param[out] err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t
  */
 static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
                            int *bg, int *attr, struct Buffer *err)
@@ -983,7 +978,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
  * @param buf      Temporary Buffer space
  * @param s        Buffer containing string to be parsed
  * @param err      Buffer for error messages
- * @param callback Function to handle command
+ * @param callback Function to handle command - Implements ::parser_callback_t
  * @param dry_run  If true, test the command, but don't apply it
  * @param color    If true "color", else "mono"
  * @retval  0 Success

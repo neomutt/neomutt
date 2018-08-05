@@ -72,12 +72,7 @@ int perform_auxsort(int retval, const void *a, const void *b)
 }
 
 /**
- * compare_score - Compare two emails using their scores
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_score - Compare two emails using their scores - Implements ::sort_t
  */
 static int compare_score(const void *a, const void *b)
 {
@@ -89,12 +84,7 @@ static int compare_score(const void *a, const void *b)
 }
 
 /**
- * compare_size - Compare the size of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_size - Compare the size of two emails - Implements ::sort_t
  */
 static int compare_size(const void *a, const void *b)
 {
@@ -106,12 +96,7 @@ static int compare_size(const void *a, const void *b)
 }
 
 /**
- * compare_date_sent - Compare the sent date of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_date_sent - Compare the sent date of two emails - Implements ::sort_t
  */
 static int compare_date_sent(const void *a, const void *b)
 {
@@ -123,12 +108,7 @@ static int compare_date_sent(const void *a, const void *b)
 }
 
 /**
- * compare_subject - Compare the subject of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_subject - Compare the subject of two emails - Implements ::sort_t
  */
 static int compare_subject(const void *a, const void *b)
 {
@@ -179,12 +159,7 @@ const char *mutt_get_name(struct Address *a)
 }
 
 /**
- * compare_to - Compare the 'to' fields of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_to - Compare the 'to' fields of two emails - Implements ::sort_t
  */
 static int compare_to(const void *a, const void *b)
 {
@@ -200,12 +175,7 @@ static int compare_to(const void *a, const void *b)
 }
 
 /**
- * compare_from - Compare the 'from' fields of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_from - Compare the 'from' fields of two emails - Implements ::sort_t
  */
 static int compare_from(const void *a, const void *b)
 {
@@ -221,12 +191,7 @@ static int compare_from(const void *a, const void *b)
 }
 
 /**
- * compare_date_received - Compare the date received of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_date_received - Compare the date received of two emails - Implements ::sort_t
  */
 static int compare_date_received(const void *a, const void *b)
 {
@@ -238,12 +203,7 @@ static int compare_date_received(const void *a, const void *b)
 }
 
 /**
- * compare_order - Restore the 'unsorted' order of emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_order - Restore the 'unsorted' order of emails - Implements ::sort_t
  */
 static int compare_order(const void *a, const void *b)
 {
@@ -255,12 +215,7 @@ static int compare_order(const void *a, const void *b)
 }
 
 /**
- * compare_spam - Compare the spam values of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_spam - Compare the spam values of two emails - Implements ::sort_t
  */
 static int compare_spam(const void *a, const void *b)
 {
@@ -319,12 +274,7 @@ static int compare_spam(const void *a, const void *b)
 }
 
 /**
- * compare_label - Compare the labels of two emails
- * @param a First email
- * @param b Second email
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * compare_label - Compare the labels of two emails - Implements ::sort_t
  */
 static int compare_label(const void *a, const void *b)
 {
@@ -359,7 +309,7 @@ static int compare_label(const void *a, const void *b)
 /**
  * mutt_get_sort_func - Get the sort function for a given sort id
  * @param method Sort id, e.g. #SORT_DATE
- * @retval ptr qsort-compatible sort function
+ * @retval ptr sort function - Implements ::sort_t
  */
 sort_t *mutt_get_sort_func(int method)
 {

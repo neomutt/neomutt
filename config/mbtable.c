@@ -87,10 +87,7 @@ struct MbTable *mbtable_parse(const char *s)
 }
 
 /**
- * mbtable_destroy - Destroy an MbTable object
- * @param cs   Config items
- * @param var  Variable to destroy
- * @param cdef Variable definition
+ * mbtable_destroy - Destroy an MbTable object - Implements ::cst_destroy
  */
 static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -105,15 +102,7 @@ static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct 
 }
 
 /**
- * mbtable_string_set - Set a MbTable by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
+ * mbtable_string_set - Set a MbTable by string - Implements ::cst_string_set
  */
 static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
@@ -167,14 +156,7 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
 }
 
 /**
- * mbtable_string_get - Get a MbTable as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
+ * mbtable_string_get - Get a MbTable as a string - Implements ::cst_string_get
  */
 static int mbtable_string_get(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, struct Buffer *result)
@@ -216,13 +198,7 @@ static struct MbTable *mbtable_dup(struct MbTable *table)
 }
 
 /**
- * mbtable_native_set - Set a MbTable config item by MbTable object
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value MbTable pointer
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * mbtable_native_set - Set a MbTable config item by MbTable object - Implements ::cst_native_set
  */
 static int mbtable_native_set(const struct ConfigSet *cs, void *var,
                               const struct ConfigDef *cdef, intptr_t value,
@@ -254,12 +230,7 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_native_get - Get an MbTable object from a MbTable config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t MbTable pointer
+ * mbtable_native_get - Get an MbTable object from a MbTable config item - Implements ::cst_native_get
  */
 static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
@@ -273,12 +244,7 @@ static intptr_t mbtable_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * mbtable_reset - Reset an MbTable to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * mbtable_reset - Reset an MbTable to its initial value - Implements ::cst_regex
  */
 static int mbtable_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)

@@ -37,10 +37,7 @@
 #include "types.h"
 
 /**
- * path_destroy - Destroy a Path
- * @param cs   Config items
- * @param var  Variable to destroy
- * @param cdef Variable definition
+ * path_destroy - Destroy a Path - Implements ::cst_destroy
  */
 static void path_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
@@ -62,15 +59,7 @@ static void path_destroy(const struct ConfigSet *cs, void *var, const struct Con
 }
 
 /**
- * path_string_set - Set a Path by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be set.
+ * path_string_set - Set a Path by string - Implements ::cst_string_set
  */
 static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -128,14 +117,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * path_string_get - Get a Path as a string
- * @param cs     Config items
- * @param var    Variable to get
- * @param cdef   Variable definition
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- *
- * If var is NULL, then the config item's initial value will be returned.
+ * path_string_get - Get a Path as a string - Implements ::cst_string_get
  */
 static int path_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -158,13 +140,7 @@ static int path_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_native_set - Set a Path config item by string
- * @param cs    Config items
- * @param var   Variable to set
- * @param cdef  Variable definition
- * @param value Native pointer/value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * path_native_set - Set a Path config item by string - Implements ::cst_native_set
  */
 static int path_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -209,12 +185,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_native_get - Get a string from a Path config item
- * @param cs   Config items
- * @param var  Variable to get
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval intptr_t Path string
+ * path_native_get - Get a string from a Path config item - Implements ::cst_native_get
  */
 static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -228,12 +199,7 @@ static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * path_reset - Reset a Path to its initial value
- * @param cs   Config items
- * @param var  Variable to reset
- * @param cdef Variable definition
- * @param err  Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
+ * path_reset - Reset a Path to its initial value - Implements ::cst_regex
  */
 static int path_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

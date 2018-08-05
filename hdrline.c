@@ -464,21 +464,7 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 }
 
 /**
- * index_format_str - Format a string for the index list
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * index_format_str() is a callback function for mutt_expando_format().
+ * index_format_str - Format a string for the index list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -1073,7 +1059,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'P':
-      mutt_str_strfcpy(buf, NONULL(hfi->pager_progress), buflen);
+      mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
       break;
 
 #ifdef USE_NNTP

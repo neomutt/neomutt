@@ -368,7 +368,7 @@ static int nntp_auth(struct NntpServer *nserv)
       mutt_str_strfcpy(authenticators, NntpAuthenticators, sizeof(authenticators));
     else if (nserv->hasCAPABILITIES)
     {
-      mutt_str_strfcpy(authenticators, NONULL(nserv->authenticators), sizeof(authenticators));
+      mutt_str_strfcpy(authenticators, nserv->authenticators, sizeof(authenticators));
       p = authenticators;
       while (*p)
       {
@@ -2605,12 +2605,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 }
 
 /**
- * nntp_compare_order - Sort to mailbox order
- * @param a First Header to compare
- * @param b First Header to compare
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * nntp_compare_order - Sort to mailbox order - Implements ::sort_t
  */
 int nntp_compare_order(const void *a, const void *b)
 {

@@ -69,6 +69,13 @@ char *ShowMultipartAlternative;
 #define TXTPLAIN 2
 #define TXTENRICHED 3
 
+/**
+ * handler_t - Manage a PGP or S/MIME encrypted MIME part
+ * @param m Body of the email
+ * @param s State of text being processed
+ * @retval 0 Success
+ * @retval -1 Error
+ */
 typedef int (*handler_t)(struct Body *b, struct State *s);
 
 /**
@@ -509,11 +516,7 @@ static bool is_autoview(struct Body *b)
 }
 
 /**
- * autoview_handler - Handler for autoviewable attachments
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
+ * autoview_handler - Handler for autoviewable attachments - Implements ::handler_t
  */
 static int autoview_handler(struct Body *a, struct State *s)
 {
@@ -648,9 +651,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 }
 
 /**
- * text_plain_handler - Handler for plain text
- * @param b Body of email (UNUSED)
- * @param s State to work with
+ * text_plain_handler - Handler for plain text - Implements ::handler_t
  * @retval 0 Always
  *
  * When generating format=flowed ($text_flowed is set) from format=fixed, strip
@@ -681,11 +682,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
 }
 
 /**
- * message_handler - Handler for message/rfc822 body parts
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
+ * message_handler - Handler for message/rfc822 body parts - Implements ::handler_t
  */
 static int message_handler(struct Body *a, struct State *s)
 {
@@ -737,11 +734,7 @@ static int message_handler(struct Body *a, struct State *s)
 }
 
 /**
- * external_body_handler - Handler for external-body emails
- * @param b Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
+ * external_body_handler - Handler for external-body emails - Implements ::handler_t
  */
 static int external_body_handler(struct Body *b, struct State *s)
 {
@@ -907,11 +900,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 }
 
 /**
- * alternative_handler - Handler for multipart alternative emails
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
+ * alternative_handler - Handler for multipart alternative emails - Implements ::handler_t
  */
 static int alternative_handler(struct Body *a, struct State *s)
 {
@@ -1092,9 +1081,7 @@ static int alternative_handler(struct Body *a, struct State *s)
 }
 
 /**
- * multilingual_handler - Handler for multi-lingual emails
- * @param a Body of the email
- * @param s State of text being processed
+ * multilingual_handler - Handler for multi-lingual emails - Implements ::handler_t
  * @retval 0 Always
  */
 static int multilingual_handler(struct Body *a, struct State *s)
@@ -1193,11 +1180,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
 }
 
 /**
- * multipart_handler - Handler for multipart emails
- * @param a Body of the email
- * @param s State of text being processed
- * @retval 0 Success
- * @retval -1 Error
+ * multipart_handler - Handler for multipart emails - Implements ::handler_t
  */
 static int multipart_handler(struct Body *a, struct State *s)
 {
@@ -1275,7 +1258,7 @@ static int multipart_handler(struct Body *a, struct State *s)
  * run_decode_and_handler - Run an appropriate decoder for an email
  * @param b         Body of the email
  * @param s         State to work with
- * @param handler   Callback function to process the content, e.g. rfc3676_handler()
+ * @param handler   Callback function to process the content - Implements ::handler_t
  * @param plaintext Is the content in plain text
  * @retval 0 Success
  * @retval -1 Error
@@ -1415,11 +1398,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 }
 
 /**
- * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails
- * @param b Body of the email
- * @param s State to work with
- * @retval 0 Success
- * @retval -1 Error
+ * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails - Implements ::handler_t
  */
 static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
@@ -1431,11 +1410,7 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 }
 
 /**
- * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails
- * @param b Body of the email
- * @param s State to work with
- * @retval 0 Success
- * @retval -1 Error
+ * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails - Implements ::handler_t
  */
 static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {

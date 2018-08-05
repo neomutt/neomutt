@@ -336,21 +336,7 @@ static char *escape_path(char *src)
 }
 
 /**
- * compress_format_str - Expand the filenames in a command string
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * compress_format_str() is a callback function for mutt_expando_format().
+ * compress_format_str - Expand the filenames in a command string - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------

@@ -228,7 +228,7 @@ int mutt_account_getuser(struct Account *account)
   {
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), account->host);
-    mutt_str_strfcpy(account->user, NONULL(Username), sizeof(account->user));
+    mutt_str_strfcpy(account->user, Username, sizeof(account->user));
     if (mutt_get_field_unbuffered(prompt, account->user, sizeof(account->user), 0))
       return -1;
   }

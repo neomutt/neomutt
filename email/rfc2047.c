@@ -48,15 +48,18 @@
 
 #define CONTINUATION_BYTE(c) (((c) &0xc0) == 0x80)
 
-typedef size_t (*encoder_t)(char *str, const char *buf, size_t buflen, const char *tocode);
-
 /**
- * b_encoder - Base64 Encode a string
+ * encoder_t - Prototype for an encoding function
  * @param str    String to encode
  * @param buf    Buffer for result
  * @param buflen Length of buffer
  * @param tocode Character encoding
  * @retval num Bytes written to buffer
+ */
+typedef size_t (*encoder_t)(char *str, const char *buf, size_t buflen, const char *tocode);
+
+/**
+ * b_encoder - Base64 Encode a string - Implements ::encoder_t
  */
 static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {
@@ -89,12 +92,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
 }
 
 /**
- * q_encoder - Quoted-printable Encode a string
- * @param str    String to encode
- * @param buf    Buffer for result
- * @param buflen Length of buffer
- * @param tocode Character encoding
- * @retval num Bytes written to buffer
+ * q_encoder - Quoted-printable Encode a string - Implements ::encoder_t
  */
 static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {
@@ -653,7 +651,7 @@ void rfc2047_decode(char **pd)
   struct Buffer buf = { 0 }; /* Output buffer                          */
   char *s = *pd;             /* Read pointer                           */
   char *beg = NULL;          /* Begin of encoded word                  */
-  enum ContentEncoding enc;  /* ENC_BASE64 or ENC_QUOTED_PRINTABLE        */
+  enum ContentEncoding enc;  /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
   char *charset = NULL;      /* Which charset                          */
   size_t charsetlen;         /* Length of the charset                  */
   char *text = NULL;         /* Encoded text                           */

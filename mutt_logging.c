@@ -150,14 +150,7 @@ void mutt_clear_error(void)
 }
 
 /**
- * log_disp_curses - Display a log line in the message line
- * @param stamp    Unix time
- * @param file     Source file
- * @param line     Source line
- * @param function Source function
- * @param level    Logging level, e.g. #LL_WARNING
- * @param ...      Format string and parameters, like printf()
- * @retval >0 Success, number of characters written
+ * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t
  */
 int log_disp_curses(time_t stamp, const char *file, int line,
                     const char *function, int level, ...)
@@ -342,12 +335,7 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * mutt_log_listener - Listen for config changes affecting the log file
- * @param cs   Config items
- * @param he   HashElem representing config item
- * @param name Name of the config item
- * @param ev   Event type, e.g. #CE_SET
- * @retval true Continue notifying
+ * mutt_log_listener - Listen for config changes affecting the log file - Implements ::cs_listener
  */
 bool mutt_log_listener(const struct ConfigSet *cs, struct HashElem *he,
                        const char *name, enum ConfigEvent ev)

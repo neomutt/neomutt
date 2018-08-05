@@ -317,7 +317,7 @@ struct Hash *mutt_hash_int_create(size_t nelem, int flags)
  * @param fn      Callback function to free Hash Table's resources
  * @param fn_data Data to pass to the callback function
  */
-void mutt_hash_set_destructor(struct Hash *table, hash_destructor fn, intptr_t fn_data)
+void mutt_hash_set_destructor(struct Hash *table, hash_destructor_t fn, intptr_t fn_data)
 {
   table->destroy = fn;
   table->dest_data = fn_data;
