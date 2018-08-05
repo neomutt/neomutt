@@ -114,8 +114,8 @@ struct NmHdrData
 {
   char *folder; /**< Location of the email */
   char *oldpath;
-  char *virtual_id; /**< Unique Notmuch Id */
-  int magic;        /**< Type of mailbox the email is in */
+  char *virtual_id;       /**< Unique Notmuch Id */
+  enum MailboxType magic; /**< Type of mailbox the email is in */
 };
 
 /**

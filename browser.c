@@ -1556,7 +1556,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                                   sizeof(buf));
           }
 
-          if ((mx_get_magic(buf) <= 0)
+          enum MailboxType magic = mx_get_magic(buf);
+          if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN)
 #ifdef USE_IMAP
               || state.entry[menu->current].inferiors
 #endif

@@ -471,7 +471,7 @@ static int comp_mbox_open(struct Context *ctx)
   unlock_realpath(ctx);
 
   ctx->magic = mx_get_magic(ctx->path);
-  if (ctx->magic == 0)
+  if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
     goto or_fail;

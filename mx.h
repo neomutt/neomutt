@@ -155,7 +155,7 @@ void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, bool committing);
 
-struct MxOps *mx_get_ops(int magic);
+struct MxOps *mx_get_ops(enum MailboxType magic);
 
 /* This variable is backing for a config item */
 WHERE short MboxType;  ///< Config: Default type for creating new mailboxes
@@ -220,7 +220,7 @@ int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *t
 
 void mx_fastclose_mailbox(struct Context *ctx);
 
-int mx_get_magic(const char *path);
+enum MailboxType mx_get_magic(const char *path);
 int mx_check_mailbox(struct Context *ctx, int *index_hint);
 #ifdef USE_IMAP
 bool mx_is_imap(const char *p);

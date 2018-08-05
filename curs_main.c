@@ -497,7 +497,9 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
   else
 #endif
     mutt_expand_path(buf, buflen);
-  if (mx_get_magic(buf) <= 0)
+
+  enum MailboxType magic = mx_get_magic(buf);
+  if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
   {
     mutt_error(_("%s is not a mailbox."), buf);
     return -1;

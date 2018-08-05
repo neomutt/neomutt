@@ -28,11 +28,13 @@ struct ConfigSet;
 extern const char *magic_values[];
 
 /**
- * enum MailboxTypes - Supported mailbox formats
+ * enum MailboxType - Supported mailbox formats
  */
-enum MailboxTypes
+enum MailboxType
 {
-  MUTT_MBOX = 1,
+  MUTT_MAILBOX_ERROR = -1,
+  MUTT_UNKNOWN = 0,
+  MUTT_MBOX,
   MUTT_MMDF,
   MUTT_MH,
   MUTT_MAILDIR,

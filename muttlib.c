@@ -1398,9 +1398,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
   char tmp[PATH_MAX];
   int ret = 0;
   int rc;
-  int magic = 0;
 
-  magic = mx_get_magic(s);
+  enum MailboxType magic = mx_get_magic(s);
 
 #ifdef USE_POP
   if (magic == MUTT_POP)
@@ -1410,7 +1409,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   }
 #endif
 
-  if (magic > 0 && !mx_access(s, W_OK))
+  if ((magic != MUTT_MAILBOX_ERROR) && (magic != MUTT_UNKNOWN) && !mx_access(s, W_OK))
   {
     if (Confirmappend)
     {
@@ -1433,7 +1432,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (stat(s, st) != -1)
   {
-    if (magic == -1)
+    if (magic == MUTT_MAILBOX_ERROR)
     {
       mutt_error(_("%s is not a mailbox!"), s);
       return 1;

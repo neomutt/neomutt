@@ -82,7 +82,7 @@ struct Context
 
   struct Menu *menu; /**< needed for pattern compilation */
 
-  short magic; /**< mailbox type */
+  enum MailboxType magic; /**< mailbox type */
 
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 

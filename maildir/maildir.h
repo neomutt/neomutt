@@ -59,8 +59,8 @@ int            maildir_check_empty(const char *path);
 void           maildir_flags(char *dest, size_t destlen, struct Header *hdr);
 FILE *         maildir_open_find_message(const char *folder, const char *msg, char **newname);
 void           maildir_parse_flags(struct Header *h, const char *path);
-struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, struct Header *h);
-struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *h);
+struct Header *maildir_parse_message(enum MailboxType magic, const char *fname, bool is_old, struct Header *h);
+struct Header *maildir_parse_stream(enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Header *h);
 bool           maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
 
 bool           mh_mailbox(struct Mailbox *mailbox, bool check_stats);

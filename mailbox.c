@@ -152,11 +152,10 @@ static bool test_new_folder(const char *path)
 {
   FILE *f = NULL;
   bool rc = false;
-  int typ;
 
-  typ = mx_get_magic(path);
+  enum MailboxType magic = mx_get_magic(path);
 
-  if (typ != MUTT_MBOX && typ != MUTT_MMDF)
+  if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
     return false;
 
   f = fopen(path, "rb");
@@ -182,7 +181,7 @@ static struct Mailbox *mailbox_new(const char *path)
   mutt_str_strfcpy(mailbox->path, path, sizeof(mailbox->path));
   char *r = realpath(path, rp);
   mutt_str_strfcpy(mailbox->realpath, r ? rp : path, sizeof(mailbox->realpath));
-  mailbox->magic = 0;
+  mailbox->magic = MUTT_UNKNOWN;
 
   return mailbox;
 }
@@ -239,7 +238,7 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
   dirp = opendir(path);
   if (!dirp)
   {
-    mailbox->magic = 0;
+    mailbox->magic = MUTT_UNKNOWN;
     return 0;
   }
 
@@ -409,12 +408,12 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
     else
 #endif
         if (stat(tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            (!tmp->magic && (tmp->magic = mx_get_magic(tmp->path)) <= 0))
+            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_get_magic(tmp->path)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to be
        * ready for when it does. */
       tmp->newly_created = true;
-      tmp->magic = 0;
+      tmp->magic = MUTT_UNKNOWN;
       tmp->size = 0;
       return;
     }
@@ -463,6 +462,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
         }
         break;
 #endif
+      default:; /* do nothing */
     }
   }
   else if (CheckMboxSize && Context && Context->path)

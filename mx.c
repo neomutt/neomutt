@@ -94,7 +94,7 @@ char *Trash;        ///< Config: Folder to put deleted emails
  * @retval ptr  Mailbox function
  * @retval NULL Error
  */
-struct MxOps *mx_get_ops(int magic)
+struct MxOps *mx_get_ops(enum MailboxType magic)
 {
   switch (magic)
   {
@@ -236,11 +236,10 @@ bool mx_is_notmuch(const char *p)
  * @retval -1 Error, can't identify mailbox
  * @retval >0 Success, e.g. #MUTT_IMAP
  */
-int mx_get_magic(const char *path)
+enum MailboxType mx_get_magic(const char *path)
 {
-  struct stat st;
-  int magic = 0;
-  FILE *f = NULL;
+  if (!path)
+    return MUTT_UNKNOWN;
 
 #ifdef USE_IMAP
   if (mx_is_imap(path))
@@ -261,6 +260,10 @@ int mx_get_magic(const char *path)
   if (mx_is_notmuch(path))
     return MUTT_NOTMUCH;
 #endif
+
+  struct stat st;
+  enum MailboxType magic = MUTT_UNKNOWN;
+  FILE *f = NULL;
 
   if (stat(path, &st) == -1)
   {
@@ -327,13 +330,13 @@ int mx_get_magic(const char *path)
   else
   {
     mutt_debug(1, "unable to open file %s for reading.\n", path);
-    return -1;
+    return MUTT_MAILBOX_ERROR;
   }
 
 #ifdef USE_COMPRESSED
   /* If there are no other matches, see if there are any
    * compress hooks that match */
-  if ((magic == 0) && mutt_comp_can_read(path))
+  if ((magic == MUTT_UNKNOWN) && mutt_comp_can_read(path))
     return MUTT_COMPRESSED;
 #endif
   return magic;
@@ -372,13 +375,13 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
 
   ctx->append = true;
   ctx->magic = mx_get_magic(ctx->path);
-  if (ctx->magic == 0)
+  if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("%s is not a mailbox."), ctx->path);
     return -1;
   }
 
-  if (ctx->magic < 0)
+  if (ctx->magic == MUTT_MAILBOX_ERROR)
   {
     if (stat(ctx->path, &sb) == -1)
     {
@@ -475,11 +478,11 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
   ctx->magic = mx_get_magic(path);
   ctx->mx_ops = mx_get_ops(ctx->magic);
 
-  if (ctx->magic <= 0 || !ctx->mx_ops)
+  if ((ctx->magic == MUTT_UNKNOWN) || (ctx->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
   {
-    if (ctx->magic == -1)
+    if (ctx->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(path);
-    else if (ctx->magic == 0 || !ctx->mx_ops)
+    else if (ctx->magic == MUTT_UNKNOWN || !ctx->mx_ops)
       mutt_error(_("%s is not a mailbox."), path);
 
     mx_fastclose_mailbox(ctx);
