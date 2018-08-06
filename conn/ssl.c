@@ -747,28 +747,28 @@ static bool check_certificate_cache(X509 *peercert)
 /**
  * check_certificate_file - Read and check a certificate file
  * @param peercert Certificate
- * @retval 1 Certificate is valid
- * @retval 0 Error, or certificate is invalid
+ * @retval true  Certificate is valid
+ * @retval false Error, or certificate is invalid
  */
-static int check_certificate_file(X509 *peercert)
+static bool check_certificate_file(X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
   X509 *cert = NULL;
-  int pass = 0;
+  int pass = false;
   FILE *fp = NULL;
 
   if (!CertificateFile)
-    return 0;
+    return false;
 
   fp = fopen(CertificateFile, "rt");
   if (!fp)
-    return 0;
+    return false;
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
   {
     mutt_file_fclose(&fp);
-    return 0;
+    return false;
   }
 
   while (PEM_read_X509(fp, &cert, NULL, NULL) != NULL)
@@ -776,7 +776,7 @@ static int check_certificate_file(X509 *peercert)
     if (compare_certificates(cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration(cert, true))
     {
-      pass = 1;
+      pass = true;
       break;
     }
   }
@@ -937,7 +937,7 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @retval true  User selected 'skip'
  * @retval false Otherwise
  */
-static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int allow_always)
+static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
   static const int part[] = {
     NID_commonName,             /* CN */
@@ -1194,7 +1194,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       mutt_error(_("Certificate host check failed: %s"), buf);
       /* we disallow (a)ccept always in the prompt, because it will have no effect
        * for hostname mismatches. */
-      return interactive_check_cert(cert, pos, len, ssl, 0);
+      return interactive_check_cert(cert, pos, len, ssl, false);
     }
     mutt_debug(2, "hostname check passed\n");
   }
@@ -1215,7 +1215,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     mutt_debug(2, "X509_verify_cert: %s\n", buf);
 
     /* prompt user */
-    return interactive_check_cert(cert, pos, len, ssl, 1);
+    return interactive_check_cert(cert, pos, len, ssl, true);
   }
 
   return 1;

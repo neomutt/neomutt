@@ -230,7 +230,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'p':
-      count = mutt_num_postponed(0);
+      count = mutt_num_postponed(false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);

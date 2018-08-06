@@ -342,7 +342,7 @@ static void resort_index(struct Menu *menu)
   struct Header *current = CURHDR;
 
   menu->current = -1;
-  mutt_sort_headers(Context, 0);
+  mutt_sort_headers(Context, false);
   /* Restore the current message */
 
   for (int i = 0; i < Context->vcount; i++)
@@ -1291,7 +1291,7 @@ int mutt_index_menu(void)
             if (rc2 == 0)
             {
               hdr = Context->hdrs[Context->msgcount - 1];
-              mutt_sort_headers(Context, 0);
+              mutt_sort_headers(Context, false);
               menu->current = hdr->virtual;
               menu->redraw = REDRAW_FULL;
             }
@@ -1725,7 +1725,7 @@ int mutt_index_menu(void)
 #ifdef USE_IMAP
       case OP_MAIN_IMAP_FETCH:
         if (Context && Context->magic == MUTT_IMAP)
-          imap_check_mailbox(Context, 1);
+          imap_check_mailbox(Context, true);
         break;
 
       case OP_MAIN_IMAP_LOGOUT_ALL:
@@ -1854,7 +1854,7 @@ int mutt_index_menu(void)
           struct Header *oldcur = CURHDR;
 
           if ((Sort & SORT_MASK) == SORT_THREADS)
-            mutt_sort_headers(Context, 0);
+            mutt_sort_headers(Context, false);
           menu->current = oldcur->virtual;
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 
@@ -2256,7 +2256,7 @@ int mutt_index_menu(void)
             struct Header *oldcur = CURHDR;
 
             mutt_break_thread(CURHDR);
-            mutt_sort_headers(Context, 1);
+            mutt_sort_headers(Context, true);
             menu->current = oldcur->virtual;
           }
 
@@ -2299,7 +2299,7 @@ int mutt_index_menu(void)
 
           if (mutt_link_threads(CURHDR, tag ? NULL : Context->last_tag, Context))
           {
-            mutt_sort_headers(Context, 1);
+            mutt_sort_headers(Context, true);
             menu->current = oldcur->virtual;
 
             Context->changed = true;

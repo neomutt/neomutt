@@ -924,7 +924,7 @@ void imap_keepalive(void)
       idata = conn->data;
       if (idata->state >= IMAP_AUTHENTICATED && now >= idata->lastread + ImapKeepalive)
       {
-        imap_check(idata, 1);
+        imap_check(idata, true);
       }
     }
   }

@@ -153,7 +153,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
       mutt_resize_screen();
       clearok(stdscr, TRUE);
     }
-    rc = mutt_enter_string_full(buf, buflen, col, flags, 0, NULL, NULL, es);
+    rc = mutt_enter_string_full(buf, buflen, col, flags, false, NULL, NULL, es);
   } while (rc == 1);
   mutt_enter_state_free(&es);
   return rc;
@@ -173,7 +173,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int multiple,
+int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
                            char ***files, int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;

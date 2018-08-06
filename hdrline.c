@@ -737,14 +737,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         p = buf;
 
         cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
-        int do_locales;
+        bool do_locales;
         if (*cp == '!')
         {
-          do_locales = 0;
+          do_locales = false;
           cp++;
         }
         else
-          do_locales = 1;
+          do_locales = true;
 
         size_t len = buflen - 1;
         while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||

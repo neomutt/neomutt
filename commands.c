@@ -781,7 +781,7 @@ void mutt_display_address(struct Envelope *env)
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
  * @param[out] chflags Copy header flags, e.g. CH_DECODE
  */
-static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
+static void set_copy_flags(struct Header *hdr, bool decode, bool decrypt,
                            int *cmflags, int *chflags)
 {
   *cmflags = 0;

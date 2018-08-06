@@ -781,9 +781,9 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   char buf[HUGE_STRING];
   FILE *tfp = NULL;
 
-  short sgn = 0;
-  short enc = 0;
-  short key = 0;
+  bool sgn = false;
+  bool enc = false;
+  bool key = false;
 
   if (b->type != TYPE_TEXT)
     return 0;
@@ -807,11 +807,11 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
       if (mutt_str_strcmp("MESSAGE-----\n", buf + 15) == 0)
-        enc = 1;
+        enc = true;
       else if (mutt_str_strcmp("SIGNED MESSAGE-----\n", buf + 15) == 0)
-        sgn = 1;
+        sgn = true;
       else if (mutt_str_strcmp("PUBLIC KEY BLOCK-----\n", buf + 15) == 0)
-        key = 1;
+        key = true;
     }
   }
   mutt_file_fclose(&tfp);

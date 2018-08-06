@@ -307,13 +307,13 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
-  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 0);
+  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, true, false);
   if (rc < 0)
     return rc;
   count += rc;
 
   buf[0] = '-';
-  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 1);
+  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, true, true);
   if (rc < 0)
     return rc;
   count += rc;
@@ -841,7 +841,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
   old_sort = Sort;
   Sort = SORT_ORDER;
-  mutt_sort_headers(idata->ctx, 0);
+  mutt_sort_headers(idata->ctx, false);
 
   for (int i = 0; i < idata->ctx->msgcount; i++)
   {
@@ -903,7 +903,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
    * to always know to rethread */
   mx_update_tables(idata->ctx, false);
   Sort = old_sort;
-  mutt_sort_headers(idata->ctx, 1);
+  mutt_sort_headers(idata->ctx, true);
 }
 
 /**
@@ -1170,7 +1170,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
  * (must be flushed with imap_exec)
  */
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
-                     int flag, int changed, int invert)
+                     int flag, bool changed, bool invert)
 {
   struct Header **hdrs = NULL;
   short oldsort;
@@ -1348,7 +1348,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
  * @retval 0               no change
  * @retval -1              error
  */
-int imap_check_mailbox(struct Context *ctx, int force)
+int imap_check_mailbox(struct Context *ctx, bool force)
 {
   return imap_check(ctx->data, force);
 }
@@ -1360,7 +1360,7 @@ int imap_check_mailbox(struct Context *ctx, int force)
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */
-int imap_check(struct ImapData *idata, int force)
+int imap_check(struct ImapData *idata, bool force)
 {
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
@@ -1421,7 +1421,7 @@ int imap_check(struct ImapData *idata, int force)
  * Given a list of mailboxes rather than called once for each so that it can
  * batch the commands and save on round trips.
  */
-int imap_mailbox_check(int check_stats)
+int imap_mailbox_check(bool check_stats)
 {
   struct ImapData *idata = NULL;
   struct ImapData *lastdata = NULL;
@@ -1524,7 +1524,7 @@ int imap_mailbox_check(int check_stats)
  * If queue is true, the command will be sent now and be expected to have been
  * run on the next call (for pipelining the postponed count).
  */
-int imap_status(char *path, int queue)
+int imap_status(char *path, bool queue)
 {
   static int queued = 0;
 
@@ -1917,7 +1917,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   /* loop in case of TRYCREATE */
   do
   {
-    rc = imap_exec_msgset(idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
+    rc = imap_exec_msgset(idata, "UID COPY", mmbox, MUTT_TRASH, false, false);
     if (!rc)
     {
       mutt_debug(1, "No messages to trash\n");
@@ -2051,7 +2051,7 @@ static int imap_mbox_open(struct Context *ctx)
   if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
       mutt_account_match(&pmx.account, &mx.account))
   {
-    imap_status(Postponed, 1);
+    imap_status(Postponed, true);
   }
   FREE(&pmx.mbox);
 
@@ -2342,7 +2342,7 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
   (void) index_hint;
 
   imap_allow_reopen(ctx);
-  rc = imap_check(ctx->data, 0);
+  rc = imap_check(ctx->data, false);
   imap_disallow_reopen(ctx);
 
   return rc;
@@ -2351,11 +2351,11 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
 /**
  * imap_sync_mailbox - Sync all the changes to the server
  * @param ctx     Context
- * @param expunge 0 or 1 - do expunge?
+ * @param expunge if true do expunge
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_sync_mailbox(struct Context *ctx, int expunge)
+int imap_sync_mailbox(struct Context *ctx, bool expunge)
 {
   struct Context *appendctx = NULL;
   struct Header *h = NULL;
@@ -2375,7 +2375,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
    * to be changed. */
   imap_allow_reopen(ctx);
 
-  rc = imap_check(idata, 0);
+  rc = imap_check(idata, false);
   if (rc != 0)
     return rc;
 
@@ -2383,7 +2383,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   if (expunge && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
     rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                          MUTT_DELETED, 1, 0);
+                          MUTT_DELETED, true, false);
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));

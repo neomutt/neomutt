@@ -957,12 +957,12 @@ static int patmatch(const struct Pattern *pat, const char *buf)
  * @param ctx   Mailbox
  * @param pat   Pattern to find
  * @param msgno Message to search
- * @retval 1 Pattern found
- * @retval 0 Error or pattern not found
+ * @retval true Pattern found
+ * @retval false Error or pattern not found
  */
-static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
+static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
-  int match = 0;
+  bool match = false;
   struct Message *msg = mx_msg_open(ctx, msgno);
   if (!msg)
   {
@@ -990,14 +990,14 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     if (!s.fpout)
     {
       mutt_perror(_("Error opening 'memory stream'"));
-      return 0;
+      return false;
     }
 #else
     s.fpout = mutt_file_mkstemp();
     if (!s.fpout)
     {
       mutt_perror(_("Can't create temporary file"));
-      return 0;
+      return false;
     }
 #endif
 
@@ -1018,7 +1018,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
           FREE(&temp);
 #endif
         }
-        return 0;
+        return false;
       }
 
       fseeko(msg->fp, h->offset, SEEK_SET);
@@ -1035,7 +1035,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       if (!fp)
       {
         mutt_perror(_("Error re-opening 'memory stream'"));
-        return 0;
+        return false;
       }
     }
     else
@@ -1044,7 +1044,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       if (!fp)
       {
         mutt_perror(_("Error opening /dev/null"));
-        return 0;
+        return false;
       }
     }
 #else
@@ -1088,7 +1088,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       break; /* don't loop forever */
     if (patmatch(pat, buf) == 0)
     {
-      match = 1;
+      match = true;
       break;
     }
     lng -= mutt_str_strlen(buf);

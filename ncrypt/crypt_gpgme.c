@@ -407,15 +407,15 @@ static bool crypt_key_is_valid(struct CryptKeyInfo *k)
  * @param key Key to test
  * @retval true Validity of key is sufficient
  */
-static int crypt_id_is_strong(struct CryptKeyInfo *key)
+static bool crypt_id_is_strong(struct CryptKeyInfo *key)
 {
   if (!key)
-    return 0;
+    return false;
 
-  unsigned int is_strong = 0;
+  bool is_strong = false;
 
   if ((key->flags & KEYFLAG_ISX509))
-    return 1;
+    return true;
 
   switch (key->validity)
   {
@@ -423,12 +423,12 @@ static int crypt_id_is_strong(struct CryptKeyInfo *key)
     case GPGME_VALIDITY_NEVER:
     case GPGME_VALIDITY_UNDEFINED:
     case GPGME_VALIDITY_UNKNOWN:
-      is_strong = 0;
+      is_strong = false;
       break;
 
     case GPGME_VALIDITY_FULL:
     case GPGME_VALIDITY_ULTIMATE:
-      is_strong = 1;
+      is_strong = true;
       break;
   }
 
@@ -544,10 +544,10 @@ static gpgme_data_t create_gpgme_data(void)
 /**
  * body_to_data_object - Create GPGME object from the mail body
  * @param a       Body to use
- * @param convert If trye, lines are converted to CR-LF if required
+ * @param convert If true, lines are converted to CR-LF if required
  * @retval ptr Newly created GPGME data object
  */
-static gpgme_data_t body_to_data_object(struct Body *a, int convert)
+static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
 {
   char tempfile[PATH_MAX];
   int err = 0;
@@ -1036,7 +1036,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
 
   crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
-  message = body_to_data_object(a, 1);
+  message = body_to_data_object(a, true);
   if (!message)
     return NULL;
   signature = create_gpgme_data();
@@ -1170,7 +1170,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, bool sign)
 
   if (sign)
     crypt_convert_to_7bit(a);
-  gpgme_data_t plaintext = body_to_data_object(a, 0);
+  gpgme_data_t plaintext = body_to_data_object(a, false);
   if (!plaintext)
   {
     free_recipient_set(&rset);
@@ -1225,7 +1225,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
    * clients depend on this for signed+encrypted messages: they do not
    * convert line endings between decrypting and checking the
    * signature.  See #3904. */
-  gpgme_data_t plaintext = body_to_data_object(a, 1);
+  gpgme_data_t plaintext = body_to_data_object(a, true);
   if (!plaintext)
   {
     free_recipient_set(&rset);
@@ -2353,8 +2353,8 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
   char buf[HUGE_STRING];
   FILE *tfp = NULL;
 
-  short sgn = 0;
-  short enc = 0;
+  bool sgn = false;
+  bool enc = false;
 
   if (b->type != TYPE_TEXT)
     return 0;
@@ -2379,12 +2379,12 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     {
       if (MESSAGE(buf + 15))
       {
-        enc = 1;
+        enc = true;
         break;
       }
       else if (SIGNED_MESSAGE(buf + 15))
       {
-        sgn = 1;
+        sgn = true;
         break;
       }
     }

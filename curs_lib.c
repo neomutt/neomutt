@@ -197,7 +197,7 @@ struct Event mutt_getch(void)
  * @retval -1 Aborted
  */
 int mutt_get_field_full(const char *field, char *buf, size_t buflen,
-                        int complete, int multiple, char ***files, int *numfiles)
+                        int complete, bool multiple, char ***files, int *numfiles)
 {
   int ret;
   int x;

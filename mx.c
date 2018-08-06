@@ -513,7 +513,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
          to begin with */
       OptSortSubthreads = false;
       OptNeedRescore = false;
-      mutt_sort_headers(ctx, 1);
+      mutt_sort_headers(ctx, true);
     }
     if (!ctx->quiet)
       mutt_clear_error();
@@ -887,7 +887,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == MUTT_IMAP)
   {
-    int check = imap_sync_mailbox(ctx, purge);
+    int check = imap_sync_mailbox(ctx, (purge != MUTT_NO));
     if (check != 0)
     {
       ctx->closing = false;
@@ -1167,7 +1167,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
       if (ctx->magic != MUTT_IMAP)
       {
         mx_update_tables(ctx, true);
-        mutt_sort_headers(ctx, 1); /* rethread from scratch */
+        mutt_sort_headers(ctx, true); /* rethread from scratch */
       }
     }
   }

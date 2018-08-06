@@ -54,7 +54,7 @@ void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 struct Event mutt_getch(void);
-int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles);
+int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, bool multiple, char ***files, int *numfiles);
 int          mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
 int          mutt_multi_choice(char *prompt, char *letters);
 void         mutt_need_hard_redraw(void);
@@ -73,7 +73,7 @@ int          mutt_yesorno(const char *msg, int def);
 
 #define mutt_enter_fname(A, B, C, D)   mutt_enter_fname_full(A, B, C, D, false, NULL, NULL, 0)
 #define mutt_enter_vfolder(A, B, C, D) mutt_enter_fname_full(A, B, C, D, false, NULL, NULL, MUTT_SEL_VFOLDER)
-#define mutt_get_field(A, B, C, D)     mutt_get_field_full(A, B, C, D, 0, NULL, NULL)
+#define mutt_get_field(A, B, C, D)     mutt_get_field_full(A, B, C, D, false, NULL, NULL)
 #define mutt_get_password(A, B, C)     mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
 
 #endif /* MUTT_CURS_LIB_H */

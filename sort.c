@@ -351,7 +351,7 @@ sort_t *mutt_get_sort_func(int method)
  * @param ctx  Mailbox
  * @param init If true, rebuild the thread
  */
-void mutt_sort_headers(struct Context *ctx, int init)
+void mutt_sort_headers(struct Context *ctx, bool init)
 {
   struct Header *h = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
@@ -386,7 +386,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
   if (OptResortInit)
   {
     OptResortInit = false;
-    init = 1;
+    init = true;
   }
 
   if (init && ctx->tree)

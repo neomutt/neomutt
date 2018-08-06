@@ -58,8 +58,8 @@
  * The folder parameter should already be 'unmunged' via
  * imap_unmunge_mbox_name().
  */
-static void add_folder(char delim, char *folder, int noselect, int noinferiors,
-                       struct BrowserState *state, short isparent)
+static void add_folder(char delim, char *folder, bool noselect, bool noinferiors,
+                       struct BrowserState *state, bool isparent)
 {
   char tmp[PATH_MAX];
   char relpath[PATH_MAX];
@@ -148,7 +148,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
  * @retval -1 Failure
  */
 static int browse_add_list_result(struct ImapData *idata, const char *cmd,
-                                  struct BrowserState *state, short isparent)
+                                  struct BrowserState *state, bool isparent)
 {
   struct ImapList list;
   struct ImapMbox mx;
@@ -290,7 +290,7 @@ int imap_browse(char *path, struct BrowserState *state)
       if (showparents)
       {
         mutt_debug(3, "adding parent %s\n", mbox);
-        add_folder(list.delim, mbox, 1, 0, state, 1);
+        add_folder(list.delim, mbox, true, false, state, true);
       }
 
       /* if our target isn't a folder, we are in our superior */
@@ -312,7 +312,7 @@ int imap_browse(char *path, struct BrowserState *state)
       /* folder may be "/" */
       snprintf(relpath, sizeof(relpath), "%c", n < 0 ? '\0' : idata->delim);
       if (showparents)
-        add_folder(idata->delim, relpath, 1, 0, state, 1);
+        add_folder(idata->delim, relpath, true, false, state, true);
       if (!state->folder)
       {
         imap_qualify_path(buf, sizeof(buf), &mx, relpath);
@@ -333,7 +333,7 @@ int imap_browse(char *path, struct BrowserState *state)
   imap_munge_mbox_name(idata, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(3, "%s\n", munged_mbox);
   snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
-  if (browse_add_list_result(idata, buf, state, 0))
+  if (browse_add_list_result(idata, buf, state, false))
     goto fail;
 
   if (state->entrylen == 0)

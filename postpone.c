@@ -77,11 +77,11 @@ static short UpdateNumPostponed = 0;
 /**
  * mutt_num_postponed - Return the number of postponed messages
  * @param force
- * * 0 Use a cached value if costly to get a fresh count (IMAP)
- * * 1 Force check
+ * * false Use a cached value if costly to get a fresh count (IMAP)
+ * * true Force check
  * @retval num Postponed messages
  */
-int mutt_num_postponed(int force)
+int mutt_num_postponed(bool force)
 {
   struct stat st;
   struct Context ctx;
@@ -92,7 +92,7 @@ int mutt_num_postponed(int force)
   if (UpdateNumPostponed)
   {
     UpdateNumPostponed = 0;
-    force = 1;
+    force = true;
   }
 
   if (mutt_str_strcmp(Postponed, OldPostponed) != 0)
@@ -100,7 +100,7 @@ int mutt_num_postponed(int force)
     FREE(&OldPostponed);
     OldPostponed = mutt_str_strdup(Postponed);
     LastModify = 0;
-    force = 1;
+    force = true;
   }
 
   if (!Postponed)
@@ -114,7 +114,7 @@ int mutt_num_postponed(int force)
     {
       short newpc;
 
-      newpc = imap_status(Postponed, 0);
+      newpc = imap_status(Postponed, false);
       if (newpc >= 0)
       {
         PostCount = newpc;

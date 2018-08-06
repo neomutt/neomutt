@@ -791,7 +791,7 @@ static int sgml_id_fputs(const char *s, FILE *out)
   return 0;
 }
 
-void print_ref(FILE *out, int output_dollar, const char *ref)
+void print_ref(FILE *out, bool output_dollar, const char *ref)
 {
   switch (OutputFormat)
   {
