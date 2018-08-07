@@ -14695,7 +14695,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
-                <entry>index,pager</entry>
+                <entry>index</entry>
                 <entry><literal>&lt;vfolder-window-forward&gt;</literal></entry>
                 <entry>
                   generate virtual folder by moving the query's time window
@@ -14703,7 +14703,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
               </row>
               <row>
-                <entry>index,pager</entry>
+                <entry>index</entry>
                 <entry><literal>&lt;vfolder-window-backward&gt;</literal></entry>
                 <entry>
                   generate virtual folder by moving the query's time window
@@ -14824,8 +14824,8 @@ bind index,pager + entire-thread
 <emphasis role="comment"># generate virtual folder from query</emphasis>
 bind index,pager \eX vfolder-from-query
 <emphasis role="comment"># generate virtual folder from query with time window</emphasis>
-bind index,pager &lt; vfolder-window-backward
-bind index,pager &gt; vfolder-window-forward
+bind index &lt; vfolder-window-backward
+bind index &gt; vfolder-window-forward
 <emphasis role="comment"># toggle between mailboxes and virtual mailboxes</emphasis>
 <emphasis role="comment"># bind index,pager ??? sidebar-toggle-virtual</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
