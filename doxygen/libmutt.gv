@@ -1,0 +1,47 @@
+digraph m2
+{
+        graph [
+                rankdir="TB"
+                nodesep="0.2"
+                ranksep="0.5"
+        ]
+
+        node [
+                shape="Mrecord"
+                fontsize="12"
+                style="solid"
+                height="0.2"
+                penwidth="1.5"
+		color=black
+        ]
+
+        edge [
+                penwidth="1.0"
+                arrowsize="0.5"
+        ]
+
+	buffer    -> string
+	charset   -> regex
+	date      -> string
+	file      -> string
+	hash      -> string
+	list      -> string
+	logging   -> file
+	logging   -> message
+	logging   -> queue
+	logging   -> string
+	mapping   -> string
+	mbyte     -> buffer
+	mbyte     -> charset
+	md5
+	memory    -> exit
+	memory    -> logging
+	parameter -> queue
+	regex     -> mbyte
+	sha1
+	signal    -> message
+	string    -> memory
+
+	{ rank=same file message queue sha1 md5 }
+}
+

@@ -422,9 +422,15 @@ distclean: clean
 	$(RM) $(DEPFILES) .clang_complete autosetup/jimsh0 config.h config.log \
 		conststrings.c contrib/Makefile doc/Makefile doc/neomutt.1 \
 		html Makefile po/Makefile test/Makefile
+	$(RM) zzz.inc doxygen-build.txt tmp.txt
 
 # Tests for the config code
 config-test: libmutt.a libemail.a libconfig.a
+
+# Web Code docs (doxygen)
+.PHONY: html $(PWD)/mutt
+html:
+	$(SRCDIR)/doxygen/generate.sh
 
 ##############################################################################
 # include generated dependency files

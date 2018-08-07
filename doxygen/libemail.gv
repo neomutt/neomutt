@@ -1,0 +1,45 @@
+digraph libemail
+{
+        graph [
+                rankdir="TB"
+                nodesep="0.2"
+                ranksep="0.5"
+		compound=true
+        ]
+
+        node [
+                shape="Mrecord"
+                fontsize="12"
+                style="solid"
+                height="0.2"
+                penwidth="1.5"
+		color=black
+        ]
+
+        edge [
+                penwidth="1.0"
+                arrowsize="0.5"
+        ]
+
+	thread    [ label="MuttThread" ]
+	envelope  [ label="Envelope"   ]
+	address   [ label="Address"    ]
+	content   [ label="Content"    ]
+	attachptr [ label="AttachPtr"  ]
+	body      [ label="Body"       ]
+	header    [ label="Header"     ]
+	parameter [ label="Parameter"  ]
+	tags      [ label="Tags"       ]
+
+	attachptr -> body
+	body      -> attachptr
+	body      -> content
+	body      -> parameter
+	envelope  -> address
+	header    -> body
+	header    -> envelope
+	header    -> tags
+	header    -> thread
+	thread    -> header
+
+}
