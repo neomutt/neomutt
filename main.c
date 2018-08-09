@@ -29,6 +29,7 @@
  */
 
 #define MAIN_C 1
+#define GNULIB_defined_setlocale
 
 #include "config.h"
 #include <errno.h>
