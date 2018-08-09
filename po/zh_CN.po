@@ -100,9 +100,8 @@ msgid "Error reading alias file"
 msgstr "读取别名文件时出错"
 
 #: alias.c:503
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "读取别名文件时出错"
+msgstr "添加别名时出错"
 
 #: alias.c:505
 msgid "Alias added."
@@ -2475,7 +2474,7 @@ msgstr "%sgroup：警告：错误的 IDN '%s'。\n"
 #: init.c:1345
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "错误：%s"
 
 #: init.c:1433
 msgid "invalid header field"
