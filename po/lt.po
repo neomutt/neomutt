@@ -96,9 +96,8 @@ msgid "Error reading alias file"
 msgstr "Klaida bandant skaityti aliasų bylą"
 
 #: alias.c:503
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Klaida bandant skaityti aliasų bylą"
+msgstr "Klaida bandant pridėti aliasą"
 
 #: alias.c:505
 msgid "Alias added."
@@ -1250,12 +1249,14 @@ msgstr "Tunelis į %s grąžino klaidą %d (%s)"
 #: conn/tunnel.c:177 conn/tunnel.c:199
 #, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Tunkelio klaida kalbant su %s: %s"
+msgstr "Tunelio klaida kalbant su %s: %s"
 
 #: copy.c:643
 #, c-format
+# FIXME: this should use ngettext(), see
+# https://github.com/neomutt/neomutt/issues/1276#issuecomment-411729048
 msgid "The length calculation was wrong by %ld bytes"
-msgstr ""
+msgstr "Ilgio skaičiavimas suklydo %ld baitais"
 
 #: copy.c:722
 msgid "No decryption engine available for message"
@@ -2429,12 +2430,12 @@ msgstr "per mažai argumentų"
 #: init.c:820 init.c:1750
 #, c-format
 msgid "Error: impossible to build path of '%s'."
-msgstr ""
+msgstr "Klaida: neįmanoma sukurti kelio iš '%s'."
 
 #: init.c:837
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'."
-msgstr ""
+msgstr "Klaida: ciklinis konfigūracijos failo '%s' įtraukimas."
 
 #: init.c:868
 #, c-format
@@ -2498,7 +2499,7 @@ msgstr "%sgroup: įspėjimas: blogas IDN '%s'.\n"
 #: init.c:1345
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Klaida: %s"
 
 #: init.c:1433
 msgid "invalid header field"
@@ -2560,19 +2561,19 @@ msgid "%s: unknown command"
 msgstr "%s: nežinoma komanda"
 
 #: init.c:4037 init.c:4067 init.c:4114
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Bloga parametro %s reikšmė: \"%s\""
+msgstr "Bloga parametro %s reikšmė: %s"
 
 #: init.c:4086
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "Negalima įjungti/išjungti parametro %s skaitant laišką"
 
 #: init.c:4136
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Funkcija neleistina laiško prisegimo režime."
+msgstr "Negalima įjungti parametro %s laiško prisegimo režime"
 
 #: keymap.c:315 keymap.c:323
 #, c-format
@@ -2965,9 +2966,8 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Laukiu fcntl užrakto... %d"
 
 #: mutt/file.c:1333
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Klaida jungiantis prie IMAP serverio: %s"
+msgstr "Klaida: absoliutinant kelią"
 
 #: mutt/history.c:229 mutt/history.c:271 mutt/history.c:602
 #, c-format
@@ -3181,18 +3181,18 @@ msgid "History '%s'"
 msgstr "Istorija '%s''"
 
 #: mutt_logging.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Bloga parametro %s reikšmė: \"%s\""
+msgstr "Bloga parametro %s reikšmė: %ld"
 
 #: mutt_lua.c:419
 msgid "Error: Couldn't load the lua interpreter."
-msgstr ""
+msgstr "Klaida: nepavyko įkelti lua interpretatoriaus."
 
 #: mutt_lua.c:495
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Nepavyko užrakinti %s\n"
+msgstr "Nepavyko įvykdyti lua bylos: %s"
 
 #: mutt_socket.c:90
 #, c-format
