@@ -3109,10 +3109,6 @@ msgstr "S’activa la depuració a nivell %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "S’activa la depuració a nivell %d.\n"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Desbordament enter, no s’ha pogut reservar memòria."
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "No resta memòria."

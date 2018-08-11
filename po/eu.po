@@ -2995,10 +2995,6 @@ msgstr "%d. mailan arazten.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "%d. mailan arazten.\n"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Osoko zenbakia iraultzea - ezin da memoria esleitu"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Memoriaz kanpo"

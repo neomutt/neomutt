@@ -2950,10 +2950,6 @@ msgstr "Depurando no nível %d para o arquivo '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Realizando log no nível %d para o arquivo '%s'"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Transbordo (overflow) de inteiros -- incapaz de alocar memória"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Acabou a memória"

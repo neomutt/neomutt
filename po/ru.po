@@ -2979,10 +2979,6 @@ msgstr "Отладка на уровне %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Отладка на уровне %d.\n"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Переполнение -- не удалось выделить память"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Нехватка памяти"

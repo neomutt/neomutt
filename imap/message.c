@@ -473,7 +473,7 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
    * if msn_count is this big, we have a serious problem. */
   if (msn_count >= (UINT_MAX / sizeof(struct Header *)))
   {
-    mutt_error(_("Integer overflow -- can't allocate memory"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 

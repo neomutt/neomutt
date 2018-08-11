@@ -3046,10 +3046,6 @@ msgstr "Leibhéal dífhabhtaithe = %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Leibhéal dífhabhtaithe = %d.\n"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Slánuimhir thar maoil -- ní féidir cuimhne a dháileadh"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Cuimhne ídithe"

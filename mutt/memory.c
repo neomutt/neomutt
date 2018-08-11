@@ -57,7 +57,7 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
 
   if (nmemb > (SIZE_MAX / size))
   {
-    mutt_error(_("Integer overflow -- can't allocate memory"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 

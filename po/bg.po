@@ -3040,11 +3040,6 @@ msgstr "Debugging на ниво %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Debugging на ниво %d.\n"
 
-#: mutt/memory.c:60
-#, fuzzy
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Integer overflow -- заделянето на памет е невъзможно"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Недостатъчно памет"

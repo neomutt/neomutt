@@ -2946,10 +2946,6 @@ msgstr "Diagnostyka błędów na poziomie %d do pliku '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Zapisywanie logu na poziomie %d do pliku '%s'"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory"
-msgstr "Przepełnienie zmiennej całkowitej - nie można zaalokować pamięci"
-
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Brak pamięci"
