@@ -47,8 +47,8 @@ msgid "Help"
 msgstr "Aiuto"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Non ci sono alias!"
+msgid "You have no aliases"
+msgstr "Non ci sono alias"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "Crea l'alias: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "È già stato definito un alias con questo nome!"
+msgid "You already have an alias defined with that name"
+msgstr "È già stato definito un alias con questo nome"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -179,8 +179,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Directory [%s], Maschera dei file: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Impossibile allegare una directory!"
+msgid "Can't attach a directory"
+msgstr "Impossibile allegare una directory"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -328,8 +328,8 @@ msgid "Verify signature?"
 msgstr "Verifico la firma?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Impossibile creare il file temporaneo!"
+msgid "Could not create temporary file"
+msgstr "Impossibile creare il file temporaneo"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -367,8 +367,8 @@ msgstr "Non è stato possibile verificare la firma PGP."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Errore eseguendo \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Errore eseguendo \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -389,8 +389,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Rimbalza i messaggi segnati a: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Errore nella lettura dell'indirizzo!"
+msgid "Error parsing address"
+msgstr "Errore nella lettura dell'indirizzo"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -721,8 +721,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] non esiste più!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] non esiste più"
 
 #: compose.c:416
 #, c-format
@@ -783,8 +783,8 @@ msgstr[1] "Allego i file selezionati..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Impossibile allegare %s!"
+msgid "Unable to attach %s"
+msgstr "Impossibile allegare %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -805,12 +805,12 @@ msgid "No messages in that folder."
 msgstr "In questo folder non ci sono messaggi."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Segnare i messaggi da allegare!"
+msgid "Tag the messages you want to attach"
+msgstr "Segnare i messaggi da allegare"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Impossibile allegare!"
+msgid "Unable to attach"
+msgstr "Impossibile allegare"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -908,8 +908,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP già selezionato. Annullare & continuare? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Impossibile bloccare la mailbox!"
+msgid "Unable to lock mailbox"
+msgstr "Impossibile bloccare la mailbox"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1033,8 +1033,8 @@ msgstr "Riempimento del pool di entropia: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s ha permessi insicuri!"
+msgid "%s has insecure permissions"
+msgstr "%s ha permessi insicuri"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1344,8 +1344,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "Impossibile %s: operazione non permessa dalle ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Impossibile (dis)abilitare la scrittura a una mailbox di sola lettura!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Impossibile (dis)abilitare la scrittura a una mailbox di sola lettura"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1889,12 +1889,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "impossibile troncare il folder temporaneo: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Il file del messaggio è vuoto!"
+msgid "Message file is empty"
+msgstr "Il file del messaggio è vuoto"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Messaggio non modificato!"
+msgid "Message not modified"
+msgstr "Messaggio non modificato"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1912,8 +1912,8 @@ msgid "Can't append to folder: %s"
 msgstr "Impossibile accodare al folder: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "il messaggio multipart non ha il parametro boundary!"
+msgid "multipart message has no boundary parameter"
+msgstr "il messaggio multipart non ha il parametro boundary"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2078,8 +2078,8 @@ msgstr ""
 "[-- e il l'access-type %s indicato non è gestito --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Errore: impossibile visualizzare ogni parte di multipart/alternative! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Errore: impossibile visualizzare ogni parte di multipart/alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2098,17 +2098,17 @@ msgstr "Uno o più parti di questo messaggio potrebbero non essere mostrate"
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Impossibile aprire il file temporaneo!"
+msgid "Unable to open 'memory stream'"
+msgstr "Impossibile aprire il file temporaneo"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Impossibile aprire il file temporaneo!"
+msgid "Unable to open temporary file"
+msgstr "Impossibile aprire il file temporaneo"
 
 #: handler.c:1376
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "Impossibile aprire il file temporaneo!"
+msgid "failed to re-open 'memory stream'"
+msgstr "Impossibile aprire il file temporaneo"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2126,14 +2126,14 @@ msgstr "[-- %s/%s non è gestito (usa '%s' per vederlo) --]\n"
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Questo è un allegato ('view-attachments' deve essere assegnato a un tasto!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Questo è un allegato ('view-attachments' deve essere assegnato a un tasto) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s non è gestito ('view-attachments' deve essere assegnato a un tasto!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s non è gestito ('view-attachments' deve essere assegnato a un tasto) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2856,8 +2856,8 @@ msgid "Mailbox is empty."
 msgstr "La mailbox è vuota."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "La mailbox è rovinata!"
+msgid "Mailbox is corrupt"
+msgstr "La mailbox è rovinata"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2873,16 +2873,16 @@ msgid "Reopening mailbox..."
 msgstr "Riapro la mailbox..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "La mailbox è stata rovinata!"
+msgid "Mailbox was corrupted"
+msgstr "La mailbox è stata rovinata"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Errore fatale!  Impossibile riaprire la mailbox!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox modified, but no modified messages! (segnala questo bug)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox modified, but no modified messages (segnala questo bug)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2894,8 +2894,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Scrittura fallita!  Salvo la mailbox parziale in %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Impossibile riaprire la mailbox!"
+msgid "Could not reopen mailbox"
+msgstr "Impossibile riaprire la mailbox"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2963,8 +2963,8 @@ msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Timeout scaduto durante il tentativo di lock fcntl!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Timeout scaduto durante il tentativo di lock fcntl"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2972,8 +2972,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "In attesa del lock fcntl... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Timeout scaduto durante il tentativo di lock flock!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Timeout scaduto durante il tentativo di lock flock"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3006,12 +3006,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Debugging al livello %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Overflow intero.-- impossibile allocare memoria!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Overflow intero.-- impossibile allocare memoria"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Memoria esaurita!"
+msgid "Out of memory"
+msgstr "Memoria esaurita"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3097,8 +3097,8 @@ msgstr "Impossibile modificare i messaggi sul server POP."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s non è una mailbox!"
+msgid "%s is not a mailbox"
+msgstr "%s non è una mailbox"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3177,12 +3177,12 @@ msgid "---Attachment: %s"
 msgstr "---Allegato: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Errore di scrittura!"
+msgid "Write fault"
+msgstr "Errore di scrittura"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Non so come stamparlo!"
+msgid "I don't know how to print that"
+msgstr "Non so come stamparlo"
 
 #: mutt_header.c:342
 #, c-format
@@ -3295,8 +3295,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Premere '%s' per (dis)abilitare la scrittura"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Usare 'toggle-write' per riabilitare la scrittura!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Usare 'toggle-write' per riabilitare la scrittura"
 
 #: mx.c:1068
 #, c-format
@@ -3372,19 +3372,19 @@ msgstr "Cerco di estrarre i certificati S/MIME..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Errore: protocollo multipart/signed %s sconosciuto! --]\n"
+"[-- Errore: protocollo multipart/signed %s sconosciuto --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Errore: struttura multipart/signed incoerente! --]\n"
+"[-- Errore: struttura multipart/signed incoerente --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3637,8 +3637,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Errore nell'estrazione dei dati della chiave!"
+msgid "Error extracting key data"
+msgstr "Errore nell'estrazione dei dati della chiave"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3683,15 +3683,15 @@ msgstr "[-- FINE DEL MESSAGGIO FIRMATO CON PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Errore: impossibile trovare l'inizio del messaggio di PGP! --]\n"
+"[-- Errore: impossibile trovare l'inizio del messaggio di PGP --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Errore: impossibile creare il file temporaneo! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Errore: impossibile creare il file temporaneo --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4081,7 +4081,7 @@ msgid "Enter PGP passphrase:"
 msgstr "Inserisci la passphrase di PGP:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Errore: impossibile creare il sottoprocesso PGP --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
@@ -4103,10 +4103,10 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Errore: non è stato possibile creare un sottoprocesso PGP! --]\n"
+"[-- Errore: non è stato possibile creare un sottoprocesso PGP --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4114,8 +4114,8 @@ msgid "Decryption failed"
 msgstr "Decifratura fallita"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Impossibile aprire il sottoprocesso PGP!"
+msgid "Can't open PGP subprocess"
+msgstr "Impossibile aprire il sottoprocesso PGP"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4330,8 +4330,8 @@ msgstr "Non è stato trovato un certificato (valido) per %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Errore: impossibile creare il sottoprocesso di OpenSSL!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Errore: impossibile creare il sottoprocesso di OpenSSL"
 
 #: ncrypt/smime.c:1394
 #, fuzzy
@@ -4355,8 +4355,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Impossibile firmare: nessuna chiave specificata. Usare Firma come."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Impossibile aprire il sottoprocesso di OpenSSL!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Impossibile aprire il sottoprocesso di OpenSSL"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4367,8 +4367,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Errore: impossibile creare il sottoprocesso di OpenSSL! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Errore: impossibile creare il sottoprocesso di OpenSSL --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4463,17 +4463,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s non è un percorso POP valido"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Il server ha chiuso la connessione!"
+msgid "Server closed connection"
+msgstr "Il server ha chiuso la connessione"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4520,7 +4520,7 @@ msgstr "Prendo la lista dei messaggi..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s non è un percorso POP valido"
 
 #: nntp/nntp.c:1541
@@ -5857,8 +5857,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Il comando TOP non è gestito dal server."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Impossibile scrivere l'header nel file temporaneo!"
+msgid "Can't write header to temporary file"
+msgstr "Impossibile scrivere l'header nel file temporaneo"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5881,8 +5881,8 @@ msgid "Fetching list of messages..."
 msgstr "Prendo la lista dei messaggi..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Impossibile scrivere il messaggio nel file temporaneo!"
+msgid "Can't write message to temporary file"
+msgstr "Impossibile scrivere il messaggio nel file temporaneo"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5908,8 +5908,8 @@ msgstr[0] "Lettura dei nuovi messaggi (%d byte)..."
 msgstr[1] "Lettura dei nuovi messaggi (%d byte)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Errore durante la scrittura della mailbox!"
+msgid "Error while writing mailbox"
+msgstr "Errore durante la scrittura della mailbox"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5925,8 +5925,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Autenticazione in corso (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "Marca temporale POP non valida!"
+msgid "POP timestamp is invalid"
+msgstr "Marca temporale POP non valida"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6054,8 +6054,8 @@ msgstr "Manda con una pipe a: "
 #.
 #: recvattach.c:859
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Non so come stampare %s allegati!"
+msgid "I don't know how to print %s attachments"
+msgstr "Non so come stampare %s allegati"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6077,16 +6077,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Impossibile decifrare il messaggio cifrato!"
+msgid "Can't decrypt encrypted message"
+msgstr "Impossibile decifrare il messaggio cifrato"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Allegati"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Non ci sono sottoparti da visualizzare!"
+msgid "There are no subparts to show"
+msgstr "Non ci sono sottoparti da visualizzare"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6116,10 +6116,10 @@ msgstr "Puoi rimbalzare solo parti message/rfc822."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Errore durante l'invio del messaggio!"
-msgstr[1] "Errore durante l'invio del messaggio!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Errore durante l'invio del messaggio"
+msgstr[1] "Errore durante l'invio del messaggio"
 
 #: recvcmd.c:484
 #, c-format
@@ -6148,8 +6148,8 @@ msgid "Can't find any tagged messages."
 msgstr "Non ci sono messaggi segnati."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Non è stata trovata alcuna mailing list!"
+msgid "No mailing lists found"
+msgstr "Non è stata trovata alcuna mailing list"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6176,8 +6176,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Non trovo type2.list di mixmaster!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Non trovo type2.list di mixmaster"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6211,8 +6211,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster non accetta header Cc o Bcc."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Impostare la variabile hostname ad un valore corretto quando si usa mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Impostare la variabile hostname ad un valore corretto quando si usa mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6264,8 +6264,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Inviare un Follow-up a %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Non è visibile alcun messaggio segnato!"
+msgid "No tagged messages are visible"
+msgstr "Non è visibile alcun messaggio segnato"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6276,8 +6276,8 @@ msgid "Including quoted message..."
 msgstr "Includo il messaggio citato..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Non ho potuto includere tutti i messaggi richiesti!"
+msgid "Could not include all requested messages"
+msgstr "Non ho potuto includere tutti i messaggi richiesti"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6363,13 +6363,13 @@ msgid "Mail sent."
 msgstr "Messaggio spedito."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Nessun parametro limite trovato! [segnalare questo errore]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Nessun parametro limite trovato [segnalare questo errore]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s non esiste più!"
+msgid "%s no longer exists"
+msgstr "%s non esiste più"
 
 #: sendlib.c:997
 #, c-format
@@ -6453,8 +6453,8 @@ msgid "Sorting mailbox..."
 msgstr "Ordinamento della mailbox..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Impossibile trovare la funzione di ordinamento! [segnala questo bug]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Impossibile trovare la funzione di ordinamento [segnala questo bug]"
 
 #: status.c:163
 msgid "(no mailbox)"

@@ -1069,7 +1069,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     /* didn't find anything that we could display! */
     state_mark_attach(s);
     state_puts(_("[-- Error:  Could not display any parts of "
-                 "Multipart/Alternative! --]\n"),
+                 "Multipart/Alternative --]\n"),
                s);
     rc = -1;
   }
@@ -1297,7 +1297,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       s->fpout = open_memstream(&temp, &tempsize);
       if (!s->fpout)
       {
-        mutt_error(_("Unable to open 'memory stream'!"));
+        mutt_error(_("Unable to open 'memory stream'"));
         mutt_debug(1, "Can't open 'memory stream'.\n");
         return -1;
       }
@@ -1306,7 +1306,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       s->fpout = mutt_file_fopen(tempfile, "w");
       if (!s->fpout)
       {
-        mutt_error(_("Unable to open temporary file!"));
+        mutt_error(_("Unable to open temporary file"));
         mutt_debug(1, "Can't open %s.\n", tempfile);
         return -1;
       }
@@ -1356,7 +1356,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
       if (!s->fpin)
       {
-        mutt_perror(_("failed to re-open 'memory stream'!"));
+        mutt_perror(_("failed to re-open 'memory stream'"));
         return -1;
       }
 #else
@@ -1640,13 +1640,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
         if (HonorDisposition && (b->disposition == DISP_ATTACH))
         {
           str = _("[-- This is an attachment (need 'view-attachments' bound to "
-                  "key!) --]\n");
+                  "key) --]\n");
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
           str = _("[-- %s/%s is unsupported (need 'view-attachments' bound to "
-                  "key!) --]\n");
+                  "key) --]\n");
         }
       }
     }

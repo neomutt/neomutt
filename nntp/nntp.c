@@ -82,7 +82,7 @@ struct NntpServer *CurrentNewsSrv;
 static int nntp_connect_error(struct NntpServer *nserv)
 {
   nserv->status = NNTP_NONE;
-  mutt_error(_("Server closed connection!"));
+  mutt_error(_("Server closed connection"));
   return -1;
 }
 
@@ -621,7 +621,7 @@ static int nntp_auth(struct NntpServer *nserv)
   conn->account.flags = flags;
   if (conn->fd < 0)
   {
-    mutt_error(_("Server closed connection!"));
+    mutt_error(_("Server closed connection"));
   }
   else
     mutt_socket_close(conn);
@@ -1519,7 +1519,7 @@ static int nntp_mbox_open(struct Context *ctx)
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
+    mutt_error(_("%s is an invalid newsgroup specification"), ctx->path);
     return -1;
   }
 

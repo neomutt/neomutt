@@ -44,8 +44,8 @@ msgid "Help"
 msgstr "Hjälp"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Du saknar alias!"
+msgid "You have no aliases"
+msgstr "Du saknar alias"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -57,8 +57,8 @@ msgid "Alias as: "
 msgstr "Alias: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Du har redan definierat ett alias med det namnet!"
+msgid "You already have an alias defined with that name"
+msgstr "Du har redan definierat ett alias med det namnet"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -178,8 +178,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], filmask: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Kan inte bifoga en katalog!"
+msgid "Can't attach a directory"
+msgstr "Kan inte bifoga en katalog"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -327,8 +327,8 @@ msgid "Verify signature?"
 msgstr "Verifiera signatur?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Kunde inte skapa tillfällig fil!"
+msgid "Could not create temporary file"
+msgstr "Kunde inte skapa tillfällig fil"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -366,8 +366,8 @@ msgstr "PGP-signaturen kunde INTE verifieras."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Fel uppstod vid körning av \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Fel uppstod vid körning av \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -388,8 +388,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Återsänd märkta meddelanden till: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Fel vid tolkning av adress!"
+msgid "Error parsing address"
+msgstr "Fel vid tolkning av adress"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -725,8 +725,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] existerar inte längre!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] existerar inte längre"
 
 #: compose.c:416
 #, c-format
@@ -787,8 +787,8 @@ msgstr[1] "Bifogar valda filer..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Kunde inte bifoga %s!"
+msgid "Unable to attach %s"
+msgstr "Kunde inte bifoga %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -809,12 +809,12 @@ msgid "No messages in that folder."
 msgstr "Inga meddelanden i den foldern."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Märk de meddelanden du vill bifoga!"
+msgid "Tag the messages you want to attach"
+msgstr "Märk de meddelanden du vill bifoga"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Kunde inte bifoga!"
+msgid "Unable to attach"
+msgstr "Kunde inte bifoga"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -912,8 +912,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP redan valt. Rensa och fortsätt? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Kunde inte låsa brevlåda!"
+msgid "Unable to lock mailbox"
+msgstr "Kunde inte låsa brevlåda"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1037,8 +1037,8 @@ msgstr "Fyller slumptalscentral: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s har osäkra rättigheter!"
+msgid "%s has insecure permissions"
+msgstr "%s har osäkra rättigheter"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1350,8 +1350,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "Kan inte %s: Operation tillåts inte av ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kan inte växla till skrivläge på en skrivskyddad brevlåda!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Kan inte växla till skrivläge på en skrivskyddad brevlåda"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1894,12 +1894,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "kunde inte avkorta tillfällig brevfolder: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Meddelandefilen är tom!"
+msgid "Message file is empty"
+msgstr "Meddelandefilen är tom"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Meddelandet ej modifierat!"
+msgid "Message not modified"
+msgstr "Meddelandet ej modifierat"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1917,8 +1917,8 @@ msgid "Can't append to folder: %s"
 msgstr "Kan inte lägga till folder: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "\"multipart\"-meddelande har ingen avgränsningsparameter!"
+msgid "multipart message has no boundary parameter"
+msgstr "\"multipart\"-meddelande har ingen avgränsningsparameter"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2083,8 +2083,8 @@ msgstr ""
 "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Fel : Kan inte visa någon del av \"Multipart/Alternative\"! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Fel : Kan inte visa någon del av \"Multipart/Alternative\" --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2104,17 +2104,17 @@ msgstr "Varning: En del av detta meddelande har inte blivit signerat."
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Kunde inte öppna tillfällig fil!"
+msgid "Unable to open 'memory stream'"
+msgstr "Kunde inte öppna tillfällig fil"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Kunde inte öppna tillfällig fil!"
+msgid "Unable to open temporary file"
+msgstr "Kunde inte öppna tillfällig fil"
 
 #: handler.c:1376
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "Kunde inte öppna tillfällig fil!"
+msgid "failed to re-open 'memory stream'"
+msgstr "Kunde inte öppna tillfällig fil"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2132,14 +2132,14 @@ msgstr "[-- %s/%s stöds inte (använd \"%s\" för att visa den här delen) --]\
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Den här %s/%s bilagan (\"view-attachments\" måste knytas till tangent!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Den här %s/%s bilagan (\"view-attachments\" måste knytas till tangent) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s stöds inte (\"view-attachments\" måste knytas till tangent!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s stöds inte (\"view-attachments\" måste knytas till tangent) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2863,8 +2863,8 @@ msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Brevlådan är trasig!"
+msgid "Mailbox is corrupt"
+msgstr "Brevlådan är trasig"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2880,16 +2880,16 @@ msgid "Reopening mailbox..."
 msgstr "Återöppnar brevlåda..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Brevlådan blev skadad!"
+msgid "Mailbox was corrupted"
+msgstr "Brevlådan blev skadad"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatalt fel! Kunde inte öppna brevlådan igen!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox modifierad, men inga modifierade meddelanden! (rapportera det här felet)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox modifierad, men inga modifierade meddelanden (rapportera det här felet)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2901,8 +2901,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Skrivning misslyckades! Sparade del av brevlåda i %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Kunde inte återöppna brevlåda!"
+msgid "Could not reopen mailbox"
+msgstr "Kunde inte återöppna brevlåda"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2970,8 +2970,8 @@ msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Maxtiden överskreds när \"fcntl\"-låsning försöktes!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Maxtiden överskreds när \"fcntl\"-låsning försöktes"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2979,8 +2979,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Väntar på fcntl-låsning... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Maxtiden överskreds när \"flock\"-låsning försöktes!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Maxtiden överskreds när \"flock\"-låsning försöktes"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3013,12 +3013,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Avlusning på nivå %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Heltalsöverflödning -- kan inte allokera minne!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Heltalsöverflödning -- kan inte allokera minne"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Slut på minne!"
+msgid "Out of memory"
+msgstr "Slut på minne"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3105,8 +3105,8 @@ msgstr "Kunde inte lämna meddelanden på server."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s är inte en brevlåda!"
+msgid "%s is not a mailbox"
+msgstr "%s är inte en brevlåda"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3184,12 +3184,12 @@ msgid "---Attachment: %s"
 msgstr "-- Bilagor"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Fel vid skrivning!"
+msgid "Write fault"
+msgstr "Fel vid skrivning"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Jag vet inte hur det där ska skrivas ut!"
+msgid "I don't know how to print that"
+msgstr "Jag vet inte hur det där ska skrivas ut"
 
 #: mutt_header.c:342
 #, c-format
@@ -3302,8 +3302,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Tryck \"%s\" för att växla skrivning"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Använd \"toggle-write\" för att återaktivera skrivning!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Använd \"toggle-write\" för att återaktivera skrivning"
 
 #: mx.c:1068
 #, c-format
@@ -3379,19 +3379,19 @@ msgstr "Försöker att extrahera S/MIME-certifikat..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Fel: Okänt \"multipart/signed\" protokoll %s! --]\n"
+"[-- Fel: Okänt \"multipart/signed\" protokoll %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Fel: Inkonsekvent \"multipart/signed\" struktur! --]\n"
+"[-- Fel: Inkonsekvent \"multipart/signed\" struktur --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3650,7 +3650,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!"
+msgid "Error extracting key data"
 msgstr "Fel vid hämtning av nyckelinformation: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3696,15 +3696,15 @@ msgstr "[-- SLUT PÅ PGP-SIGNERAT MEDDELANDE --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Fel: kunde inte hitta början av PGP-meddelande! --]\n"
+"[-- Fel: kunde inte hitta början av PGP-meddelande --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Fel: kunde inte skapa tillfällig fil! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Fel: kunde inte skapa tillfällig fil --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4098,8 +4098,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Mata in PGP-lösenfras:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fel: kunde inte skapa PGP-underprocess! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Fel: kunde inte skapa PGP-underprocess --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4120,10 +4120,10 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Fel: kunde inte skapa en PGP-underprocess! --]\n"
+"[-- Fel: kunde inte skapa en PGP-underprocess --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4131,8 +4131,8 @@ msgid "Decryption failed"
 msgstr "Avkryptering misslyckades"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Kan inte öppna PGP-underprocess!"
+msgid "Can't open PGP subprocess"
+msgstr "Kan inte öppna PGP-underprocess"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4352,8 +4352,8 @@ msgstr "Inga (giltiga) certifikat hittades för %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Fel: kunde inte skapa OpenSSL-underprocess!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Fel: kunde inte skapa OpenSSL-underprocess"
 
 #: ncrypt/smime.c:1394
 #, fuzzy
@@ -4377,8 +4377,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Kan inte signera: Inget nyckel angiven. Använd signera som."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Kan inte öppna OpenSSL-underprocess!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Kan inte öppna OpenSSL-underprocess"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4389,8 +4389,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fel: kunde inte skapa OpenSSL-underprocess! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Fel: kunde inte skapa OpenSSL-underprocess --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4491,17 +4491,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s är en ogilitig POP-sökväg"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Servern stängde förbindelsen!"
+msgid "Server closed connection"
+msgstr "Servern stängde förbindelsen"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4548,7 +4548,7 @@ msgstr "Hämtar lista över meddelanden..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s är en ogilitig POP-sökväg"
 
 #: nntp/nntp.c:1541
@@ -5885,8 +5885,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Kommandot TOP stöds inte av servern."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Kan inte skriva huvud till tillfällig fil!"
+msgid "Can't write header to temporary file"
+msgstr "Kan inte skriva huvud till tillfällig fil"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5909,8 +5909,8 @@ msgid "Fetching list of messages..."
 msgstr "Hämtar lista över meddelanden..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Kan inte skriva meddelande till tillfällig fil!"
+msgid "Can't write message to temporary file"
+msgstr "Kan inte skriva meddelande till tillfällig fil"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5936,8 +5936,8 @@ msgstr[0] "Läser nya meddelanden (%d byte)..."
 msgstr[1] "Läser nya meddelanden (%d byte)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Fel vid skrivning av brevlåda!"
+msgid "Error while writing mailbox"
+msgstr "Fel vid skrivning av brevlåda"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5953,8 +5953,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Verifierar (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP-tidsstämpel är felaktig!"
+msgid "POP timestamp is invalid"
+msgstr "POP-tidsstämpel är felaktig"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6082,8 +6082,8 @@ msgstr "Skicka genom rör till: "
 #.
 #: recvattach.c:859
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Jag vet inte hur %s bilagor ska skrivas ut!"
+msgid "I don't know how to print %s attachments"
+msgstr "Jag vet inte hur %s bilagor ska skrivas ut"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6105,16 +6105,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Kan inte avkryptera krypterat meddelande!"
+msgid "Can't decrypt encrypted message"
+msgstr "Kan inte avkryptera krypterat meddelande"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Bilagor"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Det finns inga underdelar att visa!"
+msgid "There are no subparts to show"
+msgstr "Det finns inga underdelar att visa"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6144,10 +6144,10 @@ msgstr "Du kan bara återsända \"message/rfc822\"-delar."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Fel vid återsändning av meddelande!"
-msgstr[1] "Fel vid återsändning av meddelanden!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Fel vid återsändning av meddelande"
+msgstr[1] "Fel vid återsändning av meddelanden"
 
 #: recvcmd.c:484
 #, c-format
@@ -6176,8 +6176,8 @@ msgid "Can't find any tagged messages."
 msgstr "Kan inte hitta några märkta meddelanden."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Inga sändlistor hittades!"
+msgid "No mailing lists found"
+msgstr "Inga sändlistor hittades"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6204,8 +6204,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Kan inte hämta mixmasters type2.list!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Kan inte hämta mixmasters type2.list"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6239,8 +6239,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster accepterar inte Cc eller Bcc-huvuden."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vid användande av mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vid användande av mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6291,8 +6291,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Svara till %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Inga märkta meddelanden är synliga!"
+msgid "No tagged messages are visible"
+msgstr "Inga märkta meddelanden är synliga"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6303,8 +6303,8 @@ msgid "Including quoted message..."
 msgstr "Inkluderar citerat meddelande..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Kunde inte inkludera alla begärda meddelanden!"
+msgid "Could not include all requested messages"
+msgstr "Kunde inte inkludera alla begärda meddelanden"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6391,13 +6391,13 @@ msgid "Mail sent."
 msgstr "Brevet skickat."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Ingen begränsningsparameter hittad! [Rapportera det här felet]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Ingen begränsningsparameter hittad [Rapportera det här felet]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s existerar inte längre!"
+msgid "%s no longer exists"
+msgstr "%s existerar inte längre"
 
 #: sendlib.c:997
 #, c-format
@@ -6481,8 +6481,8 @@ msgid "Sorting mailbox..."
 msgstr "Sorterar brevlåda..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Kunde inte hitta sorteringsfunktion! [Rapportera det här felet]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Kunde inte hitta sorteringsfunktion [Rapportera det här felet]"
 
 #: status.c:163
 msgid "(no mailbox)"

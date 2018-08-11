@@ -841,7 +841,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
                %s gets replaced by a MIME type, e.g. "text/plain" or
                application/octet-stream.
              */
-            mutt_error(_("I don't know how to print %s attachments!"), type);
+            mutt_error(_("I don't know how to print %s attachments"), type);
             return false;
           }
         }
@@ -1190,7 +1190,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
   decrypt_failed:
     /* Fall through and show the original parts if decryption fails */
     if (need_secured && !secured)
-      mutt_error(_("Can't decrypt encrypted message!"));
+      mutt_error(_("Can't decrypt encrypted message"));
 
     /* Strip out the top level multipart */
     if (m->type == TYPE_MULTIPART && m->parts && !need_secured &&
@@ -1362,7 +1362,7 @@ void mutt_view_attachments(struct Header *hdr)
       case OP_ATTACH_COLLAPSE:
         if (!CURATTACH->content->parts)
         {
-          mutt_error(_("There are no subparts to show!"));
+          mutt_error(_("There are no subparts to show"));
           break;
         }
         attach_collapse(actx, menu);

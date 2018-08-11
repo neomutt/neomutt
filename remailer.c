@@ -563,7 +563,7 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Remailer **type2_list = mix_type2_list(&ttll);
   if (!type2_list)
   {
-    mutt_error(_("Can't get mixmaster's type2.list!"));
+    mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
@@ -795,7 +795,7 @@ int mix_check_message(struct Header *msg)
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "
-                   "using mixmaster!"));
+                   "using mixmaster"));
       return -1;
     }
 

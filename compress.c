@@ -425,7 +425,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
   {
     rc = 0;
     mutt_any_key_to_continue(NULL);
-    mutt_error(_("Error running \"%s\"!"), sys_cmd);
+    mutt_error(_("Error running \"%s\""), sys_cmd);
   }
 
   mutt_sig_unblock();
@@ -460,7 +460,7 @@ static int comp_mbox_open(struct Context *ctx)
 
   if (!lock_realpath(ctx, 0))
   {
-    mutt_error(_("Unable to lock mailbox!"));
+    mutt_error(_("Unable to lock mailbox"));
     goto or_fail;
   }
 
@@ -525,7 +525,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
    * It will be unlocked in the close */
   if (!lock_realpath(ctx, 1))
   {
-    mutt_error(_("Unable to lock mailbox!"));
+    mutt_error(_("Unable to lock mailbox"));
     goto oa_fail2;
   }
 
@@ -677,7 +677,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
 
   if (!lock_realpath(ctx, 0))
   {
-    mutt_error(_("Unable to lock mailbox!"));
+    mutt_error(_("Unable to lock mailbox"));
     return -1;
   }
 
@@ -848,7 +848,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (!lock_realpath(ctx, 1))
   {
-    mutt_error(_("Unable to lock mailbox!"));
+    mutt_error(_("Unable to lock mailbox"));
     return -1;
   }
 

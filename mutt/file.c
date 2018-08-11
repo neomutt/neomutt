@@ -1130,7 +1130,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
     if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
     {
       if (timeout)
-        mutt_error(_("Timeout exceeded while attempting fcntl lock!"));
+        mutt_error(_("Timeout exceeded while attempting fcntl lock"));
       return -1;
     }
 
@@ -1200,7 +1200,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
     if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
     {
       if (timeout)
-        mutt_error(_("Timeout exceeded while attempting flock lock!"));
+        mutt_error(_("Timeout exceeded while attempting flock lock"));
       r = -1;
       break;
     }

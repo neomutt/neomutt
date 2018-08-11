@@ -206,7 +206,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   addr = mutt_addr_parse_list(addr, buf);
   if (!addr)
   {
-    mutt_error(_("Error parsing address!"));
+    mutt_error(_("Error parsing address"));
     return;
   }
 
@@ -262,7 +262,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   if (!ret)
     mutt_message(ngettext("Message bounced.", "Messages bounced.", p));
   else
-    mutt_error(ngettext("Error bouncing message!", "Error bouncing messages!", p));
+    mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
 
   mutt_addr_free(&addr);
 }
@@ -829,7 +829,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 
     if ((flags & SEND_LIST_REPLY) && !env->to)
     {
-      mutt_error(_("No mailing lists found!"));
+      mutt_error(_("No mailing lists found"));
       return -1;
     }
 

@@ -46,8 +46,8 @@ msgid "Help"
 msgstr "ヘルプ"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "別名がない!"
+msgid "You have no aliases"
+msgstr "別名がない"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -59,8 +59,8 @@ msgid "Alias as: "
 msgstr "別名入力: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "すでにこの名前の別名がある!"
+msgid "You already have an alias defined with that name"
+msgstr "すでにこの名前の別名がある"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -178,8 +178,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "ディレクトリ [%s], ファイルマスク: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "ディレクトリは添付できない!"
+msgid "Can't attach a directory"
+msgstr "ディレクトリは添付できない"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -325,8 +325,8 @@ msgid "Verify signature?"
 msgstr "署名を検証?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "一時ファイルを作成できなかった!"
+msgid "Could not create temporary file"
+msgstr "一時ファイルを作成できなかった"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -364,8 +364,8 @@ msgstr "PGP 署名は検証できなかった。"
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "\"%s\" 実行エラー!"
+msgid "Error running \"%s\""
+msgstr "\"%s\" 実行エラー"
 
 #: commands.c:269
 msgid "Command: "
@@ -386,8 +386,8 @@ msgid "Bounce tagged messages to: "
 msgstr "タグ付きメッセージの再送先: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "アドレス解析エラー!"
+msgid "Error parsing address"
+msgstr "アドレス解析エラー"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -711,8 +711,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] はもはや存在しない!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] はもはや存在しない"
 
 #: compose.c:416
 #, c-format
@@ -772,8 +772,8 @@ msgstr[0] "選択されたファイルを添付中..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "%s は添付できない!"
+msgid "Unable to attach %s"
+msgstr "%s は添付できない"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -793,12 +793,12 @@ msgid "No messages in that folder."
 msgstr "そのフォルダにはメッセージがない。"
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "添付したいメッセージにタグを付けよ!"
+msgid "Tag the messages you want to attach"
+msgstr "添付したいメッセージにタグを付けよ"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "添付できない!"
+msgid "Unable to attach"
+msgstr "添付できない"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -897,8 +897,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "メールボックスロック不能!"
+msgid "Unable to lock mailbox"
+msgstr "メールボックスロック不能"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1022,8 +1022,8 @@ msgstr "乱雑さプールを充填中: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s に脆弱なパーミッションがある!"
+msgid "%s has insecure permissions"
+msgstr "%s に脆弱なパーミッションがある"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1329,8 +1329,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: 操作が ACL で許可されていない"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "読み出し専用メールボックスでは変更の書き込みを切替できない!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "読み出し専用メールボックスでは変更の書き込みを切替できない"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1859,12 +1859,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "一時メールフォルダの最後の行を消せなかった: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "メッセージファイルが空!"
+msgid "Message file is empty"
+msgstr "メッセージファイルが空"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "メッセージは変更されていない!"
+msgid "Message not modified"
+msgstr "メッセージは変更されていない"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1883,8 +1883,8 @@ msgid "Can't append to folder: %s"
 msgstr "フォルダに追加できない: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "マルチパートのメッセージだが boundary パラメータがない!"
+msgid "multipart message has no boundary parameter"
+msgstr "マルチパートのメッセージだが boundary パラメータがない"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2048,8 +2048,8 @@ msgstr ""
 "[-- かつ、指定された access-type %s は未サポート --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- エラー: どの Multipart/Alternative パートも表示できなかった! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- エラー: どの Multipart/Alternative パートも表示できなかった --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2068,15 +2068,15 @@ msgstr "メッセージの一部は表示できなかった"
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "一時ファイルをオープンできない!"
+msgid "Unable to open 'memory stream'"
+msgstr "一時ファイルをオープンできない"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "一時ファイルをオープンできない!"
+msgid "Unable to open temporary file"
+msgstr "一時ファイルをオープンできない"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
+msgid "failed to re-open 'memory stream'"
 msgstr ""
 
 #: handler.c:1588
@@ -2095,14 +2095,14 @@ msgstr "[-- %s/%s 形式は未サポート (このパートを表示するには
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- 添付ファイル (キーに 'view-attachments' を割り当てる必要がある!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- 添付ファイル (キーに 'view-attachments' を割り当てる必要がある) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s 形式は未サポート (キーに 'view-attachments' を割り当てる必要がある!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s 形式は未サポート (キーに 'view-attachments' を割り当てる必要がある) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2823,8 +2823,8 @@ msgid "Mailbox is empty."
 msgstr "メールボックスが空。"
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "メールボックスがこわれている!"
+msgid "Mailbox is corrupt"
+msgstr "メールボックスがこわれている"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2840,16 +2840,16 @@ msgid "Reopening mailbox..."
 msgstr "メールボックス再オープン中..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "メールボックスがこわれた!"
+msgid "Mailbox was corrupted"
+msgstr "メールボックスがこわれた"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "致命的なエラー! メールボックスを再オープンできなかった!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: メールボックスが変更されたが、変更メッセージがない(このバグを報告せよ)!"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: メールボックスが変更されたが、変更メッセージがない(このバグを報告せよ)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2861,8 +2861,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "書き込み失敗! メールボックスの断片を %s に保存した"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "メールボックスを再オープンできなかった!"
+msgid "Could not reopen mailbox"
+msgstr "メールボックスを再オープンできなかった"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2930,8 +2930,8 @@ msgid "Tagging is not supported."
 msgstr "タグ付け機能がサポートされていない。"
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "fcntl ロック中にタイムアウト発生!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "fcntl ロック中にタイムアウト発生"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2939,8 +2939,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "fcntl ロック待ち... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "flock ロック中にタイムアウト発生!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "flock ロック中にタイムアウト発生"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2973,12 +2973,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "レベル %d でデバッグ中。\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "桁あふれ -- メモリを割り当てられない!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "桁あふれ -- メモリを割り当てられない"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "メモリ不足!"
+msgid "Out of memory"
+msgstr "メモリ不足"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3067,8 +3067,8 @@ msgstr "サーバにメッセージを残せない。"
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s はメールボックスではない!"
+msgid "%s is not a mailbox"
+msgstr "%s はメールボックスではない"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3146,12 +3146,12 @@ msgid "---Attachment: %s"
 msgstr "---添付ファイル: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "書き込み失敗!"
+msgid "Write fault"
+msgstr "書き込み失敗"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "どのように印刷するか不明!"
+msgid "I don't know how to print that"
+msgstr "どのように印刷するか不明"
 
 #: mutt_header.c:342
 #, c-format
@@ -3259,8 +3259,8 @@ msgid " Press '%s' to toggle write"
 msgstr " '%s' を押すと変更を書き込むかどうかを切替"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "'toggle-write' を使って書き込みを有効にせよ!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "'toggle-write' を使って書き込みを有効にせよ"
 
 #: mx.c:1068
 #, c-format
@@ -3336,19 +3336,19 @@ msgstr "S/MIME 証明書の展開を試行中..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- エラー: 不明な multipart/signed プロトコル %s! --]\n"
+"[-- エラー: 不明な multipart/signed プロトコル %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- エラー: multipart/signed 署名が欠落または不正! --]\n"
+"[-- エラー: multipart/signed 署名が欠落または不正 --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3601,8 +3601,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "鍵データの抽出エラー!"
+msgid "Error extracting key data"
+msgstr "鍵データの抽出エラー"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3647,15 +3647,15 @@ msgstr "[-- PGP 署名メッセージ終了 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- エラー: PGP メッセージの開始点を発見できなかった! --]\n"
+"[-- エラー: PGP メッセージの開始点を発見できなかった --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- エラー: 一時ファイルを作成できなかった! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- エラー: 一時ファイルを作成できなかった --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4032,8 +4032,8 @@ msgid "Enter PGP passphrase:"
 msgstr "PGP パスフレーズ入力:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- エラー: PGP 子プロセスを作成できなかった! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- エラー: PGP 子プロセスを作成できなかった --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4054,10 +4054,10 @@ msgstr "内部エラー。バグレポートを提出せよ。"
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- エラー: PGP 子プロセスを作成できなかった! --]\n"
+"[-- エラー: PGP 子プロセスを作成できなかった --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4065,8 +4065,8 @@ msgid "Decryption failed"
 msgstr "復号化に失敗した"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "PGP 子プロセスをオープンできない!"
+msgid "Can't open PGP subprocess"
+msgstr "PGP 子プロセスをオープンできない"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4280,8 +4280,8 @@ msgstr "%s の (正しい) 証明書が見つからない。"
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "エラー: OpenSSL 子プロセス作成不能!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "エラー: OpenSSL 子プロセス作成不能"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4304,8 +4304,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "鍵が未指定のため署名不能: 「署名鍵選択」をせよ。"
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "OpenSSL 子プロセスオープン不能!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "OpenSSL 子プロセスオープン不能"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4316,8 +4316,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- エラー: OpenSSL 子プロセスを作成できなかった! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- エラー: OpenSSL 子プロセスを作成できなかった --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4412,17 +4412,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s は不正な POP パス"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "サーバが接続を切った!"
+msgid "Server closed connection"
+msgstr "サーバが接続を切った"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4469,7 +4469,7 @@ msgstr "メッセージリストを取得中..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s は不正な POP パス"
 
 #: nntp/nntp.c:1541
@@ -5792,8 +5792,8 @@ msgid "Command TOP is not supported by server."
 msgstr "コマンド TOP をサーバがサポートしていない。"
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "ヘッダを一時ファイルに書き込めない!"
+msgid "Can't write header to temporary file"
+msgstr "ヘッダを一時ファイルに書き込めない"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5815,8 +5815,8 @@ msgid "Fetching list of messages..."
 msgstr "メッセージリストを取得中..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "メッセージを一時ファイルに書き込めない!"
+msgid "Can't write message to temporary file"
+msgstr "メッセージを一時ファイルに書き込めない"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5841,8 +5841,8 @@ msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "新着メッセージ読み出し中 (%d バイト)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "メールボックス書き込み中にエラー!"
+msgid "Error while writing mailbox"
+msgstr "メールボックス書き込み中にエラー"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5857,8 +5857,8 @@ msgid "Authenticating (SASL)..."
 msgstr "認証中 (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POPタイムスタンプが不正!"
+msgid "POP timestamp is invalid"
+msgstr "POPタイムスタンプが不正"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -5986,8 +5986,8 @@ msgstr "パイプするコマンド: "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "どのように添付ファイル %s を印刷するか不明!"
+msgid "I don't know how to print %s attachments"
+msgstr "どのように添付ファイル %s を印刷するか不明"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6008,16 +6008,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr "復号化されたメッセージの構造変更はサポートされていない"
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "暗号化メッセージを復号化できない!"
+msgid "Can't decrypt encrypted message"
+msgstr "暗号化メッセージを復号化できない"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "添付ファイル"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "表示すべき副パートがない!"
+msgid "There are no subparts to show"
+msgstr "表示すべき副パートがない"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6046,9 +6046,9 @@ msgstr "message/rfc822 パートのみ再送してもよい。"
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "メッセージ再送エラー!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "メッセージ再送エラー"
 
 #: recvcmd.c:484
 #, c-format
@@ -6077,8 +6077,8 @@ msgid "Can't find any tagged messages."
 msgstr "タグ付きメッセージが一つも見つからない。"
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "メーリングリストが見つからなかった!"
+msgid "No mailing lists found"
+msgstr "メーリングリストが見つからなかった"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6105,8 +6105,8 @@ msgid "OK"
 msgstr "承認(OK)"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "mixmaster の type2.list 取得できず!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "mixmaster の type2.list 取得できず"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6140,7 +6140,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster は Cc または Bcc ヘッダを受けつけない。"
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
 msgstr "mixmaster を使う時には、hostname 変数に適切な値を設定せよ。"
 
 #: remailer.c:855
@@ -6193,8 +6193,8 @@ msgid "Follow-up to %s%s?"
 msgstr "%s%s へのフォローアップ?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "可視なタグ付きメッセージがない!"
+msgid "No tagged messages are visible"
+msgstr "可視なタグ付きメッセージがない"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6205,8 +6205,8 @@ msgid "Including quoted message..."
 msgstr "引用メッセージを取り込み中..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "すべての要求されたメッセージを取り込めなかった!"
+msgid "Could not include all requested messages"
+msgstr "すべての要求されたメッセージを取り込めなかった"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6290,13 +6290,13 @@ msgid "Mail sent."
 msgstr "メールを送信した。"
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "boundary パラメータがみつからない! [このエラーを報告せよ]"
+msgid "No boundary parameter found [report this error]"
+msgstr "boundary パラメータがみつからない [このエラーを報告せよ]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s はもはや存在しない!"
+msgid "%s no longer exists"
+msgstr "%s はもはや存在しない"
 
 #: sendlib.c:997
 #, c-format
@@ -6380,8 +6380,8 @@ msgid "Sorting mailbox..."
 msgstr "メールボックス整列中..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "整列機能が見つからなかった! [このバグを報告せよ]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "整列機能が見つからなかった [このバグを報告せよ]"
 
 #: status.c:163
 msgid "(no mailbox)"

@@ -315,7 +315,7 @@ static int mx_toggle_write(struct Context *ctx)
 
   if (ctx->readonly)
   {
-    mutt_error(_("Cannot toggle write on a readonly mailbox!"));
+    mutt_error(_("Cannot toggle write on a readonly mailbox"));
     return -1;
   }
 
@@ -1014,7 +1014,7 @@ int mutt_index_menu(void)
                 char cmd[LONG_STRING];
                 menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
                 if (mutt_system(cmd) != 0)
-                  mutt_error(_("Error running \"%s\"!"), cmd);
+                  mutt_error(_("Error running \"%s\""), cmd);
               }
               break;
             }
@@ -1057,7 +1057,7 @@ int mutt_index_menu(void)
             char cmd[LONG_STRING];
             menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
             if (mutt_system(cmd) != 0)
-              mutt_error(_("Error running \"%s\"!"), cmd);
+              mutt_error(_("Error running \"%s\""), cmd);
           }
         }
       }

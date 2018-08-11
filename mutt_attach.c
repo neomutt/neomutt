@@ -147,7 +147,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_endwin();
         r = mutt_system(command);
         if (r == -1)
-          mutt_error(_("Error running \"%s\"!"), command);
+          mutt_error(_("Error running \"%s\""), command);
 
         if (r != -1 && entry->composetypecommand)
         {
@@ -280,7 +280,7 @@ int mutt_edit_attachment(struct Body *a)
         mutt_endwin();
         if (mutt_system(command) == -1)
         {
-          mutt_error(_("Error running \"%s\"!"), command);
+          mutt_error(_("Error running \"%s\""), command);
           goto bailout;
         }
       }
@@ -876,7 +876,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     if (mutt_file_copy_stream(ofp, nfp) == -1)
     {
-      mutt_error(_("Write fault!"));
+      mutt_error(_("Write fault"));
       mutt_file_fclose(&ofp);
       mutt_file_fclose(&nfp);
       return -1;
@@ -884,7 +884,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
     mutt_file_fclose(&ofp);
     if (mutt_file_fsync_close(&nfp) != 0)
     {
-      mutt_error(_("Write fault!"));
+      mutt_error(_("Write fault"));
       return -1;
     }
   }
@@ -1145,7 +1145,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   }
   else
   {
-    mutt_error(_("I don't know how to print that!"));
+    mutt_error(_("I don't know how to print that"));
     return 0;
   }
 }

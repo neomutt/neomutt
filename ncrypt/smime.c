@@ -1117,7 +1117,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
                         NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertEmailCommand);
   if (thepid == -1)
   {
-    mutt_message(_("Error: unable to create OpenSSL subprocess!"));
+    mutt_message(_("Error: unable to create OpenSSL subprocess"));
     mutt_file_fclose(&fperr);
     mutt_file_fclose(&fpout);
     return 1;
@@ -1146,7 +1146,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
   {
     mutt_endwin();
     mutt_file_copy_stream(fperr, stdout);
-    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
+    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     rc = 1;
   }
   else if (!rc)
@@ -1214,7 +1214,7 @@ static char *smime_extract_certificate(char *infile)
                         NULL, NULL, NULL, NULL, NULL, NULL, SmimePk7outCommand);
   if (thepid == -1)
   {
-    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
+    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     mutt_file_fclose(&fperr);
     mutt_file_fclose(&fpout);
     mutt_file_unlink(pk7out);
@@ -1255,7 +1255,7 @@ static char *smime_extract_certificate(char *infile)
                         NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertCommand);
   if (thepid == -1)
   {
-    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
+    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     mutt_file_fclose(&fperr);
     mutt_file_fclose(&fpout);
     mutt_file_unlink(pk7out);
@@ -1320,7 +1320,7 @@ static char *smime_extract_signer_certificate(char *infile)
                         NULL, NULL, certfile, NULL, SmimeGetSignerCertCommand);
   if (thepid == -1)
   {
-    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
+    mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess"));
     mutt_file_fclose(&fperr);
     mutt_file_fclose(&fpout);
     mutt_file_unlink(certfile);
@@ -1397,7 +1397,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
                                 NULL, NULL, SmimeImportCertCommand);
     if (thepid == -1)
     {
-      mutt_message(_("Error: unable to create OpenSSL subprocess!"));
+      mutt_message(_("Error: unable to create OpenSSL subprocess"));
       return;
     }
     fputs(buf, smimein);
@@ -1757,7 +1757,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1, fileno(smimeout), -1, filetosign);
   if (thepid == -1)
   {
-    mutt_perror(_("Can't open OpenSSL subprocess!"));
+    mutt_perror(_("Can't open OpenSSL subprocess"));
     mutt_file_fclose(&smimeout);
     mutt_file_unlink(signedfile);
     mutt_file_unlink(filetosign);
@@ -2053,7 +2053,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+          _("[-- Error: unable to create OpenSSL subprocess --]\n"), s);
     }
     mutt_file_fclose(&smimeerr);
     return NULL;
@@ -2067,7 +2067,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+          _("[-- Error: unable to create OpenSSL subprocess --]\n"), s);
     }
     mutt_file_fclose(&smimeerr);
     return NULL;

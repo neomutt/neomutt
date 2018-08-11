@@ -1083,7 +1083,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(s,
                  _("[-- Error: "
-                   "Unknown multipart/signed protocol %s! --]\n\n"),
+                   "Unknown multipart/signed protocol %s --]\n\n"),
                  mutt_param_get(&b->parameter, "protocol"));
     return mutt_body_handler(a, s);
   }
@@ -1123,7 +1123,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   if (inconsistent)
   {
     state_attach_puts(_("[-- Error: "
-                        "Missing or bad-format multipart/signed signature!"
+                        "Missing or bad-format multipart/signed signature"
                         " --]\n\n"),
                       s);
     return mutt_body_handler(a, s);

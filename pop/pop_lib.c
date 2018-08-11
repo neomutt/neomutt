@@ -410,7 +410,7 @@ int pop_open_connection(struct PopData *pop_data)
 
 err_conn:
   pop_data->status = POP_DISCONNECTED;
-  mutt_error(_("Server closed connection!"));
+  mutt_error(_("Server closed connection"));
   return -1;
 }
 

@@ -147,7 +147,7 @@ int mutt_display_message(struct Header *cur)
   fpout = mutt_file_fopen(tempfile, "w");
   if (!fpout)
   {
-    mutt_error(_("Could not create temporary file!"));
+    mutt_error(_("Could not create temporary file"));
     return 0;
   }
 
@@ -257,7 +257,7 @@ int mutt_display_message(struct Header *cur)
     snprintf(cmd, sizeof(cmd), "%s %s", NONULL(Pager), tempfile);
     r = mutt_system(cmd);
     if (r == -1)
-      mutt_error(_("Error running \"%s\"!"), cmd);
+      mutt_error(_("Error running \"%s\""), cmd);
     unlink(tempfile);
     if (!OptNoCurses)
       keypad(stdscr, true);
@@ -330,7 +330,7 @@ void ci_bounce_message(struct Header *h)
   addr = mutt_addr_parse_list2(addr, buf);
   if (!addr)
   {
-    mutt_error(_("Error parsing address!"));
+    mutt_error(_("Error parsing address"));
     return;
   }
 

@@ -45,8 +45,8 @@ msgid "Help"
 msgstr "Cabhair"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Níl aon ailias agat!"
+msgid "You have no aliases"
+msgstr "Níl aon ailias agat"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -58,8 +58,8 @@ msgid "Alias as: "
 msgstr "Ailias: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Tá an t-ailias seo agat cheana féin!"
+msgid "You already have an alias defined with that name"
+msgstr "Tá an t-ailias seo agat cheana féin"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -179,8 +179,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Comhadlann [%s], Masc comhaid: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Ní féidir comhadlann a cheangal!"
+msgid "Can't attach a directory"
+msgstr "Ní féidir comhadlann a cheangal"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -329,8 +329,8 @@ msgid "Verify signature?"
 msgstr "Fíoraigh síniú?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Níorbh fhéidir comhad sealadach a chruthú!"
+msgid "Could not create temporary file"
+msgstr "Níorbh fhéidir comhad sealadach a chruthú"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -368,8 +368,8 @@ msgstr "Níorbh fhéidir an síniú PGP a fhíorú."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Earráid agus \"%s\" á rith!"
+msgid "Error running \"%s\""
+msgstr "Earráid agus \"%s\" á rith"
 
 #: commands.c:269
 msgid "Command: "
@@ -390,8 +390,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Scinn teachtaireachtaí clibeáilte go: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Earráid agus seoladh á pharsáil!"
+msgid "Error parsing address"
+msgstr "Earráid agus seoladh á pharsáil"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -742,8 +742,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "níl %s [#%d] ann níos mó!"
+msgid "%s [#%d] no longer exists"
+msgstr "níl %s [#%d] ann níos mó"
 
 #: compose.c:416
 #, c-format
@@ -807,8 +807,8 @@ msgstr[4] "Comhaid roghnaithe á gceangal..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Ní féidir %s a cheangal!"
+msgid "Unable to attach %s"
+msgstr "Ní féidir %s a cheangal"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -829,12 +829,12 @@ msgid "No messages in that folder."
 msgstr "Níl aon teachtaireacht san fhillteán sin."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Clibeáil na teachtaireachtaí le ceangal!"
+msgid "Tag the messages you want to attach"
+msgstr "Clibeáil na teachtaireachtaí le ceangal"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Ní féidir a cheangal!"
+msgid "Unable to attach"
+msgstr "Ní féidir a cheangal"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -932,8 +932,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP roghnaithe cheana.  Glan agus lean ar aghaidh? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Ní féidir an bosca poist a chur faoi ghlas!"
+msgid "Unable to lock mailbox"
+msgstr "Ní féidir an bosca poist a chur faoi ghlas"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1058,8 +1058,8 @@ msgstr "Linn eantrópachta á líonadh: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "Ceadanna neamhdhaingne ar %s!"
+msgid "%s has insecure permissions"
+msgstr "Ceadanna neamhdhaingne ar %s"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1371,8 +1371,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Ní féidir 'scríobh' a scoránú ar bhosca poist inléite amháin!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Ní féidir 'scríobh' a scoránú ar bhosca poist inléite amháin"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1917,12 +1917,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "níorbh fhéidir fillteán poist shealadach a theascadh: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Tá an comhad teachtaireachta folamh!"
+msgid "Message file is empty"
+msgstr "Tá an comhad teachtaireachta folamh"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Teachtaireacht gan athrú!"
+msgid "Message not modified"
+msgstr "Teachtaireacht gan athrú"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1940,8 +1940,8 @@ msgid "Can't append to folder: %s"
 msgstr "Ní féidir aon rud a iarcheangal leis an fhillteán: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "teachtaireacht ilchodach gan paraiméadar teoranta!"
+msgid "multipart message has no boundary parameter"
+msgstr "teachtaireacht ilchodach gan paraiméadar teoranta"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2118,8 +2118,8 @@ msgstr ""
 "[-- agus ní ghlacann leis an chineál shainithe rochtana %s --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Earráid:  Níorbh fhéidir aon chuid de Multipart/Alternative a thaispeáint! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Earráid:  Níorbh fhéidir aon chuid de Multipart/Alternative a thaispeáint --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2139,17 +2139,17 @@ msgstr "Rabhadh: Níor síníodh cuid den teachtaireacht seo."
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Níorbh fhéidir an comhad sealadach a oscailt!"
+msgid "Unable to open 'memory stream'"
+msgstr "Níorbh fhéidir an comhad sealadach a oscailt"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Níorbh fhéidir an comhad sealadach a oscailt!"
+msgid "Unable to open temporary file"
+msgstr "Níorbh fhéidir an comhad sealadach a oscailt"
 
 #: handler.c:1376
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "Níorbh fhéidir an comhad sealadach a oscailt!"
+msgid "failed to re-open 'memory stream'"
+msgstr "Níorbh fhéidir an comhad sealadach a oscailt"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2167,14 +2167,14 @@ msgstr "[-- %s/%s gan tacaíocht (bain úsáid as '%s' chun na páirte seo a fhe
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Bhí an t-iatán seo %s/%s (ní foláir 'view-attachments' a cheangal le heochair!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Bhí an t-iatán seo %s/%s (ní foláir 'view-attachments' a cheangal le heochair) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s gan tacaíocht (ní foláir 'view-attachments' a cheangal le heochair!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s gan tacaíocht (ní foláir 'view-attachments' a cheangal le heochair) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2911,8 +2911,8 @@ msgid "Mailbox is empty."
 msgstr "Tá an bosca poist folamh."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Tá an bosca poist truaillithe!"
+msgid "Mailbox is corrupt"
+msgstr "Tá an bosca poist truaillithe"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2928,16 +2928,16 @@ msgid "Reopening mailbox..."
 msgstr "Bosca poist á athoscailt..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Truaillíodh an bosca poist!"
+msgid "Mailbox was corrupted"
+msgstr "Truaillíodh an bosca poist"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Earráid mharfach!  Ní féidir an bosca poist a athoscailt!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mionathraíodh mbox, ach níor mionathraíodh aon teachtaireacht! (seol tuairisc fhabht)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mionathraíodh mbox, ach níor mionathraíodh aon teachtaireacht (seol tuairisc fhabht)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2949,8 +2949,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Theip ar scríobh!  Sábháladh bosca poist neamhiomlán i %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Níorbh fhéidir an bosca poist a athoscailt!"
+msgid "Could not reopen mailbox"
+msgstr "Níorbh fhéidir an bosca poist a athoscailt"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -3018,8 +3018,8 @@ msgid "Tagging is not supported."
 msgstr "Níl clibeáil le fáil."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Thar am agus glas fcntl á dhéanamh!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Thar am agus glas fcntl á dhéanamh"
 
 #: mutt/file.c:1139
 #, c-format
@@ -3027,8 +3027,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Ag feitheamh le glas fcntl... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Thar am agus glas flock á dhéanamh!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Thar am agus glas flock á dhéanamh"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3061,12 +3061,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Leibhéal dífhabhtaithe = %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Slánuimhir thar maoil -- ní féidir cuimhne a dháileadh!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Slánuimhir thar maoil -- ní féidir cuimhne a dháileadh"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Cuimhne ídithe!"
+msgid "Out of memory"
+msgstr "Cuimhne ídithe"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3152,8 +3152,8 @@ msgstr "Ní féidir teachtaireacht a chur in eagar ar fhreastalaí POP."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "Ní bosca poist %s!"
+msgid "%s is not a mailbox"
+msgstr "Ní bosca poist %s"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3231,12 +3231,12 @@ msgid "---Attachment: %s"
 msgstr "-- Iatáin"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Fadhb i rith scríofa!"
+msgid "Write fault"
+msgstr "Fadhb i rith scríofa"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Ní fhéadaim priontáil!"
+msgid "I don't know how to print that"
+msgstr "Ní fhéadaim priontáil"
 
 #: mutt_header.c:342
 #, c-format
@@ -3358,8 +3358,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Brúigh '%s' chun mód scríofa a scoránú"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Bain úsáid as 'toggle-write' chun an mód scríofa a athchumasú!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Bain úsáid as 'toggle-write' chun an mód scríofa a athchumasú"
 
 #: mx.c:1068
 #, c-format
@@ -3435,19 +3435,19 @@ msgstr "Ag baint triail as teastais S/MIME a bhaint amach..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Earráid: Prótacal anaithnid multipart/signed %s! --]\n"
+"[-- Earráid: Prótacal anaithnid multipart/signed %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Earráid: Struchtúr neamhréireach multipart/signed! --]\n"
+"[-- Earráid: Struchtúr neamhréireach multipart/signed --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3707,7 +3707,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!"
+msgid "Error extracting key data"
 msgstr "Earráid agus eolas faoin eochair á fháil: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3753,15 +3753,15 @@ msgstr "[-- DEIREADH NA TEACHTAIREACHTA SÍNITHE PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Earráid: níorbh fhéidir tosach na teachtaireachta PGP a aimsiú! --]\n"
+"[-- Earráid: níorbh fhéidir tosach na teachtaireachta PGP a aimsiú --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Earráid: ní féidir comhad sealadach a chruthú! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Earráid: ní féidir comhad sealadach a chruthú --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4158,8 +4158,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Iontráil frása faire PGP:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Earráid: ní féidir fo-phróiseas PGP a chruthú! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Earráid: ní féidir fo-phróiseas PGP a chruthú --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4180,10 +4180,10 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Earráid: ní féidir fo-phróiseas PGP a chruthú! --]\n"
+"[-- Earráid: ní féidir fo-phróiseas PGP a chruthú --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4191,8 +4191,8 @@ msgid "Decryption failed"
 msgstr "Theip ar dhíchriptiú"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Ní féidir fo-phróiseas PGP a oscailt!"
+msgid "Can't open PGP subprocess"
+msgstr "Ní féidir fo-phróiseas PGP a oscailt"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4412,8 +4412,8 @@ msgstr "Níor aimsíodh aon teastas (bailí) do %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Earráid: ní féidir fo-phróiseas OpenSSL a chruthú!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Earráid: ní féidir fo-phróiseas OpenSSL a chruthú"
 
 #: ncrypt/smime.c:1394
 #, fuzzy
@@ -4437,8 +4437,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ní féidir é a shíniú: Níor sonraíodh eochair. Úsáid \"Sínigh Mar\"."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Ní féidir fo-phróiseas OpenSSL a oscailt!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Ní féidir fo-phróiseas OpenSSL a oscailt"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4449,8 +4449,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Earráid: ní féidir fo-phróiseas OpenSSL a chruthú! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Earráid: ní féidir fo-phróiseas OpenSSL a chruthú --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4547,17 +4547,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s: is conair POP neamhbhailí"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Dhún an freastalaí an nasc!"
+msgid "Server closed connection"
+msgstr "Dhún an freastalaí an nasc"
 
 #: nntp/nntp.c:189
 msgid "Server doesn't support reader mode."
@@ -4603,7 +4603,7 @@ msgstr "Liosta teachtaireachtaí á fháil..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s: is conair POP neamhbhailí"
 
 #: nntp/nntp.c:1541
@@ -5943,8 +5943,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Ní ghlacann an freastalaí leis an ordú TOP."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "ní féidir ceanntásc a scríobh chuig comhad sealadach!"
+msgid "Can't write header to temporary file"
+msgstr "ní féidir ceanntásc a scríobh chuig comhad sealadach"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5970,8 +5970,8 @@ msgid "Fetching list of messages..."
 msgstr "Liosta teachtaireachtaí á fháil..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "ní féidir teachtaireacht a scríobh i gcomhad sealadach!"
+msgid "Can't write message to temporary file"
+msgstr "ní féidir teachtaireacht a scríobh i gcomhad sealadach"
 
 #: pop/pop.c:798
 #, fuzzy
@@ -6001,8 +6001,8 @@ msgstr[3] "Teachtaireachtaí nua á léamh (%d beart)..."
 msgstr[4] "Teachtaireachtaí nua á léamh (%d beart)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Earráid agus bosca poist á scríobh!"
+msgid "Error while writing mailbox"
+msgstr "Earráid agus bosca poist á scríobh"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -6021,7 +6021,7 @@ msgid "Authenticating (SASL)..."
 msgstr "Á fhíordheimhniú (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
+msgid "POP timestamp is invalid"
 msgstr ""
 
 #: pop/pop_auth.c:245
@@ -6150,8 +6150,8 @@ msgstr "Píopa go: "
 #.
 #: recvattach.c:859
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Ní eol dom conas a phriontáil iatáin %s!"
+msgid "I don't know how to print %s attachments"
+msgstr "Ní eol dom conas a phriontáil iatáin %s"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6176,16 +6176,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Ní féidir teachtaireacht chriptithe a dhíchriptiú!"
+msgid "Can't decrypt encrypted message"
+msgstr "Ní féidir teachtaireacht chriptithe a dhíchriptiú"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Iatáin"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Níl aon fopháirt le taispeáint!"
+msgid "There are no subparts to show"
+msgstr "Níl aon fopháirt le taispeáint"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6215,13 +6215,13 @@ msgstr "Ní cheadaítear ach páirteanna message/rfc822 a scinneadh."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Earráid agus teachtaireacht á scinneadh!"
-msgstr[1] "Earráid agus teachtaireachtaí á scinneadh!"
-msgstr[2] "Earráid agus teachtaireachtaí á scinneadh!"
-msgstr[3] "Earráid agus teachtaireachtaí á scinneadh!"
-msgstr[4] "Earráid agus teachtaireachtaí á scinneadh!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Earráid agus teachtaireacht á scinneadh"
+msgstr[1] "Earráid agus teachtaireachtaí á scinneadh"
+msgstr[2] "Earráid agus teachtaireachtaí á scinneadh"
+msgstr[3] "Earráid agus teachtaireachtaí á scinneadh"
+msgstr[4] "Earráid agus teachtaireachtaí á scinneadh"
 
 #: recvcmd.c:484
 #, c-format
@@ -6250,8 +6250,8 @@ msgid "Can't find any tagged messages."
 msgstr "Ní féidir aon teachtaireacht chlibeáilte a aimsiú."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Níor aimsíodh aon liosta postála!"
+msgid "No mailing lists found"
+msgstr "Níor aimsíodh aon liosta postála"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6278,8 +6278,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Ní féidir type2.list ag mixmaster a fháil!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Ní féidir type2.list ag mixmaster a fháil"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6313,8 +6313,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Ní ghlacann \"mixmaster\" le ceanntásca Cc nó Bcc."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Socraigh an athróg óstainm go cuí le do thoil le linn úsáid \"mixmaster\"!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Socraigh an athróg óstainm go cuí le do thoil le linn úsáid \"mixmaster\""
 
 #: remailer.c:855
 #, c-format
@@ -6365,8 +6365,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Teachtaireacht leantach go %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Níl aon teachtaireacht chlibeáilte le feiceáil!"
+msgid "No tagged messages are visible"
+msgstr "Níl aon teachtaireacht chlibeáilte le feiceáil"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6377,8 +6377,8 @@ msgid "Including quoted message..."
 msgstr "Teachtaireacht athfhriotail san áireamh..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Níorbh fhéidir gach teachtaireacht iarrtha a chur sa fhreagra!"
+msgid "Could not include all requested messages"
+msgstr "Níorbh fhéidir gach teachtaireacht iarrtha a chur sa fhreagra"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6465,13 +6465,13 @@ msgid "Mail sent."
 msgstr "Seoladh an teachtaireacht."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Níor aimsíodh paraiméadar teorann! [seol tuairisc fhabht]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Níor aimsíodh paraiméadar teorann [seol tuairisc fhabht]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "Níl %s ann níos mó!"
+msgid "%s no longer exists"
+msgstr "Níl %s ann níos mó"
 
 #: sendlib.c:997
 #, c-format
@@ -6556,8 +6556,8 @@ msgid "Sorting mailbox..."
 msgstr "Bosca poist á shórtáil..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Níorbh fhéidir feidhm shórtála a aimsiú! [seol tuairisc fhabht]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Níorbh fhéidir feidhm shórtála a aimsiú [seol tuairisc fhabht]"
 
 #: status.c:163
 msgid "(no mailbox)"

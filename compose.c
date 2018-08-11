@@ -405,7 +405,7 @@ static int check_attachments(struct AttachCtx *actx)
     if (stat(actx->idx[i]->content->filename, &st) != 0)
     {
       mutt_pretty_mailbox(pretty, sizeof(pretty));
-      mutt_error(_("%s [#%d] no longer exists!"), pretty, i + 1);
+      mutt_error(_("%s [#%d] no longer exists"), pretty, i + 1);
       return -1;
     }
 
@@ -1371,7 +1371,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           else
           {
             error = 1;
-            mutt_error(_("Unable to attach %s!"), att);
+            mutt_error(_("Unable to attach %s"), att);
             FREE(&new);
           }
           FREE(&files[i]);
@@ -1464,7 +1464,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         Context = ctx;
         OptAttachMsg = true;
-        mutt_message(_("Tag the messages you want to attach!"));
+        mutt_message(_("Tag the messages you want to attach"));
         close = mutt_index_menu();
         OptAttachMsg = false;
 
@@ -1490,7 +1490,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
             update_idx(menu, actx, new);
           else
           {
-            mutt_error(_("Unable to attach!"));
+            mutt_error(_("Unable to attach"));
             FREE(&new);
           }
         }
@@ -1897,7 +1897,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         endwin();
         snprintf(buf, sizeof(buf), "%s -x %s", NONULL(Ispell), msg->content->filename);
         if (mutt_system(buf) == -1)
-          mutt_error(_("Error running \"%s\"!"), buf);
+          mutt_error(_("Error running \"%s\""), buf);
         else
         {
           mutt_update_encoding(msg->content);

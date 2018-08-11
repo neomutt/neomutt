@@ -220,7 +220,7 @@ static int add_entropy(const char *file)
   if (st.st_uid != getuid() || ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
       ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
   {
-    mutt_error(_("%s has insecure permissions!"), file);
+    mutt_error(_("%s has insecure permissions"), file);
     return -1;
   }
 

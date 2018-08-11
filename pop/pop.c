@@ -182,7 +182,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     }
     case -3:
     {
-      mutt_error(_("Can't write header to temporary file!"));
+      mutt_error(_("Can't write header to temporary file"));
       break;
     }
   }
@@ -700,7 +700,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
     if (ret == -3)
     {
-      mutt_error(_("Can't write message to temporary file!"));
+      mutt_error(_("Can't write message to temporary file"));
       return -1;
     }
   }
@@ -1019,7 +1019,7 @@ void pop_fetch_mail(void)
     }
     if (ret == -3)
     {
-      mutt_error(_("Error while writing mailbox!"));
+      mutt_error(_("Error while writing mailbox"));
       break;
     }
 
@@ -1050,7 +1050,7 @@ finish:
   return;
 
 fail:
-  mutt_error(_("Server closed connection!"));
+  mutt_error(_("Server closed connection"));
   mutt_socket_close(conn);
   FREE(&pop_data);
 }

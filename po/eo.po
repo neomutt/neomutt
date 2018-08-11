@@ -46,8 +46,8 @@ msgid "Help"
 msgstr "Helpo"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Vi ne havas adresaron!"
+msgid "You have no aliases"
+msgstr "Vi ne havas adresaron"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -59,8 +59,8 @@ msgid "Alias as: "
 msgstr "Aldonu nomon: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "En la adresaro jam estas nomo kun tiu adreso!"
+msgid "You already have an alias defined with that name"
+msgstr "En la adresaro jam estas nomo kun tiu adreso"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -178,8 +178,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Dosierujo [%s], Dosieromasko: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Ne eblas aldoni dosierujon!"
+msgid "Can't attach a directory"
+msgstr "Ne eblas aldoni dosierujon"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -327,8 +327,8 @@ msgid "Verify signature?"
 msgstr "Ĉu kontroli subskribon?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Ne eblis krei dumtempan dosieron!"
+msgid "Could not create temporary file"
+msgstr "Ne eblis krei dumtempan dosieron"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -366,8 +366,8 @@ msgstr "PGP-subskribo NE povis esti kontrolita."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Eraro dum ruligo de \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Eraro dum ruligo de \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -388,8 +388,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Redirekti markitajn mesaĝojn al: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Eraro dum analizo de adreso!"
+msgid "Error parsing address"
+msgstr "Eraro dum analizo de adreso"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -719,8 +719,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] ne plu ekzistas!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] ne plu ekzistas"
 
 #: compose.c:416
 #, c-format
@@ -781,8 +781,8 @@ msgstr[1] "Aldonas la elektitajn dosierojn..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Ne eblas aldoni %s!"
+msgid "Unable to attach %s"
+msgstr "Ne eblas aldoni %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -803,12 +803,12 @@ msgid "No messages in that folder."
 msgstr "Ne estas mesaĝoj en tiu poŝtfako."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Marku la mesaĝojn kiujn vi volas aldoni!"
+msgid "Tag the messages you want to attach"
+msgstr "Marku la mesaĝojn kiujn vi volas aldoni"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Ne eblas aldoni!"
+msgid "Unable to attach"
+msgstr "Ne eblas aldoni"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -905,8 +905,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP jam elektita.  Ĉu nuligi kaj daŭrigi? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Ne eblis ŝlosi poŝtfakon!"
+msgid "Unable to lock mailbox"
+msgstr "Ne eblis ŝlosi poŝtfakon"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1030,8 +1030,8 @@ msgstr "Plenigas entropiujon: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s havas malsekurajn permesojn!"
+msgid "%s has insecure permissions"
+msgstr "%s havas malsekurajn permesojn"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1337,8 +1337,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: operacio ne permesiĝas de ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Ne eblas ŝanĝi skribostaton ĉe nurlega poŝtfako!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Ne eblas ŝanĝi skribostaton ĉe nurlega poŝtfako"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1866,12 +1866,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "Ne eblis stumpigi dumtempan poŝtfakon: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Mesaĝodosiero estas malplena!"
+msgid "Message file is empty"
+msgstr "Mesaĝodosiero estas malplena"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Mesaĝo ne modifita!"
+msgid "Message not modified"
+msgstr "Mesaĝo ne modifita"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1889,8 +1889,8 @@ msgid "Can't append to folder: %s"
 msgstr "Ne eblas aldoni al dosierujo: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "Plurparta mesaĝo ne havas limparametron!"
+msgid "multipart message has no boundary parameter"
+msgstr "Plurparta mesaĝo ne havas limparametron"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2054,8 +2054,8 @@ msgstr ""
 "[-- kaj NeoMutt ne kapablas je la indikita alirmaniero %s. --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2074,15 +2074,15 @@ msgstr "Unu aŭ pluraj partoj de ĉi tiu mesaĝo ne montriĝeblas"
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Ne eblas malfermi dumtempan dosieron!"
+msgid "Unable to open 'memory stream'"
+msgstr "Ne eblas malfermi dumtempan dosieron"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Ne eblas malfermi dumtempan dosieron!"
+msgid "Unable to open temporary file"
+msgstr "Ne eblas malfermi dumtempan dosieron"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
+msgid "failed to re-open 'memory stream'"
 msgstr ""
 
 #: handler.c:1588
@@ -2101,14 +2101,14 @@ msgstr "[-- %s/%s ne estas konata (uzu '%s' por vidigi ĉi tiun parton) --]\n"
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Ĉi tiu estas parto (bezonas klavodifinon por 'view-attachments'!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Ĉi tiu estas parto (bezonas klavodifinon por 'view-attachments') --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s ne estas konata (bezonas klavodifinon por 'view-attachments'!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s ne estas konata (bezonas klavodifinon por 'view-attachments') --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2829,8 +2829,8 @@ msgid "Mailbox is empty."
 msgstr "Poŝtfako estas malplena."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Poŝtfako estas fuŝita!"
+msgid "Mailbox is corrupt"
+msgstr "Poŝtfako estas fuŝita"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2846,16 +2846,16 @@ msgid "Reopening mailbox..."
 msgstr "Remalfermas poŝtfakon..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Poŝtfako fuŝiĝis!"
+msgid "Mailbox was corrupted"
+msgstr "Poŝtfako fuŝiĝis"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatala eraro!  Ne eblis remalfermi poŝtfakon!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox modifita, sed mankas modifitaj mesaĝoj! (Raportu ĉi tiun cimon.)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox modifita, sed mankas modifitaj mesaĝoj (Raportu ĉi tiun cimon.)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2867,8 +2867,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Skribo malsukcesis!  Skribis partan poŝtfakon al %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Ne eblis remalfermi poŝtfakon!"
+msgid "Could not reopen mailbox"
+msgstr "Ne eblis remalfermi poŝtfakon"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2936,8 +2936,8 @@ msgid "Tagging is not supported."
 msgstr "Markado ne funkcias."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Tro da tempo pasis dum provado akiri fcntl-ŝloson!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Tro da tempo pasis dum provado akiri fcntl-ŝloson"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2945,8 +2945,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Atendas fcntl-ŝloson... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Tro da tempo pasis dum provado akiri flock-ŝloson!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Tro da tempo pasis dum provado akiri flock-ŝloson"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2979,12 +2979,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Sencimigo ĉe la nivelo %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Entjera troo -- ne eblas asigni memoron!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Entjera troo -- ne eblas asigni memoron"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Mankas sufiĉa memoro!"
+msgid "Out of memory"
+msgstr "Mankas sufiĉa memoro"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3070,8 +3070,8 @@ msgstr "Ne eblas lasi mesaĝojn ĉe la servilo."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s ne estas poŝtfako!"
+msgid "%s is not a mailbox"
+msgstr "%s ne estas poŝtfako"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3149,12 +3149,12 @@ msgid "---Attachment: %s"
 msgstr "---Parto: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Skriberaro!"
+msgid "Write fault"
+msgstr "Skriberaro"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Mi ne scias presi tion!"
+msgid "I don't know how to print that"
+msgstr "Mi ne scias presi tion"
 
 #: mutt_header.c:342
 #, c-format
@@ -3265,8 +3265,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Premu '%s' por (mal)ŝalti skribon"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Uzu 'toggle-write' por reebligi skribon!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Uzu 'toggle-write' por reebligi skribon"
 
 #: mx.c:1068
 #, c-format
@@ -3342,19 +3342,19 @@ msgstr "Provas eltiri S/MIME-atestilojn..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Eraro: nekonata multipart/signed-protokolo %s! --]\n"
+"[-- Eraro: nekonata multipart/signed-protokolo %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Eraro: malĝusta strukturo de multipart/signed! --]\n"
+"[-- Eraro: malĝusta strukturo de multipart/signed --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3605,8 +3605,8 @@ msgid ""
 msgstr "[-- Eraro: malĉifrado fiaskis: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Eraro dum eltiro de ŝlosildatenoj!"
+msgid "Error extracting key data"
+msgstr "Eraro dum eltiro de ŝlosildatenoj"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3649,15 +3649,15 @@ msgstr "[-- FINO DE PGP-SUBSKRIBITA MESAĜO --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Eraro: ne eblas trovi komencon de PGP-mesaĝo! --]\n"
+"[-- Eraro: ne eblas trovi komencon de PGP-mesaĝo --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Eraro: ne eblas krei dumtempan dosieron! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Eraro: ne eblas krei dumtempan dosieron --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4043,8 +4043,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Donu PGP-pasfrazon:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Eraro: ne eblas krei PGP-subprocezon! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Eraro: ne eblas krei PGP-subprocezon --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4065,10 +4065,10 @@ msgstr "*Programeraro*.  Bonvolu raporti."
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Eraro: ne eblas krei PGP-subprocezon! --]\n"
+"[-- Eraro: ne eblas krei PGP-subprocezon --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4076,8 +4076,8 @@ msgid "Decryption failed"
 msgstr "Malĉifro malsukcesis"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Ne eblas malfermi PGP-subprocezon!"
+msgid "Can't open PGP subprocess"
+msgstr "Ne eblas malfermi PGP-subprocezon"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4292,8 +4292,8 @@ msgstr "Nenia (valida) atestilo trovita por %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Eraro: ne povis krei OpenSSL-subprocezon!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Eraro: ne povis krei OpenSSL-subprocezon"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4316,8 +4316,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ne eblas subskribi: neniu ŝlosilo specifita.  Uzu \"subskribi kiel\"."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Ne eblas malfermi OpenSSL-subprocezon!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Ne eblas malfermi OpenSSL-subprocezon"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4328,8 +4328,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Eraro: ne eblas krei OpenSSL-subprocezon! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Eraro: ne eblas krei OpenSSL-subprocezon --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4424,17 +4424,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s ne estas valida POP-vojo"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Servilo fermis la konekton!"
+msgid "Server closed connection"
+msgstr "Servilo fermis la konekton"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4481,7 +4481,7 @@ msgstr "Prenas liston de mesaĝoj..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s ne estas valida POP-vojo"
 
 #: nntp/nntp.c:1541
@@ -5804,8 +5804,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Servilo ne havas la komandon TOP."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Ne eblas skribi la ĉapaĵon al dumtempa dosiero!"
+msgid "Can't write header to temporary file"
+msgstr "Ne eblas skribi la ĉapaĵon al dumtempa dosiero"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5828,8 +5828,8 @@ msgid "Fetching list of messages..."
 msgstr "Prenas liston de mesaĝoj..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Ne eblas skribi mesaĝon al dumtempa dosiero!"
+msgid "Can't write message to temporary file"
+msgstr "Ne eblas skribi mesaĝon al dumtempa dosiero"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5855,8 +5855,8 @@ msgstr[0] "Legas novajn mesaĝojn (%d bitokojn)..."
 msgstr[1] "Legas novajn mesaĝojn (%d bitokojn)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Eraro dum skribado de poŝtfako!"
+msgid "Error while writing mailbox"
+msgstr "Eraro dum skribado de poŝtfako"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5872,8 +5872,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Rajtiĝas (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP-horstampo malvalidas!"
+msgid "POP timestamp is invalid"
+msgstr "POP-horstampo malvalidas"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6001,8 +6001,8 @@ msgstr "Trakti per: "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Mi ne scias kiel presi %s-partojn!"
+msgid "I don't know how to print %s attachments"
+msgstr "Mi ne scias kiel presi %s-partojn"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6024,16 +6024,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Ne eblas malĉifri ĉifritan mesaĝon!"
+msgid "Can't decrypt encrypted message"
+msgstr "Ne eblas malĉifri ĉifritan mesaĝon"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Partoj"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Mankas subpartoj por montri!"
+msgid "There are no subparts to show"
+msgstr "Mankas subpartoj por montri"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6062,10 +6062,10 @@ msgstr "Vi povas redirekti nur message/rfc822-partojn."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Eraro dum redirektado de mesaĝo!"
-msgstr[1] "Eraro dum redirektado de mesaĝoj!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Eraro dum redirektado de mesaĝo"
+msgstr[1] "Eraro dum redirektado de mesaĝoj"
 
 #: recvcmd.c:484
 #, c-format
@@ -6094,8 +6094,8 @@ msgid "Can't find any tagged messages."
 msgstr "Ne eblas trovi markitajn mesaĝojn."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Neniu dissendolisto trovita!"
+msgid "No mailing lists found"
+msgstr "Neniu dissendolisto trovita"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6122,8 +6122,8 @@ msgid "OK"
 msgstr "Bone"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Ne eblas preni type2.list de mixmaster!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Ne eblas preni type2.list de mixmaster"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6157,8 +6157,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster ne akceptas la kampon Cc aŭ Bcc en la ĉapo."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Bonvolu doni ĝustan valoron al \"hostname\" kiam vi uzas mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Bonvolu doni ĝustan valoron al \"hostname\" kiam vi uzas mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6209,8 +6209,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Ĉu respondi grupe al %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Neniuj markitaj mesaĝoj estas videblaj!"
+msgid "No tagged messages are visible"
+msgstr "Neniuj markitaj mesaĝoj estas videblaj"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6221,8 +6221,8 @@ msgid "Including quoted message..."
 msgstr "Inkluzivas cititan mesaĝon..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Ne eblis inkluzivi ĉiujn petitajn mesaĝojn!"
+msgid "Could not include all requested messages"
+msgstr "Ne eblis inkluzivi ĉiujn petitajn mesaĝojn"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6308,13 +6308,13 @@ msgid "Mail sent."
 msgstr "Mesaĝo sendita."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Nenia limparametro trovita! (Raportu ĉi tiun cimon.)"
+msgid "No boundary parameter found [report this error]"
+msgstr "Nenia limparametro trovita (Raportu ĉi tiun cimon.)"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s ne plu ekzistas!"
+msgid "%s no longer exists"
+msgstr "%s ne plu ekzistas"
 
 #: sendlib.c:997
 #, c-format
@@ -6398,8 +6398,8 @@ msgid "Sorting mailbox..."
 msgstr "Ordigas poŝtfakon..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Ne eblis trovi ordigfunkcion! (Raportu ĉi tiun cimon.)"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Ne eblis trovi ordigfunkcion (Raportu ĉi tiun cimon.)"
 
 #: status.c:163
 msgid "(no mailbox)"

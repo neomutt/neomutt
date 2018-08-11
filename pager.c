@@ -2431,7 +2431,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           char cmd[LONG_STRING];
           menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCommand));
           if (mutt_system(cmd) != 0)
-            mutt_error(_("Error running \"%s\"!"), cmd);
+            mutt_error(_("Error running \"%s\""), cmd);
         }
       }
     }

@@ -1023,7 +1023,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
   if (!server || !*server)
   {
-    mutt_error(_("No news server defined!"));
+    mutt_error(_("No news server defined"));
     return NULL;
   }
 
@@ -1037,7 +1037,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
       mutt_account_fromurl(&acct, &url) < 0)
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid news server specification!"), server);
+    mutt_error(_("%s is an invalid news server specification"), server);
     return NULL;
   }
   if (url.scheme == U_NNTPS)

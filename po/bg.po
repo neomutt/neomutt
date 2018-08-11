@@ -49,8 +49,8 @@ msgid "Help"
 msgstr "Помощ"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "В адресната книга няма записи!"
+msgid "You have no aliases"
+msgstr "В адресната книга няма записи"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -62,8 +62,8 @@ msgid "Alias as: "
 msgstr "Псевдоним за адресната книга:"
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Вече има запис за този псевдоним!"
+msgid "You already have an alias defined with that name"
+msgstr "Вече има запис за този псевдоним"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -183,8 +183,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Директория [%s], Файлова маска: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Не може да прилагате директория!"
+msgid "Can't attach a directory"
+msgstr "Не може да прилагате директория"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -334,8 +334,8 @@ msgid "Verify signature?"
 msgstr "Желаете ли да потвърдите истинността на подписа?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Невъзможно създаването на временен файл!"
+msgid "Could not create temporary file"
+msgstr "Невъзможно създаването на временен файл"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -373,8 +373,8 @@ msgstr "PGP-подписът НЕ е потвърден успешно."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Грешка при изпълнението на \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Грешка при изпълнението на \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -395,8 +395,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Препращане на маркираните писма към: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Грешка при разчитане на адресът!"
+msgid "Error parsing address"
+msgstr "Грешка при разчитане на адресът"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -731,8 +731,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] вече не съществува!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] вече не съществува"
 
 #: compose.c:416
 #, c-format
@@ -793,8 +793,8 @@ msgstr[1] "Прилагане на избраните файлове..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Прилагането на %s е невъзможно!"
+msgid "Unable to attach %s"
+msgstr "Прилагането на %s е невъзможно"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -815,12 +815,12 @@ msgid "No messages in that folder."
 msgstr "В тази кутия няма писма."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Маркирайте писмата, които искате да приложите!"
+msgid "Tag the messages you want to attach"
+msgstr "Маркирайте писмата, които искате да приложите"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Прилагането е невъзможно!"
+msgid "Unable to attach"
+msgstr "Прилагането е невъзможно"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -920,8 +920,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP-шифроване вече е избрано. Clear and continue? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Грешка при заключване на пощенската кутия!"
+msgid "Unable to lock mailbox"
+msgstr "Грешка при заключване на пощенската кутия"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1046,8 +1046,8 @@ msgstr "Събиране на ентропия за генератора на с
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s има несигурни права за достъп!"
+msgid "%s has insecure permissions"
+msgstr "%s има несигурни права за достъп"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1365,8 +1365,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Режимът на защитената от запис пощенска кутия не може да бъде променен!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Режимът на защитената от запис пощенска кутия не може да бъде променен"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1929,12 +1929,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "грешка при съкращаването на временната пощенска кутия: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Файлът с писмото е празен!"
+msgid "Message file is empty"
+msgstr "Файлът с писмото е празен"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Писмото е непроменено!"
+msgid "Message not modified"
+msgstr "Писмото е непроменено"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1952,8 +1952,8 @@ msgid "Can't append to folder: %s"
 msgstr "Грешка при добавянето на писмо към пощенската кутия: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "съставното писмо няма \"boundary\" параметър!"
+msgid "multipart message has no boundary parameter"
+msgstr "съставното писмо няма \"boundary\" параметър"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2117,7 +2117,7 @@ msgstr ""
 "[-- а указаният метод на достъп %s не се подържа. --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Грешка: Невъзможно е показването на която и да е от алтернативните части на писмото --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -2137,17 +2137,17 @@ msgstr ""
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Грешка при отваряне на временния файл!"
+msgid "Unable to open 'memory stream'"
+msgstr "Грешка при отваряне на временния файл"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Грешка при отваряне на временния файл!"
+msgid "Unable to open temporary file"
+msgstr "Грешка при отваряне на временния файл"
 
 #: handler.c:1376
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "Грешка при отваряне на временния файл!"
+msgid "failed to re-open 'memory stream'"
+msgstr "Грешка при отваряне на временния файл"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2165,14 +2165,14 @@ msgstr "[-- %s/%s не се поддържа (използвайте'%s' за д
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Това %s/%s приложение ('view-attachments' няма клавишна комбинация!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Това %s/%s приложение ('view-attachments' няма клавишна комбинация) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s не се поддържа('view-attachments' няма клавишна комбинация!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s не се поддържа('view-attachments' няма клавишна комбинация) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2422,7 +2422,7 @@ msgstr "Избиране на %s..."
 
 #: imap/imap.c:2188
 msgid "Error opening mailbox"
-msgstr "Грешка при отваряне на пощенската кутия!"
+msgstr "Грешка при отваряне на пощенската кутия"
 
 #: imap/imap.c:2390
 msgid "Expunge failed"
@@ -2906,8 +2906,8 @@ msgid "Mailbox is empty."
 msgstr "Пощенската кутия е празна."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Пощенската кутия е повредена!"
+msgid "Mailbox is corrupt"
+msgstr "Пощенската кутия е повредена"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2923,16 +2923,16 @@ msgid "Reopening mailbox..."
 msgstr "Повторно отваряне на пощенската кутия..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Пощенската кутия е повредена!"
+msgid "Mailbox was corrupted"
+msgstr "Пощенската кутия е повредена"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Непоправима грешка! Грешка при повторното отваряне на пощенската кутия!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: пощенската кутия е променена, но няма променени писма! (моля, съобщете за тази грешка)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: пощенската кутия е променена, но няма променени писма (моля, съобщете за тази грешка)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2944,8 +2944,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Грешка при запис! Пощенската кутия е записана частично в %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Грешка при повторното отваряне на пощенската кутия!"
+msgid "Could not reopen mailbox"
+msgstr "Грешка при повторното отваряне на пощенската кутия"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -3013,8 +3013,8 @@ msgid "Tagging is not supported."
 msgstr "Маркирането не се поддържа."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "fcntl заключване не е получено в определеното време (timeout)!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "fcntl заключване не е получено в определеното време (timeout)"
 
 #: mutt/file.c:1139
 #, c-format
@@ -3022,8 +3022,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Чакане за fcntl заключване... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "flock заключване не е получено в определеното време (timeout)!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "flock заключване не е получено в определеното време (timeout)"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3057,12 +3057,12 @@ msgstr "Debugging на ниво %d.\n"
 
 #: mutt/memory.c:60
 #, fuzzy
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Integer overflow -- заделянето на памет е невъзможно!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Integer overflow -- заделянето на памет е невъзможно"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Недостатъчно памет!"
+msgid "Out of memory"
+msgstr "Недостатъчно памет"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3148,8 +3148,8 @@ msgstr "Редактирането на писмо на POP сървър не е
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s не е пощенска кутия!"
+msgid "%s is not a mailbox"
+msgstr "%s не е пощенска кутия"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3228,12 +3228,12 @@ msgid "---Attachment: %s"
 msgstr "-- Приложения"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Грешка при запис!"
+msgid "Write fault"
+msgstr "Грешка при запис"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Невъзможно отпечатване!"
+msgid "I don't know how to print that"
+msgstr "Невъзможно отпечатване"
 
 #: mutt_header.c:342
 #, c-format
@@ -3346,8 +3346,8 @@ msgid " Press '%s' to toggle write"
 msgstr "Натиснете '%s' за включване/изключване на режима за запис"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Използвайте 'toggle-write' за реактивиране на режима за запис!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Използвайте 'toggle-write' за реактивиране на режима за запис"
 
 #: mx.c:1068
 #, c-format
@@ -3421,19 +3421,19 @@ msgstr "Опит за извличане на S/MIME сертификати..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Грешка: Непознат multipart/signed протокол %s! --]\n"
+"[-- Грешка: Непознат multipart/signed протокол %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Грешка: Противоречива multipart/signed структура! --]\n"
+"[-- Грешка: Противоречива multipart/signed структура --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3691,7 +3691,7 @@ msgstr "[-- Грешка: не може да бъде създаден врем�
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!"
+msgid "Error extracting key data"
 msgstr "грешка в шаблона при: %s"
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3737,15 +3737,15 @@ msgstr "[-- КРАЙ НА PGP-ПОДПИСАНОТО ПИСМО --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Грешка: началото на PGP-писмото не може да бъде намерено! --]\n"
+"[-- Грешка: началото на PGP-писмото не може да бъде намерено --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Грешка: не може да бъде създаден временен файл! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Грешка: не може да бъде създаден временен файл --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 #, fuzzy
@@ -4148,8 +4148,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Въвеждане на PGP парола:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Грешка: не може да бъде стартиран дъщерен PGP процес! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Грешка: не може да бъде стартиран дъщерен PGP процес --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4170,10 +4170,10 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Грешка: не може да бъде стартиран дъщерен PGP процес! --]\n"
+"[-- Грешка: не може да бъде стартиран дъщерен PGP процес --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4182,8 +4182,8 @@ msgid "Decryption failed"
 msgstr "Неуспешно разшифроване."
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Не може да бъде стартиран дъщерен PGP процес!"
+msgid "Can't open PGP subprocess"
+msgstr "Не може да бъде стартиран дъщерен PGP процес"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4400,8 +4400,8 @@ msgstr "Не е намерен (валиден) сертификат за %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес"
 
 #: ncrypt/smime.c:1394
 #, fuzzy
@@ -4426,8 +4426,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Не може да бъде стартиран дъщерен OpenSSL процес!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Не може да бъде стартиран дъщерен OpenSSL процес"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4438,8 +4438,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Грешка: не може да бъде стартиран дъщерен OpenSSL процес! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Грешка: не може да бъде стартиран дъщерен OpenSSL процес --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4535,17 +4535,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s не е валидна POP пътека"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Сървърът затвори връзката!"
+msgid "Server closed connection"
+msgstr "Сървърът затвори връзката"
 
 #: nntp/nntp.c:189
 msgid "Server doesn't support reader mode."
@@ -4591,7 +4591,7 @@ msgstr "Изтегляне на списък с писмата..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s не е валидна POP пътека"
 
 #: nntp/nntp.c:1541
@@ -5936,7 +5936,7 @@ msgid "Command TOP is not supported by server."
 msgstr "Сървърът не поддържа командата TOP."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
+msgid "Can't write header to temporary file"
 msgstr "Грешка при запис на заглавната част на писмото във временен файл"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
@@ -5960,7 +5960,7 @@ msgid "Fetching list of messages..."
 msgstr "Изтегляне на списък с писмата..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
+msgid "Can't write message to temporary file"
 msgstr "Грешка при запис на писмото във временен файл"
 
 #: pop/pop.c:798
@@ -5988,8 +5988,8 @@ msgstr[0] "Зареждане на новите писма (%d байта)..."
 msgstr[1] "Зареждане на новите писма (%d байта)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Грешка при записване на пощенската кутия!"
+msgid "Error while writing mailbox"
+msgstr "Грешка при записване на пощенската кутия"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -6005,7 +6005,7 @@ msgid "Authenticating (SASL)..."
 msgstr "Идентифициране (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
+msgid "POP timestamp is invalid"
 msgstr ""
 
 #: pop/pop_auth.c:245
@@ -6136,8 +6136,8 @@ msgstr "Предаване на (pipe): "
 #.
 #: recvattach.c:859
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Не е дефинирана команда за отпечатване на %s приложения!"
+msgid "I don't know how to print %s attachments"
+msgstr "Не е дефинирана команда за отпечатване на %s приложения"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6159,8 +6159,8 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Грешка при дешифрирането на шифровано писмо!"
+msgid "Can't decrypt encrypted message"
+msgstr "Грешка при дешифрирането на шифровано писмо"
 
 #: recvattach.c:1342
 msgid "Attachments"
@@ -6168,8 +6168,8 @@ msgstr "Приложения"
 
 #: recvattach.c:1380
 #, fuzzy
-msgid "There are no subparts to show!"
-msgstr "Няма подчасти, които да бъдат показани!."
+msgid "There are no subparts to show"
+msgstr "Няма подчасти, които да бъдат показани."
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6199,10 +6199,10 @@ msgstr "Може да изпращате отново само message/rfc822 ч
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Грешка при препращане на писмото!"
-msgstr[1] "Грешка при препращане на писмата!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Грешка при препращане на писмото"
+msgstr[1] "Грешка при препращане на писмата"
 
 #: recvcmd.c:484
 #, c-format
@@ -6231,8 +6231,8 @@ msgid "Can't find any tagged messages."
 msgstr "Няма маркирани писма."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Няма mailing list-ове!"
+msgid "No mailing lists found"
+msgstr "Няма mailing list-ове"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6259,8 +6259,8 @@ msgid "OK"
 msgstr "ОК"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Невъзможно получаването на mixmaster \"type2.list\"!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Невъзможно получаването на mixmaster \"type2.list\""
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6294,8 +6294,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "mixmaster не приема Cc или Bcc заглавни полета."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Моля, поставете валидна стойност в променливата \"hostname\" когато използвате mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Моля, поставете валидна стойност в променливата \"hostname\" когато използвате mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6346,8 +6346,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Желаете ли да проследите до %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Никое от маркираните писма не е видимо!"
+msgid "No tagged messages are visible"
+msgstr "Никое от маркираните писма не е видимо"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6358,8 +6358,8 @@ msgid "Including quoted message..."
 msgstr "Прикачване на цитирано писмо..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Не всички поискани писма могат да бъдат прикачени!"
+msgid "Could not include all requested messages"
+msgstr "Не всички поискани писма могат да бъдат прикачени"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6446,13 +6446,13 @@ msgid "Mail sent."
 msgstr "Писмото е изпратенo."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Не е намерен \"boundary\" параметър! [моля, съобщете за тази грешка]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Не е намерен \"boundary\" параметър [моля, съобщете за тази грешка]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s вече не съществува!"
+msgid "%s no longer exists"
+msgstr "%s вече не съществува"
 
 #: sendlib.c:997
 #, c-format
@@ -6537,8 +6537,8 @@ msgid "Sorting mailbox..."
 msgstr "Подреждане на пощенската кутия..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Не може да бъде намерена функция за подреждане! (Моля, съобщете за тази грешка)"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Не може да бъде намерена функция за подреждане (Моля, съобщете за тази грешка)"
 
 #: status.c:163
 msgid "(no mailbox)"

@@ -2453,7 +2453,7 @@ void pgp_gpgme_invoke_import(const char *fname)
 
   if (pgp_gpgme_extract_keys(keydata, &out, false))
   {
-    mutt_error(_("Error extracting key data!"));
+    mutt_error(_("Error extracting key data"));
   }
   gpgme_data_release(keydata);
   mutt_file_fclose(&in);
@@ -2756,7 +2756,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (needpass == -1)
   {
     state_attach_puts(_("[-- Error: could not find beginning"
-                        " of PGP message! --]\n\n"),
+                        " of PGP message --]\n\n"),
                       s);
     return 1;
   }
@@ -2784,7 +2784,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(_("[-- Error: could not create temporary file! "
+      state_attach_puts(_("[-- Error: could not create temporary file "
                           "--]\n"),
                         s);
     }
@@ -2860,7 +2860,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(_("[-- Error: could not create temporary file! "
+      state_attach_puts(_("[-- Error: could not create temporary file "
                           "--]\n"),
                         s);
     }

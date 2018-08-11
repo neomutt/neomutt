@@ -151,14 +151,14 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   if (sb.st_size == 0)
   {
-    mutt_message(_("Message file is empty!"));
+    mutt_message(_("Message file is empty"));
     rc = 1;
     goto bail;
   }
 
   if (edit && sb.st_mtime == mtime)
   {
-    mutt_message(_("Message not modified!"));
+    mutt_message(_("Message not modified"));
     rc = 1;
     goto bail;
   }

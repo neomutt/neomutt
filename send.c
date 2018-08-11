@@ -945,7 +945,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
       /* This could happen if the user tagged some messages and then did
        * a limit such that none of the tagged message are visible.
        */
-      mutt_error(_("No tagged messages are visible!"));
+      mutt_error(_("No tagged messages are visible"));
       return -1;
     }
   }
@@ -985,7 +985,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
 
     if ((flags & SEND_LIST_REPLY) && !env->to)
     {
-      mutt_error(_("No mailing lists found!"));
+      mutt_error(_("No mailing lists found"));
       return -1;
     }
 
@@ -1036,7 +1036,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
 
           if (include_reply(ctx, ctx->hdrs[i], tempfp) == -1)
           {
-            mutt_error(_("Could not include all requested messages!"));
+            mutt_error(_("Could not include all requested messages"));
             return -1;
           }
           fputc('\n', tempfp);

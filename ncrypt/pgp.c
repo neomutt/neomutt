@@ -596,7 +596,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           maybe_goodsig = false;
           pgpin = NULL;
           state_attach_puts(
-              _("[-- Error: unable to create PGP subprocess! --]\n"), s);
+              _("[-- Error: unable to create PGP subprocess --]\n"), s);
         }
         else /* PGP started successfully */
         {
@@ -761,7 +761,7 @@ out:
   if (needpass == -1)
   {
     state_attach_puts(
-        _("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
+        _("[-- Error: could not find beginning of PGP message --]\n\n"), s);
     return -1;
   }
 
@@ -1027,7 +1027,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     if (s->flags & MUTT_DISPLAY)
     {
       state_attach_puts(
-          _("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
+          _("[-- Error: could not create a PGP subprocess --]\n\n"), s);
     }
     return NULL;
   }
@@ -1196,7 +1196,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
   {
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
-      state_attach_puts(_("[-- Error: could not create temporary file! --]\n"), s);
+      state_attach_puts(_("[-- Error: could not create temporary file --]\n"), s);
     return -1;
   }
 
@@ -1291,7 +1291,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   thepid = pgp_invoke_sign(&pgpin, &pgpout, &pgperr, -1, -1, -1, signedfile);
   if (thepid == -1)
   {
-    mutt_perror(_("Can't open PGP subprocess!"));
+    mutt_perror(_("Can't open PGP subprocess"));
     mutt_file_fclose(&fp);
     unlink(sigfile);
     unlink(signedfile);

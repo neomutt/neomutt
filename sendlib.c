@@ -490,8 +490,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     const char *p = mutt_param_get(&a->parameter, "boundary");
     if (!p)
     {
-      mutt_debug(1, "no boundary parameter found!\n");
-      mutt_error(_("No boundary parameter found! [report this error]"));
+      mutt_debug(1, "no boundary parameter found\n");
+      mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
     char boundary[SHORT_STRING];
@@ -521,8 +521,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   fpin = fopen(a->filename, "r");
   if (!fpin)
   {
-    mutt_debug(1, "%s no longer exists!\n", a->filename);
-    mutt_error(_("%s no longer exists!"), a->filename);
+    mutt_debug(1, "%s no longer exists\n", a->filename);
+    mutt_error(_("%s no longer exists"), a->filename);
     return -1;
   }
 
@@ -1559,7 +1559,7 @@ static void run_mime_type_query(struct Body *att)
   thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
   if (thepid < 0)
   {
-    mutt_error(_("Error running \"%s\"!"), cmd);
+    mutt_error(_("Error running \"%s\""), cmd);
     return;
   }
 

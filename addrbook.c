@@ -206,7 +206,7 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 
   if (TAILQ_EMPTY(aliases))
   {
-    mutt_error(_("You have no aliases!"));
+    mutt_error(_("You have no aliases"));
     return;
   }
 

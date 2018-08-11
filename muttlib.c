@@ -1434,7 +1434,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   {
     if (magic == MUTT_MAILBOX_ERROR)
     {
-      mutt_error(_("%s is not a mailbox!"), s);
+      mutt_error(_("%s is not a mailbox"), s);
       return 1;
     }
   }

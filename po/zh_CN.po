@@ -51,8 +51,8 @@ msgid "Help"
 msgstr "帮助"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "您没有别名信息！"
+msgid "You have no aliases"
+msgstr "您没有别名信息"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -64,8 +64,8 @@ msgid "Alias as: "
 msgstr "取别名为："
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "您已经为这个名字定义了别名啦！"
+msgid "You already have an alias defined with that name"
+msgstr "您已经为这个名字定义了别名啦"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -180,8 +180,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "目录 [%s], 文件掩码：%s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "无法附加目录！"
+msgid "Can't attach a directory"
+msgstr "无法附加目录"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -325,8 +325,8 @@ msgid "Verify signature?"
 msgstr "验证签名?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "无法创建临时文件！"
+msgid "Could not create temporary file"
+msgstr "无法创建临时文件"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -364,8 +364,8 @@ msgstr "PGP 签名“无法”验证。"
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "执行 \"%s\" 时出错！"
+msgid "Error running \"%s\""
+msgstr "执行 \"%s\" 时出错"
 
 #: commands.c:269
 msgid "Command: "
@@ -384,8 +384,8 @@ msgid "Bounce tagged messages to: "
 msgstr "重发已标记的信件至："
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "解析地址出错！"
+msgid "Error parsing address"
+msgstr "解析地址出错"
 
 #: commands.c:353 recvcmd.c:229
 #, c-format
@@ -688,8 +688,8 @@ msgstr "没有列表被定义"
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] 已不存在!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] 已不存在"
 
 #: compose.c:416
 #, c-format
@@ -744,8 +744,8 @@ msgstr[0] "正在附加已选择的文件..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "无法附加 %s！"
+msgid "Unable to attach %s"
+msgstr "无法附加 %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -765,12 +765,12 @@ msgid "No messages in that folder."
 msgstr "这个文件夹中没有信件。"
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "请标记您要附加的信件！"
+msgid "Tag the messages you want to attach"
+msgstr "请标记您要附加的信件"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "无法附加！"
+msgid "Unable to attach"
+msgstr "无法附加"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -867,8 +867,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "已经选择了 PGP。清除并继续？"
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "无法锁住信箱！"
+msgid "Unable to lock mailbox"
+msgstr "无法锁住信箱"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -992,8 +992,8 @@ msgstr "正在填充熵池：%s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s 有不安全的访问许可！"
+msgid "%s has insecure permissions"
+msgstr "%s 有不安全的访问许可"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1301,8 +1301,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "无法 %s：操作不被访问控制列表(ACL)所允许"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "无法在只读信箱切换可写！"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "无法在只读信箱切换可写"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1813,12 +1813,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "无法截断临时邮件夹：%s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "信件文件是空的！"
+msgid "Message file is empty"
+msgstr "信件文件是空的"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "信件未改动！"
+msgid "Message not modified"
+msgstr "信件未改动"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1836,8 +1836,8 @@ msgid "Can't append to folder: %s"
 msgstr "无法添加到文件夹末尾：%s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "多部份信件没有边界参数！"
+msgid "multipart message has no boundary parameter"
+msgstr "多部份信件没有边界参数"
 
 #: flags.c:432
 msgid "Set flag"
@@ -1997,7 +1997,7 @@ msgstr ""
 "[-- 并且其标明的访问类型 %s 不被支持 --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- 错误：无法显示 Multipart/Alternative 的任何部分！ --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -2016,16 +2016,16 @@ msgid "One or more parts of this message could not be displayed"
 msgstr "本信件的一个或多个部分无法显示"
 
 #: handler.c:1317
-msgid "Unable to open 'memory stream'!"
-msgstr "无法打开内存流临时文件！"
+msgid "Unable to open 'memory stream'"
+msgstr "无法打开内存流临时文件"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "无法打开临时文件！"
+msgid "Unable to open temporary file"
+msgstr "无法打开临时文件"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
-msgstr "无法重新打开内存流临时文件！"
+msgid "failed to re-open 'memory stream'"
+msgstr "无法重新打开内存流临时文件"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2041,13 +2041,13 @@ msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s 尚未支持 (使用 '%s' 来显示这部份) --]\n"
 
 #: handler.c:1667
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- 这是一个附件 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s 尚未支持 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #: handler.c:1681
@@ -2811,8 +2811,8 @@ msgid "Mailbox is empty."
 msgstr "信箱是空的。"
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "信箱损坏了！"
+msgid "Mailbox is corrupt"
+msgstr "信箱损坏了"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2828,15 +2828,15 @@ msgid "Reopening mailbox..."
 msgstr "正在重新打开信箱..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "信箱已损坏!"
+msgid "Mailbox was corrupted"
+msgstr "信箱已损坏"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "严重错误！无法重新打开信箱！"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "同步：信箱已被修改，但没有被修改过的信件！(请报告这个错误)"
 
 #: mbox/mbox.c:1199
@@ -2849,8 +2849,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "写入失败！已把部分的信箱保存至 %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "无法重开信箱！"
+msgid "Could not reopen mailbox"
+msgstr "无法重开信箱"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2918,8 +2918,8 @@ msgid "Tagging is not supported."
 msgstr "不支持标记。"
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "尝试 fcntl 加锁时超时！"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "尝试 fcntl 加锁时超时"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2927,8 +2927,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "正在等待 fcntl 加锁... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "尝试 flock 加锁时超时！"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "尝试 flock 加锁时超时"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2961,12 +2961,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "整数溢出 -- 无法分配内存！"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "整数溢出 -- 无法分配内存"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "内存不足！"
+msgid "Out of memory"
+msgstr "内存不足"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3051,8 +3051,8 @@ msgstr "无法将信件保存到新闻服务器。"
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s 不是信箱！"
+msgid "%s is not a mailbox"
+msgstr "%s 不是信箱"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3130,12 +3130,12 @@ msgid "---Attachment: %s"
 msgstr "---附件：%s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "写入出错！"
+msgid "Write fault"
+msgstr "写入出错"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "我不知道要如何打印它！"
+msgid "I don't know how to print that"
+msgstr "我不知道要如何打印它"
 
 #: mutt_header.c:342
 #, c-format
@@ -3242,8 +3242,8 @@ msgid " Press '%s' to toggle write"
 msgstr " 请按下 '%s' 来切换写入"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "请使用 'toggle-write' 来重新启用写入!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "请使用 'toggle-write' 来重新启用写入"
 
 #: mx.c:1068
 #, c-format
@@ -3316,7 +3316,7 @@ msgstr "正在尝试提取 S/MIME 证书..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
 "[-- 错误：未知的 multipart/signed 协议 %s！ --]\n"
@@ -3324,7 +3324,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1129
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
 "[-- 错误：缺失或格式错误的 multipart/signed 签名！ --]\n"
@@ -3580,8 +3580,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "取出密钥数据出错！"
+msgid "Error extracting key data"
+msgstr "取出密钥数据出错"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3626,14 +3626,14 @@ msgstr "[-- PGP 签署的信件结束 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
 "[-- 错误：找不到 PGP 消息的开头！ --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- 错误：无法创建临时文件！ --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
@@ -4004,7 +4004,7 @@ msgid "Enter PGP passphrase:"
 msgstr "请输入 PGP 通行密码："
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- 错误：无法创建 PGP 子进程！ --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
@@ -4025,7 +4025,7 @@ msgstr "内部错误。请提交一个bug报告。"
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
 "[-- 错误：无法创建 PGP 子进程！ --]\n"
@@ -4036,8 +4036,8 @@ msgid "Decryption failed"
 msgstr "解密失败"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "无法打开 PGP 子进程！"
+msgid "Can't open PGP subprocess"
+msgstr "无法打开 PGP 子进程"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4249,8 +4249,8 @@ msgstr "未找到可用于 %s 的(有效)证书。"
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "错误：无法创建 OpenSSL 子进程！"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "错误：无法创建 OpenSSL 子进程"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4273,8 +4273,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "无法签署：没有指定密钥。请使用指定身份签署(Sign As)。"
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "无法打开 OpenSSL 子进程！"
+msgid "Can't open OpenSSL subprocess"
+msgstr "无法打开 OpenSSL 子进程"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4285,7 +4285,7 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- 错误：无法创建 OpenSSL 子进程！ --]\n"
 
 #: ncrypt/smime.c:2120
@@ -4379,17 +4379,17 @@ msgid "Loading list of groups from cache..."
 msgstr "正在从缓存中加载新闻组列表..."
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
-msgstr "未定义新闻服务器！"
+msgid "No news server defined"
+msgstr "未定义新闻服务器"
 
 #: nntp/newsrc.c:1066
 #, c-format
-msgid "%s is an invalid news server specification!"
-msgstr "%s 是无效的新闻服务器 URL！"
+msgid "%s is an invalid news server specification"
+msgstr "%s 是无效的新闻服务器 URL"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "服务器关闭了连接！"
+msgid "Server closed connection"
+msgstr "服务器关闭了连接"
 
 #: nntp/nntp.c:189
 msgid "Server doesn't support reader mode."
@@ -4432,8 +4432,8 @@ msgstr "正在取回帖子列表..."
 
 #: nntp/nntp.c:1523
 #, c-format
-msgid "%s is an invalid newsgroup specification!"
-msgstr "%s 是无效的新闻组 URL！"
+msgid "%s is an invalid newsgroup specification"
+msgstr "%s 是无效的新闻组 URL"
 
 #: nntp/nntp.c:1541
 #, c-format
@@ -5711,8 +5711,8 @@ msgid "Command TOP is not supported by server."
 msgstr "服务器不支持 TOP 命令。"
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "无法将信件头写入临时文件！"
+msgid "Can't write header to temporary file"
+msgstr "无法将信件头写入临时文件"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5734,8 +5734,8 @@ msgid "Fetching list of messages..."
 msgstr "正在取回信件列表..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "无法将新建写入临时文件！"
+msgid "Can't write message to temporary file"
+msgstr "无法将新建写入临时文件"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5760,8 +5760,8 @@ msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "正在读取新信件 (%d 字节)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "写入信箱时出错！"
+msgid "Error while writing mailbox"
+msgstr "写入信箱时出错"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5776,8 +5776,8 @@ msgid "Authenticating (SASL)..."
 msgstr "正在验证 (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP 时间戳无效！"
+msgid "POP timestamp is invalid"
+msgstr "POP 时间戳无效"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -5905,8 +5905,8 @@ msgstr "通过管道传给："
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "我不知道要如何打印 %s 类型的附件！"
+msgid "I don't know how to print %s attachments"
+msgstr "我不知道要如何打印 %s 类型的附件"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -5927,16 +5927,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr "不支持对已解密附件的结构性更改"
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "无法解密加密信件！"
+msgid "Can't decrypt encrypted message"
+msgstr "无法解密加密信件"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "附件"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "无子部分可显示！"
+msgid "There are no subparts to show"
+msgstr "无子部分可显示"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -5963,9 +5963,9 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "您只能重发 message/rfc822 的部分。"
 
 #: recvcmd.c:265
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "重发信件出错！"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "重发信件出错"
 
 #: recvcmd.c:484
 #, c-format
@@ -5994,8 +5994,8 @@ msgid "Can't find any tagged messages."
 msgstr "无法找到任何已标记的信件。"
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "没有找到邮件列表！"
+msgid "No mailing lists found"
+msgstr "没有找到邮件列表"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6022,8 +6022,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "无法获得 mixmaster 的 type2.list！"
+msgid "Can't get mixmaster's type2.list"
+msgstr "无法获得 mixmaster 的 type2.list"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6057,8 +6057,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)信件头。"
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值！"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值"
 
 #: remailer.c:855
 #, c-format
@@ -6109,8 +6109,8 @@ msgid "Follow-up to %s%s?"
 msgstr "发送后续信件到 %s%s？"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "无可见的已标记信件！"
+msgid "No tagged messages are visible"
+msgstr "无可见的已标记信件"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6121,8 +6121,8 @@ msgid "Including quoted message..."
 msgstr "正在包含引用信件..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "无法包含所有请求的信件！"
+msgid "Could not include all requested messages"
+msgstr "无法包含所有请求的信件"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6205,13 +6205,13 @@ msgid "Mail sent."
 msgstr "信件已发送。"
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
+msgid "No boundary parameter found [report this error]"
 msgstr "没有发现分界变量！[请报告这个错误]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s 已经不存在了！"
+msgid "%s no longer exists"
+msgstr "%s 已经不存在了"
 
 #: sendlib.c:997
 #, c-format
@@ -6294,7 +6294,7 @@ msgid "Sorting mailbox..."
 msgstr "正在排序信箱..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
+msgid "Could not find sorting function [report this bug]"
 msgstr "找不到排序函数！[请报告这个问题]"
 
 #: status.c:163

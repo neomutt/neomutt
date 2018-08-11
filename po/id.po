@@ -47,8 +47,8 @@ msgid "Help"
 msgstr "Bantuan"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Anda tidak punya kumpulan alias!"
+msgid "You have no aliases"
+msgstr "Anda tidak punya kumpulan alias"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "Alias sebagai: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Anda telah punya alias dengan nama tersebut!"
+msgid "You already have an alias defined with that name"
+msgstr "Anda telah punya alias dengan nama tersebut"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -181,7 +181,7 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Direktori [%s], File mask: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
+msgid "Can't attach a directory"
 msgstr "Tidak bisa melampirkan sebuah direktori"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
@@ -330,8 +330,8 @@ msgid "Verify signature?"
 msgstr "Periksa tandatangan?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Tidak bisa membuat file sementara!"
+msgid "Could not create temporary file"
+msgstr "Tidak bisa membuat file sementara"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -369,8 +369,8 @@ msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Gagal menjalankan \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Gagal menjalankan \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -391,8 +391,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Bounce surat ke: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Gagal menguraikan alamat!"
+msgid "Error parsing address"
+msgstr "Gagal menguraikan alamat"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -723,8 +723,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] sudah tidak ada!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] sudah tidak ada"
 
 #: compose.c:416
 #, c-format
@@ -784,8 +784,8 @@ msgstr[0] "Melampirkan file-file yang dipilih..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Tidak bisa melampirkan %s!"
+msgid "Unable to attach %s"
+msgstr "Tidak bisa melampirkan %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -806,12 +806,12 @@ msgid "No messages in that folder."
 msgstr "Tidak ada surat di kotak tersebut."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Tandai surat-surat yang mau dilampirkan!"
+msgid "Tag the messages you want to attach"
+msgstr "Tandai surat-surat yang mau dilampirkan"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Tidak bisa dilampirkan!"
+msgid "Unable to attach"
+msgstr "Tidak bisa dilampirkan"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -909,8 +909,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP sudah dipilih. Bersihkan & lanjut ? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Tidak bisa mengunci kotak surat!"
+msgid "Unable to lock mailbox"
+msgstr "Tidak bisa mengunci kotak surat"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1034,8 +1034,8 @@ msgstr "Mengisi pool entropy: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s mempunyai permissions yang tidak aman!"
+msgid "%s has insecure permissions"
+msgstr "%s mempunyai permissions yang tidak aman"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1347,8 +1347,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "Tidak dapat %s: tidak diijinkan oleh ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kotak surat read-only, tidak bisa toggle write!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Kotak surat read-only, tidak bisa toggle write"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1890,12 +1890,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "tidak bisa memotong kotak surat sementara: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Surat kosong!"
+msgid "Message file is empty"
+msgstr "Surat kosong"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Surat tidak diubah!"
+msgid "Message not modified"
+msgstr "Surat tidak diubah"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1913,8 +1913,8 @@ msgid "Can't append to folder: %s"
 msgstr "Tidak bisa menambah ke kotak surat: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "surat multi bagian tidak punya parameter batas!"
+msgid "multipart message has no boundary parameter"
+msgstr "surat multi bagian tidak punya parameter batas"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2075,8 +2075,8 @@ msgstr ""
 "[-- dan tipe akses %s tsb tidak didukung --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2096,17 +2096,17 @@ msgstr "Perhatian: Sebagian dari pesan ini belum ditandatangani."
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Tidak bisa membuka file sementara!"
+msgid "Unable to open 'memory stream'"
+msgstr "Tidak bisa membuka file sementara"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Tidak bisa membuka file sementara!"
+msgid "Unable to open temporary file"
+msgstr "Tidak bisa membuka file sementara"
 
 #: handler.c:1376
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "Tidak bisa membuka file sementara!"
+msgid "failed to re-open 'memory stream'"
+msgstr "Tidak bisa membuka file sementara"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2124,14 +2124,14 @@ msgstr "[-- %s/%s tidak didukung (gunakan '%s' untuk melihat bagian ini) --]\n"
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Lampiran %s/%s ini (tombol untuk 'view-attachments' belum ditentukan!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Lampiran %s/%s ini (tombol untuk 'view-attachments' belum ditentukan) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s tidak didukung (tombol untuk 'view-attachments' belum ditentukan!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s tidak didukung (tombol untuk 'view-attachments' belum ditentukan) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2851,8 +2851,8 @@ msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Kotak surat kacau!"
+msgid "Mailbox is corrupt"
+msgstr "Kotak surat kacau"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2868,16 +2868,16 @@ msgid "Reopening mailbox..."
 msgstr "Membuka kembali kotak surat..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Kotak surat diobok-obok sampe kacau!"
+msgid "Mailbox was corrupted"
+msgstr "Kotak surat diobok-obok sampe kacau"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatal error! Tidak bisa membuka kembali kotak surat!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox diubah, tapi tidak ada surat yang berubah (laporkan bug ini)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2889,8 +2889,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Gagal menulis! Sebagian dari kotak surat disimpan ke %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Tidak bisa membuka kembali mailbox!"
+msgid "Could not reopen mailbox"
+msgstr "Tidak bisa membuka kembali mailbox"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2958,8 +2958,8 @@ msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Terlalu lama menunggu waktu mencoba fcntl lock!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Terlalu lama menunggu waktu mencoba fcntl lock"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2967,8 +2967,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Menunggu fcntl lock... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Terlalu lama menunggu waktu mencoba flock!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Terlalu lama menunggu waktu mencoba flock"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3001,12 +3001,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Melakukan debug tingkat %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Integer overflow -- tidak bisa mengalokasikan memori!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Integer overflow -- tidak bisa mengalokasikan memori"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Buset, memory abis!"
+msgid "Out of memory"
+msgstr "Buset, memory abis"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3093,8 +3093,8 @@ msgstr "Tidak bisa menyunting surat di server POP"
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s bukan kotak surat!"
+msgid "%s is not a mailbox"
+msgstr "%s bukan kotak surat"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3172,12 +3172,12 @@ msgid "---Attachment: %s"
 msgstr "-- Lampiran"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Gagal menulis!"
+msgid "Write fault"
+msgstr "Gagal menulis"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Saya tidak tahu bagaimana mencetak itu!"
+msgid "I don't know how to print that"
+msgstr "Saya tidak tahu bagaimana mencetak itu"
 
 #: mutt_header.c:342
 #, c-format
@@ -3287,8 +3287,8 @@ msgid " Press '%s' to toggle write"
 msgstr "Tekan '%s' untuk mengeset bisa/tidak menulis"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Gunakan 'toggle-write' supaya bisa menulis lagi!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Gunakan 'toggle-write' supaya bisa menulis lagi"
 
 #: mx.c:1068
 #, c-format
@@ -3364,19 +3364,19 @@ msgstr "Mencoba mengekstrak sertifikat2 S/MIME..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Error: Protokol multipart/signed %s tidak dikenal! --]\n"
+"[-- Error: Protokol multipart/signed %s tidak dikenal --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Error: Struktur multipart/signed tidak konsisten! --]\n"
+"[-- Error: Struktur multipart/signed tidak konsisten --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3635,7 +3635,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!"
+msgid "Error extracting key data"
 msgstr "Error saat mengambil informasi tentang kunci: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3681,15 +3681,15 @@ msgstr "[-- AKHIR PESAN DG TANDATANGAN PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Error: tidak tahu dimana surat PGP dimulai! --]\n"
+"[-- Error: tidak tahu dimana surat PGP dimulai --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Error: tidak bisa membuat file sementara --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4082,8 +4082,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Masukkan passphrase PGP: "
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Error: tidak bisa membuat subproses utk PGP! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Error: tidak bisa membuat subproses utk PGP --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4104,10 +4104,10 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Error: tidak bisa membuat subproses PGP! --]\n"
+"[-- Error: tidak bisa membuat subproses PGP --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4115,8 +4115,8 @@ msgid "Decryption failed"
 msgstr "Dekripsi gagal"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Tidak bisa membuka subproses PGP!"
+msgid "Can't open PGP subprocess"
+msgstr "Tidak bisa membuka subproses PGP"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4336,8 +4336,8 @@ msgstr "Tidak ditemukan sertifikat (yg valid) utk %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Error: tidak bisa membuat subproses utk OpenSSL!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Error: tidak bisa membuat subproses utk OpenSSL"
 
 #: ncrypt/smime.c:1394
 #, fuzzy
@@ -4361,8 +4361,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Tdk bisa tandatangan: Kunci tdk diberikan. Gunakan Tandatangan Sbg."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Tidak bisa membuka subproses OpenSSL!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Tidak bisa membuka subproses OpenSSL"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4373,8 +4373,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Error: tidak bisa membuat subproses utk OpenSSL! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Error: tidak bisa membuat subproses utk OpenSSL --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4471,17 +4471,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s bukan path POP yang valid"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Server menutup hubungan!"
+msgid "Server closed connection"
+msgstr "Server menutup hubungan"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4528,7 +4528,7 @@ msgstr "Mengambil daftar surat..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s bukan path POP yang valid"
 
 #: nntp/nntp.c:1541
@@ -5865,8 +5865,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Perintah TOP tidak didukung oleh server."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Tidak bisa menulis header ke file sementara!"
+msgid "Can't write header to temporary file"
+msgstr "Tidak bisa menulis header ke file sementara"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5888,8 +5888,8 @@ msgid "Fetching list of messages..."
 msgstr "Mengambil daftar surat..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Tidak bisa menulis surat ke file sementara!"
+msgid "Can't write message to temporary file"
+msgstr "Tidak bisa menulis surat ke file sementara"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5914,8 +5914,8 @@ msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "Membaca surat-surat baru (%d bytes)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Error saat menulis ke kotak surat!"
+msgid "Error while writing mailbox"
+msgstr "Error saat menulis ke kotak surat"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5930,8 +5930,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Mengauthentikasi (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "Tanda waktu POP tidak valid!"
+msgid "POP timestamp is invalid"
+msgstr "Tanda waktu POP tidak valid"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6059,8 +6059,8 @@ msgstr "Pipe ke: "
 #.
 #: recvattach.c:859
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Saya tidak tahu bagaimana mencetak lampiran %s!"
+msgid "I don't know how to print %s attachments"
+msgstr "Saya tidak tahu bagaimana mencetak lampiran %s"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6081,16 +6081,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Tidak dapat men-decrypt surat ini!"
+msgid "Can't decrypt encrypted message"
+msgstr "Tidak dapat men-decrypt surat ini"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Lampiran"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Tidak ada sub-bagian yg bisa ditampilkan!"
+msgid "There are no subparts to show"
+msgstr "Tidak ada sub-bagian yg bisa ditampilkan"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6120,9 +6120,9 @@ msgstr "Anda hanya dapat menge-bounce bagian-bagian 'message/rfc822'."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Gagal menge-bounce surat!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Gagal menge-bounce surat"
 
 #: recvcmd.c:484
 #, c-format
@@ -6151,8 +6151,8 @@ msgid "Can't find any tagged messages."
 msgstr "Tidak dapat menemukan surat yang ditandai."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Tidak ada mailing list yang ditemukan!"
+msgid "No mailing lists found"
+msgstr "Tidak ada mailing list yang ditemukan"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6179,8 +6179,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Tidak dapat mengambil type2.list milik mixmaster!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Tidak dapat mengambil type2.list milik mixmaster"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6214,8 +6214,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6266,8 +6266,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Balas ke %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Tidak ada surat yang ditandai yang kelihatan!"
+msgid "No tagged messages are visible"
+msgstr "Tidak ada surat yang ditandai yang kelihatan"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6278,8 +6278,8 @@ msgid "Including quoted message..."
 msgstr "Menyertakan surat terkutip..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Tidak bisa menyertakan semua surat yang diminta!"
+msgid "Could not include all requested messages"
+msgstr "Tidak bisa menyertakan semua surat yang diminta"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6366,13 +6366,13 @@ msgid "Mail sent."
 msgstr "Surat telah dikirim."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Tidak ada parameter batas yang bisa ditemukan! [laporkan error ini]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Tidak ada parameter batas yang bisa ditemukan [laporkan error ini]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s tidak ada lagi!"
+msgid "%s no longer exists"
+msgstr "%s tidak ada lagi"
 
 #: sendlib.c:997
 #, c-format
@@ -6456,8 +6456,8 @@ msgid "Sorting mailbox..."
 msgstr "Mengurutkan surat-surat..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Tidak bisa menemukan fungsi pengurutan [laporkan bug ini]"
 
 #: status.c:163
 msgid "(no mailbox)"

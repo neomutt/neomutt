@@ -391,7 +391,7 @@ retry_name:
   /* check to see if the user already has an alias defined */
   if (mutt_alias_lookup(buf))
   {
-    mutt_error(_("You already have an alias defined with that name!"));
+    mutt_error(_("You already have an alias defined with that name"));
     return;
   }
 

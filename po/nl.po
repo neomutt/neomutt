@@ -46,8 +46,8 @@ msgid "Help"
 msgstr "Hulp"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Geen afkortingen opgegeven!"
+msgid "You have no aliases"
+msgstr "Geen afkortingen opgegeven"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -59,8 +59,8 @@ msgid "Alias as: "
 msgstr "Afkorten als: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "U heeft al een afkorting onder die naam!"
+msgid "You already have an alias defined with that name"
+msgstr "U heeft al een afkorting onder die naam"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -178,8 +178,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Map [%s], Bestandsmasker: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Kan geen map bijvoegen!"
+msgid "Can't attach a directory"
+msgstr "Kan geen map bijvoegen"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -327,8 +327,8 @@ msgid "Verify signature?"
 msgstr "Handtekening controleren?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Tijdelijk bestand kon niet worden aangemaakt!"
+msgid "Could not create temporary file"
+msgstr "Tijdelijk bestand kon niet worden aangemaakt"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -366,8 +366,8 @@ msgstr "PGP-handtekening kon NIET worden geverifieerd."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Fout opgetreden bij het uitvoeren van \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Fout opgetreden bij het uitvoeren van \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -388,8 +388,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Gemarkeerde berichten doorsturen naar: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Ongeldig adres!"
+msgid "Error parsing address"
+msgstr "Ongeldig adres"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -719,8 +719,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] bestaat niet meer!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] bestaat niet meer"
 
 #: compose.c:416
 #, c-format
@@ -781,8 +781,8 @@ msgstr[1] "Opgegeven bestanden worden bijgevoegd..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Kan %s niet bijvoegen!"
+msgid "Unable to attach %s"
+msgstr "Kan %s niet bijvoegen"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -803,12 +803,12 @@ msgid "No messages in that folder."
 msgstr "Geen berichten in dit postvak."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Selecteer de berichten die u wilt bijvoegen!"
+msgid "Tag the messages you want to attach"
+msgstr "Selecteer de berichten die u wilt bijvoegen"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Kan niet bijvoegen!"
+msgid "Unable to attach"
+msgstr "Kan niet bijvoegen"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -905,8 +905,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP is al geselecteerd.  Wissen & doorgaan? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Kan postvak niet claimen!"
+msgid "Unable to lock mailbox"
+msgstr "Kan postvak niet claimen"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1030,8 +1030,8 @@ msgstr "Aanvullen van entropieverzameling: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s heeft onveilige rechten!"
+msgid "%s has insecure permissions"
+msgstr "%s heeft onveilige rechten"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1337,8 +1337,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: operatie niet toegestaan door ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kan niet schrijven in een schrijfbeveiligd postvak!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Kan niet schrijven in een schrijfbeveiligd postvak"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1868,12 +1868,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "Tijdelijke postmap kon niet worden ingekort: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Postvak is leeg!"
+msgid "Message file is empty"
+msgstr "Postvak is leeg"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Bericht is niet gewijzigd!"
+msgid "Message not modified"
+msgstr "Bericht is niet gewijzigd"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1891,7 +1891,7 @@ msgid "Can't append to folder: %s"
 msgstr "Kan bericht niet toevoegen aan postvak: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
+msgid "multipart message has no boundary parameter"
 msgstr "Multi-part bericht heeft geen \"boundary\" parameter."
 
 #: flags.c:432
@@ -2059,8 +2059,8 @@ msgstr ""
 "[-- en het access-type %s wordt niet ondersteund --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Fout: Kon geen enkel multipart/alternative-gedeelte weergeven! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Fout: Kon geen enkel multipart/alternative-gedeelte weergeven --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2079,15 +2079,15 @@ msgstr "Een of meer delen van dit bericht konden niet worden weergegeven"
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Tijdelijk bestand kon niet worden geopend!"
+msgid "Unable to open 'memory stream'"
+msgstr "Tijdelijk bestand kon niet worden geopend"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Tijdelijk bestand kon niet worden geopend!"
+msgid "Unable to open temporary file"
+msgstr "Tijdelijk bestand kon niet worden geopend"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
+msgid "failed to re-open 'memory stream'"
 msgstr ""
 
 #: handler.c:1588
@@ -2106,14 +2106,14 @@ msgstr "[-- %s/%s wordt niet ondersteund (gebruik '%s' om dit gedeelte weer te g
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Dit is een bijlage ('view-attachments' moet aan een toets gekoppeld zijn!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Dit is een bijlage ('view-attachments' moet aan een toets gekoppeld zijn) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s wordt niet ondersteund ('view-attachments' moet aan een toets gekoppeld zijn!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s wordt niet ondersteund ('view-attachments' moet aan een toets gekoppeld zijn) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2410,7 +2410,7 @@ msgstr "Ongeldig    "
 
 #: imap/message.c:480 mx.c:1338
 msgid "Integer overflow -- can't allocate memory."
-msgstr "Integer overflow -- kan geen geheugen alloceren!"
+msgstr "Integer overflow -- kan geen geheugen alloceren"
 
 #: imap/message.c:649
 msgid "Unable to fetch headers from this IMAP server version."
@@ -2834,8 +2834,8 @@ msgid "Mailbox is empty."
 msgstr "Postvak is leeg."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Postvak is beschadigd!"
+msgid "Mailbox is corrupt"
+msgstr "Postvak is beschadigd"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2851,16 +2851,16 @@ msgid "Reopening mailbox..."
 msgstr "Heropenen van postvak..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Postvak was beschadigd!"
+msgid "Mailbox was corrupted"
+msgstr "Postvak was beschadigd"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatale fout!  Kon postvak niet opnieuw openen!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox is gewijzigd, maar geen gewijzigde berichten gevonden!"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox is gewijzigd, maar geen gewijzigde berichten gevonden"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2872,8 +2872,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Opslaan is mislukt!  Deel van postvak is opgeslagen als %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Kan postvak niet opnieuw openen!"
+msgid "Could not reopen mailbox"
+msgstr "Kan postvak niet opnieuw openen"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2941,7 +2941,7 @@ msgid "Tagging is not supported."
 msgstr "Markeren wordt niet ondersteund."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
+msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "De fcntl-claim kon niet binnen de toegestane tijd worden verkregen."
 
 #: mutt/file.c:1139
@@ -2950,7 +2950,7 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Wacht op fcntl-claim... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
+msgid "Timeout exceeded while attempting flock lock"
 msgstr "de flock-claim kon niet binnen de toegestane tijd worden verkregen."
 
 #: mutt/file.c:1210
@@ -2984,12 +2984,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Debug-informatie op niveau %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Integer overflow -- kan geen geheugen alloceren!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Integer overflow -- kan geen geheugen alloceren"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Onvoldoende geheugen!"
+msgid "Out of memory"
+msgstr "Onvoldoende geheugen"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3075,8 +3075,8 @@ msgstr "Kan bericht op POP-server niet aanpassen."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s is geen postvak!"
+msgid "%s is not a mailbox"
+msgstr "%s is geen postvak"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3154,12 +3154,12 @@ msgid "---Attachment: %s"
 msgstr "---Bijlage: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Fout bij schrijven!"
+msgid "Write fault"
+msgstr "Fout bij schrijven"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Ik weet niet hoe dit afgedrukt moet worden!"
+msgid "I don't know how to print that"
+msgstr "Ik weet niet hoe dit afgedrukt moet worden"
 
 #: mutt_header.c:342
 #, c-format
@@ -3270,8 +3270,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Druk '%s' om schrijfmode aan/uit te schakelen"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Gebruik 'toggle-write' om schrijven mogelijk te maken!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Gebruik 'toggle-write' om schrijven mogelijk te maken"
 
 #: mx.c:1068
 #, c-format
@@ -3347,19 +3347,19 @@ msgstr "S/MIME-certificaten onttrekken..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Onbekend multipart/signed-protocol: %s! --]\n"
+"[-- Fout: Onbekend multipart/signed-protocol: %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Inconsistente multipart/signed-structuur! --]\n"
+"[-- Fout: Inconsistente multipart/signed-structuur --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3610,8 +3610,8 @@ msgid ""
 msgstr "[-- Fout: ontsleuteling is mislukt: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Fout bij het onttrekken van sleutelgegevens!"
+msgid "Error extracting key data"
+msgstr "Fout bij het onttrekken van sleutelgegevens"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3656,15 +3656,15 @@ msgstr "[-- EINDE PGP-ONDERTEKEND BERICHT --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Kon begin van PGP-bericht niet vinden! --]\n"
+"[-- Fout: Kon begin van PGP-bericht niet vinden --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4051,8 +4051,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Geef PGP-wachtwoord in:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fout: Kan geen PGP-subproces starten! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Fout: Kan geen PGP-subproces starten --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4073,10 +4073,10 @@ msgstr "*Interne fout*.  Graag rapporteren."
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Kon PGP-subproces niet starten! --]\n"
+"[-- Fout: Kon PGP-subproces niet starten --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4084,8 +4084,8 @@ msgid "Decryption failed"
 msgstr "Ontsleuteling is mislukt"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Kan PGP-subproces niet starten!"
+msgid "Can't open PGP subprocess"
+msgstr "Kan PGP-subproces niet starten"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4302,8 +4302,8 @@ msgstr "Geen (geldig) certificaat gevonden voor %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Fout: kan geen OpenSSL-subproces starten!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Fout: kan geen OpenSSL-subproces starten"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4326,8 +4326,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Kan niet ondertekenen: geen sleutel gegeven.  Gebruik Ondertekenen Als."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Kan OpenSSL-subproces niet starten!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Kan OpenSSL-subproces niet starten"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4338,8 +4338,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fout: Kan geen OpenSSL-subproces starten! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Fout: Kan geen OpenSSL-subproces starten --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4438,17 +4438,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s is een ongeldig POP-pad"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Server heeft verbinding gesloten!"
+msgid "Server closed connection"
+msgstr "Server heeft verbinding gesloten"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4495,7 +4495,7 @@ msgstr "Berichtenlijst ophalen..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s is een ongeldig POP-pad"
 
 #: nntp/nntp.c:1541
@@ -5819,8 +5819,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Het TOP commando wordt niet door de server ondersteund."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Kan de header niet naar een tijdelijk bestand wegschrijven!"
+msgid "Can't write header to temporary file"
+msgstr "Kan de header niet naar een tijdelijk bestand wegschrijven"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5843,7 +5843,7 @@ msgid "Fetching list of messages..."
 msgstr "Berichtenlijst ophalen..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
+msgid "Can't write message to temporary file"
 msgstr "Kan het bericht niet naar een tijdelijk bestand wegschrijven"
 
 #: pop/pop.c:798
@@ -5870,8 +5870,8 @@ msgstr[0] "Bezig met het lezen van nieuwe berichten (%d bytes)..."
 msgstr[1] "Bezig met het lezen van nieuwe berichten (%d bytes)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Er is een fout opgetreden tijdens het schrijven van het postvak!"
+msgid "Error while writing mailbox"
+msgstr "Er is een fout opgetreden tijdens het schrijven van het postvak"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5887,8 +5887,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Authenticatie (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP tijdstempel is ongeldig!"
+msgid "POP timestamp is invalid"
+msgstr "POP tijdstempel is ongeldig"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6016,8 +6016,8 @@ msgstr "Doorgeven aan (pipe): "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Kan %s-bijlagen niet afdrukken!"
+msgid "I don't know how to print %s attachments"
+msgstr "Kan %s-bijlagen niet afdrukken"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6039,16 +6039,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Kan het versleutelde bericht niet ontsleutelen!"
+msgid "Can't decrypt encrypted message"
+msgstr "Kan het versleutelde bericht niet ontsleutelen"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Bijlagen"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Er zijn geen onderdelen om te laten zien!"
+msgid "There are no subparts to show"
+msgstr "Er zijn geen onderdelen om te laten zien"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6077,10 +6077,10 @@ msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Er is een fout opgetreden tijdens het doorsturen van het bericht!"
-msgstr[1] "Er is een fout opgetreden tijdens het doorsturen van de berichten!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Er is een fout opgetreden tijdens het doorsturen van het bericht"
+msgstr[1] "Er is een fout opgetreden tijdens het doorsturen van de berichten"
 
 #: recvcmd.c:484
 #, c-format
@@ -6109,8 +6109,8 @@ msgid "Can't find any tagged messages."
 msgstr "Kan geen geselecteerde berichten vinden."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Geen mailing-lists gevonden!"
+msgid "No mailing lists found"
+msgstr "Geen mailing-lists gevonden"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6137,7 +6137,7 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
+msgid "Can't get mixmaster's type2.list"
 msgstr "Kan type2.list niet lezen van mixmaster."
 
 #: remailer.c:606
@@ -6172,8 +6172,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster laat geen CC of BCC-kopregels toe."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "De hostname variable moet ingesteld zijn voor mixmaster gebruik!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "De hostname variable moet ingesteld zijn voor mixmaster gebruik"
 
 #: remailer.c:855
 #, c-format
@@ -6224,8 +6224,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Reactie sturen naar %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Geen gemarkeerde berichten zichtbaar!"
+msgid "No tagged messages are visible"
+msgstr "Geen gemarkeerde berichten zichtbaar"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6236,8 +6236,8 @@ msgid "Including quoted message..."
 msgstr "Geciteerde bericht wordt toegevoegd..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Kon niet alle berichten citeren!"
+msgid "Could not include all requested messages"
+msgstr "Kon niet alle berichten citeren"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6323,13 +6323,13 @@ msgid "Mail sent."
 msgstr "Bericht verstuurd."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Geen 'boundary parameter' gevonden! [meldt deze fout!]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Geen 'boundary parameter' gevonden [meldt deze fout]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s bestaat niet meer!"
+msgid "%s no longer exists"
+msgstr "%s bestaat niet meer"
 
 #: sendlib.c:997
 #, c-format
@@ -6413,8 +6413,8 @@ msgid "Sorting mailbox..."
 msgstr "Postvak wordt gesorteerd..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Kan sorteerfunctie niet vinden! [Meld deze fout!]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Kan sorteerfunctie niet vinden [Meld deze fout]"
 
 #: status.c:163
 msgid "(no mailbox)"

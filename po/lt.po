@@ -47,8 +47,8 @@ msgid "Help"
 msgstr "Pagalba"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Tu neturi aliasų!"
+msgid "You have no aliases"
+msgstr "Tu neturi aliasų"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "Aliase kaip: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Tu jau apibrėžei aliasą tokiu vardu!"
+msgid "You already have an alias defined with that name"
+msgstr "Tu jau apibrėžei aliasą tokiu vardu"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -176,8 +176,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Katalogas [%s], Bylų kaukė: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Negaliu prisegti katalogo!"
+msgid "Can't attach a directory"
+msgstr "Negaliu prisegti katalogo"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -321,8 +321,8 @@ msgid "Verify signature?"
 msgstr "Tikrinti parašą?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Negaliu sukurti laikinos bylos!"
+msgid "Could not create temporary file"
+msgstr "Negaliu sukurti laikinos bylos"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -360,8 +360,8 @@ msgstr "PGP parašas NEGALI būti patikrintas."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Klaida vykdant \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Klaida vykdant \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -380,8 +380,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Nukreipti pažymėtus laiškus kam: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Klaida nagrinėjant adresą!"
+msgid "Error parsing address"
+msgstr "Klaida nagrinėjant adresą"
 
 #: commands.c:353 recvcmd.c:229
 #, c-format
@@ -694,8 +694,8 @@ msgstr "<nėra grandinės>"
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] nebeegzistuoja!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] nebeegzistuoja"
 
 #: compose.c:416
 #, c-format
@@ -752,8 +752,8 @@ msgstr[2] "Prisegu parinktas bylas..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Negaliu prisegti %s!"
+msgid "Unable to attach %s"
+msgstr "Negaliu prisegti %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -773,12 +773,12 @@ msgid "No messages in that folder."
 msgstr "Nėra laiškų tame aplanke."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Pažymėk laiškus, kuriuos nori prisegti!"
+msgid "Tag the messages you want to attach"
+msgstr "Pažymėk laiškus, kuriuos nori prisegti"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Negaliu prisegti!"
+msgid "Unable to attach"
+msgstr "Negaliu prisegti"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -875,8 +875,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP jau pasirinktas. Išjungti ir tęsti? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Negaliu užrakinti dėžutės!"
+msgid "Unable to lock mailbox"
+msgstr "Negaliu užrakinti dėžutės"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1000,8 +1000,8 @@ msgstr "Pildau entropijos tvenkinį: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s teisės nesaugios!"
+msgid "%s has insecure permissions"
+msgstr "%s teisės nesaugios"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1309,8 +1309,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: veiksmas neleidžiamas pagal ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Negaliu perjungti tik skaitomos dėžutės rašomumo!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Negaliu perjungti tik skaitomos dėžutės rašomumo"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1823,12 +1823,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "negalėjau sutrumpinti laikino pašto aplanko: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Laiškų byla yra tuščia!"
+msgid "Message file is empty"
+msgstr "Laiškų byla yra tuščia"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Laiškas nepakeistas!"
+msgid "Message not modified"
+msgstr "Laiškas nepakeistas"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1846,8 +1846,8 @@ msgid "Can't append to folder: %s"
 msgstr "Negaliu pridurti laiško prie aplanko: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "kelių dalių laiškas neturi boundary parametro!"
+msgid "multipart message has no boundary parameter"
+msgstr "kelių dalių laiškas neturi boundary parametro"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2014,8 +2014,8 @@ msgstr ""
 "[-- o nurodytas pasiekimo tipas %s yra nepalaikomas. --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Klaida:  Nepavyko parodyti nė vienos Multipart/Alternative dalies! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Klaida:  Nepavyko parodyti nė vienos Multipart/Alternative dalies --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2033,16 +2033,16 @@ msgid "One or more parts of this message could not be displayed"
 msgstr "Viena ar daugiau laiško dalių negalėjo būti parodyta"
 
 #: handler.c:1317
-msgid "Unable to open 'memory stream'!"
-msgstr "Negaliu atidaryti atminties srauto!"
+msgid "Unable to open 'memory stream'"
+msgstr "Negaliu atidaryti atminties srauto"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Negaliu atidaryti laikinos bylos!"
+msgid "Unable to open temporary file"
+msgstr "Negaliu atidaryti laikinos bylos"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
-msgstr "nepavyko iš naujo atidaryti atminties srauto!"
+msgid "failed to re-open 'memory stream'"
+msgstr "nepavyko iš naujo atidaryti atminties srauto"
 
 #: handler.c:1588
 msgid "Error: multipart/signed has no protocol."
@@ -2058,14 +2058,14 @@ msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s yra nepalaikomas (naudok '%s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:1667
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Čia yra priedas ('view-attachments' turi būti susietas su klavišu!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Čia yra priedas ('view-attachments' turi būti susietas su klavišu) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s yra nepalaikomas ('view-attachments' turi būti susietas su klavišu!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s yra nepalaikomas ('view-attachments' turi būti susietas su klavišu) --]\n"
 
 #: handler.c:1681
 msgid "[-- This is an attachment --]\n"
@@ -2841,8 +2841,8 @@ msgid "Mailbox is empty."
 msgstr "Dėžutė yra tuščia."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Dėžutė yra sugadinta!"
+msgid "Mailbox is corrupt"
+msgstr "Dėžutė yra sugadinta"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2858,16 +2858,16 @@ msgid "Reopening mailbox..."
 msgstr "Vėl atidarau dėžutę..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Dėžutė buvo sugadinta!"
+msgid "Mailbox was corrupted"
+msgstr "Dėžutė buvo sugadinta"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Baisi klaida!  Negaliu vėl atidaryti dėžutės!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox pakeista, bet nėra pakeistų laiškų! (pranešk šią klaidą)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox pakeista, bet nėra pakeistų laiškų (pranešk šią klaidą)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2879,8 +2879,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Įrašyti nepavyko!  Dėžutė dalinai išsaugota į %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Negaliu vėl atidaryti dėžutės!"
+msgid "Could not reopen mailbox"
+msgstr "Negaliu vėl atidaryti dėžutės"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2948,8 +2948,8 @@ msgid "Tagging is not supported."
 msgstr "Žymėjimas nepalaikomas."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Viršytas leistinas laikas siekiant fcntl užrakto!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Viršytas leistinas laikas siekiant fcntl užrakto"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2957,8 +2957,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Laukiu fcntl užrakto... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Viršytas leistinas laikas siekiant flock užrakto!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Viršytas leistinas laikas siekiant flock užrakto"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2990,12 +2990,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Žurnalo lygis %d į bylą '%s'"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Sveikųjų skaičių perpildymas - negaliu išskirti atminties!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Sveikųjų skaičių perpildymas - negaliu išskirti atminties"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Baigėsi atmintis!"
+msgid "Out of memory"
+msgstr "Baigėsi atmintis"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3080,8 +3080,8 @@ msgstr "Negaliu išsaugoti laiško naujienų serveryje."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s nėra pašto dėžutė!"
+msgid "%s is not a mailbox"
+msgstr "%s nėra pašto dėžutė"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3159,12 +3159,12 @@ msgid "---Attachment: %s"
 msgstr "-- Priedas: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Rašymo nesėkmė!"
+msgid "Write fault"
+msgstr "Rašymo nesėkmė"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Aš nežinau, kaip tai atspausdinti!"
+msgid "I don't know how to print that"
+msgstr "Aš nežinau, kaip tai atspausdinti"
 
 #: mutt_header.c:342
 #, c-format
@@ -3277,8 +3277,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Spausk '%s', kad perjungtum rašymą"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Naudok 'toggle-write', kad vėl galėtum rašyti!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Naudok 'toggle-write', kad vėl galėtum rašyti"
 
 #: mx.c:1068
 #, c-format
@@ -3351,18 +3351,18 @@ msgstr "Bandau išgauti S/MIME sertifikatus..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Klaida: Nežinomas multipart/signed protokolas %s! --]\n"
+"[-- Klaida: Nežinomas multipart/signed protokolas %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Klaida: Trūksta multipart/signed parašo arba jis blogo formato! --]\n"
+"[-- Klaida: Trūksta multipart/signed parašo arba jis blogo formato --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3615,8 +3615,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Klaida išgaunant rakto duomenis!"
+msgid "Error extracting key data"
+msgstr "Klaida išgaunant rakto duomenis"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3661,15 +3661,15 @@ msgstr "[-- PGP PASIRAŠYTO LAIŠKO PABAIGA --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Klaida: neradau PGP laiško pradžios! --]\n"
+"[-- Klaida: neradau PGP laiško pradžios --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Klaida: negalėjau sukurti laikinos bylos! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Klaida: negalėjau sukurti laikinos bylos --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4041,8 +4041,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Įvesk slaptą PGP frazę:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Klaida: negaliu sukurti PGP subproceso! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Klaida: negaliu sukurti PGP subproceso --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4062,10 +4062,10 @@ msgstr "Vidinė klaida.  Prašau apie ją pranešti programos autoriams."
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Klaida: negalėjau sukurti PGP subproceso! --]\n"
+"[-- Klaida: negalėjau sukurti PGP subproceso --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4073,8 +4073,8 @@ msgid "Decryption failed"
 msgstr "Nepavyko iššifruoti."
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Negaliu atidaryti PGP subproceso!"
+msgid "Can't open PGP subprocess"
+msgstr "Negaliu atidaryti PGP subproceso"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4286,8 +4286,8 @@ msgstr "Neradau (galiojančio) %s sertifikato."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Klaida: negaliu sukurti OpenSSL subproceso!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Klaida: negaliu sukurti OpenSSL subproceso"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4310,8 +4310,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Negaliu pasirašyti: nenurodytas raktas.  Naudokite \"Pasirašyti kaip\"."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Negaliu atidaryti OpenSSL subproceso!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Negaliu atidaryti OpenSSL subproceso"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4322,8 +4322,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4416,17 +4416,17 @@ msgid "Loading list of groups from cache..."
 msgstr "Užkraunu sąrašą grupių iš podėlio..."
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
-msgstr "Nenurodytas nė vienas naujienų serveris!"
+msgid "No news server defined"
+msgstr "Nenurodytas nė vienas naujienų serveris"
 
 #: nntp/newsrc.c:1066
 #, c-format
-msgid "%s is an invalid news server specification!"
-msgstr "%s yra bloga naujienų serverio speficikacija!"
+msgid "%s is an invalid news server specification"
+msgstr "%s yra bloga naujienų serverio speficikacija"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Serveris uždarė jungtį!"
+msgid "Server closed connection"
+msgstr "Serveris uždarė jungtį"
 
 #: nntp/nntp.c:189
 msgid "Server doesn't support reader mode."
@@ -4469,8 +4469,8 @@ msgstr "Paimu straipsnių sąrašą..."
 
 #: nntp/nntp.c:1523
 #, c-format
-msgid "%s is an invalid newsgroup specification!"
-msgstr "%s yra bloga naujienų grupės specifikacija!"
+msgid "%s is an invalid newsgroup specification"
+msgstr "%s yra bloga naujienų grupės specifikacija"
 
 #: nntp/nntp.c:1541
 #, c-format
@@ -5748,8 +5748,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Serveris nepalaiko komandos TOP."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Negaliu įrašyti antraštės į laikiną bylą!"
+msgid "Can't write header to temporary file"
+msgstr "Negaliu įrašyti antraštės į laikiną bylą"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5773,8 +5773,8 @@ msgid "Fetching list of messages..."
 msgstr "Paimu laiškų sąrašą..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Negaliu įrašyti laiško į laikiną bylą!"
+msgid "Can't write message to temporary file"
+msgstr "Negaliu įrašyti laiško į laikiną bylą"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5801,8 +5801,8 @@ msgstr[1] "Skaitau naujus laiškus (%d baitai)..."
 msgstr[2] "Skaitau naujus laiškus (%d baitų)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Klaida rašant į pašto dėžutę!"
+msgid "Error while writing mailbox"
+msgstr "Klaida rašant į pašto dėžutę"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5819,8 +5819,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Autentikuojuosi (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP laikas neteisingas!"
+msgid "POP timestamp is invalid"
+msgstr "POP laikas neteisingas"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -5948,8 +5948,8 @@ msgstr "Pipe į: "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Aš nežinau kaip spausdinti %s priedus!"
+msgid "I don't know how to print %s attachments"
+msgstr "Aš nežinau kaip spausdinti %s priedus"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -5972,16 +5972,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Struktūriniai iššifruotų priedų pakeitimai nepalaikomi"
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Negaliu iššifruoti užšifruoti laiško!"
+msgid "Can't decrypt encrypted message"
+msgstr "Negaliu iššifruoti užšifruoti laiško"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Priedai"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Nėra vidinių dalių!"
+msgid "There are no subparts to show"
+msgstr "Nėra vidinių dalių"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6008,8 +6008,8 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Tu gali nukreipti tik message/rfc822 priedus."
 
 #: recvcmd.c:265
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
 msgstr[0] "Klaida siunčiant laišką."
 msgstr[1] "Klaida siunčiant laiškus."
 msgstr[2] "Klaida siunčiant laiškus."
@@ -6041,8 +6041,8 @@ msgid "Can't find any tagged messages."
 msgstr "Negaliu rasti nė vieno pažymėto laiško."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Nerasta jokia konferencija!"
+msgid "No mailing lists found"
+msgstr "Nerasta jokia konferencija"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6069,8 +6069,8 @@ msgid "OK"
 msgstr "Gerai"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Negaliu gauti mixmaster'io type2.list!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Negaliu gauti mixmaster'io type2.list"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6104,8 +6104,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster'is nepriima Cc bei Bcc antraščių."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į"
 
 #: remailer.c:855
 #, c-format
@@ -6156,8 +6156,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Pratęsti-į %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Nė vienas pažymėtas laiškas nėra matomas!"
+msgid "No tagged messages are visible"
+msgstr "Nė vienas pažymėtas laiškas nėra matomas"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6168,8 +6168,8 @@ msgid "Including quoted message..."
 msgstr "Įtraukiu cituojamą laišką..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Negalėjau įtraukti visų prašytų laiškų!"
+msgid "Could not include all requested messages"
+msgstr "Negalėjau įtraukti visų prašytų laiškų"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6252,13 +6252,13 @@ msgid "Mail sent."
 msgstr "Laiškas išsiųstas."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Trūksta boundary parametro! [pranešk šią klaidą]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Trūksta boundary parametro [pranešk šią klaidą]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s nebeegzistuoja!"
+msgid "%s no longer exists"
+msgstr "%s nebeegzistuoja"
 
 #: sendlib.c:997
 #, c-format
@@ -6341,8 +6341,8 @@ msgid "Sorting mailbox..."
 msgstr "Rikiuoju dėžutę..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Negalėjau rasti rikiavimo funkcijos! [pranešk šią klaidą]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Negalėjau rasti rikiavimo funkcijos [pranešk šią klaidą]"
 
 #: status.c:163
 msgid "(no mailbox)"

@@ -47,8 +47,8 @@ msgid "Help"
 msgstr "Допомога"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Ви не маєте жодного псевдоніму!"
+msgid "You have no aliases"
+msgstr "Ви не маєте жодного псевдоніму"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "Псевдонім як: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Ви вже маєте псевдонім на це ім’я!"
+msgid "You already have an alias defined with that name"
+msgstr "Ви вже маєте псевдонім на це ім’я"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -179,8 +179,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s] з маскою: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Неможливо додати каталог!"
+msgid "Can't attach a directory"
+msgstr "Неможливо додати каталог"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -327,8 +327,8 @@ msgid "Verify signature?"
 msgstr "Перевірити підпис?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Не вийшло створити тимчасовий файл!"
+msgid "Could not create temporary file"
+msgstr "Не вийшло створити тимчасовий файл"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -366,8 +366,8 @@ msgstr "Перевірити підпис PGP неможливо."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Помилка виконання \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Помилка виконання \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -388,8 +388,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Надіслати копії виділених листів: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Помилка розбору адреси!"
+msgid "Error parsing address"
+msgstr "Помилка розбору адреси"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -723,8 +723,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] більше не існує!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] більше не існує"
 
 #: compose.c:416
 #, c-format
@@ -786,8 +786,8 @@ msgstr[2] "Додавання вибраних файлів..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Неможливо додати %s!"
+msgid "Unable to attach %s"
+msgstr "Неможливо додати %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -808,12 +808,12 @@ msgid "No messages in that folder."
 msgstr "Ця скринька зовсім порожня."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Виділіть повідомлення для додавання!"
+msgid "Tag the messages you want to attach"
+msgstr "Виділіть повідомлення для додавання"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Неможливо додати!"
+msgid "Unable to attach"
+msgstr "Неможливо додати"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -910,8 +910,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP вже вибрано. Очистити і продовжити? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Поштова скринька не може бути блокована!"
+msgid "Unable to lock mailbox"
+msgstr "Поштова скринька не може бути блокована"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1035,8 +1035,8 @@ msgstr "Заповнення пулу ентропії: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s має небезпечні права доступу!"
+msgid "%s has insecure permissions"
+msgstr "%s має небезпечні права доступу"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1342,8 +1342,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Операція не дозволена ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Скринька тільки для читання, ввімкнути запис неможливо!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Скринька тільки для читання, ввімкнути запис неможливо"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1872,12 +1872,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "не вийшло обрізати тимчасову скриньку: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Файл повідомлення порожній!"
+msgid "Message file is empty"
+msgstr "Файл повідомлення порожній"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Повідомлення не змінено!"
+msgid "Message not modified"
+msgstr "Повідомлення не змінено"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1895,8 +1895,8 @@ msgid "Can't append to folder: %s"
 msgstr "Неможливо дозаписати до скриньки: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "Багаточастинний лист не має параметру межі!"
+msgid "multipart message has no boundary parameter"
+msgstr "Багаточастинний лист не має параметру межі"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2064,8 +2064,8 @@ msgstr ""
 "[-- відповідний тип доступу %s не підтримується --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2084,15 +2084,15 @@ msgstr "Якісь частини повідомлення неможливо в
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Неможливо відкрити тимчасовий файл!"
+msgid "Unable to open 'memory stream'"
+msgstr "Неможливо відкрити тимчасовий файл"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Неможливо відкрити тимчасовий файл!"
+msgid "Unable to open temporary file"
+msgstr "Неможливо відкрити тимчасовий файл"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
+msgid "failed to re-open 'memory stream'"
 msgstr ""
 
 #: handler.c:1588
@@ -2111,14 +2111,14 @@ msgstr "[-- %s/%s не підтримується (використовуйте 
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Це додаток (треба призначити клавішу до view-attachments!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Це додаток (треба призначити клавішу до view-attachments) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s не підтримується (треба призначити клавішу до view-attachments!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s не підтримується (треба призначити клавішу до view-attachments) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2418,7 +2418,7 @@ msgstr "Неправ.   "
 
 #: imap/message.c:480 mx.c:1338
 msgid "Integer overflow -- can't allocate memory."
-msgstr "Переповнення цілого значення -- неможливо виділити пам’ять!"
+msgstr "Переповнення цілого значення -- неможливо виділити пам’ять"
 
 #: imap/message.c:649
 msgid "Unable to fetch headers from this IMAP server version."
@@ -2843,8 +2843,8 @@ msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Поштову скриньку пошкоджено!"
+msgid "Mailbox is corrupt"
+msgstr "Поштову скриньку пошкоджено"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2860,16 +2860,16 @@ msgid "Reopening mailbox..."
 msgstr "Повторне відкриття поштової скриньки..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Поштову скриньку було пошкоджено!"
+msgid "Mailbox was corrupted"
+msgstr "Поштову скриньку було пошкоджено"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Фатальна помилка! Не вийшло відкрити поштову скриньку знову!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: скриньку змінено, але немає змінених листів! (повідомте про це)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: скриньку змінено, але немає змінених листів (повідомте про це)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2881,8 +2881,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Збій запису! Часткову скриньку збережено у %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Не вийшло відкрити поштову скриньку знову!"
+msgid "Could not reopen mailbox"
+msgstr "Не вийшло відкрити поштову скриньку знову"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2950,8 +2950,8 @@ msgid "Tagging is not supported."
 msgstr "Виділення не підтримується."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Вичерпано час очікування блокування через fctnl!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Вичерпано час очікування блокування через fctnl"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2959,8 +2959,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Чекання блокування fctnl... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Вичерпано час очікування блокування через flock!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Вичерпано час очікування блокування через flock"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2993,12 +2993,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Відлагодження з рівнем %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Переповнення цілого значення -- неможливо виділити пам’ять!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Переповнення цілого значення -- неможливо виділити пам’ять"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Не вистачає пам’яті!"
+msgid "Out of memory"
+msgstr "Не вистачає пам’яті"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3084,8 +3084,8 @@ msgstr "Неможливо залишити повідомлення на сер
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s не є поштовою скринькою!"
+msgid "%s is not a mailbox"
+msgstr "%s не є поштовою скринькою"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3163,12 +3163,12 @@ msgid "---Attachment: %s"
 msgstr "---Додаток: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Збій запису!"
+msgid "Write fault"
+msgstr "Збій запису"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Не знаю, як це друкувати!"
+msgid "I don't know how to print that"
+msgstr "Не знаю, як це друкувати"
 
 #: mutt_header.c:342
 #, c-format
@@ -3282,8 +3282,8 @@ msgid " Press '%s' to toggle write"
 msgstr "Натисніть \"%s\" для зміни можливості запису"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Використовуйте toggle-write для ввімкнення запису!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Використовуйте toggle-write для ввімкнення запису"
 
 #: mx.c:1068
 #, c-format
@@ -3358,19 +3358,19 @@ msgstr "Спроба видобування сертифікатів S/MIME..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Помилка: невідомий протокол multipart/signed %s! --]\n"
+"[-- Помилка: невідомий протокол multipart/signed %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Помилка: несумісна структура multipart/signed! --]\n"
+"[-- Помилка: несумісна структура multipart/signed --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3621,8 +3621,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Помилка при отриманні даних ключа!"
+msgid "Error extracting key data"
+msgstr "Помилка при отриманні даних ключа"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3667,15 +3667,15 @@ msgstr "[-- Кінець повідомлення з PGP підписом --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Помилка: не знайдено початок повідомлення PGP! --]\n"
+"[-- Помилка: не знайдено початок повідомлення PGP --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Помилка: не вийшло створити тимчасовий файл! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Помилка: не вийшло створити тимчасовий файл --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4055,8 +4055,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Введіть кодову фразу PGP:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Помилка: неможливо створити підпроцес PGP! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Помилка: неможливо створити підпроцес PGP --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4077,10 +4077,10 @@ msgstr "Внутрішня помилка. Будь ласка, повідомт
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Помилка: не вийшло створити підпроцес PGP! --]\n"
+"[-- Помилка: не вийшло створити підпроцес PGP --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4088,8 +4088,8 @@ msgid "Decryption failed"
 msgstr "Помилка розшифровки"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Неможливо відкрити підпроцесс PGP!"
+msgid "Can't open PGP subprocess"
+msgstr "Неможливо відкрити підпроцесс PGP"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4306,8 +4306,8 @@ msgstr "Немає (правильних) сертифікатів для %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Помилка: неможливо створити підпроцес OpenSSL!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Помилка: неможливо створити підпроцес OpenSSL"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4330,8 +4330,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Неможливо підписати: Ключів не вказано. Використовуйте \"Підписати як\"."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Неможливо відкрити підпроцесс OpenSSL!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Неможливо відкрити підпроцесс OpenSSL"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4342,8 +4342,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Помилка: неможливо створити підпроцес OpenSSL! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Помилка: неможливо створити підпроцес OpenSSL --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4438,17 +4438,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s - неприпустимий шлях POP"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Сервер закрив з’єднання!"
+msgid "Server closed connection"
+msgstr "Сервер закрив з’єднання"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4495,7 +4495,7 @@ msgstr "Отримання переліку повідомлень..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s - неприпустимий шлях POP"
 
 #: nntp/nntp.c:1541
@@ -5818,8 +5818,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Команда TOP не підтримується сервером."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Неможливо записати заголовок до тимчасового файлу!"
+msgid "Can't write header to temporary file"
+msgstr "Неможливо записати заголовок до тимчасового файлу"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5843,8 +5843,8 @@ msgid "Fetching list of messages..."
 msgstr "Отримання переліку повідомлень..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Неможливо записати повідомлення до тимчасового файлу!"
+msgid "Can't write message to temporary file"
+msgstr "Неможливо записати повідомлення до тимчасового файлу"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5871,8 +5871,8 @@ msgstr[1] "Читання нових повідомлень (%d байт)..."
 msgstr[2] "Читання нових повідомлень (%d байт)..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Помилка під час запису поштової скриньки!"
+msgid "Error while writing mailbox"
+msgstr "Помилка під час запису поштової скриньки"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5889,8 +5889,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Аутентифікація (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "Неправильне значення часу POP!"
+msgid "POP timestamp is invalid"
+msgstr "Неправильне значення часу POP"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -6018,8 +6018,8 @@ msgstr "Передати команді: "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Невідомо, як друкувати додатки типу %s!"
+msgid "I don't know how to print %s attachments"
+msgstr "Невідомо, як друкувати додатки типу %s"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6042,16 +6042,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Змінення структури розшифрованих додатків не підтримується"
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Не можу розшифрувати листа!"
+msgid "Can't decrypt encrypted message"
+msgstr "Не можу розшифрувати листа"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Додатки"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Немає підчастин для проглядання!"
+msgid "There are no subparts to show"
+msgstr "Немає підчастин для проглядання"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6080,11 +6080,11 @@ msgstr "Ви можете надсилати тільки копії части�
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Помилка при пересилці листа!"
-msgstr[1] "Помилка при пересилці листів!"
-msgstr[2] "Помилка при пересилці листів!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Помилка при пересилці листа"
+msgstr[1] "Помилка при пересилці листів"
+msgstr[2] "Помилка при пересилці листів"
 
 #: recvcmd.c:484
 #, c-format
@@ -6113,8 +6113,8 @@ msgid "Can't find any tagged messages."
 msgstr "Не знайдено виділених листів."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Не знайдено списків розсилки!"
+msgid "No mailing lists found"
+msgstr "Не знайдено списків розсилки"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6141,8 +6141,8 @@ msgid "OK"
 msgstr "Ok"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Неможливо отримати type2.list mixmaster’а!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Неможливо отримати type2.list mixmaster’а"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6176,8 +6176,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster не приймає заголовки Cc та Bcc."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Треба встановити відповідне значення hostname для використання mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Треба встановити відповідне значення hostname для використання mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6228,8 +6228,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Переслати %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Жоден з виділених листів не є видимим!"
+msgid "No tagged messages are visible"
+msgstr "Жоден з виділених листів не є видимим"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6240,8 +6240,8 @@ msgid "Including quoted message..."
 msgstr "Цитується повідомлення..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Не вийшло додати всі бажані листи!"
+msgid "Could not include all requested messages"
+msgstr "Не вийшло додати всі бажані листи"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6327,13 +6327,13 @@ msgid "Mail sent."
 msgstr "Лист відправлено."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Немає параметру межі! [сповістіть про цю помилку]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Немає параметру межі [сповістіть про цю помилку]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s більше не існує!"
+msgid "%s no longer exists"
+msgstr "%s більше не існує"
 
 #: sendlib.c:997
 #, c-format
@@ -6417,8 +6417,8 @@ msgid "Sorting mailbox..."
 msgstr "Сортування поштової скриньки..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Не знайдено функцію сортування! [сповістіть про це]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Не знайдено функцію сортування [сповістіть про це]"
 
 #: status.c:163
 msgid "(no mailbox)"

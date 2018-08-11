@@ -1235,7 +1235,7 @@ static int file_tag(struct Menu *menu, int n, int m)
   struct FolderFile *ff = &(((struct FolderFile *) menu->data)[n]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(LastDir, ff->name)))
   {
-    mutt_error(_("Can't attach a directory!"));
+    mutt_error(_("Can't attach a directory"));
     return 0;
   }
 

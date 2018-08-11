@@ -47,8 +47,8 @@ msgid "Help"
 msgstr "Hjælp"
 
 #: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "Adressebogen er tom!"
+msgid "You have no aliases"
+msgstr "Adressebogen er tom"
 
 #: addrbook.c:230
 msgid "Aliases"
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "Vælg et alias: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "Der er allerede et alias med det navn!"
+msgid "You already have an alias defined with that name"
+msgstr "Der er allerede et alias med det navn"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -179,8 +179,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Filkatalog [%s], filmaske: %s"
 
 #: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "Kan ikke vedlægge et filkatalog!"
+msgid "Can't attach a directory"
+msgstr "Kan ikke vedlægge et filkatalog"
 
 #: browser.c:1554 browser.c:1984 browser.c:2124
 msgid "No files match the file mask"
@@ -328,8 +328,8 @@ msgid "Verify signature?"
 msgstr "Verificér underskrift?"
 
 #: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "Kunne ikke oprette midlertidig fil!"
+msgid "Could not create temporary file"
+msgstr "Kunne ikke oprette midlertidig fil"
 
 #: commands.c:163
 msgid "Cannot create display filter"
@@ -367,8 +367,8 @@ msgstr "PGP-underskrift er IKKE i orden."
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2435 sendlib.c:1563
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "Fejl ved kørsel af \"%s\"!"
+msgid "Error running \"%s\""
+msgstr "Fejl ved kørsel af \"%s\""
 
 #: commands.c:269
 msgid "Command: "
@@ -389,8 +389,8 @@ msgid "Bounce tagged messages to: "
 msgstr "Gensend udvalgte breve til: "
 
 #: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "Ugyldig adresse!"
+msgid "Error parsing address"
+msgstr "Ugyldig adresse"
 
 #: commands.c:353 recvcmd.c:229
 #, fuzzy, c-format
@@ -720,8 +720,8 @@ msgstr ""
 
 #: compose.c:409
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] findes ikke mere!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d] findes ikke mere"
 
 #: compose.c:416
 #, c-format
@@ -782,8 +782,8 @@ msgstr[1] "Vedlægger valgte filer ..."
 
 #: compose.c:1389
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "Kan ikke vedlægge %s!"
+msgid "Unable to attach %s"
+msgstr "Kan ikke vedlægge %s"
 
 #: compose.c:1409
 msgid "Open mailbox to attach message from"
@@ -804,12 +804,12 @@ msgid "No messages in that folder."
 msgstr "Ingen breve i den brevbakke."
 
 #: compose.c:1482
-msgid "Tag the messages you want to attach!"
-msgstr "Udvælg de breve som du vil vedlægge!"
+msgid "Tag the messages you want to attach"
+msgstr "Udvælg de breve som du vil vedlægge"
 
 #: compose.c:1508
-msgid "Unable to attach!"
-msgstr "Kan ikke vedlægge!"
+msgid "Unable to attach"
+msgstr "Kan ikke vedlægge"
 
 #: compose.c:1547
 msgid "Recoding only affects text attachments."
@@ -906,8 +906,8 @@ msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP allerede valgt. Ryd & fortsæt ? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "Kan ikke låse brevbakke!"
+msgid "Unable to lock mailbox"
+msgstr "Kan ikke låse brevbakke"
 
 #: compress.c:482 compress.c:550 compress.c:699
 #, c-format
@@ -1031,8 +1031,8 @@ msgstr "Fylder entropipuljen: %s ..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s har usikre tilladelser!"
+msgid "%s has insecure permissions"
+msgstr "%s har usikre tilladelser"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
@@ -1338,8 +1338,8 @@ msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operationen er ikke tilladt af ACL"
 
 #: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kan ikke skrive til en skrivebeskyttet brevbakke!"
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "Kan ikke skrive til en skrivebeskyttet brevbakke"
 
 #: curs_main.c:326
 msgid "Changes to folder will be written on folder exit."
@@ -1867,12 +1867,12 @@ msgid "could not truncate temporary mail folder: %s"
 msgstr "kunne ikke afkorte midlertidig brevbakke: %s"
 
 #: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "Brevfilen er tom!"
+msgid "Message file is empty"
+msgstr "Brevfilen er tom"
 
 #: editmsg.c:162
-msgid "Message not modified!"
-msgstr "Brevet er uændret!"
+msgid "Message not modified"
+msgstr "Brevet er uændret"
 
 #: editmsg.c:169
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1890,8 +1890,8 @@ msgid "Can't append to folder: %s"
 msgstr "Kan ikke føje til brevbakke: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "brev med flere dele har ingen \"boundary\"-parameter!"
+msgid "multipart message has no boundary parameter"
+msgstr "brev med flere dele har ingen \"boundary\"-parameter"
 
 #: flags.c:432
 msgid "Set flag"
@@ -2055,8 +2055,8 @@ msgstr ""
 "[-- og den angivne \"access-type\" %s er ikke understøttet --]\n"
 
 #: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\"! --]\n"
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\" --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1230
@@ -2075,15 +2075,15 @@ msgstr "En eller flere dele af dette brev kunne ikke vises"
 
 #: handler.c:1317
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "Kan ikke åbne midlertidig fil!"
+msgid "Unable to open 'memory stream'"
+msgstr "Kan ikke åbne midlertidig fil"
 
 #: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "Kan ikke åbne midlertidig fil!"
+msgid "Unable to open temporary file"
+msgstr "Kan ikke åbne midlertidig fil"
 
 #: handler.c:1376
-msgid "failed to re-open 'memory stream'!"
+msgid "failed to re-open 'memory stream'"
 msgstr ""
 
 #: handler.c:1588
@@ -2102,14 +2102,14 @@ msgstr "[-- %s/%s er ikke understøttet (brug '%s' for vise denne brevdel) --]\n
 
 #: handler.c:1667
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- Dette er et bilag ('view-attachments' må tildeles en tast!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- Dette er et bilag ('view-attachments' må tildeles en tast) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1673
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- %s/%s er ikke understøttet ('view-attachments' må tildeles en tast!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- %s/%s er ikke understøttet ('view-attachments' må tildeles en tast) --]\n"
 
 #: handler.c:1681
 #, fuzzy
@@ -2830,8 +2830,8 @@ msgid "Mailbox is empty."
 msgstr "Brevbakken er tom."
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "Brevbakken er ødelagt!"
+msgid "Mailbox is corrupt"
+msgstr "Brevbakken er ødelagt"
 
 #: mbox/mbox.c:509
 #, c-format
@@ -2847,16 +2847,16 @@ msgid "Reopening mailbox..."
 msgstr "Genåbner brevbakke ..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "Brevbakken blev ødelagt!"
+msgid "Mailbox was corrupted"
+msgstr "Brevbakken blev ødelagt"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Kritisk fejl! Kunne ikke genåbne brevbakke!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox ændret, men ingen ændrede breve! (rapportér denne bug)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox ændret, men ingen ændrede breve (rapportér denne bug)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2868,8 +2868,8 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Kunne ikke skrive! Gemte en del af brevbakken i %s"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "Kunne ikke genåbne brevbakke!"
+msgid "Could not reopen mailbox"
+msgstr "Kunne ikke genåbne brevbakke"
 
 #: menu.c:627
 msgid "Jump to: "
@@ -2937,8 +2937,8 @@ msgid "Tagging is not supported."
 msgstr "Udvælgelse er ikke understøttet."
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Udløbstid overskredet under forsøg på at bruge fcntl-lås!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "Udløbstid overskredet under forsøg på at bruge fcntl-lås"
 
 #: mutt/file.c:1139
 #, c-format
@@ -2946,8 +2946,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "Venter på fcntl-lås ... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Timeout overskredet ved forsøg på brug af flock-lås!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "Timeout overskredet ved forsøg på brug af flock-lås"
 
 #: mutt/file.c:1210
 #, c-format
@@ -2980,12 +2980,12 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Fejlfinder på niveau %d.\n"
 
 #: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Heltals-overløb, kan ikke tildele hukommelse!"
+msgid "Integer overflow -- can't allocate memory"
+msgstr "Heltals-overløb, kan ikke tildele hukommelse"
 
 #: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "Ikke mere hukommelse!"
+msgid "Out of memory"
+msgstr "Ikke mere hukommelse"
 
 #: mutt/regex.c:291
 #, c-format
@@ -3071,8 +3071,8 @@ msgstr "Kunne ikke efterlade breve på server."
 
 #: muttlib.c:1439
 #, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s er ingen brevbakke!"
+msgid "%s is not a mailbox"
+msgstr "%s er ingen brevbakke"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3150,12 +3150,12 @@ msgid "---Attachment: %s"
 msgstr "---Bilag: %s"
 
 #: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "Skrivefejl!"
+msgid "Write fault"
+msgstr "Skrivefejl"
 
 #: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "Jeg ved ikke hvordan man udskriver dette!"
+msgid "I don't know how to print that"
+msgstr "Jeg ved ikke hvordan man udskriver dette"
 
 #: mutt_header.c:342
 #, c-format
@@ -3266,8 +3266,8 @@ msgid " Press '%s' to toggle write"
 msgstr " Tast '%s' for at skifte til/fra skrivebeskyttet tilstand"
 
 #: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Brug 'toggle-write' for at muliggøre skrivning!"
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "Brug 'toggle-write' for at muliggøre skrivning"
 
 #: mx.c:1068
 #, c-format
@@ -3343,19 +3343,19 @@ msgstr "Forsøger at udtrække S/MIME-certifikater ..."
 #: ncrypt/crypt.c:1089
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Fejl: Ukendt \"multipart/signed\" protokol %s! --]\n"
+"[-- Fejl: Ukendt \"multipart/signed\" protokol %s --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1129
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Fejl: Inkonsistent \"multipart/signed\" struktur! --]\n"
+"[-- Fejl: Inkonsistent \"multipart/signed\" struktur --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1171
@@ -3600,8 +3600,8 @@ msgid ""
 msgstr "[-- Fejl: dekryptering fejlede: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!"
-msgstr "Fejl ved udtrækning af nøgledata!"
+msgid "Error extracting key data"
+msgstr "Fejl ved udtrækning af nøgledata"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3646,15 +3646,15 @@ msgstr "[-- END PGP SIGNED MESSAGE --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Fejl: kunne ikke finde begyndelse på PGP-meddelelsen! --]\n"
+"[-- Fejl: kunne ikke finde begyndelse på PGP-meddelelsen --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Fejl: Kunne ikke oprette en midlertidig fil! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- Fejl: Kunne ikke oprette en midlertidig fil --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 msgid ""
@@ -4029,8 +4029,8 @@ msgid "Enter PGP passphrase:"
 msgstr "Anfør PGP-løsen:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fejl: kan ikke skabe en PGP-delproces! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- Fejl: kan ikke skabe en PGP-delproces --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4051,10 +4051,10 @@ msgstr "Intern fejl. Indsend venligst en fejlrapport."
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Fejl: Kunne ikke skabe en PGP-delproces! --]\n"
+"[-- Fejl: Kunne ikke skabe en PGP-delproces --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
@@ -4062,8 +4062,8 @@ msgid "Decryption failed"
 msgstr "Dekryptering fejlede"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "Kan ikke åbne PGP-delproces!"
+msgid "Can't open PGP subprocess"
+msgstr "Kan ikke åbne PGP-delproces"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4280,8 +4280,8 @@ msgstr "Fandt ikke et (gyldigt) certifikat for %s."
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Fejl: kan ikke skabe en OpenSSL-delproces!"
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "Fejl: kan ikke skabe en OpenSSL-delproces"
 
 #: ncrypt/smime.c:1394
 msgid "Label for certificate: "
@@ -4304,8 +4304,8 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Kan ikke underskrive: Ingen nøgle er angivet. Brug \"underskriv som\"."
 
 #: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "Kan ikke åbne OpenSSL-delproces!"
+msgid "Can't open OpenSSL subprocess"
+msgstr "Kan ikke åbne OpenSSL-delproces"
 
 #: ncrypt/smime.c:1993 ncrypt/smime.c:2115
 msgid ""
@@ -4316,8 +4316,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fejl: kan ikke skabe en OpenSSL-delproces! --]\n"
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- Fejl: kan ikke skabe en OpenSSL-delproces --]\n"
 
 #: ncrypt/smime.c:2120
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4412,17 +4412,17 @@ msgid "Loading list of groups from cache..."
 msgstr ""
 
 #: nntp/newsrc.c:1052
-msgid "No news server defined!"
+msgid "No news server defined"
 msgstr ""
 
 #: nntp/newsrc.c:1066
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s er en ugyldig POP-sti"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "Serveren afbrød forbindelsen!"
+msgid "Server closed connection"
+msgstr "Serveren afbrød forbindelsen"
 
 #: nntp/nntp.c:189
 #, fuzzy
@@ -4469,7 +4469,7 @@ msgstr "Henter liste over breve ..."
 
 #: nntp/nntp.c:1523
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s er en ugyldig POP-sti"
 
 #: nntp/nntp.c:1541
@@ -5791,8 +5791,8 @@ msgid "Command TOP is not supported by server."
 msgstr "Kommandoen TOP understøttes ikke af server."
 
 #: pop/pop.c:186
-msgid "Can't write header to temporary file!"
-msgstr "Kan ikke skrive brevhoved til midlertidig fil!"
+msgid "Can't write header to temporary file"
+msgstr "Kan ikke skrive brevhoved til midlertidig fil"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
 msgid "Command UIDL is not supported by server."
@@ -5815,8 +5815,8 @@ msgid "Fetching list of messages..."
 msgstr "Henter liste over breve ..."
 
 #: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "Kan ikke skrive brev til midlertidig fil!"
+msgid "Can't write message to temporary file"
+msgstr "Kan ikke skrive brev til midlertidig fil"
 
 #: pop/pop.c:798
 msgid "Marking messages deleted..."
@@ -5842,8 +5842,8 @@ msgstr[0] "Indlæser nye breve (%d bytes) ..."
 msgstr[1] "Indlæser nye breve (%d bytes) ..."
 
 #: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "Fejl ved skrivning til brevbakke!"
+msgid "Error while writing mailbox"
+msgstr "Fejl ved skrivning til brevbakke"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
@@ -5859,8 +5859,8 @@ msgid "Authenticating (SASL)..."
 msgstr "Godkender (SASL) ..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
-msgstr "POP-tidsstempel er ugyldigt!"
+msgid "POP timestamp is invalid"
+msgstr "POP-tidsstempel er ugyldigt"
 
 #: pop/pop_auth.c:245
 msgid "Authenticating (APOP)..."
@@ -5988,8 +5988,8 @@ msgstr "Overfør til kommando (pipe): "
 #.
 #: recvattach.c:859
 #, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "Jeg ved ikke hvordan man udskriver %s-brevdele!"
+msgid "I don't know how to print %s attachments"
+msgstr "Jeg ved ikke hvordan man udskriver %s-brevdele"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
@@ -6011,16 +6011,16 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Strukturelle ændringer i dekrypterede bilag understøttes ikke"
 
 #: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "Kan ikke dekryptere krypteret brev!"
+msgid "Can't decrypt encrypted message"
+msgstr "Kan ikke dekryptere krypteret brev"
 
 #: recvattach.c:1342
 msgid "Attachments"
 msgstr "Brevdele"
 
 #: recvattach.c:1380
-msgid "There are no subparts to show!"
-msgstr "Der er ingen underdele at vise!"
+msgid "There are no subparts to show"
+msgstr "Der er ingen underdele at vise"
 
 #: recvattach.c:1435
 msgid "Can't delete attachment from POP server."
@@ -6049,10 +6049,10 @@ msgstr "Du kan kun gensende message/rfc822-brevdele."
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "Fejl ved gensending af brev!"
-msgstr[1] "Fejl ved gensending af breve!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "Fejl ved gensending af brev"
+msgstr[1] "Fejl ved gensending af breve"
 
 #: recvcmd.c:484
 #, c-format
@@ -6081,8 +6081,8 @@ msgid "Can't find any tagged messages."
 msgstr "Kan ikke finde nogen udvalgte breve."
 
 #: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "Ingen postlister fundet!"
+msgid "No mailing lists found"
+msgstr "Ingen postlister fundet"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6109,8 +6109,8 @@ msgid "OK"
 msgstr "OK"
 
 #: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "Kan ikke hente mixmasters type2.liste!"
+msgid "Can't get mixmaster's type2.list"
+msgstr "Kan ikke hente mixmasters type2.liste"
 
 #: remailer.c:606
 msgid "Select a remailer chain."
@@ -6144,8 +6144,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Breve sendt med Mixmaster må ikke have Cc- eller Bcc-felter."
 
 #: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Sæt hostname-variablen til en passende værdi ved brug af mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "Sæt hostname-variablen til en passende værdi ved brug af mixmaster"
 
 #: remailer.c:855
 #, c-format
@@ -6196,8 +6196,8 @@ msgid "Follow-up to %s%s?"
 msgstr "Opfølg til %s%s?"
 
 #: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "Ingen udvalgte breve er synlige!"
+msgid "No tagged messages are visible"
+msgstr "Ingen udvalgte breve er synlige"
 
 #: send.c:1024
 msgid "Include message in reply?"
@@ -6208,8 +6208,8 @@ msgid "Including quoted message..."
 msgstr "Inkluderer citeret brev ..."
 
 #: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "Kunne ikke citere alle ønskede breve!"
+msgid "Could not include all requested messages"
+msgstr "Kunne ikke citere alle ønskede breve"
 
 #: send.c:1052
 msgid "Forward as attachment?"
@@ -6295,13 +6295,13 @@ msgid "Mail sent."
 msgstr "Brev sendt."
 
 #: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "Fandt ingen \"boundary\"-parameter! [rapportér denne fejl]"
+msgid "No boundary parameter found [report this error]"
+msgstr "Fandt ingen \"boundary\"-parameter [rapportér denne fejl]"
 
 #: sendlib.c:526
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s eksisterer ikke mere!"
+msgid "%s no longer exists"
+msgstr "%s eksisterer ikke mere"
 
 #: sendlib.c:997
 #, c-format
@@ -6385,8 +6385,8 @@ msgid "Sorting mailbox..."
 msgstr "Sorterer brevbakke ..."
 
 #: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Kunne ikke finde sorteringsfunktion! [rapportér denne fejl]"
+msgid "Could not find sorting function [report this bug]"
+msgstr "Kunne ikke finde sorteringsfunktion [rapportér denne fejl]"
 
 #: status.c:163
 msgid "(no mailbox)"
