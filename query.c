@@ -579,7 +579,7 @@ int mutt_query_complete(char *buf, size_t buflen)
 
   if (!QueryCommand)
   {
-    mutt_error(_("Query command not defined."));
+    mutt_error(_("Query command not defined"));
     return 0;
   }
 
@@ -613,7 +613,7 @@ void mutt_query_menu(char *buf, size_t buflen)
 {
   if (!QueryCommand)
   {
-    mutt_error(_("Query command not defined."));
+    mutt_error(_("Query command not defined"));
     return;
   }
 

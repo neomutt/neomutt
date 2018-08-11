@@ -816,7 +816,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!mutt_file_to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
-      mutt_error(_("Error: impossible to build path of '%s'."), rcfile_path);
+      mutt_error(_("Error: impossible to build path of '%s'"), rcfile_path);
       return -1;
     }
 
@@ -833,7 +833,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     else
     {
-      mutt_error(_("Error: Cyclic sourcing of configuration file '%s'."), rcfile);
+      mutt_error(_("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
       return -1;
     }
   }
@@ -985,7 +985,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (mutt_addrlist_to_intl(tmp->addr, &estr))
   {
-    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'.\n"), estr, tmp->name);
+    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, tmp->name);
     FREE(&estr);
     goto bail;
   }
@@ -1205,7 +1205,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
       switch (state)
       {
         case GS_NONE:
-          mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr."),
+          mutt_buffer_printf(err, _("%sgroup: missing -rx or -addr"),
                              (data == MUTT_UNGROUP) ? "un" : "");
           goto bail;
 
@@ -1228,7 +1228,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
           {
-            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'.\n"),
+            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'"),
                                data == 1 ? "un" : "", estr);
             mutt_addr_free(&addr);
             FREE(&estr);
@@ -1752,7 +1752,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                 }
                 else
                 {
-                  mutt_error(_("Error: impossible to build path of '%s'."), scratch);
+                  mutt_error(_("Error: impossible to build path of '%s'"), scratch);
                 }
               }
             }
@@ -1972,7 +1972,7 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
 
     if (source_rc(path, err) < 0)
     {
-      mutt_buffer_printf(err, _("source: file %s could not be sourced."), path);
+      mutt_buffer_printf(err, _("source: file %s could not be sourced"), path);
       return -1;
     }
 

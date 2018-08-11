@@ -70,7 +70,7 @@ char *MessageFormat; ///< Config: printf-like format string for listing attached
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);
 
-static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
 #define CHECK_READONLY                                                         \
   if (Context->readonly)                                                       \
@@ -88,7 +88,7 @@ static const struct Mapping AttachHelp[] = {
 };
 
 static const char *Function_not_permitted =
-    N_("Function not permitted in attach-message mode.");
+    N_("Function not permitted in attach-message mode");
 
 #define CHECK_ATTACH                                                           \
   if (OptAttachMsg)                                                            \
@@ -553,7 +553,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     if (mutt_save_attachment(fp, body, tfile, append,
                              (hdr || !is_message) ? hdr : body->hdr) == 0)
     {
-      mutt_message(_("Attachment saved."));
+      mutt_message(_("Attachment saved"));
       return 0;
     }
     else
@@ -658,7 +658,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   }
 
   if (!AttachSplit && (rc == 0))
-    mutt_message(_("Attachment saved."));
+    mutt_message(_("Attachment saved"));
 }
 
 /**
@@ -694,7 +694,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
       mutt_file_unlink(body->filename);
       mutt_file_rename(tfile, body->filename);
       mutt_update_encoding(body);
-      mutt_message(_("Attachment filtered."));
+      mutt_message(_("Attachment filtered"));
     }
   }
   else
@@ -841,7 +841,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
                %s gets replaced by a MIME type, e.g. "text/plain" or
                application/octet-stream.
              */
-            mutt_error(_("I don't know how to print %s attachments!"), type);
+            mutt_error(_("I don't know how to print %s attachments"), type);
             return false;
           }
         }
@@ -1190,7 +1190,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
   decrypt_failed:
     /* Fall through and show the original parts if decryption fails */
     if (need_secured && !secured)
-      mutt_error(_("Can't decrypt encrypted message!"));
+      mutt_error(_("Can't decrypt encrypted message"));
 
     /* Strip out the top level multipart */
     if (m->type == TYPE_MULTIPART && m->parts && !need_secured &&
@@ -1362,7 +1362,7 @@ void mutt_view_attachments(struct Header *hdr)
       case OP_ATTACH_COLLAPSE:
         if (!CURATTACH->content->parts)
         {
-          mutt_error(_("There are no subparts to show!"));
+          mutt_error(_("There are no subparts to show"));
           break;
         }
         attach_collapse(actx, menu);
@@ -1417,7 +1417,7 @@ void mutt_view_attachments(struct Header *hdr)
         if (Context->magic == MUTT_POP)
         {
           mutt_flushinp();
-          mutt_error(_("Can't delete attachment from POP server."));
+          mutt_error(_("Can't delete attachment from POP server"));
           break;
         }
 #endif
@@ -1426,7 +1426,7 @@ void mutt_view_attachments(struct Header *hdr)
         if (Context->magic == MUTT_NNTP)
         {
           mutt_flushinp();
-          mutt_error(_("Can't delete attachment from news server."));
+          mutt_error(_("Can't delete attachment from news server"));
           break;
         }
 #endif
@@ -1434,13 +1434,13 @@ void mutt_view_attachments(struct Header *hdr)
         if ((WithCrypto != 0) && (hdr->security & ENCRYPT))
         {
           mutt_message(_("Deletion of attachments from encrypted messages is "
-                         "unsupported."));
+                         "unsupported"));
           break;
         }
         if ((WithCrypto != 0) && (hdr->security & (SIGN | PARTSIGN)))
         {
           mutt_message(_("Deletion of attachments from signed messages may "
-                         "invalidate the signature."));
+                         "invalidate the signature"));
         }
         if (!menu->tagprefix)
         {
@@ -1458,7 +1458,7 @@ void mutt_view_attachments(struct Header *hdr)
           else
           {
             mutt_message(
-                _("Only deletion of multipart attachments is supported."));
+                _("Only deletion of multipart attachments is supported"));
           }
         }
         else
@@ -1475,7 +1475,7 @@ void mutt_view_attachments(struct Header *hdr)
               else
               {
                 mutt_message(
-                    _("Only deletion of multipart attachments is supported."));
+                    _("Only deletion of multipart attachments is supported"));
               }
             }
           }

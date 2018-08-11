@@ -1873,10 +1873,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
           return h->matched;
         return 0;
       }
-      mutt_error(_("error: server custom search only supported with IMAP."));
+      mutt_error(_("error: server custom search only supported with IMAP"));
       return 0;
 #else
-      mutt_error(_("error: server custom search only supported with IMAP."));
+      mutt_error(_("error: server custom search only supported with IMAP"));
       return -1;
 #endif
     case MUTT_SENDER:
@@ -2050,7 +2050,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return pat->not ^ (h->env->newsgroups && patmatch(pat, h->env->newsgroups) == 0);
 #endif
   }
-  mutt_error(_("error: unknown op %d (report this error)."), pat->op);
+  mutt_error(_("error: unknown op %d (report this error)"), pat->op);
   return -1;
 }
 
@@ -2302,7 +2302,7 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_pattern_free(&Context->limit_pattern);
 
     if (Context->msgcount && !Context->vcount)
-      mutt_error(_("No messages matched criteria."));
+      mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
     if (mutt_str_strcmp(buf, "~A") != 0)
@@ -2407,7 +2407,7 @@ int mutt_search_command(int cur, int op)
     {
       i = 0;
       if (WrapSearch)
-        msg = _("Search wrapped to top.");
+        msg = _("Search wrapped to top");
       else
       {
         mutt_message(_("Search hit bottom without finding match"));
@@ -2418,7 +2418,7 @@ int mutt_search_command(int cur, int op)
     {
       i = Context->vcount - 1;
       if (WrapSearch)
-        msg = _("Search wrapped to bottom.");
+        msg = _("Search wrapped to bottom");
       else
       {
         mutt_message(_("Search hit top without finding match"));
@@ -2455,7 +2455,7 @@ int mutt_search_command(int cur, int op)
 
     if (SigInt)
     {
-      mutt_error(_("Search interrupted."));
+      mutt_error(_("Search interrupted"));
       SigInt = 0;
       return -1;
     }
@@ -2463,6 +2463,6 @@ int mutt_search_command(int cur, int op)
     i += incr;
   }
 
-  mutt_error(_("Not found."));
+  mutt_error(_("Not found"));
   return -1;
 }

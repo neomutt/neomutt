@@ -147,7 +147,7 @@ int mutt_compose_attachment(struct Body *a)
         mutt_endwin();
         r = mutt_system(command);
         if (r == -1)
-          mutt_error(_("Error running \"%s\"!"), command);
+          mutt_error(_("Error running \"%s\""), command);
 
         if (r != -1 && entry->composetypecommand)
         {
@@ -157,7 +157,7 @@ int mutt_compose_attachment(struct Body *a)
           FILE *fp = mutt_file_fopen(a->filename, "r");
           if (!fp)
           {
-            mutt_perror(_("Failure to open file to parse headers."));
+            mutt_perror(_("Failure to open file to parse headers"));
             goto bailout;
           }
 
@@ -191,7 +191,7 @@ int mutt_compose_attachment(struct Body *a)
             FILE *tfp = mutt_file_fopen(tempfile, "w");
             if (!tfp)
             {
-              mutt_perror(_("Failure to open file to strip headers."));
+              mutt_perror(_("Failure to open file to strip headers"));
               mutt_file_fclose(&fp);
               goto bailout;
             }
@@ -201,7 +201,7 @@ int mutt_compose_attachment(struct Body *a)
             mutt_file_unlink(a->filename);
             if (mutt_file_rename(tempfile, a->filename) != 0)
             {
-              mutt_perror(_("Failure to rename file."));
+              mutt_perror(_("Failure to rename file"));
               goto bailout;
             }
           }
@@ -212,7 +212,7 @@ int mutt_compose_attachment(struct Body *a)
   else
   {
     rfc1524_free_entry(&entry);
-    mutt_message(_("No mailcap compose entry for %s, creating empty file."), type);
+    mutt_message(_("No mailcap compose entry for %s, creating empty file"), type);
     return 1;
   }
 
@@ -280,7 +280,7 @@ int mutt_edit_attachment(struct Body *a)
         mutt_endwin();
         if (mutt_system(command) == -1)
         {
-          mutt_error(_("Error running \"%s\"!"), command);
+          mutt_error(_("Error running \"%s\""), command);
           goto bailout;
         }
       }
@@ -876,7 +876,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     if (mutt_file_copy_stream(ofp, nfp) == -1)
     {
-      mutt_error(_("Write fault!"));
+      mutt_error(_("Write fault"));
       mutt_file_fclose(&ofp);
       mutt_file_fclose(&nfp);
       return -1;
@@ -884,7 +884,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
     mutt_file_fclose(&ofp);
     if (mutt_file_fsync_close(&nfp) != 0)
     {
-      mutt_error(_("Write fault!"));
+      mutt_error(_("Write fault"));
       return -1;
     }
   }
@@ -1145,7 +1145,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   }
   else
   {
-    mutt_error(_("I don't know how to print that!"));
+    mutt_error(_("I don't know how to print that"));
     return 0;
   }
 }

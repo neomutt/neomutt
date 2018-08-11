@@ -261,7 +261,7 @@ void mutt_edit_file(const char *editor, const char *file)
   mutt_expand_file_fmt(cmd, sizeof(cmd), editor, file);
   if (mutt_system(cmd) != 0)
   {
-    mutt_error(_("Error running \"%s\"!"), cmd);
+    mutt_error(_("Error running \"%s\""), cmd);
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
@@ -531,7 +531,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
     mutt_expand_file_fmt(cmd, sizeof(cmd), Pager, tempfile);
     if (mutt_system(cmd) == -1)
     {
-      mutt_error(_("Error running \"%s\"!"), cmd);
+      mutt_error(_("Error running \"%s\""), cmd);
       rc = -1;
     }
     else

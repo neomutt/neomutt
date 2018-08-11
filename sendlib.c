@@ -490,8 +490,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     const char *p = mutt_param_get(&a->parameter, "boundary");
     if (!p)
     {
-      mutt_debug(1, "no boundary parameter found!\n");
-      mutt_error(_("No boundary parameter found! [report this error]"));
+      mutt_debug(1, "no boundary parameter found\n");
+      mutt_error(_("No boundary parameter found [report this error]"));
       return -1;
     }
     char boundary[SHORT_STRING];
@@ -521,8 +521,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   fpin = fopen(a->filename, "r");
   if (!fpin)
   {
-    mutt_debug(1, "%s no longer exists!\n", a->filename);
-    mutt_error(_("%s no longer exists!"), a->filename);
+    mutt_debug(1, "%s no longer exists\n", a->filename);
+    mutt_error(_("%s no longer exists"), a->filename);
     return -1;
   }
 
@@ -993,7 +993,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   if (!S_ISREG(sb.st_mode))
   {
-    mutt_error(_("%s isn't a regular file."), fname);
+    mutt_error(_("%s isn't a regular file"), fname);
     return NULL;
   }
 
@@ -1559,7 +1559,7 @@ static void run_mime_type_query(struct Body *att)
   thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
   if (thepid < 0)
   {
-    mutt_error(_("Error running \"%s\"!"), cmd);
+    mutt_error(_("Error running \"%s\""), cmd);
     return;
   }
 
@@ -2728,7 +2728,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
   {
-    mutt_error(_("$sendmail must be set in order to send mail."));
+    mutt_error(_("$sendmail must be set in order to send mail"));
     return -1;
   }
 
@@ -2835,7 +2835,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     if (i != S_BKG)
     {
       const char *e = mutt_str_sysexit(i);
-      mutt_error(_("Error sending message, child exited %d (%s)."), i, NONULL(e));
+      mutt_error(_("Error sending message, child exited %d (%s)"), i, NONULL(e));
       if (childout)
       {
         struct stat st;
@@ -3052,7 +3052,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   rfc2047_encode_addrlist(from, "Resent-From");
   if (mutt_addrlist_to_intl(from, &err))
   {
-    mutt_error(_("Bad IDN %s while preparing resent-from."), err);
+    mutt_error(_("Bad IDN %s while preparing resent-from"), err);
     mutt_addr_free(&from);
     return -1;
   }

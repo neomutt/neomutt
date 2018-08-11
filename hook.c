@@ -341,7 +341,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       if (current_hook_type)
       {
-        mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook."));
+        mutt_buffer_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
         return -1;
       }
       mutt_delete_hooks(0);
@@ -363,7 +363,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
       if (current_hook_type == type)
       {
-        mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s."),
+        mutt_buffer_printf(err, _("unhook: Can't delete a %s from within a %s"),
                            buf->data, buf->data);
         return -1;
       }

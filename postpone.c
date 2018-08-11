@@ -293,7 +293,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!PostContext)
   {
     PostCount = 0;
-    mutt_error(_("No postponed messages."));
+    mutt_error(_("No postponed messages"));
     return -1;
   }
 
@@ -302,7 +302,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     PostCount = 0;
     mx_mbox_close(PostContext, NULL);
     FREE(&PostContext);
-    mutt_error(_("No postponed messages."));
+    mutt_error(_("No postponed messages"));
     return -1;
   }
 
@@ -705,7 +705,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       if (mutt_body_handler(b, &s) < 0)
       {
-        mutt_error(_("Decryption failed."));
+        mutt_error(_("Decryption failed"));
         goto bail;
       }
 
@@ -728,7 +728,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       if (mutt_body_handler(b, &s) < 0)
       {
-        mutt_error(_("Decryption failed."));
+        mutt_error(_("Decryption failed"));
         goto bail;
       }
 

@@ -77,7 +77,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   {
     url_free(&url);
     FREE(&c);
-    mutt_error(_("Invalid POP URL: %s\n"), path);
+    mutt_error(_("Invalid POP URL: %s"), path);
     return -1;
   }
 
@@ -243,11 +243,11 @@ static int pop_capabilities(struct PopData *pop_data, int mode)
     char *msg = NULL;
 
     if (!pop_data->expire)
-      msg = _("Unable to leave messages on server.");
+      msg = _("Unable to leave messages on server");
     if (!pop_data->cmd_top)
-      msg = _("Command TOP is not supported by server.");
+      msg = _("Command TOP is not supported by server");
     if (!pop_data->cmd_uidl)
-      msg = _("Command UIDL is not supported by server.");
+      msg = _("Command UIDL is not supported by server");
     if (msg && pop_data->cmd_capa)
     {
       mutt_error(msg);
@@ -410,7 +410,7 @@ int pop_open_connection(struct PopData *pop_data)
 
 err_conn:
   pop_data->status = POP_DISCONNECTED;
-  mutt_error(_("Server closed connection!"));
+  mutt_error(_("Server closed connection"));
   return -1;
 }
 

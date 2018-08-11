@@ -411,7 +411,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   else if ((sortfunc = mutt_get_sort_func(Sort)) == NULL ||
            (AuxSort = mutt_get_sort_func(SortAux)) == NULL)
   {
-    mutt_error(_("Could not find sorting function! [report this bug]"));
+    mutt_error(_("Could not find sorting function [report this bug]"));
     return;
   }
   else

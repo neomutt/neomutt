@@ -502,7 +502,7 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
   err = gpgme_new(&ctx);
   if (err)
   {
-    mutt_error(_("error creating gpgme context: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error creating gpgme context: %s"), gpgme_strerror(err));
     mutt_exit(1);
   }
 
@@ -511,7 +511,7 @@ static gpgme_ctx_t create_gpgme_context(bool for_smime)
     err = gpgme_set_protocol(ctx, GPGME_PROTOCOL_CMS);
     if (err)
     {
-      mutt_error(_("error enabling CMS protocol: %s\n"), gpgme_strerror(err));
+      mutt_error(_("error enabling CMS protocol: %s"), gpgme_strerror(err));
       mutt_exit(1);
     }
   }
@@ -535,7 +535,7 @@ static gpgme_data_t create_gpgme_data(void)
   err = gpgme_data_new(&data);
   if (err)
   {
-    mutt_error(_("error creating gpgme data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error creating gpgme data object: %s"), gpgme_strerror(err));
     mutt_exit(1);
   }
   return data;
@@ -601,7 +601,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   unlink(tempfile);
   if (err)
   {
-    mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
     return NULL;
   }
 
@@ -623,7 +623,7 @@ static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
   err = gpgme_data_new_from_filepart(&data, NULL, fp, offset, length);
   if (err)
   {
-    mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
     return NULL;
   }
 
@@ -646,7 +646,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
   err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
   if (err)
   {
-    mutt_error(_("error rewinding data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error rewinding data object: %s"), gpgme_strerror(err));
     return -1;
   }
 
@@ -668,7 +668,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
   }
   if (nread == -1)
   {
-    mutt_error(_("error reading data object: %s\n"), strerror(errno));
+    mutt_error(_("error reading data object: %s"), strerror(errno));
     return -1;
   }
   return 0;
@@ -721,7 +721,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **ret_fp)
     mutt_file_fclose(&fp);
   if (nread == -1)
   {
-    mutt_error(_("error reading data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error reading data object: %s"), gpgme_strerror(err));
     unlink(tempf);
     mutt_file_fclose(&fp);
     return NULL;
@@ -808,7 +808,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
           rset[rset_n++] = key;
         else
         {
-          mutt_error(_("error adding recipient '%s': %s\n"), buf, gpgme_strerror(err));
+          mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
           rset[rset_n] = NULL;
           free_recipient_set(&rset);
           gpgme_release(context);
@@ -852,7 +852,7 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
   if (err)
   {
     gpgme_release(listctx);
-    mutt_error(_("secret key '%s' not found: %s\n"), signid, gpgme_strerror(err));
+    mutt_error(_("secret key '%s' not found: %s"), signid, gpgme_strerror(err));
     return -1;
   }
   err = gpgme_op_keylist_next(listctx, &key2);
@@ -861,7 +861,7 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
     gpgme_key_unref(key);
     gpgme_key_unref(key2);
     gpgme_release(listctx);
-    mutt_error(_("ambiguous specification of secret key '%s'\n"), signid);
+    mutt_error(_("ambiguous specification of secret key '%s'"), signid);
     return -1;
   }
   gpgme_op_keylist_end(listctx);
@@ -872,7 +872,7 @@ static int set_signer(gpgme_ctx_t ctx, bool for_smime)
   gpgme_key_unref(key);
   if (err)
   {
-    mutt_error(_("error setting secret key '%s': %s\n"), signid, gpgme_strerror(err));
+    mutt_error(_("error setting secret key '%s': %s"), signid, gpgme_strerror(err));
     return -1;
   }
   return 0;
@@ -891,7 +891,7 @@ static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 
   if (err)
   {
-    mutt_error(_("error setting PKA signature notation: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error setting PKA signature notation: %s"), gpgme_strerror(err));
   }
 
   return err;
@@ -946,7 +946,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
   redraw_if_needed(ctx);
   if (err)
   {
-    mutt_error(_("error encrypting data: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error encrypting data: %s"), gpgme_strerror(err));
     gpgme_data_release(ciphertext);
     gpgme_release(ctx);
     return NULL;
@@ -1072,7 +1072,7 @@ static struct Body *sign_message(struct Body *a, bool use_smime)
   {
     gpgme_data_release(signature);
     gpgme_release(ctx);
-    mutt_error(_("error signing data: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error signing data: %s"), gpgme_strerror(err));
     return NULL;
   }
   /* Check for zero signatures generated.  This can occur when $pgp_sign_as is
@@ -1702,7 +1702,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   if (err)
   {
     gpgme_data_release(signature);
-    mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
     return -1;
   }
   ctx = create_gpgme_context(is_smime);
@@ -2447,13 +2447,13 @@ void pgp_gpgme_invoke_import(const char *fname)
   if (err != GPG_ERR_NO_ERROR)
   {
     mutt_file_fclose(&in);
-    mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
+    mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
     return;
   }
 
   if (pgp_gpgme_extract_keys(keydata, &out, false))
   {
-    mutt_error(_("Error extracting key data!\n"));
+    mutt_error(_("Error extracting key data"));
   }
   gpgme_data_release(keydata);
   mutt_file_fclose(&in);
@@ -2756,7 +2756,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
   if (needpass == -1)
   {
     state_attach_puts(_("[-- Error: could not find beginning"
-                        " of PGP message! --]\n\n"),
+                        " of PGP message --]\n\n"),
                       s);
     return 1;
   }
@@ -2784,7 +2784,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(_("[-- Error: could not create temporary file! "
+      state_attach_puts(_("[-- Error: could not create temporary file "
                           "--]\n"),
                         s);
     }
@@ -2829,7 +2829,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     }
 
     mutt_body_free(&tattach);
-    mutt_message(_("PGP message successfully decrypted."));
+    mutt_message(_("PGP message successfully decrypted"));
   }
   else
   {
@@ -2860,7 +2860,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_perror(_("Can't create temporary file"));
     if (s->flags & MUTT_DISPLAY)
     {
-      state_attach_puts(_("[-- Error: could not create temporary file! "
+      state_attach_puts(_("[-- Error: could not create temporary file "
                           "--]\n"),
                         s);
     }
@@ -4313,7 +4313,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   if (!i && unusable)
   {
-    mutt_error(_("All matching keys are marked expired/revoked."));
+    mutt_error(_("All matching keys are marked expired/revoked"));
     return NULL;
   }
 
@@ -4374,14 +4374,14 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       /* L10N:
          %1$s is one of the previous four entries.
          %2$s is an address.
-         e.g. "S/MIME keys matching <me@mutt.org>." */
-      snprintf(buf, sizeof(buf), _("%s <%s>."), ts, p->mailbox);
+         e.g. "S/MIME keys matching <me@mutt.org>" */
+      snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
     }
     else
     {
       /* L10N:
          e.g. 'S/MIME keys matching "Michael Elkins".' */
-      snprintf(buf, sizeof(buf), _("%s \"%s\"."), ts, s);
+      snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
     menu->title = buf;
   }
@@ -4410,7 +4410,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
             mutt_error(_("This key can't be used: "
-                         "expired/disabled/revoked."));
+                         "expired/disabled/revoked"));
             break;
           }
         }
@@ -4927,7 +4927,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   err = gpgme_op_export_keys(context, export_keys, 0, keydata);
   if (err != GPG_ERR_NO_ERROR)
   {
-    mutt_error(_("Error exporting key: %s\n"), gpgme_strerror(err));
+    mutt_error(_("Error exporting key: %s"), gpgme_strerror(err));
     goto bail;
   }
 
@@ -4946,7 +4946,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
-  snprintf(buf, sizeof(buf), _("PGP Key 0x%s."), crypt_keyid(key));
+  snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
   att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 

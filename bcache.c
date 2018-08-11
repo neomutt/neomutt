@@ -212,7 +212,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   {
     if (!S_ISDIR(sb.st_mode))
     {
-      mutt_error(_("Message cache isn't a directory: %s."), bcache->path);
+      mutt_error(_("Message cache isn't a directory: %s"), bcache->path);
       return NULL;
     }
   }

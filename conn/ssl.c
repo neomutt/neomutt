@@ -214,13 +214,13 @@ static int add_entropy(const char *file)
   if (stat(file, &st) == -1)
     return (errno == ENOENT) ? 0 : -1;
 
-  mutt_message(_("Filling entropy pool: %s...\n"), file);
+  mutt_message(_("Filling entropy pool: %s..."), file);
 
   /* check that the file permissions are secure */
   if (st.st_uid != getuid() || ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
       ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
   {
-    mutt_error(_("%s has insecure permissions!"), file);
+    mutt_error(_("%s has insecure permissions"), file);
     return -1;
   }
 

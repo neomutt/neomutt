@@ -322,6 +322,6 @@ err_abort_cmd:
   while (rc == IMAP_CMD_CONTINUE);
 
 bail:
-  mutt_error(_("GSSAPI authentication failed."));
+  mutt_error(_("GSSAPI authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

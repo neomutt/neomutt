@@ -1023,7 +1023,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
   if (!server || !*server)
   {
-    mutt_error(_("No news server defined!"));
+    mutt_error(_("No news server defined"));
     return NULL;
   }
 
@@ -1037,7 +1037,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
       mutt_account_fromurl(&acct, &url) < 0)
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid news server specification!"), server);
+    mutt_error(_("%s is an invalid news server specification"), server);
     return NULL;
   }
   if (url.scheme == U_NNTPS)
@@ -1099,7 +1099,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
     cache_expand(file, sizeof(file), &conn->account, NULL);
     if (mutt_file_mkdir(file, S_IRWXU) < 0)
     {
-      mutt_error(_("Can't create %s: %s."), file, strerror(errno));
+      mutt_error(_("Can't create %s: %s"), file, strerror(errno));
     }
     nserv->cacheable = true;
   }

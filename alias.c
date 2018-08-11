@@ -391,7 +391,7 @@ retry_name:
   /* check to see if the user already has an alias defined */
   if (mutt_alias_lookup(buf))
   {
-    mutt_error(_("You already have an alias defined with that name!"));
+    mutt_error(_("You already have an alias defined with that name"));
     return;
   }
 
@@ -502,7 +502,7 @@ retry_name:
     if (mutt_file_fsync_close(&rc) != 0)
       mutt_perror(_("Trouble adding alias"));
     else
-      mutt_message(_("Alias added."));
+      mutt_message(_("Alias added"));
   }
   else
     mutt_perror(buf);

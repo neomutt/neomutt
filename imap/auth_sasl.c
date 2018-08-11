@@ -250,7 +250,7 @@ bail:
     return IMAP_AUTH_UNAVAIL;
   }
 
-  mutt_error(_("SASL authentication failed."));
+  mutt_error(_("SASL authentication failed"));
 
   return IMAP_AUTH_FAILURE;
 }

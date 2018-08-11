@@ -414,7 +414,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   if (!query_window_check_timebase(NmQueryWindowTimebase))
   {
     mutt_message(_("Invalid nm_query_window_timebase value (valid values are: "
-                   "hour, day, week, month or year)."));
+                   "hour, day, week, month or year)"));
     mutt_debug(2, "Invalid nm_query_window_timebase value\n");
     return false;
   }
@@ -1875,7 +1875,7 @@ done:
     release_db(data);
 
   if (ctx->msgcount == data->oldmsgcount)
-    mutt_message(_("No more messages in the thread."));
+    mutt_message(_("No more messages in the thread"));
 
   data->oldmsgcount = 0;
   mutt_debug(1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
@@ -2752,7 +2752,7 @@ static int nm_msg_close(struct Context *ctx, struct Message *msg)
  */
 static int nm_msg_commit(struct Context *ctx, struct Message *msg)
 {
-  mutt_error(_("Can't write to virtual folder."));
+  mutt_error(_("Can't write to virtual folder"));
   return -1;
 }
 

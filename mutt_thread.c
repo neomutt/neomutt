@@ -1040,7 +1040,7 @@ int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error(_("Threading is not enabled."));
+    mutt_error(_("Threading is not enabled"));
     return hdr->virtual;
   }
 
@@ -1104,7 +1104,7 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, bool find_root)
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error(_("Threading is not enabled."));
+    mutt_error(_("Threading is not enabled"));
     return hdr->virtual;
   }
 
@@ -1125,15 +1125,15 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, bool find_root)
 
   if (!parent)
   {
-    mutt_error(_("Parent message is not available."));
+    mutt_error(_("Parent message is not available"));
     return -1;
   }
   if (!is_visible(parent, ctx))
   {
     if (find_root)
-      mutt_error(_("Root message is not visible in this limited view."));
+      mutt_error(_("Root message is not visible in this limited view"));
     else
-      mutt_error(_("Parent message is not visible in this limited view."));
+      mutt_error(_("Parent message is not visible in this limited view"));
     return -1;
   }
   return parent->virtual;
@@ -1183,7 +1183,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 
   if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
-    mutt_error(_("Threading is not enabled."));
+    mutt_error(_("Threading is not enabled"));
     return cur->virtual;
   }
 

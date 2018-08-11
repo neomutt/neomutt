@@ -57,14 +57,14 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
 
   if (nmemb > (SIZE_MAX / size))
   {
-    mutt_error(_("Integer overflow -- can't allocate memory!"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
   p = calloc(nmemb, size);
   if (!p)
   {
-    mutt_error(_("Out of memory!"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
   return p;
@@ -105,7 +105,7 @@ void *mutt_mem_malloc(size_t size)
   p = malloc(size);
   if (!p)
   {
-    mutt_error(_("Out of memory!"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
   return p;
@@ -139,7 +139,7 @@ void mutt_mem_realloc(void *ptr, size_t size)
   r = realloc(*p, size);
   if (!r)
   {
-    mutt_error(_("Out of memory!"));
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 

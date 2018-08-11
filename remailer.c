@@ -563,7 +563,7 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Remailer **type2_list = mix_type2_list(&ttll);
   if (!type2_list)
   {
-    mutt_error(_("Can't get mixmaster's type2.list!"));
+    mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
@@ -589,7 +589,7 @@ void mix_make_chain(struct ListHead *chainhead)
   menu->max = ttll;
   menu->make_entry = mix_entry;
   menu->tag = NULL;
-  menu->title = _("Select a remailer chain.");
+  menu->title = _("Select a remailer chain");
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
@@ -651,7 +651,7 @@ void mix_make_chain(struct ListHead *chainhead)
             (type2_list[chain->ch[chain->cl - 1]]->caps & MIX_CAP_MIDDLEMAN))
         {
           mutt_error(
-              _("Error: %s can't be used as the final remailer of a chain."),
+              _("Error: %s can't be used as the final remailer of a chain"),
               type2_list[chain->ch[chain->cl - 1]]->shortname);
         }
         else
@@ -683,7 +683,7 @@ void mix_make_chain(struct ListHead *chainhead)
         else
         {
           /* L10N The '%d' here hard-coded to 19 */
-          mutt_error(_("Mixmaster chains are limited to %d elements."), MAXMIXES);
+          mutt_error(_("Mixmaster chains are limited to %d elements"), MAXMIXES);
         }
 
         break;
@@ -706,7 +706,7 @@ void mix_make_chain(struct ListHead *chainhead)
         }
         else
         {
-          mutt_error(_("The remailer chain is already empty."));
+          mutt_error(_("The remailer chain is already empty"));
         }
         break;
       }
@@ -716,7 +716,7 @@ void mix_make_chain(struct ListHead *chainhead)
         if (c_cur)
           c_cur--;
         else
-          mutt_error(_("You already have the first chain element selected."));
+          mutt_error(_("You already have the first chain element selected"));
 
         break;
       }
@@ -726,7 +726,7 @@ void mix_make_chain(struct ListHead *chainhead)
         if (chain->cl && c_cur < chain->cl - 1)
           c_cur++;
         else
-          mutt_error(_("You already have the last chain element selected."));
+          mutt_error(_("You already have the last chain element selected"));
 
         break;
       }
@@ -770,7 +770,7 @@ int mix_check_message(struct Header *msg)
 
   if (msg->env->cc || msg->env->bcc)
   {
-    mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers."));
+    mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers"));
     return -1;
   }
 
@@ -795,7 +795,7 @@ int mix_check_message(struct Header *msg)
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "
-                   "using mixmaster!"));
+                   "using mixmaster"));
       return -1;
     }
 
@@ -842,7 +842,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
     if (!OptNoCurses)
     {
       mutt_any_key_to_continue(NULL);
-      mutt_error(_("Error sending message."));
+      mutt_error(_("Error sending message"));
     }
   }
 

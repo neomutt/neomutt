@@ -196,7 +196,7 @@ bail:
   }
 
   FREE(&buf);
-  mutt_error(_("SASL authentication failed."));
+  mutt_error(_("SASL authentication failed"));
 
   return POP_A_FAILURE;
 }
@@ -238,7 +238,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 
   if (!mutt_addr_valid_msgid(pop_data->timestamp))
   {
-    mutt_error(_("POP timestamp is invalid!"));
+    mutt_error(_("POP timestamp is invalid"));
     return POP_A_UNAVAIL;
   }
 
@@ -262,7 +262,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
       return POP_A_SOCKET;
   }
 
-  mutt_error(_("APOP authentication failed."));
+  mutt_error(_("APOP authentication failed"));
 
   return POP_A_FAILURE;
 }
@@ -301,7 +301,7 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
 
       mutt_debug(1, "unset USER capability\n");
       snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
-               _("Command USER is not supported by server."));
+               _("Command USER is not supported by server"));
     }
   }
 
@@ -321,7 +321,7 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
       return POP_A_SOCKET;
   }
 
-  mutt_error("%s %s", _("Login failed."), pop_data->err_msg);
+  mutt_error("%s %s", _("Login failed"), pop_data->err_msg);
 
   return POP_A_FAILURE;
 }

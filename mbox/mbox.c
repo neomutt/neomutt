@@ -180,7 +180,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         if (fseeko(ctx->fp, loc, SEEK_SET) != 0)
         {
           mutt_debug(1, "#1 fseek() failed\n");
-          mutt_error(_("Mailbox is corrupt!"));
+          mutt_error(_("Mailbox is corrupt"));
           return -1;
         }
       }
@@ -241,8 +241,8 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     }
     else
     {
-      mutt_debug(1, "corrupt mailbox!\n");
-      mutt_error(_("Mailbox is corrupt!"));
+      mutt_debug(1, "corrupt mailbox\n");
+      mutt_error(_("Mailbox is corrupt"));
       return -1;
     }
   }
@@ -506,7 +506,7 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
 
   if (mbox_lock_mailbox(ctx, 1, 1) != 0)
   {
-    mutt_error(_("Couldn't lock %s\n"), ctx->path);
+    mutt_error(_("Couldn't lock %s"), ctx->path);
     mutt_file_fclose(&ctx->fp);
     return -1;
   }
@@ -898,7 +898,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   mbox_unlock_mailbox(ctx);
   mx_fastclose_mailbox(ctx);
   mutt_sig_unblock();
-  mutt_error(_("Mailbox was corrupted!"));
+  mutt_error(_("Mailbox was corrupted"));
   return -1;
 }
 
@@ -996,7 +996,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (mbox_lock_mailbox(ctx, 1, 1) == -1)
   {
     mutt_sig_unblock();
-    mutt_error(_("Unable to lock mailbox!"));
+    mutt_error(_("Unable to lock mailbox"));
     goto bail;
   }
 
@@ -1025,7 +1025,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
       close(i);
       unlink(tempfile);
     }
-    mutt_error(_("Could not create temporary file!"));
+    mutt_error(_("Could not create temporary file"));
     goto bail;
   }
 
@@ -1044,7 +1044,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
      * never happen, is we presume it is a bug in neomutt.
      */
     mutt_error(
-        _("sync: mbox modified, but no modified messages! (report this bug)"));
+        _("sync: mbox modified, but no modified messages (report this bug)"));
     mutt_debug(1, "no modified messages.\n");
     unlink(tempfile);
     goto bail;
@@ -1305,7 +1305,7 @@ bail: /* Come here in case of disaster */
   ctx->fp = freopen(ctx->path, "r", ctx->fp);
   if (!ctx->fp)
   {
-    mutt_error(_("Could not reopen mailbox!"));
+    mutt_error(_("Could not reopen mailbox"));
     mx_fastclose_mailbox(ctx);
     return -1;
   }

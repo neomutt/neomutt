@@ -155,7 +155,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 
         mutt_debug(1, "unset TOP capability\n");
         snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
-                 _("Command TOP is not supported by server."));
+                 _("Command TOP is not supported by server"));
       }
     }
   }
@@ -182,7 +182,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     }
     case -3:
     {
-      mutt_error(_("Can't write header to temporary file!"));
+      mutt_error(_("Can't write header to temporary file"));
       break;
     }
   }
@@ -345,7 +345,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
       mutt_debug(1, "unset UIDL capability\n");
       snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
-               _("Command UIDL is not supported by server."));
+               _("Command UIDL is not supported by server"));
     }
   }
 
@@ -700,7 +700,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
     if (ret == -3)
     {
-      mutt_error(_("Can't write message to temporary file!"));
+      mutt_error(_("Can't write message to temporary file"));
       return -1;
     }
   }
@@ -900,7 +900,7 @@ void pop_fetch_mail(void)
 
   if (!PopHost)
   {
-    mutt_error(_("POP host is not defined."));
+    mutt_error(_("POP host is not defined"));
     return;
   }
 
@@ -964,7 +964,7 @@ void pop_fetch_mail(void)
 
   if (msgs <= last)
   {
-    mutt_message(_("No new mail in POP mailbox."));
+    mutt_message(_("No new mail in POP mailbox"));
     goto finish;
   }
 
@@ -1019,7 +1019,7 @@ void pop_fetch_mail(void)
     }
     if (ret == -3)
     {
-      mutt_error(_("Error while writing mailbox!"));
+      mutt_error(_("Error while writing mailbox"));
       break;
     }
 
@@ -1050,7 +1050,7 @@ finish:
   return;
 
 fail:
-  mutt_error(_("Server closed connection!"));
+  mutt_error(_("Server closed connection"));
   mutt_socket_close(conn);
   FREE(&pop_data);
 }

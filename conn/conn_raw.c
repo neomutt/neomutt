@@ -372,7 +372,7 @@ int raw_socket_open(struct Connection *conn)
 #endif
   if (rc)
   {
-    mutt_error(_("Could not connect to %s (%s)."), conn->account.host,
+    mutt_error(_("Could not connect to %s (%s)"), conn->account.host,
                (rc > 0) ? strerror(rc) : _("unknown error"));
     return -1;
   }

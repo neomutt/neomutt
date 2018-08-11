@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180622\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-07-31 22:15+0100\n"
+"POT-Creation-Date: 2018-08-12 00:32+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -21,17 +21,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: addrbook.c:55 browser.c:81 browser.c:91 mutt_history.c:36 pager.c:1842
-#: postpone.c:67 query.c:71 recvattach.c:87
+#: addrbook.c:55 browser.c:80 browser.c:90 mutt_history.c:36 pager.c:1841
+#: postpone.c:66 query.c:71 recvattach.c:86
 msgid "Exit"
 msgstr "종료"
 
-#: addrbook.c:55 curs_main.c:812 curs_main.c:825 pager.c:1850 pager.c:1860
-#: postpone.c:68
+#: addrbook.c:55 curs_main.c:813 curs_main.c:826 pager.c:1849 pager.c:1859
+#: postpone.c:67
 msgid "Del"
 msgstr "삭제"
 
-#: addrbook.c:56 curs_main.c:813 curs_main.c:826 postpone.c:69
+#: addrbook.c:56 curs_main.c:814 curs_main.c:827 postpone.c:68
 msgid "Undel"
 msgstr "복구"
 
@@ -39,18 +39,18 @@ msgstr "복구"
 msgid "Select"
 msgstr "선택"
 
-#: addrbook.c:57 browser.c:85 browser.c:97 compose.c:178 compose.c:190
-#: conn/ssl.c:1046 conn/ssl_gnutls.c:797 curs_main.c:818 curs_main.c:831
-#: mutt_history.c:39 ncrypt/crypt_gpgme.c:4364 ncrypt/pgpkey.c:677
-#: ncrypt/smime.c:576 pager.c:2307 postpone.c:70 query.c:76 recvattach.c:88
+#: addrbook.c:57 browser.c:84 browser.c:96 compose.c:177 compose.c:189
+#: conn/ssl.c:1046 conn/ssl_gnutls.c:797 curs_main.c:819 curs_main.c:832
+#: mutt_history.c:39 ncrypt/crypt_gpgme.c:4350 ncrypt/pgpkey.c:663
+#: ncrypt/smime.c:562 pager.c:2306 postpone.c:69 query.c:76 recvattach.c:87
 msgid "Help"
 msgstr "도움말"
 
-#: addrbook.c:223
-msgid "You have no aliases!"
-msgstr "별칭이 없음!"
+#: addrbook.c:209
+msgid "You have no aliases"
+msgstr "별칭이 없음"
 
-#: addrbook.c:230
+#: addrbook.c:216
 msgid "Aliases"
 msgstr "별칭"
 
@@ -60,8 +60,8 @@ msgid "Alias as: "
 msgstr "사용 별칭: "
 
 #: alias.c:394
-msgid "You already have an alias defined with that name!"
-msgstr "같은 이름의 별칭이 이미 있음!"
+msgid "You already have an alias defined with that name"
+msgstr "같은 이름의 별칭이 이미 있음"
 
 #: alias.c:400
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -71,8 +71,8 @@ msgstr "경고: 이 알리아스는 작동하지 않습니다. 고칠까요?"
 msgid "Address: "
 msgstr "주소: "
 
-#: alias.c:435 commands.c:342 compose.c:530 conn/conn_raw.c:268
-#: conn/conn_raw.c:326 recvcmd.c:217 send.c:282
+#: alias.c:435 commands.c:341 compose.c:529 conn/conn_raw.c:268
+#: conn/conn_raw.c:326 recvcmd.c:217 send.c:281
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "잘못된 IDN: '%s'"
@@ -86,8 +86,8 @@ msgstr "이름: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 추가할까요?"
 
-#: alias.c:466 recvattach.c:524 recvattach.c:548 recvattach.c:562
-#: recvattach.c:576 recvattach.c:621
+#: alias.c:466 recvattach.c:509 recvattach.c:533 recvattach.c:547
+#: recvattach.c:561 recvattach.c:606
 msgid "Save to file: "
 msgstr "파일로 저장: "
 
@@ -102,8 +102,8 @@ msgid "Trouble adding alias"
 msgstr "파일 보기 시도 중 오류"
 
 #: alias.c:505
-msgid "Alias added."
-msgstr "별칭 추가됨."
+msgid "Alias added"
+msgstr "별칭 추가됨"
 
 #: alias.c:513
 #, fuzzy
@@ -117,172 +117,168 @@ msgstr ""
 
 #: bcache.c:215
 #, fuzzy, c-format
-msgid "Message cache isn't a directory: %s."
-msgstr "%s는 디렉토리가 아닙니다."
+msgid "Message cache isn't a directory: %s"
+msgstr "%s는 디렉토리가 아닙니다"
 
 #: bcache.c:223
 #, fuzzy, c-format
 msgid "Can't create %s %s"
 msgstr "%s를 만들 수 없음: %s."
 
-#: browser.c:82
+#: browser.c:81
 msgid "Chdir"
 msgstr "디렉토리 이동"
 
-#: browser.c:83
+#: browser.c:82
 msgid "Goto"
 msgstr ""
 
-#: browser.c:84 browser.c:96
+#: browser.c:83 browser.c:95
 msgid "Mask"
 msgstr "매스크"
 
-#: browser.c:92
+#: browser.c:91
 msgid "List"
 msgstr ""
 
-#: browser.c:93
+#: browser.c:92
 #, fuzzy
 msgid "Subscribe"
 msgstr "%s에 가입 중..."
 
-#: browser.c:94
+#: browser.c:93
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: browser.c:95 curs_main.c:830
+#: browser.c:94 curs_main.c:831
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:856 browser.c:1930
+#: browser.c:827 browser.c:1906
 #, c-format
-msgid "%s is not a directory."
-msgstr "%s는 디렉토리가 아닙니다."
+msgid "%s is not a directory"
+msgstr "%s는 디렉토리가 아닙니다"
 
-#: browser.c:1181
+#: browser.c:1156
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "%s에 가입 중..."
 
-#: browser.c:1184
+#: browser.c:1159
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser.c:1194
+#: browser.c:1169
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "메일함 [%d]"
 
-#: browser.c:1202
+#: browser.c:1177
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "디렉토리 [%s], 파일 매스크: %s"
 
-#: browser.c:1263
-msgid "Can't attach a directory!"
-msgstr "디렉토리는 첨부할 수 없음!"
+#: browser.c:1238
+msgid "Can't attach a directory"
+msgstr "디렉토리는 첨부할 수 없음"
 
-#: browser.c:1554 browser.c:1984 browser.c:2124
+#: browser.c:1529 browser.c:1960 browser.c:2100
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser.c:1756
+#: browser.c:1732
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1778
+#: browser.c:1754
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1799
+#: browser.c:1775
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1809 browser.c:1837
+#: browser.c:1785 browser.c:1813
 #, fuzzy
-msgid "Mailbox deletion failed."
-msgstr "메일함 삭제됨."
+msgid "Mailbox deletion failed"
+msgstr "메일함 삭제됨"
 
-#: browser.c:1814
+#: browser.c:1790
 #, fuzzy
 msgid "Cannot delete root folder"
 msgstr "필터를 만들 수 없음"
 
-#: browser.c:1817
+#: browser.c:1793
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "정말로 \"%s\" 메일함을 지울까요?"
 
-#: browser.c:1833
-msgid "Mailbox deleted."
-msgstr "메일함 삭제됨."
+#: browser.c:1809
+msgid "Mailbox deleted"
+msgstr "메일함 삭제됨"
 
-#: browser.c:1840
-msgid "Mailbox not deleted."
-msgstr "메일함이 삭제되지 않음."
+#: browser.c:1816
+msgid "Mailbox not deleted"
+msgstr "메일함이 삭제되지 않음"
 
-#: browser.c:1870
+#: browser.c:1846
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser.c:1920 browser.c:1978
-msgid "Error scanning directory."
-msgstr "디렉토리 검사중 오류."
+#: browser.c:1896 browser.c:1954
+msgid "Error scanning directory"
+msgstr "디렉토리 검사중 오류"
 
-#: browser.c:1941
+#: browser.c:1917
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:2001
+#: browser.c:1977
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "역순정렬 방법: 날짜(d), 낱말(a), 크기(z), 안함(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:2004
+#: browser.c:1980
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "정렬 방법: 날짜(d), 글자(a), 크기(z), 안함(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:2007
+#: browser.c:1983
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:2113
+#: browser.c:2089
 msgid "New file name: "
 msgstr "새 파일 이름: "
 
-#: browser.c:2141
+#: browser.c:2117
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser.c:2158
+#: browser.c:2134
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
-#: browser.c:2245
+#: browser.c:2221
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s에 가입 중..."
 
-#: browser.c:2247
+#: browser.c:2223
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: browser.c:2266
+#: browser.c:2242
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
-
-#: mailbox.c:838
-msgid "New mail in "
-msgstr "새 메일 도착 "
 
 #: color.c:466
 #, c-format
@@ -304,304 +300,304 @@ msgstr "%s: 항목 없음"
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: 인덱스 항목에서만 사용 가능한 명령어."
 
-#: color.c:607 color.c:822 color.c:848 color.c:891 color.c:902 color.c:937
-#: color.c:1016 hook.c:111 hook.c:124 init.c:620 init.c:628 init.c:723
-#: init.c:1135 init.c:1334 init.c:1860 init.c:1919 keymap.c:1160 score.c:106
+#: color.c:607 color.c:822 color.c:848 color.c:894 color.c:905 color.c:932
+#: color.c:1011 hook.c:111 hook.c:124 init.c:619 init.c:627 init.c:722
+#: init.c:1134 init.c:1333 init.c:1878 init.c:1937 keymap.c:1160 score.c:106
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: 인수가 부족함"
 
-#: color.c:957
+#: color.c:952
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: 속성 없음."
 
-#: color.c:1025 color.c:1081 hook.c:130 init.c:1163 init.c:2160 init.c:2610
+#: color.c:1020 color.c:1076 hook.c:130 init.c:1162 init.c:2178 init.c:2628
 #: keymap.c:1093 keymap.c:1266 keymap.c:1340 mutt_lua.c:487 score.c:115
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: 인수가 너무 많음"
 
-#: color.c:1050
+#: color.c:1045
 msgid "default colors not supported"
 msgstr "기본 색상들이 지원되지 않음"
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: commands.c:126
+#: commands.c:125
 msgid "Verify signature?"
 msgstr "서명을 확인할까요?"
 
-#: commands.c:151 mbox/mbox.c:1028
-msgid "Could not create temporary file!"
-msgstr "임시 파일을 만들 수 없음!"
+#: commands.c:150 mbox/mbox.c:1028
+msgid "Could not create temporary file"
+msgstr "임시 파일을 만들 수 없음"
 
-#: commands.c:163
+#: commands.c:162
 msgid "Cannot create display filter"
 msgstr "표시 필터를 만들 수 없음"
 
-#: commands.c:193
+#: commands.c:192
 msgid "Could not copy message"
 msgstr "메일을 복사할 수 없음"
 
-#: commands.c:226
-msgid "S/MIME signature successfully verified."
-msgstr "S/MIME 서명 확인에 성공함."
+#: commands.c:225
+msgid "S/MIME signature successfully verified"
+msgstr "S/MIME 서명 확인에 성공함"
 
-#: commands.c:228
-msgid "S/MIME certificate owner does not match sender."
-msgstr "S/MIME 인증서 소유자와 보낸이가 일치하지 않음."
+#: commands.c:227
+msgid "S/MIME certificate owner does not match sender"
+msgstr "S/MIME 인증서 소유자와 보낸이가 일치하지 않음"
 
-#: commands.c:231 commands.c:241
-msgid "Warning: Part of this message has not been signed."
+#: commands.c:230 commands.c:240
+msgid "Warning: Part of this message has not been signed"
 msgstr ""
 
-#: commands.c:233
-msgid "S/MIME signature could NOT be verified."
-msgstr "S/MIME 서명 검증에 실패함."
+#: commands.c:232
+msgid "S/MIME signature could NOT be verified"
+msgstr "S/MIME 서명 검증에 실패함"
 
-#: commands.c:239
-msgid "PGP signature successfully verified."
-msgstr "PGP 서명 확인에 성공함."
+#: commands.c:238
+msgid "PGP signature successfully verified"
+msgstr "PGP 서명 확인에 성공함"
 
-#: commands.c:243
-msgid "PGP signature could NOT be verified."
-msgstr "PGP 서명 검증에 실패함."
+#: commands.c:242
+msgid "PGP signature could NOT be verified"
+msgstr "PGP 서명 검증에 실패함"
 
-#: commands.c:261 compose.c:1915 compress.c:443 curs_lib.c:264 curs_lib.c:534
-#: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
-#: pager.c:2435 sendlib.c:1563
+#: commands.c:260 compose.c:1900 compress.c:428 curs_lib.c:264 curs_lib.c:534
+#: curs_main.c:1017 curs_main.c:1060 mutt_attach.c:150 mutt_attach.c:283
+#: pager.c:2434 sendlib.c:1562
 #, c-format
-msgid "Error running \"%s\"!"
-msgstr "\"%s\" 실행 오류!"
+msgid "Error running \"%s\""
+msgstr "\"%s\" 실행 오류"
 
-#: commands.c:269
+#: commands.c:268
 msgid "Command: "
 msgstr "명령어: "
 
-#: commands.c:300 commands.c:313 recvcmd.c:177 recvcmd.c:189
+#: commands.c:299 commands.c:312 recvcmd.c:177 recvcmd.c:189
 msgid "Warning: message contains no From: header"
 msgstr ""
 
-#: commands.c:323 recvcmd.c:198
+#: commands.c:322 recvcmd.c:198
 #, fuzzy
 msgid "Bounce message to: "
 msgstr "메일을 전달할 주소: "
 
-#: commands.c:325 recvcmd.c:200
+#: commands.c:324 recvcmd.c:200
 #, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "메일을 전달할 주소: "
 
-#: commands.c:334 recvcmd.c:209
-msgid "Error parsing address!"
-msgstr "주소 분석 중 오류!"
+#: commands.c:333 recvcmd.c:209
+msgid "Error parsing address"
+msgstr "주소 분석 중 오류"
 
-#: commands.c:353 recvcmd.c:229
+#: commands.c:352 recvcmd.c:229
 #, fuzzy, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "%s에게 메일 전달"
 
-#: commands.c:368 recvcmd.c:244
+#: commands.c:367 recvcmd.c:244
 #, fuzzy
-msgid "Message not bounced."
-msgid_plural "Messages not bounced."
-msgstr[0] "메일이 전달 되지 않음."
+msgid "Message not bounced"
+msgid_plural "Messages not bounced"
+msgstr[0] "메일이 전달 되지 않음"
 
-#: commands.c:378 recvcmd.c:263
+#: commands.c:377 recvcmd.c:263
 #, fuzzy
-msgid "Message bounced."
-msgid_plural "Messages bounced."
-msgstr[0] "메일이 전달됨."
+msgid "Message bounced"
+msgid_plural "Messages bounced"
+msgstr[0] "메일이 전달됨"
 
-#: commands.c:468 commands.c:510 commands.c:530
+#: commands.c:467 commands.c:509 commands.c:529
 msgid "Can't create filter process"
 msgstr "필터과정을 생성할 수 없음"
 
-#: commands.c:566
+#: commands.c:565
 msgid "Pipe to command: "
 msgstr "명령어로 연결: "
 
-#: commands.c:598
-msgid "No printing command has been defined."
-msgstr "프린트 명령이 정의되지 않음."
+#: commands.c:597
+msgid "No printing command has been defined"
+msgstr "프린트 명령이 정의되지 않음"
 
-#: commands.c:602
+#: commands.c:601
 #, fuzzy
 msgid "Print message?"
 msgstr "메일을 프린트 할까요?"
 
-#: commands.c:602
+#: commands.c:601
 #, fuzzy
 msgid "Print tagged messages?"
 msgstr "메일을 프린트 할까요?"
 
-#: commands.c:608
+#: commands.c:607
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "메일을 프린트함"
 
-#: commands.c:611
+#: commands.c:610
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "메일을 프린트 할 수 없음"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: commands.c:628
+#: commands.c:627
 #, fuzzy
 msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
 msgstr "역순정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: commands.c:632
+#: commands.c:631
 #, fuzzy
 msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "
 msgstr "정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:636
+#: commands.c:635
 #, fuzzy
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzc"
 
-#: commands.c:700
+#: commands.c:699
 msgid "Shell command: "
 msgstr "쉘 명령어: "
 
-#: commands.c:886
+#: commands.c:885
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "복호화-저장 메일함으로"
 
-#: commands.c:886
+#: commands.c:885
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "복호화-저장 메일함으로"
 
-#: commands.c:888
+#: commands.c:887
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "해독-저장 메일함으로"
 
-#: commands.c:888
+#: commands.c:887
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "해독-저장 메일함으로"
 
-#: commands.c:890
+#: commands.c:889
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "저장 메일함으로"
 
-#: commands.c:890
+#: commands.c:889
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "저장 메일함으로"
 
-#: commands.c:895
+#: commands.c:894
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "복호화-복사 메일함으로"
 
-#: commands.c:895
+#: commands.c:894
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "복호화-복사 메일함으로"
 
-#: commands.c:897
+#: commands.c:896
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "해독-복사 메일함으로"
 
-#: commands.c:897
+#: commands.c:896
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "해독-복사 메일함으로"
 
-#: commands.c:899
+#: commands.c:898
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "복사 메일함으로"
 
-#: commands.c:899
+#: commands.c:898
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "복사 메일함으로"
 
-#: commands.c:969
+#: commands.c:968
 #, c-format
 msgid "Copying to %s..."
 msgstr "%s로 복사..."
 
-#: commands.c:1130
+#: commands.c:1129
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "보낼때 %s로 변환할까요?"
 
-#: commands.c:1141
+#: commands.c:1140
 #, c-format
-msgid "Content-Type changed to %s."
-msgstr "%s로 Content-Type이 바뀜."
+msgid "Content-Type changed to %s"
+msgstr "%s로 Content-Type이 바뀜"
+
+#: commands.c:1145
+#, fuzzy, c-format
+msgid "Character set changed to %s; not converting"
+msgstr "문자셋이 %s에서 변환하지 않음로 바뀜"
 
 #: commands.c:1146
 #, fuzzy, c-format
-msgid "Character set changed to %s; not converting."
-msgstr "문자셋이 %s에서 변환하지 않음로 바뀜."
+msgid "Character set changed to %s; converting"
+msgstr "문자셋이 %s에서 변환중로 바뀜"
 
-#: commands.c:1147
-#, fuzzy, c-format
-msgid "Character set changed to %s; converting."
-msgstr "문자셋이 %s에서 변환중로 바뀜."
-
-#: compose.c:80
-msgid "There are no attachments."
-msgstr "첨부물이 없음."
+#: compose.c:79
+msgid "There are no attachments"
+msgstr "첨부물이 없음"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:128
+#: compose.c:127
 msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:130 send.c:338
+#: compose.c:129 send.c:337
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:132 send.c:340
+#: compose.c:131 send.c:339
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:134 send.c:342
+#: compose.c:133 send.c:341
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:136 compose.c:1056 send.c:374
+#: compose.c:135 compose.c:1041 send.c:373
 msgid "Subject: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:138
+#: compose.c:137
 #, fuzzy
 msgid "Reply-To: "
 msgstr "답장"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:140 compose.c:1073
+#: compose.c:139 compose.c:1058
 msgid "Fcc: "
 msgstr ""
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:143
+#: compose.c:142
 msgid "Mix: "
 msgstr ""
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose.c:146
+#: compose.c:145
 msgid "Security: "
 msgstr ""
 
@@ -614,353 +610,353 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:156 ncrypt/crypt_gpgme.c:5133 ncrypt/pgp.c:1935
-#: ncrypt/smime.c:2346
+#: compose.c:155 ncrypt/crypt_gpgme.c:5119 ncrypt/pgp.c:1935
+#: ncrypt/smime.c:2332
 msgid "Sign as: "
 msgstr "사용 서명: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:159
+#: compose.c:158
 msgid "Newsgroups: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:161
+#: compose.c:160
 #, fuzzy
 msgid "Followup-To: "
 msgstr "%s%s에게 댓글?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:163
+#: compose.c:162
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "Reply-To 필드 편집"
 
-#: compose.c:168 compose.c:184
+#: compose.c:167 compose.c:183
 msgid "Send"
 msgstr "보냄"
 
-#: compose.c:169 compose.c:185 remailer.c:553
+#: compose.c:168 compose.c:184 remailer.c:539
 msgid "Abort"
 msgstr "취소"
 
 #. L10N: compose menu help line entry
-#: compose.c:171
+#: compose.c:170
 msgid "To"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose.c:173
+#: compose.c:172
 msgid "CC"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose.c:175 compose.c:187
+#: compose.c:174 compose.c:186
 msgid "Subj"
 msgstr ""
 
-#: compose.c:176 compose.c:188 compose.c:1360
+#: compose.c:175 compose.c:187 compose.c:1345
 msgid "Attach file"
 msgstr "파일 첨부"
 
-#: compose.c:177 compose.c:189
+#: compose.c:176 compose.c:188
 msgid "Descrip"
 msgstr "설명"
 
-#: compose.c:186
+#: compose.c:185
 #, fuzzy
 msgid "Newsgroups"
 msgstr "제목이 지정되지 않음."
 
-#: compose.c:273
+#: compose.c:272
 #, fuzzy
 msgid "Not supported"
 msgstr "태그를 붙이는 것을 지원하지 않음."
 
-#: compose.c:280
+#: compose.c:279
 msgid "Sign, Encrypt"
 msgstr "서명, 암호화"
 
-#: compose.c:285
+#: compose.c:284
 msgid "Encrypt"
 msgstr "암호화"
 
-#: compose.c:290
+#: compose.c:289
 msgid "Sign"
 msgstr "서명"
 
-#: compose.c:296
+#: compose.c:295
 msgid "None"
 msgstr ""
 
-#: compose.c:305
+#: compose.c:304
 #, fuzzy
 msgid " (inline PGP)"
 msgstr "(계속)\n"
 
-#: compose.c:307
+#: compose.c:306
 msgid " (PGP/MIME)"
 msgstr ""
 
-#: compose.c:310
+#: compose.c:309
 msgid " (S/MIME)"
 msgstr ""
 
-#: compose.c:314
+#: compose.c:313
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: compose.c:326 compose.c:335
+#: compose.c:325 compose.c:334
 msgid "<default>"
 msgstr "<기본값>"
 
-#: compose.c:342
+#: compose.c:341
 msgid "Encrypt with: "
 msgstr "암호화 방식: "
 
-#: compose.c:364
+#: compose.c:363
 msgid "<no chain defined>"
 msgstr ""
 
-#: compose.c:409
+#: compose.c:408
 #, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d]는 더 이상 존재하지 않음!"
+msgid "%s [#%d] no longer exists"
+msgstr "%s [#%d]는 더 이상 존재하지 않음"
 
-#: compose.c:416
+#: compose.c:415
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] 변경됨. 다시 인코딩할까요?"
 
-#: compose.c:503
+#: compose.c:502
 msgid "-- Attachments"
 msgstr "-- 첨부물"
 
-#: compose.c:556
-msgid "You may not delete the only attachment."
-msgstr "첨부물만을 삭제할 수는 없습니다."
+#: compose.c:555
+msgid "You may not delete the only attachment"
+msgstr "첨부물만을 삭제할 수는 없습니다"
 
-#: compose.c:1102 edit.c:521 send.c:2155
+#: compose.c:1087 edit.c:521 send.c:2154
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "잘못된 IDN '%s': '%s'"
 
-#: compose.c:1150
+#: compose.c:1135
 #, fuzzy
-msgid "Attachment is already at top."
-msgstr "첨부물 저장됨."
+msgid "Attachment is already at top"
+msgstr "첨부물 저장됨"
 
-#: compose.c:1155 compose.c:1171
+#: compose.c:1140 compose.c:1156
 #, fuzzy
-msgid "The fundamental part cannot be moved."
-msgstr "현재 첨부물은 변환할수 없음."
+msgid "The fundamental part cannot be moved"
+msgstr "현재 첨부물은 변환할수 없음"
 
-#: compose.c:1166
+#: compose.c:1151
 #, fuzzy
-msgid "Attachment is already at bottom."
-msgstr "첨부물 필터됨."
+msgid "Attachment is already at bottom"
+msgstr "첨부물 필터됨"
 
-#: compose.c:1184
-msgid "Grouping alternatives requires at least 2 tagged messages."
+#: compose.c:1169
+msgid "Grouping alternatives requires at least 2 tagged messages"
 msgstr ""
 
-#: compose.c:1265
-msgid "Grouping multilingual requires at least 2 tagged messages."
+#: compose.c:1250
+msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr ""
 
-#: compose.c:1279
+#: compose.c:1264
 msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
-#: compose.c:1281
+#: compose.c:1266
 #, fuzzy
-msgid "Not sending this message."
-msgstr "메일 보내는 중 오류."
+msgid "Not sending this message"
+msgstr "메일 보내는 중 오류"
 
-#: compose.c:1375
+#: compose.c:1360
 #, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "선택된 파일을 첨부중..."
 
-#: compose.c:1389
+#: compose.c:1374
 #, c-format
-msgid "Unable to attach %s!"
-msgstr "%s를 첨부할 수 없음!"
+msgid "Unable to attach %s"
+msgstr "%s를 첨부할 수 없음"
 
-#: compose.c:1409
+#: compose.c:1394
 msgid "Open mailbox to attach message from"
 msgstr "메일을 첨부하기 위해 메일함을 염"
 
-#: compose.c:1420
+#: compose.c:1405
 #, fuzzy
 msgid "Open newsgroup to attach message from"
 msgstr "메일을 첨부하기 위해 메일함을 염"
 
-#: compose.c:1464
+#: compose.c:1449
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "메일함을 잠글 수 없음!"
 
-#: compose.c:1472
-msgid "No messages in that folder."
-msgstr "폴더에 메일이 없음."
+#: compose.c:1457
+msgid "No messages in that folder"
+msgstr "폴더에 메일이 없음"
 
-#: compose.c:1482
-msgid "Tag the messages you want to attach!"
+#: compose.c:1467
+msgid "Tag the messages you want to attach"
 msgstr "첨부하고자 하는 메일을 표시하세요."
 
-#: compose.c:1508
-msgid "Unable to attach!"
-msgstr "첨부할 수 없음!"
+#: compose.c:1493
+msgid "Unable to attach"
+msgstr "첨부할 수 없음"
 
-#: compose.c:1547
-msgid "Recoding only affects text attachments."
-msgstr "저장은 텍스트 첨부물에만 적용됨."
+#: compose.c:1532
+msgid "Recoding only affects text attachments"
+msgstr "저장은 텍스트 첨부물에만 적용됨"
 
-#: compose.c:1552
-msgid "The current attachment won't be converted."
-msgstr "현재 첨부물은 변환할수 없음."
+#: compose.c:1537
+msgid "The current attachment won't be converted"
+msgstr "현재 첨부물은 변환할수 없음"
 
-#: compose.c:1554
-msgid "The current attachment will be converted."
-msgstr "현재 첨부물은 변환 가능함."
+#: compose.c:1539
+msgid "The current attachment will be converted"
+msgstr "현재 첨부물은 변환 가능함"
 
-#: compose.c:1626
+#: compose.c:1611
 msgid "Empty Content-Language"
 msgstr ""
 
-#: compose.c:1643
-msgid "Invalid encoding."
+#: compose.c:1628
+msgid "Invalid encoding"
 msgstr "잘못된 인코딩"
 
-#: compose.c:1667
+#: compose.c:1652
 msgid "Save a copy of this message?"
 msgstr "이 메일의 복사본을 저장할까요?"
 
-#: compose.c:1723
+#: compose.c:1708
 #, fuzzy
 msgid "Send attachment with name: "
 msgstr "첨부물을 text로 보기"
 
-#: compose.c:1739
+#: compose.c:1724
 msgid "Rename to: "
 msgstr "이름 바꾸기: "
 
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1746 editmsg.c:113 editmsg.c:149 sendlib.c:991
+#: compose.c:1731 editmsg.c:112 editmsg.c:148 sendlib.c:990
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s: %s의 상태를 알수 없음."
 
-#: compose.c:1772
+#: compose.c:1757
 msgid "New file: "
 msgstr "새 파일: "
 
-#: compose.c:1787
+#: compose.c:1772
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type이 base/sub 형식임."
 
-#: compose.c:1794
+#: compose.c:1779
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "알 수 없는 Content-Type %s"
 
-#: compose.c:1802
+#: compose.c:1787
 #, c-format
 msgid "Can't create file %s"
 msgstr "%s 파일을 만들 수 없음"
 
-#: compose.c:1811
+#: compose.c:1796
 msgid "What we have here is a failure to make an attachment"
 msgstr "여기에 있는 것들은 첨부 과정에서 실패한 것들입니다."
 
-#: compose.c:1874
+#: compose.c:1859
 msgid "Postpone this message?"
 msgstr "이 메일을 나중에 보낼까요?"
 
-#: compose.c:1933
+#: compose.c:1918
 msgid "Write message to mailbox"
 msgstr "메일함에 메일 쓰기"
 
-#: compose.c:1936
+#: compose.c:1921
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "%s에 메일 쓰는중..."
 
-#: compose.c:1945
-msgid "Message written."
-msgstr "메일 쓰기 완료."
+#: compose.c:1930
+msgid "Message written"
+msgstr "메일 쓰기 완료"
 
-#: compose.c:1954
+#: compose.c:1939
 msgid "No PGP backend configured"
 msgstr ""
 
-#: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+#: compose.c:1947
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "이미 S/MIME이 선택됨. 지우고 계속할까요? "
 
-#: compose.c:1988
+#: compose.c:1973
 msgid "No S/MIME backend configured"
 msgstr ""
 
-#: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+#: compose.c:1981
+msgid "PGP already selected. Clear and continue? "
 msgstr "PGP가 선택됨. 지우고 계속할까요? "
 
-#: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
-msgid "Unable to lock mailbox!"
-msgstr "메일함을 잠글 수 없음!"
+#: compress.c:463 compress.c:528 compress.c:680 compress.c:851 mbox/mbox.c:999
+msgid "Unable to lock mailbox"
+msgstr "메일함을 잠글 수 없음"
 
-#: compress.c:482 compress.c:550 compress.c:699
+#: compress.c:467 compress.c:535 compress.c:684
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compress.c:491
+#: compress.c:476
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compress.c:498 compress.c:571
+#: compress.c:483 compress.c:556
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compress.c:532 compress.c:814
+#: compress.c:517 compress.c:799
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compress.c:553
+#: compress.c:538
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "초기 접속(preconnect) 명령 실패."
 
-#: compress.c:564
-msgid "Unsupported mailbox type for appending."
+#: compress.c:549
+msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compress.c:636
+#: compress.c:621
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "%s로 복사..."
 
-#: compress.c:641
+#: compress.c:626
 #, fuzzy, c-format
 msgid "Compressing %s..."
 msgstr "%s로 복사..."
 
-#: compress.c:648 editmsg.c:254
+#: compress.c:633 editmsg.c:253
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "임시 파일을 저장하는 중 오류: %s"
 
-#: compress.c:856
+#: compress.c:841
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compress.c:878
+#: compress.c:863
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "%s로 복사..."
@@ -992,10 +988,10 @@ msgstr "%s로 연결 중..."
 
 #: conn/conn_raw.c:375
 #, c-format
-msgid "Could not connect to %s (%s)."
-msgstr "%s (%s)로 연결할 수 없음."
+msgid "Could not connect to %s (%s)"
+msgstr "%s (%s)로 연결할 수 없음"
 
-#: conn/conn_raw.c:376 conn/ssl.c:1290 curs_lib.c:472 mutt_logging.c:182
+#: conn/conn_raw.c:376 conn/ssl.c:1290 curs_lib.c:472 mutt_logging.c:175
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
@@ -1021,8 +1017,8 @@ msgid "Error setting SASL external user name"
 msgstr ""
 
 #: conn/socket.c:85
-msgid "Preconnect command failed."
-msgstr "초기 접속(preconnect) 명령 실패."
+msgid "Preconnect command failed"
+msgstr "초기 접속(preconnect) 명령 실패"
 
 #: conn/socket.c:242
 #, c-format
@@ -1031,13 +1027,13 @@ msgstr "%s의 접속이 끊어짐"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "엔트로피를 채우는 중: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "엔트로피를 채우는 중: %s..."
 
 #: conn/ssl.c:223
 #, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s는 안전하지 않은 퍼미션을 가지고 있음!"
+msgid "%s has insecure permissions"
+msgstr "%s는 안전하지 않은 퍼미션을 가지고 있음"
 
 #: conn/ssl.c:369
 #, fuzzy
@@ -1150,8 +1146,8 @@ msgstr "거부(r), 이번만 허가(o)"
 msgid "(r)eject, accept (o)nce"
 msgstr "거부(r), 이번만 허가(o)"
 
-#: conn/ssl.c:1044 conn/ssl_gnutls.c:795 ncrypt/crypt_gpgme.c:4358
-#: ncrypt/pgpkey.c:671 ncrypt/smime.c:572
+#: conn/ssl.c:1044 conn/ssl_gnutls.c:795 ncrypt/crypt_gpgme.c:4344
+#: ncrypt/pgpkey.c:657 ncrypt/smime.c:558
 msgid "Exit  "
 msgstr "끝내기  "
 
@@ -1299,12 +1295,12 @@ msgstr ""
 msgid "Tunnel error talking to %s: %s"
 msgstr "%s (%s) 오류"
 
-#: copy.c:643
+#: copy.c:642
 #, c-format
 msgid "The length calculation was wrong by %ld bytes"
 msgstr ""
 
-#: copy.c:722
+#: copy.c:721
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -1328,189 +1324,189 @@ msgstr "아무키나 누르면 계속합니다..."
 msgid " ('?' for list): "
 msgstr "(목록 보기 '?'): "
 
-#: curs_main.c:100 curs_main.c:1138
-msgid "No mailbox is open."
-msgstr "열린 메일함이 없음."
+#: curs_main.c:99 curs_main.c:1139
+msgid "No mailbox is open"
+msgstr "열린 메일함이 없음"
 
-#: curs_main.c:101
-msgid "There are no messages."
-msgstr "메일이 없음."
+#: curs_main.c:100
+msgid "There are no messages"
+msgstr "메일이 없음"
 
-#: curs_main.c:102 mx.c:1073 pager.c:99 recvattach.c:74
-msgid "Mailbox is read-only."
-msgstr "읽기 전용 메일함."
+#: curs_main.c:101 mx.c:1075 pager.c:98 recvattach.c:73
+msgid "Mailbox is read-only"
+msgstr "읽기 전용 메일함"
 
-#: curs_main.c:104 pager.c:101 recvattach.c:92
-msgid "Function not permitted in attach-message mode."
-msgstr "메일 첨부 모드에서 허가되지 않는 기능임."
+#: curs_main.c:103 pager.c:100 recvattach.c:91
+msgid "Function not permitted in attach-message mode"
+msgstr "메일 첨부 모드에서 허가되지 않는 기능임"
 
-#: curs_main.c:105
-msgid "No visible messages."
-msgstr "메일 없음."
+#: curs_main.c:104
+msgid "No visible messages"
+msgstr "메일 없음"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: curs_main.c:150 pager.c:136
+#: curs_main.c:149 pager.c:135
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
-#: curs_main.c:319
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "읽기 전용 메일함에 쓸수 없음!"
+#: curs_main.c:318
+msgid "Cannot toggle write on a readonly mailbox"
+msgstr "읽기 전용 메일함에 쓸수 없음"
 
-#: curs_main.c:326
-msgid "Changes to folder will be written on folder exit."
-msgstr "변경 사항은 폴더를 닫을때 기록됨."
+#: curs_main.c:325
+msgid "Changes to folder will be written on folder exit"
+msgstr "변경 사항은 폴더를 닫을때 기록됨"
 
-#: curs_main.c:331
-msgid "Changes to folder will not be written."
-msgstr "변경 사항을 기록 하지 않음."
+#: curs_main.c:330
+msgid "Changes to folder will not be written"
+msgstr "변경 사항을 기록 하지 않음"
 
-#: curs_main.c:503 mx.c:378 mx.c:484
+#: curs_main.c:504 muttlib.c:1437 mx.c:380 mx.c:486
 #, c-format
-msgid "%s is not a mailbox."
-msgstr "%s는 메일함이 아님."
+msgid "%s is not a mailbox"
+msgstr "%s는 메일함이 아님"
 
-#: curs_main.c:811 curs_main.c:824
+#: curs_main.c:812 curs_main.c:825
 msgid "Quit"
 msgstr "종료"
 
-#: curs_main.c:814 curs_main.c:827 recvattach.c:87
+#: curs_main.c:815 curs_main.c:828 recvattach.c:86
 msgid "Save"
 msgstr "저장"
 
-#: curs_main.c:815 query.c:72
+#: curs_main.c:816 query.c:72
 msgid "Mail"
 msgstr "메일"
 
-#: curs_main.c:816 pager.c:1851
+#: curs_main.c:817 pager.c:1850
 msgid "Reply"
 msgstr "답장"
 
-#: curs_main.c:817
+#: curs_main.c:818
 msgid "Group"
 msgstr "그룹"
 
-#: curs_main.c:828 pager.c:1858
+#: curs_main.c:829 pager.c:1857
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:829 pager.c:1859
+#: curs_main.c:830 pager.c:1858
 #, fuzzy
 msgid "Followup"
 msgstr "%s%s에게 댓글?"
 
-#: curs_main.c:1000
+#: curs_main.c:1001
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "외부에서 메일함이 변경됨. 플래그가 틀릴 수 있음"
 
-#: curs_main.c:1008 pager.c:2387
-msgid "New mail in this mailbox."
-msgstr "현재 메일함에 새 메일 도착."
+#: curs_main.c:1009 pager.c:2386
+msgid "New mail in this mailbox"
+msgstr "현재 메일함에 새 메일 도착"
 
-#: curs_main.c:1023
-msgid "Mailbox was externally modified."
-msgstr "외부에서 메일함이 변경됨."
+#: curs_main.c:1024
+msgid "Mailbox was externally modified"
+msgstr "외부에서 메일함이 변경됨"
 
-#: curs_main.c:1145
-msgid "No tagged messages."
-msgstr "표시된 메일이 없음."
+#: curs_main.c:1146
+msgid "No tagged messages"
+msgstr "표시된 메일이 없음"
 
-#: curs_main.c:1149 curs_main.c:1418 menu.c:1401
-msgid "Nothing to do."
-msgstr "아무것도 하지 않음."
+#: curs_main.c:1150 curs_main.c:1419 menu.c:1401
+msgid "Nothing to do"
+msgstr "아무것도 하지 않음"
 
-#: curs_main.c:1248
+#: curs_main.c:1249
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "keyID 입력: "
 
-#: curs_main.c:1258
-msgid "Article has no parent reference."
+#: curs_main.c:1259
+msgid "Article has no parent reference"
 msgstr ""
 
-#: curs_main.c:1282
+#: curs_main.c:1283
 #, fuzzy
-msgid "Message is not visible in limited view."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "Message is not visible in limited view"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: curs_main.c:1288
+#: curs_main.c:1289
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: curs_main.c:1298
+#: curs_main.c:1299
 #, c-format
-msgid "Article %s not found on the server."
+msgid "Article %s not found on the server"
 msgstr ""
 
-#: curs_main.c:1317
+#: curs_main.c:1318
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1321 imap/message.c:787 nntp/nntp.c:1353 pop/pop.c:364
+#: curs_main.c:1322 imap/message.c:783 nntp/nntp.c:1352 pop/pop.c:354
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: curs_main.c:1395
+#: curs_main.c:1396
 #, fuzzy
-msgid "No deleted messages found in the thread."
+msgid "No deleted messages found in the thread"
 msgstr "글타래의 모든 메일 지우기"
 
-#: curs_main.c:1415
+#: curs_main.c:1416
 msgid "Jump to message: "
 msgstr "이동: "
 
-#: curs_main.c:1421
-msgid "Argument must be a message number."
-msgstr "메일의 번호만 가능."
+#: curs_main.c:1422
+msgid "Argument must be a message number"
+msgstr "메일의 번호만 가능"
 
-#: curs_main.c:1423
-msgid "Invalid message number."
-msgstr "잘못된 메일 번호."
+#: curs_main.c:1424
+msgid "Invalid message number"
+msgstr "잘못된 메일 번호"
 
-#: curs_main.c:1425
-msgid "That message is not visible."
-msgstr "메일이 볼 수 없는 상태임."
+#: curs_main.c:1426
+msgid "That message is not visible"
+msgstr "메일이 볼 수 없는 상태임"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1462 curs_main.c:2889 pager.c:2997
+#: curs_main.c:1463 curs_main.c:2890 pager.c:2996
 #, fuzzy
 msgid "Cannot delete messages"
 msgstr "삭제 취소된 메일 없음."
 
-#: curs_main.c:1465
+#: curs_main.c:1466
 msgid "Delete messages matching: "
 msgstr "일치하는 메일 삭제: "
 
-#: curs_main.c:1506
-msgid "No limit pattern is in effect."
-msgstr "제한 패턴이 없음."
+#: curs_main.c:1507
+msgid "No limit pattern is in effect"
+msgstr "제한 패턴이 없음"
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1511
+#: curs_main.c:1512
 #, c-format
 msgid "Limit: %s"
 msgstr "패턴: %s"
 
-#: curs_main.c:1549
+#: curs_main.c:1550
 msgid "Limit to messages matching: "
 msgstr "패턴과 일치하는 메일: "
 
-#: curs_main.c:1573
-msgid "To view all messages, limit to \"all\"."
+#: curs_main.c:1574
+msgid "To view all messages, limit to \"all\""
 msgstr ""
 
-#: curs_main.c:1585 pager.c:2489
+#: curs_main.c:1586 pager.c:2488
 msgid "Quit NeoMutt?"
 msgstr "NeoMutt을 종료할까요?"
 
-#: curs_main.c:1681
+#: curs_main.c:1682
 msgid "Tag messages matching: "
 msgstr "일치하는 메일에 표시함: "
 
@@ -1519,238 +1515,238 @@ msgstr "일치하는 메일에 표시함: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1695 curs_main.c:3332 pager.c:3332
+#: curs_main.c:1696 curs_main.c:3333 pager.c:3331
 #, fuzzy
 msgid "Cannot undelete messages"
 msgstr "삭제 취소된 메일 없음."
 
-#: curs_main.c:1698
+#: curs_main.c:1699
 msgid "Undelete messages matching: "
 msgstr "일치하는 메일을 삭제 취소: "
 
-#: curs_main.c:1708
+#: curs_main.c:1709
 msgid "Untag messages matching: "
 msgstr "일치하는 메일을 표시 해제: "
 
-#: curs_main.c:1742
+#: curs_main.c:1743
 #, fuzzy
-msgid "Logged out of IMAP servers."
-msgstr "IMAP 서버 접속 닫는 중..."
+msgid "Logged out of IMAP servers"
+msgstr "IMAP 서버 접속 닫는 중.."
 
-#: curs_main.c:1840
+#: curs_main.c:1841
 #, fuzzy
-msgid "No virtual folder, aborting."
-msgstr "제목 없음. 끝냅니다."
+msgid "No virtual folder, aborting"
+msgstr "제목 없음. 끝냅니다"
 
-#: curs_main.c:1848
-msgid "Failed to read thread, aborting."
+#: curs_main.c:1849
+msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: curs_main.c:1880 mx.c:1470 mx.c:1487
-msgid "Folder doesn't support tagging, aborting."
+#: curs_main.c:1881 mx.c:1472 mx.c:1489
+msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: curs_main.c:1895
+#: curs_main.c:1896
 #, fuzzy
-msgid "No tag specified, aborting."
-msgstr "제목 없음. 끝냅니다."
+msgid "No tag specified, aborting"
+msgstr "제목 없음. 끝냅니다"
 
-#: curs_main.c:1907
+#: curs_main.c:1908
 #, c-format
 msgid "Update tags..."
 msgstr ""
 
-#: curs_main.c:1944
-msgid "Failed to modify tags, aborting."
+#: curs_main.c:1945
+msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: curs_main.c:1989
+#: curs_main.c:1990
 #, fuzzy
-msgid "No query, aborting."
-msgstr "제목 없음. 끝냅니다."
+msgid "No query, aborting"
+msgstr "제목 없음. 끝냅니다"
 
-#: curs_main.c:1993 curs_main.c:2013 curs_main.c:2032
-msgid "Failed to create query, aborting."
+#: curs_main.c:1994 curs_main.c:2014 curs_main.c:2033
+msgid "Failed to create query, aborting"
 msgstr ""
 
-#: curs_main.c:2002 curs_main.c:2021
-msgid "Windowed queries disabled."
+#: curs_main.c:2003 curs_main.c:2022
+msgid "Windowed queries disabled"
 msgstr ""
 
-#: curs_main.c:2007 curs_main.c:2026
-msgid "No notmuch vfolder currently loaded."
+#: curs_main.c:2008 curs_main.c:2027
+msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: curs_main.c:2064
+#: curs_main.c:2065
 msgid "Open mailbox in read-only mode"
 msgstr "읽기 전용으로 메일함 열기"
 
-#: curs_main.c:2067
+#: curs_main.c:2068
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "다른 폴더 열기"
 
-#: curs_main.c:2070
+#: curs_main.c:2071
 msgid "Open mailbox"
 msgstr "메일함 열기"
 
-#: curs_main.c:2080
+#: curs_main.c:2081
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: curs_main.c:2127
+#: curs_main.c:2128
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "읽기 전용으로 메일함 열기"
 
-#: curs_main.c:2129
+#: curs_main.c:2130
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2231
+#: curs_main.c:2232
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "저장하지 않고 NeoMutt을 끝낼까요?"
 
-#: curs_main.c:2247
+#: curs_main.c:2248
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "필터를 만들 수 없음"
 
-#: curs_main.c:2250 curs_main.c:2290 curs_main.c:2771 curs_main.c:2803
+#: curs_main.c:2251 curs_main.c:2291 curs_main.c:2772 curs_main.c:2804
 #: flags.c:376 mutt_thread.c:1043 mutt_thread.c:1107 mutt_thread.c:1186
-msgid "Threading is not enabled."
-msgstr "글타래 모드가 아님."
+msgid "Threading is not enabled"
+msgstr "글타래 모드가 아님"
 
-#: curs_main.c:2263
+#: curs_main.c:2264
 msgid "Thread broken"
 msgstr ""
 
-#: curs_main.c:2276
+#: curs_main.c:2277
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2287
+#: curs_main.c:2288
 msgid "Cannot link threads"
 msgstr ""
 
-#: curs_main.c:2292
+#: curs_main.c:2293
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: curs_main.c:2294
+#: curs_main.c:2295
 #, fuzzy
 msgid "First, please tag a message to be linked here"
 msgstr "현재 메일을 저장 후 나중에 보냄"
 
-#: curs_main.c:2305
+#: curs_main.c:2306
 msgid "Threads linked"
 msgstr ""
 
-#: curs_main.c:2308
+#: curs_main.c:2309
 msgid "No thread linked"
 msgstr ""
 
-#: curs_main.c:2344 curs_main.c:2370
-msgid "You are on the last message."
-msgstr "마지막 메세지입니다."
+#: curs_main.c:2345 curs_main.c:2371
+msgid "You are on the last message"
+msgstr "마지막 메세지입니다"
 
-#: curs_main.c:2352 curs_main.c:2397
-msgid "No undeleted messages."
-msgstr "삭제 취소된 메일 없음."
+#: curs_main.c:2353 curs_main.c:2398
+msgid "No undeleted messages"
+msgstr "삭제 취소된 메일 없음"
 
-#: curs_main.c:2389 curs_main.c:2415
-msgid "You are on the first message."
-msgstr "첫번째 메세지입니다."
+#: curs_main.c:2390 curs_main.c:2416
+msgid "You are on the first message"
+msgstr "첫번째 메세지입니다"
 
-#: curs_main.c:2544
+#: curs_main.c:2545
 #, fuzzy
-msgid "No new messages in this limited view."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "No new messages in this limited view"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: curs_main.c:2546
+#: curs_main.c:2547
 #, fuzzy
-msgid "No new messages."
+msgid "No new messages"
 msgstr "새 메일 없음"
 
-#: curs_main.c:2551
+#: curs_main.c:2552
 #, fuzzy
-msgid "No unread messages in this limited view."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "No unread messages in this limited view"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: curs_main.c:2553
+#: curs_main.c:2554
 #, fuzzy
-msgid "No unread messages."
+msgid "No unread messages"
 msgstr "읽지 않은 메일 없음"
 
-#: curs_main.c:2562 menu.c:1191 pager.c:2613 pattern.c:2411
-msgid "Search wrapped to top."
-msgstr "위부터 다시 검색."
+#: curs_main.c:2563 menu.c:1191 pager.c:2612 pattern.c:2410
+msgid "Search wrapped to top"
+msgstr "위부터 다시 검색"
 
-#: curs_main.c:2567 pager.c:2636 pattern.c:2422
-msgid "Search wrapped to bottom."
-msgstr "아래부터 다시 검색."
+#: curs_main.c:2568 pager.c:2635 pattern.c:2421
+msgid "Search wrapped to bottom"
+msgstr "아래부터 다시 검색"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2585
+#: curs_main.c:2586
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "메일 보기"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2626 pager.c:3291
+#: curs_main.c:2627 pager.c:3290
 msgid "Cannot toggle new"
 msgstr ""
 
-#: curs_main.c:2703
-msgid "No more threads."
-msgstr "더 이상 글타래 없음."
+#: curs_main.c:2704
+msgid "No more threads"
+msgstr "더 이상 글타래 없음"
 
-#: curs_main.c:2705
-msgid "You are on the first thread."
-msgstr "처음 글타래입니다."
+#: curs_main.c:2706
+msgid "You are on the first thread"
+msgstr "처음 글타래입니다"
 
-#: curs_main.c:2789
+#: curs_main.c:2790
 #, fuzzy
-msgid "Thread contains unread or flagged messages."
-msgstr "글타래에 읽지 않은 메세지 있음."
+msgid "Thread contains unread or flagged messages"
+msgstr "글타래에 읽지 않은 메세지 있음"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2839 pager.c:2959
+#: curs_main.c:2840 pager.c:2958
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "삭제 취소된 메일 없음."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2955
+#: curs_main.c:2956
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "메일을 쓰지 못함"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:3018 pager.c:3397
+#: curs_main.c:3019 pager.c:3396
 #, fuzzy, c-format
-msgid "%d label changed."
-msgid_plural "%d labels changed."
-msgstr[0] "메일함이 변경되지 않음."
+msgid "%d label changed"
+msgid_plural "%d labels changed"
+msgstr[0] "메일함이 변경되지 않음"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:3025 pager.c:3401
+#: curs_main.c:3026 pager.c:3400
 #, fuzzy
-msgid "No labels changed."
-msgstr "메일함이 변경되지 않음."
+msgid "No labels changed"
+msgstr "메일함이 변경되지 않음"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:3129
+#: curs_main.c:3130
 #, fuzzy
 msgid "Cannot mark messages as read"
 msgstr "글타래의 부모 메일로 이동"
@@ -1758,14 +1754,14 @@ msgstr "글타래의 부모 메일로 이동"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3165
+#: curs_main.c:3166
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "keyID 입력: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3173
+#: curs_main.c:3174
 #, fuzzy
 msgid "message hotkey"
 msgstr "발송 연기됨."
@@ -1773,28 +1769,28 @@ msgstr "발송 연기됨."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3178
+#: curs_main.c:3179
 #, fuzzy, c-format
-msgid "Message bound to %s."
-msgstr "메일이 전달됨."
+msgid "Message bound to %s"
+msgstr "메일이 전달됨"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3187
+#: curs_main.c:3188
 #, fuzzy
-msgid "No message ID to macro."
-msgstr "폴더에 메일이 없음."
+msgid "No message ID to macro"
+msgstr "폴더에 메일이 없음"
 
-#: curs_main.c:3230 pager.c:3141 recvattach.c:1562
+#: curs_main.c:3231 pager.c:3140 recvattach.c:1547
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3233 pager.c:3106 pager.c:3118 pager.c:3144
+#: curs_main.c:3234 pager.c:3105 pager.c:3117 pager.c:3143
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3298 pager.c:3311
+#: curs_main.c:3299 pager.c:3310
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "삭제 취소된 메일 없음."
@@ -1900,47 +1896,47 @@ msgstr "메세지에 내용 없음.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: 알 수 없는 편집 명령 (~? 도움말)\n"
 
-#: editmsg.c:93
+#: editmsg.c:92
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "임시 폴더를 만들 수 없음: %s"
 
-#: editmsg.c:106
+#: editmsg.c:105
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "임시 메일 폴더를 쓸 수 없음: %s"
 
-#: editmsg.c:125
+#: editmsg.c:124
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "임시 메일 폴더를 삭제 할 수 없음: %s"
 
-#: editmsg.c:155
-msgid "Message file is empty!"
-msgstr "메세지 파일이 비었음!"
+#: editmsg.c:154
+msgid "Message file is empty"
+msgstr "메세지 파일이 비었음"
 
-#: editmsg.c:162
-msgid "Message not modified!"
-msgstr "메세지가 변경되지 않음!"
+#: editmsg.c:161
+msgid "Message not modified"
+msgstr "메세지가 변경되지 않음"
 
-#: editmsg.c:169
+#: editmsg.c:168
 msgid "Message of read-only mailbox modified! Ignoring changes."
 msgstr ""
 
-#: editmsg.c:185
+#: editmsg.c:184
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "메세지 파일을 열 수 없음: %s"
 
 #. L10N: %s is from strerror(errno)
-#: editmsg.c:193 editmsg.c:220
+#: editmsg.c:192 editmsg.c:219
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "폴더에 첨가할 수 없음: %s"
 
 #: email/parse.c:1278
-msgid "multipart message has no boundary parameter!"
-msgstr "다중 파트 메일에 경계 변수가 없음!"
+msgid "multipart message has no boundary parameter"
+msgstr "다중 파트 메일에 경계 변수가 없음"
 
 #: flags.c:432
 msgid "Set flag"
@@ -1950,43 +1946,43 @@ msgstr "플래그 설정"
 msgid "Clear flag"
 msgstr "플래그 지움"
 
-#: handler.c:88
+#: handler.c:95
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 종류: %s/%s, 인코딩 방식: %s, 크기: %s --]\n"
 
-#: handler.c:94
+#: handler.c:101
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 종류: %s/%s, 인코딩 방식: %s, 크기: %s --]\n"
 
-#: handler.c:551
+#: handler.c:554
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s를 사용한 자동 보기 --]\n"
 
-#: handler.c:552
+#: handler.c:555
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "자동 보기 명령 실행: %s"
 
-#: handler.c:580 mutt_attach.c:517 mutt_attach.c:696 mutt_attach.c:729
-#: mutt_attach.c:1064 mutt_attach.c:1126 ncrypt/pgpkey.c:728
-#: ncrypt/pgpkey.c:924
+#: handler.c:583 mutt_attach.c:516 mutt_attach.c:695 mutt_attach.c:728
+#: mutt_attach.c:1063 mutt_attach.c:1125 ncrypt/pgpkey.c:714
+#: ncrypt/pgpkey.c:910
 msgid "Can't create filter"
 msgstr "필터를 만들 수 없음"
 
-#: handler.c:584
+#: handler.c:587
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s를 실행할 수 없음. --]\n"
 
-#: handler.c:603 handler.c:624
+#: handler.c:606 handler.c:627
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s의 자동 보기 오류 --]\n"
 
-#: handler.c:757
+#: handler.c:750
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 오류: message/external-body에 access-type 변수가 없음 --]\n"
 
@@ -2006,7 +2002,7 @@ msgstr "[-- 오류: message/external-body에 access-type 변수가 없음 --]\n"
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
-#: handler.c:802
+#: handler.c:795
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
@@ -2033,7 +2029,7 @@ msgstr[0] ""
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
-#: handler.c:826
+#: handler.c:819
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -2047,7 +2043,7 @@ msgstr[0] "[ -- %s/%s 첨부물 (크기: %s 바이트) 삭제 되었음 --]\n"
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #.
-#: handler.c:845
+#: handler.c:838
 #, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
@@ -2060,12 +2056,12 @@ msgstr ""
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
-#: handler.c:854
+#: handler.c:847
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[ -- %s/%s 첨부물 삭제 되었음 --]\n"
 
-#: handler.c:864
+#: handler.c:857
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- 이름: %s --]\n"
@@ -2074,7 +2070,7 @@ msgstr "[-- 이름: %s --]\n"
 #. each line should start with "[-- " and end with " --]".
 #. The "%s/%s" is a MIME type, e.g. "text/plain".
 #.
-#: handler.c:879
+#: handler.c:872
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2090,7 +2086,7 @@ msgstr ""
 #. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
 #. "LOCAL-FILE", "MAIL-SERVER".
 #.
-#: handler.c:897
+#: handler.c:890
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -2099,79 +2095,79 @@ msgstr ""
 "[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
 "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
-#: handler.c:1082
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- 오류:  Multipart/Alternative 부분을 표시 수 없음! --]\n"
+#: handler.c:1071
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- 오류:  Multipart/Alternative 부분을 표시 수 없음 --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
-#: handler.c:1230
+#: handler.c:1213
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- 첨부물 #%d: %s --]\n"
 
-#: handler.c:1235
+#: handler.c:1218
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- 첨부물 #%d --]\n"
 
-#: handler.c:1251
+#: handler.c:1234
 msgid "One or more parts of this message could not be displayed"
 msgstr ""
 
-#: handler.c:1317
+#: handler.c:1300
 #, fuzzy
-msgid "Unable to open 'memory stream'!"
-msgstr "임시 파일을 열 수 없음!"
+msgid "Unable to open 'memory stream'"
+msgstr "임시 파일을 열 수 없음"
 
-#: handler.c:1326
-msgid "Unable to open temporary file!"
-msgstr "임시 파일을 열 수 없음!"
+#: handler.c:1309
+msgid "Unable to open temporary file"
+msgstr "임시 파일을 열 수 없음"
 
-#: handler.c:1376
+#: handler.c:1359
 #, fuzzy
-msgid "failed to re-open 'memory stream'!"
-msgstr "임시 파일을 열 수 없음!"
+msgid "failed to re-open 'memory stream'"
+msgstr "임시 파일을 열 수 없음"
 
-#: handler.c:1588
-msgid "Error: multipart/signed has no protocol."
-msgstr "오류: multipart/signed 프로토콜이 없음."
+#: handler.c:1563
+msgid "Error: multipart/signed has no protocol"
+msgstr "오류: multipart/signed 프로토콜이 없음"
 
-#: handler.c:1652
+#: handler.c:1627
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[ -- %s/%s 첨부물 ('%3$s' 키: 부분 보기) --]\n"
 
-#: handler.c:1660
+#: handler.c:1635
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- '%s/%s'는 지원되지 않음 ('%s' 키: 부분 보기) --]\n"
 
-#: handler.c:1667
+#: handler.c:1642
 #, fuzzy
-msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "[ -- %s/%s 첨부물 ('첨부물 보기' 글쇠 정의가 필요함!) --]\n"
+msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
+msgstr "[ -- %s/%s 첨부물 ('첨부물 보기' 글쇠 정의가 필요함) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1673
+#: handler.c:1648
 #, fuzzy, c-format
-msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "[-- '%s/%s'는 지원되지 않음 ('첨부물 보기' 글쇠 정의가 필요함!) --]\n"
+msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
+msgstr "[-- '%s/%s'는 지원되지 않음 ('첨부물 보기' 글쇠 정의가 필요함) --]\n"
 
-#: handler.c:1681
+#: handler.c:1656
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[ -- %s/%s 첨부물 --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1685
+#: handler.c:1660
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- '%s/%s'는 지원되지 않음 --]\n"
 
-#: hcache/hcache.c:160 main.c:810 nntp/newsrc.c:1128
+#: hcache/hcache.c:160 main.c:809 nntp/newsrc.c:1102
 #, c-format
-msgid "Can't create %s: %s."
-msgstr "%s를 만들 수 없음: %s."
+msgid "Can't create %s: %s"
+msgstr "%s를 만들 수 없음: %s"
 
 #: help.c:391
 msgid "ERROR: please report this bug"
@@ -2207,8 +2203,8 @@ msgid "badly formatted command string"
 msgstr ""
 
 #: hook.c:344
-msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: unhook * 할 수 없음."
+msgid "unhook: Can't do unhook * from within a hook"
+msgstr "unhook: unhook * 할 수 없음"
 
 #: hook.c:356
 #, c-format
@@ -2217,8 +2213,8 @@ msgstr "unhook: 알 수 없는 hook 유형: %s"
 
 #: hook.c:366
 #, c-format
-msgid "unhook: Can't delete a %s from within a %s."
-msgstr "unhook: %s를 %s에서 지울 수 없음."
+msgid "unhook: Can't delete a %s from within a %s"
+msgstr "unhook: %s를 %s에서 지울 수 없음"
 
 #: imap/auth.c:119
 #, fuzzy
@@ -2230,7 +2226,7 @@ msgid "Authenticating (anonymous)..."
 msgstr "인증 중 (anonymous)..."
 
 #: imap/auth_anon.c:88
-msgid "Anonymous authentication failed."
+msgid "Anonymous authentication failed"
 msgstr "Anonymous 인증 실패"
 
 #: imap/auth_cram.c:108
@@ -2238,439 +2234,440 @@ msgid "Authenticating (CRAM-MD5)..."
 msgstr "인증 중 (CRAM-MD5)..."
 
 #: imap/auth_cram.c:181
-msgid "CRAM-MD5 authentication failed."
-msgstr "CRAM-MD5 인증에 실패함."
+msgid "CRAM-MD5 authentication failed"
+msgstr "CRAM-MD5 인증에 실패함"
 
 #: imap/auth_gss.c:165
 msgid "Authenticating (GSSAPI)..."
 msgstr "인증 중 (GSSAPI)..."
 
 #: imap/auth_gss.c:325
-msgid "GSSAPI authentication failed."
-msgstr "GSSAPI 인증에 실패함."
+msgid "GSSAPI authentication failed"
+msgstr "GSSAPI 인증에 실패함"
 
 #: imap/auth_login.c:53
-msgid "LOGIN disabled on this server."
-msgstr "이 서버는 LOGIN이 허용되지 않음."
+msgid "LOGIN disabled on this server"
+msgstr "이 서버는 LOGIN이 허용되지 않음"
 
 #: imap/auth_login.c:62 imap/auth_plain.c:57 pop/pop_auth.c:284
 msgid "Logging in..."
 msgstr "접속 중..."
 
 #: imap/auth_login.c:82 imap/auth_plain.c:96 pop/pop_auth.c:324
-msgid "Login failed."
-msgstr "접속 실패."
+msgid "Login failed"
+msgstr "접속 실패"
 
-#: imap/auth_sasl.c:123 nntp/nntp.c:424 nntp/nntp.c:490 smtp.c:432
+#: imap/auth_sasl.c:123 nntp/nntp.c:423 nntp/nntp.c:489 smtp.c:432
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "인증 중 (%s)..."
 
-#: imap/auth_sasl.c:253 pop/pop_auth.c:199
-msgid "SASL authentication failed."
-msgstr "SASL 인증에 실패함."
+#: imap/auth_sasl.c:253 pop/pop_auth.c:199 smtp.c:551 smtp.c:575
+msgid "SASL authentication failed"
+msgstr "SASL 인증에 실패함"
 
-#: imap/browse.c:209 imap/imap.c:1994
+#: imap/browse.c:212 imap/imap.c:1993
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s는 잘못된 IMAP 패스임"
 
-#: imap/browse.c:221
+#: imap/browse.c:224
 msgid "Getting folder list..."
 msgstr "폴더 목록 받는 중..."
 
-#: imap/browse.c:338
+#: imap/browse.c:341
 msgid "No such folder"
 msgstr "폴더 없음"
 
-#: imap/browse.c:395
+#: imap/browse.c:398
 msgid "Create mailbox: "
 msgstr "메일함 열기"
 
-#: imap/browse.c:400 imap/browse.c:460
-msgid "Mailbox must have a name."
-msgstr "메일함은 이름을 가져야 함."
+#: imap/browse.c:403 imap/browse.c:463
+msgid "Mailbox must have a name"
+msgstr "메일함은 이름을 가져야 함"
 
-#: imap/browse.c:407
-msgid "Mailbox created."
-msgstr "메일함이 생성됨."
+#: imap/browse.c:410
+msgid "Mailbox created"
+msgstr "메일함이 생성됨"
 
-#: imap/browse.c:448
+#: imap/browse.c:451
 #, fuzzy
 msgid "Cannot rename root folder"
 msgstr "필터를 만들 수 없음"
 
-#: imap/browse.c:452
+#: imap/browse.c:455
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "메일함 열기"
 
-#: imap/browse.c:468
+#: imap/browse.c:471
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "SSL 실패: %s"
 
-#: imap/browse.c:472
+#: imap/browse.c:475
 #, fuzzy
-msgid "Mailbox renamed."
-msgstr "메일함이 생성됨."
+msgid "Mailbox renamed"
+msgstr "메일함이 생성됨"
 
-#: imap/command.c:162
+#: imap/command.c:161
 #, fuzzy, c-format
 msgid "Mailbox %s@%s closed"
 msgstr "메일함이 닫힘"
 
-#: imap/command.c:1126 imap/command.c:1220
+#: imap/command.c:1125 imap/command.c:1219
 #, fuzzy, c-format
 msgid "Connection to %s timed out"
 msgstr "%s의 접속이 끊어짐"
 
-#: imap/imap.c:90
+#: imap/imap.c:89
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "오래된 버젼의 IMAP 서버로 NeoMutt와 사용할 수 없습니다."
 
-#: imap/imap.c:464
+#: imap/imap.c:463
 #, c-format
 msgid "Header search without header name: %s"
 msgstr ""
 
-#: imap/imap.c:494
+#: imap/imap.c:493
 #, c-format
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/imap.c:672
+#: imap/imap.c:671
 #, fuzzy, c-format
 msgid "CREATE failed: %s"
 msgstr "SSL 실패: %s"
 
-#: imap/imap.c:753
+#: imap/imap.c:752
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "%s와의 연결을 닫는중..."
 
-#: imap/imap.c:1039 nntp/nntp.c:714 pop/pop_lib.c:334 smtp.c:654
+#: imap/imap.c:1038 nntp/nntp.c:713 pop/pop_lib.c:334 smtp.c:654
 msgid "Secure connection with TLS?"
 msgstr "TLS를 사용하여 연결 할까요?"
 
-#: imap/imap.c:1052 nntp/nntp.c:735 pop/pop_lib.c:353 smtp.c:669
+#: imap/imap.c:1051 nntp/nntp.c:734 pop/pop_lib.c:353 smtp.c:669
 msgid "Could not negotiate TLS connection"
 msgstr "TLS 연결 할수 없음"
 
-#: imap/imap.c:1067 pop/pop_lib.c:373
+#: imap/imap.c:1066 pop/pop_lib.c:373
 msgid "Encrypted connection unavailable"
 msgstr ""
 
-#: imap/imap.c:1717
+#: imap/imap.c:1716
 msgid "Bad mailbox name"
 msgstr "잘못된 메일함 이름"
 
-#: imap/imap.c:1742
+#: imap/imap.c:1741
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 가입 중..."
 
-#: imap/imap.c:1744
+#: imap/imap.c:1743
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1754 init.c:2174
+#: imap/imap.c:1753 init.c:2192
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
 
-#: imap/imap.c:1756 init.c:2624
+#: imap/imap.c:1755 init.c:2642
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: imap/imap.c:1935 imap/message.c:1457
+#: imap/imap.c:1934 imap/message.c:1453
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1952 imap/imap.c:2242 imap/message.c:1496 muttlib.c:1453
+#: imap/imap.c:1951 imap/imap.c:2241 imap/message.c:1492 muttlib.c:1451
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:2029 nntp/nntp.c:1550
+#: imap/imap.c:2028 nntp/nntp.c:1549
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
-#: imap/imap.c:2188
+#: imap/imap.c:2187
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:2390
+#: imap/imap.c:2389
 msgid "Expunge failed"
 msgstr "삭제 실패"
 
-#: imap/imap.c:2401
+#: imap/imap.c:2400
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d개의 메일을 삭제 표시함..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
-#: imap/imap.c:2436
+#: imap/imap.c:2435
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:2492
+#: imap/imap.c:2491
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:2500
+#: imap/imap.c:2499
 #, fuzzy
 msgid "Error saving flags"
 msgstr "주소 분석 중 오류!"
 
-#: imap/imap.c:2522
+#: imap/imap.c:2521
 msgid "Expunging messages from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: imap/imap.c:2528
+#: imap/imap.c:2527
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 삭제 실패"
 
-#: imap/imap.c:2567
+#: imap/imap.c:2566
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2611
+#: imap/imap.c:2610
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "무효   "
 
-#: imap/message.c:480 mx.c:1338
-msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+#: imap/message.c:476 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
+#: mutt/memory.c:142 mx.c:1340 safe_asprintf.c:61
+msgid "Out of memory"
+msgstr "메모리 부족"
 
-#: imap/message.c:649
-msgid "Unable to fetch headers from this IMAP server version."
-msgstr "이 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다."
+#: imap/message.c:645
+msgid "Unable to fetch headers from this IMAP server version"
+msgstr "이 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다"
 
-#: imap/message.c:658 mutt/history.c:261 ncrypt/crypt_gpgme.c:698
+#: imap/message.c:654 mutt/history.c:261 ncrypt/crypt_gpgme.c:698
 #: ncrypt/crypt_gpgme.c:2026 ncrypt/crypt_gpgme.c:2046
 #: ncrypt/crypt_gpgme.c:2099 ncrypt/crypt_gpgme.c:2116
 #: ncrypt/crypt_gpgme.c:2151 ncrypt/crypt_gpgme.c:2169
 #: ncrypt/crypt_gpgme.c:2257 ncrypt/crypt_gpgme.c:2784
-#: ncrypt/crypt_gpgme.c:2860 ncrypt/crypt_gpgme.c:3992 ncrypt/pgp.c:578
+#: ncrypt/crypt_gpgme.c:2860 ncrypt/crypt_gpgme.c:3978 ncrypt/pgp.c:578
 #: ncrypt/pgp.c:586 ncrypt/pgp.c:889 ncrypt/pgp.c:1001 ncrypt/pgp.c:1143
-#: ncrypt/pgp.c:1163 ncrypt/pgp.c:1197 ncrypt/pgp.c:1527 ncrypt/pgpkey.c:715
-#: ncrypt/pgpkey.c:906 ncrypt/pgpmicalg.c:185 ncrypt/smime.c:1118
-#: ncrypt/smime.c:1126 ncrypt/smime.c:1211 ncrypt/smime.c:1318
-#: ncrypt/smime.c:1379 ncrypt/smime.c:1387 ncrypt/smime.c:1579
-#: ncrypt/smime.c:1955 ncrypt/smime.c:2031 ncrypt/smime.c:2038
-#: ncrypt/smime.c:2140 ncrypt/smime.c:2240 ncrypt/smime.c:2256 nntp/nntp.c:1420
-#: nntp/nntp.c:2455 pattern.c:1000 pop/pop.c:131
+#: ncrypt/pgp.c:1163 ncrypt/pgp.c:1197 ncrypt/pgp.c:1527 ncrypt/pgpkey.c:701
+#: ncrypt/pgpkey.c:892 ncrypt/pgpmicalg.c:185 ncrypt/smime.c:1104
+#: ncrypt/smime.c:1112 ncrypt/smime.c:1197 ncrypt/smime.c:1304
+#: ncrypt/smime.c:1365 ncrypt/smime.c:1373 ncrypt/smime.c:1565
+#: ncrypt/smime.c:1941 ncrypt/smime.c:2017 ncrypt/smime.c:2024
+#: ncrypt/smime.c:2126 ncrypt/smime.c:2226 ncrypt/smime.c:2242 nntp/nntp.c:1419
+#: nntp/nntp.c:2454 pattern.c:999 pop/pop.c:130
 msgid "Can't create temporary file"
 msgstr "임시 파일을 만들 수 없음"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:692
+#: imap/message.c:688
 #, fuzzy
 msgid "Evaluating cache..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:1030 imap/message.c:1096 nntp/nntp.c:1678 pop/pop.c:673
+#: imap/message.c:1026 imap/message.c:1092 nntp/nntp.c:1677 pop/pop.c:663
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:1082 pop/pop.c:669
+#: imap/message.c:1078 pop/pop.c:659
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "잘못된 메일 인덱스. 메일함 열기 재시도."
 
-#: imap/message.c:1282
+#: imap/message.c:1278
 #, fuzzy
 msgid "Uploading message..."
 msgstr "메일을 업로드 하는 중..."
 
-#: imap/message.c:1463
+#: imap/message.c:1459
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메세지 %d를 %s로 복사 중..."
 
-#: imap/util.c:574
+#: imap/util.c:569
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: init.c:301
+#: init.c:300
 #, c-format
 msgid "Error in command line: %s"
 msgstr "명령어 오류: %s"
 
-#: init.c:411
+#: init.c:410
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "사용자 이름을 알수 없음"
 
-#: init.c:578
+#: init.c:577
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:588
+#: init.c:587
 #, fuzzy
 msgid "out of arguments"
 msgstr "인수가 부족함"
 
-#: init.c:820 init.c:1750
+#: init.c:819 init.c:1755
 #, c-format
-msgid "Error: impossible to build path of '%s'."
+msgid "Error: impossible to build path of '%s'"
 msgstr ""
 
-#: init.c:837
+#: init.c:836
 #, c-format
-msgid "Error: Cyclic sourcing of configuration file '%s'."
+msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr ""
 
-#: init.c:868
+#: init.c:867
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: init.c:879
+#: init.c:878
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
-#: init.c:903
+#: init.c:902
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: init.c:903
+#: init.c:902
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
-#: init.c:912
+#: init.c:911
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %s에 오류"
 
-#: init.c:947
+#: init.c:946
 msgid "alias: no address"
 msgstr "별칭: 주소 없음"
 
-#: init.c:989
+#: init.c:988
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'"
+msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'"
 
-#: init.c:1074
+#: init.c:1073
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1085
+#: init.c:1084
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1115
+#: init.c:1114
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:1209
+#: init.c:1208
 #, c-format
-msgid "%sgroup: missing -rx or -addr."
+msgid "%sgroup: missing -rx or -addr"
 msgstr ""
 
-#: init.c:1232
+#: init.c:1231
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'"
+msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'"
 
-#: init.c:1345
+#: init.c:1344
 #, c-format
 msgid "Error: %s"
 msgstr ""
 
-#: init.c:1433
+#: init.c:1432
 msgid "invalid header field"
 msgstr "잘못된 헤더 필드"
 
-#: init.c:1715 init.c:1798 init.c:3493 init.c:3500
+#: init.c:1714 init.c:1816 init.c:3511 init.c:3518
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: 알 수 없는 변수"
 
-#: init.c:1898
+#: init.c:1916
 #, c-format
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: init.c:1949 mutt_lua.c:482
+#: init.c:1967 mutt_lua.c:482
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1957
+#: init.c:1975
 #, fuzzy, c-format
-msgid "source: file %s could not be sourced."
+msgid "source: file %s could not be sourced"
 msgstr "메일들을 프린트 할 수 없음"
 
-#: init.c:1986
+#: init.c:2004
 #, fuzzy
 msgid "spam: no matching pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
-#: init.c:1988
+#: init.c:2006
 #, fuzzy
 msgid "nospam: no matching pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
-#: init.c:2169
+#: init.c:2187
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s에 가입 중..."
 
-#: init.c:2185 init.c:2635
+#: init.c:2203 init.c:2653
 #, fuzzy
 msgid "No folder specified"
 msgstr "제목이 지정되지 않음."
 
-#: init.c:2382
+#: init.c:2400
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "첨부물 설명 편집"
 
-#: init.c:2409
+#: init.c:2427
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: init.c:2619
+#: init.c:2637
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: init.c:3382
+#: init.c:3400
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:4037 init.c:4067 init.c:4114
+#: init.c:4050 init.c:4074 init.c:4109
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "잘못된 날짜 입력: %s"
 
-#: init.c:4086
+#: init.c:4087
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
-#: init.c:4136
+#: init.c:4125
 #, fuzzy, c-format
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "메일 첨부 모드에서 허가되지 않는 기능임."
@@ -2681,16 +2678,16 @@ msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neo
 msgstr ""
 
 #: keymap.c:678
-msgid "Macros are currently disabled."
+msgid "Macros are currently disabled"
 msgstr ""
 
 #: keymap.c:685
-msgid "Macro loop detected."
-msgstr "매크로 루프가 발생."
+msgid "Macro loop detected"
+msgstr "매크로 루프가 발생"
 
 #: keymap.c:1033 keymap.c:1068
-msgid "Key is not bound."
-msgstr "정의되지 않은 글쇠."
+msgid "Key is not bound"
+msgstr "정의되지 않은 글쇠"
 
 #: keymap.c:1073
 #, c-format
@@ -2734,33 +2731,37 @@ msgstr "키 입력 (^G 취소): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Char = %s, Octal = %o, Decimal = %d"
 
-#: maildir/mh.c:1445
+#: mailbox.c:845
+msgid "New mail in "
+msgstr "새 메일 도착 "
+
+#: maildir/mh.c:1444
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: maildir/mh.c:1465 mbox/mbox.c:141 mbox/mbox.c:302 mx.c:502
+#: maildir/mh.c:1464 mbox/mbox.c:141 mbox/mbox.c:302 mx.c:504
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
-#: maildir/mh.c:1825 maildir/mh.c:1920
+#: maildir/mh.c:1824 maildir/mh.c:1919
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "메일을 보낼 수 없음."
 
-#: maildir/mh.c:1864
+#: maildir/mh.c:1863
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
-#: maildir/mh.c:2607 mbox/mbox.c:1070 mx.c:591 notmuch/mutt_notmuch.c:2648
+#: maildir/mh.c:2606 mbox/mbox.c:1070 mx.c:593 notmuch/mutt_notmuch.c:2651
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:209
+#: main.c:208
 msgid ""
 "usage:\n"
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -2784,7 +2785,7 @@ msgstr ""
 
 #. L10N: Try to limit to 80 columns
 #. If more space is needed add an indented line
-#: main.c:230
+#: main.c:229
 msgid ""
 "options:\n"
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
@@ -2827,70 +2828,70 @@ msgid ""
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:295
-msgid "Error initializing terminal."
-msgstr "터미널 초기화 오류."
+#: main.c:294
+msgid "Error initializing terminal"
+msgstr "터미널 초기화 오류"
 
-#: main.c:375
+#: main.c:374
 msgid "unable to determine username"
 msgstr "사용자 이름을 알수 없음"
 
-#: main.c:381
+#: main.c:380
 msgid "unable to determine home directory"
 msgstr "홈 디렉토리를 찾을 수 없음"
 
-#: main.c:623
+#: main.c:622
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d."
-msgstr "오류: '%s'는 잘못된 IDN."
+msgid "Error: value '%s' is invalid for -d"
+msgstr "오류: '%s'는 잘못된 IDN"
 
-#: main.c:806
+#: main.c:805
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s가 없음. 만들까요?"
 
-#: main.c:861
+#: main.c:860
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:871 send.c:2143 send.c:2148
-msgid "No recipients specified."
-msgstr "수신자가 지정되지 않음."
+#: main.c:870 send.c:2142 send.c:2147
+msgid "No recipients specified"
+msgstr "수신자가 지정되지 않음"
 
-#: main.c:897
+#: main.c:896
 msgid "Cannot use -E flag with stdin"
 msgstr ""
 
-#: main.c:983
+#: main.c:982
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
 msgstr "메세지 파일을 열 수 없음: %s"
 
-#: main.c:1048
+#: main.c:1047 mutt_header.c:342
 #, c-format
-msgid "%s: unable to attach file."
-msgstr "%s: 파일을 첨부할 수 없음."
+msgid "%s: unable to attach file"
+msgstr "%s: 파일을 첨부할 수 없음"
 
-#: main.c:1125
-msgid "No mailbox with new mail."
-msgstr "새 메일이 도착한 메일함 없음."
+#: main.c:1124
+msgid "No mailbox with new mail"
+msgstr "새 메일이 도착한 메일함 없음"
 
-#: main.c:1145
-msgid "No incoming mailboxes defined."
-msgstr "수신 메일함이 정의되지 않음."
+#: main.c:1144
+msgid "No incoming mailboxes defined"
+msgstr "수신 메일함이 정의되지 않음"
 
 #: main.c:1187
-msgid "Mailbox is empty."
+msgid "Mailbox is empty"
 msgstr "메일함이 비었음"
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
-msgid "Mailbox is corrupt!"
-msgstr "메일함이 손상됨!"
+msgid "Mailbox is corrupt"
+msgstr "메일함이 손상됨"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "%s를 잠글 수 없음.\n"
+msgid "Couldn't lock %s"
+msgstr "%s를 잠글 수 없음."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -2901,16 +2902,16 @@ msgid "Reopening mailbox..."
 msgstr "메일함을 다시 여는 중..."
 
 #: mbox/mbox.c:901
-msgid "Mailbox was corrupted!"
-msgstr "메일함이 손상되었음!"
+msgid "Mailbox was corrupted"
+msgstr "메일함이 손상되었음"
 
 #: mbox/mbox.c:990 mbox/mbox.c:1250
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "치명적 오류! 메일함을 다시 열 수 없음!"
 
 #: mbox/mbox.c:1047
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox가 수정되었으나, 수정된 메일는 없음! (버그 보고 바람)"
+msgid "sync: mbox modified, but no modified messages (report this bug)"
+msgstr "sync: mbox가 수정되었으나, 수정된 메일는 없음 (버그 보고 바람)"
 
 #: mbox/mbox.c:1199
 msgid "Committing changes..."
@@ -2922,77 +2923,77 @@ msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "쓰기 실패! 메일함의 일부가 %s에 저장되었음"
 
 #: mbox/mbox.c:1308
-msgid "Could not reopen mailbox!"
-msgstr "메일함을 다시 열 수 없음!"
+msgid "Could not reopen mailbox"
+msgstr "메일함을 다시 열 수 없음"
 
 #: menu.c:627
 msgid "Jump to: "
 msgstr "이동할 위치: "
 
 #: menu.c:636
-msgid "Invalid index number."
-msgstr "잘못된 색인 번호."
+msgid "Invalid index number"
+msgstr "잘못된 색인 번호"
 
 #: menu.c:640 menu.c:665 menu.c:738 menu.c:804 menu.c:822 menu.c:837 menu.c:852
 #: menu.c:867 menu.c:884 menu.c:901 menu.c:1531
-msgid "No entries."
-msgstr "항목이 없음."
+msgid "No entries"
+msgstr "항목이 없음"
 
 #: menu.c:662
-msgid "You cannot scroll down farther."
-msgstr "더 이상 내려갈 수 없음."
+msgid "You cannot scroll down farther"
+msgstr "더 이상 내려갈 수 없음"
 
 #: menu.c:684
-msgid "You cannot scroll up farther."
-msgstr "더 이상 올라갈 수 없음."
+msgid "You cannot scroll up farther"
+msgstr "더 이상 올라갈 수 없음"
 
 #: menu.c:731
-msgid "You are on the first page."
-msgstr "첫번째 페이지입니다."
+msgid "You are on the first page"
+msgstr "첫번째 페이지입니다"
 
 #: menu.c:731
-msgid "You are on the last page."
-msgstr "마지막 페이지입니다."
+msgid "You are on the last page"
+msgstr "마지막 페이지입니다"
 
 #: menu.c:916
-msgid "You are on the last entry."
-msgstr "마지막 항목에 위치하고 있습니다."
+msgid "You are on the last entry"
+msgstr "마지막 항목에 위치하고 있습니다"
 
 #: menu.c:931
-msgid "You are on the first entry."
-msgstr "첫번째 항목에 위치하고 있습니다."
+msgid "You are on the first entry"
+msgstr "첫번째 항목에 위치하고 있습니다"
 
-#: menu.c:1155 pager.c:2659 pattern.c:2343
+#: menu.c:1155 pager.c:2658 pattern.c:2342
 msgid "Search for: "
 msgstr "찾아보기: "
 
-#: menu.c:1156 pager.c:2660 pattern.c:2344
+#: menu.c:1156 pager.c:2659 pattern.c:2343
 msgid "Reverse search for: "
 msgstr "반대 방향으로 찾아보기: "
 
-#: menu.c:1209 pager.c:2610 pager.c:2633 pager.c:2764 pattern.c:2467
-msgid "Not found."
-msgstr "찾을 수 없음."
+#: menu.c:1209 pager.c:2609 pager.c:2632 pager.c:2763 pattern.c:2466
+msgid "Not found"
+msgstr "찾을 수 없음"
 
 #: menu.c:1395
-msgid "No tagged entries."
-msgstr "태그가 붙은 항목 없음."
+msgid "No tagged entries"
+msgstr "태그가 붙은 항목 없음"
 
 #: menu.c:1495
-msgid "Search is not implemented for this menu."
-msgstr "이 메뉴에는 검색 기능이 없습니다."
+msgid "Search is not implemented for this menu"
+msgstr "이 메뉴에는 검색 기능이 없습니다"
 
 #: menu.c:1500
-msgid "Jumping is not implemented for dialogs."
-msgstr "선택창에는 바로 가기 기능이 없습니다."
+msgid "Jumping is not implemented for dialogs"
+msgstr "선택창에는 바로 가기 기능이 없습니다"
 
 #: menu.c:1534
-msgid "Tagging is not supported."
-msgstr "태그를 붙이는 것을 지원하지 않음."
+msgid "Tagging is not supported"
+msgstr "태그를 붙이는 것을 지원하지 않음"
 
 #: mutt/file.c:1133
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "fcntl 잠금 시도 중 시간 제한을 초과함!"
+msgid "Timeout exceeded while attempting fcntl lock"
+msgstr "fcntl 잠금 시도 중 시간 제한을 초과함"
 
 #: mutt/file.c:1139
 #, c-format
@@ -3000,8 +3001,8 @@ msgid "Waiting for fcntl lock... %d"
 msgstr "fcntl 잠금을 기다리는 중... %d"
 
 #: mutt/file.c:1203
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr "flock 잠금 시도 중 시간 제한을 초과함!"
+msgid "Timeout exceeded while attempting flock lock"
+msgstr "flock 잠금 시도 중 시간 제한을 초과함"
 
 #: mutt/file.c:1210
 #, c-format
@@ -3033,14 +3034,6 @@ msgstr "디버깅 레벨 %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "디버깅 레벨 %d.\n"
 
-#: mutt/memory.c:60
-msgid "Integer overflow -- can't allocate memory!"
-msgstr "Integer overflow -- 메모리 할당 불가!"
-
-#: mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 safe_asprintf.c:61
-msgid "Out of memory!"
-msgstr "메모리 부족!"
-
 #: mutt/regex.c:291
 #, c-format
 msgid "Bad regex: %s"
@@ -3060,17 +3053,17 @@ msgstr "%d (%s) 신호 발견... 종료함.\n"
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "%d 신호 발견... 종료함.\n"
 
-#: muttlib.c:431
+#: muttlib.c:430
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
 msgstr ""
 
-#: muttlib.c:451
+#: muttlib.c:450
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr ""
 
-#: muttlib.c:458
+#: muttlib.c:457
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr ""
@@ -3081,52 +3074,47 @@ msgstr ""
 #.
 #. These three letters correspond to the choices in the string.
 #.
-#: muttlib.c:727
+#: muttlib.c:726
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요? [(y)네, (n)아니오, (a)모두]"
 
-#: muttlib.c:727
+#: muttlib.c:726
 msgid "yna"
 msgstr ""
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:746
+#: muttlib.c:745
 msgid "File is a directory, save under it?"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요?"
 
-#: muttlib.c:751
+#: muttlib.c:750
 msgid "File under directory: "
 msgstr "디렉토리안에 저장할 파일:"
 
-#: muttlib.c:763
+#: muttlib.c:762
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "파일이 존재함, 덮어쓰기(o), 첨가(a), 취소(c)?"
 
 #. L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:765
+#: muttlib.c:764
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1409
-msgid "Can't save message to POP mailbox."
-msgstr "POP 메일함에 메일을 저장할 수 없음."
+#: muttlib.c:1407
+msgid "Can't save message to POP mailbox"
+msgstr "POP 메일함에 메일을 저장할 수 없음"
 
-#: muttlib.c:1418
+#: muttlib.c:1416
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s에 메일을 첨가할까요?"
 
-#: muttlib.c:1430
+#: muttlib.c:1428
 #, fuzzy
-msgid "Can't save message to news server."
-msgstr "POP 서버의 메일을 수정할 수 없음."
-
-#: muttlib.c:1439
-#, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s는 메일함이 아님!"
+msgid "Can't save message to news server"
+msgstr "POP 서버의 메일을 수정할 수 없음"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3139,100 +3127,95 @@ msgstr "이름 바꾸기 (%s): "
 msgid "Password for %s@%s: "
 msgstr "%s@%s의 암호: "
 
-#: mutt_attach.c:130 mutt_attach.c:264 mutt_attach.c:446 mutt_attach.c:1029
+#: mutt_attach.c:129 mutt_attach.c:263 mutt_attach.c:445 mutt_attach.c:1028
 msgid "Can't match nametemplate, continue?"
 msgstr "이름 템플레이트와 일치하지 않음. 계속할까요?"
 
-#: mutt_attach.c:142
+#: mutt_attach.c:141
 #, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
-#: mutt_attach.c:161
-msgid "Failure to open file to parse headers."
+#: mutt_attach.c:160
+msgid "Failure to open file to parse headers"
 msgstr "헤더를 분석하기 위한 파일 열기 실패"
 
-#: mutt_attach.c:195
-msgid "Failure to open file to strip headers."
+#: mutt_attach.c:194
+msgid "Failure to open file to strip headers"
 msgstr "헤더 제거를 위한 파일 열기 실패"
 
-#: mutt_attach.c:205
+#: mutt_attach.c:204
 #, fuzzy
-msgid "Failure to rename file."
+msgid "Failure to rename file"
 msgstr "헤더를 분석하기 위한 파일 열기 실패"
 
-#: mutt_attach.c:216
+#: mutt_attach.c:215
 #, c-format
-msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "%s의 mailcap 작성 항목이 없음, 빈 파일 생성."
+msgid "No mailcap compose entry for %s, creating empty file"
+msgstr "%s의 mailcap 작성 항목이 없음, 빈 파일 생성"
 
-#: mutt_attach.c:276
+#: mutt_attach.c:275
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Mailcap 편집 항목은 %%s가 필요함"
 
-#: mutt_attach.c:298
+#: mutt_attach.c:297
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "편집을 위한 %s의 mailcap 항목이 없음"
 
-#: mutt_attach.c:413
+#: mutt_attach.c:412
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "mailcap 항목에서 일치하는 것을 찾을 수 없음. text로 보기."
 
-#: mutt_attach.c:426
+#: mutt_attach.c:425
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "정의되지 않은 MIME 형식. 첨부물을 볼 수 없음."
 
-#: mutt_attach.c:526
+#: mutt_attach.c:525
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
 msgstr ""
 
-#: mutt_attach.c:531
+#: mutt_attach.c:530
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
 msgstr ""
 
-#: mutt_attach.c:610
+#: mutt_attach.c:609
 #, fuzzy, c-format
 msgid "---Attachment: %s: %s"
 msgstr "-- 첨부물"
 
-#: mutt_attach.c:612
+#: mutt_attach.c:611
 #, fuzzy, c-format
 msgid "---Attachment: %s"
 msgstr "-- 첨부물"
 
-#: mutt_attach.c:880 mutt_attach.c:888
-msgid "Write fault!"
-msgstr "쓰기 실패!"
+#: mutt_attach.c:879 mutt_attach.c:887
+msgid "Write fault"
+msgstr "쓰기 실패"
 
-#: mutt_attach.c:1149
-msgid "I don't know how to print that!"
-msgstr "어떻게 출력할 지 알 수 없음!"
-
-#: mutt_header.c:342
-#, c-format
-msgid "%s: unable to attach file"
-msgstr "%s: 파일을 첨부할 수 없음"
+#: mutt_attach.c:1148
+msgid "I don't know how to print that"
+msgstr "어떻게 출력할 지 알 수 없음"
 
 #: mutt_history.c:38 query.c:75
 msgid "Search"
 msgstr "찾기"
 
-#: mutt_history.c:109
+#: mutt_history.c:95
 #, fuzzy, c-format
 msgid "History '%s'"
 msgstr "질의 '%s'"
 
-#: mutt_logging.c:337
+#: mutt_logging.c:330
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "잘못된 날짜 입력: %s"
 
 #: mutt_lua.c:419
-msgid "Error: Couldn't load the lua interpreter."
+msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
 #: mutt_lua.c:495
@@ -3246,19 +3229,19 @@ msgid "SSL is unavailable, cannot connect to %s"
 msgstr "SSL 사용 불가."
 
 #: mutt_thread.c:1128
-msgid "Parent message is not available."
-msgstr "부모 메일이 존재하지 않음."
+msgid "Parent message is not available"
+msgstr "부모 메일이 존재하지 않음"
 
 #: mutt_thread.c:1134
 #, fuzzy
-msgid "Root message is not visible in this limited view."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "Root message is not visible in this limited view"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
 #: mutt_thread.c:1136
-msgid "Parent message is not visible in this limited view."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "Parent message is not visible in this limited view"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: mx.c:519
+#: mx.c:521
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
 msgstr "찾는 도중 중단됨."
@@ -3266,71 +3249,71 @@ msgstr "찾는 도중 중단됨."
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
-#: mx.c:639
+#: mx.c:641
 #, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "%d개의 메일을 삭제 표시함..."
 
-#: mx.c:676
+#: mx.c:678
 #, fuzzy
 msgid "Can't open trash folder"
 msgstr "폴더에 첨가할 수 없음: %s"
 
-#: mx.c:715
+#: mx.c:717
 msgid "Mark all articles read?"
 msgstr ""
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:762
+#: mx.c:764
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "읽은 메일을 %s로 옮길까요?"
 
-#: mx.c:779 mx.c:1089
+#: mx.c:781 mx.c:1091
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "삭제 표시된 메일(%d)을 삭제할까요?"
 
-#: mx.c:801
+#: mx.c:803
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "읽은 메일을 %s로 옮기는 중..."
 
-#: mx.c:867 mx.c:1080
-msgid "Mailbox is unchanged."
-msgstr "메일함이 변경되지 않음."
+#: mx.c:869 mx.c:1082
+msgid "Mailbox is unchanged"
+msgstr "메일함이 변경되지 않음"
 
-#: mx.c:923
+#: mx.c:925
 #, c-format
-msgid "%d kept, %d moved, %d deleted."
+msgid "%d kept, %d moved, %d deleted"
 msgstr "%d개 보관, %d개 이동, %d개 삭제"
 
-#: mx.c:927 mx.c:1142
+#: mx.c:929 mx.c:1144
 #, c-format
-msgid "%d kept, %d deleted."
+msgid "%d kept, %d deleted"
 msgstr "%d개 보관, %d개 삭제"
 
-#: mx.c:1064
+#: mx.c:1066
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 쓰기 상태 바꾸기; '%s'를 누르세요"
 
-#: mx.c:1066
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "다시 쓰기를 가능하게 하려면 'toggle-write'를 사용하세요!"
-
 #: mx.c:1068
+msgid "Use 'toggle-write' to re-enable write"
+msgstr "다시 쓰기를 가능하게 하려면 'toggle-write'를 사용하세요"
+
+#: mx.c:1070
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "메일함이 쓰기 불가능으로 표시 되었음. %s"
 
-#: mx.c:1136
-msgid "Mailbox checkpointed."
-msgstr "메일함이 표시됨."
+#: mx.c:1138
+msgid "Mailbox checkpointed"
+msgstr "메일함이 표시됨"
 
 #: ncrypt/crypt.c:89
 #, c-format
@@ -3348,15 +3331,15 @@ msgstr "[-- %s 출력 결과 %s --]\n"
 #. have other means to express this.
 #: ncrypt/crypt.c:115
 #, fuzzy
-msgid "Passphrases forgotten."
-msgstr "암호 문구 잊음."
+msgid "Passphrases forgotten"
+msgstr "암호 문구 잊음"
 
 #: ncrypt/crypt.c:189
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr ""
 
 #: ncrypt/crypt.c:193
-msgid "Mail not sent: inline PGP can't be used with attachments."
+msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr ""
 
 #: ncrypt/crypt.c:200
@@ -3364,11 +3347,11 @@ msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr ""
 
 #: ncrypt/crypt.c:204
-msgid "Mail not sent: inline PGP can't be used with format=flowed."
+msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr ""
 
-#: ncrypt/crypt.c:214 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:719
-#: ncrypt/pgpkey.c:919
+#: ncrypt/crypt.c:214 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:705
+#: ncrypt/pgpkey.c:905
 msgid "Invoking PGP..."
 msgstr "PGP를 구동합니다..."
 
@@ -3376,41 +3359,41 @@ msgstr "PGP를 구동합니다..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:228 send.c:2066
-msgid "Mail not sent."
-msgstr "보내지 않음."
+#: ncrypt/crypt.c:228 send.c:2065
+msgid "Mail not sent"
+msgstr "보내지 않음"
 
 #: ncrypt/crypt.c:612
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "내용에 S/MIME 표시가 없는 경우는 지원하지 않음."
+msgid "S/MIME messages with no hints on content are unsupported"
+msgstr "내용에 S/MIME 표시가 없는 경우는 지원하지 않음"
 
 #: ncrypt/crypt.c:847 ncrypt/crypt.c:890
 msgid "Trying to extract PGP keys...\n"
 msgstr "PGP 열쇠를 추출하는 중...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME 인증서 추출하는 중...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME 인증서 추출하는 중..."
 
-#: ncrypt/crypt.c:1089
+#: ncrypt/crypt.c:1085
 #, c-format
 msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- 오류: 알 수 없는 multipart/signed 프로토콜 %s! --]\n"
+"[-- 오류: 알 수 없는 multipart/signed 프로토콜 %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1129
+#: ncrypt/crypt.c:1125
 #, fuzzy
 msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- 오류: 일치하지 않는 multipart/signed 구조! --]\n"
+"[-- 오류: 일치하지 않는 multipart/signed 구조 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1171
+#: ncrypt/crypt.c:1167
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3419,7 +3402,7 @@ msgstr ""
 "[-- Warning: %s/%s 서명을 확인 할 수 없음 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1183
+#: ncrypt/crypt.c:1179
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3427,7 +3410,7 @@ msgstr ""
 "[-- 아래의 자료는 서명 되었음 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1188
+#: ncrypt/crypt.c:1184
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3435,7 +3418,7 @@ msgstr ""
 "[-- 경고: 서명을 찾을 수 없음. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1194
+#: ncrypt/crypt.c:1190
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3444,7 +3427,7 @@ msgstr ""
 "[-- 서명 자료의 끝 --]\n"
 
 #: ncrypt/cryptglue.c:115
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support"
 msgstr ""
 
 #: ncrypt/cryptglue.c:143
@@ -3454,28 +3437,28 @@ msgstr "S/MIME를 구동합니다..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s\n"
+msgid "error creating gpgme context: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
+msgid "error enabling CMS protocol: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:538
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s\n"
+msgid "error creating gpgme data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, fuzzy, c-format
-msgid "error allocating data object: %s\n"
+msgid "error allocating data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, fuzzy, c-format
-msgid "error rewinding data object: %s\n"
+msgid "error rewinding data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:665
@@ -3484,42 +3467,42 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, fuzzy, c-format
-msgid "error reading data object: %s\n"
+msgid "error reading data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, fuzzy, c-format
-msgid "error adding recipient '%s': %s\n"
+msgid "error adding recipient '%s': %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
+msgid "secret key '%s' not found: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
+msgid "error setting secret key '%s': %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, fuzzy, c-format
-msgid "error encrypting data: %s\n"
+msgid "error encrypting data: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, fuzzy, c-format
-msgid "error signing data: %s\n"
+msgid "error signing data: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
@@ -3572,7 +3555,7 @@ msgstr ""
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1407 ncrypt/crypt_gpgme.c:3711
+#: ncrypt/crypt_gpgme.c:1407 ncrypt/crypt_gpgme.c:3697
 #, fuzzy
 msgid "Fingerprint: "
 msgstr "Fingerprint: %s"
@@ -3590,7 +3573,7 @@ msgid "WARNING: It is NOT certain that the key belongs to the person named as sh
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1519 ncrypt/crypt_gpgme.c:1524
-#: ncrypt/crypt_gpgme.c:3710
+#: ncrypt/crypt_gpgme.c:3696
 msgid "aka: "
 msgstr ""
 
@@ -3665,7 +3648,7 @@ msgstr "[-- 오류: 임시 파일을 만들 수가 없음! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3711,15 +3694,15 @@ msgstr "[-- PGP 서명 메일 끝 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2758 ncrypt/pgp.c:764
 msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
+"[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- 오류: PGP 메일의 시작을 찾을 수 없음! --]\n"
+"[-- 오류: PGP 메일의 시작을 찾을 수 없음 --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863 ncrypt/pgp.c:1199
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- 오류: 임시 파일을 만들 수가 없음! --]\n"
+msgid "[-- Error: could not create temporary file --]\n"
+msgstr "[-- 오류: 임시 파일을 만들 수가 없음 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2802
 #, fuzzy
@@ -3749,8 +3732,8 @@ msgstr "[-- PGP/MIME 암호화 자료 끝 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2832 ncrypt/pgp.c:728 ncrypt/pgp.c:1235
 #, fuzzy
-msgid "PGP message successfully decrypted."
-msgstr "PGP 서명 확인에 성공함."
+msgid "PGP message successfully decrypted"
+msgstr "PGP 서명 확인에 성공함"
 
 #: ncrypt/crypt_gpgme.c:2836 ncrypt/pgp.c:670 ncrypt/pgp.c:724
 #: ncrypt/pgp.c:1239
@@ -3790,15 +3773,15 @@ msgstr ""
 "\n"
 "[-- S/MIME 암호화 자료 끝 --]\n"
 
-#: ncrypt/crypt_gpgme.c:3602
+#: ncrypt/crypt_gpgme.c:3588
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3604
+#: ncrypt/crypt_gpgme.c:3590
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3609
+#: ncrypt/crypt_gpgme.c:3595
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr ""
 
@@ -3806,159 +3789,159 @@ msgstr ""
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3710
+#: ncrypt/crypt_gpgme.c:3696
 msgid "Name: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3710
+#: ncrypt/crypt_gpgme.c:3696
 #, fuzzy
 msgid "Valid From: "
 msgstr "잘못된 달 입력: %s"
 
-#: ncrypt/crypt_gpgme.c:3710
+#: ncrypt/crypt_gpgme.c:3696
 #, fuzzy
 msgid "Valid To: "
 msgstr "잘못된 달 입력: %s"
 
-#: ncrypt/crypt_gpgme.c:3711
+#: ncrypt/crypt_gpgme.c:3697
 msgid "Key Type: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3711
+#: ncrypt/crypt_gpgme.c:3697
 msgid "Key Usage: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3711
+#: ncrypt/crypt_gpgme.c:3697
 msgid "Serial-No: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3712
+#: ncrypt/crypt_gpgme.c:3698
 msgid "Issued By: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3712
+#: ncrypt/crypt_gpgme.c:3698
 #, fuzzy
 msgid "Subkey: "
 msgstr "열쇠 ID: 0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3766 ncrypt/crypt_gpgme.c:3908
+#: ncrypt/crypt_gpgme.c:3752 ncrypt/crypt_gpgme.c:3894
 #, fuzzy
 msgid "[Invalid]"
 msgstr "무효   "
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3809 ncrypt/crypt_gpgme.c:3951
+#: ncrypt/crypt_gpgme.c:3795 ncrypt/crypt_gpgme.c:3937
 #, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3817 ncrypt/crypt_gpgme.c:3958
+#: ncrypt/crypt_gpgme.c:3803 ncrypt/crypt_gpgme.c:3944
 #, fuzzy
 msgid "encryption"
 msgstr "암호화"
 
-#: ncrypt/crypt_gpgme.c:3818 ncrypt/crypt_gpgme.c:3824
-#: ncrypt/crypt_gpgme.c:3959 ncrypt/crypt_gpgme.c:3964
+#: ncrypt/crypt_gpgme.c:3804 ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3945 ncrypt/crypt_gpgme.c:3950
 msgid ", "
 msgstr ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3823 ncrypt/crypt_gpgme.c:3963
+#: ncrypt/crypt_gpgme.c:3809 ncrypt/crypt_gpgme.c:3949
 msgid "signing"
 msgstr ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3829 ncrypt/crypt_gpgme.c:3968
+#: ncrypt/crypt_gpgme.c:3815 ncrypt/crypt_gpgme.c:3954
 #, fuzzy
 msgid "certification"
 msgstr "인증서 저장됨"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3902
+#: ncrypt/crypt_gpgme.c:3888
 #, fuzzy
 msgid "[Revoked]"
 msgstr "취소됨   "
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3914
+#: ncrypt/crypt_gpgme.c:3900
 #, fuzzy
 msgid "[Expired]"
 msgstr "만기됨  "
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3920
+#: ncrypt/crypt_gpgme.c:3906
 msgid "[Disabled]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3995
+#: ncrypt/crypt_gpgme.c:3981
 #, fuzzy
 msgid "Collecting data..."
 msgstr "%s로 연결 중..."
 
-#: ncrypt/crypt_gpgme.c:4020
+#: ncrypt/crypt_gpgme.c:4006
 #, fuzzy, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "%s 서버와의 연결 오류"
 
-#: ncrypt/crypt_gpgme.c:4029
+#: ncrypt/crypt_gpgme.c:4015
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "명령어 오류: %s\n"
 
-#: ncrypt/crypt_gpgme.c:4039 ncrypt/pgpkey.c:738
+#: ncrypt/crypt_gpgme.c:4025 ncrypt/pgpkey.c:724
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "열쇠 ID: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:4130
+#: ncrypt/crypt_gpgme.c:4116
 #, fuzzy, c-format
 msgid "gpgme_new failed: %s"
 msgstr "SSL 실패: %s"
 
-#: ncrypt/crypt_gpgme.c:4168 ncrypt/crypt_gpgme.c:4219
+#: ncrypt/crypt_gpgme.c:4154 ncrypt/crypt_gpgme.c:4205
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4207 ncrypt/crypt_gpgme.c:4249
+#: ncrypt/crypt_gpgme.c:4193 ncrypt/crypt_gpgme.c:4235
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4330
+#: ncrypt/crypt_gpgme.c:4316
 #, fuzzy
-msgid "All matching keys are marked expired/revoked."
-msgstr "모든 키가 만기/취소/사용 불가 입니다."
+msgid "All matching keys are marked expired/revoked"
+msgstr "모든 키가 만기/취소/사용 불가 입니다"
 
-#: ncrypt/crypt_gpgme.c:4360 ncrypt/pgpkey.c:673 ncrypt/smime.c:574
+#: ncrypt/crypt_gpgme.c:4346 ncrypt/pgpkey.c:659 ncrypt/smime.c:560
 msgid "Select  "
 msgstr "선택  "
 
-#: ncrypt/crypt_gpgme.c:4362 ncrypt/pgpkey.c:675
+#: ncrypt/crypt_gpgme.c:4348 ncrypt/pgpkey.c:661
 msgid "Check key  "
 msgstr "열쇠 확인  "
 
-#: ncrypt/crypt_gpgme.c:4378
+#: ncrypt/crypt_gpgme.c:4364
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP 키가 \"%s\"와 일치함."
 
-#: ncrypt/crypt_gpgme.c:4380
+#: ncrypt/crypt_gpgme.c:4366
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "PGP 키가 \"%s\"와 일치함."
 
-#: ncrypt/crypt_gpgme.c:4382
+#: ncrypt/crypt_gpgme.c:4368
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "S/MIME 인증서가 \"%s\"와 일치."
 
-#: ncrypt/crypt_gpgme.c:4384
+#: ncrypt/crypt_gpgme.c:4370
 #, fuzzy
 msgid "keys matching"
 msgstr "PGP 키가 \"%s\"와 일치함."
@@ -3966,162 +3949,162 @@ msgstr "PGP 키가 \"%s\"와 일치함."
 #. L10N:
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
-#. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4392
+#. e.g. "S/MIME keys matching <me@mutt.org>"
+#: ncrypt/crypt_gpgme.c:4378
 #, c-format
-msgid "%s <%s>."
+msgid "%s <%s>"
 msgstr ""
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4398
+#: ncrypt/crypt_gpgme.c:4384
 #, c-format
-msgid "%s \"%s\"."
+msgid "%s \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4426 ncrypt/pgpkey.c:758
-msgid "This key can't be used: expired/disabled/revoked."
-msgstr "이 키는 사용할 수 없습니다: 만기/사용중지/취소됨."
+#: ncrypt/crypt_gpgme.c:4412 ncrypt/pgpkey.c:744
+msgid "This key can't be used: expired/disabled/revoked"
+msgstr "이 키는 사용할 수 없습니다: 만기/사용중지/취소됨"
 
-#: ncrypt/crypt_gpgme.c:4440 ncrypt/pgpkey.c:771 ncrypt/smime.c:604
+#: ncrypt/crypt_gpgme.c:4426 ncrypt/pgpkey.c:757 ncrypt/smime.c:590
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "이 키는 만기/사용중지/취소됨. 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/crypt_gpgme.c:4450 ncrypt/pgpkey.c:783
+#: ncrypt/crypt_gpgme.c:4436 ncrypt/pgpkey.c:769
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "이 ID는 확실하지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/crypt_gpgme.c:4453 ncrypt/pgpkey.c:786
+#: ncrypt/crypt_gpgme.c:4439 ncrypt/pgpkey.c:772
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "이 ID는 신용도가 낮음. 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/crypt_gpgme.c:4461 ncrypt/pgpkey.c:779 ncrypt/smime.c:608
+#: ncrypt/crypt_gpgme.c:4447 ncrypt/pgpkey.c:765 ncrypt/smime.c:594
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID의 인증자가 정의되지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/crypt_gpgme.c:4530 ncrypt/crypt_gpgme.c:4643 ncrypt/pgpkey.c:1022
-#: ncrypt/pgpkey.c:1148
+#: ncrypt/crypt_gpgme.c:4516 ncrypt/crypt_gpgme.c:4629 ncrypt/pgpkey.c:1008
+#: ncrypt/pgpkey.c:1134
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\"와 일치하는 키를 찾는 중..."
 
-#: ncrypt/crypt_gpgme.c:4760 ncrypt/pgpkey.c:873 ncrypt/smime.c:947
+#: ncrypt/crypt_gpgme.c:4746 ncrypt/pgpkey.c:859 ncrypt/smime.c:933
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4811 ncrypt/pgp.c:1415
+#: ncrypt/crypt_gpgme.c:4797 ncrypt/pgp.c:1415
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "keyID = \"%s\"를 %s에 사용할까요?"
 
-#: ncrypt/crypt_gpgme.c:4862 ncrypt/pgp.c:1464 ncrypt/smime.c:967
-#: ncrypt/smime.c:1074
+#: ncrypt/crypt_gpgme.c:4848 ncrypt/pgp.c:1464 ncrypt/smime.c:953
+#: ncrypt/smime.c:1060
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s의 keyID 입력: "
 
-#: ncrypt/crypt_gpgme.c:4931 ncrypt/pgpkey.c:893
+#: ncrypt/crypt_gpgme.c:4917 ncrypt/pgpkey.c:879
 msgid "Please enter the key ID: "
 msgstr "열쇠 ID 를 입력하십시요: "
 
-#: ncrypt/crypt_gpgme.c:4944
+#: ncrypt/crypt_gpgme.c:4930
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "패턴 오류: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4963
+#: ncrypt/crypt_gpgme.c:4949
 #, fuzzy, c-format
-msgid "PGP Key 0x%s."
-msgstr "PGP 키 %s."
+msgid "PGP Key 0x%s"
+msgstr "PGP 키 %s"
 
-#: ncrypt/crypt_gpgme.c:5007
+#: ncrypt/crypt_gpgme.c:4993
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5018
+#: ncrypt/crypt_gpgme.c:5004
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5067
+#: ncrypt/crypt_gpgme.c:5053
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:5069
+#: ncrypt/crypt_gpgme.c:5055
 msgid "sapco"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:5076
+#: ncrypt/crypt_gpgme.c:5062
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:5078
+#: ncrypt/crypt_gpgme.c:5064
 msgid "samco"
 msgstr "esabif"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:5088
+#: ncrypt/crypt_gpgme.c:5074
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:5091
+#: ncrypt/crypt_gpgme.c:5077
 #, fuzzy
 msgid "esabpco"
 msgstr "esabif"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:5097
+#: ncrypt/crypt_gpgme.c:5083
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:5100
+#: ncrypt/crypt_gpgme.c:5086
 #, fuzzy
 msgid "esabmco"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:5111
+#: ncrypt/crypt_gpgme.c:5097
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:5113
+#: ncrypt/crypt_gpgme.c:5099
 #, fuzzy
 msgid "esabpc"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:5120
+#: ncrypt/crypt_gpgme.c:5106
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:5122
+#: ncrypt/crypt_gpgme.c:5108
 #, fuzzy
 msgid "esabmc"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:5283
+#: ncrypt/crypt_gpgme.c:5269
 msgid "Failed to verify sender"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5286
+#: ncrypt/crypt_gpgme.c:5272
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "헤더를 분석하기 위한 파일 열기 실패"
@@ -4131,8 +4114,8 @@ msgid "Enter PGP passphrase:"
 msgstr "PGP 암호 문구 입력:"
 
 #: ncrypt/pgp.c:599
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- 오류: PGP 하부 프로세스를 생성할 수 없음! --]\n"
+msgid "[-- Error: unable to create PGP subprocess --]\n"
+msgstr "[-- 오류: PGP 하부 프로세스를 생성할 수 없음 --]\n"
 
 #: ncrypt/pgp.c:648 ncrypt/pgp.c:918 ncrypt/pgp.c:1075
 msgid ""
@@ -4144,8 +4127,8 @@ msgstr ""
 
 #: ncrypt/pgp.c:726
 #, fuzzy
-msgid "PGP message was not encrypted."
-msgstr "PGP 서명 확인에 성공함."
+msgid "PGP message was not encrypted"
+msgstr "PGP 서명 확인에 성공함"
 
 #: ncrypt/pgp.c:965
 msgid "Internal error.  Please submit a bug report."
@@ -4153,20 +4136,19 @@ msgstr ""
 
 #: ncrypt/pgp.c:1030
 msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
+"[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Error: PGP 하부 프로세스를 생성할 수 없음! --]\n"
+"[-- Error: PGP 하부 프로세스를 생성할 수 없음 --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
-#, fuzzy
+#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087 postpone.c:708 postpone.c:731
 msgid "Decryption failed"
-msgstr "해독 실패."
+msgstr "해독 실패"
 
 #: ncrypt/pgp.c:1294
-msgid "Can't open PGP subprocess!"
-msgstr "PGP 하부 프로세스를 열 수 없음!"
+msgid "Can't open PGP subprocess"
+msgstr "PGP 하부 프로세스를 열 수 없음"
 
 #: ncrypt/pgp.c:1732
 msgid "Can't invoke PGP"
@@ -4257,32 +4239,32 @@ msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취
 msgid "esabc"
 msgstr "esabif"
 
-#: ncrypt/pgpinvoke.c:463
+#: ncrypt/pgpinvoke.c:449
 msgid "Fetching PGP key..."
 msgstr "PGP 열쇠 가져오는 중..."
 
-#: ncrypt/pgpkey.c:648
-msgid "All matching keys are expired, revoked, or disabled."
-msgstr "모든 키가 만기/취소/사용 불가 입니다."
+#: ncrypt/pgpkey.c:634
+msgid "All matching keys are expired, revoked, or disabled"
+msgstr "모든 키가 만기/취소/사용 불가 입니다"
 
-#: ncrypt/pgpkey.c:688
+#: ncrypt/pgpkey.c:674
 #, c-format
-msgid "PGP keys matching <%s>."
-msgstr "PGP 키가 <%s>와 일치함."
+msgid "PGP keys matching <%s>"
+msgstr "PGP 키가 <%s>와 일치함"
 
-#: ncrypt/pgpkey.c:690
+#: ncrypt/pgpkey.c:676
 #, c-format
-msgid "PGP keys matching \"%s\"."
-msgstr "PGP 키가 \"%s\"와 일치함."
+msgid "PGP keys matching \"%s\""
+msgstr "PGP 키가 \"%s\"와 일치함"
 
-#: ncrypt/pgpkey.c:708 ncrypt/pgpkey.c:913
+#: ncrypt/pgpkey.c:694 ncrypt/pgpkey.c:899
 msgid "Can't open /dev/null"
 msgstr "/dev/null를 열 수 없음"
 
-#: ncrypt/pgpkey.c:942
+#: ncrypt/pgpkey.c:928
 #, c-format
-msgid "PGP Key %s."
-msgstr "PGP 키 %s."
+msgid "PGP Key %s"
+msgstr "PGP 키 %s"
 
 #: ncrypt/smime.c:180
 msgid "Enter S/MIME passphrase:"
@@ -4295,7 +4277,7 @@ msgstr "S/MIME 암호 문구 입력:"
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:471
+#: ncrypt/smime.c:457
 msgid "Expired   "
 msgstr "만기됨  "
 
@@ -4306,7 +4288,7 @@ msgstr "만기됨  "
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:481
+#: ncrypt/smime.c:467
 msgid "Invalid   "
 msgstr "무효   "
 
@@ -4317,7 +4299,7 @@ msgstr "무효   "
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:491
+#: ncrypt/smime.c:477
 msgid "Revoked   "
 msgstr "취소됨   "
 
@@ -4328,7 +4310,7 @@ msgstr "취소됨   "
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:501
+#: ncrypt/smime.c:487
 msgid "Trusted   "
 msgstr "신용할 수 있음   "
 
@@ -4339,7 +4321,7 @@ msgstr "신용할 수 있음   "
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:511
+#: ncrypt/smime.c:497
 msgid "Unverified"
 msgstr "미확인됨"
 
@@ -4350,7 +4332,7 @@ msgstr "미확인됨"
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:521
+#: ncrypt/smime.c:507
 msgid "Verified  "
 msgstr "확인됨   "
 
@@ -4361,60 +4343,60 @@ msgstr "확인됨   "
 #. The translation strings which need to be padded are:
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #.
-#: ncrypt/smime.c:531
+#: ncrypt/smime.c:517
 msgid "Unknown   "
 msgstr "알 수 없음   "
 
-#: ncrypt/smime.c:568
+#: ncrypt/smime.c:554
 #, c-format
-msgid "S/MIME certificates matching \"%s\"."
-msgstr "S/MIME 인증서가 \"%s\"와 일치."
+msgid "S/MIME certificates matching \"%s\""
+msgstr "S/MIME 인증서가 \"%s\"와 일치"
 
-#: ncrypt/smime.c:612
+#: ncrypt/smime.c:598
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "이 ID는 확실하지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/smime.c:933
+#: ncrypt/smime.c:919
 msgid "Enter keyID: "
 msgstr "keyID 입력: "
 
-#: ncrypt/smime.c:1080
+#: ncrypt/smime.c:1066
 #, c-format
-msgid "No (valid) certificate found for %s."
-msgstr "%s를 위한 인증서를 찾을 수 없음."
+msgid "No (valid) certificate found for %s"
+msgstr "%s를 위한 인증서를 찾을 수 없음"
 
-#: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
-#: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
-msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "오류: OpenSSL 하부 프로세스를 생성할 수 없음!"
+#: ncrypt/smime.c:1120 ncrypt/smime.c:1149 ncrypt/smime.c:1217
+#: ncrypt/smime.c:1258 ncrypt/smime.c:1323 ncrypt/smime.c:1400
+msgid "Error: unable to create OpenSSL subprocess"
+msgstr "오류: OpenSSL 하부 프로세스를 생성할 수 없음"
 
-#: ncrypt/smime.c:1394
+#: ncrypt/smime.c:1380
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
-#: ncrypt/smime.c:1494
+#: ncrypt/smime.c:1480
 msgid "no certfile"
 msgstr "인증파일 없음"
 
-#: ncrypt/smime.c:1497
+#: ncrypt/smime.c:1483
 msgid "no mbox"
 msgstr "메일함 없음"
 
-#: ncrypt/smime.c:1656 ncrypt/smime.c:1809
+#: ncrypt/smime.c:1642 ncrypt/smime.c:1795
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL으로 부터 출력이 없음..."
 
-#: ncrypt/smime.c:1726
+#: ncrypt/smime.c:1712
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
-#: ncrypt/smime.c:1774
-msgid "Can't open OpenSSL subprocess!"
-msgstr "OpenSSL 하부 프로세스를 열 수 없음!"
+#: ncrypt/smime.c:1760
+msgid "Can't open OpenSSL subprocess"
+msgstr "OpenSSL 하부 프로세스를 열 수 없음"
 
-#: ncrypt/smime.c:1993 ncrypt/smime.c:2115
+#: ncrypt/smime.c:1979 ncrypt/smime.c:2101
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4422,23 +4404,23 @@ msgstr ""
 "[-- OpenSSL 출력 끝 --]\n"
 "\n"
 
-#: ncrypt/smime.c:2070 ncrypt/smime.c:2084
-msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- 오류: OpenSSL 하부 프로세스를 생성할 수 없음! --]\n"
+#: ncrypt/smime.c:2056 ncrypt/smime.c:2070
+msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
+msgstr "[-- 오류: OpenSSL 하부 프로세스를 생성할 수 없음 --]\n"
 
-#: ncrypt/smime.c:2120
+#: ncrypt/smime.c:2106
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 암호화 되었음 --]\n"
 "\n"
 
-#: ncrypt/smime.c:2125
+#: ncrypt/smime.c:2111
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 서명 되었음 --]\n"
 "\n"
 
-#: ncrypt/smime.c:2189
+#: ncrypt/smime.c:2175
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4446,7 +4428,7 @@ msgstr ""
 "\n"
 "[-- S/MIME 암호화 자료 끝 --]\n"
 
-#: ncrypt/smime.c:2191
+#: ncrypt/smime.c:2177
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4455,227 +4437,227 @@ msgstr ""
 "[-- S/MIME 서명 자료 끝 --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2311
+#: ncrypt/smime.c:2297
 #, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2314
+#: ncrypt/smime.c:2300
 msgid "swaco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2323
+#: ncrypt/smime.c:2309
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2326
+#: ncrypt/smime.c:2312
 #, fuzzy
 msgid "eswabco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2333
+#: ncrypt/smime.c:2319
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2336
+#: ncrypt/smime.c:2322
 #, fuzzy
 msgid "eswabc"
 msgstr "eswabf"
 
-#: ncrypt/smime.c:2400
+#: ncrypt/smime.c:2386
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 
 #. L10N: Options for: Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear?
-#: ncrypt/smime.c:2403
+#: ncrypt/smime.c:2389
 msgid "123c"
 msgstr ""
 
-#: ncrypt/smime.c:2406
+#: ncrypt/smime.c:2392
 msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
 #. L10N: Options for: 1: DES, 2: Triple-DES
-#: ncrypt/smime.c:2408
+#: ncrypt/smime.c:2394
 msgid "12"
 msgstr ""
 
-#: ncrypt/smime.c:2421
+#: ncrypt/smime.c:2407
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
 #. L10N: Options for: 1: RC2-40, 2: RC2-64, 3: RC2-128
 #. L10N: Options for: 1: AES128, 2: AES192, 3: AES256
-#: ncrypt/smime.c:2423 ncrypt/smime.c:2441
+#: ncrypt/smime.c:2409 ncrypt/smime.c:2427
 msgid "123"
 msgstr ""
 
-#: ncrypt/smime.c:2439
+#: ncrypt/smime.c:2425
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr ""
 
-#: nntp/newsrc.c:655
+#: nntp/newsrc.c:652
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1052
-msgid "No news server defined!"
+#: nntp/newsrc.c:1026
+msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1066
+#: nntp/newsrc.c:1040
 #, fuzzy, c-format
-msgid "%s is an invalid news server specification!"
+msgid "%s is an invalid news server specification"
 msgstr "%s는 잘못된 POP 패스"
 
-#: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1063 pop/pop_lib.c:413
-msgid "Server closed connection!"
-msgstr "서버와 연결이 끊어짐!"
+#: nntp/nntp.c:85 nntp/nntp.c:624 pop/pop.c:1053 pop/pop_lib.c:413
+msgid "Server closed connection"
+msgstr "서버와 연결이 끊어짐"
 
-#: nntp/nntp.c:189
-msgid "Server doesn't support reader mode."
+#: nntp/nntp.c:188
+msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:394 pop/pop_auth.c:456 smtp.c:555 smtp.c:616
+#: nntp/nntp.c:393 pop/pop_auth.c:456 smtp.c:555 smtp.c:616
 msgid "No authenticators available"
 msgstr "인증자가 없음."
 
-#: nntp/nntp.c:614
+#: nntp/nntp.c:613
 #, fuzzy, c-format
-msgid "%s authentication failed."
-msgstr "SASL 인증에 실패함."
+msgid "%s authentication failed"
+msgstr "SASL 인증에 실패함"
 
-#: nntp/nntp.c:689 nntp/nntp.c:779
+#: nntp/nntp.c:688 nntp/nntp.c:778
 #, fuzzy
-msgid "Could not switch to reader mode."
+msgid "Could not switch to reader mode"
 msgstr "임시 메일 폴더를 쓸 수 없음: %s"
 
-#: nntp/nntp.c:702
+#: nntp/nntp.c:701
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "%s로 연결 중..."
 
-#: nntp/nntp.c:703
+#: nntp/nntp.c:702
 #, fuzzy
-msgid "Posting is ok."
-msgstr "아무것도 하지 않음."
+msgid "Posting is ok"
+msgstr "아무것도 하지 않음"
 
-#: nntp/nntp.c:703
-msgid "Posting is NOT ok."
+#: nntp/nntp.c:702
+msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:834
+#: nntp/nntp.c:833
 #, fuzzy, c-format
 msgid "Connection to %s lost. Reconnect?"
 msgstr "%s의 접속이 끊어짐"
 
-#: nntp/nntp.c:1310
+#: nntp/nntp.c:1309
 #, fuzzy
 msgid "Fetching list of articles..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: nntp/nntp.c:1523
+#: nntp/nntp.c:1522
 #, fuzzy, c-format
-msgid "%s is an invalid newsgroup specification!"
+msgid "%s is an invalid newsgroup specification"
 msgstr "%s는 잘못된 POP 패스"
 
-#: nntp/nntp.c:1541
+#: nntp/nntp.c:1540
 #, c-format
-msgid "Newsgroup %s not found on the server."
+msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:1561
+#: nntp/nntp.c:1560
 #, c-format
-msgid "Newsgroup %s has been removed from the server."
+msgid "Newsgroup %s has been removed from the server"
 msgstr ""
 
-#: nntp/nntp.c:1713
+#: nntp/nntp.c:1712
 #, c-format
-msgid "Article %d not found on the server."
+msgid "Article %d not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:1811 nntp/nntp.c:1846
+#: nntp/nntp.c:1810 nntp/nntp.c:1845
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "%s: %s의 상태를 알수 없음."
 
-#: nntp/nntp.c:1919 nntp/nntp.c:2351 pop/pop.c:882 pop/pop.c:949
+#: nntp/nntp.c:1918 nntp/nntp.c:2350 pop/pop.c:872 pop/pop.c:939
 msgid "Checking for new messages..."
 msgstr "새 메일을 확인중..."
 
-#: nntp/nntp.c:2277
+#: nntp/nntp.c:2276
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: nntp/nntp.c:2319 nntp/nntp.c:2419
+#: nntp/nntp.c:2318 nntp/nntp.c:2418
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "접속 중..."
 
-#: nntp/nntp.c:2341
+#: nntp/nntp.c:2340
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "새 메일을 확인중..."
 
-#: nntp/nntp.c:2581
-msgid "Unable to find child articles because server does not support XPAT command."
+#: nntp/nntp.c:2580
+msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:222 notmuch/mutt_notmuch.c:1999
-#: notmuch/mutt_notmuch.c:2204
+#: notmuch/mutt_notmuch.c:221 notmuch/mutt_notmuch.c:1998
+#: notmuch/mutt_notmuch.c:2203
 #, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:304
+#: notmuch/mutt_notmuch.c:303
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:417
-msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
+#: notmuch/mutt_notmuch.c:416
+msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:476
+#: notmuch/mutt_notmuch.c:475
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:588
+#: notmuch/mutt_notmuch.c:587
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "fcntl 잠금을 기다리는 중... %d"
 
-#: notmuch/mutt_notmuch.c:606
+#: notmuch/mutt_notmuch.c:605
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
-#: notmuch/mutt_notmuch.c:607
+#: notmuch/mutt_notmuch.c:606
 #, fuzzy
 msgid "unknown reason"
 msgstr "알 수 없는 오류"
 
-#: notmuch/mutt_notmuch.c:1061
+#: notmuch/mutt_notmuch.c:1060
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "메일 보내는 중..."
 
-#: notmuch/mutt_notmuch.c:1879
+#: notmuch/mutt_notmuch.c:1878
 #, fuzzy
-msgid "No more messages in the thread."
-msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
+msgid "No more messages in the thread"
+msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 
-#: notmuch/mutt_notmuch.c:2752
+#: notmuch/mutt_notmuch.c:2755
 #, fuzzy
-msgid "Can't write to virtual folder."
+msgid "Can't write to virtual folder"
 msgstr "폴더에 첨가할 수 없음: %s"
 
 #: opcodes.h:28
@@ -4733,463 +4715,463 @@ msgid "view file"
 msgstr "파일 보기"
 
 #: opcodes.h:41
-msgid "list mailboxes with new mail"
-msgstr "새 메일이 도착한 메일함 목록."
-
-#: opcodes.h:42
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:43
+#: opcodes.h:42
 msgid "change directories"
 msgstr "디렉토리 바꾸기"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "check mailboxes for new mail"
 msgstr "메일함의 새 메일 확인"
 
-#: opcodes.h:45
+#: opcodes.h:44
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "메일/첨부물 파일로 저장"
 
-#: opcodes.h:46
+#: opcodes.h:45
 #, fuzzy
 msgid "attach files to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#: opcodes.h:47
+#: opcodes.h:46
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "현재 메세지에 메세지 첨부"
 
-#: opcodes.h:48
+#: opcodes.h:47
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#: opcodes.h:49
+#: opcodes.h:48
 msgid "edit the BCC list"
 msgstr "BCC 목록 편집"
 
-#: opcodes.h:50
+#: opcodes.h:49
 msgid "edit the CC list"
 msgstr "CC 목록 편집"
 
-#: opcodes.h:51
+#: opcodes.h:50
 msgid "edit attachment description"
 msgstr "첨부물 설명 편집"
 
-#: opcodes.h:52
+#: opcodes.h:51
 msgid "edit attachment transfer-encoding"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: opcodes.h:53
+#: opcodes.h:52
 msgid "enter a file to save a copy of this message in"
 msgstr "현재 메세지의 복사본을 저장할 파일 선택"
 
-#: opcodes.h:54
+#: opcodes.h:53
 msgid "edit the file to be attached"
 msgstr "파일을 고친 후 첨부하기"
 
-#: opcodes.h:55
+#: opcodes.h:54
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:56
+#: opcodes.h:55
 msgid "edit the from field"
 msgstr "from 필드 편집"
 
-#: opcodes.h:57
+#: opcodes.h:56
 msgid "edit the message with headers"
 msgstr "헤더를 포함한 메세지 편집"
 
-#: opcodes.h:58
+#: opcodes.h:57
 #, fuzzy
 msgid "edit the Content-Language of the attachment"
 msgstr "파일을 고친 후 첨부하기"
 
-#: opcodes.h:59
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "메세지 편집"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "mailcap 항목을 사용하여 첨부물 편집"
 
-#: opcodes.h:61
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CC 목록 편집"
 
-#: opcodes.h:62
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit the subject of this message"
 msgstr "제목 편집"
 
-#: opcodes.h:64
+#: opcodes.h:63
 msgid "edit the TO list"
 msgstr "TO 목록 편집하기"
 
-#: opcodes.h:65
+#: opcodes.h:64
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Reply-To 필드 편집"
 
-#: opcodes.h:66
+#: opcodes.h:65
 msgid "get a temporary copy of an attachment"
 msgstr "첨부물의 임시 사본 가져옴"
 
-#: opcodes.h:67
+#: opcodes.h:66
 msgid "group tagged attachments as multipart/alternative"
 msgstr ""
 
-#: opcodes.h:68
+#: opcodes.h:67
 msgid "group tagged attachments as multipart/multilingual"
 msgstr ""
 
-#: opcodes.h:69
+#: opcodes.h:68
 msgid "run ispell on the message"
 msgstr "ispell로 메일 검사"
 
-#: opcodes.h:70
+#: opcodes.h:69
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#: opcodes.h:71
+#: opcodes.h:70
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#: opcodes.h:72
+#: opcodes.h:71
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
 
-#: opcodes.h:73
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "현재 메일을 저장 후 나중에 보냄"
 
-#: opcodes.h:74
+#: opcodes.h:73
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: opcodes.h:75
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "첨부 파일 이름 변경/이동"
 
-#: opcodes.h:76
+#: opcodes.h:75
 msgid "send the message"
 msgstr "메일 보냄"
 
-#: opcodes.h:77
+#: opcodes.h:76
 msgid "toggle disposition between inline/attachment"
 msgstr "inline 또는 attachment 선택"
 
-#: opcodes.h:78
+#: opcodes.h:77
 msgid "toggle recoding of this attachment"
 msgstr "첨부물의 저장 상태 토글"
 
-#: opcodes.h:79
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "발신 후 파일을 지울지 선택"
 
-#: opcodes.h:80
+#: opcodes.h:79
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "새로운 메일 작성"
 
-#: opcodes.h:81
+#: opcodes.h:80
 msgid "update an attachment's encoding info"
 msgstr "첨부물의 인코딩 정보 다시 읽기"
 
-#: opcodes.h:82
+#: opcodes.h:81
 msgid "write the message to a folder"
 msgstr "메일을 폴더에 저장"
 
-#: opcodes.h:83
+#: opcodes.h:82
 msgid "copy a message to a file/mailbox"
 msgstr "메일을 파일/메일함에 복사"
 
-#: opcodes.h:84
+#: opcodes.h:83
 msgid "create an alias from a message sender"
 msgstr "발신인의 별칭 만들기"
 
-#: opcodes.h:85
+#: opcodes.h:84
 msgid "create a new mailbox (IMAP only)"
 msgstr "새로운 메일함 만듬 (IMAP만 지원)"
 
-#: opcodes.h:86
+#: opcodes.h:85
 msgid "move entry to bottom of screen"
 msgstr "항목을 화면 아래로 이동"
 
-#: opcodes.h:87
+#: opcodes.h:86
 msgid "move entry to middle of screen"
 msgstr "항목을 화면 중간으로 이동"
 
-#: opcodes.h:88
+#: opcodes.h:87
 msgid "move entry to top of screen"
 msgstr "항목을 화면 위로 이동"
 
-#: opcodes.h:89
+#: opcodes.h:88
 msgid "make decoded (text/plain) copy"
 msgstr "text/plain 으로 디코딩후 복사"
 
-#: opcodes.h:90
+#: opcodes.h:89
 msgid "make decoded copy (text/plain) and delete"
 msgstr "text/plain 으로 디코딩후 복사, 지우기"
 
-#: opcodes.h:91
+#: opcodes.h:90
 msgid "delete the current entry"
 msgstr "현재 항목 지움"
 
-#: opcodes.h:92
+#: opcodes.h:91
 msgid "delete the current mailbox (IMAP only)"
 msgstr "현재 메일함을 삭제 (IMAP에서만)"
 
-#: opcodes.h:93
+#: opcodes.h:92
 msgid "delete all messages in subthread"
 msgstr "부속 글타래의 모든 메일 지움"
 
-#: opcodes.h:94
+#: opcodes.h:93
 msgid "delete all messages in thread"
 msgstr "글타래의 모든 메일 지우기"
 
-#: opcodes.h:95
+#: opcodes.h:94
 msgid "display full address of sender"
 msgstr "송신인의 주소 전부 보기"
 
-#: opcodes.h:96
+#: opcodes.h:95
 msgid "display message and toggle header weeding"
 msgstr "메일 출력과 헤더 숨기기 토글"
 
-#: opcodes.h:97
+#: opcodes.h:96
 msgid "display a message"
 msgstr "메일 보기"
 
-#: opcodes.h:98
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "커서 앞의 글자 지움"
 
-#: opcodes.h:99
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "커서를 한글자 왼쪽으로 보냄"
 
-#: opcodes.h:100
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "단어의 처음으로 이동"
 
-#: opcodes.h:101
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "줄의 처음으로 이동"
 
-#: opcodes.h:102
-msgid "cycle among incoming mailboxes"
-msgstr "수신 메일함 보기"
-
-#: opcodes.h:103
+#: opcodes.h:101
 msgid "capitalize the word"
 msgstr "대문자로 변환"
 
-#: opcodes.h:104
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "파일명 또는 별칭 완성하기"
 
-#: opcodes.h:105
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "쿼리로 주소 완성하기"
 
-#: opcodes.h:106
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "커서의 글자 지움"
 
-#: opcodes.h:107
+#: opcodes.h:105
 msgid "convert the word to lower case"
 msgstr "소문자로 변환"
 
-#: opcodes.h:108
+#: opcodes.h:106
 msgid "jump to the end of the line"
 msgstr "줄의 끝으로 이동"
 
-#: opcodes.h:109
+#: opcodes.h:107
 msgid "move the cursor one character to the right"
 msgstr "한글자 오른쪽으로 이동"
 
-#: opcodes.h:110
+#: opcodes.h:108
 msgid "move the cursor to the end of the word"
 msgstr "단어의 끝으로 이동"
 
-#: opcodes.h:111
+#: opcodes.h:109
 msgid "scroll down through the history list"
 msgstr "history 목록 아래로 내리기"
 
-#: opcodes.h:112
+#: opcodes.h:110
 #, fuzzy
 msgid "search through the history list"
 msgstr "history 목록 위로 올리기"
 
-#: opcodes.h:113
+#: opcodes.h:111
 msgid "scroll up through the history list"
 msgstr "history 목록 위로 올리기"
 
-#: opcodes.h:114
+#: opcodes.h:112
 msgid "delete chars from cursor to end of line"
 msgstr "커서부터 줄의 끝까지 글자 지움"
 
-#: opcodes.h:115
+#: opcodes.h:113
 msgid "delete chars from the cursor to the end of the word"
 msgstr "커서부터 단어의 끝까지 지움"
 
-#: opcodes.h:116
+#: opcodes.h:114
 msgid "delete all chars on the line"
 msgstr "현재 줄의 모든 글자 지움"
 
-#: opcodes.h:117
+#: opcodes.h:115
 msgid "delete the word in front of the cursor"
 msgstr "커서 앞의 단어 지움"
 
-#: opcodes.h:118
+#: opcodes.h:116
+msgid "cycle among incoming mailboxes"
+msgstr "수신 메일함 보기"
+
+#: opcodes.h:117
 msgid "quote the next typed key"
 msgstr "다음에 입력되는 문자를 인용"
 
-#: opcodes.h:119
+#: opcodes.h:118
 msgid "transpose character under cursor with previous"
 msgstr "앞뒤 문자 바꾸기"
 
-#: opcodes.h:120
+#: opcodes.h:119
 msgid "convert the word to upper case"
 msgstr "대문자로 변환"
 
-#: opcodes.h:121
+#: opcodes.h:120
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: opcodes.h:122
+#: opcodes.h:121
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
-#: opcodes.h:123
+#: opcodes.h:122
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "edit attachment content type"
 msgstr "첨부물 내용 유형 편집"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "end of conditional execution (noop)"
 msgstr ""
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "enter a neomuttrc command"
 msgstr "neomuttrc 명령어 입력"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "enter a file mask"
 msgstr "파일 매스크 입력"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "exit this menu"
 msgstr "현재 메뉴 나감"
 
-#: opcodes.h:129
+#: opcodes.h:128
 msgid "filter attachment through a shell command"
 msgstr "쉘 명령어를 통해 첨부물 걸르기"
 
-#: opcodes.h:130
+#: opcodes.h:129
 msgid "move to the first entry"
 msgstr "처음 항목으로 이동"
 
-#: opcodes.h:131
+#: opcodes.h:130
 msgid "toggle a message's 'important' flag"
 msgstr "메일의 '중요' 플래그 상태 바꾸기"
 
-#: opcodes.h:132
+#: opcodes.h:131
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "%s%s에게 댓글?"
 
-#: opcodes.h:133
+#: opcodes.h:132
 msgid "forward a message with comments"
 msgstr "메일 포워딩"
 
-#: opcodes.h:134
+#: opcodes.h:133
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:135
+#: opcodes.h:134
 msgid "select the current entry"
 msgstr "현재 항목 선택"
 
-#: opcodes.h:136
+#: opcodes.h:135
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:137
+#: opcodes.h:136
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "헤더를 포함한 메세지 편집"
 
-#: opcodes.h:138
+#: opcodes.h:137
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "첫번째 메세지입니다."
 
-#: opcodes.h:139
+#: opcodes.h:138
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s는 디렉토리가 아닙니다."
 
-#: opcodes.h:140
+#: opcodes.h:139
 msgid "reply to all recipients"
 msgstr "모든 수신자에게 답장"
 
-#: opcodes.h:141
+#: opcodes.h:140
 msgid "scroll down 1/2 page"
 msgstr "1/2 페이지 내리기"
 
-#: opcodes.h:142
+#: opcodes.h:141
 msgid "scroll up 1/2 page"
 msgstr "1/2 페이지 올리기"
 
-#: opcodes.h:143
+#: opcodes.h:142
 msgid "this screen"
 msgstr "현재 화면"
 
-#: opcodes.h:144
+#: opcodes.h:143
 msgid "jump to an index number"
 msgstr "번호로 이동"
 
-#: opcodes.h:145
+#: opcodes.h:144
 msgid "move to the last entry"
 msgstr "마지막 항목으로 이동"
 
-#: opcodes.h:146
+#: opcodes.h:145
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "현재 글타래에 태그 붙임"
 
-#: opcodes.h:147
+#: opcodes.h:146
 msgid "reply to specified mailing list"
 msgstr "지정된 메일링 리스트로 답장하기"
 
-#: opcodes.h:148
+#: opcodes.h:147
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:149
+#: opcodes.h:148
 msgid "execute a macro"
 msgstr "매크로 실행"
 
-#: opcodes.h:150
+#: opcodes.h:149
 msgid "compose a new mail message"
 msgstr "새로운 메일 작성"
+
+#: opcodes.h:150
+msgid "list mailboxes with new mail"
+msgstr "새 메일이 도착한 메일함 목록."
 
 #: opcodes.h:151
 msgid "break the thread in two"
@@ -5743,244 +5725,244 @@ msgstr ""
 msgid "show S/MIME options"
 msgstr "S/MIME 옵션 보기"
 
-#: pager.c:98
-msgid "Not available in this menu."
-msgstr "이 메뉴에선 유효하지 않음."
+#: pager.c:97
+msgid "Not available in this menu"
+msgstr "이 메뉴에선 유효하지 않음"
 
-#: pager.c:1843
+#: pager.c:1842
 msgid "PrevPg"
 msgstr "이전페이지"
 
-#: pager.c:1844
+#: pager.c:1843
 msgid "NextPg"
 msgstr "다음페이지"
 
-#: pager.c:1849
+#: pager.c:1848
 msgid "View Attachm."
 msgstr "첨부물보기"
 
-#: pager.c:1852 pager.c:1861
+#: pager.c:1851 pager.c:1860
 msgid "Next"
 msgstr "다음"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager.c:2154 status.c:266
+#: pager.c:2153 status.c:252
 msgid "all"
 msgstr ""
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager.c:2156 status.c:264
+#: pager.c:2155 status.c:250
 msgid "end"
 msgstr ""
 
-#: pager.c:2505 pager.c:2536 pager.c:2572 pager.c:2894
-msgid "Bottom of message is shown."
-msgstr "메세지의 끝입니다."
+#: pager.c:2504 pager.c:2535 pager.c:2571 pager.c:2893
+msgid "Bottom of message is shown"
+msgstr "메세지의 끝입니다"
 
-#: pager.c:2522 pager.c:2543 pager.c:2550 pager.c:2560
-msgid "Top of message is shown."
-msgstr "메세지의 처음입니다."
+#: pager.c:2521 pager.c:2542 pager.c:2549 pager.c:2559
+msgid "Top of message is shown"
+msgstr "메세지의 처음입니다"
 
-#: pager.c:2810
-msgid "Help is currently being shown."
-msgstr "현재 도움말을 보고 있습니다."
+#: pager.c:2809
+msgid "Help is currently being shown"
+msgstr "현재 도움말을 보고 있습니다"
 
-#: pager.c:2858
-msgid "No more quoted text."
-msgstr "더 이상의 인용문 없음."
+#: pager.c:2857
+msgid "No more quoted text"
+msgstr "더 이상의 인용문 없음"
 
-#: pager.c:2873
-msgid "No more unquoted text after quoted text."
-msgstr "인용문 이후에 더 이상의 비 인용문 없음."
+#: pager.c:2872
+msgid "No more unquoted text after quoted text"
+msgstr "인용문 이후에 더 이상의 비 인용문 없음"
 
-#: pattern.c:201 pattern.c:475
+#: pattern.c:200 pattern.c:474
 #, c-format
 msgid "Error in expression: %s"
 msgstr "표현식에서 오류: %s"
 
-#: pattern.c:206 pattern.c:480
+#: pattern.c:205 pattern.c:479
 #, fuzzy
 msgid "Empty expression"
 msgstr "표현식 오류"
 
-#: pattern.c:305
+#: pattern.c:304
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "잘못된 날짜 입력: %s"
 
-#: pattern.c:319
+#: pattern.c:318
 #, c-format
 msgid "Invalid month: %s"
 msgstr "잘못된 달 입력: %s"
 
-#: pattern.c:422
+#: pattern.c:421
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "잘못된 날짜 입력: %s"
 
-#: pattern.c:743 pattern.c:877
+#: pattern.c:742 pattern.c:876
 #, fuzzy
 msgid "No current message"
 msgstr "읽지 않은 메일 없음"
 
-#: pattern.c:905
+#: pattern.c:904
 msgid "No Context"
 msgstr ""
 
-#: pattern.c:993
+#: pattern.c:992
 #, fuzzy
 msgid "Error opening 'memory stream'"
 msgstr "메일함 여는중 오류"
 
-#: pattern.c:1038
+#: pattern.c:1037
 #, fuzzy
 msgid "Error re-opening 'memory stream'"
 msgstr "메일함 여는중 오류"
 
-#: pattern.c:1047
+#: pattern.c:1046
 #, fuzzy
 msgid "Error opening /dev/null"
 msgstr "/dev/null를 열 수 없음"
 
-#: pattern.c:1296 pattern.c:1467
+#: pattern.c:1295 pattern.c:1466
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "패턴 오류: %s"
 
-#: pattern.c:1323
+#: pattern.c:1322
 #, fuzzy, c-format
 msgid "missing pattern: %s"
 msgstr "변수가 빠짐"
 
-#: pattern.c:1342
+#: pattern.c:1341
 #, fuzzy, c-format
 msgid "mismatched brackets: %s"
 msgstr "삽입 어구가 맞지 않음: %s"
 
-#: pattern.c:1404
+#: pattern.c:1403
 #, fuzzy, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: 잘못된 명령어"
 
-#: pattern.c:1410
+#: pattern.c:1409
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: 이 모드에서 지원되지 않음"
 
-#: pattern.c:1423
+#: pattern.c:1422
 msgid "missing parameter"
 msgstr "변수가 빠짐"
 
-#: pattern.c:1439
+#: pattern.c:1438
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "삽입 어구가 맞지 않음: %s"
 
-#: pattern.c:1474
+#: pattern.c:1473
 msgid "empty pattern"
 msgstr "빈 패턴"
 
-#: pattern.c:1877 pattern.c:1880
-msgid "error: server custom search only supported with IMAP."
+#: pattern.c:1876 pattern.c:1879
+msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
-#: pattern.c:2054
+#: pattern.c:2053
 #, c-format
-msgid "error: unknown op %d (report this error)."
-msgstr "오류: 알 수 없는 작동 %d (오류 보고 바람)."
+msgid "error: unknown op %d (report this error)"
+msgstr "오류: 알 수 없는 작동 %d (오류 보고 바람)"
 
-#: pattern.c:2220 pattern.c:2368
+#: pattern.c:2219 pattern.c:2367
 msgid "Compiling search pattern..."
 msgstr "검색 패턴 컴파일 중..."
 
-#: pattern.c:2240
+#: pattern.c:2239
 msgid "Executing command on matching messages..."
 msgstr "선택된 메일에 명령 실행중..."
 
-#: pattern.c:2306
-msgid "No messages matched criteria."
-msgstr "기준과 일치하는 메일이 없음."
+#: pattern.c:2305
+msgid "No messages matched criteria"
+msgstr "기준과 일치하는 메일이 없음"
 
-#: pattern.c:2400
+#: pattern.c:2399
 #, fuzzy
 msgid "Searching..."
 msgstr "저장중..."
 
-#: pattern.c:2414
+#: pattern.c:2413
 msgid "Search hit bottom without finding match"
 msgstr "일치하는 결과가 아래에 없음"
 
-#: pattern.c:2425
+#: pattern.c:2424
 msgid "Search hit top without finding match"
 msgstr "일치하는 결과가 위에 없음"
 
-#: pattern.c:2459
-msgid "Search interrupted."
-msgstr "찾는 도중 중단됨."
+#: pattern.c:2458
+msgid "Search interrupted"
+msgstr "찾는 도중 중단됨"
 
-#: pop/pop.c:159 pop/pop_lib.c:248
-msgid "Command TOP is not supported by server."
-msgstr "명령어 TOP이 서버에서 지원되지 않음."
+#: pop/pop.c:158 pop/pop_lib.c:248
+msgid "Command TOP is not supported by server"
+msgstr "명령어 TOP이 서버에서 지원되지 않음"
 
-#: pop/pop.c:186
-msgid "Can't write header to temporary file!"
+#: pop/pop.c:185
+msgid "Can't write header to temporary file"
 msgstr "임시 파일 만들 수 없음"
 
-#: pop/pop.c:358 pop/pop_lib.c:250
-msgid "Command UIDL is not supported by server."
-msgstr "명령어 UIDL이 서버에서 지원되지 않음."
+#: pop/pop.c:348 pop/pop_lib.c:250
+msgid "Command UIDL is not supported by server"
+msgstr "명령어 UIDL이 서버에서 지원되지 않음"
 
-#: pop/pop.c:382
+#: pop/pop.c:372
 #, fuzzy, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "잘못된 메일 인덱스. 메일함 열기 재시도."
 
-#: pop/pop.c:502 pop/pop.c:929
+#: pop/pop.c:492 pop/pop.c:919
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s는 잘못된 POP 패스"
 
-#: pop/pop.c:545
+#: pop/pop.c:535
 msgid "Fetching list of messages..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: pop/pop.c:713
-msgid "Can't write message to temporary file!"
-msgstr "메일을 임시 파일에 쓸수 없음!"
+#: pop/pop.c:703
+msgid "Can't write message to temporary file"
+msgstr "메일을 임시 파일에 쓸수 없음"
 
-#: pop/pop.c:798
+#: pop/pop.c:788
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "%d개의 메일을 삭제 표시함..."
 
-#: pop/pop.c:913
-msgid "POP host is not defined."
-msgstr "POP 서버가 지정되지 않음."
+#: pop/pop.c:903
+msgid "POP host is not defined"
+msgstr "POP 서버가 지정되지 않음"
 
-#: pop/pop.c:977
-msgid "No new mail in POP mailbox."
-msgstr "POP 메일함에 새 메일이 없음."
+#: pop/pop.c:967
+msgid "No new mail in POP mailbox"
+msgstr "POP 메일함에 새 메일이 없음"
 
-#: pop/pop.c:984
+#: pop/pop.c:974
 msgid "Delete messages from server?"
 msgstr "서버의 메일을 삭제 할까요?"
 
-#: pop/pop.c:987
+#: pop/pop.c:977
 #, fuzzy, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "새 메일 읽는 중 (%d 바이트)..."
 
-#: pop/pop.c:1032
-msgid "Error while writing mailbox!"
-msgstr "메일함에 쓰는 중 오류!"
+#: pop/pop.c:1022
+msgid "Error while writing mailbox"
+msgstr "메일함에 쓰는 중 오류"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
-#: pop/pop.c:1038
+#: pop/pop.c:1028
 #, fuzzy, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
@@ -5991,7 +5973,7 @@ msgid "Authenticating (SASL)..."
 msgstr "인증 중 (SASL)..."
 
 #: pop/pop_auth.c:241
-msgid "POP timestamp is invalid!"
+msgid "POP timestamp is invalid"
 msgstr ""
 
 #: pop/pop_auth.c:245
@@ -5999,21 +5981,21 @@ msgid "Authenticating (APOP)..."
 msgstr "인증 중 (APOP)..."
 
 #: pop/pop_auth.c:265
-msgid "APOP authentication failed."
-msgstr "APOP 인증에 실패함."
+msgid "APOP authentication failed"
+msgstr "APOP 인증에 실패함"
 
 #: pop/pop_auth.c:304
-msgid "Command USER is not supported by server."
-msgstr "명령어 USER를 서버에서 지원하지 않음."
+msgid "Command USER is not supported by server"
+msgstr "명령어 USER를 서버에서 지원하지 않음"
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "무효   "
 
 #: pop/pop_lib.c:246
-msgid "Unable to leave messages on server."
-msgstr "서버에 메일을 남겨 둘 수 없음."
+msgid "Unable to leave messages on server"
+msgstr "서버에 메일을 남겨 둘 수 없음"
 
 #: pop/pop_lib.c:277
 #, c-format
@@ -6032,31 +6014,27 @@ msgstr "메일 인덱스를 확인중..."
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "연결이 끊어짐. POP 서버와 다시 연결 할까요?"
 
-#: postpone.c:216
+#: postpone.c:215
 msgid "Postponed Messages"
 msgstr "발송 연기 됨"
 
-#: postpone.c:297 postpone.c:306
-msgid "No postponed messages."
-msgstr "발송 연기된 메일 없음."
+#: postpone.c:296 postpone.c:305
+msgid "No postponed messages"
+msgstr "발송 연기된 메일 없음"
 
-#: postpone.c:457
+#: postpone.c:456
 msgid "Illegal S/MIME header"
 msgstr "잘못된 S/MIME 헤더"
 
-#: postpone.c:488 postpone.c:514 postpone.c:523
+#: postpone.c:487 postpone.c:513 postpone.c:522
 #, fuzzy
 msgid "Illegal crypto header"
 msgstr "잘못된 PGP 헤더"
 
-#: postpone.c:608 postpone.c:704 postpone.c:727
+#: postpone.c:607 postpone.c:703 postpone.c:726
 #, fuzzy
 msgid "Decrypting message..."
 msgstr "메세지 가져오는 중..."
-
-#: postpone.c:709 postpone.c:732
-msgid "Decryption failed."
-msgstr "해독 실패."
 
 #: query.c:73
 msgid "New Query"
@@ -6070,49 +6048,49 @@ msgstr "별칭 만들기"
 msgid "Waiting for response..."
 msgstr "응답을 기다리는 중..."
 
-#: query.c:363 query.c:400
+#: query.c:349 query.c:386
 msgid "Query: "
 msgstr "질의: "
 
-#: query.c:371 query.c:407
+#: query.c:357 query.c:393
 #, c-format
 msgid "Query '%s'"
 msgstr "질의 '%s'"
 
-#: query.c:596 query.c:630
-msgid "Query command not defined."
-msgstr "질의 명령이 정의되지 않음."
+#: query.c:582 query.c:616
+msgid "Query command not defined"
+msgstr "질의 명령이 정의되지 않음"
 
-#: recvattach.c:87
+#: recvattach.c:86
 msgid "Pipe"
 msgstr "연결"
 
-#: recvattach.c:88
+#: recvattach.c:87
 msgid "Print"
 msgstr "출력"
 
-#: recvattach.c:567
+#: recvattach.c:552
 msgid "Saving..."
 msgstr "저장중..."
 
-#: recvattach.c:571 recvattach.c:676
-msgid "Attachment saved."
-msgstr "첨부물 저장됨."
+#: recvattach.c:556 recvattach.c:661
+msgid "Attachment saved"
+msgstr "첨부물 저장됨"
 
-#: recvattach.c:694
+#: recvattach.c:679
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "주의! %s를 덮어 씌웁니다, 계속할까요?"
 
-#: recvattach.c:712
-msgid "Attachment filtered."
-msgstr "첨부물 필터됨."
+#: recvattach.c:697
+msgid "Attachment filtered"
+msgstr "첨부물 필터됨"
 
-#: recvattach.c:808
+#: recvattach.c:793
 msgid "Filter through: "
 msgstr "필터: "
 
-#: recvattach.c:808
+#: recvattach.c:793
 msgid "Pipe to: "
 msgstr "연결: "
 
@@ -6120,76 +6098,76 @@ msgstr "연결: "
 #. %s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
 #.
-#: recvattach.c:859
+#: recvattach.c:844
 #, fuzzy, c-format
-msgid "I don't know how to print %s attachments!"
-msgstr "첨부물 %s의 출력 방법을 알 수 없음!"
+msgid "I don't know how to print %s attachments"
+msgstr "첨부물 %s의 출력 방법을 알 수 없음"
 
 #. L10N: Although we now the precise number of tagged messages, we
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
-#: recvattach.c:960
+#: recvattach.c:945
 #, fuzzy, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "태그가 붙은 첨부물 출력?"
 
-#: recvattach.c:961
+#: recvattach.c:946
 #, c-format
 msgid "Print attachment?"
 msgstr "첨부물 출력?"
 
-#: recvattach.c:1043
+#: recvattach.c:1028
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
-#: recvattach.c:1208
-msgid "Can't decrypt encrypted message!"
-msgstr "암호화된 메일을 해독할 수 없음!"
+#: recvattach.c:1193
+msgid "Can't decrypt encrypted message"
+msgstr "암호화된 메일을 해독할 수 없음"
 
-#: recvattach.c:1342
+#: recvattach.c:1327
 msgid "Attachments"
 msgstr "첨부물"
 
-#: recvattach.c:1380
-msgid "There are no subparts to show!"
+#: recvattach.c:1365
+msgid "There are no subparts to show"
 msgstr "더 이상 첨부물이 없습니다."
 
-#: recvattach.c:1435
-msgid "Can't delete attachment from POP server."
-msgstr "POP 서버에서 첨부물을 삭제 할수 없음."
+#: recvattach.c:1420
+msgid "Can't delete attachment from POP server"
+msgstr "POP 서버에서 첨부물을 삭제 할수 없음"
 
-#: recvattach.c:1444
+#: recvattach.c:1429
 #, fuzzy
-msgid "Can't delete attachment from news server."
-msgstr "POP 서버에서 첨부물을 삭제 할수 없음."
+msgid "Can't delete attachment from news server"
+msgstr "POP 서버에서 첨부물을 삭제 할수 없음"
 
-#: recvattach.c:1451
-msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
+#: recvattach.c:1436
+msgid "Deletion of attachments from encrypted messages is unsupported"
+msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음"
 
-#: recvattach.c:1457
+#: recvattach.c:1442
 #, fuzzy
-msgid "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
+msgid "Deletion of attachments from signed messages may invalidate the signature"
+msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음"
 
-#: recvattach.c:1476 recvattach.c:1493
-msgid "Only deletion of multipart attachments is supported."
-msgstr "다중체계 첨부물의 삭제만이 지원됩니다."
+#: recvattach.c:1461 recvattach.c:1478
+msgid "Only deletion of multipart attachments is supported"
+msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
 #: recvcmd.c:68
-msgid "You may only bounce message/rfc822 parts."
-msgstr "message/rfc822 부분만 전달할 수 있습니다."
+msgid "You may only bounce message/rfc822 parts"
+msgstr "message/rfc822 부분만 전달할 수 있습니다"
 
 #: recvcmd.c:265
 #, fuzzy
-msgid "Error bouncing message!"
-msgid_plural "Error bouncing messages!"
-msgstr[0] "메일 바운스중 오류!"
+msgid "Error bouncing message"
+msgid_plural "Error bouncing messages"
+msgstr[0] "메일 바운스중 오류"
 
 #: recvcmd.c:484
 #, c-format
-msgid "Can't open temporary file %s."
+msgid "Can't open temporary file %s"
 msgstr "임시 파일 %s를 열지 못함"
 
 #: recvcmd.c:513
@@ -6206,16 +6184,16 @@ msgstr "MIME 캡슐에 넣어 포워딩할까요?"
 
 #: recvcmd.c:661 recvcmd.c:954
 #, c-format
-msgid "Can't create %s."
-msgstr "%s를 만들 수 없음."
+msgid "Can't create %s"
+msgstr "%s를 만들 수 없음"
 
 #: recvcmd.c:796
-msgid "Can't find any tagged messages."
-msgstr "표시된 메일이 없습니다."
+msgid "Can't find any tagged messages"
+msgstr "표시된 메일이 없습니다"
 
-#: recvcmd.c:832 send.c:989
-msgid "No mailing lists found!"
-msgstr "메일링 리스트를 찾을 수 없음!"
+#: recvcmd.c:832 send.c:988
+msgid "No mailing lists found"
+msgstr "메일링 리스트를 찾을 수 없음"
 
 #: recvcmd.c:930
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -6225,69 +6203,69 @@ msgstr "표시된 첨부물을 모두 디코딩하지 못함. 나머지는 MIME 
 msgid "<random>"
 msgstr ""
 
-#: remailer.c:552
+#: remailer.c:538
 msgid "Append"
 msgstr "첨가"
 
-#: remailer.c:552
+#: remailer.c:538
 msgid "Insert"
 msgstr "삽입"
 
-#: remailer.c:553
+#: remailer.c:539
 msgid "Delete"
 msgstr "삭제"
 
-#: remailer.c:554
+#: remailer.c:540
 msgid "OK"
 msgstr "확인"
 
-#: remailer.c:580
-msgid "Can't get mixmaster's type2.list!"
-msgstr "mixmaster의 type2.list를 찾지 못함!"
+#: remailer.c:566
+msgid "Can't get mixmaster's type2.list"
+msgstr "mixmaster의 type2.list를 찾지 못함"
 
-#: remailer.c:606
-msgid "Select a remailer chain."
-msgstr "리메일러 체인 선택."
+#: remailer.c:592
+msgid "Select a remailer chain"
+msgstr "리메일러 체인 선택"
 
-#: remailer.c:668
+#: remailer.c:654
 #, c-format
-msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음."
+msgid "Error: %s can't be used as the final remailer of a chain"
+msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음"
 
 #. L10N The '%d' here hard-coded to 19
-#: remailer.c:700
+#: remailer.c:686
 #, c-format
-msgid "Mixmaster chains are limited to %d elements."
-msgstr "Mixmaster 체인은 %d개의 제한이 있음."
+msgid "Mixmaster chains are limited to %d elements"
+msgstr "Mixmaster 체인은 %d개의 제한이 있음"
 
-#: remailer.c:723
-msgid "The remailer chain is already empty."
-msgstr "리메일러 체인이 이미 비어 있음."
+#: remailer.c:709
+msgid "The remailer chain is already empty"
+msgstr "리메일러 체인이 이미 비어 있음"
 
-#: remailer.c:733
-msgid "You already have the first chain element selected."
-msgstr "이미 첫번째 체인을 선택했음."
+#: remailer.c:719
+msgid "You already have the first chain element selected"
+msgstr "이미 첫번째 체인을 선택했음"
 
-#: remailer.c:743
-msgid "You already have the last chain element selected."
-msgstr "이미 마지막 체인을 선택했음."
+#: remailer.c:729
+msgid "You already have the last chain element selected"
+msgstr "이미 마지막 체인을 선택했음"
 
-#: remailer.c:787
-msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster는 Cc 또는 Bcc 헤더를 허용하지 않음."
+#: remailer.c:773
+msgid "Mixmaster doesn't accept Cc or Bcc headers"
+msgstr "Mixmaster는 Cc 또는 Bcc 헤더를 허용하지 않음"
 
-#: remailer.c:811
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하세요!"
+#: remailer.c:797
+msgid "Please set the hostname variable to a proper value when using mixmaster"
+msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하세요"
 
-#: remailer.c:855
+#: remailer.c:841
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "메일 보내는 중 오류 %d.\n"
 
-#: remailer.c:859
-msgid "Error sending message."
-msgstr "메일 보내는 중 오류."
+#: remailer.c:845
+msgid "Error sending message"
+msgstr "메일 보내는 중 오류"
 
 #: rfc1524.c:190
 #, c-format
@@ -6307,167 +6285,167 @@ msgstr "%s 형식을 mailcap 항목에서 찾을 수 없음"
 msgid "Error: score: invalid number"
 msgstr ""
 
-#: send.c:375
+#: send.c:374
 msgid "No subject, abort?"
 msgstr "제목 없음. 끝낼까요?"
 
-#: send.c:377
-msgid "No subject, aborting."
-msgstr "제목 없음. 끝냅니다."
+#: send.c:376
+msgid "No subject, aborting"
+msgstr "제목 없음. 끝냅니다"
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send.c:693
+#: send.c:692
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "%s%s에게 답장?"
 
-#: send.c:734
+#: send.c:733
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "%s%s에게 댓글?"
 
-#: send.c:949
-msgid "No tagged messages are visible!"
-msgstr "태그가 붙은 메일을 볼 수 없음!"
+#: send.c:948
+msgid "No tagged messages are visible"
+msgstr "태그가 붙은 메일을 볼 수 없음"
 
-#: send.c:1024
+#: send.c:1023
 msgid "Include message in reply?"
 msgstr "답장에 원본을 포함시킵니까?"
 
-#: send.c:1030
+#: send.c:1029
 msgid "Including quoted message..."
 msgstr "인용 메일 포함 중..."
 
-#: send.c:1040
-msgid "Could not include all requested messages!"
-msgstr "요청된 모든 메일을 포함할 수 없음!"
+#: send.c:1039
+msgid "Could not include all requested messages"
+msgstr "요청된 모든 메일을 포함할 수 없음"
 
-#: send.c:1052
+#: send.c:1051
 msgid "Forward as attachment?"
 msgstr "첨부물로 포워딩?"
 
-#: send.c:1057
+#: send.c:1056
 msgid "Preparing forwarded message..."
 msgstr "메일 포워딩을 준비 중..."
 
-#: send.c:1563
+#: send.c:1562
 msgid "Recall postponed message?"
 msgstr "발송 연기된 메일을 다시 부를까요?"
 
-#: send.c:1861
+#: send.c:1860
 msgid "Edit forwarded message?"
 msgstr "포워딩된 메일을 수정할까요?"
 
-#: send.c:1911
+#: send.c:1910
 msgid "Abort unmodified message?"
 msgstr "변경되지 않은 메일을 취소할까요?"
 
-#: send.c:1913
-msgid "Aborted unmodified message."
-msgstr "변경되지 않은 메일 취소함."
+#: send.c:1912
+msgid "Aborted unmodified message"
+msgstr "변경되지 않은 메일 취소함"
 
-#: send.c:2025
+#: send.c:2024
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:2063
+#: send.c:2062
 #, fuzzy
-msgid "Article not posted."
-msgstr "보내지 않음."
+msgid "Article not posted"
+msgstr "보내지 않음"
 
-#: send.c:2128
-msgid "Message postponed."
-msgstr "발송 연기됨."
+#: send.c:2127
+msgid "Message postponed"
+msgstr "발송 연기됨"
 
-#: send.c:2164
+#: send.c:2163
 msgid "No subject, abort sending?"
 msgstr "제목 없음, 보내기를 취소할까요?"
 
-#: send.c:2168 send.c:2174
-msgid "No subject specified."
-msgstr "제목이 지정되지 않음."
+#: send.c:2167 send.c:2173
+msgid "No subject specified"
+msgstr "제목이 지정되지 않음"
 
-#: send.c:2180
+#: send.c:2179
 #, fuzzy
-msgid "No newsgroup specified."
-msgstr "제목이 지정되지 않음."
+msgid "No newsgroup specified"
+msgstr "제목이 지정되지 않음"
 
-#: send.c:2189
+#: send.c:2188
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: send.c:2194
+#: send.c:2193
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send.c:2253 smtp.c:212
+#: send.c:2252 smtp.c:212
 msgid "Sending message..."
 msgstr "메일 보내는 중..."
 
-#: send.c:2292 send.c:2319
+#: send.c:2291 send.c:2318
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "첨부물을 text로 보기"
 
-#: send.c:2392
-msgid "Could not send the message."
-msgstr "메일을 보낼 수 없음."
+#: send.c:2391
+msgid "Could not send the message"
+msgstr "메일을 보낼 수 없음"
+
+#: send.c:2397
+msgid "Sending in background"
+msgstr "백그라운드로 보냄"
 
 #: send.c:2398
-msgid "Sending in background."
-msgstr "백그라운드로 보냄."
-
-#: send.c:2399
-msgid "Article posted."
+msgid "Article posted"
 msgstr ""
 
-#: send.c:2400
-msgid "Mail sent."
-msgstr "메일 보냄."
+#: send.c:2399
+msgid "Mail sent"
+msgstr "메일 보냄"
 
-#: sendlib.c:495
-msgid "No boundary parameter found! [report this error]"
-msgstr "한계 변수 없음! [오류 보고 바람]"
+#: sendlib.c:494
+msgid "No boundary parameter found [report this error]"
+msgstr "한계 변수 없음 [오류 보고 바람]"
 
-#: sendlib.c:526
+#: sendlib.c:525
 #, c-format
-msgid "%s no longer exists!"
-msgstr "%s가 더 이상 존재치 않음!"
+msgid "%s no longer exists"
+msgstr "%s가 더 이상 존재치 않음"
 
-#: sendlib.c:997
+#: sendlib.c:996
 #, c-format
-msgid "%s isn't a regular file."
-msgstr "%s는 올바른 파일이 아님."
+msgid "%s isn't a regular file"
+msgstr "%s는 올바른 파일이 아님"
 
-#: sendlib.c:1171
+#: sendlib.c:1170
 #, fuzzy
 msgid "Could not find any mime.types file."
 msgstr "메일을 보낼 수 없음."
 
-#: sendlib.c:1260
+#: sendlib.c:1259
 #, c-format
 msgid "Could not open %s"
 msgstr "%s를 열 수 없음"
 
-#: sendlib.c:2732
-msgid "$sendmail must be set in order to send mail."
+#: sendlib.c:2731
+msgid "$sendmail must be set in order to send mail"
 msgstr ""
 
-#: sendlib.c:2839
+#: sendlib.c:2838
 #, c-format
-msgid "Error sending message, child exited %d (%s)."
-msgstr "메일을 보내는 중 오류 %d (%s)."
+msgid "Error sending message, child exited %d (%s)"
+msgstr "메일을 보내는 중 오류 %d (%s)"
 
-#: sendlib.c:2845
+#: sendlib.c:2844
 msgid "Output of the delivery process"
 msgstr "배달 프로세스의 출력"
 
-#: sendlib.c:3056
+#: sendlib.c:3055
 #, c-format
-msgid "Bad IDN %s while preparing resent-from."
+msgid "Bad IDN %s while preparing resent-from"
 msgstr "resent-from을 준비하는 동안 잘못된 IDN %s"
 
 #: smtp.c:150
@@ -6490,11 +6468,6 @@ msgstr "무효   "
 msgid "%s authentication failed, trying next method"
 msgstr "SASL 인증에 실패함."
 
-#: smtp.c:551 smtp.c:575
-#, fuzzy
-msgid "SASL authentication failed"
-msgstr "SASL 인증에 실패함."
-
 #: smtp.c:684
 msgid "SMTP server does not support authentication"
 msgstr ""
@@ -6515,15 +6488,15 @@ msgstr ""
 msgid "Invalid server response"
 msgstr ""
 
-#: sort.c:427
+#: sort.c:377
 msgid "Sorting mailbox..."
 msgstr "메일함 정렬 중..."
 
-#: sort.c:464
-msgid "Could not find sorting function! [report this bug]"
-msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
+#: sort.c:414
+msgid "Could not find sorting function [report this bug]"
+msgstr "정렬 함수 찾을 수 없음 [버그 보고 바람]"
 
-#: status.c:163
+#: status.c:149
 msgid "(no mailbox)"
 msgstr "(메일함 없음)"
 
@@ -6609,7 +6582,7 @@ msgstr "컴파일 선택사항:"
 #~ msgid "%s: invalid value"
 #~ msgstr "%s: 잘못된 값"
 
-#~ msgid "%s: Unknown type."
+#~ msgid "%s: Unknown type"
 #~ msgstr "%s: 알 수 없는 형식"
 
 #, fuzzy
@@ -6619,17 +6592,17 @@ msgstr "컴파일 선택사항:"
 #~ msgid "%s: unknown type"
 #~ msgstr "%s: 알 수 없는 형식"
 
-#~ msgid "Error: '%s' is a bad IDN."
-#~ msgstr "오류: '%s'는 잘못된 IDN."
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "오류: '%s'는 잘못된 IDN"
 
-#~ msgid "Warning: '%s' is a bad IDN."
-#~ msgstr "경고: '%s' 잘못된 IDN."
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "경고: '%s' 잘못된 IDN"
 
 #~ msgid "Bad IDN in \"%s\": '%s'"
 #~ msgstr "잘못된 IDN \"%s\": '%s'"
 
-#~ msgid "Bad IDN \"%s\"."
-#~ msgstr "잘못된 IDN \"%s\"."
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "잘못된 IDN \"%s\""
 
 #~ msgid "Bad IDN in %s: '%s'\n"
 #~ msgstr "잘못된 IDN %s: '%s'\n"

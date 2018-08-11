@@ -373,7 +373,7 @@ static int edit_envelope(struct Envelope *en, int flags)
   if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0 ||
       (!buf[0] && query_quadoption(AbortNosubject, _("No subject, abort?")) != MUTT_NO))
   {
-    mutt_message(_("No subject, aborting."));
+    mutt_message(_("No subject, aborting"));
     return -1;
   }
   mutt_str_replace(&en->subject, buf);
@@ -945,7 +945,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
       /* This could happen if the user tagged some messages and then did
        * a limit such that none of the tagged message are visible.
        */
-      mutt_error(_("No tagged messages are visible!"));
+      mutt_error(_("No tagged messages are visible"));
       return -1;
     }
   }
@@ -985,7 +985,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
 
     if ((flags & SEND_LIST_REPLY) && !env->to)
     {
-      mutt_error(_("No mailing lists found!"));
+      mutt_error(_("No mailing lists found"));
       return -1;
     }
 
@@ -1036,7 +1036,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
 
           if (include_reply(ctx, ctx->hdrs[i], tempfp) == -1)
           {
-            mutt_error(_("Could not include all requested messages!"));
+            mutt_error(_("Could not include all requested messages"));
             return -1;
           }
           fputc('\n', tempfp);
@@ -1909,7 +1909,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         if (mtime == st.st_mtime && !msg->content->next &&
             query_quadoption(AbortUnmodified, _("Abort unmodified message?")) == MUTT_YES)
         {
-          mutt_message(_("Aborted unmodified message."));
+          mutt_message(_("Aborted unmodified message"));
           goto cleanup;
         }
       }
@@ -2059,10 +2059,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 /* abort */
 #ifdef USE_NNTP
       if (flags & SEND_NEWS)
-        mutt_message(_("Article not posted."));
+        mutt_message(_("Article not posted"));
       else
 #endif
-        mutt_message(_("Mail not sent."));
+        mutt_message(_("Mail not sent"));
       goto cleanup;
     }
     else if (i == 1)
@@ -2124,7 +2124,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         goto main_loop;
       }
       mutt_update_num_postponed();
-      mutt_message(_("Message postponed."));
+      mutt_message(_("Message postponed"));
       rc = 1;
       goto cleanup;
     }
@@ -2139,12 +2139,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     {
       if (!(flags & SEND_BATCH))
       {
-        mutt_error(_("No recipients specified."));
+        mutt_error(_("No recipients specified"));
         goto main_loop;
       }
       else
       {
-        puts(_("No recipients specified."));
+        puts(_("No recipients specified"));
         goto cleanup;
       }
     }
@@ -2164,19 +2164,19 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   {
     /* if the abort is automatic, print an error message */
     if (AbortNosubject == MUTT_YES)
-      mutt_error(_("No subject specified."));
+      mutt_error(_("No subject specified"));
     goto main_loop;
   }
 #ifdef USE_NNTP
   if ((flags & SEND_NEWS) && !msg->env->subject)
   {
-    mutt_error(_("No subject specified."));
+    mutt_error(_("No subject specified"));
     goto main_loop;
   }
 
   if ((flags & SEND_NEWS) && !msg->env->newsgroups)
   {
-    mutt_error(_("No newsgroup specified."));
+    mutt_error(_("No newsgroup specified"));
     goto main_loop;
   }
 #endif
@@ -2388,15 +2388,15 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
     else
     {
-      puts(_("Could not send the message."));
+      puts(_("Could not send the message"));
       goto cleanup;
     }
   }
   else if (!OptNoCurses && !(flags & SEND_MAILX))
   {
-    mutt_message(i != 0 ? _("Sending in background.") :
-                          (flags & SEND_NEWS) ? _("Article posted.") : /* USE_NNTP */
-                              _("Mail sent."));
+    mutt_message(i != 0 ? _("Sending in background") :
+                          (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
+                              _("Mail sent"));
 #ifdef USE_NOTMUCH
     if (NmRecord)
       nm_record_message(ctx, finalpath, cur);

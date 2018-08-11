@@ -291,7 +291,7 @@ static int start_curses(void)
 #endif
   if (!initscr())
   {
-    mutt_error(_("Error initializing terminal."));
+    mutt_error(_("Error initializing terminal"));
     return 1;
   }
   /* slang requires the signal handlers to be set after initializing */
@@ -619,7 +619,7 @@ int main(int argc, char *argv[], char *envp[])
     short num = 0;
     if ((mutt_str_atos(dlevel, &num) < 0) || (num < LL_MESSAGE) || (num > LL_DEBUG5))
     {
-      mutt_error(_("Error: value '%s' is invalid for -d."), dlevel);
+      mutt_error(_("Error: value '%s' is invalid for -d"), dlevel);
       goto main_exit; // TEST07: neomutt -d xyz
     }
     cs_str_initial_set(Config, "debug_level", dlevel, NULL);
@@ -806,7 +806,7 @@ int main(int argc, char *argv[], char *envp[])
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
-          mutt_error(_("Can't create %s: %s."), Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
+          mutt_error(_("Can't create %s: %s"), Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
   }
@@ -867,7 +867,7 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
     {
-      mutt_error(_("No recipients specified."));
+      mutt_error(_("No recipients specified"));
       goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
     }
 
@@ -1044,7 +1044,7 @@ int main(int argc, char *argv[], char *envp[])
           msg->content = a = mutt_make_file_attach(np->data);
         if (!a)
         {
-          mutt_error(_("%s: unable to attach file."), np->data);
+          mutt_error(_("%s: unable to attach file"), np->data);
           mutt_list_free(&attach);
           goto main_curses; // TEST32: neomutt john@example.com -a missing
         }
@@ -1121,7 +1121,7 @@ int main(int argc, char *argv[], char *envp[])
     {
       if (mutt_mailbox_check(0) == 0)
       {
-        mutt_message(_("No mailbox with new mail."));
+        mutt_message(_("No mailbox with new mail"));
         goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       folder[0] = '\0';
@@ -1141,7 +1141,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
           if (STAILQ_EMPTY(&AllMailboxes))
       {
-        mutt_error(_("No incoming mailboxes defined."));
+        mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
       folder[0] = '\0';
@@ -1184,7 +1184,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_perror(folder);
           goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
-          mutt_error(_("Mailbox is empty."));
+          mutt_error(_("Mailbox is empty"));
           goto main_curses; // TEST42: neomutt -z -f /dev/null
       }
     }
