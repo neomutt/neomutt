@@ -863,7 +863,7 @@ msgid "No PGP backend configured"
 msgstr "PGP nesukonfigūruotas"
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "S/MIME jau pasirinktas. Išjungti ir tęsti? "
 
 #: compose.c:1988
@@ -871,7 +871,7 @@ msgid "No S/MIME backend configured"
 msgstr "S/MIME nesukonfigūruotas"
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "PGP jau pasirinktas. Išjungti ir tęsti? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999

@@ -240,13 +240,13 @@ msgstr "檔案遮罩："
 #: browser.c:2001
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序 ? "
+msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:2004
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
-msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序 ? "
+msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:2007
@@ -902,7 +902,7 @@ msgid "No PGP backend configured"
 msgstr ""
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr ""
 
 #: compose.c:1988
@@ -910,7 +910,7 @@ msgid "No S/MIME backend configured"
 msgstr ""
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr ""
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
@@ -3097,7 +3097,7 @@ msgstr ""
 #: muttlib.c:727
 #, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "檔案是一個目錄, 儲存在它下面 ?"
+msgstr "檔案是一個目錄, 儲存在它下面?"
 
 #: muttlib.c:727
 msgid "yna"
@@ -3108,7 +3108,7 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:746
 msgid "File is a directory, save under it?"
-msgstr "檔案是一個目錄, 儲存在它下面 ?"
+msgstr "檔案是一個目錄, 儲存在它下面?"
 
 #: muttlib.c:751
 msgid "File under directory: "
@@ -3116,7 +3116,7 @@ msgstr "在目錄底下的檔案："
 
 #: muttlib.c:763
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "檔案已經存在, (1)覆蓋, (2)附加, 或是 (3)取消 ?"
+msgstr "檔案已經存在, (1)覆蓋, (2)附加, 或是 (3)取消?"
 
 #. L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
 #: muttlib.c:765
@@ -3130,7 +3130,7 @@ msgstr "無法將信件存到信箱。"
 #: muttlib.c:1418
 #, c-format
 msgid "Append messages to %s?"
-msgstr "附加信件到 %s ?"
+msgstr "附加信件到 %s?"
 
 #: muttlib.c:1430
 #, fuzzy

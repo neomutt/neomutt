@@ -693,7 +693,7 @@ msgstr "Edita el camp de resposta (Reply-To)."
 
 # Línia completa (78 caràcters):
 #
-#     y:Envia  q:Avorta  t:Dest.  c:Còpia  s:Assumpte  a:Ajunta  d:Descriu  ?:Ajuda
+#     y:Envia  q:Avorta  t:Dest.  c:Còpia  s:Assumpte  a:Ajunta  d:Descriu ?:Ajuda
 #: compose.c:168 compose.c:184
 msgid "Send"
 msgstr "Envia"
@@ -961,7 +961,7 @@ msgid "No PGP backend configured"
 msgstr "No heu configurat cap implementació de PGP."
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "El missatge ja empra S/MIME.  Voleu posar-lo en clar i continuar? "
 
 #: compose.c:1988
@@ -969,7 +969,7 @@ msgid "No S/MIME backend configured"
 msgstr "No heu configurat cap implementació de S/MIME."
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "El missatge ja empra PGP.  Voleu posar-lo en clar i continuar? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999

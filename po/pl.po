@@ -889,7 +889,7 @@ msgid "No PGP backend configured"
 msgstr "Nie skonfigurowano beckendu PGP"
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "Wybrano już S/MIME. Anulować wybór S/MIME i kontynuować? "
 
 #: compose.c:1988
@@ -897,7 +897,7 @@ msgid "No S/MIME backend configured"
 msgstr "Nie skonfigurowano beckendu S/MIME"
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "Wybrano już PGP. Anulować wybór PGP i kontynuować? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999

@@ -894,16 +894,16 @@ msgid "No PGP backend configured"
 msgstr "Ingen PGP-ressource er konfigureret"
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
-msgstr "S/MIME allerede valgt. Ryd & fortsæt ? "
+msgid "S/MIME already selected. Clear and continue? "
+msgstr "S/MIME allerede valgt. Ryd & fortsæt? "
 
 #: compose.c:1988
 msgid "No S/MIME backend configured"
 msgstr "Ingen S/MIME-ressource er konfigureret"
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
-msgstr "PGP allerede valgt. Ryd & fortsæt ? "
+msgid "PGP already selected. Clear and continue? "
+msgstr "PGP allerede valgt. Ryd & fortsæt? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
 msgid "Unable to lock mailbox"

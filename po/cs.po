@@ -873,7 +873,7 @@ msgid "No PGP backend configured"
 msgstr "Není nakonfigurováno a přeloženo s podporou PGP"
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1988
@@ -881,7 +881,7 @@ msgid "No S/MIME backend configured"
 msgstr "Není nakonfigurováno a přeloženo s podporou S/MIME"
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999

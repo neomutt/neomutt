@@ -907,7 +907,7 @@ msgstr ""
 
 #: compose.c:1962
 #, fuzzy
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "S/MIME-шифроване вече е избрано. Clear and continue? "
 
 #: compose.c:1988
@@ -916,7 +916,7 @@ msgstr ""
 
 #: compose.c:1996
 #, fuzzy
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "PGP-шифроване вече е избрано. Clear and continue? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999

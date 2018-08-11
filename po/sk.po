@@ -884,16 +884,16 @@ msgid "No PGP backend configured"
 msgstr ""
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
-msgstr "S/MIME je už vybrané. Vyčistiť & pokračovať ? "
+msgid "S/MIME already selected. Clear and continue? "
+msgstr "S/MIME je už vybrané. Vyčistiť & pokračovať? "
 
 #: compose.c:1988
 msgid "No S/MIME backend configured"
 msgstr ""
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
-msgstr "PGP je už vybrané. Vyčistiť & pokračovať ? "
+msgid "PGP already selected. Clear and continue? "
+msgstr "PGP je už vybrané. Vyčistiť & pokračovať? "
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
 msgid "Unable to lock mailbox"

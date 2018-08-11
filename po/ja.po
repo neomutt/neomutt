@@ -885,7 +885,7 @@ msgid "No PGP backend configured"
 msgstr "PGP バックエンドが設定されていない"
 
 #: compose.c:1962
-msgid "S/MIME already selected. Clear and continue ? "
+msgid "S/MIME already selected. Clear and continue? "
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
 #: compose.c:1988
@@ -893,7 +893,7 @@ msgid "No S/MIME backend configured"
 msgstr "S/MIME バックエンドが設定されていない"
 
 #: compose.c:1996
-msgid "PGP already selected. Clear and continue ? "
+msgid "PGP already selected. Clear and continue? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
 #: compress.c:478 compress.c:543 compress.c:695 compress.c:866 mbox/mbox.c:999
