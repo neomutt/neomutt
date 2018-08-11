@@ -157,7 +157,7 @@ int mutt_compose_attachment(struct Body *a)
           FILE *fp = mutt_file_fopen(a->filename, "r");
           if (!fp)
           {
-            mutt_perror(_("Failure to open file to parse headers."));
+            mutt_perror(_("Failure to open file to parse headers"));
             goto bailout;
           }
 
@@ -191,7 +191,7 @@ int mutt_compose_attachment(struct Body *a)
             FILE *tfp = mutt_file_fopen(tempfile, "w");
             if (!tfp)
             {
-              mutt_perror(_("Failure to open file to strip headers."));
+              mutt_perror(_("Failure to open file to strip headers"));
               mutt_file_fclose(&fp);
               goto bailout;
             }
@@ -201,7 +201,7 @@ int mutt_compose_attachment(struct Body *a)
             mutt_file_unlink(a->filename);
             if (mutt_file_rename(tempfile, a->filename) != 0)
             {
-              mutt_perror(_("Failure to rename file."));
+              mutt_perror(_("Failure to rename file"));
               goto bailout;
             }
           }
@@ -212,7 +212,7 @@ int mutt_compose_attachment(struct Body *a)
   else
   {
     rfc1524_free_entry(&entry);
-    mutt_message(_("No mailcap compose entry for %s, creating empty file."), type);
+    mutt_message(_("No mailcap compose entry for %s, creating empty file"), type);
     return 1;
   }
 

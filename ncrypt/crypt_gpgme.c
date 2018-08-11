@@ -2829,7 +2829,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     }
 
     mutt_body_free(&tattach);
-    mutt_message(_("PGP message successfully decrypted."));
+    mutt_message(_("PGP message successfully decrypted"));
   }
   else
   {
@@ -4313,7 +4313,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   if (!i && unusable)
   {
-    mutt_error(_("All matching keys are marked expired/revoked."));
+    mutt_error(_("All matching keys are marked expired/revoked"));
     return NULL;
   }
 
@@ -4374,14 +4374,14 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       /* L10N:
          %1$s is one of the previous four entries.
          %2$s is an address.
-         e.g. "S/MIME keys matching <me@mutt.org>." */
-      snprintf(buf, sizeof(buf), _("%s <%s>."), ts, p->mailbox);
+         e.g. "S/MIME keys matching <me@mutt.org>" */
+      snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
     }
     else
     {
       /* L10N:
          e.g. 'S/MIME keys matching "Michael Elkins".' */
-      snprintf(buf, sizeof(buf), _("%s \"%s\"."), ts, s);
+      snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
     }
     menu->title = buf;
   }
@@ -4410,7 +4410,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
             mutt_error(_("This key can't be used: "
-                         "expired/disabled/revoked."));
+                         "expired/disabled/revoked"));
             break;
           }
         }
@@ -4946,7 +4946,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
-  snprintf(buf, sizeof(buf), _("PGP Key 0x%s."), crypt_keyid(key));
+  snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
   att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 

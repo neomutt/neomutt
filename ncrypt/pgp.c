@@ -723,9 +723,9 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
           if (could_not_decrypt || (decrypt_okay_rc <= -3))
             mutt_error(_("Could not decrypt PGP message"));
           else if (decrypt_okay_rc < 0)
-            mutt_error(_("PGP message was not encrypted."));
+            mutt_error(_("PGP message was not encrypted"));
           else
-            mutt_message(_("PGP message successfully decrypted."));
+            mutt_message(_("PGP message successfully decrypted"));
         }
         else if (pgp_keyblock)
           state_attach_puts(_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
@@ -1232,7 +1232,7 @@ int pgp_class_encrypted_handler(struct Body *a, struct State *s)
 
     mutt_body_free(&tattach);
     /* clear 'Invoking...' message, since there's no error */
-    mutt_message(_("PGP message successfully decrypted."));
+    mutt_message(_("PGP message successfully decrypted"));
   }
   else
   {

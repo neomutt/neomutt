@@ -222,24 +222,24 @@ int mutt_display_message(struct Header *cur)
       if (cur->security & GOODSIGN)
       {
         if (crypt_smime_verify_sender(cur) == 0)
-          mutt_message(_("S/MIME signature successfully verified."));
+          mutt_message(_("S/MIME signature successfully verified"));
         else
-          mutt_error(_("S/MIME certificate owner does not match sender."));
+          mutt_error(_("S/MIME certificate owner does not match sender"));
       }
       else if (cur->security & PARTSIGN)
-        mutt_message(_("Warning: Part of this message has not been signed."));
+        mutt_message(_("Warning: Part of this message has not been signed"));
       else if (cur->security & SIGN || cur->security & BADSIGN)
-        mutt_error(_("S/MIME signature could NOT be verified."));
+        mutt_error(_("S/MIME signature could NOT be verified"));
     }
 
     if ((WithCrypto != 0) && (cur->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))
     {
       if (cur->security & GOODSIGN)
-        mutt_message(_("PGP signature successfully verified."));
+        mutt_message(_("PGP signature successfully verified"));
       else if (cur->security & PARTSIGN)
-        mutt_message(_("Warning: Part of this message has not been signed."));
+        mutt_message(_("Warning: Part of this message has not been signed"));
       else if (cur->security & SIGN)
-        mutt_message(_("PGP signature could NOT be verified."));
+        mutt_message(_("PGP signature could NOT be verified"));
     }
 
     struct Pager info = { 0 };
@@ -364,7 +364,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
-    mutt_message(ngettext("Message not bounced.", "Messages not bounced.", msgcount));
+    mutt_message(ngettext("Message not bounced", "Messages not bounced", msgcount));
     return;
   }
 
@@ -374,7 +374,7 @@ void ci_bounce_message(struct Header *h)
   mutt_addr_free(&addr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
-    mutt_message(ngettext("Message bounced.", "Messages bounced.", msgcount));
+    mutt_message(ngettext("Message bounced", "Messages bounced", msgcount));
 }
 
 /**
@@ -594,7 +594,7 @@ void mutt_print_message(struct Header *h)
 
   if (Print && (!PrintCommand || !*PrintCommand))
   {
-    mutt_message(_("No printing command has been defined."));
+    mutt_message(_("No printing command has been defined"));
     return;
   }
 
@@ -1137,13 +1137,13 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   if (type_changed)
-    mutt_message(_("Content-Type changed to %s."), tmp);
+    mutt_message(_("Content-Type changed to %s"), tmp);
   if (b->type == TYPE_TEXT && charset_changed)
   {
     if (type_changed)
       mutt_sleep(1);
-    mutt_message(b->noconv ? _("Character set changed to %s; not converting.") :
-                             _("Character set changed to %s; converting."),
+    mutt_message(b->noconv ? _("Character set changed to %s; not converting") :
+                             _("Character set changed to %s; converting"),
                  mutt_param_get(&b->parameter, "charset"));
   }
 

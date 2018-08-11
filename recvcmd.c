@@ -65,7 +65,7 @@ static bool check_msg(struct Body *b, bool err)
   if (!mutt_is_message_type(b->type, b->subtype))
   {
     if (err)
-      mutt_error(_("You may only bounce message/rfc822 parts."));
+      mutt_error(_("You may only bounce message/rfc822 parts"));
     return false;
   }
   return true;
@@ -241,7 +241,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
-    mutt_message(ngettext("Message not bounced.", "Messages not bounced.", p));
+    mutt_message(ngettext("Message not bounced", "Messages not bounced", p));
     return;
   }
 
@@ -260,7 +260,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   }
 
   if (!ret)
-    mutt_message(ngettext("Message bounced.", "Messages bounced.", p));
+    mutt_message(ngettext("Message bounced", "Messages bounced", p));
   else
     mutt_error(ngettext("Error bouncing message", "Error bouncing messages", p));
 
@@ -481,7 +481,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   FILE *tmpfp = mutt_file_fopen(tmpbody, "w");
   if (!tmpfp)
   {
-    mutt_error(_("Can't open temporary file %s."), tmpbody);
+    mutt_error(_("Can't open temporary file %s"), tmpbody);
     mutt_header_free(&tmphdr);
     return;
   }
@@ -658,7 +658,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     tmpfp = mutt_file_fopen(tmpbody, "w");
     if (!tmpfp)
     {
-      mutt_error(_("Can't create %s."), tmpbody);
+      mutt_error(_("Can't create %s"), tmpbody);
       mutt_header_free(&tmphdr);
       return;
     }
@@ -793,7 +793,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 
   if (!curenv || !curhdr)
   {
-    mutt_error(_("Can't find any tagged messages."));
+    mutt_error(_("Can't find any tagged messages"));
     return -1;
   }
 
@@ -951,7 +951,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   tmpfp = mutt_file_fopen(tmpbody, "w");
   if (!tmpfp)
   {
-    mutt_error(_("Can't create %s."), tmpbody);
+    mutt_error(_("Can't create %s"), tmpbody);
     mutt_header_free(&tmphdr);
     return;
   }

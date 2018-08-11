@@ -1404,7 +1404,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 #ifdef USE_POP
   if (magic == MUTT_POP)
   {
-    mutt_error(_("Can't save message to POP mailbox."));
+    mutt_error(_("Can't save message to POP mailbox"));
     return 1;
   }
 #endif
@@ -1425,7 +1425,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 #ifdef USE_NNTP
   if (magic == MUTT_NNTP)
   {
-    mutt_error(_("Can't save message to news server."));
+    mutt_error(_("Can't save message to news server"));
     return 0;
   }
 #endif

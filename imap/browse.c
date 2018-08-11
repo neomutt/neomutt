@@ -400,14 +400,14 @@ int imap_mailbox_create(const char *folder)
 
   if (mutt_str_strlen(buf) == 0)
   {
-    mutt_error(_("Mailbox must have a name."));
+    mutt_error(_("Mailbox must have a name"));
     goto fail;
   }
 
   if (imap_create_mailbox(idata, buf) < 0)
     goto fail;
 
-  mutt_message(_("Mailbox created."));
+  mutt_message(_("Mailbox created"));
   mutt_sleep(0);
 
   FREE(&mx.mbox);
@@ -460,7 +460,7 @@ int imap_mailbox_rename(const char *mailbox)
 
   if (mutt_str_strlen(newname) == 0)
   {
-    mutt_error(_("Mailbox must have a name."));
+    mutt_error(_("Mailbox must have a name"));
     goto fail;
   }
 
@@ -472,7 +472,7 @@ int imap_mailbox_rename(const char *mailbox)
     goto fail;
   }
 
-  mutt_message(_("Mailbox renamed."));
+  mutt_message(_("Mailbox renamed"));
   mutt_sleep(0);
 
   FREE(&mx.mbox);

@@ -631,7 +631,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   if (!i && unusable)
   {
-    mutt_error(_("All matching keys are expired, revoked, or disabled."));
+    mutt_error(_("All matching keys are expired, revoked, or disabled"));
     return NULL;
   }
 
@@ -671,9 +671,9 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   mutt_menu_push_current(menu);
 
   if (p)
-    snprintf(buf, sizeof(buf), _("PGP keys matching <%s>."), p->mailbox);
+    snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);
   else
-    snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\"."), s);
+    snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\""), s);
 
   menu->title = buf;
 
@@ -741,7 +741,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         {
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
-            mutt_error(_("This key can't be used: expired/disabled/revoked."));
+            mutt_error(_("This key can't be used: expired/disabled/revoked"));
             break;
           }
         }
@@ -925,7 +925,7 @@ struct Body *pgp_class_make_key_attachment(void)
   att->use_disp = false;
   att->type = TYPE_APPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
-  snprintf(buf, sizeof(buf), _("PGP Key %s."), tmp);
+  snprintf(buf, sizeof(buf), _("PGP Key %s"), tmp);
   att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 

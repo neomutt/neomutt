@@ -82,7 +82,7 @@ static int socket_preconnect(void)
   if (rc != 0)
   {
     const int save_errno = errno;
-    mutt_perror(_("Preconnect command failed."));
+    mutt_perror(_("Preconnect command failed"));
 
     return save_errno;
   }

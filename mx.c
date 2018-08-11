@@ -377,7 +377,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   ctx->magic = mx_get_magic(ctx->path);
   if (ctx->magic == MUTT_UNKNOWN)
   {
-    mutt_error(_("%s is not a mailbox."), ctx->path);
+    mutt_error(_("%s is not a mailbox"), ctx->path);
     return -1;
   }
 
@@ -483,7 +483,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     if (ctx->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(path);
     else if (ctx->magic == MUTT_UNKNOWN || !ctx->mx_ops)
-      mutt_error(_("%s is not a mailbox."), path);
+      mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
     if (!pctx)
@@ -866,7 +866,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   else if (!ctx->changed && ctx->deleted == 0)
   {
     if (!ctx->quiet)
-      mutt_message(_("Mailbox is unchanged."));
+      mutt_message(_("Mailbox is unchanged"));
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime(ctx, NULL);
     mx_fastclose_mailbox(ctx);
@@ -922,11 +922,11 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
   {
     if (move_messages)
     {
-      mutt_message(_("%d kept, %d moved, %d deleted."),
+      mutt_message(_("%d kept, %d moved, %d deleted"),
                    ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
     }
     else
-      mutt_message(_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted, ctx->deleted);
+      mutt_message(_("%d kept, %d deleted"), ctx->msgcount - ctx->deleted, ctx->deleted);
   }
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
@@ -1072,14 +1072,14 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   }
   else if (ctx->readonly)
   {
-    mutt_error(_("Mailbox is read-only."));
+    mutt_error(_("Mailbox is read-only"));
     return -1;
   }
 
   if (!ctx->changed && !ctx->deleted)
   {
     if (!ctx->quiet)
-      mutt_message(_("Mailbox is unchanged."));
+      mutt_message(_("Mailbox is unchanged"));
     return 0;
   }
 
@@ -1135,13 +1135,13 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
     if (ctx->magic == MUTT_IMAP && !purge)
     {
       if (!ctx->quiet)
-        mutt_message(_("Mailbox checkpointed."));
+        mutt_message(_("Mailbox checkpointed"));
     }
     else
 #endif
     {
       if (!ctx->quiet)
-        mutt_message(_("%d kept, %d deleted."), msgcount - deleted, deleted);
+        mutt_message(_("%d kept, %d deleted"), msgcount - deleted, deleted);
     }
 
     mutt_sleep(0);
@@ -1337,7 +1337,7 @@ void mx_alloc_memory(struct Context *ctx)
 
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
   {
-    mutt_error(_("Integer overflow -- can't allocate memory."));
+    mutt_error(_("Integer overflow -- can't allocate memory"));
     mutt_exit(1);
   }
 
@@ -1469,7 +1469,7 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
   if (ctx->mx_ops->tags_edit)
     return ctx->mx_ops->tags_edit(ctx, tags, buf, buflen);
 
-  mutt_message(_("Folder doesn't support tagging, aborting."));
+  mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
 }
 
@@ -1486,7 +1486,7 @@ int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
   if (ctx->mx_ops->tags_commit)
     return ctx->mx_ops->tags_commit(ctx, hdr, tags);
 
-  mutt_message(_("Folder doesn't support tagging, aborting."));
+  mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
 }
 

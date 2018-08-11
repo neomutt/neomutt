@@ -1099,7 +1099,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
     cache_expand(file, sizeof(file), &conn->account, NULL);
     if (mutt_file_mkdir(file, S_IRWXU) < 0)
     {
-      mutt_error(_("Can't create %s: %s."), file, strerror(errno));
+      mutt_error(_("Can't create %s: %s"), file, strerror(errno));
     }
     nserv->cacheable = true;
   }

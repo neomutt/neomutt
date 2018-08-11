@@ -94,10 +94,10 @@ bool Tilde;
 #define IsHeader(x) (x && (x)->hdr && !(x)->bdy)
 
 static const char *Not_available_in_this_menu =
-    N_("Not available in this menu.");
-static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
+    N_("Not available in this menu");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 static const char *Function_not_permitted_in_attach_message_mode =
-    N_("Function not permitted in attach-message mode.");
+    N_("Function not permitted in attach-message mode");
 
 /* hack to return to position when returning from index to same message */
 static int TopLine = 0;
@@ -2383,7 +2383,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
             if (h && !h->read)
             {
-              mutt_message(_("New mail in this mailbox."));
+              mutt_message(_("New mail in this mailbox"));
               do_new_mail = true;
               break;
             }
@@ -2501,7 +2501,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         else if (PagerStop)
         {
           /* emulate "less -q" and don't go on to the next message. */
-          mutt_error(_("Bottom of message is shown."));
+          mutt_error(_("Bottom of message is shown"));
         }
         else
         {
@@ -2518,7 +2518,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                                   rd.line_info, rd.topline, rd.hide_quoted);
         }
         else
-          mutt_error(_("Top of message is shown."));
+          mutt_error(_("Top of message is shown"));
         break;
 
       case OP_NEXT_LINE:
@@ -2532,21 +2532,21 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
         }
         else
-          mutt_error(_("Bottom of message is shown."));
+          mutt_error(_("Bottom of message is shown"));
         break;
 
       case OP_PREV_LINE:
         if (rd.topline)
           rd.topline = up_n_lines(1, rd.line_info, rd.topline, rd.hide_quoted);
         else
-          mutt_error(_("Top of message is shown."));
+          mutt_error(_("Top of message is shown"));
         break;
 
       case OP_PAGER_TOP:
         if (rd.topline)
           rd.topline = 0;
         else
-          mutt_error(_("Top of message is shown."));
+          mutt_error(_("Top of message is shown"));
         break;
 
       case OP_HALF_UP:
@@ -2556,7 +2556,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                                   rd.topline, rd.hide_quoted);
         }
         else
-          mutt_error(_("Top of message is shown."));
+          mutt_error(_("Top of message is shown"));
         break;
 
       case OP_HALF_DOWN:
@@ -2568,7 +2568,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         else if (PagerStop)
         {
           /* emulate "less -q" and don't go on to the next message. */
-          mutt_error(_("Bottom of message is shown."));
+          mutt_error(_("Bottom of message is shown"));
         }
         else
         {
@@ -2606,10 +2606,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             if (i < rd.last_line)
               rd.topline = i;
             else if (wrapped || !WrapSearch)
-              mutt_error(_("Not found."));
+              mutt_error(_("Not found"));
             else
             {
-              mutt_message(_("Search wrapped to top."));
+              mutt_message(_("Search wrapped to top"));
               wrapped = true;
               goto search_next;
             }
@@ -2629,10 +2629,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             if (i >= 0)
               rd.topline = i;
             else if (wrapped || !WrapSearch)
-              mutt_error(_("Not found."));
+              mutt_error(_("Not found"));
             else
             {
-              mutt_message(_("Search wrapped to bottom."));
+              mutt_message(_("Search wrapped to bottom"));
               wrapped = true;
               goto search_next;
             }
@@ -2760,7 +2760,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           if (rd.line_info[rd.topline].search_cnt == 0)
           {
             rd.search_flag = 0;
-            mutt_error(_("Not found."));
+            mutt_error(_("Not found"));
           }
           else
           {
@@ -2806,7 +2806,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           InHelp = 0;
         }
         else
-          mutt_error(_("Help is currently being shown."));
+          mutt_error(_("Help is currently being shown"));
         break;
 
       case OP_PAGER_HIDE_QUOTED:
@@ -2854,7 +2854,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           if (dretval < 0)
           {
-            mutt_error(_("No more quoted text."));
+            mutt_error(_("No more quoted text"));
             break;
           }
 
@@ -2869,7 +2869,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           if (dretval < 0)
           {
-            mutt_error(_("No more unquoted text after quoted text."));
+            mutt_error(_("No more unquoted text after quoted text"));
             break;
           }
           rd.topline = new_topline;
@@ -2890,7 +2890,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                                   rd.last_line, rd.hide_quoted);
         }
         else
-          mutt_error(_("Bottom of message is shown."));
+          mutt_error(_("Bottom of message is shown"));
         break;
 
       case OP_REDRAW:
@@ -3393,11 +3393,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           Context->changed = true;
           pager_menu->redraw = REDRAW_FULL;
-          mutt_message(ngettext("%d label changed.", "%d labels changed.", rc), rc);
+          mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
         }
         else
         {
-          mutt_message(_("No labels changed."));
+          mutt_message(_("No labels changed"));
         }
         break;
 

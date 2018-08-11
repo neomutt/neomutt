@@ -102,8 +102,8 @@ msgid "Trouble adding alias"
 msgstr "Gagal menampilkan file"
 
 #: alias.c:505
-msgid "Alias added."
-msgstr "Alias telah ditambahkan."
+msgid "Alias added"
+msgstr "Alias telah ditambahkan"
 
 #: alias.c:513
 #, fuzzy
@@ -117,8 +117,8 @@ msgstr ""
 
 #: bcache.c:215
 #, fuzzy, c-format
-msgid "Message cache isn't a directory: %s."
-msgstr "%s bukan direktori."
+msgid "Message cache isn't a directory: %s"
+msgstr "%s bukan direktori"
 
 #: bcache.c:223
 #, fuzzy, c-format
@@ -157,8 +157,8 @@ msgstr ""
 
 #: browser.c:856 browser.c:1930
 #, c-format
-msgid "%s is not a directory."
-msgstr "%s bukan direktori."
+msgid "%s is not a directory"
+msgstr "%s bukan direktori"
 
 #: browser.c:1181
 #, fuzzy, c-format
@@ -202,8 +202,8 @@ msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
 #: browser.c:1809 browser.c:1837
 #, fuzzy
-msgid "Mailbox deletion failed."
-msgstr "Kotak surat telah dihapus."
+msgid "Mailbox deletion failed"
+msgstr "Kotak surat telah dihapus"
 
 #: browser.c:1814
 msgid "Cannot delete root folder"
@@ -215,20 +215,20 @@ msgid "Really delete mailbox \"%s\"?"
 msgstr "Yakin hapus kotak surat \"%s\"?"
 
 #: browser.c:1833
-msgid "Mailbox deleted."
-msgstr "Kotak surat telah dihapus."
+msgid "Mailbox deleted"
+msgstr "Kotak surat telah dihapus"
 
 #: browser.c:1840
-msgid "Mailbox not deleted."
-msgstr "Kotak surat tidak dihapus."
+msgid "Mailbox not deleted"
+msgstr "Kotak surat tidak dihapus"
 
 #: browser.c:1870
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
 #: browser.c:1920 browser.c:1978
-msgid "Error scanning directory."
-msgstr "Gagal membaca direktori."
+msgid "Error scanning directory"
+msgstr "Gagal membaca direktori"
 
 #: browser.c:1941
 msgid "File Mask: "
@@ -342,28 +342,28 @@ msgid "Could not copy message"
 msgstr "Tidak bisa menyalin surat"
 
 #: commands.c:226
-msgid "S/MIME signature successfully verified."
-msgstr "Tanda tangan S/MIME berhasil diverifikasi."
+msgid "S/MIME signature successfully verified"
+msgstr "Tanda tangan S/MIME berhasil diverifikasi"
 
 #: commands.c:228
-msgid "S/MIME certificate owner does not match sender."
-msgstr "Pemilik sertifikat S/MIME tidak sesuai dg pengirim."
+msgid "S/MIME certificate owner does not match sender"
+msgstr "Pemilik sertifikat S/MIME tidak sesuai dg pengirim"
 
 #: commands.c:231 commands.c:241
-msgid "Warning: Part of this message has not been signed."
-msgstr "Perhatian: Sebagian dari pesan ini belum ditandatangani."
+msgid "Warning: Part of this message has not been signed"
+msgstr "Perhatian: Sebagian dari pesan ini belum ditandatangani"
 
 #: commands.c:233
-msgid "S/MIME signature could NOT be verified."
-msgstr "Tanda tangan S/MIME TIDAK berhasil diverifikasi."
+msgid "S/MIME signature could NOT be verified"
+msgstr "Tanda tangan S/MIME TIDAK berhasil diverifikasi"
 
 #: commands.c:239
-msgid "PGP signature successfully verified."
-msgstr "Tanda tangan PGP berhasil diverifikasi."
+msgid "PGP signature successfully verified"
+msgstr "Tanda tangan PGP berhasil diverifikasi"
 
 #: commands.c:243
-msgid "PGP signature could NOT be verified."
-msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi."
+msgid "PGP signature could NOT be verified"
+msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi"
 
 #: commands.c:261 compose.c:1915 compress.c:443 curs_lib.c:264 curs_lib.c:534
 #: curs_main.c:1016 curs_main.c:1059 mutt_attach.c:151 mutt_attach.c:284
@@ -402,15 +402,15 @@ msgstr[0] "Bounce surat ke %s"
 
 #: commands.c:368 recvcmd.c:244
 #, fuzzy
-msgid "Message not bounced."
-msgid_plural "Messages not bounced."
-msgstr[0] "Surat tidak dibounce."
+msgid "Message not bounced"
+msgid_plural "Messages not bounced"
+msgstr[0] "Surat tidak dibounce"
 
 #: commands.c:378 recvcmd.c:263
 #, fuzzy
-msgid "Message bounced."
-msgid_plural "Messages bounced."
-msgstr[0] "Surat telah dibounce."
+msgid "Message bounced"
+msgid_plural "Messages bounced"
+msgstr[0] "Surat telah dibounce"
 
 #: commands.c:468 commands.c:510 commands.c:530
 msgid "Can't create filter process"
@@ -421,8 +421,8 @@ msgid "Pipe to command: "
 msgstr "Pipe ke perintah: "
 
 #: commands.c:598
-msgid "No printing command has been defined."
-msgstr "Perintah untuk mencetak belum didefinisikan."
+msgid "No printing command has been defined"
+msgstr "Perintah untuk mencetak belum didefinisikan"
 
 #: commands.c:602
 #, fuzzy
@@ -540,22 +540,22 @@ msgstr "Ubah ke %s saat mengirim?"
 
 #: commands.c:1141
 #, c-format
-msgid "Content-Type changed to %s."
-msgstr "Content-Type diubah ke %s."
+msgid "Content-Type changed to %s"
+msgstr "Content-Type diubah ke %s"
 
 #: commands.c:1146
 #, fuzzy, c-format
-msgid "Character set changed to %s; not converting."
-msgstr "Character set diubah ke %s; tidak melakukan konversi."
+msgid "Character set changed to %s; not converting"
+msgstr "Character set diubah ke %s; tidak melakukan konversi"
 
 #: commands.c:1147
 #, fuzzy, c-format
-msgid "Character set changed to %s; converting."
-msgstr "Character set diubah ke %s; melakukan konversi."
+msgid "Character set changed to %s; converting"
+msgstr "Character set diubah ke %s; melakukan konversi"
 
 #: compose.c:80
-msgid "There are no attachments."
-msgstr "Tidak ada lampiran."
+msgid "There are no attachments"
+msgstr "Tidak ada lampiran"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:128
@@ -736,8 +736,8 @@ msgid "-- Attachments"
 msgstr "-- Lampiran"
 
 #: compose.c:556
-msgid "You may not delete the only attachment."
-msgstr "Tidak bisa menghapus satu-satunya lampiran."
+msgid "You may not delete the only attachment"
+msgstr "Tidak bisa menghapus satu-satunya lampiran"
 
 #: compose.c:1102 edit.c:521 send.c:2155
 #, c-format
@@ -746,25 +746,25 @@ msgstr "IDN di '%s' tidak benar: '%s'"
 
 #: compose.c:1150
 #, fuzzy
-msgid "Attachment is already at top."
-msgstr "Lampiran telah disimpan."
+msgid "Attachment is already at top"
+msgstr "Lampiran telah disimpan"
 
 #: compose.c:1155 compose.c:1171
 #, fuzzy
-msgid "The fundamental part cannot be moved."
-msgstr "Lampiran yg dipilih tidak akan dikonersi."
+msgid "The fundamental part cannot be moved"
+msgstr "Lampiran yg dipilih tidak akan dikonersi"
 
 #: compose.c:1166
 #, fuzzy
-msgid "Attachment is already at bottom."
-msgstr "Lampiran telah difilter."
+msgid "Attachment is already at bottom"
+msgstr "Lampiran telah difilter"
 
 #: compose.c:1184
-msgid "Grouping alternatives requires at least 2 tagged messages."
+msgid "Grouping alternatives requires at least 2 tagged messages"
 msgstr ""
 
 #: compose.c:1265
-msgid "Grouping multilingual requires at least 2 tagged messages."
+msgid "Grouping multilingual requires at least 2 tagged messages"
 msgstr ""
 
 #: compose.c:1279
@@ -773,8 +773,8 @@ msgstr ""
 
 #: compose.c:1281
 #, fuzzy
-msgid "Not sending this message."
-msgstr "Gagal mengirim surat."
+msgid "Not sending this message"
+msgstr "Gagal mengirim surat"
 
 #: compose.c:1375
 #, fuzzy
@@ -802,8 +802,8 @@ msgid "Unable to open mailbox %s"
 msgstr "Tidak bisa mengunci kotak surat!"
 
 #: compose.c:1472
-msgid "No messages in that folder."
-msgstr "Tidak ada surat di kotak tersebut."
+msgid "No messages in that folder"
+msgstr "Tidak ada surat di kotak tersebut"
 
 #: compose.c:1482
 msgid "Tag the messages you want to attach"
@@ -814,24 +814,24 @@ msgid "Unable to attach"
 msgstr "Tidak bisa dilampirkan"
 
 #: compose.c:1547
-msgid "Recoding only affects text attachments."
-msgstr "Peng-coding-an ulang hanya berpengaruh terhadap lampiran teks."
+msgid "Recoding only affects text attachments"
+msgstr "Peng-coding-an ulang hanya berpengaruh terhadap lampiran teks"
 
 #: compose.c:1552
-msgid "The current attachment won't be converted."
-msgstr "Lampiran yg dipilih tidak akan dikonersi."
+msgid "The current attachment won't be converted"
+msgstr "Lampiran yg dipilih tidak akan dikonersi"
 
 #: compose.c:1554
-msgid "The current attachment will be converted."
-msgstr "Lampiran yg dipilih akan dikonversi."
+msgid "The current attachment will be converted"
+msgstr "Lampiran yg dipilih akan dikonversi"
 
 #: compose.c:1626
 msgid "Empty Content-Language"
 msgstr ""
 
 #: compose.c:1643
-msgid "Invalid encoding."
-msgstr "Encoding tidak betul."
+msgid "Invalid encoding"
+msgstr "Encoding tidak betul"
 
 #: compose.c:1667
 msgid "Save a copy of this message?"
@@ -889,8 +889,8 @@ msgid "Writing message to %s ..."
 msgstr "Menyimpan surat ke %s ..."
 
 #: compose.c:1945
-msgid "Message written."
-msgstr "Surat telah disimpan."
+msgid "Message written"
+msgstr "Surat telah disimpan"
 
 #: compose.c:1954
 msgid "No PGP backend configured"
@@ -937,7 +937,7 @@ msgid "Compress command failed: %s"
 msgstr "Perintah pra-koneksi gagal."
 
 #: compress.c:564
-msgid "Unsupported mailbox type for appending."
+msgid "Unsupported mailbox type for appending"
 msgstr ""
 
 #: compress.c:636
@@ -991,7 +991,7 @@ msgstr "Menghubungi %s..."
 
 #: conn/conn_raw.c:375
 #, c-format
-msgid "Could not connect to %s (%s)."
+msgid "Could not connect to %s (%s)"
 msgstr "Tidak bisa berhubungan ke %s (%s)"
 
 #: conn/conn_raw.c:376 conn/ssl.c:1290 curs_lib.c:472 mutt_logging.c:182
@@ -1019,8 +1019,8 @@ msgid "Error setting SASL external user name"
 msgstr "Gagal mengeset nama pengguna eksternal SASL"
 
 #: conn/socket.c:85
-msgid "Preconnect command failed."
-msgstr "Perintah pra-koneksi gagal."
+msgid "Preconnect command failed"
+msgstr "Perintah pra-koneksi gagal"
 
 #: conn/socket.c:242
 #, c-format
@@ -1321,24 +1321,24 @@ msgid " ('?' for list): "
 msgstr " ('?' utk lihat daftar): "
 
 #: curs_main.c:100 curs_main.c:1138
-msgid "No mailbox is open."
-msgstr "Tidak ada kotak surat yang terbuka."
+msgid "No mailbox is open"
+msgstr "Tidak ada kotak surat yang terbuka"
 
 #: curs_main.c:101
-msgid "There are no messages."
-msgstr "Tidak ada surat."
+msgid "There are no messages"
+msgstr "Tidak ada surat"
 
 #: curs_main.c:102 mx.c:1073 pager.c:99 recvattach.c:74
-msgid "Mailbox is read-only."
-msgstr "Kotak surat hanya bisa dibaca."
+msgid "Mailbox is read-only"
+msgstr "Kotak surat hanya bisa dibaca"
 
 #: curs_main.c:104 pager.c:101 recvattach.c:92
-msgid "Function not permitted in attach-message mode."
+msgid "Function not permitted in attach-message mode"
 msgstr "Fungsi ini tidak diperbolehkan pada mode pelampiran-surat"
 
 #: curs_main.c:105
-msgid "No visible messages."
-msgstr "Tidak ada surat yg bisa dilihat."
+msgid "No visible messages"
+msgstr "Tidak ada surat yg bisa dilihat"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: curs_main.c:150 pager.c:136
@@ -1351,17 +1351,12 @@ msgid "Cannot toggle write on a readonly mailbox"
 msgstr "Kotak surat read-only, tidak bisa toggle write"
 
 #: curs_main.c:326
-msgid "Changes to folder will be written on folder exit."
-msgstr "Perubahan ke folder akan dilakukan saat keluar dari folder."
+msgid "Changes to folder will be written on folder exit"
+msgstr "Perubahan ke folder akan dilakukan saat keluar dari folder"
 
 #: curs_main.c:331
-msgid "Changes to folder will not be written."
-msgstr "Perubahan ke folder tidak akan dilakukan."
-
-#: curs_main.c:503 mx.c:378 mx.c:484
-#, c-format
-msgid "%s is not a mailbox."
-msgstr "%s bukan kotak surat."
+msgid "Changes to folder will not be written"
+msgstr "Perubahan ke folder tidak akan dilakukan"
 
 #: curs_main.c:811 curs_main.c:824
 msgid "Quit"
@@ -1397,20 +1392,20 @@ msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak tepat."
 
 #: curs_main.c:1008 pager.c:2387
-msgid "New mail in this mailbox."
-msgstr "Surat baru di kotak ini."
+msgid "New mail in this mailbox"
+msgstr "Surat baru di kotak ini"
 
 #: curs_main.c:1023
-msgid "Mailbox was externally modified."
-msgstr "Kotak surat diobok-obok oleh program lain."
+msgid "Mailbox was externally modified"
+msgstr "Kotak surat diobok-obok oleh program lain"
 
 #: curs_main.c:1145
-msgid "No tagged messages."
-msgstr "Tidak ada surat yang ditandai."
+msgid "No tagged messages"
+msgstr "Tidak ada surat yang ditandai"
 
 #: curs_main.c:1149 curs_main.c:1418 menu.c:1401
-msgid "Nothing to do."
-msgstr "Gak ngapa-ngapain."
+msgid "Nothing to do"
+msgstr "Gak ngapa-ngapain"
 
 #: curs_main.c:1248
 #, fuzzy
@@ -1418,13 +1413,13 @@ msgid "Enter Message-Id: "
 msgstr "Masukkan keyID: "
 
 #: curs_main.c:1258
-msgid "Article has no parent reference."
+msgid "Article has no parent reference"
 msgstr ""
 
 #: curs_main.c:1282
 #, fuzzy
-msgid "Message is not visible in limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "Message is not visible in limited view"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: curs_main.c:1288
 #, fuzzy, c-format
@@ -1433,7 +1428,7 @@ msgstr "Menghapus surat-surat di server..."
 
 #: curs_main.c:1298
 #, c-format
-msgid "Article %s not found on the server."
+msgid "Article %s not found on the server"
 msgstr ""
 
 #: curs_main.c:1317
@@ -1446,7 +1441,7 @@ msgstr "Mengambil header surat..."
 
 #: curs_main.c:1395
 #, fuzzy
-msgid "No deleted messages found in the thread."
+msgid "No deleted messages found in the thread"
 msgstr "hapus semua surat di thread"
 
 #: curs_main.c:1415
@@ -1454,16 +1449,16 @@ msgid "Jump to message: "
 msgstr "Ke surat no: "
 
 #: curs_main.c:1421
-msgid "Argument must be a message number."
-msgstr "Parameter harus berupa nomer surat."
+msgid "Argument must be a message number"
+msgstr "Parameter harus berupa nomer surat"
 
 #: curs_main.c:1423
-msgid "Invalid message number."
-msgstr "Tidak ada nomer begitu."
+msgid "Invalid message number"
+msgstr "Tidak ada nomer begitu"
 
 #: curs_main.c:1425
-msgid "That message is not visible."
-msgstr "Surat itu tidak bisa dilihat."
+msgid "That message is not visible"
+msgstr "Surat itu tidak bisa dilihat"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
@@ -1480,8 +1475,8 @@ msgid "Delete messages matching: "
 msgstr "Hapus surat-surat yang: "
 
 #: curs_main.c:1506
-msgid "No limit pattern is in effect."
-msgstr "Pola batas (limit pattern) tidak ditentukan."
+msgid "No limit pattern is in effect"
+msgstr "Pola batas (limit pattern) tidak ditentukan"
 
 #. L10N: ask for a limit to apply
 #: curs_main.c:1511
@@ -1494,8 +1489,8 @@ msgid "Limit to messages matching: "
 msgstr "Hanya surat-surat yang: "
 
 #: curs_main.c:1573
-msgid "To view all messages, limit to \"all\"."
-msgstr "Utk melihat semua pesan, batasi dengan \"semua\"."
+msgid "To view all messages, limit to \"all\""
+msgstr "Utk melihat semua pesan, batasi dengan \"semua\""
 
 #: curs_main.c:1585 pager.c:2489
 msgid "Quit NeoMutt?"
@@ -1524,27 +1519,27 @@ msgid "Untag messages matching: "
 msgstr "Tidak jadi tandai surat-surat yang: "
 
 #: curs_main.c:1742
-msgid "Logged out of IMAP servers."
+msgid "Logged out of IMAP servers"
 msgstr ""
 
 #: curs_main.c:1840
 #, fuzzy
-msgid "No virtual folder, aborting."
-msgstr "Tidak ada subjek, batal."
+msgid "No virtual folder, aborting"
+msgstr "Tidak ada subjek, batal"
 
 #: curs_main.c:1848
-msgid "Failed to read thread, aborting."
+msgid "Failed to read thread, aborting"
 msgstr ""
 
 #: curs_main.c:1880 mx.c:1470 mx.c:1487
 #, fuzzy
-msgid "Folder doesn't support tagging, aborting."
+msgid "Folder doesn't support tagging, aborting"
 msgstr "Server SMTP tidak mendukung authentikasi"
 
 #: curs_main.c:1895
 #, fuzzy
-msgid "No tag specified, aborting."
-msgstr "Tidak ada subjek, batal."
+msgid "No tag specified, aborting"
+msgstr "Tidak ada subjek, batal"
 
 #: curs_main.c:1907
 #, c-format
@@ -1552,24 +1547,24 @@ msgid "Update tags..."
 msgstr ""
 
 #: curs_main.c:1944
-msgid "Failed to modify tags, aborting."
+msgid "Failed to modify tags, aborting"
 msgstr ""
 
 #: curs_main.c:1989
 #, fuzzy
-msgid "No query, aborting."
-msgstr "Tidak ada subjek, batal."
+msgid "No query, aborting"
+msgstr "Tidak ada subjek, batal"
 
 #: curs_main.c:1993 curs_main.c:2013 curs_main.c:2032
-msgid "Failed to create query, aborting."
+msgid "Failed to create query, aborting"
 msgstr ""
 
 #: curs_main.c:2002 curs_main.c:2021
-msgid "Windowed queries disabled."
+msgid "Windowed queries disabled"
 msgstr ""
 
 #: curs_main.c:2007 curs_main.c:2026
-msgid "No notmuch vfolder currently loaded."
+msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
 #: curs_main.c:2064
@@ -1610,8 +1605,8 @@ msgstr "hubungkan thread"
 
 #: curs_main.c:2250 curs_main.c:2290 curs_main.c:2771 curs_main.c:2803
 #: flags.c:376 mutt_thread.c:1043 mutt_thread.c:1107 mutt_thread.c:1186
-msgid "Threading is not enabled."
-msgstr "Tidak disetting untuk melakukan threading."
+msgid "Threading is not enabled"
+msgstr "Tidak disetting untuk melakukan threading"
 
 #: curs_main.c:2263
 msgid "Thread broken"
@@ -1644,44 +1639,44 @@ msgid "No thread linked"
 msgstr "Tidak ada thread yg dihubungkan"
 
 #: curs_main.c:2344 curs_main.c:2370
-msgid "You are on the last message."
-msgstr "Anda sudah di surat yang terakhir."
+msgid "You are on the last message"
+msgstr "Anda sudah di surat yang terakhir"
 
 #: curs_main.c:2352 curs_main.c:2397
-msgid "No undeleted messages."
-msgstr "Tidak ada surat yang tidak jadi dihapus."
+msgid "No undeleted messages"
+msgstr "Tidak ada surat yang tidak jadi dihapus"
 
 #: curs_main.c:2389 curs_main.c:2415
-msgid "You are on the first message."
-msgstr "Anda sudah di surat yang pertama."
+msgid "You are on the first message"
+msgstr "Anda sudah di surat yang pertama"
 
 #: curs_main.c:2544
 #, fuzzy
-msgid "No new messages in this limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "No new messages in this limited view"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: curs_main.c:2546
 #, fuzzy
-msgid "No new messages."
+msgid "No new messages"
 msgstr "Tidak ada surat baru"
 
 #: curs_main.c:2551
 #, fuzzy
-msgid "No unread messages in this limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "No unread messages in this limited view"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: curs_main.c:2553
 #, fuzzy
-msgid "No unread messages."
+msgid "No unread messages"
 msgstr "Tidak ada surat yang belum dibaca"
 
 #: curs_main.c:2562 menu.c:1191 pager.c:2613 pattern.c:2411
-msgid "Search wrapped to top."
-msgstr "Pencarian kembali ke atas."
+msgid "Search wrapped to top"
+msgstr "Pencarian kembali ke atas"
 
 #: curs_main.c:2567 pager.c:2636 pattern.c:2422
-msgid "Search wrapped to bottom."
-msgstr "Pencarian kembali ke bawah."
+msgid "Search wrapped to bottom"
+msgstr "Pencarian kembali ke bawah"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2585
@@ -1696,17 +1691,17 @@ msgid "Cannot toggle new"
 msgstr "tandai/tidak baru"
 
 #: curs_main.c:2703
-msgid "No more threads."
-msgstr "Tidak ada thread lagi."
+msgid "No more threads"
+msgstr "Tidak ada thread lagi"
 
 #: curs_main.c:2705
-msgid "You are on the first thread."
-msgstr "Anda di thread yang pertama."
+msgid "You are on the first thread"
+msgstr "Anda di thread yang pertama"
 
 #: curs_main.c:2789
 #, fuzzy
-msgid "Thread contains unread or flagged messages."
-msgstr "Thread berisi surat yang belum dibaca."
+msgid "Thread contains unread or flagged messages"
+msgstr "Thread berisi surat yang belum dibaca"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2839 pager.c:2959
@@ -1724,17 +1719,17 @@ msgstr "Tidak dapat menulis surat"
 #. * messages is edited.
 #: curs_main.c:3018 pager.c:3397
 #, fuzzy, c-format
-msgid "%d label changed."
-msgid_plural "%d labels changed."
-msgstr[0] "Kotak surat tidak berubah."
+msgid "%d label changed"
+msgid_plural "%d labels changed"
+msgstr[0] "Kotak surat tidak berubah"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
 #: curs_main.c:3025 pager.c:3401
 #, fuzzy
-msgid "No labels changed."
-msgstr "Kotak surat tidak berubah."
+msgid "No labels changed"
+msgstr "Kotak surat tidak berubah"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
@@ -1766,15 +1761,15 @@ msgstr "Surat ditunda."
 #. by whatever they typed at the prompt.)
 #: curs_main.c:3178
 #, fuzzy, c-format
-msgid "Message bound to %s."
-msgstr "Surat telah dibounce."
+msgid "Message bound to %s"
+msgstr "Surat telah dibounce"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3187
 #, fuzzy
-msgid "No message ID to macro."
-msgstr "Tidak ada surat di kotak tersebut."
+msgid "No message ID to macro"
+msgstr "Tidak ada surat di kotak tersebut"
 
 #: curs_main.c:3230 pager.c:3141 recvattach.c:1562
 msgid "Reply by mail as poster prefers?"
@@ -2109,8 +2104,8 @@ msgid "failed to re-open 'memory stream'"
 msgstr "Tidak bisa membuka file sementara"
 
 #: handler.c:1588
-msgid "Error: multipart/signed has no protocol."
-msgstr "Error: multipart/signed tidak punya protokol."
+msgid "Error: multipart/signed has no protocol"
+msgstr "Error: multipart/signed tidak punya protokol"
 
 #: handler.c:1652
 #, fuzzy
@@ -2146,8 +2141,8 @@ msgstr "[-- %s/%s tidak didukung --]\n"
 
 #: hcache/hcache.c:160 main.c:810 nntp/newsrc.c:1128
 #, c-format
-msgid "Can't create %s: %s."
-msgstr "Tidak bisa membuat %s: %s."
+msgid "Can't create %s: %s"
+msgstr "Tidak bisa membuat %s: %s"
 
 #: help.c:391
 msgid "ERROR: please report this bug"
@@ -2183,8 +2178,8 @@ msgid "badly formatted command string"
 msgstr ""
 
 #: hook.c:344
-msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: Tidak dapat melakukan unhook * dari hook."
+msgid "unhook: Can't do unhook * from within a hook"
+msgstr "unhook: Tidak dapat melakukan unhook * dari hook"
 
 #: hook.c:356
 #, c-format
@@ -2193,8 +2188,8 @@ msgstr "unhook: jenis tidak dikenali: %s"
 
 #: hook.c:366
 #, c-format
-msgid "unhook: Can't delete a %s from within a %s."
-msgstr "unhook: Tidak dapat menghapus %s dari %s."
+msgid "unhook: Can't delete a %s from within a %s"
+msgstr "unhook: Tidak dapat menghapus %s dari %s"
 
 #: imap/auth.c:119
 #, fuzzy
@@ -2206,45 +2201,41 @@ msgid "Authenticating (anonymous)..."
 msgstr "Mengauthentikasi (anonim)..."
 
 #: imap/auth_anon.c:88
-msgid "Anonymous authentication failed."
-msgstr "Authentikasi anonim gagal."
+msgid "Anonymous authentication failed"
+msgstr "Authentikasi anonim gagal"
 
 #: imap/auth_cram.c:108
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Mengauthentikasi (CRAM-MD5)..."
 
 #: imap/auth_cram.c:181
-msgid "CRAM-MD5 authentication failed."
-msgstr "Authentikasi CRAM-MD5 gagal."
+msgid "CRAM-MD5 authentication failed"
+msgstr "Authentikasi CRAM-MD5 gagal"
 
 #: imap/auth_gss.c:165
 msgid "Authenticating (GSSAPI)..."
 msgstr "Mengauthentikasi (GSSAPI)..."
 
 #: imap/auth_gss.c:325
-msgid "GSSAPI authentication failed."
-msgstr "Authentikasi GSSAPI gagal."
+msgid "GSSAPI authentication failed"
+msgstr "Authentikasi GSSAPI gagal"
 
 #: imap/auth_login.c:53
-msgid "LOGIN disabled on this server."
-msgstr "LOGIN tidak diaktifkan di server ini."
+msgid "LOGIN disabled on this server"
+msgstr "LOGIN tidak diaktifkan di server ini"
 
 #: imap/auth_login.c:62 imap/auth_plain.c:57 pop/pop_auth.c:284
 msgid "Logging in..."
 msgstr "Sedang login..."
 
 #: imap/auth_login.c:82 imap/auth_plain.c:96 pop/pop_auth.c:324
-msgid "Login failed."
-msgstr "Login gagal."
+msgid "Login failed"
+msgstr "Login gagal"
 
 #: imap/auth_sasl.c:123 nntp/nntp.c:424 nntp/nntp.c:490 smtp.c:432
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Mengauthentikasi (%s)..."
-
-#: imap/auth_sasl.c:253 pop/pop_auth.c:199
-msgid "SASL authentication failed."
-msgstr "Authentikasi SASL gagal."
 
 #: imap/browse.c:209 imap/imap.c:1994
 #, c-format
@@ -2264,12 +2255,12 @@ msgid "Create mailbox: "
 msgstr "Membuat kotak surat: "
 
 #: imap/browse.c:400 imap/browse.c:460
-msgid "Mailbox must have a name."
-msgstr "Kotak surat harus punya nama."
+msgid "Mailbox must have a name"
+msgstr "Kotak surat harus punya nama"
 
 #: imap/browse.c:407
-msgid "Mailbox created."
-msgstr "Kotak surat telah dibuat."
+msgid "Mailbox created"
+msgstr "Kotak surat telah dibuat"
 
 #: imap/browse.c:448
 #, fuzzy
@@ -2287,8 +2278,8 @@ msgid "Rename failed: %s"
 msgstr "Penggantian nama gagal: %s"
 
 #: imap/browse.c:472
-msgid "Mailbox renamed."
-msgstr "Kotak surat telah diganti namanya."
+msgid "Mailbox renamed"
+msgstr "Kotak surat telah diganti namanya"
 
 #: imap/command.c:162
 #, fuzzy, c-format
@@ -2424,13 +2415,9 @@ msgstr "Server SMTP tidak mendukung authentikasi"
 msgid "Invalid IMAP flags"
 msgstr "Tdk valid "
 
-#: imap/message.c:480 mx.c:1338
-msgid "Integer overflow -- can't allocate memory."
-msgstr "Integer overflow -- tidak bisa mengalokasikan memori."
-
 #: imap/message.c:649
-msgid "Unable to fetch headers from this IMAP server version."
-msgstr "Tidak dapat mengambil header dari IMAP server versi ini."
+msgid "Unable to fetch headers from this IMAP server version"
+msgstr "Tidak dapat mengambil header dari IMAP server versi ini"
 
 #: imap/message.c:658 mutt/history.c:261 ncrypt/crypt_gpgme.c:698
 #: ncrypt/crypt_gpgme.c:2026 ncrypt/crypt_gpgme.c:2046
@@ -2496,12 +2483,12 @@ msgstr "parameternya kurang"
 
 #: init.c:820 init.c:1750
 #, c-format
-msgid "Error: impossible to build path of '%s'."
+msgid "Error: impossible to build path of '%s'"
 msgstr ""
 
 #: init.c:837
 #, c-format
-msgid "Error: Cyclic sourcing of configuration file '%s'."
+msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr ""
 
 #: init.c:868
@@ -2536,8 +2523,8 @@ msgstr "alias: tidak ada alamat email"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'."
-msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar."
+msgid "Warning: Bad IDN '%s' in alias '%s'"
+msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar"
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2554,13 +2541,13 @@ msgstr "lampiran: disposisi tidak benar"
 
 #: init.c:1209
 #, fuzzy, c-format
-msgid "%sgroup: missing -rx or -addr."
-msgstr "Tidak ada -rx atau -addr."
+msgid "%sgroup: missing -rx or -addr"
+msgstr "Tidak ada -rx atau -addr"
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'."
-msgstr "Perhatian: IDN '%s' tidak benar."
+msgid "%sgroup: warning: bad IDN '%s'"
+msgstr "Perhatian: IDN '%s' tidak benar"
 
 #: init.c:1345
 #, c-format
@@ -2588,7 +2575,7 @@ msgstr "source: error pada %s"
 
 #: init.c:1957
 #, fuzzy, c-format
-msgid "source: file %s could not be sourced."
+msgid "source: file %s could not be sourced"
 msgstr "Surat-surat tidak dapat dicetak"
 
 #: init.c:1986
@@ -2648,16 +2635,16 @@ msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neo
 msgstr ""
 
 #: keymap.c:678
-msgid "Macros are currently disabled."
+msgid "Macros are currently disabled"
 msgstr ""
 
 #: keymap.c:685
-msgid "Macro loop detected."
-msgstr "Loop macro terdeteksi."
+msgid "Macro loop detected"
+msgstr "Loop macro terdeteksi"
 
 #: keymap.c:1033 keymap.c:1068
-msgid "Key is not bound."
-msgstr "Tombol itu tidak ditentukan untuk apa."
+msgid "Key is not bound"
+msgstr "Tombol itu tidak ditentukan untuk apa"
 
 #: keymap.c:1073
 #, c-format
@@ -2795,8 +2782,8 @@ msgid ""
 msgstr ""
 
 #: main.c:295
-msgid "Error initializing terminal."
-msgstr "Gagal menginisialisasi terminal."
+msgid "Error initializing terminal"
+msgstr "Gagal menginisialisasi terminal"
 
 #: main.c:375
 msgid "unable to determine username"
@@ -2808,8 +2795,8 @@ msgstr "tidak bisa menentukan home direktori"
 
 #: main.c:623
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d."
-msgstr "Error: IDN '%s' tidak benar."
+msgid "Error: value '%s' is invalid for -d"
+msgstr "Error: IDN '%s' tidak benar"
 
 #: main.c:806
 #, c-format
@@ -2821,8 +2808,8 @@ msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:871 send.c:2143 send.c:2148
-msgid "No recipients specified."
-msgstr "Tidak ada penerima yang disebutkan."
+msgid "No recipients specified"
+msgstr "Tidak ada penerima yang disebutkan"
 
 #: main.c:897
 msgid "Cannot use -E flag with stdin"
@@ -2833,22 +2820,17 @@ msgstr ""
 msgid "Cannot parse message template: %s"
 msgstr "Tidak bisa membuka file surat: %s"
 
-#: main.c:1048
-#, c-format
-msgid "%s: unable to attach file."
-msgstr "%s: tidak bisa melampirkan file."
-
 #: main.c:1125
-msgid "No mailbox with new mail."
-msgstr "Tidak ada kotak surat dengan surat baru."
+msgid "No mailbox with new mail"
+msgstr "Tidak ada kotak surat dengan surat baru"
 
 #: main.c:1145
-msgid "No incoming mailboxes defined."
-msgstr "Tidak ada kotak surat incoming yang didefinisikan."
+msgid "No incoming mailboxes defined"
+msgstr "Tidak ada kotak surat incoming yang didefinisikan"
 
 #: main.c:1187
-msgid "Mailbox is empty."
-msgstr "Kotak surat kosong."
+msgid "Mailbox is empty"
+msgstr "Kotak surat kosong"
 
 #: mbox/mbox.c:183 mbox/mbox.c:245
 msgid "Mailbox is corrupt"
@@ -2897,37 +2879,37 @@ msgid "Jump to: "
 msgstr "Ke: "
 
 #: menu.c:636
-msgid "Invalid index number."
-msgstr "Nomer indeks tidak betul."
+msgid "Invalid index number"
+msgstr "Nomer indeks tidak betul"
 
 #: menu.c:640 menu.c:665 menu.c:738 menu.c:804 menu.c:822 menu.c:837 menu.c:852
 #: menu.c:867 menu.c:884 menu.c:901 menu.c:1531
-msgid "No entries."
-msgstr "Tidak ada entry."
+msgid "No entries"
+msgstr "Tidak ada entry"
 
 #: menu.c:662
-msgid "You cannot scroll down farther."
-msgstr "Sudah tidak bisa geser lagi. Jebol nanti."
+msgid "You cannot scroll down farther"
+msgstr "Sudah tidak bisa geser lagi. Jebol nanti"
 
 #: menu.c:684
-msgid "You cannot scroll up farther."
-msgstr "Sudah tidak bisa geser lagi. Jebol nanti."
+msgid "You cannot scroll up farther"
+msgstr "Sudah tidak bisa geser lagi. Jebol nanti"
 
 #: menu.c:731
-msgid "You are on the first page."
-msgstr "Anda di halaman pertama."
+msgid "You are on the first page"
+msgstr "Anda di halaman pertama"
 
 #: menu.c:731
-msgid "You are on the last page."
-msgstr "Anda di halaman terakhir."
+msgid "You are on the last page"
+msgstr "Anda di halaman terakhir"
 
 #: menu.c:916
-msgid "You are on the last entry."
-msgstr "Anda di entry terakhir."
+msgid "You are on the last entry"
+msgstr "Anda di entry terakhir"
 
 #: menu.c:931
-msgid "You are on the first entry."
-msgstr "Anda di entry pertama."
+msgid "You are on the first entry"
+msgstr "Anda di entry pertama"
 
 #: menu.c:1155 pager.c:2659 pattern.c:2343
 msgid "Search for: "
@@ -2938,24 +2920,24 @@ msgid "Reverse search for: "
 msgstr "Cari mundur: "
 
 #: menu.c:1209 pager.c:2610 pager.c:2633 pager.c:2764 pattern.c:2467
-msgid "Not found."
-msgstr "Tidak ketemu."
+msgid "Not found"
+msgstr "Tidak ketemu"
 
 #: menu.c:1395
-msgid "No tagged entries."
-msgstr "Tidak ada entry yang ditandai."
+msgid "No tagged entries"
+msgstr "Tidak ada entry yang ditandai"
 
 #: menu.c:1495
-msgid "Search is not implemented for this menu."
-msgstr "Pencarian tidak bisa dilakukan untuk menu ini."
+msgid "Search is not implemented for this menu"
+msgstr "Pencarian tidak bisa dilakukan untuk menu ini"
 
 #: menu.c:1500
-msgid "Jumping is not implemented for dialogs."
-msgstr "Pelompatan tidak diimplementasikan untuk dialogs."
+msgid "Jumping is not implemented for dialogs"
+msgstr "Pelompatan tidak diimplementasikan untuk dialogs"
 
 #: menu.c:1534
-msgid "Tagging is not supported."
-msgstr "Penandaan tidak didukung."
+msgid "Tagging is not supported"
+msgstr "Penandaan tidak didukung"
 
 #: mutt/file.c:1133
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -3078,7 +3060,7 @@ msgid "oac"
 msgstr "tab"
 
 #: muttlib.c:1409
-msgid "Can't save message to POP mailbox."
+msgid "Can't save message to POP mailbox"
 msgstr "Tidak bisa menyimpan surat ke kotak surat POP"
 
 #: muttlib.c:1418
@@ -3088,7 +3070,7 @@ msgstr "Tambahkan surat-surat ke %s?"
 
 #: muttlib.c:1430
 #, fuzzy
-msgid "Can't save message to news server."
+msgid "Can't save message to news server"
 msgstr "Tidak bisa menyunting surat di server POP"
 
 #: muttlib.c:1439
@@ -3117,21 +3099,21 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' di file mailcap membutuhkan %%s"
 
 #: mutt_attach.c:161
-msgid "Failure to open file to parse headers."
-msgstr "Gagal membuka file untuk menge-parse headers."
+msgid "Failure to open file to parse headers"
+msgstr "Gagal membuka file untuk menge-parse headers"
 
 #: mutt_attach.c:195
-msgid "Failure to open file to strip headers."
-msgstr "Gagal membuka file untuk menghapus headers."
+msgid "Failure to open file to strip headers"
+msgstr "Gagal membuka file untuk menghapus headers"
 
 #: mutt_attach.c:205
-msgid "Failure to rename file."
-msgstr "Gagal mengganti nama file."
+msgid "Failure to rename file"
+msgstr "Gagal mengganti nama file"
 
 #: mutt_attach.c:216
 #, c-format
-msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
+msgid "No mailcap compose entry for %s, creating empty file"
+msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong"
 
 #: mutt_attach.c:276
 #, c-format
@@ -3199,7 +3181,7 @@ msgid "Invalid value for option %s: %ld"
 msgstr "Tidak tanggal: %s"
 
 #: mutt_lua.c:419
-msgid "Error: Couldn't load the lua interpreter."
+msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
 #: mutt_lua.c:495
@@ -3213,17 +3195,17 @@ msgid "SSL is unavailable, cannot connect to %s"
 msgstr "SSL tidak tersedia."
 
 #: mutt_thread.c:1128
-msgid "Parent message is not available."
-msgstr "Surat induk tidak ada."
+msgid "Parent message is not available"
+msgstr "Surat induk tidak ada"
 
 #: mutt_thread.c:1134
 #, fuzzy
-msgid "Root message is not visible in this limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "Root message is not visible in this limited view"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: mutt_thread.c:1136
-msgid "Parent message is not visible in this limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "Parent message is not visible in this limited view"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: mx.c:519
 #, fuzzy, c-format
@@ -3268,18 +3250,18 @@ msgid "Moving read messages to %s..."
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s..."
 
 #: mx.c:867 mx.c:1080
-msgid "Mailbox is unchanged."
-msgstr "Kotak surat tidak berubah."
+msgid "Mailbox is unchanged"
+msgstr "Kotak surat tidak berubah"
 
 #: mx.c:923
 #, c-format
-msgid "%d kept, %d moved, %d deleted."
-msgstr "%d disimpan, %d dipindahkan, %d dihapus."
+msgid "%d kept, %d moved, %d deleted"
+msgstr "%d disimpan, %d dipindahkan, %d dihapus"
 
 #: mx.c:927 mx.c:1142
 #, c-format
-msgid "%d kept, %d deleted."
-msgstr "%d disimpan, %d dihapus."
+msgid "%d kept, %d deleted"
+msgstr "%d disimpan, %d dihapus"
 
 #: mx.c:1064
 #, c-format
@@ -3296,8 +3278,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Kotak surat ditandai tidak boleh ditulisi. %s"
 
 #: mx.c:1136
-msgid "Mailbox checkpointed."
-msgstr "Kotak surat telah di-checkpoint."
+msgid "Mailbox checkpointed"
+msgstr "Kotak surat telah di-checkpoint"
 
 #: ncrypt/crypt.c:89
 #, c-format
@@ -3315,8 +3297,8 @@ msgstr "[-- Keluaran dari %s%s --]\n"
 #. have other means to express this.
 #: ncrypt/crypt.c:115
 #, fuzzy
-msgid "Passphrases forgotten."
-msgstr "Passphrase sudah dilupakan."
+msgid "Passphrases forgotten"
+msgstr "Passphrase sudah dilupakan"
 
 #: ncrypt/crypt.c:189
 #, fuzzy
@@ -3324,7 +3306,7 @@ msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "Pesan tdk bisa dikirim inline. Gunakan PGP/MIME?"
 
 #: ncrypt/crypt.c:193
-msgid "Mail not sent: inline PGP can't be used with attachments."
+msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr ""
 
 #: ncrypt/crypt.c:200
@@ -3333,7 +3315,7 @@ msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "Pesan tdk bisa dikirim inline. Gunakan PGP/MIME?"
 
 #: ncrypt/crypt.c:204
-msgid "Mail not sent: inline PGP can't be used with format=flowed."
+msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr ""
 
 #: ncrypt/crypt.c:214 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:719
@@ -3346,12 +3328,12 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Pesan tdk bisa dikirim inline. Gunakan PGP/MIME?"
 
 #: ncrypt/crypt.c:228 send.c:2066
-msgid "Mail not sent."
-msgstr "Surat tidak dikirim."
+msgid "Mail not sent"
+msgstr "Surat tidak dikirim"
 
 #: ncrypt/crypt.c:612
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "Surat2 S/MIME tanpa hints pada isi tidak didukung."
+msgid "S/MIME messages with no hints on content are unsupported"
+msgstr "Surat2 S/MIME tanpa hints pada isi tidak didukung"
 
 #: ncrypt/crypt.c:847 ncrypt/crypt.c:890
 msgid "Trying to extract PGP keys...\n"
@@ -3413,8 +3395,8 @@ msgstr ""
 "[-- Akhir data yang ditandatangani --]\n"
 
 #: ncrypt/cryptglue.c:115
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME."
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support"
+msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME"
 
 #: ncrypt/cryptglue.c:143
 msgid "Invoking S/MIME..."
@@ -3716,8 +3698,8 @@ msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2832 ncrypt/pgp.c:728 ncrypt/pgp.c:1235
-msgid "PGP message successfully decrypted."
-msgstr "Surat PGP berhasil didekrip."
+msgid "PGP message successfully decrypted"
+msgstr "Surat PGP berhasil didekrip"
 
 #: ncrypt/crypt_gpgme.c:2836 ncrypt/pgp.c:670 ncrypt/pgp.c:724
 #: ncrypt/pgp.c:1239
@@ -3888,8 +3870,8 @@ msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next gagal: %s"
 
 #: ncrypt/crypt_gpgme.c:4330
-msgid "All matching keys are marked expired/revoked."
-msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut."
+msgid "All matching keys are marked expired/revoked"
+msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut"
 
 #: ncrypt/crypt_gpgme.c:4360 ncrypt/pgpkey.c:673 ncrypt/smime.c:574
 msgid "Select  "
@@ -3918,22 +3900,22 @@ msgstr "kunci-kunci cocok"
 #. L10N:
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
-#. e.g. "S/MIME keys matching <me@mutt.org>."
+#. e.g. "S/MIME keys matching <me@mutt.org>"
 #: ncrypt/crypt_gpgme.c:4392
 #, c-format
-msgid "%s <%s>."
-msgstr "%s <%s>."
+msgid "%s <%s>"
+msgstr "%s <%s>"
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
 #: ncrypt/crypt_gpgme.c:4398
 #, c-format
-msgid "%s \"%s\"."
-msgstr "%s \"%s\"."
+msgid "%s \"%s\""
+msgstr "%s \"%s\""
 
 #: ncrypt/crypt_gpgme.c:4426 ncrypt/pgpkey.c:758
-msgid "This key can't be used: expired/disabled/revoked."
-msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
+msgid "This key can't be used: expired/disabled/revoked"
+msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut"
 
 #: ncrypt/crypt_gpgme.c:4440 ncrypt/pgpkey.c:771 ncrypt/smime.c:604
 #, fuzzy
@@ -3992,8 +3974,8 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. but it may be safer to keep it untranslated.
 #: ncrypt/crypt_gpgme.c:4963
 #, fuzzy, c-format
-msgid "PGP Key 0x%s."
-msgstr "Kunci PGP %s."
+msgid "PGP Key 0x%s"
+msgstr "Kunci PGP %s"
 
 #: ncrypt/crypt_gpgme.c:5007
 msgid "GPGME: OpenPGP protocol not available"
@@ -4095,8 +4077,8 @@ msgstr ""
 
 #: ncrypt/pgp.c:726
 #, fuzzy
-msgid "PGP message was not encrypted."
-msgstr "Surat PGP berhasil didekrip."
+msgid "PGP message was not encrypted"
+msgstr "Surat PGP berhasil didekrip"
 
 #: ncrypt/pgp.c:965
 msgid "Internal error.  Please submit a bug report."
@@ -4109,10 +4091,6 @@ msgid ""
 msgstr ""
 "[-- Error: tidak bisa membuat subproses PGP --]\n"
 "\n"
-
-#: ncrypt/pgp.c:1062 ncrypt/pgp.c:1087
-msgid "Decryption failed"
-msgstr "Dekripsi gagal"
 
 #: ncrypt/pgp.c:1294
 msgid "Can't open PGP subprocess"
@@ -4212,18 +4190,18 @@ msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
 #: ncrypt/pgpkey.c:648
-msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Semua kunci yang cocok telah kadaluwarsa, dicabut, atau disabled."
+msgid "All matching keys are expired, revoked, or disabled"
+msgstr "Semua kunci yang cocok telah kadaluwarsa, dicabut, atau disabled"
 
 #: ncrypt/pgpkey.c:688
 #, c-format
-msgid "PGP keys matching <%s>."
-msgstr "PGP keys yg cocok dg <%s>."
+msgid "PGP keys matching <%s>"
+msgstr "PGP keys yg cocok dg <%s>"
 
 #: ncrypt/pgpkey.c:690
 #, c-format
-msgid "PGP keys matching \"%s\"."
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgid "PGP keys matching \"%s\""
+msgstr "PGP keys yg cocok dg \"%s\""
 
 #: ncrypt/pgpkey.c:708 ncrypt/pgpkey.c:913
 msgid "Can't open /dev/null"
@@ -4231,8 +4209,8 @@ msgstr "Tidak bisa membuka /dev/null"
 
 #: ncrypt/pgpkey.c:942
 #, c-format
-msgid "PGP Key %s."
-msgstr "Kunci PGP %s."
+msgid "PGP Key %s"
+msgstr "Kunci PGP %s"
 
 #: ncrypt/smime.c:180
 msgid "Enter S/MIME passphrase:"
@@ -4317,8 +4295,8 @@ msgstr "Tdk diketahui"
 
 #: ncrypt/smime.c:568
 #, c-format
-msgid "S/MIME certificates matching \"%s\"."
-msgstr "Sertifikat2 S/MIME yg cocok dg \"%s\"."
+msgid "S/MIME certificates matching \"%s\""
+msgstr "Sertifikat2 S/MIME yg cocok dg \"%s\""
 
 #: ncrypt/smime.c:612
 #, fuzzy
@@ -4331,8 +4309,8 @@ msgstr "Masukkan keyID: "
 
 #: ncrypt/smime.c:1080
 #, c-format
-msgid "No (valid) certificate found for %s."
-msgstr "Tidak ditemukan sertifikat (yg valid) utk %s."
+msgid "No (valid) certificate found for %s"
+msgstr "Tidak ditemukan sertifikat (yg valid) utk %s"
 
 #: ncrypt/smime.c:1134 ncrypt/smime.c:1163 ncrypt/smime.c:1231
 #: ncrypt/smime.c:1272 ncrypt/smime.c:1337 ncrypt/smime.c:1414
@@ -4485,7 +4463,7 @@ msgstr "Server menutup hubungan"
 
 #: nntp/nntp.c:189
 #, fuzzy
-msgid "Server doesn't support reader mode."
+msgid "Server doesn't support reader mode"
 msgstr "Server SMTP tidak mendukung authentikasi"
 
 #: nntp/nntp.c:394 pop/pop_auth.c:456 smtp.c:555 smtp.c:616
@@ -4494,12 +4472,12 @@ msgstr "Tidak ada pengauthentikasi yg bisa digunakan"
 
 #: nntp/nntp.c:614
 #, fuzzy, c-format
-msgid "%s authentication failed."
-msgstr "Authentikasi SASL gagal."
+msgid "%s authentication failed"
+msgstr "Authentikasi SASL gagal"
 
 #: nntp/nntp.c:689 nntp/nntp.c:779
 #, fuzzy
-msgid "Could not switch to reader mode."
+msgid "Could not switch to reader mode"
 msgstr "Tidak bisa membuat kotak surat sementara: %s"
 
 #: nntp/nntp.c:702
@@ -4509,11 +4487,11 @@ msgstr "Menghubungi %s..."
 
 #: nntp/nntp.c:703
 #, fuzzy
-msgid "Posting is ok."
-msgstr "Gak ngapa-ngapain."
+msgid "Posting is ok"
+msgstr "Gak ngapa-ngapain"
 
 #: nntp/nntp.c:703
-msgid "Posting is NOT ok."
+msgid "Posting is NOT ok"
 msgstr ""
 
 #: nntp/nntp.c:834
@@ -4533,17 +4511,17 @@ msgstr "%s bukan path POP yang valid"
 
 #: nntp/nntp.c:1541
 #, c-format
-msgid "Newsgroup %s not found on the server."
+msgid "Newsgroup %s not found on the server"
 msgstr ""
 
 #: nntp/nntp.c:1561
 #, c-format
-msgid "Newsgroup %s has been removed from the server."
+msgid "Newsgroup %s has been removed from the server"
 msgstr ""
 
 #: nntp/nntp.c:1713
 #, c-format
-msgid "Article %d not found on the server."
+msgid "Article %d not found on the server"
 msgstr ""
 
 #: nntp/nntp.c:1811 nntp/nntp.c:1846
@@ -4571,7 +4549,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Memeriksa surat baru..."
 
 #: nntp/nntp.c:2581
-msgid "Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
 #: notmuch/mutt_notmuch.c:222 notmuch/mutt_notmuch.c:1999
@@ -4586,7 +4564,7 @@ msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
 #: notmuch/mutt_notmuch.c:417
-msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
+msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)"
 msgstr ""
 
 #: notmuch/mutt_notmuch.c:476
@@ -4616,12 +4594,12 @@ msgstr "Mengirim surat..."
 
 #: notmuch/mutt_notmuch.c:1879
 #, fuzzy
-msgid "No more messages in the thread."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
+msgid "No more messages in the thread"
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini"
 
 #: notmuch/mutt_notmuch.c:2752
 #, fuzzy
-msgid "Can't write to virtual folder."
+msgid "Can't write to virtual folder"
 msgstr "Tidak bisa menambah ke kotak surat: %s"
 
 #: opcodes.h:28
@@ -5686,8 +5664,8 @@ msgid "show S/MIME options"
 msgstr "tunjukan opsi2 S/MIME"
 
 #: pager.c:98
-msgid "Not available in this menu."
-msgstr "Tidak ada di menu ini."
+msgid "Not available in this menu"
+msgstr "Tidak ada di menu ini"
 
 #: pager.c:1843
 msgid "PrevPg"
@@ -5718,24 +5696,24 @@ msgid "end"
 msgstr ""
 
 #: pager.c:2505 pager.c:2536 pager.c:2572 pager.c:2894
-msgid "Bottom of message is shown."
-msgstr "Sudah paling bawah."
+msgid "Bottom of message is shown"
+msgstr "Sudah paling bawah"
 
 #: pager.c:2522 pager.c:2543 pager.c:2550 pager.c:2560
-msgid "Top of message is shown."
-msgstr "Sudah paling atas."
+msgid "Top of message is shown"
+msgstr "Sudah paling atas"
 
 #: pager.c:2810
-msgid "Help is currently being shown."
-msgstr "Bantuan sedang ditampilkan."
+msgid "Help is currently being shown"
+msgstr "Bantuan sedang ditampilkan"
 
 #: pager.c:2858
-msgid "No more quoted text."
-msgstr "Tidak ada lagi teks kutipan."
+msgid "No more quoted text"
+msgstr "Tidak ada lagi teks kutipan"
 
 #: pager.c:2873
-msgid "No more unquoted text after quoted text."
-msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan."
+msgid "No more unquoted text after quoted text"
+msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan"
 
 #: pattern.c:201 pattern.c:475
 #, c-format
@@ -5824,13 +5802,13 @@ msgid "empty pattern"
 msgstr "kriteria kosong"
 
 #: pattern.c:1877 pattern.c:1880
-msgid "error: server custom search only supported with IMAP."
+msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
 #: pattern.c:2054
 #, c-format
-msgid "error: unknown op %d (report this error)."
-msgstr "error: %d tidak dikenali (laporkan error ini)."
+msgid "error: unknown op %d (report this error)"
+msgstr "error: %d tidak dikenali (laporkan error ini)"
 
 #: pattern.c:2220 pattern.c:2368
 msgid "Compiling search pattern..."
@@ -5841,8 +5819,8 @@ msgid "Executing command on matching messages..."
 msgstr "Menjalankan perintah terhadap surat-surat yang cocok..."
 
 #: pattern.c:2306
-msgid "No messages matched criteria."
-msgstr "Tidak ada surat yang memenuhi kriteria."
+msgid "No messages matched criteria"
+msgstr "Tidak ada surat yang memenuhi kriteria"
 
 #: pattern.c:2400
 msgid "Searching..."
@@ -5857,20 +5835,20 @@ msgid "Search hit top without finding match"
 msgstr "Sudah dicari sampe atas, tapi tidak ketemu"
 
 #: pattern.c:2459
-msgid "Search interrupted."
-msgstr "Pencarian dibatalkan."
+msgid "Search interrupted"
+msgstr "Pencarian dibatalkan"
 
 #: pop/pop.c:159 pop/pop_lib.c:248
-msgid "Command TOP is not supported by server."
-msgstr "Perintah TOP tidak didukung oleh server."
+msgid "Command TOP is not supported by server"
+msgstr "Perintah TOP tidak didukung oleh server"
 
 #: pop/pop.c:186
 msgid "Can't write header to temporary file"
 msgstr "Tidak bisa menulis header ke file sementara"
 
 #: pop/pop.c:358 pop/pop_lib.c:250
-msgid "Command UIDL is not supported by server."
-msgstr "Perintah UIDL tidak didukung oleh server."
+msgid "Command UIDL is not supported by server"
+msgstr "Perintah UIDL tidak didukung oleh server"
 
 #: pop/pop.c:382
 #, fuzzy, c-format
@@ -5896,12 +5874,12 @@ msgid "Marking messages deleted..."
 msgstr "Menandai surat-surat \"dihapus\"..."
 
 #: pop/pop.c:913
-msgid "POP host is not defined."
-msgstr "Nama server POP tidak diketahui."
+msgid "POP host is not defined"
+msgstr "Nama server POP tidak diketahui"
 
 #: pop/pop.c:977
-msgid "No new mail in POP mailbox."
-msgstr "Tidak ada surat baru di kotak surat POP."
+msgid "No new mail in POP mailbox"
+msgstr "Tidak ada surat baru di kotak surat POP"
 
 #: pop/pop.c:984
 msgid "Delete messages from server?"
@@ -5938,12 +5916,12 @@ msgid "Authenticating (APOP)..."
 msgstr "Mengauthentikasi (APOP)..."
 
 #: pop/pop_auth.c:265
-msgid "APOP authentication failed."
-msgstr "Authentikasi APOP gagal."
+msgid "APOP authentication failed"
+msgstr "Authentikasi APOP gagal"
 
 #: pop/pop_auth.c:304
-msgid "Command USER is not supported by server."
-msgstr "Perintah USER tidak didukung oleh server."
+msgid "Command USER is not supported by server"
+msgstr "Perintah USER tidak didukung oleh server"
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
@@ -5951,8 +5929,8 @@ msgid "Invalid POP URL: %s"
 msgstr "URL SMTP tidak valid: %s"
 
 #: pop/pop_lib.c:246
-msgid "Unable to leave messages on server."
-msgstr "Tidak bisa meninggalkan surat-surat di server."
+msgid "Unable to leave messages on server"
+msgstr "Tidak bisa meninggalkan surat-surat di server"
 
 #: pop/pop_lib.c:277
 #, c-format
@@ -5976,8 +5954,8 @@ msgid "Postponed Messages"
 msgstr "Surat-surat tertunda"
 
 #: postpone.c:297 postpone.c:306
-msgid "No postponed messages."
-msgstr "Tidak ada surat yg ditunda."
+msgid "No postponed messages"
+msgstr "Tidak ada surat yg ditunda"
 
 #: postpone.c:457
 msgid "Illegal S/MIME header"
@@ -5992,8 +5970,8 @@ msgid "Decrypting message..."
 msgstr "Mendekripsi surat..."
 
 #: postpone.c:709 postpone.c:732
-msgid "Decryption failed."
-msgstr "Dekripsi gagal."
+msgid "Decryption failed"
+msgstr "Dekripsi gagal"
 
 #: query.c:73
 msgid "New Query"
@@ -6017,8 +5995,8 @@ msgid "Query '%s'"
 msgstr "Query '%s'"
 
 #: query.c:596 query.c:630
-msgid "Query command not defined."
-msgstr "Perintah query tidak diketahui."
+msgid "Query command not defined"
+msgstr "Perintah query tidak diketahui"
 
 #: recvattach.c:87
 msgid "Pipe"
@@ -6033,8 +6011,8 @@ msgid "Saving..."
 msgstr "Menyimpan..."
 
 #: recvattach.c:571 recvattach.c:676
-msgid "Attachment saved."
-msgstr "Lampiran telah disimpan."
+msgid "Attachment saved"
+msgstr "Lampiran telah disimpan"
 
 #: recvattach.c:694
 #, c-format
@@ -6042,8 +6020,8 @@ msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "PERHATIAN! Anda akan menimpa %s, lanjut?"
 
 #: recvattach.c:712
-msgid "Attachment filtered."
-msgstr "Lampiran telah difilter."
+msgid "Attachment filtered"
+msgstr "Lampiran telah difilter"
 
 #: recvattach.c:808
 msgid "Filter through: "
@@ -6093,30 +6071,30 @@ msgid "There are no subparts to show"
 msgstr "Tidak ada sub-bagian yg bisa ditampilkan"
 
 #: recvattach.c:1435
-msgid "Can't delete attachment from POP server."
-msgstr "Tidak bisa menghapus lampiran dari server POP."
+msgid "Can't delete attachment from POP server"
+msgstr "Tidak bisa menghapus lampiran dari server POP"
 
 #: recvattach.c:1444
 #, fuzzy
-msgid "Can't delete attachment from news server."
-msgstr "Tidak bisa menghapus lampiran dari server POP."
+msgid "Can't delete attachment from news server"
+msgstr "Tidak bisa menghapus lampiran dari server POP"
 
 #: recvattach.c:1451
-msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
+msgid "Deletion of attachments from encrypted messages is unsupported"
+msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung"
 
 #: recvattach.c:1457
 #, fuzzy
-msgid "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
+msgid "Deletion of attachments from signed messages may invalidate the signature"
+msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung"
 
 #: recvattach.c:1476 recvattach.c:1493
-msgid "Only deletion of multipart attachments is supported."
-msgstr "Hanya penghapusan lampiran dari surat multi bagian yang didukung."
+msgid "Only deletion of multipart attachments is supported"
+msgstr "Hanya penghapusan lampiran dari surat multi bagian yang didukung"
 
 #: recvcmd.c:68
-msgid "You may only bounce message/rfc822 parts."
-msgstr "Anda hanya dapat menge-bounce bagian-bagian 'message/rfc822'."
+msgid "You may only bounce message/rfc822 parts"
+msgstr "Anda hanya dapat menge-bounce bagian-bagian 'message/rfc822'"
 
 #: recvcmd.c:265
 #, fuzzy
@@ -6126,8 +6104,8 @@ msgstr[0] "Gagal menge-bounce surat"
 
 #: recvcmd.c:484
 #, c-format
-msgid "Can't open temporary file %s."
-msgstr "Tidak bisa membuka file sementara %s."
+msgid "Can't open temporary file %s"
+msgstr "Tidak bisa membuka file sementara %s"
 
 #: recvcmd.c:513
 msgid "Forward as attachments?"
@@ -6143,12 +6121,12 @@ msgstr "Forward dalam MIME?"
 
 #: recvcmd.c:661 recvcmd.c:954
 #, c-format
-msgid "Can't create %s."
-msgstr "Tidak bisa membuat %s."
+msgid "Can't create %s"
+msgstr "Tidak bisa membuat %s"
 
 #: recvcmd.c:796
-msgid "Can't find any tagged messages."
-msgstr "Tidak dapat menemukan surat yang ditandai."
+msgid "Can't find any tagged messages"
+msgstr "Tidak dapat menemukan surat yang ditandai"
 
 #: recvcmd.c:832 send.c:989
 msgid "No mailing lists found"
@@ -6183,35 +6161,35 @@ msgid "Can't get mixmaster's type2.list"
 msgstr "Tidak dapat mengambil type2.list milik mixmaster"
 
 #: remailer.c:606
-msgid "Select a remailer chain."
-msgstr "Pilih rangkaian remailer."
+msgid "Select a remailer chain"
+msgstr "Pilih rangkaian remailer"
 
 #: remailer.c:668
 #, c-format
-msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr "Error: %s tidak dapat digunakan sebagai akhir rangkaian remailer."
+msgid "Error: %s can't be used as the final remailer of a chain"
+msgstr "Error: %s tidak dapat digunakan sebagai akhir rangkaian remailer"
 
 #. L10N The '%d' here hard-coded to 19
 #: remailer.c:700
 #, c-format
-msgid "Mixmaster chains are limited to %d elements."
-msgstr "Rangkaian mixmaster dibatasi hingga %d elemen."
+msgid "Mixmaster chains are limited to %d elements"
+msgstr "Rangkaian mixmaster dibatasi hingga %d elemen"
 
 #: remailer.c:723
-msgid "The remailer chain is already empty."
-msgstr "Rangkaian remailer sudah kosong."
+msgid "The remailer chain is already empty"
+msgstr "Rangkaian remailer sudah kosong"
 
 #: remailer.c:733
-msgid "You already have the first chain element selected."
-msgstr "Anda sudah memilih awal rangkaian."
+msgid "You already have the first chain element selected"
+msgstr "Anda sudah memilih awal rangkaian"
 
 #: remailer.c:743
-msgid "You already have the last chain element selected."
-msgstr "Anda sudah memilih akhir rangkaian."
+msgid "You already have the last chain element selected"
+msgstr "Anda sudah memilih akhir rangkaian"
 
 #: remailer.c:787
-msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
+msgid "Mixmaster doesn't accept Cc or Bcc headers"
+msgstr "Mixmaster tidak menerima header Cc maupun Bcc"
 
 #: remailer.c:811
 msgid "Please set the hostname variable to a proper value when using mixmaster"
@@ -6223,8 +6201,8 @@ msgid "Error sending message, child exited %d.\n"
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d.\n"
 
 #: remailer.c:859
-msgid "Error sending message."
-msgstr "Gagal mengirim surat."
+msgid "Error sending message"
+msgstr "Gagal mengirim surat"
 
 #: rfc1524.c:190
 #, c-format
@@ -6249,8 +6227,8 @@ msgid "No subject, abort?"
 msgstr "Tidak ada subjek, batal?"
 
 #: send.c:377
-msgid "No subject, aborting."
-msgstr "Tidak ada subjek, batal."
+msgid "No subject, aborting"
+msgstr "Tidak ada subjek, batal"
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
@@ -6302,8 +6280,8 @@ msgid "Abort unmodified message?"
 msgstr "Batalkan surat yang tidak diubah?"
 
 #: send.c:1913
-msgid "Aborted unmodified message."
-msgstr "Surat yang tidak diubah dibatalkan."
+msgid "Aborted unmodified message"
+msgstr "Surat yang tidak diubah dibatalkan"
 
 #: send.c:2025
 msgid "No crypto backend configured.  Disabling message security setting."
@@ -6311,25 +6289,25 @@ msgstr ""
 
 #: send.c:2063
 #, fuzzy
-msgid "Article not posted."
-msgstr "Surat tidak dikirim."
+msgid "Article not posted"
+msgstr "Surat tidak dikirim"
 
 #: send.c:2128
-msgid "Message postponed."
-msgstr "Surat ditunda."
+msgid "Message postponed"
+msgstr "Surat ditunda"
 
 #: send.c:2164
 msgid "No subject, abort sending?"
 msgstr "Tidak ada subjek, batalkan pengiriman?"
 
 #: send.c:2168 send.c:2174
-msgid "No subject specified."
-msgstr "Tidak ada subjek."
+msgid "No subject specified"
+msgstr "Tidak ada subjek"
 
 #: send.c:2180
 #, fuzzy
-msgid "No newsgroup specified."
-msgstr "Tidak ada subjek."
+msgid "No newsgroup specified"
+msgstr "Tidak ada subjek"
 
 #: send.c:2189
 #, fuzzy
@@ -6350,20 +6328,20 @@ msgid "Save attachments in Fcc?"
 msgstr "tampilkan lampiran sebagai teks"
 
 #: send.c:2392
-msgid "Could not send the message."
-msgstr "Tidak bisa mengirim surat."
+msgid "Could not send the message"
+msgstr "Tidak bisa mengirim surat"
 
 #: send.c:2398
-msgid "Sending in background."
-msgstr "Mengirim di latar belakang."
+msgid "Sending in background"
+msgstr "Mengirim di latar belakang"
 
 #: send.c:2399
-msgid "Article posted."
+msgid "Article posted"
 msgstr ""
 
 #: send.c:2400
-msgid "Mail sent."
-msgstr "Surat telah dikirim."
+msgid "Mail sent"
+msgstr "Surat telah dikirim"
 
 #: sendlib.c:495
 msgid "No boundary parameter found [report this error]"
@@ -6376,8 +6354,8 @@ msgstr "%s tidak ada lagi"
 
 #: sendlib.c:997
 #, c-format
-msgid "%s isn't a regular file."
-msgstr "%s bukan file biasa."
+msgid "%s isn't a regular file"
+msgstr "%s bukan file biasa"
 
 #: sendlib.c:1171
 #, fuzzy
@@ -6390,13 +6368,13 @@ msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
 #: sendlib.c:2732
-msgid "$sendmail must be set in order to send mail."
+msgid "$sendmail must be set in order to send mail"
 msgstr ""
 
 #: sendlib.c:2839
 #, c-format
-msgid "Error sending message, child exited %d (%s)."
-msgstr "Error mengirimkan surat, proses keluar dengan kode %d (%s)."
+msgid "Error sending message, child exited %d (%s)"
+msgstr "Error mengirimkan surat, proses keluar dengan kode %d (%s)"
 
 #: sendlib.c:2845
 msgid "Output of the delivery process"
@@ -6404,8 +6382,8 @@ msgstr "Keluaran dari proses pengiriman"
 
 #: sendlib.c:3056
 #, c-format
-msgid "Bad IDN %s while preparing resent-from."
-msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar."
+msgid "Bad IDN %s while preparing resent-from"
+msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar"
 
 #: smtp.c:150
 #, c-format
@@ -6551,8 +6529,8 @@ msgstr "Opsi2 saat kompilasi:"
 #~ msgid "%s: invalid value"
 #~ msgstr "%s: nilai tidak betul"
 
-#~ msgid "%s: Unknown type."
-#~ msgstr "%s: Jenis tidak dikenali."
+#~ msgid "%s: Unknown type"
+#~ msgstr "%s: Jenis tidak dikenali"
 
 #, fuzzy
 #~ msgid "%s: invalid backend"
@@ -6561,17 +6539,17 @@ msgstr "Opsi2 saat kompilasi:"
 #~ msgid "%s: unknown type"
 #~ msgstr "%s: jenis tidak dikenali"
 
-#~ msgid "Error: '%s' is a bad IDN."
-#~ msgstr "Error: IDN '%s' tidak benar."
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "Error: IDN '%s' tidak benar"
 
-#~ msgid "Warning: '%s' is a bad IDN."
-#~ msgstr "Perhatian: IDN '%s' tidak benar."
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "Perhatian: IDN '%s' tidak benar"
 
 #~ msgid "Bad IDN in \"%s\": '%s'"
 #~ msgstr "IDN di \"%s\" tidak benar: '%s'"
 
-#~ msgid "Bad IDN \"%s\"."
-#~ msgstr "IDN \"%s\" tidak benar."
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "IDN \"%s\" tidak benar"
 
 #~ msgid "Bad IDN in %s: '%s'\n"
 #~ msgstr "IDN di %s tidak benar: '%s'\n"

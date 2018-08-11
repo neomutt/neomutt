@@ -112,7 +112,7 @@ void crypt_forget_passphrase(void)
        by gpg-agent) we cannot know whether we forgot zero, 1, 12, ...
        passwords. So in English we use "Passphrases". Your language might
        have other means to express this. */
-    mutt_message(_("Passphrases forgotten."));
+    mutt_message(_("Passphrases forgotten"));
   }
 }
 
@@ -190,7 +190,7 @@ int mutt_protect(struct Header *msg, char *keylist)
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(
-            _("Mail not sent: inline PGP can't be used with attachments."));
+            _("Mail not sent: inline PGP can't be used with attachments"));
         return -1;
       }
     }
@@ -201,7 +201,7 @@ int mutt_protect(struct Header *msg, char *keylist)
                               "Revert to PGP/MIME?"))) != MUTT_YES)
       {
         mutt_error(
-            _("Mail not sent: inline PGP can't be used with format=flowed."));
+            _("Mail not sent: inline PGP can't be used with format=flowed"));
         return -1;
       }
     }
@@ -225,7 +225,7 @@ int mutt_protect(struct Header *msg, char *keylist)
               PgpMimeAuto,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
-        mutt_error(_("Mail not sent."));
+        mutt_error(_("Mail not sent"));
         return -1;
       }
     }
@@ -609,7 +609,7 @@ int mutt_is_application_smime(struct Body *m)
     if (complain)
     {
       mutt_message(
-          _("S/MIME messages with no hints on content are unsupported."));
+          _("S/MIME messages with no hints on content are unsupported"));
     }
     return 0;
   }

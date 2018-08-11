@@ -546,7 +546,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   /* We can only deal with mbox and mmdf mailboxes */
   if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
   {
-    mutt_error(_("Unsupported mailbox type for appending."));
+    mutt_error(_("Unsupported mailbox type for appending"));
     goto oa_fail2;
   }
 

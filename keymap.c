@@ -675,14 +675,14 @@ int km_dokey(int menu)
 
       if (OptIgnoreMacroEvents)
       {
-        mutt_error(_("Macros are currently disabled."));
+        mutt_error(_("Macros are currently disabled"));
         return -1;
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
-        mutt_error(_("Macro loop detected."));
+        mutt_error(_("Macro loop detected"));
         return -1;
       }
 
@@ -1030,7 +1030,7 @@ void km_error_key(int menu)
     key = km_find_func(MENU_GENERIC, OP_HELP);
   if (!key)
   {
-    mutt_error(_("Key is not bound."));
+    mutt_error(_("Key is not bound"));
     return;
   }
 
@@ -1065,7 +1065,7 @@ void km_error_key(int menu)
     mutt_flush_unget_to_endcond();
   if (op != OP_HELP)
   {
-    mutt_error(_("Key is not bound."));
+    mutt_error(_("Key is not bound"));
     return;
   }
 

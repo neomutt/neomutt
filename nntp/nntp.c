@@ -185,7 +185,7 @@ static int nntp_capabilities(struct NntpServer *nserv)
 
   mutt_socket_close(conn);
   nserv->status = NNTP_BYE;
-  mutt_error(_("Server doesn't support reader mode."));
+  mutt_error(_("Server doesn't support reader mode"));
   return -1;
 }
 
@@ -610,7 +610,7 @@ static int nntp_auth(struct NntpServer *nserv)
 #endif /* USE_SASL */
       }
 
-      mutt_error(_("%s authentication failed."), method);
+      mutt_error(_("%s authentication failed"), method);
       break;
     }
     break;
@@ -685,7 +685,7 @@ int nntp_open_connection(struct NntpServer *nserv)
     else if (nserv->hasCAPABILITIES)
     {
       mutt_socket_close(conn);
-      mutt_error(_("Could not switch to reader mode."));
+      mutt_error(_("Could not switch to reader mode"));
       return -1;
     }
 
@@ -699,7 +699,7 @@ int nntp_open_connection(struct NntpServer *nserv)
   }
 
   mutt_message(_("Connected to %s. %s"), conn->account.host,
-               posting ? _("Posting is ok.") : _("Posting is NOT ok."));
+               posting ? _("Posting is ok") : _("Posting is NOT ok"));
   mutt_sleep(1);
 
 #ifdef USE_SSL
@@ -775,7 +775,7 @@ int nntp_open_connection(struct NntpServer *nserv)
     if (cap > 0)
     {
       mutt_socket_close(conn);
-      mutt_error(_("Could not switch to reader mode."));
+      mutt_error(_("Could not switch to reader mode"));
       return -1;
     }
   }
@@ -1537,7 +1537,7 @@ static int nntp_mbox_open(struct Context *ctx)
   if (!nntp_data)
   {
     nntp_newsrc_close(nserv);
-    mutt_error(_("Newsgroup %s not found on the server."), group);
+    mutt_error(_("Newsgroup %s not found on the server"), group);
     return -1;
   }
 
@@ -1557,7 +1557,7 @@ static int nntp_mbox_open(struct Context *ctx)
   /* newsgroup not found, remove it */
   if (mutt_str_strncmp("411", buf, 3) == 0)
   {
-    mutt_error(_("Newsgroup %s has been removed from the server."), nntp_data->group);
+    mutt_error(_("Newsgroup %s has been removed from the server"), nntp_data->group);
     if (!nntp_data->deleted)
     {
       nntp_data->deleted = true;
@@ -1709,7 +1709,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       {
         if (mutt_str_strncmp(NHDR(hdr)->article_num ? "423" : "430", buf, 3) == 0)
         {
-          mutt_error(_("Article %d not found on the server."),
+          mutt_error(_("Article %d not found on the server"),
                      NHDR(hdr)->article_num ? article : hdr->env->message_id);
         }
         else
@@ -2578,7 +2578,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       else
       {
         mutt_error(_("Unable to find child articles because server does not "
-                     "support XPAT command."));
+                     "support XPAT command"));
       }
     }
     return -1;

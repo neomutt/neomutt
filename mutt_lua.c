@@ -416,7 +416,7 @@ static bool lua_init(lua_State **l)
 
   if (!*l)
   {
-    mutt_error(_("Error: Couldn't load the lua interpreter."));
+    mutt_error(_("Error: Couldn't load the lua interpreter"));
     return false;
   }
 

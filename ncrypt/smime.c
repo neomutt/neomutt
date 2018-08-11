@@ -551,7 +551,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
     table[table_index++] = key;
   }
 
-  snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\"."), query);
+  snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
 
   /* Make Helpstring */
   helpstr[0] = 0;
@@ -1063,7 +1063,7 @@ char *smime_class_find_keys(struct Address *addrlist, bool oppenc_mode)
     if (!key)
     {
       if (!oppenc_mode)
-        mutt_message(_("No (valid) certificate found for %s."), q->mailbox);
+        mutt_message(_("No (valid) certificate found for %s"), q->mailbox);
       FREE(&keylist);
       return NULL;
     }

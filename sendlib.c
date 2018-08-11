@@ -993,7 +993,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   if (!S_ISREG(sb.st_mode))
   {
-    mutt_error(_("%s isn't a regular file."), fname);
+    mutt_error(_("%s isn't a regular file"), fname);
     return NULL;
   }
 
@@ -2728,7 +2728,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
   {
-    mutt_error(_("$sendmail must be set in order to send mail."));
+    mutt_error(_("$sendmail must be set in order to send mail"));
     return -1;
   }
 
@@ -2835,7 +2835,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     if (i != S_BKG)
     {
       const char *e = mutt_str_sysexit(i);
-      mutt_error(_("Error sending message, child exited %d (%s)."), i, NONULL(e));
+      mutt_error(_("Error sending message, child exited %d (%s)"), i, NONULL(e));
       if (childout)
       {
         struct stat st;
@@ -3052,7 +3052,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   rfc2047_encode_addrlist(from, "Resent-From");
   if (mutt_addrlist_to_intl(from, &err))
   {
-    mutt_error(_("Bad IDN %s while preparing resent-from."), err);
+    mutt_error(_("Bad IDN %s while preparing resent-from"), err);
     mutt_addr_free(&from);
     return -1;
   }

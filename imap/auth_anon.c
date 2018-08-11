@@ -85,6 +85,6 @@ enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("Anonymous authentication failed."));
+  mutt_error(_("Anonymous authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

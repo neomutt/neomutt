@@ -50,7 +50,7 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
 
   if (mutt_bit_isset(idata->capabilities, LOGINDISABLED))
   {
-    mutt_message(_("LOGIN disabled on this server."));
+    mutt_message(_("LOGIN disabled on this server"));
     return IMAP_AUTH_UNAVAIL;
   }
 
@@ -79,6 +79,6 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
   }
 
-  mutt_error(_("Login failed."));
+  mutt_error(_("Login failed"));
   return IMAP_AUTH_FAILURE;
 }

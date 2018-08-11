@@ -824,7 +824,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
     if (!S_ISDIR(s.st_mode))
     {
-      mutt_error(_("%s is not a directory."), d);
+      mutt_error(_("%s is not a directory"), d);
       return -1;
     }
 
@@ -1782,7 +1782,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (imap_parse_path(state.entry[nentry].name, &mx) < 0)
           {
             mutt_debug(1, "imap_parse_path failed\n");
-            mutt_error(_("Mailbox deletion failed."));
+            mutt_error(_("Mailbox deletion failed"));
             break;
           }
           if (!mx.mbox)
@@ -1806,14 +1806,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               }
               memset(&state.entry[state.entrylen - 1], 0, sizeof(struct FolderFile));
               state.entrylen--;
-              mutt_message(_("Mailbox deleted."));
+              mutt_message(_("Mailbox deleted"));
               init_menu(&state, menu, title, sizeof(title), mailbox);
             }
             else
-              mutt_error(_("Mailbox deletion failed."));
+              mutt_error(_("Mailbox deletion failed"));
           }
           else
-            mutt_message(_("Mailbox not deleted."));
+            mutt_message(_("Mailbox not deleted"));
           FREE(&mx.mbox);
         }
         break;
@@ -1893,7 +1893,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                   mutt_str_strfcpy(LastDir, buf, sizeof(LastDir));
                 else
                 {
-                  mutt_error(_("Error scanning directory."));
+                  mutt_error(_("Error scanning directory"));
                   if (examine_directory(menu, &state, LastDir, prefix) == -1)
                   {
                     goto bail;
@@ -1903,7 +1903,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 init_menu(&state, menu, title, sizeof(title), mailbox);
               }
               else
-                mutt_error(_("%s is not a directory."), buf);
+                mutt_error(_("%s is not a directory"), buf);
             }
             else
               mutt_perror(buf);
@@ -1951,7 +1951,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           init_menu(&state, menu, title, sizeof(title), mailbox);
         else
         {
-          mutt_error(_("Error scanning directory."));
+          mutt_error(_("Error scanning directory"));
           goto bail;
         }
         kill_prefix = 0;

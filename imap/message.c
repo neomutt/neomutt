@@ -473,7 +473,7 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
    * if msn_count is this big, we have a serious problem. */
   if (msn_count >= (UINT_MAX / sizeof(struct Header *)))
   {
-    mutt_error(_("Integer overflow -- can't allocate memory."));
+    mutt_error(_("Integer overflow -- can't allocate memory"));
     mutt_exit(1);
   }
 
@@ -642,7 +642,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   }
   else
   { /* Unable to fetch headers for lower versions */
-    mutt_error(_("Unable to fetch headers from this IMAP server version."));
+    mutt_error(_("Unable to fetch headers from this IMAP server version"));
     goto error_out_0;
   }
 

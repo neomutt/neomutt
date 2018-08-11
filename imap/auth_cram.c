@@ -178,6 +178,6 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("CRAM-MD5 authentication failed."));
+  mutt_error(_("CRAM-MD5 authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

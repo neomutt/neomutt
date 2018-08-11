@@ -157,7 +157,7 @@ static bool create_hcache_dir(const char *path)
   if (mutt_file_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
     return true;
 
-  mutt_error(_("Can't create %s: %s."), dir, strerror(errno));
+  mutt_error(_("Can't create %s: %s"), dir, strerror(errno));
   return false;
 }
 

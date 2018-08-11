@@ -76,7 +76,7 @@ char *ComposeFormat; ///< Config: printf-like format string for the Compose pane
 char *Ispell;           ///< Config: External command to perform spell-checking
 unsigned char Postpone; ///< Config: Save messages to the Postponed folder
 
-static const char *There_are_no_attachments = N_("There are no attachments.");
+static const char *There_are_no_attachments = N_("There are no attachments");
 
 #define CHECK_COUNT                                                            \
   if (actx->idxlen == 0)                                                       \
@@ -552,7 +552,7 @@ static int delete_attachment(struct AttachCtx *actx, int x)
 
   if (rindex == 0 && actx->idxlen == 1)
   {
-    mutt_error(_("You may not delete the only attachment."));
+    mutt_error(_("You may not delete the only attachment"));
     idx[rindex]->content->tagged = false;
     return -1;
   }
@@ -1132,12 +1132,12 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
       case OP_COMPOSE_MOVE_UP:
         if (menu->current == 0)
         {
-          mutt_error(_("Attachment is already at top."));
+          mutt_error(_("Attachment is already at top"));
           break;
         }
         if (menu->current == 1)
         {
-          mutt_error(_("The fundamental part cannot be moved."));
+          mutt_error(_("The fundamental part cannot be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current - 1);
@@ -1148,12 +1148,12 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
       case OP_COMPOSE_MOVE_DOWN:
         if (menu->current == actx->idxlen - 1)
         {
-          mutt_error(_("Attachment is already at bottom."));
+          mutt_error(_("Attachment is already at bottom"));
           break;
         }
         if (menu->current == 0)
         {
-          mutt_error(_("The fundamental part cannot be moved."));
+          mutt_error(_("The fundamental part cannot be moved"));
           break;
         }
         compose_attach_swap(msg->content, actx->idx, menu->current);
@@ -1166,7 +1166,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (menu->tagged < 2)
         {
           mutt_error(
-              _("Grouping alternatives requires at least 2 tagged messages."));
+              _("Grouping alternatives requires at least 2 tagged messages"));
           break;
         }
 
@@ -1247,7 +1247,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (menu->tagged < 2)
         {
           mutt_error(
-              _("Grouping multilingual requires at least 2 tagged messages."));
+              _("Grouping multilingual requires at least 2 tagged messages"));
           break;
         }
 
@@ -1263,7 +1263,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (mutt_yesorno(
                   _("Not all parts have Content-Language: set, continue?"), MUTT_YES) != MUTT_YES)
           {
-            mutt_message(_("Not sending this message."));
+            mutt_message(_("Not sending this message"));
             break;
           }
         }
@@ -1454,7 +1454,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         {
           mx_mbox_close(ctx, NULL);
           FREE(&ctx);
-          mutt_error(_("No messages in that folder."));
+          mutt_error(_("No messages in that folder"));
           break;
         }
 
@@ -1529,14 +1529,14 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         CHECK_COUNT;
         if (!mutt_is_text_part(CURATTACH->content))
         {
-          mutt_error(_("Recoding only affects text attachments."));
+          mutt_error(_("Recoding only affects text attachments"));
           break;
         }
         CURATTACH->content->noconv = !CURATTACH->content->noconv;
         if (CURATTACH->content->noconv)
-          mutt_message(_("The current attachment won't be converted."));
+          mutt_message(_("The current attachment won't be converted"));
         else
-          mutt_message(_("The current attachment will be converted."));
+          mutt_message(_("The current attachment will be converted"));
         menu->redraw = REDRAW_CURRENT;
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
@@ -1625,7 +1625,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
             mutt_clear_error();
           }
           else
-            mutt_error(_("Invalid encoding."));
+            mutt_error(_("Invalid encoding"));
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2_HOOK);
         break;
@@ -1927,7 +1927,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (mutt_write_fcc(fname, msg, NULL, false, NULL, NULL) < 0)
             msg->content = mutt_remove_multipart(msg->content);
           else
-            mutt_message(_("Message written."));
+            mutt_message(_("Message written"));
         }
         break;
 

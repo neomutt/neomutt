@@ -1560,7 +1560,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     else if ((WithCrypto != 0) && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
       if (!mutt_param_get(&b->parameter, "protocol"))
-        mutt_error(_("Error: multipart/signed has no protocol."));
+        mutt_error(_("Error: multipart/signed has no protocol"));
       else if (s->flags & MUTT_VERIFY)
         handler = mutt_signed_handler;
     }

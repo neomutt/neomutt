@@ -502,7 +502,7 @@ retry_name:
     if (mutt_file_fsync_close(&rc) != 0)
       mutt_perror(_("Trouble adding alias"));
     else
-      mutt_message(_("Alias added."));
+      mutt_message(_("Alias added"));
   }
   else
     mutt_perror(buf);
