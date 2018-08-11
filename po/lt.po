@@ -995,8 +995,8 @@ msgstr "Prisijungimas prie %s uždarytas"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Pildau entropijos tvenkinį: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Pildau entropijos tvenkinį: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2471,8 +2471,8 @@ msgstr "alias: nėra adreso"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2493,8 +2493,8 @@ msgstr "%sgroup: trūksta -rx arba -addr"
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: įspėjimas: blogas IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: įspėjimas: blogas IDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2846,8 +2846,8 @@ msgstr "Dėžutė yra sugadinta!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Nepavyko užrakinti %s\n"
+msgid "Couldn't lock %s"
+msgstr "Nepavyko užrakinti %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3345,8 +3345,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Bandau išgauti PGP raktus...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Bandau išgauti S/MIME sertifikatus...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Bandau išgauti S/MIME sertifikatus..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3408,29 +3408,29 @@ msgstr "Kviečiu S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "klaida kuriant gpgme kontekstą: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "klaida kuriant gpgme kontekstą: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "klaida įjungiant CMS protokolą: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "klaida įjungiant CMS protokolą: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "klaida kuriant gpgme duomenų objektą: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "klaida kuriant gpgme duomenų objektą: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "klaida išskiriant atmintį duomenų objektui: %s\n"
+msgid "error allocating data object: %s"
+msgstr "klaida išskiriant atmintį duomenų objektui: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "klaida atsukant duomenų objektą: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "klaida atsukant duomenų objektą: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3438,43 +3438,43 @@ msgstr "[tempfile]"
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "klaida skaitant duomenų objektą: %s\n"
+msgid "error reading data object: %s"
+msgstr "klaida skaitant duomenų objektą: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "klaida pridedant gavėją '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "klaida pridedant gavėją '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "slaptas raktas '%s' nerastas: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "slaptas raktas '%s' nerastas: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "nevienprasmė slapto rakto specifikacija '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "nevienprasmė slapto rakto specifikacija '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "klaida nustatant slaptą raktą '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "klaida nustatant slaptą raktą '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "klaida nustatant PKA parašo notaciją: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "klaida nustatant PKA parašo notaciją: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "klaida užšifruojant duomenis: %s\n"
+msgid "error encrypting data: %s"
+msgstr "klaida užšifruojant duomenis: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "klaida pasirašant duomenis: %s\n"
+msgid "error signing data: %s"
+msgstr "klaida pasirašant duomenis: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3615,8 +3615,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Klaida išgaunant rakto duomenis!\n"
+msgid "Error extracting key data!"
+msgstr "Klaida išgaunant rakto duomenis!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3952,8 +3952,8 @@ msgstr "Prašau, įvesk rakto ID: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Klaida eksportuojant raktą: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Klaida eksportuojant raktą: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5836,8 +5836,8 @@ msgstr "Serveris nepalaiko komandos USER."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Blogas POP URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Blogas POP URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

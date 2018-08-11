@@ -1026,8 +1026,8 @@ msgstr "Forbindelse til %s er lukket"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Fylder entropipuljen: %s ...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Fylder entropipuljen: %s ..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2516,8 +2516,8 @@ msgstr "alias: Ingen adresse"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Advarsel: Forkert IDN '%s' i alias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Advarsel: Forkert IDN '%s' i alias '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2539,8 +2539,8 @@ msgstr "%sgroup: mangler -rx eller -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: advarsel: forkert IDN \"%s\".\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: advarsel: forkert IDN \"%s\"."
 
 #: init.c:1345
 #, c-format
@@ -2835,8 +2835,8 @@ msgstr "Brevbakken er ødelagt!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Kunne ikke låse %s.\n"
+msgid "Couldn't lock %s"
+msgstr "Kunne ikke låse %s."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3337,8 +3337,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Forsøger at udtrække PGP-nøgler ...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Forsøger at udtrække S/MIME-certifikater ...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Forsøger at udtrække S/MIME-certifikater ..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3397,29 +3397,29 @@ msgstr "Starter S/MIME ..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "dannelse af gpgme-kontekst fejlede: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "dannelse af gpgme-kontekst fejlede: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "fejl ved aktivering af CMS-protokol: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "fejl ved aktivering af CMS-protokol: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "dannelse af gpgme-dataobjekt fejlede: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "dannelse af gpgme-dataobjekt fejlede: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "tildeling af dataobjekt fejlede: %s\n"
+msgid "error allocating data object: %s"
+msgstr "tildeling af dataobjekt fejlede: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "fejl ved tilbagespoling af dataobjekt: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "fejl ved tilbagespoling af dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3427,43 +3427,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "fejl ved læsning af dataobjekt: %s\n"
+msgid "error reading data object: %s"
+msgstr "fejl ved læsning af dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "tilføjelse af modtager fejlede \"%s\": %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "tilføjelse af modtager fejlede \"%s\": %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "hemmelig nøgle \"%s\" ikke fundet: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "hemmelig nøgle \"%s\" ikke fundet: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tvetydig specifikation af hemmelig nøgle \"%s\"\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "tvetydig specifikation af hemmelig nøgle \"%s\""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "fejl ved indstilling af hemmelig nøgle \"%s\": %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "fejl ved indstilling af hemmelig nøgle \"%s\": %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "fejl ved indstilling af PKA-underskrifts notation: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "fejl ved indstilling af PKA-underskrifts notation: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "fejl ved kryptering af data: %s\n"
+msgid "error encrypting data: %s"
+msgstr "fejl ved kryptering af data: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "fejl ved underskrivelse af data: %s\n"
+msgid "error signing data: %s"
+msgstr "fejl ved underskrivelse af data: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3600,8 +3600,8 @@ msgid ""
 msgstr "[-- Fejl: dekryptering fejlede: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Fejl ved udtrækning af nøgledata!\n"
+msgid "Error extracting key data!"
+msgstr "Fejl ved udtrækning af nøgledata!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3936,8 +3936,8 @@ msgstr "Anfør venligst nøgle-id: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Fejl ved eksportering af nøgle: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Fejl ved eksportering af nøgle: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5876,8 +5876,8 @@ msgstr "Kommandoen USER er ikke understøttet af server."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Ugyldig POP-URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Ugyldig POP-URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

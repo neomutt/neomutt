@@ -1032,8 +1032,8 @@ msgstr "Anslutning till %s stängd"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Fyller slumptalscentral: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Fyller slumptalscentral: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2548,8 +2548,8 @@ msgstr "alias: ingen adress"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\"."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2571,8 +2571,8 @@ msgstr "Saknar -rx eller -addr."
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Varning: Felaktigtt IDN \"%s\".\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "Varning: Felaktigtt IDN \"%s\"."
 
 #: init.c:1345
 #, c-format
@@ -2868,8 +2868,8 @@ msgstr "Brevlådan är trasig!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Kunde inte låsa %s\n"
+msgid "Couldn't lock %s"
+msgstr "Kunde inte låsa %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3373,8 +3373,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Försöker att extrahera PGP-nycklar...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Försöker att extrahera S/MIME-certifikat...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Försöker att extrahera S/MIME-certifikat..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3437,29 +3437,29 @@ msgstr "Startar S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "fel vid skapande av gpgme-kontext: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "fel vid skapande av gpgme-kontext: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "fel vid aktivering av CMS-protokoll: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "fel vid aktivering av CMS-protokoll: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "fel vid skapande av gpgme dataobjekt: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "fel vid skapande av gpgme dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "fel vid allokering av dataobjekt: %s\n"
+msgid "error allocating data object: %s"
+msgstr "fel vid allokering av dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "fel vid tillbakaspolning av dataobjekt: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "fel vid tillbakaspolning av dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3467,43 +3467,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "fel vid läsning av dataobjekt: %s\n"
+msgid "error reading data object: %s"
+msgstr "fel vid läsning av dataobjekt: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "fel vid tilläggning av mottagare '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "fel vid tilläggning av mottagare '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "hemlig nyckel '%s' hittades inte: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "hemlig nyckel '%s' hittades inte: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "otydlig specifikation av hemlig nyckel '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "otydlig specifikation av hemlig nyckel '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "fel vid sättning av hemlig nyckel '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "fel vid sättning av hemlig nyckel '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "fel vid sättning av notation för PKA-signatur: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "fel vid sättning av notation för PKA-signatur: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "fel vid kryptering av data: %s\n"
+msgid "error encrypting data: %s"
+msgstr "fel vid kryptering av data: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "fel vid signering av data: %s\n"
+msgid "error signing data: %s"
+msgstr "fel vid signering av data: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3650,7 +3650,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "Fel vid hämtning av nyckelinformation: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3999,7 +3999,7 @@ msgstr "Var vänlig ange nyckel-ID: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "Fel vid hämtning av nyckelinformation: "
 
 #. L10N:
@@ -5970,7 +5970,7 @@ msgstr "Kommandot USER stöds inte av servern."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Ogiltig SMTP-URL: %s"
 
 #: pop/pop_lib.c:246

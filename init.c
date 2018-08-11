@@ -985,7 +985,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (mutt_addrlist_to_intl(tmp->addr, &estr))
   {
-    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'.\n"), estr, tmp->name);
+    mutt_buffer_printf(err, _("Warning: Bad IDN '%s' in alias '%s'."), estr, tmp->name);
     FREE(&estr);
     goto bail;
   }
@@ -1228,7 +1228,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
           {
-            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'.\n"),
+            mutt_buffer_printf(err, _("%sgroup: warning: bad IDN '%s'."),
                                data == 1 ? "un" : "", estr);
             mutt_addr_free(&addr);
             FREE(&estr);

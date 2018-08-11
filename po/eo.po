@@ -1025,8 +1025,8 @@ msgstr "Konekto al %s fermita"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Plenigas entropiujon: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Plenigas entropiujon: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2515,8 +2515,8 @@ msgstr "adresaro: mankas adreso"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Averto: Malbona IDN '%s' en adreso '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Averto: Malbona IDN '%s' en adreso '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2538,8 +2538,8 @@ msgstr "%s-grupo: mankas -rx aŭ -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%s-grupo: averto: malbona IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%s-grupo: averto: malbona IDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2834,8 +2834,8 @@ msgstr "Poŝtfako estas fuŝita!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Ne eblis ŝlosi %s\n"
+msgid "Couldn't lock %s"
+msgstr "Ne eblis ŝlosi %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3336,8 +3336,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Provas eltiri PGP-ŝlosilojn...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Provas eltiri S/MIME-atestilojn...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Provas eltiri S/MIME-atestilojn..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3400,29 +3400,29 @@ msgstr "Alvokas S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "eraro en kreado de gpgme-kunteksto: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "eraro en kreado de gpgme-kunteksto: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "eraro en funkciigo de CMS-protokolo: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "eraro en funkciigo de CMS-protokolo: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "eraro en kreado de gpgme-datenobjekto: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "eraro en kreado de gpgme-datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "eraro en asignado por datenobjekto: %s\n"
+msgid "error allocating data object: %s"
+msgstr "eraro en asignado por datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "eraro en rebobenado de datenobjekto: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "eraro en rebobenado de datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3430,43 +3430,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "eraro en legado de datenobjekto: %s\n"
+msgid "error reading data object: %s"
+msgstr "eraro en legado de datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "eraro en aldonado de ricevonto '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "eraro en aldonado de ricevonto '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "sekreta ŝlosilo '%s' ne trovita: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "sekreta ŝlosilo '%s' ne trovita: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "plursenca specifo de sekreta ŝlosilo '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "plursenca specifo de sekreta ŝlosilo '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "eraro en elekto de sekreta ŝlosilo '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "eraro en elekto de sekreta ŝlosilo '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "eraro en elektado de PKA-subskribo-notacio: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "eraro en elektado de PKA-subskribo-notacio: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "eraro en ĉifrado de datenoj: %s\n"
+msgid "error encrypting data: %s"
+msgstr "eraro en ĉifrado de datenoj: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "eraro en subskribado de datenoj: %s\n"
+msgid "error signing data: %s"
+msgstr "eraro en subskribado de datenoj: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3605,8 +3605,8 @@ msgid ""
 msgstr "[-- Eraro: malĉifrado fiaskis: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Eraro dum eltiro de ŝlosildatenoj!\n"
+msgid "Error extracting key data!"
+msgstr "Eraro dum eltiro de ŝlosildatenoj!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3951,8 +3951,8 @@ msgstr "Bonvolu doni la ŝlosilidentigilon: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Eraro dum eksportado de ŝlosilo: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Eraro dum eksportado de ŝlosilo: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5889,8 +5889,8 @@ msgstr "Servilo ne havas la komandon USER."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Nevalida POP-adreso: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Nevalida POP-adreso: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

@@ -1036,8 +1036,8 @@ msgstr "%s kapcsolat lezárva"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Entrópiát szerzek a véletlenszámgenerátorhoz: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Entrópiát szerzek a véletlenszámgenerátorhoz: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2582,8 +2582,8 @@ msgstr "címjegyzék: nincs cím"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Figyelmeztetés: Hibás IDN '%s' a '%s' álnévben.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Figyelmeztetés: Hibás IDN '%s' a '%s' álnévben."
 
 #: init.c:1074
 #, fuzzy
@@ -2607,8 +2607,8 @@ msgstr ""
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Figyelmeztetés: Hibás IDN '%s' a '%s' álnévben.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "Figyelmeztetés: Hibás IDN '%s' a '%s' álnévben."
 
 #: init.c:1345
 #, c-format
@@ -2907,8 +2907,8 @@ msgstr "A postafiók megsérült!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Nem lehet lockolni %s\n"
+msgid "Couldn't lock %s"
+msgstr "Nem lehet lockolni %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3411,8 +3411,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "PGP kulcsok kibontása...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME tanúsítványok kibontása...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME tanúsítványok kibontása..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3476,28 +3476,28 @@ msgstr "S/MIME betöltés..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s\n"
+msgid "error creating gpgme context: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
+msgid "error enabling CMS protocol: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:538
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s\n"
+msgid "error creating gpgme data object: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, fuzzy, c-format
-msgid "error allocating data object: %s\n"
+msgid "error allocating data object: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, fuzzy, c-format
-msgid "error rewinding data object: %s\n"
+msgid "error rewinding data object: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:665
@@ -3506,42 +3506,42 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, fuzzy, c-format
-msgid "error reading data object: %s\n"
+msgid "error reading data object: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, fuzzy, c-format
-msgid "error adding recipient '%s': %s\n"
+msgid "error adding recipient '%s': %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
+msgid "secret key '%s' not found: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
+msgid "error setting secret key '%s': %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, fuzzy, c-format
-msgid "error encrypting data: %s\n"
+msgid "error encrypting data: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, fuzzy, c-format
-msgid "error signing data: %s\n"
+msgid "error signing data: %s"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
@@ -3687,7 +3687,7 @@ msgstr "[-- Hiba: nem lehet létrehozni az ideiglenes fájlt! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "hiba a mintában: %s"
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -4050,7 +4050,7 @@ msgstr "Kérlek írd be a kulcs ID-t: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "hiba a mintában: %s"
 
 #. L10N:
@@ -6019,7 +6019,7 @@ msgstr "A USER parancsot nem ismeri ez a kiszolgáló."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Érvénytelen   "
 
 #: pop/pop_lib.c:246

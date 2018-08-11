@@ -77,7 +77,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   {
     url_free(&url);
     FREE(&c);
-    mutt_error(_("Invalid POP URL: %s\n"), path);
+    mutt_error(_("Invalid POP URL: %s"), path);
     return -1;
   }
 

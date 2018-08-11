@@ -1019,8 +1019,8 @@ msgstr "%s soketine yapılan bağlantı kapatıldı"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Entropi havuzu dolduruluyor: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Entropi havuzu dolduruluyor: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2517,8 +2517,8 @@ msgstr "alias: adres yok"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Uyarı: '%2$s' adresindeki '%1$s' IDN'si hatalı.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Uyarı: '%2$s' adresindeki '%1$s' IDN'si hatalı."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2540,8 +2540,8 @@ msgstr ""
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgrup: uyarı: IDN'si hatalı '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgrup: uyarı: IDN'si hatalı '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2837,8 +2837,8 @@ msgstr "Eposta kutusu hasarlı!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "%s kilitlenemedi\n"
+msgid "Couldn't lock %s"
+msgstr "%s kilitlenemedi"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3341,8 +3341,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "PGP anahtarları belirlenmeye çalışılıyor...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME sertifikaları belirlenmeye çalışılıyor...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME sertifikaları belirlenmeye çalışılıyor..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3406,29 +3406,29 @@ msgstr "S/MIME çağırılıyor..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "gpgme bağlamı oluşturulurken hata: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "gpgme bağlamı oluşturulurken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "CMS protokolü etkinleştirilirken hata: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "CMS protokolü etkinleştirilirken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "gpgme veri nesnesi oluşturulurken hata: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "gpgme veri nesnesi oluşturulurken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "veri nesnesi için bellek ayrılırken hata: %s\n"
+msgid "error allocating data object: %s"
+msgstr "veri nesnesi için bellek ayrılırken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "veri nesnesi konumlanırken hata: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "veri nesnesi konumlanırken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3436,43 +3436,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "veri nesnesi okunurken hata: %s\n"
+msgid "error reading data object: %s"
+msgstr "veri nesnesi okunurken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "'%s' alıcısı eklenirken hata: %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "'%s' alıcısı eklenirken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "'%s' gizli anahtarı bulunamadı: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "'%s' gizli anahtarı bulunamadı: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "'%s' gizli anahtarının özellikleri belirsiz\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "'%s' gizli anahtarının özellikleri belirsiz"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "'%s' gizli anahtarı ayarlanırken hata: %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "'%s' gizli anahtarı ayarlanırken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "Anahtar bilgisi alınırken hata: "
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "veri şifrelenirken hata: %s\n"
+msgid "error encrypting data: %s"
+msgstr "veri şifrelenirken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "veri imzalanırken hata: %s\n"
+msgid "error signing data: %s"
+msgstr "veri imzalanırken hata: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3620,7 +3620,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "Anahtar bilgisi alınırken hata: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3962,7 +3962,7 @@ msgstr "Lütfen anahtar numarasını girin: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "Anahtar bilgisi alınırken hata: "
 
 #. L10N:
@@ -5918,8 +5918,8 @@ msgstr "Sunucu USER komutunu desteklemiyor."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Geçersiz POP URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Geçersiz POP URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

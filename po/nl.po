@@ -1025,8 +1025,8 @@ msgstr "Verbinding met %s beëindigd"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Aanvullen van entropieverzameling: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Aanvullen van entropieverzameling: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2520,8 +2520,8 @@ msgstr "alias: Geen adres"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2543,8 +2543,8 @@ msgstr "%s-groep: Ontbrekende -rx of -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%s-groep: waarschuwing: Ongeldige IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%s-groep: waarschuwing: Ongeldige IDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2839,8 +2839,8 @@ msgstr "Postvak is beschadigd!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Kan %s niet claimen.\n"
+msgid "Couldn't lock %s"
+msgstr "Kan %s niet claimen."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3341,8 +3341,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "PGP-sleutels onttrekken...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME-certificaten onttrekken...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME-certificaten onttrekken..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3405,29 +3405,29 @@ msgstr "S/MIME wordt aangeroepen..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "fout bij het creëren van GPGME-context: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "fout bij het creëren van GPGME-context: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "fout bij het inschakelen van CMS-protocol: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "fout bij het inschakelen van CMS-protocol: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "fout bij het creëren van GPGME-gegevensobject: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "fout bij het creëren van GPGME-gegevensobject: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "fout bij het alloceren van gegevensobject: %s\n"
+msgid "error allocating data object: %s"
+msgstr "fout bij het alloceren van gegevensobject: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "fout bij het terugwinden van het gegevensobject: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "fout bij het terugwinden van het gegevensobject: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3435,43 +3435,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "fout bij het lezen van het gegevensobject: %s\n"
+msgid "error reading data object: %s"
+msgstr "fout bij het lezen van het gegevensobject: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "fout bij het toevoegen van ontvanger '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "fout bij het toevoegen van ontvanger '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "geheime sleutel '%s' niet gevonden: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "geheime sleutel '%s' niet gevonden: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "dubbelzinnige specificatie van geheime sleutel '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "dubbelzinnige specificatie van geheime sleutel '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "fout bij het instellen van geheime sleutel '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "fout bij het instellen van geheime sleutel '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "fout bij het instellen van PKA-ondertekening: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "fout bij het instellen van PKA-ondertekening: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "fout bij het versleutelen van gegevens: %s\n"
+msgid "error encrypting data: %s"
+msgstr "fout bij het versleutelen van gegevens: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "fout bij het ondertekenen van gegevens: %s\n"
+msgid "error signing data: %s"
+msgstr "fout bij het ondertekenen van gegevens: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3610,8 +3610,8 @@ msgid ""
 msgstr "[-- Fout: ontsleuteling is mislukt: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Fout bij het onttrekken van sleutelgegevens!\n"
+msgid "Error extracting key data!"
+msgstr "Fout bij het onttrekken van sleutelgegevens!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3958,8 +3958,8 @@ msgstr "Geef Key-ID in: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Fout bij exporteren van sleutel: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Fout bij exporteren van sleutel: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5904,8 +5904,8 @@ msgstr "Het UIDL commando wordt niet door de server ondersteund."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Ongeldig POP-URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Ongeldig POP-URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

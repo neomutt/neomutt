@@ -993,8 +993,8 @@ msgstr "Verbindung zu %s beendet"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Sammle Entropie für Zufallsgenerator: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Sammle Entropie für Zufallsgenerator: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2459,8 +2459,8 @@ msgstr "alias (Kurzname): Keine Adresse"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Warnung: Ungültige IDN '%s' in Kurzname '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Warnung: Ungültige IDN '%s' in Kurzname '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2481,8 +2481,8 @@ msgstr "%sgroup: Es fehlt -rx oder -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: Warnung: Ungültige IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: Warnung: Ungültige IDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2834,8 +2834,8 @@ msgstr "Die Mailbox ist beschädigt!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Konnte %s nicht für exklusiven Zugriff sperren.\n"
+msgid "Couldn't lock %s"
+msgstr "Konnte %s nicht für exklusiven Zugriff sperren."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3331,8 +3331,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Versuche PGP-Schlüssel zu extrahieren...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Versuche S/MIME-Zertifikate zu extrahieren...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Versuche S/MIME-Zertifikate zu extrahieren..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3394,29 +3394,29 @@ msgstr "Rufe S/MIME auf..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "Fehler beim Erzeugen des GPGME-Kontexts: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "Fehler beim Erzeugen des GPGME-Kontexts: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "Fehler beim Aktivieren des CMS-Protokolls : %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "Fehler beim Aktivieren des CMS-Protokolls : %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "Fehler beim Erzeugen des GPGME-Datenobjekts: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "Fehler beim Erzeugen des GPGME-Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "Fehler beim Anlegen des Datenobjekts: %s\n"
+msgid "error allocating data object: %s"
+msgstr "Fehler beim Anlegen des Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "Fehler beim Zurücklegen des Datenobjekts: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "Fehler beim Zurücklegen des Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3424,43 +3424,43 @@ msgstr "[Temporärdatei]"
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "Fehler beim Lesen des Datenobjekts: %s\n"
+msgid "error reading data object: %s"
+msgstr "Fehler beim Lesen des Datenobjekts: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "Fehler beim Hinzufügen des Empfängers '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "Fehler beim Hinzufügen des Empfängers '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "Geheimer Schlüssel '%s' nicht gefunden: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "Geheimer Schlüssel '%s' nicht gefunden: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "mehrdeutige Angabe des geheimen Schlüssels '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "mehrdeutige Angabe des geheimen Schlüssels '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "Fehler beim Setzen des geheimen Schlüssels '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "Fehler beim Setzen des geheimen Schlüssels '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "Fehler beim Setzen der Darstellung der PKA-Unterschrift: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "Fehler beim Setzen der Darstellung der PKA-Unterschrift: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "Fehler beim Verschlüsseln der Daten: %s\n"
+msgid "error encrypting data: %s"
+msgstr "Fehler beim Verschlüsseln der Daten: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "Fehler beim Signieren der Daten: %s\n"
+msgid "error signing data: %s"
+msgstr "Fehler beim Signieren der Daten: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3601,8 +3601,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Fehler beim Auslesen der Schlüsselinformation!\n"
+msgid "Error extracting key data!"
+msgstr "Fehler beim Auslesen der Schlüsselinformation!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3937,8 +3937,8 @@ msgstr "Bitte Schlüsselidentifikation eingeben: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Fehler beim Export des Schlüssels: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Fehler beim Export des Schlüssels: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5819,8 +5819,8 @@ msgstr "Kommando USER wird vom Server nicht unterstützt."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Ungültige POP-URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Ungültige POP-URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

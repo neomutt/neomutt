@@ -1016,7 +1016,7 @@ msgstr "Spájam sa s %s..."
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
+msgid "Filling entropy pool: %s..."
 msgstr ""
 
 #: conn/ssl.c:223
@@ -2554,7 +2554,7 @@ msgstr "zástupca: žiadna adresa"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
 msgstr ""
 
 #: init.c:1074
@@ -2579,7 +2579,7 @@ msgstr ""
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
 msgstr ""
 
 #: init.c:1345
@@ -2881,8 +2881,8 @@ msgstr "Schránka je porušená!"
 
 #: mbox/mbox.c:509
 #, fuzzy, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Nemožno zistiť stav: %s.\n"
+msgid "Couldn't lock %s"
+msgstr "Nemožno zistiť stav: %s."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 #, fuzzy
@@ -3395,8 +3395,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Pokúšam sa extrahovať PGP kľúče ...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Pokúšam sa extrahovať S/MIME certifikáty ...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Pokúšam sa extrahovať S/MIME certifikáty ..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3455,29 +3455,29 @@ msgstr "Spúšťam S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "Chyba pri vytváraní gpgme kontextu: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "Chyba pri vytváraní gpgme kontextu: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "Chyba pri zapínaní CMS protokolu: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "Chyba pri zapínaní CMS protokolu: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "Chyba pri vytváraní gpgme dátového objektu: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "Chyba pri vytváraní gpgme dátového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "Chyba pri alokovaní dátového objektu: %s\n"
+msgid "error allocating data object: %s"
+msgstr "Chyba pri alokovaní dátového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "Chyba pri pretáčaní dátového objektu: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "Chyba pri pretáčaní dátového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3485,43 +3485,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "Chyba pri čítaní dátového objektu: %s\n"
+msgid "error reading data object: %s"
+msgstr "Chyba pri čítaní dátového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "Chyba pri pridávaní príjemcu '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "Chyba pri pridávaní príjemcu '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "Tajný kľúč '%s' nebol nájdený: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "Tajný kľúč '%s' nebol nájdený: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "Nejednoznačné vymedzenie tajného kľúča '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "Nejednoznačné vymedzenie tajného kľúča '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "Chyba pri nastavovaní tajného kľúča '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "Chyba pri nastavovaní tajného kľúča '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "Chyba pri nastavovaní PKA podpisovej poznámky: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "Chyba pri nastavovaní PKA podpisovej poznámky: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "Chyba pri šifrovaní dát: %s\n"
+msgid "error encrypting data: %s"
+msgstr "Chyba pri šifrovaní dát: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "Chyba pri podpisovaní dát: %s\n"
+msgid "error signing data: %s"
+msgstr "Chyba pri podpisovaní dát: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3664,8 +3664,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Chyba extrakcie dát z kľúča!\n"
+msgid "Error extracting key data!"
+msgstr "Chyba extrakcie dát z kľúča!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -4001,8 +4001,8 @@ msgstr "Prosím zadajte ID kľúča: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Chyba pri exporte kľúča: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Chyba pri exporte kľúča: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5996,7 +5996,7 @@ msgstr "Označovanie nie je podporované."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Neplatný mesiac: %s"
 
 #: pop/pop_lib.c:246

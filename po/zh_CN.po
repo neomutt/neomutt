@@ -987,8 +987,8 @@ msgstr "到 %s 的连接已关闭"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "正在填充熵池：%s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "正在填充熵池：%s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2446,8 +2446,8 @@ msgstr "别名：没有邮件地址"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "警告：错误的 IDN '%s' 在别名 '%s' 中。\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "警告：错误的 IDN '%s' 在别名 '%s' 中。"
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2468,8 +2468,8 @@ msgstr "%sgroup：缺少 -rx 或 -addr。"
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup：警告：错误的 IDN '%s'。\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup：警告：错误的 IDN '%s'。"
 
 #: init.c:1345
 #, c-format
@@ -2816,8 +2816,8 @@ msgstr "信箱损坏了！"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "无法锁住 %s。\n"
+msgid "Couldn't lock %s"
+msgstr "无法锁住 %s。"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3310,8 +3310,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "正在尝试提取 PGP 密钥...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "正在尝试提取 S/MIME 证书...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "正在尝试提取 S/MIME 证书..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3373,29 +3373,29 @@ msgstr "正在调用 S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "创建 gpgme 上下文出错：%s\n"
+msgid "error creating gpgme context: %s"
+msgstr "创建 gpgme 上下文出错：%s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "开启 CMS 协议时出错：%s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "开启 CMS 协议时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "创建 gpgme 数据对象时出错：%s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "创建 gpgme 数据对象时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "分配数据对象时出错：%s\n"
+msgid "error allocating data object: %s"
+msgstr "分配数据对象时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "倒回数据对象时出错：%s\n"
+msgid "error rewinding data object: %s"
+msgstr "倒回数据对象时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3403,43 +3403,43 @@ msgstr "[临时文件]"
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "读取数据对象时出错：%s\n"
+msgid "error reading data object: %s"
+msgstr "读取数据对象时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "添加接收方 '%s' 时出错：%s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "添加接收方 '%s' 时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "未找到密钥'%s'：%s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "未找到密钥'%s'：%s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "密钥 '%s' 的说明有歧义\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "密钥 '%s' 的说明有歧义"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "设置密钥'%s'时出错：%s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "设置密钥'%s'时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "设置公钥认证(PKA)签名注释时出错：%s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "设置公钥认证(PKA)签名注释时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "加密数据时出错：%s\n"
+msgid "error encrypting data: %s"
+msgstr "加密数据时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "签署数据时出错：%s\n"
+msgid "error signing data: %s"
+msgstr "签署数据时出错：%s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3580,8 +3580,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "取出密钥数据出错！\n"
+msgid "Error extracting key data!"
+msgstr "取出密钥数据出错！"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3915,8 +3915,8 @@ msgstr "请输入密钥 ID："
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "导出密钥时出错：%s\n"
+msgid "Error exporting key: %s"
+msgstr "导出密钥时出错：%s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5793,8 +5793,8 @@ msgstr "服务器不支持 USER 命令。"
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "无效的 POP 地址(URL)：%s\n"
+msgid "Invalid POP URL: %s"
+msgstr "无效的 POP 地址(URL)：%s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

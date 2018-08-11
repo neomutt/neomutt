@@ -1005,8 +1005,8 @@ msgstr "Spojení s %s uzavřeno"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Připravuji zdroj náhodných dat: %s…\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Připravuji zdroj náhodných dat: %s…"
 
 #: conn/ssl.c:223
 #, c-format
@@ -2482,8 +2482,8 @@ msgstr "přezdívka: žádná adresa"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2506,8 +2506,8 @@ msgstr "%sgroup: chybí -rx nebo -addr."
 # "%sgroup" is literal
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: pozor: chybné IDN „%s“.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: pozor: chybné IDN „%s“."
 
 #: init.c:1345
 #, c-format
@@ -2856,8 +2856,8 @@ msgstr "Schránka je poškozena!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "%s nelze zamknout.\n"
+msgid "Couldn't lock %s"
+msgstr "%s nelze zamknout."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3356,8 +3356,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Zkouším extrahovat PGP klíče…\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Zkouším extrahovat S/MIME certifikáty…\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Zkouším extrahovat S/MIME certifikáty…"
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3419,29 +3419,29 @@ msgstr "Spouštím S/MIME…"
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "chyba při vytváření kontextu pro gpgme: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "chyba při vytváření kontextu pro gpgme: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "chybě při zapínání CMS protokolu: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "chybě při zapínání CMS protokolu: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "chybě při vytváření gpgme datového objektu: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "chybě při vytváření gpgme datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "chybě při alokování datového objektu: %s\n"
+msgid "error allocating data object: %s"
+msgstr "chybě při alokování datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "chyba při přetáčení datového objektu: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "chyba při přetáčení datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3449,43 +3449,43 @@ msgstr "[dočasný soubor]"
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "chyba při čtení datového objektu: %s\n"
+msgid "error reading data object: %s"
+msgstr "chyba při čtení datového objektu: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "chyba při přidávání příjemce „%s“: %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "chyba při přidávání příjemce „%s“: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "tajný klíč „%s“ nenalezen: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "tajný klíč „%s“ nenalezen: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "tajný klíč „%s“ neurčen jednoznačně\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "tajný klíč „%s“ neurčen jednoznačně"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "chyba při nastavování tajného klíče „%s“: %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "chyba při nastavování tajného klíče „%s“: %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "chyba při nastavování PKA podpisové poznámky: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "chyba při nastavování PKA podpisové poznámky: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "chyba při šifrování dat: %s\n"
+msgid "error encrypting data: %s"
+msgstr "chyba při šifrování dat: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "chyba při podepisování dat: %s\n"
+msgid "error signing data: %s"
+msgstr "chyba při podepisování dat: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3626,8 +3626,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Chyba při získávání podrobností o klíči!\n"
+msgid "Error extracting key data!"
+msgstr "Chyba při získávání podrobností o klíči!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3963,8 +3963,8 @@ msgstr "Zadejte ID klíče: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Chyba při exportu klíče: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Chyba při exportu klíče: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5853,8 +5853,8 @@ msgstr "Server nepodporuje příkaz USER."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Neplatné POP URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Neplatné POP URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

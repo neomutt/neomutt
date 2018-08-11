@@ -1041,8 +1041,8 @@ msgstr "Fallou a conexión con %s."
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Enchendo pozo de entropía: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Enchendo pozo de entropía: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2596,7 +2596,7 @@ msgstr "alias: sen enderezo"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
 msgstr ""
 
 #: init.c:1074
@@ -2621,7 +2621,7 @@ msgstr ""
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
 msgstr ""
 
 #: init.c:1345
@@ -2923,8 +2923,8 @@ msgstr "¡O buzón está corrupto!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Non foi posible bloquear %s.\n"
+msgid "Couldn't lock %s"
+msgstr "Non foi posible bloquear %s."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3431,7 +3431,7 @@ msgid "Trying to extract PGP keys...\n"
 msgstr ""
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
+msgid "Trying to extract S/MIME certificates..."
 msgstr ""
 
 #: ncrypt/crypt.c:1089
@@ -3494,28 +3494,28 @@ msgstr "Chamando ó S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s\n"
+msgid "error creating gpgme context: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
+msgid "error enabling CMS protocol: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:538
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s\n"
+msgid "error creating gpgme data object: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, fuzzy, c-format
-msgid "error allocating data object: %s\n"
+msgid "error allocating data object: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, fuzzy, c-format
-msgid "error rewinding data object: %s\n"
+msgid "error rewinding data object: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:665
@@ -3524,42 +3524,42 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, fuzzy, c-format
-msgid "error reading data object: %s\n"
+msgid "error reading data object: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, fuzzy, c-format
-msgid "error adding recipient '%s': %s\n"
+msgid "error adding recipient '%s': %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
+msgid "secret key '%s' not found: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
+msgid "error setting secret key '%s': %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, fuzzy, c-format
-msgid "error encrypting data: %s\n"
+msgid "error encrypting data: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, fuzzy, c-format
-msgid "error signing data: %s\n"
+msgid "error signing data: %s"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
@@ -3705,7 +3705,7 @@ msgstr "[-- Erro: ¡fin de ficheiro inesperado! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -4081,7 +4081,7 @@ msgstr "Introduza o key ID: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "erro no patrón en: %s"
 
 #. L10N:
@@ -6073,7 +6073,7 @@ msgstr "O comando USER non está soportado polo servidor."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Mes inválido: %s"
 
 #: pop/pop_lib.c:246

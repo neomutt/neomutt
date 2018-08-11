@@ -214,7 +214,7 @@ static int add_entropy(const char *file)
   if (stat(file, &st) == -1)
     return (errno == ENOENT) ? 0 : -1;
 
-  mutt_message(_("Filling entropy pool: %s...\n"), file);
+  mutt_message(_("Filling entropy pool: %s..."), file);
 
   /* check that the file permissions are secure */
   if (st.st_uid != getuid() || ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||

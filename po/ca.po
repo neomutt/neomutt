@@ -1097,8 +1097,8 @@ msgstr "S’ha tancat la connexió amb «%s»."
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "S’està plenant la piscina d’entropia «%s»…\n"
+msgid "Filling entropy pool: %s..."
+msgstr "S’està plenant la piscina d’entropia «%s»…"
 
 #: conn/ssl.c:223
 #, c-format
@@ -2648,8 +2648,8 @@ msgstr "alias: No s’ha indicat cap adreça."
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s"
 
 # «attachments» és una ordre de configuració.  ivb
 #: init.c:1074
@@ -2674,8 +2674,8 @@ msgstr "%sgroup: Manca «-rx» o «-addr»."
 # L’indicador de format inicial altera l’ordre de configuració.  ivb
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: Avís: L’IDN no és vàlid: %s\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: Avís: L’IDN no és vàlid: %s"
 
 #: init.c:1345
 #, c-format
@@ -2977,8 +2977,8 @@ msgstr "La bústia és corrupta."
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "No s’ha pogut blocar «%s».\n"
+msgid "Couldn't lock %s"
+msgstr "No s’ha pogut blocar «%s»."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3524,8 +3524,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "S’està provant d’extreure les claus PGP…\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S’està provant d’extreure els certificats S/MIME…\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S’està provant d’extreure els certificats S/MIME…"
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3590,29 +3590,29 @@ msgstr "S’està invocant S/MIME…"
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "Error en crear el context GPGME: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "Error en crear el context GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "Error en habilitar el protocol CMS: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "Error en habilitar el protocol CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "Error en crear l’objecte de dades GPGME: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "Error en crear l’objecte de dades GPGME: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "Error en reservar l’objecte de dades: %s\n"
+msgid "error allocating data object: %s"
+msgstr "Error en reservar l’objecte de dades: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "Error en rebobinar l’objecte de dades: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "Error en rebobinar l’objecte de dades: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3620,44 +3620,44 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "Error en llegir l’objecte de dades: %s\n"
+msgid "error reading data object: %s"
+msgstr "Error en llegir l’objecte de dades: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "Error en afegir el destinatari «%s»: %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "Error en afegir el destinatari «%s»: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "No s’ha trobat la clau secreta «%s»: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "No s’ha trobat la clau secreta «%s»: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "L’especificació de la clau secreta «%s» és ambigua.\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "L’especificació de la clau secreta «%s» és ambigua."
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "Error en establir la clau secreta «%s»: %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "Error en establir la clau secreta «%s»: %s"
 
 # PKA és la notació, no la signatura.  ivb
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "Error en establir la notació PKA de la signatura: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "Error en establir la notació PKA de la signatura: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "Error en xifrar les dades: %s\n"
+msgid "error encrypting data: %s"
+msgstr "Error en xifrar les dades: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "Error en signar les dades: %s\n"
+msgid "error signing data: %s"
+msgstr "Error en signar les dades: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3805,8 +3805,8 @@ msgstr ""
 
 # Es refereix a múltiples claus.  ivb
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Error en extreure les dades de les claus.\n"
+msgid "Error extracting key data!"
+msgstr "Error en extreure les dades de les claus."
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -4179,8 +4179,8 @@ msgstr "Per favor, entreu l’ID de la clau: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Error en exportar la clau: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Error en exportar la clau: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -6196,8 +6196,8 @@ msgstr "El servidor no permet l’ordre «USER»."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "L’URL de POP no és vàlid: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "L’URL de POP no és vàlid: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

@@ -1031,8 +1031,8 @@ msgstr "%s의 접속이 끊어짐"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "엔트로피를 채우는 중: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "엔트로피를 채우는 중: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2564,8 +2564,8 @@ msgstr "별칭: 주소 없음"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'."
 
 #: init.c:1074
 #, fuzzy
@@ -2589,8 +2589,8 @@ msgstr ""
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2889,8 +2889,8 @@ msgstr "메일함이 손상됨!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "%s를 잠글 수 없음.\n"
+msgid "Couldn't lock %s"
+msgstr "%s를 잠글 수 없음."
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3389,8 +3389,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "PGP 열쇠를 추출하는 중...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME 인증서 추출하는 중...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME 인증서 추출하는 중..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3454,28 +3454,28 @@ msgstr "S/MIME를 구동합니다..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, fuzzy, c-format
-msgid "error creating gpgme context: %s\n"
+msgid "error creating gpgme context: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
+msgid "error enabling CMS protocol: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:538
 #, fuzzy, c-format
-msgid "error creating gpgme data object: %s\n"
+msgid "error creating gpgme data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, fuzzy, c-format
-msgid "error allocating data object: %s\n"
+msgid "error allocating data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, fuzzy, c-format
-msgid "error rewinding data object: %s\n"
+msgid "error rewinding data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:665
@@ -3484,42 +3484,42 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, fuzzy, c-format
-msgid "error reading data object: %s\n"
+msgid "error reading data object: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, fuzzy, c-format
-msgid "error adding recipient '%s': %s\n"
+msgid "error adding recipient '%s': %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
+msgid "secret key '%s' not found: %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
+msgid "error setting secret key '%s': %s"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, fuzzy, c-format
-msgid "error encrypting data: %s\n"
+msgid "error encrypting data: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, fuzzy, c-format
-msgid "error signing data: %s\n"
+msgid "error signing data: %s"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
@@ -3665,7 +3665,7 @@ msgstr "[-- 오류: 임시 파일을 만들 수가 없음! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -4031,7 +4031,7 @@ msgstr "열쇠 ID 를 입력하십시요: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "패턴 오류: %s"
 
 #. L10N:
@@ -6008,7 +6008,7 @@ msgstr "명령어 USER를 서버에서 지원하지 않음."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "무효   "
 
 #: pop/pop_lib.c:246

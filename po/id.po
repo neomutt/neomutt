@@ -1029,8 +1029,8 @@ msgstr "Hubungan ke %s ditutup."
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Mengisi pool entropy: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Mengisi pool entropy: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2536,8 +2536,8 @@ msgstr "alias: tidak ada alamat email"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2559,8 +2559,8 @@ msgstr "Tidak ada -rx atau -addr."
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Perhatian: IDN '%s' tidak benar.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "Perhatian: IDN '%s' tidak benar."
 
 #: init.c:1345
 #, c-format
@@ -2856,8 +2856,8 @@ msgstr "Kotak surat kacau!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Tidak bisa mengunci %s\n"
+msgid "Couldn't lock %s"
+msgstr "Tidak bisa mengunci %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3358,8 +3358,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Mencoba mengekstrak kunci2 PGP...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Mencoba mengekstrak sertifikat2 S/MIME...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Mencoba mengekstrak sertifikat2 S/MIME..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3422,29 +3422,29 @@ msgstr "Memanggil S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "error saat membuat konteks gpgme: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "error saat membuat konteks gpgme: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "error saat mengaktifkan protokol CMS: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "error saat mengaktifkan protokol CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "error saat membuat objek data gpgme: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "error saat membuat objek data gpgme: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "error saat mengalokasikan objek data: %s\n"
+msgid "error allocating data object: %s"
+msgstr "error saat mengalokasikan objek data: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "error saat me-rewind objek data: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "error saat me-rewind objek data: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3452,43 +3452,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "error saat membaca objek data: %s\n"
+msgid "error reading data object: %s"
+msgstr "error saat membaca objek data: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "error saat menambah penerima '%s': %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "error saat menambah penerima '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "kunci rahasia '%s' tidak ditemukan: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "kunci rahasia '%s' tidak ditemukan: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "lebih dari satu kunci rahasia yang cocok dengan '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "lebih dari satu kunci rahasia yang cocok dengan '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "error saat memasang '%s' sebagai kunci rahasia: %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "error saat memasang '%s' sebagai kunci rahasia: %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "kesalahan mengatur notasi tanda tangan PKA: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "kesalahan mengatur notasi tanda tangan PKA: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "error saat mengenkripsi data: %s\n"
+msgid "error encrypting data: %s"
+msgstr "error saat mengenkripsi data: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "error saat menandatangani data: %s\n"
+msgid "error signing data: %s"
+msgstr "error saat menandatangani data: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3635,7 +3635,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "Error saat mengambil informasi tentang kunci: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -3983,7 +3983,7 @@ msgstr "Masukkan key ID: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "Error saat mengambil informasi tentang kunci: "
 
 #. L10N:
@@ -5947,7 +5947,7 @@ msgstr "Perintah USER tidak didukung oleh server."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "URL SMTP tidak valid: %s"
 
 #: pop/pop_lib.c:246

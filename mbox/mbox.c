@@ -506,7 +506,7 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
 
   if (mbox_lock_mailbox(ctx, 1, 1) != 0)
   {
-    mutt_error(_("Couldn't lock %s\n"), ctx->path);
+    mutt_error(_("Couldn't lock %s"), ctx->path);
     mutt_file_fclose(&ctx->fp);
     return -1;
   }

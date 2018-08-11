@@ -1081,8 +1081,8 @@ msgstr "Connexion à %s fermée"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Remplissage du tas d'entropie : %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Remplissage du tas d'entropie : %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2630,8 +2630,8 @@ msgstr "alias : pas d'adresse"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Attention : mauvais IDN '%s' dans l'alias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Attention : mauvais IDN '%s' dans l'alias '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2653,8 +2653,8 @@ msgstr "%sgroup : il manque un -rx ou -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup : attention : mauvais IDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup : attention : mauvais IDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2967,8 +2967,8 @@ msgstr "La boîte aux lettres est altérée !"
 # , c-format
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Impossible de verrouiller %s\n"
+msgid "Couldn't lock %s"
+msgstr "Impossible de verrouiller %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3493,8 +3493,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Tentative d'extraction de clés PGP...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Tentative d'extraction de certificats S/MIME...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Tentative d'extraction de certificats S/MIME..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3557,32 +3557,32 @@ msgstr "Appel de S/MIME..."
 # , c-format
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "erreur lors de la création du contexte gpgme : %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "erreur lors de la création du contexte gpgme : %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "erreur lors de l'activation du protocole CMS : %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "erreur lors de l'activation du protocole CMS : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "erreur lors de la création de l'objet gpgme : %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "erreur lors de la création de l'objet gpgme : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "erreur lors de l'allocation de l'objet : %s\n"
+msgid "error allocating data object: %s"
+msgstr "erreur lors de l'allocation de l'objet : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "erreur lors du retour au début de l'objet : %s\n"
+msgid "error rewinding data object: %s"
+msgstr "erreur lors du retour au début de l'objet : %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3591,46 +3591,46 @@ msgstr ""
 # , c-format
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "erreur lors de la lecture de l'objet : %s\n"
+msgid "error reading data object: %s"
+msgstr "erreur lors de la lecture de l'objet : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "erreur lors de l'ajout du destinataire « %s » : %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "erreur lors de l'ajout du destinataire « %s » : %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "clé secrète « %s » non trouvée : %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "clé secrète « %s » non trouvée : %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "spécification de la clé secrète « %s » ambiguë\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "spécification de la clé secrète « %s » ambiguë"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "erreur lors de la mise en place de la clé secrète « %s » : %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "erreur lors de la mise en place de la clé secrète « %s » : %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "erreur lors de la mise en place de la note de signature PKA : %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "erreur lors de la mise en place de la note de signature PKA : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "erreur lors du chiffrage des données : %s\n"
+msgid "error encrypting data: %s"
+msgstr "erreur lors du chiffrage des données : %s"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "erreur lors de la signature des données : %s\n"
+msgid "error signing data: %s"
+msgstr "erreur lors de la signature des données : %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3773,8 +3773,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Erreur d'extraction des données de la clé !\n"
+msgid "Error extracting key data!"
+msgstr "Erreur d'extraction des données de la clé !"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -4126,8 +4126,8 @@ msgstr "Veuillez entrer l'ID de la clé : "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Erreur à l'export de la clé : %s\n"
+msgid "Error exporting key: %s"
+msgstr "Erreur à l'export de la clé : %s"
 
 # , c-format
 #. L10N:
@@ -6083,8 +6083,8 @@ msgstr "La commande USER n'est pas supportée par le serveur."
 # , c-format
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "URL POP invalide : %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "URL POP invalide : %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

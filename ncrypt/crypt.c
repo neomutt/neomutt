@@ -868,7 +868,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
         if (mbox)
         {
           mutt_endwin();
-          puts(_("Trying to extract S/MIME certificates...\n"));
+          puts(_("Trying to extract S/MIME certificates..."));
           crypt_smime_invoke_import(tempfname, mbox);
           tmp = NULL;
         }
@@ -910,7 +910,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
         mbox = tmp ? tmp->mailbox : NULL;
         if (mbox) /* else ? */
         {
-          mutt_message(_("Trying to extract S/MIME certificates...\n"));
+          mutt_message(_("Trying to extract S/MIME certificates..."));
           crypt_smime_invoke_import(tempfname, mbox);
         }
       }

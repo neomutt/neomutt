@@ -1032,8 +1032,8 @@ msgstr "%s-rekiko konexioa itxia"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Entropia elkarbiltzea betetzen: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Entropia elkarbiltzea betetzen: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2549,8 +2549,8 @@ msgstr "ezizena: helbide gabea"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2572,8 +2572,8 @@ msgstr "-rx edo -helb falta da."
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Kontuz: '%s' IDN okerra.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "Kontuz: '%s' IDN okerra."
 
 #: init.c:1345
 #, c-format
@@ -2869,8 +2869,8 @@ msgstr "Postakutxa hondaturik dago!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Ezin da %s blokeatu\n"
+msgid "Couldn't lock %s"
+msgstr "Ezin da %s blokeatu"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3374,8 +3374,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "PGP-gakoak ateratzen saiatzen...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME ziurtagiria ateratzen saiatzen...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "S/MIME ziurtagiria ateratzen saiatzen..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3438,29 +3438,29 @@ msgstr "S/MIME deitzen..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "errorea gpgme ingurunea sortzean: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "errorea gpgme ingurunea sortzean: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "errorea CMS protokoloa gaitzerakoan: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "errorea CMS protokoloa gaitzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "errorea gpgme datu objektua sortzerakoan: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "errorea gpgme datu objektua sortzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "errorea datu objektua esleitzerakoan: %s\n"
+msgid "error allocating data object: %s"
+msgstr "errorea datu objektua esleitzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "errorea datu objektua atzera eraman: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "errorea datu objektua atzera eraman: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3468,43 +3468,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "errorea datu objektua irakurtzerakoan: %s\n"
+msgid "error reading data object: %s"
+msgstr "errorea datu objektua irakurtzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "errorea '%s' hartzailea gehitzerakoan: %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "errorea '%s' hartzailea gehitzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "ez da '%s' gako sekretua aurkitu: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "ez da '%s' gako sekretua aurkitu: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "'%s' gako sekretu espezifikazio anbiguoa\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "'%s' gako sekretu espezifikazio anbiguoa"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "errorea'%s' gako sekretua ezartzerakoan: %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "errorea'%s' gako sekretua ezartzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "errorea PKA sinadura notazioa ezartzean: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "errorea PKA sinadura notazioa ezartzean: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "errorea datuak enkriptatzerakoan: %s\n"
+msgid "error encrypting data: %s"
+msgstr "errorea datuak enkriptatzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "errorea datuak sinatzerakoan: %s\n"
+msgid "error signing data: %s"
+msgstr "errorea datuak sinatzerakoan: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3651,7 +3651,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "Errorea gako argibideak eskuratzen: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -4000,7 +4000,7 @@ msgstr "Mesedez sar ezazu gako-ID-a: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "Errorea gako argibideak eskuratzen: "
 
 #. L10N:
@@ -5967,7 +5967,7 @@ msgstr "USER komandoa ez du zerbitzariak onartzen."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Okerreko SMTP URLa: %s"
 
 #: pop/pop_lib.c:246

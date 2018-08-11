@@ -1030,8 +1030,8 @@ msgstr "З’єднання з %s закрито"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Заповнення пулу ентропії: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Заповнення пулу ентропії: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2529,8 +2529,8 @@ msgstr "alias: адреси немає"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Попередження: Погане IDN \"%s\" в псевдонімі \"%s\".\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Попередження: Погане IDN \"%s\" в псевдонімі \"%s\"."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2552,8 +2552,8 @@ msgstr "%sgroup: відсутні -rx чи -addr."
 
 #: init.c:1232
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%sgroup: попередження: погане IDN: %s.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "%sgroup: попередження: погане IDN: %s."
 
 #: init.c:1345
 #, c-format
@@ -2848,8 +2848,8 @@ msgstr "Поштову скриньку пошкоджено!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Не вийшло заблокувати %s\n"
+msgid "Couldn't lock %s"
+msgstr "Не вийшло заблокувати %s"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3352,8 +3352,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Спроба видобування ключів PGP...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Спроба видобування сертифікатів S/MIME...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Спроба видобування сертифікатів S/MIME..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3416,29 +3416,29 @@ msgstr "Виклик S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "помилка при створенні контексту gpgme: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "помилка при створенні контексту gpgme: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "помилка при ввімкненні протоколу CMS: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "помилка при ввімкненні протоколу CMS: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "помилка при створенні об’єкту даних gpgme: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "помилка при створенні об’єкту даних gpgme: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "помилка розміщення об’єкту даних: %s\n"
+msgid "error allocating data object: %s"
+msgstr "помилка розміщення об’єкту даних: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "помилка позиціонування на початок об’єкта даних: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "помилка позиціонування на початок об’єкта даних: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3446,43 +3446,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "помилка читання об’єкту даних: %s\n"
+msgid "error reading data object: %s"
+msgstr "помилка читання об’єкту даних: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "помилка додавання отримувача \"%s\": %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "помилка додавання отримувача \"%s\": %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "таємний ключ \"%s\" не знайдено: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "таємний ключ \"%s\" не знайдено: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "неоднозначне визначення таємного ключа \"%s\"\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "неоднозначне визначення таємного ключа \"%s\""
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "помилка встановлення таємного ключа \"%s\": %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "помилка встановлення таємного ключа \"%s\": %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, c-format
-msgid "error setting PKA signature notation: %s\n"
-msgstr "помилка встановлення нотації PKA для підписання: %s\n"
+msgid "error setting PKA signature notation: %s"
+msgstr "помилка встановлення нотації PKA для підписання: %s"
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "помилка при шифруванні даних: %s\n"
+msgid "error encrypting data: %s"
+msgstr "помилка при шифруванні даних: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "помилка при підписуванні даних: %s\n"
+msgid "error signing data: %s"
+msgstr "помилка при підписуванні даних: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3621,8 +3621,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2456
-msgid "Error extracting key data!\n"
-msgstr "Помилка при отриманні даних ключа!\n"
+msgid "Error extracting key data!"
+msgstr "Помилка при отриманні даних ключа!"
 
 #: ncrypt/crypt_gpgme.c:2638
 #, c-format
@@ -3962,8 +3962,8 @@ msgstr "Будь ласка, введіть ID ключа: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, c-format
-msgid "Error exporting key: %s\n"
-msgstr "Помилка експорта ключа: %s\n"
+msgid "Error exporting key: %s"
+msgstr "Помилка експорта ключа: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -5906,8 +5906,8 @@ msgstr "Команда USER не підтримується сервером."
 
 #: pop/pop_lib.c:80
 #, c-format
-msgid "Invalid POP URL: %s\n"
-msgstr "Неправильний POP URL: %s\n"
+msgid "Invalid POP URL: %s"
+msgstr "Неправильний POP URL: %s"
 
 #: pop/pop_lib.c:246
 msgid "Unable to leave messages on server."

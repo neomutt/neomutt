@@ -1053,8 +1053,8 @@ msgstr "Nasc le %s dúnta"
 
 #: conn/ssl.c:217
 #, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr "Linn eantrópachta á líonadh: %s...\n"
+msgid "Filling entropy pool: %s..."
+msgstr "Linn eantrópachta á líonadh: %s..."
 
 #: conn/ssl.c:223
 #, c-format
@@ -2596,8 +2596,8 @@ msgstr "ailias: gan seoladh"
 
 #: init.c:989
 #, c-format
-msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Rabhadh: DrochIDN '%s' san ailias '%s'.\n"
+msgid "Warning: Bad IDN '%s' in alias '%s'."
+msgstr "Rabhadh: DrochIDN '%s' san ailias '%s'."
 
 #: init.c:1074
 msgid "attachments: no disposition"
@@ -2619,8 +2619,8 @@ msgstr "-rx nó -addr ar iarraidh."
 
 #: init.c:1232
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Rabhadh: DrochIDN '%s'.\n"
+msgid "%sgroup: warning: bad IDN '%s'."
+msgstr "Rabhadh: DrochIDN '%s'."
 
 #: init.c:1345
 #, c-format
@@ -2916,8 +2916,8 @@ msgstr "Tá an bosca poist truaillithe!"
 
 #: mbox/mbox.c:509
 #, c-format
-msgid "Couldn't lock %s\n"
-msgstr "Níorbh fhéidir %s a ghlasáil\n"
+msgid "Couldn't lock %s"
+msgstr "Níorbh fhéidir %s a ghlasáil"
 
 #: mbox/mbox.c:572 mbox/mbox.c:589
 msgid "Can't write message"
@@ -3429,8 +3429,8 @@ msgid "Trying to extract PGP keys...\n"
 msgstr "Ag baint triail as eochracha PGP a bhaint amach...\n"
 
 #: ncrypt/crypt.c:871 ncrypt/crypt.c:913
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Ag baint triail as teastais S/MIME a bhaint amach...\n"
+msgid "Trying to extract S/MIME certificates..."
+msgstr "Ag baint triail as teastais S/MIME a bhaint amach..."
 
 #: ncrypt/crypt.c:1089
 #, c-format
@@ -3493,29 +3493,29 @@ msgstr "S/MIME á thosú..."
 
 #: ncrypt/crypt_gpgme.c:505
 #, c-format
-msgid "error creating gpgme context: %s\n"
-msgstr "earráid agus comhthéacs gpgme á chruthú: %s\n"
+msgid "error creating gpgme context: %s"
+msgstr "earráid agus comhthéacs gpgme á chruthú: %s"
 
 #: ncrypt/crypt_gpgme.c:514
 #, c-format
-msgid "error enabling CMS protocol: %s\n"
-msgstr "earráid agus prótacal CMS á chumasú: %s\n"
+msgid "error enabling CMS protocol: %s"
+msgstr "earráid agus prótacal CMS á chumasú: %s"
 
 #: ncrypt/crypt_gpgme.c:538
 #, c-format
-msgid "error creating gpgme data object: %s\n"
-msgstr "earráid agus réad gpgme á chruthú: %s\n"
+msgid "error creating gpgme data object: %s"
+msgstr "earráid agus réad gpgme á chruthú: %s"
 
 #: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1705
 #: ncrypt/crypt_gpgme.c:2450
 #, c-format
-msgid "error allocating data object: %s\n"
-msgstr "earráid agus réad á dháileadh: %s\n"
+msgid "error allocating data object: %s"
+msgstr "earráid agus réad á dháileadh: %s"
 
 #: ncrypt/crypt_gpgme.c:649
 #, c-format
-msgid "error rewinding data object: %s\n"
-msgstr "earráid agus réad á atochras: %s\n"
+msgid "error rewinding data object: %s"
+msgstr "earráid agus réad á atochras: %s"
 
 #: ncrypt/crypt_gpgme.c:665
 msgid "[tempfile]"
@@ -3523,43 +3523,43 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:671 ncrypt/crypt_gpgme.c:724
 #, c-format
-msgid "error reading data object: %s\n"
-msgstr "earráid agus réad á léamh: %s\n"
+msgid "error reading data object: %s"
+msgstr "earráid agus réad á léamh: %s"
 
 #: ncrypt/crypt_gpgme.c:811
 #, c-format
-msgid "error adding recipient '%s': %s\n"
-msgstr "earráid agus faighteoir '%s' á chur leis: %s\n"
+msgid "error adding recipient '%s': %s"
+msgstr "earráid agus faighteoir '%s' á chur leis: %s"
 
 #: ncrypt/crypt_gpgme.c:855
 #, c-format
-msgid "secret key '%s' not found: %s\n"
-msgstr "eochair rúnda '%s' gan aimsiú: %s\n"
+msgid "secret key '%s' not found: %s"
+msgstr "eochair rúnda '%s' gan aimsiú: %s"
 
 #: ncrypt/crypt_gpgme.c:864
 #, c-format
-msgid "ambiguous specification of secret key '%s'\n"
-msgstr "sonrú débhríoch d'eochair rúnda '%s'\n"
+msgid "ambiguous specification of secret key '%s'"
+msgstr "sonrú débhríoch d'eochair rúnda '%s'"
 
 #: ncrypt/crypt_gpgme.c:875
 #, c-format
-msgid "error setting secret key '%s': %s\n"
-msgstr "earráid agus eochair rúnda á shocrú '%s': %s\n"
+msgid "error setting secret key '%s': %s"
+msgstr "earráid agus eochair rúnda á shocrú '%s': %s"
 
 #: ncrypt/crypt_gpgme.c:894
 #, fuzzy, c-format
-msgid "error setting PKA signature notation: %s\n"
+msgid "error setting PKA signature notation: %s"
 msgstr "Earráid agus eolas faoin eochair á fháil: "
 
 #: ncrypt/crypt_gpgme.c:949
 #, c-format
-msgid "error encrypting data: %s\n"
-msgstr "earráid agus sonraí á gcriptiú: %s\n"
+msgid "error encrypting data: %s"
+msgstr "earráid agus sonraí á gcriptiú: %s"
 
 #: ncrypt/crypt_gpgme.c:1075
 #, c-format
-msgid "error signing data: %s\n"
-msgstr "earráid agus sonraí á síniú: %s\n"
+msgid "error signing data: %s"
+msgstr "earráid agus sonraí á síniú: %s"
 
 #: ncrypt/crypt_gpgme.c:1086
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -3707,7 +3707,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2456
 #, fuzzy
-msgid "Error extracting key data!\n"
+msgid "Error extracting key data!"
 msgstr "Earráid agus eolas faoin eochair á fháil: "
 
 #: ncrypt/crypt_gpgme.c:2638
@@ -4059,7 +4059,7 @@ msgstr "Iontráil aitheantas na heochrach, le do thoil: "
 
 #: ncrypt/crypt_gpgme.c:4944
 #, fuzzy, c-format
-msgid "Error exporting key: %s\n"
+msgid "Error exporting key: %s"
 msgstr "Earráid agus eolas faoin eochair á fháil: "
 
 #. L10N:
@@ -6038,7 +6038,7 @@ msgstr "Ní ghlacann an freastalaí leis an ordú USER."
 
 #: pop/pop_lib.c:80
 #, fuzzy, c-format
-msgid "Invalid POP URL: %s\n"
+msgid "Invalid POP URL: %s"
 msgstr "Neamhbhailí  "
 
 #: pop/pop_lib.c:246
