@@ -2533,9 +2533,9 @@ msgid "%s: unknown command"
 msgstr "%s：未知命令"
 
 #: init.c:4050 init.c:4074 init.c:4109
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "选项 %s 的值无效：\"%s\""
+msgstr "选项 %s 的值无效：%s"
 
 #: init.c:4087
 #, c-format
