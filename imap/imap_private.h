@@ -314,7 +314,8 @@ int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
 void imap_free_header_data(struct ImapHeaderData **data);
-int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
+int imap_read_headers (struct ImapData* idata, unsigned int msn_begin, unsigned int msn_end,
+                       int initial_download);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes);
 int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);

@@ -1092,7 +1092,8 @@ bail:
  * the last message read. It will return a value other than msn_end if mail
  * comes in while downloading headers (in theory).
  */
-int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end)
+int imap_read_headers(struct ImapData *idata, unsigned int msn_begin,
+                      unsigned int msn_end, int initial_download)
 {
   struct ImapStatus *status = NULL;
   int oldmsgcount;
@@ -1128,7 +1129,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open(idata, NULL);
 
-  if (idata->hcache && (msn_begin == 1))
+  if (idata->hcache && initial_download)
   {
     uid_validity = mutt_hcache_fetch_raw(idata->hcache, "/UIDVALIDITY", 12);
     puidnext = mutt_hcache_fetch_raw(idata->hcache, "/UIDNEXT", 8);
@@ -1223,16 +1224,24 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     mutt_hcache_store_raw(idata->hcache, "/UIDNEXT", 8, &idata->uidnext,
                           sizeof(idata->uidnext));
 
-  if (has_condstore || has_qresync)
-    mutt_hcache_store_raw(idata->hcache, "/MODSEQ", 7, &idata->modseq,
-                          sizeof(idata->modseq));
-  else
-    mutt_hcache_delete(idata->hcache, "/MODSEQ", 7);
+  /* We currently only sync CONDSTORE and QRESYNC on the initial download.
+   * To do it more often, we'll need to deal with flag updates combined with
+   * unsync'ed local flag changes.  We'll also need to properly sync flags to
+   * the header cache on close.  I'm not sure it's worth the added complexity.
+   */
+  if (initial_download)
+  {
+    if (has_condstore || has_qresync)
+      mutt_hcache_store_raw(idata->hcache, "/MODSEQ", 7, &idata->modseq,
+                            sizeof(idata->modseq));
+    else
+      mutt_hcache_delete(idata->hcache, "/MODSEQ", 7);
 
-  if (has_qresync)
-    imap_hcache_store_uid_seqset(idata);
-  else
-    imap_hcache_clear_uid_seqset(idata);
+    if (has_qresync)
+      imap_hcache_store_uid_seqset(idata);
+    else
+      imap_hcache_clear_uid_seqset(idata);
+  }
 #endif /* USE_HCACHE */
 
   if (ctx->msgcount > oldmsgcount)
