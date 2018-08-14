@@ -1513,7 +1513,7 @@ static bool search_attach_keyword(char *filename)
   while (!feof(attf))
   {
     fgets(inputline, LONG_STRING, attf);
-    if (regexec(QuoteRegex->regex, inputline, 0, NULL, 0) != 0 &&
+    if (!mutt_is_quote_line(inputline, NULL) &&
         regexec(AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
       found = true;
