@@ -1224,37 +1224,6 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 }
 
 /**
- * trim_incomplete_mbyte - Remove an incomplete character
- * @param buf    Buffer containing string
- * @param buflen Length of buffer
- * @retval num Number of bytes remaining
- *
- * trim tail of buf so that it contains complete multibyte characters
- */
-static int trim_incomplete_mbyte(unsigned char *buf, size_t buflen)
-{
-  mbstate_t mbstate;
-  size_t k;
-
-  memset(&mbstate, 0, sizeof(mbstate));
-  for (; buflen > 0; buf += k, buflen -= k)
-  {
-    k = mbrtowc(NULL, (char *) buf, buflen, &mbstate);
-    if (k == (size_t)(-2))
-      break;
-    else if (k == (size_t)(-1) || k == 0)
-    {
-      if (k == (size_t)(-1))
-        memset(&mbstate, 0, sizeof(mbstate));
-      k = 1;
-    }
-  }
-  *buf = '\0';
-
-  return buflen;
-}
-
-/**
  * fill_buffer - Fill a buffer from a file
  * @param[in]     f         File to read from
  * @param[in,out] last_pos  End of last read
@@ -1288,11 +1257,6 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
     *buf_ready = 1;
 
     mutt_mem_realloc(fmt, *blen);
-
-    /* incomplete mbyte characters trigger a segfault in regex processing for
-     * certain versions of glibc. Trim them if necessary. */
-    if (b_read == *blen - 2)
-      b_read -= trim_incomplete_mbyte(*buf, b_read);
 
     /* copy "buf" to "fmt", but without bold and underline controls */
     p = *buf;
