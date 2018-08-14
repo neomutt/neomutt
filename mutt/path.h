@@ -30,4 +30,7 @@ bool mutt_path_tidy       (char *buf);
 bool mutt_path_tidy_dotdot(char *buf);
 bool mutt_path_tidy_slash (char *buf);
 
+bool mutt_path_canon (char *buf, size_t buflen, const char *homedir);
+bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
+
 #endif /* _MUTT_PATH_H */

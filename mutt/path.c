@@ -161,3 +161,100 @@ bool mutt_path_tidy(char *buf)
 
   return mutt_path_tidy_dotdot(buf);
 }
+
+/**
+ * mutt_path_pretty - Tidy a filesystem path
+ * @param buf    Path to modify
+ * @param buflen Length of the buffer
+ * @param homedir Home directory for '~' substitution
+ * @retval true Success
+ *
+ * Tidy a path and replace a home directory with '~'
+ */
+bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
+{
+  if (!buf)
+    return false;
+
+  mutt_path_tidy(buf);
+
+  size_t len = mutt_str_strlen(homedir);
+  if ((len == 0) || (len >= buflen))
+    return false;
+
+  char end = buf[len];
+  if ((end != '/') && (end != '\0'))
+    return false;
+
+  if (mutt_str_strncmp(buf, homedir, len) != 0)
+    return false;
+
+  buf[0] = '~';
+  if (end == '\0')
+  {
+    buf[1] = '\0';
+    return true;
+  }
+
+  mutt_str_strfcpy(buf + 1, buf + len, buflen - len);
+  return true;
+}
+
+/**
+ * mutt_path_canon - Create the canonical version of a path
+ * @param buf     Path to modify
+ * @param buflen  Length of the buffer
+ * @param homedir Home directory for '~' substitution
+ * @retval true Success
+ *
+ * Remove unnecessary dots and slashes from a path and expand shell '~'
+ * abbreviations:
+ * - ~/dir (~ expanded)
+ * - ~realuser/dir (~realuser expanded)
+ * - ~nonuser/dir (~nonuser not changed)
+ */
+bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
+{
+  if (!buf || (buf[0] != '~'))
+    return false;
+
+  char result[PATH_MAX] = { 0 };
+  char *dir = NULL;
+  size_t len = 0;
+
+  if ((buf[1] == '/') || (buf[1] == '\0'))
+  {
+    if (!homedir)
+      return false;
+
+    len = mutt_str_strfcpy(result, homedir, sizeof(result));
+    dir = buf + 1;
+  }
+  else
+  {
+    char user[SHORT_STRING];
+    dir = strchr(buf + 1, '/');
+    if (dir)
+      mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+    else
+      mutt_str_strfcpy(user, buf + 1, sizeof(user));
+
+    struct passwd *pw = getpwnam(user);
+    if (!pw || !pw->pw_dir)
+      return false;
+
+    len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
+  }
+
+  len += mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
+
+  if (len >= buflen)
+    return false;
+
+  mutt_str_strfcpy(buf, result, buflen);
+
+  if (!mutt_path_tidy(buf))
+    return false;
+
+  return true;
+}
