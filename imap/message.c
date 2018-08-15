@@ -458,6 +458,26 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
   *len = 0;
 }
 
+/* If the user hits ctrl-c during an initial header download for a mailbox,
+ * prompt whether to completely abort the download and close the mailbox.
+ */
+static int query_abort_header_download(struct ImapData *idata)
+{
+  int abort = 0;
+
+  mutt_flushinp();
+  /* L10N: This prompt is made if the user hits Ctrl-C when opening
+   * an IMAP mailbox */
+  if (mutt_yesorno(_("Abort download and close mailbox?"), MUTT_YES) == MUTT_YES)
+  {
+    abort = 1;
+    imap_close_connection(idata);
+  }
+  SigInt = 0;
+
+  return abort;
+}
+
 /**
  * alloc_msn_index - Create lookup table of MSN to Header
  * @param idata     Server data
@@ -643,6 +663,9 @@ static int read_headers_normal_eval_cache(struct ImapData *idata, unsigned int m
   rc = IMAP_CMD_CONTINUE;
   for (msgno = 1; rc == IMAP_CMD_CONTINUE; msgno++)
   {
+    if (SigInt && query_abort_header_download(idata))
+      return -1;
+
     mutt_progress_update(&progress, msgno, -1);
 
     memset(&h, 0, sizeof(h));
@@ -837,6 +860,9 @@ static int read_headers_condstore_qresync_updates(struct ImapData *idata, unsign
   rc = IMAP_CMD_CONTINUE;
   for (msgno = 1; rc == IMAP_CMD_CONTINUE; msgno++)
   {
+    if (SigInt && query_abort_header_download(idata))
+      return -1;
+
     mutt_progress_update(&progress, msgno, -1);
 
     /* cmd_parse_fetch will update the flags */
@@ -886,7 +912,8 @@ static int read_headers_condstore_qresync_updates(struct ImapData *idata, unsign
 /* Retrieve new messages from the server
  */
 static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin,
-                                  unsigned int msn_end, int evalhc, unsigned int *maxuid)
+                                  unsigned int msn_end, int evalhc,
+                                  unsigned int *maxuid, int initial_download)
 {
   struct Context *ctx;
   int idx, msgno, rc, mfhrc = 0, retval = -1;
@@ -958,6 +985,9 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
     rc = IMAP_CMD_CONTINUE;
     for (msgno = msn_begin; rc == IMAP_CMD_CONTINUE; msgno++)
     {
+      if (initial_download && SigInt && query_abort_header_download(idata))
+        goto bail;
+
       mutt_progress_update(&progress, msgno, -1);
 
       rewind(fp);
@@ -1205,7 +1235,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin,
   }
 #endif /* USE_HCACHE */
 
-  if (read_headers_fetch_new(idata, msn_begin, msn_end, evalhc, &maxuid) < 0)
+  if (read_headers_fetch_new(idata, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
   if (maxuid && (status = imap_mboxcache_get(idata, idata->mailbox, 0)) &&
