@@ -1554,7 +1554,7 @@ static void run_mime_type_query(struct Body *att)
   int dummy = 0;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), MimeTypeQueryCommand, att->filename);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), MimeTypeQueryCommand, att->filename);
 
   thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
   if (thepid < 0)

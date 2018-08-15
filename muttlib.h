@@ -43,8 +43,6 @@ extern struct Regex *GecosMask;
 void        mutt_adv_mktemp(char *s, size_t l);
 int         mutt_check_overwrite(const char *attname, const char *path, char *fname, size_t flen, int *append, char **directory);
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);
-void        mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
-void        mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
 void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, enum FormatFlag flags);
 char *      mutt_expand_path(char *s, size_t slen);
 char *      mutt_expand_path_regex(char *s, size_t slen, bool regex);

@@ -2128,7 +2128,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     {
       char tmp[LONG_STRING];
       quote_simple(s, tmp, sizeof(tmp));
-      mutt_expand_fmt(s, len, simple, tmp);
+      mutt_file_expand_fmt(s, len, simple, tmp);
     }
   }
 }

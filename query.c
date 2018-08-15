@@ -139,7 +139,7 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCommand, s);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), QueryCommand, s);
 
   thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
   if (thepid < 0)

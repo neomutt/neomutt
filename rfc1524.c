@@ -519,7 +519,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   }
   else if (!oldfile)
   {
-    mutt_expand_fmt(newfile, nflen, nametemplate, "neomutt");
+    mutt_file_expand_fmt(newfile, nflen, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {

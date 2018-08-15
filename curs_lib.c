@@ -258,7 +258,7 @@ void mutt_edit_file(const char *editor, const char *file)
   char cmd[HUGE_STRING];
 
   mutt_endwin();
-  mutt_expand_file_fmt(cmd, sizeof(cmd), editor, file);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), editor, file);
   if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\""), cmd);
@@ -528,7 +528,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
     char cmd[STRING];
 
     mutt_endwin();
-    mutt_expand_file_fmt(cmd, sizeof(cmd), Pager, tempfile);
+    mutt_file_expand_fmt_quote(cmd, sizeof(cmd), Pager, tempfile);
     if (mutt_system(cmd) == -1)
     {
       mutt_error(_("Error running \"%s\""), cmd);

@@ -1238,3 +1238,76 @@ int mutt_file_check_empty(const char *path)
 
   return st.st_size == 0;
 }
+
+/**
+ * mutt_file_expand_fmt_quote - Replace `%s` in a string with a filename
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param fmt     printf-like format string
+ * @param src     Filename to substitute
+ *
+ * This function also quotes the file to prevent shell problems.
+ */
+void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src)
+{
+  char tmp[PATH_MAX];
+
+  mutt_file_quote_filename(tmp, sizeof(tmp), src);
+  mutt_file_expand_fmt(dest, destlen, fmt, tmp);
+}
+
+/**
+ * mutt_file_expand_fmt - Replace `%s` in a string with a filename
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param fmt     printf-like format string
+ * @param src     Filename to substitute
+ */
+void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
+{
+  const char *p = NULL;
+  char *d = NULL;
+  size_t slen;
+  bool found = false;
+
+  slen = mutt_str_strlen(src);
+  destlen--;
+
+  for (p = fmt, d = dest; (destlen != 0) && *p; p++)
+  {
+    if (*p == '%')
+    {
+      switch (p[1])
+      {
+        case '%':
+          *d++ = *p++;
+          destlen--;
+          break;
+        case 's':
+          found = true;
+          mutt_str_strfcpy(d, src, destlen + 1);
+          d += (destlen > slen) ? slen : destlen;
+          destlen -= (destlen > slen) ? slen : destlen;
+          p++;
+          break;
+        default:
+          *d++ = *p;
+          destlen--;
+          break;
+      }
+    }
+    else
+    {
+      *d++ = *p;
+      destlen--;
+    }
+  }
+
+  *d = '\0';
+
+  if (!found && (destlen > 0))
+  {
+    mutt_str_strcat(dest, destlen, " ");
+    mutt_str_strcat(dest, destlen, src);
+  }
+}
