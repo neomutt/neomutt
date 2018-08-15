@@ -1649,7 +1649,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 }
               }
               /* resolve paths navigated from GUI */
-              if (mutt_realpath(LastDir) == 0)
+              if (mutt_path_realpath(LastDir) == 0)
                 break;
             }
 
@@ -1881,7 +1881,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             /* Resolve path from <chdir>
              * Avoids buildup such as /a/b/../../c
              * Symlinks are always unraveled to keep code simple */
-            if (mutt_realpath(buf) == 0)
+            if (mutt_path_realpath(buf) == 0)
               break;
 
             if (stat(buf, &st) == 0)

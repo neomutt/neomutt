@@ -1620,26 +1620,6 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 }
 
 /**
- * mutt_realpath - resolve path, unraveling symlinks
- * @param buf Buffer containing path
- * @retval num String length of resolved path
- * @retval 0   Error, buf is not overwritten
- *
- * Resolve and overwrite the path in buf.
- *
- * @note Size of buf should be at least PATH_MAX bytes.
- */
-size_t mutt_realpath(char *buf)
-{
-  char s[PATH_MAX];
-
-  if (realpath(buf, s) == NULL)
-    return 0;
-
-  return mutt_str_strfcpy(buf, s, sizeof(s));
-}
-
-/**
  * mutt_inbox_cmp - do two folders share the same path and one is an inbox
  * @param a First path
  * @param b Second path
