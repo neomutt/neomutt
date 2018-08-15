@@ -289,7 +289,7 @@ struct Address *mutt_expand_aliases(struct Address *a)
   STAILQ_INIT(&expn);
   t = expand_aliases_r(a, &expn);
   mutt_list_free(&expn);
-  return mutt_remove_duplicates(t);
+  return mutt_addrlist_dedupe(t);
 }
 
 /**

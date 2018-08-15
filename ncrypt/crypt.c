@@ -963,7 +963,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
 
   if (fqdn)
     mutt_addr_qualify(addrlist, fqdn);
-  addrlist = mutt_remove_duplicates(addrlist);
+  addrlist = mutt_addrlist_dedupe(addrlist);
 
   *keylist = NULL;
 

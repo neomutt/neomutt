@@ -3078,53 +3078,6 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 }
 
 /**
- * mutt_remove_duplicates - Remove duplicate addresses
- * @param addr Address list to de-dupe
- * @retval ptr Updated Address list
- *
- * Given a list of addresses, return a list of unique addresses
- */
-struct Address *mutt_remove_duplicates(struct Address *addr)
-{
-  struct Address *top = addr;
-  struct Address **last = &top;
-  struct Address *tmp = NULL;
-  bool dup;
-
-  while (addr)
-  {
-    for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
-    {
-      if (tmp->mailbox && addr->mailbox &&
-          (mutt_str_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
-      {
-        dup = true;
-        break;
-      }
-    }
-
-    if (dup)
-    {
-      mutt_debug(2, "Removing %s\n", addr->mailbox);
-
-      *last = addr->next;
-
-      addr->next = NULL;
-      mutt_addr_free(&addr);
-
-      addr = *last;
-    }
-    else
-    {
-      last = &addr->next;
-      addr = addr->next;
-    }
-  }
-
-  return top;
-}
-
-/**
  * set_noconv_flags - Set/reset the "x-mutt-noconv" flag
  * @param b    Body of email
  * @param flag If true, set the flag, otherwise remove it

@@ -810,8 +810,8 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   }
 
   /* the CC field can get cluttered, especially with lists */
-  env->to = mutt_remove_duplicates(env->to);
-  env->cc = mutt_remove_duplicates(env->cc);
+  env->to = mutt_addrlist_dedupe(env->to);
+  env->cc = mutt_addrlist_dedupe(env->cc);
   env->cc = mutt_remove_xrefs(env->to, env->cc);
 
   if (env->cc && !env->to)
@@ -1184,7 +1184,7 @@ void mutt_set_followup_to(struct Envelope *e)
       }
     }
 
-    e->mail_followup_to = mutt_remove_duplicates(e->mail_followup_to);
+    e->mail_followup_to = mutt_addrlist_dedupe(e->mail_followup_to);
   }
 }
 

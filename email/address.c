@@ -1264,3 +1264,50 @@ int mutt_addrlist_to_local(struct Address *a)
 
   return 0;
 }
+
+/**
+ * mutt_addrlist_dedupe - Remove duplicate addresses
+ * @param addr Address list to de-dupe
+ * @retval ptr Updated Address list
+ *
+ * Given a list of addresses, return a list of unique addresses
+ */
+struct Address *mutt_addrlist_dedupe(struct Address *addr)
+{
+  struct Address *top = addr;
+  struct Address **last = &top;
+  struct Address *tmp = NULL;
+  bool dup;
+
+  while (addr)
+  {
+    for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
+    {
+      if (tmp->mailbox && addr->mailbox &&
+          (mutt_str_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
+      {
+        dup = true;
+        break;
+      }
+    }
+
+    if (dup)
+    {
+      mutt_debug(2, "Removing %s\n", addr->mailbox);
+
+      *last = addr->next;
+
+      addr->next = NULL;
+      mutt_addr_free(&addr);
+
+      addr = *last;
+    }
+    else
+    {
+      last = &addr->next;
+      addr = addr->next;
+    }
+  }
+
+  return top;
+}
