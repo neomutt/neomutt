@@ -66,7 +66,7 @@ static struct ConfigDef Vars[] = {
   { "Kumquat",    DT_REGEX, 0,                  &VarKumquat,    IP "kumquat.*",    NULL              },
   { "Lemon",      DT_REGEX, 0,                  &VarLemon,      0,                 NULL              }, /* test_native_get */
   { "Mango",      DT_REGEX, 0,                  &VarMango,      IP "mango.*",      NULL              }, /* test_reset */
-  { "Nectarine",  DT_REGEX, 0,                  &VarNectarine,  IP "\\1",          NULL              },
+  { "Nectarine",  DT_REGEX, 0,                  &VarNectarine,  IP "[a-b",         NULL              },
   { "Olive",      DT_REGEX, 0,                  &VarOlive,      IP "olive.*",      validator_fail    },
   { "Papaya",     DT_REGEX, 0,                  &VarPapaya,     IP "papaya.*",     validator_succeed }, /* test_validator */
   { "Quince",     DT_REGEX, 0,                  &VarQuince,     IP "quince.*",     validator_warn    },
@@ -237,7 +237,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   }
 
   mutt_buffer_reset(err);
-  rc = cs_str_string_set(cs, name, "\\1", err);
+  rc = cs_str_string_set(cs, name, "[a-b", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error: %s\n", err->data);
@@ -355,8 +355,10 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 
   regex_free(&r);
   r = regex_create("world.*", 0, err);
-  r->pattern[0] = '\\';
-  r->pattern[1] = '1';
+  r->pattern[0] = '[';
+  r->pattern[1] = 'a';
+  r->pattern[2] = '-';
+  r->pattern[3] = 'b';
   name = "Kumquat";
 
   mutt_buffer_reset(err);
