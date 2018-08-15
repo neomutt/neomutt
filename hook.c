@@ -573,7 +573,7 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
       struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       char buf[PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
-      mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
+      mutt_path_concat(path, NONULL(Folder), buf, pathlen);
       if (!ForceName && mx_access(path, W_OK) != 0)
         mutt_str_strfcpy(path, Record, pathlen);
     }

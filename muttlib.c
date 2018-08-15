@@ -746,14 +746,14 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
       return (rc == MUTT_NO) ? 1 : -1;
 
     char tmp[PATH_MAX];
-    mutt_str_strfcpy(tmp, mutt_file_basename(NONULL(attname)), sizeof(tmp));
+    mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
         !tmp[0])
     {
       return -1;
     }
-    mutt_file_concat_path(fname, path, tmp, flen);
+    mutt_path_concat(fname, path, tmp, flen);
   }
 
   if (*append == 0 && access(fname, F_OK) == 0)
@@ -1460,7 +1460,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (ret == 0)
       {
         /* create dir recursively */
-        char *tmp_path = mutt_file_dirname(s);
+        char *tmp_path = mutt_path_dirname(s);
         if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
         {
           /* report failure & abort */

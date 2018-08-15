@@ -490,7 +490,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   {
     if (directory && *directory)
     {
-      mutt_file_concat_path(buf, *directory, mutt_file_basename(body->filename),
+      mutt_path_concat(buf, *directory, mutt_path_basename(body->filename),
                             sizeof(buf));
     }
     else
@@ -600,7 +600,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           int append = 0;
 
-          mutt_str_strfcpy(buf, mutt_file_basename(NONULL(top->filename)), sizeof(buf));
+          mutt_str_strfcpy(buf, mutt_path_basename(NONULL(top->filename)), sizeof(buf));
           prepend_curdir(buf, sizeof(buf));
 
           if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||

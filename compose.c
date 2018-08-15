@@ -1704,7 +1704,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           src = CURATTACH->content->d_filename;
         else
           src = CURATTACH->content->filename;
-        mutt_str_strfcpy(fname, mutt_file_basename(NONULL(src)), sizeof(fname));
+        mutt_str_strfcpy(fname, mutt_path_basename(NONULL(src)), sizeof(fname));
         ret = mutt_get_field(_("Send attachment with name: "), fname, sizeof(fname), MUTT_FILE);
         if (ret == 0)
         {

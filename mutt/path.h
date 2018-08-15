@@ -26,11 +26,15 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-bool mutt_path_tidy       (char *buf);
-bool mutt_path_tidy_dotdot(char *buf);
-bool mutt_path_tidy_slash (char *buf);
-
-bool mutt_path_canon (char *buf, size_t buflen, const char *homedir);
-bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
+const char *mutt_path_basename(const char *f);
+bool        mutt_path_canon(char *buf, size_t buflen, const char *homedir);
+char *      mutt_path_concat(char *d, const char *dir, const char *fname, size_t l);
+char *      mutt_path_concatn(char *dst, size_t dstlen, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
+char *      mutt_path_dirname(const char *path);
+bool        mutt_path_pretty(char *buf, size_t buflen, const char *homedir);
+bool        mutt_path_tidy(char *buf);
+bool        mutt_path_tidy_dotdot(char *buf);
+bool        mutt_path_tidy_slash(char *buf);
+int         mutt_path_to_absolute(char *path, const char *reference);
 
 #endif /* _MUTT_PATH_H */

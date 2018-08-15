@@ -814,7 +814,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (!ispipe)
   {
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    if (!mutt_file_to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
+    if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error(_("Error: impossible to build path of '%s'"), rcfile_path);
       return -1;
@@ -1745,7 +1745,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                   (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */
               {
                 struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-                if (mutt_file_to_absolute_path(scratch, np ? NONULL(np->data) : "./"))
+                if (mutt_path_to_absolute(scratch, np ? NONULL(np->data) : "./"))
                 {
                   mutt_buffer_reset(buf);
                   mutt_buffer_addstr(buf, scratch);
@@ -3109,9 +3109,9 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   if (!p)
   {
 #ifdef HOMESPOOL
-    mutt_file_concat_path(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
+    mutt_path_concat(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
 #else
-    mutt_file_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
+    mutt_path_concat(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
 #endif
     p = buffer;
   }

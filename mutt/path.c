@@ -20,20 +20,25 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page path Path manipulation functions
+ *
+ * Path manipulation functions
+ */
+
 #include "config.h"
+#include <errno.h>
+#include <libgen.h>
 #include <limits.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/mutt.h"
-#include "email/email.h"
-#include "alias.h"
-#include "globals.h"
-#include "hook.h"
-#include "imap/imap.h"
-#include "mx.h"
+#include "mutt/logging.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 
 /**
  * mutt_path_tidy_slash - Remove unnecessary slashes and dots
@@ -258,3 +263,152 @@ bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
 
   return true;
 }
+
+/**
+ * mutt_path_basename - Find the last component for a pathname
+ * @param f String to be examined
+ * @retval ptr Part of pathname after last '/' character
+ */
+const char *mutt_path_basename(const char *f)
+{
+  const char *p = strrchr(f, '/');
+  if (p)
+    return p + 1;
+  else
+    return f;
+}
+
+/**
+ * mutt_path_concat - Join a directory name and a filename
+ * @param d     Buffer for the result
+ * @param dir   Directory name
+ * @param fname File name
+ * @param l     Length of buffer
+ * @retval ptr Destination buffer
+ *
+ * If both dir and fname are supplied, they are separated with '/'.
+ * If either is missing, then the other will be copied exactly.
+ */
+char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
+{
+  const char *fmt = "%s/%s";
+
+  if (!*fname || (*dir && dir[strlen(dir) - 1] == '/'))
+    fmt = "%s%s";
+
+  snprintf(d, l, fmt, dir, fname);
+  return d;
+}
+
+/**
+ * mutt_path_concatn - Concatenate directory and filename
+ * @param dst      Buffer for result
+ * @param dstlen   Buffer length
+ * @param dir      Directory
+ * @param dirlen   Directory length
+ * @param fname    Filename
+ * @param fnamelen Filename length
+ * @retval NULL Error
+ * @retval ptr  Success, pointer to \a dst
+ *
+ * Write the concatenated pathname (dir + "/" + fname) into dst.
+ * The slash is omitted when dir or fname is of 0 length.
+ */
+char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir,
+                             size_t dirlen, const char *fname, size_t fnamelen)
+{
+  size_t req;
+  size_t offset = 0;
+
+  if (dstlen == 0)
+    return NULL; /* probably should not mask errors like this */
+
+  /* size check */
+  req = dirlen + fnamelen + 1; /* +1 for the trailing nul */
+  if (dirlen && fnamelen)
+    req++; /* when both components are non-nul, we add a "/" in between */
+  if (req > dstlen)
+  { /* check for condition where the dst length is too short */
+    /* Two options here:
+     * 1) assert(0) or return NULL to signal error
+     * 2) copy as much of the path as will fit
+     * It doesn't appear that the return value is actually checked anywhere mutt_path_concat()
+     * is called, so we should just copy set dst to nul and let the calling function fail later.
+     */
+    dst[0] = '\0'; /* safe since we bail out early if dstlen == 0 */
+    return NULL;
+  }
+
+  if (dirlen)
+  { /* when dir is not empty */
+    memcpy(dst, dir, dirlen);
+    offset = dirlen;
+    if (fnamelen)
+      dst[offset++] = '/';
+  }
+  if (fnamelen)
+  { /* when fname is not empty */
+    memcpy(dst + offset, fname, fnamelen);
+    offset += fnamelen;
+  }
+  dst[offset] = '\0';
+  return dst;
+}
+
+/**
+ * mutt_path_dirname - Return a path up to, but not including, the final '/'
+ * @param  path Path
+ * @retval ptr  The directory containing p
+ *
+ * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
+ * implementation does not modify its parameter, so callers need not manually
+ * copy their paths into a modifiable buffer prior to calling this function.
+ */
+char *mutt_path_dirname(const char *path)
+{
+  char buf[PATH_MAX] = { 0 };
+  mutt_str_strfcpy(buf, path, sizeof(buf));
+  return mutt_str_strdup(dirname(buf));
+}
+
+/**
+ * mutt_path_to_absolute - Convert relative filepath to an absolute path
+ * @param path      Relative path
+ * @param reference Absolute path that \a path is relative to
+ * @retval true  Success
+ * @retval false Failure
+ *
+ * Use POSIX functions to convert a path to absolute, relatively to another path
+ *
+ * @note \a path should be at least of PATH_MAX length
+ */
+int mutt_path_to_absolute(char *path, const char *reference)
+{
+  char abs_path[PATH_MAX];
+  int path_len;
+
+  /* if path is already absolute, don't do anything */
+  if ((strlen(path) > 1) && (path[0] == '/'))
+  {
+    return true;
+  }
+
+  char *dirpath = mutt_path_dirname(reference);
+  mutt_str_strfcpy(abs_path, dirpath, sizeof(abs_path));
+  FREE(&dirpath);
+  mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+
+  path_len = sizeof(abs_path) - strlen(path);
+
+  mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+
+  path = realpath(abs_path, path);
+  if (!path && (errno != ENOENT))
+  {
+    mutt_perror(_("Error: converting path to absolute"));
+    return false;
+  }
+
+  return true;
+}
+

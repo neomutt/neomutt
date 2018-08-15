@@ -35,19 +35,15 @@ extern char *Tmpdir;
 #define MUTT_CONT (1 << 0) /**< \-continuation */
 #define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
 
-const char *mutt_file_basename(const char *f);
 int         mutt_file_check_empty(const char *path);
 int         mutt_file_chmod(const char *path, mode_t mode);
 int         mutt_file_chmod_add(const char *path, mode_t mode);
 int         mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st);
 int         mutt_file_chmod_rm(const char *path, mode_t mode);
 int         mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st);
-char *      mutt_file_concat_path(char *d, const char *dir, const char *fname, size_t l);
-char *      mutt_file_concatn_path(char *dst, size_t dstlen, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
 int         mutt_file_copy_bytes(FILE *in, FILE *out, size_t size);
 int         mutt_file_copy_stream(FILE *fin, FILE *fout);
 time_t      mutt_file_decrease_mtime(const char *f, struct stat *st);
-char *      mutt_file_dirname(const char *path);
 int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
@@ -66,7 +62,6 @@ void        mutt_file_sanitize_filename(char *f, bool slash);
 int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);
-int         mutt_file_to_absolute_path(char *path, const char *reference);
 void        mutt_file_touch_atime(int fd);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
