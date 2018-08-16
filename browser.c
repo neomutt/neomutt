@@ -877,7 +877,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         np->b->msg_count = Context->msgcount;
         np->b->msg_unread = Context->unread;
       }
-      add_folder(menu, state, de->d_name, NULL, &s, np->b, NULL);
+      add_folder(menu, state, de->d_name, NULL, &s, np ? np->b : NULL, NULL);
     }
     closedir(dp);
   }
