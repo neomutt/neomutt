@@ -1739,7 +1739,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
             char scratch[PATH_MAX];
             mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
             size_t scratchlen = mutt_str_strlen(scratch);
-            if (scratchlen != 0)
+            if (!(he->type & DT_MAILBOX) && (scratchlen != 0))
             {
               if ((scratch[scratchlen - 1] != '|') && /* not a command */
                   (url_check_scheme(scratch) == U_UNKNOWN)) /* probably a local file */

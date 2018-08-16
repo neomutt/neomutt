@@ -968,7 +968,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If set, flagged messages cannot be deleted.
   */
-  { "folder",           DT_PATH, R_NONE, &Folder, IP "~/Mail" },
+  { "folder",           DT_PATH|DT_MAILBOX, R_NONE, &Folder, IP "~/Mail" },
   /*
   ** .pp
   ** Specifies the default location of your mailboxes.  A ``+'' or ``='' at the
@@ -1819,7 +1819,7 @@ struct ConfigDef MuttVars[] = {
   ** the \fInot\fP operator ``!''.  Only files whose names match this mask
   ** will be shown. The match is always case-sensitive.
   */
-  { "mbox",             DT_PATH, R_BOTH, &Mbox, IP "~/mbox" },
+  { "mbox",             DT_PATH|DT_MAILBOX, R_BOTH, &Mbox, IP "~/mbox" },
   /*
   ** .pp
   ** This specifies the folder into which read mail in your $$spoolfile
@@ -2826,7 +2826,7 @@ struct ConfigDef MuttVars[] = {
   ** Please use $$pgp_default_key or $$smime_default_key.
   ** (Crypto only)
   */
-  { "postponed",        DT_PATH, R_INDEX, &Postponed, IP "~/postponed" },
+  { "postponed",        DT_PATH|DT_MAILBOX, R_INDEX, &Postponed, IP "~/postponed" },
   /*
   ** .pp
   ** NeoMutt allows you to indefinitely ``$postpone sending a message'' which
@@ -3001,7 +3001,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Also see $$postponed variable.
   */
-  { "record",           DT_PATH, R_NONE, &Record, IP "~/sent" },
+  { "record",           DT_PATH|DT_MAILBOX, R_NONE, &Record, IP "~/sent" },
   /*
   ** .pp
   ** This specifies the file into which your outgoing messages should be
@@ -3934,7 +3934,7 @@ struct ConfigDef MuttVars[] = {
   ** match will append to the previous, using this variable's value as a
   ** separator.
   */
-  { "spoolfile",        DT_PATH, R_NONE, &Spoolfile, 0 },
+  { "spoolfile",        DT_PATH|DT_MAILBOX, R_NONE, &Spoolfile, 0 },
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where NeoMutt cannot find
@@ -4282,7 +4282,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
   ** .de
   */
-  { "trash",            DT_PATH, R_NONE, &Trash, 0 },
+  { "trash",            DT_PATH|DT_MAILBOX, R_NONE, &Trash, 0 },
   /*
   ** .pp
   ** If set, this variable specifies the path of the trash folder where the
