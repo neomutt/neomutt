@@ -745,7 +745,7 @@ int main(int argc, char *argv[], char *envp[])
   if (dump_variables)
   {
     dump_config(Config, CS_DUMP_STYLE_NEO, hide_sensitive ? CS_DUMP_HIDE_SENSITIVE : 0);
-    goto main_curses; // TEST18: neomutt -D
+    goto main_ok; // TEST18: neomutt -D
   }
 
   if (!STAILQ_EMPTY(&alias_queries))
