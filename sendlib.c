@@ -66,23 +66,23 @@
 #endif
 
 /* These Config Variables are only used in sendlib.c */
-bool Allow8bit;
+bool Allow8bit; ///< Config: Allow 8-bit messages, don't use quoted-printable or base64
 char *AttachCharset; ///< Config: When attaching files, use one of these character sets
-bool BounceDelivered;
-bool EncodeFrom;
+bool BounceDelivered; ///< Config: Add 'Delivered-To' to bounced messages
+bool EncodeFrom; ///< Config: Encode 'From ' as 'quote-printable' at the beginning of lines
 bool ForwardDecrypt; ///< Config: Decrypt the message when forwarding it
 bool HiddenHost; ///< Config: Don't use the hostname, just the domain, when generating the message id
 char *Inews;     ///< Config: (nntp) External command to post news articles
-bool MimeForwardDecode;
-bool MimeSubject; ///< encode subject line with RFC2047
+bool MimeForwardDecode; ///< Config: Decode the forwarded message before attaching it
+bool MimeSubject; ///< Config: (nntp) Encode the article subject in base64
 char *MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
-bool MimeTypeQueryFirst;
+bool MimeTypeQueryFirst; ///< Config: Run the MimeTypeQueryCommand before the mime.types lookup
 char *Sendmail; ///< Config: External command to send email
-short SendmailWait;
-bool Use8bitmime;
-bool UseEnvelopeFrom;
+short SendmailWait; ///< Config: Time to wait for sendmail to finish
+bool Use8bitmime; ///< Config: Use 8-bit messages and ESMTP to send messages
+bool UseEnvelopeFrom; ///< Config: Set the envelope sender of the message
 bool UserAgent; ///< Config: Add a 'User-Agent' head to outgoing mail
-short WrapHeaders;
+short WrapHeaders; ///< Config: Width to wrap headers in outgoing messages
 
 /**
  * encode_quoted - Encode text as quoted printable

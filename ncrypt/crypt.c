@@ -61,7 +61,7 @@
 /* These Config Variables are only used in ncrypt/crypt.c */
 bool CryptTimestamp; ///< Config: Add a timestamp to PGP or SMIME output to prevent spoofing
 unsigned char PgpEncryptSelf;
-unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */ ///< Config: Prompt the user to use MIME if inline PGP fails
+unsigned char PgpMimeAuto; ///< Config: Prompt the user to use MIME if inline PGP fails
 bool PgpRetainableSigs; ///< Config: Create nested multipart/signed or encrypted messages
 bool PgpSelfEncrypt; ///< Config: Encrypted messages will also be encrypted to PgpDefaultKey too
 bool PgpStrictEnc; ///< Config: Encode PGP signed messages with quoted-printable (don't unset)

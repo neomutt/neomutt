@@ -77,15 +77,15 @@
 
 /* These Config Variables are only used in pager.c */
 bool AllowAnsi; ///< Config: Allow ANSI colour codes in rich text messages
-bool HeaderColorPartial;
+bool HeaderColorPartial; ///< Config: Only colour the part of the header matching the regex
 short PagerContext; ///< Config: Number of lines of overlap when changing pages in the pager
-short PagerIndexLines;
+short PagerIndexLines; ///< Config: Number of index lines to display above the pager
 bool PagerStop; ///< Config: Don't automatically open the next message when at the end of a message
-short SearchContext;
-short SkipQuotedOffset;
-bool SmartWrap;
-struct Regex *Smileys;
-bool Tilde;
+short SearchContext; ///< Config: Context to display around search matches
+short SkipQuotedOffset; ///< Config: Lines of context to show when skipping quoted text
+bool SmartWrap; ///< Config: Wrap text at word boundaries
+struct Regex *Smileys; ///< Config: Regex to match smileys to prevent mistakes when quoting text
+bool Tilde; ///< Config: Character to pad blank lines in the pager
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 

@@ -83,7 +83,7 @@
 #endif
 
 /* These Config Variables are only used in main.c */
-bool ResumeEditedDraftFiles;
+bool ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft files
 
 #define MUTT_IGNORE (1 << 0)  /* -z */
 #define MUTT_MAILBOX (1 << 1) /* -Z */

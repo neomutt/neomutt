@@ -66,7 +66,7 @@
 #endif
 
 /* These Config Variables are only used in imap/imap.c */
-bool ImapIdle;
+bool ImapIdle; ///< Config: (imap) Use the IMAP IDLE extension to check for new mail
 
 /**
  * check_capabilities - Make sure we can log in to this server

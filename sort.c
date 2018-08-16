@@ -40,7 +40,7 @@
 #endif
 
 /* These Config Variables are only used in sort.c */
-bool ReverseAlias;
+bool ReverseAlias; ///< Config: Display the alias in the index, rather than the message's sender
 
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;

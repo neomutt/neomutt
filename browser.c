@@ -68,11 +68,11 @@
 #endif
 
 /* These Config Variables are only used in browser.c */
-bool BrowserAbbreviateMailboxes;
+bool BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
 char *FolderFormat; ///< Config: printf-like format string for the browser's display of folders
 char *GroupIndexFormat; ///< Config: (nntp) printf-like format string for the browser's display of newsgroups
 char *NewsgroupsCharset; ///< Config: (nntp) Character set of newsgroups' descriptions
-bool ShowOnlyUnread;
+bool ShowOnlyUnread; ///< Config: (nntp) Only show subscribed newsgroups with unread articles
 short SortBrowser;   ///< Config: Sort method for the browser
 char *VfolderFormat; ///< Config: (notmuch) printf-like format string for the browser's display of virtual folders
 

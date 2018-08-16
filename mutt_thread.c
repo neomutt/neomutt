@@ -37,7 +37,7 @@
 #include "sort.h"
 
 /* These Config Variables are only used in mutt_thread.c */
-bool DuplicateThreads;
+bool DuplicateThreads; ///< Config: Highlight messages with duplicated message IDs
 bool HideLimited; ///< Config: Don't indicate hidden messages, in the thread tree
 bool HideMissing; ///< Config: Don't indicate missing messages, in the thread tree
 bool HideThreadSubject; ///< Config: Hide subjects that are similar to that of the parent message
@@ -45,8 +45,8 @@ bool HideTopLimited; ///< Config: Don't indicate hidden top message, in the thre
 bool HideTopMissing; ///< Config: Don't indicate missing top message, in the thread tree
 bool NarrowTree; ///< Config: Draw a narrower thread tree in the index
 bool SortRe;     ///< Config: Sort method for the sidebar
-bool StrictThreads;
-bool ThreadReceived;
+bool StrictThreads; ///< Config: Thread messages using 'In-Reply-To' and 'References' headers
+bool ThreadReceived; ///< Config: Sort threaded messages by their received date
 
 /**
  * is_visible - Is the message visible?

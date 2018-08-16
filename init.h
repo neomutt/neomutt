@@ -2116,13 +2116,12 @@ struct ConfigDef MuttVars[] = {
   { "nm_query_window_current_position", DT_NUMBER, R_NONE, &NmQueryWindowCurrentPosition, 0 },
   /*
   ** .pp
-  ** This variable contains the currently setup notmuch search for window based vfolder.
+  ** This variable contains the position of the current search for window based vfolder.
   */
   { "nm_query_window_current_search", DT_STRING, R_NONE, &NmQueryWindowCurrentSearch, 0 },
   /*
   ** .pp
-  ** This variable sets the time duration of a windowed notmuch query.
-  ** Accepted values all non negative integers. A value of 0 disables the feature.
+  ** This variable contains the currently setup notmuch search for window based vfolder.
   */
   { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &NmQueryWindowDuration, 0 },
   /*

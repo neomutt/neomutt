@@ -71,10 +71,10 @@
 #endif
 
 /* These Config Variables are only used in send.c */
-unsigned char AbortNoattach; /* forgotten attachment detector */ ///< Config: Abort sending the email if attachments are missing
+unsigned char AbortNoattach; ///< Config: Abort sending the email if attachments are missing
 struct Regex *AbortNoattachRegex; ///< Config: Regex to match text indicating attachments are expected
 unsigned char AbortNosubject; ///< Config: Abort creating the email if subject is missing
-unsigned char AbortUnmodified;
+unsigned char AbortUnmodified; ///< Config: Abort the sending if the message hasn't been edited
 bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
 bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
 char *ContentType; ///< Config: Default "Content-Type" for newly composed messages
@@ -89,32 +89,32 @@ char *EmptySubject; ///< Config: Subject to use when replying to an email with n
 bool FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
 unsigned char FccAttach; ///< Config: Save send message with all their attachments
 bool FccClear; ///< Config: Save sent messages unencrypted and unsigned
-bool FollowupTo;
-char *ForwardAttributionIntro;
-char *ForwardAttributionTrailer;
+bool FollowupTo; ///< Config: Add the 'Mail-Followup-To' header is generated when sending mail
+char *ForwardAttributionIntro; ///< Config: Prefix message for forwarded messages
+char *ForwardAttributionTrailer; ///< Config: Suffix message for forwarded messages
 unsigned char ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
 char *ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
 bool ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
-bool Hdrs;
-unsigned char HonorFollowupTo;
-bool IgnoreListReplyTo;
+bool Hdrs; ///< Config: Add custom headers to outgoing mail
+unsigned char HonorFollowupTo; ///< Config: Honour the 'Mail-Followup-To' header when group replying
+bool IgnoreListReplyTo; ///< Config: Ignore the 'Reply-To' header when using `<reply>` on a mailing list
 unsigned char Include; ///< Config: Include a copy of the email that's being replied to
-bool Metoo;
-bool NmRecord;
+bool Metoo; ///< Config: Remove the user's address from the list of recipients
+bool NmRecord; ///< Config: (notmuch) If the 'record' mailbox (sent mail) should be indexed
 bool PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
-char *PostIndentString;
+char *PostIndentString; ///< Config: Suffix message to add after reply text
 bool PostponeEncrypt; ///< Config: Self-encrypt postponed messages
 char *PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
 unsigned char Recall; ///< Config: Recall postponed mesaages when asked to compose a message
-bool ReplySelf;
-unsigned char ReplyTo;
-bool ReplyWithXorig;
-bool ReverseName;
-bool ReverseRealname;
-bool SigDashes;
+bool ReplySelf; ///< Config: Really reply to yourself, when replying to your own email
+unsigned char ReplyTo; ///< Config: Address to use as a 'Reply-To' header
+bool ReplyWithXorig; ///< Config: Create 'From' header from 'X-Original-To' header
+bool ReverseName; ///< Config: Set the 'From' from the address the email was sent to
+bool ReverseRealname; ///< Config: Set the 'From' from the full 'To' address the email was sent to
+bool SigDashes; ///< Config: Insert '-- ' before the signature
 char *Signature; ///< Config: File containing a signature to append to all mail
-bool SigOnTop;
-bool UseFrom;
+bool SigOnTop; ///< Config: Insert the signature before the quoted text
+bool UseFrom; ///< Config: Set the 'From' header for outgoing mail
 
 /**
  * append_signature - Append a signature to an email

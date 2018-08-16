@@ -40,7 +40,7 @@
 #include "options.h"
 
 /* These Config Variables are only used in progress.c */
-short TimeInc;
+short TimeInc; ///< Config: Frequency of progress bar updates (milliseconds)
 
 /**
  * message_bar - Draw a colourful progress bar

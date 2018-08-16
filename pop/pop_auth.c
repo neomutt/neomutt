@@ -43,8 +43,8 @@
 #endif
 
 /* These Config Variables are only used in pop/pop_auth.c */
-char *PopAuthenticators;
-bool PopAuthTryAll;
+char *PopAuthenticators; ///< Config: (pop) List of allowed authentication methods
+bool PopAuthTryAll; ///< Config: (pop) Try all available authentication methods
 
 #ifdef USE_SASL
 /**

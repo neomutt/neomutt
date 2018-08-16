@@ -54,7 +54,7 @@
 
 /* These Config Variables are only used in conn/conn_raw.c */
 #ifdef HAVE_GETADDRINFO
-bool UseIpv6;
+bool UseIpv6; ///< Config: Lookup IPv6 addresses when making connections
 #endif
 
 /**

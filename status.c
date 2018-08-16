@@ -45,7 +45,7 @@
 #endif
 
 /* These Config Variables are only used in status.c */
-struct MbTable *StatusChars;
+struct MbTable *StatusChars; ///< Config: Indicator characters for the status bar
 
 /**
  * get_sort_str - Get the sort method as a string

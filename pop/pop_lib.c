@@ -49,7 +49,7 @@
 #include "progress.h"
 
 /* These Config Variables are only used in pop/pop_lib.c */
-unsigned char PopReconnect;
+unsigned char PopReconnect; ///< Config: (pop) Reconnect to the server is the connection is lost
 
 /**
  * pop_parse_path - Parse a POP mailbox name

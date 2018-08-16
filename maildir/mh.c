@@ -67,8 +67,8 @@
 
 /* These Config Variables are only used in maildir/mh.c */
 bool CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
-bool MaildirHeaderCacheVerify;
-bool MhPurge;
+bool MaildirHeaderCacheVerify; ///< Config: (hcache) Check for maildir changes when opening mailbox
+bool MhPurge; ///< Config: Really delete files in MH mailboxes
 char *MhSeqFlagged; ///< Config: MH sequence for flagged message
 char *MhSeqReplied; ///< Config: MH sequence to tag replied messages
 char *MhSeqUnseen;  ///< Config: MH sequence for unseen messages

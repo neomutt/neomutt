@@ -51,9 +51,9 @@
 struct Context;
 
 /* These Config Variables are only used in hook.c */
-char *DefaultHook;
-bool ForceName;
-bool SaveName;
+char *DefaultHook; ///< Config: Pattern to use for hooks that only have a simple regex
+bool ForceName; ///< Config: Save outgoing mail in a folder of their name
+bool SaveName; ///< Config: Save outgoing message to mailbox of recipient's name if it exists
 
 /**
  * struct Hook - A list of user hooks

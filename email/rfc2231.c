@@ -46,7 +46,7 @@
 #include "rfc2047.h"
 
 /* These Config Variables are only used in rfc2231.c */
-bool Rfc2047Parameters;
+bool Rfc2047Parameters; ///< Config: Decode RFC2047-encoded MIME parameters
 
 /**
  * struct Rfc2231Parameter - MIME section parameter

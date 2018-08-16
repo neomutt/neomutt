@@ -61,7 +61,7 @@
 
 /* These Config Variables are only used in imap/util.c */
 char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in IMAP folders
-short ImapPipelineDepth;
+short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
  * imap_expand_path - Canonicalise an IMAP path

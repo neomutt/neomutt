@@ -67,10 +67,10 @@
 /* These Config Variables are only used in nntp/nntp.c */
 char *NntpAuthenticators; ///< Config: (nntp) Allowed authentication methods
 short NntpContext; ///< Config: (nntp) Maximum number of articles to list (0 for all articles)
-bool NntpListgroup;
-bool NntpLoadDescription;
-short NntpPoll;
-bool ShowNewNews;
+bool NntpListgroup; ///< Config: (nntp) Check all articles when opening a newsgroup
+bool NntpLoadDescription; ///< Config: (nntp) Load descriptions for newsgroups when adding to the list
+short NntpPoll; ///< Config: (nntp) Interval between checks for new posts
+bool ShowNewNews; ///< Config: (nntp) Check for new newsgroups when entering the browser
 
 struct NntpServer *CurrentNewsSrv;
 

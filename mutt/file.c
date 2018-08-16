@@ -47,7 +47,7 @@
 #include "message.h"
 #include "string2.h"
 
-char *Tmpdir; /**< Temporary directory path */ ///< Config: Directory for temporary files
+char *Tmpdir; ///< Config: Directory for temporary files
 
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";

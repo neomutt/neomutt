@@ -61,7 +61,7 @@
 #endif
 
 /* These Config Variables are only used in pattern.c */
-bool ThoroughSearch;
+bool ThoroughSearch; ///< Config: Decode headers and messages before searching them
 
 // clang-format off
 /* The regexes in a modern format */

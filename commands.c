@@ -69,7 +69,7 @@
 #endif
 
 /* These Config Variables are only used in commands.c */
-unsigned char CryptVerifySig; /* verify PGP signatures */ ///< Config: Verify PGP or SMIME signatures
+unsigned char CryptVerifySig; ///< Config: Verify PGP or SMIME signatures
 char *DisplayFilter; ///< Config: External command to pre-process an email before display
 bool PipeDecode;  ///< Config: Decode the message when piping it
 char *PipeSep;    ///< Config: Separator to add between multiple piped messages

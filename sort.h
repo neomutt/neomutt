@@ -56,8 +56,8 @@ extern const struct Mapping SortMethods[];
 const char *mutt_get_name(struct Address *a);
 
 /* These variables are backing for config items */
-WHERE short Sort;  ///< Config: Sort method for the index
-WHERE short SortAux; /* auxiliary sorting method */  ///< Config: Secondary sort method for the index
+WHERE short Sort;    ///< Config: Sort method for the index
+WHERE short SortAux; ///< Config: Secondary sort method for the index
 
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys

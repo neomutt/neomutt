@@ -38,8 +38,8 @@
 #include "state.h"
 
 /* These Config Variables are only used in rfc3676.c */
-bool ReflowSpaceQuotes;
-short ReflowWrap;
+bool ReflowSpaceQuotes; ///< Config: Insert spaces into reply quotes for 'format=flowed' messages
+short ReflowWrap; ///< Config: Maximum paragraph width for reformatting 'format=flowed' text
 
 #define FLOWED_MAX 72
 

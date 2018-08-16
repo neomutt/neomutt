@@ -45,8 +45,8 @@
 
 struct timeval LastError = { 0 };
 
-short DebugLevel = 0;     /**< Log file logging level */
-char *DebugFile = NULL;   /**< Log file name */
+short DebugLevel = 0;     ///< Config: Logging level for debug logs
+char *DebugFile = NULL;   ///< Config: File to save debug logs
 char *CurrentFile = NULL; /**< The previous log file name */
 const int NumOfLogs = 5;  /**< How many log files to rotate */
 

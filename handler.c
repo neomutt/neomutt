@@ -55,12 +55,12 @@
 #endif
 
 /* These Config Variables are only used in handler.c */
-bool HonorDisposition;
-bool ImplicitAutoview;
-bool IncludeOnlyfirst;
-char *PreferredLanguages;
-bool ReflowText;
-char *ShowMultipartAlternative;
+bool HonorDisposition; ///< Config: Don't display MIME parts inline if they have a disposition of 'attachment'
+bool ImplicitAutoview; ///< Config: Display MIME attachments inline if a 'copiousoutput' mailcap entry exists
+bool IncludeOnlyfirst; ///< Config: Only include the first attachment when replying
+char *PreferredLanguages; ///< Config: Preferred languages for multilingual MIME
+bool ReflowText; ///< Config: Reformat paragraphs of 'format=flowed' text
+char *ShowMultipartAlternative; ///< Config: How to display 'multipart/alternative' MIME parts
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000

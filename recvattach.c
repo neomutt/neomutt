@@ -63,9 +63,9 @@
 #endif
 
 /* These Config Variables are only used in recvattach.c */
-char *AttachSep;
-bool AttachSplit;
-bool DigestCollapse;
+char *AttachSep; ///< Config: Separator to add between saved/printed/piped attachments
+bool AttachSplit; ///< Config: Save/print/pipe tagged messages individually
+bool DigestCollapse; ///< Config: Hide the subparts of a multipart/digest
 char *MessageFormat; ///< Config: printf-like format string for listing attached messages
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool init);

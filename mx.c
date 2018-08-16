@@ -83,7 +83,7 @@
 #endif
 
 /* These Config Variables are only used in mx.c */
-unsigned char CatchupNewsgroup;
+unsigned char CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
 unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;        ///< Config: Folder to put deleted emails

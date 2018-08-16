@@ -55,7 +55,7 @@
 #include "mx.h"
 
 /* These Config Variables are only used in imap/command.c */
-bool ImapServernoise;
+bool ImapServernoise; ///< Config: (imap) Display server warnings as error messages
 
 #define IMAP_CMD_BUFSIZE 512
 

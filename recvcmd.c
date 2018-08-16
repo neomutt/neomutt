@@ -49,7 +49,7 @@
 #endif
 
 /* These Config Variables are only used in recvcmd.c */
-unsigned char MimeForwardRest;
+unsigned char MimeForwardRest; ///< Config: Forward all attachments, even if they can't be decoded
 
 /**
  * check_msg - Are we working with an RFC822 message

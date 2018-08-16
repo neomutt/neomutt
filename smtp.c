@@ -48,7 +48,7 @@
 #endif
 
 /* These Config Variables are only used in smtp.c */
-char *SmtpAuthenticators;
+char *SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication methods
 
 #define smtp_success(x) ((x) / 100 == 2)
 #define SMTP_READY 334

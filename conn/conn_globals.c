@@ -49,10 +49,10 @@ const char *Tunnel = NULL; ///< Config: Shell command to establish a tunnel
 #endif
 
 #ifdef USE_SSL
-bool SslUseSslv3;
-bool SslUseTlsv1;
-bool SslUseTlsv11;
-bool SslUseTlsv12;
-bool SslVerifyDates;
-bool SslVerifyHost;
+bool SslUseSslv3; ///< Config: (ssl) INSECURE: Use SSLv3 for authentication 
+bool SslUseTlsv1; ///< Config: (ssl) Use TLSv1 for authentication
+bool SslUseTlsv11; ///< Config: (ssl) Use TLSv1.1 for authentication
+bool SslUseTlsv12; ///< Config: (ssl) Use TLSv1.2 for authentication
+bool SslVerifyDates; ///< Config: (ssl) Verify the dates on the server certificate
+bool SslVerifyHost; ///< Config: (ssl) Verify the server's hostname against the certificate
 #endif

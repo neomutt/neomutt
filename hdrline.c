@@ -48,9 +48,9 @@
 #include "sort.h"
 
 /* These Config Variables are only used in hdrline.c */
-struct MbTable *FlagChars; ///< Config: User-configurable index flags, e.g. tagged, new, etc
-struct MbTable *FromChars; ///< Config: User-configurable index flags, e.g. to address, cc address, etc
-struct MbTable *ToChars;
+struct MbTable *FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
+struct MbTable *FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
+struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)
