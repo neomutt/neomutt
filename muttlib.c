@@ -538,24 +538,24 @@ void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
 
 /**
  * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
- * @param s      Buffer containing string to shorten
+ * @param buf    Buffer containing string to shorten
  * @param buflen Length of buffer
  *
  * Collapse the pathname using ~ or = when possible
  */
-void mutt_pretty_mailbox(char *s, size_t buflen)
+void mutt_pretty_mailbox(char *buf, size_t buflen)
 {
-  char *p = s, *q = s;
+  char *p = buf, *q = buf;
   size_t len;
   enum UrlScheme scheme;
   char tmp[PATH_MAX];
 
-  scheme = url_check_scheme(s);
+  scheme = url_check_scheme(buf);
 
 #ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(s);
+    imap_pretty_mailbox(buf);
     return;
   }
 #endif
@@ -565,10 +565,10 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     return;
 #endif
 
-  /* if s is an url, only collapse path component */
+  /* if buf is an url, only collapse path component */
   if (scheme != U_UNKNOWN)
   {
-    p = strchr(s, ':') + 1;
+    p = strchr(buf, ':') + 1;
     if (strncmp(p, "//", 2) == 0)
       q = strchr(p + 2, '/');
     if (!q)
@@ -600,19 +600,19 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     *q = 0;
   }
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
-    mutt_str_strfcpy(p, tmp, buflen - (p - s));
+    mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
   len = mutt_str_strlen(Folder);
-  if ((mutt_str_strncmp(s, Folder, len) == 0) && s[len] == '/')
+  if ((mutt_str_strncmp(buf, Folder, len) == 0) && buf[len] == '/')
   {
-    *s++ = '=';
-    memmove(s, s + len, mutt_str_strlen(s + len) + 1);
+    *buf++ = '=';
+    memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((mutt_str_strncmp(s, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
-           s[len] == '/')
+  else if ((mutt_str_strncmp(buf, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
+           buf[len] == '/')
   {
-    *s++ = '~';
-    memmove(s, s + len - 1, mutt_str_strlen(s + len - 1) + 1);
+    *buf++ = '~';
+    memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
   }
 }
 

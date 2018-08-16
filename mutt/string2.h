@@ -83,7 +83,7 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(char *p);
 int         mutt_str_strcasecmp(const char *a, const char *b);
-char *      mutt_str_strcat(char *d, size_t l, const char *s);
+char *      mutt_str_strcat(char *buf, size_t buflen, const char *s);
 const char *mutt_str_strchrnul(const char *s, char c);
 int         mutt_str_strcmp(const char *a, const char *b);
 int         mutt_str_strcoll(const char *a, const char *b);
