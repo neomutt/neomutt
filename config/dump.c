@@ -220,8 +220,6 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
   }
 }
 
-void mutt_pretty_mailbox(char *s, size_t buflen);
-
 /**
  * dump_config - Write all the config to stdout
  * @param cs    ConfigSet to dump
@@ -301,15 +299,15 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
           break;
         }
 
-        if (type == DT_PATH)
-          mutt_pretty_mailbox(value->data, value->dsize);
+        if ((type == DT_PATH) && !(he->type & DT_MAILBOX))
+          mutt_pretty_mailbox(initial->data, initial->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD) &&
             !(flags & CS_DUMP_NO_ESCAPING))
         {
           mutt_buffer_reset(tmp);
           size_t len = pretty_var(initial->data, tmp);
-          mutt_str_strfcpy(value->data, tmp->data, len + 1);
+          mutt_str_strfcpy(initial->data, tmp->data, len + 1);
         }
       }
     }
