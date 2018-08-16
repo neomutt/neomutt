@@ -239,9 +239,9 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
 
   bool result = true;
 
-  struct Buffer *value = mutt_buffer_alloc(1024);
-  struct Buffer *initial = mutt_buffer_alloc(1024);
-  struct Buffer *tmp = mutt_buffer_alloc(1024);
+  struct Buffer *value = mutt_buffer_alloc(STRING);
+  struct Buffer *initial = mutt_buffer_alloc(STRING);
+  struct Buffer *tmp = mutt_buffer_alloc(STRING);
 
   for (size_t i = 0; list[i]; i++)
   {

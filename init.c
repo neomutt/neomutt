@@ -3417,30 +3417,44 @@ finish:
 int mutt_query_variables(struct ListHead *queries)
 {
   struct Buffer *value = mutt_buffer_alloc(STRING);
-  struct Buffer *err = mutt_buffer_alloc(STRING);
+  struct Buffer *tmp = mutt_buffer_alloc(STRING);
   int rc = 0;
-
-  mutt_buffer_init(value);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, queries, entries)
   {
     mutt_buffer_reset(value);
 
-    if (var_to_string2(np->data, true, value, err) < 0)
+    struct HashElem *he = cs_get_elem(Config, np->data);
+    if (!he)
     {
-      mutt_error("%s", err->data);
       rc = 1;
-      break;
+      continue;
     }
 
-    printf("set %s=%s\n", np->data, value->data);
-    // dump_config_mutt(Config, he, &value, NULL, 0);
-    // dump_config_neo(Config, he, value, NULL, 0);
+    int rv = cs_he_string_get(Config, he, value);
+    if (CSR_RESULT(rv) != CSR_SUCCESS)
+    {
+      rc = 1;
+      continue;
+    }
+
+    int type = DTYPE(he->type);
+    if ((type == DT_PATH) && !(he->type & DT_MAILBOX))
+      mutt_pretty_mailbox(value->data, value->dsize);
+
+    if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
+    {
+      mutt_buffer_reset(tmp);
+      size_t len = pretty_var(value->data, tmp);
+      mutt_str_strfcpy(value->data, tmp->data, len + 1);
+    }
+
+    dump_config_neo(Config, he, value, NULL, 0);
   }
 
   mutt_buffer_free(&value);
-  mutt_buffer_free(&err);
+  mutt_buffer_free(&tmp);
 
   return rc; // TEST16: neomutt -Q charset
 }
