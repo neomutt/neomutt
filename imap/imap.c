@@ -1434,7 +1434,7 @@ int imap_mailbox_check(bool check_stats)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* Init newly-added mailboxes */
-    if (!np->b->magic)
+    if (np->b->magic == MUTT_UNKNOWN)
     {
       if (mx_is_imap(np->b->path))
         np->b->magic = MUTT_IMAP;
