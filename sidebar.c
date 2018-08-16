@@ -992,7 +992,7 @@ void mutt_sb_draw(void)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      mutt_sb_notify_mailbox(np->b, 1);
+      mutt_sb_notify_mailbox(np->b, true);
     }
   }
 
@@ -1138,7 +1138,7 @@ void mutt_sb_set_open_mailbox(void)
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(struct Mailbox *b, int created)
+void mutt_sb_notify_mailbox(struct Mailbox *b, bool created)
 {
   if (!b)
     return;

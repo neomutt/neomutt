@@ -48,11 +48,11 @@ extern bool ThreadReceived;
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4)
 #define MUTT_THREAD_FLAGGED     (1 << 5)
 
-int mutt_aside_thread(struct Header *hdr, short dir, short subthreads);
-#define mutt_next_thread(x)        mutt_aside_thread(x, 1, 0)
-#define mutt_previous_thread(x)    mutt_aside_thread(x, 0, 0)
-#define mutt_next_subthread(x)     mutt_aside_thread(x, 1, 1)
-#define mutt_previous_subthread(x) mutt_aside_thread(x, 0, 1)
+int mutt_aside_thread(struct Header *hdr, bool forwards, bool subthreads);
+#define mutt_next_thread(x)        mutt_aside_thread(x, true,  false)
+#define mutt_previous_thread(x)    mutt_aside_thread(x, false, false)
+#define mutt_next_subthread(x)     mutt_aside_thread(x, true,  true)
+#define mutt_previous_subthread(x) mutt_aside_thread(x, false, true)
 
 int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag);
 #define mutt_collapse_thread(x, y)         mutt_traverse_thread(x, y, MUTT_THREAD_COLLAPSE)

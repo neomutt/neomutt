@@ -905,10 +905,10 @@ out:
 /**
  * check_certificate_by_digest - Validate a certificate by its digest
  * @param peercert Certificate
- * @retval 1 Certificate is valid
- * @retval 0 Error
+ * @retval true  Certificate is valid
+ * @retval false Error
  */
-static int check_certificate_by_digest(X509 *peercert)
+static bool check_certificate_by_digest(X509 *peercert)
 {
   return check_certificate_expiration(peercert, false) && check_certificate_file(peercert);
 }
@@ -937,7 +937,7 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @retval true  User selected 'skip'
  * @retval false Otherwise
  */
-static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
+static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
   static const int part[] = {
     NID_commonName,             /* CN */
@@ -1106,9 +1106,9 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, boo
  * @retval true  Certificate is valid
  * @retval false Error, or Certificate is invalid
  *
- * called for each certificate in the chain sent by the peer, starting from the
- * root; returning 1 means that the given certificate is trusted, returning 0
- * immediately aborts the SSL connection
+ * Called for each certificate in the chain sent by the peer, starting from the
+ * root; returning true means that the given certificate is trusted, returning
+ * false immediately aborts the SSL connection
  */
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
@@ -1118,19 +1118,19 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   int pos;
   X509 *cert = NULL;
   SSL *ssl = NULL;
-  int skip_mode;
+  bool skip_mode;
 
   ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)
   {
     mutt_debug(1, "failed to retrieve SSL structure from X509_STORE_CTX\n");
-    return 0;
+    return false;
   }
   host = SSL_get_ex_data(ssl, HostExDataIndex);
   if (!host)
   {
     mutt_debug(1, "failed to retrieve hostname from SSL structure\n");
-    return 0;
+    return false;
   }
 
   /* This is true when a previous entry in the certificate chain did
@@ -1166,7 +1166,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
           compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug(2, "ignoring duplicate skipped certificate.\n");
-        return 1;
+        return true;
       }
     }
 
@@ -1182,7 +1182,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   {
     mutt_debug(2, "using cached certificate\n");
     SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
-    return 1;
+    return true;
   }
 
   /* check hostname only for the leaf certificate */
@@ -1206,7 +1206,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     {
       mutt_debug(2, "digest check passed\n");
       SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
-      return 1;
+      return true;
     }
 
     /* log verification error */
@@ -1218,7 +1218,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     return interactive_check_cert(cert, pos, len, ssl, true);
   }
 
-  return 1;
+  return true;
 }
 
 /**
