@@ -1248,12 +1248,12 @@ msgid "Tunnel error talking to %s: %s"
 msgstr "Tunelio klaida kalbant su %s: %s"
 
 #: copy.c:642
-#, fuzzy, c-format
+#, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] "Ilgio skaičiavimas suklydo %ld baitais"
+msgstr[0] "Ilgio skaičiavimas suklydo %ld baitu"
 msgstr[1] "Ilgio skaičiavimas suklydo %ld baitais"
-msgstr[2] "Ilgio skaičiavimas suklydo %ld baitais"
+msgstr[2] "Ilgio skaičiavimas suklydo %ld baitų"
 
 #: copy.c:721
 msgid "No decryption engine available for message"
