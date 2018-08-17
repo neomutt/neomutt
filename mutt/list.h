@@ -45,7 +45,7 @@ struct ListNode
 STAILQ_HEAD(ListHead, ListNode);
 
 /**
- * list_free_t - Prototype for a function to free List data
+ * typedef list_free_t - Prototype for a function to free List data
  * @param ptr Data to free
  */
 typedef void (*list_free_t)(void **ptr);

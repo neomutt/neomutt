@@ -70,7 +70,7 @@ char *ShowMultipartAlternative; ///< Config: How to display 'multipart/alternati
 #define TXTENRICHED 3
 
 /**
- * handler_t - Manage a PGP or S/MIME encrypted MIME part
+ * typedef handler_t - Manage a PGP or S/MIME encrypted MIME part
  * @param m Body of the email
  * @param s State of text being processed
  * @retval 0 Success

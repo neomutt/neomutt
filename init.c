@@ -599,13 +599,7 @@ bail:
 }
 
 /**
- * parse_replace_list - Parse a string replacement rule
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_replace_list - Parse a string replacement rule - Implements ::command_t
  */
 static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
@@ -703,13 +697,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unreplace_list - Remove a string replacement rule
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unreplace_list - Remove a string replacement rule - Implements ::command_t
  */
 static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
@@ -926,13 +914,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 }
 
 /**
- * parse_alias - Parse the 'alias' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_alias - Parse the 'alias' command - Implements ::command_t
  */
 static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -1013,13 +995,7 @@ bail:
 }
 
 /**
- * parse_alternates - Parse the 'alternates' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_alternates - Parse the 'alternates' command - Implements ::command_t
  */
 static int parse_alternates(struct Buffer *buf, struct Buffer *s,
                             unsigned long data, struct Buffer *err)
@@ -1053,13 +1029,7 @@ bail:
 }
 
 /**
- * parse_attachments - Parse the 'attachments' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_attachments - Parse the 'attachments' command - Implements ::command_t
  */
 static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -1119,12 +1089,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_echo - Parse the 'echo' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_echo - Parse the 'echo' command - Implements ::command_t
  */
 static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
@@ -1144,11 +1109,7 @@ static int parse_echo(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * parse_finish - Parse the 'finish' command
- * @param buf  Temporary space shared by all command handlers
- * @param s    Current line of the config file
- * @param data data field from init.h:struct Command
- * @param err  Buffer for any error message
+ * parse_finish - Parse the 'finish' command - Implements ::command_t
  * @retval  1 Stop processing the current file
  * @retval -1 Failed
  *
@@ -1167,13 +1128,7 @@ static int parse_finish(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_group - Parse the 'group' and 'ungroup' commands
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_group - Parse the 'group' and 'ungroup' commands - Implements ::command_t
  */
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -1254,13 +1209,7 @@ bail:
 }
 
 /**
- * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands
- * @param buf  Temporary space shared by all command handlers
- * @param s    Current line of the config file
- * @param data data field from init.h:struct Command
- * @param err  Buffer for any error message
- * @retval  0 Success
- * @retval -1 Failed
+ * parse_ifdef - Parse the 'ifdef' and 'ifndef' commands - Implements ::command_t
  *
  * The 'ifdef' command allows conditional elements in the config file.
  * If a given variable, function, command or compile-time symbol exists, then
@@ -1352,12 +1301,7 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * parse_ignore - Parse the 'ignore' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_ignore - Parse the 'ignore' command - Implements ::command_t
  */
 static int parse_ignore(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1373,13 +1317,7 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_lists - Parse the 'lists' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_lists - Parse the 'lists' command - Implements ::command_t
  */
 static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -1411,13 +1349,7 @@ bail:
 }
 
 /**
- * parse_my_hdr - Parse the 'my_hdr' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_my_hdr - Parse the 'my_hdr' command - Implements ::command_t
  */
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1462,12 +1394,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_SIDEBAR
 /**
- * parse_path_list - Parse the 'sidebar_whitelist' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_path_list - Parse the 'sidebar_whitelist' command - Implements ::command_t
  */
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -1488,12 +1415,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_SIDEBAR
 /**
- * parse_path_unlist - Parse the 'unsidebar_whitelist' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_path_unlist - Parse the 'unsidebar_whitelist' command - Implements ::command_t
  */
 static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -1519,13 +1441,7 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
 #endif
 
 /**
- * parse_set - Parse the 'set' family of commands
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_set - Parse the 'set' family of commands - Implements ::command_t
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
@@ -1857,13 +1773,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * parse_setenv - Parse the 'setenv' and 'unsetenv' commands
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements ::command_t
  */
 static int parse_setenv(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1947,13 +1857,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_source - Parse the 'source' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_source - Parse the 'source' command - Implements ::command_t
  */
 static int parse_source(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1982,13 +1886,7 @@ static int parse_source(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_spam_list - Parse the 'spam' and 'nospam' commands
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements ::command_t
  */
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -2066,12 +1964,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_stailq - Parse a list command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_stailq - Parse a list command - Implements ::command_t
  *
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
@@ -2088,13 +1981,7 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_subjectrx_list - Parse the 'subjectrx' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_subjectrx_list - Parse the 'subjectrx' command - Implements ::command_t
  */
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
@@ -2108,13 +1995,7 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_subscribe - Parse the 'subscribe' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_subscribe - Parse the 'subscribe' command - Implements ::command_t
  */
 static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -2149,13 +2030,7 @@ bail:
 
 #ifdef USE_IMAP
 /**
- * parse_subscribe_to - Parse the 'subscribe-to' command
- * @param buf  Buffer space shared by all command handlers
- * @param s    Current line of the config file
- * @param data Data field from init.h:struct Command
- * @param err  Buffer for any error message
- * @retval  0 Success
- * @retval -1 Failed
+ * parse_subscribe_to - Parse the 'subscribe-to' command - Implements ::command_t
  *
  * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
  * Patterns are not supported.
@@ -2206,13 +2081,7 @@ static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 #endif
 
 /**
- * parse_tag_formats - Parse the 'tag-formats' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_tag_formats - Parse the 'tag-formats' command - Implements ::command_t
  */
 static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -2251,13 +2120,7 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_tag_transforms - Parse the 'tag-transforms' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_tag_transforms - Parse the 'tag-transforms' command - Implements ::command_t
  */
 static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
@@ -2296,12 +2159,7 @@ static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unalias - Parse the 'unalias' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_unalias - Parse the 'unalias' command - Implements ::command_t
  */
 static int parse_unalias(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
@@ -2351,13 +2209,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unalternates - Parse the 'unalternates' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unalternates - Parse the 'unalternates' command - Implements ::command_t
  */
 static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
@@ -2380,13 +2232,7 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unattachments - Parse the 'unattachments' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unattachments - Parse the 'unattachments' command - Implements ::command_t
  */
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
@@ -2432,12 +2278,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unignore - Parse the 'unignore' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_unignore - Parse the 'unignore' command - Implements ::command_t
  */
 static int parse_unignore(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
@@ -2457,13 +2298,7 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unlists - Parse the 'unlists' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unlists - Parse the 'unlists' command - Implements ::command_t
  */
 static int parse_unlists(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
@@ -2485,12 +2320,7 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unmy_hdr - Parse the 'unmy_hdr' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements ::command_t
  */
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
@@ -2525,12 +2355,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unstailq - Parse an unlist command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval 0 Always
+ * parse_unstailq - Parse an unlist command - Implements ::command_t
  *
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
@@ -2553,13 +2378,7 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unsubjectrx_list - Parse the 'unsubjectrx' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements ::command_t
  */
 static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
@@ -2573,13 +2392,7 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_unsubscribe - Parse the 'unsubscribe' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * parse_unsubscribe - Parse the 'unsubscribe' command - Implements ::command_t
  */
 static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -2601,13 +2414,7 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_IMAP
 /**
- * parse_unsubscribe_from - Parse the 'unsubscribe-from' command
- * @param buf  Buffer space shared by all command handlers
- * @param s    Current line of the config file
- * @param data Data field from init.h:struct Command
- * @param err  Buffer for any error message
- * @retval  0 Success
- * @retval -1 Failed
+ * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements ::command_t
  *
  * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
  * Patterns are not supported.

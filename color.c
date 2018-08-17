@@ -868,7 +868,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 }
 
 /**
- * parser_callback_t - Prototype for a function to parse color config
+ * typedef parser_callback_t - Prototype for a function to parse color config
  * @param[in]  buf Temporary Buffer space
  * @param[in]  s    Buffer containing string to be parsed
  * @param[out] fg   Foreground colour (set to -1)
