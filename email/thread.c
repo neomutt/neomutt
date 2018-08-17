@@ -197,7 +197,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
       /* clearing the References: header from obsolete Message-ID(s) */
       struct ListNode *np = NULL;
-      while ((np = STAILQ_NEXT(ref, entries)) != NULL)
+      while ((np = STAILQ_NEXT(ref, entries)))
       {
         STAILQ_REMOVE_AFTER(&cur->message->env->references, ref, entries);
         FREE(&np->data);

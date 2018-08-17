@@ -153,7 +153,7 @@ static struct Query *run_query(char *s, int quiet)
   p = strrchr(msg, '\n');
   if (p)
     *p = '\0';
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
   {
     p = strtok(buf, "\t\n");
     if (p)

@@ -332,7 +332,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 bool mutt_mb_is_shell_char(wchar_t ch)
 {
   static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
-  return wcschr(shell_chars, ch) != NULL;
+  return wcschr(shell_chars, ch);
 }
 
 /**

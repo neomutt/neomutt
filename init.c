@@ -246,7 +246,7 @@ static int complete_all_nm_tags(const char *pt)
   /* Free the old list, if any. */
   if (nm_tags)
   {
-    for (int i = 0; nm_tags[i] != NULL; i++)
+    for (int i = 0; nm_tags[i]; i++)
       FREE(&nm_tags[i]);
     FREE(&nm_tags);
   }
@@ -836,7 +836,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
 
   mutt_buffer_init(&token);
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)))
   {
     const int conv = ConfigCharset && (*ConfigCharset) && Charset;
     if (conv)

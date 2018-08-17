@@ -1006,7 +1006,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   info = mutt_mem_calloc(1, sizeof(struct Content));
 
-  if (b != NULL && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
+  if (b && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_param_get(&b->parameter, "charset");
     char *fchs = b->use_disp ?
@@ -1037,7 +1037,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   mutt_file_fclose(&fp);
 
-  if (b != NULL && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
+  if (b && b->type == TYPE_TEXT && (!b->noconv && !b->force_charset))
   {
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ? "us-ascii" :
@@ -1107,7 +1107,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
     {
       found_mimetypes = true;
 
-      while (fgets(buf, sizeof(buf) - 1, f) != NULL)
+      while (fgets(buf, sizeof(buf) - 1, f))
       {
         /* weed out any comments */
         p = strchr(buf, '#');
@@ -3127,7 +3127,7 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
   if (status != 0)
     return status;
 
-  while ((tok = strtok(NULL, ",")) != NULL)
+  while ((tok = strtok(NULL, ",")))
   {
     if (!*tok)
       continue;
@@ -3331,7 +3331,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 
     /* count the number of lines */
     rewind(tempfp);
-    while (fgets(sasha, sizeof(sasha), tempfp) != NULL)
+    while (fgets(sasha, sizeof(sasha), tempfp))
       lines++;
     fprintf(msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftello(tempfp));
     fprintf(msg->fp, "Lines: %d\n\n", lines);

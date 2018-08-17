@@ -771,7 +771,7 @@ static bool check_certificate_file(X509 *peercert)
     return false;
   }
 
-  while (PEM_read_X509(fp, &cert, NULL, NULL) != NULL)
+  while (PEM_read_X509(fp, &cert, NULL, NULL))
   {
     if (compare_certificates(cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration(cert, true))
@@ -1139,7 +1139,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    * In this case, all following certificates need to be treated as non-verified
    * until one is actually verified.
    */
-  skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex) != NULL);
+  skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
 
   cert = X509_STORE_CTX_get_current_cert(ctx);
   pos = X509_STORE_CTX_get_error_depth(ctx);

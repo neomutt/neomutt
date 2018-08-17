@@ -291,7 +291,7 @@ int raw_socket_open(struct Connection *conn)
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
-  for (cur = res; cur != NULL; cur = cur->ai_next)
+  for (cur = res; cur; cur = cur->ai_next)
   {
     int fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
@@ -350,7 +350,7 @@ int raw_socket_open(struct Connection *conn)
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
-  for (int i = 0; he->h_addr_list[i] != NULL; i++)
+  for (int i = 0; he->h_addr_list[i]; i++)
   {
     memcpy(&sin.sin_addr, he->h_addr_list[i], he->h_length);
     int fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);

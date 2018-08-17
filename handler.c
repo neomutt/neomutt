@@ -438,7 +438,7 @@ static bool is_mmnoask(const char *buf)
   mutt_str_strfcpy(tmp, val, sizeof(tmp));
   p = tmp;
 
-  while ((p = strtok(p, ",")) != NULL)
+  while ((p = strtok(p, ",")))
   {
     q = strrchr(p, '/');
     if (q)
@@ -592,7 +592,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 
     if (s->prefix)
     {
-      while (fgets(buffer, sizeof(buffer), fpout) != NULL)
+      while (fgets(buffer, sizeof(buffer), fpout))
       {
         state_puts(s->prefix, s);
         state_puts(buffer, s);
@@ -608,7 +608,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 
         state_puts(s->prefix, s);
         state_puts(buffer, s);
-        while (fgets(buffer, sizeof(buffer), fperr) != NULL)
+        while (fgets(buffer, sizeof(buffer), fperr))
         {
           state_puts(s->prefix, s);
           state_puts(buffer, s);

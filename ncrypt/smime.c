@@ -1624,7 +1624,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   fflush(smimeerr);
   rewind(smimeerr);
-  while (fgets(buf, sizeof(buf) - 1, smimeerr) != NULL)
+  while (fgets(buf, sizeof(buf) - 1, smimeerr))
   {
     err = 1;
     fputs(buf, stdout);
@@ -1773,7 +1773,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   err = 0;
   fflush(smimeerr);
   rewind(smimeerr);
-  while (fgets(buffer, sizeof(buffer) - 1, smimeerr) != NULL)
+  while (fgets(buffer, sizeof(buffer) - 1, smimeerr))
   {
     err = 1;
     fputs(buffer, stdout);
@@ -2130,7 +2130,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       }
     }
     char buf[HUGE_STRING];
-    while (fgets(buf, sizeof(buf) - 1, smimeout) != NULL)
+    while (fgets(buf, sizeof(buf) - 1, smimeout))
     {
       const size_t len = mutt_str_strlen(buf);
       if (len > 1 && buf[len - 2] == '\r')

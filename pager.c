@@ -1142,7 +1142,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     x++;
 
   /* Character Attributes */
-  if (AllowAnsi && a != NULL && buf[x] == 'm')
+  if (AllowAnsi && a && (buf[x] == 'm'))
   {
     if (pos == x)
     {

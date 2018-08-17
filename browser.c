@@ -849,7 +849,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
     init_state(state, menu);
 
-    while ((de = readdir(dp)) != NULL)
+    while ((de = readdir(dp)))
     {
       if (mutt_str_strcmp(de->d_name, ".") == 0)
         continue; /* we don't need . */

@@ -289,7 +289,7 @@ enum MailboxType mx_get_magic(const char *path)
     else
       return MUTT_MBOX;
   }
-  else if ((f = fopen(path, "r")) != NULL)
+  else if ((f = fopen(path, "r")))
   {
     struct utimbuf times;
     int ch;
@@ -656,7 +656,7 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash) != NULL)
+  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash))
   {
     /* continue from initial scan above */
     for (i = first_del; i < ctx->msgcount; i++)

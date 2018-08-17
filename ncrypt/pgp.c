@@ -257,7 +257,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
     int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)) != NULL)
+    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
     {
       if (regexec(PgpGoodSign->regex, line, 0, NULL, 0) == 0)
       {
@@ -304,7 +304,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
     int lineno = 0;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)) != NULL)
+    while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
     {
       if (regexec(PgpDecryptionOkay->regex, line, 0, NULL, 0) == 0)
       {
@@ -357,7 +357,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
   if (!PgpCheckGpgDecryptStatusFd)
     return pgp_check_pgp_decryption_okay_regex(fpin);
 
-  while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)) != NULL)
+  while ((line = mutt_file_read_line(line, &linelen, fpin, &lineno, 0)))
   {
     if (mutt_str_strncmp(line, "[GNUPG:] ", 9) != 0)
       continue;
@@ -423,8 +423,8 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
    */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc) != NULL;
-       complete = (strchr(buf, '\n') != NULL))
+  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc);
+       complete = (strchr(buf, '\n')))
   {
     if (!complete)
     {
@@ -537,7 +537,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
       }
 
       fputs(buf, tmpfp);
-      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin) != NULL)
+      while (bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin))
       {
         offset = ftello(s->fpin);
         bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
@@ -1043,7 +1043,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   /* Read the output from PGP, and make sure to change CRLF to LF, otherwise
    * read_mime_header has a hard time parsing the message.
    */
-  while (fgets(buf, sizeof(buf) - 1, pgpout) != NULL)
+  while (fgets(buf, sizeof(buf) - 1, pgpout))
   {
     size_t len = mutt_str_strlen(buf);
     if (len > 1 && buf[len - 2] == '\r')
@@ -1306,7 +1306,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
   /* Read back the PGP signature.  Also, change MESSAGE=>SIGNATURE as
    * recommended for future releases of PGP.
    */
-  while (fgets(buffer, sizeof(buffer) - 1, pgpout) != NULL)
+  while (fgets(buffer, sizeof(buffer) - 1, pgpout))
   {
     if (mutt_str_strcmp("-----BEGIN PGP MESSAGE-----\n", buffer) == 0)
       fputs("-----BEGIN PGP SIGNATURE-----\n", fp);
@@ -1319,7 +1319,7 @@ struct Body *pgp_class_sign_message(struct Body *a)
 
   /* check for errors from PGP */
   err = false;
-  while (fgets(buffer, sizeof(buffer) - 1, pgperr) != NULL)
+  while (fgets(buffer, sizeof(buffer) - 1, pgperr))
   {
     err = true;
     fputs(buffer, stdout);
@@ -1580,7 +1580,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 
   fflush(pgperr);
   rewind(pgperr);
-  while (fgets(buf, sizeof(buf) - 1, pgperr) != NULL)
+  while (fgets(buf, sizeof(buf) - 1, pgperr))
   {
     err = 1;
     fputs(buf, stdout);

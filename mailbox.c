@@ -242,7 +242,7 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
     return 0;
   }
 
-  while ((de = readdir(dirp)) != NULL)
+  while ((de = readdir(dirp)))
   {
     if (*de->d_name == '.')
       continue;
@@ -354,7 +354,7 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
   if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
   {
     if (mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
-                     &ctx) != NULL)
+                     &ctx))
     {
       mailbox->msg_count = ctx.msgcount;
       mailbox->msg_unread = ctx.unread;

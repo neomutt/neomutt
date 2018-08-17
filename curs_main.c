@@ -199,7 +199,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   /* Iterate all threads, perform collapse/uncollapse as needed */
   top = Context->tree;
   Context->collapsed = toggle ? !Context->collapsed : true;
-  while ((thread = top) != NULL)
+  while ((thread = top))
   {
     while (!thread->message)
       thread = thread->child;

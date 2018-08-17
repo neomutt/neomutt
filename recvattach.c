@@ -612,7 +612,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
             return;
           rc = mutt_save_attachment(fp, top, tfile, append, hdr);
-          if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
+          if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
             mutt_file_fclose(&fpout);
@@ -621,7 +621,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         else
         {
           rc = mutt_save_attachment(fp, top, tfile, MUTT_SAVE_APPEND, hdr);
-          if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
+          if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
             mutt_file_fclose(&fpout);

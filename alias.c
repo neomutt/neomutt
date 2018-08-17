@@ -59,7 +59,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
 
   while (a)
   {
-    if (!a->group && !a->personal && a->mailbox && strchr(a->mailbox, '@') == NULL)
+    if (!a->group && !a->personal && a->mailbox && !strchr(a->mailbox, '@'))
     {
       t = mutt_alias_lookup(a->mailbox);
 

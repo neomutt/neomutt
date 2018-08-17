@@ -179,7 +179,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 
   fp = mutt_file_fopen(path, "r");
 
-  mutt_debug(3, "bcache: get: '%s': %s\n", path, fp == NULL ? "no" : "yes");
+  mutt_debug(3, "bcache: get: '%s': %s\n", path, fp ? "yes" : "no");
 
   return fp;
 }

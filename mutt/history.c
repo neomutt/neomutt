@@ -221,7 +221,7 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = mutt_hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
   {
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
         *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -263,7 +263,7 @@ static void shrink_histfile(void)
     }
     rewind(f);
     line = 0;
-    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
     {
       if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
           *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -289,7 +289,7 @@ cleanup:
   FREE(&linebuf);
   if (tmpfp)
   {
-    if (fflush(tmpfp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
+    if ((fflush(tmpfp) == 0) && (f = fopen(HistoryFile, "w")))
     {
       rewind(tmpfp);
       mutt_file_copy_stream(tmpfp, f);
@@ -593,7 +593,7 @@ void mutt_hist_read_file(void)
   if (!f)
     return;
 
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
   {
     read = 0;
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||

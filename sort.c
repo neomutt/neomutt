@@ -435,7 +435,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {
     top = ctx->tree;
-    while ((thread = top) != NULL)
+    while ((thread = top))
     {
       while (!thread->message)
         thread = thread->child;

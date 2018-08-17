@@ -304,7 +304,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   else
     return NULL;
 
-  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")) != NULL; ++p)
+  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")); ++p)
   {
     if (*p == '<')
     {

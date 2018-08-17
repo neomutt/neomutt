@@ -126,7 +126,7 @@ int mutt_label_message(struct Header *hdr)
     return 0;
 
   *buf = '\0';
-  if (hdr != NULL && hdr->env->x_label != NULL)
+  if (hdr && hdr->env->x_label)
   {
     mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
   }

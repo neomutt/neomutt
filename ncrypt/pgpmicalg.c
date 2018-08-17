@@ -78,7 +78,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* find the beginning of ASCII armor */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     if (strncmp(line, "-----BEGIN", 10) == 0)
       break;
@@ -91,7 +91,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* skip the armor header */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     SKIPWS(r);
     if (!*r)
@@ -110,7 +110,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* find the checksum */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     if (*line == '=' || (strncmp(line, "-----END", 8) == 0))
       break;

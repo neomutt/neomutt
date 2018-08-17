@@ -681,7 +681,7 @@ char *mutt_str_skip_email_wsp(const char *s)
  */
 bool mutt_str_is_email_wsp(char c)
 {
-  return c && (strchr(EMAIL_WSP, c) != NULL);
+  return c && (strchr(EMAIL_WSP, c));
 }
 
 /**

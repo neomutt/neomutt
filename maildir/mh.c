@@ -414,7 +414,7 @@ bool mh_mailbox(struct Mailbox *mailbox, bool check_stats)
     dirp = opendir(mailbox->path);
     if (dirp)
     {
-      while ((de = readdir(dirp)) != NULL)
+      while ((de = readdir(dirp)))
       {
         if (*de->d_name == '.')
           continue;
@@ -968,7 +968,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
   if (!dirp)
     return -1;
 
-  while (((de = readdir(dirp)) != NULL) && (SigInt != 1))
+  while (((de = readdir(dirp))) && (SigInt != 1))
   {
     if ((ctx->magic == MUTT_MH && !mh_valid_message(de->d_name)) ||
         (ctx->magic == MUTT_MAILDIR && *de->d_name == '.'))
@@ -1364,7 +1364,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     void *data = mutt_hcache_fetch(hc, key, keylen);
     struct timeval *when = (struct timeval *) data;
 
-    if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
+    if (data && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
       struct Header *h = mutt_hcache_restore((unsigned char *) data);
       h->old = p->h->old;
@@ -1928,7 +1928,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
   }
 
   /* figure out what the next message number is */
-  while ((de = readdir(dirp)) != NULL)
+  while ((de = readdir(dirp)))
   {
     dep = de->d_name;
     if (*dep == ',')

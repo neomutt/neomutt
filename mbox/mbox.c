@@ -304,7 +304,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
   }
 
   loc = ftello(ctx->fp);
-  while ((fgets(buf, sizeof(buf), ctx->fp) != NULL) && (SigInt != 1))
+  while ((fgets(buf, sizeof(buf), ctx->fp)) && (SigInt != 1))
   {
     if (is_from(buf, return_path, sizeof(return_path), &t))
     {
@@ -842,7 +842,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
       char buffer[LONG_STRING];
       if (fseeko(ctx->fp, ctx->size, SEEK_SET) != 0)
         mutt_debug(1, "#1 fseek() failed\n");
-      if (fgets(buffer, sizeof(buffer), ctx->fp) != NULL)
+      if (fgets(buffer, sizeof(buffer), ctx->fp))
       {
         if ((ctx->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buffer, 5) == 0)) ||
             (ctx->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buffer) == 0)))

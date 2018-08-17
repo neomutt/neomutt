@@ -637,7 +637,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
 
     mutt_str_strfcpy(tmp, s, sizeof(tmp));
     char *r = tmp;
-    while ((r = strtok(r, " \t")) != NULL)
+    while ((r = strtok(r, " \t")))
     {
       p = mutt_addr_parse_list(p, r);
       r = NULL;
