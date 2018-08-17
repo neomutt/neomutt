@@ -1241,8 +1241,10 @@ msgstr "Tunnel error talking to %s: %s"
 
 #: copy.c:642
 #, c-format
-msgid "The length calculation was wrong by %ld bytes"
-msgstr "The length calculation was wrong by %ld bytes"
+msgid "The length calculation was wrong by %ld byte"
+msgid_plural "The length calculation was wrong by %ld bytes"
+msgstr[0] "The length calculation was wrong by %ld byte"
+msgstr[1] "The length calculation was wrong by %ld bytes"
 
 #: copy.c:721
 msgid "No decryption engine available for message"

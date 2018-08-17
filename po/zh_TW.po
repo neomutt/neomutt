@@ -1300,8 +1300,9 @@ msgstr "連線到 %s (%s) 時失敗"
 
 #: copy.c:642
 #, c-format
-msgid "The length calculation was wrong by %ld bytes"
-msgstr ""
+msgid "The length calculation was wrong by %ld byte"
+msgid_plural "The length calculation was wrong by %ld bytes"
+msgstr[0] ""
 
 #: copy.c:721
 msgid "No decryption engine available for message"
