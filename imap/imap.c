@@ -2672,8 +2672,7 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
     mutt_buffer_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
-     * continue to add new flags *
-     */
+     * continue to add new flags */
     if (imap_exec(idata, cmd->data, 0) != 0)
     {
       mutt_buffer_free(&cmd);

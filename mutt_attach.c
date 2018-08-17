@@ -372,7 +372,6 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * Viewer processes are opened and waited on synchronously so viewing an
  * attachment this way will block the main neomutt process until the viewer process
  * exits.
- *
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachCtx *actx)

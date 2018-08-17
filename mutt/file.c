@@ -910,7 +910,6 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  *     stat(path, &st);
  *     // ... do something else with st ...
  *     mutt_file_chmod_add_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
- *
  */
 int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
 {
@@ -962,7 +961,6 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  *     stat(path, &st);
  *     // ... do something else with st ...
  *     mutt_file_chmod_rm_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
- *
  */
 int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 {

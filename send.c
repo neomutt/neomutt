@@ -673,9 +673,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        *
        * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
-       * in his From header, and the reply-to has no display-name.
-       *
-       */
+       * in his From header, and the reply-to has no display-name.  */
       mutt_addr_append(to, env->from, false);
     }
     else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&

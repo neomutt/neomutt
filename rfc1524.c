@@ -492,7 +492,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
  * If both a nametemplate and oldfile are specified, the template is checked
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
- *
  */
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
 {

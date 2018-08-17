@@ -1417,7 +1417,6 @@ static int ssl_socket_open(struct Connection *conn)
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error
- *
  */
 int mutt_ssl_starttls(struct Connection *conn)
 {
