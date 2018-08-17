@@ -59,30 +59,31 @@ bool mutt_path_tidy_slash(char *buf)
   {
     *w++ = *r++;
 
-    if (r[-1] == '/')
+    if (r[-1] == '/') /* After a '/' ... */
     {
       for (; (r[0] == '/') || (r[0] == '.'); r++)
       {
-        if (r[0] == '/')
+        if (r[0] == '/') /* skip multiple /s */
           continue;
         if (r[0] == '.')
         {
-          if (r[1] == '/')
+          if (r[1] == '/') /* skip /./ */
           {
             r++;
             continue;
           }
-          else if (r[1] == '\0')
+          else if (r[1] == '\0') /* skip /.$ */
           {
             r[0] = '\0';
           }
-          break;
+          break; /* dot-anything-else isn't special */
         }
       }
     }
   }
 
-  if ((w[-1] == '/') && (w != (buf + 1)))
+  /* Strip a trailing / as long as it's not the only character */
+  if ((w > (buf + 1)) && (w[-1] == '/'))
     w--;
 
   *w = '\0';
