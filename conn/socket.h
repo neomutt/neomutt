@@ -29,6 +29,9 @@
 
 #include "mutt/mutt.h"
 
+/**
+ * enum ConnectionType - Type of connection
+ */
 enum ConnectionType
 {
   MUTT_CONNECTION_SIMPLE,

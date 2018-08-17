@@ -67,6 +67,9 @@ struct Mailbox
   time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
+/**
+ * struct MailboxNode - List of Mailboxes
+ */
 struct MailboxNode
 {
   struct Mailbox *b;
