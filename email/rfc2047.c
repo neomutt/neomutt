@@ -734,6 +734,7 @@ void rfc2047_decode(char **pd)
   }
 
   mutt_buffer_addch(&buf, '\0');
+  FREE(pd);
   *pd = buf.data;
 }
 
