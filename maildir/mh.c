@@ -1672,7 +1672,7 @@ static int maildir_mh_open_message(struct Context *ctx, struct Message *msg,
   snprintf(path, sizeof(path), "%s/%s", ctx->path, cur->path);
 
   msg->fp = fopen(path, "r");
-  if (msg->fp == NULL && errno == ENOENT && is_maildir)
+  if (!msg->fp && (errno == ENOENT) && is_maildir)
     msg->fp = maildir_open_find_message(ctx->path, cur->path, NULL);
 
   if (!msg->fp)

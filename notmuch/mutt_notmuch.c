@@ -408,7 +408,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   }
 
   /* if the query has changed, reset the window position */
-  if (NmQueryWindowCurrentSearch == NULL || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
+  if (!NmQueryWindowCurrentSearch || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
   if (!query_window_check_timebase(NmQueryWindowTimebase))
@@ -1974,14 +1974,14 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
-  if (get_query_string(tmp_ctxdata, false) == NULL)
+  if (!get_query_string(tmp_ctxdata, false))
     goto gone;
 
   mutt_debug(2, "#2 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
   mutt_str_strfcpy(buf, tmp_ctxdata->db_query, sizeof(buf));
 
-  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
+  if (!nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)))
     goto gone;
 
   strncpy(new_uri, buf, new_uri_sz);

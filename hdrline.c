@@ -429,7 +429,7 @@ static char *apply_subject_mods(struct Envelope *env)
   if (STAILQ_EMPTY(&SubjectRegexList))
     return env->subject;
 
-  if (env->subject == NULL || *env->subject == '\0')
+  if (!env->subject || *env->subject == '\0')
   {
     env->disp_subj = NULL;
     return NULL;

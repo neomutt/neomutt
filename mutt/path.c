@@ -427,7 +427,7 @@ size_t mutt_path_realpath(char *buf)
 {
   char s[PATH_MAX];
 
-  if (realpath(buf, s) == NULL)
+  if (!realpath(buf, s))
     return 0;
 
   return mutt_str_strfcpy(buf, s, sizeof(s));

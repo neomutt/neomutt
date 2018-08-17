@@ -1084,7 +1084,7 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       if (*buf == '\0')
         break;
     }
-    else if (fgets(buf, blen - 1, fp) == NULL)
+    else if (!fgets(buf, blen - 1, fp))
       break; /* don't loop forever */
     if (patmatch(pat, buf) == 0)
     {

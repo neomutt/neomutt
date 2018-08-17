@@ -154,7 +154,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
     }
 
     /* Find the next parameter */
-    if ((*s != ';') && (s = strchr(s, ';')) == NULL)
+    if ((*s != ';') && !(s = strchr(s, ';')))
       break; /* no more parameters */
 
     do

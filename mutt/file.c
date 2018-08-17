@@ -304,7 +304,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   {
     char abs_oldpath[PATH_MAX];
 
-    if ((getcwd(abs_oldpath, sizeof(abs_oldpath)) == NULL) ||
+    if (!getcwd(abs_oldpath, sizeof(abs_oldpath)) ||
         ((strlen(abs_oldpath) + 1 + strlen(oldpath) + 1) > sizeof(abs_oldpath)))
     {
       return -1;
@@ -612,7 +612,7 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 
   while (true)
   {
-    if (fgets(s + offset, *size - offset, fp) == NULL)
+    if (!fgets(s + offset, *size - offset, fp))
     {
       FREE(&s);
       return NULL;

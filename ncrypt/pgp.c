@@ -490,7 +490,7 @@ int pgp_class_application_handler(struct Body *m, struct State *s)
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (fgets(buf, sizeof(buf), s->fpin) == NULL)
+    if (!fgets(buf, sizeof(buf), s->fpin))
       break;
 
     offset = ftello(s->fpin);

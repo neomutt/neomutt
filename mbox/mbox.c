@@ -144,7 +144,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
   while (true)
   {
-    if (fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL)
+    if (!fgets(buf, sizeof(buf) - 1, ctx->fp))
       break;
 
     if (SigInt == 1)
@@ -166,7 +166,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       hdr->offset = loc;
       hdr->index = ctx->msgcount;
 
-      if (fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL)
+      if (!fgets(buf, sizeof(buf) - 1, ctx->fp))
       {
         /* TODO: memory leak??? */
         mutt_debug(1, "unexpected EOF\n");
@@ -200,7 +200,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         if ((tmploc > 0) && (tmploc < ctx->size))
         {
           if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 ||
-              fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL ||
+              !fgets(buf, sizeof(buf) - 1, ctx->fp) ||
               (mutt_str_strcmp(MMDF_SEP, buf) != 0))
           {
             if (fseeko(ctx->fp, loc, SEEK_SET) != 0)
@@ -222,7 +222,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
           loc = ftello(ctx->fp);
           if (loc < 0)
             return -1;
-          if (fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL)
+          if (!fgets(buf, sizeof(buf) - 1, ctx->fp))
             break;
           lines++;
         } while (mutt_str_strcmp(buf, MMDF_SEP) != 0);
@@ -363,7 +363,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
            * to see a valid message separator at this point in the stream
            */
           if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 ||
-              fgets(buf, sizeof(buf), ctx->fp) == NULL ||
+              !fgets(buf, sizeof(buf), ctx->fp) ||
               (mutt_str_strncmp("From ", buf, 5) != 0))
           {
             mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
@@ -1018,7 +1018,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
   i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600);
-  if ((i == -1) || (fp = fdopen(i, "w")) == NULL)
+  if ((i == -1) || !(fp = fdopen(i, "w")))
   {
     if (-1 != i)
     {
@@ -1175,7 +1175,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (fseeko(ctx->fp, offset, SEEK_SET) != 0 || /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
-      fgets(buf, sizeof(buf), ctx->fp) == NULL ||
+      !fgets(buf, sizeof(buf), ctx->fp) ||
       (ctx->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buf, 5) != 0)) ||
       (ctx->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {

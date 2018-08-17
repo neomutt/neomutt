@@ -622,7 +622,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
+      if (!tmp && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
       {
         /* ok, it's a subclass somewhere on this branch */
 
@@ -724,7 +724,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           else
           {
             /* longer than the current prefix: try subclassing it */
-            if (tmp == NULL && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
+            if (!tmp && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
                                                  q_list->length - offset) == 0))
             {
               /* still a subclass: go down one level */
@@ -944,7 +944,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
         if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
         {
-          if (q_classify && line_info[n].quote == NULL)
+          if (q_classify && !line_info[n].quote)
           {
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
                                                 pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -962,7 +962,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     }
     else
     {
-      if (q_classify && line_info[n].quote == NULL)
+      if (q_classify && !line_info[n].quote)
       {
         line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
                                             pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -1638,7 +1638,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
    * length of the quote prefix.
    */
   if ((flags & MUTT_SHOWCOLOR) && !(*line_info)[n].continuation &&
-      (*line_info)[n].type == MT_COLOR_QUOTED && (*line_info)[n].quote == NULL)
+      ((*line_info)[n].type == MT_COLOR_QUOTED) && !(*line_info)[n].quote)
   {
     if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {

@@ -142,7 +142,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   regmatch_t match[4];
   size_t nmatch = 4;
 
-  if (re == NULL)
+  if (!re)
   {
     re = mutt_regex_compile("=\\?"
                             "([^][()<>@,;:\\\"/?. =]+)" /* charset */

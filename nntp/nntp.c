@@ -1164,7 +1164,7 @@ static int parse_overview_line(char *line, void *data)
 
     if (*header)
     {
-      if (strstr(header, ":full") == NULL && fputs(header, fp) == EOF)
+      if (!strstr(header, ":full") && (fputs(header, fp) == EOF))
       {
         mutt_file_fclose(&fp);
         return -1;
@@ -1296,7 +1296,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   fc.last = last;
   fc.restore = restore;
   fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
-  if (fc.messages == NULL)
+  if (!fc.messages)
     return -1;
 #ifdef USE_HCACHE
   fc.hc = hc;
@@ -2214,7 +2214,7 @@ static int nntp_mbox_close(struct Context *ctx)
     return 0;
 
   nntp_tmp = mutt_hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
-  if (nntp_tmp == NULL || nntp_tmp != nntp_data)
+  if (!nntp_tmp || nntp_tmp != nntp_data)
     nntp_data_free(nntp_data);
   return 0;
 }

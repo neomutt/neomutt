@@ -1228,7 +1228,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
     }
   }
 
-  if (thread == top && (thread = thread->child) == NULL)
+  if ((thread == top) && !(thread = thread->child))
   {
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))

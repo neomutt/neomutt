@@ -83,7 +83,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  rc = (mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
+  rc = mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) ? 0 : -1;
 
   MboxType = omagic;
 
@@ -185,7 +185,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  if (mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx) == NULL)
+  if (!mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx))
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */

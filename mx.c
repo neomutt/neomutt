@@ -835,7 +835,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      if (mx_mbox_open(mbox, MUTT_APPEND, &f) == NULL)
+      if (!mx_mbox_open(mbox, MUTT_APPEND, &f))
       {
         ctx->closing = false;
         return -1;

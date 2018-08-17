@@ -213,7 +213,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
     int bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
     bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
-      bad = bad || (strchr("-_+=.", *s) == NULL && !iswalnum(wc));
+      bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
     else
       bad = bad || !iswalnum(wc);
     if (bad)

@@ -1330,7 +1330,7 @@ int mutt_index_menu(void)
             struct ListNode *ref = NULL;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
-              if (mutt_hash_find(Context->id_hash, ref->data) == NULL)
+              if (!mutt_hash_find(Context->id_hash, ref->data))
               {
                 rc2 = nntp_check_msgid(Context, ref->data);
                 if (rc2 < 0)

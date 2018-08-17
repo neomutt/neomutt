@@ -782,7 +782,7 @@ int mix_check_message(struct Header *msg)
 
   for (struct Address *a = msg->env->to; a; a = a->next)
   {
-    if (!a->group && strchr(a->mailbox, '@') == NULL)
+    if (!a->group && !strchr(a->mailbox, '@'))
     {
       need_hostname = true;
       break;

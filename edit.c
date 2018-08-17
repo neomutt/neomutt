@@ -101,7 +101,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   fseeko(f, offset, SEEK_SET);
   while (bytes > 0)
   {
-    if (fgets(p, tmplen - 1, f) == NULL)
+    if (!fgets(p, tmplen - 1, f))
       break;
     bytes -= mutt_str_strlen(p);
     if (*bufmax == *buflen)

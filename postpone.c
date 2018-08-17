@@ -162,7 +162,7 @@ int mutt_num_postponed(bool force)
     if (optnews)
       OptNews = false;
 #endif
-    if (mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
+    if (!mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx))
       PostCount = 0;
     else
       PostCount = ctx.msgcount;
@@ -311,7 +311,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     /* only one message, so just use that one. */
     h = PostContext->hdrs[0];
   }
-  else if ((h = select_msg()) == NULL)
+  else if (!(h = select_msg()))
   {
     mx_mbox_close(PostContext, NULL);
     FREE(&PostContext);
@@ -568,7 +568,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && (msg = mx_msg_open(ctx, hdr->msgno)) == NULL)
+  if (!fp && !(msg = mx_msg_open(ctx, hdr->msgno)))
     return -1;
 
   if (!fp)
@@ -605,7 +605,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       goto bail;
 
     mutt_message(_("Decrypting message..."));
-    if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
+    if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || !b)
     {
       goto bail;
     }

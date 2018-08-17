@@ -527,7 +527,7 @@ char *mutt_hist_next(enum HistoryClass hclass)
       next = 0;
     if (next == h->last)
       break;
-  } while (h->hist[next] == NULL);
+  } while (!h->hist[next]);
 
   h->cur = next;
   return NONULL(h->hist[h->cur]);
@@ -555,7 +555,7 @@ char *mutt_hist_prev(enum HistoryClass hclass)
       prev = History;
     if (prev == h->last)
       break;
-  } while (h->hist[prev] == NULL);
+  } while (!h->hist[prev]);
 
   h->cur = prev;
   return NONULL(h->hist[h->cur]);

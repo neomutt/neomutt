@@ -117,7 +117,7 @@ static int lua_mutt_call(lua_State *l)
   }
   else
   {
-    if (lua_pushstring(l, err.data) == NULL)
+    if (!lua_pushstring(l, err.data))
       handle_error(l);
     else
       rc++;
@@ -303,7 +303,7 @@ static int lua_mutt_enter(lua_State *l)
   }
   else
   {
-    if (lua_pushstring(l, err.data) == NULL)
+    if (!lua_pushstring(l, err.data))
       handle_error(l);
     else
       rc++;

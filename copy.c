@@ -102,7 +102,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     {
       nl = strchr(buf, '\n');
 
-      if ((fgets(buf, sizeof(buf), in)) == NULL)
+      if (!fgets(buf, sizeof(buf), in))
         break;
 
       /* Is it the beginning of a header? */
@@ -177,7 +177,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     nl = strchr(buf, '\n');
 
     /* Read a line */
-    if ((fgets(buf, sizeof(buf), in)) == NULL)
+    if (!fgets(buf, sizeof(buf), in))
       break;
 
     /* Is it the beginning of a header? */
@@ -820,7 +820,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 
   if (fseeko(fpin, hdr->offset, SEEK_SET) < 0)
     return -1;
-  if (fgets(buf, sizeof(buf), fpin) == NULL)
+  if (!fgets(buf, sizeof(buf), fpin))
     return -1;
 
   msg = mx_msg_open_new(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);

@@ -1299,7 +1299,7 @@ bool crypt_is_numerical_keyid(const char *s)
   if (strlen(s) % 8)
     return false;
   while (*s)
-    if (strchr("0123456789ABCDEFabcdef", *s++) == NULL)
+    if (!strchr("0123456789ABCDEFabcdef", *s++))
       return false;
 
   return true;

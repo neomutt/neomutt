@@ -2971,7 +2971,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
   }
 
   /* If we failed to open a message, return with error */
-  if (!fp && (msg = mx_msg_open(Context, h->msgno)) == NULL)
+  if (!fp && !(msg = mx_msg_open(Context, h->msgno)))
     return -1;
 
   if (!fp)
@@ -3175,7 +3175,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path);
 #endif
-  if (mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
+  if (!mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &f))
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
     goto done;

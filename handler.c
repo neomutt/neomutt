@@ -314,7 +314,7 @@ static void decode_quoted(struct State *s, long len, bool istext, iconv_t cd)
      * lines are at most 76 characters, but we should be liberal about what
      * we accept.
      */
-    if (fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fpin) == NULL)
+    if (!fgets(line, MIN((ssize_t) sizeof(line), len + 1), s->fpin))
       break;
 
     size_t linelen = strlen(line);
@@ -374,7 +374,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
 
   while (len > 0)
   {
-    if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
+    if (!fgets(tmps, sizeof(tmps), s->fpin))
       return;
     len -= mutt_str_strlen(tmps);
     if ((mutt_str_strncmp(tmps, "begin", 5) == 0) && ISSPACE(tmps[5]))
@@ -382,7 +382,7 @@ static void decode_uuencoded(struct State *s, long len, bool istext, iconv_t cd)
   }
   while (len > 0)
   {
-    if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
+    if (!fgets(tmps, sizeof(tmps), s->fpin))
       return;
     len -= mutt_str_strlen(tmps);
     if (mutt_str_strncmp(tmps, "end", 3) == 0)

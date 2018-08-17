@@ -642,7 +642,7 @@ static int active_get_cache(struct NntpServer *nserv)
   if (!fp)
     return -1;
 
-  if (fgets(buf, sizeof(buf), fp) == NULL || sscanf(buf, "%ld%s", &t, file) != 1 || t == 0)
+  if (!fgets(buf, sizeof(buf), fp) || (sscanf(buf, "%ld%s", &t, file) != 1) || (t == 0))
   {
     mutt_file_fclose(&fp);
     return -1;
