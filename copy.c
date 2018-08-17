@@ -639,7 +639,9 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       LOFF_T fail = ((ftello(fpout) - new_offset) - new_length);
       if (fail)
       {
-        mutt_error(_("The length calculation was wrong by %ld bytes"), fail);
+        mutt_error(ngettext("The length calculation was wrong by %ld byte",
+                            "The length calculation was wrong by %ld bytes", fail),
+                   fail);
         new_length += fail;
       }
 

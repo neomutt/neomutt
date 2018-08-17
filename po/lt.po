@@ -1247,12 +1247,13 @@ msgstr "Tunelis į %s grąžino klaidą %d (%s)"
 msgid "Tunnel error talking to %s: %s"
 msgstr "Tunelio klaida kalbant su %s: %s"
 
-# FIXME: this should use ngettext(), see
-# https://github.com/neomutt/neomutt/issues/1276#issuecomment-411729048
 #: copy.c:642
-#, c-format
-msgid "The length calculation was wrong by %ld bytes"
-msgstr "Ilgio skaičiavimas suklydo %ld baitais"
+#, fuzzy, c-format
+msgid "The length calculation was wrong by %ld byte"
+msgid_plural "The length calculation was wrong by %ld bytes"
+msgstr[0] "Ilgio skaičiavimas suklydo %ld baitais"
+msgstr[1] "Ilgio skaičiavimas suklydo %ld baitais"
+msgstr[2] "Ilgio skaičiavimas suklydo %ld baitais"
 
 #: copy.c:721
 msgid "No decryption engine available for message"
