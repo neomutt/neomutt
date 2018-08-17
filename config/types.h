@@ -41,10 +41,9 @@
 
 #define DTYPE(x) ((x) & 0x1f) /**< Mask for the Data Type */
 
-#define DT_NOT_EMPTY    0x40  /**< Empty strings are not allowed */
-#define DT_NOT_NEGATIVE 0x80  /**< Negative numbers are not allowed */
-
-#define DT_MAILBOX      0x40  /**< DT_PATH: Don't perform path expansions */
+#define DT_NOT_EMPTY     0x40  /**< Empty strings are not allowed */
+#define DT_NOT_NEGATIVE  0x80  /**< Negative numbers are not allowed */
+#define DT_MAILBOX      0x100  /**< DT_PATH: Don't perform path expansions */
 
 /* subtypes for... */
 #define DT_SUBTYPE_MASK 0xfe0 /**< Mask for the Data Subtype */
