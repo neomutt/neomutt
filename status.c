@@ -62,9 +62,6 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
   return buf;
 }
 
-static void status_line(char *buf, size_t buflen, size_t col, int cols,
-                        struct Menu *menu, const char *p);
-
 /**
  * status_format_str - Create the status bar string - Implements ::format_t
  *
@@ -354,27 +351,17 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   }
 
   if (optional)
-    status_line(buf, buflen, col, cols, menu, if_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, if_str, status_format_str,
+                        (unsigned long) menu, 0);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    status_line(buf, buflen, col, cols, menu, else_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, else_str, status_format_str,
+                        (unsigned long) menu, 0);
+  }
 
   return src;
-}
-
-/**
- * status_line - Create the status line
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  col    Starting column
- * @param[in]  cols   Number of screen columns
- * @param[in]  menu   Current menu
- * @param[in]  p      Format string
- */
-static void status_line(char *buf, size_t buflen, size_t col, int cols,
-                        struct Menu *menu, const char *p)
-{
-  mutt_expando_format(buf, buflen, col, cols, p, status_format_str,
-                      (unsigned long) menu, 0);
 }
 
 /**
