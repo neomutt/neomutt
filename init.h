@@ -448,7 +448,6 @@ struct ConfigDef MuttVars[] = {
   ** .ts
   ** set certificate_file=~/.neomutt/certificates
   ** .te
-  **
   */
 #endif
   { "change_folder_next", DT_BOOL, R_NONE, &ChangeFolderNext, false },
@@ -2572,7 +2571,6 @@ struct ConfigDef MuttVars[] = {
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
   ** (PGP only)
-  **
   */
   { "pgp_retainable_sigs", DT_BOOL, R_NONE, &PgpRetainableSigs, false },
   /*
@@ -3225,7 +3223,6 @@ struct ConfigDef MuttVars[] = {
   ** When this variable is \fIunset\fP, scoring is turned off.  This can
   ** be useful to selectively disable scoring for certain folders when the
   ** $$score_threshold_delete variable and related are used.
-  **
   */
   { "score_threshold_delete", DT_NUMBER, R_NONE, &ScoreThresholdDelete, -1 },
   /*

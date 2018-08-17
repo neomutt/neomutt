@@ -1029,11 +1029,11 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 /**
  * mutt_aside_thread - Find the next/previous (sub)thread
  * @param hdr        Search from this message
- * @param dir        Direction to search: 'true' forwards, 'false' backwards
+ * @param forwards   Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval num Index into the virtual email table
  */
-int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
+int mutt_aside_thread(struct Header *hdr, bool forwards, bool subthreads)
 {
   struct MuttThread *cur = NULL;
   struct Header *tmp = NULL;
@@ -1053,7 +1053,7 @@ int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
   }
   else
   {
-    if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
+    if (forwards ^ ((Sort & SORT_REVERSE) != 0))
     {
       while (!cur->next && cur->parent)
         cur = cur->parent;
@@ -1065,7 +1065,7 @@ int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
     }
   }
 
-  if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
+  if (forwards ^ ((Sort & SORT_REVERSE) != 0))
   {
     do
     {

@@ -189,7 +189,7 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
  *                   one in the list
  * @retval ptr Head of the remaining Address List
  */
-static struct Address *remove_user(struct Address *a, int leave_only)
+static struct Address *remove_user(struct Address *a, bool leave_only)
 {
   struct Address *top = NULL, *last = NULL;
 
@@ -673,9 +673,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        *
        * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
-       * in his From header, and the reply-to has no display-name.
-       *
-       */
+       * in his From header, and the reply-to has no display-name.  */
       mutt_addr_append(to, env->from, false);
     }
     else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&
@@ -1156,7 +1154,7 @@ void mutt_set_followup_to(struct Envelope *e)
     }
 
     /* remove ourselves from the mail-followup-to header */
-    e->mail_followup_to = remove_user(e->mail_followup_to, 0);
+    e->mail_followup_to = remove_user(e->mail_followup_to, false);
 
     /* If we are not subscribed to any of the lists in question,
      * re-add ourselves to the mail-followup-to header.  The

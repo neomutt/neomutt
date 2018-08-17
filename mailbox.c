@@ -689,7 +689,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
 
 #ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(b, 1);
+    mutt_sb_notify_mailbox(b, true);
 #endif
   }
   return 0;
@@ -748,7 +748,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
           (mutt_str_strcasecmp(buf, np->b->desc) == 0))
       {
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(np->b, 0);
+        mutt_sb_notify_mailbox(np->b, false);
 #endif
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
         mailbox_free(&np->b);

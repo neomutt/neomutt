@@ -14748,6 +14748,16 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
           </group>
         </cmdsynopsis>
         <para>
+          <literal>virtual-mailboxes</literal> is like the
+          <link linkend="mailboxes">mailboxes</link> command, except that it
+          takes a description.  The mailbox will be watched for new mail and
+          will appear in the sidebar.
+        </para>
+        <para>
+          <literal>unvirtual-mailboxes</literal> is identical to the
+          <literal>unmailboxes</literal> command.
+        </para>
+        <para>
           More commands about tags can be found in
           <link linkend="custom-tags-commands">Custom backend Tags Feature</link>
         </para>
