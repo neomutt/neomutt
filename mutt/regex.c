@@ -127,13 +127,10 @@ void mutt_regex_free(struct Regex **r)
  */
 int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err)
 {
-  struct RegexListNode *t = NULL, *last = NULL;
-  struct Regex *rx = NULL;
-
   if (!str || !*str)
     return 0;
 
-  rx = mutt_regex_compile(str, flags);
+  struct Regex *rx = mutt_regex_compile(str, flags);
   if (!rx)
   {
     mutt_buffer_printf(err, "Bad regex: %s\n", str);
@@ -141,29 +138,23 @@ int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct 
   }
 
   /* check to make sure the item is not already on this rl */
-  STAILQ_FOREACH_FROM(last, rl, entries)
+  struct RegexListNode *np = NULL;
+  STAILQ_FOREACH_FROM(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, last->regex->pattern) == 0)
-    {
-      /* already on the rl, so just ignore it */
-      last = NULL;
-      break;
-    }
-    if (!STAILQ_NEXT(last, entries))
-      break;
+    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+      break; /* already on the rl */
   }
 
-  if (STAILQ_EMPTY(rl) || last)
+  if (np)
   {
-    t = mutt_regexlist_new();
-    t->regex = rx;
-    if (last)
-      STAILQ_INSERT_TAIL(rl, t, entries);
-    else
-      STAILQ_INSERT_HEAD(rl, t, entries);
-  }
-  else /* duplicate */
     mutt_regex_free(&rx);
+  }
+  else
+  {
+    np = mutt_regexlist_new();
+    np->regex = rx;
+    STAILQ_INSERT_TAIL(rl, np, entries);
+  }
 
   return 0;
 }
@@ -174,18 +165,17 @@ int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct 
  */
 void mutt_regexlist_free(struct RegexList *rl)
 {
-  struct RegexListNode *np = STAILQ_FIRST(rl), *next = NULL;
-
   if (!rl)
     return;
-  while (np)
-  {
-    mutt_regex_free(&np->regex);
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np);
-    np = next;
-  }
 
+  struct RegexListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
+  {
+    STAILQ_REMOVE(rl, np, RegexListNode, entries);
+    mutt_regex_free(&np->regex);
+    FREE(&np);
+  }
+  STAILQ_INIT(rl);
 }
 
 /**
@@ -233,26 +223,28 @@ struct RegexListNode *mutt_regexlist_new(void)
  */
 int mutt_regexlist_remove(struct RegexList *rl, const char *str)
 {
-  struct RegexListNode *np = STAILQ_FIRST(rl), *next = NULL;
-  int rc = -1;
+  if (!rl || !str)
+    return -1;
 
   if (mutt_str_strcmp("*", str) == 0)
   {
     mutt_regexlist_free(rl); /* "unCMD *" means delete all current entries */
-    rc = 0;
+    return 0;
   }
-  else
+
+  int rc = -1;
+  struct RegexListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    while(np)
+    if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
     {
-      if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
-        mutt_regex_free(&np->regex);
-      next = STAILQ_NEXT(np, entries);
+      STAILQ_REMOVE(rl, np, RegexListNode, entries);
+      mutt_regex_free(&np->regex);
       FREE(&np);
-      np = next;
+      rc = 0;
     }
-    rc = 0;
   }
+
   return rc;
 }
 
