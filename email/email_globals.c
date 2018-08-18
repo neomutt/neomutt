@@ -38,7 +38,7 @@ char *SpamSeparator = NULL; ///< Config: Separator for multiple spam headers ///
 bool Weed = false; ///< Config: Filter headers when displaying/forwarding/printing/replying
 
 /* Global variables */
-struct RegexList *NoSpamList = NULL;
+struct RegexList NoSpamList = STAILQ_HEAD_INITIALIZER(NoSpamList);
 struct ReplaceList *SpamList = NULL;
 struct ListHead Ignore = STAILQ_HEAD_INITIALIZER(Ignore);
 struct ListHead UnIgnore = STAILQ_HEAD_INITIALIZER(UnIgnore);

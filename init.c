@@ -1924,7 +1924,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       }
       FREE(&templ.data);
     }
-
     /* If not, try to remove from the nospam list. */
     else
     {
@@ -1933,7 +1932,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
 
     return 0;
   }
-
   /* MUTT_NOSPAM is for nospam commands. */
   else if (data == MUTT_NOSPAM)
   {

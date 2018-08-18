@@ -35,7 +35,7 @@ extern bool                Weed;
 
 /* Global variables */
 extern struct ListHead     Ignore;
-extern struct RegexList *  NoSpamList;
+extern struct RegexList    NoSpamList;
 extern struct ReplaceList *SpamList;
 extern struct ListHead     UnIgnore;
 

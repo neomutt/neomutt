@@ -125,9 +125,9 @@ void mutt_regex_free(struct Regex **r)
  * @retval 0  Success, Regex compiled and added to the list
  * @retval -1 Error, see message in 'err'
  */
-int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct Buffer *err)
+int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err)
 {
-  struct RegexList *t = NULL, *last = NULL;
+  struct RegexListNode *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
 
   if (!str || !*str)
@@ -141,7 +141,7 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
   }
 
   /* check to make sure the item is not already on this rl */
-  for (last = *rl; last; last = last->next)
+  STAILQ_FOREACH_FROM(last, rl, entries)
   {
     if (mutt_str_strcasecmp(rx->pattern, last->regex->pattern) == 0)
     {
@@ -149,18 +149,18 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
       last = NULL;
       break;
     }
-    if (!last->next)
+    if (!STAILQ_NEXT(last, entries))
       break;
   }
 
-  if (!*rl || last)
+  if (STAILQ_EMPTY(rl) || last)
   {
     t = mutt_regexlist_new();
     t->regex = rx;
     if (last)
-      last->next = t;
+      STAILQ_INSERT_TAIL(rl, t, entries);
     else
-      *rl = t;
+      STAILQ_INSERT_HEAD(rl, t, entries);
   }
   else /* duplicate */
     mutt_regex_free(&rx);
@@ -172,19 +172,20 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
  * mutt_regexlist_free - Free a RegexList object
  * @param rl RegexList to free
  */
-void mutt_regexlist_free(struct RegexList **rl)
+void mutt_regexlist_free(struct RegexList *rl)
 {
-  struct RegexList *p = NULL;
+  struct RegexListNode *np = STAILQ_FIRST(rl), *next = NULL;
 
   if (!rl)
     return;
-  while (*rl)
+  while (np)
   {
-    p = *rl;
-    *rl = (*rl)->next;
-    mutt_regex_free(&p->regex);
-    FREE(&p);
+    mutt_regex_free(&np->regex);
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
   }
+
 }
 
 /**
@@ -195,16 +196,16 @@ void mutt_regexlist_free(struct RegexList **rl)
  */
 bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 {
+  struct RegexListNode *np = NULL;
   if (!str)
     return false;
-
-  for (; rl; rl = rl->next)
+  STAILQ_FOREACH(np, rl, entries)
   {
-    if (!rl->regex || !rl->regex->regex)
+    if (!np->regex || !np->regex->regex)
       continue;
-    if (regexec(rl->regex->regex, str, 0, NULL, 0) == 0)
+    if (regexec(np->regex->regex, str, 0, NULL, 0) == 0)
     {
-      mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
+      mutt_debug(5, "%s matches %s\n", str, np->regex->pattern);
       return true;
     }
   }
@@ -216,9 +217,9 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
  * mutt_regexlist_new - Create a new RegexList
  * @retval ptr New RegexList object
  */
-struct RegexList *mutt_regexlist_new(void)
+struct RegexListNode *mutt_regexlist_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct RegexList));
+  return mutt_mem_calloc(1, sizeof(struct RegexListNode));
 }
 
 /**
@@ -230,9 +231,9 @@ struct RegexList *mutt_regexlist_new(void)
  *
  * If the pattern is "*", then all the Regexes are removed.
  */
-int mutt_regexlist_remove(struct RegexList **rl, const char *str)
+int mutt_regexlist_remove(struct RegexList *rl, const char *str)
 {
-  struct RegexList *p = NULL, *last = NULL;
+  struct RegexListNode *np = STAILQ_FIRST(rl), *next = NULL;
   int rc = -1;
 
   if (mutt_str_strcmp("*", str) == 0)
@@ -242,26 +243,15 @@ int mutt_regexlist_remove(struct RegexList **rl, const char *str)
   }
   else
   {
-    p = *rl;
-    last = NULL;
-    while (p)
+    while(np)
     {
-      if (mutt_str_strcasecmp(str, p->regex->pattern) == 0)
-      {
-        mutt_regex_free(&p->regex);
-        if (last)
-          last->next = p->next;
-        else
-          (*rl) = p->next;
-        FREE(&p);
-        rc = 0;
-      }
-      else
-      {
-        last = p;
-        p = p->next;
-      }
+      if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
+        mutt_regex_free(&np->regex);
+      next = STAILQ_NEXT(np, entries);
+      FREE(&np);
+      np = next;
     }
+    rc = 0;
   }
   return rc;
 }
