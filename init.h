@@ -90,7 +90,9 @@
 
 // clang-format off
 #ifndef _MAKEDOC
-/* flags to parse_set() */
+/**
+ * enum MuttSetCommand - Flags for parse_set()
+ */
 enum MuttSetCommand
 {
   MUTT_SET_SET,   /**< default is to set all vars */

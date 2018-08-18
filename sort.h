@@ -37,7 +37,7 @@ extern bool ReverseAlias;
 #define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
 
 /**
- * sort_t - Prototype for a function to compare two emails
+ * typedef sort_t - Prototype for a function to compare two emails
  * @param a First email
  * @param b Second email
  * @retval -1 a precedes b

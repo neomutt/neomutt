@@ -23,6 +23,10 @@
 #ifndef _MUTT_SIGNAL_H
 #define _MUTT_SIGNAL_H
 
+/**
+ * typedef sig_handler_t - Handler for signals
+ * @param sig Signal number, e.g. SIGINT
+ */
 typedef void (*sig_handler_t)(int sig);
 
 void mutt_sig_allow_interrupt(int disposition);

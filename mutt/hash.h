@@ -48,7 +48,7 @@ struct HashElem
 };
 
 /**
- * hash_destructor_t - Prototype for Hash Destructor callback function
+ * typedef hash_destructor_t - Prototype for Hash Destructor callback function
  * @param type Hash Type
  * @param obj  Object to free
  * @param data Data associated with the Hash

@@ -699,6 +699,16 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
 }
 #endif /* USE_NNTP */
 
+/**
+ * add_folder - Add a folder to the browser list
+ * @param m     Menu to 
+ * @param state Browser state
+ * @param name  Name of folder
+ * @param desc  Description of folder
+ * @param s     stat info for the folder
+ * @param b     Mailbox
+ * @param data  Data to associate with the folder
+ */
 static void add_folder(struct Menu *m, struct BrowserState *state,
                        const char *name, const char *desc, const struct stat *s,
                        struct Mailbox *b, void *data)

@@ -41,7 +41,7 @@ enum FormatFlag
 };
 
 /**
- * format_t - Prototype for a mutt_expando_format() callback function
+ * typedef format_t - Prototype for a mutt_expando_format() callback function
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Starting column

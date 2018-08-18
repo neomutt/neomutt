@@ -342,6 +342,14 @@ static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * compare_key_address - Compare Key addresses and IDs for sorting
+ * @param a First key
+ * @param b Second key
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int compare_key_address(const void *a, const void *b)
 {
   int r;

@@ -49,7 +49,7 @@
 #define CONTINUATION_BYTE(c) (((c) &0xc0) == 0x80)
 
 /**
- * encoder_t - Prototype for an encoding function
+ * typedef encoder_t - Prototype for an encoding function
  * @param str    String to encode
  * @param buf    Buffer for result
  * @param buflen Length of buffer
