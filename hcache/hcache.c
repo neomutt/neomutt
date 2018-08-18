@@ -268,7 +268,6 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
       unsigned int intval;
     } digest;
     struct Md5Ctx ctx;
-    struct ReplaceList *spam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -278,10 +277,11 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     mutt_md5_process_bytes(&hcachever, sizeof(hcachever), &ctx);
 
     /* Mix in user's spam list */
-    for (spam = SpamList; spam; spam = spam->next)
+    struct ReplaceListNode *sp = NULL;
+    STAILQ_FOREACH(sp, &SpamList, entries)
     {
-      mutt_md5_process(spam->regex->pattern, &ctx);
-      mutt_md5_process(spam->template, &ctx);
+      mutt_md5_process(sp->regex->pattern, &ctx);
+      mutt_md5_process(sp->template, &ctx);
     }
 
     /* Mix in user's nospam list */

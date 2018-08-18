@@ -39,6 +39,6 @@ bool Weed = false; ///< Config: Filter headers when displaying/forwarding/printi
 
 /* Global variables */
 struct RegexList NoSpamList = STAILQ_HEAD_INITIALIZER(NoSpamList);
-struct ReplaceList *SpamList = NULL;
+struct ReplaceList SpamList = STAILQ_HEAD_INITIALIZER(SpamList);
 struct ListHead Ignore = STAILQ_HEAD_INITIALIZER(Ignore);
 struct ListHead UnIgnore = STAILQ_HEAD_INITIALIZER(UnIgnore);

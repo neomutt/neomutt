@@ -1011,7 +1011,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_
 
     *buf = '\0';
 
-    if (mutt_replacelist_match(SpamList, buf, sizeof(buf), line))
+    if (mutt_replacelist_match(&SpamList, buf, sizeof(buf), line))
     {
       if (!mutt_regexlist_match(&NoSpamList, line))
       {

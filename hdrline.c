@@ -426,7 +426,7 @@ static char *apply_subject_mods(struct Envelope *env)
   if (!env)
     return NULL;
 
-  if (!SubjectRegexList)
+  if (STAILQ_EMPTY(&SubjectRegexList))
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
@@ -435,7 +435,7 @@ static char *apply_subject_mods(struct Envelope *env)
     return NULL;
   }
 
-  env->disp_subj = mutt_replacelist_apply(SubjectRegexList, NULL, 0, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, NULL, 0, env->subject);
   return env->disp_subj;
 }
 
@@ -1089,7 +1089,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       char *subj = NULL;
       if (hdr->env->disp_subj)
         subj = hdr->env->disp_subj;
-      else if (SubjectRegexList)
+      else if (!STAILQ_EMPTY(&SubjectRegexList))
         subj = apply_subject_mods(hdr->env);
       else
         subj = hdr->env->subject;
