@@ -65,8 +65,8 @@ short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be
 
 /**
  * imap_expand_path - Canonicalise an IMAP path
- * @param path Buffer containing path
- * @param len  Buffer length
+ * @param buf Buffer containing path
+ * @param buflen  Buffer length
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -77,7 +77,7 @@ short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be
  * Function can fail if imap_parse_path() or url_tostring() fail,
  * of if the buffer isn't large enough.
  */
-int imap_expand_path(char *path, size_t len)
+int imap_expand_path(char *buf, size_t buflen)
 {
   struct ImapMbox mx;
   struct ImapData *idata = NULL;
@@ -85,7 +85,7 @@ int imap_expand_path(char *path, size_t len)
   char fixedpath[LONG_STRING];
   int rc;
 
-  if (imap_parse_path(path, &mx) < 0)
+  if (imap_parse_path(buf, &mx) < 0)
     return -1;
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
@@ -93,7 +93,7 @@ int imap_expand_path(char *path, size_t len)
   imap_fix_path(idata, mx.mbox, fixedpath, sizeof(fixedpath));
   url.path = fixedpath;
 
-  rc = url_tostring(&url, path, len, U_DECODE_PASSWD);
+  rc = url_tostring(&url, buf, buflen, U_DECODE_PASSWD);
   FREE(&mx.mbox);
 
   return rc;
@@ -777,21 +777,21 @@ char *imap_next_word(char *s)
 
 /**
  * imap_qualify_path - Make an absolute IMAP folder target
- * @param dest Buffer for the result
- * @param len  Length of buffer
- * @param mx   Imap mailbox
- * @param path Path relative to the mailbox
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param mx     Imap mailbox
+ * @param path   Path relative to the mailbox
  *
  * given ImapMbox and relative path.
  */
-void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
+void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path)
 {
   struct Url url;
 
   mutt_account_tourl(&mx->account, &url);
   url.path = path;
 
-  url_tostring(&url, dest, len, 0);
+  url_tostring(&url, buf, buflen, 0);
 }
 
 /**

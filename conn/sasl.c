@@ -372,13 +372,13 @@ static int mutt_sasl_conn_close(struct Connection *conn)
 
 /**
  * mutt_sasl_conn_read - Read data from an SASL connection
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
+ * @param conn   Connection to a server
+ * @param buf    Buffer to store the data
+ * @param buflen Number of bytes to read
  * @retval >0 Success, number of bytes read
  * @retval -1 Error, see errno
  */
-static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
+static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t buflen)
 {
   int rc;
   unsigned int olen;
@@ -388,7 +388,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
   {
-    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+    olen = (sasldata->blen - sasldata->bpos > buflen) ? buflen :
                                                      sasldata->blen - sasldata->bpos;
 
     memcpy(buf, sasldata->buf + sasldata->bpos, olen);
@@ -408,7 +408,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
     do
     {
       /* call the underlying read function to fill the buffer */
-      rc = (sasldata->msasl_read)(conn, buf, len);
+      rc = (sasldata->msasl_read)(conn, buf, buflen);
       if (rc <= 0)
         goto out;
 
@@ -420,7 +420,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
       }
     } while (sasldata->blen == 0);
 
-    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+    olen = (sasldata->blen - sasldata->bpos > buflen) ? buflen :
                                                      sasldata->blen - sasldata->bpos;
 
     memcpy(buf, sasldata->buf, olen);
@@ -429,7 +429,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
     rc = olen;
   }
   else
-    rc = (sasldata->msasl_read)(conn, buf, len);
+    rc = (sasldata->msasl_read)(conn, buf, buflen);
 
 out:
   conn->sockdata = sasldata;
@@ -439,13 +439,13 @@ out:
 
 /**
  * mutt_sasl_conn_write - Write to an SASL connection
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
+ * @param conn   Connection to a server
+ * @param buf    Buffer to store the data
+ * @param buflen Number of bytes to read
  * @retval >0 Success, number of bytes read
  * @retval -1 Error, see errno
  */
-static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t len)
+static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t buflen)
 {
   int rc;
   const char *pbuf = NULL;
@@ -460,7 +460,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
     /* handle data larger than MAXOUTBUF */
     do
     {
-      olen = (len > *sasldata->pbufsize) ? *sasldata->pbufsize : len;
+      olen = (buflen > *sasldata->pbufsize) ? *sasldata->pbufsize : buflen;
 
       rc = sasl_encode(sasldata->saslconn, buf, olen, &pbuf, &plen);
       if (rc != SASL_OK)
@@ -473,14 +473,14 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
       if (rc != plen)
         goto fail;
 
-      len -= olen;
+      buflen -= olen;
       buf += olen;
-    } while (len > *sasldata->pbufsize);
+    } while (buflen > *sasldata->pbufsize);
   }
   else
   {
     /* just write using the underlying socket function */
-    rc = (sasldata->msasl_write)(conn, buf, len);
+    rc = (sasldata->msasl_write)(conn, buf, buflen);
   }
 
   conn->sockdata = sasldata;

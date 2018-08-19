@@ -54,6 +54,6 @@
 #include "sasl.h"
 #endif
 
-int getdnsdomainname(char *d, size_t len);
+int getdnsdomainname(char *buf, size_t buflen);
 
 #endif /* _CONN_CONN_H */

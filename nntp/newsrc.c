@@ -569,17 +569,17 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
 
 /**
  * nntp_expand_path - Make fully qualified url from newsgroup name
- * @param line String containing newsgroup name
- * @param len  Length of string
+ * @param buf    Buffer containing newsgroup name
+ * @param buflen Length of buffer
  * @param acct Account to save result
  */
-void nntp_expand_path(char *line, size_t len, struct Account *acct)
+void nntp_expand_path(char *buf, size_t buflen, struct Account *acct)
 {
   struct Url url;
 
   mutt_account_tourl(acct, &url);
-  url.path = mutt_str_strdup(line);
-  url_tostring(&url, line, len, 0);
+  url.path = mutt_str_strdup(buf);
+  url_tostring(&url, buf, buflen, 0);
   FREE(&url.path);
 }
 
@@ -1374,9 +1374,9 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 /**
  * nntp_mailbox - Get first newsgroup with new messages
  * @param buf Buffer for result
- * @param len Length of buffer
+ * @param buflen Length of buffer
  */
-void nntp_mailbox(char *buf, size_t len)
+void nntp_mailbox(char *buf, size_t buflen)
 {
   for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
   {
@@ -1396,7 +1396,7 @@ void nntp_mailbox(char *buf, size_t len)
       if (!unread)
         continue;
     }
-    mutt_str_strfcpy(buf, nntp_data->group, len);
+    mutt_str_strfcpy(buf, nntp_data->group, buflen);
     break;
   }
 }

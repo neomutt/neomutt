@@ -108,7 +108,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(char *path, size_t len);
+int imap_expand_path(char *buf, size_t buflen);
 int imap_parse_path(const char *path, struct ImapMbox *mx);
 void imap_pretty_mailbox(char *path);
 

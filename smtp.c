@@ -85,15 +85,15 @@ static unsigned char Capabilities[(CAPMAX + 7) / 8];
 /**
  * valid_smtp_code - Is the is a valid SMTP return code?
  * @param[in]  buf String to check
- * @param[in]  len Length of string
+ * @param[in]  buflen Length of string
  * @param[out] n   Numeric value of code
  * @retval true Valid number
  */
-static bool valid_smtp_code(char *buf, size_t len, int *n)
+static bool valid_smtp_code(char *buf, size_t buflen, int *n)
 {
   char code[4];
 
-  if (len < 4)
+  if (buflen < 4)
     return false;
   code[0] = buf[0];
   code[1] = buf[1];

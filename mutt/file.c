@@ -1190,32 +1190,32 @@ int mutt_file_rename(char *oldfile, char *newfile)
 /**
  * mutt_file_read_keyword - Read a keyword from a file
  * @param file   File to read
- * @param buffer Buffer to store the keyword
- * @param buflen Length of the buffer
+ * @param buf    Buffer to store the keyword
+ * @param buflen Length of the buf
  * @retval ptr Start of the keyword
  *
  * Read one line from the start of a file.
  * Skip any leading whitespace and extract the first token.
  */
-char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
+char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
 {
   FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return NULL;
 
-  buffer = fgets(buffer, buflen, fp);
+  buf = fgets(buf, buflen, fp);
   mutt_file_fclose(&fp);
 
-  if (!buffer)
+  if (!buf)
     return NULL;
 
-  SKIPWS(buffer);
-  char *start = buffer;
+  SKIPWS(buf);
+  char *start = buf;
 
-  while (*buffer && !isspace(*buffer))
-    buffer++;
+  while (*buf && !isspace(*buf))
+    buf++;
 
-  *buffer = '\0';
+  *buf = '\0';
 
   return start;
 }

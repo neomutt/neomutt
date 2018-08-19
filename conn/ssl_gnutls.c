@@ -252,12 +252,12 @@ static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
 
 /**
  * tls_fingerprint - Create a fingerprint of a TLS Certificate
- * @param algo Fingerprint algorithm, e.g. GNUTLS_MAC_SHA256
- * @param s    Buffer for the fingerprint
- * @param l    Length of the buffer
+ * @param algo   Fingerprint algorithm, e.g. GNUTLS_MAC_SHA256
+ * @param buf    Buffer for the fingerprint
+ * @param buflen Length of the buffer
  * @param data Certificate
  */
-static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
+static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf, size_t buflen,
                             const gnutls_datum_t *data)
 {
   unsigned char md[36];
@@ -267,7 +267,7 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
 
   if (gnutls_fingerprint(algo, data, (char *) md, &n) < 0)
   {
-    snprintf(s, l, _("[unable to calculate]"));
+    snprintf(buf, buflen, _("[unable to calculate]"));
   }
   else
   {
@@ -275,9 +275,9 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_strcat(s, l, ch);
+      mutt_str_strcat(buf, buflen, ch);
     }
-    s[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
+    buf[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
   }
 }
 

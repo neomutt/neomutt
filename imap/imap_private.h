@@ -326,7 +326,7 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
+void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path);
 void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
