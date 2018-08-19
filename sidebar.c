@@ -651,7 +651,8 @@ static bool prepare_sidebar(int page_size)
    * need to scan for the framing interval */
   if (SidebarNewMailOnly)
   {
-    TopIndex = BotIndex = -1;
+    TopIndex = -1;
+    BotIndex = -1;
     while (BotIndex < HilIndex)
     {
       TopIndex = BotIndex + 1;

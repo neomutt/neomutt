@@ -203,7 +203,10 @@ static struct Address *remove_user(struct Address *a, bool leave_only)
         last = last->next;
       }
       else
-        last = top = a;
+      {
+        last = a;
+        top = a;
+      }
       a = a->next;
       last->next = NULL;
     }
@@ -218,7 +221,10 @@ static struct Address *remove_user(struct Address *a, bool leave_only)
         mutt_addr_free(&tmp);
       }
       else
-        last = top = tmp;
+      {
+        last = tmp;
+        top = tmp;
+      }
     }
   }
   return top;
@@ -246,7 +252,10 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
           ptr = ptr->next;
         }
         else
-          ptr = top = mutt_addr_copy(t);
+        {
+          top = mutt_addr_copy(t);
+          ptr = top;
+        }
       }
     }
   }
@@ -1078,7 +1087,10 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
             last = tmp;
           }
           else
-            last = msg->content = tmp;
+          {
+            last = tmp;
+            msg->content = tmp;
+          }
         }
       }
     }

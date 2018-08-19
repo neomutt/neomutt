@@ -309,7 +309,8 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
     if (*p == '<')
     {
       s = p;
-      o = onull = NULL;
+      o = NULL;
+      onull = NULL;
       continue;
     }
 
@@ -339,7 +340,9 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
     else if (o)
     {
       /* more than two lines, give up */
-      s = o = onull = NULL;
+      s = NULL;
+      o = NULL;
+      onull = NULL;
     }
     else
     {
@@ -1342,7 +1345,10 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           last = new;
         }
         else
-          last = head = new;
+        {
+          last = new;
+          head = new;
+        }
       }
     }
   }

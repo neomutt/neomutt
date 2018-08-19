@@ -2139,7 +2139,9 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     }
   }
 
-  p = last = line = (char *) v;
+  p = v;
+  last = v;
+  line = v;
   while (p && *p)
   {
     p = strchr(p, '\n');

@@ -263,7 +263,8 @@ void mutt_md5_init_ctx(struct Md5Ctx *ctx)
   ctx->C = 0x98badcfe;
   ctx->D = 0x10325476;
 
-  ctx->total[0] = ctx->total[1] = 0;
+  ctx->total[0] = 0;
+  ctx->total[1] = 0;
   ctx->buflen = 0;
 }
 

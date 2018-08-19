@@ -209,7 +209,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   o_read = cur->read;
   o_old = cur->old;
-  cur->read = cur->old = false;
+  cur->read = false;
+  cur->old = false;
   msg = mx_msg_open_new(&tmpctx, cur, of);
   cur->read = o_read;
   cur->old = o_old;

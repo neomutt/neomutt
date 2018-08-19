@@ -746,7 +746,8 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
   ib = s;
   ibl = len + 1;
   obl = MB_LEN_MAX * ibl;
-  ob = buf = mutt_mem_malloc(obl + 1);
+  buf = mutt_mem_malloc(obl + 1);
+  ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
   iconv_close(cd);
@@ -823,7 +824,8 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char 
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
     fc = mutt_mem_malloc(sizeof(struct FgetConv));
-    fc->p = fc->ob = fc->bufo;
+    fc->p = fc->bufo;
+    fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
@@ -868,7 +870,8 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
     return (unsigned char) *(fc->p)++;
 
   /* Try to convert some more */
-  fc->p = fc->ob = fc->bufo;
+  fc->p = fc->bufo;
+  fc->ob = fc->bufo;
   if (fc->ibl)
   {
     size_t obl = sizeof(fc->bufo);

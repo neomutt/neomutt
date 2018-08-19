@@ -61,7 +61,8 @@ struct MbTable *mbtable_parse(const char *s)
   /* This could be more space efficient.  However, being used on tiny
    * strings (Tochars and StatusChars), the overhead is not great. */
   t->chars = mutt_mem_calloc(slen, sizeof(char *));
-  d = t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
+  t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
+  d = t->segmented_str;
 
   memset(&mbstate, 0, sizeof(mbstate));
   while (slen && (k = mbrtowc(NULL, s, slen, &mbstate)))

@@ -218,9 +218,11 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         {
           struct Header *h = mutt_header_new();
           h->env = mutt_env_new();
-          h->env->from = h->env->to = alias;
+          h->env->from = alias;
+          h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
-          h->env->from = h->env->to = NULL;
+          h->env->from = NULL;
+          h->env->to = NULL;
           mutt_header_free(&h);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
@@ -1078,7 +1080,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         int pl, pw;
         pl = mutt_mb_charlen(src, &pw);
         if (pl <= 0)
-          pl = pw = 1;
+        {
+          pl = 1;
+          pw = 1;
+        }
 
         /* see if there's room to add content, else ignore */
         if ((col < cols && wlen < buflen) || soft)
@@ -1149,7 +1154,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         int pl, pw;
         pl = mutt_mb_charlen(src, &pw);
         if (pl <= 0)
-          pl = pw = 1;
+        {
+          pl = 1;
+          pw = 1;
+        }
 
         /* see if there's room to add content, else ignore */
         if (col < cols && wlen < buflen)

@@ -289,16 +289,14 @@ int mutt_yesorno(const char *msg, int def)
   char *expr = NULL;
   regex_t reyes;
   regex_t reno;
-  int reyes_ok;
-  int reno_ok;
   char answer[2];
 
   answer[1] = '\0';
 
-  reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
-             (REGCOMP(&reyes, expr, REG_NOSUB) == 0);
-  reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
-            (REGCOMP(&reno, expr, REG_NOSUB) == 0);
+  bool reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
+                  (REGCOMP(&reyes, expr, REG_NOSUB) == 0);
+  bool reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
+                 (REGCOMP(&reno, expr, REG_NOSUB) == 0);
 
   /* In order to prevent the default answer to the question to wrapped
    * around the screen in the even the question is wider than the screen,

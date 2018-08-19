@@ -62,8 +62,10 @@ struct HcacheDbCtx
 static void dbt_init(DBT *dbt, void *data, size_t len)
 {
   dbt->data = data;
-  dbt->size = dbt->ulen = len;
-  dbt->dlen = dbt->doff = 0;
+  dbt->size = len;
+  dbt->ulen = len;
+  dbt->dlen = 0;
+  dbt->doff = 0;
   dbt->flags = DB_DBT_USERMEM;
 }
 
@@ -74,7 +76,10 @@ static void dbt_init(DBT *dbt, void *data, size_t len)
 static void dbt_empty_init(DBT *dbt)
 {
   dbt->data = NULL;
-  dbt->size = dbt->ulen = dbt->dlen = dbt->doff = 0;
+  dbt->size = 0;
+  dbt->ulen = 0;
+  dbt->dlen = 0;
+  dbt->doff = 0;
   dbt->flags = 0;
 }
 

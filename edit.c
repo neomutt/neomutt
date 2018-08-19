@@ -511,7 +511,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             char *tag = NULL, *err = NULL;
             be_free_memory(buf, buflen);
             buf = NULL;
-            bufmax = buflen = 0;
+            bufmax = 0;
+            buflen = 0;
 
             if (EditHeaders)
             {

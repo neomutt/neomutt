@@ -108,7 +108,8 @@ static void mutt_update_v2r(struct AttachCtx *actx)
 {
   int vindex, rindex, curlevel;
 
-  vindex = rindex = 0;
+  vindex = 0;
+  rindex = 0;
 
   while (rindex < actx->idxlen)
   {
@@ -1132,7 +1133,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
   for (; m; m = m->next)
   {
-    need_secured = secured = 0;
+    need_secured = 0;
+    secured = 0;
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
     {

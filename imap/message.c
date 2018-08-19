@@ -218,7 +218,11 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   FREE(&hd->flags_system);
   FREE(&hd->flags_remote);
 
-  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
+  hd->deleted = false;
+  hd->flagged = false;
+  hd->replied = false;
+  hd->read = false;
+  hd->old = false;
 
   /* start parsing */
   while (*s && *s != ')')
@@ -1281,7 +1285,9 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   imap_munge_mbox_name(idata, mbox, sizeof(mbox), mailbox);
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
-  imap_flags[0] = imap_flags[1] = 0;
+  imap_flags[0] = 0;
+  imap_flags[1] = 0;
+
   if (msg->flags.read)
     mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Seen");
   if (msg->flags.replied)

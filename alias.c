@@ -85,7 +85,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
           if (head)
             last->next = w;
           else
-            head = last = w;
+          {
+            head = w;
+            last = w;
+          }
           while (last && last->next)
             last = last->next;
         }
@@ -115,7 +118,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
       last = last->next;
     }
     else
-      head = last = a;
+    {
+      head = a;
+      last = a;
+    }
     a = a->next;
     last->next = NULL;
   }

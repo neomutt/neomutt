@@ -168,7 +168,11 @@ void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
   state[3] += d;
   state[4] += e;
   /* Wipe variables */
-  a = b = c = d = e = 0;
+  a = 0;
+  b = 0;
+  c = 0;
+  d = 0;
+  e = 0;
   memset(block, '\0', sizeof(block));
 }
 
@@ -184,7 +188,8 @@ void mutt_sha1_init(struct Sha1Ctx *context)
   context->state[2] = 0x98BADCFE;
   context->state[3] = 0x10325476;
   context->state[4] = 0xC3D2E1F0;
-  context->count[0] = context->count[1] = 0;
+  context->count[0] = 0;
+  context->count[1] = 0;
 }
 
 /**

@@ -448,9 +448,12 @@ static void adjust_date_range(struct tm *min, struct tm *max)
     min->tm_mday = max->tm_mday;
     max->tm_mday = tmp;
 
-    min->tm_hour = min->tm_min = min->tm_sec = 0;
+    min->tm_hour = 0;
+    min->tm_min = 0;
+    min->tm_sec = 0;
     max->tm_hour = 23;
-    max->tm_min = max->tm_sec = 59;
+    max->tm_min = 59;
+    max->tm_sec = 59;
   }
 }
 
@@ -523,7 +526,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
         exact++;
     }
     tm->tm_hour = 23;
-    tm->tm_min = tm->tm_sec = 59;
+    tm->tm_min = 59;
+    tm->tm_sec = 59;
 
     /* force negative offset */
     get_offset(tm, buffer.data + 1, -1);
@@ -532,7 +536,9 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     {
       /* start at the beginning of the day in question */
       memcpy(&min, &max, sizeof(max));
-      min.tm_hour = min.tm_sec = min.tm_min = 0;
+      min.tm_hour = 0;
+      min.tm_sec = 0;
+      min.tm_min = 0;
     }
   }
   else
@@ -571,7 +577,9 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
         struct tm *tm = localtime(&now);
         memcpy(&base_min, &min, sizeof(base_min));
         memcpy(&min, tm, sizeof(min));
-        min.tm_hour = min.tm_sec = min.tm_min = 0;
+        min.tm_hour = 0;
+        min.tm_sec = 0;
+        min.tm_min = 0;
       }
 
       /* preset max date for relative offsets,
@@ -876,7 +884,8 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
       mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
       return RANGE_E_CTX;
     }
-    pat->min = pat->max = CTX_MSGNO(Context);
+    pat->max = CTX_MSGNO(Context);
+    pat->min = pat->max;
   }
 
   /* Since we don't enforce order, we must swap bounds if they're backward */

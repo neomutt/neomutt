@@ -447,7 +447,10 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   ulen = mutt_str_strlen(u);
 
   /* Find earliest and latest things we must encode. */
-  s0 = s1 = t0 = t1 = 0;
+  s0 = 0;
+  s1 = 0;
+  t0 = 0;
+  t1 = 0;
   for (t = u; t < (u + ulen); t++)
   {
     if ((*t & 0x80) || ((*t == '=') && (t[1] == '?') && ((t == u) || HSPACE(*(t - 1)))))

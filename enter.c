@@ -327,7 +327,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
           break;
 
         case OP_EDITOR_KILL_LINE:
-          state->curpos = state->lastchar = 0;
+          state->curpos = 0;
+          state->lastchar = 0;
           break;
 
         case OP_EDITOR_KILL_EOL:
@@ -743,7 +744,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
       {
         first = 0;
         if (IsWPrint(wc)) /* why? */
-          state->curpos = state->lastchar = 0;
+        {
+          state->curpos = 0;
+          state->lastchar = 0;
+        }
       }
 
       if (wc == '\r' || wc == '\n')

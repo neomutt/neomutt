@@ -1202,7 +1202,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
              * and remove from the msg->content list */
             if (!alts)
             {
-              group->parts = alts = bptr;
+              group->parts = bptr;
+              alts = bptr;
               bptr = bptr->next;
               alts->next = NULL;
             }
@@ -1300,7 +1301,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
              * and remove from the msg->content list */
             if (!alts)
             {
-              group->parts = alts = bptr;
+              group->parts = bptr;
+              alts = bptr;
               bptr = bptr->next;
               alts->next = NULL;
             }

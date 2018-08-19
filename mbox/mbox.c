@@ -162,7 +162,8 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
-      ctx->hdrs[ctx->msgcount] = hdr = mutt_header_new();
+      hdr = mutt_header_new();
+      ctx->hdrs[ctx->msgcount] = hdr;
       hdr->offset = loc;
       hdr->index = ctx->msgcount;
 
@@ -333,7 +334,8 @@ static int mbox_parse_mailbox(struct Context *ctx)
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
 
-      curhdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
+      ctx->hdrs[ctx->msgcount] = mutt_header_new();
+      curhdr = ctx->hdrs[ctx->msgcount];
       curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;

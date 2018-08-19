@@ -1582,7 +1582,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
       (*line_info)[ch].type = -1;
       (*line_info)[ch].search_cnt = -1;
       (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct Syntax));
-      ((*line_info)[ch].syntax)[0].first = ((*line_info)[ch].syntax)[0].last = -1;
+      ((*line_info)[ch].syntax)[0].first = -1;
+      ((*line_info)[ch].syntax)[0].last = -1;
     }
   }
 
@@ -1939,7 +1940,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
     memcpy(rd->pager_window, MuttIndexWindow, sizeof(struct MuttWindow));
     memcpy(rd->pager_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
-    rd->index_status_window->rows = rd->index_window->rows = 0;
+    rd->index_status_window->rows = 0;
+    rd->index_window->rows = 0;
 
     if (IsHeader(rd->extra) && PagerIndexLines)
     {
@@ -2094,7 +2096,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     do
     {
       mutt_window_move(rd->pager_window, 0, 0);
-      rd->curline = rd->oldtopline = rd->topline;
+      rd->curline = rd->topline;
+      rd->oldtopline = rd->topline;
       rd->lines = 0;
       rd->force_redraw = false;
 
@@ -2286,7 +2289,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
     rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct Syntax));
-    (rd.line_info[i].syntax)[0].first = (rd.line_info[i].syntax)[0].last = -1;
+    (rd.line_info[i].syntax)[0].first = -1;
+    (rd.line_info[i].syntax)[0].last = -1;
   }
 
   mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);

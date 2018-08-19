@@ -369,7 +369,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable;
 
     int i;
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)

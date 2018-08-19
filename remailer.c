@@ -294,7 +294,8 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
     if (c >= MuttIndexWindow->cols)
     {
-      oc = c = MIX_HOFFSET;
+      oc = MIX_HOFFSET;
+      c = MIX_HOFFSET;
       r++;
     }
 

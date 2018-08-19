@@ -204,7 +204,8 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
         FREE(&np);
       }
 
-      h->env->refs_changed = h->changed = true;
+      h->env->refs_changed = true;
+      h->changed = true;
     }
   }
 }

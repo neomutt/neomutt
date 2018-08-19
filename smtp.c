@@ -580,7 +580,7 @@ static int smtp_auth_plain(struct Connection *conn)
   }
 
   /* Check if any elements in SmtpAuthenticators is "plain" */
-  for (method = delim = SmtpAuthenticators;
+  for (method = SmtpAuthenticators, delim = SmtpAuthenticators;
        *delim && (delim = mutt_str_strchrnul(method, ':')); method = delim + 1)
   {
     if (mutt_str_strncasecmp(method, "plain", 5) == 0)

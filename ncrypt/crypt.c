@@ -270,7 +270,8 @@ int mutt_protect(struct Header *msg, char *keylist)
       tmp_pbody = crypt_smime_sign_message(msg->content);
       if (!tmp_pbody)
         return -1;
-      pbody = tmp_smime_pbody = tmp_pbody;
+      pbody = tmp_pbody;
+      tmp_smime_pbody = tmp_pbody;
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP) &&
@@ -281,7 +282,8 @@ int mutt_protect(struct Header *msg, char *keylist)
         return -1;
 
       flags &= ~SIGN;
-      pbody = tmp_pgp_pbody = tmp_pbody;
+      pbody = tmp_pbody;
+      tmp_pgp_pbody = tmp_pbody;
     }
 
     if ((WithCrypto != 0) && (msg->security & APPLICATION_SMIME) &&
@@ -1256,19 +1258,22 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   if (pfcopy)
   {
     /* Use pfcopy to strip all spaces from fingerprint and as hint. */
-    s1 = s2 = pfcopy;
+    s1 = pfcopy;
+    s2 = pfcopy;
     do
     {
       *(s1++) = *(s2 = mutt_str_skip_whitespace(s2));
     } while (*(s2++));
 
     phint = pfcopy;
-    ps = pl = NULL;
+    ps = NULL;
+    pl = NULL;
   }
   else
   {
     phint = p;
-    ps = pl = NULL;
+    ps = NULL;
+    pl = NULL;
     if (isid == 1)
     {
       if (mutt_str_strlen(pf) == 16)

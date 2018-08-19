@@ -904,7 +904,8 @@ void pop_fetch_mail(void)
     return;
   }
 
-  url = p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  url = p;
   if (url_check_scheme(PopHost) == U_UNKNOWN)
   {
     strcpy(url, "pop://");

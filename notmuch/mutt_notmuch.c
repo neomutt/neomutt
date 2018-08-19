@@ -770,7 +770,8 @@ static void apply_exclude_tags(notmuch_query_t *query)
 
     mutt_debug(2, "nm: query exclude tag '%s'\n", tag);
     notmuch_query_add_tag_exclude(query, tag);
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
   notmuch_query_set_omit_excluded(query, 1);
   FREE(&buf);
@@ -1446,7 +1447,8 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
       mutt_debug(1, "nm: add tag: '%s'\n", (*tag == '+') ? tag + 1 : tag);
       notmuch_message_add_tag(msg, (*tag == '+') ? tag + 1 : tag);
     }
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
 
   notmuch_message_thaw(msg);
@@ -1511,7 +1513,8 @@ static int update_header_flags(struct Context *ctx, struct Header *hdr, const ch
       else if (strcmp(tag, "flagged") == 0)
         mutt_set_flag(ctx, hdr, MUTT_FLAG, 1);
     }
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
 
   FREE(&buf);
@@ -2661,7 +2664,8 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     if (!ctx->quiet)
       mutt_progress_update(&progress, i, -1);
 
-    *old = *new = '\0';
+    *old = '\0';
+    *new = '\0';
 
     if (hd->oldpath)
     {
