@@ -166,12 +166,10 @@ WHERE short ImapKeepalive;                 ///< Config: (imap) Time to wait befo
 WHERE short ImapPollTimeout;               ///< Config: (imap) Maximum time to wait for a server response
 #endif
 
-/* -- formerly in pgp.h -- */
 WHERE char *PgpDefaultKey;                 ///< Config: Default key to use for PGP operations
 WHERE char *PgpSignAs;                     ///< Config: Use this alternative key for signing messages
 WHERE char *PgpEntryFormat;                ///< Config: printf-like format string for the PGP key selection menu
 
-/* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;               ///< Config: Default key for SMIME operations
 WHERE char *SmimeSignAs;                   ///< Config: Use this alternative key for signing messages
 WHERE char *SmimeEncryptWith;              ///< Config: Algorithm for encryption

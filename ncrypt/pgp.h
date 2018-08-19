@@ -25,8 +25,6 @@
 #ifndef _NCRYPT_PGP_H
 #define _NCRYPT_PGP_H
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -62,7 +60,5 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign)
 struct Body *pgp_class_sign_message(struct Body *a);
 
 int pgp_class_send_menu(struct Header *msg);
-
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */
 
 #endif /* _NCRYPT_PGP_H */

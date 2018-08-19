@@ -39,7 +39,6 @@
 #include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "smime.h"
 #include "alias.h"
 #include "copy.h"
 #include "crypt.h"
@@ -61,6 +60,9 @@
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+#include "smime.h"
+#endif
 
 /* These Config Variables are only used in ncrypt/smime.c */
 bool SmimeAskCertLabel; ///< Config: Prompt the user for a label for SMIME certificates

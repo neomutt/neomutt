@@ -48,7 +48,9 @@
 #include "ncrypt.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
+#endif
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by

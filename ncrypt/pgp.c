@@ -45,7 +45,6 @@
 #include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "pgp.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "curs_lib.h"
@@ -59,10 +58,13 @@
 #include "options.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
-#include "pgplib.h"
 #include "pgpmicalg.h"
 #include "sendlib.h"
 #include "state.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgp.h"
+#include "pgplib.h"
+#endif
 
 /* These Config Variables are only used in ncrypt/pgp.c */
 bool PgpCheckExit; ///< Config: Check the exit code of PGP subprocess

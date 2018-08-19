@@ -73,7 +73,6 @@
 #include "query.h"
 #include "recvattach.h"
 #include "recvcmd.h"
-#include "remailer.h"
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "score.h"
@@ -83,6 +82,9 @@
 #include "smtp.h"
 #include "sort.h"
 #include "status.h"
+#ifdef MIXMASTER
+#include "remailer.h"
+#endif
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif

@@ -45,9 +45,11 @@
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
-#include "pgp.h"
 #include "pgpkey.h"
 #include "protos.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgp.h"
+#endif
 
 /* These Config Variables are only used in ncrypt/pgpinvoke.c */
 char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a messsage

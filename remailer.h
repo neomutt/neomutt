@@ -23,8 +23,6 @@
 #ifndef _MUTT_REMAILER_H
 #define _MUTT_REMAILER_H
 
-#ifdef MIXMASTER
-
 #include <stddef.h>
 
 struct ListHead;
@@ -62,7 +60,5 @@ struct MixChain
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Header *msg);
 void mix_make_chain(struct ListHead *chainhead);
-
-#endif /* MIXMASTER */
 
 #endif /* _MUTT_REMAILER_H */
