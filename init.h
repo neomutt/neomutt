@@ -1572,6 +1572,15 @@ struct ConfigDef MuttVars[] = {
   ** as folder separators for displaying IMAP paths. In particular it
   ** helps in using the "=" shortcut for your \fIfolder\fP variable.
   */
+  { "imap_fetch_chunk_size",        DT_LONG, R_NONE, &C_ImapFetchChunkSize, 0 },
+  /*
+  ** .pp
+  ** When set to a value greater than 0, new headers will be downloaded
+  ** in sets of this size.  If you have a very large mailbox, this might
+  ** prevent a timeout and disconnect when opening the mailbox, by sending
+  ** a FETCH per set of this size instead of a single FETCH for all new
+  ** headers.
+  */
   { "imap_headers",     DT_STRING, R_INDEX, &C_ImapHeaders, 0 },
   /*
   ** .pp

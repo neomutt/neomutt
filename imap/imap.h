@@ -69,6 +69,7 @@ extern bool C_ImapIdle;
 
 /* These Config Variables are only used in imap/message.c */
 extern char *C_ImapHeaders;
+extern long C_ImapFetchChunkSize;
 
 /* These Config Variables are only used in imap/command.c */
 extern bool C_ImapServernoise;
