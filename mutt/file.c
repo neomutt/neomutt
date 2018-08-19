@@ -660,43 +660,43 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 
 /**
  * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
- * @param d Buffer for the result
- * @param l Length of buffer
- * @param f String to convert
+ * @param filename String to convert
+ * @param buf      Buffer for the result
+ * @param buflen   Length of buffer
  * @retval num Bytes written to the buffer
  *
  * From the Unix programming FAQ by way of Liviu.
  */
-size_t mutt_file_quote_filename(char *d, size_t l, const char *f)
+size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 {
   size_t j = 0;
 
-  if (!f)
+  if (!filename)
   {
-    *d = '\0';
+    *buf = '\0';
     return 0;
   }
 
   /* leave some space for the trailing characters. */
-  l -= 6;
+  buflen -= 6;
 
-  d[j++] = '\'';
+  buf[j++] = '\'';
 
-  for (size_t i = 0; (j < l) && f[i]; i++)
+  for (size_t i = 0; (j < buflen) && filename[i]; i++)
   {
-    if ((f[i] == '\'') || (f[i] == '`'))
+    if ((filename[i] == '\'') || (filename[i] == '`'))
     {
-      d[j++] = '\'';
-      d[j++] = '\\';
-      d[j++] = f[i];
-      d[j++] = '\'';
+      buf[j++] = '\'';
+      buf[j++] = '\\';
+      buf[j++] = filename[i];
+      buf[j++] = '\'';
     }
     else
-      d[j++] = f[i];
+      buf[j++] = filename[i];
   }
 
-  d[j++] = '\'';
-  d[j] = '\0';
+  buf[j++] = '\'';
+  buf[j] = '\0';
 
   return j;
 }
@@ -1250,7 +1250,7 @@ void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, con
 {
   char tmp[PATH_MAX];
 
-  mutt_file_quote_filename(tmp, sizeof(tmp), src);
+  mutt_file_quote_filename(src, tmp, sizeof(tmp));
   mutt_file_expand_fmt(dest, destlen, fmt, tmp);
 }
 

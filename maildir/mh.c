@@ -2252,23 +2252,23 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 
 /**
  * maildir_canon_filename - Generate the canonical filename for a Maildir folder
- * @param dest Buffer for the result
- * @param src  Buffer containing source filename
- * @param l    Length of dest buffer
- * @retval ptr Dest buffer
+ * @param src    Buffer containing source filename
+ * @param buf    Buffer for the result
+ * @param buflen Length of buf buffer
+ * @retval ptr Buf buffer
  */
-static char *maildir_canon_filename(char *dest, const char *src, size_t l)
+static char *maildir_canon_filename(const char *src, char *buf, size_t buflen)
 {
   char *t = strrchr(src, '/');
   if (t)
     src = t + 1;
 
-  mutt_str_strfcpy(dest, src, l);
-  char *u = strrchr(dest, ':');
+  mutt_str_strfcpy(buf, src, buflen);
+  char *u = strrchr(buf, ':');
   if (u)
     *u = '\0';
 
-  return dest;
+  return buf;
 }
 
 /**
@@ -2370,7 +2370,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 
   for (p = md; p; p = p->next)
   {
-    maildir_canon_filename(buf, p->h->path, sizeof(buf));
+    maildir_canon_filename(p->h->path, buf, sizeof(buf));
     p->canon_fname = mutt_str_strdup(buf);
     mutt_hash_insert(fnames, p->canon_fname, p);
   }
@@ -2379,7 +2379,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   for (int i = 0; i < ctx->msgcount; i++)
   {
     ctx->hdrs[i]->active = false;
-    maildir_canon_filename(buf, ctx->hdrs[i]->path, sizeof(buf));
+    maildir_canon_filename(ctx->hdrs[i]->path, buf, sizeof(buf));
     p = mutt_hash_find(fnames, buf);
     if (p && p->h)
     {
@@ -2737,7 +2737,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
 
   while ((de = readdir(dp)))
   {
-    maildir_canon_filename(tunique, de->d_name, sizeof(tunique));
+    maildir_canon_filename(de->d_name, tunique, sizeof(tunique));
 
     if (mutt_str_strcmp(tunique, unique) == 0)
     {
@@ -2770,7 +2770,7 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 
   static unsigned int new_hits = 0, cur_hits = 0; /* simple dynamic optimization */
 
-  maildir_canon_filename(unique, msg, sizeof(unique));
+  maildir_canon_filename(msg, unique, sizeof(unique));
 
   FILE *fp = md_open_find_message(folder, unique, new_hits > cur_hits ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))

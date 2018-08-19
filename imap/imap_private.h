@@ -332,7 +332,7 @@ void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
 int imap_account_match(const struct Account *a1, const struct Account *a2);
-void imap_get_parent(char *output, const char *mbox, size_t olen, char delim);
+void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */
 void imap_utf_encode(struct ImapData *idata, char **s);

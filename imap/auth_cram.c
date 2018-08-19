@@ -131,7 +131,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  len = mutt_b64_decode(obuf, idata->buf + 2, sizeof(obuf));
+  len = mutt_b64_decode(idata->buf + 2, obuf, sizeof(obuf));
   if (len == -1)
   {
     mutt_debug(1, "Error decoding base64 response.\n");
@@ -160,7 +160,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
-  mutt_b64_encode(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
+  mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
   mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
   mutt_socket_send(idata->conn, ibuf);
 

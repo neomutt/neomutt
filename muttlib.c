@@ -1514,7 +1514,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
 #ifdef USE_IMAP
   if (mx_is_imap(path))
-    imap_get_parent_path(buf, path, buflen);
+    imap_get_parent_path(path, buf, buflen);
   else
 #endif
 #ifdef USE_NOTMUCH

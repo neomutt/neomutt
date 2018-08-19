@@ -180,7 +180,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
   /* now start the security context initialisation loop... */
   mutt_debug(2, "Sending credentials\n");
-  mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+  mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
   gss_release_buffer(&min_stat, &send_token);
   mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
   mutt_socket_send(idata->conn, buf1);
@@ -199,7 +199,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
       goto bail;
     }
 
-    request_buf.length = mutt_b64_decode(buf2, idata->buf + 2, sizeof(buf2));
+    request_buf.length = mutt_b64_decode(idata->buf + 2, buf2, sizeof(buf2));
     request_buf.value = buf2;
     sec_token = &request_buf;
 
@@ -216,7 +216,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
       goto err_abort_cmd;
     }
-    mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+    mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
     gss_release_buffer(&min_stat, &send_token);
     mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
     mutt_socket_send(idata->conn, buf1);
@@ -234,7 +234,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     mutt_debug(1, "#2 Error receiving server response.\n");
     goto bail;
   }
-  request_buf.length = mutt_b64_decode(buf2, idata->buf + 2, sizeof(buf2));
+  request_buf.length = mutt_b64_decode(idata->buf + 2, buf2, sizeof(buf2));
   request_buf.value = buf2;
 
   maj_stat = gss_unwrap(&min_stat, context, &request_buf, &send_token, &cflags, &quality);
@@ -282,7 +282,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     goto err_abort_cmd;
   }
 
-  mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+  mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
   mutt_debug(2, "Requesting authorisation as %s\n", idata->conn->account.user);
   mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
   mutt_socket_send(idata->conn, buf1);

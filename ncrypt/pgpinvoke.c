@@ -402,7 +402,7 @@ void pgp_class_invoke_import(const char *fname)
   char cmd[HUGE_STRING];
   struct PgpCommandContext cctx = { 0 };
 
-  mutt_file_quote_filename(tmp_fname, sizeof(tmp_fname), fname);
+  mutt_file_quote_filename(fname, tmp_fname, sizeof(tmp_fname));
   cctx.fname = tmp_fname;
   if (PgpSignAs && *PgpSignAs)
     cctx.signas = PgpSignAs;
@@ -437,7 +437,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   *tmp = '\0';
   mutt_addrlist_to_local(addr);
   mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
-  mutt_file_quote_filename(buf, sizeof(buf), tmp);
+  mutt_file_quote_filename(tmp, buf, sizeof(buf));
 
   addr->personal = personal;
 
@@ -533,7 +533,7 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
-    mutt_file_quote_filename(quoted, sizeof(quoted), (char *) np->data);
+    mutt_file_quote_filename((char *) np->data, quoted, sizeof(quoted));
     snprintf(tmpuids, sizeof(tmpuids), "%s %s", uids, quoted);
     strcpy(uids, tmpuids);
   }

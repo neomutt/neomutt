@@ -830,7 +830,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_file_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }

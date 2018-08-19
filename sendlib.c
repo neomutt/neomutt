@@ -269,7 +269,7 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
   /* ret should always be equal to 4 here, because ctx->size
    * is a value between 1 and 3 (included), but let's not hardcode it
    * and prefer the return value of the function */
-  ret = mutt_b64_encode(encoded, ctx->buffer, ctx->size, sizeof(encoded));
+  ret = mutt_b64_encode(ctx->buffer, ctx->size, encoded, sizeof(encoded));
   for (size_t i = 0; i < ret; i++)
   {
     fputc(encoded[i], fout);

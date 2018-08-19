@@ -489,7 +489,7 @@ retry_name:
     }
 
     if (check_alias_name(new->name, NULL, 0))
-      mutt_file_quote_filename(buf, sizeof(buf), new->name);
+      mutt_file_quote_filename(new->name, buf, sizeof(buf));
     else
       mutt_str_strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));

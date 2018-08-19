@@ -55,7 +55,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 
 char *nm_header_get_folder(struct Header *h);
 int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
-bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
+bool nm_normalize_uri(const char *uri, char *buf, size_t buflen);
 char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen);
 bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
 

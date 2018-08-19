@@ -78,7 +78,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
     size_t ret;
     size_t in_len = MIN(3, buflen);
 
-    ret = mutt_b64_encode(encoded, buf, in_len, sizeof(encoded));
+    ret = mutt_b64_encode(buf, in_len, encoded, sizeof(encoded));
     for (size_t i = 0; i < ret; i++)
       *str++ = encoded[i];
 
@@ -397,7 +397,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   {
     const int olen = 3 * len / 4 + 1;
     char *out = mutt_mem_malloc(olen);
-    int dlen = mutt_b64_decode(out, it, olen);
+    int dlen = mutt_b64_decode(it, out, olen);
     if (dlen == -1)
     {
       FREE(&out);

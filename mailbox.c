@@ -624,7 +624,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     mutt_extract_token(path, s, 0);
 #ifdef USE_NOTMUCH
     if (mx_is_notmuch(path->data))
-      nm_normalize_uri(buf, path->data, sizeof(buf));
+      nm_normalize_uri(path->data, buf, sizeof(buf));
     else
 #endif
       mutt_str_strfcpy(buf, path->data, sizeof(buf));
@@ -725,7 +725,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(path->data))
       {
-        nm_normalize_uri(buf, path->data, sizeof(buf));
+        nm_normalize_uri(path->data, buf, sizeof(buf));
       }
       else
 #endif

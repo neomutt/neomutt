@@ -54,7 +54,7 @@ int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 int         mutt_file_open(const char *path, int flags);
-size_t      mutt_file_quote_filename(char *d, size_t l, const char *f);
+size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
 char *      mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);
 int         mutt_file_rename(char *oldfile, char *newfile);
