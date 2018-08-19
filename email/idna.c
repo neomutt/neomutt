@@ -83,7 +83,7 @@ static bool check_idn(char *domain)
   if (mutt_str_strncasecmp(domain, "xn--", 4) == 0)
     return true;
 
-  while ((domain = strchr(domain, '.')) != NULL)
+  while ((domain = strchr(domain, '.')))
   {
     if (mutt_str_strncasecmp(++domain, "xn--", 4) == 0)
       return true;

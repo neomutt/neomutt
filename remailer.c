@@ -29,7 +29,6 @@
 #include "mutt/mutt.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "remailer.h"
 #include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -43,6 +42,9 @@
 #include "protos.h"
 #include "recvattach.h"
 #include "sendlib.h"
+#ifdef MIXMASTER
+#include "remailer.h"
+#endif
 
 /* These Config Variables are only used in remailer.c */
 char *MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
@@ -292,7 +294,8 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
     if (c >= MuttIndexWindow->cols)
     {
-      oc = c = MIX_HOFFSET;
+      oc = MIX_HOFFSET;
+      c = MIX_HOFFSET;
       r++;
     }
 
@@ -782,7 +785,7 @@ int mix_check_message(struct Header *msg)
 
   for (struct Address *a = msg->env->to; a; a = a->next)
   {
-    if (!a->group && strchr(a->mailbox, '@') == NULL)
+    if (!a->group && !strchr(a->mailbox, '@'))
     {
       need_hostname = true;
       break;
@@ -828,7 +831,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_file_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }

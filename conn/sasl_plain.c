@@ -67,6 +67,6 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
   {
     len = snprintf(buf, buflen, "%s ", cmd);
   }
-  len += mutt_b64_encode(buf + len, tmp, tmplen, buflen - len);
+  len += mutt_b64_encode(tmp, tmplen, buf + len, buflen - len);
   return len;
 }

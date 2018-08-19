@@ -638,7 +638,8 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
 
   top = thread;
 
-  array = mutt_mem_calloc((array_size = 256), sizeof(struct MuttThread *));
+  array_size = 256;
+  array = mutt_mem_calloc(array_size, sizeof(struct MuttThread *));
   while (true)
   {
     if (init || !thread->sort_key)
@@ -822,7 +823,10 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
    * node temporarily */
-  top.parent = top.next = top.prev = NULL;
+  top.parent = NULL;
+  top.next = NULL;
+  top.prev = NULL;
+
   top.child = ctx->tree;
   for (thread = ctx->tree; thread; thread = thread->next)
     thread->parent = &top;
@@ -1228,7 +1232,7 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
     }
   }
 
-  if (thread == top && (thread = thread->child) == NULL)
+  if ((thread == top) && !(thread = thread->child))
   {
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
@@ -1415,7 +1419,8 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
   mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 
-  child->env->irt_changed = child->changed = true;
+  child->env->irt_changed = true;
+  child->changed = true;
   return true;
 }
 

@@ -154,8 +154,8 @@ static struct ColorLine *new_color_line(void)
 {
   struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
 
-  p->fg = p->bg = -1;
-
+  p->fg = -1;
+  p->bg = -1;
   return p;
 }
 
@@ -367,11 +367,12 @@ static int mutt_lookup_color(short pair, short *fg, short *bg)
  */
 int mutt_combine_color(int fg_attr, int bg_attr)
 {
-  short fg, bg;
+  short fg = COLOR_DEFAULT;
+  short bg = COLOR_DEFAULT;
 
-  fg = bg = COLOR_DEFAULT;
   mutt_lookup_color(fg_attr, &fg, NULL);
   mutt_lookup_color(bg_attr, NULL, &bg);
+
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
   return mutt_alloc_color(fg, bg);

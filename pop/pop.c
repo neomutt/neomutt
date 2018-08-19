@@ -904,7 +904,8 @@ void pop_fetch_mail(void)
     return;
   }
 
-  url = p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  url = p;
   if (url_check_scheme(PopHost) == U_UNKNOWN)
   {
     strcpy(url, "pop://");
@@ -968,7 +969,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  if (mx_mbox_open(Spoolfile, MUTT_APPEND, &ctx) == NULL)
+  if (!mx_mbox_open(Spoolfile, MUTT_APPEND, &ctx))
     goto finish;
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));

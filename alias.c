@@ -59,7 +59,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
 
   while (a)
   {
-    if (!a->group && !a->personal && a->mailbox && strchr(a->mailbox, '@') == NULL)
+    if (!a->group && !a->personal && a->mailbox && !strchr(a->mailbox, '@'))
     {
       t = mutt_alias_lookup(a->mailbox);
 
@@ -85,7 +85,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
           if (head)
             last->next = w;
           else
-            head = last = w;
+          {
+            head = w;
+            last = w;
+          }
           while (last && last->next)
             last = last->next;
         }
@@ -115,7 +118,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
       last = last->next;
     }
     else
-      head = last = a;
+    {
+      head = a;
+      last = a;
+    }
     a = a->next;
     last->next = NULL;
   }
@@ -213,7 +219,7 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
     int bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
     bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
-      bad = bad || (strchr("-_+=.", *s) == NULL && !iswalnum(wc));
+      bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
     else
       bad = bad || !iswalnum(wc);
     if (bad)
@@ -489,7 +495,7 @@ retry_name:
     }
 
     if (check_alias_name(new->name, NULL, 0))
-      mutt_file_quote_filename(buf, sizeof(buf), new->name);
+      mutt_file_quote_filename(new->name, buf, sizeof(buf));
     else
       mutt_str_strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));

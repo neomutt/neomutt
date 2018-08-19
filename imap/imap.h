@@ -108,14 +108,14 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(char *path, size_t len);
+int imap_expand_path(char *buf, size_t buflen);
 int imap_parse_path(const char *path, struct ImapMbox *mx);
 void imap_pretty_mailbox(char *path);
 
 int imap_wait_keepalive(pid_t pid);
 void imap_keepalive(void);
 
-void imap_get_parent_path(char *output, const char *path, size_t olen);
+void imap_get_parent_path(const char *path, char *buf, size_t buflen);
 void imap_clean_path(char *path, size_t plen);
 
 #endif /* _IMAP_IMAP_H */

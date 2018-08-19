@@ -107,7 +107,8 @@ static int lua_mutt_call(lua_State *l)
     mutt_str_strncat(buffer, sizeof(buffer), " ", 1);
   }
 
-  expn.data = expn.dptr = buffer;
+  expn.data = buffer;
+  expn.dptr = buffer;
   expn.dsize = mutt_str_strlen(buffer);
 
   if (command->func(&token, &expn, command->data, &err))
@@ -117,7 +118,7 @@ static int lua_mutt_call(lua_State *l)
   }
   else
   {
-    if (lua_pushstring(l, err.data) == NULL)
+    if (!lua_pushstring(l, err.data))
       handle_error(l);
     else
       rc++;
@@ -303,7 +304,7 @@ static int lua_mutt_enter(lua_State *l)
   }
   else
   {
-    if (lua_pushstring(l, err.data) == NULL)
+    if (!lua_pushstring(l, err.data))
       handle_error(l);
     else
       rc++;

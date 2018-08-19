@@ -199,7 +199,7 @@ int mutt_display_message(struct Header *cur)
     return 0;
   }
 
-  if (fpfilterout != NULL && mutt_wait_filter(filterpid) != 0)
+  if (fpfilterout && mutt_wait_filter(filterpid) != 0)
     mutt_any_key_to_continue(NULL);
 
   mutt_file_fclose(&fpfilterout); /* XXX - check result? */
@@ -986,7 +986,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   }
 #endif
 
-  if (mx_mbox_open(buf, MUTT_APPEND, &ctx) != NULL)
+  if (mx_mbox_open(buf, MUTT_APPEND, &ctx))
   {
 #ifdef USE_COMPRESSED
     /* If we're saving to a compressed mailbox, the stats won't be updated

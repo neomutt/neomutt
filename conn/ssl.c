@@ -337,13 +337,13 @@ static void ssl_dprint_err_stack(void)
 /**
  * ssl_passwd_cb - Callback to get a password
  * @param buf      Buffer for the password
- * @param size     Length of the buffer
+ * @param buflen   Length of the buffer
  * @param rwflag   0 if writing, 1 if reading (UNUSED)
  * @param userdata Account whose password is requested
  * @retval >0 Success, number of chars written to buf
  * @retval  0 Error
  */
-static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
+static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
 
@@ -356,7 +356,7 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
   if (mutt_account_getpass(account) < 0)
     return 0;
 
-  return snprintf(buf, size, "%s", account->pass);
+  return snprintf(buf, buflen, "%s", account->pass);
 }
 
 /**
@@ -771,7 +771,7 @@ static bool check_certificate_file(X509 *peercert)
     return false;
   }
 
-  while (PEM_read_X509(fp, &cert, NULL, NULL) != NULL)
+  while (PEM_read_X509(fp, &cert, NULL, NULL))
   {
     if (compare_certificates(cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration(cert, true))
@@ -1139,7 +1139,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    * In this case, all following certificates need to be treated as non-verified
    * until one is actually verified.
    */
-  skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex) != NULL);
+  skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
 
   cert = X509_STORE_CTX_get_current_cert(ctx);
   pos = X509_STORE_CTX_get_error_depth(ctx);

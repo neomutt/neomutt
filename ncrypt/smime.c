@@ -39,7 +39,6 @@
 #include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
-#include "smime.h"
 #include "alias.h"
 #include "copy.h"
 #include "crypt.h"
@@ -61,6 +60,9 @@
 #include "send.h"
 #include "sendlib.h"
 #include "state.h"
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+#include "smime.h"
+#endif
 
 /* These Config Variables are only used in ncrypt/smime.c */
 bool SmimeAskCertLabel; ///< Config: Prompt the user for a label for SMIME certificates
@@ -227,7 +229,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
 
         mutt_str_strfcpy(path, SmimeCaLocation, sizeof(path));
         mutt_expand_path(path, sizeof(path));
-        mutt_file_quote_filename(buf1, sizeof(buf1), path);
+        mutt_file_quote_filename(path, buf1, sizeof(buf1));
 
         if (stat(path, &sb) != 0 || !S_ISDIR(sb.st_mode))
           snprintf(buf2, sizeof(buf2), "-CAfile %s", buf1);
@@ -1624,7 +1626,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 
   fflush(smimeerr);
   rewind(smimeerr);
-  while (fgets(buf, sizeof(buf) - 1, smimeerr) != NULL)
+  while (fgets(buf, sizeof(buf) - 1, smimeerr))
   {
     err = 1;
     fputs(buf, stdout);
@@ -1773,7 +1775,7 @@ struct Body *smime_class_sign_message(struct Body *a)
   err = 0;
   fflush(smimeerr);
   rewind(smimeerr);
-  while (fgets(buffer, sizeof(buffer) - 1, smimeerr) != NULL)
+  while (fgets(buffer, sizeof(buffer) - 1, smimeerr))
   {
     err = 1;
     fputs(buffer, stdout);
@@ -2130,7 +2132,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       }
     }
     char buf[HUGE_STRING];
-    while (fgets(buf, sizeof(buf) - 1, smimeout) != NULL)
+    while (fgets(buf, sizeof(buf) - 1, smimeout))
     {
       const size_t len = mutt_str_strlen(buf);
       if (len > 1 && buf[len - 2] == '\r')

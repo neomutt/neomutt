@@ -299,61 +299,61 @@ void url_free(struct Url *u)
 
 /**
  * url_pct_encode - Percent-encode a string
- * @param dst Buffer for the result
- * @param l   Length of buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
  * @param src String to encode
  *
  * e.g. turn "hello world" into "hello%20world"
  */
-void url_pct_encode(char *dst, size_t l, const char *src)
+void url_pct_encode(char *buf, size_t buflen, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
 
-  *dst = 0;
-  l--;
-  while (src && *src && (l != 0))
+  *buf = 0;
+  buflen--;
+  while (src && *src && (buflen != 0))
   {
     if (strchr("/:&%", *src))
     {
-      if (l < 3)
+      if (buflen < 3)
         break;
 
-      *dst++ = '%';
-      *dst++ = alph[(*src >> 4) & 0xf];
-      *dst++ = alph[*src & 0xf];
+      *buf++ = '%';
+      *buf++ = alph[(*src >> 4) & 0xf];
+      *buf++ = alph[*src & 0xf];
       src++;
-      l -= 3;
+      buflen -= 3;
       continue;
     }
-    *dst++ = *src++;
-    l--;
+    *buf++ = *src++;
+    buflen--;
   }
-  *dst = 0;
+  *buf = 0;
 }
 
 /**
  * url_tostring - Output the URL string for a given Url object
- * @param u     Url to turn into a string
- * @param dest  Buffer for the result
- * @param len   Length of buffer
- * @param flags Flags, e.g. #U_DECODE_PASSWD
+ * @param u      Url to turn into a string
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param flags  Flags, e.g. #U_DECODE_PASSWD
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tostring(struct Url *u, char *dest, size_t len, int flags)
+int url_tostring(struct Url *u, char *buf, size_t buflen, int flags)
 {
   if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(dest, len, "%s:", mutt_map_get_name(u->scheme, UrlMap));
+  snprintf(buf, buflen, "%s:", mutt_map_get_name(u->scheme, UrlMap));
 
   if (u->host)
   {
     if (!(flags & U_PATH))
-      mutt_str_strcat(dest, len, "//");
-    size_t l = strlen(dest);
-    len -= l;
-    dest += l;
+      mutt_str_strcat(buf, buflen, "//");
+    size_t l = strlen(buf);
+    buflen -= l;
+    buf += l;
 
     if (u->user && (u->user[0] || !(flags & U_PATH)))
     {
@@ -364,33 +364,33 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
       {
         char p[STRING];
         url_pct_encode(p, sizeof(p), u->pass);
-        snprintf(dest, len, "%s:%s@", str, p);
+        snprintf(buf, buflen, "%s:%s@", str, p);
       }
       else
-        snprintf(dest, len, "%s@", str);
+        snprintf(buf, buflen, "%s@", str);
 
-      l = strlen(dest);
-      len -= l;
-      dest += l;
+      l = strlen(buf);
+      buflen -= l;
+      buf += l;
     }
 
     if (strchr(u->host, ':'))
-      snprintf(dest, len, "[%s]", u->host);
+      snprintf(buf, buflen, "[%s]", u->host);
     else
-      snprintf(dest, len, "%s", u->host);
+      snprintf(buf, buflen, "%s", u->host);
 
-    l = strlen(dest);
-    len -= l;
-    dest += l;
+    l = strlen(buf);
+    buflen -= l;
+    buf += l;
 
     if (u->port)
-      snprintf(dest, len, ":%hu/", u->port);
+      snprintf(buf, buflen, ":%hu/", u->port);
     else
-      snprintf(dest, len, "/");
+      snprintf(buf, buflen, "/");
   }
 
   if (u->path)
-    mutt_str_strcat(dest, len, u->path);
+    mutt_str_strcat(buf, buflen, u->path);
 
   return 0;
 }

@@ -108,16 +108,16 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
         if (MailcapSanitize)
           mutt_file_sanitize_filename(pvalue, false);
 
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, pvalue);
+        y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
       }
-      else if (command[x] == 's' && filename != NULL)
+      else if (command[x] == 's' && filename)
       {
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, filename);
+        y += mutt_file_quote_filename(filename, buf + y, sizeof(buf) - y);
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, type2);
+        y += mutt_file_quote_filename(type2, buf + y, sizeof(buf) - y);
       }
       x++;
     }
@@ -143,7 +143,7 @@ static char *get_field(char *s)
   if (!s)
     return NULL;
 
-  while ((ch = strpbrk(s, ";\\")) != NULL)
+  while ((ch = strpbrk(s, ";\\")))
   {
     if (*ch == '\\')
     {
@@ -231,7 +231,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
   if (fp)
   {
     size_t buflen;
-    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
+    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)))
     {
       /* ignore comments */
       if (*buf == '#')

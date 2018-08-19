@@ -66,7 +66,7 @@ static void lazy_realloc(void *ptr, size_t size)
 {
   void **p = (void **) ptr;
 
-  if (p != NULL && size < 4096)
+  if (p && (size < 4096))
     return;
 
   mutt_mem_realloc(ptr, size);

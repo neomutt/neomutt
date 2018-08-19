@@ -203,7 +203,10 @@ static struct Address *remove_user(struct Address *a, bool leave_only)
         last = last->next;
       }
       else
-        last = top = a;
+      {
+        last = a;
+        top = a;
+      }
       a = a->next;
       last->next = NULL;
     }
@@ -218,7 +221,10 @@ static struct Address *remove_user(struct Address *a, bool leave_only)
         mutt_addr_free(&tmp);
       }
       else
-        last = top = tmp;
+      {
+        last = tmp;
+        top = tmp;
+      }
     }
   }
   return top;
@@ -246,7 +252,10 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
           ptr = ptr->next;
         }
         else
-          ptr = top = mutt_addr_copy(t);
+        {
+          top = mutt_addr_copy(t);
+          ptr = top;
+        }
       }
     }
   }
@@ -334,7 +343,7 @@ static int edit_envelope(struct Envelope *en, int flags)
   else
 #endif
   {
-    if (edit_address(&en->to, _("To: ")) == -1 || en->to == NULL)
+    if (edit_address(&en->to, _("To: ")) == -1 || !en->to)
       return -1;
     if (Askcc && edit_address(&en->cc, _("Cc: ")) == -1)
       return -1;
@@ -1078,7 +1087,10 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
             last = tmp;
           }
           else
-            last = msg->content = tmp;
+          {
+            last = tmp;
+            msg->content = tmp;
+          }
         }
       }
     }
@@ -1103,7 +1115,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
   {
     struct Body *b = NULL;
 
-    if (((WithCrypto & APPLICATION_PGP) != 0) && (b = crypt_pgp_make_key_attachment()) == NULL)
+    if (((WithCrypto & APPLICATION_PGP) != 0) && !(b = crypt_pgp_make_key_attachment()))
     {
       return -1;
     }

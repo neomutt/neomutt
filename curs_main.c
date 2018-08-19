@@ -199,7 +199,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   /* Iterate all threads, perform collapse/uncollapse as needed */
   top = Context->tree;
   Context->collapsed = toggle ? !Context->collapsed : true;
-  while ((thread = top) != NULL)
+  while ((thread = top))
   {
     while (!thread->message)
       thread = thread->child;
@@ -1330,7 +1330,7 @@ int mutt_index_menu(void)
             struct ListNode *ref = NULL;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
-              if (mutt_hash_find(Context->id_hash, ref->data) == NULL)
+              if (!mutt_hash_find(Context->id_hash, ref->data))
               {
                 rc2 = nntp_check_msgid(Context, ref->data);
                 if (rc2 < 0)

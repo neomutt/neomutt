@@ -162,14 +162,10 @@ void mutt_param_delete(struct ParameterList *p, const char *attribute)
 bool mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2)
 {
   if (!p1 && !p2)
-  {
     return false;
-  }
 
   if ((p1 == NULL) ^ (p2 == NULL))
-  {
     return true;
-  }
 
   struct Parameter *np1 = TAILQ_FIRST(p1);
   struct Parameter *np2 = TAILQ_FIRST(p2);

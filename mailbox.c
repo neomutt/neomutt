@@ -242,7 +242,7 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
     return 0;
   }
 
-  while ((de = readdir(dirp)) != NULL)
+  while ((de = readdir(dirp)))
   {
     if (*de->d_name == '.')
       continue;
@@ -354,7 +354,7 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
   if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
   {
     if (mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
-                     &ctx) != NULL)
+                     &ctx))
     {
       mailbox->msg_count = ctx.msgcount;
       mailbox->msg_unread = ctx.unread;
@@ -624,7 +624,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     mutt_extract_token(path, s, 0);
 #ifdef USE_NOTMUCH
     if (mx_is_notmuch(path->data))
-      nm_normalize_uri(buf, path->data, sizeof(buf));
+      nm_normalize_uri(path->data, buf, sizeof(buf));
     else
 #endif
       mutt_str_strfcpy(buf, path->data, sizeof(buf));
@@ -725,7 +725,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(path->data))
       {
-        nm_normalize_uri(buf, path->data, sizeof(buf));
+        nm_normalize_uri(path->data, buf, sizeof(buf));
       }
       else
 #endif

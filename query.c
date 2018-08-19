@@ -153,7 +153,7 @@ static struct Query *run_query(char *s, int quiet)
   p = strrchr(msg, '\n');
   if (p)
     *p = '\0';
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
   {
     p = strtok(buf, "\t\n");
     if (p)
@@ -369,7 +369,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable;
 
     int i;
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)

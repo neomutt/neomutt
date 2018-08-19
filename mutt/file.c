@@ -304,7 +304,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   {
     char abs_oldpath[PATH_MAX];
 
-    if ((getcwd(abs_oldpath, sizeof(abs_oldpath)) == NULL) ||
+    if (!getcwd(abs_oldpath, sizeof(abs_oldpath)) ||
         ((strlen(abs_oldpath) + 1 + strlen(oldpath) + 1) > sizeof(abs_oldpath)))
     {
       return -1;
@@ -612,7 +612,7 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 
   while (true)
   {
-    if (fgets(s + offset, *size - offset, fp) == NULL)
+    if (!fgets(s + offset, *size - offset, fp))
     {
       FREE(&s);
       return NULL;
@@ -660,43 +660,43 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 
 /**
  * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
- * @param d Buffer for the result
- * @param l Length of buffer
- * @param f String to convert
+ * @param filename String to convert
+ * @param buf      Buffer for the result
+ * @param buflen   Length of buffer
  * @retval num Bytes written to the buffer
  *
  * From the Unix programming FAQ by way of Liviu.
  */
-size_t mutt_file_quote_filename(char *d, size_t l, const char *f)
+size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
 {
   size_t j = 0;
 
-  if (!f)
+  if (!filename)
   {
-    *d = '\0';
+    *buf = '\0';
     return 0;
   }
 
   /* leave some space for the trailing characters. */
-  l -= 6;
+  buflen -= 6;
 
-  d[j++] = '\'';
+  buf[j++] = '\'';
 
-  for (size_t i = 0; (j < l) && f[i]; i++)
+  for (size_t i = 0; (j < buflen) && filename[i]; i++)
   {
-    if ((f[i] == '\'') || (f[i] == '`'))
+    if ((filename[i] == '\'') || (filename[i] == '`'))
     {
-      d[j++] = '\'';
-      d[j++] = '\\';
-      d[j++] = f[i];
-      d[j++] = '\'';
+      buf[j++] = '\'';
+      buf[j++] = '\\';
+      buf[j++] = filename[i];
+      buf[j++] = '\'';
     }
     else
-      d[j++] = f[i];
+      buf[j++] = filename[i];
   }
 
-  d[j++] = '\'';
-  d[j] = '\0';
+  buf[j++] = '\'';
+  buf[j] = '\0';
 
   return j;
 }
@@ -1190,32 +1190,32 @@ int mutt_file_rename(char *oldfile, char *newfile)
 /**
  * mutt_file_read_keyword - Read a keyword from a file
  * @param file   File to read
- * @param buffer Buffer to store the keyword
- * @param buflen Length of the buffer
+ * @param buf    Buffer to store the keyword
+ * @param buflen Length of the buf
  * @retval ptr Start of the keyword
  *
  * Read one line from the start of a file.
  * Skip any leading whitespace and extract the first token.
  */
-char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
+char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
 {
   FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return NULL;
 
-  buffer = fgets(buffer, buflen, fp);
+  buf = fgets(buf, buflen, fp);
   mutt_file_fclose(&fp);
 
-  if (!buffer)
+  if (!buf)
     return NULL;
 
-  SKIPWS(buffer);
-  char *start = buffer;
+  SKIPWS(buf);
+  char *start = buf;
 
-  while (*buffer && !isspace(*buffer))
-    buffer++;
+  while (*buf && !isspace(*buf))
+    buf++;
 
-  *buffer = '\0';
+  *buf = '\0';
 
   return start;
 }
@@ -1250,7 +1250,7 @@ void mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, con
 {
   char tmp[PATH_MAX];
 
-  mutt_file_quote_filename(tmp, sizeof(tmp), src);
+  mutt_file_quote_filename(src, tmp, sizeof(tmp));
   mutt_file_expand_fmt(dest, destlen, fmt, tmp);
 }
 

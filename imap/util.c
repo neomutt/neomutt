@@ -65,8 +65,8 @@ short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be
 
 /**
  * imap_expand_path - Canonicalise an IMAP path
- * @param path Buffer containing path
- * @param len  Buffer length
+ * @param buf Buffer containing path
+ * @param buflen  Buffer length
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -77,7 +77,7 @@ short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be
  * Function can fail if imap_parse_path() or url_tostring() fail,
  * of if the buffer isn't large enough.
  */
-int imap_expand_path(char *path, size_t len)
+int imap_expand_path(char *buf, size_t buflen)
 {
   struct ImapMbox mx;
   struct ImapData *idata = NULL;
@@ -85,7 +85,7 @@ int imap_expand_path(char *path, size_t len)
   char fixedpath[LONG_STRING];
   int rc;
 
-  if (imap_parse_path(path, &mx) < 0)
+  if (imap_parse_path(buf, &mx) < 0)
     return -1;
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
@@ -93,7 +93,7 @@ int imap_expand_path(char *path, size_t len)
   imap_fix_path(idata, mx.mbox, fixedpath, sizeof(fixedpath));
   url.path = fixedpath;
 
-  rc = url_tostring(&url, path, len, U_DECODE_PASSWD);
+  rc = url_tostring(&url, buf, buflen, U_DECODE_PASSWD);
   FREE(&mx.mbox);
 
   return rc;
@@ -101,32 +101,32 @@ int imap_expand_path(char *path, size_t len)
 
 /**
  * imap_get_parent - Get an IMAP folder's parent
- * @param output Buffer for the result
  * @param mbox   Mailbox whose parent is to be determined
- * @param olen   Length of the buffer
  * @param delim  Path delimiter
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
  */
-void imap_get_parent(char *output, const char *mbox, size_t olen, char delim)
+void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
 {
   int n;
 
   /* Make a copy of the mailbox name, but only if the pointers are different */
-  if (mbox != output)
-    mutt_str_strfcpy(output, mbox, olen);
+  if (mbox != buf)
+    mutt_str_strfcpy(buf, mbox, buflen);
 
-  n = mutt_str_strlen(output);
+  n = mutt_str_strlen(buf);
 
   /* Let's go backwards until the next delimiter
    *
-   * If output[n] is a '/', the first n-- will allow us
-   * to ignore it. If it isn't, then output looks like
+   * If buf[n] is a '/', the first n-- will allow us
+   * to ignore it. If it isn't, then buf looks like
    * "/aaaaa/bbbb". There is at least one "b", so we can't skip
    * the "/" after the 'a's.
    *
-   * If output == '/', then n-- => n == 0, so the loop ends
+   * If buf == '/', then n-- => n == 0, so the loop ends
    * immediately
    */
-  for (n--; n >= 0 && output[n] != delim; n--)
+  for (n--; n >= 0 && buf[n] != delim; n--)
     ;
 
   /* We stopped before the beginning. There is a trailing
@@ -135,24 +135,24 @@ void imap_get_parent(char *output, const char *mbox, size_t olen, char delim)
   if (n > 0)
   {
     /* Strip the trailing delimiter.  */
-    output[n] = '\0';
+    buf[n] = '\0';
   }
   else
   {
-    output[0] = (n == 0) ? delim : '\0';
+    buf[0] = (n == 0) ? delim : '\0';
   }
 }
 
 /**
  * imap_get_parent_path - Get the path of the parent folder
- * @param output Buffer for the result
  * @param path   Mailbox whose parent is to be determined
- * @param olen   Length of the buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
  *
- * Provided an imap path, returns in output the parent directory if
+ * Provided an imap path, returns in buf the parent directory if
  * existent. Else returns the same path.
  */
-void imap_get_parent_path(char *output, const char *path, size_t olen)
+void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   struct ImapMbox mx;
   struct ImapData *idata = NULL;
@@ -160,14 +160,14 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
 
   if (imap_parse_path(path, &mx) < 0)
   {
-    mutt_str_strfcpy(output, path, olen);
+    mutt_str_strfcpy(buf, path, buflen);
     return;
   }
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
   if (!idata)
   {
-    mutt_str_strfcpy(output, path, olen);
+    mutt_str_strfcpy(buf, path, buflen);
     return;
   }
 
@@ -175,10 +175,10 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
   imap_fix_path(idata, mx.mbox, mbox, sizeof(mbox));
 
   /* Gets the parent mbox in mbox */
-  imap_get_parent(mbox, mbox, sizeof(mbox), idata->delim);
+  imap_get_parent(mbox, idata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(output, olen, &mx, mbox);
+  imap_qualify_path(buf, buflen, &mx, mbox);
   FREE(&mx.mbox);
 }
 
@@ -777,21 +777,21 @@ char *imap_next_word(char *s)
 
 /**
  * imap_qualify_path - Make an absolute IMAP folder target
- * @param dest Buffer for the result
- * @param len  Length of buffer
- * @param mx   Imap mailbox
- * @param path Path relative to the mailbox
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param mx     Imap mailbox
+ * @param path   Path relative to the mailbox
  *
  * given ImapMbox and relative path.
  */
-void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
+void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path)
 {
   struct Url url;
 
   mutt_account_tourl(&mx->account, &url);
   url.path = path;
 
-  url_tostring(&url, dest, len, 0);
+  url_tostring(&url, buf, buflen, 0);
 }
 
 /**
@@ -1019,8 +1019,8 @@ int imap_account_match(const struct Account *a1, const struct Account *a2)
 {
   struct ImapData *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
   struct ImapData *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
-  const struct Account *a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
-  const struct Account *a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
+  const struct Account *a1_canon = a1_idata ? &a1_idata->conn->account : a1;
+  const struct Account *a2_canon = a2_idata ? &a2_idata->conn->account : a2;
 
   return mutt_account_match(a1_canon, a2_canon);
 }

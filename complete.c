@@ -158,8 +158,8 @@ int mutt_complete(char *buf, size_t buflen)
     if (p)
     {
       char tmp[PATH_MAX];
-      if (mutt_path_concatn(tmp, sizeof(tmp), exp_dirpart, strlen(exp_dirpart),
-                                 buf + 1, (size_t)(p - buf - 1)) == NULL)
+      if (!mutt_path_concatn(tmp, sizeof(tmp), exp_dirpart, strlen(exp_dirpart),
+                                 buf + 1, (size_t)(p - buf - 1)))
       {
         return -1;
       }
@@ -214,7 +214,7 @@ int mutt_complete(char *buf, size_t buflen)
   len = mutt_str_strlen(filepart);
   if (len == 0)
   {
-    while ((de = readdir(dirp)) != NULL)
+    while ((de = readdir(dirp)))
     {
       if ((mutt_str_strcmp(".", de->d_name) != 0) &&
           (mutt_str_strcmp("..", de->d_name) != 0))
@@ -226,7 +226,7 @@ int mutt_complete(char *buf, size_t buflen)
     }
   }
 
-  while ((de = readdir(dirp)) != NULL)
+  while ((de = readdir(dirp)))
   {
     if (mutt_str_strncmp(de->d_name, filepart, len) == 0)
     {

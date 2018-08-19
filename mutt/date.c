@@ -470,7 +470,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
   memset(&tm, 0, sizeof(tm));
 
-  while ((t = strtok(t, " \t")) != NULL)
+  while ((t = strtok(t, " \t")))
   {
     switch (count)
     {

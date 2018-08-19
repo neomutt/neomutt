@@ -221,7 +221,7 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = mutt_hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
   {
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
         *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -263,7 +263,7 @@ static void shrink_histfile(void)
     }
     rewind(f);
     line = 0;
-    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
     {
       if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
           *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -289,7 +289,7 @@ cleanup:
   FREE(&linebuf);
   if (tmpfp)
   {
-    if (fflush(tmpfp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
+    if ((fflush(tmpfp) == 0) && (f = fopen(HistoryFile, "w")))
     {
       rewind(tmpfp);
       mutt_file_copy_stream(tmpfp, f);
@@ -368,7 +368,8 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
     return; /* disabled */
 
   /* Remove dups from 0..last-1 compacting up. */
-  source = dest = 0;
+  source = 0;
+  dest = 0;
   while (source < h->last)
   {
     if (mutt_str_strcmp(h->hist[source], str) == 0)
@@ -387,7 +388,8 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
     h->hist[source--] = NULL;
 
   /* Remove dups from last+1 .. History compacting down. */
-  source = dest = History;
+  source = History;
+  dest = History;
   while (source > old_last)
   {
     if (mutt_str_strcmp(h->hist[source], str) == 0)
@@ -527,7 +529,7 @@ char *mutt_hist_next(enum HistoryClass hclass)
       next = 0;
     if (next == h->last)
       break;
-  } while (h->hist[next] == NULL);
+  } while (!h->hist[next]);
 
   h->cur = next;
   return NONULL(h->hist[h->cur]);
@@ -555,7 +557,7 @@ char *mutt_hist_prev(enum HistoryClass hclass)
       prev = History;
     if (prev == h->last)
       break;
-  } while (h->hist[prev] == NULL);
+  } while (!h->hist[prev]);
 
   h->cur = prev;
   return NONULL(h->hist[h->cur]);
@@ -593,7 +595,7 @@ void mutt_hist_read_file(void)
   if (!f)
     return;
 
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))
   {
     read = 0;
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||

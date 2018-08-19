@@ -119,7 +119,7 @@ static int count_body_parts(struct Body *body, int flags)
   if (!body)
     return 0;
 
-  for (struct Body *bp = body; bp != NULL; bp = bp->next)
+  for (struct Body *bp = body; bp; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
     bool shallcount = true; /* default */

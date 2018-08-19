@@ -48,7 +48,9 @@
 #include "ncrypt.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
+#endif
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by
@@ -78,7 +80,7 @@ static void fix_uid(char *uid)
   char *s = NULL, *d = NULL;
   iconv_t cd;
 
-  for (s = d = uid; *s;)
+  for (s = uid, d = uid; *s;)
   {
     if (*s == '\\' && *(s + 1) == 'x' && isxdigit((unsigned char) *(s + 2)) &&
         isxdigit((unsigned char) *(s + 3)))
@@ -433,7 +435,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
     {
       if (k)
         kend = &k->next;
-      *kend = k = kk;
+      *kend = kk;
+      k = kk;
 
       if (is_sub)
       {

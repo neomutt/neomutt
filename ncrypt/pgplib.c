@@ -29,7 +29,9 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
+#endif
 
 /**
  * pgp_pkalgbytype - Get the name of the algorithm from its ID

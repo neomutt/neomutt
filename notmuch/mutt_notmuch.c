@@ -408,7 +408,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
   }
 
   /* if the query has changed, reset the window position */
-  if (NmQueryWindowCurrentSearch == NULL || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
+  if (!NmQueryWindowCurrentSearch || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
   if (!query_window_check_timebase(NmQueryWindowTimebase))
@@ -770,7 +770,8 @@ static void apply_exclude_tags(notmuch_query_t *query)
 
     mutt_debug(2, "nm: query exclude tag '%s'\n", tag);
     notmuch_query_add_tag_exclude(query, tag);
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
   notmuch_query_set_omit_excluded(query, 1);
   FREE(&buf);
@@ -1446,7 +1447,8 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
       mutt_debug(1, "nm: add tag: '%s'\n", (*tag == '+') ? tag + 1 : tag);
       notmuch_message_add_tag(msg, (*tag == '+') ? tag + 1 : tag);
     }
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
 
   notmuch_message_thaw(msg);
@@ -1511,7 +1513,8 @@ static int update_header_flags(struct Context *ctx, struct Header *hdr, const ch
       else if (strcmp(tag, "flagged") == 0)
         mutt_set_flag(ctx, hdr, MUTT_FLAG, 1);
     }
-    end = tag = NULL;
+    end = NULL;
+    tag = NULL;
   }
 
   FREE(&buf);
@@ -1520,15 +1523,15 @@ static int update_header_flags(struct Context *ctx, struct Header *hdr, const ch
 
 /**
  * rename_maildir_filename - Rename a Maildir file
- * @param old     Old path
- * @param newpath Buffer for new path
- * @param newsz   Length of buffer
- * @param h       Email Header
+ * @param old    Old path
+ * @param buf    Buffer for new path
+ * @param buflen Length of buffer
+ * @param h      Email Header
  * @retval  0 Success, renamed
  * @retval  1 Success, no change
  * @retval -1 Failure
  */
-static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
+static int rename_maildir_filename(const char *old, char *buf, size_t buflen,
                                    struct Header *h)
 {
   char filename[PATH_MAX];
@@ -1560,15 +1563,15 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
   /* compose new flags */
   maildir_flags(suffix, sizeof(suffix), h);
 
-  snprintf(newpath, newsz, "%s/%s/%s%s", folder,
+  snprintf(buf, buflen, "%s/%s/%s%s", folder,
            (h->read || h->old) ? "cur" : "new", filename, suffix);
 
-  if (strcmp(old, newpath) == 0)
+  if (strcmp(old, buf) == 0)
     return 1;
 
-  if (rename(old, newpath) != 0)
+  if (rename(old, buf) != 0)
   {
-    mutt_debug(1, "nm: rename(2) failed %s -> %s\n", old, newpath);
+    mutt_debug(1, "nm: rename(2) failed %s -> %s\n", old, buf);
     return -1;
   }
 
@@ -1943,11 +1946,11 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
 
 /**
  * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
- * @param new_uri    allocated string receiving the reformatted URI
- * @param orig_uri   original URI to be parsed
- * @param new_uri_sz size of the allocated new_uri string
- * @retval true if new_uri contains a normalized version of the query
- * @retval false if orig_uri contains an invalid query
+ * @param uri    Original URI to be parsed
+ * @param buf    Buffer for the reformatted URI
+ * @param buflen Size of the buffer
+ * @retval true if buf contains a normalized version of the query
+ * @retval false if uri contains an invalid query
  *
  * This function aims at making notmuch searches URI representations deterministic,
  * so that when comparing two equivalent searches they will be the same. It works
@@ -1957,14 +1960,14 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
  * It's aimed to be used by mailbox when parsing the virtual_mailboxes to make the
  * parsed user written search strings comparable to the internally generated ones.
  */
-bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
+bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
 {
-  mutt_debug(2, "(%s)\n", orig_uri);
-  char buf[PATH_MAX];
+  mutt_debug(2, "(%s)\n", uri);
+  char tmp[PATH_MAX];
   int rc = -1;
 
   struct Context tmp_ctx = { 0 };
-  struct NmCtxData *tmp_ctxdata = new_ctxdata(orig_uri);
+  struct NmCtxData *tmp_ctxdata = new_ctxdata(uri);
 
   if (!tmp_ctxdata)
     return false;
@@ -1974,19 +1977,19 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
-  if (get_query_string(tmp_ctxdata, false) == NULL)
+  if (!get_query_string(tmp_ctxdata, false))
     goto gone;
 
   mutt_debug(2, "#2 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
-  mutt_str_strfcpy(buf, tmp_ctxdata->db_query, sizeof(buf));
+  mutt_str_strfcpy(tmp, tmp_ctxdata->db_query, sizeof(tmp));
 
-  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
+  if (!nm_uri_from_query(&tmp_ctx, tmp, sizeof(tmp)))
     goto gone;
 
-  strncpy(new_uri, buf, new_uri_sz);
+  strncpy(buf, tmp, buflen);
 
-  mutt_debug(2, "#3 (%s) -> %s\n", orig_uri, new_uri);
+  mutt_debug(2, "#3 (%s) -> %s\n", uri, buf);
 
   rc = 0;
 gone:
@@ -1995,7 +1998,7 @@ gone:
   FREE(&tmp_ctxdata);
   if (rc < 0)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
+    mutt_error(_("failed to parse notmuch uri: %s"), uri);
     mutt_debug(2, "() -> error\n");
     return false;
   }
@@ -2661,7 +2664,8 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     if (!ctx->quiet)
       mutt_progress_update(&progress, i, -1);
 
-    *old = *new = '\0';
+    *old = '\0';
+    *new = '\0';
 
     if (hd->oldpath)
     {

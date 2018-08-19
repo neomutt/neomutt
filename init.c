@@ -246,7 +246,7 @@ static int complete_all_nm_tags(const char *pt)
   /* Free the old list, if any. */
   if (nm_tags)
   {
-    for (int i = 0; nm_tags[i] != NULL; i++)
+    for (int i = 0; nm_tags[i]; i++)
       FREE(&nm_tags[i]);
     FREE(&nm_tags);
   }
@@ -836,7 +836,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
 
   mutt_buffer_init(&token);
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)))
   {
     const int conv = ConfigCharset && (*ConfigCharset) && Charset;
     if (conv)
@@ -2931,7 +2931,8 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     snprintf(buffer, sizeof(buffer), "Reply-To: %s", p);
 
     mutt_buffer_init(&buf);
-    buf.data = buf.dptr = buffer;
+    buf.data = buffer;
+    buf.dptr = buffer;
     buf.dsize = mutt_str_strlen(buffer);
 
     mutt_buffer_init(&token);
@@ -3172,7 +3173,8 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
     return 0;
 
   mutt_buffer_init(&expn);
-  expn.data = expn.dptr = line;
+  expn.data = line;
+  expn.dptr = line;
   expn.dsize = mutt_str_strlen(line);
 
   *err->data = 0;

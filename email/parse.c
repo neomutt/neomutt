@@ -154,7 +154,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
     }
 
     /* Find the next parameter */
-    if ((*s != ';') && (s = strchr(s, ';')) == NULL)
+    if ((*s != ';') && !(s = strchr(s, ';')))
       break; /* no more parameters */
 
     do
@@ -304,12 +304,13 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   else
     return NULL;
 
-  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")) != NULL; ++p)
+  for (s = NULL, o = NULL, onull = NULL; (p = strpbrk(p, "<> \t;")); ++p)
   {
     if (*p == '<')
     {
       s = p;
-      o = onull = NULL;
+      o = NULL;
+      onull = NULL;
       continue;
     }
 
@@ -339,7 +340,9 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
     else if (o)
     {
       /* more than two lines, give up */
-      s = o = onull = NULL;
+      s = NULL;
+      o = NULL;
+      onull = NULL;
     }
     else
     {
@@ -1342,7 +1345,10 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           last = new;
         }
         else
-          last = head = new;
+        {
+          last = new;
+          head = new;
+        }
       }
     }
   }

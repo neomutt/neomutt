@@ -101,7 +101,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   fseeko(f, offset, SEEK_SET);
   while (bytes > 0)
   {
-    if (fgets(p, tmplen - 1, f) == NULL)
+    if (!fgets(p, tmplen - 1, f))
       break;
     bytes -= mutt_str_strlen(p);
     if (*bufmax == *buflen)
@@ -208,7 +208,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   if (!msg || !buf || !bufmax || !buflen)
     return buf;
 
-  while ((msg = strtok(msg, " ,")) != NULL)
+  while ((msg = strtok(msg, " ,")))
   {
     if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
     {
@@ -511,7 +511,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             char *tag = NULL, *err = NULL;
             be_free_memory(buf, buflen);
             buf = NULL;
-            bufmax = buflen = 0;
+            bufmax = 0;
+            buflen = 0;
 
             if (EditHeaders)
             {

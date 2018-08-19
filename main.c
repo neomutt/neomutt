@@ -1041,7 +1041,10 @@ int main(int argc, char *argv[], char *envp[])
           a = a->next;
         }
         else
-          msg->content = a = mutt_make_file_attach(np->data);
+        {
+          a = mutt_make_file_attach(np->data);
+          msg->content = a;
+        }
         if (!a)
         {
           mutt_error(_("%s: unable to attach file"), np->data);

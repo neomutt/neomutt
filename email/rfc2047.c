@@ -78,7 +78,7 @@ static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *t
     size_t ret;
     size_t in_len = MIN(3, buflen);
 
-    ret = mutt_b64_encode(encoded, buf, in_len, sizeof(encoded));
+    ret = mutt_b64_encode(buf, in_len, encoded, sizeof(encoded));
     for (size_t i = 0; i < ret; i++)
       *str++ = encoded[i];
 
@@ -142,7 +142,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   regmatch_t match[4];
   size_t nmatch = 4;
 
-  if (re == NULL)
+  if (!re)
   {
     re = mutt_regex_compile("=\\?"
                             "([^][()<>@,;:\\\"/?. =]+)" /* charset */
@@ -397,7 +397,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   {
     const int olen = 3 * len / 4 + 1;
     char *out = mutt_mem_malloc(olen);
-    int dlen = mutt_b64_decode(out, it, olen);
+    int dlen = mutt_b64_decode(it, out, olen);
     if (dlen == -1)
     {
       FREE(&out);
@@ -447,7 +447,10 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   ulen = mutt_str_strlen(u);
 
   /* Find earliest and latest things we must encode. */
-  s0 = s1 = t0 = t1 = 0;
+  s0 = 0;
+  s1 = 0;
+  t0 = 0;
+  t1 = 0;
   for (t = u; t < (u + ulen); t++)
   {
     if ((*t & 0x80) || ((*t == '=') && (t[1] == '?') && ((t == u) || HSPACE(*(t - 1)))))
@@ -767,7 +770,7 @@ void rfc2047_decode_addrlist(struct Address *a)
   while (a)
   {
     if (a->personal &&
-        ((strstr(a->personal, "=?") != NULL) || (AssumedCharset && *AssumedCharset)))
+        ((strstr(a->personal, "=?")) || (AssumedCharset && *AssumedCharset)))
     {
       rfc2047_decode(&a->personal);
     }

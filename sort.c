@@ -408,8 +408,8 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     }
     mutt_sort_threads(ctx, init);
   }
-  else if ((sortfunc = mutt_get_sort_func(Sort)) == NULL ||
-           (AuxSort = mutt_get_sort_func(SortAux)) == NULL)
+  else if (!(sortfunc = mutt_get_sort_func(Sort)) ||
+           !(AuxSort = mutt_get_sort_func(SortAux)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;
@@ -435,7 +435,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {
     top = ctx->tree;
-    while ((thread = top) != NULL)
+    while ((thread = top))
     {
       while (!thread->message)
         thread = thread->child;

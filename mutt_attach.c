@@ -436,7 +436,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
     if (rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile)))
     {
-      if (fp == NULL && (mutt_str_strcmp(tempfile, a->filename) != 0))
+      if (!fp && (mutt_str_strcmp(tempfile, a->filename) != 0))
       {
         /* send case: the file is already there */
         if (mutt_file_symlink(a->filename, tempfile) == -1)
@@ -802,9 +802,9 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
       if (fseeko(fp, m->offset, SEEK_SET) < 0)
         return -1;
-      if (fgets(buf, sizeof(buf), fp) == NULL)
+      if (!fgets(buf, sizeof(buf), fp))
         return -1;
-      if (mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
+      if (!mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET, &ctx))
         return -1;
       msg = mx_msg_open_new(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)

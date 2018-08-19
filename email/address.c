@@ -637,7 +637,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
 
     mutt_str_strfcpy(tmp, s, sizeof(tmp));
     char *r = tmp;
-    while ((r = strtok(r, " \t")) != NULL)
+    while ((r = strtok(r, " \t")))
     {
       p = mutt_addr_parse_list(p, r);
       r = NULL;
@@ -743,7 +743,10 @@ struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
       last = last->next;
     }
     else
-      top = last = mutt_addr_copy(addr);
+    {
+      last = mutt_addr_copy(addr);
+      top = last;
+    }
   }
   return top;
 }
@@ -768,7 +771,10 @@ struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool pru
   if (tmp)
     tmp->next = mutt_addr_copy_list(b, prune);
   else
-    tmp = *a = mutt_addr_copy_list(b, prune);
+  {
+    *a = mutt_addr_copy_list(b, prune);
+    tmp = *a;
+  }
   while (tmp && tmp->next)
     tmp = tmp->next;
   return tmp;

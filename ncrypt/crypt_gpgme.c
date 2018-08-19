@@ -2496,8 +2496,8 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc) != NULL;
-       complete = (strchr(buf, '\n') != NULL))
+  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc);
+       complete = (strchr(buf, '\n')))
   {
     if (!complete)
     {
@@ -2563,7 +2563,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   for (bytes = m->length; bytes > 0;)
   {
-    if (fgets(buf, sizeof(buf), s->fpin) == NULL)
+    if (!fgets(buf, sizeof(buf), s->fpin))
       break;
 
     LOFF_T offset = ftello(s->fpin);
@@ -4054,7 +4054,8 @@ static char *list_to_pattern(struct ListHead *list)
     n++; /* delimiter or end of string */
   }
   n++; /* make sure to allocate at least one byte */
-  pattern = p = mutt_mem_calloc(1, n);
+  p = mutt_mem_calloc(1, n);
+  pattern = p;
   STAILQ_FOREACH(np, list, entries)
   {
     s = np->data;
@@ -4292,7 +4293,8 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   *forced_valid = 0;
 
   /* build the key table */
-  keymax = i = 0;
+  keymax = 0;
+  i = 0;
   struct CryptKeyInfo **key_table = NULL;
   for (k = keys; k; k = k->next)
   {
@@ -4565,7 +4567,8 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     {
       struct CryptKeyInfo *tmp = NULL;
 
-      *matches_endp = tmp = crypt_copy_key(k);
+      tmp = crypt_copy_key(k);
+      *matches_endp = tmp;
       matches_endp = &tmp->next;
 
       if (this_key_has_strong)
@@ -4658,7 +4661,8 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
 
       mutt_debug(5, "match.\n");
 
-      *matches_endp = tmp = crypt_copy_key(k);
+      tmp = crypt_copy_key(k);
+      *matches_endp = tmp;
       matches_endp = &tmp->next;
     }
     else

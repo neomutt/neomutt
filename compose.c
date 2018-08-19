@@ -1200,9 +1200,10 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
             /* append bptr to the alts list,
              * and remove from the msg->content list */
-            if (alts == NULL)
+            if (!alts)
             {
-              group->parts = alts = bptr;
+              group->parts = bptr;
+              alts = bptr;
               bptr = bptr->next;
               alts->next = NULL;
             }
@@ -1298,9 +1299,10 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
             /* append bptr to the alts list,
              * and remove from the msg->content list */
-            if (alts == NULL)
+            if (!alts)
             {
-              group->parts = alts = bptr;
+              group->parts = bptr;
+              alts = bptr;
               bptr = bptr->next;
               alts->next = NULL;
             }
@@ -1486,7 +1488,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
           new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context, Context->hdrs[i], true);
-          if (new->content != NULL)
+          if (new->content)
             update_idx(menu, actx, new);
           else
           {

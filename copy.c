@@ -102,7 +102,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     {
       nl = strchr(buf, '\n');
 
-      if ((fgets(buf, sizeof(buf), in)) == NULL)
+      if (!fgets(buf, sizeof(buf), in))
         break;
 
       /* Is it the beginning of a header? */
@@ -177,7 +177,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     nl = strchr(buf, '\n');
 
     /* Read a line */
-    if ((fgets(buf, sizeof(buf), in)) == NULL)
+    if (!fgets(buf, sizeof(buf), in))
       break;
 
     /* Is it the beginning of a header? */
@@ -221,7 +221,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         if ((flags & CH_FROM) == 0)
           continue;
-        this_is_from = from = true;
+        this_is_from = true;
+        from = true;
       }
       else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
         break; /* end of header */
@@ -820,7 +821,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 
   if (fseeko(fpin, hdr->offset, SEEK_SET) < 0)
     return -1;
-  if (fgets(buf, sizeof(buf), fpin) == NULL)
+  if (!fgets(buf, sizeof(buf), fpin))
     return -1;
 
   msg = mx_msg_open_new(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
@@ -949,7 +950,9 @@ static void format_address_header(char **h, struct Address *a)
   {
     struct Address *tmp = a->next;
     a->next = NULL;
-    *buf = *cbuf = *c2buf = '\0';
+    *buf = '\0';
+    *cbuf = '\0';
+    *c2buf = '\0';
     const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
     a->next = tmp;
 

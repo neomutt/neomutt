@@ -622,7 +622,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
+      if (!tmp && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
       {
         /* ok, it's a subclass somewhere on this branch */
 
@@ -724,7 +724,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           else
           {
             /* longer than the current prefix: try subclassing it */
-            if (tmp == NULL && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
+            if (!tmp && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
                                                  q_list->length - offset) == 0))
             {
               /* still a subclass: go down one level */
@@ -944,7 +944,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
         if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
         {
-          if (q_classify && line_info[n].quote == NULL)
+          if (q_classify && !line_info[n].quote)
           {
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
                                                 pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -962,7 +962,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     }
     else
     {
-      if (q_classify && line_info[n].quote == NULL)
+      if (q_classify && !line_info[n].quote)
       {
         line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
                                             pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -1142,7 +1142,7 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
     x++;
 
   /* Character Attributes */
-  if (AllowAnsi && a != NULL && buf[x] == 'm')
+  if (AllowAnsi && a && (buf[x] == 'm'))
   {
     if (pos == x)
     {
@@ -1582,7 +1582,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
       (*line_info)[ch].type = -1;
       (*line_info)[ch].search_cnt = -1;
       (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct Syntax));
-      ((*line_info)[ch].syntax)[0].first = ((*line_info)[ch].syntax)[0].last = -1;
+      ((*line_info)[ch].syntax)[0].first = -1;
+      ((*line_info)[ch].syntax)[0].last = -1;
     }
   }
 
@@ -1638,7 +1639,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
    * length of the quote prefix.
    */
   if ((flags & MUTT_SHOWCOLOR) && !(*line_info)[n].continuation &&
-      (*line_info)[n].type == MT_COLOR_QUOTED && (*line_info)[n].quote == NULL)
+      ((*line_info)[n].type == MT_COLOR_QUOTED) && !(*line_info)[n].quote)
   {
     if (fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
@@ -1939,7 +1940,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
     memcpy(rd->pager_window, MuttIndexWindow, sizeof(struct MuttWindow));
     memcpy(rd->pager_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
-    rd->index_status_window->rows = rd->index_window->rows = 0;
+    rd->index_status_window->rows = 0;
+    rd->index_window->rows = 0;
 
     if (IsHeader(rd->extra) && PagerIndexLines)
     {
@@ -2094,7 +2096,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     do
     {
       mutt_window_move(rd->pager_window, 0, 0);
-      rd->curline = rd->oldtopline = rd->topline;
+      rd->curline = rd->topline;
+      rd->oldtopline = rd->topline;
       rd->lines = 0;
       rd->force_redraw = false;
 
@@ -2286,7 +2289,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
     rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct Syntax));
-    (rd.line_info[i].syntax)[0].first = (rd.line_info[i].syntax)[0].last = -1;
+    (rd.line_info[i].syntax)[0].first = -1;
+    (rd.line_info[i].syntax)[0].last = -1;
   }
 
   mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);

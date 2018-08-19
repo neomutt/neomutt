@@ -579,7 +579,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
       }
     }
 
-    if (mime_fwd_any && copy_problematic_attachments(last, actx, mime_fwd_all) == NULL)
+    if (mime_fwd_any && !copy_problematic_attachments(last, actx, mime_fwd_all))
       goto bail;
   }
 
@@ -1020,7 +1020,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     mutt_make_post_indent(Context, parent_hdr, tmpfp);
 
     if (mime_reply_any && !cur &&
-        copy_problematic_attachments(&tmphdr->content, actx, false) == NULL)
+        !copy_problematic_attachments(&tmphdr->content, actx, false))
     {
       mutt_header_free(&tmphdr);
       mutt_file_fclose(&tmpfp);

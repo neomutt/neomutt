@@ -24,8 +24,6 @@
 #ifndef _NCRYPT_PGPLIB_H
 #define _NCRYPT_PGPLIB_H
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 #include <stdbool.h>
 #include <time.h>
 
@@ -71,7 +69,5 @@ void pgp_free_key(struct PgpKeyInfo **kpp);
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
 
 struct PgpKeyInfo *pgp_new_keyinfo(void);
-
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */
 
 #endif /* _NCRYPT_PGPLIB_H */

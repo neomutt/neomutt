@@ -108,7 +108,8 @@ static void mutt_update_v2r(struct AttachCtx *actx)
 {
   int vindex, rindex, curlevel;
 
-  vindex = rindex = 0;
+  vindex = 0;
+  rindex = 0;
 
   while (rindex < actx->idxlen)
   {
@@ -612,7 +613,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
             return;
           rc = mutt_save_attachment(fp, top, tfile, append, hdr);
-          if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
+          if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
             mutt_file_fclose(&fpout);
@@ -621,7 +622,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         else
         {
           rc = mutt_save_attachment(fp, top, tfile, MUTT_SAVE_APPEND, hdr);
-          if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
+          if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
             mutt_file_fclose(&fpout);
@@ -1132,7 +1133,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
   for (; m; m = m->next)
   {
-    need_secured = secured = 0;
+    need_secured = 0;
+    secured = 0;
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
     {

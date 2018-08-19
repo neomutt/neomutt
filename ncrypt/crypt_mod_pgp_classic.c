@@ -30,9 +30,11 @@
 #include <stdio.h>
 #include "crypt_mod.h"
 #include "ncrypt.h"
-#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgp.h"
+#endif
 
 // clang-format off
 struct CryptModuleSpecs crypt_mod_pgp_classic = {

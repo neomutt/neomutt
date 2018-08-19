@@ -358,7 +358,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   if (buf && buflen)
     buf[0] = '\0';
 
-  if (str == NULL || *str == '\0' || (buf && !buflen))
+  if (!str || *str == '\0' || (buf && !buflen))
     return buf;
 
   twinbuf[0][0] = '\0';

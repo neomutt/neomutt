@@ -1164,7 +1164,7 @@ static int parse_overview_line(char *line, void *data)
 
     if (*header)
     {
-      if (strstr(header, ":full") == NULL && fputs(header, fp) == EOF)
+      if (!strstr(header, ":full") && (fputs(header, fp) == EOF))
       {
         mutt_file_fclose(&fp);
         return -1;
@@ -1188,7 +1188,8 @@ static int parse_overview_line(char *line, void *data)
     mx_alloc_memory(ctx);
 
   /* parse header */
-  hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
+  ctx->hdrs[ctx->msgcount] = mutt_header_new();
+  hdr = ctx->hdrs[ctx->msgcount];
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
@@ -1206,7 +1207,8 @@ static int parse_overview_line(char *line, void *data)
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       mutt_header_free(&hdr);
-      ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
+      hdr = mutt_hcache_restore(hdata);
+      ctx->hdrs[ctx->msgcount] = hdr;
       mutt_hcache_free(fc->hc, &hdata);
       hdr->data = NULL;
       hdr->read = false;
@@ -1296,7 +1298,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   fc.last = last;
   fc.restore = restore;
   fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
-  if (fc.messages == NULL)
+  if (!fc.messages)
     return -1;
 #ifdef USE_HCACHE
   fc.hc = hc;
@@ -1375,7 +1377,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     if (hdata)
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
-      ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
+      hdr = mutt_hcache_restore(hdata);
+      ctx->hdrs[ctx->msgcount] = hdr;
       mutt_hcache_free(fc.hc, &hdata);
       hdr->data = NULL;
 
@@ -1448,7 +1451,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       }
 
       /* parse header */
-      hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
+      ctx->hdrs[ctx->msgcount] = mutt_header_new();
+      hdr = ctx->hdrs[ctx->msgcount];
       hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
@@ -2032,7 +2036,8 @@ static int check_mailbox(struct Context *ctx)
         if (ctx->msgcount >= ctx->hdrmax)
           mx_alloc_memory(ctx);
 
-        ctx->hdrs[ctx->msgcount] = hdr = mutt_hcache_restore(hdata);
+        hdr = mutt_hcache_restore(hdata);
+        ctx->hdrs[ctx->msgcount] = hdr;
         mutt_hcache_free(hc, &hdata);
         hdr->data = NULL;
         if (hdr->deleted)
@@ -2214,7 +2219,7 @@ static int nntp_mbox_close(struct Context *ctx)
     return 0;
 
   nntp_tmp = mutt_hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
-  if (nntp_tmp == NULL || nntp_tmp != nntp_data)
+  if (!nntp_tmp || nntp_tmp != nntp_data)
     nntp_data_free(nntp_data);
   return 0;
 }
@@ -2471,7 +2476,8 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   /* parse header */
   if (ctx->msgcount == ctx->hdrmax)
     mx_alloc_memory(ctx);
-  struct Header *hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
+  ctx->hdrs[ctx->msgcount] = mutt_header_new();
+  struct Header *hdr = ctx->hdrs[ctx->msgcount];
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   mutt_file_fclose(&fp);

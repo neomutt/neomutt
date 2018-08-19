@@ -27,7 +27,7 @@ extern const int Index64[];
 
 #define base64val(c) Index64[(unsigned int) (c)]
 
-int    mutt_b64_decode(char *out, const char *in, size_t olen);
-size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen);
+int    mutt_b64_decode(const char *in, char *out, size_t olen);
+size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
 
 #endif /* _MUTT_BASE64_H */

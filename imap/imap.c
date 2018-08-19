@@ -326,14 +326,14 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
  * @param path   Mailbox URI
  * @param hidata Server data
  * @param buf    Buffer to store mailbox name
- * @param blen   Length of buffer
+ * @param buflen Length of buffer
  * @retval  0 Success
  * @retval -1 Failure
  *
  * Split up a mailbox URI.  The connection info is stored in the ImapData and
  * the mailbox name is stored in buf.
  */
-static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, size_t blen)
+static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, size_t buflen)
 {
   struct ImapMbox mx;
 
@@ -349,9 +349,9 @@ static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, si
     return -1;
   }
 
-  imap_fix_path(*hidata, mx.mbox, buf, blen);
+  imap_fix_path(*hidata, mx.mbox, buf, buflen);
   if (!*buf)
-    mutt_str_strfcpy(buf, "INBOX", blen);
+    mutt_str_strfcpy(buf, "INBOX", buflen);
   FREE(&mx.mbox);
 
   return 0;
@@ -1103,7 +1103,10 @@ void imap_close_connection(struct ImapData *idata)
     mutt_socket_close(idata->conn);
     idata->state = IMAP_DISCONNECTED;
   }
-  idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = false;
+  idata->seqno = false;
+  idata->nextcmd = false;
+  idata->lastcmd = false;
+  idata->status = false;
   memset(idata->cmds, 0, sizeof(struct ImapCommand) * idata->cmdslots);
 }
 

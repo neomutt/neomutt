@@ -24,8 +24,6 @@
 #ifndef _NCRYPT_SMIME_H
 #define _NCRYPT_SMIME_H
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -61,7 +59,5 @@ int          smime_class_valid_passphrase(void);
 int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 int          smime_class_verify_sender(struct Header *h);
 void         smime_class_void_passphrase(void);
-
-#endif
 
 #endif /* _NCRYPT_SMIME_H */
