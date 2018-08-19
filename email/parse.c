@@ -1011,9 +1011,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_
 
     *buf = '\0';
 
-    if (mutt_replacelist_match(SpamList, buf, sizeof(buf), line))
+    if (mutt_replacelist_match(&SpamList, buf, sizeof(buf), line))
     {
-      if (!mutt_regexlist_match(NoSpamList, line))
+      if (!mutt_regexlist_match(&NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)

@@ -604,7 +604,7 @@ bail:
 static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
-  struct ReplaceList **list = (struct ReplaceList **) data;
+  struct ReplaceList *list = (struct ReplaceList *) data;
   struct Buffer templ = { 0 };
 
   /* First token is a regex. */
@@ -702,7 +702,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
 static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
-  struct ReplaceList **list = (struct ReplaceList **) data;
+  struct ReplaceList *list = (struct ReplaceList *) data;
 
   /* First token is a regex. */
   if (!MoreArgs(s))
@@ -1924,7 +1924,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       }
       FREE(&templ.data);
     }
-
     /* If not, try to remove from the nospam list. */
     else
     {
@@ -1933,7 +1932,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
 
     return 0;
   }
-
   /* MUTT_NOSPAM is for nospam commands. */
   else if (data == MUTT_NOSPAM)
   {

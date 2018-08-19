@@ -125,15 +125,12 @@ void mutt_regex_free(struct Regex **r)
  * @retval 0  Success, Regex compiled and added to the list
  * @retval -1 Error, see message in 'err'
  */
-int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct Buffer *err)
+int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err)
 {
-  struct RegexList *t = NULL, *last = NULL;
-  struct Regex *rx = NULL;
-
   if (!str || !*str)
     return 0;
 
-  rx = mutt_regex_compile(str, flags);
+  struct Regex *rx = mutt_regex_compile(str, flags);
   if (!rx)
   {
     mutt_buffer_printf(err, "Bad regex: %s\n", str);
@@ -141,29 +138,23 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
   }
 
   /* check to make sure the item is not already on this rl */
-  for (last = *rl; last; last = last->next)
+  struct RegexListNode *np = NULL;
+  STAILQ_FOREACH_FROM(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, last->regex->pattern) == 0)
-    {
-      /* already on the rl, so just ignore it */
-      last = NULL;
-      break;
-    }
-    if (!last->next)
-      break;
+    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
+      break; /* already on the rl */
   }
 
-  if (!*rl || last)
+  if (np)
   {
-    t = mutt_regexlist_new();
-    t->regex = rx;
-    if (last)
-      last->next = t;
-    else
-      *rl = t;
-  }
-  else /* duplicate */
     mutt_regex_free(&rx);
+  }
+  else
+  {
+    np = mutt_regexlist_new();
+    np->regex = rx;
+    STAILQ_INSERT_TAIL(rl, np, entries);
+  }
 
   return 0;
 }
@@ -172,19 +163,19 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
  * mutt_regexlist_free - Free a RegexList object
  * @param rl RegexList to free
  */
-void mutt_regexlist_free(struct RegexList **rl)
+void mutt_regexlist_free(struct RegexList *rl)
 {
-  struct RegexList *p = NULL;
-
   if (!rl)
     return;
-  while (*rl)
+
+  struct RegexListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    p = *rl;
-    *rl = (*rl)->next;
-    mutt_regex_free(&p->regex);
-    FREE(&p);
+    STAILQ_REMOVE(rl, np, RegexListNode, entries);
+    mutt_regex_free(&np->regex);
+    FREE(&np);
   }
+  STAILQ_INIT(rl);
 }
 
 /**
@@ -195,16 +186,16 @@ void mutt_regexlist_free(struct RegexList **rl)
  */
 bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 {
+  struct RegexListNode *np = NULL;
   if (!str)
     return false;
-
-  for (; rl; rl = rl->next)
+  STAILQ_FOREACH(np, rl, entries)
   {
-    if (!rl->regex || !rl->regex->regex)
+    if (!np->regex || !np->regex->regex)
       continue;
-    if (regexec(rl->regex->regex, str, 0, NULL, 0) == 0)
+    if (regexec(np->regex->regex, str, 0, NULL, 0) == 0)
     {
-      mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
+      mutt_debug(5, "%s matches %s\n", str, np->regex->pattern);
       return true;
     }
   }
@@ -216,9 +207,9 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
  * mutt_regexlist_new - Create a new RegexList
  * @retval ptr New RegexList object
  */
-struct RegexList *mutt_regexlist_new(void)
+struct RegexListNode *mutt_regexlist_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct RegexList));
+  return mutt_mem_calloc(1, sizeof(struct RegexListNode));
 }
 
 /**
@@ -230,39 +221,30 @@ struct RegexList *mutt_regexlist_new(void)
  *
  * If the pattern is "*", then all the Regexes are removed.
  */
-int mutt_regexlist_remove(struct RegexList **rl, const char *str)
+int mutt_regexlist_remove(struct RegexList *rl, const char *str)
 {
-  struct RegexList *p = NULL, *last = NULL;
-  int rc = -1;
+  if (!rl || !str)
+    return -1;
 
   if (mutt_str_strcmp("*", str) == 0)
   {
     mutt_regexlist_free(rl); /* "unCMD *" means delete all current entries */
-    rc = 0;
+    return 0;
   }
-  else
+
+  int rc = -1;
+  struct RegexListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    p = *rl;
-    last = NULL;
-    while (p)
+    if (mutt_str_strcasecmp(str, np->regex->pattern) == 0)
     {
-      if (mutt_str_strcasecmp(str, p->regex->pattern) == 0)
-      {
-        mutt_regex_free(&p->regex);
-        if (last)
-          last->next = p->next;
-        else
-          (*rl) = p->next;
-        FREE(&p);
-        rc = 0;
-      }
-      else
-      {
-        last = p;
-        p = p->next;
-      }
+      STAILQ_REMOVE(rl, np, RegexListNode, entries);
+      mutt_regex_free(&np->regex);
+      FREE(&np);
+      rc = 0;
     }
   }
+
   return rc;
 }
 
@@ -275,17 +257,13 @@ int mutt_regexlist_remove(struct RegexList **rl, const char *str)
  * @retval 0  Success, pattern added to the ReplaceList
  * @retval -1 Error, see message in 'err'
  */
-int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
+int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
                          const char *templ, struct Buffer *err)
 {
-  struct ReplaceList *t = NULL, *last = NULL;
-  struct Regex *rx = NULL;
-  const char *p = NULL;
-
   if (!pat || !*pat || !templ)
     return 0;
 
-  rx = mutt_regex_compile(pat, REG_ICASE);
+  struct Regex *rx = mutt_regex_compile(pat, REG_ICASE);
   if (!rx)
   {
     mutt_buffer_printf(err, _("Bad regex: %s"), pat);
@@ -293,9 +271,10 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
   }
 
   /* check to make sure the item is not already on this rl */
-  for (last = *rl; last; last = last->next)
+  struct ReplaceListNode *np = NULL;
+  STAILQ_FOREACH(np, rl, entries)
   {
-    if (mutt_str_strcasecmp(rx->pattern, last->regex->pattern) == 0)
+    if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
     {
       /* Already on the rl. Formerly we just skipped this case, but
        * now we're supporting removals, which means we're supporting
@@ -303,42 +282,38 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
        * removal, then do an add. We can achieve the removal by freeing
        * the template, and leaving t pointed at the current item.
        */
-      t = last;
-      FREE(&t->template);
+      FREE(&np->template);
       break;
     }
-    if (!last->next)
-      break;
   }
 
-  /* If t is set, it's pointing into an extant ReplaceList* that we want to
+  /* If np is set, it's pointing into an extant ReplaceList* that we want to
    * update. Otherwise we want to make a new one to link at the rl's end.
    */
-  if (!t)
+  if (np)
   {
-    t = mutt_replacelist_new();
-    t->regex = rx;
-    rx = NULL;
-    if (last)
-      last->next = t;
-    else
-      *rl = t;
+    mutt_regex_free(&rx);
   }
   else
-    mutt_regex_free(&rx);
+  {
+    np = mutt_replacelist_new();
+    np->regex = rx;
+    rx = NULL;
+    STAILQ_INSERT_TAIL(rl, np, entries);
+  }
 
-  /* Now t is the ReplaceList* that we want to modify. It is prepared. */
-  t->template = mutt_str_strdup(templ);
+  /* Now np is the ReplaceListNode that we want to modify. It is prepared. */
+  np->template = mutt_str_strdup(templ);
 
   /* Find highest match number in template string */
-  t->nmatch = 0;
-  for (p = templ; *p;)
+  np->nmatch = 0;
+  for (const char *p = templ; *p;)
   {
     if (*p == '%')
     {
       int n = atoi(++p);
-      if (n > t->nmatch)
-        t->nmatch = n;
+      if (n > np->nmatch)
+        np->nmatch = n;
       while (*p && isdigit((int) *p))
         p++;
     }
@@ -346,15 +321,14 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
       p++;
   }
 
-  if (t->nmatch > t->regex->regex->re_nsub)
+  if (np->nmatch > np->regex->regex->re_nsub)
   {
     mutt_buffer_printf(err, "%s", _("Not enough subexpressions for template"));
     mutt_replacelist_remove(rl, pat);
     return -1;
   }
 
-  t->nmatch++; /* match 0 is always the whole expr */
-
+  np->nmatch++; /* match 0 is always the whole expr */
   return 0;
 }
 
@@ -373,7 +347,6 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
  */
 char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
-  struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
   static size_t nmatch = 0;
   static char twinbuf[2][LONG_STRING];
@@ -395,27 +368,28 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
 
   mutt_str_strfcpy(src, str, LONG_STRING);
 
-  for (l = rl; l; l = l->next)
+  struct ReplaceListNode *np = NULL;
+  STAILQ_FOREACH(np, rl, entries)
   {
     /* If this pattern needs more matches, expand pmatch. */
-    if (l->nmatch > nmatch)
+    if (np->nmatch > nmatch)
     {
-      mutt_mem_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
-      nmatch = l->nmatch;
+      mutt_mem_realloc(&pmatch, np->nmatch * sizeof(regmatch_t));
+      nmatch = np->nmatch;
     }
 
-    if (regexec(l->regex->regex, src, l->nmatch, pmatch, 0) == 0)
+    if (regexec(np->regex->regex, src, np->nmatch, pmatch, 0) == 0)
     {
       tlen = 0;
       switcher ^= 1;
       dst = twinbuf[switcher];
 
-      mutt_debug(5, "%s matches %s\n", src, l->regex->pattern);
+      mutt_debug(5, "%s matches %s\n", src, np->regex->pattern);
 
       /* Copy into other twinbuf with substitutions */
-      if (l->template)
+      if (np->template)
       {
-        for (p = l->template; *p && (tlen < LONG_STRING - 1);)
+        for (p = np->template; *p && (tlen < LONG_STRING - 1);)
         {
           if (*p == '%')
           {
@@ -467,19 +441,18 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
  * mutt_replacelist_free - Free a ReplaceList object
  * @param rl ReplaceList to free
  */
-void mutt_replacelist_free(struct ReplaceList **rl)
+void mutt_replacelist_free(struct ReplaceList *rl)
 {
-  struct ReplaceList *p = NULL;
-
   if (!rl)
     return;
-  while (*rl)
+
+  struct ReplaceListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    p = *rl;
-    *rl = (*rl)->next;
-    mutt_regex_free(&p->regex);
-    FREE(&p->template);
-    FREE(&p);
+    STAILQ_REMOVE(rl, np, ReplaceListNode, entries);
+    mutt_regex_free(&np->regex);
+    FREE(&np->template);
+    FREE(&np);
   }
 }
 
@@ -498,31 +471,32 @@ void mutt_replacelist_free(struct ReplaceList **rl)
  */
 bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
+  if (!rl || !buf || !str)
+    return false;
+
   static regmatch_t *pmatch = NULL;
   static size_t nmatch = 0;
   int tlen = 0;
   char *p = NULL;
 
-  if (!str)
-    return false;
-
-  for (; rl; rl = rl->next)
+  struct ReplaceListNode *np = NULL;
+  STAILQ_FOREACH(np, rl, entries)
   {
     /* If this pattern needs more matches, expand pmatch. */
-    if (rl->nmatch > nmatch)
+    if (np->nmatch > nmatch)
     {
-      mutt_mem_realloc(&pmatch, rl->nmatch * sizeof(regmatch_t));
-      nmatch = rl->nmatch;
+      mutt_mem_realloc(&pmatch, np->nmatch * sizeof(regmatch_t));
+      nmatch = np->nmatch;
     }
 
     /* Does this pattern match? */
-    if (regexec(rl->regex->regex, str, (size_t) rl->nmatch, pmatch, 0) == 0)
+    if (regexec(np->regex->regex, str, (size_t) np->nmatch, pmatch, 0) == 0)
     {
-      mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
-      mutt_debug(5, "%d subs\n", (int) rl->regex->regex->re_nsub);
+      mutt_debug(5, "%s matches %s\n", str, np->regex->pattern);
+      mutt_debug(5, "%d subs\n", (int) np->regex->regex->re_nsub);
 
       /* Copy template into buf, with substitutions. */
-      for (p = rl->template; *p && tlen < buflen - 1;)
+      for (p = np->template; *p && tlen < buflen - 1;)
       {
         /* backreference to pattern match substring, eg. %1, %2, etc) */
         if (*p == '%')
@@ -534,7 +508,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
           /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
            * should not strictly be necessary since add_to_spam_list() finds the largest value, and
            * the static array above is always large enough based on that value. */
-          if (e != p && n >= 0 && n <= rl->nmatch && pmatch[n].rm_so != -1)
+          if (e != p && n >= 0 && n <= np->nmatch && pmatch[n].rm_so != -1)
           {
             /* copy as much of the substring match as will fit in the output buffer, saving space for
              * the terminating nul char */
@@ -573,9 +547,9 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
  * mutt_replacelist_new - Create a new ReplaceList
  * @retval ptr New ReplaceList
  */
-struct ReplaceList *mutt_replacelist_new(void)
+struct ReplaceListNode *mutt_replacelist_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ReplaceList));
+  return mutt_mem_calloc(1, sizeof(struct ReplaceListNode));
 }
 
 /**
@@ -584,36 +558,23 @@ struct ReplaceList *mutt_replacelist_new(void)
  * @param pat Pattern to remove
  * @retval num Matching patterns removed
  */
-int mutt_replacelist_remove(struct ReplaceList **rl, const char *pat)
+int mutt_replacelist_remove(struct ReplaceList *rl, const char *pat)
 {
-  /* Being first is a special case. */
-  struct ReplaceList *cur = *rl;
-  if (!cur)
+  if (!rl || !pat)
     return 0;
-  if (cur->regex && (mutt_str_strcmp(cur->regex->pattern, pat) == 0))
-  {
-    *rl = cur->next;
-    mutt_regex_free(&cur->regex);
-    FREE(&cur->template);
-    FREE(&cur);
-    return 1;
-  }
 
   int nremoved = 0;
-  struct ReplaceList *prev = cur;
-  for (cur = prev->next; cur;)
+  struct ReplaceListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, rl, entries, tmp)
   {
-    if (mutt_str_strcmp(cur->regex->pattern, pat) == 0)
+    if (mutt_str_strcmp(np->regex->pattern, pat) == 0)
     {
-      prev->next = cur->next;
-      mutt_regex_free(&cur->regex);
-      FREE(&cur->template);
-      FREE(&cur);
-      cur = prev->next;
+      STAILQ_REMOVE(rl, np, ReplaceListNode, entries);
+      mutt_regex_free(&np->regex);
+      FREE(&np->template);
+      FREE(&np);
       nremoved++;
     }
-    else
-      cur = cur->next;
   }
 
   return nremoved;

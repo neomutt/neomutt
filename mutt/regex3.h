@@ -26,6 +26,7 @@
 #include <stddef.h>
 #include <regex.h>
 #include <stdbool.h>
+#include "mutt/queue.h"
 
 struct Buffer;
 
@@ -61,40 +62,43 @@ struct Regex
 };
 
 /**
- * struct RegexList - List of regular expressions
+ * struct RegexListNode - List of regular expressions
  */
-struct RegexList
+struct RegexListNode
 {
-  struct Regex *regex;    /**< Regex containing a regular expression */
-  struct RegexList *next; /**< Next item in list */
+  struct Regex *regex; /**< Regex containing a regular expression */
+  STAILQ_ENTRY(RegexListNode) entries; /**< Next item in list */
 };
 
+STAILQ_HEAD(RegexList, RegexListNode);
+
 /**
- * struct ReplaceList - List of regular expressions
+ * struct ReplaceListNode - List of regular expressions
  */
-struct ReplaceList
+struct ReplaceListNode
 {
   struct Regex *regex;      /**< Regex containing a regular expression */
   size_t nmatch;            /**< Match the 'nth' occurrence (0 means the whole expression) */
   char *template;           /**< Template to match */
-  struct ReplaceList *next; /**< Next item in list */
+  STAILQ_ENTRY(ReplaceListNode) entries; /**< Next item in list */
 };
+STAILQ_HEAD(ReplaceList, ReplaceListNode);
 
-struct Regex *      mutt_regex_compile(const char *str, int flags);
-struct Regex *      mutt_regex_create(const char *str, int flags, struct Buffer *err);
-void                mutt_regex_free(struct Regex **r);
+struct Regex *mutt_regex_compile(const char *str, int flags);
+struct Regex *mutt_regex_create(const char *str, int flags, struct Buffer *err);
+void          mutt_regex_free(struct Regex **r);
 
-int                 mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct Buffer *err);
-void                mutt_regexlist_free(struct RegexList **rl);
-bool                mutt_regexlist_match(struct RegexList *rl, const char *str);
-struct RegexList *  mutt_regexlist_new(void);
-int                 mutt_regexlist_remove(struct RegexList **rl, const char *str);
+int                   mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err);
+void                  mutt_regexlist_free(struct RegexList *rl);
+bool                  mutt_regexlist_match(struct RegexList *rl, const char *str);
+struct RegexListNode *mutt_regexlist_new(void);
+int                   mutt_regexlist_remove(struct RegexList *rl, const char *str);
 
-int                 mutt_replacelist_add(struct ReplaceList **rl, const char *pat, const char *templ, struct Buffer *err);
-char *              mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
-void                mutt_replacelist_free(struct ReplaceList **rl);
-bool                mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
-struct ReplaceList *mutt_replacelist_new(void);
-int                 mutt_replacelist_remove(struct ReplaceList **rl, const char *pat);
+int                     mutt_replacelist_add(struct ReplaceList *rl, const char *pat, const char *templ, struct Buffer *err);
+char *                  mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
+void                    mutt_replacelist_free(struct ReplaceList *rl);
+bool                    mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
+struct ReplaceListNode *mutt_replacelist_new(void);
+int                     mutt_replacelist_remove(struct ReplaceList *rl, const char *pat);
 
 #endif /* _MUTT_REGEX_H */

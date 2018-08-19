@@ -34,9 +34,9 @@ extern char *              SpamSeparator;
 extern bool                Weed;
 
 /* Global variables */
-extern struct ListHead     Ignore;
-extern struct RegexList *  NoSpamList;
-extern struct ReplaceList *SpamList;
-extern struct ListHead     UnIgnore;
+extern struct ListHead    Ignore;
+extern struct RegexList   NoSpamList;
+extern struct ReplaceList SpamList;
+extern struct ListHead    UnIgnore;
 
 #endif /* _EMAIL_GLOBALS_H */

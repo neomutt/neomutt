@@ -65,7 +65,7 @@ static void group_remove(struct Group *g)
     return;
   mutt_hash_delete(Groups, g->name, g);
   mutt_addr_free(&g->as);
-  mutt_regexlist_free(&g->rs);
+  mutt_regexlist_free(g->rs);
   FREE(&g->name);
   FREE(&g);
 }
@@ -185,7 +185,7 @@ static int group_remove_addrlist(struct Group *g, struct Address *a)
  */
 static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
 {
-  return mutt_regexlist_add(&g->rs, s, flags, err);
+  return mutt_regexlist_add(g->rs, s, flags, err);
 }
 
 /**
@@ -197,7 +197,7 @@ static int group_add_regex(struct Group *g, const char *s, int flags, struct Buf
  */
 static int group_remove_regex(struct Group *g, const char *s)
 {
-  return mutt_regexlist_remove(&g->rs, s);
+  return mutt_regexlist_remove(g->rs, s);
 }
 
 /**
