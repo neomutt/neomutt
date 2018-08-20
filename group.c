@@ -49,6 +49,7 @@ struct Group *mutt_pattern_group(const char *k)
     mutt_debug(2, "Creating group %s.\n", k);
     p = mutt_mem_calloc(1, sizeof(struct Group));
     p->name = mutt_str_strdup(k);
+    STAILQ_INIT(&p->rs);
     mutt_hash_insert(Groups, p->name, p);
   }
 
@@ -65,7 +66,7 @@ static void group_remove(struct Group *g)
     return;
   mutt_hash_delete(Groups, g->name, g);
   mutt_addr_free(&g->as);
-  mutt_regexlist_free(g->rs);
+  mutt_regexlist_free(&g->rs);
   FREE(&g->name);
   FREE(&g);
 }
@@ -96,7 +97,7 @@ static bool empty_group(struct Group *g)
 {
   if (!g)
     return true;
-  return !g->as && !g->rs;
+  return !g->as && STAILQ_EMPTY(&g->rs);
 }
 
 /**
@@ -185,7 +186,7 @@ static int group_remove_addrlist(struct Group *g, struct Address *a)
  */
 static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
 {
-  return mutt_regexlist_add(g->rs, s, flags, err);
+  return mutt_regexlist_add(&g->rs, s, flags, err);
 }
 
 /**
@@ -197,7 +198,7 @@ static int group_add_regex(struct Group *g, const char *s, int flags, struct Buf
  */
 static int group_remove_regex(struct Group *g, const char *s)
 {
-  return mutt_regexlist_remove(g->rs, s);
+  return mutt_regexlist_remove(&g->rs, s);
 }
 
 /**
@@ -284,7 +285,7 @@ bool mutt_group_match(struct Group *g, const char *s)
   if (!g || !s)
     return false;
 
-  if (mutt_regexlist_match(g->rs, s))
+  if (mutt_regexlist_match(&g->rs, s))
     return true;
   for (struct Address *ap = g->as; ap; ap = ap->next)
     if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
