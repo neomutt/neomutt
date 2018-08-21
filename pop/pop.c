@@ -485,7 +485,7 @@ static int pop_mbox_open(struct Context *ctx)
 {
   char buf[PATH_MAX];
   struct Connection *conn = NULL;
-  struct Account acct;
+  struct ConnAccount acct;
   struct PopData *pop_data = NULL;
   struct Url url;
 
@@ -903,7 +903,7 @@ void pop_fetch_mail(void)
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct Connection *conn = NULL;
   struct Message *msg = NULL;
-  struct Account acct;
+  struct ConnAccount acct;
   struct PopData *pop_data = NULL;
 
   if (!PopHost)

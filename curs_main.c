@@ -573,8 +573,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
 #ifdef USE_COMPRESSED
-    if (Context->mailbox->compress_info &&
-        (Context->mailbox->realpath[0] != '\0'))
+    if (Context->mailbox->compress_info && (Context->mailbox->realpath[0] != '\0'))
       new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
     else
 #endif
@@ -2203,8 +2202,7 @@ int mutt_index_menu(void)
 #endif
         else
         {
-          if (ChangeFolderNext && Context &&
-              (Context->mailbox->path[0] != '\0'))
+          if (ChangeFolderNext && Context && (Context->mailbox->path[0] != '\0'))
           {
             mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
             mutt_pretty_mailbox(buf, sizeof(buf));

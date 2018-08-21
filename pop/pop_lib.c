@@ -61,7 +61,7 @@ unsigned char PopReconnect; ///< Config: (pop) Reconnect to the server is the co
  *
  * Split a POP path into host, port, username and password
  */
-int pop_parse_path(const char *path, struct Account *acct)
+int pop_parse_path(const char *path, struct ConnAccount *acct)
 {
   struct Url url;
 

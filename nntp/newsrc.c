@@ -541,7 +541,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
  * @param acct   Account
  * @param src    Path to add to the URL
  */
-static void cache_expand(char *dst, size_t dstlen, struct Account *acct, const char *src)
+static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, const char *src)
 {
   char *c = NULL;
   char file[PATH_MAX];
@@ -574,7 +574,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, const c
  * @param buflen Length of buffer
  * @param acct Account to serialise
  */
-void nntp_expand_path(char *buf, size_t buflen, struct Account *acct)
+void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct)
 {
   struct Url url;
 
@@ -947,7 +947,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
                             const char *else_str, unsigned long data, enum FormatFlag flags)
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
-  struct Account *acct = &nserv->conn->account;
+  struct ConnAccount *acct = &nserv->conn->account;
   struct Url url;
   char fn[SHORT_STRING], fmt[SHORT_STRING], *p = NULL;
 
@@ -1017,7 +1017,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
   char *p = NULL;
 #endif
   int rc;
-  struct Account acct;
+  struct ConnAccount acct;
   struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
   struct Connection *conn = NULL;

@@ -39,7 +39,7 @@
 /**
  * mutt_conn_find - Find a connection from a list
  * @param start   First connection to try
- * @param account Account to match
+ * @param account ConnAccount to match
  * @retval ptr Matching Connection
  *
  * find a connection off the list of connections whose account matches account.
@@ -48,14 +48,15 @@
  * account info - eg in IMAP we may wish to find a connection which is not in
  * IMAP_SELECTED state)
  */
-struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
+struct Connection *mutt_conn_find(const struct Connection *start,
+                                  const struct ConnAccount *account)
 {
   enum ConnectionType conn_type;
   struct Url url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */
-  mutt_account_tourl((struct Account *) account, &url);
+  mutt_account_tourl((struct ConnAccount *) account, &url);
   url.path = NULL;
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
@@ -79,7 +80,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   conn = mutt_socket_new(conn_type);
   if (conn)
   {
-    memcpy(&conn->account, account, sizeof(struct Account));
+    memcpy(&conn->account, account, sizeof(struct ConnAccount));
   }
   else
   {

@@ -79,7 +79,7 @@ extern short ImapPipelineDepth;
  */
 struct ImapMbox
 {
-  struct Account account;
+  struct ConnAccount account;
   char *mbox;
 };
 

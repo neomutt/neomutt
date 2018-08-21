@@ -23,7 +23,7 @@
 #ifndef MUTT_MUTT_SOCKET_H
 #define MUTT_MUTT_SOCKET_H
 
-struct Account;
+struct ConnAccount;
 struct Connection;
 
 /* logging levels */
@@ -31,7 +31,7 @@ struct Connection;
 #define MUTT_SOCK_LOG_HDR  3
 #define MUTT_SOCK_LOG_FULL 4
 
-struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account);
+struct Connection *mutt_conn_find(const struct Connection *start, const struct ConnAccount *account);
 
 #define mutt_socket_readln(A, B, C)  mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)
 #define mutt_socket_send(conn, buffer)           mutt_socket_send_d(conn, buffer, MUTT_SOCK_LOG_CMD)

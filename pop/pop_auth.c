@@ -413,7 +413,7 @@ static const struct PopAuth pop_authenticators[] = {
  */
 int pop_authenticate(struct PopData *pop_data)
 {
-  struct Account *acct = &pop_data->conn->account;
+  struct ConnAccount *acct = &pop_data->conn->account;
   const struct PopAuth *authenticator = NULL;
   char *methods = NULL;
   char *comma = NULL;

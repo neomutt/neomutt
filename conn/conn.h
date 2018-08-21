@@ -43,7 +43,7 @@
 
 #include <stdio.h>
 
-#include "account.h"
+#include "connaccount.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "sasl_plain.h"

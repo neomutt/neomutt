@@ -1,6 +1,6 @@
 /**
  * @file
- * Account object used by POP and IMAP
+ * ConnAccount object used by POP and IMAP
  *
  * @authors
  * Copyright (C) 2000-2007,2012 Brendan Cully <brendan@kublai.com>
@@ -25,7 +25,7 @@
 #ifndef MUTT_MUTT_ACCOUNT_H
 #define MUTT_MUTT_ACCOUNT_H
 
-struct Account;
+struct ConnAccount;
 struct Url;
 
 /* These Config Variables are only used in mutt_account.c */
@@ -59,13 +59,13 @@ enum AccountType
 #define MUTT_ACCT_PASS  (1 << 3)
 #define MUTT_ACCT_SSL   (1 << 4)
 
-int mutt_account_match(const struct Account *a1, const struct Account *a2);
-int mutt_account_fromurl(struct Account *account, struct Url *url);
-void mutt_account_tourl(struct Account *account, struct Url *url);
-int mutt_account_getuser(struct Account *account);
-int mutt_account_getlogin(struct Account *account);
-int mutt_account_getpass(struct Account *account);
-void mutt_account_unsetpass(struct Account *account);
-char *mutt_account_getoauthbearer(struct Account *account);
+int mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
+int mutt_account_fromurl(struct ConnAccount *account, struct Url *url);
+void mutt_account_tourl(struct ConnAccount *account, struct Url *url);
+int mutt_account_getuser(struct ConnAccount *account);
+int mutt_account_getlogin(struct ConnAccount *account);
+int mutt_account_getpass(struct ConnAccount *account);
+void mutt_account_unsetpass(struct ConnAccount *account);
+char *mutt_account_getoauthbearer(struct ConnAccount *account);
 
 #endif /* MUTT_MUTT_ACCOUNT_H */

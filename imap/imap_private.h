@@ -32,7 +32,7 @@
 #include "hcache/hcache.h"
 #endif
 
-struct Account;
+struct ConnAccount;
 struct Context;
 struct Header;
 struct ImapHeaderData;
@@ -298,7 +298,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapData *idata);
 void imap_close_connection(struct ImapData *idata);
-struct ImapData *imap_conn_find(const struct Account *account, int flags);
+struct ImapData *imap_conn_find(const struct ConnAccount *account, int flags);
 int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
@@ -359,7 +359,7 @@ void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset);
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next);
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter);
-int imap_account_match(const struct Account *a1, const struct Account *a2);
+int imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */

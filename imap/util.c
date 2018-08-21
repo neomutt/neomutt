@@ -1133,16 +1133,16 @@ void imap_disallow_reopen(struct Context *ctx)
 
 /**
  * imap_account_match - Compare two Accounts
- * @param a1 First Account
- * @param a2 Second Account
+ * @param a1 First ConnAccount
+ * @param a2 Second ConnAccount
  * @retval true Accounts match
  */
-int imap_account_match(const struct Account *a1, const struct Account *a2)
+int imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
   struct ImapData *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
   struct ImapData *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
-  const struct Account *a1_canon = a1_idata ? &a1_idata->conn->account : a1;
-  const struct Account *a2_canon = a2_idata ? &a2_idata->conn->account : a2;
+  const struct ConnAccount *a1_canon = a1_idata ? &a1_idata->conn->account : a1;
+  const struct ConnAccount *a2_canon = a2_idata ? &a2_idata->conn->account : a2;
 
   return mutt_account_match(a1_canon, a2_canon);
 }

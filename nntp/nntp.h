@@ -44,7 +44,7 @@
 #include "format_flags.h"
 #include "mx.h"
 
-struct Account;
+struct ConnAccount;
 struct Header;
 struct Context;
 
@@ -163,7 +163,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid);
 int nntp_newsrc_parse(struct NntpServer *nserv);
 void nntp_newsrc_close(struct NntpServer *nserv);
 void nntp_mailbox(struct Mailbox *mailbox, char *buf, size_t buflen);
-void nntp_expand_path(char *buf, size_t buflen, struct Account *acct);
+void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
 void nntp_clear_cache(struct NntpServer *nserv);
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
                             const char *src, const char *prec, const char *if_str,

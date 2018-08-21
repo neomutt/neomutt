@@ -48,7 +48,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "sasl.h"
-#include "account.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "curs_lib.h"
 #include "mutt_account.h"
@@ -208,8 +208,8 @@ static int mutt_sasl_start(void)
 }
 
 /**
- * mutt_sasl_cb_authname - callback to retrieve authname or user from Account
- * @param[in]  context Account
+ * mutt_sasl_cb_authname - callback to retrieve authname or user from ConnAccount
+ * @param[in]  context ConnAccount
  * @param[in]  id      Field to get.  SASL_CB_USER or SASL_CB_AUTHNAME
  * @param[out] result  Resulting string
  * @param[out] len     Length of result
@@ -217,7 +217,7 @@ static int mutt_sasl_start(void)
  */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
-  struct Account *account = context;
+  struct ConnAccount *account = context;
 
   if (!result)
     return SASL_FAIL;
@@ -254,14 +254,14 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
 /**
  * mutt_sasl_cb_pass - SASL callback function to get password
  * @param[in]  conn    Connection to a server
- * @param[in]  context Account
+ * @param[in]  context ConnAccount
  * @param[in]  id      SASL_CB_PASS
  * @param[out] psecret SASL secret
  * @retval num SASL error code, e.g SASL_FAIL
  */
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
-  struct Account *account = context;
+  struct ConnAccount *account = context;
   int len;
 
   if (!account || !psecret)
@@ -285,10 +285,10 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
 
 /**
  * mutt_sasl_get_callbacks - Get the SASL callback functions
- * @param account Account to associate with callbacks
+ * @param account ConnAccount to associate with callbacks
  * @retval ptr Array of callback functions
  */
-static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
+static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *account)
 {
   sasl_callback_t *callback = MuttSaslCallbacks;
 

@@ -910,7 +910,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
 /**
  * imap_conn_find - Find an open IMAP connection
- * @param account Account to search
+ * @param account ConnAccount to search
  * @param flags   Flags, e.g. #MUTT_IMAP_CONN_NONEW
  * @retval ptr  Matching connection
  * @retval NULL Failure
@@ -918,10 +918,10 @@ void imap_expunge_mailbox(struct ImapData *idata)
  * Find an open IMAP connection matching account, or open a new one if none can
  * be found.
  */
-struct ImapData *imap_conn_find(const struct Account *account, int flags)
+struct ImapData *imap_conn_find(const struct ConnAccount *account, int flags)
 {
   struct Connection *conn = NULL;
-  struct Account *creds = NULL;
+  struct ConnAccount *creds = NULL;
   struct ImapData *idata = NULL;
   bool new = false;
 
@@ -930,7 +930,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     if (!creds)
       creds = &conn->account;
     else
-      memcpy(&conn->account, creds, sizeof(struct Account));
+      memcpy(&conn->account, creds, sizeof(struct ConnAccount));
 
     idata = conn->data;
     if (flags & MUTT_IMAP_CONN_NONEW)
