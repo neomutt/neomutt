@@ -84,18 +84,6 @@ static const char **Matches;
 /* this is a lie until mutt_init runs: */
 static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
-/**
- * struct MyVar - A user-set variable
- */
-struct MyVar
-{
-  char *name;
-  char *value;
-  TAILQ_ENTRY(MyVar) entries;
-};
-
-static TAILQ_HEAD(, MyVar) MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
-
 #ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
 static char **nm_tags;
@@ -458,27 +446,6 @@ static bool get_hostname(void)
     cs_str_initial_set(Config, "hostname", mutt_str_strdup(Hostname), NULL);
 
   return true;
-}
-
-/**
- * myvar_del - Unset the value of a "my_" variable
- * @param var Variable name
- */
-static void myvar_del(const char *var)
-{
-  struct MyVar *myv = NULL;
-
-  TAILQ_FOREACH(myv, &MyVars, entries)
-  {
-    if (mutt_str_strcmp(myv->name, var) == 0)
-    {
-      TAILQ_REMOVE(&MyVars, myv, entries);
-      FREE(&myv->name);
-      FREE(&myv->value);
-      FREE(&myv);
-      return;
-    }
-  }
 }
 
 /**
@@ -3268,49 +3235,6 @@ int query_quadoption(int opt, const char *prompt)
   }
 
   /* not reached */
-}
-
-/**
- * myvar_get - Get the value of a "my_" variable
- * @param var Variable name
- * @retval ptr  Success, value of variable
- * @retval NULL Error, variable doesn't exist
- */
-const char *myvar_get(const char *var)
-{
-  struct MyVar *myv = NULL;
-
-  TAILQ_FOREACH(myv, &MyVars, entries)
-  {
-    if (mutt_str_strcmp(myv->name, var) == 0)
-      return NONULL(myv->value);
-  }
-
-  return NULL;
-}
-
-/**
- * myvar_set - Set the value of a "my_" variable
- * @param var Variable name
- * @param val Value to set
- */
-void myvar_set(const char *var, const char *val)
-{
-  struct MyVar *myv = NULL;
-
-  TAILQ_FOREACH(myv, &MyVars, entries)
-  {
-    if (mutt_str_strcmp(myv->name, var) == 0)
-    {
-      mutt_str_replace(&myv->value, val);
-      return;
-    }
-  }
-
-  myv = mutt_mem_calloc(1, sizeof(struct MyVar));
-  myv->name = mutt_str_strdup(var);
-  myv->value = mutt_str_strdup(val);
-  TAILQ_INSERT_TAIL(&MyVars, myv, entries);
 }
 
 /**
