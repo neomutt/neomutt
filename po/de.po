@@ -1586,7 +1586,7 @@ msgstr "Kein Diskussionsfaden verbunden"
 
 #: curs_main.c:2345 curs_main.c:2371
 msgid "You are on the last message"
-msgstr "Das ist bereits auf die letzte Nachricht"
+msgstr "Das ist bereits die letzte Nachricht"
 
 #: curs_main.c:2353 curs_main.c:2398
 msgid "No undeleted messages"
@@ -1594,7 +1594,7 @@ msgstr "Keine ungelöschten Nachrichten"
 
 #: curs_main.c:2390 curs_main.c:2416
 msgid "You are on the first message"
-msgstr "Das ist bereits auf die erste Nachricht"
+msgstr "Das ist bereits die erste Nachricht"
 
 #: curs_main.c:2545
 msgid "No new messages in this limited view"
