@@ -2007,6 +2007,7 @@ static int imap_mbox_open(struct Context *ctx)
   int count = 0;
   struct ImapMbox mx, pmx;
   int rc;
+  const char *condstore;
 
   if (imap_parse_path(ctx->path, &mx))
   {
@@ -2078,14 +2079,15 @@ static int imap_mbox_open(struct Context *ctx)
   if (ImapCheckSubscribed)
     imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
-  snprintf(bufout, sizeof(bufout), "%s %s%s", ctx->readonly ? "EXAMINE" : "SELECT", buf,
 #if USE_HCACHE
-           mutt_bit_isset(idata->capabilities, CONDSTORE) && ImapCondStore ?
-               " (CONDSTORE)" :
-               "");
-#else
-           "");
+  if (mutt_bit_isset(idata->capabilities, CONDSTORE) && ImapCondStore)
+    condstore = " (CONDSTORE)";
+  else
 #endif
+    condstore = "";
+
+  snprintf(bufout, sizeof(bufout), "%s %s%s",
+           ctx->readonly ? "EXAMINE" : "SELECT", buf, condstore);
 
   idata->state = IMAP_SELECTED;
 
