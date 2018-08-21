@@ -455,7 +455,7 @@ static bool get_hostname(void)
 #endif
   }
   if (Hostname)
-    set_default_value("hostname", (intptr_t) mutt_str_strdup(Hostname));
+    cs_str_initial_set(Config, "hostname", mutt_str_strdup(Hostname), NULL);
 
   return true;
 }
@@ -1224,13 +1224,14 @@ bail:
 static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  bool res = 0;
+  bool res = false;
   struct Buffer token = { 0 };
 
   mutt_extract_token(buf, s, 0);
 
   /* is the item defined as a variable? */
-  res = (mutt_option_index(buf->data) != -1);
+  struct HashElem *he = cs_get_elem(Config, buf->data);
+  res = (he != NULL);
 
   /* is the item a compiled-in feature? */
   if (!res)
@@ -3132,26 +3133,6 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
 }
 
 /**
- * mutt_option_index - Find the index (in rc_vars) of a variable name
- * @param s Variable name to search for
- * @retval -1 Error
- * @retval >0 Success
- */
-int mutt_option_index(const char *s)
-{
-  for (int i = 0; MuttVars[i].name; i++)
-  {
-    if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
-    {
-      return MuttVars[i].type == DT_SYNONYM ?
-                 mutt_option_index((char *) MuttVars[i].initial) :
-                 i;
-    }
-  }
-  return -1;
-}
-
-/**
  * mutt_parse_rc_line - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
@@ -3287,69 +3268,6 @@ int query_quadoption(int opt, const char *prompt)
   }
 
   /* not reached */
-}
-
-/**
- * set_default_value - Set a config item's default/initial value
- * @param name  Name of config item
- * @param value Value to set
- * @retval true  Success, value set
- * @retval false Error, config item doesn't exist
- */
-bool set_default_value(const char *name, intptr_t value)
-{
-  if (!name)
-    return false;
-
-  int idx = mutt_option_index(name);
-  if (idx < 0)
-    return false;
-
-  MuttVars[idx].initial = value;
-  return true;
-}
-
-/**
- * var_to_string2 - Convert a config variable to a string
- * @param name    Name of config item
- * @param quote   If true, quote the result
- * @param result  Buffer for the result
- * @param err     Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
- */
-int var_to_string2(const char *name, bool quote, struct Buffer *result, struct Buffer *err)
-{
-  if (!name || !result)
-    return -1;
-
-  struct Buffer *value = mutt_buffer_alloc(STRING);
-  int rc = -1;
-
-  struct HashElem *he = cs_get_elem(Config, name);
-  if (!he)
-  {
-    mutt_buffer_printf(err, _("%s: unknown variable"), name);
-    goto vts_out;
-  }
-
-  int grc = cs_he_string_get(Config, he, value);
-  if (CSR_RESULT(grc) != CSR_SUCCESS)
-  {
-    mutt_buffer_printf(err, _("%s: unknown variable"), name);
-    goto vts_out;
-  }
-
-  if (quote)
-    mutt_buffer_addch(result, '"');
-  escape_string(result, value->data);
-  if (quote)
-    mutt_buffer_addch(result, '"');
-
-  rc = 0;
-vts_out:
-  mutt_buffer_free(&value);
-  return rc;
 }
 
 /**

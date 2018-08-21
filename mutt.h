@@ -230,7 +230,6 @@ int mutt_dump_variables(bool hide_sensitive);
 int mutt_get_hook_type(const char *name);
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
 int mutt_query_variables(struct ListHead *queries);
-bool set_default_value(const char *name, intptr_t value);
 void reset_value(const char *name);
 
 #endif /* _MUTT_H */
