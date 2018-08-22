@@ -51,6 +51,8 @@ extern char *        Trash;
  */
 struct MxOps
 {
+  const int magic;
+  const char *name;
   /**
    * mbox_open - Open a mailbox
    * @param ctx Mailbox to open
@@ -155,7 +157,7 @@ void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, bool committing);
 
-struct MxOps *mx_get_ops(enum MailboxType magic);
+const struct MxOps *mx_get_ops(enum MailboxType magic);
 
 /* This variable is backing for a config item */
 WHERE short MboxType;  ///< Config: Default type for creating new mailboxes

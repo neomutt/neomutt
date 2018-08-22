@@ -2724,6 +2724,8 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
  */
 struct MxOps mx_imap_ops = {
+  .magic            = MUTT_IMAP,
+  .name             = "imap",
   .mbox_open        = imap_mbox_open,
   .mbox_open_append = imap_mbox_open_append,
   .mbox_check       = imap_mbox_check,

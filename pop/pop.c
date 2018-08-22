@@ -1061,6 +1061,8 @@ fail:
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
  */
 struct MxOps mx_pop_ops = {
+  .magic            = MUTT_POP,
+  .name             = "pop",
   .mbox_open        = pop_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = pop_mbox_check,

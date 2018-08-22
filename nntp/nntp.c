@@ -2630,6 +2630,8 @@ int nntp_compare_order(const void *a, const void *b)
  * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
  */
 struct MxOps mx_nntp_ops = {
+  .magic            = MUTT_NNTP,
+  .name             = "nntp",
   .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = nntp_mbox_check,

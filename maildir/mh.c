@@ -2928,6 +2928,8 @@ bool mx_is_mh(const char *path)
  * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
  */
 struct MxOps mx_maildir_ops = {
+  .magic            = MUTT_MAILDIR,
+  .name             = "maildir",
   .mbox_open        = maildir_mbox_open,
   .mbox_open_append = maildir_mbox_open_append,
   .mbox_check       = maildir_mbox_check,
@@ -2945,6 +2947,8 @@ struct MxOps mx_maildir_ops = {
  * struct mx_mh_ops - Mailbox callback functions for MH mailboxes
  */
 struct MxOps mx_mh_ops = {
+  .magic            = MUTT_MH,
+  .name             = "mh",
   .mbox_open        = mh_mbox_open,
   .mbox_open_append = mh_mbox_open_append,
   .mbox_check       = mh_mbox_check,

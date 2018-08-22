@@ -1327,6 +1327,8 @@ bail: /* Come here in case of disaster */
  * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
  */
 struct MxOps mx_mbox_ops = {
+  .magic            = MUTT_MBOX,
+  .name             = "mbox",
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
@@ -1344,6 +1346,8 @@ struct MxOps mx_mbox_ops = {
  * struct mx_mmdf_ops - Mailbox callback functions for MMDF mailboxes
  */
 struct MxOps mx_mmdf_ops = {
+  .magic            = MUTT_MMDF,
+  .name             = "mmdf",
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,

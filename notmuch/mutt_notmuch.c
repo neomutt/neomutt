@@ -2765,6 +2765,8 @@ static int nm_msg_commit(struct Context *ctx, struct Message *msg)
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
  */
 struct MxOps mx_notmuch_ops = {
+  .magic            = MUTT_NOTMUCH,
+  .name             = "notmuch",
   .mbox_open        = nm_mbox_open, /* calls init_context() */
   .mbox_open_append = NULL,
   .mbox_check       = nm_mbox_check,

@@ -62,13 +62,13 @@ struct Header;
  */
 struct CompressInfo
 {
-  const char *append;      /**< append-hook command */
-  const char *close;       /**< close-hook  command */
-  const char *open;        /**< open-hook   command */
-  off_t size;              /**< size of the compressed file */
-  struct MxOps *child_ops; /**< callbacks of de-compressed file */
-  int locked;              /**< if realpath is locked */
-  FILE *lockfp;            /**< fp used for locking */
+  const char *append;            /**< append-hook command */
+  const char *close;             /**< close-hook  command */
+  const char *open;              /**< open-hook   command */
+  off_t size;                    /**< size of the compressed file */
+  const struct MxOps *child_ops; /**< callbacks of de-compressed file */
+  int locked;                    /**< if realpath is locked */
+  FILE *lockfp;                  /**< fp used for locking */
 };
 
 /**
@@ -587,7 +587,7 @@ static int comp_mbox_close(struct Context *ctx)
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
   {
     free_compress_info(ctx);
@@ -667,7 +667,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -702,7 +702,7 @@ static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -722,7 +722,7 @@ static int comp_msg_close(struct Context *ctx, struct Message *msg)
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -742,7 +742,7 @@ static int comp_msg_commit(struct Context *ctx, struct Message *msg)
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -762,7 +762,7 @@ static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   if (!ci)
     return -1;
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -842,7 +842,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  struct MxOps *ops = ci->child_ops;
+  const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -900,6 +900,8 @@ int mutt_comp_valid_command(const char *cmd)
  * The message functions are delegated to mbox.
  */
 struct MxOps mx_comp_ops = {
+  .magic            = MUTT_COMPRESSED,
+  .name             = "compressed",
   .mbox_open        = comp_mbox_open,
   .mbox_open_append = comp_mbox_open_append,
   .mbox_check       = comp_mbox_check,

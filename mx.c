@@ -89,46 +89,44 @@ unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;        ///< Config: Folder to put deleted emails
 
 /**
+ * mx_ops - All the Mailbox backends
+ */
+const struct MxOps *mx_ops[] = {
+#ifdef USE_COMPRESSED
+  &mx_comp_ops,
+#endif
+#ifdef USE_IMAP
+  &mx_imap_ops,
+#endif
+  &mx_maildir_ops,
+  &mx_mbox_ops,
+  &mx_mh_ops,
+  &mx_mmdf_ops,
+#ifdef USE_NNTP
+  &mx_nntp_ops,
+#endif
+#ifdef USE_NOTMUCH
+  &mx_notmuch_ops,
+#endif
+#ifdef USE_POP
+  &mx_pop_ops,
+#endif
+  NULL,
+};
+
+/**
  * mx_get_ops - Get mailbox operations
  * @param magic Mailbox magic number
  * @retval ptr  Mailbox function
  * @retval NULL Error
  */
-struct MxOps *mx_get_ops(enum MailboxType magic)
+const struct MxOps *mx_get_ops(int magic)
 {
-  switch (magic)
-  {
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-      return &mx_imap_ops;
-#endif
-    case MUTT_MAILDIR:
-      return &mx_maildir_ops;
-    case MUTT_MBOX:
-      return &mx_mbox_ops;
-    case MUTT_MH:
-      return &mx_mh_ops;
-    case MUTT_MMDF:
-      return &mx_mmdf_ops;
-#ifdef USE_POP
-    case MUTT_POP:
-      return &mx_pop_ops;
-#endif
-#ifdef USE_COMPRESSED
-    case MUTT_COMPRESSED:
-      return &mx_comp_ops;
-#endif
-#ifdef USE_NNTP
-    case MUTT_NNTP:
-      return &mx_nntp_ops;
-#endif
-#ifdef USE_NOTMUCH
-    case MUTT_NOTMUCH:
-      return &mx_notmuch_ops;
-#endif
-    default:
-      return NULL;
-  }
+  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+    if ((*ops)->magic == magic)
+      return *ops;
+
+  return NULL;
 }
 
 /**
