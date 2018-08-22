@@ -1035,3 +1035,32 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     mutt_set_flag(Context, hdr, MUTT_REPLIED, 1);
   }
 }
+
+void mutt_attach_mail_sender(FILE *fp, struct Header *hdr,
+                             struct AttachCtx *actx, struct Body *cur)
+{
+  if (!check_all_msg(actx, cur, 0))
+  {
+    mutt_error(_("You may only compose to sender with message/rfc822 parts."));
+    return;
+  }
+
+  struct Header *tmphdr = mutt_header_new();
+  tmphdr->env = mutt_env_new();
+
+  if (cur)
+  {
+    if (mutt_fetch_recips(tmphdr->env, cur->hdr->env, SEND_TO_SENDER) == -1)
+      return;
+  }
+  else
+  {
+    for (int i = 0; i < actx->idxlen; i++)
+    {
+      if (actx->idx[i]->content->tagged &&
+          mutt_fetch_recips(tmphdr->env, actx->idx[i]->content->hdr->env, SEND_TO_SENDER) == -1)
+        return;
+    }
+  }
+  ci_send_message(0, tmphdr, NULL, NULL, NULL);
+}

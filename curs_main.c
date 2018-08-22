@@ -1764,11 +1764,11 @@ int mutt_index_menu(void)
         break;
 
       case OP_COMPOSE_TO_SENDER:
-        if (Context)
-        {
-          mutt_compose_to_sender(tag ? NULL : CURHDR);
-          menu->redraw = REDRAW_FULL;
-        }
+        CHECK_ATTACH;
+        CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+        ci_send_message (SEND_TO_SENDER, NULL, NULL, Context, tag ? NULL : CURHDR);
+        menu->redraw = REDRAW_FULL;
         break;
 
         /* --------------------------------------------------------------------

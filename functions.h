@@ -394,6 +394,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "bounce-message",        OP_BOUNCE_MESSAGE,              "b" },
   { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },
   { "collapse-parts",        OP_ATTACH_COLLAPSE,             "v" },
+  { "compose-to-sender",     OP_COMPOSE_TO_SENDER,           NULL },
   { "delete-entry",          OP_DELETE,                      "d" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
   { "edit-type",             OP_EDIT_TYPE,                   "\005" },

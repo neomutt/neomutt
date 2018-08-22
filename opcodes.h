@@ -76,7 +76,7 @@
   _fmt(OP_COMPOSE_TOGGLE_DISPOSITION,     N_("toggle disposition between inline/attachment")) \
   _fmt(OP_COMPOSE_TOGGLE_RECODE,          N_("toggle recoding of this attachment")) \
   _fmt(OP_COMPOSE_TOGGLE_UNLINK,          N_("toggle whether to delete file after sending it")) \
-  _fmt(OP_COMPOSE_TO_SENDER,              N_("compose a new message to the sender")) \
+  _fmt(OP_COMPOSE_TO_SENDER,              N_("compose new message to the current message sender")) \
   _fmt(OP_COMPOSE_UPDATE_ENCODING,        N_("update an attachment's encoding info")) \
   _fmt(OP_COMPOSE_WRITE_MESSAGE,          N_("write the message to a folder")) \
   _fmt(OP_COPY_MESSAGE,                   N_("copy a message to a file/mailbox")) \

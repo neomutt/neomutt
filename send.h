@@ -91,11 +91,11 @@ extern bool          UseFrom;
 #define SEND_POSTPONED_FCC  (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
 #define SEND_NO_FREE_HEADER (1 << 10) /**< Used by the -E flag */
 #define SEND_DRAFT_FILE     (1 << 11) /**< Used by the -H flag */
-#define SEND_NEWS           (1 << 12)
+#define SEND_TO_SENDER      (1 << 12)
+#define SEND_NEWS           (1 << 13)
 
 int             ci_send_message(int flags, struct Header *msg, char *tempfile, struct Context *ctx, struct Header *cur);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
-int             mutt_compose_to_sender(struct Header *hdr);
 struct Address *mutt_default_from(void);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);
 int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);

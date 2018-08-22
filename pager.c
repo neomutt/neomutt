@@ -2899,7 +2899,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_COMPOSE_TO_SENDER:
-        mutt_compose_to_sender(extra->hdr);
+        CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        CHECK_ATTACH;
+        if (IsMsgAttach (extra))
+          mutt_attach_mail_sender (extra->fp, extra->hdr, extra->actx, extra->bdy);
+        else
+          ci_send_message (SEND_TO_SENDER, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
         break;
 
