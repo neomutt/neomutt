@@ -425,7 +425,9 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 
   if (end == 0)
   {
-    snprintf(buf, buflen, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
+    // Open-ended date allows mail from the future.
+    // This may occur is the sender's time settings are off.
+    snprintf(buf, buflen, "date:%d%s.. and %s", beg, NmQueryWindowTimebase,
              NmQueryWindowCurrentSearch);
   }
   else
