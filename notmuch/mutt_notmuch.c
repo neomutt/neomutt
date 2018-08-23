@@ -2760,6 +2760,21 @@ static int nm_msg_commit(struct Context *ctx, struct Message *msg)
   return -1;
 }
 
+/**
+ * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe
+ */
+int nm_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  enum UrlScheme scheme = url_check_scheme(path);
+  if (scheme == U_NOTMUCH)
+    return MUTT_NOTMUCH;
+
+  return MUTT_UNKNOWN;
+}
+
 // clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
@@ -2778,5 +2793,6 @@ struct MxOps mx_notmuch_ops = {
   .msg_close        = nm_msg_close,
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
+  .path_probe       = nm_path_probe,
 };
 // clang-format on

@@ -1056,6 +1056,21 @@ fail:
   FREE(&pop_data);
 }
 
+/**
+ * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe
+ */
+int pop_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  enum UrlScheme scheme = url_check_scheme(path);
+  if ((scheme == U_POP) || (scheme == U_POPS))
+    return MUTT_POP;
+
+  return MUTT_UNKNOWN;
+}
+
 // clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
@@ -1074,5 +1089,6 @@ struct MxOps mx_pop_ops = {
   .msg_close        = pop_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = pop_path_probe,
 };
 // clang-format on

@@ -2868,59 +2868,87 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * mx_is_maildir - Is this a Maildir folder?
- * @param path Path to examine
+ * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe
+ */
+int maildir_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISDIR(st->st_mode))
+    return MUTT_UNKNOWN;
+
+  char cur[PATH_MAX];
+  snprintf(cur, sizeof(cur), "%s/cur", path);
+
+  struct stat stc;
+  if ((stat(cur, &stc) == 0) && S_ISDIR(stc.st_mode))
+    return MUTT_MAILDIR;
+
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * mx_is_maildir - Is this a Maildir mailbox?
+ * @param path Path to test
  * @retval true If it is
  */
 bool mx_is_maildir(const char *path)
 {
-  char tmp[PATH_MAX];
-  struct stat st;
-
-  snprintf(tmp, sizeof(tmp), "%s/cur", path);
-  if (stat(tmp, &st) == 0 && S_ISDIR(st.st_mode))
-    return true;
-  return false;
+  return (maildir_path_probe(path, NULL) == MUTT_MAILDIR);
 }
 
 /**
- * mx_is_mh - Is this an MH folder?
- * @param path Path to examine
- * @retval true If it is
+ * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe
  */
-bool mx_is_mh(const char *path)
+int mh_path_probe(const char *path, const struct stat *st)
 {
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISDIR(st->st_mode))
+    return MUTT_UNKNOWN;
+
   char tmp[PATH_MAX];
 
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.xmhcache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.mew_cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.mew-cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.sylpheed_cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   /* ok, this isn't an mh folder, but mh mode can be used to read
-   * Usenet news from the spool. ;-)
-   */
+   * Usenet news from the spool.  */
 
   snprintf(tmp, sizeof(tmp), "%s/.overview", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
-  return false;
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * mx_is_mh - Is this an mh mailbox?
+ * @param path Path to test
+ * @retval true If it is
+ */
+bool mx_is_mh(const char *path)
+{
+  return (mh_path_probe(path, NULL) == MUTT_MH);
 }
 
 // clang-format off
@@ -2941,6 +2969,7 @@ struct MxOps mx_maildir_ops = {
   .msg_close        = mh_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = maildir_path_probe,
 };
 
 /**
@@ -2960,5 +2989,6 @@ struct MxOps mx_mh_ops = {
   .msg_close        = mh_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mh_path_probe,
 };
 // clang-format on

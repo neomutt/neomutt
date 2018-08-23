@@ -2719,6 +2719,21 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
   return 0;
 }
 
+/**
+ * imap_path_probe - Is this an IMAP mailbox? - Implements MxOps::path_probe
+ */
+int imap_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  enum UrlScheme scheme = url_check_scheme(path);
+  if ((scheme == U_IMAP) || (scheme == U_IMAPS))
+    return MUTT_IMAP;
+
+  return MUTT_UNKNOWN;
+}
+
 // clang-format off
 /**
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
@@ -2737,5 +2752,6 @@ struct MxOps mx_imap_ops = {
   .msg_close        = imap_msg_close,
   .tags_edit        = imap_tags_edit,
   .tags_commit      = imap_tags_commit,
+  .path_probe       = imap_path_probe,
 };
 // clang-format on

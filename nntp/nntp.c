@@ -2625,6 +2625,21 @@ int nntp_compare_order(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe
+ */
+int nntp_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  enum UrlScheme scheme = url_check_scheme(path);
+  if ((scheme == U_NNTP) || (scheme == U_NNTPS))
+    return MUTT_NNTP;
+
+  return MUTT_UNKNOWN;
+}
+
 // clang-format off
 /**
  * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
@@ -2643,5 +2658,6 @@ struct MxOps mx_nntp_ops = {
   .msg_close        = nntp_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = nntp_path_probe,
 };
 // clang-format on

@@ -145,6 +145,13 @@ struct MxOps
    * @retval  1 Buf set
    */
   int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
+  /**
+   * path_probe - Does this mailbox type recognise this path?
+   * @param path Path to examine
+   * @param st   stat buffer (for local filesystems)
+   * @retval num Type, e.g. #MUTT_IMAP
+   */
+  int (*path_probe)      (const char *path, const struct stat *st);
 };
 
 #ifdef USE_NOTMUCH
@@ -219,6 +226,7 @@ int             mx_msg_commit  (struct Context *ctx, struct Message *msg);
 int             mx_msg_close   (struct Context *ctx, struct Message **msg);
 int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
+int             mx_path_probe  (const char *path, const struct stat *st);
 
 void mx_fastclose_mailbox(struct Context *ctx);
 

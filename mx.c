@@ -1497,3 +1497,66 @@ bool mx_tags_is_supported(struct Context *ctx)
 {
   return ctx->mx_ops->tags_commit && ctx->mx_ops->tags_edit;
 }
+
+/**
+ * mx_path_probe - Find a mailbox that understands a path
+ * @param path  Path to examine
+ * @param st    stat buffer (for local filesystems)
+ * @retval num Type, e.g. #MUTT_IMAP
+ */
+int mx_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  static const struct MxOps *no_stat[] = {
+#ifdef USE_IMAP
+    &mx_imap_ops,
+#endif
+#ifdef USE_NOTMUCH
+    &mx_notmuch_ops,
+#endif
+#ifdef USE_POP
+    &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+    &mx_nntp_ops,
+#endif
+  };
+
+  static const struct MxOps *with_stat[] = {
+    &mx_maildir_ops, &mx_mbox_ops, &mx_mh_ops, &mx_mmdf_ops,
+#ifdef USE_COMPRESSED
+    &mx_comp_ops,
+#endif
+  };
+
+  int rc;
+
+  for (size_t i = 0; i < mutt_array_size(no_stat); i++)
+  {
+    rc = no_stat[i]->path_probe(path, NULL);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  struct stat st2 = { 0 };
+  if (!st)
+  {
+    st = &st2;
+    if (stat(path, &st2) != 0)
+    {
+      mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+      return MUTT_UNKNOWN;
+    }
+  }
+
+  for (size_t i = 0; i < mutt_array_size(with_stat); i++)
+  {
+    rc = with_stat[i]->path_probe(path, st);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  return rc;
+}

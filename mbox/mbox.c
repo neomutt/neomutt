@@ -1322,6 +1322,60 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
+/**
+ * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe
+ */
+int mbox_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISREG(st->st_mode))
+    return MUTT_UNKNOWN;
+
+  FILE *fp = fopen(path, "r");
+  if (!fp)
+    return MUTT_UNKNOWN;
+
+  int ch;
+  while ((ch = fgetc(fp)) != EOF)
+  {
+    /* Some mailbox creation tools erroneously append a blank line to
+     * a file before appending a mail message.  This allows neomutt to
+     * detect magic for and thus open those files. */
+    if ((ch != '\n') && (ch != '\r'))
+    {
+      ungetc(ch, fp);
+      break;
+    }
+  }
+
+  int magic = MUTT_UNKNOWN;
+  char tmp[STRING];
+  if (fgets(tmp, sizeof(tmp), fp))
+  {
+    if (mutt_str_strncmp("From ", tmp, 5) == 0)
+      magic = MUTT_MBOX;
+    else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
+      magic = MUTT_MMDF;
+  }
+  mutt_file_fclose(&fp);
+
+  if (!CheckMboxSize)
+  {
+    /* need to restore the times here, the file was not really accessed,
+     * only the type was accessed.  This is important, because detection
+     * of "new mail" depends on those times set correctly.
+     */
+    struct utimbuf times;
+    times.actime = st->st_atime;
+    times.modtime = st->st_mtime;
+    utime(path, &times);
+  }
+
+  return magic;
+}
+
 // clang-format off
 /**
  * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
@@ -1340,6 +1394,7 @@ struct MxOps mx_mbox_ops = {
   .msg_close        = mbox_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mbox_path_probe,
 };
 
 /**
@@ -1359,5 +1414,6 @@ struct MxOps mx_mmdf_ops = {
   .msg_close        = mbox_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mbox_path_probe,
 };
 // clang-format on

@@ -892,6 +892,23 @@ int mutt_comp_valid_command(const char *cmd)
   return strstr(cmd, "%f") && strstr(cmd, "%t");
 }
 
+/**
+ * comp_path_probe - Is this a compressed mailbox? - Implements MxOps::path_probe
+ */
+int comp_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISREG(st->st_mode))
+    return MUTT_UNKNOWN;
+
+  if (mutt_comp_can_read(path))
+    return MUTT_COMPRESSED;
+
+  return MUTT_UNKNOWN;
+}
+
 // clang-format off
 /**
  * struct mx_comp_ops - Mailbox callback functions for compressed mailboxes
@@ -913,5 +930,6 @@ struct MxOps mx_comp_ops = {
   .msg_close        = comp_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = comp_path_probe,
 };
 // clang-format on
