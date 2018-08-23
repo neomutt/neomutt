@@ -152,6 +152,24 @@ struct MxOps
    * @retval num Type, e.g. #MUTT_IMAP
    */
   int (*path_probe)      (const char *path, const struct stat *st);
+  /**
+   * path_canon - Canonicalise a mailbox path
+   * @param buf    Path to modify
+   * @param buflen Length of buffer
+   * @param folder Base path for '=' substitution
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*path_canon)     (char *buf, size_t buflen, const char *folder);
+  /**
+   * path_pretty - Abbreviate a mailbox path
+   * @param buf    Path to modify
+   * @param buflen Length of buffer
+   * @param folder Base path for '=' substitution
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
 };
 
 #ifdef USE_NOTMUCH
@@ -227,6 +245,8 @@ int             mx_msg_close   (struct Context *ctx, struct Message **msg);
 int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
 int             mx_path_probe  (const char *path, const struct stat *st);
+int             mx_path_canon  (char *buf, size_t buflen, const char *folder);
+int             mx_path_pretty (char *buf, size_t buflen, const char *folder);
 
 void mx_fastclose_mailbox(struct Context *ctx);
 

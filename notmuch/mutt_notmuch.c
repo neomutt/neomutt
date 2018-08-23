@@ -2794,5 +2794,7 @@ struct MxOps mx_notmuch_ops = {
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
   .path_probe       = nm_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 // clang-format on

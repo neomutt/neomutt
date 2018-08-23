@@ -2753,5 +2753,7 @@ struct MxOps mx_imap_ops = {
   .tags_edit        = imap_tags_edit,
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 // clang-format on

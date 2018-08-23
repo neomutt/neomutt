@@ -1560,3 +1560,19 @@ int mx_path_probe(const char *path, const struct stat *st)
 
   return rc;
 }
+
+/**
+ * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
+ */
+int mx_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  return -1;
+}
+
+/**
+ * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty
+ */
+int mx_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  return -1;
+}

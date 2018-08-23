@@ -2970,6 +2970,8 @@ struct MxOps mx_maildir_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = maildir_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 
 /**
@@ -2990,5 +2992,7 @@ struct MxOps mx_mh_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 // clang-format on

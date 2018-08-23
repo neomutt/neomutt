@@ -1395,6 +1395,8 @@ struct MxOps mx_mbox_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 
 /**
@@ -1415,5 +1417,7 @@ struct MxOps mx_mmdf_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 // clang-format on

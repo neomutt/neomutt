@@ -1090,5 +1090,7 @@ struct MxOps mx_pop_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,
+  .path_canon       = NULL,
+  .path_pretty      = NULL,
 };
 // clang-format on
