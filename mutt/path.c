@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "mutt/logging.h"
 #include "mutt/memory.h"
 #include "mutt/message.h"
@@ -221,43 +222,76 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
  */
 bool mutt_path_canon(char *buf, size_t buflen, const char *homedir)
 {
-  if (!buf || (buf[0] != '~'))
+  if (!buf)
     return false;
 
   char result[PATH_MAX] = { 0 };
-  char *dir = NULL;
-  size_t len = 0;
 
-  if ((buf[1] == '/') || (buf[1] == '\0'))
+  if (buf[0] == '~')
   {
-    if (!homedir)
-      return false;
+    char *dir = NULL;
+    size_t len = 0;
 
-    len = mutt_str_strfcpy(result, homedir, sizeof(result));
-    dir = buf + 1;
-  }
-  else
-  {
-    char user[SHORT_STRING];
-    dir = strchr(buf + 1, '/');
-    if (dir)
-      mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+    if ((buf[1] == '/') || (buf[1] == '\0'))
+    {
+      if (!homedir)
+      {
+        mutt_debug(3, "no homedir\n");
+        return false;
+      }
+
+      len = mutt_str_strfcpy(result, homedir, sizeof(result));
+      dir = buf + 1;
+    }
     else
-      mutt_str_strfcpy(user, buf + 1, sizeof(user));
+    {
+      char user[SHORT_STRING];
+      dir = strchr(buf + 1, '/');
+      if (dir)
+        mutt_str_strfcpy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+      else
+        mutt_str_strfcpy(user, buf + 1, sizeof(user));
 
-    struct passwd *pw = getpwnam(user);
-    if (!pw || !pw->pw_dir)
+      struct passwd *pw = getpwnam(user);
+      if (!pw || !pw->pw_dir)
+      {
+        mutt_debug(1, "no such user: %s\n", user);
+        return false;
+      }
+
+      len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
+    }
+
+    size_t dirlen = mutt_str_strlen(dir);
+    if ((len + dirlen) >= buflen)
+    {
+      mutt_debug(3, "result too big for the buffer %d >= %d\n", len + dirlen, buflen);
       return false;
+    }
 
-    len = mutt_str_strfcpy(result, pw->pw_dir, sizeof(result));
+    mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
+    mutt_str_strfcpy(buf, result, buflen);
   }
+  else if (buf[0] != '/')
+  {
+    if (!getcwd(result, sizeof(result)))
+    {
+      mutt_debug(1, "getcwd failed: %s (%d)\n", strerror(errno), errno);
+      return false;
+    }
 
-  len += mutt_str_strfcpy(result + len, dir, sizeof(result) - len);
+    size_t cwdlen = mutt_str_strlen(result);
+    size_t dirlen = mutt_str_strlen(buf);
+    if ((cwdlen + dirlen + 1) >= buflen)
+    {
+      mutt_debug(3, "result too big for the buffer %d >= %d\n", cwdlen + dirlen + 1, buflen);
+      return false;
+    }
 
-  if (len >= buflen)
-    return false;
-
-  mutt_str_strfcpy(buf, result, buflen);
+    result[cwdlen] = '/';
+    mutt_str_strfcpy(result + cwdlen + 1, buf, sizeof(result) - cwdlen - 1);
+    mutt_str_strfcpy(buf, result, buflen);
+  }
 
   if (!mutt_path_tidy(buf))
     return false;
