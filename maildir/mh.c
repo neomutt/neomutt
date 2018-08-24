@@ -2972,6 +2972,23 @@ int maildir_path_canon(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * maildir_path_pretty - Implements MxOps::path_pretty
+ */
+int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_abbr_folder(buf, buflen, folder))
+    return 0;
+
+  if (mutt_path_pretty(buf, buflen, HomeDir))
+    return 0;
+
+  return -1;
+}
+
 // clang-format off
 /**
  * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
@@ -2992,7 +3009,7 @@ struct MxOps mx_maildir_ops = {
   .tags_commit      = NULL,
   .path_probe       = maildir_path_probe,
   .path_canon       = maildir_path_canon,
-  .path_pretty      = NULL,
+  .path_pretty      = maildir_path_pretty,
 };
 
 /**
@@ -3014,6 +3031,6 @@ struct MxOps mx_mh_ops = {
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,
   .path_canon       = maildir_path_canon,
-  .path_pretty      = NULL,
+  .path_pretty      = maildir_path_pretty,
 };
 // clang-format on

@@ -2803,6 +2803,15 @@ int nm_path_canon(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * nm_path_pretty - Implements MxOps::path_pretty
+ */
+int nm_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
@@ -2823,6 +2832,6 @@ struct MxOps mx_notmuch_ops = {
   .tags_commit      = nm_tags_commit,
   .path_probe       = nm_path_probe,
   .path_canon       = nm_path_canon,
-  .path_pretty      = NULL,
+  .path_pretty      = nm_path_pretty,
 };
 // clang-format on

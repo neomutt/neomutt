@@ -2762,6 +2762,18 @@ int imap_path_canon(char *buf, size_t buflen, const char *folder)
   return imap_expand_path(buf, buflen);
 }
 
+/**
+ * imap_path_pretty - Implements MxOps::path_pretty
+ */
+int imap_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf || !folder)
+    return -1;
+
+  imap_pretty_mailbox(buf, folder);
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
@@ -2782,6 +2794,6 @@ struct MxOps mx_imap_ops = {
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
   .path_canon       = imap_path_canon,
-  .path_pretty      = NULL,
+  .path_pretty      = imap_path_pretty,
 };
 // clang-format on

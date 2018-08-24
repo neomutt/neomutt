@@ -1648,5 +1648,22 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
  */
 int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  return -1;
+  int magic = mx_path_probe(buf, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops)
+    return -1;
+
+  if (!ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+    return -1;
+
+  if (!ops->path_pretty)
+    return -1;
+
+  if (ops->path_pretty(buf, buflen, folder) < 0)
+    return -1;
+
+  return 0;
 }

@@ -1099,6 +1099,15 @@ int pop_path_canon(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * pop_path_pretty - Implements MxOps::path_pretty
+ */
+int pop_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
@@ -1119,6 +1128,6 @@ struct MxOps mx_pop_ops = {
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,
   .path_canon       = pop_path_canon,
-  .path_pretty      = NULL,
+  .path_pretty      = pop_path_pretty,
 };
 // clang-format on

@@ -350,7 +350,7 @@ char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
  * The slash is omitted when dir or fname is of 0 length.
  */
 char *mutt_path_concatn(char *dst, size_t dstlen, const char *dir,
-                             size_t dirlen, const char *fname, size_t fnamelen)
+                        size_t dirlen, const char *fname, size_t fnamelen)
 {
   size_t req;
   size_t offset = 0;
