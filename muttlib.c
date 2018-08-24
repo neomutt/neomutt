@@ -557,7 +557,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 #ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(buf);
+    imap_pretty_mailbox(buf, Folder);
     return;
   }
 #endif
