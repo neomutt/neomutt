@@ -815,7 +815,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     else
       currentline = linebuf;
-
+    mutt_buffer_reset(err);
     line_rc = mutt_parse_rc_line(currentline, &token, err);
     if (line_rc == -1)
     {
