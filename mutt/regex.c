@@ -139,7 +139,7 @@ int mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct 
 
   /* check to make sure the item is not already on this rl */
   struct RegexListNode *np = NULL;
-  STAILQ_FOREACH_FROM(np, rl, entries)
+  STAILQ_FOREACH(np, rl, entries)
   {
     if (mutt_str_strcasecmp(rx->pattern, np->regex->pattern) == 0)
       break; /* already on the rl */
