@@ -258,8 +258,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   {
     case 'a':
       mutt_addr_write(tmp, sizeof(tmp), query->addr, true);
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, tmp);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
     case 'c':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -267,16 +266,12 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'e':
       if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(query->other));
-      }
+        mutt_format_s(buf, buflen, prec, NONULL(query->other));
       else if (!query->other || !*query->other)
         optional = 0;
       break;
     case 'n':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, NONULL(query->name));
+      mutt_format_s(buf, buflen, prec, NONULL(query->name));
       break;
     case 't':
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
