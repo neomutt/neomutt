@@ -394,9 +394,19 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
     return -1;
 
   if (!ctx->quiet)
+  {
+    /* L10N: Displayed before/as a mailbox is being synced */
     mutt_message(_("Writing %s..."), ctx->path);
+  }
 
-  return ctx->mx_ops->mbox_sync(ctx, index_hint);
+  int rc = ctx->mx_ops->mbox_sync(ctx, index_hint);
+  if ((rc != 0) && !ctx->quiet)
+  {
+    /* L10N: Displayed if a mailbox sync fails */
+    mutt_error(_("Unable to write %s!"), ctx->path);
+  }
+
+  return rc;
 }
 
 /**
