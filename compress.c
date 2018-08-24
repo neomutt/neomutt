@@ -909,6 +909,27 @@ int comp_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
+/**
+ * comp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int comp_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    buf[0] = '/';
+    mutt_str_inline_replace(buf, buflen, 0, folder);
+  }
+
+  mutt_path_canon(buf, buflen, HomeDir);
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_comp_ops - Mailbox callback functions for compressed mailboxes
@@ -931,7 +952,7 @@ struct MxOps mx_comp_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = comp_path_probe,
-  .path_canon       = NULL,
+  .path_canon       = comp_path_canon,
   .path_pretty      = NULL,
 };
 // clang-format on

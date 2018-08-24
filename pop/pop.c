@@ -1071,6 +1071,34 @@ int pop_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
+/**
+ * pop_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int pop_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return 0;
+}
+
 // clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
@@ -1090,7 +1118,7 @@ struct MxOps mx_pop_ops = {
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,
-  .path_canon       = NULL,
+  .path_canon       = pop_path_canon,
   .path_pretty      = NULL,
 };
 // clang-format on

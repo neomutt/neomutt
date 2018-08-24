@@ -2734,6 +2734,34 @@ int imap_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
+/**
+ * imap_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int imap_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return imap_expand_path(buf, buflen);
+}
+
 // clang-format off
 /**
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
@@ -2753,7 +2781,7 @@ struct MxOps mx_imap_ops = {
   .tags_edit        = imap_tags_edit,
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
-  .path_canon       = NULL,
+  .path_canon       = imap_path_canon,
   .path_pretty      = NULL,
 };
 // clang-format on

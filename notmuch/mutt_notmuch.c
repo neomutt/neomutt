@@ -2775,6 +2775,34 @@ int nm_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
+/**
+ * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int nm_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
@@ -2794,7 +2822,7 @@ struct MxOps mx_notmuch_ops = {
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
   .path_probe       = nm_path_probe,
-  .path_canon       = NULL,
+  .path_canon       = nm_path_canon,
   .path_pretty      = NULL,
 };
 // clang-format on

@@ -30,6 +30,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <pwd.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,6 +42,7 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "mx.h"
+#include "alias.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -1566,7 +1568,79 @@ int mx_path_probe(const char *path, const struct stat *st)
  */
 int mx_path_canon(char *buf, size_t buflen, const char *folder)
 {
-  return -1;
+  if (!buf)
+    return -1;
+
+  for (size_t i = 0; i < 3; i++)
+  {
+    /* Look for !! ! - < > or ^ followed by / or NUL */
+    if ((buf[0] == '!') && (buf[1] == '!'))
+    {
+      if (((buf[2] == '/') || (buf[2] == '\0')))
+      {
+        mutt_str_inline_replace(buf, buflen, 2, LastFolder);
+      }
+    }
+    else if ((buf[1] == '/') || (buf[1] == '\0'))
+    {
+      if (buf[0] == '!')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Spoolfile);
+      }
+      else if (buf[0] == '-')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, LastFolder);
+      }
+      else if (buf[0] == '<')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Record);
+      }
+      else if (buf[0] == '>')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Mbox);
+      }
+      else if (buf[0] == '^')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
+      }
+    }
+    else if (buf[0] == '@')
+    {
+      /* elm compatibility, @ expands alias to user name */
+      struct Address *alias = mutt_alias_lookup(buf + 1);
+      if (!alias)
+        break;
+
+      struct Header *h = mutt_header_new();
+      h->env = mutt_env_new();
+      h->env->from = alias;
+      h->env->to = alias;
+      mutt_default_save(buf, buflen, h);
+      h->env->from = NULL;
+      h->env->to = NULL;
+      mutt_header_free(&h);
+      break;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  if (!folder)
+    return -1;
+
+  int magic = mx_path_probe(folder, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops || !ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+  {
+    mutt_path_canon(buf, buflen, HomeDir);
+  }
+
+  return 0;
 }
 
 /**
