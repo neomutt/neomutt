@@ -71,6 +71,7 @@ int         mutt_str_atoul(const char *str, unsigned long *dst);
 void        mutt_str_dequote_comment(char *s);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
+bool        mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
 bool        mutt_str_is_ascii(const char *p, size_t len);
 bool        mutt_str_is_email_wsp(char c);
 size_t      mutt_str_lws_len(const char *s, size_t n);
