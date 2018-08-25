@@ -174,6 +174,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
 extern struct NntpServer *CurrentNewsSrv;
 
 int nntp_compare_order(const void *a, const void *b);
+int nntp_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_nntp_ops;
 

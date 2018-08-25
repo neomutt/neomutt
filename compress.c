@@ -470,7 +470,7 @@ static int comp_mbox_open(struct Context *ctx)
 
   unlock_realpath(ctx);
 
-  ctx->magic = mx_get_magic(ctx->path);
+  ctx->magic = mx_path_probe(ctx->path, NULL);
   if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
@@ -538,7 +538,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
       mutt_error(_("Compress command failed: %s"), ci->open);
       goto oa_fail2;
     }
-    ctx->magic = mx_get_magic(ctx->path);
+    ctx->magic = mx_path_probe(ctx->path, NULL);
   }
   else
     ctx->magic = MboxType;

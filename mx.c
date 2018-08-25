@@ -94,25 +94,30 @@ char *Trash;        ///< Config: Folder to put deleted emails
 /**
  * mx_ops - All the Mailbox backends
  */
-const struct MxOps *mx_ops[] = {
-#ifdef USE_COMPRESSED
-  &mx_comp_ops,
-#endif
+static const struct MxOps *mx_ops[] = {
+  /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &mx_imap_ops,
-#endif
-  &mx_maildir_ops,
-  &mx_mbox_ops,
-  &mx_mh_ops,
-  &mx_mmdf_ops,
-#ifdef USE_NNTP
-  &mx_nntp_ops,
 #endif
 #ifdef USE_NOTMUCH
   &mx_notmuch_ops,
 #endif
 #ifdef USE_POP
   &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+  &mx_nntp_ops,
+#endif
+
+  /* Local mailboxes */
+  &mx_maildir_ops,
+  &mx_mbox_ops,
+  &mx_mh_ops,
+  &mx_mmdf_ops,
+
+  /* If everything else fails... */
+#ifdef USE_COMPRESSED
+  &mx_comp_ops,
 #endif
   NULL,
 };
@@ -230,118 +235,6 @@ bool mx_is_notmuch(const char *p)
 #endif
 
 /**
- * mx_get_magic - Identify the type of mailbox
- * @param path Mailbox path to test
- * @retval -1 Error, can't identify mailbox
- * @retval >0 Success, e.g. #MUTT_IMAP
- */
-enum MailboxType mx_get_magic(const char *path)
-{
-  if (!path)
-    return MUTT_UNKNOWN;
-
-#ifdef USE_IMAP
-  if (mx_is_imap(path))
-    return MUTT_IMAP;
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-  if (mx_is_pop(path))
-    return MUTT_POP;
-#endif /* USE_POP */
-
-#ifdef USE_NNTP
-  if (mx_is_nntp(path))
-    return MUTT_NNTP;
-#endif /* USE_NNTP */
-
-#ifdef USE_NOTMUCH
-  if (mx_is_notmuch(path))
-    return MUTT_NOTMUCH;
-#endif
-
-  struct stat st;
-  enum MailboxType magic = MUTT_UNKNOWN;
-  FILE *f = NULL;
-
-  if (stat(path, &st) == -1)
-  {
-    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  if (S_ISDIR(st.st_mode))
-  {
-    /* check for maildir-style mailbox */
-    if (mx_is_maildir(path))
-      return MUTT_MAILDIR;
-
-    /* check for mh-style mailbox */
-    if (mx_is_mh(path))
-      return MUTT_MH;
-  }
-  else if (st.st_size == 0)
-  {
-    /* hard to tell what zero-length files are, so assume the default magic */
-    if (MboxType == MUTT_MBOX || MboxType == MUTT_MMDF)
-      return MboxType;
-    else
-      return MUTT_MBOX;
-  }
-  else if ((f = fopen(path, "r")))
-  {
-    struct utimbuf times;
-    int ch;
-
-    /* Some mailbox creation tools erroneously append a blank line to
-     * a file before appending a mail message.  This allows neomutt to
-     * detect magic for and thus open those files. */
-    while ((ch = fgetc(f)) != EOF)
-    {
-      if (ch != '\n' && ch != '\r')
-      {
-        ungetc(ch, f);
-        break;
-      }
-    }
-
-    char tmp[STRING];
-    if (fgets(tmp, sizeof(tmp), f))
-    {
-      if (mutt_str_strncmp("From ", tmp, 5) == 0)
-        magic = MUTT_MBOX;
-      else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
-        magic = MUTT_MMDF;
-    }
-    mutt_file_fclose(&f);
-
-    if (!CheckMboxSize)
-    {
-      /* need to restore the times here, the file was not really accessed,
-       * only the type was accessed.  This is important, because detection
-       * of "new mail" depends on those times set correctly.
-       */
-      times.actime = st.st_atime;
-      times.modtime = st.st_mtime;
-      utime(path, &times);
-    }
-  }
-  else
-  {
-    mutt_debug(1, "unable to open file %s for reading.\n", path);
-    return MUTT_MAILBOX_ERROR;
-  }
-
-#ifdef USE_COMPRESSED
-  /* If there are no other matches, see if there are any
-   * compress hooks that match */
-  if ((magic == MUTT_UNKNOWN) && mutt_comp_can_read(path))
-    return MUTT_COMPRESSED;
-#endif
-  return magic;
-}
-
-/**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
  * @param path  Path of mailbox
  * @param flags Flags, e.g. W_OK
@@ -373,7 +266,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   struct stat sb;
 
   ctx->append = true;
-  ctx->magic = mx_get_magic(ctx->path);
+  ctx->magic = mx_path_probe(ctx->path, NULL);
   if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("%s is not a mailbox"), ctx->path);
@@ -474,7 +367,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     return ctx;
   }
 
-  ctx->magic = mx_get_magic(path);
+  ctx->magic = mx_path_probe(path, NULL);
   ctx->mx_ops = mx_get_ops(ctx->magic);
 
   if ((ctx->magic == MUTT_UNKNOWN) || (ctx->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
@@ -1437,7 +1330,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
  */
 int mx_check_empty(const char *path)
 {
-  switch (mx_get_magic(path))
+  switch (mx_path_probe(path, NULL))
   {
     case MUTT_MBOX:
     case MUTT_MMDF:

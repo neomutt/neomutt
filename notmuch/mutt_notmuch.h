@@ -77,6 +77,7 @@ int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
  * functions usable outside notmuch Context
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
+int nm_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_notmuch_ops;
 

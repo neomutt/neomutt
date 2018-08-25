@@ -68,6 +68,8 @@ int            mh_check_empty(const char *path);
 
 bool           mx_is_maildir(const char *path);
 bool           mx_is_mh(const char *path);
+int            maildir_path_probe(const char *path, const struct stat *st);
+int            mh_path_probe(const char *path, const struct stat *st);
 
 #ifdef USE_HCACHE
 int            mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);

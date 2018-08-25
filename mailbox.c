@@ -153,7 +153,7 @@ static bool test_new_folder(const char *path)
   FILE *f = NULL;
   bool rc = false;
 
-  enum MailboxType magic = mx_get_magic(path);
+  enum MailboxType magic = mx_path_probe(path, NULL);
 
   if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
     return false;
@@ -408,7 +408,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
     else
 #endif
         if (stat(tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_get_magic(tmp->path)) <= 0))
+            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_path_probe(tmp->path, NULL)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to be
        * ready for when it does. */

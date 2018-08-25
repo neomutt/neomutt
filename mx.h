@@ -247,7 +247,6 @@ void                mx_alloc_memory(struct Context *ctx);
 int                 mx_check_empty(const char *path);
 int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
 void                mx_fastclose_mailbox(struct Context *ctx);
-enum MailboxType    mx_get_magic(const char *path);
 const struct MxOps *mx_get_ops(enum MailboxType magic);
 bool                mx_tags_is_supported(struct Context *ctx);
 void                mx_update_context(struct Context *ctx, int new_messages);

@@ -32,6 +32,7 @@ struct Context;
 bool mutt_comp_can_append(struct Context *ctx);
 bool mutt_comp_can_read(const char *path);
 int mutt_comp_valid_command(const char *cmd);
+int comp_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_comp_ops;
 

@@ -1334,7 +1334,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   int ret = 0;
   int rc;
 
-  enum MailboxType magic = mx_get_magic(s);
+  enum MailboxType magic = mx_path_probe(s, NULL);
 
 #ifdef USE_POP
   if (magic == MUTT_POP)

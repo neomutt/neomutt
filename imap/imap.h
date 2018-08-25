@@ -93,6 +93,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
 int imap_fast_trash(struct Context *ctx, char *dest);
+int imap_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_imap_ops;
 
