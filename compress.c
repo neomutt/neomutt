@@ -947,6 +947,26 @@ int comp_path_pretty(char *buf, size_t buflen, const char *folder)
   return -1;
 }
 
+/**
+ * comp_path_parent - Implements MxOps::path_parent
+ */
+int comp_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  if (buf[0] == '~')
+    mutt_path_canon(buf, buflen, HomeDir);
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  return -1;
+}
+
 // clang-format off
 /**
  * struct mx_comp_ops - Mailbox callback functions for compressed mailboxes
@@ -971,5 +991,6 @@ struct MxOps mx_comp_ops = {
   .path_probe       = comp_path_probe,
   .path_canon       = comp_path_canon,
   .path_pretty      = comp_path_pretty,
+  .path_parent      = comp_path_parent,
 };
 // clang-format on

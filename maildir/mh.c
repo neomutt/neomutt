@@ -2989,6 +2989,26 @@ int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
   return -1;
 }
 
+/**
+ * maildir_path_parent - Implements MxOps::path_parent
+ */
+int maildir_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  if (buf[0] == '~')
+    mutt_path_canon(buf, buflen, HomeDir);
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  return -1;
+}
+
 // clang-format off
 /**
  * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
@@ -3010,6 +3030,7 @@ struct MxOps mx_maildir_ops = {
   .path_probe       = maildir_path_probe,
   .path_canon       = maildir_path_canon,
   .path_pretty      = maildir_path_pretty,
+  .path_parent      = maildir_path_parent,
 };
 
 /**
@@ -3032,5 +3053,6 @@ struct MxOps mx_mh_ops = {
   .path_probe       = mh_path_probe,
   .path_canon       = maildir_path_canon,
   .path_pretty      = maildir_path_pretty,
+  .path_parent      = maildir_path_parent,
 };
 // clang-format on

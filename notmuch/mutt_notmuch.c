@@ -2812,6 +2812,15 @@ int nm_path_pretty(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * nm_path_parent - Implements MxOps::path_parent
+ */
+int nm_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
@@ -2833,5 +2842,6 @@ struct MxOps mx_notmuch_ops = {
   .path_probe       = nm_path_probe,
   .path_canon       = nm_path_canon,
   .path_pretty      = nm_path_pretty,
+  .path_parent      = nm_path_parent,
 };
 // clang-format on

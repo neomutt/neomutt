@@ -1108,6 +1108,15 @@ int pop_path_pretty(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * pop_path_parent - Implements MxOps::path_parent
+ */
+int pop_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
@@ -1129,5 +1138,6 @@ struct MxOps mx_pop_ops = {
   .path_probe       = pop_path_probe,
   .path_canon       = pop_path_canon,
   .path_pretty      = pop_path_pretty,
+  .path_parent      = pop_path_parent,
 };
 // clang-format on

@@ -2774,6 +2774,18 @@ int imap_path_pretty(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * imap_path_parent - Implements MxOps::path_parent
+ */
+int imap_path_parent(char *buf, size_t buflen)
+{
+  char tmp[PATH_MAX] = { 0 };
+
+  imap_get_parent_path(buf, tmp, sizeof(tmp));
+  mutt_str_strfcpy(buf, tmp, buflen);
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
@@ -2795,5 +2807,6 @@ struct MxOps mx_imap_ops = {
   .path_probe       = imap_path_probe,
   .path_canon       = imap_path_canon,
   .path_pretty      = imap_path_pretty,
+  .path_parent      = imap_path_parent,
 };
 // clang-format on

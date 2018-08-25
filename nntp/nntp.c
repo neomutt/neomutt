@@ -2677,6 +2677,15 @@ int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
   return 0;
 }
 
+/**
+ * nntp_path_parent - Implements MxOps::path_parent
+ */
+int nntp_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
@@ -2698,5 +2707,6 @@ struct MxOps mx_nntp_ops = {
   .path_probe       = nntp_path_probe,
   .path_canon       = nntp_path_canon,
   .path_pretty      = nntp_path_pretty,
+  .path_parent      = nntp_path_parent,
 };
 // clang-format on

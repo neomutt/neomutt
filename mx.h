@@ -170,6 +170,14 @@ struct MxOps
    * @retval -1 Failure
    */
   int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
+  /**
+   * path_parent - Find the parent of a mailbox path
+   * @param buf    Path to modify
+   * @param buflen Length of buffer
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*path_parent)     (char *buf, size_t buflen);
 };
 
 #ifdef USE_NOTMUCH
@@ -234,19 +242,23 @@ struct Message
 };
 
 /* The Mailbox API, see MxOps */
-struct Context *mx_mbox_open   (const char *path, int flags, struct Context *pctx);
 int             mx_mbox_check  (struct Context *ctx, int *index_hint);
-int             mx_mbox_sync   (struct Context *ctx, int *index_hint);
 int             mx_mbox_close  (struct Context *ctx, int *index_hint);
-struct Message *mx_msg_open    (struct Context *ctx, int msgno);
-struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags);
-int             mx_msg_commit  (struct Context *ctx, struct Message *msg);
+struct Context *mx_mbox_open   (const char *path, int flags, struct Context *pctx);
+int             mx_mbox_sync   (struct Context *ctx, int *index_hint);
+
 int             mx_msg_close   (struct Context *ctx, struct Message **msg);
-int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
-int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
-int             mx_path_probe  (const char *path, const struct stat *st);
+int             mx_msg_commit  (struct Context *ctx, struct Message *msg);
+struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags);
+struct Message *mx_msg_open    (struct Context *ctx, int msgno);
+
 int             mx_path_canon  (char *buf, size_t buflen, const char *folder);
+int             mx_path_parent (char *buf, size_t buflen);
 int             mx_path_pretty (char *buf, size_t buflen, const char *folder);
+int             mx_path_probe  (const char *path, const struct stat *st);
+
+int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
+int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 void mx_fastclose_mailbox(struct Context *ctx);
 
