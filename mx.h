@@ -255,9 +255,6 @@ void                mx_update_tables(struct Context *ctx, bool committing);
 #ifdef USE_IMAP
 bool mx_is_imap(const char *p);
 #endif
-#ifdef USE_NOTMUCH
-bool mx_is_notmuch(const char *p);
-#endif
 #ifdef USE_NNTP
 bool mx_is_nntp(const char *p);
 #endif

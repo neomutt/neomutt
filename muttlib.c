@@ -57,6 +57,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_NOTMUCH
+#include "notmuch/mutt_notmuch.h"
+#endif
 
 /* These Config Variables are only used in muttlib.c */
 struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
@@ -196,7 +199,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         else
 #endif
 #ifdef USE_NOTMUCH
-            if (mx_is_notmuch(Folder))
+            if (nm_path_probe(Folder, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(p, Folder, sizeof(p));
         else
 #endif
@@ -1526,7 +1529,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
   else
 #endif
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(path))
+      if (nm_path_probe(path, NULL) == MUTT_NOTMUCH)
     mutt_str_strfcpy(buf, Folder, buflen);
   else
 #endif

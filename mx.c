@@ -213,27 +213,6 @@ bool mx_is_nntp(const char *p)
 }
 #endif
 
-#ifdef USE_NOTMUCH
-/**
- * mx_is_notmuch - Is this a Notmuch mailbox
- * @param p Mailbox string to test
- * @retval true It is a Notmuch mailbox
- */
-bool mx_is_notmuch(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_NOTMUCH)
-    return true;
-
-  return false;
-}
-#endif
-
 /**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
  * @param path  Path of mailbox

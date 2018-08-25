@@ -403,7 +403,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
       tmp->magic = MUTT_NNTP;
 #endif
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(tmp->path))
+    if (nm_path_probe(tmp->path, NULL) == MUTT_NOTMUCH)
       tmp->magic = MUTT_NOTMUCH;
     else
 #endif
@@ -623,7 +623,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     mutt_extract_token(path, s, 0);
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(path->data))
+    if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
       nm_normalize_uri(path->data, buf, sizeof(buf));
     else
 #endif
@@ -663,7 +663,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     b->newly_created = false;
     b->desc = desc;
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(b->path))
+    if (nm_path_probe(b->path, NULL) == MUTT_NOTMUCH)
     {
       b->magic = MUTT_NOTMUCH;
       b->size = 0;
@@ -723,7 +723,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
     else
     {
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(path->data))
+      if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
       {
         nm_normalize_uri(path->data, buf, sizeof(buf));
       }

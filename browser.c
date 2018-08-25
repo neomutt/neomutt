@@ -415,7 +415,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       char *s = NULL;
 
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(folder->ff->name))
+      if (nm_path_probe(folder->ff->name, NULL) == MUTT_NOTMUCH)
         s = NONULL(folder->ff->desc);
       else
 #endif
@@ -915,7 +915,7 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mx_is_notmuch(np->b->path))
+    if (nm_path_probe(np->b->path, NULL) == MUTT_NOTMUCH)
     {
       nm_nonctx_get_count(np->b->path, &np->b->msg_count, &np->b->msg_unread);
       add_folder(menu, state, np->b->path, np->b->desc, NULL, np->b, NULL);
@@ -1681,7 +1681,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
 #ifdef USE_NOTMUCH
-        else if (mx_is_notmuch(state.entry[menu->current].name))
+        else if (nm_path_probe(state.entry[menu->current].name, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
         else

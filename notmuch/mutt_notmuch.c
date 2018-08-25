@@ -2768,8 +2768,7 @@ int nm_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  enum UrlScheme scheme = url_check_scheme(path);
-  if (scheme == U_NOTMUCH)
+  if (mutt_str_strncasecmp(path, "notmuch://", 10) == 0)
     return MUTT_NOTMUCH;
 
   return MUTT_UNKNOWN;
