@@ -499,3 +499,38 @@ void mutt_path_get_parent(char *path, char *buf, size_t buflen)
     buf[1] = '\0';
   }
 }
+
+/**
+ * mutt_path_abbr_folder - Create a folder abbreviation
+ * @param buf    Path to modify
+ * @param buflen Length of buffer
+ * @param folder Base path for '=' substitution
+ * @retval true Path was abbreviated
+ *
+ * Abbreviate a path using '=' to represent the 'folder'.
+ * If the folder path is passed, it won't be abbreviated to just '='
+ */
+bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf || !folder)
+    return false;
+
+  size_t flen = mutt_str_strlen(folder);
+  if (flen < 2)
+    return false;
+
+  if (folder[flen - 1] == '/')
+    flen--;
+
+  if (mutt_str_strncmp(buf, folder, flen) != 0)
+    return false;
+
+  if (buf[flen + 1] == '\0') // Don't abbreviate to '=/'
+    return false;
+
+  size_t rlen = mutt_str_strlen(buf + flen + 1);
+
+  buf[0] = '=';
+  memmove(buf + 1, buf + flen + 1, rlen + 1);
+  return true;
+}

@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+bool        mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder);
 const char *mutt_path_basename(const char *f);
 bool        mutt_path_canon(char *buf, size_t buflen, const char *homedir);
 char *      mutt_path_concat(char *d, const char *dir, const char *fname, size_t l);
