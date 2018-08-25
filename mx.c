@@ -171,27 +171,6 @@ bool mx_is_imap(const char *p)
 }
 #endif
 
-#ifdef USE_POP
-/**
- * mx_is_pop - Is this a POP mailbox
- * @param p Mailbox string to test
- * @retval true It is a POP mailbox
- */
-bool mx_is_pop(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_POP || scheme == U_POPS)
-    return true;
-
-  return false;
-}
-#endif
-
 /**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
  * @param path  Path of mailbox

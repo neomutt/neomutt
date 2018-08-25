@@ -66,6 +66,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
 
 /* These Config Variables are only used in browser.c */
 bool BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
@@ -987,7 +990,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       }
 #endif
 #ifdef USE_POP
-      if (mx_is_pop(np->b->path))
+      if (pop_path_probe(np->b->path, NULL) == MUTT_POP)
       {
         add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;

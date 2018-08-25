@@ -255,8 +255,5 @@ void                mx_update_tables(struct Context *ctx, bool committing);
 #ifdef USE_IMAP
 bool mx_is_imap(const char *p);
 #endif
-#ifdef USE_POP
-bool mx_is_pop(const char *p);
-#endif
 
 #endif /* _MUTT_MX_H */

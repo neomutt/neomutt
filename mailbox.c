@@ -55,6 +55,9 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
 
 /* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
@@ -397,7 +400,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   {
     tmp->new = false;
 #ifdef USE_POP
-    if (mx_is_pop(tmp->path))
+    if (pop_path_probe(tmp->path, NULL) == MUTT_POP)
       tmp->magic = MUTT_POP;
     else
 #endif

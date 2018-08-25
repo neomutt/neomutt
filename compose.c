@@ -70,6 +70,9 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
 
 /* These Config Variables are only used in compose.c */
 char *ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
@@ -1431,7 +1434,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if (!mx_is_imap(fname))
 #endif
 #ifdef USE_POP
-          if (!mx_is_pop(fname))
+          if (pop_path_probe(fname, NULL) != MUTT_POP)
 #endif
 #ifdef USE_NNTP
             if (!OptNews && (nntp_path_probe(fname, NULL) != MUTT_NNTP))
