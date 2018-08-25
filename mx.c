@@ -87,6 +87,7 @@
 /* These Config Variables are only used in mx.c */
 unsigned char CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
+short MboxType;     ///< Config: Default type for creating new mailboxes
 unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;        ///< Config: Folder to put deleted emails
 
@@ -142,7 +143,6 @@ static bool mutt_is_spool(const char *str)
 }
 
 #ifdef USE_IMAP
-
 /**
  * mx_is_imap - Is this an IMAP mailbox
  * @param p Mailbox string to test
@@ -164,7 +164,6 @@ bool mx_is_imap(const char *p)
 
   return false;
 }
-
 #endif
 
 #ifdef USE_POP
