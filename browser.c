@@ -994,7 +994,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       }
 #endif
 #ifdef USE_NNTP
-      if (mx_is_nntp(np->b->path))
+      if (nntp_path_probe(np->b->path, NULL) == MUTT_NNTP)
       {
         add_folder(menu, state, np->b->path, NULL, NULL, np->b, NULL);
         continue;

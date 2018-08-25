@@ -1434,7 +1434,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (!mx_is_pop(fname))
 #endif
 #ifdef USE_NNTP
-            if (!mx_is_nntp(fname) && !OptNews)
+            if (!OptNews && (nntp_path_probe(fname, NULL) != MUTT_NNTP))
 #endif
               /* check to make sure the file exists and is readable */
               if (access(fname, R_OK) == -1)

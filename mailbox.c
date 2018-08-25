@@ -52,6 +52,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_NNTP
+#include "nntp/nntp.h"
+#endif
 
 /* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
@@ -399,7 +402,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
     else
 #endif
 #ifdef USE_NNTP
-        if ((tmp->magic == MUTT_NNTP) || mx_is_nntp(tmp->path))
+        if ((tmp->magic == MUTT_NNTP) || (nntp_path_probe(tmp->path, NULL) == MUTT_NNTP))
       tmp->magic = MUTT_NNTP;
 #endif
 #ifdef USE_NOTMUCH
