@@ -468,36 +468,33 @@ size_t mutt_path_realpath(char *buf)
 }
 
 /**
- * mutt_path_get_parent - Find the parent of a path
+ * mutt_path_parent - Find the parent of a path
  * @param path   Path to use
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
+ * @retval true  Success
  */
-void mutt_path_get_parent(char *path, char *buf, size_t buflen)
+bool mutt_path_parent(char *buf, size_t buflen)
 {
-  if (!path || !buf || (buflen == 0))
-    return;
+  if (!buf)
+    return false;
 
-  mutt_str_strfcpy(buf, path, buflen);
   int n = mutt_str_strlen(buf);
-  if (n == 0)
-    return;
+  if (n < 2)
+    return false;
 
-  /* remove any final trailing '/' */
   if (buf[n - 1] == '/')
-    buf[n - 1] = '\0';
+    n--;
 
-  /* Remove everything until the next slash */
+  // Find the previous '/'
   for (n--; ((n >= 0) && (buf[n] != '/')); n--)
     ;
 
-  if (n > 0)
-    buf[n] = '\0';
-  else
-  {
-    buf[0] = '/';
-    buf[1] = '\0';
-  }
+  if (n == 0) // Always keep at least one '/'
+    n++;
+
+  buf[n] = '\0';
+  return true;
 }
 
 /**
