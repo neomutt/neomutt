@@ -147,30 +147,6 @@ static bool mutt_is_spool(const char *str)
   return mutt_str_strcmp(Spoolfile, str) == 0;
 }
 
-#ifdef USE_IMAP
-/**
- * mx_is_imap - Is this an IMAP mailbox
- * @param p Mailbox string to test
- * @retval true It is an IMAP mailbox
- */
-bool mx_is_imap(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  if (*p == '{')
-    return true;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_IMAP || scheme == U_IMAPS)
-    return true;
-
-  return false;
-}
-#endif
-
 /**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
  * @param path  Path of mailbox
@@ -184,7 +160,7 @@ bool mx_is_imap(const char *p)
 int mx_access(const char *path, int flags)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
     return imap_access(path);
 #endif
 
@@ -478,7 +454,7 @@ static int trash_append(struct Context *ctx)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
+  if (Context->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
   {
     if (imap_fast_trash(Context, Trash) == 0)
       return 0;
@@ -635,7 +611,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     /* try to use server-side copy first */
     i = 1;
 
-    if (ctx->magic == MUTT_IMAP && mx_is_imap(mbox))
+    if ((ctx->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)

@@ -1439,7 +1439,7 @@ int imap_mailbox_check(bool check_stats)
     /* Init newly-added mailboxes */
     if (np->b->magic == MUTT_UNKNOWN)
     {
-      if (mx_is_imap(np->b->path))
+      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
         np->b->magic = MUTT_IMAP;
     }
 
@@ -1714,7 +1714,7 @@ int imap_subscribe(char *path, bool subscribe)
   struct ImapMbox mx;
   size_t len = 0;
 
-  if (!mx_is_imap(path) || imap_parse_path(path, &mx) || !mx.mbox)
+  if ((imap_path_probe(path, NULL) != MUTT_IMAP) || imap_parse_path(path, &mx) || !mx.mbox)
   {
     mutt_error(_("Bad mailbox name"));
     return -1;
@@ -2051,7 +2051,7 @@ static int imap_mbox_open(struct Context *ctx)
   }
   /* pipeline the postponed count if possible */
   pmx.mbox = NULL;
-  if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
+  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) && !imap_parse_path(Postponed, &pmx) &&
       mutt_account_match(&pmx.account, &mx.account))
   {
     imap_status(Postponed, true);
@@ -2727,9 +2727,11 @@ int imap_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  enum UrlScheme scheme = url_check_scheme(path);
-  if ((scheme == U_IMAP) || (scheme == U_IMAPS))
-    return MUTT_IMAP;
+  if (mutt_str_strncasecmp(path, "imap://", 7) == 0)
+    return MUTT_NOTMUCH;
+
+  if (mutt_str_strncasecmp(path, "imaps://", 8) == 0)
+    return MUTT_NOTMUCH;
 
   return MUTT_UNKNOWN;
 }

@@ -983,7 +983,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
-      if (mx_is_imap(np->b->path))
+      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
       {
         add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
@@ -1203,9 +1203,8 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     char TargetDir[PATH_MAX] = "";
 
 #ifdef USE_IMAP
-    /* Use mx_is_imap to check what kind of dir is OldLastDir.
-     */
-    if (mx_is_imap(OldLastDir))
+    /* Check what kind of dir OldLastDir is. */
+    if (imap_path_probe(OldLastDir, NULL) == MUTT_IMAP)
     {
       mutt_str_strfcpy(TargetDir, OldLastDir, sizeof(TargetDir));
       imap_clean_path(TargetDir, sizeof(TargetDir));
@@ -1334,7 +1333,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   {
     mutt_expand_path(file, filelen);
 #ifdef USE_IMAP
-    if (mx_is_imap(file))
+    if (imap_path_probe(file, NULL) == MUTT_IMAP)
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1464,7 +1463,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     }
 
 #ifdef USE_IMAP
-    if (!mailbox && mx_is_imap(LastDir))
+    if (!mailbox && (imap_path_probe(LastDir, NULL) == MUTT_IMAP))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1868,7 +1867,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mailbox = 0;
           mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_IMAP
-          if (mx_is_imap(buf))
+          if (imap_path_probe(buf, NULL) == MUTT_IMAP)
           {
             mutt_str_strfcpy(LastDir, buf, sizeof(LastDir));
             destroy_state(&state);
@@ -2078,7 +2077,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           examine_mailboxes(menu, &state);
         }
 #ifdef USE_IMAP
-        else if (mx_is_imap(LastDir))
+        else if (imap_path_probe(LastDir, NULL) == MUTT_IMAP)
         {
           init_state(&state, NULL);
           state.imap_browse = true;

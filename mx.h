@@ -252,8 +252,4 @@ bool                mx_tags_is_supported(struct Context *ctx);
 void                mx_update_context(struct Context *ctx, int new_messages);
 void                mx_update_tables(struct Context *ctx, bool committing);
 
-#ifdef USE_IMAP
-bool mx_is_imap(const char *p);
-#endif
-
 #endif /* _MUTT_MX_H */

@@ -73,6 +73,9 @@
 #ifdef USE_POP
 #include "pop/pop.h"
 #endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
 
 /* These Config Variables are only used in compose.c */
 char *ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
@@ -1431,7 +1434,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 #endif
           mutt_expand_path(fname, sizeof(fname));
 #ifdef USE_IMAP
-        if (!mx_is_imap(fname))
+        if (imap_path_probe(fname, NULL) != MUTT_IMAP)
 #endif
 #ifdef USE_POP
           if (pop_path_probe(fname, NULL) != MUTT_POP)

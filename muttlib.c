@@ -191,7 +191,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(Folder) &&
+        if ((imap_path_probe(Folder, NULL) == MUTT_IMAP) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
           mutt_str_strfcpy(p, Folder, sizeof(p));
@@ -300,7 +300,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
-  if (mx_is_imap(buf))
+  if (imap_path_probe(buf, NULL) == MUTT_IMAP)
     imap_expand_path(buf, buflen);
 #endif
 
@@ -1524,7 +1524,7 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
   else
 #endif

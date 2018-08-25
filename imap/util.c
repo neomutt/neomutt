@@ -517,7 +517,7 @@ void imap_pretty_mailbox(char *path, const char *folder)
 
   tlen = mutt_str_strlen(target.mbox);
   /* check whether we can do '=' substitution */
-  if (mx_is_imap(folder) && !imap_parse_path(folder, &home))
+  if ((imap_path_probe(folder, NULL) == MUTT_IMAP) && !imap_parse_path(folder, &home))
   {
     hlen = mutt_str_strlen(home.mbox);
     if (tlen && mutt_account_match(&home.account, &target.account) &&

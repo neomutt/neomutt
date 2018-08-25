@@ -794,7 +794,7 @@ int main(int argc, char *argv[], char *envp[])
     bool skip = false;
 #ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
-    skip |= mx_is_imap(fpath);
+    skip |= (imap_path_probe(fpath, NULL) == MUTT_IMAP);
 #endif
 #ifdef USE_NNTP
     skip |= (nntp_path_probe(fpath, NULL) == MUTT_NNTP);
