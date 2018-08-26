@@ -224,7 +224,7 @@ ALLOBJS+=	$(PGPEWRAPOBJS)
 ###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
+LIBCONFIGOBJS=	config/account.o config/address.o config/bool.o config/command.o config/dump.o \
 		config/long.o config/magic.o config/mbtable.o config/number.o \
 		config/path.o config/quad.o config/regex.o config/set.o \
 		config/sort.o config/string.o
