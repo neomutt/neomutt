@@ -73,3 +73,17 @@ struct CryptModuleSpecs *crypto_module_lookup(int identifier)
   }
   return NULL;
 }
+
+/**
+ * crypto_module_free - Clean up the crypto modules
+ */
+void crypto_module_free(void)
+{
+  struct CryptModule *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &CryptModules, entries, tmp)
+  {
+    STAILQ_REMOVE(&CryptModules, np, CryptModule, entries);
+    FREE(&np);
+  }
+}
+

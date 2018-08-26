@@ -1215,7 +1215,6 @@ int main(int argc, char *argv[], char *envp[])
     log_queue_empty();
     mutt_log_stop();
     cs_free(&Config);
-    mutt_window_free();
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }
@@ -1230,6 +1229,8 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  crypto_module_free();
+  mutt_window_free();
   mutt_envlist_free();
   mutt_free_opts();
   mutt_free_keys();

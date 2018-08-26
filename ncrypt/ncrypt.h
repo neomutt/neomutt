@@ -211,4 +211,7 @@ void         crypt_smime_getkeys(struct Envelope *env);
 int          crypt_smime_send_menu(struct Header *msg);
 int          crypt_smime_verify_sender(struct Header *h);
 
+/* crypt_mod.c */
+void crypto_module_free(void);
+
 #endif /* _NCRYPT_NCRYPT_H */
