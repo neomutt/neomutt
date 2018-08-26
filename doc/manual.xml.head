@@ -3743,12 +3743,21 @@ alternates -group me -group work address3
         the named <emphasis>group</emphasis>.
       </para>
       <para>
-        To remove an alias or aliases (<quote>*</quote> means all aliases):
+        To add an alias:
       </para>
 
 <screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
 alias theguys manny, moe, jack
+</screen>
+
+      <para>
+      To remove an alias or aliases (<quote>*</quote> means all aliases):
+      </para>
+
+<screen>
+unalias muttdude
+unalias *
 </screen>
 
       <para>
