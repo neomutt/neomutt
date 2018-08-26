@@ -1009,7 +1009,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (mx_is_maildir(np->b->path))
+      if (maildir_path_probe(np->b->path, NULL) == MUTT_MAILDIR)
       {
         struct stat st2;
         char md[PATH_MAX];

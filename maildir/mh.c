@@ -2889,16 +2889,6 @@ int maildir_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mx_is_maildir - Is this a Maildir mailbox?
- * @param path Path to test
- * @retval true If it is
- */
-bool mx_is_maildir(const char *path)
-{
-  return (maildir_path_probe(path, NULL) == MUTT_MAILDIR);
-}
-
-/**
  * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe
  */
 int mh_path_probe(const char *path, const struct stat *st)
@@ -2939,16 +2929,6 @@ int mh_path_probe(const char *path, const struct stat *st)
     return MUTT_MH;
 
   return MUTT_UNKNOWN;
-}
-
-/**
- * mx_is_mh - Is this an mh mailbox?
- * @param path Path to test
- * @retval true If it is
- */
-bool mx_is_mh(const char *path)
-{
-  return (mh_path_probe(path, NULL) == MUTT_MH);
 }
 
 /**
