@@ -647,7 +647,7 @@ static bool prepare_sidebar(int page_size)
 
   /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
 
-  /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
+  /* If SidebarNewMailOnly is set, some entries may be hidden so we
    * need to scan for the framing interval */
   if (SidebarNewMailOnly)
   {

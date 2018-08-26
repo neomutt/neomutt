@@ -123,6 +123,7 @@ mutt_thread.c
 mutt_url.c
 mutt_window.c
 mx.c
+myvar.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
 ncrypt/crypt_gpgme.c

@@ -480,7 +480,6 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
  * | \%E     | Number of messages in current thread
  * | \%F     | Author name, or recipient name if the message is from you
  * | \%f     | Sender (address + real name), either From: or Return-Path:
- * | \%g     | Newsgroup name (if compiled with NNTP support)
  * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
  * | \%H     | Spam attribute(s) of this message
