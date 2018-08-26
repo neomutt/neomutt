@@ -108,7 +108,7 @@ int mutt_num_postponed(bool force)
 
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
-  if (mx_is_imap(Postponed))
+  if (imap_path_probe(Postponed, NULL) == MUTT_IMAP)
   {
     if (force)
     {

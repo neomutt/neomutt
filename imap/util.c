@@ -498,11 +498,12 @@ int imap_mxcmp(const char *mx1, const char *mx2)
 
 /**
  * imap_pretty_mailbox - Prettify an IMAP mailbox name
- * @param path Mailbox name to be tidied
+ * @param path   Mailbox name to be tidied
+ * @param folder Path to use for '+' abbreviations
  *
  * Called by mutt_pretty_mailbox() to make IMAP paths look nice.
  */
-void imap_pretty_mailbox(char *path)
+void imap_pretty_mailbox(char *path, const char *folder)
 {
   struct ImapMbox home, target;
   struct Url url;
@@ -516,7 +517,7 @@ void imap_pretty_mailbox(char *path)
 
   tlen = mutt_str_strlen(target.mbox);
   /* check whether we can do '=' substitution */
-  if (mx_is_imap(Folder) && !imap_parse_path(Folder, &home))
+  if ((imap_path_probe(folder, NULL) == MUTT_IMAP) && !imap_parse_path(folder, &home))
   {
     hlen = mutt_str_strlen(home.mbox);
     if (tlen && mutt_account_match(&home.account, &target.account) &&

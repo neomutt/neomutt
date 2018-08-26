@@ -2868,59 +2868,125 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * mx_is_maildir - Is this a Maildir folder?
- * @param path Path to examine
- * @retval true If it is
+ * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe
  */
-bool mx_is_maildir(const char *path)
+int maildir_path_probe(const char *path, const struct stat *st)
 {
-  char tmp[PATH_MAX];
-  struct stat st;
+  if (!path)
+    return MUTT_UNKNOWN;
 
-  snprintf(tmp, sizeof(tmp), "%s/cur", path);
-  if (stat(tmp, &st) == 0 && S_ISDIR(st.st_mode))
-    return true;
-  return false;
+  if (!st || !S_ISDIR(st->st_mode))
+    return MUTT_UNKNOWN;
+
+  char cur[PATH_MAX];
+  snprintf(cur, sizeof(cur), "%s/cur", path);
+
+  struct stat stc;
+  if ((stat(cur, &stc) == 0) && S_ISDIR(stc.st_mode))
+    return MUTT_MAILDIR;
+
+  return MUTT_UNKNOWN;
 }
 
 /**
- * mx_is_mh - Is this an MH folder?
- * @param path Path to examine
- * @retval true If it is
+ * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe
  */
-bool mx_is_mh(const char *path)
+int mh_path_probe(const char *path, const struct stat *st)
 {
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISDIR(st->st_mode))
+    return MUTT_UNKNOWN;
+
   char tmp[PATH_MAX];
 
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.xmhcache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.mew_cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.mew-cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   snprintf(tmp, sizeof(tmp), "%s/.sylpheed_cache", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
   /* ok, this isn't an mh folder, but mh mode can be used to read
-   * Usenet news from the spool. ;-)
-   */
+   * Usenet news from the spool.  */
 
   snprintf(tmp, sizeof(tmp), "%s/.overview", path);
   if (access(tmp, F_OK) == 0)
-    return true;
+    return MUTT_MH;
 
-  return false;
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int maildir_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    buf[0] = '/';
+    mutt_str_inline_replace(buf, buflen, 0, folder);
+  }
+
+  mutt_path_canon(buf, buflen, HomeDir);
+  return 0;
+}
+
+/**
+ * maildir_path_pretty - Implements MxOps::path_pretty
+ */
+int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_abbr_folder(buf, buflen, folder))
+    return 0;
+
+  if (mutt_path_pretty(buf, buflen, HomeDir))
+    return 0;
+
+  return -1;
+}
+
+/**
+ * maildir_path_parent - Implements MxOps::path_parent
+ */
+int maildir_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  if (buf[0] == '~')
+    mutt_path_canon(buf, buflen, HomeDir);
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  return -1;
 }
 
 // clang-format off
@@ -2928,6 +2994,8 @@ bool mx_is_mh(const char *path)
  * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
  */
 struct MxOps mx_maildir_ops = {
+  .magic            = MUTT_MAILDIR,
+  .name             = "maildir",
   .mbox_open        = maildir_mbox_open,
   .mbox_open_append = maildir_mbox_open_append,
   .mbox_check       = maildir_mbox_check,
@@ -2939,12 +3007,18 @@ struct MxOps mx_maildir_ops = {
   .msg_close        = mh_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = maildir_path_probe,
+  .path_canon       = maildir_path_canon,
+  .path_pretty      = maildir_path_pretty,
+  .path_parent      = maildir_path_parent,
 };
 
 /**
  * struct mx_mh_ops - Mailbox callback functions for MH mailboxes
  */
 struct MxOps mx_mh_ops = {
+  .magic            = MUTT_MH,
+  .name             = "mh",
   .mbox_open        = mh_mbox_open,
   .mbox_open_append = mh_mbox_open_append,
   .mbox_check       = mh_mbox_check,
@@ -2956,5 +3030,9 @@ struct MxOps mx_mh_ops = {
   .msg_close        = mh_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mh_path_probe,
+  .path_canon       = maildir_path_canon,
+  .path_pretty      = maildir_path_pretty,
+  .path_parent      = maildir_path_parent,
 };
 // clang-format on

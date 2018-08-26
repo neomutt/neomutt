@@ -69,6 +69,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
 
 /* These Config Variables are only used in send.c */
 unsigned char AbortNoattach; ///< Config: Abort sending the email if attachments are missing
@@ -2277,7 +2280,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
    */
 
 #ifdef USE_IMAP
-  if ((flags & SEND_BATCH) && fcc[0] && mx_is_imap(fcc))
+  if ((flags & SEND_BATCH) && fcc[0] && (imap_path_probe(fcc, NULL) == MUTT_IMAP))
     fcc[0] = '\0';
 #endif
 

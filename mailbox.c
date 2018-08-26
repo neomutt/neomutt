@@ -52,6 +52,12 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_NNTP
+#include "nntp/nntp.h"
+#endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
 
 /* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
@@ -153,7 +159,7 @@ static bool test_new_folder(const char *path)
   FILE *f = NULL;
   bool rc = false;
 
-  enum MailboxType magic = mx_get_magic(path);
+  enum MailboxType magic = mx_path_probe(path, NULL);
 
   if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
     return false;
@@ -394,21 +400,21 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   {
     tmp->new = false;
 #ifdef USE_POP
-    if (mx_is_pop(tmp->path))
+    if (pop_path_probe(tmp->path, NULL) == MUTT_POP)
       tmp->magic = MUTT_POP;
     else
 #endif
 #ifdef USE_NNTP
-        if ((tmp->magic == MUTT_NNTP) || mx_is_nntp(tmp->path))
+        if ((tmp->magic == MUTT_NNTP) || (nntp_path_probe(tmp->path, NULL) == MUTT_NNTP))
       tmp->magic = MUTT_NNTP;
 #endif
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(tmp->path))
+    if (nm_path_probe(tmp->path, NULL) == MUTT_NOTMUCH)
       tmp->magic = MUTT_NOTMUCH;
     else
 #endif
         if (stat(tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_get_magic(tmp->path)) <= 0))
+            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_path_probe(tmp->path, NULL)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to be
        * ready for when it does. */
@@ -623,7 +629,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     mutt_extract_token(path, s, 0);
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(path->data))
+    if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
       nm_normalize_uri(path->data, buf, sizeof(buf));
     else
 #endif
@@ -663,7 +669,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     b->newly_created = false;
     b->desc = desc;
 #ifdef USE_NOTMUCH
-    if (mx_is_notmuch(b->path))
+    if (nm_path_probe(b->path, NULL) == MUTT_NOTMUCH)
     {
       b->magic = MUTT_NOTMUCH;
       b->size = 0;
@@ -723,7 +729,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
     else
     {
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(path->data))
+      if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
       {
         nm_normalize_uri(path->data, buf, sizeof(buf));
       }

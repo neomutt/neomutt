@@ -968,7 +968,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   mutt_message(_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && !(decode || decrypt) && mx_is_imap(buf))
+  if ((Context->magic == MUTT_IMAP) && !(decode || decrypt) && (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
     switch (imap_copy_messages(Context, h, buf, delete))
     {

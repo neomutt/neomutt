@@ -57,6 +57,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_NOTMUCH
+#include "notmuch/mutt_notmuch.h"
+#endif
 
 /* These Config Variables are only used in muttlib.c */
 struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
@@ -188,7 +191,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(Folder) &&
+        if ((imap_path_probe(Folder, NULL) == MUTT_IMAP) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
           mutt_str_strfcpy(p, Folder, sizeof(p));
@@ -196,7 +199,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         else
 #endif
 #ifdef USE_NOTMUCH
-            if (mx_is_notmuch(Folder))
+            if (nm_path_probe(Folder, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(p, Folder, sizeof(p));
         else
 #endif
@@ -297,7 +300,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
-  if (mx_is_imap(buf))
+  if (imap_path_probe(buf, NULL) == MUTT_IMAP)
     imap_expand_path(buf, buflen);
 #endif
 
@@ -557,7 +560,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 #ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(buf);
+    imap_pretty_mailbox(buf, Folder);
     return;
   }
 #endif
@@ -1334,7 +1337,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   int ret = 0;
   int rc;
 
-  enum MailboxType magic = mx_get_magic(s);
+  enum MailboxType magic = mx_path_probe(s, NULL);
 
 #ifdef USE_POP
   if (magic == MUTT_POP)
@@ -1521,12 +1524,12 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
   else
 #endif
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(path))
+      if (nm_path_probe(path, NULL) == MUTT_NOTMUCH)
     mutt_str_strfcpy(buf, Folder, buflen);
   else
 #endif

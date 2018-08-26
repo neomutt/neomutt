@@ -70,6 +70,12 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
 
 /* These Config Variables are only used in compose.c */
 char *ComposeFormat; ///< Config: printf-like format string for the Compose panel's status bar
@@ -1428,13 +1434,13 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 #endif
           mutt_expand_path(fname, sizeof(fname));
 #ifdef USE_IMAP
-        if (!mx_is_imap(fname))
+        if (imap_path_probe(fname, NULL) != MUTT_IMAP)
 #endif
 #ifdef USE_POP
-          if (!mx_is_pop(fname))
+          if (pop_path_probe(fname, NULL) != MUTT_POP)
 #endif
 #ifdef USE_NNTP
-            if (!mx_is_nntp(fname) && !OptNews)
+            if (!OptNews && (nntp_path_probe(fname, NULL) != MUTT_NNTP))
 #endif
               /* check to make sure the file exists and is readable */
               if (access(fname, R_OK) == -1)

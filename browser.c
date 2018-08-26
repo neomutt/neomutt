@@ -66,6 +66,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_POP
+#include "pop/pop.h"
+#endif
 
 /* These Config Variables are only used in browser.c */
 bool BrowserAbbreviateMailboxes; ///< Config: Abbreviate mailboxes using '~' and '=' in the browser
@@ -415,7 +418,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       char *s = NULL;
 
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(folder->ff->name))
+      if (nm_path_probe(folder->ff->name, NULL) == MUTT_NOTMUCH)
         s = NONULL(folder->ff->desc);
       else
 #endif
@@ -915,7 +918,7 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mx_is_notmuch(np->b->path))
+    if (nm_path_probe(np->b->path, NULL) == MUTT_NOTMUCH)
     {
       nm_nonctx_get_count(np->b->path, &np->b->msg_count, &np->b->msg_unread);
       add_folder(menu, state, np->b->path, np->b->desc, NULL, np->b, NULL);
@@ -980,21 +983,21 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
-      if (mx_is_imap(np->b->path))
+      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
       {
         add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_POP
-      if (mx_is_pop(np->b->path))
+      if (pop_path_probe(np->b->path, NULL) == MUTT_POP)
       {
         add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
         continue;
       }
 #endif
 #ifdef USE_NNTP
-      if (mx_is_nntp(np->b->path))
+      if (nntp_path_probe(np->b->path, NULL) == MUTT_NNTP)
       {
         add_folder(menu, state, np->b->path, NULL, NULL, np->b, NULL);
         continue;
@@ -1006,7 +1009,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (mx_is_maildir(np->b->path))
+      if (maildir_path_probe(np->b->path, NULL) == MUTT_MAILDIR)
       {
         struct stat st2;
         char md[PATH_MAX];
@@ -1200,9 +1203,8 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     char TargetDir[PATH_MAX] = "";
 
 #ifdef USE_IMAP
-    /* Use mx_is_imap to check what kind of dir is OldLastDir.
-     */
-    if (mx_is_imap(OldLastDir))
+    /* Check what kind of dir OldLastDir is. */
+    if (imap_path_probe(OldLastDir, NULL) == MUTT_IMAP)
     {
       mutt_str_strfcpy(TargetDir, OldLastDir, sizeof(TargetDir));
       imap_clean_path(TargetDir, sizeof(TargetDir));
@@ -1331,7 +1333,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   {
     mutt_expand_path(file, filelen);
 #ifdef USE_IMAP
-    if (mx_is_imap(file))
+    if (imap_path_probe(file, NULL) == MUTT_IMAP)
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1430,7 +1432,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir
            */
-          switch (mx_get_magic(CurrentFolder))
+          switch (mx_path_probe(CurrentFolder, NULL))
           {
             case MUTT_IMAP:
             case MUTT_MAILDIR:
@@ -1461,7 +1463,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     }
 
 #ifdef USE_IMAP
-    if (!mailbox && mx_is_imap(LastDir))
+    if (!mailbox && (imap_path_probe(LastDir, NULL) == MUTT_IMAP))
     {
       init_state(&state, NULL);
       state.imap_browse = true;
@@ -1566,7 +1568,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                                   sizeof(buf));
           }
 
-          enum MailboxType magic = mx_get_magic(buf);
+          enum MailboxType magic = mx_path_probe(buf, NULL);
           if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN)
 #ifdef USE_IMAP
               || state.entry[menu->current].inferiors
@@ -1681,7 +1683,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
 #ifdef USE_NOTMUCH
-        else if (mx_is_notmuch(state.entry[menu->current].name))
+        else if (nm_path_probe(state.entry[menu->current].name, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
         else
@@ -1865,7 +1867,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           mailbox = 0;
           mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_IMAP
-          if (mx_is_imap(buf))
+          if (imap_path_probe(buf, NULL) == MUTT_IMAP)
           {
             mutt_str_strfcpy(LastDir, buf, sizeof(LastDir));
             destroy_state(&state);
@@ -2075,7 +2077,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           examine_mailboxes(menu, &state);
         }
 #ifdef USE_IMAP
-        else if (mx_is_imap(LastDir))
+        else if (imap_path_probe(LastDir, NULL) == MUTT_IMAP)
         {
           init_state(&state, NULL);
           state.imap_browse = true;

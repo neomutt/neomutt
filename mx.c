@@ -30,6 +30,7 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <pwd.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,6 +42,7 @@
 #include "email/email.h"
 #include "mutt.h"
 #include "mx.h"
+#include "alias.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -85,8 +87,40 @@
 /* These Config Variables are only used in mx.c */
 unsigned char CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
+short MboxType;     ///< Config: Default type for creating new mailboxes
 unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;        ///< Config: Folder to put deleted emails
+
+/**
+ * mx_ops - All the Mailbox backends
+ */
+static const struct MxOps *mx_ops[] = {
+  /* These mailboxes can be recognised by their Url scheme */
+#ifdef USE_IMAP
+  &mx_imap_ops,
+#endif
+#ifdef USE_NOTMUCH
+  &mx_notmuch_ops,
+#endif
+#ifdef USE_POP
+  &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+  &mx_nntp_ops,
+#endif
+
+  /* Local mailboxes */
+  &mx_maildir_ops,
+  &mx_mbox_ops,
+  &mx_mh_ops,
+  &mx_mmdf_ops,
+
+  /* If everything else fails... */
+#ifdef USE_COMPRESSED
+  &mx_comp_ops,
+#endif
+  NULL,
+};
 
 /**
  * mx_get_ops - Get mailbox operations
@@ -94,41 +128,13 @@ char *Trash;        ///< Config: Folder to put deleted emails
  * @retval ptr  Mailbox function
  * @retval NULL Error
  */
-struct MxOps *mx_get_ops(enum MailboxType magic)
+const struct MxOps *mx_get_ops(int magic)
 {
-  switch (magic)
-  {
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-      return &mx_imap_ops;
-#endif
-    case MUTT_MAILDIR:
-      return &mx_maildir_ops;
-    case MUTT_MBOX:
-      return &mx_mbox_ops;
-    case MUTT_MH:
-      return &mx_mh_ops;
-    case MUTT_MMDF:
-      return &mx_mmdf_ops;
-#ifdef USE_POP
-    case MUTT_POP:
-      return &mx_pop_ops;
-#endif
-#ifdef USE_COMPRESSED
-    case MUTT_COMPRESSED:
-      return &mx_comp_ops;
-#endif
-#ifdef USE_NNTP
-    case MUTT_NNTP:
-      return &mx_nntp_ops;
-#endif
-#ifdef USE_NOTMUCH
-    case MUTT_NOTMUCH:
-      return &mx_notmuch_ops;
-#endif
-    default:
-      return NULL;
-  }
+  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+    if ((*ops)->magic == magic)
+      return *ops;
+
+  return NULL;
 }
 
 /**
@@ -139,207 +145,6 @@ struct MxOps *mx_get_ops(enum MailboxType magic)
 static bool mutt_is_spool(const char *str)
 {
   return mutt_str_strcmp(Spoolfile, str) == 0;
-}
-
-#ifdef USE_IMAP
-
-/**
- * mx_is_imap - Is this an IMAP mailbox
- * @param p Mailbox string to test
- * @retval true It is an IMAP mailbox
- */
-bool mx_is_imap(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  if (*p == '{')
-    return true;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_IMAP || scheme == U_IMAPS)
-    return true;
-
-  return false;
-}
-
-#endif
-
-#ifdef USE_POP
-/**
- * mx_is_pop - Is this a POP mailbox
- * @param p Mailbox string to test
- * @retval true It is a POP mailbox
- */
-bool mx_is_pop(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_POP || scheme == U_POPS)
-    return true;
-
-  return false;
-}
-#endif
-
-#ifdef USE_NNTP
-/**
- * mx_is_nntp - Is this an NNTP mailbox
- * @param p Mailbox string to test
- * @retval true It is an NNTP mailbox
- */
-bool mx_is_nntp(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_NNTP || scheme == U_NNTPS)
-    return true;
-
-  return false;
-}
-#endif
-
-#ifdef USE_NOTMUCH
-/**
- * mx_is_notmuch - Is this a Notmuch mailbox
- * @param p Mailbox string to test
- * @retval true It is a Notmuch mailbox
- */
-bool mx_is_notmuch(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_NOTMUCH)
-    return true;
-
-  return false;
-}
-#endif
-
-/**
- * mx_get_magic - Identify the type of mailbox
- * @param path Mailbox path to test
- * @retval -1 Error, can't identify mailbox
- * @retval >0 Success, e.g. #MUTT_IMAP
- */
-enum MailboxType mx_get_magic(const char *path)
-{
-  if (!path)
-    return MUTT_UNKNOWN;
-
-#ifdef USE_IMAP
-  if (mx_is_imap(path))
-    return MUTT_IMAP;
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-  if (mx_is_pop(path))
-    return MUTT_POP;
-#endif /* USE_POP */
-
-#ifdef USE_NNTP
-  if (mx_is_nntp(path))
-    return MUTT_NNTP;
-#endif /* USE_NNTP */
-
-#ifdef USE_NOTMUCH
-  if (mx_is_notmuch(path))
-    return MUTT_NOTMUCH;
-#endif
-
-  struct stat st;
-  enum MailboxType magic = MUTT_UNKNOWN;
-  FILE *f = NULL;
-
-  if (stat(path, &st) == -1)
-  {
-    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  if (S_ISDIR(st.st_mode))
-  {
-    /* check for maildir-style mailbox */
-    if (mx_is_maildir(path))
-      return MUTT_MAILDIR;
-
-    /* check for mh-style mailbox */
-    if (mx_is_mh(path))
-      return MUTT_MH;
-  }
-  else if (st.st_size == 0)
-  {
-    /* hard to tell what zero-length files are, so assume the default magic */
-    if (MboxType == MUTT_MBOX || MboxType == MUTT_MMDF)
-      return MboxType;
-    else
-      return MUTT_MBOX;
-  }
-  else if ((f = fopen(path, "r")))
-  {
-    struct utimbuf times;
-    int ch;
-
-    /* Some mailbox creation tools erroneously append a blank line to
-     * a file before appending a mail message.  This allows neomutt to
-     * detect magic for and thus open those files. */
-    while ((ch = fgetc(f)) != EOF)
-    {
-      if (ch != '\n' && ch != '\r')
-      {
-        ungetc(ch, f);
-        break;
-      }
-    }
-
-    char tmp[STRING];
-    if (fgets(tmp, sizeof(tmp), f))
-    {
-      if (mutt_str_strncmp("From ", tmp, 5) == 0)
-        magic = MUTT_MBOX;
-      else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
-        magic = MUTT_MMDF;
-    }
-    mutt_file_fclose(&f);
-
-    if (!CheckMboxSize)
-    {
-      /* need to restore the times here, the file was not really accessed,
-       * only the type was accessed.  This is important, because detection
-       * of "new mail" depends on those times set correctly.
-       */
-      times.actime = st.st_atime;
-      times.modtime = st.st_mtime;
-      utime(path, &times);
-    }
-  }
-  else
-  {
-    mutt_debug(1, "unable to open file %s for reading.\n", path);
-    return MUTT_MAILBOX_ERROR;
-  }
-
-#ifdef USE_COMPRESSED
-  /* If there are no other matches, see if there are any
-   * compress hooks that match */
-  if ((magic == MUTT_UNKNOWN) && mutt_comp_can_read(path))
-    return MUTT_COMPRESSED;
-#endif
-  return magic;
 }
 
 /**
@@ -355,7 +160,7 @@ enum MailboxType mx_get_magic(const char *path)
 int mx_access(const char *path, int flags)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
     return imap_access(path);
 #endif
 
@@ -374,7 +179,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   struct stat sb;
 
   ctx->append = true;
-  ctx->magic = mx_get_magic(ctx->path);
+  ctx->magic = mx_path_probe(ctx->path, NULL);
   if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("%s is not a mailbox"), ctx->path);
@@ -475,7 +280,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     return ctx;
   }
 
-  ctx->magic = mx_get_magic(path);
+  ctx->magic = mx_path_probe(path, NULL);
   ctx->mx_ops = mx_get_ops(ctx->magic);
 
   if ((ctx->magic == MUTT_UNKNOWN) || (ctx->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
@@ -649,7 +454,7 @@ static int trash_append(struct Context *ctx)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
+  if (Context->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
   {
     if (imap_fast_trash(Context, Trash) == 0)
       return 0;
@@ -806,7 +611,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     /* try to use server-side copy first */
     i = 1;
 
-    if (ctx->magic == MUTT_IMAP && mx_is_imap(mbox))
+    if ((ctx->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
@@ -1438,7 +1243,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
  */
 int mx_check_empty(const char *path)
 {
-  switch (mx_get_magic(path))
+  switch (mx_path_probe(path, NULL))
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
@@ -1498,4 +1303,183 @@ int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
 bool mx_tags_is_supported(struct Context *ctx)
 {
   return ctx->mx_ops->tags_commit && ctx->mx_ops->tags_edit;
+}
+
+/**
+ * mx_path_probe - Find a mailbox that understands a path
+ * @param path  Path to examine
+ * @param st    stat buffer (for local filesystems)
+ * @retval num Type, e.g. #MUTT_IMAP
+ */
+int mx_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  static const struct MxOps *no_stat[] = {
+#ifdef USE_IMAP
+    &mx_imap_ops,
+#endif
+#ifdef USE_NOTMUCH
+    &mx_notmuch_ops,
+#endif
+#ifdef USE_POP
+    &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+    &mx_nntp_ops,
+#endif
+  };
+
+  static const struct MxOps *with_stat[] = {
+    &mx_maildir_ops, &mx_mbox_ops, &mx_mh_ops, &mx_mmdf_ops,
+#ifdef USE_COMPRESSED
+    &mx_comp_ops,
+#endif
+  };
+
+  int rc;
+
+  for (size_t i = 0; i < mutt_array_size(no_stat); i++)
+  {
+    rc = no_stat[i]->path_probe(path, NULL);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  struct stat st2 = { 0 };
+  if (!st)
+  {
+    st = &st2;
+    if (stat(path, &st2) != 0)
+    {
+      mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+      return MUTT_UNKNOWN;
+    }
+  }
+
+  for (size_t i = 0; i < mutt_array_size(with_stat); i++)
+  {
+    rc = with_stat[i]->path_probe(path, st);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  return rc;
+}
+
+/**
+ * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
+ */
+int mx_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  for (size_t i = 0; i < 3; i++)
+  {
+    /* Look for !! ! - < > or ^ followed by / or NUL */
+    if ((buf[0] == '!') && (buf[1] == '!'))
+    {
+      if (((buf[2] == '/') || (buf[2] == '\0')))
+      {
+        mutt_str_inline_replace(buf, buflen, 2, LastFolder);
+      }
+    }
+    else if ((buf[1] == '/') || (buf[1] == '\0'))
+    {
+      if (buf[0] == '!')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Spoolfile);
+      }
+      else if (buf[0] == '-')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, LastFolder);
+      }
+      else if (buf[0] == '<')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Record);
+      }
+      else if (buf[0] == '>')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Mbox);
+      }
+      else if (buf[0] == '^')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
+      }
+    }
+    else if (buf[0] == '@')
+    {
+      /* elm compatibility, @ expands alias to user name */
+      struct Address *alias = mutt_alias_lookup(buf + 1);
+      if (!alias)
+        break;
+
+      struct Header *h = mutt_header_new();
+      h->env = mutt_env_new();
+      h->env->from = alias;
+      h->env->to = alias;
+      mutt_default_save(buf, buflen, h);
+      h->env->from = NULL;
+      h->env->to = NULL;
+      mutt_header_free(&h);
+      break;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  if (!folder)
+    return -1;
+
+  int magic = mx_path_probe(folder, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops || !ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+  {
+    mutt_path_canon(buf, buflen, HomeDir);
+  }
+
+  return 0;
+}
+
+/**
+ * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty
+ */
+int mx_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  int magic = mx_path_probe(buf, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops)
+    return -1;
+
+  if (!ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+    return -1;
+
+  if (!ops->path_pretty)
+    return -1;
+
+  if (ops->path_pretty(buf, buflen, folder) < 0)
+    return -1;
+
+  return 0;
+}
+
+/**
+ * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent
+ */
+int mx_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  return 0;
 }

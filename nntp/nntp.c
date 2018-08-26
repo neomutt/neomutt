@@ -2625,11 +2625,76 @@ int nntp_compare_order(const void *a, const void *b)
   return SORTCODE(result);
 }
 
+/**
+ * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe
+ */
+int nntp_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (mutt_str_strncasecmp(path, "news://", 7) == 0)
+    return MUTT_NOTMUCH;
+
+  if (mutt_str_strncasecmp(path, "snews://", 8) == 0)
+    return MUTT_NOTMUCH;
+
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * nntp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int nntp_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * nntp_path_pretty - Implements MxOps::path_pretty
+ */
+int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
+/**
+ * nntp_path_parent - Implements MxOps::path_parent
+ */
+int nntp_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
  */
 struct MxOps mx_nntp_ops = {
+  .magic            = MUTT_NNTP,
+  .name             = "nntp",
   .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = nntp_mbox_check,
@@ -2641,5 +2706,9 @@ struct MxOps mx_nntp_ops = {
   .msg_close        = nntp_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = nntp_path_probe,
+  .path_canon       = nntp_path_canon,
+  .path_pretty      = nntp_path_pretty,
+  .path_parent      = nntp_path_parent,
 };
 // clang-format on

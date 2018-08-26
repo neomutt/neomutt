@@ -1322,11 +1322,125 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
+/**
+ * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe
+ */
+int mbox_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (!st || !S_ISREG(st->st_mode))
+    return MUTT_UNKNOWN;
+
+  FILE *fp = fopen(path, "r");
+  if (!fp)
+    return MUTT_UNKNOWN;
+
+  int ch;
+  while ((ch = fgetc(fp)) != EOF)
+  {
+    /* Some mailbox creation tools erroneously append a blank line to
+     * a file before appending a mail message.  This allows neomutt to
+     * detect magic for and thus open those files. */
+    if ((ch != '\n') && (ch != '\r'))
+    {
+      ungetc(ch, fp);
+      break;
+    }
+  }
+
+  int magic = MUTT_UNKNOWN;
+  char tmp[STRING];
+  if (fgets(tmp, sizeof(tmp), fp))
+  {
+    if (mutt_str_strncmp("From ", tmp, 5) == 0)
+      magic = MUTT_MBOX;
+    else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
+      magic = MUTT_MMDF;
+  }
+  mutt_file_fclose(&fp);
+
+  if (!CheckMboxSize)
+  {
+    /* need to restore the times here, the file was not really accessed,
+     * only the type was accessed.  This is important, because detection
+     * of "new mail" depends on those times set correctly.
+     */
+    struct utimbuf times;
+    times.actime = st->st_atime;
+    times.modtime = st->st_mtime;
+    utime(path, &times);
+  }
+
+  return magic;
+}
+
+/**
+ * mbox_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int mbox_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    buf[0] = '/';
+    mutt_str_inline_replace(buf, buflen, 0, folder);
+  }
+
+  mutt_path_canon(buf, buflen, HomeDir);
+  return 0;
+}
+
+/**
+ * mbox_path_pretty - Implements MxOps::path_pretty
+ */
+int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_abbr_folder(buf, buflen, folder))
+    return 0;
+
+  if (mutt_path_pretty(buf, buflen, HomeDir))
+    return 0;
+
+  return -1;
+}
+
+/**
+ * mbox_path_parent - Implements MxOps::path_parent
+ */
+int mbox_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  if (buf[0] == '~')
+    mutt_path_canon(buf, buflen, HomeDir);
+
+  if (mutt_path_parent(buf, buflen))
+    return 0;
+
+  return -1;
+}
+
 // clang-format off
 /**
  * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
  */
 struct MxOps mx_mbox_ops = {
+  .magic            = MUTT_MBOX,
+  .name             = "mbox",
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
@@ -1338,12 +1452,18 @@ struct MxOps mx_mbox_ops = {
   .msg_close        = mbox_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mbox_path_probe,
+  .path_canon       = mbox_path_canon,
+  .path_pretty      = mbox_path_pretty,
+  .path_parent      = mbox_path_parent,
 };
 
 /**
  * struct mx_mmdf_ops - Mailbox callback functions for MMDF mailboxes
  */
 struct MxOps mx_mmdf_ops = {
+  .magic            = MUTT_MMDF,
+  .name             = "mmdf",
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
@@ -1355,5 +1475,9 @@ struct MxOps mx_mmdf_ops = {
   .msg_close        = mbox_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = mbox_path_probe,
+  .path_canon       = mbox_path_canon,
+  .path_pretty      = mbox_path_pretty,
+  .path_parent      = mbox_path_parent,
 };
 // clang-format on

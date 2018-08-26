@@ -2760,11 +2760,73 @@ static int nm_msg_commit(struct Context *ctx, struct Message *msg)
   return -1;
 }
 
+/**
+ * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe
+ */
+int nm_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (mutt_str_strncasecmp(path, "notmuch://", 10) == 0)
+    return MUTT_NOTMUCH;
+
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int nm_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * nm_path_pretty - Implements MxOps::path_pretty
+ */
+int nm_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
+/**
+ * nm_path_parent - Implements MxOps::path_parent
+ */
+int nm_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
  */
 struct MxOps mx_notmuch_ops = {
+  .magic            = MUTT_NOTMUCH,
+  .name             = "notmuch",
   .mbox_open        = nm_mbox_open, /* calls init_context() */
   .mbox_open_append = NULL,
   .mbox_check       = nm_mbox_check,
@@ -2776,5 +2838,9 @@ struct MxOps mx_notmuch_ops = {
   .msg_close        = nm_msg_close,
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
+  .path_probe       = nm_path_probe,
+  .path_canon       = nm_path_canon,
+  .path_pretty      = nm_path_pretty,
+  .path_parent      = nm_path_parent,
 };
 // clang-format on

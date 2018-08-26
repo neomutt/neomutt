@@ -1439,7 +1439,7 @@ int imap_mailbox_check(bool check_stats)
     /* Init newly-added mailboxes */
     if (np->b->magic == MUTT_UNKNOWN)
     {
-      if (mx_is_imap(np->b->path))
+      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
         np->b->magic = MUTT_IMAP;
     }
 
@@ -1714,7 +1714,7 @@ int imap_subscribe(char *path, bool subscribe)
   struct ImapMbox mx;
   size_t len = 0;
 
-  if (!mx_is_imap(path) || imap_parse_path(path, &mx) || !mx.mbox)
+  if ((imap_path_probe(path, NULL) != MUTT_IMAP) || imap_parse_path(path, &mx) || !mx.mbox)
   {
     mutt_error(_("Bad mailbox name"));
     return -1;
@@ -2051,7 +2051,7 @@ static int imap_mbox_open(struct Context *ctx)
   }
   /* pipeline the postponed count if possible */
   pmx.mbox = NULL;
-  if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
+  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) && !imap_parse_path(Postponed, &pmx) &&
       mutt_account_match(&pmx.account, &mx.account))
   {
     imap_status(Postponed, true);
@@ -2719,11 +2719,82 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
   return 0;
 }
 
+/**
+ * imap_path_probe - Is this an IMAP mailbox? - Implements MxOps::path_probe
+ */
+int imap_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (mutt_str_strncasecmp(path, "imap://", 7) == 0)
+    return MUTT_NOTMUCH;
+
+  if (mutt_str_strncasecmp(path, "imaps://", 8) == 0)
+    return MUTT_NOTMUCH;
+
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * imap_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int imap_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return imap_expand_path(buf, buflen);
+}
+
+/**
+ * imap_path_pretty - Implements MxOps::path_pretty
+ */
+int imap_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf || !folder)
+    return -1;
+
+  imap_pretty_mailbox(buf, folder);
+  return 0;
+}
+
+/**
+ * imap_path_parent - Implements MxOps::path_parent
+ */
+int imap_path_parent(char *buf, size_t buflen)
+{
+  char tmp[PATH_MAX] = { 0 };
+
+  imap_get_parent_path(buf, tmp, sizeof(tmp));
+  mutt_str_strfcpy(buf, tmp, buflen);
+  return 0;
+}
+
 // clang-format off
 /**
  * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
  */
 struct MxOps mx_imap_ops = {
+  .magic            = MUTT_IMAP,
+  .name             = "imap",
   .mbox_open        = imap_mbox_open,
   .mbox_open_append = imap_mbox_open_append,
   .mbox_check       = imap_mbox_check,
@@ -2735,5 +2806,9 @@ struct MxOps mx_imap_ops = {
   .msg_close        = imap_msg_close,
   .tags_edit        = imap_tags_edit,
   .tags_commit      = imap_tags_commit,
+  .path_probe       = imap_path_probe,
+  .path_canon       = imap_path_canon,
+  .path_pretty      = imap_path_pretty,
+  .path_parent      = imap_path_parent,
 };
 // clang-format on

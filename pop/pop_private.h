@@ -124,5 +124,4 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
 int pop_reconnect(struct Context *ctx);
 void pop_logout(struct Context *ctx);
 
-
 #endif /* _POP_PRIVATE_H */

@@ -1056,11 +1056,76 @@ fail:
   FREE(&pop_data);
 }
 
+/**
+ * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe
+ */
+int pop_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  if (mutt_str_strncasecmp(path, "pop://", 6) == 0)
+    return MUTT_NOTMUCH;
+
+  if (mutt_str_strncasecmp(path, "pops://", 7) == 0)
+    return MUTT_NOTMUCH;
+
+  return MUTT_UNKNOWN;
+}
+
+/**
+ * pop_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ */
+int pop_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  if ((buf[0] == '+') || (buf[0] == '='))
+  {
+    if (!folder)
+      return -1;
+
+    size_t flen = mutt_str_strlen(folder);
+    if ((flen > 0) && (folder[flen - 1] != '/'))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, folder);
+    }
+    else
+    {
+      mutt_str_inline_replace(buf, buflen, 1, folder);
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * pop_path_pretty - Implements MxOps::path_pretty
+ */
+int pop_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
+/**
+ * pop_path_parent - Implements MxOps::path_parent
+ */
+int pop_path_parent(char *buf, size_t buflen)
+{
+  /* Succeed, but don't do anything, for now */
+  return 0;
+}
+
 // clang-format off
 /**
  * mx_pop_ops - Mailbox callback functions for POP mailboxes
  */
 struct MxOps mx_pop_ops = {
+  .magic            = MUTT_POP,
+  .name             = "pop",
   .mbox_open        = pop_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = pop_mbox_check,
@@ -1072,5 +1137,9 @@ struct MxOps mx_pop_ops = {
   .msg_close        = pop_msg_close,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
+  .path_probe       = pop_path_probe,
+  .path_canon       = pop_path_canon,
+  .path_pretty      = pop_path_pretty,
+  .path_parent      = pop_path_parent,
 };
 // clang-format on

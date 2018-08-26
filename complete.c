@@ -142,7 +142,7 @@ int mutt_complete(char *buf, size_t buflen)
   else
     mutt_str_strfcpy(imap_path, buf, sizeof(imap_path));
 
-  if (mx_is_imap(imap_path))
+  if (imap_path_probe(imap_path, NULL) == MUTT_IMAP)
     return imap_complete(buf, buflen, imap_path);
 #endif
 
