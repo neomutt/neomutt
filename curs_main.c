@@ -521,7 +521,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
       new_last_folder = mutt_str_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
-    int check = mx_mbox_close(Context, index_hint);
+    int check = mx_mbox_close(&Context, index_hint);
     if (check != 0)
     {
       if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
@@ -532,7 +532,6 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
       menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
-    FREE(&Context);
     FREE(&LastFolder);
     LastFolder = new_last_folder;
   }
@@ -1591,7 +1590,7 @@ int mutt_index_menu(void)
 
           mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
 
-          if (!Context || (check = mx_mbox_close(Context, &index_hint)) == 0)
+          if (!Context || (check = mx_mbox_close(&Context, &index_hint)) == 0)
             done = true;
           else
           {
@@ -1731,13 +1730,12 @@ int mutt_index_menu(void)
       case OP_MAIN_IMAP_LOGOUT_ALL:
         if (Context && Context->magic == MUTT_IMAP)
         {
-          if (mx_mbox_close(Context, &index_hint) != 0)
+          if (mx_mbox_close(&Context, &index_hint) != 0)
           {
             OptSearchInvalid = true;
             menu->redraw = REDRAW_FULL;
             break;
           }
-          FREE(&Context);
         }
         imap_logout_all();
         mutt_message(_("Logged out of IMAP servers"));

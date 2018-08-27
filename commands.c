@@ -1003,8 +1003,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
     {
       if (mutt_save_message_ctx(h, delete, decode, decrypt, savectx) != 0)
       {
-        mx_mbox_close(savectx, NULL);
-        FREE(&savectx);
+        mx_mbox_close(&savectx, NULL);
         return -1;
       }
 #ifdef USE_COMPRESSED
@@ -1053,16 +1052,14 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #endif
       if (rc != 0)
       {
-        mx_mbox_close(savectx, NULL);
-        FREE(&savectx);
+        mx_mbox_close(&savectx, NULL);
         return -1;
       }
     }
 
     const bool need_mailbox_cleanup = ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
 
-    mx_mbox_close(savectx, NULL);
-    FREE(&savectx);
+    mx_mbox_close(&savectx, NULL);
 
     if (need_mailbox_cleanup)
       mutt_mailbox_cleanup(buf, &st);

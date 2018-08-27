@@ -301,8 +301,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!PostContext->msgcount)
   {
     PostCount = 0;
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -314,8 +313,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   }
   else if (!(h = select_msg()))
   {
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
@@ -336,10 +334,8 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_mbox_close(PostContext, NULL);
+  mx_mbox_close(&PostContext, NULL);
   Delete = opt_delete;
-
-  FREE(&PostContext);
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)

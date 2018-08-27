@@ -365,8 +365,7 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
       mailbox->msg_unread = ctx->unread;
       mailbox->msg_flagged = ctx->flagged;
       mailbox->stats_last_checked = ctx->mtime;
-      mx_mbox_close(ctx, NULL);
-      FREE(&ctx);
+      mx_mbox_close(&ctx, NULL);
     }
   }
 

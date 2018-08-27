@@ -469,15 +469,13 @@ static int trash_append(struct Context *ctx)
       {
         if (mutt_append_message(ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
-          mx_mbox_close(ctx_trash, NULL);
-          FREE(&ctx_trash);
+          mx_mbox_close(&ctx_trash, NULL);
           return -1;
         }
       }
     }
 
-    mx_mbox_close(ctx_trash, NULL);
-    FREE(&ctx_trash);
+    mx_mbox_close(&ctx_trash, NULL);
   }
   else
   {
@@ -489,26 +487,28 @@ static int trash_append(struct Context *ctx)
 }
 
 /**
- * mx_mbox_close - save changes and close mailbox
+ * mx_mbox_close - Save changes and close mailbox
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_mbox_close(struct Context *ctx, int *index_hint)
+int mx_mbox_close(struct Context **pctx, int *index_hint)
 {
+  if (!pctx || !*pctx)
+    return 0;
+
+  struct Context *ctx = *pctx;
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
-
-  if (!ctx)
-    return 0;
 
   ctx->closing = true;
 
   if (ctx->readonly || ctx->dontwrite || ctx->append)
   {
     mx_fastclose_mailbox(ctx);
+    FREE(pctx);
     return 0;
   }
 
@@ -659,16 +659,14 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
           }
           else
           {
-            mx_mbox_close(f, NULL);
-            FREE(&f);
+            mx_mbox_close(&f, NULL);
             ctx->closing = false;
             return -1;
           }
         }
       }
 
-      mx_mbox_close(f, NULL);
-      FREE(&f);
+      mx_mbox_close(&f, NULL);
     }
   }
   else if (!ctx->changed && ctx->deleted == 0)
@@ -678,6 +676,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime(ctx, NULL);
     mx_fastclose_mailbox(ctx);
+    FREE(pctx);
     return 0;
   }
 
@@ -762,6 +761,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
 #endif
 
   mx_fastclose_mailbox(ctx);
+  FREE(pctx);
 
   return 0;
 }

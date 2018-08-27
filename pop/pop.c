@@ -1010,8 +1010,7 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
-      mx_mbox_close(ctx, NULL);
-      FREE(&ctx);
+      mx_mbox_close(&ctx, NULL);
       goto fail;
     }
     if (ret == -2)
@@ -1032,8 +1031,7 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
-  mx_mbox_close(ctx, NULL);
-  FREE(&ctx);
+  mx_mbox_close(&ctx, NULL);
 
   if (rset)
   {

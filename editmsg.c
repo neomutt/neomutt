@@ -97,8 +97,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
   oerrno = errno;
 
-  mx_mbox_close(tmpctx, NULL);
-  FREE(&tmpctx);
+  mx_mbox_close(&tmpctx, NULL);
 
   if (rc == -1)
   {
@@ -219,8 +218,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   if (!msg)
   {
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_mbox_close(tmpctx, NULL);
-    FREE(&tmpctx);
+    mx_mbox_close(&tmpctx, NULL);
     goto bail;
   }
 
@@ -234,8 +232,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   rc = mx_msg_commit(tmpctx, msg);
   mx_msg_close(tmpctx, &msg);
 
-  mx_mbox_close(tmpctx, NULL);
-  FREE(&tmpctx);
+  mx_mbox_close(&tmpctx, NULL);
 
 bail:
   if (fp)
