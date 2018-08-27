@@ -182,8 +182,15 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   ctx->magic = mx_path_probe(ctx->path, NULL);
   if (ctx->magic == MUTT_UNKNOWN)
   {
-    mutt_error(_("%s is not a mailbox"), ctx->path);
-    return -1;
+    if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+    {
+      ctx->magic = MUTT_MAILBOX_ERROR;
+    }
+    else
+    {
+      mutt_error(_("%s is not a mailbox"), ctx->path);
+      return -1;
+    }
   }
 
   if (ctx->magic == MUTT_MAILBOX_ERROR)
