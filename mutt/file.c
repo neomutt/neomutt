@@ -338,12 +338,36 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
 int mutt_file_safe_rename(const char *src, const char *target)
 {
   struct stat ssb, tsb;
+  int link_errno;
 
   if (!src || !target)
     return -1;
 
   if (link(src, target) != 0)
   {
+    link_errno = errno;
+
+    /*
+     * It is historically documented that link can return -1 if NFS
+     * dies after creating the link.  In that case, we are supposed
+     * to use stat to check if the link was created.
+     *
+     * Derek Martin notes that some implementations of link() follow a
+     * source symlink.  It might be more correct to use stat() on src.
+     * I am not doing so to minimize changes in behavior: the function
+     * used lstat() further below for 20 years without issue, and I
+     * believe was never intended to be used on a src symlink.
+     */
+    if ((lstat(src, &ssb) == 0) && (lstat(target, &tsb) == 0) &&
+        (compare_stat(&ssb, &tsb) == 0))
+    {
+      mutt_debug(1, "link (%s, %s) reported failure: %s (%d) but actually succeded\n",
+                 src, target, strerror(errno), errno);
+      goto success;
+    }
+
+    errno = link_errno;
+
     /* Coda does not allow cross-directory links, but tells
      * us it's a cross-filesystem linking attempt.
      *
@@ -412,6 +436,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
   }
 #endif
 
+success:
   /* Unlink the original link.
    * Should we really ignore the return value here? XXX */
   if (unlink(src) == -1)
