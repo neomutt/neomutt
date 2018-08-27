@@ -1451,7 +1451,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         menu->redraw = REDRAW_FULL;
 
-        ctx = mx_mbox_open(fname, MUTT_READONLY, NULL);
+        ctx = mx_mbox_open(fname, MUTT_READONLY);
         if (!ctx)
         {
           mutt_error(_("Unable to open mailbox %s"), fname);
@@ -1460,8 +1460,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         if (!ctx->msgcount)
         {
-          mx_mbox_close(ctx, NULL);
-          FREE(&ctx);
+          mx_mbox_close(&ctx, NULL);
           mutt_error(_("No messages in that folder"));
           break;
         }
@@ -1505,10 +1504,12 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         menu->redraw |= REDRAW_FULL;
 
         if (close == OP_QUIT)
-          mx_mbox_close(Context, NULL);
+          mx_mbox_close(&Context, NULL);
         else
+        {
           mx_fastclose_mailbox(Context);
-        FREE(&Context);
+          FREE(&Context);
+        }
 
         /* go back to the folder we started from */
         Context = this;

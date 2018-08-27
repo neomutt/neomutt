@@ -228,7 +228,6 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * mx_mbox_open - Open a mailbox and parse it
  * @param path  Path to the mailbox
  * @param flags See below
- * @param pctx  Reuse this Context (if supplied)
  * @retval ptr  Mailbox context
  * @retval NULL Error
  *
@@ -239,23 +238,19 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
+struct Context *mx_mbox_open(const char *path, int flags)
 {
-  struct Context *ctx = pctx;
-  int rc;
-
   if (!path || !path[0])
     return NULL;
 
-  if (!ctx)
-    ctx = mutt_mem_malloc(sizeof(struct Context));
-  memset(ctx, 0, sizeof(struct Context));
+  int rc;
+
+  struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
 
   ctx->path = mutt_str_strdup(path);
   if (!ctx->path)
   {
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
     return NULL;
   }
   ctx->realpath = realpath(ctx->path, NULL);
@@ -280,8 +275,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     if (mx_open_mailbox_append(ctx, flags) != 0)
     {
       mx_fastclose_mailbox(ctx);
-      if (!pctx)
-        FREE(&ctx);
+      FREE(&ctx);
       return NULL;
     }
     return ctx;
@@ -298,8 +292,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
       mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
     return NULL;
   }
 
@@ -335,8 +328,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
   else
   {
     mx_fastclose_mailbox(ctx);
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
   }
 
   OptForceRefresh = false;
@@ -415,7 +407,6 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
  */
 static int trash_append(struct Context *ctx)
 {
-  struct Context ctx_trash;
   int i;
   struct stat st, stc;
   int opt_confappend, rc;
@@ -468,14 +459,15 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash))
+  struct Context *ctx_trash = mx_mbox_open(Trash, MUTT_APPEND);
+  if (ctx_trash)
   {
     /* continue from initial scan above */
     for (i = first_del; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
-        if (mutt_append_message(&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
           mx_mbox_close(&ctx_trash, NULL);
           return -1;
@@ -495,27 +487,28 @@ static int trash_append(struct Context *ctx)
 }
 
 /**
- * mx_mbox_close - save changes and close mailbox
+ * mx_mbox_close - Save changes and close mailbox
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_mbox_close(struct Context *ctx, int *index_hint)
+int mx_mbox_close(struct Context **pctx, int *index_hint)
 {
+  if (!pctx || !*pctx)
+    return 0;
+
+  struct Context *ctx = *pctx;
   int i, move_messages = 0, purge = 1, read_msgs = 0;
-  struct Context f;
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
-
-  if (!ctx)
-    return 0;
 
   ctx->closing = true;
 
   if (ctx->readonly || ctx->dontwrite || ctx->append)
   {
     mx_fastclose_mailbox(ctx);
+    FREE(pctx);
     return 0;
   }
 
@@ -647,7 +640,8 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      if (!mx_mbox_open(mbox, MUTT_APPEND, &f))
+      struct Context *f = mx_mbox_open(mbox, MUTT_APPEND);
+      if (!f)
       {
         ctx->closing = false;
         return -1;
@@ -658,7 +652,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
             !(ctx->hdrs[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
             mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
@@ -682,6 +676,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime(ctx, NULL);
     mx_fastclose_mailbox(ctx);
+    FREE(pctx);
     return 0;
   }
 
@@ -766,6 +761,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
 #endif
 
   mx_fastclose_mailbox(ctx);
+  FREE(pctx);
 
   return 0;
 }

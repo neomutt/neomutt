@@ -84,7 +84,6 @@ static short UpdateNumPostponed = 0;
 int mutt_num_postponed(bool force)
 {
   struct stat st;
-  struct Context ctx;
 
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
@@ -162,11 +161,13 @@ int mutt_num_postponed(bool force)
     if (optnews)
       OptNews = false;
 #endif
-    if (!mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx))
+    struct Context *ctx = mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET);
+    if (!ctx)
       PostCount = 0;
     else
-      PostCount = ctx.msgcount;
-    mx_fastclose_mailbox(&ctx);
+      PostCount = ctx->msgcount;
+    mx_fastclose_mailbox(ctx);
+    FREE(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
@@ -289,7 +290,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT, NULL);
+  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT);
   if (!PostContext)
   {
     PostCount = 0;
@@ -300,8 +301,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!PostContext->msgcount)
   {
     PostCount = 0;
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -313,8 +313,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   }
   else if (!(h = select_msg()))
   {
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
@@ -335,10 +334,8 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_mbox_close(PostContext, NULL);
+  mx_mbox_close(&PostContext, NULL);
   Delete = opt_delete;
-
-  FREE(&PostContext);
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
