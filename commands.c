@@ -876,7 +876,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   int app = 0;
   char buf[PATH_MAX];
   const char *prompt = NULL;
-  struct Context ctx;
+  struct Context *savectx = NULL;
   struct stat st;
 
   if (delete)
@@ -986,23 +986,25 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   }
 #endif
 
-  if (mx_mbox_open(buf, MUTT_APPEND, &ctx))
+  savectx = mx_mbox_open(buf, MUTT_APPEND, NULL);
+  if (savectx)
   {
 #ifdef USE_COMPRESSED
     /* If we're saving to a compressed mailbox, the stats won't be updated
      * until the next open.  Until then, improvise. */
     struct Mailbox *cm = NULL;
-    if (ctx.compress_info)
-      cm = mutt_find_mailbox(ctx.realpath);
+    if (savectx->compress_info)
+      cm = mutt_find_mailbox(savectx->realpath);
     /* We probably haven't been opened yet */
     if (cm && (cm->msg_count == 0))
       cm = NULL;
 #endif
     if (h)
     {
-      if (mutt_save_message_ctx(h, delete, decode, decrypt, &ctx) != 0)
+      if (mutt_save_message_ctx(h, delete, decode, decrypt, savectx) != 0)
       {
-        mx_mbox_close(&ctx, NULL);
+        mx_mbox_close(savectx, NULL);
+        FREE(&savectx);
         return -1;
       }
 #ifdef USE_COMPRESSED
@@ -1030,7 +1032,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
           continue;
 
         mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx);
+        rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, savectx);
         if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
@@ -1051,14 +1053,16 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #endif
       if (rc != 0)
       {
-        mx_mbox_close(&ctx, NULL);
+        mx_mbox_close(savectx, NULL);
+        FREE(&savectx);
         return -1;
       }
     }
 
-    const int need_mailbox_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
+    const bool need_mailbox_cleanup = ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
 
-    mx_mbox_close(&ctx, NULL);
+    mx_mbox_close(savectx, NULL);
+    FREE(&savectx);
 
     if (need_mailbox_cleanup)
       mutt_mailbox_cleanup(buf, &st);

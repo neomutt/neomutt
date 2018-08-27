@@ -34,6 +34,7 @@
 
 struct Header;
 struct Context;
+struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in mx.c */

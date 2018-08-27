@@ -70,7 +70,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   int of, cf;
 
-  struct Context tmpctx;
+  struct Context *tmpctx = NULL;
   struct Message *msg = NULL;
 
   FILE *fp = NULL;
@@ -83,22 +83,22 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  rc = mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) ? 0 : -1;
+  tmpctx = mx_mbox_open(tmp, MUTT_NEWFOLDER, NULL);
 
   MboxType = omagic;
 
-  if (rc == -1)
+  if (!tmpctx)
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
     return -1;
   }
 
-  rc = mutt_append_message(
-      &tmpctx, ctx, cur, 0,
-      CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
+  const int chflags = CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
   oerrno = errno;
 
-  mx_mbox_close(&tmpctx, NULL);
+  mx_mbox_close(tmpctx, NULL);
+  FREE(&tmpctx);
 
   if (rc == -1)
   {
@@ -185,7 +185,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  if (!mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx))
+  tmpctx = mx_mbox_open(ctx->path, MUTT_APPEND, NULL);
+  if (!tmpctx)
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
@@ -194,11 +195,11 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   }
 
   of = 0;
-  cf = ((tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  cf = (((tmpctx->magic == MUTT_MBOX) || (tmpctx->magic == MUTT_MMDF)) ? 0 : CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
-    if (tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF)
+    if ((tmpctx->magic == MUTT_MBOX) || (tmpctx->magic == MUTT_MMDF))
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else
@@ -211,14 +212,15 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   o_old = cur->old;
   cur->read = false;
   cur->old = false;
-  msg = mx_msg_open_new(&tmpctx, cur, of);
+  msg = mx_msg_open_new(tmpctx, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
   if (!msg)
   {
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_mbox_close(&tmpctx, NULL);
+    mx_mbox_close(tmpctx, NULL);
+    FREE(&tmpctx);
     goto bail;
   }
 
@@ -229,10 +231,11 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_msg_commit(&tmpctx, msg);
-  mx_msg_close(&tmpctx, &msg);
+  rc = mx_msg_commit(tmpctx, msg);
+  mx_msg_close(tmpctx, &msg);
 
-  mx_mbox_close(&tmpctx, NULL);
+  mx_mbox_close(tmpctx, NULL);
+  FREE(&tmpctx);
 
 bail:
   if (fp)

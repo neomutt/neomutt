@@ -893,7 +893,6 @@ void pop_fetch_mail(void)
   char *url = NULL, *p = NULL;
   int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct Connection *conn = NULL;
-  struct Context ctx;
   struct Message *msg = NULL;
   struct Account acct;
   struct PopData *pop_data = NULL;
@@ -969,7 +968,8 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  if (!mx_mbox_open(Spoolfile, MUTT_APPEND, &ctx))
+  struct Context *ctx = mx_mbox_open(Spoolfile, MUTT_APPEND, NULL);
+  if (!ctx)
     goto finish;
 
   delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
@@ -982,7 +982,7 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    msg = mx_msg_open_new(&ctx, NULL, MUTT_ADD_FROM);
+    msg = mx_msg_open_new(ctx, NULL, MUTT_ADD_FROM);
     if (!msg)
       ret = -3;
     else
@@ -992,13 +992,13 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if (ret == 0 && mx_msg_commit(&ctx, msg) != 0)
+      if (ret == 0 && mx_msg_commit(ctx, msg) != 0)
       {
         rset = 1;
         ret = -3;
       }
 
-      mx_msg_close(&ctx, &msg);
+      mx_msg_close(ctx, &msg);
     }
 
     if (ret == 0 && delanswer == MUTT_YES)
@@ -1010,7 +1010,8 @@ void pop_fetch_mail(void)
 
     if (ret == -1)
     {
-      mx_mbox_close(&ctx, NULL);
+      mx_mbox_close(ctx, NULL);
+      FREE(&ctx);
       goto fail;
     }
     if (ret == -2)
@@ -1031,7 +1032,8 @@ void pop_fetch_mail(void)
                  msgbuf, i - last, msgs - last);
   }
 
-  mx_mbox_close(&ctx, NULL);
+  mx_mbox_close(ctx, NULL);
+  FREE(&ctx);
 
   if (rset)
   {

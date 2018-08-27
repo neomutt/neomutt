@@ -415,7 +415,6 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
  */
 static int trash_append(struct Context *ctx)
 {
-  struct Context ctx_trash;
   int i;
   struct stat st, stc;
   int opt_confappend, rc;
@@ -468,22 +467,25 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash))
+  struct Context *ctx_trash = mx_mbox_open(Trash, MUTT_APPEND, NULL);
+  if (ctx_trash)
   {
     /* continue from initial scan above */
     for (i = first_del; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
-        if (mutt_append_message(&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
-          mx_mbox_close(&ctx_trash, NULL);
+          mx_mbox_close(ctx_trash, NULL);
+          FREE(&ctx_trash);
           return -1;
         }
       }
     }
 
-    mx_mbox_close(&ctx_trash, NULL);
+    mx_mbox_close(ctx_trash, NULL);
+    FREE(&ctx_trash);
   }
   else
   {
@@ -504,7 +506,6 @@ static int trash_append(struct Context *ctx)
 int mx_mbox_close(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
-  struct Context f;
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
@@ -647,7 +648,8 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      if (!mx_mbox_open(mbox, MUTT_APPEND, &f))
+      struct Context *f = mx_mbox_open(mbox, MUTT_APPEND, NULL);
+      if (!f)
       {
         ctx->closing = false;
         return -1;
@@ -658,21 +660,23 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
             !(ctx->hdrs[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
             mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
           }
           else
           {
-            mx_mbox_close(&f, NULL);
+            mx_mbox_close(f, NULL);
+            FREE(&f);
             ctx->closing = false;
             return -1;
           }
         }
       }
 
-      mx_mbox_close(&f, NULL);
+      mx_mbox_close(f, NULL);
+      FREE(&f);
     }
   }
   else if (!ctx->changed && ctx->deleted == 0)

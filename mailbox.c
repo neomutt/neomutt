@@ -328,16 +328,15 @@ static int mailbox_maildir_check(struct Mailbox *mailbox, bool check_stats)
 static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool check_stats)
 {
   int rc = 0;
-  int new_or_changed;
-  struct Context ctx;
+  bool new_or_changed;
 
   if (CheckMboxSize)
-    new_or_changed = sb->st_size > mailbox->size;
+    new_or_changed = (sb->st_size > mailbox->size);
   else
   {
-    new_or_changed = sb->st_mtime > sb->st_atime ||
-                     (mailbox->newly_created && sb->st_ctime == sb->st_mtime &&
-                      sb->st_ctime == sb->st_atime);
+    new_or_changed = (sb->st_mtime > sb->st_atime) ||
+                     (mailbox->newly_created && (sb->st_ctime == sb->st_mtime) &&
+                      (sb->st_ctime == sb->st_atime));
   }
 
   if (new_or_changed)
@@ -359,14 +358,15 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
 
   if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
   {
-    if (mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
-                     &ctx))
+    struct Context *ctx = mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK, NULL);
+    if (ctx)
     {
-      mailbox->msg_count = ctx.msgcount;
-      mailbox->msg_unread = ctx.unread;
-      mailbox->msg_flagged = ctx.flagged;
-      mailbox->stats_last_checked = ctx.mtime;
-      mx_mbox_close(&ctx, 0);
+      mailbox->msg_count = ctx->msgcount;
+      mailbox->msg_unread = ctx->unread;
+      mailbox->msg_flagged = ctx->flagged;
+      mailbox->stats_last_checked = ctx->mtime;
+      mx_mbox_close(ctx, NULL);
+      FREE(&ctx);
     }
   }
 
