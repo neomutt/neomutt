@@ -2728,10 +2728,10 @@ int imap_path_probe(const char *path, const struct stat *st)
     return MUTT_UNKNOWN;
 
   if (mutt_str_strncasecmp(path, "imap://", 7) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_IMAP;
 
   if (mutt_str_strncasecmp(path, "imaps://", 8) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_IMAP;
 
   return MUTT_UNKNOWN;
 }
