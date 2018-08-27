@@ -228,7 +228,6 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * mx_mbox_open - Open a mailbox and parse it
  * @param path  Path to the mailbox
  * @param flags See below
- * @param pctx  Reuse this Context (if supplied)
  * @retval ptr  Mailbox context
  * @retval NULL Error
  *
@@ -239,23 +238,19 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
+struct Context *mx_mbox_open(const char *path, int flags)
 {
-  struct Context *ctx = pctx;
-  int rc;
-
   if (!path || !path[0])
     return NULL;
 
-  if (!ctx)
-    ctx = mutt_mem_malloc(sizeof(struct Context));
-  memset(ctx, 0, sizeof(struct Context));
+  int rc;
+
+  struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
 
   ctx->path = mutt_str_strdup(path);
   if (!ctx->path)
   {
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
     return NULL;
   }
   ctx->realpath = realpath(ctx->path, NULL);
@@ -280,8 +275,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
     if (mx_open_mailbox_append(ctx, flags) != 0)
     {
       mx_fastclose_mailbox(ctx);
-      if (!pctx)
-        FREE(&ctx);
+      FREE(&ctx);
       return NULL;
     }
     return ctx;
@@ -298,8 +292,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
       mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
     return NULL;
   }
 
@@ -335,8 +328,7 @@ struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
   else
   {
     mx_fastclose_mailbox(ctx);
-    if (!pctx)
-      FREE(&ctx);
+    FREE(&ctx);
   }
 
   OptForceRefresh = false;
@@ -467,7 +459,7 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  struct Context *ctx_trash = mx_mbox_open(Trash, MUTT_APPEND, NULL);
+  struct Context *ctx_trash = mx_mbox_open(Trash, MUTT_APPEND);
   if (ctx_trash)
   {
     /* continue from initial scan above */
@@ -648,7 +640,7 @@ int mx_mbox_close(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      struct Context *f = mx_mbox_open(mbox, MUTT_APPEND, NULL);
+      struct Context *f = mx_mbox_open(mbox, MUTT_APPEND);
       if (!f)
       {
         ctx->closing = false;

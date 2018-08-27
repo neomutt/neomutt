@@ -986,7 +986,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   }
 #endif
 
-  savectx = mx_mbox_open(buf, MUTT_APPEND, NULL);
+  savectx = mx_mbox_open(buf, MUTT_APPEND);
   if (savectx)
   {
 #ifdef USE_COMPRESSED

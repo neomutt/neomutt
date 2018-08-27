@@ -161,7 +161,7 @@ int mutt_num_postponed(bool force)
     if (optnews)
       OptNews = false;
 #endif
-    struct Context *ctx = mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, NULL);
+    struct Context *ctx = mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET);
     if (!ctx)
       PostCount = 0;
     else
@@ -290,7 +290,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT, NULL);
+  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT);
   if (!PostContext)
   {
     PostCount = 0;

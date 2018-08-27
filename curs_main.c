@@ -551,7 +551,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
   mutt_folder_hook(buf);
 
   const int flags = (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
-  Context = mx_mbox_open(buf, flags, NULL);
+  Context = mx_mbox_open(buf, flags);
   if (Context)
   {
     menu->current = ci_first_message();

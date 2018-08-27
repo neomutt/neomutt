@@ -83,7 +83,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  tmpctx = mx_mbox_open(tmp, MUTT_NEWFOLDER, NULL);
+  tmpctx = mx_mbox_open(tmp, MUTT_NEWFOLDER);
 
   MboxType = omagic;
 
@@ -185,7 +185,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  tmpctx = mx_mbox_open(ctx->path, MUTT_APPEND, NULL);
+  tmpctx = mx_mbox_open(ctx->path, MUTT_APPEND);
   if (!tmpctx)
   {
     rc = -1;

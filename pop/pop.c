@@ -968,7 +968,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  struct Context *ctx = mx_mbox_open(Spoolfile, MUTT_APPEND, NULL);
+  struct Context *ctx = mx_mbox_open(Spoolfile, MUTT_APPEND);
   if (!ctx)
     goto finish;
 
