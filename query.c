@@ -21,26 +21,30 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
-#include "envelope.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
-#include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "menu.h"
+#include "mutt_logging.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
-#include "protos.h"
+#include "send.h"
+
+/* These Config Variables are only used in query.c */
+char *QueryCommand; ///< Config: External command to query and external address book
+char *QueryFormat; ///< Config: printf-like format string for the query menu (address book)
 
 /**
  * struct Query - An entry from an external address-book
@@ -73,6 +77,11 @@ static const struct Mapping QueryHelp[] = {
   { NULL, 0 },
 };
 
+/**
+ * result_to_addr - Turn a Query into an Address
+ * @param r Query to use
+ * @retval ptr Newly allocaated Address
+ */
 static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
@@ -88,6 +97,10 @@ static struct Address *result_to_addr(struct Query *r)
   return tmp;
 }
 
+/**
+ * free_query - Free a Query
+ * @param query Query to free
+ */
 static void free_query(struct Query **query)
 {
   struct Query *p = NULL;
@@ -107,12 +120,18 @@ static void free_query(struct Query **query)
   }
 }
 
+/**
+ * run_query - Run an external program to find Addresses
+ * @param s     String to match
+ * @param quiet If true, don't print progress messages
+ * @retval ptr Query List of results
+ */
 static struct Query *run_query(char *s, int quiet)
 {
   FILE *fp = NULL;
   struct Query *first = NULL;
   struct Query *cur = NULL;
-  char cmd[_POSIX_PATH_MAX];
+  char cmd[HUGE_STRING];
   char *buf = NULL;
   size_t buflen;
   int dummy = 0;
@@ -120,7 +139,7 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCommand, s);
+  mutt_file_expand_fmt_quote(cmd, sizeof(cmd), QueryCommand, s);
 
   thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
   if (thepid < 0)
@@ -134,7 +153,7 @@ static struct Query *run_query(char *s, int quiet)
   p = strrchr(msg, '\n');
   if (p)
     *p = '\0';
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)))
   {
     p = strtok(buf, "\t\n");
     if (p)
@@ -178,6 +197,16 @@ static struct Query *run_query(char *s, int quiet)
   return first;
 }
 
+/**
+ * query_search - Search a Address menu item
+ * @param m  Current Menu
+ * @param re Regex to match
+ * @param n  Index of menu item to test
+ * @retval  0 Success
+ * @retval -1 Error, or no match
+ *
+ * Try to match various Address fields.
+ */
 static int query_search(struct Menu *m, regex_t *re, int n)
 {
   struct Entry *table = (struct Entry *) m->data;
@@ -204,21 +233,7 @@ static int query_search(struct Menu *m, regex_t *re, int n)
 }
 
 /**
- * query_format_str - Format a string for the query menu
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * query_format_str() is a callback function for mutt_expando_format().
+ * query_format_str - Format a string for the query menu - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -297,6 +312,13 @@ static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * query_tag - Tag an entry in the Query Menu
+ * @param menu Current Menu
+ * @param n    Index of menu entry to tag
+ * @param m    If >=0 then multiple tags are allowed
+ * @retval num Number of tagged menu items
+ */
 static int query_tag(struct Menu *menu, int n, int m)
 {
   struct Entry *cur = &((struct Entry *) menu->data)[n];
@@ -306,15 +328,19 @@ static int query_tag(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
-static void query_menu(char *buf, size_t buflen, struct Query *results, int retbuf)
+/**
+ * query_menu - Get the user to enter an Address Query
+ * @param buf     Buffer for the query
+ * @param buflen  Length of buffer
+ * @param results Query List
+ * @param retbuf  If true, populate the results
+ */
+static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
   struct Header *msg = NULL;
   struct Entry *QueryTable = NULL;
   struct Query *queryp = NULL;
-  int i, done = 0;
-  int op;
-  char helpstr[LONG_STRING];
   char title[STRING];
 
   if (!results)
@@ -330,34 +356,37 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
   {
     snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
-    menu = mutt_new_menu(MENU_QUERY);
+    menu = mutt_menu_new(MENU_QUERY);
     menu->make_entry = query_entry;
     menu->search = query_search;
     menu->tag = query_tag;
     menu->title = title;
+    char helpstr[LONG_STRING];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-    mutt_push_current_menu(menu);
+    mutt_menu_push_current(menu);
 
     /* count the number of results */
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable;
 
+    int i;
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
 
+    int done = 0;
     while (!done)
     {
-      switch ((op = mutt_menu_loop(menu)))
+      const int op = mutt_menu_loop(menu);
+      switch (op)
       {
         case OP_QUERY_APPEND:
         case OP_QUERY:
           if (mutt_get_field(_("Query: "), buf, buflen, 0) == 0 && buf[0])
           {
-            struct Query *newresults = NULL;
-
-            newresults = run_query(buf, 0);
+            struct Query *newresults = run_query(buf, 0);
 
             menu->redraw = REDRAW_FULL;
             if (newresults)
@@ -380,15 +409,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               }
 
               menu->current = 0;
-              mutt_pop_current_menu(menu);
+              mutt_menu_pop_current(menu);
               mutt_menu_destroy(&menu);
-              menu = mutt_new_menu(MENU_QUERY);
+              menu = mutt_menu_new(MENU_QUERY);
               menu->make_entry = query_entry;
               menu->search = query_search;
               menu->tag = query_tag;
               menu->title = title;
               menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-              mutt_push_current_menu(menu);
+              mutt_menu_push_current(menu);
 
               /* count the number of results */
               for (queryp = results; queryp; queryp = queryp->next)
@@ -441,13 +470,13 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               }
             }
 
-            mutt_create_alias(NULL, naddr);
+            mutt_alias_create(NULL, naddr);
             mutt_addr_free(&naddr);
           }
           else
           {
             struct Address *a = result_to_addr(QueryTable[menu->current].data);
-            mutt_create_alias(NULL, a);
+            mutt_alias_create(NULL, a);
             mutt_addr_free(&a);
           }
           break;
@@ -460,7 +489,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
           }
         /* fallthrough */
         case OP_MAIL:
-          msg = mutt_new_header();
+          msg = mutt_header_new();
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
@@ -533,11 +562,17 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
     free_query(&results);
     FREE(&QueryTable);
-    mutt_pop_current_menu(menu);
+    mutt_menu_pop_current(menu);
     mutt_menu_destroy(&menu);
   }
 }
 
+/**
+ * mutt_query_complete - Perform auto-complete using an Address Query
+ * @param buf    Buffer for completion
+ * @param buflen Length of buffer
+ * @retval 0 Always
+ */
 int mutt_query_complete(char *buf, size_t buflen)
 {
   struct Query *results = NULL;
@@ -545,7 +580,7 @@ int mutt_query_complete(char *buf, size_t buflen)
 
   if (!QueryCommand)
   {
-    mutt_error(_("Query command not defined."));
+    mutt_error(_("Query command not defined"));
     return 0;
   }
 
@@ -565,16 +600,21 @@ int mutt_query_complete(char *buf, size_t buflen)
       return 0;
     }
     /* multiple results, choose from query menu */
-    query_menu(buf, buflen, results, 1);
+    query_menu(buf, buflen, results, true);
   }
   return 0;
 }
 
+/**
+ * mutt_query_menu - Show the user the results of a Query
+ * @param buf    Buffer for the query
+ * @param buflen Length of buffer
+ */
 void mutt_query_menu(char *buf, size_t buflen)
 {
   if (!QueryCommand)
   {
-    mutt_error(_("Query command not defined."));
+    mutt_error(_("Query command not defined"));
     return;
   }
 
@@ -582,10 +622,10 @@ void mutt_query_menu(char *buf, size_t buflen)
   {
     char buffer[STRING] = "";
 
-    query_menu(buffer, sizeof(buffer), NULL, 0);
+    query_menu(buffer, sizeof(buffer), NULL, false);
   }
   else
   {
-    query_menu(buf, buflen, NULL, 1);
+    query_menu(buf, buflen, NULL, true);
   }
 }

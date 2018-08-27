@@ -22,113 +22,120 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>
-#include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
-#include <utime.h>
-#include <wchar.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "email/email.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "address.h"
+#include "muttlib.h"
 #include "alias.h"
-#include "body.h"
-#include "envelope.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
-#include "mailbox.h"
-#include "mutt_curses.h"
+#include "hook.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
 #include "protos.h"
-#include "tags.h"
-#include "url.h"
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_NOTMUCH
+#include "notmuch/mutt_notmuch.h"
+#endif
+
+/* These Config Variables are only used in muttlib.c */
+struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
 
 static const char *xdg_env_vars[] = {
-      [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
-      [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
+  [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
+  [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
 };
 
 static const char *xdg_defaults[] = {
-      [XDG_CONFIG_HOME] = "~/.config", [XDG_CONFIG_DIRS] = "/etc/xdg",
+  [XDG_CONFIG_HOME] = "~/.config",
+  [XDG_CONFIG_DIRS] = "/etc/xdg",
 };
 
 /**
  * mutt_adv_mktemp - Advanced mktemp(3)
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
  *
  * Modified by blong to accept a "suggestion" for file name.  If that file
  * exists, then construct one with unique name but keep any extension.  This
  * might fail, I guess.
  */
-void mutt_adv_mktemp(char *s, size_t l)
+void mutt_adv_mktemp(char *buf, size_t buflen)
 {
-  char prefix[_POSIX_PATH_MAX];
-  char *suffix = NULL;
-  struct stat sb;
-
-  if (s[0] == '\0')
+  if (buf[0] == '\0')
   {
-    mutt_mktemp(s, l);
+    mutt_mktemp(buf, buflen);
   }
   else
   {
-    mutt_str_strfcpy(prefix, s, sizeof(prefix));
-    mutt_file_sanitize_filename(prefix, 1);
-    snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
-    if (lstat(s, &sb) == -1 && errno == ENOENT)
+    char prefix[PATH_MAX];
+    mutt_str_strfcpy(prefix, buf, sizeof(prefix));
+    mutt_file_sanitize_filename(prefix, true);
+    snprintf(buf, buflen, "%s/%s", NONULL(Tmpdir), prefix);
+    struct stat sb;
+    if (lstat(buf, &sb) == -1 && errno == ENOENT)
       return;
 
-    suffix = strrchr(prefix, '.');
+    char *suffix = strrchr(prefix, '.');
     if (suffix)
     {
       *suffix = 0;
       suffix++;
     }
-    mutt_mktemp_pfx_sfx(s, l, prefix, suffix);
+    mutt_mktemp_pfx_sfx(buf, buflen, prefix, suffix);
   }
 }
 
 /**
- * mutt_matches_ignore - Does the string match the ignore list
+ * mutt_expand_path - Create the canonical path
+ * @param buf    Buffer with path
+ * @param buflen Length of buffer
+ * @retval ptr The expanded string
  *
- * checks Ignore and UnIgnore using mutt_list_match
+ * @note The path is expanded in-place
  */
-bool mutt_matches_ignore(const char *s)
+char *mutt_expand_path(char *buf, size_t buflen)
 {
-  return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
+  return mutt_expand_path_regex(buf, buflen, false);
 }
 
-char *mutt_expand_path(char *s, size_t slen)
+/**
+ * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
+ * @param buf     Buffer with path
+ * @param buflen  Length of buffer
+ * @param regex If true, escape any regex characters
+ * @retval ptr The expanded string
+ *
+ * @note The path is expanded in-place
+ */
+char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
 {
-  return mutt_expand_path_regex(s, slen, 0);
-}
-
-char *mutt_expand_path_regex(char *s, size_t slen, int regex)
-{
-  char p[_POSIX_PATH_MAX] = "";
-  char q[_POSIX_PATH_MAX] = "";
-  char tmp[_POSIX_PATH_MAX];
+  char p[PATH_MAX] = "";
+  char q[PATH_MAX] = "";
+  char tmp[PATH_MAX];
   char *t = NULL;
 
   char *tail = "";
@@ -139,23 +146,23 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
   {
     recurse = false;
 
-    switch (*s)
+    switch (*buf)
     {
       case '~':
       {
-        if (*(s + 1) == '/' || *(s + 1) == 0)
+        if (*(buf + 1) == '/' || *(buf + 1) == 0)
         {
-          mutt_str_strfcpy(p, NONULL(HomeDir), sizeof(p));
-          tail = s + 1;
+          mutt_str_strfcpy(p, HomeDir, sizeof(p));
+          tail = buf + 1;
         }
         else
         {
           struct passwd *pw = NULL;
-          t = strchr(s + 1, '/');
+          t = strchr(buf + 1, '/');
           if (t)
             *t = 0;
 
-          pw = getpwnam(s + 1);
+          pw = getpwnam(buf + 1);
           if (pw)
           {
             mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));
@@ -173,7 +180,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
             if (t)
               *t = '/';
             *p = '\0';
-            tail = s;
+            tail = buf;
           }
         }
       }
@@ -184,43 +191,42 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(NONULL(Folder)) &&
+        if ((imap_path_probe(Folder, NULL) == MUTT_IMAP) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         }
         else
 #endif
 #ifdef USE_NOTMUCH
-            if (mx_is_notmuch(NONULL(Folder)))
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+            if (nm_path_probe(Folder, NULL) == MUTT_NOTMUCH)
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         else
 #endif
             if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
-          mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+          mutt_str_strfcpy(p, Folder, sizeof(p));
         else
           snprintf(p, sizeof(p), "%s/", NONULL(Folder));
 
-        tail = s + 1;
+        tail = buf + 1;
       }
       break;
 
-      /* elm compatibility, @ expands alias to user name */
+        /* elm compatibility, @ expands alias to user name */
 
       case '@':
       {
-        struct Header *h = NULL;
-        struct Address *alias = NULL;
-
-        alias = mutt_lookup_alias(s + 1);
+        struct Address *alias = mutt_alias_lookup(buf + 1);
         if (alias)
         {
-          h = mutt_new_header();
+          struct Header *h = mutt_header_new();
           h->env = mutt_env_new();
-          h->env->from = h->env->to = alias;
+          h->env->from = alias;
+          h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
-          h->env->from = h->env->to = NULL;
-          mutt_free_header(&h);
+          h->env->from = NULL;
+          h->env->to = NULL;
+          mutt_header_free(&h);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
             recurse = true;
@@ -232,51 +238,51 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
 
       case '>':
       {
-        mutt_str_strfcpy(p, NONULL(Mbox), sizeof(p));
-        tail = s + 1;
+        mutt_str_strfcpy(p, Mbox, sizeof(p));
+        tail = buf + 1;
       }
       break;
 
       case '<':
       {
-        mutt_str_strfcpy(p, NONULL(Record), sizeof(p));
-        tail = s + 1;
+        mutt_str_strfcpy(p, Record, sizeof(p));
+        tail = buf + 1;
       }
       break;
 
       case '!':
       {
-        if (*(s + 1) == '!')
+        if (*(buf + 1) == '!')
         {
-          mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
-          tail = s + 2;
+          mutt_str_strfcpy(p, LastFolder, sizeof(p));
+          tail = buf + 2;
         }
         else
         {
-          mutt_str_strfcpy(p, NONULL(SpoolFile), sizeof(p));
-          tail = s + 1;
+          mutt_str_strfcpy(p, Spoolfile, sizeof(p));
+          tail = buf + 1;
         }
       }
       break;
 
       case '-':
       {
-        mutt_str_strfcpy(p, NONULL(LastFolder), sizeof(p));
-        tail = s + 1;
+        mutt_str_strfcpy(p, LastFolder, sizeof(p));
+        tail = buf + 1;
       }
       break;
 
       case '^':
       {
-        mutt_str_strfcpy(p, NONULL(CurrentFolder), sizeof(p));
-        tail = s + 1;
+        mutt_str_strfcpy(p, CurrentFolder, sizeof(p));
+        tail = buf + 1;
       }
       break;
 
       default:
       {
         *p = '\0';
-        tail = s;
+        tail = buf;
       }
     }
 
@@ -288,21 +294,25 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
     else
       snprintf(tmp, sizeof(tmp), "%s%s", p, tail);
 
-    mutt_str_strfcpy(s, tmp, slen);
+    mutt_str_strfcpy(buf, tmp, buflen);
   } while (recurse);
 
 #ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
-   * folders. May possibly fail, in which case s should be the same. */
-  if (mx_is_imap(s))
-    imap_expand_path(s, slen);
+   * folders. May possibly fail, in which case buf should be the same. */
+  if (imap_path_probe(buf, NULL) == MUTT_IMAP)
+    imap_expand_path(buf, buflen);
 #endif
 
-  return s;
+  return buf;
 }
 
 /**
  * mutt_gecos_name - Lookup a user's real name in /etc/passwd
+ * @param dest    Buffer for the result
+ * @param destlen Length of buffer
+ * @param pw      Passwd entry
+ * @retval ptr Result buffer on success
  *
  * Extract the real name from /etc/passwd's GECOS field.  When set, honor the
  * regular expression in GecosMask, otherwise assume that the GECOS field is a
@@ -320,11 +330,13 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (GecosMask)
+  if (GecosMask && GecosMask->regex)
   {
     if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
+    {
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
                        MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
+    }
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
     mutt_str_strfcpy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
@@ -357,43 +369,48 @@ bool mutt_needs_mailcap(struct Body *m)
 {
   switch (m->type)
   {
-    case TYPETEXT:
+    case TYPE_TEXT:
       if (mutt_str_strcasecmp("plain", m->subtype) == 0)
         return false;
       break;
-    case TYPEAPPLICATION:
-      if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(m))
+    case TYPE_APPLICATION:
+      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
         return false;
-      if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(m))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
         return false;
       break;
 
-    case TYPEMULTIPART:
-    case TYPEMESSAGE:
+    case TYPE_MULTIPART:
+    case TYPE_MESSAGE:
       return false;
   }
 
   return true;
 }
 
+/**
+ * mutt_is_text_part - Is this part of an email in plain text?
+ * @param b Part of an email
+ * @retval true If part is in plain text
+ */
 bool mutt_is_text_part(struct Body *b)
 {
   int t = b->type;
   char *s = b->subtype;
 
-  if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
     return false;
 
-  if (t == TYPETEXT)
+  if (t == TYPE_TEXT)
     return true;
 
-  if (t == TYPEMESSAGE)
+  if (t == TYPE_MESSAGE)
   {
     if (mutt_str_strcasecmp("delivery-status", s) == 0)
       return true;
   }
 
-  if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
+  if (((WithCrypto & APPLICATION_PGP) != 0) && t == TYPE_APPLICATION)
   {
     if (mutt_str_strcasecmp("pgp-keys", s) == 0)
       return true;
@@ -404,103 +421,146 @@ bool mutt_is_text_part(struct Body *b)
 
 static FILE *frandom;
 
-static void mutt_randbuf(void *out, size_t len)
+/**
+ * mutt_randbuf - Fill a buffer with randomness
+ * @param buf    Buffer for result
+ * @param buflen Size of buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_randbuf(void *buf, size_t buflen)
 {
-  if (len > 1048576)
+  if (buflen > 1048576)
   {
-    mutt_error(_("mutt_randbuf len=%zu"), len);
-    exit(1);
+    mutt_error(_("mutt_randbuf buflen=%zu"), buflen);
+    return -1;
   }
 /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
 #if defined(SYS_getrandom) && defined(__linux__)
   long ret;
   do
   {
-    ret = syscall(SYS_getrandom, out, len, 0, 0, 0, 0);
+    ret = syscall(SYS_getrandom, buf, buflen, 0, 0, 0, 0);
   } while ((ret == -1) && (errno == EINTR));
-  if (ret == len)
-    return;
-/* let's try urandom in case we're on an old kernel, or the user has
-   * configured selinux, seccomp or something to not allow getrandom */
+  if (ret == buflen)
+    return 0;
 #endif
+  /* let's try urandom in case we're on an old kernel, or the user has
+   * configured selinux, seccomp or something to not allow getrandom */
   if (!frandom)
   {
     frandom = fopen("/dev/urandom", "rb");
     if (!frandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
-      exit(1);
+      return -1;
     }
     setbuf(frandom, NULL);
   }
-  if (fread(out, 1, len, frandom) != len)
+  if (fread(buf, 1, buflen, frandom) != buflen)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
-    exit(1);
+    return -1;
   }
+
+  return 0;
 }
 
 static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
-void mutt_rand_base32(void *out, size_t len)
+/**
+ * mutt_rand_base32 - Fill a buffer with a base32-encoded random string
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
+ */
+void mutt_rand_base32(void *buf, size_t buflen)
 {
-  uint8_t *p = out;
+  uint8_t *p = buf;
 
-  mutt_randbuf(p, len);
-  for (size_t pos = 0; pos < len; pos++)
+  if (mutt_randbuf(p, buflen) < 0)
+    mutt_exit(1);
+  for (size_t pos = 0; pos < buflen; pos++)
     p[pos] = base32[p[pos] % 32];
 }
 
+/**
+ * mutt_rand32 - Create a 32-bit random number
+ * @retval num Random number
+ */
 uint32_t mutt_rand32(void)
 {
-  uint32_t ret;
+  uint32_t ret = 0;
 
-  mutt_randbuf(&ret, sizeof(ret));
+  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+    mutt_exit(1);
   return ret;
 }
 
+/**
+ * mutt_rand64 - Create a 64-bit random number
+ * @retval num Random number
+ */
 uint64_t mutt_rand64(void)
 {
-  uint64_t ret;
+  uint64_t ret = 0;
 
-  mutt_randbuf(&ret, sizeof(ret));
+  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+    mutt_exit(1);
   return ret;
 }
 
-void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
+/**
+ * mutt_mktemp_full - Create a temporary filename
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
+ * @param prefix Prefix for filename
+ * @param suffix Suffix for filename
+ * @param src    Source file of caller
+ * @param line   Source line number of caller
+ *
+ * @note This doesn't create the file, only the name
+ */
+void mutt_mktemp_full(char *buf, size_t buflen, const char *prefix,
                       const char *suffix, const char *src, int line)
 {
-  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
+  size_t n = snprintf(buf, buflen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
                       (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
-  if (n >= slen)
-    mutt_debug(1, "%s:%d: ERROR: insufficient buffer space to hold temporary "
-                  "filename! slen=%zu but need %zu\n",
-               src, line, slen, n);
-  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s);
-  if (unlink(s) && errno != ENOENT)
-    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s,
-               strerror(errno), errno);
+  if (n >= buflen)
+  {
+    mutt_debug(1,
+               "%s:%d: ERROR: insufficient buffer space to hold temporary "
+               "filename! buflen=%zu but need %zu\n",
+               src, line, buflen, n);
+  }
+  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, buf);
+  if (unlink(buf) && errno != ENOENT)
+  {
+    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+               buf, strerror(errno), errno);
+  }
 }
 
 /**
  * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
+ * @param buf    Buffer containing string to shorten
+ * @param buflen Length of buffer
  *
  * Collapse the pathname using ~ or = when possible
  */
-void mutt_pretty_mailbox(char *s, size_t buflen)
+void mutt_pretty_mailbox(char *buf, size_t buflen)
 {
-  char *p = s, *q = s;
+  char *p = buf, *q = buf;
   size_t len;
   enum UrlScheme scheme;
   char tmp[PATH_MAX];
 
-  scheme = url_check_scheme(s);
+  scheme = url_check_scheme(buf);
 
 #ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(s);
+    imap_pretty_mailbox(buf, Folder);
     return;
   }
 #endif
@@ -510,10 +570,10 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     return;
 #endif
 
-  /* if s is an url, only collapse path component */
+  /* if buf is an url, only collapse path component */
   if (scheme != U_UNKNOWN)
   {
-    p = strchr(s, ':') + 1;
+    p = strchr(buf, ':') + 1;
     if (strncmp(p, "//", 2) == 0)
       q = strchr(p + 2, '/');
     if (!q)
@@ -545,90 +605,37 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     *q = 0;
   }
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
-    mutt_str_strfcpy(p, tmp, buflen - (p - s));
+    mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
   len = mutt_str_strlen(Folder);
-  if ((mutt_str_strncmp(s, Folder, len) == 0) && s[len] == '/')
+  if ((mutt_str_strncmp(buf, Folder, len) == 0) && buf[len] == '/')
   {
-    *s++ = '=';
-    memmove(s, s + len, mutt_str_strlen(s + len) + 1);
+    *buf++ = '=';
+    memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((mutt_str_strncmp(s, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
-           s[len] == '/')
+  else if ((mutt_str_strncmp(buf, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
+           buf[len] == '/')
   {
-    *s++ = '~';
-    memmove(s, s + len - 1, mutt_str_strlen(s + len - 1) + 1);
-  }
-}
-
-void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
-{
-  char tmp[LONG_STRING];
-
-  mutt_file_quote_filename(tmp, sizeof(tmp), src);
-  mutt_expand_fmt(dest, destlen, fmt, tmp);
-}
-
-void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
-{
-  const char *p = NULL;
-  char *d = NULL;
-  size_t slen;
-  bool found = false;
-
-  slen = mutt_str_strlen(src);
-  destlen--;
-
-  for (p = fmt, d = dest; destlen && *p; p++)
-  {
-    if (*p == '%')
-    {
-      switch (p[1])
-      {
-        case '%':
-          *d++ = *p++;
-          destlen--;
-          break;
-        case 's':
-          found = true;
-          mutt_str_strfcpy(d, src, destlen + 1);
-          d += destlen > slen ? slen : destlen;
-          destlen -= destlen > slen ? slen : destlen;
-          p++;
-          break;
-        default:
-          *d++ = *p;
-          destlen--;
-          break;
-      }
-    }
-    else
-    {
-      *d++ = *p;
-      destlen--;
-    }
-  }
-
-  *d = '\0';
-
-  if (!found && destlen > 0)
-  {
-    mutt_str_strcat(dest, destlen, " ");
-    mutt_str_strcat(dest, destlen, src);
+    *buf++ = '~';
+    memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
   }
 }
 
 /**
  * mutt_check_overwrite - Ask the user if overwriting is necessary
- * @retval  0 on success
- * @retval -1 on abort
- * @retval  1 on error
+ * @param[in]  attname   Attachment name
+ * @param[in]  path      Path to save the file
+ * @param[out] fname     Buffer for filename
+ * @param[out] flen      Length of buffer
+ * @param[out] append    Flags set to #MUTT_SAVE_APPEND or #MUTT_SAVE_OVERWRITE
+ * @param[out] directory Directory to save under (OPTIONAL)
+ * @retval  0 Success
+ * @retval -1 Abort
+ * @retval  1 Error
  */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory)
 {
-  int rc = 0;
-  char tmp[_POSIX_PATH_MAX];
   struct stat st;
 
   mutt_str_strfcpy(fname, path, flen);
@@ -638,12 +645,16 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     return -1;
   if (S_ISDIR(st.st_mode))
   {
+    int rc = 0;
     if (directory)
     {
       switch (mutt_multi_choice
               /* L10N:
                  Means "The path you specified as the destination file is a directory."
-                 See the msgid "Save to file: " (alias.c, recvattach.c) */
+                 See the msgid "Save to file: " (alias.c, recvattach.c)
+
+                 These three letters correspond to the choices in the string.
+               */
               (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
       {
         case 3: /* all */
@@ -666,18 +677,23 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (rc == MUTT_NO) ? 1 : -1;
 
-    mutt_str_strfcpy(tmp, mutt_file_basename(NONULL(attname)), sizeof(tmp));
+    char tmp[PATH_MAX];
+    mutt_str_strfcpy(tmp, mutt_path_basename(NONULL(attname)), sizeof(tmp));
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
         !tmp[0])
+    {
       return -1;
-    mutt_file_concat_path(fname, path, tmp, flen);
+    }
+    mutt_path_concat(fname, path, tmp, flen);
   }
 
   if (*append == 0 && access(fname, F_OK) == 0)
   {
-    switch (mutt_multi_choice(
-        _("File exists, (o)verwrite, (a)ppend, or (c)ancel?"), _("oac")))
+    switch (
+        mutt_multi_choice(_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"),
+                          // L10N: Options for: File exists, (o)verwrite, (a)ppend, or (c)ancel?
+                          _("oac")))
     {
       case -1: /* abort */
         return -1;
@@ -695,29 +711,44 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
   return 0;
 }
 
-void mutt_save_path(char *d, size_t dsize, struct Address *a)
+/**
+ * mutt_save_path - Turn an email address into a filename (for saving)
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param addr   Email address to use
+ *
+ * If the user hasn't set `$save_address` the name will be trucated to the '@'
+ * character.
+ */
+void mutt_save_path(char *buf, size_t buflen, struct Address *addr)
 {
-  if (a && a->mailbox)
+  if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(d, a->mailbox, dsize);
+    mutt_str_strfcpy(buf, addr->mailbox, buflen);
     if (!SaveAddress)
     {
-      char *p = NULL;
-
-      p = strpbrk(d, "%@");
+      char *p = strpbrk(buf, "%@");
       if (p)
         *p = 0;
     }
-    mutt_str_strlower(d);
+    mutt_str_strlower(buf);
   }
   else
-    *d = 0;
+    *buf = 0;
 }
 
-void mutt_safe_path(char *s, size_t l, struct Address *a)
+/**
+ * mutt_safe_path - Make a safe filename from an email address
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param a Address to use
+ *
+ * The filename will be stripped of '/', space, etc to make it safe.
+ */
+void mutt_safe_path(char *buf, size_t buflen, struct Address *a)
 {
-  mutt_save_path(s, l, a);
-  for (char *p = s; *p; p++)
+  mutt_save_path(buf, buflen, a);
+  for (char *p = buf; *p; p++)
     if ((*p == '/') || ISSPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
@@ -729,7 +760,7 @@ void mutt_safe_path(char *s, size_t l, struct Address *a)
  * @param[in]  col      Starting column
  * @param[in]  cols     Number of screen columns
  * @param[in]  src      Printf-like format string
- * @param[in]  callback Callback for processing
+ * @param[in]  callback Callback - Implements ::format_t
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  */
@@ -739,9 +770,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char prefix[SHORT_STRING], tmp[LONG_STRING], *cp = NULL, *wptr = buf, ch;
   char if_str[SHORT_STRING], else_str[SHORT_STRING];
   size_t wlen, count, len, wid;
-  pid_t pid;
   FILE *filter = NULL;
-  int n;
   char *recycler = NULL;
 
   char src2[STRING];
@@ -758,7 +787,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     int off = -1;
 
     /* Do not consider filters if no pipe at end */
-    n = mutt_str_strlen(src);
+    int n = mutt_str_strlen(src);
     if (n > 1 && src[n - 1] == '|')
     {
       /* Scan backwards for backslashes */
@@ -771,7 +800,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n - off) % 2) == 0)
     {
-      struct Buffer *srcbuf = NULL, *word = NULL, *command = NULL;
       char srccopy[LONG_STRING];
       int i = 0;
 
@@ -781,10 +809,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       srccopy[n - 1] = '\0';
 
       /* prepare BUFFERs */
-      srcbuf = mutt_buffer_from(srccopy);
+      struct Buffer *srcbuf = mutt_buffer_from(srccopy);
       srcbuf->dptr = srcbuf->data;
-      word = mutt_buffer_new();
-      command = mutt_buffer_new();
+      struct Buffer *word = mutt_buffer_new();
+      struct Buffer *command = mutt_buffer_new();
 
       /* Iterate expansions across successive arguments */
       do
@@ -801,11 +829,13 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         for (char *p = tmp; p && *p; p++)
         {
           if (*p == '\'')
+          {
             /* shell quoting doesn't permit escaping a single quote within
              * single-quoted material.  double-quoting instead will lead
              * shell variable expansions, so break out of the single-quoted
              * span, insert a double-quoted single quote, and resume. */
             mutt_buffer_addstr(command, "'\"'\"'");
+          }
           else
             mutt_buffer_addch(command, *p);
         }
@@ -817,8 +847,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
-      pid = mutt_create_filter(command->data, NULL, &filter, NULL);
+      pid_t pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
         int rc;
@@ -1054,7 +1083,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         int pl, pw;
         pl = mutt_mb_charlen(src, &pw);
         if (pl <= 0)
-          pl = pw = 1;
+        {
+          pl = 1;
+          pw = 1;
+        }
 
         /* see if there's room to add content, else ignore */
         if ((col < cols && wlen < buflen) || soft)
@@ -1116,24 +1148,24 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
           memcpy(wptr, tmp, len);
           wptr += len;
-          wlen += len;
-          col += wid;
-          src += pl;
         }
         break; /* skip rest of input */
       }
       else if (ch == '|')
       {
         /* pad to EOL */
-        int pl, pw, c;
+        int pl, pw;
         pl = mutt_mb_charlen(src, &pw);
         if (pl <= 0)
-          pl = pw = 1;
+        {
+          pl = 1;
+          pw = 1;
+        }
 
         /* see if there's room to add content, else ignore */
         if (col < cols && wlen < buflen)
         {
-          c = (cols - col) / pw;
+          int c = (cols - col) / pw;
           if (c > 0 && wlen + (c * pl) > buflen)
             c = ((signed) (buflen - wlen)) / pl;
           while (c > 0)
@@ -1144,7 +1176,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             col += pw;
             c--;
           }
-          src += pl;
         }
         break; /* skip rest of input */
       }
@@ -1193,17 +1224,17 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         break;
       switch (*src)
       {
+        case 'f':
+          *wptr = '\f';
+          break;
         case 'n':
           *wptr = '\n';
-          break;
-        case 't':
-          *wptr = '\t';
           break;
         case 'r':
           *wptr = '\r';
           break;
-        case 'f':
-          *wptr = '\f';
+        case 't':
+          *wptr = '\t';
           break;
         case 'v':
           *wptr = '\v';
@@ -1247,6 +1278,9 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
 /**
  * mutt_open_read - Run a command to read from
+ * @param[in]  path   Path to command
+ * @param[out] thepid PID of the command
+ * @retval ptr File containing output of command
  *
  * This function allows the user to specify a command to read stdout from in
  * place of a normal file.  If the last character in the string is a pipe (|),
@@ -1270,7 +1304,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
     char *p = mutt_str_strdup(path);
 
     p[len - 1] = 0;
-    mutt_endwin(NULL);
+    mutt_endwin();
     *thepid = mutt_create_filter(p, NULL, &f, NULL);
     FREE(&p);
   }
@@ -1291,28 +1325,29 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
 /**
  * mutt_save_confirm - Ask the user to save
+ * @param s  Save location
+ * @param st Timestamp
  * @retval  0 if OK to proceed
  * @retval -1 to abort
  * @retval  1 to retry
  */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   int ret = 0;
   int rc;
-  int magic = 0;
 
-  magic = mx_get_magic(s);
+  enum MailboxType magic = mx_path_probe(s, NULL);
 
 #ifdef USE_POP
   if (magic == MUTT_POP)
   {
-    mutt_error(_("Can't save message to POP mailbox."));
+    mutt_error(_("Can't save message to POP mailbox"));
     return 1;
   }
 #endif
 
-  if (magic > 0 && !mx_access(s, W_OK))
+  if ((magic != MUTT_MAILBOX_ERROR) && (magic != MUTT_UNKNOWN) && !mx_access(s, W_OK))
   {
     if (Confirmappend)
     {
@@ -1328,16 +1363,16 @@ int mutt_save_confirm(const char *s, struct stat *st)
 #ifdef USE_NNTP
   if (magic == MUTT_NNTP)
   {
-    mutt_error(_("Can't save message to news server."));
+    mutt_error(_("Can't save message to news server"));
     return 0;
   }
 #endif
 
   if (stat(s, st) != -1)
   {
-    if (magic == -1)
+    if (magic == MUTT_MAILBOX_ERROR)
     {
-      mutt_error(_("%s is not a mailbox!"), s);
+      mutt_error(_("%s is not a mailbox"), s);
       return 1;
     }
   }
@@ -1363,12 +1398,15 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (ret == 0)
       {
         /* create dir recursively */
-        if (mutt_file_mkdir(mutt_file_dirname(s), S_IRWXU) == -1)
+        char *tmp_path = mutt_path_dirname(s);
+        if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
         {
           /* report failure & abort */
           mutt_perror(s);
+          FREE(&tmp_path);
           return 1;
         }
+        FREE(&tmp_path);
       }
     }
     else
@@ -1382,6 +1420,12 @@ int mutt_save_confirm(const char *s, struct stat *st)
   return ret;
 }
 
+/**
+ * mutt_sleep - Sleep for a while
+ * @param s Number of seconds to sleep
+ *
+ * If the user config `SleepTime` is larger, sleep that long instead.
+ */
 void mutt_sleep(short s)
 {
   if (SleepTime > s)
@@ -1390,6 +1434,12 @@ void mutt_sleep(short s)
     sleep(s);
 }
 
+/**
+ * mutt_make_version - Generate the NeoMutt version string
+ * @retval ptr Version string
+ *
+ * @note This returns a pointer to a static buffer
+ */
 const char *mutt_make_version(void)
 {
   static char vstring[STRING];
@@ -1397,12 +1447,29 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
-void mutt_encode_path(char *dest, size_t dlen, const char *src)
+/**
+ * mutt_encode_path - Convert a path into the user's preferred character set
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param src  Path to convert (OPTIONAL)
+ *
+ * If `src` is NULL, the path in `buf` will be converted in-place.
+ */
+void mutt_encode_path(char *buf, size_t buflen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_ch_convert_string(&p, Charset, "utf-8", 0);
+  int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
-  mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
+  size_t len = mutt_str_strfcpy(buf, (rc == 0) ? p : src, buflen);
+
+  /* convert the path to POSIX "Portable Filename Character Set" */
+  for (size_t i = 0; i < len; ++i)
+  {
+    if (!isalnum(buf[i]) && !strchr("/.-_", buf[i]))
+    {
+      buf[i] = '_';
+    }
+  }
   FREE(&p);
 }
 
@@ -1418,8 +1485,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {
   const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = (xdg_env && *xdg_env) ? mutt_str_strdup(xdg_env) :
-                                      mutt_str_strdup(xdg_defaults[type]);
+  char *xdg = xdg_env ? mutt_str_strdup(xdg_env) : mutt_str_strdup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;
@@ -1449,89 +1515,46 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
   return rc;
 }
 
-void mutt_get_parent_path(char *output, char *path, size_t olen)
+/**
+ * mutt_get_parent_path - Find the parent of a path (or mailbox)
+ * @param path   Path to use
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ */
+void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
-    imap_get_parent_path(output, path, olen);
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
+    imap_get_parent_path(path, buf, buflen);
   else
 #endif
 #ifdef USE_NOTMUCH
-      if (mx_is_notmuch(path))
-    mutt_str_strfcpy(output, NONULL(Folder), olen);
+      if (nm_path_probe(path, NULL) == MUTT_NOTMUCH)
+    mutt_str_strfcpy(buf, Folder, buflen);
   else
 #endif
   {
-    mutt_str_strfcpy(output, path, olen);
-    int n = mutt_str_strlen(output);
+    mutt_str_strfcpy(buf, path, buflen);
+    int n = mutt_str_strlen(buf);
+    if (n == 0)
+      return;
 
     /* remove any final trailing '/' */
-    if (output[n - 1] == '/')
-      output[n - 1] = '\0';
+    if (buf[n - 1] == '/')
+      buf[n - 1] = '\0';
 
     /* Remove everything until the next slash */
-    for (n--; ((n >= 0) && (output[n] != '/')); n--)
+    for (n--; ((n >= 0) && (buf[n] != '/')); n--)
       ;
 
     if (n > 0)
-      output[n] = '\0';
+      buf[n] = '\0';
     else
     {
-      output[0] = '/';
-      output[1] = '\0';
+      buf[0] = '/';
+      buf[1] = '\0';
     }
   }
-}
-
-/**
- * mutt_realpath - resolve path, unraveling symlinks
- * @param buf Buffer containing path
- * @retval len String length of resolved path
- * @retval 0   Error, buf is not overwritten
- *
- * Resolve and overwrite the path in buf.
- *
- * @note Size of buf should be at least PATH_MAX bytes.
- */
-size_t mutt_realpath(char *buf)
-{
-  char s[PATH_MAX];
-
-  if (realpath(buf, s) == NULL)
-    return 0;
-
-  return mutt_str_strfcpy(buf, s, PATH_MAX);
-}
-
-char debugfilename[_POSIX_PATH_MAX];
-FILE *debugfile = NULL;
-int debuglevel;
-char *debugfile_cmdline = NULL;
-int debuglevel_cmdline;
-
-int mutt_debug_real(const char *function, const char *file, int line, int level, ...)
-{
-  va_list ap;
-  time_t now = time(NULL);
-  static char buf[23] = "";
-  static time_t last = 0;
-  int ret = 0;
-
-  if ((debuglevel < level) || !debugfile)
-    return 0;
-
-  if (now > last)
-  {
-    ret += strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
-    last = now;
-  }
-  ret += fprintf(debugfile, "[%s] %s() ", buf, function);
-
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  ret += vfprintf(debugfile, fmt, ap);
-  va_end(ap);
-  return ret;
 }
 
 /**
@@ -1560,9 +1583,11 @@ int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if (a[0] == '=' && b[0] == '=')
+  {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
                (mutt_str_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
+  }
 
   const char *a_end = strrchr(a, '/');
   const char *b_end = strrchr(b, '/');
@@ -1593,4 +1618,3 @@ int mutt_inbox_cmp(const char *a, const char *b)
 
   return 0;
 }
-

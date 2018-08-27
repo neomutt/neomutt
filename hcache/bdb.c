@@ -41,7 +41,6 @@
 #include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
-#include "mx.h"
 
 /**
  * struct HcacheDbCtx - Berkeley DB context
@@ -51,24 +50,42 @@ struct HcacheDbCtx
   DB_ENV *env;
   DB *db;
   int fd;
-  char lockfile[_POSIX_PATH_MAX];
+  char lockfile[PATH_MAX];
 };
 
+/**
+ * dbt_init - Initialise a BDB context
+ * @param dbt  Context to initialise
+ * @param data ID string to associate
+ * @param len  Length of ID string
+ */
 static void dbt_init(DBT *dbt, void *data, size_t len)
 {
   dbt->data = data;
-  dbt->size = dbt->ulen = len;
-  dbt->dlen = dbt->doff = 0;
+  dbt->size = len;
+  dbt->ulen = len;
+  dbt->dlen = 0;
+  dbt->doff = 0;
   dbt->flags = DB_DBT_USERMEM;
 }
 
+/**
+ * dbt_empty_init - Initialise an empty BDB context
+ * @param dbt  Context to initialise
+ */
 static void dbt_empty_init(DBT *dbt)
 {
   dbt->data = NULL;
-  dbt->size = dbt->ulen = dbt->dlen = dbt->doff = 0;
+  dbt->size = 0;
+  dbt->ulen = 0;
+  dbt->dlen = 0;
+  dbt->doff = 0;
   dbt->flags = 0;
 }
 
+/**
+ * hcache_bdb_open - Implements HcacheOps::open()
+ */
 static void *hcache_bdb_open(const char *path)
 {
   struct stat sb;
@@ -78,10 +95,10 @@ static void *hcache_bdb_open(const char *path)
 
   struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
-  if (mutt_str_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+  if (mutt_str_atoi(HeaderCachePagesize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
-  snprintf(ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
+  snprintf(ctx->lockfile, sizeof(ctx->lockfile), "%s-lock-hack", path);
 
   ctx->fd = open(ctx->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (ctx->fd < 0)
@@ -132,6 +149,9 @@ fail_close:
   return NULL;
 }
 
+/**
+ * hcache_bdb_fetch - Implements HcacheOps::fetch()
+ */
 static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
@@ -151,11 +171,17 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.data;
 }
 
+/**
+ * hcache_bdb_free - Implements HcacheOps::free()
+ */
 static void hcache_bdb_free(void *vctx, void **data)
 {
   FREE(data);
 }
 
+/**
+ * hcache_bdb_store - Implements HcacheOps::store()
+ */
 static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   DBT dkey;
@@ -176,6 +202,9 @@ static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *da
   return ctx->db->put(ctx->db, NULL, &dkey, &databuf, 0);
 }
 
+/**
+ * hcache_bdb_delete - Implements HcacheOps::delete()
+ */
 static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
@@ -189,6 +218,9 @@ static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
 }
 
+/**
+ * hcache_bdb_close - Implements HcacheOps::close()
+ */
 static void hcache_bdb_close(void **vctx)
 {
   if (!vctx || !*vctx)
@@ -204,6 +236,9 @@ static void hcache_bdb_close(void **vctx)
   FREE(vctx);
 }
 
+/**
+ * hcache_bdb_backend - Implements HcacheOps::backend()
+ */
 static const char *hcache_bdb_backend(void)
 {
   return DB_VERSION_STRING;

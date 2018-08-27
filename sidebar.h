@@ -25,15 +25,29 @@
 #ifndef _MUTT_SIDEBAR_H
 #define _MUTT_SIDEBAR_H
 
+#include <stdbool.h>
+
+struct Mailbox;
 struct Context;
-struct Buffy;
+
+/* These Config Variables are only used in sidebar.c */
+extern short SidebarComponentDepth;
+extern char *SidebarDelimChars;
+extern char *SidebarDividerChar;
+extern bool  SidebarFolderIndent;
+extern char *SidebarFormat;
+extern char *SidebarIndentString;
+extern bool  SidebarNewMailOnly;
+extern bool  SidebarNextNewWrap;
+extern bool  SidebarShortPath;
+extern short SidebarSortMethod;
 
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 const char *mutt_sb_get_highlight(void);
-void mutt_sb_notify_mailbox(struct Buffy *b, int created);
-void mutt_sb_set_buffystats(const struct Context *ctx);
-void mutt_sb_set_open_buffy(void);
+void mutt_sb_notify_mailbox(struct Mailbox *b, bool created);
+void mutt_sb_set_mailbox_stats(const struct Context *ctx);
+void mutt_sb_set_open_mailbox(void);
 void mutt_sb_toggle_virtual(void);
 
 #endif /* _MUTT_SIDEBAR_H */

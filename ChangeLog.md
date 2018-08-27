@@ -1,3 +1,181 @@
+2018-07-16  Richard Russon  <rich@flatcap.org>
+* Features
+  - <check-stats> function
+* Bug Fixes
+  - Lots
+
+2018-06-22  Richard Russon  <rich@flatcap.org>
+* Features
+  - Expand variables inside backticks
+  - Honour SASL-IR IMAP capability in SASL PLAIN
+* Bug Fixes
+  - Fix toggle-read
+  - Do not truncate shell commands on ; or #
+  - pager: index must be rebuilt on MUTT_REOPENED
+  - Handle a BAD response in AUTH PLAIN w/o initial response
+  - fcc_attach: Don't ask every time
+  - Enlarge path buffers PATH_MAX (4096)
+  - Move LSUB call from connection establishment to mailbox SELECTion
+* Translations
+  - Update Chinese (Simplified): 100%
+  - Update Czech: 100%
+  - Update German: 100%
+  - Update Lithuanian: 100%
+  - Update Portuguese (Brazil): 100%
+  - Update Slovak: 59%
+  - Reduce duplication of messages
+* Code
+  - Tidy up the mailbox API
+  - Tidy up the header cache API
+  - Tidy up the encryption API
+  - Add doxygen docs for more functions
+  - Refactor more structs to use STAILQ
+
+2018-05-12  Richard Russon  <rich@flatcap.org>
+* Features
+  - echo command
+  - Add $browser_abbreviate_mailboxes
+  - Add ~M pattern to match mime Content-Types
+  - Add support for multipart/multilingual emails
+  - Jump to a collapsed email
+  - Add support for idn2 (IDNA2008)
+* Bug Fixes
+  - Let mutt_ch_choose report conversion failure
+  - minor IMAP string handling fixes
+* Translations
+  - Chinese (Simplified) (100%)
+  - Czech (100%)
+  - German (100%)
+  - Lithuanian (62%)
+  - Portuguese (Brazil) (100%)
+* Coverity defects
+  - match prototypes to their functions
+  - make logic clearer
+  - reduce scope of variables
+  - fix coverity defects
+* Docs
+  - development: analysis
+  - development: easy tasks
+  - development: roadmap
+* Code
+  - start refactoring libconn
+  - split out progress functions
+  - split out window functions
+  - split out terminal setting
+  - convert MyVars to use TAILQ
+  - split mutt_file_{lock,unlock}
+  - Move IDN version string to mutt/idna.c
+  - refactor: init_locale()
+  - Eliminate static variable in mutt_file_dirname
+* Tidy
+  - test int functions against 0
+  - rename lots of constants
+  - rename lots of functions
+  - sort lots of fields/definitions
+* Upstream
+  - Increase account.user/login size to 128
+  - Fix comparison of flags with multiple bits set
+  - Change mutt_error call in mutt_gpgme_set_sender() to dprint
+  - Improve the error message when a signature is missing
+  - pager specific "show incoming mailboxes list" macro
+  - Improve gss debug printing of status_string
+  - Remove trailing null count from gss_buffer_desc.length field
+  - Add a comment in auth_gss about RFCs and null-termination
+  - Change prompt string for $crypt_verify_sig
+
+2018-03-23  Richard Russon  <rich@flatcap.org>
+* Features
+  - unify logging/messaging
+  - add alert (blink) colors
+* Contrib
+  - Vim syntax for NeoMutt log files
+* Bug Fixes
+  - Fix progress bar range
+  - notmuch: stop if db open fails
+  - Improve index color cache flushing behavior
+  - lua: fix crash when setting a string
+* Translations
+  - Update Czech translation (100%)
+  - Update German translation (100%)
+  - Update Polish translation (94%)
+  - Update Portuguese (BR) translation (100%)
+  - Update Spanish translation (64%)
+  - Update Turkish translation (75%)
+  - Merge simliar messages
+* Docs
+  - Clarify precedence of settings in config files
+  - Fix subjectrx example in the manual
+* Website
+  - Update Gentoo distro page
+  - Devel: Static analysis
+* Build
+  - Support —with-sysroot configure arg
+  - Expose EXTRA_CFLAGS_FOR_BUILD and EXTRA_LDFLAGS_FOR_BUIlD
+  - Update to latest autosetup
+  - Make sure git_ver.h doesn't eat random 'g's out of tag names
+* Code
+  - Refactor to reduce complexity
+  - Refactor to reduce variables' scope
+  - Sort functions/config to make docs more legible
+
+2018-02-23  Richard Russon  <rich@flatcap.org>
+* Features
+  - browser: `<goto-parent>` function bound to "p"
+  - editor: `<history-search>` function bound to "Ctrl-r"
+  - Cygwin support: https://neomutt.org/distro/cygwin
+  - openSUSE support: https://neomutt.org/distro/suse
+  - Upstream Homebrew support: Very soon - https://neomutt.org/distro/homebrew
+* Bug Fixes
+  - gmail server-size search
+  - nested-if: correctly handle "<" and ">" with %?
+  - display of special chars
+  - lua: enable myvars
+  - for pgpewrap in default gpg.rc
+  - reply_regexp which wasn't formatted correctly.
+  - parsing of urls containing '?'
+  - out-of-bounds read in mutt_str_lws_len
+* Translations
+  - Review fuzzy lt translations
+  - Updated French translation
+* Website
+  - Installation guide for Cygwin
+  - Installation guide for openSUSE
+  - Installation guide for CRUX
+* Build
+  - check that DTDs are installed
+  - autosetup improvements
+  - option for which version of bdb to use
+  - drop test for resizeterm -- it's always present
+* Code
+  - split if's containing assignments
+  - doxygen: add/improve comments
+  - rename functions / parameters for consistency
+  - add missing {}s for clarity
+  - move functions to library
+  - reduce scope of variables
+  - boolify more variables
+  - iwyu: remove unnecessary headers
+  - name unicode chars
+  - tailq: migrate parameter api
+  - md5: refactor and tidy
+  - rfc2047: refactor and tidy
+  - buffer: improvements
+  - create unit test framework
+  - fix several coverity defects
+* Upstream
+  - Fix s/mime certificate deletion bug
+  - Disable message security if the backend is not available
+  - Fix improper signed int conversion of IMAP uid and msn values
+  - Change imap literal counts to parse and store unsigned ints
+  - Fix imap status count range check
+  - cmd_handle_fatal: make error message a bit more descriptive
+  - Create pgp and s/mime default and sign_as key vars
+  - Add missing setup calls when resuming encrypted drafts
+  - mutt_pretty_size: show real number for small files
+  - examine_directory: set directory/symlink size to zero
+  - Add history-search function, bound to ctrl-r
+  - Avoid a potential integer overflow if a Content-Length value is huge
+
 2017-12-15  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - Fix some regressions in the previous release
@@ -168,7 +346,7 @@
   - Updated French translation
   - Fix imap sync segfault due to inactive headers during an expunge
   - Close the imap socket for the selected mailbox on error
-  - Add missing IMAP_CMD_POLL flag in imap buffy check
+  - Add missing IMAP_CMD_POLL flag in imap mailbox check
   - Change maildir and mh check_mailbox to use dynamic sized hash
   - Fix uses of context->changed as a counter
   - Make cmd_parse_fetch() more precise about setting reopen/check flags
@@ -307,7 +485,7 @@
 * Tidy
   - drop VirtIncoming
   - split mutt_parse_mailboxes into mutt_parse_unmailboxes
-  - tidy some buffy code
+  - tidy some mailbox code
   - tidy the version strings
 * Upstream
   - Add ~<() and ~>() immediate parent/children patterns
@@ -792,7 +970,7 @@
   - Add option for missing subject replacement
   - notmuch: Allow <modify-labels> to toggle labels
   - Support for aborting mailbox loading
-  - Do a buffy check after shell escape
+  - Do a mailbox check after shell escape
   - Support of relative paths sourcing and cyclic source detection
   - Support of multiple config files as CLI arguments
   - Extend the ~m pattern to allow relative ranges
@@ -1197,14 +1375,14 @@
   - Add sidebar_format flag '%n' to display 'N' on new mail.
   - fix index_format truncation problem
   - Fix compiler warnings due to always true condition
-  - Change sidebar next/prev-new to look at buffy->new too.
+  - Change sidebar next/prev-new to look at mailbox->new too.
   - Change the default for sidebar_format to use %n.
-  - sidebar "unsorted" order to match Buffy list order.
+  - sidebar "unsorted" order to match Mailbox list order.
   - Include ncurses tinfo library if found.
   - Sidebar width problem
   - sidebar crash for non-existent mailbox
   - Temporary compatibility workaround
-  - Reset buffy->new for the current mailbox in IMAP.
+  - Reset mailbox->new for the current mailbox in IMAP.
   - version.sh regression
   - crash when notmuch tries to read a message
   - status line wrapping
@@ -1235,7 +1413,7 @@
   - Single quote at line beginning misinterpreted by groff
   - Setting $sidebar_width to more than 128 would cause bad things to happen.
   - Fix alignment in the compose menu.
-  - Fix sidebar buffy stats updating on mailbox close.
+  - Fix sidebar mailbox stats updating on mailbox close.
 * Build Changes
   - Sync whitespace to mutt/default
   - Alter ChangeLog date format to simplify Makefiles

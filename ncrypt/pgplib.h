@@ -24,22 +24,8 @@
 #ifndef _NCRYPT_PGPLIB_H
 #define _NCRYPT_PGPLIB_H
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 #include <stdbool.h>
 #include <time.h>
-#include "mutt/mutt.h"
-
-/**
- * struct PgpSignature - PGP Signature
- */
-struct PgpSignature
-{
-  struct PgpSignature *next;
-  unsigned char sigtype;
-  unsigned long sid1;
-  unsigned long sid2;
-};
 
 /**
  * struct PgpUid - PGP User ID
@@ -51,7 +37,6 @@ struct PgpUid
   int flags;
   struct PgpKeyInfo *parent;
   struct PgpUid *next;
-  struct PgpSignature *sigs;
 };
 
 /**
@@ -68,7 +53,6 @@ struct PgpKeyInfo
   int numalg;
   const char *algorithm;
   struct PgpKeyInfo *parent;
-  struct PgpSignature *sigs;
   struct PgpKeyInfo *next;
 };
 
@@ -82,13 +66,8 @@ short pgp_get_abilities(unsigned char type);
 
 void pgp_free_key(struct PgpKeyInfo **kpp);
 
-struct PgpKeyInfo * pgp_remove_key(struct PgpKeyInfo * *klist, struct PgpKeyInfo * key);
+struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
 
-static inline struct PgpKeyInfo *pgp_new_keyinfo(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
-}
-
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */
+struct PgpKeyInfo *pgp_new_keyinfo(void);
 
 #endif /* _NCRYPT_PGPLIB_H */

@@ -20,25 +20,36 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page addrbook Address book handling aliases
+ *
+ * Address book handling aliases
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "email/email.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "menu.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
-#include "options.h"
-#include "protos.h"
 #include "sort.h"
 
-#define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
+/* These Config Variables are only used in addrbook.c */
+char *AliasFormat; ///< Config: printf-like format string for the alias menu
+short SortAlias;   ///< Config: Sort method for the alias menu
+
+#define RSORT(x) ((SortAlias & SORT_REVERSE) ? -x : x)
 
 static const struct Mapping AliasHelp[] = {
   { N_("Exit"), OP_EXIT },      { N_("Del"), OP_DELETE },
@@ -47,21 +58,7 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_format_str - Format a string for the alias list
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * alias_format_str() is a callback function for mutt_expando_format().
+ * alias_format_str - Format a string for the alias list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -121,6 +118,13 @@ static void alias_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * alias_tag - Tag some aliases
+ * @param menu Menu
+ * @param n    Current selection
+ * @param m    Current number of tagged aliases
+ * @retval num How man more aliases are now tagged?
+ */
 static int alias_tag(struct Menu *menu, int n, int m)
 {
   struct Alias *cur = ((struct Alias **) menu->data)[n];
@@ -131,15 +135,31 @@ static int alias_tag(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
+/**
+ * alias_sort_alias - Compare two Aliases
+ * @param a First  Alias to compare
+ * @param b Second Alias to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int alias_sort_alias(const void *a, const void *b)
 {
   struct Alias *pa = *(struct Alias **) a;
   struct Alias *pb = *(struct Alias **) b;
   int r = mutt_str_strcasecmp(pa->name, pb->name);
 
-  return (RSORT(r));
+  return RSORT(r);
 }
 
+/**
+ * alias_sort_address - Compare two Addresses
+ * @param a First  Address to compare
+ * @param b Second Address to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int alias_sort_address(const void *a, const void *b)
 {
   struct Address *pa = (*(struct Alias **) a)->addr;
@@ -163,44 +183,48 @@ static int alias_sort_address(const void *a, const void *b)
     r = -1;
   else
     r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
-  return (RSORT(r));
+  return RSORT(r);
 }
 
-void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
+/**
+ * mutt_alias_menu - Display a menu of Aliases
+ * @param buf    Buffer for expanded aliases
+ * @param buflen Length of buffer
+ * @param aliases Alias List
+ */
+void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
 {
-  struct Alias *aliasp = NULL;
+  struct Alias *a = NULL, *last = NULL;
   struct Menu *menu = NULL;
   struct Alias **AliasTable = NULL;
   int t = -1;
   int i;
   bool done = false;
-  int op;
   char helpstr[LONG_STRING];
 
   int omax;
 
-  if (!aliases)
+  if (TAILQ_EMPTY(aliases))
   {
-    mutt_error(_("You have no aliases!"));
+    mutt_error(_("You have no aliases"));
     return;
   }
 
-  menu = mutt_new_menu(MENU_ALIAS);
+  menu = mutt_menu_new(MENU_ALIAS);
   menu->make_entry = alias_entry;
   menu->tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
 new_aliases:
-
   omax = menu->max;
 
   /* count the number of aliases */
-  for (aliasp = aliases; aliasp; aliasp = aliasp->next)
+  TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    aliasp->del = false;
-    aliasp->tagged = false;
+    a->del = false;
+    a->tagged = false;
     menu->max++;
   }
 
@@ -209,30 +233,36 @@ new_aliases:
   if (!AliasTable)
     return;
 
-  for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
+  if (last)
+    a = TAILQ_NEXT(last, entries);
+
+  i = omax;
+  TAILQ_FOREACH_FROM(a, aliases, entries)
   {
-    AliasTable[i] = aliasp;
-    aliases = aliasp;
+    AliasTable[i] = a;
+    i++;
   }
 
   if ((SortAlias & SORT_MASK) != SORT_ORDER)
   {
-    qsort(AliasTable, i, sizeof(struct Alias *),
+    qsort(AliasTable, menu->max, sizeof(struct Alias *),
           (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 
   for (i = 0; i < menu->max; i++)
     AliasTable[i]->num = i;
 
+  last = TAILQ_LAST(aliases, AliasList);
+
   while (!done)
   {
-    if (aliases->next)
+    int op;
+    if (TAILQ_NEXT(last, entries))
     {
       menu->redraw |= REDRAW_FULL;
-      aliases = aliases->next;
+      a = TAILQ_NEXT(last, entries);
       goto new_aliases;
     }
-
     switch ((op = mutt_menu_loop(menu)))
     {
       case OP_DELETE:
@@ -279,7 +309,7 @@ new_aliases:
     mutt_addr_write(buf, buflen, AliasTable[t]->addr, true);
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   FREE(&AliasTable);
 }

@@ -24,29 +24,17 @@
  * @page date Time and date handling routines
  *
  * Some commonly used time and date functions.
- *
- * | Function                   | Description
- * | :------------------------- | :--------------------------------------------------
- * | mutt_date_check_month()    | Is the string a valid month name
- * | mutt_date_is_day_name()    | Is the string a valid day name
- * | mutt_date_local_tz()       | Calculate the local timezone in seconds east of UTC
- * | mutt_date_make_date()      | Write a date in RFC822 format to a buffer
- * | mutt_date_make_imap()      | Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
- * | mutt_date_make_time()      | Convert `struct tm` to `time_t`
- * | mutt_date_make_tls()       | Format date in TLS certificate verification style
- * | mutt_date_normalize_time() | Fix the contents of a struct tm
- * | mutt_date_parse_date()     | Parse a date string in RFC822 format
- * | mutt_date_parse_imap()     | Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  */
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "date.h"
-#include "debug.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 
@@ -135,7 +123,7 @@ static const struct Tz TimeZones[] = {
  * compute_tz - Calculate the number of seconds east of UTC
  * @param g   Local time
  * @param utc UTC time
- * @retval number Seconds east of UTC
+ * @retval num Seconds east of UTC
  *
   * returns the seconds east of UTC given 'g' and its corresponding gmtime()
  * representation
@@ -173,12 +161,11 @@ static time_t compute_tz(time_t g, struct tm *utc)
  */
 static int is_leap_year_feb(struct tm *tm)
 {
-  if (tm->tm_mon == 1)
-  {
-    int y = tm->tm_year + 1900;
-    return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
-  }
-  return 0;
+  if (tm->tm_mon != 1)
+    return 0;
+
+  int y = tm->tm_year + 1900;
+  return ((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0));
 }
 
 /**
@@ -235,7 +222,7 @@ time_t mutt_date_local_tz(time_t t)
   /* need to make a copy because gmtime/localtime return a pointer to
      static memory (grr!) */
   memcpy(&utc, ptm, sizeof(utc));
-  return (compute_tz(t, &utc));
+  return compute_tz(t, &utc);
 }
 
 /**
@@ -255,8 +242,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
 
-  /* Prevent an integer overflow.
-   * The time_t cast is an attempt to silence a clang range warning. */
+  /* Prevent an integer overflow. */
   if ((time_t) t->tm_year > (TM_YEAR_MAX - 1900))
     return TIME_T_MAX;
   if ((time_t) t->tm_year < (TM_YEAR_MIN - 1900))
@@ -426,7 +412,7 @@ int mutt_date_check_month(const char *s)
 /**
  * mutt_date_is_day_name - Is the string a valid day name
  * @param s String to check
- * @retval boolean
+ * @retval true It's a valid day name
  *
  * @note Only the first three characters are checked
  * @note The comparison is case insensitive
@@ -457,7 +443,6 @@ bool mutt_date_is_day_name(const char *s)
 time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 {
   int count = 0;
-  char *t = NULL;
   int hour, min, sec;
   struct tm tm;
   int i;
@@ -476,7 +461,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
   /* kill the day of the week, if it exists. */
-  t = strchr(scratch, ',');
+  char *t = strchr(scratch, ',');
   if (t)
     t++;
   else
@@ -485,7 +470,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
   memset(&tm, 0, sizeof(tm));
 
-  while ((t = strtok(t, " \t")) != NULL)
+  while ((t = strtok(t, " \t")))
   {
     switch (count)
     {
@@ -552,11 +537,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         }
         else
         {
-          struct Tz *tz = NULL;
-
           /* This is safe to do: A pointer to a struct equals a pointer to its first element */
-          tz = bsearch(ptz, TimeZones, mutt_array_size(TimeZones), sizeof(struct Tz),
-                       (int (*)(const void *, const void *)) mutt_str_strcasecmp);
+          struct Tz *tz =
+              bsearch(ptz, TimeZones, mutt_array_size(TimeZones), sizeof(struct Tz),
+                      (int (*)(const void *, const void *)) mutt_str_strcasecmp);
 
           if (tz)
           {
@@ -611,7 +595,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
  * @param buf       Buffer to store the results
  * @param buflen    Length of buffer
  * @param timestamp Time to format
- * @retval int Number of characters written to buf
+ * @retval num Characters written to buf
  *
  * Caller should provide a buffer of at least 27 bytes.
  */
@@ -632,7 +616,7 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
  * @param buf       Buffer to store the results
  * @param buflen    Length of buffer
  * @param timestamp Time to format
- * @retval int Number of characters written to buf
+ * @retval num Characters written to buf
  *
  * e.g., Mar 17 16:40:46 2016 UTC. The time is always in UTC.
  *
@@ -649,8 +633,8 @@ int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
 /**
  * mutt_date_parse_imap - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param s Date in string form
- * @retval 0      Error
- * @retval time_t Unix time
+ * @retval num Unix time
+ * @retval 0   Error
  */
 time_t mutt_date_parse_imap(char *s)
 {
@@ -696,5 +680,24 @@ time_t mutt_date_parse_imap(char *s)
   if (s[0] == '+')
     tz = -tz;
 
-  return (mutt_date_make_time(&t, 0) + tz);
+  return mutt_date_make_time(&t, 0) + tz;
+}
+
+/**
+ * mutt_date_add_timeout - Safely add a timeout to a given time_t value
+ * @param now     Time now
+ * @param timeout Timeout in seconds
+ * @retval num Unix time to timeout
+ *
+ * This will truncate instead of overflowing.
+ */
+time_t mutt_date_add_timeout(time_t now, long timeout)
+{
+  if (timeout < 0)
+    return now;
+
+  if ((TIME_T_MAX - now) < timeout)
+    return TIME_T_MAX;
+
+  return now + timeout;
 }

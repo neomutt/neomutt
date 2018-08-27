@@ -213,7 +213,7 @@ proc cc-check-members {args} {
 # These libraries are not automatically added to 'LIBS'.
 #
 # Returns 1 if found or 0 if not.
-# 
+#
 proc cc-check-function-in-lib {function libs {otherlibs {}}} {
 	msg-checking "Checking libs for $function..."
 	set found 0
@@ -434,7 +434,7 @@ proc cc-with {settings args} {
 }
 
 # @cctest ?settings?
-# 
+#
 # Low level C/C++ compiler checker. Compiles and or links a small C program
 # according to the arguments and returns 1 if OK, or 0 if not.
 #

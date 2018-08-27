@@ -20,7 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* simple, editor-based message editing */
+/**
+ * @page editmsg Prepare an email to be edited
+ *
+ * Prepare an email to be edited
+ */
 
 #include "config.h"
 #include <errno.h>
@@ -32,20 +36,21 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
+#include "curs_lib.h"
 #include "globals.h"
-#include "header.h"
-#include "mailbox.h"
+#include "muttlib.h"
 #include "mx.h"
-#include "options.h"
 #include "protos.h"
 
 /**
  * edit_or_view_one_message - Edit an email or view it in an external editor
  * @param edit true if the message should be editable. If false, changes
- *            to the massage (in the editor) will be ignored.
+ *            to the message (in the editor) will be ignored.
  * @param ctx Context
  * @param cur Header of email
  * @retval 1  Message not modified
@@ -54,7 +59,7 @@
  */
 static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
   char buf[STRING];
   int omagic;
   int oerrno;
@@ -78,7 +83,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  rc = (mx_open_mailbox(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
+  rc = mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) ? 0 : -1;
 
   MboxType = omagic;
 
@@ -93,7 +98,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
       CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
   oerrno = errno;
 
-  mx_close_mailbox(&tmpctx, NULL);
+  mx_mbox_close(&tmpctx, NULL);
 
   if (rc == -1)
   {
@@ -146,14 +151,14 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   if (sb.st_size == 0)
   {
-    mutt_message(_("Message file is empty!"));
+    mutt_message(_("Message file is empty"));
     rc = 1;
     goto bail;
   }
 
   if (edit && sb.st_mtime == mtime)
   {
-    mutt_message(_("Message not modified!"));
+    mutt_message(_("Message not modified"));
     rc = 1;
     goto bail;
   }
@@ -180,7 +185,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  if (mx_open_mailbox(ctx->path, MUTT_APPEND, &tmpctx) == NULL)
+  if (!mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx))
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
@@ -204,15 +209,16 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   o_read = cur->read;
   o_old = cur->old;
-  cur->read = cur->old = false;
-  msg = mx_open_new_message(&tmpctx, cur, of);
+  cur->read = false;
+  cur->old = false;
+  msg = mx_msg_open_new(&tmpctx, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
   if (!msg)
   {
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
-    mx_close_mailbox(&tmpctx, NULL);
+    mx_mbox_close(&tmpctx, NULL);
     goto bail;
   }
 
@@ -223,10 +229,10 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_commit_message(msg, &tmpctx);
-  mx_close_message(&tmpctx, &msg);
+  rc = mx_msg_commit(&tmpctx, msg);
+  mx_msg_close(&tmpctx, &msg);
 
-  mx_close_mailbox(&tmpctx, NULL);
+  mx_mbox_close(&tmpctx, NULL);
 
 bail:
   if (fp)
@@ -250,6 +256,15 @@ bail:
   return rc;
 }
 
+/**
+ * edit_or_view_message - Edit an email or view it in an external editor
+ * @param edit true: Edit the email; false: view the email
+ * @param ctx  Mailbox Context
+ * @param hdr  Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
 {
   if (hdr)
@@ -267,11 +282,27 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
   return 0;
 }
 
+/**
+ * mutt_edit_message - Edit a message
+ * @param ctx Mailbox Context
+ * @param hdr Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 {
   return edit_or_view_message(true, ctx, hdr); /* true means edit */
 }
 
+/**
+ * mutt_view_message - Edit a message
+ * @param ctx Mailbox Context
+ * @param hdr Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int mutt_view_message(struct Context *ctx, struct Header *hdr)
 {
   return edit_or_view_message(false, ctx, hdr); /* false means only view */

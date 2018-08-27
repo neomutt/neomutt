@@ -20,32 +20,40 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Mixmaster support for NeoMutt
- */
-
 #include "config.h"
 #include <fcntl.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
-#include "remailer.h"
-#include "address.h"
-#include "envelope.h"
+#include "curs_lib.h"
 #include "filter.h"
 #include "format_flags.h"
-#include "globals.h"
-#include "header.h"
 #include "keymap.h"
+#include "menu.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
+#include "recvattach.h"
+#include "sendlib.h"
+#ifdef MIXMASTER
+#include "remailer.h"
+#endif
+
+/* These Config Variables are only used in remailer.c */
+char *MixEntryFormat; ///< Config: (mixmaster) printf-like format string for the mixmaster chain
+char *Mixmaster; ///< Config: (mixmaster) External command to route a mixmaster message
+
+#define MIX_CAP_COMPRESS (1 << 0)
+#define MIX_CAP_MIDDLEMAN (1 << 1)
+#define MIX_CAP_NEWSPOST (1 << 2)
+#define MIX_CAP_NEWSMAIL (1 << 3)
 
 /**
  * struct Coord - Screen coordinates
@@ -56,6 +64,11 @@ struct Coord
   short c; /**< column */
 };
 
+/**
+ * mix_get_caps - Get Mixmaster Capabilities
+ * @param capstr Capability string to parse
+ * @retval num Capabilities, e.g. #MIX_CAP_COMPRESS
+ */
 static int mix_get_caps(const char *capstr)
 {
   int caps = 0;
@@ -94,6 +107,13 @@ static int mix_get_caps(const char *capstr)
   return caps;
 }
 
+/**
+ * mix_add_entry - Add an entry to the Remailer list
+ * @param[in]  type2_list Remailer list to add to
+ * @param[in]  entry      Remailer to add
+ * @param[out] slots      Total number of slots
+ * @param[out] used       Number of slots used
+ */
 static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
                           size_t *slots, size_t *used)
 {
@@ -108,11 +128,19 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
     entry->num = *used;
 }
 
+/**
+ * mix_new_remailer - Create a new Remailer
+ * @retval ptr Newly allocated Remailer
+ */
 static struct Remailer *mix_new_remailer(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Remailer));
 }
 
+/**
+ * mix_free_remailer - Free a Remailer
+ * @param r Remailer to free
+ */
 static void mix_free_remailer(struct Remailer **r)
 {
   FREE(&(*r)->shortname);
@@ -124,6 +152,8 @@ static void mix_free_remailer(struct Remailer **r)
 
 /**
  * mix_type2_list - parse the type2.list as given by mixmaster -T
+ * @param[out] l Length of list
+ * @retval ptr type2.list
  */
 static struct Remailer **mix_type2_list(size_t *l)
 {
@@ -131,7 +161,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   pid_t mm_pid;
   int devnull;
 
-  char cmd[HUGE_STRING + _POSIX_PATH_MAX];
+  char cmd[HUGE_STRING];
   char line[HUGE_STRING];
   char *t = NULL;
 
@@ -209,6 +239,10 @@ static struct Remailer **mix_type2_list(size_t *l)
   return type2_list;
 }
 
+/**
+ * mix_free_type2_list - Free a Remailer List
+ * @param ttlp Remailer List to free
+ */
 static void mix_free_type2_list(struct Remailer ***ttlp)
 {
   struct Remailer **type2_list = *ttlp;
@@ -223,18 +257,24 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 #define MIX_VOFFSET (MuttIndexWindow->rows - 4)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
 
+/**
+ * mix_screen_coordinates - Get the screen coordinates to place a chain
+ * @param type2_list Remailer List
+ * @param coordsp    On screen coordinates
+ * @param chain      Chain
+ * @param i          Index in chain
+ */
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
 {
-  short c, r, oc;
-  struct Coord *coords = NULL;
+  short c, r;
 
   if (!chain->cl)
     return;
 
   mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 
-  coords = *coordsp;
+  struct Coord *coords = *coordsp;
 
   if (i)
   {
@@ -249,12 +289,13 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
   for (; i < chain->cl; i++)
   {
-    oc = c;
+    short oc = c;
     c += strlen(type2_list[chain->ch[i]]->shortname) + 2;
 
     if (c >= MuttIndexWindow->cols)
     {
-      oc = c = MIX_HOFFSET;
+      oc = MIX_HOFFSET;
+      c = MIX_HOFFSET;
       r++;
     }
 
@@ -263,8 +304,16 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
   }
 }
 
+/**
+ * mix_redraw_ce - Redraw the Remailer chain
+ * @param type2_list Remailer List
+ * @param coords     Screen Coordinates
+ * @param chain      Chain
+ * @param i          Index in chain
+ * @param selected   true, if this item is selected
+ */
 static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
-                          struct MixChain *chain, int i, short selected)
+                          struct MixChain *chain, int i, bool selected)
 {
   if (!coords || !chain)
     return;
@@ -285,6 +334,13 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
   }
 }
 
+/**
+ * mix_redraw_chain - Redraw the chain on screen
+ * @param type2_list Remailer List
+ * @param coords     Where to draw the list on screen
+ * @param chain      Chain to display
+ * @param cur        Chain index of current selection
+ */
 static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
                              struct MixChain *chain, int cur)
 {
@@ -298,6 +354,10 @@ static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
     mix_redraw_ce(type2_list, coords, chain, i, i == cur);
 }
 
+/**
+ * mix_redraw_head - Redraw the Chain info
+ * @param chain Chain
+ */
 static void mix_redraw_head(struct MixChain *chain)
 {
   SETCOLOR(MT_COLOR_STATUS);
@@ -307,6 +367,13 @@ static void mix_redraw_head(struct MixChain *chain)
   NORMAL_COLOR;
 }
 
+/**
+ * mix_format_caps - Turn flags into a MixMaster capability string
+ * @param r Remailer to use
+ * @retval ptr Capability string
+ *
+ * @note The string is a static buffer
+ */
 static const char *mix_format_caps(struct Remailer *r)
 {
   static char capbuf[10];
@@ -350,21 +417,7 @@ static const char *mix_format_caps(struct Remailer *r)
 }
 
 /**
- * mix_format_str - Format a string for the remailer menu
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * mix_format_str() is a callback function for mutt_expando_format().
+ * mix_format_str - Format a string for the remailer menu - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -446,6 +499,14 @@ static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * mix_chain_add - Add a host to the chain
+ * @param chain      Chain to add to
+ * @param s          Hostname
+ * @param type2_list Remailer List
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer **type2_list)
 {
   int i;
@@ -482,13 +543,16 @@ static const struct Mapping RemailerHelp[] = {
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
 
+/**
+ * mix_make_chain - Create a Mixmaster chain
+ * @param chainhead List if chain links
+ *
+ * Ask the user to select Mixmaster hosts to create a chain.
+ */
 void mix_make_chain(struct ListHead *chainhead)
 {
-  struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
-
-  struct Remailer **type2_list = NULL;
   size_t ttll = 0;
 
   struct Coord *coords = NULL;
@@ -496,21 +560,19 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   bool loop = true;
-  int op;
 
-  int j;
   char *t = NULL;
 
-  type2_list = mix_type2_list(&ttll);
+  struct Remailer **type2_list = mix_type2_list(&ttll);
   if (!type2_list)
   {
-    mutt_error(_("Can't get mixmaster's type2.list!"));
+    mutt_error(_("Can't get mixmaster's type2.list"));
     return;
   }
 
-  chain = mutt_mem_calloc(1, sizeof(struct MixChain));
+  struct MixChain *chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
-  struct ListNode *p;
+  struct ListNode *p = NULL;
   STAILQ_FOREACH(p, chainhead, entries)
   {
     mix_chain_add(chain, p->data, type2_list);
@@ -526,15 +588,15 @@ void mix_make_chain(struct ListHead *chainhead)
 
   mix_screen_coordinates(type2_list, &coords, chain, 0);
 
-  menu = mutt_new_menu(MENU_MIX);
+  menu = mutt_menu_new(MENU_MIX);
   menu->max = ttll;
   menu->make_entry = mix_entry;
   menu->tag = NULL;
-  menu->title = _("Select a remailer chain.");
+  menu->title = _("Select a remailer chain");
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   while (loop)
   {
@@ -552,13 +614,14 @@ void mix_make_chain(struct ListHead *chainhead)
     }
     else if (c_cur != c_old)
     {
-      mix_redraw_ce(type2_list, coords, chain, c_old, 0);
-      mix_redraw_ce(type2_list, coords, chain, c_cur, 1);
+      mix_redraw_ce(type2_list, coords, chain, c_old, false);
+      mix_redraw_ce(type2_list, coords, chain, c_cur, true);
     }
 
     c_old = c_cur;
 
-    switch ((op = mutt_menu_loop(menu)))
+    const int op = mutt_menu_loop(menu);
+    switch (op)
     {
       case OP_REDRAW:
       {
@@ -591,7 +654,7 @@ void mix_make_chain(struct ListHead *chainhead)
             (type2_list[chain->ch[chain->cl - 1]]->caps & MIX_CAP_MIDDLEMAN))
         {
           mutt_error(
-              _("Error: %s can't be used as the final remailer of a chain."),
+              _("Error: %s can't be used as the final remailer of a chain"),
               type2_list[chain->ch[chain->cl - 1]]->shortname);
         }
         else
@@ -621,7 +684,10 @@ void mix_make_chain(struct ListHead *chainhead)
           c_redraw = true;
         }
         else
-          mutt_error(_("Mixmaster chains are limited to %d elements."), MAXMIXES);
+        {
+          /* L10N The '%d' here hard-coded to 19 */
+          mutt_error(_("Mixmaster chains are limited to %d elements"), MAXMIXES);
+        }
 
         break;
       }
@@ -643,7 +709,7 @@ void mix_make_chain(struct ListHead *chainhead)
         }
         else
         {
-          mutt_error(_("The remailer chain is already empty."));
+          mutt_error(_("The remailer chain is already empty"));
         }
         break;
       }
@@ -653,7 +719,7 @@ void mix_make_chain(struct ListHead *chainhead)
         if (c_cur)
           c_cur--;
         else
-          mutt_error(_("You already have the first chain element selected."));
+          mutt_error(_("You already have the first chain element selected"));
 
         break;
       }
@@ -663,14 +729,14 @@ void mix_make_chain(struct ListHead *chainhead)
         if (chain->cl && c_cur < chain->cl - 1)
           c_cur++;
         else
-          mutt_error(_("You already have the last chain element selected."));
+          mutt_error(_("You already have the last chain element selected"));
 
         break;
       }
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
 
   /* construct the remailer list */
@@ -679,7 +745,7 @@ void mix_make_chain(struct ListHead *chainhead)
   {
     for (int i = 0; i < chain->cl; i++)
     {
-      j = chain->ch[i];
+      const int j = chain->ch[i];
       if (j != 0)
         t = type2_list[j]->shortname;
       else
@@ -696,6 +762,9 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
+ * @param msg Header of email
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mix_check_message(struct Header *msg)
 {
@@ -704,7 +773,7 @@ int mix_check_message(struct Header *msg)
 
   if (msg->env->cc || msg->env->bcc)
   {
-    mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers."));
+    mutt_error(_("Mixmaster doesn't accept Cc or Bcc headers"));
     return -1;
   }
 
@@ -716,7 +785,7 @@ int mix_check_message(struct Header *msg)
 
   for (struct Address *a = msg->env->to; a; a = a->next)
   {
-    if (!a->group && strchr(a->mailbox, '@') == NULL)
+    if (!a->group && !strchr(a->mailbox, '@'))
     {
       need_hostname = true;
       break;
@@ -725,11 +794,11 @@ int mix_check_message(struct Header *msg)
 
   if (need_hostname)
   {
-    fqdn = mutt_fqdn(1);
+    fqdn = mutt_fqdn(true);
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "
-                   "using mixmaster!"));
+                   "using mixmaster"));
       return -1;
     }
 
@@ -742,6 +811,13 @@ int mix_check_message(struct Header *msg)
   return 0;
 }
 
+/**
+ * mix_send_message - Send an email via Mixmaster
+ * @param chain    String list of hosts
+ * @param tempfile Temporary file containing email
+ * @retval -1  Error
+ * @retval >=0 Success (Mixmaster's return code)
+ */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
@@ -751,26 +827,25 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
 
   snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_file_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
-  if (!OPT_NO_CURSES)
-    mutt_endwin(NULL);
+  mutt_endwin();
 
   i = mutt_system(cmd);
   if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
-    if (!OPT_NO_CURSES)
+    if (!OptNoCurses)
     {
       mutt_any_key_to_continue(NULL);
-      mutt_error(_("Error sending message."));
+      mutt_error(_("Error sending message"));
     }
   }
 

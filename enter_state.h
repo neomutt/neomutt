@@ -24,7 +24,6 @@
 #define _MUTT_ENTER_STATE_H
 
 #include <stddef.h>
-#include "mutt/mutt.h"
 
 /**
  * struct EnterState - Keep our place when entering a string
@@ -39,9 +38,7 @@ struct EnterState
   int tabs;
 };
 
-static inline struct EnterState *mutt_new_enter_state(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct EnterState));
-}
+void mutt_enter_state_free(struct EnterState **esp);
+struct EnterState *mutt_enter_state_new(void);
 
 #endif /* _MUTT_ENTER_STATE_H */

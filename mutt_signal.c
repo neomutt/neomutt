@@ -20,13 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_signal Signal handling
+ *
+ * Signal handling
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <signal.h>
 #include "mutt/mutt.h"
 #include "globals.h"
 #include "mutt_curses.h"
-#include "options.h"
 
 static int IsEndwin = 0;
 
@@ -48,24 +53,20 @@ static void curses_signal_handler(int sig)
       if (!IsEndwin)
         endwin();
       kill(0, SIGSTOP);
-    /* fallthrough */
+      /* fallthrough */
 
     case SIGCONT:
       if (!IsEndwin)
         refresh();
       mutt_curs_set(-1);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       /* We don't receive SIGWINCH when suspended; however, no harm is done by
        * just assuming we received one, and triggering the 'resize' anyway. */
       SigWinch = 1;
-#endif
       break;
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     case SIGWINCH:
       SigWinch = 1;
       break;
-#endif
 
     case SIGINT:
       SigInt = 1;
@@ -88,6 +89,7 @@ static void curses_exit_handler(int sig)
 #ifdef USE_SLANG_CURSES
 /**
  * mutt_intr_hook - Workaround handler for slang
+ * @retval -1 Always
  */
 static int mutt_intr_hook(void)
 {

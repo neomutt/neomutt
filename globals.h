@@ -24,7 +24,9 @@
 #define _MUTT_GLOBALS_H
 
 #include <signal.h>
+#include <stdbool.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "where.h"
 
 #ifdef MAIN_C
@@ -35,56 +37,55 @@
 #include "sort.h"
 #endif /* MAIN_C */
 
+WHERE struct ConfigSet *Config;
+
 WHERE struct Context *Context;
 
+WHERE bool ErrorBufMessage;
 WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
 WHERE char *HomeDir;
 WHERE char *ShortHostname;
 
-WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
-
-WHERE short TSSupported;
 WHERE char *Username;
 
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
-WHERE const char *GitVer;
+extern const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
-WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 
-WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
+/* Lists of strings */
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
+WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
+WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
+WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
+WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
+WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
+#ifdef USE_SIDEBAR
+WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
+#endif
+WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
+
+/* Lists of AttachMatch */
 WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
 WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
 WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
 WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
-WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
-WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
-WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
-WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
-WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
 
-WHERE struct RegexList *Alternates;
-WHERE struct RegexList *UnAlternates;
-WHERE struct RegexList *MailLists;
-WHERE struct RegexList *UnMailLists;
-WHERE struct RegexList *SubscribedLists;
-WHERE struct RegexList *UnSubscribedLists;
-WHERE struct ReplaceList *SpamList;
-WHERE struct RegexList *NoSpamList;
-WHERE struct ReplaceList *SubjectRegexList;
+WHERE struct RegexList Alternates INITVAL(STAILQ_HEAD_INITIALIZER(Alternates));
+WHERE struct RegexList UnAlternates INITVAL(STAILQ_HEAD_INITIALIZER(UnAlternates));
+WHERE struct RegexList MailLists INITVAL(STAILQ_HEAD_INITIALIZER(MailLists));
+WHERE struct RegexList UnMailLists INITVAL(STAILQ_HEAD_INITIALIZER(UnMailLists));
+WHERE struct RegexList SubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(SubscribedLists));
+WHERE struct RegexList UnSubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(UnSubscribedLists));
+WHERE struct ReplaceList SubjectRegexList INITVAL(STAILQ_HEAD_INITIALIZER(SubjectRegexList));
 
 WHERE unsigned short Counter;
-
-#ifdef USE_SIDEBAR
-WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
-#endif
 
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
@@ -93,239 +94,196 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 
 WHERE int CurrentMenu;
 
-WHERE struct Alias *Aliases;
-WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
+WHERE struct AliasList Aliases INITVAL(TAILQ_HEAD_INITIALIZER(Aliases));
 
 /* All the variables below are backing for config items */
 
-WHERE struct Address *EnvelopeFromAddress;
-WHERE struct Address *From;
+WHERE struct Address *EnvelopeFromAddress; ///< Config: Manually set the sender for outgoing messages
+WHERE struct Address *From;                ///< Config: Default 'From' address to use, if isn't otherwise set
 
-WHERE char *AliasFile;
-WHERE char *AliasFormat;
-WHERE char *AttachSep;
-WHERE char *Attribution;
-WHERE char *AttributionLocale;
-WHERE char *AttachCharset;
-WHERE char *AttachFormat;
-WHERE struct Regex *AttachKeyword;
-WHERE char *ComposeFormat;
-WHERE char *ConfigCharset;
-WHERE char *ContentType;
-WHERE char *DefaultHook;
-WHERE char *DateFormat;
-WHERE char *DisplayFilter;
-WHERE char *DsnNotify;
-WHERE char *DsnReturn;
-WHERE char *Editor;
-WHERE char *EmptySubject;
-WHERE char *Escape;
-WHERE char *FolderFormat;
-WHERE char *ForwardAttributionIntro;
-WHERE char *ForwardAttributionTrailer;
-WHERE char *ForwardFormat;
-WHERE char *Hostname;
-WHERE struct MbTable *FromChars;
-WHERE char *IndexFormat;
+WHERE char *AliasFile;                     ///< Config: Save new aliases to this file
+WHERE char *Attribution;                   ///< Config: Message to start a reply, "On DATE, PERSON wrote:"
+WHERE char *AttributionLocale;             ///< Config: Locale for dates in the attribution message
+WHERE char *AttachFormat;                  ///< Config: printf-like format string for the attachment menu
+WHERE char *ConfigCharset;                 ///< Config: Character set that the config files are in
+WHERE char *DateFormat;                    ///< Config: strftime format string for the `%d` expando
+WHERE char *DsnNotify;                     ///< Config: Request notification for message delivery or delay
+WHERE char *DsnReturn;                     ///< Config: What to send as a notification of message delivery or delay
+WHERE char *Editor;                        ///< Config: External command to use as an email editor
+WHERE char *Hostname;                      ///< Config: Fully-qualified domain name of this machine
+WHERE char *IndexFormat;                   ///< Config: printf-like format string for the index menu (emails)
 
 #ifdef USE_IMAP
-WHERE char *ImapAuthenticators;
-WHERE char *ImapDelimChars;
-WHERE char *ImapHeaders;
-WHERE char *ImapLogin;
-WHERE char *ImapPass;
-WHERE char *ImapUser;
+WHERE char *ImapUser;                      ///< Config: (imap) Username for the IMAP server
 #endif
-WHERE char *Mbox;
-WHERE char *Ispell;
-WHERE char *MailcapPath;
-WHERE char *Folder;
-#if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
-WHERE char *MessageCachedir;
-#endif
+WHERE char *Mbox;                          ///< Config: Folder that receives read emails (see Move)
+WHERE char *MailcapPath;                   ///< Config: Colon-separated list of mailcap files
+WHERE char *Folder;                        ///< Config: Base folder for a set of mailboxes
 #ifdef USE_HCACHE
-WHERE char *HeaderCache;
-WHERE char *HeaderCacheBackend;
+WHERE char *HeaderCache;                   ///< Config: (hcache) Directory/file for the header cache database
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-WHERE char *HeaderCachePageSize;
+WHERE char *HeaderCachePagesize;           ///< Config: (hcache) Database page size (gdbm,bdb4)
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
-WHERE char *MarkMacroPrefix;
-WHERE char *MhSeqFlagged;
-WHERE char *MhSeqReplied;
-WHERE char *MhSeqUnseen;
-WHERE char *MimeTypeQueryCommand;
-WHERE char *MessageFormat;
 
 #ifdef USE_SOCKET
-WHERE short NetInc;
+WHERE short NetInc;                        ///< Config: (socket) Update the progress bar after this many KB sent/received (0 to disable)
 #endif /* USE_SOCKET */
 
-#ifdef MIXMASTER
-WHERE char *Mixmaster;
-WHERE char *MixEntryFormat;
-#endif
-
 #ifdef USE_NNTP
-WHERE char *GroupIndexFormat;
-WHERE char *Inews;
-WHERE char *NewsCacheDir;
-WHERE char *NewsServer;
-WHERE char *NewsgroupsCharset;
-WHERE char *NewsRc;
-WHERE char *NntpAuthenticators;
-WHERE char *NntpUser;
-WHERE char *NntpPass;
+WHERE char *NewsServer;                    ///< Config: (nntp) Url of the news server
 #endif
-WHERE char *Record;
-WHERE char *Pager;
-WHERE char *PagerFormat;
-WHERE char *PipeSep;
-#ifdef USE_POP
-WHERE char *PopAuthenticators;
-WHERE short PopCheckinterval;
-WHERE char *PopHost;
-WHERE char *PopPass;
-WHERE char *PopUser;
-#endif
-WHERE char *PostIndentString;
-WHERE char *Postponed;
-WHERE char *PostponeEncryptAs;
-WHERE char *IndentString;
-WHERE char *PrintCommand;
-WHERE char *NewMailCommand;
-WHERE char *QueryCommand;
-WHERE char *QueryFormat;
-WHERE char *RealName;
-WHERE short SearchContext;
-WHERE char *SendCharset;
-WHERE char *Sendmail;
-WHERE char *Shell;
-WHERE char *ShowMultipartAlternative;
-#ifdef USE_SIDEBAR
-WHERE char *SidebarDelimChars;
-WHERE char *SidebarDividerChar;
-WHERE char *SidebarFormat;
-WHERE char *SidebarIndentString;
-#endif
-WHERE char *Signature;
-WHERE char *SimpleSearch;
+WHERE char *Record;                        ///< Config: Folder to save 'sent' messages
+WHERE char *Pager;                         ///< Config: External command for viewing messages, or 'builtin' to use NeoMutt's
+WHERE char *PagerFormat;                   ///< Config: printf-like format string for the pager's status bar
+WHERE char *Postponed;                     ///< Config: Folder to store postponed messages
+WHERE char *IndentString;                  ///< Config: String used to indent 'reply' text
+WHERE char *PrintCommand;                  ///< Config: External command to print a message
+WHERE char *NewMailCommand;                ///< Config: External command to run when new mail arrives
+WHERE char *Realname;                      ///< Config: Real name of the user
+WHERE char *Shell;                         ///< Config: External command to run subshells in
+WHERE char *SimpleSearch;                  ///< Config: Pattern to search for when search doesn't contain ~'s
 #ifdef USE_SMTP
-WHERE char *SmtpAuthenticators;
-WHERE char *SmtpPass;
-WHERE char *SmtpUrl;
+WHERE char *SmtpUrl;                       ///< Config: (smtp) Url of the SMTP server
 #endif /* USE_SMTP */
-WHERE char *SpoolFile;
-WHERE char *SpamSeparator;
-WHERE struct MbTable *StatusChars;
-WHERE char *StatusFormat;
-WHERE char *Tmpdir;
-WHERE struct MbTable *ToChars;
-WHERE struct MbTable *FlagChars;
-WHERE char *Trash;
-WHERE char *TSStatusFormat;
-WHERE char *TSIconFormat;
-WHERE char *Visual;
+WHERE char *Spoolfile;                     ///< Config: Inbox
+WHERE char *StatusFormat;                  ///< Config: printf-like format string for the index's status line
+WHERE char *TsStatusFormat;                ///< Config: printf-like format string for the terminal's status (window title)
+WHERE char *TsIconFormat;                  ///< Config: printf-like format string for the terminal's icon title
+WHERE char *Visual;                        ///< Config: Editor to use when '~v' is given in the built-in editor
 
-WHERE char *HiddenTags;
-
-#ifdef USE_NNTP
-WHERE short NntpPoll;
-WHERE short NntpContext;
-#endif
-
-WHERE short DebugLevel;
-WHERE char *DebugFile;
-
-WHERE short MenuContext;
-WHERE short PagerContext;
-WHERE short PagerIndexLines;
-WHERE short ReadInc;
-WHERE short ReflowWrap;
-WHERE short SendmailWait;
-WHERE short SleepTime;
-WHERE short SkipQuotedOffset;
-WHERE short TimeInc;
-WHERE short Timeout;
-WHERE short Wrap;
-WHERE short WrapHeaders;
-WHERE short WriteInc;
-
-WHERE short ScoreThresholdDelete;
-WHERE short ScoreThresholdRead;
-WHERE short ScoreThresholdFlag;
+WHERE short ReadInc;                       ///< Config: Update the progress bar after this many records read (0 to disable)
+WHERE short SleepTime;                     ///< Config: Time to pause after certain info messages
+WHERE short Timeout;                       ///< Config: Time to wait for user input in menus
+WHERE short Wrap;                          ///< Config: Width to wrap text in the pager
+WHERE short WriteInc;                      ///< Config: Update the progress bar after this many records written (0 to disable)
 
 #ifdef USE_SIDEBAR
-WHERE short SidebarComponentDepth;
-WHERE short SidebarWidth;
+WHERE short SidebarWidth;                  ///< Config: (sidebar) Width of the sidebar
 #endif
 #ifdef USE_IMAP
-WHERE short ImapKeepalive;
-WHERE short ImapPipelineDepth;
-WHERE short ImapPollTimeout;
+WHERE short ImapKeepalive;                 ///< Config: (imap) Time to wait before polling an open IMAP connection
+WHERE short ImapPollTimeout;               ///< Config: (imap) Maximum time to wait for a server response
 #endif
 
-/* -- formerly in pgp.h -- */
-WHERE struct Regex *PgpGoodSign;
-WHERE struct Regex *PgpDecryptionOkay;
-WHERE char *PgpDefaultKey;
-WHERE char *PgpSignAs;
-WHERE short PgpTimeout;
-WHERE char *PgpEntryFormat;
-WHERE char *PgpClearSignCommand;
-WHERE char *PgpDecodeCommand;
-WHERE char *PgpVerifyCommand;
-WHERE char *PgpDecryptCommand;
-WHERE char *PgpSignCommand;
-WHERE char *PgpEncryptSignCommand;
-WHERE char *PgpEncryptOnlyCommand;
-WHERE char *PgpImportCommand;
-WHERE char *PgpExportCommand;
-WHERE char *PgpVerifyKeyCommand;
-WHERE char *PgpListSecringCommand;
-WHERE char *PgpListPubringCommand;
-WHERE char *PgpGetkeysCommand;
+WHERE char *PgpDefaultKey;                 ///< Config: Default key to use for PGP operations
+WHERE char *PgpSignAs;                     ///< Config: Use this alternative key for signing messages
+WHERE char *PgpEntryFormat;                ///< Config: printf-like format string for the PGP key selection menu
 
-/* -- formerly in smime.h -- */
-WHERE char *SmimeDefaultKey;
-WHERE char *SmimeSignAs;
-WHERE short SmimeTimeout;
-WHERE char *SmimeCertificates;
-WHERE char *SmimeKeys;
-WHERE char *SmimeEncryptWith;
-WHERE char *SmimeCALocation;
-WHERE char *SmimeVerifyCommand;
-WHERE char *SmimeVerifyOpaqueCommand;
-WHERE char *SmimeDecryptCommand;
-WHERE char *SmimeSignCommand;
-WHERE char *SmimeSignDigestAlg;
-WHERE char *SmimeEncryptCommand;
-WHERE char *SmimeGetSignerCertCommand;
-WHERE char *SmimePk7outCommand;
-WHERE char *SmimeGetCertCommand;
-WHERE char *SmimeImportCertCommand;
-WHERE char *SmimeGetCertEmailCommand;
+WHERE char *SmimeDefaultKey;               ///< Config: Default key for SMIME operations
+WHERE char *SmimeSignAs;                   ///< Config: Use this alternative key for signing messages
+WHERE char *SmimeEncryptWith;              ///< Config: Algorithm for encryption
 
 #ifdef USE_NOTMUCH
-WHERE int NmOpenTimeout;
-WHERE char *NmDefaultUri;
-WHERE char *NmExcludeTags;
-WHERE char *NmUnreadTag;
-WHERE char *VfolderFormat;
-WHERE int NmDbLimit;
-WHERE char *NmQueryType;
-WHERE char *NmRecordTags;
-WHERE int NmQueryWindowDuration;
-WHERE char *NmQueryWindowTimebase;
-WHERE int NmQueryWindowCurrentPosition;
-WHERE char *NmQueryWindowCurrentSearch;
+WHERE int NmQueryWindowDuration;           ///< Config: (notmuch) Time duration of the current search window
+WHERE char *NmQueryWindowCurrentSearch;    ///< Config: (notmuch) Current search parameters
 #endif
 
 /* These variables are backing for config items */
-WHERE struct Regex *GecosMask;
-WHERE struct Regex *Mask;
-WHERE struct Regex *QuoteRegex;
-WHERE struct Regex *ReplyRegex;
-WHERE struct Regex *Smileys;
+WHERE struct Regex *Mask;                  ///< Config: Only display files/dirs matching this regex in the browser
+WHERE struct Regex *QuoteRegex;            ///< Config: Regex to match quoted text in a reply
+
+/* Quad-options */
+WHERE unsigned char Bounce;                ///< Config: Confirm before bouncing a message
+WHERE unsigned char Copy;                  ///< Config: Save outgoing emails to $record
+WHERE unsigned char Delete;                ///< Config: Really delete messages, when the mailbox is closed
+WHERE unsigned char MimeForward;           ///< Config: Forward a message as a 'message/RFC822' MIME part
+WHERE unsigned char Print;                 ///< Config: Confirm before printing a message
+WHERE unsigned char Quit;                  ///< Config: Prompt before exiting NeoMutt
+#ifdef USE_SSL
+WHERE unsigned char SslStarttls;           ///< Config: (ssl) Use STARTTLS on servers advertising the capability
+#endif
+#ifdef USE_NNTP
+WHERE unsigned char PostModerated;         ///< Config: (nntp) Allow posting to moderated newsgroups
+WHERE unsigned char FollowupToPoster;      ///< Config: (nntp) Reply to the poster if 'poster' is in the 'Followup-To' header
+#endif
+
+WHERE bool ArrowCursor;                    ///< Config: Use an arrow '->' instead of highlighting in the index
+WHERE bool AsciiChars;                     ///< Config: Use plain ASCII characters, when drawing email threads
+WHERE bool Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
+WHERE bool Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
+WHERE bool Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
+WHERE bool AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
+WHERE bool Beep;                           ///< Config: Make a noise when an error occurs
+WHERE bool BeepNew;                        ///< Config: Make a noise when new mail arrives
+WHERE bool BrailleFriendly;                ///< Config: Move the cursor to the beginning of the line
+WHERE bool CheckMboxSize;                  ///< Config: (mbox,mmdf) Use mailbox size as an indicator of new mail
+WHERE bool Confirmappend;                  ///< Config: Confirm before appending emails to a mailbox
+WHERE bool Confirmcreate;                  ///< Config: Confirm before creating a new mailbox
+WHERE bool DeleteUntag;                    ///< Config: Untag messages when they are marked for deletion
+WHERE bool EditHeaders;                    ///< Config: Let the user edit the email headers whilst editing an email
+WHERE bool FlagSafe;                       ///< Config: Protect flagged messages from deletion
+WHERE bool ForwardDecode;                  ///< Config: Decode the message when forwarding it
+WHERE bool ForwardQuote;                   ///< Config: Automatically quote a forwarded message using IndentString
+#ifdef USE_HCACHE
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
+WHERE bool HeaderCacheCompress;            ///< Config: (hcache) Enable database compression (qdbm,tokyocabinet,kyotocabinet)
+#endif /* HAVE_QDBM */
+#endif
+WHERE bool Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
+WHERE bool Help;                           ///< Config: Display a help line with common key bindings
+#ifdef USE_IMAP
+WHERE bool ImapCheckSubscribed;            ///< Config: (imap) Ask the IMAP server for a list of subscribed folders
+WHERE bool ImapListSubscribed;             ///< Config: (imap) Get a list of mailboxes from the server
+WHERE bool ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
+WHERE bool ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
+#endif
+#ifdef USE_SSL
+#ifndef USE_SSL_GNUTLS
+WHERE bool SslUsesystemcerts;              ///< Config: (ssl) Use CA certificates in the system-wide store
+WHERE bool SslUseSslv2;                    ///< Config: (ssl) INSECURE: Use SSLv2 for authentication
+#endif /* USE_SSL_GNUTLS */
+WHERE bool SslForceTls;                    ///< Config: (ssl) Require TLS encryption for all connections
+#if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
+WHERE bool SslVerifyPartialChains;         ///< Config: (ssl) Allow verification using partial certificate chains
+#endif /* USE_SSL_OPENSSL */
+#endif /* defined(USE_SSL) */
+WHERE bool MailCheckRecent;                ///< Config: Notify the user about new mail since the last time the mailbox was opened
+WHERE bool MaildirTrash;                   ///< Config: Use the maildir 'trashed' flag, rather than deleting
+WHERE bool Markers;                        ///< Config: Display a '+' at the beginning of wrapped lines in the pager
+#if defined(USE_IMAP) || defined(USE_POP)
+WHERE bool MessageCacheClean;              ///< Config: (imap/pop) Clean out obsolete entries from the message cache
+#endif
+WHERE bool ReadOnly;                       ///< Config: Open folders in read-only mode
+WHERE bool Resolve;                        ///< Config: Move to the next email whenever a command modifies an email
+WHERE bool ResumeDraftFiles;               ///< Config: Process draft files like postponed messages
+WHERE bool SaveAddress;                    ///< Config: Use sender's full address as a default save folder
+WHERE bool SaveEmpty;                      ///< Config: (mbox,mmdf) Preserve empty mailboxes
+WHERE bool Score;                          ///< Config: Use message scoring
+#ifdef USE_SIDEBAR
+WHERE bool SidebarVisible;                 ///< Config: (sidebar) Show the sidebar
+WHERE bool SidebarOnRight;                 ///< Config: (sidebar) Display the sidebar on the right
+#endif
+WHERE bool StatusOnTop;                    ///< Config: Display the status bar at the top
+WHERE bool Suspend;                        ///< Config: Allow the user to suspend NeoMutt using '^Z'
+WHERE bool TextFlowed;                     ///< Config: Generate 'format=flowed' messages
+WHERE bool TsEnabled;                      ///< Config: Allow NeoMutt to set the terminal status line and icon
+WHERE bool UseDomain;                      ///< Config: Qualify local addresses using this domain
+WHERE bool WaitKey;                        ///< Config: Prompt to press a key after running external commands
+WHERE bool WrapSearch;                     ///< Config: Wrap around when the search hits the end
+WHERE bool WriteBcc;                       ///< Config: Write out the 'Bcc' field when preparing to send a mail
+
+WHERE bool CryptUsePka;                    ///< Config: Use GPGME to use PKA (lookup PGP keys using DNS)
+
+/* PGP options */
+
+WHERE bool CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
+WHERE bool CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
+WHERE bool SmimeIsDefault;                 ///< Config: Use SMIME rather than PGP by default
+WHERE bool PgpIgnoreSubkeys;               ///< Config: Only use the principal PGP key
+WHERE bool PgpLongIds;                     ///< Config: Display long PGP key IDs to the user
+WHERE bool PgpShowUnusable;                ///< Config: Show non-usable keys in the key selection
+WHERE bool PgpAutoinline;                  ///< Config: Use old-style inline PGP messages (not recommended)
+
+/* news options */
+
+#ifdef USE_NNTP
+WHERE bool SaveUnsubscribed;               ///< Config: (nntp) Save a list of unsubscribed newsgroups to the 'newsrc'
+WHERE bool XCommentTo;                     ///< Config: (nntp) Add 'X-Comment-To' header that contains article author
+#endif
+
+#ifdef USE_NOTMUCH
+WHERE bool VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file
+#endif
 
 #endif /* _MUTT_GLOBALS_H */

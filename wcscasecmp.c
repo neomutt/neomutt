@@ -24,6 +24,14 @@
 #include <stddef.h>
 #include <wctype.h>
 
+/**
+ * wcscasecmp - Compare two wide-character strings, ignoring case
+ * @param a First string
+ * @param b Second string
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int wcscasecmp(const wchar_t *a, const wchar_t *b)
 {
   if (!a && !b)

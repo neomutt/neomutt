@@ -20,21 +20,37 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_account Account object used by POP and IMAP
+ *
+ * Account object used by POP and IMAP
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "options.h"
-#include "protos.h"
-#include "url.h"
+
+/* These Config Variables are only used in mutt_account.c */
+char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
+char *ImapPass; ///< Config: (imap) Password for the IMAP server
+char *NntpPass; ///< Config: (nntp) Password for the news server
+char *NntpUser; ///< Config: (nntp) Username for the news server
+char *PopPass;  ///< Config: (pop) Password of the POP server
+char *PopUser;  ///< Config: (pop) Username of the POP server
+char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
  * @param a1 First Account
  * @param a2 Second Account
+ * @retval 1 Accounts match
  * @retval 0 Accounts match
  */
 int mutt_account_match(const struct Account *a1, const struct Account *a2)
@@ -67,15 +83,15 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 #endif
 
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return (strcmp(a1->user, a2->user) == 0);
+    return strcmp(a1->user, a2->user) == 0;
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
     return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
 #endif
   if (a1->flags & MUTT_ACCT_USER)
-    return (strcmp(a1->user, user) == 0);
+    return strcmp(a1->user, user) == 0;
   if (a2->flags & MUTT_ACCT_USER)
-    return (strcmp(a2->user, user) == 0);
+    return strcmp(a2->user, user) == 0;
 
   return 1;
 }
@@ -205,14 +221,14 @@ int mutt_account_getuser(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
     mutt_str_strfcpy(account->user, NntpUser, sizeof(account->user));
 #endif
-  else if (OPT_NO_CURSES)
+  else if (OptNoCurses)
     return -1;
   /* prompt (defaults to unix username), copy into account->user */
   else
   {
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), account->host);
-    mutt_str_strfcpy(account->user, NONULL(Username), sizeof(account->user));
+    mutt_str_strfcpy(account->user, Username, sizeof(account->user));
     if (mutt_get_field_unbuffered(prompt, account->user, sizeof(account->user), 0))
       return -1;
   }
@@ -289,12 +305,12 @@ int mutt_account_getpass(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpPass)
     mutt_str_strfcpy(account->pass, NntpPass, sizeof(account->pass));
 #endif
-  else if (OPT_NO_CURSES)
+  else if (OptNoCurses)
     return -1;
   else
   {
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
-             account->flags & MUTT_ACCT_LOGIN ? account->login : account->user,
+             (account->flags & MUTT_ACCT_LOGIN) ? account->login : account->user,
              account->host);
     account->pass[0] = '\0';
     if (mutt_get_password(prompt, account->pass, sizeof(account->pass)))

@@ -26,13 +26,25 @@
 struct Buffer;
 
 /**
+ * typedef command_t - Prototype for a function to parse a command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ * @retval -2 Warning
+ */
+typedef int (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+
+/**
  * struct Command - A user-callable command
  */
 struct Command
 {
-  char *name;
-  int (*func)(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
-  unsigned long data;
+  char *name;         /**< Name of the command */
+  command_t func;     /**< Function to parse the command */
+  unsigned long data; /**< Data or flags to pass to the command */
 };
 
 const struct Command *mutt_command_get(const char *s);

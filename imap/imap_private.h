@@ -27,13 +27,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "mutt/list.h"
+#include "mutt/mutt.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 
 struct Account;
-struct Buffer;
 struct Context;
 struct Header;
 struct ImapHeaderData;
@@ -51,12 +50,12 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_CMD_OK       (0)  /**< `<tag> OK ...` */
-#define IMAP_CMD_BAD      (-1) /**< `<tag> BAD ...` */
-#define IMAP_CMD_NO       (-2) /**< `<tag> NO ...` */
-#define IMAP_CMD_CONTINUE (1)  /**< `* ...` */
-#define IMAP_CMD_RESPOND  (2)  /**< `+` */
-#define IMAP_CMD_NEW      (3)  /**< ImapCommand.state additions */
+#define IMAP_CMD_OK       0  /**< `<tag> OK ...` */
+#define IMAP_CMD_BAD      -1 /**< `<tag> BAD ...` */
+#define IMAP_CMD_NO       -2 /**< `<tag> NO ...` */
+#define IMAP_CMD_CONTINUE 1  /**< `* ...` */
+#define IMAP_CMD_RESPOND  2  /**< `+` */
+#define IMAP_CMD_NEW      3  /**< ImapCommand.state additions */
 
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
@@ -265,17 +264,16 @@ struct ImapData
   header_cache_t *hcache;
 #endif
 };
-/* I wish that were called IMAP_CONTEXT :( */
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check(struct ImapData *idata, int force);
+int imap_check(struct ImapData *idata, bool force);
 int imap_create_mailbox(struct ImapData *idata, char *mailbox);
 int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char *newname);
 struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, bool create);
 void imap_mboxcache_free(struct ImapData *idata);
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
-                     int flag, int changed, int invert);
+                     int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapData *idata);
 void imap_close_connection(struct ImapData *idata);
 struct ImapData *imap_conn_find(const struct Account *account, int flags);
@@ -289,12 +287,12 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_authenticate(struct ImapData *idata);
 
 /* command.c */
-int imap_cmd_start(struct ImapData *idata, const char *cmd);
+int imap_cmd_start(struct ImapData *idata, const char *cmdstr);
 int imap_cmd_step(struct ImapData *idata);
 void imap_cmd_finish(struct ImapData *idata);
 bool imap_code(const char *s);
 const char *imap_cmd_trailer(struct ImapData *idata);
-int imap_exec(struct ImapData *idata, const char *cmd, int flags);
+int imap_exec(struct ImapData *idata, const char *cmdstr, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
@@ -305,9 +303,9 @@ int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);
 int imap_append_message(struct Context *ctx, struct Message *msg);
 
-int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
-int imap_close_message(struct Context *ctx, struct Message *msg);
-int imap_commit_message(struct Context *ctx, struct Message *msg);
+int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno);
+int imap_msg_close(struct Context *ctx, struct Message *msg);
+int imap_msg_commit(struct Context *ctx, struct Message *msg);
 
 /* util.c */
 #ifdef USE_HCACHE
@@ -328,13 +326,13 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
-void imap_quote_string(char *dest, size_t slen, const char *src);
+void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path);
+void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
 int imap_account_match(const struct Account *a1, const struct Account *a2);
-void imap_get_parent(char *output, const char *mbox, size_t olen, char delim);
+void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */
 void imap_utf_encode(struct ImapData *idata, char **s);

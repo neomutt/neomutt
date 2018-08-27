@@ -21,7 +21,7 @@
  */
 
 /**
- * @page conn Connection Library
+ * @page conn CONN: Network connections and their encryption
  *
  * Manage external connections.
  *
@@ -29,6 +29,7 @@
  * | :------------------ | :----------------------- |
  * | conn/conn_globals.c | @subpage conn_globals    |
  * | conn/getdomain.c    | @subpage conn_getdomain  |
+ * | conn/conn_raw.c     | @subpage conn_raw        |
  * | conn/sasl.c         | @subpage conn_sasl       |
  * | conn/sasl_plain.c   | @subpage conn_sasl_plain |
  * | conn/socket.c       | @subpage conn_socket     |
@@ -40,17 +41,19 @@
 #ifndef _CONN_CONN_H
 #define _CONN_CONN_H
 
+#include <stdio.h>
+
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
+#include "ssl.h"
 #include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
-#ifdef USE_SSL
-#include "ssl.h"
-#endif
+
+int getdnsdomainname(char *buf, size_t buflen);
 
 #endif /* _CONN_CONN_H */

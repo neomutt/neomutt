@@ -20,21 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This module peeks at a PGP signature and figures out the hash
- * algorithm.
+/**
+ * @page crypt_pgpmicalg Identify the hash algorithm from a PGP signature
+ *
+ * Identify the Message Integrity Check algorithm (micalg) from a PGP signature
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <iconv.h>
-#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "handler.h"
 #include "pgppacket.h"
-#include "protos.h"
 #include "state.h"
 
 static const struct
@@ -48,6 +47,11 @@ static const struct
   { 11, "pgp-sha224" }, { -1, NULL },
 };
 
+/**
+ * pgp_hash_to_micalg - Lookup a hash name, given its id
+ * @param id ID
+ * @retval ptr Name of hash algorithm
+ */
 static const char *pgp_hash_to_micalg(short id)
 {
   for (int i = 0; HashAlgorithms[i].id >= 0; i++)
@@ -56,6 +60,11 @@ static const char *pgp_hash_to_micalg(short id)
   return "x-unknown";
 }
 
+/**
+ * pgp_dearmor - Unwrap an armoured PGP block
+ * @param in  File to read from
+ * @param out File to write to
+ */
 static void pgp_dearmor(FILE *in, FILE *out)
 {
   char line[HUGE_STRING];
@@ -63,15 +72,13 @@ static void pgp_dearmor(FILE *in, FILE *out)
   LOFF_T end;
   char *r = NULL;
 
-  struct State state;
-
-  memset(&state, 0, sizeof(struct State));
+  struct State state = { 0 };
   state.fpin = in;
   state.fpout = out;
 
   /* find the beginning of ASCII armor */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     if (strncmp(line, "-----BEGIN", 10) == 0)
       break;
@@ -84,7 +91,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* skip the armor header */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     SKIPWS(r);
     if (!*r)
@@ -103,7 +110,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
 
   /* find the checksum */
 
-  while ((r = fgets(line, sizeof(line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)))
   {
     if (*line == '=' || (strncmp(line, "-----END", 8) == 0))
       break;
@@ -127,9 +134,15 @@ static void pgp_dearmor(FILE *in, FILE *out)
     return;
   }
 
-  mutt_decode_base64(&state, end - start, 0, (iconv_t) -1);
+  mutt_decode_base64(&state, end - start, false, (iconv_t) -1);
 }
 
+/**
+ * pgp_mic_from_packet - Get the hash algorithm from a PGP packet
+ * @param p   PGP packet
+ * @param len Length of packet
+ * @retval num Hash algorithm id
+ */
 static short pgp_mic_from_packet(unsigned char *p, size_t len)
 {
   /* is signature? */
@@ -156,28 +169,24 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
   }
 }
 
+/**
+ * pgp_find_hash - Find the hash algorithm of a file
+ * @param fname File to read
+ * @retval num Hash algorithm id
+ */
 static short pgp_find_hash(const char *fname)
 {
-  FILE *in = NULL;
-  FILE *out = NULL;
-
-  char tempfile[_POSIX_PATH_MAX];
-
-  unsigned char *p = NULL;
   size_t l;
-
   short rc = -1;
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  out = mutt_file_fopen(tempfile, "w+");
+  FILE *out = mutt_file_mkstemp();
   if (!out)
   {
-    mutt_perror(tempfile);
+    mutt_perror(_("Can't create temporary file"));
     goto bye;
   }
-  unlink(tempfile);
 
-  in = fopen(fname, "r");
+  FILE *in = fopen(fname, "r");
   if (!in)
   {
     mutt_perror(fname);
@@ -187,7 +196,7 @@ static short pgp_find_hash(const char *fname)
   pgp_dearmor(in, out);
   rewind(out);
 
-  p = pgp_read_packet(out, &l);
+  unsigned char *p = pgp_read_packet(out, &l);
   if (p)
   {
     rc = pgp_mic_from_packet(p, l);
@@ -205,6 +214,11 @@ bye:
   return rc;
 }
 
+/**
+ * pgp_micalg - Find the hash algorithm of a file
+ * @param fname File to read
+ * @retval ptr Name of hash algorithm
+ */
 const char *pgp_micalg(const char *fname)
 {
   return pgp_hash_to_micalg(pgp_find_hash(fname));

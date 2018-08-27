@@ -24,18 +24,13 @@
  * @page imap_utf7 UTF-7 Manipulation
  *
  * Convert strings to/from utf7/utf8
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_utf_decode()  | Decode email from UTF-8 to local charset
- * | imap_utf_encode()  | Encode email from local charset to UTF-8
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "globals.h"
 
 // clang-format off
 /**
@@ -87,10 +82,10 @@ static const char B64Chars[64] = {
  */
 static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len)
 {
-  char *buf = NULL, *p = NULL;
   int b, ch, k;
 
-  p = buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
+  char *buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
+  char *p = buf;
 
   for (; u7len; u7++, u7len--)
   {
@@ -197,16 +192,15 @@ bail:
  */
 static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len)
 {
-  char *buf = NULL, *p = NULL;
   int ch;
   int n, b = 0, k = 0;
   bool base64 = false;
 
-  /*
-   * In the worst case we convert 2 chars to 7 chars. For example:
+  /* In the worst case we convert 2 chars to 7 chars. For example:
    * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".
    */
-  p = buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
+  char *buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
+  char *p = buf;
 
   while (u8len)
   {
@@ -322,19 +316,19 @@ bail:
  */
 void imap_utf_encode(struct ImapData *idata, char **s)
 {
-  if (Charset)
+  if (!Charset || !s)
+    return;
+
+  char *t = mutt_str_strdup(*s);
+  if (t && (mutt_ch_convert_string(&t, Charset, "utf-8", 0) == 0))
   {
-    char *t = mutt_str_strdup(*s);
-    if (t && !mutt_ch_convert_string(&t, Charset, "utf-8", 0))
-    {
-      FREE(s);
-      if (idata->unicode)
-        *s = mutt_str_strdup(t);
-      else
-        *s = utf8_to_utf7(t, strlen(t), NULL, 0);
-    }
-    FREE(&t);
+    FREE(s);
+    if (idata->unicode)
+      *s = mutt_str_strdup(t);
+    else
+      *s = utf8_to_utf7(t, strlen(t), NULL, 0);
   }
+  FREE(&t);
 }
 
 /**
@@ -344,21 +338,21 @@ void imap_utf_encode(struct ImapData *idata, char **s)
  */
 void imap_utf_decode(struct ImapData *idata, char **s)
 {
+  if (!Charset)
+    return;
+
   char *t = NULL;
 
-  if (Charset)
-  {
-    if (idata->unicode)
-      t = mutt_str_strdup(*s);
-    else
-      t = utf7_to_utf8(*s, strlen(*s), 0, 0);
+  if (idata->unicode)
+    t = mutt_str_strdup(*s);
+  else
+    t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-    if (t && !mutt_ch_convert_string(&t, "utf-8", Charset, 0))
-    {
-      FREE(s);
-      *s = t;
-    }
-    else
-      FREE(&t);
+  if (t && mutt_ch_convert_string(&t, "utf-8", Charset, 0) == 0)
+  {
+    FREE(s);
+    *s = t;
   }
+  else
+    FREE(&t);
 }

@@ -24,13 +24,13 @@
 #ifndef _MUTT_H
 #define _MUTT_H
 
+#include <stddef.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <stdio.h>
-#include "where.h"
+#include <stdint.h>
 
+struct Buffer;
 struct ListHead;
 struct Mapping;
 
@@ -42,8 +42,8 @@ struct Mapping;
 #endif
 
 /* PATH_MAX is undefined on the hurd */
-#if !defined(PATH_MAX) && defined(_POSIX_PATH_MAX)
-#define PATH_MAX _POSIX_PATH_MAX
+#ifndef PATH_MAX
+#define PATH_MAX 4096
 #endif
 
 #ifdef HAVE_FGETS_UNLOCKED
@@ -69,37 +69,17 @@ struct Mapping;
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
 #endif
 
-/* flags for mutt_get_token() */
-#define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
-#define MUTT_TOKEN_CONDENSE   (1<<1)  /* ^(char) to control chars (macros) */
-#define MUTT_TOKEN_SPACE      (1<<2)  /* don't treat whitespace as a term */
-#define MUTT_TOKEN_QUOTE      (1<<3)  /* don't interpret quotes */
-#define MUTT_TOKEN_PATTERN    (1<<4)  /* !)|~ are terms (for patterns) */
-#define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
-#define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
-
-/* types for mutt_add_hook() */
-#define MUTT_FOLDERHOOK   (1 << 0)
-#define MUTT_MBOXHOOK     (1 << 1)
-#define MUTT_SENDHOOK     (1 << 2)
-#define MUTT_FCCHOOK      (1 << 3)
-#define MUTT_SAVEHOOK     (1 << 4)
-#define MUTT_CHARSETHOOK  (1 << 5)
-#define MUTT_ICONVHOOK    (1 << 6)
-#define MUTT_MESSAGEHOOK  (1 << 7)
-#define MUTT_CRYPTHOOK    (1 << 8)
-#define MUTT_ACCOUNTHOOK  (1 << 9)
-#define MUTT_REPLYHOOK    (1 << 10)
-#define MUTT_SEND2HOOK    (1 << 11)
-#ifdef USE_COMPRESSED
-#define MUTT_OPENHOOK     (1 << 12)
-#define MUTT_APPENDHOOK   (1 << 13)
-#define MUTT_CLOSEHOOK    (1 << 14)
-#endif
-#define MUTT_TIMEOUTHOOK  (1 << 15)
-#define MUTT_STARTUPHOOK  (1 << 16)
-#define MUTT_SHUTDOWNHOOK (1 << 17)
-#define MUTT_GLOBALHOOK   (1 << 18)
+/* flags for mutt_extract_token() */
+#define MUTT_TOKEN_EQUAL         (1<<0)  /**< treat '=' as a special */
+#define MUTT_TOKEN_CONDENSE      (1<<1)  /**< ^(char) to control chars (macros) */
+#define MUTT_TOKEN_SPACE         (1<<2)  /**< don't treat whitespace as a term */
+#define MUTT_TOKEN_QUOTE         (1<<3)  /**< don't interpret quotes */
+#define MUTT_TOKEN_PATTERN       (1<<4)  /**< !)|~ are terms (for patterns) */
+#define MUTT_TOKEN_COMMENT       (1<<5)  /**< don't reap comments */
+#define MUTT_TOKEN_SEMICOLON     (1<<6)  /**< don't treat ; as special */
+#define MUTT_TOKEN_BACKTICK_VARS (1<<7)  /**< expand variables within backticks */
+#define MUTT_TOKEN_NOSHELL       (1<<8)  /**< don't expand environment variables */
+#define MUTT_TOKEN_QUESTION      (1<<9)  /**< treat '?' as a special */
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER 1
@@ -118,13 +98,6 @@ struct Mapping;
 #define MUTT_TREE_MAX      14
 
 #define MUTT_SPECIAL_INDEX MUTT_TREE_MAX
-
-#define MUTT_THREAD_COLLAPSE    (1 << 0)
-#define MUTT_THREAD_UNCOLLAPSE  (1 << 1)
-#define MUTT_THREAD_GET_HIDDEN  (1 << 2)
-#define MUTT_THREAD_UNREAD      (1 << 3)
-#define MUTT_THREAD_NEXT_UNREAD (1 << 4)
-#define MUTT_THREAD_FLAGGED     (1 << 5)
 
 /**
  * enum MuttMisc - Unsorted flags
@@ -196,6 +169,7 @@ enum MuttMisc
   MUTT_SERVERSEARCH,
   MUTT_DRIVER_TAGS,
   MUTT_MIMEATTACH,
+  MUTT_MIMETYPE,
 #ifdef USE_NNTP
   MUTT_NEWSGROUPS,
 #endif
@@ -217,52 +191,12 @@ enum MuttMisc
   MUTT_SAVE_OVERWRITE
 };
 
-/**
- * enum QuadOptionResponse - Possible values of a QuadOption
- */
-enum QuadOptionResponse
-{
-  MUTT_ABORT = -1,
-  MUTT_NO,
-  MUTT_YES,
-  MUTT_ASKNO,
-  MUTT_ASKYES
-};
-
-/* flags to ci_send_message() */
-#define SENDREPLY        (1 << 0)
-#define SENDGROUPREPLY   (1 << 1)
-#define SENDLISTREPLY    (1 << 2)
-#define SENDFORWARD      (1 << 3)
-#define SENDPOSTPONED    (1 << 4)
-#define SENDBATCH        (1 << 5)
-#define SENDMAILX        (1 << 6)
-#define SENDKEY          (1 << 7)
-#define SENDRESEND       (1 << 8)
-#define SENDPOSTPONEDFCC (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SENDNOFREEHEADER (1 << 10) /**< Used by the -E flag */
-#define SENDDRAFTFILE    (1 << 11) /**< Used by the -H flag */
-#define SENDNEWS         (1 << 12)
-
-/* flags for mutt_compose_menu() */
-#define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
-
-/* flags to mutt_select_file() */
-#define MUTT_SEL_BUFFY   (1 << 0)
-#define MUTT_SEL_MULTI   (1 << 1)
-#define MUTT_SEL_FOLDER  (1 << 2)
-#define MUTT_SEL_VFOLDER (1 << 3)
-
 /* flags for parse_spam_list */
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-bool mutt_matches_ignore(const char *s);
-
-void mutt_init(int skip_sys_rc, struct ListHead *commands);
-
-/* flag to mutt_pattern_comp() */
-#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
+int mutt_init(bool skip_sys_rc, struct ListHead *commands);
+struct ConfigSet *init_config(size_t size);
 
 /**
  * struct AttachMatch - An attachment matching a regex
@@ -277,65 +211,25 @@ struct AttachMatch
   regex_t minor_regex;
 };
 
-#define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
-
 #define EXECSHELL "/bin/sh"
-
-/* For mutt_simple_format() justifications */
-#define FMT_LEFT   -1
-#define FMT_CENTER 0
-#define FMT_RIGHT  1
 
 int safe_asprintf(char **, const char *, ...);
 
-int mutt_inbox_cmp(const char *a, const char *b);
-
-const char *mutt_str_sysexit(int e);
-
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
-extern char debugfilename[_POSIX_PATH_MAX];
-extern FILE *debugfile;
-extern int debuglevel;
-extern char *debugfile_cmdline;
-extern int debuglevel_cmdline;
-
-/* All the variables below are backing for config items */
-
-/* Quad-options */
-WHERE unsigned char AbortUnmodified;
-WHERE unsigned char Bounce;
-WHERE unsigned char Copy;
-WHERE unsigned char Delete;
-WHERE unsigned char ForwardEdit;
-WHERE unsigned char FccAttach;
-WHERE unsigned char Include;
-WHERE unsigned char HonorFollowupTo;
-WHERE unsigned char MimeForward;
-WHERE unsigned char MimeForwardRest;
-WHERE unsigned char Move;
-WHERE unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
-WHERE unsigned char SmimeEncryptSelf;
-WHERE unsigned char PgpEncryptSelf;
-#ifdef USE_POP
-WHERE unsigned char PopDelete;
-WHERE unsigned char PopReconnect;
-#endif
-WHERE unsigned char Postpone;
-WHERE unsigned char Print;
-WHERE unsigned char Quit;
-WHERE unsigned char ReplyTo;
-WHERE unsigned char Recall;
-#ifdef USE_SSL
-WHERE unsigned char SslStarttls;
-#endif
-WHERE unsigned char AbortNosubject;
-WHERE unsigned char CryptVerifySig; /* verify PGP signatures */
-#ifdef USE_NNTP
-WHERE unsigned char PostModerated;
-WHERE unsigned char CatchupNewsgroup;
-WHERE unsigned char FollowupToPoster;
-#endif
-WHERE unsigned char AbortNoattach; /* forgotten attachment detector */
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
+void mutt_free_opts(void);
+int query_quadoption(int opt, const char *prompt);
+int mutt_label_complete(char *buf, size_t buflen, int numtabs);
+int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs);
+int mutt_var_value_complete(char *buf, size_t buflen, int pos);
+void myvar_set(const char *var, const char *val);
+bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs);
+bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs);
+int mutt_dump_variables(bool hide_sensitive);
+int mutt_get_hook_type(const char *name);
+int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
+int mutt_query_variables(struct ListHead *queries);
+void reset_value(const char *name);
 
 #endif /* _MUTT_H */

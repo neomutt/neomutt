@@ -23,10 +23,20 @@
 #ifndef _MUTT_PAGER_H
 #define _MUTT_PAGER_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
-struct Context;
-struct Menu;
+/* These Config Variables are only used in pager.c */
+extern bool          AllowAnsi;
+extern bool          HeaderColorPartial;
+extern short         PagerContext;
+extern short         PagerIndexLines;
+extern bool          PagerStop;
+extern short         SearchContext;
+extern short         SkipQuotedOffset;
+extern bool          SmartWrap;
+extern struct Regex *Smileys;
+extern bool          Tilde;
 
 /* dynamic internal flags */
 #define MUTT_SHOWFLAT  (1 << 0)
@@ -43,8 +53,9 @@ struct Menu;
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
 #define MUTT_PAGER_ATTACHMENT (1 << 8)
 #define MUTT_PAGER_NOWRAP     (1 << 9)    /**< format for term width, ignore $wrap */
+#define MUTT_PAGER_LOGS       (1 << 10)   /**< Logview mode */
 
-#define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
+#define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
 
 /**
  * struct Pager - An email being displayed
@@ -58,8 +69,8 @@ struct Pager
   struct AttachCtx *actx; /**< attachment information */
 };
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra);
-void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint);
+
+void mutt_clear_pager_position(void);
 
 #endif /* _MUTT_PAGER_H */

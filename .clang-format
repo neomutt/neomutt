@@ -8,6 +8,8 @@ ColumnLimit:       80
 BreakBeforeBraces: Allman
 
 IncludeCategories:
+  - Regex:      '"acutest\.h"'
+    Priority:   -12
   - Regex:      '"config\.h"'
     Priority:   -10
   - Regex:      '<stddef\.h>'
@@ -17,11 +19,15 @@ IncludeCategories:
   - Regex:      '".*_private\.h"'
     Priority:   -6
   - Regex:      '"mutt/.*\.h"'
+    Priority:   -5
+  - Regex:      '"config/.*\.h"'
     Priority:   -4
-  - Regex:      '"conn/.*\.h"'
+  - Regex:      '"email/.*\.h"'
     Priority:   -3
-  - Regex:      '"mutt\.h"'
+  - Regex:      '"conn/.*\.h"'
     Priority:   -2
+  - Regex:      '"mutt\.h"'
+    Priority:   -1
   # Main Header 0
   - Regex:      '".*"'
     Priority:   5

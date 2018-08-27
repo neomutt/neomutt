@@ -31,19 +31,22 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "address.h"
+#include "email/email.h"
 #include "alias.h"
-#include "body.h"
 #include "context.h"
-#include "envelope.h"
+#include "curs_lib.h"
 #include "globals.h"
-#include "header.h"
+#include "hdrline.h"
 #include "mutt_curses.h"
-#include "options.h"
+#include "mutt_header.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "protos.h"
 
-/*
- * SLcurses_waddnstr() can't take a "const char *", so this is only
+/* These Config Variables are only used in edit.c */
+char *Escape; ///< Config: Escape character to use for functions in the built-in editor
+
+/* SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
  */
 static char *EditorHelp1 =
@@ -68,6 +71,17 @@ static char *EditorHelp2 =
        "~?              this message\n"
        ".               on a line by itself ends input\n");
 
+/**
+ * be_snarf_data - Read data from a file into a buffer
+ * @param[in]  f      File to read from
+ * @param[out] buf    Buffer allocated to save data
+ * @param[out] bufmax Allocated size of buffer
+ * @param[out] buflen Bytes of buffer used
+ * @param[in]  offset Start reading at this file offset
+ * @param[in]  bytes  Read this many bytes
+ * @param[in]  prefix If true, prefix the lines with the IndentString
+ * @retval ptr Pointer to allocated buffer
+ */
 static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
                             LOFF_T offset, int bytes, int prefix)
 {
@@ -78,7 +92,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    mutt_str_strfcpy(tmp, NONULL(IndentString), sizeof(tmp));
+    mutt_str_strfcpy(tmp, IndentString, sizeof(tmp));
     tmplen = mutt_str_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -87,7 +101,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   fseeko(f, offset, SEEK_SET);
   while (bytes > 0)
   {
-    if (fgets(p, tmplen - 1, f) == NULL)
+    if (!fgets(p, tmplen - 1, f))
       break;
     bytes -= mutt_str_strlen(p);
     if (*bufmax == *buflen)
@@ -103,13 +117,21 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   return buf;
 }
 
-static char **be_snarf_file(const char *path, char **buf, int *max, int *len, int verbose)
+/**
+ * be_snarf_file - Read a file into a buffer
+ * @param[in]  path    File to read
+ * @param[out] buf     Buffer allocated to save data
+ * @param[out] max     Allocated size of buffer
+ * @param[out] len     Bytes of buffer used
+ * @param[in]  verbose If true, report the file and bytes read
+ * @retval ptr Pointer to allocated buffer
+ */
+static char **be_snarf_file(const char *path, char **buf, int *max, int *len, bool verbose)
 {
-  FILE *f = NULL;
   char tmp[LONG_STRING];
   struct stat sb;
 
-  f = fopen(path, "r");
+  FILE *f = fopen(path, "r");
   if (f)
   {
     fstat(fileno(f), &sb);
@@ -129,11 +151,17 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
   return buf;
 }
 
+/**
+ * be_barf_file - Write a buffer to a file
+ * @param path   Path to write to
+ * @param buf    Buffer to read from
+ * @param buflen Length of buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int be_barf_file(const char *path, char **buf, int buflen)
 {
-  FILE *f = NULL;
-
-  f = fopen(path, "w");
+  FILE *f = fopen(path, "w");
   if (!f)
   {
     addstr(strerror(errno));
@@ -148,6 +176,11 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   return -1;
 }
 
+/**
+ * be_free_memory - Free an array of buffers
+ * @param buf    Buffer to free
+ * @param buflen Number of buffers to free
+ */
 static void be_free_memory(char **buf, int buflen)
 {
   while (buflen-- > 0)
@@ -156,6 +189,16 @@ static void be_free_memory(char **buf, int buflen)
     FREE(&buf);
 }
 
+/**
+ * be_include_messages - Gather the contents of some messages
+ * @param[in]  msg      List of message numbers (space or comma separated)
+ * @param[out] buf      Buffer allocated to save data
+ * @param[out] bufmax   Allocated size of buffer
+ * @param[out] buflen   Bytes of buffer used
+ * @param[in]  pfx      Prefix
+ * @param[in]  inc_hdrs If true, include the message headers
+ * @retval ptr Pointer to allocated buffer
+ */
 static char **be_include_messages(char *msg, char **buf, int *bufmax,
                                   int *buflen, int pfx, int inc_hdrs)
 {
@@ -165,7 +208,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   if (!msg || !buf || !bufmax || !buflen)
     return buf;
 
-  while ((msg = strtok(msg, " ,")) != NULL)
+  while ((msg = strtok(msg, " ,")))
   {
     if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
     {
@@ -205,6 +248,10 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   return buf;
 }
 
+/**
+ * be_print_header - Print a message Header
+ * @param env Envelope to print
+ */
 static void be_print_header(struct Envelope *env)
 {
   char tmp[HUGE_STRING];
@@ -329,6 +376,14 @@ static void be_edit_header(struct Envelope *e, int force)
   }
 }
 
+/**
+ * mutt_builtin_editor - Show the user the built-in editor
+ * @param path File to read
+ * @param msg  Header of new message
+ * @param cur  Header of current message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
 {
   char **buf = NULL;
@@ -344,7 +399,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   addstr(_("(End message with a . on a line by itself)\n"));
 
-  buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
+  buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
   tmp[0] = '\0';
   while (!done)
@@ -423,7 +478,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           {
             strncpy(tmp, p, sizeof(tmp));
             mutt_expand_path(tmp, sizeof(tmp));
-            buf = be_snarf_file(tmp, buf, &bufmax, &buflen, 1);
+            buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }
           else
             addstr(_("missing filename.\n"));
@@ -456,21 +511,22 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             char *tag = NULL, *err = NULL;
             be_free_memory(buf, buflen);
             buf = NULL;
-            bufmax = buflen = 0;
+            bufmax = 0;
+            buflen = 0;
 
             if (EditHeaders)
             {
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);
               if (mutt_env_to_intl(msg->env, &tag, &err))
-                printw(_("Bad IDN in %s: '%s'\n"), tag, err);
+                printw(_("Bad IDN in '%s': '%s'"), tag, err);
               /* tag is a statically allocated string and should not be freed */
               FREE(&err);
             }
             else
               mutt_edit_file(NONULL(Visual), path);
 
-            buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
+            buf = be_snarf_file(path, buf, &bufmax, &buflen, false);
 
             addstr(_("(continue)\n"));
           }
@@ -504,5 +560,5 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
     be_barf_file(path, buf, buflen);
   be_free_memory(buf, buflen);
 
-  return (abort ? -1 : 0);
+  return abort ? -1 : 0;
 }

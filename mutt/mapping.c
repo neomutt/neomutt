@@ -25,13 +25,9 @@
  * @page mapping Map between a string and a constant
  *
  * Map a string to a constant and vice versa.
- *
- * | Function             | Description
- * | :------------------- | :-------------------------------
- * | mutt_map_get_name()  | Lookup a string for a constant
- * | mutt_map_get_value() | Lookup the constant for a string
  */
 
+#include "config.h"
 #include <stddef.h>
 #include "mapping.h"
 #include "string2.h"
@@ -40,7 +36,7 @@
  * mutt_map_get_name - Lookup a string for a constant
  * @param val ID to locate in map
  * @param map NULL-terminated map of strings and constants
- * @retval str  String matching ID
+ * @retval ptr  String matching ID
  * @retval NULL Error, or ID not found
  */
 const char *mutt_map_get_name(int val, const struct Mapping *map)

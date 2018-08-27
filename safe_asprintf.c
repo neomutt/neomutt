@@ -20,20 +20,30 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include "mutt/mutt.h"
-
-/* NOTE: Currently there is no check in configure.ac for vasprintf(3).  the
+/**
+ * @page safe_asprintf Wrapper for vasprintf()
+ *
+ * Wrapper for vasprintf()
+ *
+ * @note Currently there is no check in configure for vasprintf(3).  The
  * undefined behavior of the error condition makes it difficult to write a safe
  * version using it.
  */
 
-/**
- * safe_asprintf - Wrapper for vasprintf()
- */
+#include "config.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include "mutt/mutt.h"
+
 #ifdef HAVE_VASPRINTF
+/**
+ * safe_asprintf - Format a string, allocating space as necessary
+ * @param strp New string saved here
+ * @param fmt  Format string
+ * @param ...  Format arguments
+ * @retval num Characters written
+ * @retval -1  Error
+ */
 int safe_asprintf(char **strp, const char *fmt, ...)
 {
   va_list ap;
@@ -48,8 +58,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
    */
   if (n < 0)
   {
-    mutt_error(_("Out of memory!"));
-    sleep(1);
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
@@ -68,14 +77,13 @@ int safe_asprintf(char **strp, const char *fmt, ...)
 int safe_asprintf(char **strp, const char *fmt, ...)
 {
   int rlen = STRING;
-  int n;
 
   *strp = mutt_mem_malloc(rlen);
   while (true)
   {
     va_list ap;
     va_start(ap, fmt);
-    n = vsnprintf(*strp, rlen, fmt, ap);
+    const int n = vsnprintf(*strp, rlen, fmt, ap);
     va_end(ap);
     if (n < 0)
     {

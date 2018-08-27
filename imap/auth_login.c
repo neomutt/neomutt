@@ -24,24 +24,17 @@
  * @page imap_auth_login IMAP login authentication method
  *
  * IMAP login authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_login()  | Plain LOGIN support
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
-#include "mutt_socket.h"
-#include "options.h"
-#include "protos.h"
+#include "mutt_logging.h"
 
 /**
  * imap_auth_login - Plain LOGIN support
@@ -57,7 +50,7 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
 
   if (mutt_bit_isset(idata->capabilities, LOGINDISABLED))
   {
-    mutt_message(_("LOGIN disabled on this server."));
+    mutt_message(_("LOGIN disabled on this server"));
     return IMAP_AUTH_UNAVAIL;
   }
 
@@ -68,13 +61,13 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
 
   mutt_message(_("Logging in..."));
 
-  imap_quote_string(q_user, sizeof(q_user), idata->conn->account.user);
-  imap_quote_string(q_pass, sizeof(q_pass), idata->conn->account.pass);
+  imap_quote_string(q_user, sizeof(q_user), idata->conn->account.user, false);
+  imap_quote_string(q_pass, sizeof(q_pass), idata->conn->account.pass, false);
 
   /* don't print the password unless we're at the ungodly debugging level
    * of 5 or higher */
 
-  if (debuglevel < IMAP_LOG_PASS)
+  if (DebugLevel < IMAP_LOG_PASS)
     mutt_debug(2, "Sending LOGIN command for %s...\n", idata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
@@ -86,7 +79,6 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
   }
 
-  mutt_error(_("Login failed."));
-  mutt_sleep(2);
+  mutt_error(_("Login failed"));
   return IMAP_AUTH_FAILURE;
 }

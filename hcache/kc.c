@@ -35,16 +35,18 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "backend.h"
-#include "options.h"
+#include "globals.h"
 
+/**
+ * hcache_kyotocabinet_open - Implements HcacheOps::open()
+ */
 static void *hcache_kyotocabinet_open(const char *path)
 {
-  char kcdbpath[_POSIX_PATH_MAX];
+  char kcdbpath[PATH_MAX];
   int printfresult;
 
-  printfresult =
-      snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
-               path, HeaderCacheCompress ? "lc" : "l");
+  printfresult = snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
+                          path, HeaderCacheCompress ? "lc" : "l");
   if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
   {
     return NULL;
@@ -65,6 +67,9 @@ static void *hcache_kyotocabinet_open(const char *path)
   }
 }
 
+/**
+ * hcache_kyotocabinet_fetch - Implements HcacheOps::fetch()
+ */
 static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   size_t sp;
@@ -76,12 +81,18 @@ static void *hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen
   return kcdbget(db, key, keylen, &sp);
 }
 
+/**
+ * hcache_kyotocabinet_free - Implements HcacheOps::free()
+ */
 static void hcache_kyotocabinet_free(void *vctx, void **data)
 {
   kcfree(*data);
   *data = NULL;
 }
 
+/**
+ * hcache_kyotocabinet_store - Implements HcacheOps::store()
+ */
 static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
                                      void *data, size_t dlen)
 {
@@ -97,6 +108,9 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
   return 0;
 }
 
+/**
+ * hcache_kyotocabinet_delete - Implements HcacheOps::delete()
+ */
 static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
@@ -111,6 +125,9 @@ static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
   return 0;
 }
 
+/**
+ * hcache_kyotocabinet_close - Implements HcacheOps::close()
+ */
 static void hcache_kyotocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
@@ -125,6 +142,9 @@ static void hcache_kyotocabinet_close(void **ctx)
   kcdbdel(db);
 }
 
+/**
+ * hcache_kyotocabinet_backend - Implements HcacheOps::backend()
+ */
 static const char *hcache_kyotocabinet_backend(void)
 {
   /* SHORT_STRING(128) should be more than enough for KCVERSION */

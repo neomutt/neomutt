@@ -20,14 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page system Execute external programs
+ *
+ * Execute external programs
+ */
+
 #include "config.h"
 #include <signal.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
@@ -72,7 +77,7 @@ int mutt_system(const char *cmd)
     act.sa_flags = 0;
 
     /* reset signals for the child; not really needed, but... */
-    mutt_sig_unblock_system(0);
+    mutt_sig_unblock_system(false);
     act.sa_handler = SIG_DFL;
     act.sa_flags = 0;
     sigemptyset(&act.sa_mask);
@@ -80,7 +85,7 @@ int mutt_system(const char *cmd)
     sigaction(SIGTSTP, &act, NULL);
     sigaction(SIGCONT, &act, NULL);
 
-    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist());
+    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
     _exit(127); /* execl error */
   }
   else if (thepid != -1)
@@ -94,7 +99,7 @@ int mutt_system(const char *cmd)
   sigaction(SIGTSTP, &oldtstp, NULL);
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
-  mutt_sig_unblock_system(1);
+  mutt_sig_unblock_system(true);
 
   rc = (thepid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
 

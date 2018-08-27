@@ -83,15 +83,15 @@ set pgp_clearsign_command="gpg %?p?--pinentry-mode loopback --passphrase-fd 0? -
 
 # Create an encrypted attachment (note that some users include the --always-trust option here)
 #
-# set pgp_encrypt_only_command="/usr/lib/neomutt/pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+# set pgp_encrypt_only_command="/usr/libexec/neomutt/pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 #
-set pgp_encrypt_only_command="/usr/lib/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor --encrypt -- --recipient %r -- %f"
+set pgp_encrypt_only_command="/usr/libexec/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor --encrypt -- --recipient %r -- %f"
 
 # Create an encrypted and signed attachment (note that some users include the --always-trust option here)
-# 
-# set pgp_encrypt_sign_command="/usr/lib/neomutt/pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 #
-set pgp_encrypt_sign_command="/usr/lib/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor --sign --encrypt -- --recipient %r -- %f"
+# set pgp_encrypt_sign_command="/usr/libexec/neomutt/pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+#
+set pgp_encrypt_sign_command="/usr/libexec/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor --sign --encrypt -- --recipient %r -- %f"
 
 # Import a key into the public key ring
 #
@@ -107,11 +107,11 @@ set pgp_verify_key_command="gpg --verbose --batch --fingerprint --check-sigs %r"
 
 # Read in the public key ring
 #
-set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-keys %r" 
+set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-keys %r"
 
 # Read in the secret key ring
 #
-set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-secret-keys %r" 
+set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-secret-keys %r"
 
 # Fetch keys
 # set pgp_getkeys_command="pkspxycwrap %r"
@@ -125,5 +125,7 @@ set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --w
 set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
 
 # Output pattern to verify a decryption occurred
-set pgp_decryption_okay="^\\[GNUPG:\\] DECRYPTION_OKAY"
+# This is now deprecated by pgp_check_gpg_decrypt_status_fd:
+# set pgp_decryption_okay="^\\[GNUPG:\\] DECRYPTION_OKAY"
+set pgp_check_gpg_decrypt_status_fd
 

@@ -25,10 +25,6 @@
  * @page imap_auth_plain IMAP plain authentication method
  *
  * IMAP plain authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_plain()  | SASL PLAIN support
  */
 
 #include "config.h"
@@ -36,10 +32,9 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "protos.h"
 
 /**
  * imap_auth_plain - SASL PLAIN support
@@ -49,9 +44,10 @@
  */
 enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {
-  int rc;
+  int rc = IMAP_CMD_CONTINUE;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
-  char buf[STRING];
+  static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
+  char buf[STRING] = { 0 };
 
   if (mutt_account_getuser(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
@@ -60,13 +56,36 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 
   mutt_message(_("Logging in..."));
 
-  mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN", idata->conn->account.user,
+  /* Prepare full AUTHENTICATE PLAIN message */
+  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, idata->conn->account.user,
                       idata->conn->account.user, idata->conn->account.pass);
 
-  imap_cmd_start(idata, buf);
-  do
+  if (mutt_bit_isset(idata->capabilities, SASL_IR))
+  {
+    imap_cmd_start(idata, buf);
+  }
+  else
+  {
+    /* Split the message so we send AUTHENTICATE PLAIN first, and the
+     * credentials after the first command continuation request */
+    buf[sizeof(auth_plain_cmd) - 1] = '\0';
+    imap_cmd_start(idata, buf);
+    while (rc == IMAP_CMD_CONTINUE)
+    {
+      rc = imap_cmd_step(idata);
+    }
+    if (rc == IMAP_CMD_RESPOND)
+    {
+      mutt_str_strcat(buf + sizeof(auth_plain_cmd),
+                      sizeof(buf) - sizeof(auth_plain_cmd), "\r\n");
+      mutt_socket_send(idata->conn, buf + sizeof(auth_plain_cmd));
+    }
+  }
+
+  while (rc == IMAP_CMD_CONTINUE)
+  {
     rc = imap_cmd_step(idata);
-  while (rc == IMAP_CMD_CONTINUE);
+  }
 
   if (rc == IMAP_CMD_BAD)
   {
@@ -74,8 +93,7 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
   }
   else if (rc == IMAP_CMD_NO)
   {
-    mutt_error(_("Login failed."));
-    mutt_sleep(2);
+    mutt_error(_("Login failed"));
     res = IMAP_AUTH_FAILURE;
   }
 

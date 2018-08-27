@@ -30,22 +30,27 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "email/email.h"
 #include "mutt.h"
-#include "address.h"
-#include "body.h"
+#include "hdrline.h"
+#include "alias.h"
 #include "context.h"
-#include "envelope.h"
+#include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "header.h"
-#include "mbtable.h"
 #include "mutt_curses.h"
+#include "mutt_parse.h"
+#include "mutt_thread.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
-#include "options.h"
-#include "protos.h"
 #include "sort.h"
-#include "tags.h"
-#include "thread.h"
+
+/* These Config Variables are only used in hdrline.c */
+struct MbTable *FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
+struct MbTable *FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
+struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in the index
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)
@@ -65,19 +70,29 @@ enum FlagChars
   FlagCharZEmpty
 };
 
+/**
+ * mutt_is_mail_list - Is this the email address of a mailing list?
+ * @param addr Address to test
+ * @retval true If it's a mailing list
+ */
 bool mutt_is_mail_list(struct Address *addr)
 {
-  if (!mutt_regexlist_match(UnMailLists, addr->mailbox))
-    return mutt_regexlist_match(MailLists, addr->mailbox);
+  if (!mutt_regexlist_match(&UnMailLists, addr->mailbox))
+    return mutt_regexlist_match(&MailLists, addr->mailbox);
   return false;
 }
 
+/**
+ * mutt_is_subscribed_list - Is this the email address of a user-subscribed mailing list?
+ * @param addr Address to test
+ * @retval true If it's a subscribed mailing list
+ */
 bool mutt_is_subscribed_list(struct Address *addr)
 {
-  if (!mutt_regexlist_match(UnMailLists, addr->mailbox) &&
-      !mutt_regexlist_match(UnSubscribedLists, addr->mailbox))
+  if (!mutt_regexlist_match(&UnMailLists, addr->mailbox) &&
+      !mutt_regexlist_match(&UnSubscribedLists, addr->mailbox))
   {
-    return mutt_regexlist_match(SubscribedLists, addr->mailbox);
+    return mutt_regexlist_match(&SubscribedLists, addr->mailbox);
   }
   return false;
 }
@@ -110,9 +125,12 @@ static bool check_for_mailing_list(struct Address *addr, const char *pfx, char *
 
 /**
  * check_for_mailing_list_addr - Check an address list for a mailing list
+ * @param addr   Address list
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @retval true Mailing list found
  *
- * If one is found, print the address of the list into buf, then return 1.
- * Otherwise, simply return 0.
+ * If one is found, print the address of the list into buf.
  */
 static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buflen)
 {
@@ -128,6 +146,13 @@ static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buf
   return false;
 }
 
+/**
+ * first_mailing_list - Get the first mailing list in the list of addresses
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param a      Address list
+ * @retval true If a mailing list was found
+ */
 static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
   for (; a; a = a->next)
@@ -147,14 +172,12 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * @param buflen Buffer length
  * @param flags  Flags, e.g. MUTT_FORMAT_INDEX
  * @param color  Color, e.g. MT_COLOR_MESSAGE
- * @retval n Number of characters written
+ * @retval num Characters written
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
 static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
 {
-  size_t len;
-
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))
     return 0;
@@ -165,7 +188,7 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
 
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
-    len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_strlen(buf);
     buf += len;
     buflen -= len;
   }
@@ -216,7 +239,7 @@ static char *get_nth_wchar(struct MbTable *table, int index)
 /**
  * make_from_prefix - Create a prefix for an author field
  * @param disp   Type of field
- * @retval string Prefix string (do not free it)
+ * @retval ptr Prefix string (do not free it)
  *
  * If $from_chars is set, pick an appropriate character from it.
  * If not, use the default prefix: "To", "Cc", etc
@@ -226,7 +249,10 @@ static const char *make_from_prefix(enum FieldType disp)
   /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
   static const char *long_prefixes[DISP_NUM] = {
-        [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ", [DISP_FROM] = "",
+    [DISP_TO] = "To ",
+    [DISP_CC] = "Cc ",
+    [DISP_BCC] = "Bcc ",
+    [DISP_FROM] = "",
   };
 
   if (!FromChars || !FromChars->chars || (FromChars->len == 0))
@@ -244,7 +270,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * make_from - Generate a From: field (with optional prefix)
  * @param env      Envelope of the email
  * @param buf      Buffer to store the result
- * @param len      Size of the buffer
+ * @param buflen   Size of the buffer
  * @param do_lists Should we check for mailing lists?
  *
  * Generate the %F or %L field in $index_format.
@@ -253,7 +279,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
+static void make_from(struct Envelope *env, char *buf, size_t buflen, bool do_lists)
 {
   if (!env || !buf)
     return;
@@ -266,9 +292,9 @@ static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list(env->to, make_from_prefix(DISP_TO), buf, len))
+    if (check_for_mailing_list(env->to, make_from_prefix(DISP_TO), buf, buflen))
       return;
-    if (check_for_mailing_list(env->cc, make_from_prefix(DISP_CC), buf, len))
+    if (check_for_mailing_list(env->cc, make_from_prefix(DISP_CC), buf, buflen))
       return;
   }
 
@@ -298,10 +324,17 @@ static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
     return;
   }
 
-  snprintf(buf, len, "%s%s", make_from_prefix(disp), mutt_get_name(name));
+  snprintf(buf, buflen, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
-static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_lists)
+/**
+ * make_from_addr - Create a 'from' address for a reply email
+ * @param hdr      Envelope of current email
+ * @param buf      Buffer for the result
+ * @param buflen   Length of buffer
+ * @param do_lists If true, check for mailing lists
+ */
+static void make_from_addr(struct Envelope *hdr, char *buf, size_t buflen, bool do_lists)
 {
   if (!hdr || !buf)
     return;
@@ -310,22 +343,27 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_l
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list_addr(hdr->to, buf, len))
+    if (check_for_mailing_list_addr(hdr->to, buf, buflen))
       return;
-    if (check_for_mailing_list_addr(hdr->cc, buf, len))
+    if (check_for_mailing_list_addr(hdr->cc, buf, buflen))
       return;
   }
 
   if (me && hdr->to)
-    snprintf(buf, len, "%s", hdr->to->mailbox);
+    snprintf(buf, buflen, "%s", hdr->to->mailbox);
   else if (me && hdr->cc)
-    snprintf(buf, len, "%s", hdr->cc->mailbox);
+    snprintf(buf, buflen, "%s", hdr->cc->mailbox);
   else if (hdr->from)
-    mutt_str_strfcpy(buf, hdr->from->mailbox, len);
+    mutt_str_strfcpy(buf, hdr->from->mailbox, buflen);
   else
     *buf = 0;
 }
 
+/**
+ * user_in_addr - Do any of the addresses refer to the user?
+ * @param a Address list
+ * @retval true If any of the addresses match one of the user's addresses
+ */
 static bool user_in_addr(struct Address *a)
 {
   for (; a; a = a->next)
@@ -336,6 +374,7 @@ static bool user_in_addr(struct Address *a)
 
 /**
  * user_is_recipient - Is the user a recipient of the message
+ * @param h Header of email to test
  * @retval 0 User is not in list
  * @retval 1 User is unique recipient
  * @retval 2 User is in the TO list
@@ -376,93 +415,100 @@ static int user_is_recipient(struct Header *h)
   return h->recipient;
 }
 
+/**
+ * apply_subject_mods - Apply regex modifications to the subject
+ * @param env Envelope of email
+ * @retval ptr  Modified subject
+ * @retval NULL No modification made
+ */
 static char *apply_subject_mods(struct Envelope *env)
 {
   if (!env)
     return NULL;
 
-  if (!SubjectRegexList)
+  if (STAILQ_EMPTY(&SubjectRegexList))
     return env->subject;
 
-  if (env->subject == NULL || *env->subject == '\0')
-    return env->disp_subj = NULL;
+  if (!env->subject || *env->subject == '\0')
+  {
+    env->disp_subj = NULL;
+    return NULL;
+  }
 
-  env->disp_subj = mutt_replacelist_apply(SubjectRegexList, NULL, 0, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, NULL, 0, env->subject);
   return env->disp_subj;
 }
 
+/**
+ * thread_is_new - Does the email thread contain any new emails?
+ * @param ctx Mailbox
+ * @param hdr Header of an email
+ * @retval true If thread contains new mail
+ */
 static bool thread_is_new(struct Context *ctx, struct Header *hdr)
 {
-  return (hdr->collapsed && (hdr->num_hidden > 1) &&
-          (mutt_thread_contains_unread(ctx, hdr) == 1));
-}
-
-static bool thread_is_old(struct Context *ctx, struct Header *hdr)
-{
-  return (hdr->collapsed && (hdr->num_hidden > 1) &&
-          (mutt_thread_contains_unread(ctx, hdr) == 2));
+  return hdr->collapsed && (hdr->num_hidden > 1) &&
+         (mutt_thread_contains_unread(ctx, hdr) == 1);
 }
 
 /**
- * index_format_str - Format a string for the index list
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * index_format_str() is a callback function for mutt_expando_format().
+ * thread_is_old - Does the email thread contain any unread emails?
+ * @param ctx Mailbox
+ * @param hdr Header of an email
+ * @retval true If thread contains unread mail
+ */
+static bool thread_is_old(struct Context *ctx, struct Header *hdr)
+{
+  return hdr->collapsed && (hdr->num_hidden > 1) &&
+         (mutt_thread_contains_unread(ctx, hdr) == 2);
+}
+
+/**
+ * index_format_str - Format a string for the index list - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | Address of author
- * | \%A     | Reply-to address (if present; otherwise: address of author
- * | \%b     | Filename of the originating folder
+ * | \%a     | Address of the author
+ * | \%A     | Reply-to address (if present; otherwise: address of author)
+ * | \%b     | Filename of the original message folder (think mailbox)
  * | \%B     | The list to which the letter was sent, or else the folder name (%b).
  * | \%C     | Current message number
- * | \%c     | Size of message in bytes
+ * | \%c     | Number of characters (bytes) in the message
  * | \%D     | Date and time of message using $date_format and local timezone
  * | \%d     | Date and time of message using $date_format and sender's timezone
  * | \%e     | Current message number in thread
  * | \%E     | Number of messages in current thread
- * | \%f     | Entire from line
- * | \%F     | Like %n, unless from self
+ * | \%F     | Author name, or recipient name if the message is from you
+ * | \%f     | Sender (address + real name), either From: or Return-Path:
  * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
  * | \%H     | Spam attribute(s) of this message
  * | \%I     | Initials of author
- * | \%i     | Message-id
+ * | \%i     | Message-id of the current message
  * | \%J     | Message tags (if present, tree unfolded, and != parent's tags)
  * | \%K     | The list to which the letter was sent (if any; otherwise: empty)
  * | \%L     | Like %F, except 'lists' are displayed first
  * | \%l     | Number of lines in the message
  * | \%M     | Number of hidden messages if the thread is collapsed
- * | \%m     | Number of messages in the mailbox
- * | \%n     | Name of author
- * | \%N     | Score
+ * | \%m     | Total number of message in the mailbox
+ * | \%N     | Message score
+ * | \%n     | Author's real name (or address if missing)
  * | \%O     | Like %L, except using address instead of name
- * | \%P     | Progress indicator for builtin pager
+ * | \%P     | Progress indicator for the built-in pager (how much of the file has been displayed)
  * | \%q     | Newsgroup name (if compiled with NNTP support)
  * | \%R     | Comma separated list of Cc: recipients
  * | \%r     | Comma separated list of To: recipients
- * | \%S     | Short message status (e.g., N/O/D/!/r/-)
- * | \%s     | Subject
- * | \%T     | $to_chars
+ * | \%S     | Single character status of the message (N/O/D/d/!/r/-)
+ * | \%s     | Subject of the message
+ * | \%T     | The appropriate character from the $$to_chars string
  * | \%t     | 'To:' field (recipients)
- * | \%u     | User (login) name of author
- * | \%v     | First name of author, unless from self
- * | \%W     | Where user is (organization)
+ * | \%u     | User (login) name of the author
+ * | \%v     | First name of the author, or the recipient if the message is from you
+ * | \%W     | Name of organization of author ('Organization:' field)
  * | \%x     | 'X-Comment-To:' field (if present and compiled with NNTP support)
  * | \%X     | Number of MIME attachments
- * | \%y     | 'X-Label:' field (if present)
  * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
+ * | \%y     | 'X-Label:' field (if present)
  * | \%Z     | Combined message flags
  * | \%zc    | Message crypto flags
  * | \%zs    | Message status flags
@@ -477,19 +523,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                                     unsigned long data, enum FormatFlag flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
-  struct Header *hdr = NULL, *htmp = NULL;
-  struct Context *ctx = NULL;
   char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
   char *wch = NULL;
-  int do_locales, i;
+  int i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
-  size_t len;
   size_t colorlen;
 
-  hdr = hfi->hdr;
-  ctx = hfi->ctx;
+  struct Header *hdr = hfi->hdr;
+  struct Context *ctx = hfi->ctx;
 
   if (!hdr || !hdr->env)
     return src;
@@ -519,13 +562,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           break;
         }
       }
-    /* fallthrough */
+      /* fallthrough */
 
     case 'a':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
       if (hdr->env->from && hdr->env->from->mailbox)
+      {
         mutt_format_s(buf + colorlen, buflen - colorlen, prec,
                       mutt_addr_for_display(hdr->env->from));
+      }
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
@@ -551,8 +596,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         /* break if 'K' returns nothing */
         break;
       }
-    /* if 'B' returns nothing */
-    /* fallthrough */
+      /* if 'B' returns nothing */
+      /* fallthrough */
 
     case 'b':
       if (ctx)
@@ -594,7 +639,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         const char *cp = NULL;
         struct tm *tm = NULL;
         time_t T;
-        int j = 0, invert = 0;
+        int j = 0;
 
         if (optional && ((op == '[') || (op == '(')))
         {
@@ -604,6 +649,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           T -= (op == '(') ? hdr->received : hdr->date_sent;
 
           is = (char *) prec;
+          int invert = 0;
           if (*is == '>')
           {
             invert = 1;
@@ -690,15 +736,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         p = buf;
 
         cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
+        bool do_locales;
         if (*cp == '!')
         {
-          do_locales = 0;
+          do_locales = false;
           cp++;
         }
         else
-          do_locales = 1;
+          do_locales = true;
 
-        len = buflen - 1;
+        size_t len = buflen - 1;
         while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
                            (op == '{' && *cp != '}') || (op == '[' && *cp != ']') ||
                            (op == '(' && *cp != ')') || (op == '<' && *cp != '>')))
@@ -799,7 +846,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, tmp, sizeof(tmp), 0);
+        make_from(hdr->env, tmp, sizeof(tmp), false);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
@@ -820,7 +867,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       FREE(&tags);
       break;
 
-    case 'G':;
+    case 'G':
+    {
       char format[3];
       char *tag = NULL;
 
@@ -856,7 +904,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           FREE(&tags);
         }
       }
-      break;
+    }
+    break;
 
     case 'H':
       /* (Hormel) spam score */
@@ -882,11 +931,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         {
           char *parent_tags = NULL;
           if (hdr->thread->prev && hdr->thread->prev->message)
+          {
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+          }
           if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
+          {
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+          }
           if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
             i = 0;
           FREE(&parent_tags);
@@ -923,7 +976,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, tmp, sizeof(tmp), 1);
+        make_from(hdr->env, tmp, sizeof(tmp), true);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
@@ -992,7 +1045,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'O':
       if (!optional)
       {
-        make_from_addr(hdr->env, tmp, sizeof(tmp), 1);
+        make_from_addr(hdr->env, tmp, sizeof(tmp), true);
         if (!SaveAddress && (p = strpbrk(tmp, "%@")))
           *p = 0;
         mutt_format_s(buf, buflen, prec, tmp);
@@ -1005,7 +1058,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'P':
-      mutt_str_strfcpy(buf, NONULL(hfi->pager_progress), buflen);
+      mutt_str_strfcpy(buf, hfi->pager_progress, buflen);
       break;
 
 #ifdef USE_NNTP
@@ -1035,7 +1088,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       char *subj = NULL;
       if (hdr->env->disp_subj)
         subj = hdr->env->disp_subj;
-      else if (SubjectRegexList)
+      else if (!STAILQ_EMPTY(&SubjectRegexList))
         subj = apply_subject_mods(hdr->env);
       else
         subj = hdr->env->subject;
@@ -1139,8 +1192,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'W':
       if (!optional)
+      {
         mutt_format_s(buf, buflen, prec,
                       hdr->env->organization ? hdr->env->organization : "");
+      }
       else if (!hdr->env->organization)
         optional = 0;
       break;
@@ -1148,8 +1203,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 #ifdef USE_NNTP
     case 'x':
       if (!optional)
+      {
         mutt_format_s(buf, buflen, prec,
                       hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
+      }
       else if (!hdr->env->x_comment_to)
         optional = 0;
       break;
@@ -1181,7 +1238,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (hdr->env->x_label)
       {
         i = 1; /* reduce reuse recycle */
-        htmp = NULL;
+        struct Header *htmp = NULL;
         if (flags & MUTT_FORMAT_TREE && (hdr->thread->prev && hdr->thread->prev->message &&
                                          hdr->thread->prev->message->env->x_label))
         {
@@ -1243,14 +1300,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (src[0] == 'c') /* crypto */
       {
         char *ch = NULL;
-        if (WithCrypto && (hdr->security & GOODSIGN))
+        if ((WithCrypto != 0) && (hdr->security & GOODSIGN))
           ch = "S";
-        else if (WithCrypto && (hdr->security & ENCRYPT))
+        else if ((WithCrypto != 0) && (hdr->security & ENCRYPT))
           ch = "P";
-        else if (WithCrypto && (hdr->security & SIGN))
+        else if ((WithCrypto != 0) && (hdr->security & SIGN))
           ch = "s";
-        else if ((WithCrypto & APPLICATION_PGP) && (hdr->security & PGPKEY))
+        else if (((WithCrypto & APPLICATION_PGP) != 0) &&
+                 ((hdr->security & PGP_KEY) == PGP_KEY))
+        {
           ch = "K";
+        }
         else
           ch = " ";
 
@@ -1307,13 +1367,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = get_nth_wchar(FlagChars, FlagCharDeleted);
       else if (hdr->attach_del)
         second = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
-      else if (WithCrypto && (hdr->security & GOODSIGN))
+      else if ((WithCrypto != 0) && (hdr->security & GOODSIGN))
         second = "S";
-      else if (WithCrypto && (hdr->security & ENCRYPT))
+      else if ((WithCrypto != 0) && (hdr->security & ENCRYPT))
         second = "P";
-      else if (WithCrypto && (hdr->security & SIGN))
+      else if ((WithCrypto != 0) && (hdr->security & SIGN))
         second = "s";
-      else if ((WithCrypto & APPLICATION_PGP) && (hdr->security & PGPKEY))
+      else if (((WithCrypto & APPLICATION_PGP) != 0) && (hdr->security & PGP_KEY))
         second = "K";
       else
         second = " ";
@@ -1341,15 +1401,28 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   }
 
   if (optional)
+  {
     mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str,
                         (unsigned long) hfi, flags);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
+  {
     mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str,
                         (unsigned long) hfi, flags);
+  }
 
   return src;
 }
 
+/**
+ * mutt_make_string_flags - Create formatted strings using mailbox expandos
+ * @param buf    Buffer for the result
+ * @param buflen Buffer length
+ * @param s      printf-line format string
+ * @param ctx    Mailbox
+ * @param hdr    Header of email
+ * @param flags  Format flags
+ */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                             struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
 {
@@ -1363,6 +1436,15 @@ void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
                       index_format_str, (unsigned long) &hfi, flags);
 }
 
+/**
+ * mutt_make_string_info - Create pager status bar string
+ * @param buf    Buffer for the result
+ * @param buflen Buffer length
+ * @param cols   Number of screen columns
+ * @param s      printf-line format string
+ * @param hfi    Mailbox data to pass to the formatter
+ * @param flags  Format flags
+ */
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {

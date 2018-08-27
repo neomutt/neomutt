@@ -24,47 +24,6 @@
  * @page string String manipulation functions
  *
  * Lots of commonly-used string manipulation routines.
- *
- * | Function                      | Description
- * | :---------------------------- | :---------------------------------------------------------
- * | mutt_str_adjust()             | Shrink-to-fit a string
- * | mutt_str_append_item()        | Add string to another separated by sep
- * | mutt_str_atoi()               | Convert ASCII string to an integer
- * | mutt_str_atol()               | Convert ASCII string to a long
- * | mutt_str_atos()               | Convert ASCII string to a short
- * | mutt_str_atoui()              | Convert ASCII string to an unsigned integer
- * | mutt_str_atoul()              | Convert ASCII string to an unsigned long
- * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
- * | mutt_str_find_word()          | Find the next word (non-space)
- * | mutt_str_getenv()             | Get an environment variable
- * | mutt_str_is_ascii()           | Is a string ASCII (7-bit)?
- * | mutt_str_is_email_wsp()       | Is this a whitespace character (for an email header)
- * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
- * | mutt_str_lws_rlen()           | Measure the linear-white-space at the end of a string
- * | mutt_str_next_word()          | Find the next word in a string
- * | mutt_str_remove_trailing_ws() | Trim trailing whitespace from a string
- * | mutt_str_replace()            | Replace one string with another
- * | mutt_str_rstrnstr()           | Find last instance of a substring
- * | mutt_str_skip_email_wsp()     | Skip over whitespace as defined by RFC5322
- * | mutt_str_skip_whitespace()    | Find the first non-whitespace character in a string
- * | mutt_str_strcasecmp()         | Compare two strings ignoring case, safely
- * | mutt_str_strcat()             | Concatenate two strings
- * | mutt_str_strchrnul()          | Find first occurrence of character in string
- * | mutt_str_strcmp()             | Compare two strings, safely
- * | mutt_str_strcoll()            | Collate two strings (compare using locale), safely
- * | mutt_str_strdup()             | Copy a string, safely
- * | mutt_str_strfcpy()            | Copy a string into a buffer (guaranteeing NUL-termination)
- * | mutt_str_stristr()            | Find first occurrence of string (ignoring case)
- * | mutt_str_strlen()             | Calculate the length of a string, safely
- * | mutt_str_strlower()           | convert all characters in the string to lowercase
- * | mutt_str_strncasecmp()        | Compare two strings ignoring case (to a maximum), safely
- * | mutt_str_strncat()            | Concatenate two strings
- * | mutt_str_strncmp()            | Compare two strings (to a maximum), safely
- * | mutt_str_strnfcpy()           | Copy a limited string into a buffer (guaranteeing NUL-termination)
- * | mutt_str_substr_cpy()         | Copy a sub-string into a buffer
- * | mutt_str_substr_dup()         | Duplicate a sub-string
- * | mutt_str_sysexit()            | Return a string matching an error code
- * | mutt_str_word_casecmp()       | Find word a in word list b
  */
 
 #include "config.h"
@@ -72,10 +31,11 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "debug.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
@@ -142,6 +102,7 @@ static const struct SysExits
 /**
  * mutt_str_sysexit - Return a string matching an error code
  * @param e Error code, e.g. EX_NOPERM
+ * @retval ptr string representing the error code
  */
 const char *mutt_str_sysexit(int e)
 {
@@ -162,6 +123,7 @@ const char *mutt_str_sysexit(int e)
  * @param[out] dst Store the result
  * @retval  0 Success
  * @retval -1 Error
+ * @retval -2 Overflow
  *
  * This is a strtol() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
@@ -179,9 +141,12 @@ int mutt_str_atol(const char *str, long *dst)
     return 0;
   }
 
+  errno = 0;
   *res = strtol(str, &e, 10);
-  if (((*res == LONG_MAX) && (errno == ERANGE)) || (e && (*e != '\0')))
+  if (e && (*e != '\0'))
     return -1;
+  if (errno == ERANGE)
+    return -2;
   return 0;
 }
 
@@ -252,14 +217,13 @@ int mutt_str_atoi(const char *str, int *dst)
  * mutt_str_atoui - Convert ASCII string to an unsigned integer
  * @param[in]  str String to read
  * @param[out] dst Store the result
- * @retval  1 Successful conversion, with trailing characters 
- * @retval  0 Successful conversion                           
- * @retval -1 Invalid input                                   
- * @retval -2 Input out of range                              
+ * @retval  1 Successful conversion, with trailing characters
+ * @retval  0 Successful conversion
+ * @retval -1 Invalid input
+ * @retval -2 Input out of range
  *
- * @note
- * This function's return value differs from the other functions.
- * They return -1 if there is input beyond the number.
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
  */
 int mutt_str_atoui(const char *str, unsigned int *dst)
 {
@@ -284,13 +248,12 @@ int mutt_str_atoui(const char *str, unsigned int *dst)
  * mutt_str_atoul - Convert ASCII string to an unsigned long
  * @param[in]  str String to read
  * @param[out] dst Store the result
- * @retval  1 Successful conversion, with trailing characters 
- * @retval  0 Successful conversion                           
- * @retval -1 Invalid input                                   
+ * @retval  1 Successful conversion, with trailing characters
+ * @retval  0 Successful conversion
+ * @retval -1 Invalid input
  *
- * @note
- * This function's return value differs from the other functions.
- * They return -1 if there is input beyond the number.
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
  */
 int mutt_str_atoul(const char *str, unsigned long *dst)
 {
@@ -313,47 +276,46 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
     return 1;
   return 0;
 }
+
 /**
  * mutt_str_strdup - Copy a string, safely
- * @param s String to copy
+ * @param str String to copy
  * @retval ptr  Copy of the string
- * @retval NULL if s was NULL
+ * @retval NULL if str was NULL
  */
-char *mutt_str_strdup(const char *s)
+char *mutt_str_strdup(const char *str)
 {
-  char *p = NULL;
-  size_t l;
+  if (!str || !*str)
+    return NULL;
 
-  if (!s || !*s)
-    return 0;
-  l = strlen(s) + 1;
-  p = mutt_mem_malloc(l);
-  memcpy(p, s, l);
-  return p;
+  const size_t len = strlen(str) + 1;
+  char *copy = mutt_mem_malloc(len);
+  memcpy(copy, str, len);
+  return copy;
 }
 
 /**
  * mutt_str_strcat - Concatenate two strings
- * @param d Buffer containing source string
- * @param l Length of buffer
- * @param s String to add
+ * @param buf    Buffer containing source string
+ * @param buflen Length of buffer
+ * @param s      String to add
  * @retval ptr Start of joined string
  */
-char *mutt_str_strcat(char *d, size_t l, const char *s)
+char *mutt_str_strcat(char *buf, size_t buflen, const char *s)
 {
-  char *p = d;
+  char *p = buf;
 
-  if (!l)
-    return d;
+  if (!buflen)
+    return buf;
 
-  l--; /* Space for the trailing '\0'. */
+  buflen--; /* Space for the trailing '\0'. */
 
-  for (; *d && l; l--)
-    d++;
-  for (; *s && l; l--)
-    *d++ = *s++;
+  for (; *buf && buflen; buflen--)
+    buf++;
+  for (; *s && buflen; buflen--)
+    *buf++ = *s++;
 
-  *d = '\0';
+  *buf = '\0';
 
   return p;
 }
@@ -637,8 +599,10 @@ const char *mutt_str_stristr(const char *haystack, const char *needle)
   while (*(p = haystack))
   {
     for (q = needle;
-         *p && *q && tolower((unsigned char) *p) == tolower((unsigned char) *q); p++, q++)
-      ;
+         *p && *q && (tolower((unsigned char) *p) == tolower((unsigned char) *q));
+         p++, q++)
+    {
+    }
     if (!*q)
       return haystack;
     haystack++;
@@ -666,7 +630,7 @@ char *mutt_str_skip_whitespace(char *p)
  */
 void mutt_str_remove_trailing_ws(char *s)
 {
-  for (char *p = s + mutt_str_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+  for (char *p = s + mutt_str_strlen(s) - 1; (p >= s) && ISSPACE(*p); p--)
     *p = '\0';
 }
 
@@ -675,12 +639,17 @@ void mutt_str_remove_trailing_ws(char *s)
  * @param dest  Buffer for the result
  * @param src   String to copy
  * @param dsize Destination buffer size
- * @retval len Destination string length
+ * @retval num Destination string length
  */
 size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 {
-  if (dsize == 0)
+  if (!dest || (dsize == 0))
     return 0;
+  if (!src)
+  {
+    dest[0] = '\0';
+    return 0;
+  }
 
   char *dest0 = dest;
   while ((--dsize > 0) && (*src != '\0'))
@@ -700,19 +669,19 @@ size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
  */
 char *mutt_str_skip_email_wsp(const char *s)
 {
-  if (s)
-    return (char *) (s + strspn(s, EMAIL_WSP));
-  return (char *) s;
+  if (!s)
+    return NULL;
+  return (char *) (s + strspn(s, EMAIL_WSP));
 }
 
 /**
  * mutt_str_is_email_wsp - Is this a whitespace character (for an email header)
  * @param c Character to test
- * @retval boolean
+ * @retval true It is whitespcae
  */
-int mutt_str_is_email_wsp(char c)
+bool mutt_str_is_email_wsp(char c)
 {
-  return c && (strchr(EMAIL_WSP, c) != NULL);
+  return c && (strchr(EMAIL_WSP, c));
 }
 
 /**
@@ -721,7 +690,7 @@ int mutt_str_is_email_wsp(char c)
  * @param src   String to copy
  * @param n     Maximum number of characters to copy
  * @param dsize Destination buffer size
- * @retval len Destination string length
+ * @retval num Destination string length
  */
 size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
 {
@@ -742,7 +711,7 @@ size_t mutt_str_lws_len(const char *s, size_t n)
   const char *p = s;
   size_t len = n;
 
-  if (n <= 0)
+  if (n == 0)
     return 0;
 
   for (; p < (s + n); p++)
@@ -754,7 +723,7 @@ size_t mutt_str_lws_len(const char *s, size_t n)
     }
   }
 
-  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
+  if (len != 0 && strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
     len = 0;
   return len;
 }
@@ -773,7 +742,7 @@ size_t mutt_str_lws_rlen(const char *s, size_t n)
   const char *p = s + n - 1;
   size_t len = n;
 
-  if (n <= 0)
+  if (n == 0)
     return 0;
 
   if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
@@ -885,7 +854,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
   char tmp[SHORT_STRING] = "";
 
   int i;
-  for (i = 0; i < SHORT_STRING - 2; i++, b++)
+  for (i = 0; i < (SHORT_STRING - 2); i++, b++)
   {
     if (!*b || ISSPACE(*b))
     {
@@ -903,7 +872,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
  * @param p   String to examine
  * @param len Length of string
- * @retval bool True if there are no 8-bit chars
+ * @retval true There are no 8-bit chars
  */
 bool mutt_str_is_ascii(const char *p, size_t len)
 {
@@ -940,7 +909,7 @@ const char *mutt_str_find_word(const char *src)
 }
 
 /**
- * mutt_str_pretty_size - Display an abbreviated size, e.g. 3.4K
+ * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
  * @param buf    Buffer for the result
  * @param buflen Length of the buffer
  * @param num    Number to abbreviate
@@ -986,7 +955,31 @@ const char *mutt_str_getenv(const char *name)
 
   const char *val = getenv(name);
   if (val && (val[0] != '\0'))
-      return val;
+    return val;
 
   return NULL;
+}
+
+/**
+ * mutt_str_inline_replace - Replace the beginning of a string
+ * @param buf    Buffer to modify
+ * @param buflen Length of buffer
+ * @param xlen   Length of string to overwrite
+ * @param rstr   Replacement string
+ * @retval true Success
+ *
+ * String (`XX<OOOOOO>......`, 16, 2, `RRRR`) becomes `RRRR<OOOOOO>....`
+ */
+bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr)
+{
+  if (!buf || !rstr || (xlen >= buflen))
+    return false;
+
+  size_t slen = mutt_str_strlen(buf + xlen);
+  size_t rlen = mutt_str_strlen(rstr);
+
+  memmove(buf + rlen, buf + xlen, slen + 1);
+  memmove(buf, rstr, rlen);
+
+  return true;
 }

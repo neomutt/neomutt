@@ -26,14 +26,12 @@
 
 #include <regex.h>
 #include "mutt/mutt.h"
-#include "options.h"
-#include "mutt/queue.h"
 
 #ifdef USE_SLANG_CURSES
 
-#ifndef unix /* this symbol is not defined by the hp-ux compiler (sigh) */
+#ifndef unix /* this symbol is not defined by the hp-ux compiler */
 #define unix
-#endif /* unix */
+#endif
 
 #include <slang.h> /* in addition to slcurses.h, we need slang.h for the version
                       number to test for 2.x having UTF-8 support in main.c */
@@ -68,9 +66,9 @@
 
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/ncurses.h>
-#elif HAVE_NCURSES_NCURSES_H
+#elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/ncurses.h>
-#elif HAVE_NCURSES_H
+#elif defined(HAVE_NCURSES_H)
 #include <ncurses.h>
 #else
 #include <curses.h>
@@ -112,18 +110,7 @@ struct Event
   int op; /**< function op */
 };
 
-struct Event mutt_getch(void);
-
-void mutt_endwin(const char *msg);
-void mutt_flushinp(void);
-void mutt_refresh(void);
 void mutt_resize_screen(void);
-void mutt_unget_event(int ch, int op);
-void mutt_unget_string(char *s);
-void mutt_push_macro_event(int ch, int op);
-void mutt_flush_macro_to_endcond(void);
-void mutt_flush_unget_to_endcond(void);
-void mutt_need_hard_redraw(void);
 
 /* ----------------------------------------------------------------------------
  * Support for color
@@ -163,6 +150,7 @@ enum ColorId
   MT_COLOR_SB_INDICATOR,
   MT_COLOR_SB_SPOOLFILE,
 #endif
+  MT_COLOR_MESSAGE_LOG,
   /* please no non-MT_COLOR_INDEX objects after this point */
   MT_COLOR_INDEX,
   MT_COLOR_INDEX_AUTHOR,
@@ -201,72 +189,6 @@ struct ColorLine
 };
 STAILQ_HEAD(ColorLineHead, ColorLine);
 
-#define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
-#define MUTT_PROGRESS_MSG  (1 << 1) /**< message-based progress */
-
-/**
- * struct Progress - A progress bar
- */
-struct Progress
-{
-  unsigned short inc;
-  unsigned short flags;
-  const char *msg;
-  long pos;
-  size_t size;
-  unsigned int timestamp;
-  char sizestr[SHORT_STRING];
-};
-
-void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, size_t size);
-/* If percent is positive, it is displayed as percentage, otherwise
- * percentage is calculated from progress->size and pos if progress
- * was initialized with positive size, otherwise no percentage is shown */
-void mutt_progress_update(struct Progress *progress, long pos, int percent);
-
-/**
- * struct MuttWindow - A division of the screen
- *
- * Windows for different parts of the screen
- */
-struct MuttWindow
-{
-  int rows;
-  int cols;
-  int row_offset;
-  int col_offset;
-};
-
-extern struct MuttWindow *MuttHelpWindow;
-extern struct MuttWindow *MuttIndexWindow;
-extern struct MuttWindow *MuttStatusWindow;
-extern struct MuttWindow *MuttMessageWindow;
-#ifdef USE_SIDEBAR
-extern struct MuttWindow *MuttSidebarWindow;
-#endif
-
-void mutt_init_windows(void);
-void mutt_free_windows(void);
-void mutt_reflow_windows(void);
-int mutt_window_move(struct MuttWindow *win, int row, int col);
-int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch);
-int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str);
-int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
-void mutt_window_clrtoeol(struct MuttWindow *win);
-void mutt_window_clearline(struct MuttWindow *win, int row);
-void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
-
-static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
-{
-  if (wrap < 0)
-    return win->cols > -wrap ? win->cols + wrap : win->cols;
-  else if (wrap)
-    return wrap < win->cols ? wrap : win->cols;
-  else
-    return win->cols;
-}
-
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];
@@ -279,8 +201,6 @@ extern struct ColorLineHead ColorIndexAuthorList;
 extern struct ColorLineHead ColorIndexFlagsList;
 extern struct ColorLineHead ColorIndexSubjectList;
 extern struct ColorLineHead ColorIndexTagList;
-
-void ci_start_color(void);
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the

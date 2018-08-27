@@ -22,7 +22,7 @@
  */
 
 /**
- * @page imap IMAP Network Mailbox
+ * @page imap IMAP: Network Mailbox
  *
  * IMAP network mailbox
  *
@@ -47,15 +47,31 @@
 #define _IMAP_IMAP_H
 
 #include "conn/conn.h"
-#include "mutt_account.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <sys/types.h>
+#include "mx.h"
 
 struct BrowserState;
 struct Context;
 struct Header;
-struct Message;
 struct Pattern;
+
+/* These Config Variables are only used in imap/auth.c */
+extern char *ImapAuthenticators;
+
+/* These Config Variables are only used in imap/imap.c */
+extern bool ImapIdle;
+
+/* These Config Variables are only used in imap/message.c */
+extern char *ImapHeaders;
+
+/* These Config Variables are only used in imap/command.c */
+extern bool ImapServernoise;
+
+/* These Config Variables are only used in imap/util.c */
+extern char *ImapDelimChars;
+extern short ImapPipelineDepth;
 
 /**
  * struct ImapMbox - An IMAP mailbox
@@ -68,15 +84,16 @@ struct ImapMbox
 
 /* imap.c */
 int imap_access(const char *path);
-int imap_check_mailbox(struct Context *ctx, int force);
+int imap_check_mailbox(struct Context *ctx, bool force);
 int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
-int imap_sync_mailbox(struct Context *ctx, int expunge);
-int imap_buffy_check(int check_stats);
-int imap_status(char *path, int queue);
+int imap_sync_mailbox(struct Context *ctx, bool expunge);
+int imap_mailbox_check(bool check_stats);
+int imap_status(char *path, bool queue);
 int imap_search(struct Context *ctx, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
-int imap_complete(char *dest, size_t dlen, char *path);
+int imap_complete(char *buf, size_t buflen, char *path);
 int imap_fast_trash(struct Context *ctx, char *dest);
+int imap_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_imap_ops;
 
@@ -86,20 +103,20 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *mailbox);
 
 /* message.c */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete);
+int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete);
 
 /* socket.c */
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(char *path, size_t len);
+int imap_expand_path(char *buf, size_t buflen);
 int imap_parse_path(const char *path, struct ImapMbox *mx);
-void imap_pretty_mailbox(char *path);
+void imap_pretty_mailbox(char *path, const char *folder);
 
 int imap_wait_keepalive(pid_t pid);
 void imap_keepalive(void);
 
-void imap_get_parent_path(char *output, const char *path, size_t olen);
+void imap_get_parent_path(const char *path, char *buf, size_t buflen);
 void imap_clean_path(char *path, size_t plen);
 
 #endif /* _IMAP_IMAP_H */

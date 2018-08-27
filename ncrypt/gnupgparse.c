@@ -21,10 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * NOTE
+/**
+ * @page crypt_gnupg Parse the output of CLI PGP program
  *
- * This code used to be the parser for GnuPG's output.
+ * Parse the output of CLI PGP program
+ *
+ * @note This code used to be the parser for GnuPG's output.
  *
  * Nowadays, we are using an external pubring lister with PGP which mimics
  * gpg's output format.
@@ -34,20 +36,21 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <iconv.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "email/email.h"
 #include "filter.h"
 #include "globals.h"
 #include "ncrypt.h"
-#include "options.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
-#include "protos.h"
+#endif
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by
@@ -66,16 +69,18 @@
  *   - signature class
  */
 
-/* decode the backslash-escaped user ids. */
-
 static char *chs = NULL;
 
+/**
+ * fix_uid - Decode backslash-escaped user ids (in place)
+ * @param uid String to decode
+ */
 static void fix_uid(char *uid)
 {
   char *s = NULL, *d = NULL;
   iconv_t cd;
 
-  for (s = d = uid; *s;)
+  for (s = uid, d = uid; *s;)
   {
     if (*s == '\\' && *(s + 1) == 'x' && isxdigit((unsigned char) *(s + 2)) &&
         isxdigit((unsigned char) *(s + 3)))
@@ -91,16 +96,12 @@ static void fix_uid(char *uid)
   if (chs && (cd = mutt_ch_iconv_open(chs, "utf-8", 0)) != (iconv_t) -1)
   {
     int n = s - uid + 1; /* chars available in original buffer */
-    char *buf = NULL;
-    const char *ib = NULL;
-    char *ob = NULL;
-    size_t ibl, obl;
 
-    buf = mutt_mem_malloc(n + 1);
-    ib = uid;
-    ibl = d - uid + 1;
-    ob = buf;
-    obl = n;
+    char *buf = mutt_mem_malloc(n + 1);
+    const char *ib = uid;
+    size_t ibl = d - uid + 1;
+    char *ob = buf;
+    size_t obl = n;
     iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
     if (!ibl)
     {
@@ -117,6 +118,14 @@ static void fix_uid(char *uid)
   }
 }
 
+/**
+ * parse_pub_line - Parse the 'pub' line from the pgp output
+ * @param[in]  buf       Buffer containing string to parse
+ * @param[out] is_subkey Is this a subkey of another key?
+ * @param[in]  k         Key to from which to merge info (optional)
+ * @retval ptr  PgpKeyInfo containing the (merged) results
+ * @retval NULL Error
+ */
 static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
 {
   struct PgpUid *uid = NULL;
@@ -142,7 +151,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   else
     memset(&tmp, 0, sizeof(tmp));
 
-  mutt_debug(2, "buf = `%s'\n", buf);
+  mutt_debug(2, "buf = '%s'\n", buf);
 
   for (p = buf; p; p = pend)
   {
@@ -188,23 +197,23 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         switch (*p)
         { /* look only at the first letter */
-          case 'e':
-            flags |= KEYFLAG_EXPIRED;
-            break;
-          case 'r':
-            flags |= KEYFLAG_REVOKED;
-            break;
           case 'd':
             flags |= KEYFLAG_DISABLED;
             break;
-          case 'n':
-            trust = 1;
+          case 'e':
+            flags |= KEYFLAG_EXPIRED;
+            break;
+          case 'f':
+            trust = 3;
             break;
           case 'm':
             trust = 2;
             break;
-          case 'f':
-            trust = 3;
+          case 'n':
+            trust = 1;
+            break;
+          case 'r':
+            flags |= KEYFLAG_REVOKED;
             break;
           case 'u':
             trust = 3;
@@ -354,7 +363,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         if (!is_uid && (!*is_subkey || !PgpIgnoreSubkeys ||
                         !((flags & KEYFLAG_DISABLED) || (flags & KEYFLAG_REVOKED) ||
                           (flags & KEYFLAG_EXPIRED))))
+        {
           tmp.flags |= flags;
+        }
 
         break;
 
@@ -382,6 +393,13 @@ bail:
   return NULL;
 }
 
+/**
+ * pgp_get_candidates - Find PGP keys matching a list of hints
+ * @param keyring PGP Keyring
+ * @param hints   List of strings to match
+ * @retval ptr  Key list
+ * @retval NULL Error
+ */
 struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints)
 {
   FILE *fp = NULL;
@@ -417,7 +435,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
     {
       if (k)
         kend = &k->next;
-      *kend = k = kk;
+      *kend = kk;
+      k = kk;
 
       if (is_sub)
       {

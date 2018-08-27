@@ -24,27 +24,21 @@
  * @page imap_auth_sasl IMAP SASL authentication method
  *
  * IMAP SASL authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_sasl()   | Default authenticator if available
  */
 
 #include "config.h"
 #include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
-#include "protos.h"
 
 /**
  * imap_auth_sasl - Default authenticator if available
@@ -61,7 +55,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   size_t bufsize = 0;
   const char *mech = NULL;
   const char *pc = NULL;
-  unsigned int len, olen;
+  unsigned int len = 0, olen = 0;
   bool client_start;
 
   if (mutt_sasl_client_new(idata->conn, &saslconn) < 0)
@@ -116,9 +110,11 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
     if (method)
       mutt_debug(2, "%s unavailable\n", method);
     else
+    {
       mutt_debug(
           1,
           "Failure starting authentication exchange. No shared mechanisms?\n");
+    }
     /* SASL doesn't support LOGIN, so fall back */
 
     return IMAP_AUTH_UNAVAIL;
@@ -214,13 +210,13 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
     if (irc == IMAP_CMD_RESPOND)
     {
       mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
-      mutt_socket_write(idata->conn, buf);
+      mutt_socket_send(idata->conn, buf);
     }
 
     /* If SASL has errored out, send an abort string to the server */
     if (rc < 0)
     {
-      mutt_socket_write(idata->conn, "*\r\n");
+      mutt_socket_send(idata->conn, "*\r\n");
       mutt_debug(1, "sasl_client_step error %d\n", rc);
     }
 
@@ -254,8 +250,7 @@ bail:
     return IMAP_AUTH_UNAVAIL;
   }
 
-  mutt_error(_("SASL authentication failed."));
-  mutt_sleep(2);
+  mutt_error(_("SASL authentication failed"));
 
   return IMAP_AUTH_FAILURE;
 }

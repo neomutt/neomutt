@@ -23,8 +23,10 @@
 #ifndef _CONN_GLOBALS_H
 #define _CONN_GLOBALS_H
 
+#include <stdbool.h>
+
 /* These variables are backing for config items */
-short ConnectTimeout;
+extern short ConnectTimeout;
 
 #ifdef USE_SSL
 extern const char *CertificateFile;
@@ -33,13 +35,27 @@ extern const char *SslCiphers;
 extern const char *SslClientCert;
 #ifdef USE_SSL_GNUTLS
 extern const char *SslCaCertificatesFile;
-short SslMinDhPrimeBits;
+extern short SslMinDhPrimeBits;
 #endif
 #endif
 
 #ifdef USE_SOCKET
 extern const char *Preconnect;
 extern const char *Tunnel;
+#endif
+
+/* These Config Variables are only used in conn/conn_raw.c */
+#ifdef HAVE_GETADDRINFO
+extern bool UseIpv6;
+#endif
+
+#ifdef USE_SSL
+extern bool SslUseSslv3;
+extern bool SslUseTlsv1;
+extern bool SslUseTlsv11;
+extern bool SslUseTlsv12;
+extern bool SslVerifyDates;
+extern bool SslVerifyHost;
 #endif
 
 #endif /* _CONN_GLOBALS_H */

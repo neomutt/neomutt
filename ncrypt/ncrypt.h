@@ -21,14 +21,35 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-   Common definitions and prototypes for the crypt functions. They are
-   all defined in crypt.c and cryptglue.c
-*/
+/**
+ * @page ncrypt NCRYPT: Encrypt/decrypt/sign/verify emails
+ *
+ * Encrypt/decrypt/sign/verify emails
+ *
+ * | File                             | Description                          |
+ * | :------------------------------- | :----------------------------------- |
+ * | ncrypt/crypt.c                   | @subpage crypt_crypt                 |
+ * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
+ * | ncrypt/crypt_gpgme.c             | @subpage crypt_crypt_gpgme           |
+ * | ncrypt/crypt_mod.c               | @subpage crypt_crypt_mod             |
+ * | ncrypt/crypt_mod_pgp_classic.c   | @subpage crypt_crypt_mod_pgp         |
+ * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage crypt_crypt_mod_pgp_gpgme   |
+ * | ncrypt/crypt_mod_smime_classic.c | @subpage crypt_crypt_mod_smime       |
+ * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage crypt_crypt_mod_smime_gpgme |
+ * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
+ * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
+ * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |
+ * | ncrypt/pgpkey.c                  | @subpage crypt_pgpkey                |
+ * | ncrypt/pgplib.c                  | @subpage crypt_pgplib                |
+ * | ncrypt/pgpmicalg.c               | @subpage crypt_pgpmicalg             |
+ * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
+ * | ncrypt/smime.c                   | @subpage crypt_smime                 |
+ */
 
 #ifndef _NCRYPT_NCRYPT_H
 #define _NCRYPT_NCRYPT_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;
@@ -36,6 +57,61 @@ struct Body;
 struct Envelope;
 struct Header;
 struct State;
+
+/* These Config Variables are only used in ncrypt/crypt.c */
+extern bool          CryptTimestamp;
+extern unsigned char PgpEncryptSelf;
+extern unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+extern bool          PgpRetainableSigs;
+extern bool          PgpSelfEncrypt;
+extern bool          PgpStrictEnc;
+extern unsigned char SmimeEncryptSelf;
+extern bool          SmimeSelfEncrypt;
+
+/* These Config Variables are only used in ncrypt/cryptglue.c */
+extern bool CryptUseGpgme;
+
+/* These Config Variables are only used in ncrypt/pgp.c */
+extern bool          PgpCheckExit;
+extern bool          PgpCheckGpgDecryptStatusFd;
+extern struct Regex *PgpDecryptionOkay;
+extern struct Regex *PgpGoodSign;
+extern long          PgpTimeout;
+extern bool          PgpUseGpgAgent;
+
+/* These Config Variables are only used in ncrypt/pgpinvoke.c */
+extern char *PgpClearsignCommand;
+extern char *PgpDecodeCommand;
+extern char *PgpDecryptCommand;
+extern char *PgpEncryptOnlyCommand;
+extern char *PgpEncryptSignCommand;
+extern char *PgpExportCommand;
+extern char *PgpGetkeysCommand;
+extern char *PgpImportCommand;
+extern char *PgpListPubringCommand;
+extern char *PgpListSecringCommand;
+extern char *PgpSignCommand;
+extern char *PgpVerifyCommand;
+extern char *PgpVerifyKeyCommand;
+
+/* These Config Variables are only used in ncrypt/smime.c */
+extern bool  SmimeAskCertLabel;
+extern char *SmimeCaLocation;
+extern char *SmimeCertificates;
+extern char *SmimeDecryptCommand;
+extern bool  SmimeDecryptUseDefaultKey;
+extern char *SmimeEncryptCommand;
+extern char *SmimeGetCertCommand;
+extern char *SmimeGetCertEmailCommand;
+extern char *SmimeGetSignerCertCommand;
+extern char *SmimeImportCertCommand;
+extern char *SmimeKeys;
+extern char *SmimePk7outCommand;
+extern char *SmimeSignCommand;
+extern char *SmimeSignDigestAlg;
+extern long  SmimeTimeout;
+extern char *SmimeVerifyCommand;
+extern char *SmimeVerifyOpaqueCommand;
 
 /* FIXME: They should be pointer to anonymous structures for better
    information hiding. */
@@ -55,24 +131,24 @@ struct State;
 
 #define PGP_TRADITIONAL_CHECKED (1 << 11)
 
-#define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
-#define PGPSIGN     (APPLICATION_PGP | SIGN)
-#define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGPKEY      (APPLICATION_PGP | KEYBLOCK)
-#define PGPINLINE   (APPLICATION_PGP | INLINE)
+#define PGP_ENCRYPT  (APPLICATION_PGP | ENCRYPT)
+#define PGP_SIGN     (APPLICATION_PGP | SIGN)
+#define PGP_GOODSIGN (APPLICATION_PGP | GOODSIGN)
+#define PGP_KEY      (APPLICATION_PGP | KEYBLOCK)
+#define PGP_INLINE   (APPLICATION_PGP | INLINE)
 
-#define SMIMEENCRYPT  (APPLICATION_SMIME | ENCRYPT)
-#define SMIMESIGN     (APPLICATION_SMIME | SIGN)
-#define SMIMEGOODSIGN (APPLICATION_SMIME | GOODSIGN)
-#define SMIMEBADSIGN  (APPLICATION_SMIME | BADSIGN)
-#define SMIMEOPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
+#define SMIME_ENCRYPT  (APPLICATION_SMIME | ENCRYPT)
+#define SMIME_SIGN     (APPLICATION_SMIME | SIGN)
+#define SMIME_GOODSIGN (APPLICATION_SMIME | GOODSIGN)
+#define SMIME_BADSIGN  (APPLICATION_SMIME | BADSIGN)
+#define SMIME_OPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
 
 /* WITHCRYPTO actually replaces ifdefs so make the code more readable.
-   Because it is defined as a constant and known at compile time, the
-   compiler can do dead code elimination and thus it behaves
-   effectively as a conditional compile directive. It is set to false
-   if no crypto backend is configured or to a bit vector denoting the
-   configured backends. */
+ * Because it is defined as a constant and known at compile time, the
+ * compiler can do dead code elimination and thus it behaves
+ * effectively as a conditional compile directive. It is set to false
+ * if no crypto backend is configured or to a bit vector denoting the
+ * configured backends. */
 #if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || \
     defined(CRYPT_BACKEND_GPGME)
 #define WithCrypto (APPLICATION_PGP | APPLICATION_SMIME)
@@ -101,43 +177,41 @@ struct State;
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
-/* Some prototypes -- old crypt.h. */
-int mutt_protect(struct Header *msg, char *keylist);
-int mutt_is_multipart_encrypted(struct Body *b);
-int mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
-int mutt_is_multipart_signed(struct Body *b);
-int mutt_is_application_pgp(struct Body *m);
-int mutt_is_application_smime(struct Body *m);
-int mutt_signed_handler(struct Body *a, struct State *s);
-int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
+/* crypt.c */
+void         crypt_extract_keys_from_messages(struct Header *h);
+void         crypt_forget_passphrase(void);
+int          crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode);
+void         crypt_opportunistic_encrypt(struct Header *msg);
+int          crypt_query(struct Body *m);
+int          crypt_valid_passphrase(int flags);
+int          mutt_is_application_pgp(struct Body *m);
+int          mutt_is_application_smime(struct Body *m);
+int          mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
+int          mutt_is_multipart_encrypted(struct Body *b);
+int          mutt_is_multipart_signed(struct Body *b);
+int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
+int          mutt_protect(struct Header *msg, char *keylist);
+int          mutt_signed_handler(struct Body *a, struct State *s);
 
-/* -- crypt.c -- */
-int crypt_query(struct Body *m);
-void crypt_extract_keys_from_messages(struct Header *h);
-int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode);
-void crypt_opportunistic_encrypt(struct Header *msg);
-void crypt_forget_passphrase(void);
-int crypt_valid_passphrase(int flags);
+/* cryptglue.c */
+bool         crypt_has_module_backend(int type);
+void         crypt_init(void);
+void         crypt_invoke_message(int type);
+int          crypt_pgp_application_handler(struct Body *m, struct State *s);
+int          crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one);
+int          crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
+int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
+void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);
+void         crypt_pgp_invoke_getkeys(struct Address *addr);
+struct Body *crypt_pgp_make_key_attachment(void);
+int          crypt_pgp_send_menu(struct Header *msg);
+int          crypt_smime_application_handler(struct Body *m, struct State *s);
+int          crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
+void         crypt_smime_getkeys(struct Envelope *env);
+int          crypt_smime_send_menu(struct Header *msg);
+int          crypt_smime_verify_sender(struct Header *h);
 
-/* -- cryptglue.c -- */
-void crypt_invoke_message(int type);
-int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
-int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s);
-int crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
-void crypt_pgp_invoke_getkeys(struct Address *addr);
-int crypt_pgp_check_traditional (FILE *fp, struct Body *b, int just_one);
-struct Body *crypt_pgp_make_key_attachment(char *tempf);
-int crypt_pgp_send_menu(struct Header *msg);
-void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
-int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
-int crypt_smime_application_smime_handler(struct Body *m, struct State *s);
-void crypt_smime_getkeys(struct Envelope *env);
-int crypt_smime_verify_sender(struct Header *h);
-int crypt_smime_send_menu(struct Header *msg);
-void crypt_init(void);
-
-/* Returns 1 if a module backend is registered for the type */
-int crypt_has_module_backend(int type);
+/* crypt_mod.c */
+void crypto_module_free(void);
 
 #endif /* _NCRYPT_NCRYPT_H */

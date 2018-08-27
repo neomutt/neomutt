@@ -31,17 +31,22 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "keymap.h"
+#include "curs_lib.h"
 #include "functions.h"
 #include "globals.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
+#include "mutt_window.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
 
+/**
+ * Menus - Menu name lookup table
+ */
 const struct Mapping Menus[] = {
   { "alias", MENU_ALIAS },
   { "attach", MENU_ATTACH },
@@ -57,16 +62,17 @@ const struct Mapping Menus[] = {
   { "key_select_pgp", MENU_KEY_SELECT_PGP },
   { "key_select_smime", MENU_KEY_SELECT_SMIME },
 #endif
-
 #ifdef MIXMASTER
   { "mix", MENU_MIX },
 #endif
-
   { "query", MENU_QUERY },
   { "generic", MENU_GENERIC },
   { NULL, 0 },
 };
 
+/**
+ * KeyNames - Key name lookup table
+ */
 static struct Mapping KeyNames[] = {
   { "<PageUp>", KEY_PPAGE },
   { "<PageDown>", KEY_NPAGE },
@@ -126,22 +132,32 @@ static struct Mapping KeyNames[] = {
   { NULL, 0 },
 };
 
-/* contains the last key the user pressed */
-int LastKey;
+int LastKey; /**< contains the last key the user pressed */
 
 struct Keymap *Keymaps[MENU_MAX];
 
+/**
+ * alloc_keys - Allocate space for a sequence of keys
+ * @param len  Number of keys
+ * @param keys Array of keys
+ * @retval ptr Sequence of keys
+ */
 static struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
-  struct Keymap *p = NULL;
-
-  p = mutt_mem_calloc(1, sizeof(struct Keymap));
+  struct Keymap *p = mutt_mem_calloc(1, sizeof(struct Keymap));
   p->len = len;
   p->keys = mutt_mem_malloc(len * sizeof(keycode_t));
   memcpy(p->keys, keys, len * sizeof(keycode_t));
   return p;
 }
 
+/**
+ * parse_fkey - Parse a function key string
+ * @param s String to parse
+ * @retval num Number of the key
+ *
+ * Given "<f8>", it will return 8.
+ */
 static int parse_fkey(char *s)
 {
   char *t = NULL;
@@ -164,6 +180,8 @@ static int parse_fkey(char *s)
 
 /**
  * parse_keycode - Parse a numeric keycode
+ * @param s String to parse
+ * @retval num Number of the key
  *
  * This function parses the string `<NNN>` and uses the octal value as the key
  * to bind.
@@ -184,16 +202,23 @@ static int parse_keycode(const char *s)
   return result;
 }
 
+/**
+ * parsekeys - Parse a key string into key codes
+ * @param str Key string
+ * @param d   Array for key codes
+ * @param max Maximum length of key sequence
+ * @retval num Length of key sequence
+ */
 static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
   int n;
   size_t len = max;
   char buf[SHORT_STRING];
   char c;
-  char *s = NULL, *t = NULL;
+  char *t = NULL;
 
   mutt_str_strfcpy(buf, str, sizeof(buf));
-  s = buf;
+  char *s = buf;
 
   while (*s && len)
   {
@@ -233,31 +258,38 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
     len--;
   }
 
-  return (max - len);
+  return max - len;
 }
 
 /**
  * km_bind_err - Set up a key binding
+ * @param s     Key string
+ * @param menu  Menu id, e.g. #MENU_EDITOR
+ * @param op    Operation, e.g. OP_DELETE
+ * @param macro Macro string
+ * @param desc Description of macro (OPTIONAL)
+ * @param err   Buffer for error message
+ * @retval  0 Success
+ * @retval -2 Error
  *
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buffer *err)
+static int km_bind_err(char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
 {
   int retval = 0;
-  struct Keymap *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
+  struct Keymap *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
-  size_t len;
   size_t pos = 0, lastpos = 0;
 
-  len = parsekeys(s, buf, MAX_SEQ);
+  size_t len = parsekeys(s, buf, MAX_SEQ);
 
-  map = alloc_keys(len, buf);
+  struct Keymap *map = alloc_keys(len, buf);
   map->op = op;
   map->macro = mutt_str_strdup(macro);
-  map->descr = mutt_str_strdup(descr);
+  map->desc = mutt_str_strdup(desc);
 
-  tmp = Keymaps[menu];
+  struct Keymap *tmp = Keymaps[menu];
 
   while (tmp)
   {
@@ -299,7 +331,7 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
         next = tmp->next;
         FREE(&tmp->macro);
         FREE(&tmp->keys);
-        FREE(&tmp->descr);
+        FREE(&tmp->desc);
         FREE(&tmp);
         tmp = next;
       } while (tmp && len >= pos);
@@ -338,21 +370,55 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
   return retval;
 }
 
-int km_bind(char *s, int menu, int op, char *macro, char *descr)
+/**
+ * km_bind - Bind a key to a macro
+ * @param s     Key string
+ * @param menu  Menu id, e.g. #MENU_EDITOR
+ * @param op    Operation, e.g. OP_DELETE
+ * @param macro Macro string
+ * @param desc Description of macro (OPTIONAL)
+ * @retval  0 Success
+ * @retval -2 Error
+ */
+int km_bind(char *s, int menu, int op, char *macro, char *desc)
 {
-  return km_bind_err(s, menu, op, macro, descr, NULL);
+  return km_bind_err(s, menu, op, macro, desc, NULL);
 }
 
+/**
+ * km_bindkey_err - Bind a key in a Menu to an operation (with error message)
+ * @param s    Key string
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param op   Operation, e.g. OP_DELETE
+ * @param err  Buffer for error message
+ * @retval  0 Success
+ * @retval -2 Error
+ */
 static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
 
+/**
+ * km_bindkey - Bind a key in a Menu to an operation
+ * @param s    Key string
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param op   Operation, e.g. OP_DELETE
+ * @retval  0 Success
+ * @retval -2 Error
+ */
 static int km_bindkey(char *s, int menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
 
+/**
+ * get_op - Get the function by its name
+ * @param bindings Key bindings table
+ * @param start    Name of function to find
+ * @param len      Length of string to match
+ * @retval num Operation, e.g. OP_DELETE
+ */
 static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   for (int i = 0; bindings[i].name; i++)
@@ -367,6 +433,15 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   return OP_NULL;
 }
 
+/**
+ * get_func - Get the name of a function
+ * @param bindings Key bindings table
+ * @param op       Operation, e.g. OP_DELETE
+ * @retval ptr  Name of function
+ * @retval NULL Operation not found
+ *
+ * @note This returns a static string.
+ */
 static char *get_func(const struct Binding *bindings, int op)
 {
   for (int i = 0; bindings[i].name; i++)
@@ -380,6 +455,8 @@ static char *get_func(const struct Binding *bindings, int op)
 
 /**
  * generic_tokenize_push_string - Parse and queue a 'push' command
+ * @param s            String to push into the key queue
+ * @param generic_push Callback function to add events to macro queue
  *
  * Parses s for `<function>` syntax and adds the whole sequence to either the
  * macro or unget buffer.  This function is invoked by the next two defines
@@ -448,6 +525,14 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
   }
 }
 
+/**
+ * retry_generic - Try to find the key in the generic menu bindings
+ * @param menu    Menu id, e.g. #MENU_PAGER
+ * @param keys    Array of keys to return to the input queue
+ * @param keyslen Number of keys in the array
+ * @param lastkey Last key pressed (to return to input queue)
+ * @retval num Operation, e.g. OP_DELETE
+ */
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
@@ -456,7 +541,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
       mutt_unget_event(lastkey, 0);
     for (; keyslen; keyslen--)
       mutt_unget_event(keys[keyslen - 1], 0);
-    return (km_dokey(MENU_GENERIC));
+    return km_dokey(MENU_GENERIC);
   }
   if (menu != MENU_EDITOR)
   {
@@ -480,14 +565,13 @@ int km_dokey(int menu)
   struct Keymap *map = Keymaps[menu];
   int pos = 0;
   int n = 0;
-  int i;
 
   if (!map)
-    return (retry_generic(menu, NULL, 0, 0));
+    return retry_generic(menu, NULL, 0, 0);
 
   while (true)
   {
-    i = Timeout > 0 ? Timeout : 60;
+    int i = Timeout > 0 ? Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than Timeout allows */
     if (ImapKeepalive)
@@ -577,28 +661,28 @@ int km_dokey(int menu)
     while (LastKey > map->keys[pos])
     {
       if (pos > map->eq || !map->next)
-        return (retry_generic(menu, map->keys, pos, LastKey));
+        return retry_generic(menu, map->keys, pos, LastKey);
       map = map->next;
     }
 
     if (LastKey != map->keys[pos])
-      return (retry_generic(menu, map->keys, pos, LastKey));
+      return retry_generic(menu, map->keys, pos, LastKey);
 
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (OPT_IGNORE_MACRO_EVENTS)
+      if (OptIgnoreMacroEvents)
       {
-        mutt_error(_("Macros are currently disabled."));
+        mutt_error(_("Macros are currently disabled"));
         return -1;
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
-        mutt_error(_("Macro loop detected."));
+        mutt_error(_("Macro loop detected"));
         return -1;
       }
 
@@ -611,6 +695,11 @@ int km_dokey(int menu)
   /* not reached */
 }
 
+/**
+ * create_bindings - Attach a set of keybindings to a Menu
+ * @param map  Key bindings
+ * @param menu Menu id, e.g. #MENU_PAGER
+ */
 static void create_bindings(const struct Binding *map, int menu)
 {
   for (int i = 0; map[i].name; i++)
@@ -618,12 +707,18 @@ static void create_bindings(const struct Binding *map, int menu)
       km_bindkey(map[i].seq, menu, map[i].op);
 }
 
+/**
+ * km_keyname - Get the human name for a key
+ * @param c Key code
+ * @retval ptr Name of the key
+ *
+ * @note This returns a pointer to a static buffer.
+ */
 static const char *km_keyname(int c)
 {
   static char buf[10];
-  const char *p = NULL;
 
-  p = mutt_map_get_name(c, KeyNames);
+  const char *p = mutt_map_get_name(c, KeyNames);
   if (p)
     return p;
 
@@ -650,9 +745,16 @@ static const char *km_keyname(int c)
   return buf;
 }
 
+/**
+ * km_expand_key - Get the key string bound to a Keymap
+ * @param s   Buffer for the key string
+ * @param len Length of buffer
+ * @param map Keybinding map
+ * @retval 1 Success
+ * @retval 0 Error
+ */
 int km_expand_key(char *s, size_t len, struct Keymap *map)
 {
-  size_t l;
   int p = 0;
 
   if (!map)
@@ -661,7 +763,8 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
   while (true)
   {
     mutt_str_strfcpy(s, km_keyname(map->keys[p]), len);
-    len -= (l = mutt_str_strlen(s));
+    const size_t l = mutt_str_strlen(s);
+    len -= l;
 
     if (++p >= map->len || !len)
       return 1;
@@ -672,6 +775,12 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
   /* not reached */
 }
 
+/**
+ * km_find_func - Find a function's mapping in a Menu
+ * @param menu Menu id, e.g. #MENU_PAGER
+ * @param func Function, e.g. OP_DELETE
+ * @retval ptr Keymap for the function
+ */
 struct Keymap *km_find_func(int menu, int func)
 {
   struct Keymap *map = Keymaps[menu];
@@ -683,7 +792,6 @@ struct Keymap *km_find_func(int menu, int func)
 }
 
 #ifdef NCURSES_VERSION
-
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
  */
@@ -731,8 +839,12 @@ static const struct Extkey ExtKeys[] = {
 
 /**
  * find_ext_name - Find the curses name for a key
+ * @param key Key name
+ * @retval ptr Curses name
  *
- * Look up NeoMutt's name for a key and find the ncurses extended name for it
+ * Look up NeoMutt's name for a key and find the ncurses extended name for it.
+ *
+ * @note This returns a static string.
  */
 static const char *find_ext_name(const char *key)
 {
@@ -782,6 +894,9 @@ void init_extended_keys(void)
 #endif
 }
 
+/**
+ * km_init - Initialise all the menu keybindings
+ */
 void km_init(void)
 {
   memset(Keymaps, 0, sizeof(struct Keymap *) * MENU_MAX);
@@ -795,10 +910,10 @@ void km_init(void)
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
 
-  if ((WithCrypto & APPLICATION_PGP))
+  if (WithCrypto & APPLICATION_PGP)
     create_bindings(OpPgp, MENU_PGP);
 
-  if ((WithCrypto & APPLICATION_SMIME))
+  if (WithCrypto & APPLICATION_SMIME)
     create_bindings(OpSmime, MENU_SMIME);
 
 #ifdef CRYPT_BACKEND_GPGME
@@ -901,18 +1016,21 @@ void km_init(void)
   km_bindkey("T", MENU_COMPOSE, OP_TAG);
 }
 
+/**
+ * km_error_key - Handle an unbound key sequence
+ * @param menu Menu id, e.g. #MENU_PAGER
+ */
 void km_error_key(int menu)
 {
   char buf[SHORT_STRING];
-  struct Keymap *key = NULL;
   int p, op;
 
-  key = km_find_func(menu, OP_HELP);
+  struct Keymap *key = km_find_func(menu, OP_HELP);
   if (!key && (menu != MENU_EDITOR) && (menu != MENU_PAGER))
     key = km_find_func(MENU_GENERIC, OP_HELP);
   if (!key)
   {
-    mutt_error(_("Key is not bound."));
+    mutt_error(_("Key is not bound"));
     return;
   }
 
@@ -947,15 +1065,23 @@ void km_error_key(int menu)
     mutt_flush_unget_to_endcond();
   if (op != OP_HELP)
   {
-    mutt_error(_("Key is not bound."));
+    mutt_error(_("Key is not bound"));
     return;
   }
 
   km_expand_key(buf, sizeof(buf), key);
   mutt_error(_("Key is not bound.  Press '%s' for help."), buf);
-  return;
 }
 
+/**
+ * mutt_parse_push - Parse the 'push' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
@@ -964,7 +1090,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("push: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "push");
     r = -1;
   }
   else
@@ -974,20 +1100,30 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 /**
  * parse_keymap - Parse a user-config key binding
+ * @param menu     Array for results
+ * @param s        Buffer containing config string
+ * @param maxmenus Total number of menus
+ * @param nummenus Number of menus this config applies to
+ * @param err      Buffer for error messages
+ * @param bind     If true 'bind', otherwise 'macro'
+ * @retval ptr Key string for the binding
  *
  * Expects to see: <menu-string>,<menu-string>,... <key-string>
+ *
+ * @note Caller needs to free the returned string
  */
-char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, struct Buffer *err)
+static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
+                          int *nummenus, struct Buffer *err, bool bind)
 {
   struct Buffer buf;
   int i = 0;
-  char *p = NULL, *q = NULL;
+  char *q = NULL;
 
   mutt_buffer_init(&buf);
 
   /* menu name */
   mutt_extract_token(&buf, s, 0);
-  p = buf.data;
+  char *p = buf.data;
   if (MoreArgs(s))
   {
     while (i < maxmenus)
@@ -999,7 +1135,7 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
       menu[i] = mutt_map_get_value(p, Menus);
       if (menu[i] == -1)
       {
-        snprintf(err->data, err->dsize, _("%s: no such menu"), p);
+        mutt_buffer_printf(err, _("%s: no such menu"), p);
         goto error;
       }
       i++;
@@ -1014,20 +1150,31 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
 
     if (!*buf.data)
     {
-      mutt_str_strfcpy(err->data, _("null key sequence"), err->dsize);
+      mutt_buffer_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
     else if (MoreArgs(s))
       return buf.data;
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), bind ? "bind" : "macro");
   }
 error:
   FREE(&buf.data);
   return NULL;
 }
 
+/**
+ * try_bind - Try to make a key binding
+ * @param key      Key name
+ * @param menu     Menu id, e.g. #MENU_PAGER
+ * @param func     Function name
+ * @param bindings Key bindings table
+ * @param err      Buffer for error message
+ * @retval  0 Success
+ * @retval -1 Unknown function
+ * @retval -2 Error
+ */
 static int try_bind(char *key, int menu, char *func,
                     const struct Binding *bindings, struct Buffer *err)
 {
@@ -1040,58 +1187,65 @@ static int try_bind(char *key, int menu, char *func,
   }
   if (err)
   {
-    snprintf(err->data, err->dsize,
-             _("Function '%s' not available for menu '%s'"), func,
-             mutt_map_get_name(menu, Menus));
+    mutt_buffer_printf(err, _("Function '%s' not available for menu '%s'"),
+                       func, mutt_map_get_name(menu, Menus));
   }
   return -1; /* Couldn't find an existing function with this name */
 }
 
+/**
+ * km_get_table - Lookup a menu's keybindings
+ * @param menu Menu id, e.g. #MENU_EDITOR
+ * @retval ptr Array of keybindings
+ */
 const struct Binding *km_get_table(int menu)
 {
   switch (menu)
   {
-    case MENU_MAIN:
-      return OpMain;
-    case MENU_GENERIC:
-      return OpGeneric;
-    case MENU_COMPOSE:
-      return OpCompose;
-    case MENU_PAGER:
-      return OpPager;
-    case MENU_POST:
-      return OpPost;
-    case MENU_FOLDER:
-      return OpBrowser;
     case MENU_ALIAS:
       return OpAlias;
     case MENU_ATTACH:
       return OpAttach;
+    case MENU_COMPOSE:
+      return OpCompose;
     case MENU_EDITOR:
       return OpEditor;
-    case MENU_QUERY:
-      return OpQuery;
-
-    case MENU_PGP:
-      return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
-
+    case MENU_FOLDER:
+      return OpBrowser;
+    case MENU_GENERIC:
+      return OpGeneric;
 #ifdef CRYPT_BACKEND_GPGME
     case MENU_KEY_SELECT_PGP:
       return OpPgp;
     case MENU_KEY_SELECT_SMIME:
       return OpSmime;
 #endif
-
+    case MENU_MAIN:
+      return OpMain;
 #ifdef MIXMASTER
     case MENU_MIX:
       return OpMix;
 #endif
+    case MENU_PAGER:
+      return OpPager;
+    case MENU_PGP:
+      return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
+    case MENU_POST:
+      return OpPost;
+    case MENU_QUERY:
+      return OpQuery;
   }
   return NULL;
 }
 
 /**
- * mutt_parse_bind - Parse a 'bind' command
+ * mutt_parse_bind - Parse the 'bind' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * bind menu-name `<key_sequence>` function-name
  */
@@ -1099,10 +1253,9 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
-  char *key = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
   if (!key)
     return -1;
 
@@ -1110,7 +1263,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, 0);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("bind: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
     r = -1;
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
@@ -1149,7 +1302,13 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_macro - Parse a 'macro' command
+ * mutt_parse_macro - Parse the 'macro' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
@@ -1158,9 +1317,8 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus;
   char *seq = NULL;
-  char *key = NULL;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
   if (!key)
     return -1;
 
@@ -1179,7 +1337,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
       if (MoreArgs(s))
       {
-        mutt_str_strfcpy(err->data, _("macro: too many arguments"), err->dsize);
+        mutt_buffer_printf(err, _("%s: too many arguments"), "macro");
       }
       else
       {
@@ -1204,7 +1362,13 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_exec - exec function-name
+ * mutt_parse_exec - Parse the 'exec' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
@@ -1257,8 +1421,7 @@ void mutt_what_key(void)
 {
   int ch;
 
-  mutt_window_mvprintw(MuttMessageWindow, 0, 0,
-                       _("Enter keys (^G to abort): "));
+  mutt_window_mvprintw(MuttMessageWindow, 0, 0, _("Enter keys (^G to abort): "));
   do
   {
     ch = getch();
@@ -1270,4 +1433,28 @@ void mutt_what_key(void)
 
   mutt_flushinp();
   mutt_clear_error();
+}
+
+/**
+ * mutt_free_keys - Free the key maps
+ */
+void mutt_free_keys(void)
+{
+  struct Keymap *map = NULL;
+  struct Keymap *next = NULL;
+
+  for (int i = 0; i < MENU_MAX; i++)
+  {
+    for (map = Keymaps[i]; map; map = next)
+    {
+      next = map->next;
+
+      FREE(&map->macro);
+      FREE(&map->desc);
+      FREE(&map->keys);
+      FREE(&map);
+    }
+
+    Keymaps[i] = NULL;
+  }
 }

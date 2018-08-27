@@ -21,9 +21,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mx Mailbox multiplexor
+ *
+ * Mailbox multiplexor
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
+#include <pwd.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -31,26 +39,29 @@
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "mx.h"
-#include "address.h"
-#include "body.h"
-#include "buffy.h"
+#include "alias.h"
 #include "context.h"
 #include "copy.h"
-#include "envelope.h"
 #include "globals.h"
-#include "header.h"
+#include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "maildir/maildir.h"
+#include "mbox/mbox.h"
+#include "mutt_header.h"
+#include "mutt_logging.h"
+#include "mutt_thread.h"
+#include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
+#include "score.h"
 #include "sort.h"
-#include "thread.h"
-#include "url.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -61,277 +72,87 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_POP
-#include "pop.h"
+#include "pop/pop.h"
 #endif
 #ifdef USE_NNTP
-#include "nntp.h"
+#include "nntp/nntp.h"
 #endif
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
-struct MxOps *mx_get_ops(int magic)
-{
-  switch (magic)
-  {
+/* These Config Variables are only used in mx.c */
+unsigned char CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
+bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
+short MboxType;     ///< Config: Default type for creating new mailboxes
+unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
+char *Trash;        ///< Config: Folder to put deleted emails
+
+/**
+ * mx_ops - All the Mailbox backends
+ */
+static const struct MxOps *mx_ops[] = {
+  /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
-    case MUTT_IMAP:
-      return &mx_imap_ops;
-#endif
-    case MUTT_MAILDIR:
-      return &mx_maildir_ops;
-    case MUTT_MBOX:
-      return &mx_mbox_ops;
-    case MUTT_MH:
-      return &mx_mh_ops;
-    case MUTT_MMDF:
-      return &mx_mmdf_ops;
-#ifdef USE_POP
-    case MUTT_POP:
-      return &mx_pop_ops;
-#endif
-#ifdef USE_COMPRESSED
-    case MUTT_COMPRESSED:
-      return &mx_comp_ops;
-#endif
-#ifdef USE_NNTP
-    case MUTT_NNTP:
-      return &mx_nntp_ops;
+  &mx_imap_ops,
 #endif
 #ifdef USE_NOTMUCH
-    case MUTT_NOTMUCH:
-      return &mx_notmuch_ops;
+  &mx_notmuch_ops,
 #endif
-    default:
-      return NULL;
-  }
+#ifdef USE_POP
+  &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+  &mx_nntp_ops,
+#endif
+
+  /* Local mailboxes */
+  &mx_maildir_ops,
+  &mx_mbox_ops,
+  &mx_mh_ops,
+  &mx_mmdf_ops,
+
+  /* If everything else fails... */
+#ifdef USE_COMPRESSED
+  &mx_comp_ops,
+#endif
+  NULL,
+};
+
+/**
+ * mx_get_ops - Get mailbox operations
+ * @param magic Mailbox magic number
+ * @retval ptr  Mailbox function
+ * @retval NULL Error
+ */
+const struct MxOps *mx_get_ops(int magic)
+{
+  for (const struct MxOps **ops = mx_ops; *ops; ops++)
+    if ((*ops)->magic == magic)
+      return *ops;
+
+  return NULL;
 }
 
+/**
+ * mutt_is_spool - Is this the spoolfile?
+ * @param str Name to check
+ * @retval true It is the spoolfile
+ */
 static bool mutt_is_spool(const char *str)
 {
-  return (mutt_str_strcmp(SpoolFile, str) == 0);
-}
-
-#ifdef USE_IMAP
-
-/**
- * mx_is_imap - Is this an IMAP mailbox
- * @param p Mailbox string to test
- * return boolean
- */
-bool mx_is_imap(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  if (*p == '{')
-    return true;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_IMAP || scheme == U_IMAPS)
-    return true;
-
-  return false;
-}
-
-#endif
-
-#ifdef USE_POP
-/**
- * mx_is_pop - Is this a POP mailbox
- * @param p Mailbox string to test
- * return boolean
- */
-bool mx_is_pop(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_POP || scheme == U_POPS)
-    return true;
-
-  return false;
-}
-#endif
-
-#ifdef USE_NNTP
-/**
- * mx_is_nntp - Is this an NNTP mailbox
- * @param p Mailbox string to test
- * return boolean
- */
-bool mx_is_nntp(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_NNTP || scheme == U_NNTPS)
-    return true;
-
-  return false;
-}
-#endif
-
-#ifdef USE_NOTMUCH
-/**
- * mx_is_notmuch - Is this a notmuch mailbox
- * @param p Mailbox string to test
- * return boolean
- */
-bool mx_is_notmuch(const char *p)
-{
-  enum UrlScheme scheme;
-
-  if (!p)
-    return false;
-
-  scheme = url_check_scheme(p);
-  if (scheme == U_NOTMUCH)
-    return true;
-
-  return false;
-}
-#endif
-
-/**
- * mx_get_magic - Identify the type of mailbox
- * @param path Mailbox path to test
- * return
- * * -1 Error, can't identify mailbox
- * * >0 Success, e.g. #MUTT_IMAP
- */
-int mx_get_magic(const char *path)
-{
-  struct stat st;
-  int magic = 0;
-  char tmp[_POSIX_PATH_MAX];
-  FILE *f = NULL;
-
-#ifdef USE_IMAP
-  if (mx_is_imap(path))
-    return MUTT_IMAP;
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-  if (mx_is_pop(path))
-    return MUTT_POP;
-#endif /* USE_POP */
-
-#ifdef USE_NNTP
-  if (mx_is_nntp(path))
-    return MUTT_NNTP;
-#endif /* USE_NNTP */
-
-#ifdef USE_NOTMUCH
-  if (mx_is_notmuch(path))
-    return MUTT_NOTMUCH;
-#endif
-
-  if (stat(path, &st) == -1)
-  {
-    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
-    return -1;
-  }
-
-  if (S_ISDIR(st.st_mode))
-  {
-    /* check for maildir-style mailbox */
-    if (mx_is_maildir(path))
-      return MUTT_MAILDIR;
-
-    /* check for mh-style mailbox */
-    if (mx_is_mh(path))
-      return MUTT_MH;
-  }
-  else if (st.st_size == 0)
-  {
-    /* hard to tell what zero-length files are, so assume the default magic */
-    if (MboxType == MUTT_MBOX || MboxType == MUTT_MMDF)
-      return MboxType;
-    else
-      return MUTT_MBOX;
-  }
-  else if ((f = fopen(path, "r")) != NULL)
-  {
-    struct utimbuf times;
-    int ch;
-
-    /* Some mailbox creation tools erroneously append a blank line to
-     * a file before appending a mail message.  This allows neomutt to
-     * detect magic for and thus open those files. */
-    while ((ch = fgetc(f)) != EOF)
-    {
-      if (ch != '\n' && ch != '\r')
-      {
-        ungetc(ch, f);
-        break;
-      }
-    }
-
-    if (fgets(tmp, sizeof(tmp), f))
-    {
-      if (mutt_str_strncmp("From ", tmp, 5) == 0)
-        magic = MUTT_MBOX;
-      else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
-        magic = MUTT_MMDF;
-    }
-    mutt_file_fclose(&f);
-
-    if (!CheckMboxSize)
-    {
-      /* need to restore the times here, the file was not really accessed,
-       * only the type was accessed.  This is important, because detection
-       * of "new mail" depends on those times set correctly.
-       */
-      times.actime = st.st_atime;
-      times.modtime = st.st_mtime;
-      utime(path, &times);
-    }
-  }
-  else
-  {
-    mutt_debug(1, "unable to open file %s for reading.\n", path);
-    return -1;
-  }
-
-#ifdef USE_COMPRESSED
-  /* If there are no other matches, see if there are any
-   * compress hooks that match */
-  if ((magic == 0) && mutt_comp_can_read(path))
-    return MUTT_COMPRESSED;
-#endif
-  return magic;
-}
-
-/**
- * mx_set_magic - set MboxType to the given value
- */
-int mx_set_magic(const char *s)
-{
-  if (mutt_str_strcasecmp(s, "mbox") == 0)
-    MboxType = MUTT_MBOX;
-  else if (mutt_str_strcasecmp(s, "mmdf") == 0)
-    MboxType = MUTT_MMDF;
-  else if (mutt_str_strcasecmp(s, "mh") == 0)
-    MboxType = MUTT_MH;
-  else if (mutt_str_strcasecmp(s, "maildir") == 0)
-    MboxType = MUTT_MAILDIR;
-  else
-    return -1;
-
-  return 0;
+  return mutt_str_strcmp(Spoolfile, str) == 0;
 }
 
 /**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
+ * @param path  Path of mailbox
+ * @param flags Flags, e.g. W_OK
+ * @retval  0 Success, allowed
+ * @retval <0 Failure, not allowed
  *
  * We may be interested in using ACL-style flags at some point, currently we
  * use the normal access() flags.
@@ -339,26 +160,40 @@ int mx_set_magic(const char *s)
 int mx_access(const char *path, int flags)
 {
 #ifdef USE_IMAP
-  if (mx_is_imap(path))
+  if (imap_path_probe(path, NULL) == MUTT_IMAP)
     return imap_access(path);
 #endif
 
   return access(path, flags);
 }
 
+/**
+ * mx_open_mailbox_append - Open a mailbox for appending
+ * @param ctx   Mailbox
+ * @param flags Flags, e.g. #MUTT_READONLY
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int mx_open_mailbox_append(struct Context *ctx, int flags)
 {
   struct stat sb;
 
   ctx->append = true;
-  ctx->magic = mx_get_magic(ctx->path);
-  if (ctx->magic == 0)
+  ctx->magic = mx_path_probe(ctx->path, NULL);
+  if (ctx->magic == MUTT_UNKNOWN)
   {
-    mutt_error(_("%s is not a mailbox."), ctx->path);
-    return -1;
+    if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+    {
+      ctx->magic = MUTT_MAILBOX_ERROR;
+    }
+    else
+    {
+      mutt_error(_("%s is not a mailbox"), ctx->path);
+      return -1;
+    }
   }
 
-  if (ctx->magic < 0)
+  if (ctx->magic == MUTT_MAILBOX_ERROR)
   {
     if (stat(ctx->path, &sb) == -1)
     {
@@ -383,17 +218,19 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   }
 
   ctx->mx_ops = mx_get_ops(ctx->magic);
-  if (!ctx->mx_ops || !ctx->mx_ops->open_append)
+  if (!ctx->mx_ops || !ctx->mx_ops->mbox_open_append)
     return -1;
 
-  return ctx->mx_ops->open_append(ctx, flags);
+  return ctx->mx_ops->mbox_open_append(ctx, flags);
 }
 
 /**
- * mx_open_mailbox - Open a mailbox and parse it
+ * mx_mbox_open - Open a mailbox and parse it
  * @param path  Path to the mailbox
  * @param flags See below
  * @param pctx  Reuse this Context (if supplied)
+ * @retval ptr  Mailbox context
+ * @retval NULL Error
  *
  * flags:
  * * #MUTT_NOSORT   do not sort mailbox
@@ -402,7 +239,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx)
+struct Context *mx_mbox_open(const char *path, int flags, struct Context *pctx)
 {
   struct Context *ctx = pctx;
   int rc;
@@ -450,15 +287,15 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     return ctx;
   }
 
-  ctx->magic = mx_get_magic(path);
+  ctx->magic = mx_path_probe(path, NULL);
   ctx->mx_ops = mx_get_ops(ctx->magic);
 
-  if (ctx->magic <= 0 || !ctx->mx_ops)
+  if ((ctx->magic == MUTT_UNKNOWN) || (ctx->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
   {
-    if (ctx->magic == -1)
+    if (ctx->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(path);
-    else if (ctx->magic == 0 || !ctx->mx_ops)
-      mutt_error(_("%s is not a mailbox."), path);
+    else if (ctx->magic == MUTT_UNKNOWN || !ctx->mx_ops)
+      mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
     if (!pctx)
@@ -473,12 +310,12 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
    */
-  OPT_FORCE_REFRESH = true;
+  OptForceRefresh = true;
 
   if (!ctx->quiet)
     mutt_message(_("Reading %s..."), ctx->path);
 
-  rc = ctx->mx_ops->open(ctx);
+  rc = ctx->mx_ops->mbox_open(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -486,9 +323,9 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     {
       /* avoid unnecessary work since the mailbox is completely unthreaded
          to begin with */
-      OPT_SORT_SUBTHREADS = false;
-      OPT_NEED_RESCORE = false;
-      mutt_sort_headers(ctx, 1);
+      OptSortSubthreads = false;
+      OptNeedRescore = false;
+      mutt_sort_headers(ctx, true);
     }
     if (!ctx->quiet)
       mutt_clear_error();
@@ -502,12 +339,13 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
       FREE(&ctx);
   }
 
-  OPT_FORCE_REFRESH = false;
+  OptForceRefresh = false;
   return ctx;
 }
 
 /**
  * mx_fastclose_mailbox - free up memory associated with the mailbox context
+ * @param ctx Mailbox
  */
 void mx_fastclose_mailbox(struct Context *ctx)
 {
@@ -516,7 +354,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (!ctx)
     return;
 
-  /* fix up the times so buffy won't get confused */
+  /* fix up the times so mailbox won't get confused */
   if (ctx->peekonly && ctx->path && (ctx->mtime > ctx->atime))
   {
     ut.actime = ctx->atime;
@@ -525,12 +363,12 @@ void mx_fastclose_mailbox(struct Context *ctx)
   }
 
   /* never announce that a mailbox we've just left has new mail. #3290
-   * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
+   * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
-    mutt_buffy_setnotified(ctx->path);
+    mutt_mailbox_setnotified(ctx->path);
 
   if (ctx->mx_ops)
-    ctx->mx_ops->close(ctx);
+    ctx->mx_ops->mbox_close(ctx);
 
   if (ctx->subj_hash)
     mutt_hash_destroy(&ctx->subj_hash);
@@ -539,7 +377,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->msgcount; i++)
-    mutt_free_header(&ctx->hdrs[i]);
+    mutt_header_free(&ctx->hdrs[i]);
   FREE(&ctx->hdrs);
   FREE(&ctx->v2r);
   FREE(&ctx->path);
@@ -553,20 +391,27 @@ void mx_fastclose_mailbox(struct Context *ctx)
 
 /**
  * sync_mailbox - save changes to disk
+ * @param ctx        Mailbox
+ * @param index_hint Current email
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  if (!ctx->mx_ops || !ctx->mx_ops->sync)
+  if (!ctx->mx_ops || !ctx->mx_ops->mbox_sync)
     return -1;
 
   if (!ctx->quiet)
     mutt_message(_("Writing %s..."), ctx->path);
 
-  return ctx->mx_ops->sync(ctx, index_hint);
+  return ctx->mx_ops->mbox_sync(ctx, index_hint);
 }
 
 /**
  * trash_append - move deleted mails to the trash folder
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int trash_append(struct Context *ctx)
 {
@@ -578,10 +423,19 @@ static int trash_append(struct Context *ctx)
   if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
     return 0;
 
+  int delmsgcount = 0;
+  int first_del = -1;
   for (i = 0; i < ctx->msgcount; i++)
+  {
     if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
-      break;
-  if (i == ctx->msgcount)
+    {
+      if (first_del < 0)
+        first_del = i;
+      delmsgcount++;
+    }
+  }
+
+  if (delmsgcount == 0)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
@@ -593,7 +447,10 @@ static int trash_append(struct Context *ctx)
     Confirmappend = true;
   if (rc != 0)
   {
-    mutt_error(_("message(s) not deleted"));
+    /* L10N: Although we know the precise number of messages, we do not show it to the user.
+       So feel free to use a "generic plural" as plural translation if your language has one.
+     */
+    mutt_error(ngettext("message not deleted", "messages not deleted", delmsgcount));
     return -1;
   }
 
@@ -604,29 +461,29 @@ static int trash_append(struct Context *ctx)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
+  if (Context->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
   {
-    if (!imap_fast_trash(Context, Trash))
+    if (imap_fast_trash(Context, Trash) == 0)
       return 0;
   }
 #endif
 
-  if (mx_open_mailbox(Trash, MUTT_APPEND, &ctx_trash) != NULL)
+  if (mx_mbox_open(Trash, MUTT_APPEND, &ctx_trash))
   {
     /* continue from initial scan above */
-    for (; i < ctx->msgcount; i++)
+    for (i = first_del; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
         if (mutt_append_message(&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
-          mx_close_mailbox(&ctx_trash, NULL);
+          mx_mbox_close(&ctx_trash, NULL);
           return -1;
         }
       }
     }
 
-    mx_close_mailbox(&ctx_trash, NULL);
+    mx_mbox_close(&ctx_trash, NULL);
   }
   else
   {
@@ -638,16 +495,18 @@ static int trash_append(struct Context *ctx)
 }
 
 /**
- * mx_close_mailbox - save changes and close mailbox
+ * mx_mbox_close - save changes and close mailbox
+ * @param ctx        Mailbox
+ * @param index_hint Current email
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-int mx_close_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_close(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
-  int check;
-  int is_spool = 0;
   struct Context f;
-  char mbox[_POSIX_PATH_MAX];
-  char buf[SHORT_STRING];
+  char mbox[PATH_MAX];
+  char buf[PATH_MAX + 64];
 
   if (!ctx)
     return 0;
@@ -695,9 +554,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   if (read_msgs && Move != MUTT_NO)
   {
-    char *p = NULL;
-
-    p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path);
+    int is_spool;
+    char *p = mutt_find_hook(MUTT_MBOX_HOOK, ctx->path);
     if (p)
     {
       is_spool = 1;
@@ -705,14 +563,18 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
     else
     {
-      mutt_str_strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
+      mutt_str_strfcpy(mbox, Mbox, sizeof(mbox));
       is_spool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 
     if (is_spool && *mbox)
     {
       mutt_expand_path(mbox, sizeof(mbox));
-      snprintf(buf, sizeof(buf), _("Move %d read messages to %s?"), read_msgs, mbox);
+      snprintf(buf, sizeof(buf),
+               /* L10N: The first argument is the number of read messages to be
+                  moved, the second argument is the target mailbox. */
+               ngettext("Move %d read message to %s?", "Move %d read messages to %s?", read_msgs),
+               read_msgs, mbox);
       move_messages = query_quadoption(Move, buf);
       if (move_messages == MUTT_ABORT)
       {
@@ -722,15 +584,13 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
   }
 
-  /*
-   * There is no point in asking whether or not to purge if we are
+  /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
   if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
-             ctx->deleted == 1 ? _("Purge %d deleted message?") :
-                                 _("Purge %d deleted messages?"),
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
              ctx->deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
@@ -758,7 +618,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     /* try to use server-side copy first */
     i = 1;
 
-    if (ctx->magic == MUTT_IMAP && mx_is_imap(mbox))
+    if ((ctx->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
@@ -774,7 +634,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
         }
       }
 
-      i = imap_copy_messages(ctx, NULL, mbox, 1);
+      i = imap_copy_messages(ctx, NULL, mbox, true);
     }
 
     if (i == 0) /* success */
@@ -787,7 +647,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      if (mx_open_mailbox(mbox, MUTT_APPEND, &f) == NULL)
+      if (!mx_mbox_open(mbox, MUTT_APPEND, &f))
       {
         ctx->closing = false;
         return -1;
@@ -805,20 +665,20 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
           }
           else
           {
-            mx_close_mailbox(&f, NULL);
+            mx_mbox_close(&f, NULL);
             ctx->closing = false;
             return -1;
           }
         }
       }
 
-      mx_close_mailbox(&f, NULL);
+      mx_mbox_close(&f, NULL);
     }
   }
   else if (!ctx->changed && ctx->deleted == 0)
   {
     if (!ctx->quiet)
-      mutt_message(_("Mailbox is unchanged."));
+      mutt_message(_("Mailbox is unchanged"));
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime(ctx, NULL);
     mx_fastclose_mailbox(ctx);
@@ -839,7 +699,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == MUTT_IMAP)
   {
-    check = imap_sync_mailbox(ctx, purge);
+    int check = imap_sync_mailbox(ctx, (purge != MUTT_NO));
     if (check != 0)
     {
       ctx->closing = false;
@@ -861,7 +721,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (ctx->changed || ctx->deleted)
     {
-      check = sync_mailbox(ctx, index_hint);
+      int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
       {
         ctx->closing = false;
@@ -873,10 +733,12 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     if (move_messages)
-      mutt_message(_("%d kept, %d moved, %d deleted."),
+    {
+      mutt_message(_("%d kept, %d moved, %d deleted"),
                    ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
+    }
     else
-      mutt_message(_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted, ctx->deleted);
+      mutt_message(_("%d kept, %d deleted"), ctx->msgcount - ctx->deleted, ctx->deleted);
   }
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
@@ -898,7 +760,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
         ctx->flagged--;
     }
     ctx->msgcount -= ctx->deleted;
-    mutt_sb_set_buffystats(ctx);
+    mutt_sb_set_mailbox_stats(ctx);
     ctx->msgcount = orig_msgcount;
   }
 #endif
@@ -910,6 +772,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * mx_update_tables - Update a Context structure's internal tables
+ * @param ctx        Mailbox
+ * @param committing Commit the changes?
  */
 void mx_update_tables(struct Context *ctx, bool committing)
 {
@@ -971,35 +835,37 @@ void mx_update_tables(struct Context *ctx, bool committing)
     else
     {
       if (ctx->magic == MUTT_MH || ctx->magic == MUTT_MAILDIR)
+      {
         ctx->size -= (ctx->hdrs[i]->content->length + ctx->hdrs[i]->content->offset -
                       ctx->hdrs[i]->content->hdr_offset);
+      }
       /* remove message from the hash tables */
       if (ctx->subj_hash && ctx->hdrs[i]->env->real_subj)
         mutt_hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i]);
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
         mutt_hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i]);
       mutt_label_hash_remove(ctx, ctx->hdrs[i]);
-      /* The path mx_check_mailbox() -> imap_check_mailbox() ->
+      /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
-       * can occur before a call to mx_sync_mailbox(), resulting in
+       * can occur before a call to mx_mbox_sync(), resulting in
        * last_tag being stale if it's not reset here.
        */
       if (ctx->last_tag == ctx->hdrs[i])
         ctx->last_tag = NULL;
-      mutt_free_header(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->hdrs[i]);
     }
   }
   ctx->msgcount = j;
 }
 
 /**
- * mx_sync_mailbox - Save changes to mailbox
+ * mx_mbox_sync - Save changes to mailbox
  * @param[in]  ctx        Context
  * @param[out] index_hint Currently selected mailbox
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
-int mx_sync_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int rc;
   int purge = 1;
@@ -1011,21 +877,21 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
-      mutt_str_strfcpy(tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
+      mutt_str_strfcpy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
 
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
   }
   else if (ctx->readonly)
   {
-    mutt_error(_("Mailbox is read-only."));
+    mutt_error(_("Mailbox is read-only"));
     return -1;
   }
 
   if (!ctx->changed && !ctx->deleted)
   {
     if (!ctx->quiet)
-      mutt_message(_("Mailbox is unchanged."));
+      mutt_message(_("Mailbox is unchanged"));
     return 0;
   }
 
@@ -1034,8 +900,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     char buf[SHORT_STRING];
 
     snprintf(buf, sizeof(buf),
-             ctx->deleted == 1 ? _("Purge %d deleted message?") :
-                                 _("Purge %d deleted messages?"),
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
              ctx->deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
@@ -1082,13 +947,13 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     if (ctx->magic == MUTT_IMAP && !purge)
     {
       if (!ctx->quiet)
-        mutt_message(_("Mailbox checkpointed."));
+        mutt_message(_("Mailbox checkpointed"));
     }
     else
 #endif
     {
       if (!ctx->quiet)
-        mutt_message(_("%d kept, %d deleted."), msgcount - deleted, deleted);
+        mutt_message(_("%d kept, %d deleted"), msgcount - deleted, deleted);
     }
 
     mutt_sleep(0);
@@ -1114,7 +979,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
       if (ctx->magic != MUTT_IMAP)
       {
         mx_update_tables(ctx, true);
-        mutt_sort_headers(ctx, 1); /* rethread from scratch */
+        mutt_sort_headers(ctx, true); /* rethread from scratch */
       }
     }
   }
@@ -1123,21 +988,20 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /**
- * mx_open_new_message - Open a new message
- * @param dest  Destination mailbox
- * @param hdr   Message being copied (required for maildir support, because
- *              the filename depends on the message flags)
+ * mx_msg_open_new - Open a new message
+ * @param ctx   Destination mailbox
+ * @param hdr   Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
- * @retval ptr new Message
+ * @retval ptr New Message
  */
-struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
+struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags)
 {
   struct Address *p = NULL;
   struct Message *msg = NULL;
 
-  if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_open_new)
   {
-    mutt_debug(1, "function unimplemented for mailbox type %d.\n", dest->magic);
+    mutt_debug(1, "function unimplemented for mailbox type %d.\n", ctx->magic);
     return NULL;
   }
 
@@ -1156,12 +1020,12 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   if (msg->received == 0)
     time(&msg->received);
 
-  if (dest->mx_ops->open_new_msg(msg, dest, hdr) == 0)
+  if (ctx->mx_ops->msg_open_new(ctx, msg, hdr) == 0)
   {
-    if (dest->magic == MUTT_MMDF)
+    if (ctx->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if ((dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
+    if ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
     {
       if (hdr)
       {
@@ -1184,9 +1048,14 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
 }
 
 /**
- * mx_check_mailbox - check for new mail
+ * mx_mbox_check - check for new mail
+ * @param ctx        Mailbox
+ * @param index_hint Current email
+ * @retval >0 Success, e.g. #MUTT_NEW_MAIL
+ * @retval  0 Success, no change
+ * @retval -1 Failure
  */
-int mx_check_mailbox(struct Context *ctx, int *index_hint)
+int mx_mbox_check(struct Context *ctx, int *index_hint)
 {
   if (!ctx || !ctx->mx_ops)
   {
@@ -1194,35 +1063,43 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  return ctx->mx_ops->check(ctx, index_hint);
+  return ctx->mx_ops->mbox_check(ctx, index_hint);
 }
 
 /**
- * mx_open_message - return a stream pointer for a message
+ * mx_msg_open - return a stream pointer for a message
+ * @param ctx   Mailbox
+ * @param msgno Message number
+ * @retval ptr  Message
+ * @retval NULL Error
  */
-struct Message *mx_open_message(struct Context *ctx, int msgno)
+struct Message *mx_msg_open(struct Context *ctx, int msgno)
 {
   struct Message *msg = NULL;
 
-  if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_open)
   {
     mutt_debug(1, "function not implemented for mailbox type %d.\n", ctx->magic);
     return NULL;
   }
 
   msg = mutt_mem_calloc(1, sizeof(struct Message));
-  if (ctx->mx_ops->open_msg(ctx, msg, msgno))
+  if (ctx->mx_ops->msg_open(ctx, msg, msgno))
     FREE(&msg);
 
   return msg;
 }
 
 /**
- * mx_commit_message - commit a message to a folder
+ * mx_msg_commit - commit a message to a folder
+ * @param msg Message to commit
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-int mx_commit_message(struct Message *msg, struct Context *ctx)
+int mx_msg_commit(struct Context *ctx, struct Message *msg)
 {
-  if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_commit)
     return -1;
 
   if (!(msg->write && ctx->append))
@@ -1231,20 +1108,24 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
     return -1;
   }
 
-  return ctx->mx_ops->commit_msg(ctx, msg);
+  return ctx->mx_ops->msg_commit(ctx, msg);
 }
 
 /**
- * mx_close_message - close a pointer to a message
+ * mx_msg_close - Close a message
+ * @param ctx Mailbox
+ * @param msg Message to close
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-int mx_close_message(struct Context *ctx, struct Message **msg)
+int mx_msg_close(struct Context *ctx, struct Message **msg)
 {
   if (!ctx || !msg || !*msg)
     return 0;
   int r = 0;
 
-  if (ctx->mx_ops && ctx->mx_ops->close_msg)
-    r = ctx->mx_ops->close_msg(ctx, *msg);
+  if (ctx->mx_ops && ctx->mx_ops->msg_close)
+    r = ctx->mx_ops->msg_close(ctx, *msg);
 
   if ((*msg)->path)
   {
@@ -1253,19 +1134,22 @@ int mx_close_message(struct Context *ctx, struct Message **msg)
     FREE(&(*msg)->path);
   }
 
-  FREE(&(*msg)->commited_path);
+  FREE(&(*msg)->committed_path);
   FREE(msg);
   return r;
 }
 
+/**
+ * mx_alloc_memory - Create storage for the emails
+ * @param ctx Mailbox
+ */
 void mx_alloc_memory(struct Context *ctx)
 {
   size_t s = MAX(sizeof(struct Header *), sizeof(int));
 
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
   {
-    mutt_error(_("Integer overflow -- can't allocate memory."));
-    sleep(1);
+    mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
@@ -1288,6 +1172,8 @@ void mx_alloc_memory(struct Context *ctx)
 
 /**
  * mx_update_context - Update the Context's message counts
+ * @param ctx          Mailbox
+ * @param new_messages Number of new messages
  *
  * this routine is called to update the counts in the context structure for the
  * last message header parsed.
@@ -1326,7 +1212,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       {
         h2->superseded = true;
         if (Score)
-          mutt_score_message(ctx, h2, 1);
+          mutt_score_message(ctx, h2, true);
       }
     }
 
@@ -1338,7 +1224,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     mutt_label_hash_add(ctx, h);
 
     if (Score)
-      mutt_score_message(ctx, h, 0);
+      mutt_score_message(ctx, h, false);
 
     if (h->changed)
       ctx->changed = true;
@@ -1364,7 +1250,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
  */
 int mx_check_empty(const char *path)
 {
-  switch (mx_get_magic(path))
+  switch (mx_path_probe(path, NULL))
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
@@ -1381,34 +1267,226 @@ int mx_check_empty(const char *path)
 }
 
 /**
- * mx_tags_editor - start the tag editor of the mailbox
+ * mx_tags_edit - start the tag editor of the mailbox
+ * @param ctx    Mailbox
+ * @param tags   Existing tags
+ * @param buf    Buffer for the results
+ * @param buflen Length of the buffer
  * @retval -1 Error
+ * @retval 0  No valid user input
+ * @retval 1  Buffer set
  */
-int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
-  if (ctx->mx_ops->edit_msg_tags)
-    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf, buflen);
+  if (ctx->mx_ops->tags_edit)
+    return ctx->mx_ops->tags_edit(ctx, tags, buf, buflen);
 
-  mutt_message(_("Folder doesn't support tagging, aborting."));
+  mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
 }
 
 /**
  * mx_tags_commit - save tags to the mailbox
+ * @param ctx  Mailbox
+ * @param hdr  Email Header
+ * @param tags Tags to save
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
+int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
 {
-  if (ctx->mx_ops->commit_msg_tags)
-    return ctx->mx_ops->commit_msg_tags(ctx, h, tags);
+  if (ctx->mx_ops->tags_commit)
+    return ctx->mx_ops->tags_commit(ctx, hdr, tags);
 
-  mutt_message(_("Folder doesn't support tagging, aborting."));
+  mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
 }
 
 /**
  * mx_tags_is_supported - return true if mailbox support tagging
+ * @param ctx Mailbox
+ * @retval true Tagging is supported
  */
 bool mx_tags_is_supported(struct Context *ctx)
 {
-  return ctx->mx_ops->commit_msg_tags && ctx->mx_ops->edit_msg_tags;
+  return ctx->mx_ops->tags_commit && ctx->mx_ops->tags_edit;
+}
+
+/**
+ * mx_path_probe - Find a mailbox that understands a path
+ * @param path  Path to examine
+ * @param st    stat buffer (for local filesystems)
+ * @retval num Type, e.g. #MUTT_IMAP
+ */
+int mx_path_probe(const char *path, const struct stat *st)
+{
+  if (!path)
+    return MUTT_UNKNOWN;
+
+  static const struct MxOps *no_stat[] = {
+#ifdef USE_IMAP
+    &mx_imap_ops,
+#endif
+#ifdef USE_NOTMUCH
+    &mx_notmuch_ops,
+#endif
+#ifdef USE_POP
+    &mx_pop_ops,
+#endif
+#ifdef USE_NNTP
+    &mx_nntp_ops,
+#endif
+  };
+
+  static const struct MxOps *with_stat[] = {
+    &mx_maildir_ops, &mx_mbox_ops, &mx_mh_ops, &mx_mmdf_ops,
+#ifdef USE_COMPRESSED
+    &mx_comp_ops,
+#endif
+  };
+
+  int rc;
+
+  for (size_t i = 0; i < mutt_array_size(no_stat); i++)
+  {
+    rc = no_stat[i]->path_probe(path, NULL);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  struct stat st2 = { 0 };
+  if (!st)
+  {
+    st = &st2;
+    if (stat(path, &st2) != 0)
+    {
+      mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+      return MUTT_UNKNOWN;
+    }
+  }
+
+  for (size_t i = 0; i < mutt_array_size(with_stat); i++)
+  {
+    rc = with_stat[i]->path_probe(path, st);
+    if (rc != MUTT_UNKNOWN)
+      return rc;
+  }
+
+  return rc;
+}
+
+/**
+ * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
+ */
+int mx_path_canon(char *buf, size_t buflen, const char *folder)
+{
+  if (!buf)
+    return -1;
+
+  for (size_t i = 0; i < 3; i++)
+  {
+    /* Look for !! ! - < > or ^ followed by / or NUL */
+    if ((buf[0] == '!') && (buf[1] == '!'))
+    {
+      if (((buf[2] == '/') || (buf[2] == '\0')))
+      {
+        mutt_str_inline_replace(buf, buflen, 2, LastFolder);
+      }
+    }
+    else if ((buf[1] == '/') || (buf[1] == '\0'))
+    {
+      if (buf[0] == '!')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Spoolfile);
+      }
+      else if (buf[0] == '-')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, LastFolder);
+      }
+      else if (buf[0] == '<')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Record);
+      }
+      else if (buf[0] == '>')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Mbox);
+      }
+      else if (buf[0] == '^')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
+      }
+    }
+    else if (buf[0] == '@')
+    {
+      /* elm compatibility, @ expands alias to user name */
+      struct Address *alias = mutt_alias_lookup(buf + 1);
+      if (!alias)
+        break;
+
+      struct Header *h = mutt_header_new();
+      h->env = mutt_env_new();
+      h->env->from = alias;
+      h->env->to = alias;
+      mutt_default_save(buf, buflen, h);
+      h->env->from = NULL;
+      h->env->to = NULL;
+      mutt_header_free(&h);
+      break;
+    }
+    else
+    {
+      break;
+    }
+  }
+
+  if (!folder)
+    return -1;
+
+  int magic = mx_path_probe(folder, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops || !ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+  {
+    mutt_path_canon(buf, buflen, HomeDir);
+  }
+
+  return 0;
+}
+
+/**
+ * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty
+ */
+int mx_path_pretty(char *buf, size_t buflen, const char *folder)
+{
+  int magic = mx_path_probe(buf, NULL);
+  const struct MxOps *ops = mx_get_ops(magic);
+  if (!ops)
+    return -1;
+
+  if (!ops->path_canon)
+    return -1;
+
+  if (ops->path_canon(buf, buflen, folder) < 0)
+    return -1;
+
+  if (!ops->path_pretty)
+    return -1;
+
+  if (ops->path_pretty(buf, buflen, folder) < 0)
+    return -1;
+
+  return 0;
+}
+
+/**
+ * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent
+ */
+int mx_path_parent(char *buf, size_t buflen)
+{
+  if (!buf)
+    return -1;
+
+  return 0;
 }

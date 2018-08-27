@@ -29,15 +29,6 @@
  *
  * @note RFC3548 obsoletes RFC2045.
  * @note RFC4648 obsoletes RFC3548.
- *
- * | Data              | Description
- * | :---------------- | :--------------------------------------------------
- * | #Index64          | Lookup table for Base64 encoding characters
- *
- * | Function          | Description
- * | :---------------- | :-------------------------------------------------
- * | mutt_b64_encode() | Convert raw bytes to null-terminated base64 string
- * | mutt_b64_decode() | Convert null-terminated base64 string to raw bytes
  */
 
 #include "config.h"
@@ -80,44 +71,44 @@ const int Index64[128] = {
 
 /**
  * mutt_b64_encode - Convert raw bytes to null-terminated base64 string
- * @param out  Output buffer for the base64 encoded string
- * @param cin  Input  buffer for the raw bytes
- * @param len  Length of the input buffer
- * @param olen Length of the output buffer
- * @retval n Length of the string written to the output buffer
+ * @param in     Input buffer for the raw bytes
+ * @param inlen  Length of the input buffer
+ * @param out    Output buffer for the base64 encoded string
+ * @param outlen Length of the output buffer
+ * @retval num Length of the string written to the output buffer
  *
  * This function performs base64 encoding. The resulting string is guaranteed
  * to be null-terminated. The number of characters up to the terminating
- * null-byte is returned (equivalent to calling strlen() on the output buffer
+ * NUL-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
+size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
 {
   unsigned char *begin = (unsigned char *) out;
-  const unsigned char *in = (const unsigned char *) cin;
+  const unsigned char *inu = (const unsigned char *) in;
 
-  while ((len >= 3) && (olen > 10))
+  while ((inlen >= 3) && (outlen > 10))
   {
-    *out++ = B64Chars[in[0] >> 2];
-    *out++ = B64Chars[((in[0] << 4) & 0x30) | (in[1] >> 4)];
-    *out++ = B64Chars[((in[1] << 2) & 0x3c) | (in[2] >> 6)];
-    *out++ = B64Chars[in[2] & 0x3f];
-    olen -= 4;
-    len -= 3;
-    in += 3;
+    *out++ = B64Chars[inu[0] >> 2];
+    *out++ = B64Chars[((inu[0] << 4) & 0x30) | (inu[1] >> 4)];
+    *out++ = B64Chars[((inu[1] << 2) & 0x3c) | (inu[2] >> 6)];
+    *out++ = B64Chars[inu[2] & 0x3f];
+    outlen -= 4;
+    inlen -= 3;
+    inu += 3;
   }
 
   /* clean up remainder */
-  if ((len > 0) && (olen > 4))
+  if ((inlen > 0) && (outlen > 4))
   {
     unsigned char fragment;
 
-    *out++ = B64Chars[in[0] >> 2];
-    fragment = (in[0] << 4) & 0x30;
-    if (len > 1)
-      fragment |= in[1] >> 4;
+    *out++ = B64Chars[inu[0] >> 2];
+    fragment = (inu[0] << 4) & 0x30;
+    if (inlen > 1)
+      fragment |= inu[1] >> 4;
     *out++ = B64Chars[fragment];
-    *out++ = (len < 2) ? '=' : B64Chars[(in[1] << 2) & 0x3c];
+    *out++ = (inlen < 2) ? '=' : B64Chars[(inu[1] << 2) & 0x3c];
     *out++ = '=';
   }
   *out = '\0';
@@ -126,29 +117,30 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
 
 /**
  * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
- * @param out Output buffer for the raw bytes
- * @param in  Input  buffer for the null-terminated base64-encoded string
- * @retval n Number of bytes written on success
- * @retval -1 on error
+ * @param in   Input  buffer for the null-terminated base64-encoded string
+ * @param out  Output buffer for the raw bytes
+ * @param olen Length of the output buffer
+ * @retval num Success, bytes written
+ * @retval -1  Error
  *
  * This function performs base64 decoding. The resulting buffer is NOT
  * null-terminated. If the input buffer contains invalid base64 characters,
  * this function returns -1.
  */
-int mutt_b64_decode(char *out, const char *in)
+int mutt_b64_decode(const char *in, char *out, size_t olen)
 {
   int len = 0;
-  unsigned char digit1, digit2, digit3, digit4;
+  unsigned char digit4;
 
   do
   {
-    digit1 = in[0];
+    const unsigned char digit1 = in[0];
     if ((digit1 > 127) || (base64val(digit1) == BAD))
       return -1;
-    digit2 = in[1];
+    const unsigned char digit2 = in[1];
     if ((digit2 > 127) || (base64val(digit2) == BAD))
       return -1;
-    digit3 = in[2];
+    const unsigned char digit3 = in[2];
     if ((digit3 > 127) || ((digit3 != '=') && (base64val(digit3) == BAD)))
       return -1;
     digit4 = in[3];
@@ -157,14 +149,20 @@ int mutt_b64_decode(char *out, const char *in)
     in += 4;
 
     /* digits are already sanity-checked */
+    if (len == olen)
+      return len;
     *out++ = (base64val(digit1) << 2) | (base64val(digit2) >> 4);
     len++;
     if (digit3 != '=')
     {
+      if (len == olen)
+        return len;
       *out++ = ((base64val(digit2) << 4) & 0xf0) | (base64val(digit3) >> 2);
       len++;
       if (digit4 != '=')
       {
+        if (len == olen)
+          return len;
         *out++ = ((base64val(digit3) << 6) & 0xc0) | base64val(digit4);
         len++;
       }

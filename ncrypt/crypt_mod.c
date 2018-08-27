@@ -20,9 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt_mod Register crypto modules
+ *
+ * Register crypto modules
+ */
+
 #include "config.h"
 #include "mutt/mutt.h"
-#include "mutt/queue.h"
 #include "crypt_mod.h"
 
 /**
@@ -30,34 +35,36 @@
  *
  * A type of a variable to keep track of registered crypto modules.
  */
+static STAILQ_HEAD(CryptModuleHead,
+                   CryptModule) CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
 struct CryptModule
 {
   struct CryptModuleSpecs *specs;
   STAILQ_ENTRY(CryptModule) entries;
 };
-STAILQ_HEAD(CryptModules, CryptModule)
-modules = STAILQ_HEAD_INITIALIZER(modules);
 
 /**
  * crypto_module_register - Register a new crypto module
+ * @param specs API functions
  */
 void crypto_module_register(struct CryptModuleSpecs *specs)
 {
   struct CryptModule *module = mutt_mem_calloc(1, sizeof(struct CryptModule));
   module->specs = specs;
-  STAILQ_INSERT_HEAD(&modules, module, entries);
+  STAILQ_INSERT_HEAD(&CryptModules, module, entries);
 }
 
 /**
  * crypto_module_lookup - Lookup a crypto module by name
+ * @param identifier Name, e.g. #APPLICATION_PGP
+ * @retval ptr Crypto module
  *
- * Return the crypto module specs for IDENTIFIER.
  * This function is usually used via the CRYPT_MOD_CALL[_CHECK] macros.
  */
 struct CryptModuleSpecs *crypto_module_lookup(int identifier)
 {
   struct CryptModule *module = NULL;
-  STAILQ_FOREACH(module, &modules, entries)
+  STAILQ_FOREACH(module, &CryptModules, entries)
   {
     if (module->specs->identifier == identifier)
     {
@@ -66,3 +73,17 @@ struct CryptModuleSpecs *crypto_module_lookup(int identifier)
   }
   return NULL;
 }
+
+/**
+ * crypto_module_free - Clean up the crypto modules
+ */
+void crypto_module_free(void)
+{
+  struct CryptModule *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, &CryptModules, entries, tmp)
+  {
+    STAILQ_REMOVE(&CryptModules, np, CryptModule, entries);
+    FREE(&np);
+  }
+}
+

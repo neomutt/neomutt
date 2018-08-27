@@ -24,17 +24,6 @@
  * @page signal Signal handling
  *
  * Signal handling
- *
- * | Function                   | Description
- * | :------------------------- | :---------------------------------------------------------
- * | mutt_sig_allow_interrupt() | Allow/disallow Ctrl-C (SIGINT)
- * | mutt_sig_block()           | Block signals during critical operations
- * | mutt_sig_block_system()    | Block signals before calling exec()
- * | mutt_sig_empty_handler()   | Dummy signal handler
- * | mutt_sig_exit_handler()    | Notify the user and shutdown gracefully
- * | mutt_sig_init()            | Initialise the signal handling
- * | mutt_sig_unblock()         | Restore previously blocked signals
- * | mutt_sig_unblock_system()  | Restore previously blocked signals
  */
 
 #include "config.h"
@@ -75,13 +64,13 @@ void mutt_sig_empty_handler(int sig)
 void mutt_sig_exit_handler(int sig)
 {
 #if HAVE_DECL_SYS_SIGLIST
-  printf(_("%s...  Exiting.\n"), sys_siglist[sig]);
+  printf(_("Caught signal %d (%s) ...  Exiting.\n"), sig, sys_siglist[sig]);
 #elif (defined(__sun__) && defined(__svr4__))
-  printf(_("Caught %s...  Exiting.\n"), _sys_siglist[sig]);
+  printf(_("Caught signal %d (%s) ...  Exiting.\n"), sig, _sys_siglist[sig]);
 #elif (defined(__alpha) && defined(__osf__))
-  printf(_("Caught %s...  Exiting.\n"), __sys_siglist[sig]);
+  printf(_("Caught signal %d (%s) ...  Exiting.\n"), sig, __sys_siglist[sig]);
 #else
-  printf(_("Caught signal %d...  Exiting.\n"), sig);
+  printf(_("Caught signal %d ...  Exiting.\n"), sig);
 #endif
   exit(0);
 }
@@ -132,9 +121,7 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
   sigaction(SIGCONT, &act, NULL);
   sigaction(SIGTSTP, &act, NULL);
   sigaction(SIGINT, &act, NULL);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   sigaction(SIGWINCH, &act, NULL);
-#endif
 
   /* POSIX doesn't allow us to ignore SIGCHLD,
    * so we just install a dummy handler for it */
@@ -162,9 +149,7 @@ void mutt_sig_block(void)
   sigaddset(&Sigset, SIGHUP);
   sigaddset(&Sigset, SIGTSTP);
   sigaddset(&Sigset, SIGINT);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   sigaddset(&Sigset, SIGWINCH);
-#endif
   sigprocmask(SIG_BLOCK, &Sigset, 0);
   SignalsBlocked = true;
 }
@@ -211,7 +196,7 @@ void mutt_sig_block_system(void)
  * mutt_sig_unblock_system - Restore previously blocked signals
  * @param catch If true, restore previous SIGINT, SIGQUIT behaviour
  */
-void mutt_sig_unblock_system(int catch)
+void mutt_sig_unblock_system(bool catch)
 {
   if (!SysSignalsBlocked)
     return;

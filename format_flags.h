@@ -40,13 +40,30 @@ enum FormatFlag
   MUTT_FORMAT_NOFILTER    = (1 << 7)  /**< do not allow filtering on this pass */
 };
 
+/**
+ * typedef format_t - Prototype for a mutt_expando_format() callback function
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * Each callback function implements some expandos, e.g.
+ *
+ * | Expando | Description
+ * |:--------|:-----------
+ * | \%t     | Title
+ */
 typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              char op, const char *src, const char *prec,
                              const char *if_str, const char *else_str,
                              unsigned long data, enum FormatFlag flags);
-
-void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols,
-                         const char *src, format_t *callback,
-                         unsigned long data, enum FormatFlag flags);
 
 #endif /* _MUTT_FORMAT_FLAGS_H */

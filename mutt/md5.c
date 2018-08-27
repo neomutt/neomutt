@@ -25,23 +25,10 @@
  * @page md5 Calculate the MD5 checksum of a buffer
  *
  * Calculate the MD5 cryptographic hash of a string, according to RFC1321.
- *
- * | Function                 | Description
- * | :----------------------- | :----------------------------------------------------
- * | mutt_md5()               | Calculate the MD5 hash of a NULL-terminated string
- * | mutt_md5_buf()           | Calculate the MD5 hash of a buffer
- * | mutt_md5_finish_ctx()    | Process the remaining bytes in the buffer
- * | mutt_md5_init_ctx()      | Initialise the MD5 computation
- * | mutt_md5_process()       | Process a NULL-terminated string
- * | mutt_md5_process_block() | Process a block with MD5
- * | mutt_md5_process_bytes() | Process a block of data
- * | mutt_md5_read_ctx()      | Read from the context into a buffer
- * | mutt_md5_toascii()       | Convert a binary MD5 digest into ASCII Hexadecimal
  */
 
 #include "config.h"
 #include <stddef.h>
-#include <stdbool.h>
 #include <string.h>
 #include "md5.h"
 
@@ -103,12 +90,12 @@ static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx
     md5_uint32 C_save = C;
     md5_uint32 D_save = D;
 
-/* First round: using the given function, the context and a constant the next
- * context is computed.  Because the algorithms processing unit is a 32-bit
- * word and it is determined to work on words in little endian byte order we
- * perhaps have to change the byte order before the computation.  To reduce the
- * work for the next steps we store the swapped words in the array
- * CORRECT_WORDS. */
+    /* First round: using the given function, the context and a constant the
+     * next context is computed.  Because the algorithms processing unit is a
+     * 32-bit word and it is determined to work on words in little endian byte
+     * order we perhaps have to change the byte order before the computation.
+     * To reduce the work for the next steps we store the swapped words in the
+     * array CORRECT_WORDS. */
 
 #define OP(a, b, c, d, s, T)                                                   \
   do                                                                           \
@@ -276,7 +263,8 @@ void mutt_md5_init_ctx(struct Md5Ctx *ctx)
   ctx->C = 0x98badcfe;
   ctx->D = 0x10325476;
 
-  ctx->total[0] = ctx->total[1] = 0;
+  ctx->total[0] = 0;
+  ctx->total[1] = 0;
   ctx->buflen = 0;
 }
 
@@ -314,16 +302,16 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
 
 /**
  * mutt_md5 - Calculate the MD5 hash of a NULL-terminated string
- * @param s      String to hash
+ * @param string String to hash
  * @param resbuf Buffer for result
  */
-void *mutt_md5(const char *s, void *resbuf)
+void *mutt_md5(const char *string, void *resbuf)
 {
-  return mutt_md5_bytes(s, strlen(s), resbuf);
+  return mutt_md5_bytes(string, strlen(string), resbuf);
 }
 
 /**
- * mutt_md5_buf - Calculate the MD5 hash of a buffer
+ * mutt_md5_bytes - Calculate the MD5 hash of a buffer
  * @param buffer  Buffer to hash
  * @param len     Length of buffer
  * @param resbuf  Buffer for result
@@ -349,12 +337,12 @@ void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
 
 /**
  * mutt_md5_process - Process a NULL-terminated string
- * @param s    String to process
- * @param ctx  MD5 context
+ * @param string String to process
+ * @param ctx    MD5 context
  */
-void mutt_md5_process(const char *s, struct Md5Ctx *ctx)
+void mutt_md5_process(const char *string, struct Md5Ctx *ctx)
 {
-  mutt_md5_process_bytes(s, strlen(s), ctx);
+  mutt_md5_process_bytes(string, strlen(string), ctx);
 }
 
 /**

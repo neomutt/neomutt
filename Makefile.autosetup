@@ -3,11 +3,18 @@
 
 PACKAGE=	@PACKAGE@
 PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_DATE=	@PACKAGE_DATE@
+
+# Build-time compiler and flags. These are used for building executables that
+# are only used at build-time, e.g., doc/makedoc. These are different from CC /
+# CFLAGS / LDFLAGS because the host and target systems might be different.
+CC_FOR_BUILD=		@CC_FOR_BUILD@
+CFLAGS_FOR_BUILD=	@CFLAGS_FOR_BUILD@ $(EXTRA_CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD=	@LDFLAGS_FOR_BUILD@ $(EXTRA_LDFLAGS_FOR_BUILD)
 
 PWD=		@PWD@
 AR=		@AR@
 CC=		@CC@
-CC_FOR_BUILD=	@CC_FOR_BUILD@ @CFLAGS_FOR_BUILD@
 CPP=		@CPP@
 CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@top_srcdir@ -Wall $(EXTRA_CFLAGS)
 LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
@@ -25,21 +32,21 @@ RM=		rm -fr
 DEPFILES=	$(ALLOBJS:.o=.Po)
 BINFILES=	$(NEOMUTT)
 @if HAVE_PGP
-LIBBINFILES+=	$(PGPEWRAP) $(PGPRING)
+LIBBINFILES+=	$(PGPEWRAP)
 @endif
 @if HAVE_SMIME
 LIBBINFILES+=	$(SRCDIR)/contrib/smime_keys
 @endif
 
 # paths
-prefix=		@prefix@
 bindir=		@BINDIR@
 datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
 libdir=		@libdir@
-libexecdir=		@libexecdir@
+libexecdir=	@libexecdir@
 sysconfdir=	@SYSCONFDIR@
+textdomaindir=	@MUTTLOCALEDIR@
 
 # targets for specific subdirectories
 ALL_TARGETS=		@ALL_TARGETS@
@@ -54,30 +61,21 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
-		browser.o buffy.o color.o commands.o complete.o \
-		compose.o compress.o conststrings.o copy.o curs_lib.o \
-		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
-		flags.o from.o group.o handler.o hdrline.o \
-		header.o help.o history.o hook.o init.o keymap.o main.o \
-		mbox.o menu.o mh.o muttlib.o mutt_address.o \
-		mutt_socket.o tags.o mx.o \
-		newsrc.o nntp.o pager.o parse.o pattern.o pop.o \
-		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
-		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \
-		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
-		smtp.o sort.o state.o status.o system.o thread.o url.o \
-		version.o
+NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
+		complete.o compose.o compress.o conststrings.o copy.o \
+		curs_lib.o curs_main.o edit.o editmsg.o enriched.o enter.o \
+		filter.o flags.o group.o handler.o hdrline.o help.o hook.o \
+		init.o keymap.o mailbox.o main.o menu.o muttlib.o \
+		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
+		mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
+		mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o myvar.o \
+		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
+		recvcmd.o resize.o rfc1524.o rfc3676.o safe_asprintf.o \
+		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
+		status.o system.o terminal.o version.o
 
-@if HAVE_WCSCASECMP
-@else
+@if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
-@endif
-@if HAVE_RESIZETERM
-NEOMUTTOBJS+=	resize.o
-@endif
-@if USE_NOTMUCH
-NEOMUTTOBJS+=	mutt_notmuch.o
 @endif
 @if MIXMASTER
 NEOMUTTOBJS+=	remailer.o
@@ -89,18 +87,46 @@ CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 
 ###############################################################################
-# libmutt
-LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
-		mutt/debug.o mutt/exit.o \
-		mutt/file.o mutt/hash.o mutt/idna.o mutt/list.o \
-		mutt/mapping.o mutt/mbyte.o mutt/md5.o \
-		mutt/memory.o mutt/message.o mutt/mime.o mutt/parameter.o \
-		mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o \
-		mutt/rfc2047.o
-CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
-MUTTLIBS+=	$(LIBMUTT)
-ALLOBJS+=	$(LIBMUTTOBJS)
+# libpop
+LIBPOP=	libpop.a
+LIBPOPOBJS=	pop/pop_auth.o pop/pop.o pop/pop_lib.o
+CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
+MUTTLIBS+=	$(LIBPOP)
+ALLOBJS+=	$(LIBPOPOBJS)
+
+###############################################################################
+# libnntp
+LIBNNTP=	libnntp.a
+LIBNNTPOBJS=	nntp/newsrc.o nntp/nntp.o
+CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
+MUTTLIBS+=	$(LIBNNTP)
+ALLOBJS+=	$(LIBNNTPOBJS)
+
+###############################################################################
+# libmbox
+LIBMBOX=	libmbox.a
+LIBMBOXOBJS=	mbox/mbox.o
+CLEANFILES+=	$(LIBMBOX) $(LIBMBOXOBJS)
+MUTTLIBS+=	$(LIBMBOX)
+ALLOBJS+=	$(LIBMBOXOBJS)
+
+###############################################################################
+# libnotmuch
+@if USE_NOTMUCH
+LIBNOTMUCH=	libnotmuch.a
+LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o
+CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
+MUTTLIBS+=	$(LIBNOTMUCH)
+ALLOBJS+=	$(LIBNOTMUCHOBJS)
+@endif
+
+###############################################################################
+# libmaildir
+LIBMAILDIR=	libmaildir.a
+LIBMAILDIROBJS=	maildir/mh.o
+CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
+MUTTLIBS+=	$(LIBMAILDIR)
+ALLOBJS+=	$(LIBMAILDIROBJS)
 
 ###############################################################################
 # libncrypt
@@ -142,8 +168,8 @@ ALLOBJS+=	$(LIBIMAPOBJS)
 ###############################################################################
 # libconn
 LIBCONN=	libconn.a
-LIBCONNOBJS=	conn/conn_globals.o conn/getdomain.o conn/sasl_plain.o \
-		conn/socket.o conn/tunnel.o
+LIBCONNOBJS=	conn/conn_globals.o conn/conn_raw.o conn/getdomain.o \
+		conn/sasl_plain.o  conn/socket.o conn/tunnel.o
 @if HAVE_SASL
 LIBCONNOBJS+=	conn/sasl.o
 @endif
@@ -161,11 +187,10 @@ ALLOBJS+=	$(LIBCONNOBJS)
 # libhcache
 @if USE_HCACHE
 LIBHCACHE=	libhcache.a
-LIBHCACHEOBJS=	hcache/hcache.o
+LIBHCACHEOBJS=	hcache/hcache.o hcache/serialize.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 MUTTLIBS+=	$(LIBHCACHE)
 ALLOBJS+=	$(LIBHCACHEOBJS)
-@endif
 @if HAVE_BDB
 LIBHCACHEOBJS+=	hcache/bdb.o
 @endif
@@ -184,6 +209,7 @@ LIBHCACHEOBJS+=	hcache/qdbm.o
 @if HAVE_TC
 LIBHCACHEOBJS+=	hcache/tc.o
 @endif
+@endif # USE_HCACHE
 
 ###############################################################################
 # pgpewrap
@@ -193,11 +219,40 @@ CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
 ALLOBJS+=	$(PGPEWRAPOBJS)
 
 ###############################################################################
-# pgpring
-PGPRING=	pgpring$(EXEEXT)
-PGPRINGOBJS=	pgppubring.o
-CLEANFILES+=	$(PGPRING) $(PGPRINGOBJS)
-ALLOBJS+=	$(PGPRINGOBJS)
+# libconfig
+LIBCONFIG=	libconfig.a
+LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
+		config/long.o config/magic.o config/mbtable.o config/number.o \
+		config/path.o config/quad.o config/regex.o config/set.o \
+		config/sort.o config/string.o
+
+CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
+MUTTLIBS+=	$(LIBCONFIG)
+ALLOBJS+=	$(LIBCONFIGOBJS)
+
+###############################################################################
+# libemail
+LIBEMAIL=	libemail.a
+LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
+		email/email_globals.o email/envelope.o email/from.o \
+		email/header.o email/idna.o email/mime.o email/parameter.o \
+		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
+		email/thread.o email/url.o
+CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
+MUTTLIBS+=	$(LIBEMAIL)
+ALLOBJS+=	$(LIBEMAILOBJS)
+
+###############################################################################
+# libmutt
+LIBMUTT=	libmutt.a
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
+		mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
+		mutt/history.o mutt/list.o mutt/logging.o mutt/mapping.o \
+		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/path.o mutt/regex.o \
+		mutt/sha1.o mutt/signal.o mutt/string.o
+CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
+MUTTLIBS+=	$(LIBMUTT)
+ALLOBJS+=	$(LIBMUTTOBJS)
 
 ###############################################################################
 # generated
@@ -227,6 +282,48 @@ $(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
 $(PWD)/mutt:
 	$(MKDIR_P) $(PWD)/mutt
 
+# libemail
+$(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
+	$(AR) cr $@ $(LIBEMAILOBJS)
+	$(RANLIB) $@
+$(PWD)/email:
+	$(MKDIR_P) $(PWD)/email
+
+# libpop
+$(LIBPOP): $(PWD)/pop $(LIBPOPOBJS)
+	$(AR) cr $@ $(LIBPOPOBJS)
+	$(RANLIB) $@
+$(PWD)/pop:
+	$(MKDIR_P) $(PWD)/pop
+
+# libnntp
+$(LIBNNTP): $(PWD)/nntp $(LIBNNTPOBJS)
+	$(AR) cr $@ $(LIBNNTPOBJS)
+	$(RANLIB) $@
+$(PWD)/nntp:
+	$(MKDIR_P) $(PWD)/nntp
+
+# libmbox
+$(LIBMBOX): $(PWD)/mbox $(LIBMBOXOBJS)
+	$(AR) cr $@ $(LIBMBOXOBJS)
+	$(RANLIB) $@
+$(PWD)/mbox:
+	$(MKDIR_P) $(PWD)/mbox
+
+# libnotmuch
+$(LIBNOTMUCH): $(PWD)/notmuch $(LIBNOTMUCHOBJS)
+	$(AR) cr $@ $(LIBNOTMUCHOBJS)
+	$(RANLIB) $@
+$(PWD)/notmuch:
+	$(MKDIR_P) $(PWD)/notmuch
+
+# libmaildir
+$(LIBMAILDIR): $(PWD)/maildir $(LIBMAILDIROBJS)
+	$(AR) cr $@ $(LIBMAILDIROBJS)
+	$(RANLIB) $@
+$(PWD)/maildir:
+	$(MKDIR_P) $(PWD)/maildir
+
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
 	$(AR) cr $@ $(LIBNCRYPTOBJS)
@@ -248,6 +345,13 @@ $(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
 $(PWD)/conn:
 	$(MKDIR_P) $(PWD)/conn
 
+# libconfig
+$(LIBCONFIG): $(PWD)/config $(LIBCONFIGOBJS)
+	$(AR) cr $@ $(LIBCONFIGOBJS)
+	$(RANLIB) $@
+$(PWD)/config:
+	$(MKDIR_P) $(PWD)/config
+
 # libhcache
 hcache/hcache.o:	hcache/hcversion.h
 $(LIBHCACHE): $(PWD)/hcache $(LIBHCACHEOBJS)
@@ -260,28 +364,31 @@ $(PWD)/hcache:
 $(PGPEWRAP): $(PGPEWRAPOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
 
-# pgpring
-$(PGPRING): $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT)
-	$(CC) $(LDFLAGS) -o $@ $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT) $(INTLLIBS)
-
 # generated
 git_ver.h: $(ALL_FILES)
-	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
+	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | \
+		sed -e 's/^neomutt-[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
 
-hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
-			$(SRCDIR)/mutt/list.h $(SRCDIR)/mutt/buffer.h \
-			$(SRCDIR)/mutt/parameter.h $(SRCDIR)/body.h \
-			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
-			$(SRCDIR)/hcache/hcachever.sh \
-			$(PWD)/hcache
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
-	echo '#include "address.h"'; echo '#include "mutt/list.h"'; \
-	echo '#include "mutt/buffer.h"'; echo '#include "mutt/parameter.h"'; \
-	echo '#include "body.h"'; echo '#include "envelope.h"'; \
-	echo '#include "header.h"';) | $(CPP) $(CFLAGS) - | \
+hcache/hcversion.h:	$(SRCDIR)/email/address.h \
+			$(SRCDIR)/email/body.h \
+			$(SRCDIR)/email/envelope.h \
+			$(SRCDIR)/email/header.h \
+			$(SRCDIR)/email/parameter.h \
+			$(SRCDIR)/mutt/buffer.h \
+			$(SRCDIR)/mutt/list.h \
+			$(SRCDIR)/hcache/hcachever.sh
+	$(MKDIR_P) $(PWD)/hcache
+	( echo '#include "config.h"'; \
+	echo '#include "email/address.h"'; \
+	echo '#include "email/body.h"'; \
+	echo '#include "email/envelope.h"'; \
+	echo '#include "email/header.h"'; \
+	echo '#include "email/parameter.h"'; \
+	echo '#include "mutt/buffer.h"'; \
+	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \
 	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
 
 # clean
@@ -293,11 +400,11 @@ install: all $(INSTALL_TARGETS)
 	# Install binaries
 	$(MKDIR_P) $(DESTDIR)$(bindir)
 	for f in $(BINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f` || exit 1; \
 	done
 	$(MKDIR_P) $(DESTDIR)$(libexecdir)/$(PACKAGE)
 	for f in $(LIBBINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f` || exit 1; \
 	done
 
 # uninstall
@@ -312,9 +419,12 @@ uninstall: $(UNINSTALL_TARGETS)
 
 # distclean
 distclean: clean
-	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
-		Makefile po/Makefile contrib/Makefile doc/Makefile \
-		test/Makefile autosetup/jimsh0
+	$(RM) $(DEPFILES) .clang_complete autosetup/jimsh0 config.h config.log \
+		conststrings.c contrib/Makefile doc/Makefile doc/neomutt.1 \
+		html Makefile po/Makefile test/Makefile
+
+# Tests for the config code
+config-test: libmutt.a libemail.a libconfig.a
 
 ##############################################################################
 # include generated dependency files

@@ -1,24 +1,53 @@
 TEST_OBJS   = test/main.o \
 	      test/base64.o \
-	      test/rfc2047.o \
 	      test/md5.o \
-	      test/string.o
+	      test/path.o \
+	      test/rfc2047.o \
+	      test/string.o \
+	      test/address.o
+
+
+CONFIG_OBJS	= test/config/main.o test/config/account.o \
+		  test/config/address.o test/config/bool.o \
+		  test/config/command.o test/config/common.o \
+		  test/config/initial.o test/config/long.o \
+		  test/config/magic.o test/config/mbtable.o \
+		  test/config/number.o test/config/path.o test/config/quad.o \
+		  test/config/regex.o test/config/set.o test/config/sort.o \
+		  test/config/string.o test/config/synonym.o
+
+CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
+TEST_CONFIG = test/config-test$(EXEEXT)
+
 .PHONY: test
-test: $(TEST_BINARY)
+test: $(TEST_BINARY) $(TEST_CONFIG)
 	$(TEST_BINARY)
+	$(TEST_CONFIG)
 
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
-all-test: $(TEST_BINARY)
+$(TEST_CONFIG): $(PWD)/test/config $(CONFIG_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(CONFIG_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(PWD)/test/config:
+	$(MKDIR_P) $(PWD)/test/config
+
+all-test: $(TEST_BINARY) $(TEST_CONFIG)
 
 clean-test:
-	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)
+	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po) $(TEST_CONFIG) $(CONFIG_OBJS) $(CONFIG_OBJS:.o=.Po)
 
 install-test:
 uninstall-test:
+
+TEST_DEPFILES = $(TEST_OBJS:.o=.Po)
+-include $(TEST_DEPFILES)
+
+CONFIG_DEPFILES = $(CONFIG_OBJS:.o=.Po)
+-include $(CONFIG_DEPFILES)
 
 # vim: set ts=8 noexpandtab:

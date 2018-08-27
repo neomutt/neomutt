@@ -22,13 +22,20 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "group.h"
-#include "address.h"
 #include "globals.h"
-#include "protos.h"
+#include "send.h"
 
+/**
+ * mutt_pattern_group - Match a pattern to a Group
+ * @param k Pattern to match
+ * @retval ptr Matching Group
+ * @retval ptr Newly created Group (if no match)
+ */
 struct Group *mutt_pattern_group(const char *k)
 {
   struct Group *p = NULL;
@@ -42,12 +49,17 @@ struct Group *mutt_pattern_group(const char *k)
     mutt_debug(2, "Creating group %s.\n", k);
     p = mutt_mem_calloc(1, sizeof(struct Group));
     p->name = mutt_str_strdup(k);
+    STAILQ_INIT(&p->rs);
     mutt_hash_insert(Groups, p->name, p);
   }
 
   return p;
 }
 
+/**
+ * group_remove - Remove a Group from the Hash Table
+ * @param g Group to remove
+ */
 static void group_remove(struct Group *g)
 {
   if (!g)
@@ -59,6 +71,11 @@ static void group_remove(struct Group *g)
   FREE(&g);
 }
 
+/**
+ * mutt_group_context_clear - Empty a Group List
+ * @param ctx Group List to modify
+ * @retval 0 Always
+ */
 int mutt_group_context_clear(struct GroupContext **ctx)
 {
   struct GroupContext *t = NULL;
@@ -71,13 +88,23 @@ int mutt_group_context_clear(struct GroupContext **ctx)
   return 0;
 }
 
-static int empty_group(struct Group *g)
+/**
+ * empty_group - Is a Group empty?
+ * @param g Group to test
+ * @retval true If the Group is empty
+ */
+static bool empty_group(struct Group *g)
 {
   if (!g)
-    return -1;
-  return !g->as && !g->rs;
+    return true;
+  return !g->as && STAILQ_EMPTY(&g->rs);
 }
 
+/**
+ * mutt_group_context_add - Add a Group to a List
+ * @param ctx   Group List
+ * @param group Group to add
+ */
 void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
 {
   for (; *ctx; ctx = &((*ctx)->next))
@@ -90,6 +117,10 @@ void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
   (*ctx)->g = group;
 }
 
+/**
+ * mutt_group_context_destroy - Destroy a Group List
+ * @param ctx Group List to destroy
+ */
 void mutt_group_context_destroy(struct GroupContext **ctx)
 {
   struct GroupContext *p = NULL;
@@ -100,6 +131,11 @@ void mutt_group_context_destroy(struct GroupContext **ctx)
   }
 }
 
+/**
+ * group_add_addrlist - Add an Address List to a Group
+ * @param g Group to add to
+ * @param a Address List
+ */
 static void group_add_addrlist(struct Group *g, struct Address *a)
 {
   struct Address **p = NULL, *q = NULL;
@@ -117,6 +153,13 @@ static void group_add_addrlist(struct Group *g, struct Address *a)
   *p = q;
 }
 
+/**
+ * group_remove_addrlist - Remove an Address List from a Group
+ * @param g Group to modify
+ * @param a Address List to remove
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int group_remove_addrlist(struct Group *g, struct Address *a)
 {
   struct Address *p = NULL;
@@ -132,22 +175,50 @@ static int group_remove_addrlist(struct Group *g, struct Address *a)
   return 0;
 }
 
+/**
+ * group_add_regex - Add a Regex to a Group
+ * @param g     Group to add to
+ * @param s     Regex string to add
+ * @param flags Flags, e.g. REG_ICASE
+ * @param err   Buffer for error message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
 {
   return mutt_regexlist_add(&g->rs, s, flags, err);
 }
 
+/**
+ * group_remove_regex - Remove a Regex from a Group
+ * @param g Group to modify
+ * @param s Regex string to match
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int group_remove_regex(struct Group *g, const char *s)
 {
   return mutt_regexlist_remove(&g->rs, s);
 }
 
+/**
+ * mutt_group_context_add_addrlist - Add an Address List to a Group List
+ * @param ctx Group List to add to
+ * @param a   Address List to add
+ */
 void mutt_group_context_add_addrlist(struct GroupContext *ctx, struct Address *a)
 {
   for (; ctx; ctx = ctx->next)
     group_add_addrlist(ctx->g, a);
 }
 
+/**
+ * mutt_group_context_remove_addrlist - Remove an Address List from a Group List
+ * @param ctx Group List to modify
+ * @param a   Address List to remove
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address *a)
 {
   int rc = 0;
@@ -162,6 +233,15 @@ int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address 
   return rc;
 }
 
+/**
+ * mutt_group_context_add_regex - Add a Regex to a Group List
+ * @param ctx   Group List to add to
+ * @param s     Regex string to add
+ * @param flags Flags, e.g. REG_ICASE
+ * @param err   Buffer for error message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
                                  int flags, struct Buffer *err)
 {
@@ -173,6 +253,13 @@ int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
   return rc;
 }
 
+/**
+ * mutt_group_context_remove_regex - Remove a Regex from a Group List
+ * @param ctx Group List to modify
+ * @param s   Regex string to remove
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
 {
   int rc = 0;
@@ -187,17 +274,22 @@ int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
   return rc;
 }
 
+/**
+ * mutt_group_match - Does a string match an entry in a Group?
+ * @param g Group to match against
+ * @param s String to match
+ * @retval true If there's a match
+ */
 bool mutt_group_match(struct Group *g, const char *s)
 {
-  struct Address *ap = NULL;
+  if (!g || !s)
+    return false;
 
-  if (s && g)
-  {
-    if (mutt_regexlist_match(g->rs, s))
+  if (mutt_regexlist_match(&g->rs, s))
+    return true;
+  for (struct Address *ap = g->as; ap; ap = ap->next)
+    if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
       return true;
-    for (ap = g->as; ap; ap = ap->next)
-      if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
-        return true;
-  }
+
   return false;
 }

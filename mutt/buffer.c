@@ -25,24 +25,11 @@
  * @page buffer General purpose object for storing and parsing strings
  *
  * The Buffer object make parsing and manipulating strings easier.
- *
- * | Function               | Description
- * | :--------------------- | :--------------------------------------------------
- * | mutt_buffer_add()      | Add a string to a Buffer, expanding it if necessary
- * | mutt_buffer_addch()    | Add a single character to a Buffer
- * | mutt_buffer_addstr()   | Add a string to a Buffer
- * | mutt_buffer_alloc()    | Create a new Buffer
- * | mutt_buffer_free()     | Release a Buffer and its contents
- * | mutt_buffer_from()     | Create Buffer from an existing string
- * | mutt_buffer_init()     | Initialise a new Buffer
- * | mutt_buffer_is_empty() | Is the Buffer empty?
- * | mutt_buffer_new()      | Create and initialise a Buffer
- * | mutt_buffer_printf()   | Format a string into a Buffer
- * | mutt_buffer_reset()    | Reset an existing Buffer
  */
 
 #include "config.h"
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
@@ -57,9 +44,7 @@
  */
 struct Buffer *mutt_buffer_new(void)
 {
-  struct Buffer *b = NULL;
-
-  b = mutt_mem_malloc(sizeof(struct Buffer));
+  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
 
   mutt_buffer_init(b);
 
@@ -184,7 +169,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
   doff = buf->dptr - buf->data;
   blen = buf->dsize - doff;
   /* solaris 9 vsnprintf barfs when blen is 0 */
-  if (!blen)
+  if (blen == 0)
   {
     blen = 128;
     buf->dsize += blen;
@@ -244,14 +229,14 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
 /**
  * mutt_buffer_is_empty - Is the Buffer empty?
  * @param buf Buffer to inspect
- * @retval bool True, if Buffer is empty
+ * @retval true Buffer is empty
  */
 bool mutt_buffer_is_empty(const struct Buffer *buf)
 {
   if (!buf)
     return true;
 
-  return (buf->data && (buf->data[0] == '\0'));
+  return buf->data && (buf->data[0] == '\0');
 }
 
 /**

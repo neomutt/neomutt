@@ -25,9 +25,12 @@
  *
  * IMAP GSS authentication method
  *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_gss()    | GSS Authentication support
+ * An overview of the authentication method is in RFC 1731.
+ *
+ * An overview of the C API used is in RFC 2744.
+ * Of note is section 3.2, which describes gss_buffer_desc.
+ * The length should not include a terminating '\0' byte, and the client
+ * should not expect the value field to be '\0'terminated.
  */
 
 #include "config.h"
@@ -37,13 +40,10 @@
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
-#include "options.h"
-#include "protos.h"
 #ifdef HAVE_HEIMDAL
 #include <gssapi/gssapi.h>
 #define gss_nt_service_name GSS_C_NT_HOSTBASED_SERVICE
@@ -77,14 +77,22 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
                                   GSS_C_NO_OID, &msg_ctx, &status_string);
     if (GSS_ERROR(maj_stat))
       break;
-    mutt_str_strfcpy(buf_maj, (char *) status_string.value, sizeof(buf_maj));
+    size_t status_len = status_string.length;
+    if (status_len >= sizeof(buf_maj))
+      status_len = sizeof(buf_maj) - 1;
+    strncpy(buf_maj, (char *) status_string.value, status_len);
+    buf_maj[status_len] = '\0';
     gss_release_buffer(&min_stat, &status_string);
 
     maj_stat = gss_display_status(&min_stat, err_min, GSS_C_MECH_CODE,
                                   GSS_C_NULL_OID, &msg_ctx, &status_string);
     if (!GSS_ERROR(maj_stat))
     {
-      mutt_str_strfcpy(buf_min, (char *) status_string.value, sizeof(buf_min));
+      status_len = status_string.length;
+      if (status_len >= sizeof(buf_min))
+        status_len = sizeof(buf_min) - 1;
+      strncpy(buf_min, (char *) status_string.value, status_len);
+      buf_min[status_len] = '\0';
       gss_release_buffer(&min_stat, &status_string);
     }
   } while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
@@ -122,14 +130,14 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   /* get an IMAP service ticket for the server */
   snprintf(buf1, sizeof(buf1), "imap@%s", idata->conn->account.host);
   request_buf.value = buf1;
-  request_buf.length = strlen(buf1) + 1;
+  request_buf.length = strlen(buf1);
   maj_stat = gss_import_name(&min_stat, &request_buf, gss_nt_service_name, &target_name);
   if (maj_stat != GSS_S_COMPLETE)
   {
     mutt_debug(2, "Couldn't get service name for [%s]\n", buf1);
     return IMAP_AUTH_UNAVAIL;
   }
-  else if (debuglevel >= 2)
+  else if (DebugLevel >= 2)
   {
     gss_display_name(&min_stat, target_name, &request_buf, &mech_name);
     mutt_debug(2, "Using service name [%s]\n", (char *) request_buf.value);
@@ -172,10 +180,10 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
   /* now start the security context initialisation loop... */
   mutt_debug(2, "Sending credentials\n");
-  mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+  mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
   gss_release_buffer(&min_stat, &send_token);
   mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
-  mutt_socket_write(idata->conn, buf1);
+  mutt_socket_send(idata->conn, buf1);
 
   while (maj_stat == GSS_S_CONTINUE_NEEDED)
   {
@@ -191,7 +199,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
       goto bail;
     }
 
-    request_buf.length = mutt_b64_decode(buf2, idata->buf + 2);
+    request_buf.length = mutt_b64_decode(idata->buf + 2, buf2, sizeof(buf2));
     request_buf.value = buf2;
     sec_token = &request_buf;
 
@@ -208,10 +216,10 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
       goto err_abort_cmd;
     }
-    mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+    mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
     gss_release_buffer(&min_stat, &send_token);
     mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
-    mutt_socket_write(idata->conn, buf1);
+    mutt_socket_send(idata->conn, buf1);
   }
 
   gss_release_name(&min_stat, &target_name);
@@ -226,7 +234,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     mutt_debug(1, "#2 Error receiving server response.\n");
     goto bail;
   }
-  request_buf.length = mutt_b64_decode(buf2, idata->buf + 2);
+  request_buf.length = mutt_b64_decode(idata->buf + 2, buf2, sizeof(buf2));
   request_buf.value = buf2;
 
   maj_stat = gss_unwrap(&min_stat, context, &request_buf, &send_token, &cflags, &quality);
@@ -253,9 +261,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   buf_size = ntohl(*((long *) send_token.value));
   gss_release_buffer(&min_stat, &send_token);
   mutt_debug(2, "Unwrapped security level flags: %c%c%c\n",
-             server_conf_flags & GSS_AUTH_P_NONE ? 'N' : '-',
-             server_conf_flags & GSS_AUTH_P_INTEGRITY ? 'I' : '-',
-             server_conf_flags & GSS_AUTH_P_PRIVACY ? 'P' : '-');
+             (server_conf_flags & GSS_AUTH_P_NONE) ? 'N' : '-',
+             (server_conf_flags & GSS_AUTH_P_INTEGRITY) ? 'I' : '-',
+             (server_conf_flags & GSS_AUTH_P_PRIVACY) ? 'P' : '-');
   mutt_debug(2, "Maximum GSS token size is %ld\n", buf_size);
 
   /* agree to terms (hack!) */
@@ -265,7 +273,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   /* server decides if principal can log in as user */
   strncpy(buf1 + 4, idata->conn->account.user, sizeof(buf1) - 4);
   request_buf.value = buf1;
-  request_buf.length = 4 + strlen(idata->conn->account.user) + 1;
+  request_buf.length = 4 + strlen(idata->conn->account.user);
   maj_stat = gss_wrap(&min_stat, context, 0, GSS_C_QOP_DEFAULT, &request_buf,
                       &cflags, &send_token);
   if (maj_stat != GSS_S_COMPLETE)
@@ -274,10 +282,10 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     goto err_abort_cmd;
   }
 
-  mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
+  mutt_b64_encode(send_token.value, send_token.length, buf1, sizeof(buf1) - 2);
   mutt_debug(2, "Requesting authorisation as %s\n", idata->conn->account.user);
   mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
-  mutt_socket_write(idata->conn, buf1);
+  mutt_socket_send(idata->conn, buf1);
 
   /* Joy of victory or agony of defeat? */
   do
@@ -308,13 +316,12 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     goto bail;
 
 err_abort_cmd:
-  mutt_socket_write(idata->conn, "*\r\n");
+  mutt_socket_send(idata->conn, "*\r\n");
   do
     rc = imap_cmd_step(idata);
   while (rc == IMAP_CMD_CONTINUE);
 
 bail:
-  mutt_error(_("GSSAPI authentication failed."));
-  mutt_sleep(2);
+  mutt_error(_("GSSAPI authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

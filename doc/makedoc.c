@@ -791,7 +791,7 @@ static int sgml_id_fputs(const char *s, FILE *out)
   return 0;
 }
 
-void print_ref(FILE *out, int output_dollar, const char *ref)
+void print_ref(FILE *out, bool output_dollar, const char *ref)
 {
   switch (OutputFormat)
   {
@@ -905,7 +905,6 @@ static int handle_docline(char *l, FILE *out, int docstat)
     {
       bool output_dollar = false;
       char *ref = NULL;
-      char save;
 
       s++;
       if (*s == '$')
@@ -924,7 +923,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
           s++;
 
         docstat = commit_buf(buf, &d, out, docstat);
-        save = *s;
+        const char save = *s;
         *s = '\0';
         print_ref(out, output_dollar, ref);
         *s = save;
@@ -951,6 +950,7 @@ enum DataType
   DT_NONE = 0,
   DT_BOOL,
   DT_NUMBER,
+  DT_LONG,
   DT_STRING,
   DT_PATH,
   DT_QUAD,
@@ -959,7 +959,8 @@ enum DataType
   DT_MAGIC,
   DT_SYNONYM,
   DT_ADDRESS,
-  DT_MBTABLE
+  DT_MBTABLE,
+  DT_COMMAND,
 };
 
 struct VariableTypes
@@ -970,6 +971,7 @@ struct VariableTypes
   { "DT_NONE", "-none-" },
   { "DT_BOOL", "boolean" },
   { "DT_NUMBER", "number" },
+  { "DT_LONG",  "number (long)" },
   { "DT_STRING", "string" },
   { "DT_PATH", "path" },
   { "DT_QUAD", "quadoption" },
@@ -979,6 +981,7 @@ struct VariableTypes
   { "DT_SYNONYM", NULL },
   { "DT_ADDRESS", "e-mail address" },
   { "DT_MBTABLE", "string" },
+  { "DT_COMMAND", "command" },
   { NULL, NULL },
 };
 
@@ -1012,7 +1015,11 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     }
     case DT_BOOL:
     {
-      if (atoi(s))
+      if (strcasecmp(s, "true") == 0)
+        strncpy(t, "yes", l);
+      else if (strcasecmp(s, "false") == 0)
+        strncpy(t, "no", l);
+      else if (atoi(s))
         strncpy(t, "yes", l);
       else
         strncpy(t, "no", l);
@@ -1046,6 +1053,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     case DT_REGEX:
     case DT_ADDRESS:
     case DT_PATH:
+    case DT_COMMAND:
     case DT_MBTABLE:
     {
       if (strcmp(s, "0") == 0)
@@ -1166,7 +1174,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     case F_CONF:
     {
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
@@ -1178,7 +1186,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1198,7 +1206,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1226,7 +1234,7 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
-          type == DT_PATH || type == DT_MBTABLE)
+          type == DT_PATH || type == DT_MBTABLE || type == DT_COMMAND)
       {
         if (val && *val)
         {
@@ -1307,11 +1315,11 @@ static void handle_confline(char *s, FILE *out)
       break;
   }
 
-  /* option name or UL &address */
+  /* option name or IP &address */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buf, "UL") == 0)
+  if (strcmp(buf, "IP") == 0)
   {
     s = get_token(buf, sizeof(buf), s);
     if (!s)
@@ -1326,14 +1334,14 @@ static void handle_confline(char *s, FILE *out)
   if (Debug)
     fprintf(stderr, "%s: Expecting default value.\n", Progname);
 
-  /* <default value> or UL <default value> */
+  /* <default value> or IP <default value> */
   s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buf, "UL") == 0)
+  if (strcmp(buf, "IP") == 0)
   {
     if (Debug)
-      fprintf(stderr, "%s: Skipping UL.\n", Progname);
+      fprintf(stderr, "%s: Skipping IP.\n", Progname);
     s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;

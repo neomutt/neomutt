@@ -3,8 +3,8 @@
 .\"
 .\"     Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
 .\"
-.\"	This document is in the public domain and may be distributed and
-.\"	changed arbitrarily.
+.\"     This document is in the public domain and may be distributed and
+.\"     changed arbitrarily.
 .\"
 .TH mbox 5 "February 19th, 2002" Unix "User Manuals"
 .\"
@@ -70,7 +70,7 @@ into
 before storing it. Besides \fBMBOXO\fP and \fBMBOXRD\fP there is also
 \fBMBOXCL\fP which is \fBMBOXO\fP with a "Content-Length:"\-field with the
 number of bytes in the message body; some MUAs (like
-.BR mutt (1))
+.BR neomutt (1))
 do automatically transform \fBMBOXO\fP mailboxes into \fBMBOXCL\fP ones when
 ever they write them back as \fBMBOXCL\fP can be read by any \fBMBOXO\fP-MUA
 without any problems.
@@ -147,7 +147,7 @@ format folders.
 .PP
 .\"
 .SH "SEE ALSO"
-.BR mutt (1),
+.BR neomutt (1),
 .BR fcntl (2),
 .BR flock (2),
 .BR link (2),

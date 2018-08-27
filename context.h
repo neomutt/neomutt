@@ -54,7 +54,7 @@ enum AclRights
 struct Context
 {
   char *path;
-  char *realpath; /**< used for buffy comparison and the sidebar */
+  char *realpath; /**< used for mailbox comparison and the sidebar */
   FILE *fp;
   time_t atime;
   time_t mtime;
@@ -82,7 +82,7 @@ struct Context
 
   struct Menu *menu; /**< needed for pattern compilation */
 
-  short magic; /**< mailbox type */
+  enum MailboxType magic; /**< mailbox type */
 
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
@@ -102,7 +102,7 @@ struct Context
 
   /* driver hooks */
   void *data; /**< driver specific data */
-  struct MxOps *mx_ops;
+  const struct MxOps *mx_ops;
 };
 
 #endif /* _MUTT_CONTEXT_H */

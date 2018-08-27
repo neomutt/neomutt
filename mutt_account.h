@@ -28,6 +28,15 @@
 struct Account;
 struct Url;
 
+/* These Config Variables are only used in mutt_account.c */
+extern char *ImapLogin;
+extern char *ImapPass;
+extern char *NntpPass;
+extern char *NntpUser;
+extern char *PopPass;
+extern char *PopUser;
+extern char *SmtpPass;
+
 /**
  * enum AccountType - account types
  */
@@ -47,7 +56,7 @@ enum AccountType
 #define MUTT_ACCT_PASS  (1 << 3)
 #define MUTT_ACCT_SSL   (1 << 4)
 
-int mutt_account_match(const struct Account *a1, const struct Account *m2);
+int mutt_account_match(const struct Account *a1, const struct Account *a2);
 int mutt_account_fromurl(struct Account *account, struct Url *url);
 void mutt_account_tourl(struct Account *account, struct Url *url);
 int mutt_account_getuser(struct Account *account);

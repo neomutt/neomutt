@@ -30,13 +30,16 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "body.h"
+#include "email/email.h"
+#include "curs_lib.h"
 #include "globals.h"
-#include "header.h"
-#include "mutt_curses.h"
-#include "options.h"
-#include "protos.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "state.h"
+
+/* These Config Variables are only used in rfc3676.c */
+bool ReflowSpaceQuotes; ///< Config: Insert spaces into reply quotes for 'format=flowed' messages
+short ReflowWrap; ///< Config: Maximum paragraph width for reformatting 'format=flowed' text
 
 #define FLOWED_MAX 72
 
@@ -50,6 +53,11 @@ struct FlowedState
   int delsp;
 };
 
+/**
+ * get_quote_level - Get the quote level of a line
+ * @param line Text to examine
+ * @retval num Quote level
+ */
 static int get_quote_level(const char *line)
 {
   int quoted = 0;
@@ -66,6 +74,8 @@ static int get_quote_level(const char *line)
 
 /**
  * space_quotes - Should we add spaces between quote levels
+ * @param s State to use
+ * @retval true If spaces should be added
  *
  * Determines whether to add spacing between/after each quote level:
  * `   >>>foo`
@@ -85,6 +95,9 @@ static int space_quotes(struct State *s)
 
 /**
  * add_quote_suffix - Should we add a trailing space to quotes
+ * @param s  State to use
+ * @param ql Quote level
+ * @retval true If spaces should be added
  *
  * Determines whether to add a trailing space to quotes:
  * `   >>> foo`
@@ -109,6 +122,13 @@ static bool add_quote_suffix(struct State *s, int ql)
   return true;
 }
 
+/**
+ * print_indent - Print indented text
+ * @param ql         Quote level
+ * @param s          State to work with
+ * @param add_suffix If true, write a trailing space character
+ * @retval num Number of characters written
+ */
 static size_t print_indent(int ql, struct State *s, int add_suffix)
 {
   size_t wid = 0;
@@ -141,6 +161,11 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
   return ql + add_suffix + wid;
 }
 
+/**
+ * flush_par - Write out the paragraph
+ * @param s   State to work with
+ * @param fst The state of the flowed text
+ */
 static void flush_par(struct State *s, struct FlowedState *fst)
 {
   if (fst->width > 0)
@@ -153,6 +178,9 @@ static void flush_par(struct State *s, struct FlowedState *fst)
 
 /**
  * quote_width - Calculate the paragraph width based upon the quote level
+ * @param s  State to use
+ * @param ql Quote level
+ * @retval int Paragraph width
  *
  * The start of a quoted line will be ">>> ", so we need to subtract the space
  * required for the prefix from the terminal width.
@@ -180,8 +208,16 @@ static int quote_width(struct State *s, int ql)
   return width;
 }
 
+/**
+ * print_flowed_line - Print a format-flowed line
+ * @param line Text to print
+ * @param s    State to work with
+ * @param ql   Quote level
+ * @param fst  The state of the flowed text
+ * @param term If true, terminate with a new line
+ */
 static void print_flowed_line(char *line, struct State *s, int ql,
-                              struct FlowedState *fst, int term)
+                              struct FlowedState *fst, bool term)
 {
   size_t width, w, words = 0;
   char *p = NULL;
@@ -202,7 +238,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
 
-  for (p = (char *) line, words = 0; (p = strsep(&line, " ")) != NULL;)
+  for (words = 0; (p = strsep(&line, " "));)
   {
     mutt_debug(4, "f=f: word [%s], width: %lu, remaining = [%s]\n", p, fst->width, line);
 
@@ -250,6 +286,13 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     flush_par(s, fst);
 }
 
+/**
+ * print_fixed_line - Print a fixed format line
+ * @param line Text to print
+ * @param s    State to work with
+ * @param ql   Quote level
+ * @param fst  The state of the flowed text
+ */
 static void print_fixed_line(const char *line, struct State *s, int ql, struct FlowedState *fst)
 {
   print_indent(ql, s, add_quote_suffix(s, ql));
@@ -262,20 +305,19 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
 }
 
 /**
- * rfc3676_handler - body handler implementing RFC3676 for format=flowed
+ * rfc3676_handler - Body handler implementing RFC3676 for format=flowed - Implements ::handler_t
+ * @retval 0 Always
  */
 int rfc3676_handler(struct Body *a, struct State *s)
 {
-  char *buf = NULL, *t = NULL;
-  unsigned int quotelevel = 0, newql = 0, sigsep = 0;
-  int buf_off = 0, delsp = 0, fixed = 0;
-  size_t buf_len = 0, sz = 0;
-  struct FlowedState fst;
-
-  memset(&fst, 0, sizeof(fst));
+  char *buf = NULL;
+  unsigned int quotelevel = 0;
+  int delsp = 0;
+  size_t sz = 0;
+  struct FlowedState fst = { 0 };
 
   /* respect DelSp of RFC3676 only with f=f parts */
-  t = mutt_param_get(&a->parameter, "delsp");
+  char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
     delsp = mutt_str_strlen(t) == 3 && (mutt_str_strncasecmp(t, "yes", 3) == 0);
@@ -287,8 +329,8 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
-    buf_len = mutt_str_strlen(buf);
-    newql = get_quote_level(buf);
+    const size_t buf_len = mutt_str_strlen(buf);
+    const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
      * changes (should not but can happen, see RFC3676, sec. 4.5.)
@@ -297,22 +339,22 @@ int rfc3676_handler(struct Body *a, struct State *s)
       flush_par(s, &fst);
 
     quotelevel = newql;
-    buf_off = newql;
+    int buf_off = newql;
 
     /* respect sender's space-stuffing by removing one leading space */
     if (buf[buf_off] == ' ')
       buf_off++;
 
     /* test for signature separator */
-    sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
+    const unsigned int sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
+    const bool fixed = (buf_len == buf_off) || (buf[buf_len - 1] != ' ') || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
-    if ((fixed && (!fst.width || !buf_len)) || sigsep)
+    if ((fixed && ((fst.width == 0) || (buf_len == 0))) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
       flush_par(s, &fst);
@@ -322,7 +364,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
     /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
     if (delsp && !fixed)
-      buf[--buf_len] = '\0';
+      buf[buf_len - 1] = '\0';
 
     print_flowed_line(buf + buf_off, s, quotelevel, &fst, fixed);
   }
@@ -335,6 +377,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
 /**
  * rfc3676_space_stuff - Perform required RFC3676 space stuffing
+ * @param hdr Header of email
  *
  * Space stuffing means that we have to add leading spaces to
  * certain lines:
@@ -355,7 +398,7 @@ void rfc3676_space_stuff(struct Header *hdr)
   unsigned char c = '\0';
   FILE *in = NULL, *out = NULL;
   char buf[LONG_STRING];
-  char tmpfile[_POSIX_PATH_MAX];
+  char tmpfile[PATH_MAX];
 
   if (!hdr || !hdr->content || !hdr->content->filename)
     return;

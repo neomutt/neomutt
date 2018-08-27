@@ -20,24 +20,40 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page status GUI display a user-configurable status line
+ *
+ * GUI display a user-configurable status line
+ */
+
 #include "config.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mbtable.h"
-#include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mailbox.h"
+#include "menu.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
+#include "notmuch/mutt_notmuch.h"
 #endif
 
+/* These Config Variables are only used in status.c */
+struct MbTable *StatusChars; ///< Config: Indicator characters for the status bar
+
+/**
+ * get_sort_str - Get the sort method as a string
+ * @param buf    Buffer for the sort string
+ * @param buflen Length of the bufer
+ * @param method Sort method, e.g. #SORT_DATE
+ * @retval ptr Buffer pointer
+ */
 static char *get_sort_str(char *buf, size_t buflen, int method)
 {
   snprintf(buf, buflen, "%s%s%s", (method & SORT_REVERSE) ? "reverse-" : "",
@@ -46,25 +62,8 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
   return buf;
 }
 
-static void status_line(char *buf, size_t buflen, size_t col, int cols,
-                        struct Menu *menu, const char *p);
-
 /**
- * status_format_str - Create the status bar string
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  op       printf-like operator, e.g. 't'
- * @param[in]  src      printf-like format string
- * @param[in]  prec     Field precision, e.g. "-3.4"
- * @param[in]  if_str   If condition is met, display this string
- * @param[in]  else_str Otherwise, display this string
- * @param[in]  data     Pointer to the mailbox Context
- * @param[in]  flags    Format flags
- * @retval src (unchanged)
- *
- * status_format_str() is a callback function for mutt_expando_format().
+ * status_format_str - Create the status bar string - Implements ::format_t
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -106,9 +105,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_buffy_check(false));
+        snprintf(buf, buflen, fmt, mutt_mailbox_check(0));
       }
-      else if (!mutt_buffy_check(false))
+      else if (mutt_mailbox_check(0) == 0)
         optional = 0;
       break;
 
@@ -228,7 +227,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'p':
-      count = mutt_num_postponed(0);
+      count = mutt_num_postponed(false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -242,7 +241,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!menu)
         break;
       if (menu->top + menu->pagelen >= menu->max)
-        cp = menu->top ? "end" : "all";
+      {
+        cp = menu->top ?
+                 /* L10N: Status bar message: the end of the list emails is visible in the index */
+                 _("end") :
+                 /* L10N: Status bar message: all the emails are visible in the index */
+                 _("all");
+      }
       else
       {
         count = (100 * (menu->top + menu->pagelen)) / menu->max;
@@ -259,13 +264,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = OPT_ATTACH_MSG ? 3 : ((Context->readonly || Context->dontwrite) ?
-                                      2 :
-                                      (Context->changed ||
-                                       /* deleted doesn't necessarily mean changed in IMAP */
-                                       (Context->magic != MUTT_IMAP && Context->deleted)) ?
-                                      1 :
-                                      0);
+        i = OptAttachMsg ? 3 :
+                           ((Context->readonly || Context->dontwrite) ?
+                                2 :
+                                (Context->changed ||
+                                 /* deleted doesn't necessarily mean changed in IMAP */
+                                 (Context->magic != MUTT_IMAP && Context->deleted)) ?
+                                1 :
+                                0);
       }
 
       if (!StatusChars || !StatusChars->len)
@@ -322,8 +328,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'v':
-      snprintf(fmt, sizeof(fmt), "NeoMutt %%s%%s");
-      snprintf(buf, buflen, fmt, PACKAGE_VERSION, GitVer);
+      snprintf(buf, buflen, "%s", mutt_make_version());
       break;
 
     case 'V':
@@ -346,20 +351,26 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   }
 
   if (optional)
-    status_line(buf, buflen, col, cols, menu, if_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, if_str, status_format_str,
+                        (unsigned long) menu, 0);
+  }
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    status_line(buf, buflen, col, cols, menu, else_str);
+  {
+    mutt_expando_format(buf, buflen, col, cols, else_str, status_format_str,
+                        (unsigned long) menu, 0);
+  }
 
   return src;
 }
 
-static void status_line(char *buf, size_t buflen, size_t col, int cols,
-                        struct Menu *menu, const char *p)
-{
-  mutt_expando_format(buf, buflen, col, cols, p, status_format_str,
-                      (unsigned long) menu, 0);
-}
-
+/**
+ * menu_status_line - Create the status line
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  menu     Current menu
+ * @param[in]  p        Format string
+ */
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
 {
   mutt_expando_format(buf, buflen, 0,

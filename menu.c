@@ -21,29 +21,37 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
+#include "menu.h"
+#include "color.h"
+#include "commands.h"
 #include "context.h"
+#include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "mutt_logging.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
-#include "tags.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
 
-struct Header;
+/* These Config Variables are only used in menu.c */
+short MenuContext; ///< Config: Number of lines of overlap when changing pages in the index
+bool MenuMoveOff; ///< Config: Allow the last menu item to move off the bottom of the screen
+bool MenuScroll; ///< Config: Scroll the menu/index by one line, rather than a page
 
 char *SearchBuffers[MENU_MAX];
 
@@ -52,6 +60,20 @@ static size_t MenuStackCount = 0;
 static size_t MenuStackLen = 0;
 static struct Menu **MenuStack = NULL;
 
+#define DIRECTION ((neg * 2) + 1)
+
+#define MUTT_SEARCH_UP 1
+#define MUTT_SEARCH_DOWN 2
+
+/**
+ * get_color - Choose a colour for a line of the index
+ * @param index Index number
+ * @param s     String of embedded colour codes
+ * @retval num Colour pair in an integer
+ *
+ * Text is coloured by inserting special characters into the string, e.g.
+ * #MT_COLOR_INDEX_AUTHOR
+ */
 static int get_color(int index, unsigned char *s)
 {
   struct ColorLineHead *color = NULL;
@@ -96,7 +118,14 @@ static int get_color(int index, unsigned char *s)
   return 0;
 }
 
-static void print_enriched_string(int index, int attr, unsigned char *s, int do_color)
+/**
+ * print_enriched_string - Display a string with embedded colours and graphics
+ * @param index    Index number
+ * @param attr     Default colour for the line
+ * @param s        String of embedded colour codes
+ * @param do_color If true, apply colour
+ */
+static void print_enriched_string(int index, int attr, unsigned char *s, bool do_color)
 {
   wchar_t wc;
   size_t k;
@@ -132,7 +161,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_LLCORNER);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\224"); /* WACS_LLCORNER */
             else
               addch(ACS_LLCORNER);
@@ -145,7 +174,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_ULCORNER);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\214"); /* WACS_ULCORNER */
             else
               addch(ACS_ULCORNER);
@@ -158,7 +187,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_LTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\234"); /* WACS_LTEE */
             else
               addch(ACS_LTEE);
@@ -171,7 +200,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_HLINE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\200"); /* WACS_HLINE */
             else
               addch(ACS_HLINE);
@@ -184,7 +213,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_VLINE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\202"); /* WACS_VLINE */
             else
               addch(ACS_VLINE);
@@ -197,7 +226,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_TTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\254"); /* WACS_TTEE */
             else
               addch(ACS_TTEE);
@@ -210,7 +239,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_BTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\264"); /* WACS_BTEE */
             else
               addch(ACS_BTEE);
@@ -276,6 +305,13 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
   }
 }
 
+/**
+ * menu_make_entry - Create string to display in a Menu (the index)
+ * @param s    Buffer for the result
+ * @param l    Length of the buffer
+ * @param menu Current Menu
+ * @param i    Selected item
+ */
 static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
 {
   if (menu->dialog)
@@ -287,6 +323,14 @@ static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
     menu->make_entry(s, l, menu, i);
 }
 
+/**
+ * menu_pad_string - Pad a string with spaces for display in the Menu
+ * @param menu   Current Menu
+ * @param buf    Buffer containing the string
+ * @param buflen Length of the buffer
+ *
+ * @note The string is padded in-place.
+ */
 static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
   char *scratch = mutt_str_strdup(buf);
@@ -299,11 +343,13 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
   FREE(&scratch);
 }
 
+/**
+ * menu_redraw_full - Force the redraw of the Menu
+ * @param menu Current Menu
+ */
 void menu_redraw_full(struct Menu *menu)
 {
-#if !(defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM))
-  mutt_reflow_windows();
-#endif
+  mutt_window_reflow();
   NORMAL_COLOR;
   /* clear() doesn't optimize screen redraws */
   move(0, 0);
@@ -327,6 +373,10 @@ void menu_redraw_full(struct Menu *menu)
 #endif
 }
 
+/**
+ * menu_redraw_status - Force the redraw of the status bar
+ * @param menu Current Menu
+ */
 void menu_redraw_status(struct Menu *menu)
 {
   char buf[STRING];
@@ -340,6 +390,10 @@ void menu_redraw_status(struct Menu *menu)
 }
 
 #ifdef USE_SIDEBAR
+/**
+ * menu_redraw_sidebar - Force the redraw of the sidebar
+ * @param menu Current Menu
+ */
 void menu_redraw_sidebar(struct Menu *menu)
 {
   menu->redraw &= ~REDRAW_SIDEBAR;
@@ -347,6 +401,10 @@ void menu_redraw_sidebar(struct Menu *menu)
 }
 #endif
 
+/**
+ * menu_redraw_index - Force the redraw of the index
+ * @param menu Current Menu
+ */
 void menu_redraw_index(struct Menu *menu)
 {
   char buf[LONG_STRING];
@@ -393,10 +451,13 @@ void menu_redraw_index(struct Menu *menu)
   menu->redraw = 0;
 }
 
+/**
+ * menu_redraw_motion - Force the redraw of the list part of the menu
+ * @param menu Current Menu
+ */
 void menu_redraw_motion(struct Menu *menu)
 {
   char buf[LONG_STRING];
-  int old_color, cur_color;
 
   if (menu->dialog)
   {
@@ -408,7 +469,7 @@ void menu_redraw_motion(struct Menu *menu)
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
-  old_color = menu->color(menu->oldcurrent);
+  const int old_color = menu->color(menu->oldcurrent);
   mutt_window_move(menu->indexwin, menu->oldcurrent + menu->offset - menu->top, 0);
   ATTRSET(old_color);
 
@@ -437,7 +498,7 @@ void menu_redraw_motion(struct Menu *menu)
     print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
 
     /* now draw the new one to reflect the change */
-    cur_color = menu->color(menu->current);
+    const int cur_color = menu->color(menu->current);
     menu_make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
     SETCOLOR(MT_COLOR_INDICATOR);
@@ -448,6 +509,10 @@ void menu_redraw_motion(struct Menu *menu)
   NORMAL_COLOR;
 }
 
+/**
+ * menu_redraw_current - Redraw the current menu
+ * @param menu Current Menu
+ */
 void menu_redraw_current(struct Menu *menu)
 {
   char buf[LONG_STRING];
@@ -472,24 +537,32 @@ void menu_redraw_current(struct Menu *menu)
   NORMAL_COLOR;
 }
 
+/**
+ * menu_redraw_prompt - Force the redraw of the message window
+ * @param menu Current Menu
+ */
 static void menu_redraw_prompt(struct Menu *menu)
 {
-  if (menu->dialog)
+  if (!menu || !menu->dialog)
+    return;
+
+  if (OptMsgErr)
   {
-    if (OPT_MSG_ERR)
-    {
-      mutt_sleep(1);
-      OPT_MSG_ERR = false;
-    }
-
-    if (*ErrorBuf)
-      mutt_clear_error();
-
-    mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
-    mutt_window_clrtoeol(menu->messagewin);
+    mutt_sleep(1);
+    OptMsgErr = false;
   }
+
+  if (ErrorBufMessage)
+    mutt_clear_error();
+
+  mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);
+  mutt_window_clrtoeol(menu->messagewin);
 }
 
+/**
+ * menu_check_recenter - Recentre the menu on screen
+ * @param menu Current Menu
+ */
 void menu_check_recenter(struct Menu *menu)
 {
   int c = MIN(MenuContext, menu->pagelen / 2);
@@ -515,12 +588,16 @@ void menu_check_recenter(struct Menu *menu)
     else
     {
       if (menu->current < menu->top + c)
+      {
         menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) /
                                             (menu->pagelen - c)) -
                      c;
+      }
       else if ((menu->current >= menu->top + menu->pagelen - c))
+      {
         menu->top +=
             (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
+      }
     }
   }
 
@@ -532,14 +609,20 @@ void menu_check_recenter(struct Menu *menu)
     menu->redraw |= REDRAW_INDEX;
 }
 
+/**
+ * menu_jump - Jump to another item in the menu
+ * @param menu Current Menu
+ *
+ * Ask the user for a message number to jump to.
+ */
 static void menu_jump(struct Menu *menu)
 {
   int n;
-  char buf[SHORT_STRING];
 
   if (menu->max)
   {
     mutt_unget_event(LastKey, 0);
+    char buf[SHORT_STRING];
     buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
@@ -550,13 +633,17 @@ static void menu_jump(struct Menu *menu)
         menu->redraw = REDRAW_MOTION;
       }
       else
-        mutt_error(_("Invalid index number."));
+        mutt_error(_("Invalid index number"));
     }
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_next_line - Move the view down one line, keeping the selection the same
+ * @param menu Current Menu
+ */
 void menu_next_line(struct Menu *menu)
 {
   if (menu->max)
@@ -572,12 +659,16 @@ void menu_next_line(struct Menu *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error(_("You cannot scroll down farther."));
+      mutt_error(_("You cannot scroll down farther"));
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_prev_line - Move the view up one line, keeping the selection the same
+ * @param menu Current Menu
+ */
 void menu_prev_line(struct Menu *menu)
 {
   if (menu->top > 0)
@@ -590,26 +681,28 @@ void menu_prev_line(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("You cannot scroll up farther."));
+    mutt_error(_("You cannot scroll up farther"));
 }
 
 /**
  * menu_length_jump - Calculate the destination of a jump
+ * @param menu    Current Menu
+ * @param jumplen Number of lines to jump
  *
  * * pageup:   jumplen == -pagelen
  * * pagedown: jumplen == pagelen
  * * halfup:   jumplen == -pagelen/2
  * * halfdown: jumplen == pagelen/2
  */
-#define DIRECTION ((neg * 2) + 1)
 static void menu_length_jump(struct Menu *menu, int jumplen)
 {
-  int tmp, neg = (jumplen >= 0) ? 0 : -1;
-  int c = MIN(MenuContext, menu->pagelen / 2);
+  const int neg = (jumplen >= 0) ? 0 : -1;
+  const int c = MIN(MenuContext, menu->pagelen / 2);
 
   if (menu->max)
   {
     /* possible to scroll? */
+    int tmp;
     if (DIRECTION * menu->top <
         (tmp = (neg ? 0 : (menu->max /* -1 */) - (menu->pagelen /* -1 */))))
     {
@@ -635,47 +728,69 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     }
     else
     {
-      mutt_error(neg ? _("You are on the first page.") :
-                       _("You are on the last page."));
+      mutt_error(neg ? _("You are on the first page") : _("You are on the last page"));
     }
 
     menu->current = MIN(menu->current, menu->max - 1);
     menu->current = MAX(menu->current, 0);
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
-#undef DIRECTION
 
+/**
+ * menu_next_page - Move the focus to the next page in the menu
+ * @param menu Current Menu
+ */
 void menu_next_page(struct Menu *menu)
 {
   menu_length_jump(menu, MAX(menu->pagelen /* - MenuOverlap */, 0));
 }
 
+/**
+ * menu_prev_page - Move the focus to the previous page in the menu
+ * @param menu Current Menu
+ */
 void menu_prev_page(struct Menu *menu)
 {
   menu_length_jump(menu, 0 - MAX(menu->pagelen /* - MenuOverlap */, 0));
 }
 
+/**
+ * menu_half_down - Move the focus down half a page in the menu
+ * @param menu Current Menu
+ */
 void menu_half_down(struct Menu *menu)
 {
   menu_length_jump(menu, menu->pagelen / 2);
 }
 
+/**
+ * menu_half_up - Move the focus up half a page in the menu
+ * @param menu Current Menu
+ */
 void menu_half_up(struct Menu *menu)
 {
   menu_length_jump(menu, 0 - menu->pagelen / 2);
 }
 
+/**
+ * menu_top_page - Move the focus to the top of the page
+ * @param menu Current Menu
+ */
 void menu_top_page(struct Menu *menu)
 {
-  if (menu->current != menu->top)
-  {
-    menu->current = menu->top;
-    menu->redraw = REDRAW_MOTION;
-  }
+  if (menu->current == menu->top)
+    return;
+
+  menu->current = menu->top;
+  menu->redraw = REDRAW_MOTION;
 }
 
+/**
+ * menu_bottom_page - Move the focus to the bottom of the page
+ * @param menu Current Menu
+ */
 void menu_bottom_page(struct Menu *menu)
 {
   if (menu->max)
@@ -686,25 +801,31 @@ void menu_bottom_page(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_middle_page - Move the focus to the centre of the page
+ * @param menu Current Menu
+ */
 void menu_middle_page(struct Menu *menu)
 {
-  int i;
-
   if (menu->max)
   {
-    i = menu->top + menu->pagelen;
+    int i = menu->top + menu->pagelen;
     if (i > menu->max - 1)
       i = menu->max - 1;
     menu->current = menu->top + (i - menu->top) / 2;
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_first_entry - Move the focus to the first entry in the menu
+ * @param menu Current Menu
+ */
 void menu_first_entry(struct Menu *menu)
 {
   if (menu->max)
@@ -713,9 +834,13 @@ void menu_first_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_last_entry - Move the focus to the last entry in the menu
+ * @param menu Current Menu
+ */
 void menu_last_entry(struct Menu *menu)
 {
   if (menu->max)
@@ -724,9 +849,13 @@ void menu_last_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_current_top - Move the current selection to the top of the window
+ * @param menu Current Menu
+ */
 void menu_current_top(struct Menu *menu)
 {
   if (menu->max)
@@ -735,9 +864,13 @@ void menu_current_top(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_current_middle - Move the current selection to the centre of the window
+ * @param menu Current Menu
+ */
 void menu_current_middle(struct Menu *menu)
 {
   if (menu->max)
@@ -748,9 +881,13 @@ void menu_current_middle(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_current_bottom - Move the current selection to the bottom of the window
+ * @param menu Current Menu
+ */
 void menu_current_bottom(struct Menu *menu)
 {
   if (menu->max)
@@ -761,9 +898,13 @@ void menu_current_bottom(struct Menu *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error(_("No entries."));
+    mutt_error(_("No entries"));
 }
 
+/**
+ * menu_next_entry - Move the focus to the next item in the menu
+ * @param menu Current Menu
+ */
 static void menu_next_entry(struct Menu *menu)
 {
   if (menu->current < menu->max - 1)
@@ -772,9 +913,13 @@ static void menu_next_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("You are on the last entry."));
+    mutt_error(_("You are on the last entry"));
 }
 
+/**
+ * menu_prev_entry - Move the focus to the previous item in the menu
+ * @param menu Current Menu
+ */
 static void menu_prev_entry(struct Menu *menu)
 {
   if (menu->current)
@@ -783,29 +928,50 @@ static void menu_prev_entry(struct Menu *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error(_("You are on the first entry."));
+    mutt_error(_("You are on the first entry"));
 }
 
+/**
+ * default_color - Get the default colour
+ * @param i Colour index (UNUSED)
+ * @retval num Colour pair in an integer
+ */
 static int default_color(int i)
 {
   return ColorDefs[MT_COLOR_NORMAL];
 }
 
+/**
+ * menu_search_generic - Search a menu for a item matching a regex
+ * @param m  Menu to search
+ * @param re Regex to match
+ * @param n  Index number
+ * @retval  0 Success
+ * @retval >0 Error, e.g. REG_BADPAT
+ */
 static int menu_search_generic(struct Menu *m, regex_t *re, int n)
 {
   char buf[LONG_STRING];
 
   menu_make_entry(buf, sizeof(buf), m, n);
-  return (regexec(re, buf, 0, NULL, 0));
+  return regexec(re, buf, 0, NULL, 0);
 }
 
+/**
+ * mutt_menu_init - Initialise all the Menus
+ */
 void mutt_menu_init(void)
 {
   for (int i = 0; i < MENU_MAX; i++)
     SearchBuffers[i] = NULL;
 }
 
-struct Menu *mutt_new_menu(int menu)
+/**
+ * mutt_menu_new - Create a new Menu
+ * @param menu Menu type, e.g. MENU_PAGER
+ * @retval ptr New Menu
+ */
+struct Menu *mutt_menu_new(int menu)
 {
   struct Menu *p = mutt_mem_calloc(1, sizeof(struct Menu));
 
@@ -828,6 +994,10 @@ struct Menu *mutt_new_menu(int menu)
   return p;
 }
 
+/**
+ * mutt_menu_destroy - Destroy a menu
+ * @param p Menu to destroy
+ */
 void mutt_menu_destroy(struct Menu **p)
 {
   if ((*p)->dialog)
@@ -841,12 +1011,22 @@ void mutt_menu_destroy(struct Menu **p)
   FREE(p);
 }
 
+/**
+ * get_current_menu - Get the current Menu
+ * @retval ptr Current Menu
+ */
 static struct Menu *get_current_menu(void)
 {
   return MenuStackCount ? MenuStack[MenuStackCount - 1] : NULL;
 }
 
-void mutt_push_current_menu(struct Menu *menu)
+/**
+ * mutt_menu_push_current - Add a new Menu to the stack
+ * @param menu Menu to add
+ *
+ * The menus are stored in a LIFO.  The top-most is shown to the user.
+ */
+void mutt_menu_push_current(struct Menu *menu)
 {
   if (MenuStackCount >= MenuStackLen)
   {
@@ -858,7 +1038,13 @@ void mutt_push_current_menu(struct Menu *menu)
   CurrentMenu = menu->menu;
 }
 
-void mutt_pop_current_menu(struct Menu *menu)
+/**
+ * mutt_menu_pop_current - Remove a Menu from the stack
+ * @param menu Current Menu
+ *
+ * The menus are stored in a LIFO.  The top-most is shown to the user.
+ */
+void mutt_menu_pop_current(struct Menu *menu)
 {
   struct Menu *prev_menu = NULL;
 
@@ -881,55 +1067,78 @@ void mutt_pop_current_menu(struct Menu *menu)
   }
 }
 
-void mutt_set_current_menu_redraw(int redraw)
+/**
+ * mutt_menu_set_current_redraw - Set redraw flags on the current menu
+ * @param redraw Flags to set, e.g. #REDRAW_INDEX
+ */
+void mutt_menu_set_current_redraw(int redraw)
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
     current_menu->redraw |= redraw;
 }
 
-void mutt_set_current_menu_redraw_full(void)
+/**
+ * mutt_menu_set_current_redraw_full - Flag the current menu to be fully redrawn
+ */
+void mutt_menu_set_current_redraw_full(void)
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
     current_menu->redraw = REDRAW_FULL;
 }
 
-void mutt_set_menu_redraw(int menu_type, int redraw)
+/**
+ * mutt_menu_set_redraw - Set redraw flags on a menu
+ * @param menu_type Menu type, e.g. #MENU_ALIAS
+ * @param redraw    Flags, e.g. #REDRAW_INDEX
+ *
+ * This is ignored if it's not the current menu.
+ */
+void mutt_menu_set_redraw(int menu_type, int redraw)
 {
   if (CurrentMenu == menu_type)
-    mutt_set_current_menu_redraw(redraw);
+    mutt_menu_set_current_redraw(redraw);
 }
 
-void mutt_set_menu_redraw_full(int menu_type)
+/**
+ * mutt_menu_set_redraw_full - Flag a menu to be fully redrawn
+ * @param menu_type Menu type, e.g. #MENU_ALIAS
+ *
+ * This is ignored if it's not the current menu.
+ */
+void mutt_menu_set_redraw_full(int menu_type)
 {
   if (CurrentMenu == menu_type)
-    mutt_set_current_menu_redraw_full();
+    mutt_menu_set_current_redraw_full();
 }
 
-void mutt_current_menu_redraw()
+/**
+ * mutt_menu_current_redraw - Redraw the current menu
+ */
+void mutt_menu_current_redraw(void)
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
   {
     if (menu_redraw(current_menu) == OP_REDRAW)
+    {
       /* On a REDRAW_FULL with a non-customized redraw, menu_redraw()
-     * will return OP_REDRAW to give the calling menu-loop a chance to
-     * customize output.
-     */
+       * will return OP_REDRAW to give the calling menu-loop a chance to
+       * customize output.
+       */
       menu_redraw(current_menu);
+    }
   }
 }
 
-#define MUTT_SEARCH_UP 1
-#define MUTT_SEARCH_DOWN 2
-
+/**
+ * menu_search - Search a menu
+ * @param menu Menu to search
+ * @param op   Search operation, e.g. OP_SEARCH_NEXT
+ * @retval >=0 Index of matching item
+ * @retval -1  Search failed, or was cancelled
+ */
 static int menu_search(struct Menu *menu, int op)
 {
   int r = 0, wrap = 0;
@@ -947,7 +1156,9 @@ static int menu_search(struct Menu *menu, int op)
                            _("Reverse search for: "),
                        buf, sizeof(buf), MUTT_CLEAR) != 0 ||
         !buf[0])
+    {
       return -1;
+    }
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace(&SearchBuffers[menu->menu], buf);
@@ -977,7 +1188,7 @@ static int menu_search(struct Menu *menu, int op)
   r = menu->current + search_dir;
 search_next:
   if (wrap)
-    mutt_message(_("Search wrapped to top."));
+    mutt_message(_("Search wrapped to top"));
   while (r >= 0 && r < menu->max)
   {
     if (menu->search(menu, &re, r) == 0)
@@ -995,10 +1206,15 @@ search_next:
     goto search_next;
   }
   regfree(&re);
-  mutt_error(_("Not found."));
+  mutt_error(_("Not found"));
   return -1;
 }
 
+/**
+ * menu_dialog_translate_op - Convert menubar movement to scrolling
+ * @param i Action requested, e.g. OP_NEXT_ENTRY
+ * @retval num Action to perform, e.g. OP_NEXT_LINE
+ */
 static int menu_dialog_translate_op(int i)
 {
   switch (i)
@@ -1020,6 +1236,13 @@ static int menu_dialog_translate_op(int i)
   return i;
 }
 
+/**
+ * menu_dialog_dokey - Check if there are any menu key events to process
+ * @param menu Current Menu
+ * @param ip   Event ID
+ * @retval  0 An event occured for the menu, or a timeout
+ * @retval -1 There was an event, but not for menu
+ */
 static int menu_dialog_dokey(struct Menu *menu, int *ip)
 {
   struct Event ch;
@@ -1045,6 +1268,12 @@ static int menu_dialog_dokey(struct Menu *menu, int *ip)
   }
 }
 
+/**
+ * menu_redraw - Redraw the parts of the screen that have been flagged to be redrawn
+ * @param menu Menu to redraw
+ * @retval OP_NULL   Menu was redrawn
+ * @retval OP_REDRAW Full redraw required
+ */
 int menu_redraw(struct Menu *menu)
 {
   if (menu->custom_menu_redraw)
@@ -1083,6 +1312,11 @@ int menu_redraw(struct Menu *menu)
   return OP_NULL;
 }
 
+/**
+ * mutt_menu_loop - Menu event loop
+ * @param menu Current Menu
+ * @retval num An event id that the menu can't process
+ */
 int mutt_menu_loop(struct Menu *menu)
 {
   static int last_position = -1;
@@ -1098,9 +1332,9 @@ int mutt_menu_loop(struct Menu *menu)
 
   while (true)
   {
-    if (OPT_MENU_CALLER)
+    if (OptMenuCaller)
     {
-      OPT_MENU_CALLER = false;
+      OptMenuCaller = false;
       return OP_NULL;
     }
 
@@ -1130,8 +1364,10 @@ int mutt_menu_loop(struct Menu *menu)
     else if (BrailleFriendly)
       mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset, 0);
     else
+    {
       mutt_window_move(menu->indexwin, menu->current - menu->top + menu->offset,
                        menu->indexwin->cols - 1);
+    }
 
     mutt_refresh();
 
@@ -1156,13 +1392,13 @@ int mutt_menu_loop(struct Menu *menu)
       }
       else if (i == OP_TAG_PREFIX)
       {
-        mutt_error(_("No tagged entries."));
+        mutt_error(_("No tagged entries"));
         i = -1;
       }
       else /* None tagged, OP_TAG_PREFIX_COND */
       {
         mutt_flush_macro_to_endcond();
-        mutt_message(_("Nothing to do."));
+        mutt_message(_("Nothing to do"));
         i = -1;
       }
     }
@@ -1171,14 +1407,12 @@ int mutt_menu_loop(struct Menu *menu)
 
     mutt_curs_set(1);
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (SigWinch)
     {
       mutt_resize_screen();
       SigWinch = 0;
       clearok(stdscr, true); /* force complete redraw */
     }
-#endif
 
     if (i < 0)
     {
@@ -1258,12 +1492,12 @@ int mutt_menu_loop(struct Menu *menu)
             menu->current = menu->oldcurrent;
         }
         else
-          mutt_error(_("Search is not implemented for this menu."));
+          mutt_error(_("Search is not implemented for this menu"));
         break;
 
       case OP_JUMP:
         if (menu->dialog)
-          mutt_error(_("Jumping is not implemented for dialogs."));
+          mutt_error(_("Jumping is not implemented for dialogs"));
         else
           menu_jump(menu);
         break;
@@ -1294,10 +1528,10 @@ int mutt_menu_loop(struct Menu *menu)
               menu->redraw |= REDRAW_CURRENT;
           }
           else
-            mutt_error(_("No entries."));
+            mutt_error(_("No entries"));
         }
         else
-          mutt_error(_("Tagging is not supported."));
+          mutt_error(_("Tagging is not supported"));
         break;
 
       case OP_SHELL_ESCAPE:
@@ -1306,6 +1540,10 @@ int mutt_menu_loop(struct Menu *menu)
 
       case OP_WHAT_KEY:
         mutt_what_key();
+        break;
+
+      case OP_CHECK_STATS:
+        mutt_check_stats();
         break;
 
       case OP_REDRAW:
@@ -1332,4 +1570,47 @@ int mutt_menu_loop(struct Menu *menu)
     }
   }
   /* not reached */
+}
+
+/**
+ * mutt_menu_listener - Listen for config changes affecting the menu - Implements ::cs_listener
+ */
+bool mutt_menu_listener(const struct ConfigSet *cs, struct HashElem *he,
+                        const char *name, enum ConfigEvent ev)
+{
+  const struct ConfigDef *cdef = he->data;
+  int flags = cdef->flags;
+
+  if (flags == 0)
+    return true;
+
+  if (flags & R_INDEX)
+    mutt_menu_set_redraw_full(MENU_MAIN);
+  if (flags & R_PAGER)
+    mutt_menu_set_redraw_full(MENU_PAGER);
+  if (flags & R_PAGER_FLOW)
+  {
+    mutt_menu_set_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
+  }
+
+  if (flags & R_RESORT_SUB)
+    OptSortSubthreads = true;
+  if (flags & R_RESORT)
+    OptNeedResort = true;
+  if (flags & R_RESORT_INIT)
+    OptResortInit = true;
+  if (flags & R_TREE)
+    OptRedrawTree = true;
+
+  if (flags & R_REFLOW)
+    mutt_window_reflow();
+#ifdef USE_SIDEBAR
+  if (flags & R_SIDEBAR)
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
+#endif
+  if (flags & R_MENU)
+    mutt_menu_set_current_redraw_full();
+
+  return true;
 }

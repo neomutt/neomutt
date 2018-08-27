@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Mixmaster support for NeoMutt
- */
-
 #ifndef _MUTT_REMAILER_H
 #define _MUTT_REMAILER_H
 
@@ -32,12 +28,9 @@
 struct ListHead;
 struct Header;
 
-#ifdef MIXMASTER
-
-#define MIX_CAP_COMPRESS  (1 << 0)
-#define MIX_CAP_MIDDLEMAN (1 << 1)
-#define MIX_CAP_NEWSPOST  (1 << 2)
-#define MIX_CAP_NEWSMAIL  (1 << 3)
+/* These Config Variables are only used in remailer.c */
+extern char *MixEntryFormat;
+extern char *Mixmaster;
 
 /* Mixmaster's maximum chain length.  Don't change this. */
 
@@ -66,8 +59,6 @@ struct MixChain
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Header *msg);
-void mix_make_chain(struct ListHead *chain);
-
-#endif /* MIXMASTER */
+void mix_make_chain(struct ListHead *chainhead);
 
 #endif /* _MUTT_REMAILER_H */

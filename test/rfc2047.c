@@ -3,8 +3,8 @@
 
 #include "mutt/charset.h"
 #include "mutt/memory.h"
-#include "mutt/rfc2047.h"
 #include "mutt/string2.h"
+#include "email/rfc2047.h"
 
 #include <locale.h>
 
@@ -47,20 +47,34 @@ static const struct
       "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
     , "聪明的    聪明的"
     , "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
+  },
+  {
+    /* Let's accept spaces within encoded-text (issue #1189). In this
+     * particular case, NeoMutt choses to encode only the initial part of the
+     * string, as the remaining part only contains ASCII characters. */
+      "=?UTF-8?Q?Sicherheitsl=C3=BCcke in praktisch allen IT-Systemen?="
+    , "Sicherheitslücke in praktisch allen IT-Systemen"
+    , "=?utf-8?Q?Sicherheitsl=C3=BCcke?= in praktisch allen IT-Systemen"
   }
 };
 /* clang-format on */
 
 void test_rfc2047(void)
 {
-  setlocale(LC_ALL, "en_US.UTF-8");
+  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
+                  (setlocale(LC_ALL, "C.UTF-8") != NULL)))
+  {
+    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
+    return;
+  }
+
   Charset = "utf-8";
 
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
   {
     /* decode the original string */
     char *s = mutt_str_strdup(test_data[i].original);
-    mutt_rfc2047_decode(&s);
+    rfc2047_decode(&s);
     if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);
@@ -71,7 +85,7 @@ void test_rfc2047(void)
 
     /* encode the expected result */
     s = mutt_str_strdup(test_data[i].decoded);
-    mutt_rfc2047_encode(&s, NULL, 0, "utf-8");
+    rfc2047_encode(&s, NULL, 0, "utf-8");
     if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);
@@ -82,7 +96,7 @@ void test_rfc2047(void)
 
     /* decode the encoded result */
     s = mutt_str_strdup(test_data[i].encoded);
-    mutt_rfc2047_decode(&s);
+    rfc2047_decode(&s);
     if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
     {
       TEST_MSG("Iteration: %zu", i);

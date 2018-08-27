@@ -25,23 +25,14 @@
  * @page list Singly-linked list type
  *
  * Singly-linked list of strings.
- *
- * | Function                 | Description
- * | :----------------------- | :-----------------------------------------
- * | mutt_list_clear()        | Free a list, but NOT its strings
- * | mutt_list_compare()      | Compare two string lists
- * | mutt_list_find()         | Find a string in a List
- * | mutt_list_free()         | Free a List AND its strings
- * | mutt_list_insert_after() | Insert a string after a given ListNode
- * | mutt_list_insert_head()  | Insert a string at the beginning of a List
- * | mutt_list_insert_tail()  | Append a string to the end of a List
- * | mutt_list_match()        | Is the string in the list (see notes)
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <string.h>
 #include "list.h"
 #include "memory.h"
+#include "queue.h"
 #include "string2.h"
 
 /**
@@ -96,7 +87,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
  */
 struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     if (np->data == data || mutt_str_strcmp(np->data, data) == 0)
@@ -125,6 +116,27 @@ void mutt_list_free(struct ListHead *h)
 }
 
 /**
+ * mutt_list_free_type - Free a List of type
+ * @param h Head of the List
+ * @param fn Function to free contents of ListNode
+ */
+void mutt_list_free_type(struct ListHead *h, list_free_t fn)
+{
+  if (!h || !fn)
+    return;
+
+  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
+  while (np)
+  {
+    next = STAILQ_NEXT(np, entries);
+    fn((void **) &np->data);
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(h);
+}
+
+/**
  * mutt_list_clear - Free a list, but NOT its strings
  * @param h Head of the List
  *
@@ -146,7 +158,7 @@ void mutt_list_clear(struct ListHead *h)
  * mutt_list_match - Is the string in the list (see notes)
  * @param s String to match
  * @param h Head of the List
- * @return true String matches a List item (or List contains "*")
+ * @retval true String matches a List item (or List contains "*")
  *
  * This is a very specific function.  It searches a List of strings looking for
  * a match.  If the list contains a string "*", then it match any input string.
@@ -157,7 +169,7 @@ void mutt_list_clear(struct ListHead *h)
  */
 bool mutt_list_match(const char *s, struct ListHead *h)
 {
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
     if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))
@@ -170,7 +182,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * mutt_list_compare - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
- * @retval bool True if lists are identical
+ * @retval true Lists are identical
  *
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.

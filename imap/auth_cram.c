@@ -24,10 +24,6 @@
  * @page imap_auth_cram IMAP CRAM-MD5 authentication method
  *
  * IMAP CRAM-MD5 authentication method
- *
- * | Function             | Description
- * | :------------------- | :-------------------------------------------------
- * | imap_auth_cram_md5() | Authenticate using CRAM-MD5
  */
 
 #include "config.h"
@@ -37,11 +33,8 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
-#include "protos.h"
 
 #define MD5_BLOCK_LEN 64
 #define MD5_DIGEST_LEN 16
@@ -55,9 +48,9 @@
 static void hmac_md5(const char *password, char *challenge, unsigned char *response)
 {
   struct Md5Ctx ctx;
-  unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
+  unsigned char ipad[MD5_BLOCK_LEN] = { 0 };
+  unsigned char opad[MD5_BLOCK_LEN] = { 0 };
   unsigned char secret[MD5_BLOCK_LEN + 1];
-  unsigned char hash_passwd[MD5_DIGEST_LEN];
   size_t secret_len;
 
   secret_len = strlen(password);
@@ -66,6 +59,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
+    unsigned char hash_passwd[MD5_DIGEST_LEN];
     mutt_md5_bytes(password, secret_len, hash_passwd);
     mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
@@ -73,8 +67,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   else
     mutt_str_strfcpy((char *) secret, password, sizeof(secret));
 
-  memset(ipad, 0, sizeof(ipad));
-  memset(opad, 0, sizeof(opad));
   memcpy(ipad, secret, secret_len);
   memcpy(opad, secret, secret_len);
 
@@ -139,7 +131,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  len = mutt_b64_decode(obuf, idata->buf + 2);
+  len = mutt_b64_decode(idata->buf + 2, obuf, sizeof(obuf));
   if (len == -1)
   {
     mutt_debug(1, "Error decoding base64 response.\n");
@@ -168,9 +160,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
-  mutt_b64_encode(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
+  mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
   mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
-  mutt_socket_write(idata->conn, ibuf);
+  mutt_socket_send(idata->conn, ibuf);
 
   do
     rc = imap_cmd_step(idata);
@@ -186,7 +178,6 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("CRAM-MD5 authentication failed."));
-  mutt_sleep(2);
+  mutt_error(_("CRAM-MD5 authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

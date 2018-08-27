@@ -24,10 +24,6 @@
  * @page conn_sasl_plain SASL plain authentication support
  *
  * SASL plain authentication support
- *
- * | Function              | Description
- * | :-------------------- | :-----------------------------------
- * | mutt_sasl_plain_msg() | Create an SASL command
  */
 
 #include "config.h"
@@ -35,15 +31,21 @@
 #include "mutt/mutt.h"
 
 /**
- * mutt_sasl_plain_msg - Create an SASL command
- * @param buf    Buffer to store the command
- * @param buflen Length of the buffer
- * @param cmd    SASL command
- * @param authz  Authorisation
- * @param user   Username
+ * mutt_sasl_plain_msg - Construct a base64 encoded SASL PLAIN message
+ * @param buf    Destination buffer
+ * @param buflen Available space in the destination buffer
+ * @param cmd    Protocol-specific string the prepend to the PLAIN message
+ * @param authz  Authorization identity
+ * @param user   Authentication identity (username)
  * @param pass   Password
  * @retval >0 Success, number of chars in the command string
  * @retval  0 Error
+ *
+ * This function can be used to build a protocol-specific SASL Response message
+ * using the PLAIN mechanism. The protocol specific command is given in the cmd
+ * parameter. The function appends a space, encodes the string derived from
+ * authz\0user\0pass using base64 encoding, and stores the result in buf. If
+ * cmd is either NULL or the empty string, the initial space is skipped.
  *
  * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
  * string. Add the two NULL bytes in between plus one at the end and we get
@@ -53,7 +55,7 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)
 {
   char tmp[768];
-  size_t len;
+  size_t len = 0;
   size_t tmplen;
 
   if (!user || !*user || !pass || !*pass)
@@ -61,7 +63,10 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
 
   tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
 
-  len = snprintf(buf, buflen, "%s ", cmd);
-  len += mutt_b64_encode(buf + len, tmp, tmplen, buflen - len);
+  if (cmd && *cmd)
+  {
+    len = snprintf(buf, buflen, "%s ", cmd);
+  }
+  len += mutt_b64_encode(tmp, tmplen, buf + len, buflen - len);
   return len;
 }

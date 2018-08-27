@@ -20,26 +20,51 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file contains the new pgp invocation code.  Note that this
- * is almost entirely format based.
+/**
+ * @page crypt_pgpinvoke Wrapper around calls to external PGP program
+ *
+ * This file contains the new pgp invocation code.
+ *
+ * @note This is almost entirely format based.
  */
 
 #include "config.h"
 #include <fcntl.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "address.h"
+#include "email/email.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
+#include "mutt_window.h"
+#include "muttlib.h"
 #include "ncrypt.h"
-#include "pgp.h"
 #include "pgpkey.h"
 #include "protos.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgp.h"
+#endif
+
+/* These Config Variables are only used in ncrypt/pgpinvoke.c */
+char *PgpClearsignCommand; ///< Config: (pgp) External command to inline-sign a messsage
+char *PgpDecodeCommand; ///< Config: (pgp) External command to decode a PGP attachment
+char *PgpDecryptCommand; ///< Config: (pgp) External command to decrypt a PGP message
+char *PgpEncryptOnlyCommand; ///< Config: (pgp) External command to encrypt, but not sign a message
+char *PgpEncryptSignCommand; ///< Config: (pgp) External command to encrypt and sign a message
+char *PgpExportCommand; ///< Config: (pgp) External command to export a public key from the user's keyring
+char *PgpGetkeysCommand; ///< Config: (pgp) External command to download a key for an email address
+char *PgpImportCommand; ///< Config: (pgp) External command to import a key into the user's keyring
+char *PgpListPubringCommand; ///< Config: (pgp) External command to list the public keys in a user's keyring
+char *PgpListSecringCommand; ///< Config: (pgp) External command to list the private keys in a user's keyring
+char *PgpSignCommand; ///< Config: (pgp) External command to create a detached PGP signature
+char *PgpVerifyCommand; ///< Config: (pgp) External command to verify PGP signatures
+char *PgpVerifyKeyCommand; ///< Config: (pgp) External command to verify key information
 
 /**
  * struct PgpCommandContext - Data for a PGP command
@@ -48,13 +73,24 @@
  */
 struct PgpCommandContext
 {
-  short need_passphrase; /**< %p */
+  bool need_passphrase;  /**< %p */
   const char *fname;     /**< %f */
   const char *sig_fname; /**< %s */
   const char *signas;    /**< %a */
   const char *ids;       /**< %r */
 };
 
+/**
+ * fmt_pgp_command - Format a PGP command string - Implements ::format_t
+ *
+ * | Expando | Description
+ * |:--------|:-----------------------------------------------------------------
+ * | \%a     | Value of $pgp_sign_as if set, otherwise $pgp_default_key
+ * | \%f     | File containing a message
+ * | \%p     | Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty string otherwise
+ * | \%r     | One or more key IDs (or fingerprints if available)
+ * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
+ */
 static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int cols,
                                    char op, const char *src, const char *prec,
                                    const char *if_str, const char *else_str,
@@ -66,18 +102,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 
   switch (op)
   {
-    case 'r':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
-      }
-      else if (!cctx->ids)
-        optional = 0;
-      break;
-    }
-
     case 'a':
     {
       if (!optional)
@@ -89,19 +113,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         optional = 0;
       break;
     }
-
-    case 's':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
-      }
-      else if (!cctx->sig_fname)
-        optional = 0;
-      break;
-    }
-
     case 'f':
     {
       if (!optional)
@@ -113,7 +124,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         optional = 0;
       break;
     }
-
     case 'p':
     {
       if (!optional)
@@ -122,6 +132,28 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
       else if (!cctx->need_passphrase || pgp_use_gpg_agent())
+        optional = 0;
+      break;
+    }
+    case 'r':
+    {
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
+      }
+      else if (!cctx->ids)
+        optional = 0;
+      break;
+    }
+    case 's':
+    {
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
+      }
+      else if (!cctx->sig_fname)
         optional = 0;
       break;
     }
@@ -140,6 +172,13 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
   return src;
 }
 
+/**
+ * mutt_pgp_command - Prepare a PGP Command
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param cctx   Data to pass to the formatter
+ * @param fmt    printf-like formatting string
+ */
 static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
@@ -148,19 +187,31 @@ static void mutt_pgp_command(char *buf, size_t buflen,
   mutt_debug(2, "%s\n", buf);
 }
 
-/*
- * Glue.
+/**
+ * pgp_invoke - Run a PGP command
+ * @param pgpin           stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout          stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr          stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd         stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd        stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param need_passphrase Is a passphrase needed?
+ * @param fname           Filename to pass to the command
+ * @param sig_fname       Signature filename to pass to the command
+ * @param ids             List of IDs/fingerprints, space separated
+ * @param format          printf-like format string
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
  */
-
-static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                        int pgpoutfd, int pgperrfd, short need_passphrase,
-                        const char *fname, const char *sig_fname,
-                        const char *ids, const char *format)
+static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd,
+                        int pgperrfd, bool need_passphrase, const char *fname,
+                        const char *sig_fname, const char *ids, const char *format)
 {
-  struct PgpCommandContext cctx;
+  struct PgpCommandContext cctx = { 0 };
   char cmd[HUGE_STRING];
-
-  memset(&cctx, 0, sizeof(cctx));
 
   if (!format || !*format)
     return (pid_t) -1;
@@ -185,68 +236,173 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
  * This is historic and may be removed at some point.
  */
 
+/**
+ * pgp_invoke_decode - Use PGP to decode a message
+ * @param pgpin           stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout          stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr          stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd         stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd        stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd        stderr for the command, or -1 (OPTIONAL)
+ * @param fname           Filename to pass to the command
+ * @param need_passphrase Is a passphrase needed?
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_decode(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                        int pgpoutfd, int pgperrfd, const char *fname, short need_passphrase)
+                        int pgpoutfd, int pgperrfd, const char *fname, bool need_passphrase)
 {
   return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
                     need_passphrase, fname, NULL, NULL, PgpDecodeCommand);
 }
 
+/**
+ * pgp_invoke_verify - Use PGP to verify a message
+ * @param pgpin     stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout    stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr    stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd   stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd  stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd  stderr for the command, or -1 (OPTIONAL)
+ * @param fname     Filename to pass to the command
+ * @param sig_fname Signature filename to pass to the command
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_verify(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *fname, const char *sig_fname)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0,
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
                     fname, sig_fname, NULL, PgpVerifyCommand);
 }
 
+/**
+ * pgp_invoke_decrypt - Use PGP to decrypt a file
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param fname    Filename to pass to the command
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_decrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                          int pgpoutfd, int pgperrfd, const char *fname)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
                     fname, NULL, NULL, PgpDecryptCommand);
 }
 
+/**
+ * pgp_invoke_sign - Use PGP to sign a file
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param fname    Filename to pass to the command
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_sign(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                       int pgpoutfd, int pgperrfd, const char *fname)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
                     fname, NULL, NULL, PgpSignCommand);
 }
 
+/**
+ * pgp_invoke_encrypt - Use PGP to encrypt a file
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param fname    Filename to pass to the command
+ * @param uids     List of IDs/fingerprints, space separated
+ * @param sign     If true, also sign the file
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                          int pgpinfd, int pgpoutfd, int pgperrfd,
-                         const char *fname, const char *uids, int sign)
+                         const char *fname, const char *uids, bool sign)
 {
   if (sign)
-    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
+  {
+    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
                       fname, NULL, uids, PgpEncryptSignCommand);
+  }
   else
-    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0,
+  {
+    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
                       fname, NULL, uids, PgpEncryptOnlyCommand);
+  }
 }
 
+/**
+ * pgp_invoke_traditional - Use PGP to create in inline-signed message
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param fname    Filename to pass to the command
+ * @param uids     List of IDs/fingerprints, space separated
+ * @param flags    Flags, e.g. #SIGN, #ENCRYPT
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                              int pgpinfd, int pgpoutfd, int pgperrfd,
                              const char *fname, const char *uids, int flags)
 {
   if (flags & ENCRYPT)
+  {
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-                      flags & SIGN ? 1 : 0, fname, NULL, uids,
-                      flags & SIGN ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
+                      (flags & SIGN), fname, NULL, uids,
+                      (flags & SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
+  }
   else
-    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
-                      fname, NULL, NULL, PgpClearSignCommand);
+  {
+    return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, true,
+                      fname, NULL, NULL, PgpClearsignCommand);
+  }
 }
 
-void pgp_invoke_import(const char *fname)
+/**
+ * pgp_class_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import()
+ */
+void pgp_class_invoke_import(const char *fname)
 {
-  char tmp_fname[_POSIX_PATH_MAX + SHORT_STRING];
+  char tmp_fname[PATH_MAX + SHORT_STRING];
   char cmd[HUGE_STRING];
-  struct PgpCommandContext cctx;
+  struct PgpCommandContext cctx = { 0 };
 
-  memset(&cctx, 0, sizeof(cctx));
-
-  mutt_file_quote_filename(tmp_fname, sizeof(tmp_fname), fname);
+  mutt_file_quote_filename(fname, tmp_fname, sizeof(tmp_fname));
   cctx.fname = tmp_fname;
   if (PgpSignAs && *PgpSignAs)
     cctx.signas = PgpSignAs;
@@ -258,21 +414,22 @@ void pgp_invoke_import(const char *fname)
     mutt_debug(1, "Error running \"%s\"!", cmd);
 }
 
-void pgp_invoke_getkeys(struct Address *addr)
+/**
+ * pgp_class_invoke_getkeys - Implements CryptModuleSpecs::pgp_invoke_getkeys()
+ */
+void pgp_class_invoke_getkeys(struct Address *addr)
 {
-  char buf[LONG_STRING];
+  char buf[PATH_MAX];
   char tmp[LONG_STRING];
   char cmd[HUGE_STRING];
   int devnull;
 
   char *personal = NULL;
 
-  struct PgpCommandContext cctx;
+  struct PgpCommandContext cctx = { 0 };
 
   if (!PgpGetkeysCommand)
     return;
-
-  memset(&cctx, 0, sizeof(cctx));
 
   personal = addr->personal;
   addr->personal = NULL;
@@ -280,7 +437,7 @@ void pgp_invoke_getkeys(struct Address *addr)
   *tmp = '\0';
   mutt_addrlist_to_local(addr);
   mutt_addr_write_single(tmp, sizeof(tmp), addr, false);
-  mutt_file_quote_filename(buf, sizeof(buf), tmp);
+  mutt_file_quote_filename(tmp, buf, sizeof(buf));
 
   addr->personal = personal;
 
@@ -303,20 +460,66 @@ void pgp_invoke_getkeys(struct Address *addr)
     close(devnull);
 }
 
+/**
+ * pgp_invoke_export - Use PGP to export a key from the user's keyring
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param uids     List of IDs/fingerprints, space separated
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *uids)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0, NULL,
-                    NULL, uids, PgpExportCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids, PgpExportCommand);
 }
 
+/**
+ * pgp_invoke_verify_key - Use PGP to verify a key
+ * @param pgpin    stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout   stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr   stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param uids     List of IDs/fingerprints, space separated
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                             int pgpoutfd, int pgperrfd, const char *uids)
 {
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0, NULL,
-                    NULL, uids, PgpVerifyKeyCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids, PgpVerifyKeyCommand);
 }
 
+/**
+ * pgp_invoke_list_keys - Find matching PGP Keys
+ * @param pgpin  stdin  for the command, or NULL (OPTIONAL)
+ * @param pgpout stdout for the command, or NULL (OPTIONAL)
+ * @param pgperr stderr for the command, or NULL (OPTIONAL)
+ * @param pgpinfd  stdin  for the command, or -1 (OPTIONAL)
+ * @param pgpoutfd stdout for the command, or -1 (OPTIONAL)
+ * @param pgperrfd stderr for the command, or -1 (OPTIONAL)
+ * @param keyring  Keyring type, e.g. #PGP_SECRING
+ * @param hints    Match keys to these strings
+ * @retval num PID of the created process
+ * @retval -1  Error creating pipes or forking
+ *
+ * @note `pgpin` has priority over `pgpinfd`.
+ *       Likewise `pgpout` and `pgperr`.
+ */
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)
@@ -327,14 +530,15 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
   *uids = '\0';
 
-  struct ListNode *np;
+  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
-    mutt_file_quote_filename(quoted, sizeof(quoted), (char *) np->data);
+    mutt_file_quote_filename((char *) np->data, quoted, sizeof(quoted));
     snprintf(tmpuids, sizeof(tmpuids), "%s %s", uids, quoted);
     strcpy(uids, tmpuids);
   }
 
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0, NULL, NULL,
-                    uids, keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
+                    NULL, NULL, uids,
+                    keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
 }

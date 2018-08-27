@@ -23,68 +23,43 @@
 #ifndef _MUTT_SORT_H
 #define _MUTT_SORT_H
 
-#include "where.h"
+#include <stdbool.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "where.h"
 
 struct Address;
 struct Context;
 
-#define SORT_DATE     1 /**< the date the mail was sent. */
-#define SORT_SIZE     2
-#define SORT_SUBJECT  3
-#define SORT_ALPHA    3 /**< makedoc.c requires this */
-#define SORT_FROM     4
-#define SORT_ORDER    5 /**< the order the messages appear in the mailbox. */
-#define SORT_THREADS  6
-#define SORT_RECEIVED 7 /**< when the message were delivered locally */
-#define SORT_TO       8
-#define SORT_SCORE    9
-#define SORT_ALIAS    10
-#define SORT_ADDRESS  11
-#define SORT_KEYID    12
-#define SORT_TRUST    13
-#define SORT_SPAM     14
-#define SORT_COUNT    15
-#define SORT_UNREAD   16
-#define SORT_FLAGGED  17
-#define SORT_PATH     18
-#define SORT_LABEL    19
-#define SORT_DESC     20
+/* These Config Variables are only used in sort.c */
+extern bool ReverseAlias;
 
-/* Sort and sort_aux are shorts, and are a composite of a
- * constant sort operation number and a set of compounded
- * bitflags.
- *
- * Everything below SORT_MASK is a constant. There's room for
- * SORT_MASK constant SORT_ values.
- *
- * Everything above is a bitflag. It's OK to move SORT_MASK
- * down by powers of 2 if we need more, so long as we don't
- * collide with the constants above. (Or we can just expand
- * sort and sort_aux to uint32_t.)
+#define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
+
+/**
+ * typedef sort_t - Prototype for a function to compare two emails
+ * @param a First email
+ * @param b Second email
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
  */
-#define SORT_MASK    ((1 << 8) - 1)
-#define SORT_REVERSE (1 << 8)
-#define SORT_LAST    (1 << 9)
-
 typedef int sort_t(const void *a, const void *b);
+
 sort_t *mutt_get_sort_func(int method);
 
-void mutt_sort_headers(struct Context *ctx, int init);
-int mutt_select_sort(int reverse);
+void mutt_sort_headers(struct Context *ctx, bool init);
+int perform_auxsort(int retval, const void *a, const void *b);
 
 extern const struct Mapping SortMethods[];
 
 const char *mutt_get_name(struct Address *a);
 
 /* These variables are backing for config items */
-WHERE short SortBrowser;
-WHERE short Sort;
-WHERE short SortAux; /* auxiliary sorting method */
-WHERE short SortAlias;
-WHERE short SidebarSortMethod;
+WHERE short Sort;    ///< Config: Sort method for the index
+WHERE short SortAux; ///< Config: Secondary sort method for the index
 
 /* FIXME: This one does not belong to here */
-WHERE short PgpSortKeys;
+WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys
 
 #endif /* _MUTT_SORT_H */

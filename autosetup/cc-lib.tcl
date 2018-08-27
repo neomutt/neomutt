@@ -12,7 +12,7 @@ module-options {}
 # @cc-check-lfs
 #
 # The equivalent of the 'AC_SYS_LARGEFILE' macro.
-# 
+#
 # defines 'HAVE_LFS' if LFS is available,
 # and defines '_FILE_OFFSET_BITS=64' if necessary
 #
@@ -38,7 +38,7 @@ proc cc-check-lfs {} {
 # @cc-check-endian
 #
 # The equivalent of the 'AC_C_BIGENDIAN' macro.
-# 
+#
 # defines 'HAVE_BIG_ENDIAN' if endian is known to be big,
 # or 'HAVE_LITTLE_ENDIAN' if endian is known to be little.
 #

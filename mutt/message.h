@@ -34,10 +34,7 @@
 #else
 #define _(a) (a)
 #define N_(a) a
+#define ngettext(x, xs, n) ((n) == 1 ? (x) : (xs))
 #endif
-
-void (*mutt_error)  (const char *format, ...);
-void (*mutt_message)(const char *format, ...);
-void (*mutt_perror) (const char *message);
 
 #endif /* _MUTT_MESSAGE_H */

@@ -25,12 +25,8 @@
 #ifndef _NCRYPT_PGP_H
 #define _NCRYPT_PGP_H
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
-#include "ncrypt.h"
 
 struct Address;
 struct Body;
@@ -40,7 +36,7 @@ struct State;
 
 bool pgp_use_gpg_agent(void);
 
-int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only);
+int pgp_class_check_traditional(FILE *fp, struct Body *b, bool just_one);
 
 char *pgp_this_keyid(struct PgpKeyInfo *k);
 char *pgp_keyid(struct PgpKeyInfo *k);
@@ -48,23 +44,21 @@ char *pgp_short_keyid(struct PgpKeyInfo * k);
 char *pgp_long_keyid(struct PgpKeyInfo * k);
 char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);
 
-int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
+int pgp_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-char *pgp_find_keys(struct Address *addrlist, int oppenc_mode);
+char *pgp_class_find_keys(struct Address *addrlist, bool oppenc_mode);
 
-int pgp_application_pgp_handler(struct Body *m, struct State *s);
-int pgp_encrypted_handler(struct Body *a, struct State *s);
-void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
-void pgp_void_passphrase(void);
-int pgp_valid_passphrase(void);
+int pgp_class_application_handler(struct Body *m, struct State *s);
+int pgp_class_encrypted_handler(struct Body *a, struct State *s);
+void pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top);
+void pgp_class_void_passphrase(void);
+int pgp_class_valid_passphrase(void);
 
-int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
-struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign);
-struct Body *pgp_sign_message(struct Body *a);
+int pgp_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
+struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *keylist);
+struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign);
+struct Body *pgp_class_sign_message(struct Body *a);
 
-int pgp_send_menu(struct Header *msg);
-
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */
+int pgp_class_send_menu(struct Header *msg);
 
 #endif /* _NCRYPT_PGP_H */

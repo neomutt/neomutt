@@ -26,11 +26,17 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "mutt/mutt.h"
 
 struct Address;
+struct Buffer;
 struct Header;
 struct Context;
+
+/* These Config Variables are only used in pattern.c */
+extern bool ThoroughSearch;
+
+/* flag to mutt_pattern_comp() */
+#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
 /**
  * struct Pattern - A simple (non-regex) pattern
@@ -83,11 +89,7 @@ struct PatternCache
   int pers_from_one;  /**<  ~P */
 };
 
-static inline struct Pattern *new_pattern(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct Pattern));
-}
-
+struct Pattern *mutt_pattern_new(void);
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *h, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
@@ -95,7 +97,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(struct Pattern **pat);
 
 int mutt_which_case(const char *s);
-int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2);
+int mutt_is_list_recipient(bool alladdr, struct Address *a1, struct Address *a2);
 int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(int cur, int op);

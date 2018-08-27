@@ -24,7 +24,6 @@
 #define _MUTT_STATE_H
 
 #include <stdio.h>
-#include <stddef.h>
 
 /**
  * struct State - Keep track when processing files
@@ -57,6 +56,6 @@ void state_attach_puts(const char *t, struct State *s);
 void state_prefix_putc(char c, struct State *s);
 int state_printf(struct State *s, const char *fmt, ...);
 int state_putws(const wchar_t *ws, struct State *s);
-void state_prefix_put(const char *d, size_t dlen, struct State *s);
+void state_prefix_put(const char *buf, size_t buflen, struct State *s);
 
 #endif /* _MUTT_STATE_H */

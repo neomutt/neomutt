@@ -38,7 +38,7 @@ struct Buffer;
 struct Group
 {
   struct Address *as;
-  struct RegexList *rs;
+  struct RegexList rs;
   char *name;
 };
 

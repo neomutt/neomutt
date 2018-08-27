@@ -20,27 +20,40 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_pgppacket Parse PGP data packets
+ *
+ * Parse PGP data packets
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "mutt/mutt.h"
 
-#define CHUNKSIZE 1024
+#define CHUNKSIZE 1024 /**< Amount of data to read at once */
 
-static unsigned char *pbuf = NULL;
-static size_t plen = 0;
+static unsigned char *pbuf = NULL; /**< Cache PGP data packet */
+static size_t plen = 0;            /**< Length of cached packet */
 
+/**
+ * read_material - Read PGP data into a buffer
+ * @param[in]     material Number of bytes to read
+ * @param[in,out] used     Number of bytes already read
+ * @param[in]     fp       File to read from
+ * @retval  0 Success
+ * @retval -1 Failure (see errno)
+ *
+ * This function uses a cache to store the data: #pbuf, #plen.
+ */
 static int read_material(size_t material, size_t *used, FILE *fp)
 {
   if (*used + material >= plen)
   {
-    unsigned char *p = NULL;
-    size_t nplen;
+    size_t nplen = *used + material + CHUNKSIZE;
 
-    nplen = *used + material + CHUNKSIZE;
-
-    p = realloc(pbuf, nplen);
+    unsigned char *p = realloc(pbuf, nplen);
     if (!p)
     {
       perror("realloc");
@@ -60,6 +73,13 @@ static int read_material(size_t material, size_t *used, FILE *fp)
   return 0;
 }
 
+/**
+ * pgp_read_packet - Read a PGP packet from a file
+ * @param[in]  fp  File to read from
+ * @param[out] len Number of bytes read
+ *
+ * This function uses a cache to store the data: #pbuf, #plen.
+ */
 unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 {
   size_t used = 0;
@@ -72,7 +92,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (startpos < 0)
     return NULL;
 
-  if (!plen)
+  if (plen == 0)
   {
     plen = CHUNKSIZE;
     pbuf = mutt_mem_malloc(plen);
@@ -169,7 +189,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
       case 1:
         bytes = 2;
-      /* fallthrough */
+        /* fallthrough */
 
       case 2:
       {
@@ -210,6 +230,11 @@ bail:
   return NULL;
 }
 
+/**
+ * pgp_release_packet - Free the cached PGP packet
+ *
+ * Free the data stored in #pbuf.
+ */
 void pgp_release_packet(void)
 {
   plen = 0;

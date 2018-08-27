@@ -24,10 +24,6 @@
  * @page imap_auth_anon IMAP anonymous authentication method
  *
  * IMAP anonymous authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_anon()   | Authenticate anonymously
  */
 
 #include "config.h"
@@ -35,11 +31,8 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
-#include "options.h"
-#include "protos.h"
 
 /**
  * imap_auth_anon - Authenticate anonymously
@@ -76,7 +69,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  mutt_socket_write(idata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
+  mutt_socket_send(idata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
 
   do
     rc = imap_cmd_step(idata);
@@ -92,7 +85,6 @@ enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
     return IMAP_AUTH_SUCCESS;
 
 bail:
-  mutt_error(_("Anonymous authentication failed."));
-  mutt_sleep(2);
+  mutt_error(_("Anonymous authentication failed"));
   return IMAP_AUTH_FAILURE;
 }

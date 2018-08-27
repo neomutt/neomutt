@@ -35,8 +35,11 @@
 #include <tcutil.h>
 #include "mutt/mutt.h"
 #include "backend.h"
-#include "options.h"
+#include "globals.h"
 
+/**
+ * hcache_tokyocabinet_open - Implements HcacheOps::open()
+ */
 static void *hcache_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
@@ -56,6 +59,9 @@ static void *hcache_tokyocabinet_open(const char *path)
   }
 }
 
+/**
+ * hcache_tokyocabinet_fetch - Implements HcacheOps::fetch()
+ */
 static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   int sp;
@@ -67,11 +73,17 @@ static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen
   return tcbdbget(db, key, keylen, &sp);
 }
 
+/**
+ * hcache_tokyocabinet_free - Implements HcacheOps::free()
+ */
 static void hcache_tokyocabinet_free(void *ctx, void **data)
 {
   FREE(data);
 }
 
+/**
+ * hcache_tokyocabinet_store - Implements HcacheOps::store()
+ */
 static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
                                      void *data, size_t dlen)
 {
@@ -87,6 +99,9 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
   return 0;
 }
 
+/**
+ * hcache_tokyocabinet_delete - Implements HcacheOps::delete()
+ */
 static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
@@ -101,6 +116,9 @@ static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
   return 0;
 }
 
+/**
+ * hcache_tokyocabinet_close - Implements HcacheOps::close()
+ */
 static void hcache_tokyocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
@@ -115,6 +133,9 @@ static void hcache_tokyocabinet_close(void **ctx)
   tcbdbdel(db);
 }
 
+/**
+ * hcache_tokyocabinet_backend - Implements HcacheOps::backend()
+ */
 static const char *hcache_tokyocabinet_backend(void)
 {
   return "tokyocabinet " _TC_VERSION;

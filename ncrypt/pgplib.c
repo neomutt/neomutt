@@ -20,13 +20,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Generally useful, pgp-related functions. */
+/**
+ * @page crypt_pgplib Misc PGP helper routines
+ *
+ * Misc PGP helper routines
+ */
 
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/mutt.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgplib.h"
+#endif
 
+/**
+ * pgp_pkalgbytype - Get the name of the algorithm from its ID
+ * @param type Algorithm ID
+ * @retval ptr Algorithm name
+ */
 const char *pgp_pkalgbytype(unsigned char type)
 {
   switch (type)
@@ -48,6 +59,11 @@ const char *pgp_pkalgbytype(unsigned char type)
   }
 }
 
+/**
+ * pgp_canencrypt - Does this algorithm ID support encryption?
+ * @param type Algorithm ID
+ * @retval true If it does
+ */
 bool pgp_canencrypt(unsigned char type)
 {
   switch (type)
@@ -62,6 +78,11 @@ bool pgp_canencrypt(unsigned char type)
   }
 }
 
+/**
+ * pgp_cansign - Does this algorithm ID support signing?
+ * @param type Algorithm ID
+ * @retval true If it does
+ */
 bool pgp_cansign(unsigned char type)
 {
   switch (type)
@@ -76,34 +97,24 @@ bool pgp_cansign(unsigned char type)
   }
 }
 
-/* return values:
-
- * 1 = sign only
- * 2 = encrypt only
- * 3 = both
+/**
+ * pgp_get_abilities - Get the capabilities of an algorithm
+ * @param type Algorithm ID
+ * @retval num Capabilities
+ *
+ * The abilities are OR'd together
+ * - 1 If signing is possible
+ * - 2 If encryption is possible
  */
-
 short pgp_get_abilities(unsigned char type)
 {
   return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
 }
 
-static void pgp_free_sig(struct PgpSignature **sigp)
-{
-  struct PgpSignature *sp = NULL, *q = NULL;
-
-  if (!sigp || !*sigp)
-    return;
-
-  for (sp = *sigp; sp; sp = q)
-  {
-    q = sp->next;
-    FREE(&sp);
-  }
-
-  *sigp = NULL;
-}
-
+/**
+ * pgp_free_uid - Free a PGP UID
+ * @param upp PGP UID to free
+ */
 static void pgp_free_uid(struct PgpUid **upp)
 {
   struct PgpUid *up = NULL, *q = NULL;
@@ -113,7 +124,6 @@ static void pgp_free_uid(struct PgpUid **upp)
   for (up = *upp; up; up = q)
   {
     q = up->next;
-    pgp_free_sig(&up->sigs);
     FREE(&up->addr);
     FREE(&up);
   }
@@ -121,6 +131,12 @@ static void pgp_free_uid(struct PgpUid **upp)
   *upp = NULL;
 }
 
+/**
+ * pgp_copy_uids - Copy a list of PGP UIDs
+ * @param up     List of PGP UIDs
+ * @param parent Parent PGP key
+ * @retval ptr New list of PGP UIDs
+ */
 struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 {
   struct PgpUid *l = NULL;
@@ -139,6 +155,10 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
   return l;
 }
 
+/**
+ * free_key - Free a PGP Key info
+ * @param kpp PGP Key info to free
+ */
 static void free_key(struct PgpKeyInfo **kpp)
 {
   struct PgpKeyInfo *kp = NULL;
@@ -154,6 +174,12 @@ static void free_key(struct PgpKeyInfo **kpp)
   FREE(kpp);
 }
 
+/**
+ * pgp_remove_key - Remove a PGP key from a list
+ * @param klist List of PGP Keys
+ * @param key   Key to remove
+ * @retval ptr Updated list of PGP Keys
+ */
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key)
 {
   struct PgpKeyInfo **last = NULL;
@@ -182,6 +208,10 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
   return q;
 }
 
+/**
+ * pgp_free_key - Free a PGP key info
+ * @param kpp PGP key info to free
+ */
 void pgp_free_key(struct PgpKeyInfo **kpp)
 {
   struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
@@ -214,4 +244,13 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
   }
 
   *kpp = NULL;
+}
+
+/**
+ * pgp_new_keyinfo - Create a new PgpKeyInfo
+ * @retval ptr New PgpKeyInfo
+ */
+struct PgpKeyInfo *pgp_new_keyinfo(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
 }

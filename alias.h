@@ -23,10 +23,12 @@
 #ifndef _MUTT_ALIAS_H
 #define _MUTT_ALIAS_H
 
+#include <stddef.h>
 #include <stdbool.h>
+#include "mutt/mutt.h"
 
-struct Envelope;
 struct Address;
+struct Envelope;
 
 /**
  * struct Alias - A shortcut for an email address
@@ -35,17 +37,26 @@ struct Alias
 {
   char *name;
   struct Address *addr;
-  struct Alias *next;
   bool tagged;
   bool del;
   short num;
+  TAILQ_ENTRY(Alias) entries;
 };
 
-struct Address *mutt_lookup_alias(const char *s);
+TAILQ_HEAD(AliasList, Alias);
+
+void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
+void            mutt_alias_free(struct Alias **p);
+void            mutt_aliaslist_free(struct AliasList *a_list);
+struct Address *mutt_alias_lookup(const char *s);
+void            mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_expand_aliases(struct Address *a);
-void mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
-void mutt_create_alias(struct Envelope *cur, struct Address *iaddr);
-void mutt_free_alias(struct Alias **p);
+
+bool mutt_addr_is_user(struct Address *addr);
+int mutt_alias_complete(char *buf, size_t buflen);
+void mutt_alias_add_reverse(struct Alias *t);
+void mutt_alias_delete_reverse(struct Alias *t);
+struct Address *mutt_alias_reverse_lookup(struct Address *a);
 
 #endif /* _MUTT_ALIAS_H */

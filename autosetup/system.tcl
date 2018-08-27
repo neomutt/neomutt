@@ -48,6 +48,7 @@ module-options [subst -noc -nob {
 	sysconfdir:
 	sharedstatedir:
 	localstatedir:
+	runstatedir:
 	maintainer-mode=0
 	dependency-tracking=0
 	silent-rules=0
@@ -141,29 +142,32 @@ proc write-if-changed {file buf {script {}}} {
 #
 # Each pattern of the form '@define@' is replaced with the corresponding
 # "define", if it exists, or left unchanged if not.
-# 
+#
 # The special value '@srcdir@' is substituted with the relative
 # path to the source directory from the directory where the output
 # file is created, while the special value '@top_srcdir@' is substituted
 # with the relative path to the top level source directory.
 #
 # Conditional sections may be specified as follows:
-## @if name == value
+## @if NAME eq "value"
 ## lines
 ## @else
 ## lines
 ## @endif
 #
-# Where 'name' is a defined variable name and '@else' is optional.
+# Where 'NAME' is a defined variable name and '@else' is optional.
+# Note that variables names *must* start with an uppercase letter.
 # If the expression does not match, all lines through '@endif' are ignored.
 #
 # The alternative forms may also be used:
-## @if name
-## @if name != value
+## @if NAME  (true if the variable is defined, but not empty and not "0")
+## @if !NAME  (opposite of the form above)
+## @if <general-tcl-expression>
 #
-# Where the first form is true if the variable is defined, but not empty nor 0.
+# In the general Tcl expression, any words beginning with an uppercase letter
+# are translated into [get-define NAME]
 #
-# Currently these expressions can't be nested.
+# Expressions may be nested
 #
 proc make-template {template {out {}}} {
 	set infile [file join $::autosetup(srcdir) $template]
@@ -195,34 +199,62 @@ proc make-template {template {out {}}} {
 	foreach {n v} [array get ::define] {
 		lappend mapping @$n@ $v
 	}
+
+	# A stack of true/false conditions, one for each nested conditional
+	# starting with "true"
+	set condstack {1}
 	set result {}
+	set linenum 0
 	foreach line [split [readfile $infile] \n] {
-		if {[info exists cond]} {
-			set l [string trimright $line]
-			if {$l eq "@endif"} {
-				unset cond
-				continue
+		incr linenum
+		if {[regexp {^@(if|else|endif)\s*(.*)} $line -> condtype condargs]} {
+			if {$condtype eq "if"} {
+				if {[llength $condargs] == 1} {
+					# ABC => [get-define ABC] ni {0 ""}
+					# !ABC => [get-define ABC] in {0 ""}
+					lassign $condargs condvar
+					if {[regexp {^!(.*)} $condvar -> condvar]} {
+						set op in
+					} else {
+						set op ni
+					}
+					set condexpr "\[[list get-define $condvar]\] $op {0 {}}"
+				} else {
+					# Translate alphanumeric ABC into [get-define ABC] and leave the
+					# rest of the expression untouched
+					regsub -all {([A-Z][[:alnum:]_]*)} $condargs {[get-define \1]} condexpr
+				}
+				if {[catch [list expr $condexpr] condval]} {
+					dputs $condval
+					autosetup-error "$infile:$linenum: Invalid expression: $line"
+				}
+				dputs "@$condtype: $condexpr => $condval"
 			}
-			if {$l eq "@else"} {
-				set cond [expr {!$cond}]
-				continue
+			if {$condtype ne "if" && [llength $condstack] <= 1} {
+				autosetup-error "$infile:$linenum: Error: @$condtype missing @if"
 			}
-			if {$cond} {
-				lappend result $line
+			switch -exact $condtype {
+				if {
+					# push condval
+					lappend condstack $condval
+				}
+				else {
+					# Toggle the last entry
+					set condval [lpop condstack]
+					set condval [expr {!$condval}]
+					lappend condstack $condval
+				}
+				endif {
+					if {[llength $condstack] == 0} {
+						user-notice "$infile:$linenum: Error: @endif missing @if"
+					}
+					lpop condstack
+				}
 			}
 			continue
 		}
-		if {[regexp {^@if\s+(\w+)(.*)} $line -> name expression]} {
-			lassign $expression equal value
-			set varval [get-define $name ""]
-			if {$equal eq ""} {
-				set cond [expr {$varval ni {"" 0}}]
-			} else {
-				set cond [expr {$varval eq $value}]
-				if {$equal ne "=="} {
-					set cond [expr {!$cond}]
-				}
-			}
+		# Only output this line if the stack contains all "true"
+		if {"0" in $condstack} {
 			continue
 		}
 		lappend result $line
@@ -301,6 +333,7 @@ if {$prefix ne {/usr}} {
 define sysconfdir $sysconfdir
 
 define localstatedir [opt-str localstatedir o /var]
+define runstatedir [opt-str runstatedir o /run]
 
 define SHELL [get-env SHELL [find-an-executable sh bash ksh]]
 

@@ -32,7 +32,7 @@
 /* type for key storage, the rest of neomutt works fine with int type */
 typedef short keycode_t;
 
-int km_bind(char *s, int menu, int op, char *macro, char *descr);
+int km_bind(char *s, int menu, int op, char *macro, char *desc);
 int km_dokey(int menu);
 
 void init_extended_keys(void);
@@ -45,7 +45,7 @@ void init_extended_keys(void);
 struct Keymap
 {
   char *macro;         /**< macro expansion (op == OP_MACRO) */
-  char *descr;         /**< description of a macro for the help menu */
+  char *desc;          /**< description of a macro for the help menu */
   struct Keymap *next; /**< next key in map */
   short op;            /**< operation to perform */
   short eq;            /**< number of leading keys equal to next entry */
@@ -128,5 +128,12 @@ extern const struct Binding OpSmime[];
 #ifdef MIXMASTER
 extern const struct Binding OpMix[];
 #endif
+
+void mutt_free_keys(void);
+
+int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* _MUTT_KEYMAP_H */

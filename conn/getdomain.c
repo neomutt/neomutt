@@ -24,10 +24,6 @@
  * @page conn_getdomain DNS lookups
  *
  * DNS lookups
- *
- * | Function           | Description
- * | :----------------- | :-----------------------------------
- * | getdnsdomainname() | Lookup the host's name using DNS
  */
 
 #include "config.h"
@@ -36,30 +32,28 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/debug.h"
-#include "mutt/memory.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS
- * @param d   Buffer for the result
- * @param len Length of the buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
  * @retval  0 Success
  * @retval -1 Error
  */
-int getdnsdomainname(char *d, size_t len)
+int getdnsdomainname(char *buf, size_t buflen)
 {
   int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
-  if (gethostname(node, sizeof(node)))
+  if (gethostname(node, sizeof(node)) != 0)
     return rc;
 
   struct addrinfo hints;
   struct addrinfo *h = NULL;
 
-  *d = '\0';
+  *buf = '\0';
   memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
@@ -70,7 +64,6 @@ int getdnsdomainname(char *d, size_t len)
    * If it takes longer, the system is mis-configured and the network is not
    * working properly, so...
    */
-  int status;
   struct timespec timeout = { 0, 100000000 };
   struct gaicb *reqs[1];
   reqs[0] = mutt_mem_calloc(1, sizeof(*reqs[0]));
@@ -79,7 +72,7 @@ int getdnsdomainname(char *d, size_t len)
   if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
   {
     gai_suspend((const struct gaicb *const *) reqs, 1, &timeout);
-    status = gai_error(reqs[0]);
+    const int status = gai_error(reqs[0]);
     if (status == 0)
       h = reqs[0]->ar_result;
     else if (status == EAI_INPROGRESS)
@@ -106,11 +99,11 @@ int getdnsdomainname(char *d, size_t len)
 #endif
 
   char *p = NULL;
-  if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
+  if (h && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
-    mutt_str_strfcpy(d, ++p, len);
+    mutt_str_strfcpy(buf, ++p, buflen);
     rc = 0;
-    mutt_debug(1, "%s\n", d);
+    mutt_debug(1, "Hostname: %s\n", buf);
     freeaddrinfo(h);
   }
 

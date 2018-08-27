@@ -23,18 +23,24 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
+#include "email/email.h"
 #include "mutt.h"
+#include "score.h"
 #include "context.h"
 #include "globals.h"
-#include "header.h"
 #include "keymap.h"
-#include "mutt_menu.h"
+#include "menu.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+
+/* These Config Variables are only used in score.c */
+short ScoreThresholdDelete; ///< Config: Messages with a lower score will be automatically deleted
+short ScoreThresholdFlag; ///< Config: Messages with a greater score will be automatically flagged
+short ScoreThresholdRead; ///< Config: Messages with a lower score will be automatically marked read
 
 /**
  * struct Score - Scoring rule for email
@@ -50,30 +56,43 @@ struct Score
 
 static struct Score *ScoreList = NULL;
 
+/**
+ * mutt_check_rescore - Do the emails need to have their scores recalculated?
+ * @param ctx Mailbox
+ */
 void mutt_check_rescore(struct Context *ctx)
 {
-  if (OPT_NEED_RESCORE && Score)
+  if (OptNeedRescore && Score)
   {
     if ((Sort & SORT_MASK) == SORT_SCORE || (SortAux & SORT_MASK) == SORT_SCORE)
     {
-      OPT_NEED_RESORT = true;
+      OptNeedResort = true;
       if ((Sort & SORT_MASK) == SORT_THREADS)
-        OPT_SORT_SUBTHREADS = true;
+        OptSortSubthreads = true;
     }
 
     /* must redraw the index since the user might have %N in it */
-    mutt_set_menu_redraw_full(MENU_MAIN);
-    mutt_set_menu_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_PAGER);
 
     for (int i = 0; ctx && i < ctx->msgcount; i++)
     {
-      mutt_score_message(ctx, ctx->hdrs[i], 1);
+      mutt_score_message(ctx, ctx->hdrs[i], true);
       ctx->hdrs[i]->pair = 0;
     }
   }
-  OPT_NEED_RESCORE = false;
+  OptNeedRescore = false;
 }
 
+/**
+ * mutt_parse_score - Parse the 'score' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
@@ -84,7 +103,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, 0);
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("score: too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "score");
     return -1;
   }
   pattern = buf->data;
@@ -93,7 +112,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (MoreArgs(s))
   {
     FREE(&pattern);
-    mutt_str_strfcpy(err->data, _("score: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "score");
     return -1;
   }
 
@@ -119,11 +138,13 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     ptr->str = pattern;
   }
   else
+  {
     /* 'buf' arg was cleared and 'pattern' holds the only reference;
      * as here 'ptr' != NULL -> update the value only in which case
      * ptr->str already has the string, so pattern should be freed.
      */
     FREE(&pattern);
+  }
   pc = buf->data;
   if (*pc == '=')
   {
@@ -136,16 +157,21 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_str_strfcpy(err->data, _("Error: score: invalid number"), err->dsize);
     return -1;
   }
-  OPT_NEED_RESCORE = true;
+  OptNeedRescore = true;
   return 0;
 }
 
-void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
+/**
+ * mutt_score_message - Apply scoring to an email
+ * @param ctx     Mailbox
+ * @param hdr     Email header
+ * @param upd_ctx If true, update the Context too
+ */
+void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx)
 {
   struct Score *tmp = NULL;
-  struct PatternCache cache;
+  struct PatternCache cache = { 0 };
 
-  memset(&cache, 0, sizeof(cache));
   hdr->score = 0; /* in case of re-scoring */
   for (tmp = ScoreList; tmp; tmp = tmp->next)
   {
@@ -163,13 +189,22 @@ void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
     hdr->score = 0;
 
   if (hdr->score <= ScoreThresholdDelete)
-    mutt_set_flag_update(ctx, hdr, MUTT_DELETE, 1, upd_ctx);
+    mutt_set_flag_update(ctx, hdr, MUTT_DELETE, true, upd_ctx);
   if (hdr->score <= ScoreThresholdRead)
-    mutt_set_flag_update(ctx, hdr, MUTT_READ, 1, upd_ctx);
+    mutt_set_flag_update(ctx, hdr, MUTT_READ, true, upd_ctx);
   if (hdr->score >= ScoreThresholdFlag)
-    mutt_set_flag_update(ctx, hdr, MUTT_FLAG, 1, upd_ctx);
+    mutt_set_flag_update(ctx, hdr, MUTT_FLAG, true, upd_ctx);
 }
 
+/**
+ * mutt_parse_unscore - Parse the 'unscore' command
+ * @param buf  Temporary Buffer space
+ * @param s    Buffer containing string to be parsed
+ * @param data Flags associated with the command
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
@@ -207,6 +242,6 @@ int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
     }
   }
-  OPT_NEED_RESCORE = true;
+  OptNeedRescore = true;
   return 0;
 }

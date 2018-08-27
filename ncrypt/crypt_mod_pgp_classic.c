@@ -20,131 +20,49 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-    This is a crytpo module wrapping the classic pgp code.
+/**
+ * @page crypt_crypt_mod_pgp Wrappers for calls to CLI PGP
+ *
+ * Wrappers for calls to CLI PGP
  */
 
 #include "config.h"
 #include <stdio.h>
 #include "crypt_mod.h"
 #include "ncrypt.h"
-#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgp.h"
+#endif
 
-struct Address;
-struct Body;
-struct Header;
-struct State;
-
-static void crypt_mod_pgp_void_passphrase(void)
-{
-  pgp_void_passphrase();
-}
-
-static int crypt_mod_pgp_valid_passphrase(void)
-{
-  return pgp_valid_passphrase();
-}
-
-static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
-{
-  return pgp_decrypt_mime(a, b, c, d);
-}
-
-static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
-{
-  return pgp_application_pgp_handler(m, s);
-}
-
-static char *crypt_mod_pgp_findkeys(struct Address *addrlist, int oppenc_mode)
-{
-  return pgp_find_keys(addrlist, oppenc_mode);
-}
-
-static struct Body *crypt_mod_pgp_sign_message(struct Body *a)
-{
-  return pgp_sign_message(a);
-}
-
-static int crypt_mod_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
-{
-  return pgp_verify_one(sigbdy, s, tempf);
-}
-
-static int crypt_mod_pgp_send_menu(struct Header *msg)
-{
-  return pgp_send_menu(msg);
-}
-
-static struct Body *crypt_mod_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
-{
-  return pgp_encrypt_message(a, keylist, sign);
-}
-
-static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
-{
-  return pgp_make_key_attachment(tempf);
-}
-
-static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
-{
-  return pgp_check_traditional(fp, b, just_one);
-}
-
-static struct Body *crypt_mod_pgp_traditional_encryptsign(struct Body *a,
-                                                          int flags, char *keylist)
-{
-  return pgp_traditional_encryptsign(a, flags, keylist);
-}
-
-static int crypt_mod_pgp_encrypted_handler(struct Body *m, struct State *s)
-{
-  return pgp_encrypted_handler(m, s);
-}
-
-static void crypt_mod_pgp_invoke_getkeys(struct Address *addr)
-{
-  pgp_invoke_getkeys(addr);
-}
-
-static void crypt_mod_pgp_invoke_import(const char *fname)
-{
-  pgp_invoke_import(fname);
-}
-
-static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag,
-                                                            struct Body *top)
-{
-  pgp_extract_keys_from_attachment_list(fp, tag, top);
-}
-
+// clang-format off
 struct CryptModuleSpecs crypt_mod_pgp_classic = {
   APPLICATION_PGP,
-  {
-      NULL, /* init */
-      crypt_mod_pgp_void_passphrase,
-      crypt_mod_pgp_valid_passphrase,
-      crypt_mod_pgp_decrypt_mime,
-      crypt_mod_pgp_application_handler,
-      crypt_mod_pgp_encrypted_handler,
-      crypt_mod_pgp_findkeys,
-      crypt_mod_pgp_sign_message,
-      crypt_mod_pgp_verify_one,
-      crypt_mod_pgp_send_menu,
-      NULL,
 
-      crypt_mod_pgp_encrypt_message,
-      crypt_mod_pgp_make_key_attachment,
-      crypt_mod_pgp_check_traditional,
-      crypt_mod_pgp_traditional_encryptsign,
-      crypt_mod_pgp_invoke_getkeys,
-      crypt_mod_pgp_invoke_import,
-      crypt_mod_pgp_extract_keys_from_attachment_list,
+  NULL, /* init */
+  pgp_class_void_passphrase,
+  pgp_class_valid_passphrase,
+  pgp_class_decrypt_mime,
+  pgp_class_application_handler,
+  pgp_class_encrypted_handler,
+  pgp_class_find_keys,
+  pgp_class_sign_message,
+  pgp_class_verify_one,
+  pgp_class_send_menu,
+  NULL, /* set_sender */
 
-      NULL, /* smime_getkeys */
-      NULL, /* smime_verify_sender */
-      NULL, /* smime_build_smime_entity */
-      NULL, /* smime_invoke_import */
-  },
+  pgp_class_encrypt_message,
+  pgp_class_make_key_attachment,
+  pgp_class_check_traditional,
+  pgp_class_traditional_encryptsign,
+  pgp_class_invoke_getkeys,
+  pgp_class_invoke_import,
+  pgp_class_extract_key_from_attachment,
+
+  NULL, /* smime_getkeys */
+  NULL, /* smime_verify_sender */
+  NULL, /* smime_build_smime_entity */
+  NULL, /* smime_invoke_import */
 };
+// clang-format on

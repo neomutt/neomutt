@@ -6,13 +6,15 @@ if {![catch {exec uname} out] && $out eq {Linux}} {
   define defaultprefix /usr
 }
 
+autosetup-require-version 0.6.8
+
 # Standard autosetup modules and our own modules
 use system cc cc-lib mutt-gettext mutt-iconv
 
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20171215"
+define PACKAGE_VERSION  "20180716"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
@@ -30,8 +32,7 @@ options {
   doc=1                     => "Disable building the documentation"
   full-doc=0                => "Build the full documentation set"
   docdir:path               => "Documentation root"
-  flock=0                   => "Use flock() to lock files"
-  fcntl=1                   => "Do NOT use fcntl() to lock files"
+  with-lock:=fcntl          => "Select fcntl() or flock() to lock files"
   fmemopen=0                => "Use fmemopen() for temporary in-memory files"
   locales-fix=0             => "Enable locales fix"
   pgp=1                     => "Disable PGP support"
@@ -69,9 +70,12 @@ options {
 # IDN
   idn=1                     => "Disable GNU libidn for internationalized domain names"
   with-idn:path             => "Location of GNU libidn"
+  idn2=0                    => "Enable GNU libidn2 for internationalized domain names"
+  with-idn2:path            => "Location of GNU libidn2"
 # Header cache
   bdb=0                     => "Use BerkeleyDB for the header cache"
   with-bdb:path             => "Location of BerkeleyDB"
+  with-bdb-version:version  => "Version of BerkeleyDB"
   gdbm=0                    => "Use GNU dbm for the header cache"
   with-gdbm:path            => "Location of GNU dbm"
   kyotocabinet=0            => "Use KyotoCabinet for the header cache"
@@ -82,6 +86,8 @@ options {
   with-qdbm:path            => "Location of QDBM"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
+# System
+  with-sysroot:path         => "Target system root"
 # Enable all options
   everything=0              => "Enable all options"
 }
@@ -94,8 +100,8 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb doc everything fcntl flock fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn kyotocabinet lmdb locales-fix lua mixmaster nls
+    bdb doc everything fmemopen full-doc gdbm gnutls gpgme gss
+    homespool idn idn2 kyotocabinet lmdb locales-fix lua mixmaster nls
     notmuch pgp qdbm sasl smime ssl tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
@@ -105,7 +111,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster 
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
     ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -183,6 +189,7 @@ if {1} {
     user-error "C99 is required"
   }
   define-append CFLAGS_FOR_BUILD -std=c99
+  define LDFLAGS_FOR_BUILD {}
 
   # Check for tools and programs
   cc-check-tools ar ranlib strip
@@ -290,12 +297,12 @@ define USE_SOCKET
 define SUN_ATTACHMENT
 ###############################################################################
 
-set prefix [get-define prefix]
+set prefix [opt-val with-sysroot][get-define prefix]
 
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb 
+  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb
                gdbm qdbm lmdb} {
     define want-$opt
     append conf_options "--$opt "
@@ -305,12 +312,21 @@ if {[get-define want-everything]} {
 }
 
 ###############################################################################
-# flock(1)
-if {[get-define want-flock]} {define USE_FLOCK}
+# Locking
+switch [opt-val with-lock fcntl] {
+  fcntl {
+    define USE_FCNTL
+  }
 
-###############################################################################
-# fcntl(1)
-if {[get-define want-fcntl]} {define USE_FCNTL}
+  flock {
+    define USE_FLOCK
+  }
+
+  default {
+    user-error "Invalid value for --with-lock=[opt-val with-lock], select fcntl\
+                or flock"
+  }
+}
 
 ###############################################################################
 # Locales fix
@@ -324,20 +340,8 @@ if {[get-define want-doc]} {
   }
 
   msg-checking "Checking for DocBook DTDs..."
-
-  writefile xslt_test.xsl {<?xml version="1.0"?>
-    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-      <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
-    </xsl:stylesheet>}
-
-  writefile xslt_test.xml {<?xml version="1.0" standalone="no"?>
-    <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
-    <book />}
-
-  set err [catch {exec xsltproc --nonet xslt_test.xsl xslt_test.xml}]
-  file delete -- xslt_test.xsl xslt_test.xml
-  if {$err} {
+  set res [exec xmlcatalog --shell << {public "-//OASIS//DTD DocBook XML V4.2//EN"}]
+  if {[string match {> No entry*} $res]} {
     msg-result "no"
     user-error "Install DocBook DTDs or './configure --disable-doc'"
   }
@@ -435,17 +439,14 @@ if {[get-define want-notmuch]} {
   }
   define USE_NOTMUCH
   msg-checking "Checking for Notmuch API version 3..."
-  if {[cctest -includes {notmuch.h} \
-              -code {
-                notmuch_database_open("/path",
-                                      NOTMUCH_DATABASE_MODE_READ_ONLY,
-                                      (notmuch_database_t**)NULL);
-              }]} {
+  if {[cctest -includes {notmuch.h} -libs {-lnotmuch} -link 1 \
+      -code { notmuch_database_open(NULL, 0, NULL); }]} {
     define NOTMUCH_API_3
     msg-result "yes"
   } else {
     msg-result "no"
   }
+  cc-check-function-in-lib notmuch_database_index_file notmuch
 }
 
 ###############################################################################
@@ -479,44 +480,52 @@ if {[get-define want-fmemopen]} {
 switch [opt-val with-ui ncurses] {
   ncurses {
     define-append CFLAGS -DNCURSES_WIDECHAR
-    # Locate the library defining waddnwstr()
     set ncurses_prefix [opt-val with-ncurses $prefix]
+
     cc-with [list -libs -L$ncurses_prefix/lib] {
-      foreach ncurses_lib {ncursesw ncurses curses} {
+
+      set tinfo_libs   {tinfow tinfo}
+      set ncurses_libs {ncursesw ncurses curses}
+
+      # Locate the library defining tgetent()
+      # This must be done *before* checking for ncurses functions, see
+      # https://github.com/neomutt/neomutt/issues/1118
+      foreach tinfo_lib [concat $tinfo_libs $ncurses_libs] {
+        if {[cc-check-function-in-lib tgetent $tinfo_lib]} {
+          break
+        }
+      }
+
+      # Locate the library defining waddnwstr()
+      foreach ncurses_lib $ncurses_libs {
         if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
           break
         }
       }
-    }
-    if {![have-feature waddnwstr]} {
-      user-error "Unable to find ncursesw library"
-    }
 
-    # Locate the directory containing ncurses.h
-    # See https://github.com/neomutt/neomutt/pull/679
-    set found 0
-    cc-with [list -cflags -I$ncurses_prefix/include] {
-      foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
-        if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
-            [cc-check-includes ${ncurses_inc}curses.h]} {
-          set found 1
-          break
-        }
+      if {![have-feature waddnwstr] || ![have-feature tgetent]} {
+        user-error "Unable to find ncursesw library"
       }
-    }
-    if {!$found} {
-      user-error "Unable to find ncurses headers"
-    }
 
-    cc-with [list -libs -L$ncurses_prefix/lib] {
-      if {![cc-check-function-in-lib tgetent $ncurses_lib]} {
-        cc-check-function-in-lib tgetent tinfo
-      }
-      foreach f {start_color typeahead bkgdset curs_set meta use_default_colors resizeterm} {
+      foreach f {start_color typeahead bkgdset curs_set meta use_default_colors} {
         cc-check-function-in-lib $f $ncurses_lib
       }
       cc-check-functions use_extended_names
     }
+
+    # Locate the directory containing ncurses.h
+    # See https://github.com/neomutt/neomutt/pull/679
+    apply {{ncurses_prefix} {
+      cc-with [list -cflags -I$ncurses_prefix/include] {
+        foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
+          if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
+              [cc-check-includes ${ncurses_inc}curses.h]} {
+            return
+          }
+        }
+        user-error "Unable to find ncurses headers"
+      }
+    }} $ncurses_prefix
 
     if {[have-feature start_color]} {
       define-feature COLOR
@@ -535,7 +544,6 @@ switch [opt-val with-ui ncurses] {
     }
     define USE_SLANG_CURSES
     define-feature COLOR
-    define-feature RESIZETERM
   }
 
   default {
@@ -623,6 +631,9 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
 
 ###############################################################################
 # GNU libidn
+if {[get-define want-idn] && [get-define want-idn2]} {
+  user-error "Cannot specify both --idn and --idn2"
+}
 if {[get-define want-idn]} {
   set idn_prefix [opt-val with-idn $prefix]
   set sprep 0
@@ -643,12 +654,30 @@ if {[get-define want-idn]} {
     cc-check-functions idna_to_ascii_from_utf8 idna_to_ascii_8z
     cc-check-functions idna_to_ascii_lz idna_to_ascii_from_locale
   }
+} elseif {[get-define want-idn2]} {
+  set idn_prefix [opt-val with-idn2 $prefix]
+  cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
+    set idn2 [cc-check-includes idn2.h]
+    incr idn2 [cc-check-includes idn/idn2.h]
+    set lu8  [cc-check-function-in-lib idn2_lookup_u8 idn2]
+    if {$idn2 == 0 || $lu8 == 0} {
+      user-error "Unable to find GNU libidn2"
+    }
+    define-feature libidn
+    define-append CFLAGS -I$idn_prefix/include
+    define-append LDFLAGS -L$idn_prefix/lib
+    cc-with {-includes "idn2.h idn/idn2.h"} {
+      cc-check-defines idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
+      cc-check-defines idna_to_ascii_from_utf8 idna_to_ascii_8z
+      cc-check-defines idna_to_ascii_lz idna_to_ascii_from_locale
+    }
+  }
 }
 
 ###############################################################################
 # Header cache - bdb
 if {[get-define want-bdb]} {
-  set bdb_versions { 5.3 6.2 4.8 } ;# Will be checked in order
+  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
   set bdb_prefix [opt-val with-bdb $prefix]
 
   foreach ver $bdb_versions {
@@ -889,16 +918,21 @@ foreach dir $subdirs {
 }
 
 ###############################################################################
+# Define package timestamp (UTC) based on PACKAGE_VERSION for:
+# doc/neomuttrc.5, doc/neomutt.1
+define PACKAGE_DATE \
+  [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
+
+###############################################################################
 # Generate Makefile and config.h
 define PWD [pwd]
 make-template Makefile.autosetup Makefile
 make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 
 ###############################################################################
-# Generate doc/neomutt.1
-define bindir [get-define BINDIR]
-define docdir [get-define PKGDOCDIR]
-make-template doc/neomutt.man doc/neomutt.1
+# Generate .clang_complete
+define cflags-one-per-line [string map {" " "\n"} [get-define CFLAGS]]
+make-template .clang_complete.in
 
 ###############################################################################
 # Print a summary

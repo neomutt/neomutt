@@ -20,30 +20,44 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * rfc1524 defines a format for the Multimedia Mail Configuration, which
- * is the standard mailcap file format under Unix which specifies what
- * external programs should be used to view/compose/edit multimedia files
- * based on content type.
+/**
+ * @page rfc1524 RFC1524 Mailcap routines
+ *
+ * RFC1524 defines a format for the Multimedia Mail Configuration, which is the
+ * standard mailcap file format under Unix which specifies what external
+ * programs should be used to view/compose/edit multimedia files based on
+ * content type.
  *
  * This file contains various functions for implementing a fair subset of
- * rfc1524.
+ * RFC1524.
  */
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/email.h"
 #include "mutt.h"
 #include "rfc1524.h"
-#include "body.h"
 #include "globals.h"
-#include "options.h"
+#include "mutt_attach.h"
+#include "muttlib.h"
 #include "protos.h"
+
+/* These Config Variables are only used in rfc1524.c */
+bool MailcapSanitize; ///< Config: Restrict the possible characters in mailcap expandos
 
 /**
  * rfc1524_expand_command - Expand expandos in a command
+ * @param a        Email Body
+ * @param filename File containing the email text
+ * @param type     Type, e.g. "text/plain"
+ * @param command  Buffer containing command
+ * @param clen     Length of buffer
+ * @retval 0 Command works on a file
+ * @retval 1 Command works on a pipe
  *
  * The command semantics include the following:
  * %s is the filename that contains the mail body data
@@ -54,21 +68,18 @@
  * by neomutt, and can probably just be done by piping the message to metamail
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
- *
- * In addition, this function returns a 0 if the command works on a file,
- * and 1 if the command works on a pipe.
  */
 int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *command, int clen)
 {
   int x = 0, y = 0;
   int needspipe = true;
-  char buf[LONG_STRING];
+  char buf[HUGE_STRING];
   char type2[LONG_STRING];
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
   if (MailcapSanitize)
-    mutt_file_sanitize_filename(type2, 0);
+    mutt_file_sanitize_filename(type2, false);
 
   while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
   {
@@ -93,20 +104,20 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
         param[z] = '\0';
 
         pvalue2 = mutt_param_get(&a->parameter, param);
-        mutt_str_strfcpy(pvalue, NONULL(pvalue2), sizeof(pvalue));
+        mutt_str_strfcpy(pvalue, pvalue2, sizeof(pvalue));
         if (MailcapSanitize)
-          mutt_file_sanitize_filename(pvalue, 0);
+          mutt_file_sanitize_filename(pvalue, false);
 
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, pvalue);
+        y += mutt_file_quote_filename(pvalue, buf + y, sizeof(buf) - y);
       }
-      else if (command[x] == 's' && filename != NULL)
+      else if (command[x] == 's' && filename)
       {
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, filename);
+        y += mutt_file_quote_filename(filename, buf + y, sizeof(buf) - y);
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, type2);
+        y += mutt_file_quote_filename(type2, buf + y, sizeof(buf) - y);
       }
       x++;
     }
@@ -132,7 +143,7 @@ static char *get_field(char *s)
   if (!s)
     return NULL;
 
-  while ((ch = strpbrk(s, ";\\")) != NULL)
+  while ((ch = strpbrk(s, ";\\")))
   {
     if (*ch == '\\')
     {
@@ -151,6 +162,16 @@ static char *get_field(char *s)
   return ch;
 }
 
+/**
+ * get_field_text - Get the matching text from a mailcap
+ * @param field    String to parse
+ * @param entry    Save the entry here
+ * @param type     Type, e.g. "text/plain"
+ * @param filename Mailcap filename
+ * @param line     Mailcap line
+ * @retval 1 Success
+ * @retval 0 Failure
+ */
 static int get_field_text(char *field, char **entry, char *type, char *filename, int line)
 {
   field = mutt_str_skip_whitespace(field);
@@ -172,20 +193,21 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
   }
 }
 
+/**
+ * rfc1524_mailcap_parse - Parse a mailcap entry
+ * @param a        Email Body
+ * @param filename Filename
+ * @param type     Type, e.g. "text/plain"
+ * @param entry    Entry, e.g. "compose"
+ * @param opt      Option, e.g. #MUTT_EDIT
+ * @retval 1 Success
+ * @retval 0 Failure
+ */
 static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
                                  struct Rfc1524MailcapEntry *entry, int opt)
 {
-  FILE *fp = NULL;
   char *buf = NULL;
-  size_t buflen;
-  char *ch = NULL;
-  char *field = NULL;
   int found = false;
-  int copiousoutput;
-  int composecommand;
-  int editcommand;
-  int printcommand;
-  int btlen;
   int line = 0;
 
   /* rfc1524 mailcap file is of the format:
@@ -200,15 +222,16 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
    */
 
   /* find length of basetype */
-  ch = strchr(type, '/');
+  char *ch = strchr(type, '/');
   if (!ch)
     return false;
-  btlen = ch - type;
+  const int btlen = ch - type;
 
-  fp = fopen(filename, "r");
+  FILE *fp = fopen(filename, "r");
   if (fp)
   {
-    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
+    size_t buflen;
+    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)))
     {
       /* ignore comments */
       if (*buf == '#')
@@ -221,20 +244,22 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           ((mutt_str_strncasecmp(buf, type, btlen) != 0) ||
            (buf[btlen] != 0 &&                           /* implicit wild */
             (mutt_str_strcmp(buf + btlen, "/*") != 0)))) /* wildsubtype */
+      {
         continue;
+      }
 
       /* next field is the viewcommand */
-      field = ch;
+      char *field = ch;
       ch = get_field(ch);
       if (entry)
         entry->command = mutt_str_strdup(field);
 
       /* parse the optional fields */
       found = true;
-      copiousoutput = false;
-      composecommand = false;
-      editcommand = false;
-      printcommand = false;
+      bool copiousoutput = false;
+      bool composecommand = false;
+      bool editcommand = false;
+      bool printcommand = false;
 
       while (ch)
       {
@@ -294,16 +319,14 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         }
         else if (mutt_str_strncasecmp(field, "test", 4) == 0)
         {
-          /*
-           * This routine executes the given test command to determine
+          /* This routine executes the given test command to determine
            * if this is the right entry.
            */
           char *test_command = NULL;
-          size_t len;
 
           if (get_field_text(field + 4, &test_command, type, filename, line) && test_command)
           {
-            len = mutt_str_strlen(test_command) + STRING;
+            const size_t len = mutt_str_strlen(test_command) + STRING;
             mutt_mem_realloc(&test_command, len);
             if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
             {
@@ -396,8 +419,8 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * @param type   Text type in "type/subtype" format
  * @param entry  struct Rfc1524MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup
- * @retval 1 on success. If *entry is not NULL it populates it with the mailcap entry
- * @retval 0 if no matching entry is found
+ * @retval 1 Success. If *entry is not NULL it populates it with the mailcap entry
+ * @retval 0 No matching entry is found
  *
  * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
  *
@@ -406,8 +429,7 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 int rfc1524_mailcap_lookup(struct Body *a, char *type,
                            struct Rfc1524MailcapEntry *entry, int opt)
 {
-  char path[_POSIX_PATH_MAX];
-  int x;
+  char path[PATH_MAX];
   int found = false;
   char *curr = MailcapPath;
 
@@ -427,7 +449,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
 
   while (!found && *curr)
   {
-    x = 0;
+    int x = 0;
     while (*curr && *curr != ':' && x < sizeof(path) - 1)
     {
       path[x++] = *curr;
@@ -470,15 +492,14 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
  * If both a nametemplate and oldfile are specified, the template is checked
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
- *
  */
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
 {
   int i, j, k, ps;
   char *s = NULL;
   bool lmatch = false, rmatch = false;
-  char left[_POSIX_PATH_MAX];
-  char right[_POSIX_PATH_MAX];
+  char left[PATH_MAX];
+  char right[PATH_MAX];
 
   newfile[0] = 0;
 
@@ -497,7 +518,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   }
   else if (!oldfile)
   {
-    mutt_expand_fmt(newfile, nflen, nametemplate, "neomutt");
+    mutt_file_expand_fmt(newfile, nflen, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {

@@ -25,10 +25,6 @@
  * @page conn_tunnel Support for network tunnelling
  *
  * Support for network tunnelling
- *
- * | Function                   | Description
- * | :------------------------- | :-----------------------------------
- * | mutt_tunnel_socket_setup() | setups tunnel connection functions.
  */
 
 #include "config.h"
@@ -44,7 +40,6 @@
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
-#include "protos.h"
 #include "socket.h"
 
 /**
@@ -65,18 +60,14 @@ struct TunnelData
  */
 static int tunnel_socket_open(struct Connection *conn)
 {
-  struct TunnelData *tunnel = NULL;
-  int pid;
-  int rc;
   int pin[2], pout[2];
-  int devnull;
 
-  tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
+  struct TunnelData *tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);
 
-  rc = pipe(pin);
+  int rc = pipe(pin);
   if (rc == -1)
   {
     mutt_perror("pipe");
@@ -94,11 +85,11 @@ static int tunnel_socket_open(struct Connection *conn)
   }
 
   mutt_sig_block_system();
-  pid = fork();
+  int pid = fork();
   if (pid == 0)
   {
-    mutt_sig_unblock_system(0);
-    devnull = open("/dev/null", O_RDWR);
+    mutt_sig_unblock_system(false);
+    const int devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
     {
@@ -113,10 +104,10 @@ static int tunnel_socket_open(struct Connection *conn)
     /* Don't let the subprocess think it can use the controlling tty */
     setsid();
 
-    execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist());
+    execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist_getlist());
     _exit(127);
   }
-  mutt_sig_unblock_system(1);
+  mutt_sig_unblock_system(true);
 
   if (pid == -1)
   {
@@ -161,7 +152,6 @@ static int tunnel_socket_close(struct Connection *conn)
   {
     mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
                WEXITSTATUS(status), NONULL(mutt_str_sysexit(WEXITSTATUS(status))));
-    mutt_sleep(2);
   }
   FREE(&conn->sockdata);
 
@@ -185,7 +175,6 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
   if (rc == -1)
   {
     mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
-    mutt_sleep(1);
   }
 
   return rc;
@@ -208,7 +197,6 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
   if (rc == -1)
   {
     mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
-    mutt_sleep(1);
   }
 
   return rc;
@@ -237,7 +225,7 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 }
 
 /**
- * mutt_tunnel_socket_setup - setups tunnel connection functions.
+ * mutt_tunnel_socket_setup - sets up tunnel connection functions
  * @param conn Connection to assign functions to
  *
  * Assign tunnel socket functions to the Connection conn.
