@@ -704,7 +704,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
 
 /**
  * add_folder - Add a folder to the browser list
- * @param m     Menu to 
+ * @param m     Menu to use
  * @param state Browser state
  * @param name  Name of folder
  * @param desc  Description of folder

@@ -488,10 +488,12 @@ static int trash_append(struct Context *ctx)
 
 /**
  * mx_mbox_close - Save changes and close mailbox
- * @param ctx        Mailbox
+ * @param pctx       Mailbox
  * @param index_hint Current email
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * @note Context will be freed after it's closed
  */
 int mx_mbox_close(struct Context **pctx, int *index_hint)
 {
