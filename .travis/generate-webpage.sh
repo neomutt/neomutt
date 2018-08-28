@@ -14,6 +14,7 @@ function lookup_lang()
 		en_GB) IMG="english.png";             NAME="English (British)";;
 		eo)    IMG="esperanto.png";           NAME="Esperanto";;
 		et)    IMG="estonian.png";            NAME="Estonian";;
+		fi)    IMG="finnish.png";             NAME="Finnish";;
 		fr)    IMG="french.png";              NAME="French";;
 		gl)    IMG="galician.png";            NAME="Galician";;
 		de)    IMG="german.png";              NAME="German";;
