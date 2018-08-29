@@ -45,6 +45,7 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
@@ -1518,12 +1519,12 @@ static int nntp_mbox_open(struct Context *ctx)
   anum_t first, last, count = 0;
   struct Url url;
 
-  mutt_str_strfcpy(buf, ctx->path, sizeof(buf));
+  mutt_str_strfcpy(buf, ctx->mailbox->path, sizeof(buf));
   if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid newsgroup specification"), ctx->path);
+    mutt_error(_("%s is an invalid newsgroup specification"), ctx->mailbox->path);
     return -1;
   }
 

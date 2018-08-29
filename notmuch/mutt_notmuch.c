@@ -243,7 +243,7 @@ static int init_context(struct Context *ctx)
   if (ctx->data)
     return 0;
 
-  ctx->data = new_ctxdata(ctx->path);
+  ctx->data = new_ctxdata(ctx->mailbox->path);
   if (!ctx->data)
     return -1;
 
@@ -2287,7 +2287,7 @@ char *nm_get_description(struct Context *ctx)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->b->desc && (strcmp(np->b->path, ctx->path) == 0))
+    if (np->b->desc && (strcmp(np->b->path, ctx->mailbox->path) == 0))
       return np->b->desc;
   }
 
@@ -2646,7 +2646,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   struct NmCtxData *data = get_ctxdata(ctx);
   int rc = 0;
   struct Progress progress;
-  char *uri = ctx->path;
+  char *uri = ctx->mailbox->path;
   bool changed = false;
 
   if (!data)
@@ -2658,7 +2658,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   {
     /* all is in this function so we don't use data->progress here */
     char msgbuf[PATH_MAX + 64];
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->path);
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
 
@@ -2683,14 +2683,14 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     else
       header_get_fullpath(h, old, sizeof(old));
 
-    ctx->path = hd->folder;
+    mutt_str_strfcpy(ctx->mailbox->path, hd->folder, sizeof(ctx->mailbox->path));
     ctx->magic = hd->magic;
 #ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);
 #endif
-    ctx->path = uri;
+    mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
     ctx->magic = MUTT_NOTMUCH;
 
     if (rc)
@@ -2710,7 +2710,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     FREE(&hd->oldpath);
   }
 
-  ctx->path = uri;
+  mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
   ctx->magic = MUTT_NOTMUCH;
 
   if (!is_longrun(data))

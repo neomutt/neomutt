@@ -317,7 +317,7 @@ static int pop_fetch_headers(struct Context *ctx)
   struct Progress progress;
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = pop_hcache_open(pop_data, ctx->path);
+  header_cache_t *hc = pop_hcache_open(pop_data, ctx->mailbox->path);
 #endif
 
   time(&pop_data->check_time);
@@ -488,9 +488,9 @@ static int pop_mbox_open(struct Context *ctx)
   struct PopData *pop_data = NULL;
   struct Url url;
 
-  if (pop_parse_path(ctx->path, &acct))
+  if (pop_parse_path(ctx->mailbox->path, &acct))
   {
-    mutt_error(_("%s is an invalid POP path"), ctx->path);
+    mutt_error(_("%s is an invalid POP mailbox->path"), ctx->mailbox->path);
     return -1;
   }
 
@@ -501,9 +501,8 @@ static int pop_mbox_open(struct Context *ctx)
   if (!conn)
     return -1;
 
-  FREE(&ctx->path);
-  ctx->path = mutt_str_strdup(buf);
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
 
   pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
@@ -789,7 +788,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
                        MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #ifdef USE_HCACHE
-    hc = pop_hcache_open(pop_data, ctx->path);
+    hc = pop_hcache_open(pop_data, ctx->mailbox->path);
 #endif
 
     for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)

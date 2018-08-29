@@ -137,9 +137,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
 #endif
-          if (Context && Context->path)
+          if (Context && Context->mailbox->path)
       {
-        mutt_str_strfcpy(tmp, Context->path, sizeof(tmp));
+        mutt_str_strfcpy(tmp, Context->mailbox->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else

@@ -438,7 +438,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!Context || !Context->path ||
+  if (!Context || !Context->mailbox->path ||
       ((tmp->magic == MUTT_IMAP ||
 #ifdef USE_NNTP
         tmp->magic == MUTT_NNTP ||
@@ -447,7 +447,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
         tmp->magic == MUTT_NOTMUCH ||
 #endif
         tmp->magic == MUTT_POP) ?
-           (mutt_str_strcmp(tmp->path, Context->path) != 0) :
+           (mutt_str_strcmp(tmp->path, Context->mailbox->path) != 0) :
            (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
   {
     switch (tmp->magic)
@@ -483,7 +483,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
       default:; /* do nothing */
     }
   }
-  else if (CheckMboxSize && Context && Context->path)
+  else if (CheckMboxSize && Context && Context->mailbox->path)
     tmp->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -860,7 +860,7 @@ int mutt_mailbox_check(int force)
 #ifdef USE_NNTP
       || Context->magic == MUTT_NNTP
 #endif
-      || stat(Context->path, &contex_sb) != 0)
+      || stat(Context->mailbox->path, &contex_sb) != 0)
   {
     contex_sb.st_dev = 0;
     contex_sb.st_ino = 0;

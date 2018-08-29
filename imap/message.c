@@ -46,6 +46,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
@@ -1605,7 +1606,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
 
   struct ImapData *idata = ctx->data;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
     return -1;
 
   imap_fix_path(idata, mx.mbox, mailbox, sizeof(mailbox));
@@ -1748,7 +1749,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
   /* check that the save-to folder is in the same account */
   if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
     return 1;
   }
 

@@ -39,6 +39,7 @@
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_parse.h"
 #include "mutt_thread.h"
@@ -602,11 +603,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'b':
       if (ctx)
       {
-        p = strrchr(ctx->path, '/');
+        p = strrchr(ctx->mailbox->path, '/');
         if (p)
           mutt_str_strfcpy(buf, p + 1, buflen);
         else
-          mutt_str_strfcpy(buf, ctx->path, buflen);
+          mutt_str_strfcpy(buf, ctx->mailbox->path, buflen);
       }
       else
         mutt_str_strfcpy(buf, "(null)", buflen);

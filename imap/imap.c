@@ -1903,7 +1903,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   /* check that the save-to folder is in the same account */
   if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
     return 1;
   }
 
@@ -2002,9 +2002,9 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
   {
-    mutt_error(_("%s is an invalid IMAP path"), ctx->path);
+    mutt_error(_("%s is an invalid IMAP mailbox->path"), ctx->mailbox->path);
     return -1;
   }
 
@@ -2026,9 +2026,8 @@ static int imap_mbox_open(struct Context *ctx)
   idata->mailbox = mutt_str_strdup(buf);
   imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
 
-  FREE(&(ctx->path));
-  ctx->path = mutt_str_strdup(buf);
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
 
   idata->ctx = ctx;
 
@@ -2246,7 +2245,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
   struct ImapMbox mx;
   int rc;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
     return -1;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
@@ -2266,7 +2265,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
     mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
   FREE(&mx.mbox);
 
-  rc = imap_access(ctx->path);
+  rc = imap_access(ctx->mailbox->path);
   if (rc == 0)
     return 0;
 
@@ -2472,7 +2471,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
                               "Saving changed messages... [%d/%d]", ctx->msgcount),
                      i + 1, ctx->msgcount);
         if (!appendctx)
-          appendctx = mx_mbox_open(ctx->path, MUTT_APPEND | MUTT_QUIET);
+          appendctx = mx_mbox_open(ctx->mailbox->path, MUTT_APPEND | MUTT_QUIET);
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else

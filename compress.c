@@ -161,14 +161,13 @@ static int setup_paths(struct Context *ctx)
   char tmppath[PATH_MAX];
 
   /* Setup the right paths */
-  FREE(&ctx->mailbox->realpath);
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
-  ctx->path = mutt_str_strdup(tmppath);
+  mutt_str_strfcpy(ctx->mailbox->path, tmppath, sizeof(ctx->mailbox->path));
 
-  FILE *tmpfp = mutt_file_fopen(ctx->path, "w");
+  FILE *tmpfp = mutt_file_fopen(ctx->mailbox->path, "w");
   if (!tmpfp)
     return -1;
 
@@ -250,19 +249,19 @@ static const char *find_hook(int type, const char *path)
  */
 static struct CompressInfo *set_compress_info(struct Context *ctx)
 {
-  if (!ctx || !ctx->path)
+  if (!ctx || !ctx->mailbox->path)
     return NULL;
 
   if (ctx->compress_info)
     return ctx->compress_info;
 
   /* Open is compulsory */
-  const char *o = find_hook(MUTT_OPEN_HOOK, ctx->path);
+  const char *o = find_hook(MUTT_OPEN_HOOK, ctx->mailbox->path);
   if (!o)
     return NULL;
 
-  const char *c = find_hook(MUTT_CLOSE_HOOK, ctx->path);
-  const char *a = find_hook(MUTT_APPEND_HOOK, ctx->path);
+  const char *c = find_hook(MUTT_CLOSE_HOOK, ctx->mailbox->path);
+  const char *a = find_hook(MUTT_APPEND_HOOK, ctx->mailbox->path);
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
@@ -362,7 +361,7 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->path)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->mailbox->path)));
       break;
   }
   return src;
@@ -454,7 +453,7 @@ static int comp_mbox_open(struct Context *ctx)
     return -1;
 
   /* If there's no close-hook, or the file isn't writable */
-  if (!ci->close || (access(ctx->path, W_OK) != 0))
+  if (!ci->close || (access(ctx->mailbox->path, W_OK) != 0))
     ctx->readonly = true;
 
   if (setup_paths(ctx) != 0)
@@ -473,7 +472,7 @@ static int comp_mbox_open(struct Context *ctx)
 
   unlock_realpath(ctx);
 
-  ctx->magic = mx_path_probe(ctx->path, NULL);
+  ctx->magic = mx_path_probe(ctx->mailbox->path, NULL);
   if (ctx->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
@@ -491,7 +490,7 @@ static int comp_mbox_open(struct Context *ctx)
 
 or_fail:
   /* remove the partial uncompressed file */
-  remove(ctx->path);
+  remove(ctx->mailbox->path);
   free_compress_info(ctx);
   return -1;
 }
@@ -517,7 +516,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   /* To append we need an append-hook or a close-hook */
   if (!ci->append && !ci->close)
   {
-    mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
+    mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->mailbox->path);
     goto oa_fail1;
   }
 
@@ -541,7 +540,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
       mutt_error(_("Compress command failed: %s"), ci->open);
       goto oa_fail2;
     }
-    ctx->magic = mx_path_probe(ctx->path, NULL);
+    ctx->magic = mx_path_probe(ctx->mailbox->path, NULL);
   }
   else
     ctx->magic = MboxType;
@@ -567,7 +566,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
 
 oa_fail2:
   /* remove the partial uncompressed file */
-  remove(ctx->path);
+  remove(ctx->mailbox->path);
 oa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
   free_compress_info(ctx);
@@ -603,13 +602,13 @@ static int comp_mbox_close(struct Context *ctx)
   if (!ctx->append)
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(ctx->path, F_OK) != 0) && !SaveEmpty)
+    if ((access(ctx->mailbox->path, F_OK) != 0) && !SaveEmpty)
     {
       remove(ctx->mailbox->realpath);
     }
     else
     {
-      remove(ctx->path);
+      remove(ctx->mailbox->path);
     }
   }
   else
@@ -633,10 +632,10 @@ static int comp_mbox_close(struct Context *ctx)
     if (rc == 0)
     {
       mutt_any_key_to_continue(NULL);
-      mutt_error(_("Error. Preserving temporary file: %s"), ctx->path);
+      mutt_error(_("Error. Preserving temporary file: %s"), ctx->mailbox->path);
     }
     else
-      remove(ctx->path);
+      remove(ctx->mailbox->path);
 
     unlock_realpath(ctx);
   }
@@ -799,7 +798,7 @@ bool mutt_comp_can_append(struct Context *ctx)
   if (ci->append || ci->close)
     return true;
 
-  mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
+  mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->mailbox->path);
   return false;
 }
 

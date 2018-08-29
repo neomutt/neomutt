@@ -43,6 +43,7 @@
 #include "copy.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
@@ -185,7 +186,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  tmpctx = mx_mbox_open(ctx->path, MUTT_APPEND);
+  tmpctx = mx_mbox_open(ctx->mailbox->path, MUTT_APPEND);
   if (!tmpctx)
   {
     rc = -1;
