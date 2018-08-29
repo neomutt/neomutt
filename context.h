@@ -103,6 +103,8 @@ struct Context
   /* driver hooks */
   void *data; /**< driver specific data */
   const struct MxOps *mx_ops;
+
+  struct Mailbox *mailbox;
 };
 
 #endif /* _MUTT_CONTEXT_H */

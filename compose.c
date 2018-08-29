@@ -46,6 +46,7 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
@@ -1509,7 +1510,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         else
         {
           mx_fastclose_mailbox(Context);
-          FREE(&Context);
+          mutt_context_free(&Context);
         }
 
         /* go back to the folder we started from */

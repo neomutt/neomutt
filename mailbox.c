@@ -182,7 +182,7 @@ static bool test_new_folder(const char *path)
  * @param path Path to the mailbox
  * @retval ptr New Mailbox
  */
-static struct Mailbox *mailbox_new(const char *path)
+struct Mailbox *mailbox_new(const char *path)
 {
   char rp[PATH_MAX] = "";
 
@@ -199,7 +199,7 @@ static struct Mailbox *mailbox_new(const char *path)
  * mailbox_free - Free a Mailbox
  * @param mailbox Mailbox to free
  */
-static void mailbox_free(struct Mailbox **mailbox)
+void mailbox_free(struct Mailbox **mailbox)
 {
   if (mailbox && *mailbox)
     FREE(&(*mailbox)->desc);
@@ -1043,3 +1043,17 @@ void mutt_mailbox_vfolder(char *buf, size_t buflen)
   *buf = '\0';
 }
 #endif
+
+/**
+ * mutt_context_free - Free a Context
+ * @param ctx Context to free
+ */
+void mutt_context_free(struct Context **ctx)
+{
+  if (!ctx || !*ctx)
+    return;
+
+  mailbox_free(&(*ctx)->mailbox);
+  FREE(ctx);
+}
+

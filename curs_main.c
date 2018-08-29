@@ -563,7 +563,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
   if (Context && !Context->path)
-    FREE(&Context);
+    mutt_context_free(&Context);
 
   if (Context)
   {
@@ -1054,7 +1054,7 @@ int mutt_index_menu(void)
         if (!Context->path)
         {
           /* fatal error occurred */
-          FREE(&Context);
+          mutt_context_free(&Context);
           menu->redraw = REDRAW_FULL;
         }
 
@@ -1870,7 +1870,7 @@ int mutt_index_menu(void)
 
         /* check for a fatal error, or all messages deleted */
         if (!Context->path)
-          FREE(&Context);
+          mutt_context_free(&Context);
 
         /* if we were in the pager, redisplay the message */
         if (menu->menu == MENU_PAGER)
@@ -2304,7 +2304,7 @@ int mutt_index_menu(void)
           if (Context)
           {
             mx_fastclose_mailbox(Context);
-            FREE(&Context);
+            mutt_context_free(&Context);
           }
           done = true;
         }

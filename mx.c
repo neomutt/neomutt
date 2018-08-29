@@ -257,6 +257,13 @@ struct Context *mx_mbox_open(const char *path, int flags)
   if (!ctx->realpath)
     ctx->realpath = mutt_str_strdup(ctx->path);
 
+  ctx->mailbox = mutt_find_mailbox(ctx->path);
+  if (!ctx->mailbox)
+  {
+    ctx->mailbox = mailbox_new(ctx->path);
+    ctx->mailbox->flags = MB_HIDDEN;
+  }
+
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
@@ -275,7 +282,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
     if (mx_open_mailbox_append(ctx, flags) != 0)
     {
       mx_fastclose_mailbox(ctx);
-      FREE(&ctx);
+      mutt_context_free(&ctx);
       return NULL;
     }
     return ctx;
@@ -292,7 +299,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
       mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
-    FREE(&ctx);
+    mutt_context_free(&ctx);
     return NULL;
   }
 
@@ -328,7 +335,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
   else
   {
     mx_fastclose_mailbox(ctx);
-    FREE(&ctx);
+    mutt_context_free(&ctx);
   }
 
   OptForceRefresh = false;

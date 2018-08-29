@@ -2344,7 +2344,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (!Context->path)
         {
           /* fatal error occurred */
-          FREE(&Context);
+          mutt_context_free(&Context);
           pager_menu->redraw = REDRAW_FULL;
           break;
         }

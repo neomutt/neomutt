@@ -46,6 +46,7 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
@@ -167,7 +168,7 @@ int mutt_num_postponed(bool force)
     else
       PostCount = ctx->msgcount;
     mx_fastclose_mailbox(ctx);
-    FREE(&ctx);
+    mutt_context_free(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
