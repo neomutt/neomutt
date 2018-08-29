@@ -404,8 +404,15 @@ int mutt_file_safe_rename(const char *src, const char *target)
     return -1;
   }
 
+  /*
+   * Remove the compare_stat() check, because it causes problems with maildir on
+   * filesystems that don't properly support hard links, such as
+   * sshfs.  The filesystem creates the link, but the resulting file
+   * is given a different inode number by the sshfs layer.  This
+   * results in an infinite loop creating links.
+   */
+#if 0
   /* Stat both links and check if they are equal. */
-
   if (lstat(src, &ssb) == -1)
   {
     mutt_debug(1, "#1 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
@@ -420,14 +427,6 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   /* pretend that the link failed because the target file did already exist. */
 
-#if 0
-  /*
-   * Remove this check, because it causes problems with maildir on
-   * filesystems that don't properly support hard links, such as
-   * sshfs.  The filesystem creates the link, but the resulting file
-   * is given a different inode number by the sshfs layer.  This
-   * results in an infinite loop creating links.
-   */
   if (!compare_stat(&ssb, &tsb))
   {
     mutt_debug(1, "stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target);
