@@ -295,7 +295,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *mailbox)
   else if (Context)
   {
     info->magic = Context->magic;
-    info->path = Context->realpath;
+    info->path = Context->mailbox->realpath;
   }
   else
   {
@@ -495,7 +495,7 @@ int mutt_monitor_remove(struct Mailbox *mailbox)
     }
     else
     {
-      if (mutt_find_mailbox(Context->realpath))
+      if (mutt_find_mailbox(Context->mailbox->realpath))
         return 1;
     }
   }

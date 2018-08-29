@@ -885,7 +885,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
           break;
       }
 
-      if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
+      if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
         np->b->msg_count = Context->msgcount;
         np->b->msg_unread = Context->unread;
@@ -971,7 +971,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (Context && (mutt_str_strcmp(np->b->realpath, Context->realpath) == 0))
+      if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
         np->b->msg_count = Context->msgcount;
         np->b->msg_unread = Context->unread;

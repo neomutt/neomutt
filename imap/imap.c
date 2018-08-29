@@ -2027,9 +2027,8 @@ static int imap_mbox_open(struct Context *ctx)
   imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
 
   FREE(&(ctx->path));
-  FREE(&(ctx->realpath));
   ctx->path = mutt_str_strdup(buf);
-  ctx->realpath = mutt_str_strdup(ctx->path);
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
 
   idata->ctx = ctx;
 

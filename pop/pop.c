@@ -46,6 +46,7 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -501,9 +502,8 @@ static int pop_mbox_open(struct Context *ctx)
     return -1;
 
   FREE(&ctx->path);
-  FREE(&ctx->realpath);
   ctx->path = mutt_str_strdup(buf);
-  ctx->realpath = mutt_str_strdup(ctx->path);
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
 
   pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;

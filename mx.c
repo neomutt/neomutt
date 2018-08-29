@@ -253,16 +253,15 @@ struct Context *mx_mbox_open(const char *path, int flags)
     FREE(&ctx);
     return NULL;
   }
-  ctx->realpath = realpath(ctx->path, NULL);
-  if (!ctx->realpath)
-    ctx->realpath = mutt_str_strdup(ctx->path);
-
   ctx->mailbox = mutt_find_mailbox(ctx->path);
   if (!ctx->mailbox)
   {
     ctx->mailbox = mailbox_new(ctx->path);
     ctx->mailbox->flags = MB_HIDDEN;
   }
+
+  if (!realpath(ctx->path, ctx->mailbox->realpath))
+    mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
@@ -390,7 +389,6 @@ void mx_fastclose_mailbox(struct Context *ctx)
   FREE(&ctx->hdrs);
   FREE(&ctx->v2r);
   FREE(&ctx->path);
-  FREE(&ctx->realpath);
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);

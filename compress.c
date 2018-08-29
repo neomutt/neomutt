@@ -42,6 +42,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -95,12 +96,12 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 1;
 
   if (excl)
-    ci->lockfp = fopen(ctx->realpath, "a");
+    ci->lockfp = fopen(ctx->mailbox->realpath, "a");
   else
-    ci->lockfp = fopen(ctx->realpath, "r");
+    ci->lockfp = fopen(ctx->mailbox->realpath, "r");
   if (!ci->lockfp)
   {
-    mutt_perror(ctx->realpath);
+    mutt_perror(ctx->mailbox->realpath);
     return 0;
   }
 
@@ -160,8 +161,8 @@ static int setup_paths(struct Context *ctx)
   char tmppath[PATH_MAX];
 
   /* Setup the right paths */
-  FREE(&ctx->realpath);
-  ctx->realpath = ctx->path;
+  FREE(&ctx->mailbox->realpath);
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->path, sizeof(ctx->mailbox->realpath));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
@@ -208,7 +209,7 @@ static void store_size(const struct Context *ctx)
   if (!ci)
     return;
 
-  ci->size = get_size(ctx->realpath);
+  ci->size = get_size(ctx->mailbox->realpath);
 }
 
 /**
@@ -357,7 +358,7 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   {
     case 'f':
       /* Compressed file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->mailbox->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
@@ -413,7 +414,9 @@ static int execute_command(struct Context *ctx, const char *command, const char 
     return 0;
 
   if (!ctx->quiet)
-    mutt_message(progress, ctx->realpath);
+  {
+    mutt_message(progress, ctx->mailbox->realpath);
+  }
 
   mutt_sig_block();
   endwin();
@@ -530,7 +533,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   }
 
   /* Open the existing mailbox, unless we are appending */
-  if (!ci->append && (get_size(ctx->realpath) > 0))
+  if (!ci->append && (get_size(ctx->mailbox->realpath) > 0))
   {
     int rc = execute_command(ctx, ci->open, _("Decompressing %s"));
     if (rc == 0)
@@ -602,7 +605,7 @@ static int comp_mbox_close(struct Context *ctx)
     /* If the file was removed, remove the compressed folder too */
     if ((access(ctx->path, F_OK) != 0) && !SaveEmpty)
     {
-      remove(ctx->realpath);
+      remove(ctx->mailbox->realpath);
     }
     else
     {
@@ -615,7 +618,7 @@ static int comp_mbox_close(struct Context *ctx)
     const char *msg = NULL;
 
     /* The file exists and we can append */
-    if ((access(ctx->realpath, F_OK) == 0) && ci->append)
+    if ((access(ctx->mailbox->realpath, F_OK) == 0) && ci->append)
     {
       append = ci->append;
       msg = _("Compressed-appending to %s...");
@@ -671,7 +674,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
   if (!ops)
     return -1;
 
-  int size = get_size(ctx->realpath);
+  int size = get_size(ctx->mailbox->realpath);
   if (size == ci->size)
     return 0;
 

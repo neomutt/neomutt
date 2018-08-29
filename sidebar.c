@@ -139,7 +139,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
   if (!b)
     return src;
 
-  int c = Context && (mutt_str_strcmp(Context->realpath, b->realpath) == 0);
+  int c = Context && (mutt_str_strcmp(Context->mailbox->realpath, b->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
@@ -384,7 +384,7 @@ static void update_entries_visibility(void)
       continue;
     }
 
-    if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->realpath) == 0))
+    if (Context && (mutt_str_strcmp(sbe->mailbox->realpath, Context->mailbox->realpath) == 0))
     {
       /* Spool directory */
       continue;
@@ -863,8 +863,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       col = div_width;
 
     mutt_window_move(MuttSidebarWindow, row, col);
-    if (Context && Context->realpath &&
-        (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
+    if (Context && Context->mailbox->realpath &&
+        (mutt_str_strcmp(b->realpath, Context->mailbox->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
       if (b->magic == MUTT_NOTMUCH)
@@ -1077,7 +1077,7 @@ void mutt_sb_set_mailbox_stats(const struct Context *ctx)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strcmp(np->b->realpath, ctx->realpath) == 0)
+    if (mutt_str_strcmp(np->b->realpath, ctx->mailbox->realpath) == 0)
     {
       np->b->msg_unread = ctx->unread;
       np->b->msg_count = ctx->msgcount;
@@ -1119,7 +1119,7 @@ void mutt_sb_set_open_mailbox(void)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, Context->realpath) == 0)
+    if (mutt_str_strcmp(Entries[entry]->mailbox->realpath, Context->mailbox->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1161,7 +1161,7 @@ void mutt_sb_notify_mailbox(struct Mailbox *b, bool created)
       TopIndex = EntryCount;
     if (BotIndex < 0)
       BotIndex = EntryCount;
-    if ((OpnIndex < 0) && Context && (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
+    if ((OpnIndex < 0) && Context && (mutt_str_strcmp(b->realpath, Context->mailbox->realpath) == 0))
       OpnIndex = EntryCount;
 
     EntryCount++;

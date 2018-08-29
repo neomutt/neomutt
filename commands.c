@@ -995,7 +995,9 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
      * until the next open.  Until then, improvise. */
     struct Mailbox *cm = NULL;
     if (savectx->compress_info)
-      cm = mutt_find_mailbox(savectx->realpath);
+    {
+      cm = mutt_find_mailbox(savectx->mailbox->realpath);
+    }
     /* We probably haven't been opened yet */
     if (cm && (cm->msg_count == 0))
       cm = NULL;
