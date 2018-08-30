@@ -152,7 +152,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
           {
             h->read = false;
             if (upd_ctx)
-              ctx->unread++;
+              ctx->mailbox->msg_unread++;
           }
           h->changed = true;
           if (upd_ctx)
@@ -167,7 +167,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
             ctx->new --;
         h->read = true;
         if (upd_ctx)
-          ctx->unread--;
+          ctx->mailbox->msg_unread--;
         h->changed = true;
         if (upd_ctx)
           ctx->changed = true;
@@ -218,7 +218,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
           update = true;
           h->read = true;
           if (upd_ctx)
-            ctx->unread--;
+            ctx->mailbox->msg_unread--;
           if (!h->old)
             if (upd_ctx)
               ctx->new --;
@@ -232,7 +232,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
         update = true;
         h->read = false;
         if (upd_ctx)
-          ctx->unread++;
+          ctx->mailbox->msg_unread++;
         if (!h->old)
           if (upd_ctx)
             ctx->new ++;
@@ -257,7 +257,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
           {
             h->read = true;
             if (upd_ctx)
-              ctx->unread--;
+              ctx->mailbox->msg_unread--;
             if (!h->old)
               if (upd_ctx)
                 ctx->new --;

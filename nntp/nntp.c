@@ -2081,7 +2081,7 @@ static int check_mailbox(struct Context *ctx)
     ctx->vcount = 0;
     ctx->deleted = 0;
     ctx->new = 0;
-    ctx->unread = 0;
+    ctx->mailbox->msg_unread = 0;
     ctx->flagged = 0;
     ctx->changed = false;
     ctx->id_hash = NULL;
@@ -2213,7 +2213,7 @@ static int nntp_mbox_close(struct Context *ctx)
   if (!nntp_data)
     return 0;
 
-  nntp_data->unread = ctx->unread;
+  nntp_data->unread = ctx->mailbox->msg_unread;
 
   nntp_acache_free(nntp_data);
   if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)

@@ -689,7 +689,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       else if (Context && Context->data == folder->ff->nd)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context->unread);
+        snprintf(buf, buflen, fmt, Context->mailbox->msg_unread);
       }
       else
       {
@@ -888,7 +888,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
         np->b->msg_count = Context->mailbox->msg_count;
-        np->b->msg_unread = Context->unread;
+        np->b->msg_unread = Context->mailbox->msg_unread;
       }
       add_folder(menu, state, de->d_name, NULL, &s, np ? np->b : NULL, NULL);
     }
@@ -974,7 +974,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
         np->b->msg_count = Context->mailbox->msg_count;
-        np->b->msg_unread = Context->unread;
+        np->b->msg_unread = Context->mailbox->msg_unread;
       }
 
       char buffer[PATH_MAX];

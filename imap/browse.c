@@ -125,7 +125,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
     if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
     {
       np->b->msg_count = Context->mailbox->msg_count;
-      np->b->msg_unread = Context->unread;
+      np->b->msg_unread = Context->mailbox->msg_unread;
     }
     (state->entry)[state->entrylen].has_mailbox = true;
     (state->entry)[state->entrylen].new = np->b->new;

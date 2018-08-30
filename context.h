@@ -72,7 +72,6 @@ struct Context
   int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */
-  int unread;               /**< how many unread messages? */
   int deleted;              /**< how many deleted messages */
   int flagged;              /**< how many flagged messages */
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */

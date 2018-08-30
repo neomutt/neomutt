@@ -220,9 +220,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->unread - Context->new : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_unread - Context->new : 0);
       }
-      else if (!Context || !(Context->unread - Context->new))
+      else if (!Context || !(Context->mailbox->msg_unread - Context->new))
         optional = 0;
       break;
 
@@ -285,7 +285,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'R':
     {
-      int read = Context ? Context->mailbox->msg_count - Context->unread : 0;
+      int read = Context ? Context->mailbox->msg_count - Context->mailbox->msg_unread : 0;
 
       if (!optional)
       {
@@ -321,9 +321,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->unread : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_unread : 0);
       }
-      else if (!Context || !Context->unread)
+      else if (!Context || !Context->mailbox->msg_unread)
         optional = 0;
       break;
 

@@ -690,7 +690,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   ctx->tagged = 0;
   ctx->deleted = 0;
   ctx->new = 0;
-  ctx->unread = 0;
+  ctx->mailbox->msg_unread = 0;
   ctx->flagged = 0;
   ctx->changed = false;
   ctx->id_hash = NULL;
