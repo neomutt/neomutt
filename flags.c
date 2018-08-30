@@ -85,7 +85,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx && ctx->magic == MUTT_IMAP)
+          if (ctx && ctx->mailbox->magic == MUTT_IMAP)
           {
             h->changed = true;
             if (upd_ctx)
@@ -102,7 +102,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
           ctx->deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
-        if (ctx->magic == MUTT_IMAP)
+        if (ctx->mailbox->magic == MUTT_IMAP)
         {
           h->changed = true;
           if (upd_ctx)
@@ -116,7 +116,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
          * is checked in specific code in the maildir folder
          * driver.
          */
-        if (ctx->magic == MUTT_MAILDIR && upd_ctx && h->trash)
+        if (ctx->mailbox->magic == MUTT_MAILDIR && upd_ctx && h->trash)
           ctx->changed = true;
       }
       break;

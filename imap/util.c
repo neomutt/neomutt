@@ -1108,7 +1108,7 @@ int imap_wait_keepalive(pid_t pid)
 void imap_allow_reopen(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || ctx->mailbox->magic != MUTT_IMAP)
     return;
 
   idata = ctx->data;
@@ -1123,7 +1123,7 @@ void imap_allow_reopen(struct Context *ctx)
 void imap_disallow_reopen(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || ctx->mailbox->magic != MUTT_IMAP)
     return;
 
   idata = ctx->data;

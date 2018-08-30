@@ -294,7 +294,7 @@ static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *mailbox)
   }
   else if (Context)
   {
-    info->magic = Context->magic;
+    info->magic = Context->mailbox->magic;
     info->path = Context->mailbox->realpath;
   }
   else

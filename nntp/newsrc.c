@@ -1386,7 +1386,7 @@ void nntp_mailbox(char *buf, size_t buflen)
     if (!nntp_data || !nntp_data->subscribed || !nntp_data->unread)
       continue;
 
-    if (Context && Context->magic == MUTT_NNTP &&
+    if (Context && Context->mailbox->magic == MUTT_NNTP &&
         (mutt_str_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
     {
       unsigned int unread = 0;

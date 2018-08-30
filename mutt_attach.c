@@ -41,6 +41,7 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
+#include "mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -812,9 +813,9 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         mx_mbox_close(&ctx, NULL);
         return -1;
       }
-      if ((ctx->magic == MUTT_MBOX) || (ctx->magic == MUTT_MMDF))
+      if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
-      chflags |= (ctx->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+      chflags |= (ctx->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if ((mutt_copy_message_fp(msg->fp, fp, hn, 0, chflags) == 0) &&
           (mx_msg_commit(ctx, msg) == 0))
       {

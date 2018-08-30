@@ -1784,7 +1784,7 @@ int nntp_post(const char *msg)
   struct NntpData *nntp_data, nntp_tmp;
   char buf[LONG_STRING];
 
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && Context->mailbox->magic == MUTT_NNTP)
     nntp_data = Context->data;
   else
   {
@@ -2368,7 +2368,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
       }
     }
     /* select current newsgroup */
-    if (Context && Context->magic == MUTT_NNTP)
+    if (Context && Context->mailbox->magic == MUTT_NNTP)
     {
       buf[0] = '\0';
       if (nntp_query((struct NntpData *) Context->data, buf, sizeof(buf)) < 0)
@@ -2383,7 +2383,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   if (nntp_date(nserv, &now) < 0)
     return -1;
   nntp_data.nserv = nserv;
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && Context->mailbox->magic == MUTT_NNTP)
     nntp_data.group = ((struct NntpData *) Context->data)->group;
   else
     nntp_data.group = NULL;

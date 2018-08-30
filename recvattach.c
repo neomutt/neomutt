@@ -43,6 +43,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_logging.h"
@@ -1415,7 +1416,7 @@ void mutt_view_attachments(struct Header *hdr)
         CHECK_READONLY;
 
 #ifdef USE_POP
-        if (Context->magic == MUTT_POP)
+        if (Context->mailbox->magic == MUTT_POP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from POP server"));
@@ -1424,7 +1425,7 @@ void mutt_view_attachments(struct Header *hdr)
 #endif
 
 #ifdef USE_NNTP
-        if (Context->magic == MUTT_NNTP)
+        if (Context->mailbox->magic == MUTT_NNTP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from news server"));

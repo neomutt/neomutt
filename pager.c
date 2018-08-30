@@ -2272,7 +2272,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_compile_help(buffer, sizeof(buffer), MENU_PAGER,
 #ifdef USE_NNTP
-                      (Context && (Context->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
+                      (Context && (Context->mailbox->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
 #endif
                                                                    PagerHelpExtra);
     snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
@@ -3083,7 +3083,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_POST:
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
@@ -3095,7 +3095,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_FORWARD_TO_GROUP:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
@@ -3121,7 +3121,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             query_quadoption(FollowupToPoster,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+          if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;

@@ -125,7 +125,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     {
 #ifdef USE_NOTMUCH
       char *p = NULL;
-      if (Context && Context->magic == MUTT_NOTMUCH && (p = nm_get_description(Context)))
+      if (Context && Context->mailbox->magic == MUTT_NOTMUCH && (p = nm_get_description(Context)))
         mutt_str_strfcpy(tmp, p, sizeof(tmp));
       else
 #endif
@@ -269,7 +269,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                 2 :
                                 (Context->changed ||
                                  /* deleted doesn't necessarily mean changed in IMAP */
-                                 (Context->magic != MUTT_IMAP && Context->deleted)) ?
+                                 (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
                                 1 :
                                 0);
       }

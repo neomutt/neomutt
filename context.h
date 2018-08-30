@@ -77,8 +77,6 @@ struct Context
 
   struct Menu *menu; /**< needed for pattern compilation */
 
-  enum MailboxType magic; /**< mailbox type */
-
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
   bool locked : 1;    /**< is the mailbox locked? */

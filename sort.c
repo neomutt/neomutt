@@ -321,7 +321,7 @@ sort_t *mutt_get_sort_func(int method)
       return compare_label;
     case SORT_ORDER:
 #ifdef USE_NNTP
-      if (Context && (Context->magic == MUTT_NNTP))
+      if (Context && (Context->mailbox->magic == MUTT_NNTP))
         return nntp_compare_order;
       else
 #endif

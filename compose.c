@@ -1419,7 +1419,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         if (Context)
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
           {
             mutt_str_strfcpy(fname, Context->mailbox->path, sizeof(fname));

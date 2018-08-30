@@ -856,9 +856,9 @@ int mutt_mailbox_check(int force)
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
+  if (!Context || Context->mailbox->magic == MUTT_IMAP || Context->mailbox->magic == MUTT_POP
 #ifdef USE_NNTP
-      || Context->magic == MUTT_NNTP
+      || Context->mailbox->magic == MUTT_NNTP
 #endif
       || stat(Context->mailbox->path, &contex_sb) != 0)
   {

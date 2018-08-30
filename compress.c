@@ -445,7 +445,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
  */
 static int comp_mbox_open(struct Context *ctx)
 {
-  if (!ctx || (ctx->magic != MUTT_COMPRESSED))
+  if (!ctx || (ctx->mailbox->magic != MUTT_COMPRESSED))
     return -1;
 
   struct CompressInfo *ci = set_compress_info(ctx);
@@ -472,17 +472,17 @@ static int comp_mbox_open(struct Context *ctx)
 
   unlock_realpath(ctx);
 
-  ctx->magic = mx_path_probe(ctx->mailbox->path, NULL);
-  if (ctx->magic == MUTT_UNKNOWN)
+  ctx->mailbox->magic = mx_path_probe(ctx->mailbox->path, NULL);
+  if (ctx->mailbox->magic == MUTT_UNKNOWN)
   {
     mutt_error(_("Can't identify the contents of the compressed file"));
     goto or_fail;
   }
 
-  ci->child_ops = mx_get_ops(ctx->magic);
+  ci->child_ops = mx_get_ops(ctx->mailbox->magic);
   if (!ci->child_ops)
   {
-    mutt_error(_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
+    mutt_error(_("Can't find mailbox ops for mailbox type %d"), ctx->mailbox->magic);
     goto or_fail;
   }
 
@@ -540,22 +540,22 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
       mutt_error(_("Compress command failed: %s"), ci->open);
       goto oa_fail2;
     }
-    ctx->magic = mx_path_probe(ctx->mailbox->path, NULL);
+    ctx->mailbox->magic = mx_path_probe(ctx->mailbox->path, NULL);
   }
   else
-    ctx->magic = MboxType;
+    ctx->mailbox->magic = MboxType;
 
   /* We can only deal with mbox and mmdf mailboxes */
-  if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
+  if ((ctx->mailbox->magic != MUTT_MBOX) && (ctx->mailbox->magic != MUTT_MMDF))
   {
     mutt_error(_("Unsupported mailbox type for appending"));
     goto oa_fail2;
   }
 
-  ci->child_ops = mx_get_ops(ctx->magic);
+  ci->child_ops = mx_get_ops(ctx->mailbox->magic);
   if (!ci->child_ops)
   {
-    mutt_error(_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
+    mutt_error(_("Can't find mailbox ops for mailbox type %d"), ctx->mailbox->magic);
     goto oa_fail2;
   }
 

@@ -237,7 +237,7 @@ static struct NmCtxData *new_ctxdata(const char *uri)
  */
 static int init_context(struct Context *ctx)
 {
-  if (!ctx || (ctx->magic != MUTT_NOTMUCH))
+  if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
   if (ctx->data)
@@ -282,7 +282,7 @@ static char *header_get_fullpath(struct Header *h, char *buf, size_t buflen)
  */
 static struct NmCtxData *get_ctxdata(struct Context *ctx)
 {
-  if (ctx && (ctx->magic == MUTT_NOTMUCH))
+  if (ctx && (ctx->mailbox->magic == MUTT_NOTMUCH))
     return ctx->data;
 
   return NULL;
@@ -1973,7 +1973,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   if (!tmp_ctxdata)
     return false;
 
-  tmp_ctx.magic = MUTT_NOTMUCH;
+  tmp_ctx.mailbox->magic = MUTT_NOTMUCH;
   tmp_ctx.data = tmp_ctxdata;
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
@@ -2492,7 +2492,7 @@ static int nm_mbox_open(struct Context *ctx)
  */
 static int nm_mbox_close(struct Context *ctx)
 {
-  if (!ctx || (ctx->magic != MUTT_NOTMUCH))
+  if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
@@ -2684,14 +2684,14 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
       header_get_fullpath(h, old, sizeof(old));
 
     mutt_str_strfcpy(ctx->mailbox->path, hd->folder, sizeof(ctx->mailbox->path));
-    ctx->magic = hd->magic;
+    ctx->mailbox->magic = hd->magic;
 #ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);
 #endif
     mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
-    ctx->magic = MUTT_NOTMUCH;
+    ctx->mailbox->magic = MUTT_NOTMUCH;
 
     if (rc)
       break;
@@ -2711,7 +2711,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
-  ctx->magic = MUTT_NOTMUCH;
+  ctx->mailbox->magic = MUTT_NOTMUCH;
 
   if (!is_longrun(data))
     release_db(data);
@@ -2740,7 +2740,7 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) &&
-      ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_NOTMUCH)))
+      ((ctx->mailbox->magic == MUTT_MAILDIR) || (ctx->mailbox->magic == MUTT_NOTMUCH)))
   {
     msg->fp = maildir_open_find_message(folder, cur->path, NULL);
   }

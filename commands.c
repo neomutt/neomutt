@@ -182,7 +182,7 @@ int mutt_display_message(struct Header *cur)
 
   chflags = (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
-  if (Context->magic == MUTT_NOTMUCH)
+  if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
   res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
@@ -968,7 +968,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   mutt_message(_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if ((Context->magic == MUTT_IMAP) && !(decode || decrypt) &&
+  if ((Context->mailbox->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
     switch (imap_copy_messages(Context, h, buf, delete))
@@ -1025,7 +1025,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       int rc = 0;
 
 #ifdef USE_NOTMUCH
-      if (Context->magic == MUTT_NOTMUCH)
+      if (Context->mailbox->magic == MUTT_NOTMUCH)
         nm_longrun_init(Context, true);
 #endif
       for (int i = 0; i < Context->mailbox->msg_count; i++)
@@ -1050,7 +1050,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #endif
       }
 #ifdef USE_NOTMUCH
-      if (Context->magic == MUTT_NOTMUCH)
+      if (Context->mailbox->magic == MUTT_NOTMUCH)
         nm_longrun_done(Context);
 #endif
       if (rc != 0)
@@ -1061,7 +1061,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
     }
 
     const bool need_mailbox_cleanup =
-        ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
+        ((savectx->mailbox->magic == MUTT_MBOX) || (savectx->mailbox->magic == MUTT_MMDF));
 
     mx_mbox_close(&savectx, NULL);
 

@@ -1869,7 +1869,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         return 0;
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
-      if (ctx->magic == MUTT_IMAP && pat->stringmatch)
+      if (ctx->mailbox->magic == MUTT_IMAP && pat->stringmatch)
         return h->matched;
 #endif
       return pat->not ^ msg_search(ctx, pat, h->msgno);
@@ -1877,7 +1877,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
 #ifdef USE_IMAP
       if (!ctx)
         return 0;
-      if (ctx->magic == MUTT_IMAP)
+      if (ctx->mailbox->magic == MUTT_IMAP)
       {
         if (pat->stringmatch)
           return h->matched;
@@ -2242,7 +2242,7 @@ int mutt_pattern_func(int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && imap_search(Context, pat) < 0)
+  if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context, pat) < 0)
     goto bail;
 #endif
 
@@ -2400,7 +2400,7 @@ int mutt_search_command(int cur, int op)
     for (int i = 0; i < Context->mailbox->msg_count; i++)
       Context->hdrs[i]->searched = false;
 #ifdef USE_IMAP
-    if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
+    if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
       return -1;
 #endif
     OptSearchInvalid = false;
