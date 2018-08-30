@@ -61,7 +61,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
   bool changed = h->changed;
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
-  int flagged = ctx->flagged;
+  int mailbox = ctx->mailbox->msg_flagged;
   int update = false;
 
   if (ctx->readonly && flag != MUTT_TAG)
@@ -289,7 +289,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
           update = true;
           h->flagged = bf;
           if (upd_ctx)
-            ctx->flagged++;
+            ctx->mailbox->msg_flagged++;
           h->changed = true;
           if (upd_ctx)
             ctx->changed = true;
@@ -300,7 +300,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
         update = true;
         h->flagged = false;
         if (upd_ctx)
-          ctx->flagged--;
+          ctx->mailbox->msg_flagged--;
         h->changed = true;
         if (upd_ctx)
           ctx->changed = true;
@@ -341,7 +341,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
    * of this message and not what it was at the time it was last searched.
    */
   if (h->searched && (changed != h->changed || deleted != ctx->deleted ||
-                      tagged != ctx->tagged || flagged != ctx->flagged))
+                      tagged != ctx->tagged || mailbox != ctx->mailbox->msg_flagged))
   {
     h->searched = false;
   }

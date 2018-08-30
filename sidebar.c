@@ -875,7 +875,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         b->msg_unread = Context->mailbox->msg_unread;
         b->msg_count = Context->mailbox->msg_count;
       }
-      b->msg_flagged = Context->flagged;
+      b->msg_flagged = Context->mailbox->msg_flagged;
     }
 
     /* compute length of Folder without trailing separator */
@@ -1081,7 +1081,7 @@ void mutt_sb_set_mailbox_stats(const struct Context *ctx)
     {
       np->b->msg_unread = ctx->mailbox->msg_unread;
       np->b->msg_count = ctx->mailbox->msg_count;
-      np->b->msg_flagged = ctx->flagged;
+      np->b->msg_flagged = ctx->mailbox->msg_flagged;
       break;
     }
   }

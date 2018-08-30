@@ -73,7 +73,6 @@ struct Context
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */
   int deleted;              /**< how many deleted messages */
-  int flagged;              /**< how many flagged messages */
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
   struct Menu *menu; /**< needed for pattern compilation */
