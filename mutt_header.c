@@ -35,6 +35,7 @@
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -150,7 +151,7 @@ int mutt_label_message(struct Header *hdr)
   }
   else
   {
-    for (int i = 0; i < Context->msgcount; ++i)
+    for (int i = 0; i < Context->mailbox->msg_count; ++i)
     {
       if (!message_is_tagged(Context, i))
         continue;

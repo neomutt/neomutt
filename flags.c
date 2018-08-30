@@ -37,6 +37,7 @@
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -353,7 +354,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
  */
 void mutt_tag_set_flag(int flag, int bf)
 {
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
     if (message_is_tagged(Context, i))
       mutt_set_flag(Context, Context->hdrs[i], flag, bf);
 }

@@ -2336,7 +2336,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     if (Context && !OptAttachMsg)
     {
-      oldcount = Context ? Context->msgcount : 0;
+      oldcount = Context ? Context->mailbox->msg_count : 0;
       /* check for new mail */
       check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
@@ -2354,7 +2354,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* notify user of newly arrived mail */
         if (check == MUTT_NEW_MAIL)
         {
-          for (i = oldcount; i < Context->msgcount; i++)
+          for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
             struct Header *h = Context->hdrs[i];
 
@@ -2373,7 +2373,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           {
             /* After the mailbox has been updated,
              * rd.index->current might be invalid */
-            rd.index->current = MIN(rd.index->current, (Context->msgcount - 1));
+            rd.index->current = MIN(rd.index->current, (Context->mailbox->msg_count - 1));
             index_hint = Context->hdrs[Context->v2r[rd.index->current]]->index;
 
             bool q = Context->quiet;

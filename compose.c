@@ -1460,7 +1460,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
         }
 
-        if (!ctx->msgcount)
+        if (!ctx->mailbox->msg_count)
         {
           mx_mbox_close(&ctx, NULL);
           mutt_error(_("No messages in that folder"));
@@ -1488,7 +1488,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
         }
 
-        for (i = 0; i < Context->msgcount; i++)
+        for (i = 0; i < Context->mailbox->msg_count; i++)
         {
           if (!message_is_tagged(Context, i))
             continue;

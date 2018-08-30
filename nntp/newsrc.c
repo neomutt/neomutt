@@ -47,6 +47,7 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -346,7 +347,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
    * first article in our list */
   nntp_data->newsrc_len = 0;
   series = true;
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     /* search for first unread */
     if (series)
@@ -1325,7 +1326,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
   nntp_data->unread = 0;
   if (Context && Context->data == nntp_data)
   {
-    for (unsigned int i = 0; i < Context->msgcount; i++)
+    for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 1);
   }
   return nntp_data;
@@ -1358,8 +1359,8 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   }
   if (Context && Context->data == nntp_data)
   {
-    nntp_data->unread = Context->msgcount;
-    for (unsigned int i = 0; i < Context->msgcount; i++)
+    nntp_data->unread = Context->mailbox->msg_count;
+    for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 0);
   }
   else
@@ -1390,7 +1391,7 @@ void nntp_mailbox(char *buf, size_t buflen)
     {
       unsigned int unread = 0;
 
-      for (unsigned int j = 0; j < Context->msgcount; j++)
+      for (unsigned int j = 0; j < Context->mailbox->msg_count; j++)
         if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
           unread++;
       if (!unread)

@@ -31,6 +31,7 @@
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "options.h"
 #include "pattern.h"
@@ -75,7 +76,7 @@ void mutt_check_rescore(struct Context *ctx)
     mutt_menu_set_redraw_full(MENU_MAIN);
     mutt_menu_set_redraw_full(MENU_PAGER);
 
-    for (int i = 0; ctx && i < ctx->msgcount; i++)
+    for (int i = 0; ctx && i < ctx->mailbox->msg_count; i++)
     {
       mutt_score_message(ctx, ctx->hdrs[i], true);
       ctx->hdrs[i]->pair = 0;

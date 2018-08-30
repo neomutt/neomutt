@@ -887,7 +887,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
       if (np && Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
-        np->b->msg_count = Context->msgcount;
+        np->b->msg_count = Context->mailbox->msg_count;
         np->b->msg_unread = Context->unread;
       }
       add_folder(menu, state, de->d_name, NULL, &s, np ? np->b : NULL, NULL);
@@ -973,7 +973,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     {
       if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
       {
-        np->b->msg_count = Context->msgcount;
+        np->b->msg_count = Context->mailbox->msg_count;
         np->b->msg_unread = Context->unread;
       }
 

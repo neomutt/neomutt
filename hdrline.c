@@ -992,7 +992,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (ctx)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, ctx->msgcount);
+        snprintf(buf, buflen, fmt, ctx->mailbox->msg_count);
       }
       else
         mutt_str_strfcpy(buf, "(null)", buflen);

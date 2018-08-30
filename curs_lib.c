@@ -45,6 +45,7 @@
 #include "context.h"
 #include "enter_state.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
@@ -1219,7 +1220,7 @@ int mutt_strwidth(const char *s)
  */
 bool message_is_visible(struct Context *ctx, int index)
 {
-  if (!ctx || !ctx->hdrs || (index >= ctx->msgcount))
+  if (!ctx || !ctx->hdrs || (index >= ctx->mailbox->msg_count))
     return false;
 
   return !ctx->pattern || ctx->hdrs[index]->limited;

@@ -380,7 +380,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
     mutt_hash_destroy(&ctx->id_hash);
   mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
     mutt_header_free(&ctx->hdrs[i]);
   FREE(&ctx->hdrs);
   FREE(&ctx->v2r);
@@ -436,7 +436,7 @@ static int trash_append(struct Context *ctx)
 
   int delmsgcount = 0;
   int first_del = -1;
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
     {
@@ -483,7 +483,7 @@ static int trash_append(struct Context *ctx)
   if (ctx_trash)
   {
     /* continue from initial scan above */
-    for (i = first_del; i < ctx->msgcount; i++)
+    for (i = first_del; i < ctx->mailbox->msg_count; i++)
     {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
@@ -553,7 +553,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 #endif
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read && !(ctx->hdrs[i]->flagged && KeepFlagged))
     {
@@ -617,7 +617,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
   if (MarkOld)
   {
-    for (i = 0; i < ctx->msgcount; i++)
+    for (i = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->old && !ctx->hdrs[i]->read)
         mutt_set_flag(ctx, ctx->hdrs[i], MUTT_OLD, 1);
@@ -636,7 +636,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     if ((ctx->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
-      for (i = 0; i < ctx->msgcount; i++)
+      for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
             !(ctx->hdrs[i]->flagged && KeepFlagged))
@@ -669,7 +669,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
         return -1;
       }
 
-      for (i = 0; i < ctx->msgcount; i++)
+      for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
             !(ctx->hdrs[i]->flagged && KeepFlagged))
@@ -728,7 +728,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   {
     if (!purge)
     {
-      for (i = 0; i < ctx->msgcount; i++)
+      for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
         ctx->hdrs[i]->deleted = false;
         ctx->hdrs[i]->purge = false;
@@ -752,13 +752,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     if (move_messages)
     {
       mutt_message(_("%d kept, %d moved, %d deleted"),
-                   ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
+                   ctx->mailbox->msg_count - ctx->deleted, read_msgs, ctx->deleted);
     }
     else
-      mutt_message(_("%d kept, %d deleted"), ctx->msgcount - ctx->deleted, ctx->deleted);
+      mutt_message(_("%d kept, %d deleted"), ctx->mailbox->msg_count - ctx->deleted, ctx->deleted);
   }
 
-  if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
+  if (ctx->mailbox->msg_count == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
   {
     mutt_file_unlink_empty(ctx->mailbox->path);
@@ -767,18 +767,18 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
   {
-    int orig_msgcount = ctx->msgcount;
+    int orig_msgcount = ctx->mailbox->msg_count;
 
-    for (i = 0; i < ctx->msgcount; i++)
+    for (i = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read)
         ctx->unread--;
       if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->flagged)
         ctx->flagged--;
     }
-    ctx->msgcount -= ctx->deleted;
+    ctx->mailbox->msg_count -= ctx->deleted;
     mutt_sb_set_mailbox_stats(ctx);
-    ctx->msgcount = orig_msgcount;
+    ctx->mailbox->msg_count = orig_msgcount;
   }
 #endif
 
@@ -807,7 +807,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   ctx->changed = false;
   ctx->flagged = 0;
   padding = mx_msg_padding_size(ctx);
-  for (i = 0, j = 0; i < ctx->msgcount; i++)
+  for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
         ((committing && (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))) ||
@@ -874,7 +874,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       mutt_header_free(&ctx->hdrs[i]);
     }
   }
-  ctx->msgcount = j;
+  ctx->mailbox->msg_count = j;
 }
 
 /**
@@ -931,7 +931,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != MUTT_IMAP)
       {
-        for (int i = 0; i < ctx->msgcount; i++)
+        for (int i = 0; i < ctx->mailbox->msg_count; i++)
         {
           ctx->hdrs[i]->deleted = false;
           ctx->hdrs[i]->purge = false;
@@ -945,7 +945,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
    * mx_update_tables, so ctx->deleted is 0 when it comes back */
-  msgcount = ctx->msgcount;
+  msgcount = ctx->mailbox->msg_count;
   deleted = ctx->deleted;
 
   if (purge && ctx->deleted && (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
@@ -977,7 +977,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
     mutt_sleep(0);
 
-    if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
+    if (ctx->mailbox->msg_count == ctx->deleted && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
         !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
     {
       unlink(ctx->mailbox->path);
@@ -1182,7 +1182,7 @@ void mx_alloc_memory(struct Context *ctx)
     ctx->hdrs = mutt_mem_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
     ctx->v2r = mutt_mem_calloc(ctx->hdrmax, sizeof(int));
   }
-  for (int i = ctx->msgcount; i < ctx->hdrmax; i++)
+  for (int i = ctx->mailbox->msg_count; i < ctx->hdrmax; i++)
   {
     ctx->hdrs[i] = NULL;
     ctx->v2r[i] = -1;
@@ -1200,7 +1200,7 @@ void mx_alloc_memory(struct Context *ctx)
 void mx_update_context(struct Context *ctx, int new_messages)
 {
   struct Header *h = NULL;
-  for (int msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
+  for (int msgno = ctx->mailbox->msg_count - new_messages; msgno < ctx->mailbox->msg_count; msgno++)
   {
     h = ctx->hdrs[msgno];
 

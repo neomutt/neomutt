@@ -37,6 +37,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_window.h"
@@ -210,7 +211,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
   while ((msg = strtok(msg, " ,")))
   {
-    if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
+    if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->mailbox->msg_count)
     {
       n--;
 

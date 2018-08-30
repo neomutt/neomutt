@@ -45,6 +45,7 @@
 #include "group.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
 #include "mutt_parse.h"
@@ -802,7 +803,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
     if (side == RANGE_S_LEFT)
       return 1;
     else if (side == RANGE_S_RIGHT)
-      return Context->msgcount;
+      return Context->mailbox->msg_count;
   }
   /* We have something, so determine what */
   c = (unsigned char) (s->dptr[pmatch[grp].rm_so]);
@@ -811,7 +812,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
     case RANGE_CIRCUM:
       return 1;
     case RANGE_DOLLAR:
-      return Context->msgcount;
+      return Context->mailbox->msg_count;
     case RANGE_DOT:
       return CTX_MSGNO(Context);
     case RANGE_LT:
@@ -2184,7 +2185,7 @@ bool mutt_limit_current_thread(struct Header *h)
   Context->vsize = 0;
   Context->collapsed = false;
 
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
   {
     Context->hdrs[i]->virtual = -1;
     Context->hdrs[i]->limited = false;
@@ -2247,7 +2248,7 @@ int mutt_pattern_func(int op, char *prompt)
 
   mutt_progress_init(&progress, _("Executing command on matching messages..."),
                      MUTT_PROGRESS_MSG, ReadInc,
-                     (op == MUTT_LIMIT) ? Context->msgcount : Context->vcount);
+                     (op == MUTT_LIMIT) ? Context->mailbox->msg_count : Context->vcount);
 
   if (op == MUTT_LIMIT)
   {
@@ -2256,7 +2257,7 @@ int mutt_pattern_func(int op, char *prompt)
     Context->collapsed = false;
     padding = mx_msg_padding_size(Context);
 
-    for (int i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       mutt_progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
@@ -2311,7 +2312,7 @@ int mutt_pattern_func(int op, char *prompt)
     if (Context->limit_pattern)
       mutt_pattern_free(&Context->limit_pattern);
 
-    if (Context->msgcount && !Context->vcount)
+    if (Context->mailbox->msg_count && !Context->vcount)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
@@ -2396,7 +2397,7 @@ int mutt_search_command(int cur, int op)
 
   if (OptSearchInvalid)
   {
-    for (int i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
       Context->hdrs[i]->searched = false;
 #ifdef USE_IMAP
     if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)

@@ -46,6 +46,7 @@
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "mailbox.h"
 #include "mutt_attach.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -907,7 +908,7 @@ static void make_reference_headers(struct Envelope *curenv,
 
   if (!curenv)
   {
-    for (int i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (message_is_tagged(ctx, i))
         mutt_add_to_reference_headers(env, ctx->hdrs[i]->env);
@@ -944,7 +945,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
   if (!cur)
   {
     tag = true;
-    for (int i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (!message_is_tagged(ctx, i))
         continue;
@@ -985,7 +986,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
 #endif
         if (tag)
     {
-      for (int i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(ctx, i))
           continue;
@@ -1046,7 +1047,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       mutt_message(_("Including quoted message..."));
       if (!cur)
       {
-        for (i = 0; i < ctx->msgcount; i++)
+        for (i = 0; i < ctx->mailbox->msg_count; i++)
         {
           if (!message_is_tagged(ctx, i))
             continue;
@@ -1085,7 +1086,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       }
       else
       {
-        for (i = 0; i < ctx->msgcount; i++)
+        for (i = 0; i < ctx->mailbox->msg_count; i++)
         {
           if (!message_is_tagged(ctx, i))
             continue;
@@ -1110,7 +1111,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
         include_forward(ctx, cur, tempfp);
       else
       {
-        for (i = 0; i < ctx->msgcount; i++)
+        for (i = 0; i < ctx->mailbox->msg_count; i++)
         {
           if (message_is_tagged(ctx, i))
             include_forward(ctx, ctx->hdrs[i], tempfp);
@@ -2412,7 +2413,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       mutt_set_flag(ctx, cur, MUTT_REPLIED, is_reply(cur, msg));
     else if (!(flags & SEND_POSTPONED) && ctx && ctx->tagged)
     {
-      for (i = 0; i < ctx->msgcount; i++)
+      for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (message_is_tagged(ctx, i))
         {

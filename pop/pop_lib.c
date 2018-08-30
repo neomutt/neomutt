@@ -42,6 +42,7 @@
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -586,7 +587,7 @@ static int check_uidl(char *line, void *data)
     endp++;
   memmove(line, endp, strlen(endp) + 1);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (mutt_str_strcmp(ctx->hdrs[i]->data, line) == 0)
     {
@@ -624,7 +625,7 @@ int pop_reconnect(struct Context *ctx)
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
-      for (int i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->mailbox->msg_count; i++)
         ctx->hdrs[i]->refno = -1;
 
       ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);

@@ -69,7 +69,6 @@ struct Context
   struct Hash *label_hash;  /**< hash table for x-labels */
   int *v2r;                 /**< mapping from virtual to real msgno */
   int hdrmax;               /**< number of pointers in hdrs */
-  int msgcount;             /**< number of messages in the mailbox */
   int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */

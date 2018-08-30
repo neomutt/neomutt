@@ -587,7 +587,7 @@ static void mh_update_sequences(struct Context *ctx)
   mutt_file_fclose(&ofp);
 
   /* now, update our unseen, flagged, and replied sequences */
-  for (l = 0; l < ctx->msgcount; l++)
+  for (l = 0; l < ctx->mailbox->msg_count; l++)
   {
     if (ctx->hdrs[l]->deleted)
       continue;
@@ -1029,7 +1029,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
  */
 static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 {
-  int oldmsgcount = ctx->msgcount;
+  int oldmsgcount = ctx->mailbox->msg_count;
 
   while (md)
   {
@@ -1040,23 +1040,23 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
       mutt_debug(2, "Adding header structure. Flags: %s%s%s%s%s\n",
                  md->h->flagged ? "f" : "", md->h->deleted ? "D" : "",
                  md->h->replied ? "r" : "", md->h->old ? "O" : "", md->h->read ? "R" : "");
-      if (ctx->msgcount == ctx->hdrmax)
+      if (ctx->mailbox->msg_count == ctx->hdrmax)
         mx_alloc_memory(ctx);
 
-      ctx->hdrs[ctx->msgcount] = md->h;
-      ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
+      ctx->hdrs[ctx->mailbox->msg_count] = md->h;
+      ctx->hdrs[ctx->mailbox->msg_count]->index = ctx->mailbox->msg_count;
       ctx->size += md->h->content->length + md->h->content->offset -
                    md->h->content->hdr_offset;
 
       md->h = NULL;
-      ctx->msgcount++;
+      ctx->mailbox->msg_count++;
     }
     md = md->next;
   }
 
-  if (ctx->msgcount > oldmsgcount)
+  if (ctx->mailbox->msg_count > oldmsgcount)
   {
-    mx_update_context(ctx, ctx->msgcount - oldmsgcount);
+    mx_update_context(ctx, ctx->mailbox->msg_count - oldmsgcount);
     return true;
   }
   return false;
@@ -2289,7 +2289,7 @@ static void maildir_update_tables(struct Context *ctx, int *index_hint)
     Sort = old_sort;
   }
 
-  const int old_count = ctx->msgcount;
+  const int old_count = ctx->mailbox->msg_count;
   for (int i = 0, j = 0; i < old_count; i++)
   {
     if (ctx->hdrs[i]->active && index_hint && *index_hint == i)
@@ -2391,7 +2391,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   }
 
   /* check for modifications and adjust flags */
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     ctx->hdrs[i]->active = false;
     maildir_canon_filename(ctx->hdrs[i]->path, buf, sizeof(buf));
@@ -2568,7 +2568,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
     mutt_hash_insert(fnames, p->canon_fname, p);
   }
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     ctx->hdrs[i]->active = false;
 
@@ -2635,10 +2635,10 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->mailbox->msg_count);
   }
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!ctx->quiet)
       mutt_progress_update(&progress, i, -1);
@@ -2668,7 +2668,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (ctx->deleted)
   {
-    for (i = 0, j = 0; i < ctx->msgcount; i++)
+    for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
         ctx->hdrs[i]->index = j++;

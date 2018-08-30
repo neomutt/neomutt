@@ -166,7 +166,7 @@ int mutt_num_postponed(bool force)
     if (!ctx)
       PostCount = 0;
     else
-      PostCount = ctx->msgcount;
+      PostCount = ctx->mailbox->msg_count;
     mx_fastclose_mailbox(ctx);
     mutt_context_free(&ctx);
 #ifdef USE_NNTP
@@ -213,7 +213,7 @@ static struct Header *select_msg(void)
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
   menu->make_entry = post_entry;
-  menu->max = PostContext->msgcount;
+  menu->max = PostContext->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POST, PostponeHelp);
@@ -235,7 +235,7 @@ static struct Header *select_msg(void)
         /* should deleted draft messages be saved in the trash folder? */
         mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
-        PostCount = PostContext->msgcount - PostContext->deleted;
+        PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
@@ -299,7 +299,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     return -1;
   }
 
-  if (!PostContext->msgcount)
+  if (!PostContext->mailbox->msg_count)
   {
     PostCount = 0;
     mx_mbox_close(&PostContext, NULL);
@@ -307,7 +307,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     return -1;
   }
 
-  if (PostContext->msgcount == 1)
+  if (PostContext->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
     h = PostContext->hdrs[0];
@@ -330,7 +330,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   mutt_set_flag(PostContext, h, MUTT_PURGE, 1);
 
   /* update the count for the status display */
-  PostCount = PostContext->msgcount - PostContext->deleted;
+  PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;

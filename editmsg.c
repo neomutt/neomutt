@@ -272,7 +272,7 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
   if (hdr)
     return edit_or_view_one_message(edit, ctx, hdr);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!message_is_tagged(ctx, i))
       continue;
