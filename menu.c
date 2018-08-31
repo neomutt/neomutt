@@ -307,20 +307,20 @@ static void print_enriched_string(int index, int attr, unsigned char *s, bool do
 
 /**
  * menu_make_entry - Create string to display in a Menu (the index)
- * @param s    Buffer for the result
- * @param l    Length of the buffer
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
  * @param menu Current Menu
  * @param i    Selected item
  */
-static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
+static void menu_make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
-    strncpy(s, menu->dialog[i], l);
+    strncpy(buf, menu->dialog[i], buflen);
     menu->current = -1; /* hide menubar */
   }
   else
-    menu->make_entry(s, l, menu, i);
+    menu->make_entry(buf, buflen, menu, i);
 }
 
 /**
