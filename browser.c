@@ -1294,9 +1294,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   struct Menu *menu = NULL;
   struct stat st;
   int i, kill_prefix = 0;
-  int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;
-  int folder = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
-  int mailbox = (flags & MUTT_SEL_MAILBOX) ? 1 : 0;
+  bool multiple = (flags & MUTT_SEL_MULTI);
+  bool folder = (flags & MUTT_SEL_FOLDER);
+  bool mailbox = (flags & MUTT_SEL_MAILBOX);
 
   /* Keeps in memory the directory we were in when hitting '='
    * to go directly to $folder (Folder)
@@ -1315,13 +1315,13 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       struct NntpServer *nserv = CurrentNewsSrv;
 
       /* default state for news reader mode is browse subscribed newsgroups */
-      mailbox = 0;
+      mailbox = false;
       for (unsigned int j = 0; j < nserv->groups_num; j++)
       {
         struct NntpData *nntp_data = nserv->groups_list[j];
         if (nntp_data && nntp_data->subscribed)
         {
-          mailbox = 1;
+          mailbox = true;
           break;
         }
       }
@@ -1637,7 +1637,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
               prefix[0] = 0;
               kill_prefix = 0;
             }
-            mailbox = 0;
+            mailbox = false;
 #ifdef USE_IMAP
             if (state.imap_browse)
             {
@@ -1864,7 +1864,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
         if (buf[0])
         {
-          mailbox = 0;
+          mailbox = false;
           mutt_expand_path(buf, sizeof(buf));
 #ifdef USE_IMAP
           if (imap_path_probe(buf, NULL) == MUTT_IMAP)
@@ -1929,7 +1929,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) != 0)
           break;
 
-        mailbox = 0;
+        mailbox = false;
         /* assume that the user wants to see everything */
         if (!buf[0])
           mutt_str_strfcpy(buf, ".", sizeof(buf));
@@ -2042,7 +2042,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
         if (i == OP_TOGGLE_MAILBOXES)
-          mailbox = 1 - mailbox;
+          mailbox = !mailbox;
 
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
