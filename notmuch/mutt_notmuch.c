@@ -2822,7 +2822,7 @@ int nm_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_notmuch_ops - Mailbox callback functions for Notmuch mailboxes
+ * struct mx_notmuch_ops - Notmuch mailbox - Implements ::MxOps
  */
 struct MxOps mx_notmuch_ops = {
   .magic            = MUTT_NOTMUCH,

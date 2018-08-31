@@ -13577,6 +13577,11 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
             longer known. This is a limitation of NeoMutt. The `%f` expando
             will show the open folder.
           </para>
+          <para>
+            When using Maildir local mailboxes, you must set
+            <link linkend="check-new">$check_new</link> config variable for
+            this feature to work.
+          </para>
         </note>
         <para>
           For example in Linux you can use (most distributions already provide

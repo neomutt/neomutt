@@ -2690,7 +2690,7 @@ int nntp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_nntp_ops - Mailbox callback functions for NNTP mailboxes
+ * struct mx_nntp_ops - NNTP mailbox - Implements ::MxOps
  */
 struct MxOps mx_nntp_ops = {
   .magic            = MUTT_NNTP,

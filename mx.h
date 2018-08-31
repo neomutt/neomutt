@@ -93,8 +93,8 @@ struct Message
 /**
  * struct MxOps - The Mailbox API
  *
- * Each backend provides a set of functions through which the mailbox, messages
- * and tags are manipulated.
+ * Each backend provides a set of functions through which the mailbox, messages,
+ * tags and paths are manipulated.
  */
 struct MxOps
 {

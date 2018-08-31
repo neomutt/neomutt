@@ -1121,7 +1121,7 @@ int pop_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * mx_pop_ops - Mailbox callback functions for POP mailboxes
+ * mx_pop_ops - POP mailbox - Implements ::MxOps
  */
 struct MxOps mx_pop_ops = {
   .magic            = MUTT_POP,

@@ -2991,7 +2991,7 @@ int maildir_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_maildir_ops - Mailbox callback functions for Maildir mailboxes
+ * struct mx_maildir_ops - Maildir mailbox - Implements ::MxOps
  */
 struct MxOps mx_maildir_ops = {
   .magic            = MUTT_MAILDIR,
@@ -3014,7 +3014,7 @@ struct MxOps mx_maildir_ops = {
 };
 
 /**
- * struct mx_mh_ops - Mailbox callback functions for MH mailboxes
+ * struct mx_mh_ops - MH mailbox - Implements ::MxOps
  */
 struct MxOps mx_mh_ops = {
   .magic            = MUTT_MH,
