@@ -569,9 +569,9 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
 
 /**
  * nntp_expand_path - Make fully qualified url from newsgroup name
- * @param buf    Buffer containing newsgroup name
+ * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param acct Account to save result
+ * @param acct Account to serialise
  */
 void nntp_expand_path(char *buf, size_t buflen, struct Account *acct)
 {
