@@ -2790,7 +2790,7 @@ int imap_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_imap_ops - Mailbox callback functions for IMAP mailboxes
+ * struct mx_imap_ops - IMAP mailbox - Implements ::MxOps
  */
 struct MxOps mx_imap_ops = {
   .magic            = MUTT_IMAP,

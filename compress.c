@@ -969,7 +969,7 @@ int comp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_comp_ops - Mailbox callback functions for compressed mailboxes
+ * struct mx_comp_ops - Compressed mailbox - Implements ::MxOps 
  *
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.

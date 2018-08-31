@@ -1436,7 +1436,7 @@ int mbox_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_mbox_ops - Mailbox callback functions for mbox mailboxes
+ * struct mx_mbox_ops - Mbox mailbox - Implements ::MxOps
  */
 struct MxOps mx_mbox_ops = {
   .magic            = MUTT_MBOX,
@@ -1459,7 +1459,7 @@ struct MxOps mx_mbox_ops = {
 };
 
 /**
- * struct mx_mmdf_ops - Mailbox callback functions for MMDF mailboxes
+ * struct mx_mmdf_ops - MMDF mailbox - Implements ::MxOps
  */
 struct MxOps mx_mmdf_ops = {
   .magic            = MUTT_MMDF,
