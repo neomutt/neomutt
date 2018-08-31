@@ -5036,7 +5036,9 @@ void smime_gpgme_init(void)
 static int gpgme_send_menu(struct Header *msg, int is_smime)
 {
   struct CryptKeyInfo *p = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   int choice;
 
   if (is_smime)

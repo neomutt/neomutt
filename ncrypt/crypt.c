@@ -75,7 +75,7 @@ bool SmimeSelfEncrypt; ///< Config: Encrypted messages will also be encrypt to S
  *
  * print the current time to avoid spoofing of the signature output
  */
-void crypt_current_time(struct State *s, char *app_name)
+void crypt_current_time(struct State *s, const char *app_name)
 {
   time_t t;
   char p[STRING], tmp[STRING];

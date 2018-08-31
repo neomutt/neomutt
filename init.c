@@ -698,7 +698,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
  * @param name Attached/Inline, 'A', 'I'
  * @retval 0 Always
  */
-static int print_attach_list(struct ListHead *h, char op, char *name)
+static int print_attach_list(struct ListHead *h, const char op, const char *name)
 {
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)

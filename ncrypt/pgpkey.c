@@ -759,7 +759,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         if (OptPgpCheckTrust && (!pgp_id_is_valid(KeyTable[menu->current]) ||
                                  !pgp_id_is_strong(KeyTable[menu->current])))
         {
-          char *str = "";
+          const char *str = "";
           char buf2[LONG_STRING];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)

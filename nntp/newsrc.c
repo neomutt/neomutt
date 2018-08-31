@@ -540,7 +540,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
  * @param acct   Account
  * @param src    Path to add to the URL
  */
-static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *src)
+static void cache_expand(char *dst, size_t dstlen, struct Account *acct, const char *src)
 {
   char *c = NULL;
   char file[PATH_MAX];
@@ -551,7 +551,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
     struct Url url;
 
     mutt_account_tourl(acct, &url);
-    url.path = src;
+    url.path = mutt_str_strdup(src);
     url_tostring(&url, file, sizeof(file), U_PATH);
   }
   else

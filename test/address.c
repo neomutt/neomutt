@@ -53,8 +53,8 @@ void test_addr_mbox_to_udomain(void)
 
   { /* integration */
     char buf[256] = { 0 };
-    char *per = "bobby bob";
-    char *mbx = "bob@bobsdomain";
+    char per[64] = "bobby bob";
+    char mbx[64] = "bob@bobsdomain";
 
     struct Address addr = {
       .personal = per,
@@ -73,8 +73,8 @@ void test_addr_mbox_to_udomain(void)
   }
 
   { /* integration */
-    char *per = "bobby bob";
-    char *mbx = "bob@bobsdomain";
+    char per[64] = "bobby bob";
+    char mbx[64] = "bob@bobsdomain";
 
     struct Address addr = {
       .personal = per,

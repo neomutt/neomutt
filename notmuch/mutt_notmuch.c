@@ -311,7 +311,7 @@ static enum NmQueryType string_to_query_type(const char *str)
  *
  * @note This is a static string and must not be freed.
  */
-static char *query_type_to_string(enum NmQueryType query_type)
+static const char *query_type_to_string(enum NmQueryType query_type)
 {
   if (query_type == NM_QUERY_TYPE_THREADS)
     return "threads";

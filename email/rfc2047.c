@@ -435,7 +435,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   encoder_t encoder = NULL;
   char *tocode1 = NULL;
   const char *tocode = NULL;
-  char *icode = "utf-8";
+  const char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
   char *u = mutt_str_substr_dup(d, d + dlen);

@@ -189,14 +189,14 @@ static int nntp_capabilities(struct NntpServer *nserv)
   return -1;
 }
 
-char *OverviewFmt = "Subject:\0"
-                    "From:\0"
-                    "Date:\0"
-                    "Message-ID:\0"
-                    "References:\0"
-                    "Content-Length:\0"
-                    "Lines:\0"
-                    "\0";
+const char *OverviewFmt = "Subject:\0"
+                          "From:\0"
+                          "Date:\0"
+                          "Message-ID:\0"
+                          "References:\0"
+                          "Content-Length:\0"
+                          "Lines:\0"
+                          "\0";
 
 /**
  * nntp_attempt_features - Detect supported commands
@@ -278,7 +278,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
       return nntp_connect_error(nserv);
     }
     if (mutt_str_strncmp("215", buf, 3) != 0)
-      nserv->overview_fmt = OverviewFmt;
+      nserv->overview_fmt = mutt_str_strdup(OverviewFmt);
     else
     {
       int cont = 0;
@@ -990,10 +990,10 @@ static int fetch_description(char *line, void *data)
  * @retval -1 Connection lost
  * @retval -2 Error
  */
-static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
+static int get_description(struct NntpData *nntp_data, const char *wildmat, const char *msg)
 {
   char buf[STRING];
-  char *cmd = NULL;
+  const char *cmd = NULL;
 
   /* get newsgroup description, if possible */
   struct NntpServer *nserv = nntp_data->nserv;

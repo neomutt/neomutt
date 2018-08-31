@@ -1085,7 +1085,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && EditHeaders)))
         {
-          char *tag = NULL, *err = NULL;
+          const char *tag = NULL;
+          char *err = NULL;
           mutt_env_to_local(msg->env);
           mutt_edit_headers(NONULL(Editor), msg->content->filename, msg, fcc, fcclen);
           if (mutt_env_to_intl(msg->env, &tag, &err))

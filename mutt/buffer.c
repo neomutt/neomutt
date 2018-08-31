@@ -86,7 +86,7 @@ void mutt_buffer_reset(struct Buffer *b)
  * @param seed String to put in the Buffer
  * @retval ptr New Buffer
  */
-struct Buffer *mutt_buffer_from(char *seed)
+struct Buffer *mutt_buffer_from(const char *seed)
 {
   struct Buffer *b = NULL;
 

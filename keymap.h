@@ -103,9 +103,9 @@ extern const struct Mapping Menus[];
  */
 struct Binding
 {
-  char *name; /**< name of the function */
-  int op;     /**< function id number */
-  char *seq;  /**< default key binding */
+  const char *name; /**< name of the function */
+  int op;           /**< function id number */
+  const char *seq;  /**< default key binding */
 };
 
 const struct Binding *km_get_table(int menu);

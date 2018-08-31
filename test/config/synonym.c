@@ -103,8 +103,8 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Fig";
-  char *value = "tree";
+  const char *name = "Fig";
+  const char *value = "tree";
 
   mutt_buffer_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
@@ -149,7 +149,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Jackfruit";
+  const char *name = "Jackfruit";
   mutt_buffer_reset(err);
 
   TEST_MSG("Initial: %s = '%s'\n", name, NONULL(VarIlama));

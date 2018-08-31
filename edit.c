@@ -508,7 +508,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
         case 'v':
           if (be_barf_file(path, buf, buflen) == 0)
           {
-            char *tag = NULL, *err = NULL;
+            const char *tag = NULL;
+            char *err = NULL;
             be_free_memory(buf, buflen);
             buf = NULL;
             bufmax = 0;

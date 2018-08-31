@@ -275,7 +275,7 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static int km_bind_err(char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
+static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
 {
   int retval = 0;
   struct Keymap *last = NULL, *next = NULL;
@@ -394,7 +394,7 @@ int km_bind(char *s, int menu, int op, char *macro, char *desc)
  * @retval  0 Success
  * @retval -2 Error
  */
-static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
+static int km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
@@ -407,7 +407,7 @@ static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
  * @retval  0 Success
  * @retval -2 Error
  */
-static int km_bindkey(char *s, int menu, int op)
+static int km_bindkey(const char *s, int menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
@@ -442,7 +442,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
  *
  * @note This returns a static string.
  */
-static char *get_func(const struct Binding *bindings, int op)
+static const char *get_func(const struct Binding *bindings, int op)
 {
   for (int i = 0; bindings[i].name; i++)
   {
@@ -616,7 +616,7 @@ int km_dokey(int menu)
     /* do we have an op already? */
     if (tmp.op)
     {
-      char *func = NULL;
+      const char *func = NULL;
       const struct Binding *bindings = NULL;
 
       /* is this a valid op for this menu? */

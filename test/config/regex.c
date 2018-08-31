@@ -181,7 +181,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   const char *valid[] = { "hello.*", "world.*", "world.*", "", NULL };
-  char *name = "Damson";
+  const char *name = "Damson";
   char *regex = NULL;
 
   int rc;
@@ -303,7 +303,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   struct Regex *r = regex_create("hello.*", 0, err);
-  char *name = "Ilama";
+  const char *name = "Ilama";
   char *regex = NULL;
   bool result = false;
 
@@ -383,7 +383,7 @@ tns_out:
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Lemon";
+  const char *name = "Lemon";
 
   int rc = cs_str_string_set(cs, name, "lemon.*", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -410,7 +410,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Mango";
+  const char *name = "Mango";
 
   mutt_buffer_reset(err);
 
@@ -491,7 +491,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   struct Regex *r = regex_create("world.*", 0, err);
   bool result = false;
 
-  char *name = "Papaya";
+  const char *name = "Papaya";
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "hello.*", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))

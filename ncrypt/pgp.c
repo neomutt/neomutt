@@ -1811,7 +1811,9 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 int pgp_class_send_menu(struct Header *msg)
 {
   struct PgpKeyInfo *p = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   char promptbuf[LONG_STRING];
   int choice;
 

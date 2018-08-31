@@ -539,7 +539,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   char buf[LONG_STRING];
   char title[256];
   struct Menu *menu = NULL;
-  char *s = "";
+  const char *s = "";
   bool done = false;
 
   for (table_index = 0, key = keys; key; key = key->next)
@@ -2281,7 +2281,9 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 int smime_class_send_menu(struct Header *msg)
 {
   struct SmimeKey *key = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))

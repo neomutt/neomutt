@@ -733,7 +733,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
   char *buf = NULL, *ob = NULL;
   size_t ibl, obl;
   const char **inrepls = NULL;
-  char *outrepl = NULL;
+  const char *outrepl = NULL;
 
   if (mutt_ch_is_utf8(to))
     outrepl = "\357\277\275";

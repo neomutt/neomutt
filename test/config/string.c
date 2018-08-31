@@ -181,7 +181,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   const char *valid[] = { "hello", "world", "world", "", NULL };
-  char *name = "Damson";
+  const char *name = "Damson";
 
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
@@ -299,7 +299,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   const char *valid[] = { "hello", "world", "world", "", NULL };
-  char *name = "Jackfruit";
+  const char *name = "Jackfruit";
 
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
@@ -373,7 +373,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Mango";
+  const char *name = "Mango";
 
   int rc = cs_str_string_set(cs, name, "mango", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -396,7 +396,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Nectarine";
+  const char *name = "Nectarine";
   mutt_buffer_reset(err);
 
   TEST_MSG("Initial: %s = '%s'\n", name, VarNectarine);
@@ -465,7 +465,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Papaya";
+  const char *name = "Papaya";
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))

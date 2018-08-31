@@ -225,7 +225,7 @@ enum FieldType
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-static char *get_nth_wchar(struct MbTable *table, int index)
+static const char *get_nth_wchar(struct MbTable *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";
@@ -258,7 +258,7 @@ static const char *make_from_prefix(enum FieldType disp)
   if (!FromChars || !FromChars->chars || (FromChars->len == 0))
     return long_prefixes[disp];
 
-  char *pchar = get_nth_wchar(FromChars, disp);
+  const char *pchar = get_nth_wchar(FromChars, disp);
   if (mutt_str_strlen(pchar) == 0)
     return "";
 
@@ -524,7 +524,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
-  char *wch = NULL;
+  const char *wch = NULL;
   int i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
@@ -1270,7 +1270,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'z':
       if (src[0] == 's') /* status: deleted/new/old/replied */
       {
-        char *ch = NULL;
+        const char *ch = NULL;
         if (hdr->deleted)
           ch = get_nth_wchar(FlagChars, FlagCharDeleted);
         else if (hdr->attach_del)
@@ -1299,7 +1299,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 'c') /* crypto */
       {
-        char *ch = NULL;
+        const char *ch = NULL;
         if ((WithCrypto != 0) && (hdr->security & GOODSIGN))
           ch = "S";
         else if ((WithCrypto != 0) && (hdr->security & ENCRYPT))
@@ -1319,7 +1319,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else if (src[0] == 't') /* tagged, flagged, recipient */
       {
-        char *ch = NULL;
+        const char *ch = NULL;
         if (hdr->tagged)
           ch = get_nth_wchar(FlagChars, FlagCharTagged);
         else if (hdr->flagged)
@@ -1341,7 +1341,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'Z':
     {
       /* New/Old for threads; replied; New/Old for messages */
-      char *first = NULL;
+      const char *first = NULL;
       if (threads && thread_is_new(ctx, hdr))
         first = get_nth_wchar(FlagChars, FlagCharNewThread);
       else if (threads && thread_is_old(ctx, hdr))
@@ -1362,7 +1362,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
 
       /* Marked for deletion; deleted attachments; crypto */
-      char *second = NULL;
+      const char *second = NULL;
       if (hdr->deleted)
         second = get_nth_wchar(FlagChars, FlagCharDeleted);
       else if (hdr->attach_del)
@@ -1379,7 +1379,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         second = " ";
 
       /* Tagged, flagged and recipient flag */
-      char *third = NULL;
+      const char *third = NULL;
       if (hdr->tagged)
         third = get_nth_wchar(FlagChars, FlagCharTagged);
       else if (hdr->flagged)

@@ -1219,7 +1219,7 @@ bool mutt_is_message_type(int type, const char *subtype)
  */
 void mutt_parse_part(FILE *fp, struct Body *b)
 {
-  char *bound = NULL;
+  const char *bound = NULL;
 
   switch (b->type)
   {

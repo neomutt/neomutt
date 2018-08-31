@@ -205,9 +205,9 @@ struct ConfigSet *init_config(size_t size);
  */
 struct AttachMatch
 {
-  char *major;
+  const char *major;
   int major_int;
-  char *minor;
+  const char *minor;
   regex_t minor_regex;
 };
 

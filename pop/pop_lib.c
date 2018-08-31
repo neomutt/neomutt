@@ -508,7 +508,7 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
  * This function calls  func(*line, *data)  for each received line,
  * func(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  */
-int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
+int pop_fetch_data(struct PopData *pop_data, const char *query, struct Progress *progressbar,
                    int (*func)(char *, void *), void *data)
 {
   char buf[LONG_STRING];

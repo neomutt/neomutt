@@ -272,7 +272,7 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int edit_address(struct Address **a, /* const */ char *field)
+static int edit_address(struct Address **a, const char *field)
 {
   char buf[HUGE_STRING];
   char *err = NULL;
@@ -1554,7 +1554,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   /* save current value of "pgp_sign_as"  and "smime_default_key" */
   char *pgp_signas = NULL;
   char *smime_signas = NULL;
-  char *tag = NULL, *err = NULL;
+  const char *tag = NULL;
+  char *err = NULL;
   char *ctype = NULL;
   char *finalpath = NULL;
 

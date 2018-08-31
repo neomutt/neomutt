@@ -177,7 +177,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   const char *valid[] = { "hello", "world", "world", "", NULL };
-  char *name = "Damson";
+  const char *name = "Damson";
   char *mb = NULL;
 
   int rc;
@@ -295,7 +295,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   struct MbTable *t = mbtable_parse("hello");
-  char *name = "Ilama";
+  const char *name = "Ilama";
   char *mb = NULL;
   bool result = false;
 
@@ -342,7 +342,7 @@ tns_out:
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Kumquat";
+  const char *name = "Kumquat";
 
   int rc = cs_str_string_set(cs, name, "kumquat", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -369,7 +369,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Lemon";
+  const char *name = "Lemon";
 
   mutt_buffer_reset(err);
 
@@ -438,7 +438,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   struct MbTable *t = mbtable_parse("world");
   bool result = false;
 
-  char *name = "Nectarine";
+  const char *name = "Nectarine";
   char *mb = NULL;
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "hello", err);

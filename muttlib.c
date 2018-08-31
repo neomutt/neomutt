@@ -138,7 +138,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
   char tmp[PATH_MAX];
   char *t = NULL;
 
-  char *tail = "";
+  const char *tail = "";
 
   bool recurse = false;
 

@@ -43,8 +43,8 @@
 bool TsSupported; /**< Terminal Setting is supported */
 
 /* de facto standard escapes for tsl/fsl */
-static char *tsl = "\033]0;";
-static char *fsl = "\007";
+static const char *tsl = "\033]0;";
+static const char *fsl = "\007";
 
 /**
  * mutt_ts_capability - Check terminal capabilities
@@ -54,7 +54,7 @@ static char *fsl = "\007";
  */
 bool mutt_ts_capability(void)
 {
-  char *known[] = {
+  const char *known[] = {
     "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
     "putty",       "rxvt",   "screen", "xterm", NULL,
   };
@@ -85,7 +85,7 @@ bool mutt_ts_capability(void)
   /* Check term types that are known to support the standard escape without
    * necessarily asserting it in terminfo. */
   const char *term = mutt_str_getenv("TERM");
-  for (char **termp = known; termp; termp++)
+  for (const char **termp = known; termp; termp++)
   {
     if (term && *termp && (mutt_str_strncasecmp(term, *termp, strlen(*termp)) != 0))
       return true;

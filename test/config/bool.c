@@ -172,7 +172,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     "",
     NULL,
   };
-  char *name = "Damson";
+  const char *name = "Damson";
 
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
@@ -264,7 +264,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Fig";
+  const char *name = "Fig";
   bool value = true;
 
   TEST_MSG("Setting %s to %d\n", name, value);
@@ -327,7 +327,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Guava";
+  const char *name = "Guava";
 
   VarGuava = true;
   mutt_buffer_reset(err);
@@ -347,7 +347,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Hawthorn";
+  const char *name = "Hawthorn";
   VarHawthorn = true;
   mutt_buffer_reset(err);
 
@@ -406,7 +406,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Jackfruit";
+  const char *name = "Jackfruit";
   VarJackfruit = false;
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "yes", err);
@@ -595,7 +595,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
 
   struct ToggleTest tests[] = { { false, true }, { true, false } };
 
-  char *name = "Nectarine";
+  const char *name = "Nectarine";
   int rc;
 
   struct HashElem *he = cs_get_elem(cs, name);

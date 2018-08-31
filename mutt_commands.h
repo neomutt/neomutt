@@ -42,7 +42,7 @@ typedef int (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long dat
  */
 struct Command
 {
-  char *name;         /**< Name of the command */
+  const char *name;   /**< Name of the command */
   command_t func;     /**< Function to parse the command */
   unsigned long data; /**< Data or flags to pass to the command */
 };

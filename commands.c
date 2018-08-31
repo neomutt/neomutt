@@ -443,7 +443,7 @@ static void pipe_msg(struct Header *h, FILE *fp, bool decode, bool print)
  * The following code is shared between printing and piping.
  */
 static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
-                        bool split, char *sep)
+                        bool split, const char *sep)
 {
   int rc = 0;
   pid_t thepid;
@@ -755,7 +755,7 @@ void mutt_enter_command(void)
  */
 void mutt_display_address(struct Envelope *env)
 {
-  char *pfx = NULL;
+  const char *pfx = NULL;
   char buf[SHORT_STRING];
 
   struct Address *addr = mutt_get_address(env, &pfx);

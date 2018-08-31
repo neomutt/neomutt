@@ -633,9 +633,9 @@ void mutt_unget_event(int ch, int op)
  *
  * This puts events into the `UngetKeyEvents` buffer
  */
-void mutt_unget_string(char *s)
+void mutt_unget_string(const char *s)
 {
-  char *p = s + mutt_str_strlen(s) - 1;
+  const char *p = s + mutt_str_strlen(s) - 1;
 
   while (p >= s)
   {
@@ -738,7 +738,7 @@ void mutt_curs_set(int cursor)
  * @retval >=0 0-based user selection
  * @retval  -1 Selection aborted
  */
-int mutt_multi_choice(char *prompt, char *letters)
+int mutt_multi_choice(const char *prompt, const char *letters)
 {
   struct Event ch;
   int choice;

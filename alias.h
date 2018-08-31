@@ -51,7 +51,7 @@ void            mutt_aliaslist_free(struct AliasList *a_list);
 struct Address *mutt_alias_lookup(const char *s);
 void            mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_expand_aliases(struct Address *a);
-struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
+struct Address *mutt_get_address(struct Envelope *env, const char **pfxp);
 
 bool mutt_addr_is_user(struct Address *addr);
 int mutt_alias_complete(char *buf, size_t buflen);

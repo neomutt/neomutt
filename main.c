@@ -99,7 +99,7 @@ bool ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft 
  */
 static void test_parse_set(void)
 {
-  char *vars[] = {
+  const char *vars[] = {
     "from",        // ADDRESS
     "beep",        // BOOL
     "ispell",      // COMMAND
@@ -115,14 +115,14 @@ static void test_parse_set(void)
     "my_var",      // MY_VAR
   };
 
-  char *commands[] = {
+  const char *commands[] = {
     "set",
     "toggle",
     "reset",
     "unset",
   };
 
-  char *tests[] = {
+  const char *tests[] = {
     "%s %s",       "%s %s=42",  "%s %s?",     "%s ?%s",    "%s ?%s=42",
     "%s ?%s?",     "%s no%s",   "%s no%s=42", "%s no%s?",  "%s inv%s",
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
