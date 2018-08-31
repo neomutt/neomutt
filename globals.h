@@ -223,8 +223,8 @@ WHERE bool HeaderCacheCompress;            ///< Config: (hcache) Enable database
 WHERE bool Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool Help;                           ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
-WHERE bool ImapCheckSubscribed;            ///< Config: (imap) Ask the IMAP server for a list of subscribed folders
-WHERE bool ImapListSubscribed;             ///< Config: (imap) Get a list of mailboxes from the server
+WHERE bool ImapCheckSubscribed;            ///< Config: (imap) When opening a mailbox, ask the server for a list of subscribed folders
+WHERE bool ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
 WHERE bool ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
 WHERE bool ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
 #endif
