@@ -159,7 +159,7 @@ int mutt_complete(char *buf, size_t buflen)
     {
       char tmp[PATH_MAX];
       if (!mutt_path_concatn(tmp, sizeof(tmp), exp_dirpart, strlen(exp_dirpart),
-                                 buf + 1, (size_t)(p - buf - 1)))
+                             buf + 1, (size_t)(p - buf - 1)))
       {
         return -1;
       }

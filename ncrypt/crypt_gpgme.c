@@ -2496,8 +2496,8 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc);
-       complete = (strchr(buf, '\n')))
+  for (complete = true, armor_header = true;
+       mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
   {
     if (!complete)
     {

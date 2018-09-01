@@ -74,15 +74,15 @@ bool ForwardDecrypt; ///< Config: Decrypt the message when forwarding it
 bool HiddenHost; ///< Config: Don't use the hostname, just the domain, when generating the message id
 char *Inews;     ///< Config: (nntp) External command to post news articles
 bool MimeForwardDecode; ///< Config: Decode the forwarded message before attaching it
-bool MimeSubject; ///< Config: (nntp) Encode the article subject in base64
+bool MimeSubject;       ///< Config: (nntp) Encode the article subject in base64
 char *MimeTypeQueryCommand; ///< Config: External command to determine the MIME type of an attachment
 bool MimeTypeQueryFirst; ///< Config: Run the MimeTypeQueryCommand before the mime.types lookup
-char *Sendmail; ///< Config: External command to send email
-short SendmailWait; ///< Config: Time to wait for sendmail to finish
-bool Use8bitmime; ///< Config: Use 8-bit messages and ESMTP to send messages
+char *Sendmail;       ///< Config: External command to send email
+short SendmailWait;   ///< Config: Time to wait for sendmail to finish
+bool Use8bitmime;     ///< Config: Use 8-bit messages and ESMTP to send messages
 bool UseEnvelopeFrom; ///< Config: Set the envelope sender of the message
-bool UserAgent; ///< Config: Add a 'User-Agent' head to outgoing mail
-short WrapHeaders; ///< Config: Width to wrap headers in outgoing messages
+bool UserAgent;       ///< Config: Add a 'User-Agent' head to outgoing mail
+short WrapHeaders;    ///< Config: Width to wrap headers in outgoing messages
 
 /**
  * encode_quoted - Encode text as quoted printable

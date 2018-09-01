@@ -769,8 +769,7 @@ void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)
   {
-    if (a->personal &&
-        ((strstr(a->personal, "=?")) || (AssumedCharset && *AssumedCharset)))
+    if (a->personal && ((strstr(a->personal, "=?")) || (AssumedCharset && *AssumedCharset)))
     {
       rfc2047_decode(&a->personal);
     }

@@ -83,7 +83,7 @@ short PagerIndexLines; ///< Config: Number of index lines to display above the p
 bool PagerStop; ///< Config: Don't automatically open the next message when at the end of a message
 short SearchContext; ///< Config: Context to display around search matches
 short SkipQuotedOffset; ///< Config: Lines of context to show when skipping quoted text
-bool SmartWrap; ///< Config: Wrap text at word boundaries
+bool SmartWrap;         ///< Config: Wrap text at word boundaries
 struct Regex *Smileys; ///< Config: Regex to match smileys to prevent mistakes when quoting text
 bool Tilde; ///< Config: Character to pad blank lines in the pager
 
@@ -725,7 +725,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           {
             /* longer than the current prefix: try subclassing it */
             if (!tmp && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
-                                                 q_list->length - offset) == 0))
+                                          q_list->length - offset) == 0))
             {
               /* still a subclass: go down one level */
               ptr = q_list;

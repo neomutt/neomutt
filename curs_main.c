@@ -88,11 +88,11 @@
 
 /* These Config Variables are only used in curs_main.c */
 bool ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
-bool CollapseAll; ///< Config: Collapse all threads when entering a folder
+bool CollapseAll;      ///< Config: Collapse all threads when entering a folder
 bool CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
 bool CollapseUnread; ///< Config: Prevent the collapse of threads with unread emails
 char *MarkMacroPrefix; ///< Config: Prefix for macros using '<mark-message>'
-bool PgpAutoDecode; ///< Config: Automatically decrypt PGP messages
+bool PgpAutoDecode;    ///< Config: Automatically decrypt PGP messages
 bool UncollapseJump; ///< Config: When opening a thread, jump to the next unread message
 bool UncollapseNew; ///< Config: Open collapsed threads when new mail arrives
 
@@ -549,7 +549,8 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
    * switch statement would need to be run. */
   mutt_folder_hook(buf);
 
-  const int flags = (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
+  const int flags =
+      (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
   Context = mx_mbox_open(buf, flags);
   if (Context)
   {

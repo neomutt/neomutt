@@ -74,7 +74,7 @@
 int NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
 char *NmDefaultUri;  ///< Config: (notmuch) Path to the Notmuch database
 char *NmExcludeTags; ///< Config: (notmuch) Exclude messages with these tags
-int NmOpenTimeout; ///< Config: (notmuch) Database timeout
+int NmOpenTimeout;   ///< Config: (notmuch) Database timeout
 char *NmQueryType; ///< Config: (notmuch) Default query type: 'threads' or 'messages'
 int NmQueryWindowCurrentPosition; ///< Config: (notmuch) Position of current search window
 char *NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration

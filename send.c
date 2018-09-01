@@ -81,12 +81,12 @@ unsigned char AbortUnmodified; ///< Config: Abort the sending if the message has
 bool AskFollowUp; ///< Config: (nntp) Ask the user for follow-up groups before editing
 bool AskXCommentTo; ///< Config: (nntp) Ask the user for the 'X-Comment-To' field before editing
 char *ContentType; ///< Config: Default "Content-Type" for newly composed messages
-bool CryptAutoencrypt; ///< Config: Automatically PGP encrypt all outgoing mail
-bool CryptAutopgp; ///< Config: Allow automatic PGP functions
-bool CryptAutosign; ///< Config: Automatically PGP sign all outgoing mail
-bool CryptAutosmime; ///< Config: Allow automatic SMIME functions
+bool CryptAutoencrypt;  ///< Config: Automatically PGP encrypt all outgoing mail
+bool CryptAutopgp;      ///< Config: Allow automatic PGP functions
+bool CryptAutosign;     ///< Config: Automatically PGP sign all outgoing mail
+bool CryptAutosmime;    ///< Config: Allow automatic SMIME functions
 bool CryptReplyencrypt; ///< Config: Encrypt replies to encrypted messages
-bool CryptReplysign; ///< Config: Sign replies to signed messages
+bool CryptReplysign;    ///< Config: Sign replies to signed messages
 bool CryptReplysignencrypted; ///< Config: Sign replies to encrypted messages
 char *EmptySubject; ///< Config: Subject to use when replying to an email with none
 bool FastReply; ///< Config: Don't prompt for the recipients and subject when replying/forwarding
@@ -98,7 +98,7 @@ char *ForwardAttributionTrailer; ///< Config: Suffix message for forwarded messa
 unsigned char ForwardEdit; ///< Config: Automatically start the editor when forwarding a message
 char *ForwardFormat; ///< Config: printf-like format string to control the subject when forwarding a message
 bool ForwardReferences; ///< Config: Set the 'In-Reply-To' and 'References' headers when forwarding a message
-bool Hdrs; ///< Config: Add custom headers to outgoing mail
+bool Hdrs;              ///< Config: Add custom headers to outgoing mail
 unsigned char HonorFollowupTo; ///< Config: Honour the 'Mail-Followup-To' header when group replying
 bool IgnoreListReplyTo; ///< Config: Ignore the 'Reply-To' header when using `<reply>` on a mailing list
 unsigned char Include; ///< Config: Include a copy of the email that's being replied to
@@ -106,7 +106,7 @@ bool Metoo; ///< Config: Remove the user's address from the list of recipients
 bool NmRecord; ///< Config: (notmuch) If the 'record' mailbox (sent mail) should be indexed
 bool PgpReplyinline; ///< Config: Reply using old-style inline PGP messages (not recommended)
 char *PostIndentString; ///< Config: Suffix message to add after reply text
-bool PostponeEncrypt; ///< Config: Self-encrypt postponed messages
+bool PostponeEncrypt;   ///< Config: Self-encrypt postponed messages
 char *PostponeEncryptAs; ///< Config: Fallback encryption key for postponed messages
 unsigned char Recall; ///< Config: Recall postponed mesaages when asked to compose a message
 bool ReplySelf; ///< Config: Really reply to yourself, when replying to your own email
@@ -114,10 +114,10 @@ unsigned char ReplyTo; ///< Config: Address to use as a 'Reply-To' header
 bool ReplyWithXorig; ///< Config: Create 'From' header from 'X-Original-To' header
 bool ReverseName; ///< Config: Set the 'From' from the address the email was sent to
 bool ReverseRealname; ///< Config: Set the 'From' from the full 'To' address the email was sent to
-bool SigDashes; ///< Config: Insert '-- ' before the signature
+bool SigDashes;  ///< Config: Insert '-- ' before the signature
 char *Signature; ///< Config: File containing a signature to append to all mail
-bool SigOnTop; ///< Config: Insert the signature before the quoted text
-bool UseFrom; ///< Config: Set the 'From' header for outgoing mail
+bool SigOnTop;   ///< Config: Insert the signature before the quoted text
+bool UseFrom;    ///< Config: Set the 'From' header for outgoing mail
 
 /**
  * append_signature - Append a signature to an email

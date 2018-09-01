@@ -388,8 +388,9 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t buflen
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
   {
-    olen = (sasldata->blen - sasldata->bpos > buflen) ? buflen :
-                                                     sasldata->blen - sasldata->bpos;
+    olen = (sasldata->blen - sasldata->bpos > buflen) ?
+               buflen :
+               sasldata->blen - sasldata->bpos;
 
     memcpy(buf, sasldata->buf + sasldata->bpos, olen);
     sasldata->bpos += olen;
@@ -420,8 +421,9 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t buflen
       }
     } while (sasldata->blen == 0);
 
-    olen = (sasldata->blen - sasldata->bpos > buflen) ? buflen :
-                                                     sasldata->blen - sasldata->bpos;
+    olen = (sasldata->blen - sasldata->bpos > buflen) ?
+               buflen :
+               sasldata->blen - sasldata->bpos;
 
     memcpy(buf, sasldata->buf, olen);
     sasldata->bpos += olen;

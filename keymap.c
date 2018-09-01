@@ -275,7 +275,8 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
+static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc,
+                       struct Buffer *err)
 {
   int retval = 0;
   struct Keymap *last = NULL, *next = NULL;

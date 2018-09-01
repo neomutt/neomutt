@@ -87,7 +87,7 @@
 /* These Config Variables are only used in mx.c */
 unsigned char CatchupNewsgroup; ///< Config: (nntp) Mark all articles as read when leaving a newsgroup
 bool KeepFlagged; ///< Config: Don't move flagged messages from Spoolfile to Mbox
-short MboxType;     ///< Config: Default type for creating new mailboxes
+short MboxType;   ///< Config: Default type for creating new mailboxes
 unsigned char Move; ///< Config: Move emails from Spoolfile to Mbox when read
 char *Trash;        ///< Config: Folder to put deleted emails
 
@@ -95,7 +95,7 @@ char *Trash;        ///< Config: Folder to put deleted emails
  * mx_ops - All the Mailbox backends
  */
 static const struct MxOps *mx_ops[] = {
-  /* These mailboxes can be recognised by their Url scheme */
+/* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
   &mx_imap_ops,
 #endif
@@ -115,7 +115,7 @@ static const struct MxOps *mx_ops[] = {
   &mx_mh_ops,
   &mx_mmdf_ops,
 
-  /* If everything else fails... */
+/* If everything else fails... */
 #ifdef USE_COMPRESSED
   &mx_comp_ops,
 #endif

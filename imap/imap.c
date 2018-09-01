@@ -2051,8 +2051,8 @@ static int imap_mbox_open(struct Context *ctx)
   }
   /* pipeline the postponed count if possible */
   pmx.mbox = NULL;
-  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) && !imap_parse_path(Postponed, &pmx) &&
-      mutt_account_match(&pmx.account, &mx.account))
+  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) &&
+      !imap_parse_path(Postponed, &pmx) && mutt_account_match(&pmx.account, &mx.account))
   {
     imap_status(Postponed, true);
   }

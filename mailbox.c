@@ -358,7 +358,8 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
 
   if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
   {
-    struct Context *ctx = mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+    struct Context *ctx =
+        mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
     {
       mailbox->msg_count = ctx->msgcount;
@@ -413,7 +414,8 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
     else
 #endif
         if (stat(tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            ((tmp->magic == MUTT_UNKNOWN) && (tmp->magic = mx_path_probe(tmp->path, NULL)) <= 0))
+            ((tmp->magic == MUTT_UNKNOWN) &&
+             (tmp->magic = mx_path_probe(tmp->path, NULL)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to be
        * ready for when it does. */

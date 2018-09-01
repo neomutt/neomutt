@@ -1564,8 +1564,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif
           else
           {
-            mutt_path_concat(buf, LastDir, state.entry[menu->current].name,
-                                  sizeof(buf));
+            mutt_path_concat(buf, LastDir, state.entry[menu->current].name, sizeof(buf));
           }
 
           enum MailboxType magic = mx_path_probe(buf, NULL);
@@ -1626,8 +1625,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             else
             {
               char tmp[PATH_MAX];
-              mutt_path_concat(tmp, LastDir,
-                                    state.entry[menu->current].name, sizeof(tmp));
+              mutt_path_concat(tmp, LastDir, state.entry[menu->current].name, sizeof(tmp));
               mutt_str_strfcpy(LastDir, tmp, sizeof(LastDir));
             }
 
@@ -2133,8 +2131,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         {
           char buf2[PATH_MAX];
 
-          mutt_path_concat(buf2, LastDir, state.entry[menu->current].name,
-                                sizeof(buf2));
+          mutt_path_concat(buf2, LastDir, state.entry[menu->current].name, sizeof(buf2));
           struct Body *b = mutt_make_file_attach(buf2);
           if (b)
           {

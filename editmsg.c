@@ -93,7 +93,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     return -1;
   }
 
-  const int chflags = CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  const int chflags =
+      CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
   rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
   oerrno = errno;
 

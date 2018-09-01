@@ -408,8 +408,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     }
     mutt_sort_threads(ctx, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(Sort)) ||
-           !(AuxSort = mutt_get_sort_func(SortAux)))
+  else if (!(sortfunc = mutt_get_sort_func(Sort)) || !(AuxSort = mutt_get_sort_func(SortAux)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;

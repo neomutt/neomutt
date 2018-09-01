@@ -64,7 +64,7 @@
 
 /* These Config Variables are only used in recvattach.c */
 char *AttachSep; ///< Config: Separator to add between saved/printed/piped attachments
-bool AttachSplit; ///< Config: Save/print/pipe tagged messages individually
+bool AttachSplit;    ///< Config: Save/print/pipe tagged messages individually
 bool DigestCollapse; ///< Config: Hide the subparts of a multipart/digest
 char *MessageFormat; ///< Config: printf-like format string for listing attached messages
 
@@ -491,8 +491,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   {
     if (directory && *directory)
     {
-      mutt_path_concat(buf, *directory, mutt_path_basename(body->filename),
-                            sizeof(buf));
+      mutt_path_concat(buf, *directory, mutt_path_basename(body->filename), sizeof(buf));
     }
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));

@@ -968,7 +968,8 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   mutt_message(_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if ((Context->magic == MUTT_IMAP) && !(decode || decrypt) && (imap_path_probe(buf, NULL) == MUTT_IMAP))
+  if ((Context->magic == MUTT_IMAP) && !(decode || decrypt) &&
+      (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
     switch (imap_copy_messages(Context, h, buf, delete))
     {
@@ -1057,7 +1058,8 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       }
     }
 
-    const bool need_mailbox_cleanup = ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
+    const bool need_mailbox_cleanup =
+        ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
 
     mx_mbox_close(&savectx, NULL);
 

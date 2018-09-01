@@ -257,8 +257,8 @@ static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
  * @param buflen Length of the buffer
  * @param data Certificate
  */
-static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf, size_t buflen,
-                            const gnutls_datum_t *data)
+static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
+                            size_t buflen, const gnutls_datum_t *data)
 {
   unsigned char md[36];
   size_t n;

@@ -1007,7 +1007,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
 
     s = mutt_str_substr_dup(u, u + ulen);
     const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, 0) :
-                                 mutt_ch_check(s, ulen, fromcode, t);
+                       mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
     {
       FREE(&t);

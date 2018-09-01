@@ -1019,8 +1019,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
     mutt_make_post_indent(Context, parent_hdr, tmpfp);
 
-    if (mime_reply_any && !cur &&
-        !copy_problematic_attachments(&tmphdr->content, actx, false))
+    if (mime_reply_any && !cur && !copy_problematic_attachments(&tmphdr->content, actx, false))
     {
       mutt_header_free(&tmphdr);
       mutt_file_fclose(&tmpfp);

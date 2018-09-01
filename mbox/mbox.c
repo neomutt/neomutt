@@ -364,8 +364,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
           /* check to see if the content-length looks valid.  we expect to
            * to see a valid message separator at this point in the stream
            */
-          if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 ||
-              !fgets(buf, sizeof(buf), ctx->fp) ||
+          if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 || !fgets(buf, sizeof(buf), ctx->fp) ||
               (mutt_str_strncmp("From ", buf, 5) != 0))
           {
             mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
