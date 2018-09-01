@@ -33,6 +33,7 @@
 #include "mutt_thread.h"
 #include "context.h"
 #include "curs_lib.h"
+#include "mx.h"
 #include "protos.h"
 #include "sort.h"
 
@@ -1153,6 +1154,7 @@ void mutt_set_virtual(struct Context *ctx)
 
   ctx->vcount = 0;
   ctx->vsize = 0;
+  int padding = mx_msg_padding_size(ctx);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
@@ -1162,7 +1164,8 @@ void mutt_set_virtual(struct Context *ctx)
       cur->virtual = ctx->vcount;
       ctx->v2r[ctx->vcount] = i;
       ctx->vcount++;
-      ctx->vsize += cur->content->length + cur->content->offset - cur->content->hdr_offset;
+      ctx->vsize += cur->content->length + cur->content->offset -
+                    cur->content->hdr_offset + padding;
       cur->num_hidden = mutt_get_hidden(ctx, cur);
     }
   }

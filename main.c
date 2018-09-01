@@ -1122,6 +1122,10 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_MAILBOX)
     {
+#ifdef USE_IMAP
+      bool passive = ImapPassive;
+      ImapPassive = false;
+#endif
       if (mutt_mailbox_check(0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
@@ -1129,6 +1133,9 @@ int main(int argc, char *argv[], char *envp[])
       }
       folder[0] = '\0';
       mutt_mailbox(folder, sizeof(folder));
+#ifdef USE_IMAP
+      ImapPassive = passive;
+#endif
     }
     else if (flags & MUTT_SELECT)
     {

@@ -760,6 +760,10 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
       return -1; /* abort */
     }
   }
+  else if (flags & SEND_TO_SENDER)
+  {
+    mutt_addr_append(&out->to, in->from, 0);
+  }
   else
   {
     if (default_to(&out->to, in, flags & SEND_GROUP_REPLY, hmfupto) == MUTT_ABORT)
@@ -965,7 +969,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
   if (!curenv)
     return -1;
 
-  if (flags & SEND_REPLY)
+  if (flags & (SEND_REPLY|SEND_TO_SENDER))
   {
 #ifdef USE_NNTP
     if ((flags & SEND_NEWS))
@@ -999,8 +1003,11 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
       return -1;
     }
 
-    mutt_make_misc_reply_headers(env, curenv);
-    make_reference_headers(tag ? NULL : curenv, env, ctx);
+    if (flags & SEND_REPLY)
+    {
+      mutt_make_misc_reply_headers(env, curenv);
+      make_reference_headers (tag ? NULL : curenv, env, ctx);
+    }
   }
   else if (flags & SEND_FORWARD)
   {
@@ -1402,32 +1409,6 @@ static void fix_end_of_file(const char *data)
 }
 
 /**
- * mutt_compose_to_sender - Compose an email to the sender
- * @param hdr Header of original email
- * @retval  0 Message was successfully sent
- * @retval -1 Message was aborted or an error occurred
- * @retval  1 Message was postponed
- */
-int mutt_compose_to_sender(struct Header *hdr)
-{
-  struct Header *msg = mutt_header_new();
-
-  msg->env = mutt_env_new();
-  if (!hdr)
-  {
-    for (int i = 0; i < Context->msgcount; i++)
-    {
-      if (message_is_tagged(Context, i))
-        mutt_addr_append(&msg->env->to, Context->hdrs[i]->env->from, false);
-    }
-  }
-  else
-    msg->env->to = mutt_addr_copy_list(hdr->env->from, false);
-
-  return ci_send_message(0, msg, NULL, NULL, NULL);
-}
-
-/**
  * mutt_resend_message - Resend an email
  * @param fp  File containing email
  * @param ctx Mailbox
@@ -1513,7 +1494,7 @@ static bool search_attach_keyword(char *filename)
   while (!feof(attf))
   {
     fgets(inputline, LONG_STRING, attf);
-    if (regexec(QuoteRegex->regex, inputline, 0, NULL, 0) != 0 &&
+    if (!mutt_is_quote_line(inputline, NULL) &&
         regexec(AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
       found = true;
@@ -1729,7 +1710,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) && !((flags & SEND_DRAFT_FILE) && ResumeDraftFiles))
   {
-    if ((flags & (SEND_REPLY | SEND_FORWARD)) && ctx &&
+    if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) && ctx &&
         envelope_defaults(msg->env, ctx, cur, flags) == -1)
     {
       goto cleanup;

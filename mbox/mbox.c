@@ -604,6 +604,16 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   return 0;
 }
 
+static int mbox_msg_padding_size(struct Context *ctx)
+{
+  return 1;
+}
+
+static int mmdf_msg_padding_size(struct Context *ctx)
+{
+  return 10;
+}
+
 /**
  * reopen_mailbox - Close and reopen a mailbox
  * @param ctx        Mailbox
@@ -666,6 +676,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   ctx->hdrmax = 0; /* force allocation of new headers */
   ctx->msgcount = 0;
   ctx->vcount = 0;
+  ctx->vsize = 0;
   ctx->tagged = 0;
   ctx->deleted = 0;
   ctx->new = 0;
@@ -1006,7 +1017,6 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
-    need_sort = i;
     rc = i;
     goto bail;
   }
@@ -1449,6 +1459,7 @@ struct MxOps mx_mbox_ops = {
   .msg_open_new     = mbox_msg_open_new,
   .msg_commit       = mbox_msg_commit,
   .msg_close        = mbox_msg_close,
+  .msg_padding_size = mbox_msg_padding_size,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
@@ -1472,6 +1483,7 @@ struct MxOps mx_mmdf_ops = {
   .msg_open_new     = mbox_msg_open_new,
   .msg_commit       = mmdf_msg_commit,
   .msg_close        = mbox_msg_close,
+  .msg_padding_size = mmdf_msg_padding_size,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,

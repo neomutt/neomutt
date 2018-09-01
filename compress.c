@@ -893,6 +893,25 @@ int mutt_comp_valid_command(const char *cmd)
 }
 
 /**
+ * comp_msg_padding_size - Returns the padding between messages.
+ */
+static int comp_msg_padding_size(struct Context *ctx)
+{
+  if (!ctx)
+    return 0;
+
+  struct CompressInfo *ci = ctx->compress_info;
+  if (!ci)
+    return 0;
+
+  const struct MxOps *ops = ci->child_ops;
+  if (!ops || !ops->msg_padding_size)
+    return 0;
+
+  return ops->msg_padding_size(ctx);
+}
+
+/**
  * comp_path_probe - Is this a compressed mailbox? - Implements MxOps::path_probe
  */
 int comp_path_probe(const char *path, const struct stat *st)
@@ -969,7 +988,7 @@ int comp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_comp_ops - Compressed mailbox - Implements ::MxOps 
+ * struct mx_comp_ops - Compressed mailbox - Implements ::MxOps
  *
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.
@@ -986,6 +1005,7 @@ struct MxOps mx_comp_ops = {
   .msg_open_new     = comp_msg_open_new,
   .msg_commit       = comp_msg_commit,
   .msg_close        = comp_msg_close,
+  .msg_padding_size = comp_msg_padding_size,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = comp_path_probe,

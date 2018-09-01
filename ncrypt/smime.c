@@ -2113,63 +2113,70 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       state_attach_puts(_("[-- The following data is S/MIME signed --]\n"), s);
   }
 
-  if (smimeout)
+  fflush(smimeout);
+  rewind(smimeout);
+
+  if (type & ENCRYPT)
   {
-    fflush(smimeout);
+    /* void the passphrase, even if that wasn't the problem */
+    if (fgetc(smimeout) == EOF)
+    {
+      mutt_error(_("Decryption failed"));
+      smime_class_void_passphrase();
+    }
     rewind(smimeout);
-
-    if (out_file)
-      fpout = out_file;
-    else
-    {
-      fpout = mutt_file_mkstemp();
-      if (!fpout)
-      {
-        mutt_perror(_("Can't create temporary file"));
-        mutt_file_fclose(&smimeout);
-        mutt_file_fclose(&smimeerr);
-        return NULL;
-      }
-    }
-    char buf[HUGE_STRING];
-    while (fgets(buf, sizeof(buf) - 1, smimeout))
-    {
-      const size_t len = mutt_str_strlen(buf);
-      if (len > 1 && buf[len - 2] == '\r')
-      {
-        buf[len - 2] = '\n';
-        buf[len - 1] = '\0';
-      }
-      fputs(buf, fpout);
-    }
-    fflush(fpout);
-    rewind(fpout);
-
-    p = mutt_read_mime_header(fpout, 0);
-    if (p)
-    {
-      fstat(fileno(fpout), &info);
-      p->length = info.st_size - p->offset;
-
-      mutt_parse_part(fpout, p);
-      if (s->fpout)
-      {
-        rewind(fpout);
-        tmpfp_buffer = s->fpin;
-        s->fpin = fpout;
-        mutt_body_handler(p, s);
-        s->fpin = tmpfp_buffer;
-      }
-    }
-    mutt_file_fclose(&smimeout);
-    smimeout = NULL;
-
-    if (!out_file)
-    {
-      mutt_file_fclose(&fpout);
-    }
-    fpout = NULL;
   }
+
+  if (out_file)
+    fpout = out_file;
+  else
+  {
+    fpout = mutt_file_mkstemp();
+    if (!fpout)
+    {
+      mutt_perror(_("Can't create temporary file"));
+      mutt_file_fclose(&smimeout);
+      mutt_file_fclose(&smimeerr);
+      return NULL;
+    }
+  }
+  char buf[HUGE_STRING];
+  while (fgets(buf, sizeof(buf) - 1, smimeout))
+  {
+    const size_t len = mutt_str_strlen(buf);
+    if (len > 1 && buf[len - 2] == '\r')
+    {
+      buf[len - 2] = '\n';
+      buf[len - 1] = '\0';
+    }
+    fputs(buf, fpout);
+  }
+  fflush(fpout);
+  rewind(fpout);
+
+  p = mutt_read_mime_header(fpout, 0);
+  if (p)
+  {
+    fstat(fileno(fpout), &info);
+    p->length = info.st_size - p->offset;
+
+    mutt_parse_part(fpout, p);
+    if (s->fpout)
+    {
+      rewind(fpout);
+      tmpfp_buffer = s->fpin;
+      s->fpin = fpout;
+      mutt_body_handler(p, s);
+      s->fpin = tmpfp_buffer;
+    }
+  }
+  mutt_file_fclose(&smimeout);
+
+  if (!out_file)
+  {
+    mutt_file_fclose(&fpout);
+  }
+  fpout = NULL;
 
   if (s->flags & MUTT_DISPLAY)
   {

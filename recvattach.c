@@ -1568,6 +1568,13 @@ void mutt_view_attachments(struct Header *hdr)
         menu->redraw = REDRAW_FULL;
         break;
 
+      case OP_COMPOSE_TO_SENDER:
+        CHECK_ATTACH;
+        mutt_attach_mail_sender (CURATTACH->fp, hdr, actx,
+                                 menu->tagprefix ? NULL : CURATTACH->content);
+        menu->redraw = REDRAW_FULL;
+        break;
+
       case OP_EDIT_TYPE:
         recvattach_edit_content_type(actx, menu, hdr);
         menu->redraw |= REDRAW_INDEX;

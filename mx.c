@@ -394,9 +394,19 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
     return -1;
 
   if (!ctx->quiet)
+  {
+    /* L10N: Displayed before/as a mailbox is being synced */
     mutt_message(_("Writing %s..."), ctx->path);
+  }
 
-  return ctx->mx_ops->mbox_sync(ctx, index_hint);
+  int rc = ctx->mx_ops->mbox_sync(ctx, index_hint);
+  if ((rc != 0) && !ctx->quiet)
+  {
+    /* L10N: Displayed if a mailbox sync fails */
+    mutt_error(_("Unable to write %s!"), ctx->path);
+  }
+
+  return rc;
 }
 
 /**
@@ -775,7 +785,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
  */
 void mx_update_tables(struct Context *ctx, bool committing)
 {
-  int i, j;
+  int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
   ctx->vcount = 0;
@@ -786,6 +796,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   ctx->unread = 0;
   ctx->changed = false;
   ctx->flagged = 0;
+  padding = mx_msg_padding_size(ctx);
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
@@ -803,7 +814,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
         ctx->v2r[ctx->vcount] = j;
         ctx->hdrs[j]->virtual = ctx->vcount++;
         struct Body *b = ctx->hdrs[j]->content;
-        ctx->vsize += b->length + b->offset - b->hdr_offset;
+        ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
       if (committing)
@@ -1257,6 +1268,16 @@ int mx_check_empty(const char *path)
       return mh_check_empty(path);
     case MUTT_MAILDIR:
       return maildir_check_empty(path);
+#ifdef USE_IMAP
+    case MUTT_IMAP:
+    {
+      bool passive = ImapPassive;
+      ImapPassive = false;
+      int rv = imap_status(path, 0);
+      ImapPassive = passive;
+      return (rv <= 0);
+    }
+#endif
     default:
       errno = EINVAL;
       return -1;
@@ -1487,4 +1508,18 @@ int mx_path_parent(char *buf, size_t buflen)
     return -1;
 
   return 0;
+}
+
+/* mx_msg_padding_size: Returns the padding size between messages for the
+ * mailbox type pointed to by ctx.
+ *
+ * mmdf and mbox add separators, which leads a small discrepancy when computing
+ * vsize for a limited view.
+ */
+int mx_msg_padding_size(struct Context *ctx)
+{
+  if (!ctx->mx_ops || !ctx->mx_ops->msg_padding_size)
+    return 0;
+
+  return ctx->mx_ops->msg_padding_size(ctx);
 }

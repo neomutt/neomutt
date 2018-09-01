@@ -281,7 +281,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       </para>
       <para>
         Besides an interactive mode, NeoMutt can also be used as a command-line
-        tool only send messages. It also supports
+        tool to send messages. It also supports
         a <literal>mailx(1)</literal>-compatible interface, see
         <xref linkend="tab-commandline-options" /> for a complete list of
         command-line options.
@@ -3743,12 +3743,21 @@ alternates -group me -group work address3
         the named <emphasis>group</emphasis>.
       </para>
       <para>
-        To remove an alias or aliases (<quote>*</quote> means all aliases):
+        To add an alias:
       </para>
 
 <screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
 alias theguys manny, moe, jack
+</screen>
+
+      <para>
+      To remove an alias or aliases (<quote>*</quote> means all aliases):
+      </para>
+
+<screen>
+unalias muttdude
+unalias *
 </screen>
 
       <para>

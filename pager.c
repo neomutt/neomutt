@@ -823,6 +823,41 @@ static int check_attachment_marker(char *p)
   return (int) (*p - *q);
 }
 
+/* Checks if buf matches the QuoteRegex and doesn't match Smileys.
+ * pmatch, if non-null, is populated with the regexec match against
+ * QuoteRegex.  This is used by the pager for calling classify_quote.
+ */
+int mutt_is_quote_line(char *buf, regmatch_t *pmatch)
+{
+  int is_quote = 0;
+  regmatch_t pmatch_internal[1], smatch[1];
+  char c;
+
+  if (!pmatch)
+    pmatch = pmatch_internal;
+
+  if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+  {
+    if (Smileys && Smileys->regex && regexec(Smileys->regex, buf, 1, smatch, 0) == 0)
+    {
+      if (smatch[0].rm_so > 0)
+      {
+        c = buf[smatch[0].rm_so];
+        buf[smatch[0].rm_so] = 0;
+
+        if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+          is_quote = 1;
+
+        buf[smatch[0].rm_so] = c;
+      }
+    }
+    else
+      is_quote = 1;
+  }
+
+  return is_quote;
+}
+
 /**
  * resolve_types - Determine the style for a line of text
  * @param buf          Formatted text
@@ -840,7 +875,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           bool *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
-  regmatch_t pmatch[1], smatch[1];
+  regmatch_t pmatch[1];
   bool found;
   bool null_rx;
   int offset, i = 0;
@@ -929,47 +964,16 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (QuoteRegex && QuoteRegex->regex &&
-           regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+  else if (mutt_is_quote_line(buf, pmatch))
+
   {
-    if (Smileys && Smileys->regex && (regexec(Smileys->regex, buf, 1, smatch, 0) == 0))
+    if (q_classify && line_info[n].quote == NULL)
     {
-      if (smatch[0].rm_so > 0)
-      {
-        char c;
-
-        /* hack to avoid making an extra copy of buf */
-        c = buf[smatch[0].rm_so];
-        buf[smatch[0].rm_so] = 0;
-
-        if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
-        {
-          if (q_classify && !line_info[n].quote)
-          {
-            line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                                pmatch[0].rm_eo - pmatch[0].rm_so,
-                                                force_redraw, q_level);
-          }
-          line_info[n].type = MT_COLOR_QUOTED;
-        }
-        else
-          line_info[n].type = MT_COLOR_NORMAL;
-
-        buf[smatch[0].rm_so] = c;
-      }
-      else
-        line_info[n].type = MT_COLOR_NORMAL;
+      line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
+                                          pmatch[0].rm_eo - pmatch[0].rm_so,
+                                          force_redraw, q_level);
     }
-    else
-    {
-      if (q_classify && !line_info[n].quote)
-      {
-        line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                            pmatch[0].rm_eo - pmatch[0].rm_so,
-                                            force_redraw, q_level);
-      }
-      line_info[n].type = MT_COLOR_QUOTED;
-    }
+    line_info[n].type = MT_COLOR_QUOTED;
   }
   else
     line_info[n].type = MT_COLOR_NORMAL;
@@ -1220,37 +1224,6 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 }
 
 /**
- * trim_incomplete_mbyte - Remove an incomplete character
- * @param buf    Buffer containing string
- * @param buflen Length of buffer
- * @retval num Number of bytes remaining
- *
- * trim tail of buf so that it contains complete multibyte characters
- */
-static int trim_incomplete_mbyte(unsigned char *buf, size_t buflen)
-{
-  mbstate_t mbstate;
-  size_t k;
-
-  memset(&mbstate, 0, sizeof(mbstate));
-  for (; buflen > 0; buf += k, buflen -= k)
-  {
-    k = mbrtowc(NULL, (char *) buf, buflen, &mbstate);
-    if (k == (size_t)(-2))
-      break;
-    else if (k == (size_t)(-1) || k == 0)
-    {
-      if (k == (size_t)(-1))
-        memset(&mbstate, 0, sizeof(mbstate));
-      k = 1;
-    }
-  }
-  *buf = '\0';
-
-  return buflen;
-}
-
-/**
  * fill_buffer - Fill a buffer from a file
  * @param[in]     f         File to read from
  * @param[in,out] last_pos  End of last read
@@ -1284,11 +1257,6 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
     *buf_ready = 1;
 
     mutt_mem_realloc(fmt, *blen);
-
-    /* incomplete mbyte characters trigger a segfault in regex processing for
-     * certain versions of glibc. Trim them if necessary. */
-    if (b_read == *blen - 2)
-      b_read -= trim_incomplete_mbyte(*buf, b_read);
 
     /* copy "buf" to "fmt", but without bold and underline controls */
     p = *buf;
@@ -2931,7 +2899,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_COMPOSE_TO_SENDER:
-        mutt_compose_to_sender(extra->hdr);
+        CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        CHECK_ATTACH;
+        if (IsMsgAttach (extra))
+          mutt_attach_mail_sender (extra->fp, extra->hdr, extra->actx, extra->bdy);
+        else
+          ci_send_message (SEND_TO_SENDER, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
         break;
 

@@ -68,6 +68,7 @@ int mutt_num_postponed(bool force);
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread);
 void mutt_update_num_postponed(void);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
+int mutt_is_quote_line(char *buf, regmatch_t *pmatch);
 
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp(const wchar_t *a, const wchar_t *b);

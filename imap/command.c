@@ -285,20 +285,28 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
   unsigned int msn, uid;
   struct Header *h = NULL;
+  char *flags = NULL;
+  int uid_checked = 0;
   int server_changes = 0;
 
   mutt_debug(3, "Handling FETCH\n");
 
-  if (mutt_str_atoui(s, &msn) < 0 || msn < 1 || msn > idata->max_msn)
+  if (mutt_str_atoui(s, &msn) < 0)
   {
-    mutt_debug(3, "#1 FETCH response ignored for this message\n");
+    mutt_debug(3, "Skipping FETCH response - illegal MSN\n");
+    return;
+  }
+
+  if ((msn < 1) || (msn > idata->max_msn))
+  {
+    mutt_debug(3, "Skipping FETCH response - MSN %u out of range\n", msn);
     return;
   }
 
   h = idata->msn_index[msn - 1];
   if (!h || !h->active)
   {
-    mutt_debug(3, "#2 FETCH response ignored for this message\n");
+    mutt_debug(3, "Skipping FETCH response - MSN %u not in msn_index\n", msn);
     return;
   }
 
@@ -320,16 +328,27 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
     if (mutt_str_strncasecmp("FLAGS", s, 5) == 0)
     {
-      imap_set_flags(idata, h, s, &server_changes);
-      if (server_changes)
+      flags = s;
+      if (uid_checked)
+        break;
+
+      s += 5;
+      SKIPWS(s);
+      if (*s != '(')
       {
-        /* If server flags could conflict with neomutt's flags, reopen the mailbox. */
-        if (h->changed)
-          idata->reopen |= IMAP_EXPUNGE_PENDING;
-        else
-          idata->check_status = IMAP_FLAGS_PENDING;
+        mutt_debug(1, "bogus FLAGS response: %s\n", s);
+        return;
       }
-      return;
+      s++;
+      while (*s && *s != ')')
+        s++;
+      if (*s == ')')
+        s++;
+      else
+      {
+        mutt_debug(1, "Unterminated FLAGS response: %s\n", s);
+        return;
+      }
     }
     else if (mutt_str_strncasecmp("UID", s, 3) == 0)
     {
@@ -337,22 +356,38 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
       SKIPWS(s);
       if (mutt_str_atoui(s, &uid) < 0)
       {
-        mutt_debug(2, "Illegal UID.  Skipping update.\n");
+        mutt_debug(1, "Illegal UID.  Skipping update.\n");
         return;
       }
       if (uid != HEADER_DATA(h)->uid)
       {
-        mutt_debug(2, "FETCH UID vs MSN mismatch.  Skipping update.\n");
+        mutt_debug(1, "UID vs MSN mismatch.  Skipping update.\n");
         return;
       }
+      uid_checked = 1;
+      if (flags)
+        break;
       s = imap_next_word(s);
     }
     else if (*s == ')')
-      s++; /* end of request */
+      break; /* end of request */
     else if (*s)
     {
       mutt_debug(2, "Only handle FLAGS updates\n");
-      return;
+      break;
+    }
+  }
+
+  if (flags)
+  {
+    imap_set_flags(idata, h, flags, &server_changes);
+    if (server_changes)
+    {
+      /* If server flags could conflict with mutt's flags, reopen the mailbox. */
+      if (h->changed)
+        idata->reopen |= IMAP_EXPUNGE_PENDING;
+      else
+        idata->check_status = IMAP_FLAGS_PENDING;
     }
   }
 }
