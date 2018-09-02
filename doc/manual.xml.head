@@ -11273,7 +11273,7 @@ bind index,pager @ compose-to-sender
             then you can use <literal>.</literal> as the regex.
           </para>
 
-          <sect4 id="compress-open-hook-example">
+          <example id="compress-open-hook-example">
             <title>Example of
             <literal>open-hook</literal></title>
 
@@ -11301,7 +11301,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
                 </para>
               </listitem>
             </itemizedlist>
-          </sect4>
+          </example>
         </sect3>
 
         <sect3 id="close-hook">
@@ -11320,7 +11320,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
             </para>
           </note>
 
-          <sect4 id="compress-close-hook-example">
+          <example id="compress-close-hook-example">
             <title>Example of
             <literal>close-hook</literal></title>
             <screen>close-hook '\.gz$' "gzip --stdout '%t' &gt; '%f'"</screen>
@@ -11350,13 +11350,13 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
                 </para>
               </listitem>
             </itemizedlist>
-            <note>
-              <para>
-                The <literal>close-hook</literal> can also include extra
-                options, e.g. compression level: <literal>--best</literal>
-              </para>
-            </note>
-          </sect4>
+          </example>
+          <note>
+            <para>
+              The <literal>close-hook</literal> can also include extra
+              options, e.g. compression level: <literal>--best</literal>
+            </para>
+          </note>
         </sect3>
 
         <sect3 id="append-hook">
@@ -11390,7 +11390,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
             </para>
           </note>
 
-          <sect4 id="compress-append-hook-example">
+          <example id="compress-append-hook-example">
             <title>Example of
             <literal>append-hook</literal></title>
 
@@ -11425,13 +11425,13 @@ append-hook '\.gz$' "gzip --stdout '%t' &gt;&gt; '%f'"
                 </para>
               </listitem>
             </itemizedlist>
-            <note>
-              <para>
-                The <literal>append-hook</literal> can also include extra
-                options, e.g. compression level: <literal>--best</literal>
-              </para>
-            </note>
-          </sect4>
+          </example>
+          <note>
+            <para>
+              The <literal>append-hook</literal> can also include extra
+              options, e.g. compression level: <literal>--best</literal>
+            </para>
+          </note>
         </sect3>
 
         <sect3 id="compress-empty">
