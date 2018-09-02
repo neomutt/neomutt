@@ -18129,7 +18129,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
-              <link linkend="unsidebar-whitelist">unsidebar_whitelist</link>
+              <link linkend="sidebar-whitelist">unsidebar_whitelist</link>
             </command>
             <group choice="req">
               <arg choice="plain">
