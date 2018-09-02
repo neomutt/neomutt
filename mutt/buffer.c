@@ -255,14 +255,21 @@ struct Buffer *mutt_buffer_alloc(size_t size)
   return b;
 }
 
-/* Increases the allocated size of the buffer */
+/**
+ * mutt_buffer_increase_size - Increase the allocated size of a buffer
+ * @param buf      Buffer to change
+ * @param new_size New size
+ */
 void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
 {
-  if (new_size > buf->dsize)
-  {
-    size_t offset = buf->dptr - buf->data;
-    buf->dsize = new_size;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
-  }
+  if (!buf)
+    return;
+
+  if (new_size <= buf->dsize)
+    return;
+
+  size_t offset = buf->dptr - buf->data;
+  buf->dsize = new_size;
+  mutt_mem_realloc(&buf->data, buf->dsize);
+  buf->dptr = buf->data + offset;
 }

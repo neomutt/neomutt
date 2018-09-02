@@ -893,7 +893,9 @@ int mutt_comp_valid_command(const char *cmd)
 }
 
 /**
- * comp_msg_padding_size - Returns the padding between messages.
+ * comp_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * @param ctx Mailbox
+ * @retval num Number of bytes of padding
  */
 static int comp_msg_padding_size(struct Context *ctx)
 {

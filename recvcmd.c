@@ -1036,6 +1036,13 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   }
 }
 
+/**
+ * mutt_attach_mail_sender - Compose an email to the sender in the email attachment
+ * @param fp   File containing attachment (UNUSED)
+ * @param hdr  Header of email (UNUSED)
+ * @param actx Attachment Context
+ * @param cur  Current attachment
+ */
 void mutt_attach_mail_sender(FILE *fp, struct Header *hdr,
                              struct AttachCtx *actx, struct Body *cur)
 {

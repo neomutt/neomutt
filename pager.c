@@ -823,36 +823,41 @@ static int check_attachment_marker(char *p)
   return (int) (*p - *q);
 }
 
-/* Checks if buf matches the QuoteRegex and doesn't match Smileys.
- * pmatch, if non-null, is populated with the regexec match against
- * QuoteRegex.  This is used by the pager for calling classify_quote.
+/**
+ * mutt_is_quote_line - Is a line of message text a quote?
+ * @param[in]  line   Line to test
+ * @param[out] pmatch Regex sub-matches
+ * @retval true Line is quoted
+ *
+ * Checks if line matches the QuoteRegex and doesn't match Smileys.
+ * This is used by the pager for calling classify_quote.
  */
-int mutt_is_quote_line(char *buf, regmatch_t *pmatch)
+int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
-  int is_quote = 0;
+  bool is_quote = false;
   regmatch_t pmatch_internal[1], smatch[1];
   char c;
 
   if (!pmatch)
     pmatch = pmatch_internal;
 
-  if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+  if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, line, 1, pmatch, 0) == 0)
   {
-    if (Smileys && Smileys->regex && regexec(Smileys->regex, buf, 1, smatch, 0) == 0)
+    if (Smileys && Smileys->regex && regexec(Smileys->regex, line, 1, smatch, 0) == 0)
     {
       if (smatch[0].rm_so > 0)
       {
-        c = buf[smatch[0].rm_so];
-        buf[smatch[0].rm_so] = 0;
+        c = line[smatch[0].rm_so];
+        line[smatch[0].rm_so] = 0;
 
-        if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
-          is_quote = 1;
+        if (regexec(QuoteRegex->regex, line, 1, pmatch, 0) == 0)
+          is_quote = true;
 
-        buf[smatch[0].rm_so] = c;
+        line[smatch[0].rm_so] = c;
       }
     }
     else
-      is_quote = 1;
+      is_quote = true;
   }
 
   return is_quote;
@@ -2899,12 +2904,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_COMPOSE_TO_SENDER:
-        CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
-        if (IsMsgAttach (extra))
-          mutt_attach_mail_sender (extra->fp, extra->hdr, extra->actx, extra->bdy);
+        if (IsMsgAttach(extra))
+          mutt_attach_mail_sender(extra->fp, extra->hdr, extra->actx, extra->bdy);
         else
-          ci_send_message (SEND_TO_SENDER, NULL, NULL, extra->ctx, extra->hdr);
+          ci_send_message(SEND_TO_SENDER, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
         break;
 

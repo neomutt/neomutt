@@ -1570,8 +1570,8 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_COMPOSE_TO_SENDER:
         CHECK_ATTACH;
-        mutt_attach_mail_sender (CURATTACH->fp, hdr, actx,
-                                 menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_mail_sender(CURATTACH->fp, hdr, actx,
+                                menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 

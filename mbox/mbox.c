@@ -604,11 +604,21 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   return 0;
 }
 
+/**
+ * mbox_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * @param ctx Mailbox
+ * @retval 1 Always
+ */
 static int mbox_msg_padding_size(struct Context *ctx)
 {
   return 1;
 }
 
+/**
+ * mmdf_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * @param ctx Mailbox
+ * @retval 10 Always
+ */
 static int mmdf_msg_padding_size(struct Context *ctx)
 {
   return 10;

@@ -403,7 +403,7 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
   if ((rc != 0) && !ctx->quiet)
   {
     /* L10N: Displayed if a mailbox sync fails */
-    mutt_error(_("Unable to write %s!"), ctx->path);
+    mutt_error(_("Unable to write %s"), ctx->path);
   }
 
   return rc;
@@ -1273,7 +1273,7 @@ int mx_check_empty(const char *path)
     {
       bool passive = ImapPassive;
       ImapPassive = false;
-      int rv = imap_status(path, 0);
+      int rv = imap_status(path, false);
       ImapPassive = passive;
       return (rv <= 0);
     }
@@ -1510,8 +1510,10 @@ int mx_path_parent(char *buf, size_t buflen)
   return 0;
 }
 
-/* mx_msg_padding_size: Returns the padding size between messages for the
- * mailbox type pointed to by ctx.
+/**
+ * mx_msg_padding_size - Bytes of padding between messages - Wrapper for MxOps::msg_padding_size
+ * @param ctx Mailbox
+ * @retval num Number of bytes of padding
  *
  * mmdf and mbox add separators, which leads a small discrepancy when computing
  * vsize for a limited view.

@@ -347,8 +347,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
   {
     link_errno = errno;
 
-    /*
-     * It is historically documented that link can return -1 if NFS
+    /* It is historically documented that link can return -1 if NFS
      * dies after creating the link.  In that case, we are supposed
      * to use stat to check if the link was created.
      *
@@ -361,7 +360,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
     if ((lstat(src, &ssb) == 0) && (lstat(target, &tsb) == 0) &&
         (compare_stat(&ssb, &tsb) == 0))
     {
-      mutt_debug(1, "link (%s, %s) reported failure: %s (%d) but actually succeded\n",
+      mutt_debug(1, "link (%s, %s) reported failure: %s (%d) but actually succeeded\n",
                  src, target, strerror(errno), errno);
       goto success;
     }
@@ -404,12 +403,11 @@ int mutt_file_safe_rename(const char *src, const char *target)
     return -1;
   }
 
-  /*
-   * Remove the compare_stat() check, because it causes problems with maildir on
-   * filesystems that don't properly support hard links, such as
-   * sshfs.  The filesystem creates the link, but the resulting file
-   * is given a different inode number by the sshfs layer.  This
-   * results in an infinite loop creating links.
+  /* Remove the compare_stat() check, because it causes problems with maildir
+   * on filesystems that don't properly support hard links, such as sshfs.  The
+   * filesystem creates the link, but the resulting file is given a different
+   * inode number by the sshfs layer.  This results in an infinite loop
+   * creating links.
    */
 #if 0
   /* Stat both links and check if they are equal. */

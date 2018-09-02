@@ -1767,7 +1767,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        ci_send_message (SEND_TO_SENDER, NULL, NULL, Context, tag ? NULL : CURHDR);
+        ci_send_message(SEND_TO_SENDER, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
