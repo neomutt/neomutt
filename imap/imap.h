@@ -34,6 +34,7 @@
  * | imap/auth_cram.c  | @subpage imap_auth_cram  |
  * | imap/auth_gss.c   | @subpage imap_auth_gss   |
  * | imap/auth_login.c | @subpage imap_auth_login |
+ * | imap/auth_oauth.c | @subpage imap_auth_oauth |
  * | imap/auth_plain.c | @subpage imap_auth_plain |
  * | imap/auth_sasl.c  | @subpage imap_auth_sasl  |
  * | imap/browse.c     | @subpage imap_browse     |

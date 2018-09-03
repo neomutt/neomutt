@@ -67,22 +67,12 @@ bool ImapServernoise; ///< Config: (imap) Display server warnings as error messa
  * @note Gmail documents one string but use another, so we support both.
  */
 static const char *const Capabilities[] = {
-  "IMAP4",
-  "IMAP4rev1",
-  "STATUS",
-  "ACL",
-  "NAMESPACE",
-  "AUTH=CRAM-MD5",
-  "AUTH=GSSAPI",
-  "AUTH=ANONYMOUS",
-  "AUTH=OAUTHBEARER",
-  "STARTTLS",
-  "LOGINDISABLED",
-  "IDLE",
-  "SASL-IR",
-  "ENABLE",
-  "X-GM-EXT-1",
-  "X-GM-EXT1",
+  "IMAP4",       "IMAP4rev1",      "STATUS",
+  "ACL",         "NAMESPACE",      "AUTH=CRAM-MD5",
+  "AUTH=GSSAPI", "AUTH=ANONYMOUS", "AUTH=OAUTHBEARER",
+  "STARTTLS",    "LOGINDISABLED",  "IDLE",
+  "SASL-IR",     "ENABLE",         "CONDSTORE",
+  "QRESYNC",     "X-GM-EXT-1",     "X-GM-EXT1",
   NULL,
 };
 
@@ -286,6 +276,97 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 }
 
 /**
+ * cmd_parse_vanished - Parse vanished command
+ * @param idata Server data
+ * @param s     String containing MSN of message to expunge
+ *
+ * Handle VANISHED (RFC7162), which is like expunge, but passes a seqset of UIDs.
+ * An optional (EARLIER) argument specifies not to decrement subsequent MSNs.
+ */
+static void cmd_parse_vanished(struct ImapData *idata, char *s)
+{
+  bool earlier = false;
+  int rc;
+  unsigned int uid = 0;
+
+  mutt_debug(2, "Handling VANISHED\n");
+
+  if (mutt_str_strncasecmp("(EARLIER)", s, 9) == 0)
+  {
+    /* The RFC says we should not decrement msns with the VANISHED EARLIER tag.
+     * My experimentation says that's crap. */
+    earlier = true;
+    s = imap_next_word(s);
+  }
+
+  char *end_of_seqset = s;
+  while (*end_of_seqset)
+  {
+    if (!strchr("0123456789:,", *end_of_seqset))
+      *end_of_seqset = '\0';
+    else
+      end_of_seqset++;
+  }
+
+  struct SeqsetIterator *iter = mutt_seqset_iterator_new(s);
+  if (!iter)
+  {
+    mutt_debug(2, "VANISHED: empty seqset [%s]?\n", s);
+    return;
+  }
+
+  while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
+  {
+    struct Header *h = mutt_hash_int_find(idata->uid_hash, uid);
+    if (!h)
+      continue;
+
+    unsigned int exp_msn = HEADER_DATA(h)->msn;
+
+    /* imap_expunge_mailbox() will rewrite h->index.
+     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * makes the code simpler and possibly more efficient. */
+    h->index = INT_MAX;
+    HEADER_DATA(h)->msn = 0;
+
+    if ((exp_msn < 1) || (exp_msn > idata->max_msn))
+    {
+      mutt_debug(1, "VANISHED: msn for UID %u is incorrect.\n", uid);
+      continue;
+    }
+    if (idata->msn_index[exp_msn - 1] != h)
+    {
+      mutt_debug(1, "VANISHED: msn_index for UID %u is incorrect.\n", uid);
+      continue;
+    }
+
+    idata->msn_index[exp_msn - 1] = NULL;
+
+    if (!earlier)
+    {
+      /* decrement seqno of those above. */
+      for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
+      {
+        h = idata->msn_index[cur];
+        if (h)
+          HEADER_DATA(h)->msn--;
+        idata->msn_index[cur - 1] = h;
+      }
+
+      idata->msn_index[idata->max_msn - 1] = NULL;
+      idata->max_msn--;
+    }
+  }
+
+  if (rc < 0)
+    mutt_debug(1, "VANISHED: illegal seqset %s\n", s);
+
+  idata->reopen |= IMAP_EXPUNGE_PENDING;
+
+  mutt_seqset_iterator_free(&iter);
+}
+
+/**
  * cmd_parse_fetch - Load fetch response into ImapData
  * @param idata Server data
  * @param s     String containing MSN of message to fetch
@@ -381,6 +462,26 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
       if (flags)
         break;
       s = imap_next_word(s);
+    }
+    else if (mutt_str_strncasecmp("MODSEQ", s, 6) == 0)
+    {
+      s += 6;
+      SKIPWS(s);
+      if (*s != '(')
+      {
+        mutt_debug(1, "bogus MODSEQ response: %s\n", s);
+        return;
+      }
+      s++;
+      while (*s && *s != ')')
+        s++;
+      if (*s == ')')
+        s++;
+      else
+      {
+        mutt_debug(1, "Unterminated MODSEQ response: %s\n", s);
+        return;
+      }
     }
     else if (*s == ')')
       break; /* end of request */
@@ -851,6 +952,8 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
     {
       idata->unicode = 1;
     }
+    if (mutt_str_strncasecmp(s, "QRESYNC", 7) == 0)
+      idata->qresync = 1;
   }
 }
 
@@ -911,6 +1014,8 @@ static int cmd_handle_untagged(struct ImapData *idata)
     else if (mutt_str_strncasecmp("FETCH", s, 5) == 0)
       cmd_parse_fetch(idata, pn);
   }
+  else if ((idata->state >= IMAP_SELECTED) && (mutt_str_strncasecmp("VANISHED", s, 8) == 0))
+    cmd_parse_vanished(idata, pn);
   else if (mutt_str_strncasecmp("CAPABILITY", s, 10) == 0)
     cmd_parse_capability(idata, s);
   else if (mutt_str_strncasecmp("OK [CAPABILITY", s, 14) == 0)
@@ -1229,7 +1334,7 @@ void imap_cmd_finish(struct ImapData *idata)
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
       idata->check_status = IMAP_NEWMAIL_PENDING;
-      imap_read_headers(idata, idata->max_msn + 1, count);
+      imap_read_headers(idata, idata->max_msn + 1, count, false);
     }
     else if (idata->reopen & IMAP_EXPUNGE_PENDING)
     {

@@ -278,6 +278,39 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
 }
 
 /**
+ * mutt_str_atoull - Convert ASCII string to an unsigned long long
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters
+ * @retval  0 Successful conversion
+ * @retval -1 Invalid input
+ *
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoull(const char *str, unsigned long long *dst)
+{
+  unsigned long long r;
+  unsigned long long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoull(str, &e, 10);
+  if ((*res == ULLONG_MAX) && (errno == ERANGE))
+    return -1;
+  if (e && (*e != '\0'))
+    return 1;
+  return 0;
+}
+
+/**
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string

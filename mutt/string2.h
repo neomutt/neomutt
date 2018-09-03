@@ -68,6 +68,7 @@ int         mutt_str_atol(const char *str, long *dst);
 int         mutt_str_atos(const char *str, short *dst);
 int         mutt_str_atoui(const char *str, unsigned int *dst);
 int         mutt_str_atoul(const char *str, unsigned long *dst);
+int         mutt_str_atoull(const char *str, unsigned long long *dst);
 void        mutt_str_dequote_comment(char *s);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);

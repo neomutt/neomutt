@@ -41,7 +41,6 @@ struct ImapHeaderData
   bool deleted : 1;
   bool flagged : 1;
   bool replied : 1;
-  bool changed : 1;
 
   bool parsed : 1;
 

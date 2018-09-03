@@ -361,10 +361,11 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
-  ret = pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
+  ret =
+      pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
-                    /* don't print the bearer token unless we're at the ungodly debugging level */
-                    (DebugLevel < MUTT_SOCK_LOG_FULL) ? "AUTH OAUTHBEARER *\r\n" :
+                  /* don't print the bearer token unless we're at the ungodly debugging level */
+                  (DebugLevel < MUTT_SOCK_LOG_FULL) ? "AUTH OAUTHBEARER *\r\n" :
 #endif
                                                       NULL);
   FREE(&auth_cmd);

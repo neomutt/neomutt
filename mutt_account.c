@@ -46,8 +46,8 @@ char *ImapPass; ///< Config: (imap) Password for the IMAP server
 char *NntpPass; ///< Config: (nntp) Password for the news server
 char *NntpUser; ///< Config: (nntp) Username for the news server
 char *PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
-char *PopPass;  ///< Config: (pop) Password of the POP server
-char *PopUser;  ///< Config: (pop) Username of the POP server
+char *PopPass; ///< Config: (pop) Password of the POP server
+char *PopUser; ///< Config: (pop) Username of the POP server
 char *SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
 char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
