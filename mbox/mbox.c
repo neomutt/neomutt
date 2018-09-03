@@ -830,7 +830,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   {
     if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mtime) == 0) &&
         st.st_size == ctx->size)
+    {
       return 0;
+    }
 
     if (st.st_size == ctx->size)
     {

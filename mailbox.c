@@ -234,7 +234,7 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
    */
   if (check_new && MailCheckRecent)
   {
-    if (stat(path, &sb) == 0 &&
+    if ((stat(path, &sb) == 0) &&
         mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &mailbox->last_visited) < 0)
     {
       rc = 0;

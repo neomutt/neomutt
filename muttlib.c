@@ -1434,6 +1434,14 @@ void mutt_sleep(short s)
     sleep(s);
 }
 
+/**
+ * mutt_timespec_compare - Compare to time values
+ * @param a First time value
+ * @param b Second time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int mutt_timespec_compare(struct timespec *a, struct timespec *b)
 {
   if (a->tv_sec < b->tv_sec)
@@ -1448,6 +1456,12 @@ int mutt_timespec_compare(struct timespec *a, struct timespec *b)
   return 0;
 }
 
+/**
+ * mutt_get_stat_timespec - Read the stat() time into a time value
+ * @param dest Time value to populate
+ * @param sb   stat info
+ * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
+ */
 void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
 {
   dest->tv_nsec = 0;
@@ -1475,6 +1489,15 @@ void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttSta
   }
 }
 
+/**
+ * mutt_stat_timespec_compare - Compare stat info with a time value
+ * @param sba  stat info
+ * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
+ * @param b    Time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
 {
   struct timespec a;
@@ -1483,6 +1506,16 @@ int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct 
   return mutt_timespec_compare(&a, b);
 }
 
+/**
+ * mutt_stat_compare - Compare two stat infos
+ * @param sba      First stat info
+ * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
+ * @param sbb      Second stat info
+ * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type,
                       struct stat *sbb, enum MuttStatType sbb_type)
 {

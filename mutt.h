@@ -55,6 +55,9 @@ struct Mapping;
 #endif
 
 #ifndef HAVE_STRUCT_TIMESPEC
+/**
+ * struct timespec - Time value with nanosecond precision
+ */
 struct timespec
 {
   time_t tv_sec;
@@ -62,7 +65,11 @@ struct timespec
 };
 #endif
 
-/* flags for mutt_get_stat_timespec */
+/**
+ * enum MuttStatType - Flags for mutt_get_stat_timespec
+ *
+ * These represent filesystem timestamps returned by stat()
+ */
 enum MuttStatType
 {
   MUTT_STAT_ATIME,

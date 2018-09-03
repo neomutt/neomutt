@@ -121,10 +121,14 @@ void mutt_need_hard_redraw(void)
   mutt_menu_set_current_redraw_full();
 }
 
-/* delay is just like for timeout() or poll():
- *   the number of milliseconds mutt_getch() should block for input.
- *   delay == 0 means mutt_getch() is non-blocking.
- *   delay < 0 means mutt_getch is blocking.
+/**
+ * mutt_getch_timeout - Set the getch() timeout
+ * @param delay Timeout delay in ms
+ *
+ * delay is just like for timeout() or poll(): the number of milliseconds
+ * mutt_getch() should block for input.
+ * * delay == 0 means mutt_getch() is non-blocking.
+ * * delay < 0 means mutt_getch is blocking.
  */
 void mutt_getch_timeout(int delay)
 {
@@ -133,6 +137,11 @@ void mutt_getch_timeout(int delay)
 }
 
 #ifdef USE_INOTIFY
+/**
+ * mutt_monitor_getch - Get a character and poll the filesystem monitor
+ * @retval num Character pressed
+ * @retval ERR Timeout
+ */
 static int mutt_monitor_getch(void)
 {
   /* ncurses has its own internal buffer, so before we perform a poll,

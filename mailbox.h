@@ -56,9 +56,9 @@ struct Mailbox
   bool new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */
-  int msg_count;   /**< total number of messages */
-  int msg_unread;  /**< number of unread messages */
-  int msg_flagged; /**< number of flagged messages */
+  int msg_count;             /**< total number of messages */
+  int msg_unread;            /**< number of unread messages */
+  int msg_flagged;           /**< number of flagged messages */
 
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */
