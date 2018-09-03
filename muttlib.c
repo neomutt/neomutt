@@ -1500,7 +1500,7 @@ void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttSta
  */
 int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
 {
-  struct timespec a;
+  struct timespec a = { 0 };
 
   mutt_get_stat_timespec(&a, sba, type);
   return mutt_timespec_compare(&a, b);
@@ -1519,7 +1519,8 @@ int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct 
 int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type,
                       struct stat *sbb, enum MuttStatType sbb_type)
 {
-  struct timespec a, b;
+  struct timespec a = { 0 };
+  struct timespec b = { 0 };
 
   mutt_get_stat_timespec(&a, sba, sba_type);
   mutt_get_stat_timespec(&b, sbb, sbb_type);
