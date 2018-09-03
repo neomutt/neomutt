@@ -47,7 +47,7 @@ msgstr "Hulp"
 
 #: addrbook.c:209
 msgid "You have no aliases"
-msgstr "Geen afkortingen opgegeven"
+msgstr "Geen afkortingen beschikbaar"
 
 #: addrbook.c:216
 msgid "Aliases"
@@ -110,7 +110,7 @@ msgstr "Fout tijdens doorzoeken adresbestand"
 #: bcache.c:207
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Het pad is te lang: %s%s%s"
 
 #: bcache.c:215
 #, fuzzy, c-format
@@ -128,7 +128,7 @@ msgstr "Andere map"
 
 #: browser.c:82
 msgid "Goto"
-msgstr ""
+msgstr "Ga naar"
 
 #: browser.c:83 browser.c:95
 msgid "Mask"
@@ -136,7 +136,7 @@ msgstr "Masker"
 
 #: browser.c:91
 msgid "List"
-msgstr ""
+msgstr "Lijst"
 
 #: browser.c:92
 #, fuzzy
@@ -165,7 +165,7 @@ msgstr "Geabonneerd op %s"
 #: browser.c:1159
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Beschikbare nieuwsgroepen"
 
 #: browser.c:1169
 #, c-format
@@ -200,11 +200,11 @@ msgstr "Alleen IMAP-postvakken kunnen verwijderd worden"
 #: browser.c:1785 browser.c:1813
 #, fuzzy
 msgid "Mailbox deletion failed"
-msgstr "Postvak is verwijderd"
+msgstr "Postvak is niet verwijderd"
 
 #: browser.c:1790
 msgid "Cannot delete root folder"
-msgstr "Kan de basismap niet verwijderen"
+msgstr "Kan de hoofdmap niet verwijderen"
 
 #: browser.c:1793
 #, c-format
@@ -246,7 +246,7 @@ msgstr "Sorteren op (d)atum, bestands(g)rootte, (a)lfabet of helemaal (n)iet?"
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1983
 msgid "dazecwn"
-msgstr ""
+msgstr "dgan"
 
 #: browser.c:2089
 msgid "New file name: "
@@ -293,7 +293,7 @@ msgstr "%s: onbekend object"
 #: color.c:600
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s: commando is alleen geldig voor index, body en headerobjecten"
+msgstr "%s: commando is alleen geldig voor index-, body- en headerobjecten"
 
 #: color.c:607 color.c:822 color.c:848 color.c:894 color.c:905 color.c:932
 #: color.c:1011 hook.c:111 hook.c:124 init.c:619 init.c:627 init.c:722
@@ -336,11 +336,11 @@ msgstr "Bericht kon niet gekopieerd worden."
 
 #: commands.c:225
 msgid "S/MIME signature successfully verified"
-msgstr "S/MIME-handtekening is correct bevonden"
+msgstr "S/MIME-handtekening werd goed geverifieerd"
 
 #: commands.c:227
 msgid "S/MIME certificate owner does not match sender"
-msgstr "S/MIME-certificaateigenaar komt niet overeen met afzender"
+msgstr "S/MIME-certificaateigenaar komt niet overeen met de afzender"
 
 #: commands.c:230 commands.c:240
 msgid "Warning: Part of this message has not been signed"
@@ -352,7 +352,7 @@ msgstr "S/MIME-handtekening kon NIET worden geverifieerd"
 
 #: commands.c:238
 msgid "PGP signature successfully verified"
-msgstr "PGP-handtekening is correct bevonden"
+msgstr "PGP-handtekening is goed geverifieerd"
 
 #: commands.c:242
 msgid "PGP signature could NOT be verified"
@@ -371,7 +371,7 @@ msgstr "Commando: "
 
 #: commands.c:299 commands.c:312 recvcmd.c:177 recvcmd.c:189
 msgid "Warning: message contains no From: header"
-msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
+msgstr "Waarschuwing: bericht bevat geen 'Van:'-onderdeel"
 
 #: commands.c:322 recvcmd.c:198
 #, fuzzy
@@ -398,15 +398,15 @@ msgstr[1] "Berichten doorsturen aan %s"
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
-msgstr[0] "Bericht niet doorgestuurd"
-msgstr[1] "Berichten niet doorgestuurd"
+msgstr[0] "Bericht is niet doorgestuurd"
+msgstr[1] "Berichten zijn niet doorgestuurd"
 
 #: commands.c:377 recvcmd.c:263
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
-msgstr[0] "Bericht doorgestuurd"
-msgstr[1] "Berichten doorgestuurd"
+msgstr[0] "Bericht is doorgestuurd"
+msgstr[1] "Berichten zijn doorgestuurd"
 
 #: commands.c:467 commands.c:509 commands.c:529
 msgid "Can't create filter process"
@@ -471,7 +471,7 @@ msgstr "Decoderen-opslaan in postvak"
 #: commands.c:885
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr "Decoderen-opslaan gemarkeerd in postvak"
+msgstr "Decoderen-opslaan gemarkeerd bericht naar postvak"
 
 #: commands.c:887
 #, fuzzy
@@ -481,7 +481,7 @@ msgstr "Ontsleutelen-opslaan in postvak"
 #: commands.c:887
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr "Ontsleutelen-opslaan gemarkeerd in postvak"
+msgstr "Ontsleutelen-opslaan gemarkeerd bericht naar postvak"
 
 #: commands.c:889
 #, fuzzy
@@ -491,27 +491,27 @@ msgstr "Opslaan in postvak"
 #: commands.c:889
 #, fuzzy
 msgid "Save tagged to mailbox"
-msgstr "Opslaan gemarkeerd in postvak"
+msgstr "Sla gemarkeerd bericht op in postvak"
 
 #: commands.c:894
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "Decoderen-kopiëren naar postvak"
+msgstr "Decoderen-kopieer naar postvak"
 
 #: commands.c:894
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr "Decoderen-kopiëren gemarkeerd naar postvak"
+msgstr "Decoderen-kopieer gemarkeerd bericht naar postvak"
 
 #: commands.c:896
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgstr "Ontsleutelen-kopiëren naar postvak"
+msgstr "Ontsleutelen-kopieer naar postvak"
 
 #: commands.c:896
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr "Ontsleutelen-kopiëren gemarkeerd naar postvak"
+msgstr "Ontsleutelen-kopieer gemarkeerd bericht naar postvak"
 
 #: commands.c:898
 #, fuzzy
@@ -521,7 +521,7 @@ msgstr "Kopiëren naar postvak"
 #: commands.c:898
 #, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr "Kopiëren gemarkeerd naar postvak"
+msgstr "Kopieer gemarkeerd bericht naar postvak"
 
 #: commands.c:968
 #, c-format
@@ -531,7 +531,7 @@ msgstr "Kopiëren naar %s..."
 #: commands.c:1129
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr "Converteren naar %s bij versturen?"
+msgstr "Converteren naar %s tijdens zending?"
 
 #: commands.c:1140
 #, c-format
@@ -555,12 +555,12 @@ msgstr "Bericht bevat geen bijlage"
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:127
 msgid "From: "
-msgstr ""
+msgstr "Van: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:129 send.c:337
 msgid "To: "
-msgstr ""
+msgstr "Naar: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:131 send.c:339
@@ -575,7 +575,7 @@ msgstr ""
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:135 compose.c:1041 send.c:373
 msgid "Subject: "
-msgstr ""
+msgstr "Onderwerp: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:137
@@ -729,7 +729,7 @@ msgstr "-- Bijlagen"
 
 #: compose.c:555
 msgid "You may not delete the only attachment"
-msgstr "Een bericht bestaat uit minimaal één gedeelte"
+msgstr "De laatste bijlagen kan je niet verwijderen"
 
 #: compose.c:1087 edit.c:521 send.c:2154
 #, c-format
@@ -739,41 +739,41 @@ msgstr "Ongeldige IDN in '%s': '%s'"
 #: compose.c:1135
 #, fuzzy
 msgid "Attachment is already at top"
-msgstr "Bijlage opgeslagen"
+msgstr "Bijlage staat al bovenaan"
 
 #: compose.c:1140 compose.c:1156
 #, fuzzy
 msgid "The fundamental part cannot be moved"
-msgstr "Deze bijlage zal niet geconverteerd worden"
+msgstr "Dit onderdeel kan niet verplaatst worden"
 
 #: compose.c:1151
 #, fuzzy
 msgid "Attachment is already at bottom"
-msgstr "Bijlage gefilterd"
+msgstr "De bijlage staat al onderaan"
 
 #: compose.c:1169
 msgid "Grouping alternatives requires at least 2 tagged messages"
-msgstr ""
+msgstr "Alternatieve groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1250
 msgid "Grouping multilingual requires at least 2 tagged messages"
-msgstr ""
+msgstr "Meertalige groeperingen vereisen zeker 2 gemarkeerde berichten"
 
 #: compose.c:1264
 msgid "Not all parts have Content-Language: set, continue?"
-msgstr ""
+msgstr "Niet alle onderdelen hebben taal ingesteld. Verdergaan?"
 
 #: compose.c:1266
 #, fuzzy
 msgid "Not sending this message"
-msgstr "Er is een fout opgetreden tijdens het versturen van het bericht"
+msgstr "Bericht kan niet verzonden worden"
 
 #: compose.c:1360
 #, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Opgegeven bestanden worden bijgevoegd..."
-msgstr[1] "Opgegeven bestanden worden bijgevoegd..."
+msgstr[0] "Opgegeven bestand toevoegen..."
+msgstr[1] "Opgegeven bestanden toevoegen..."
 
 #: compose.c:1374
 #, c-format
@@ -787,7 +787,7 @@ msgstr "Open postvak waaruit een bericht bijgevoegd moet worden"
 #: compose.c:1405
 #, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Open postvak waaruit een bericht bijgevoegd moet worden"
+msgstr "Open nieuwsgroep waaruit een bericht bijgevoegd moet worden"
 
 #: compose.c:1449
 #, c-format
@@ -886,7 +886,7 @@ msgstr "Bericht opgeslagen"
 
 #: compose.c:1939
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Geen PGP software beschikbaar"
 
 #: compose.c:1947
 msgid "S/MIME already selected. Clear and continue? "
@@ -894,7 +894,7 @@ msgstr "S/MIME is al geselecteerd.  Wissen & doorgaan? "
 
 #: compose.c:1973
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Geen S/MIME software beschikbaar"
 
 #: compose.c:1981
 msgid "PGP already selected. Clear and continue? "
@@ -902,7 +902,7 @@ msgstr "PGP is al geselecteerd.  Wissen & doorgaan? "
 
 #: compress.c:463 compress.c:528 compress.c:680 compress.c:851 mbox/mbox.c:999
 msgid "Unable to lock mailbox"
-msgstr "Kan postvak niet claimen"
+msgstr "Kan postvak niet vergrendelen"
 
 #: compress.c:467 compress.c:535 compress.c:684
 #, c-format
@@ -954,7 +954,7 @@ msgstr "Kan gecomprimeerd bestand niet synchroniseren zonder close-hook"
 #: compress.c:863
 #, c-format
 msgid "Compressing %s"
-msgstr "Comprimeren van %s"
+msgstr "%s comprimeren"
 
 #: conn/conn_raw.c:141 conn/conn_raw.c:172
 #, c-format
@@ -964,7 +964,7 @@ msgstr "Verbinding met %s is mislukt (%s)"
 #: conn/conn_raw.c:148 conn/conn_raw.c:179
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Verbinding met %s beëindigd"
+msgstr "Verbinding met %s is gestopt"
 
 #: conn/conn_raw.c:276 conn/conn_raw.c:334
 #, c-format
@@ -979,7 +979,7 @@ msgstr "Kan adres van server \"%s\" niet achterhalen"
 #: conn/conn_raw.c:291 conn/conn_raw.c:350
 #, c-format
 msgid "Connecting to %s..."
-msgstr "Bezig met verbinden met %s..."
+msgstr "Verbinden met %s..."
 
 #: conn/conn_raw.c:375
 #, c-format
@@ -996,7 +996,7 @@ msgstr "Onbekend SASL profiel"
 
 #: conn/sasl.c:589
 msgid "Error allocating SASL connection"
-msgstr "Fout bij het aanmaken van de SASL-connectie"
+msgstr "Fout bij het alloceren van SASL-connectie"
 
 #: conn/sasl.c:599
 msgid "Error setting SASL security properties"
@@ -1012,7 +1012,7 @@ msgstr "Fout bij het instellen van de externe SASL-gebruikersnaam"
 
 #: conn/socket.c:85
 msgid "Preconnect command failed"
-msgstr "Preconnect-commando is mislukt"
+msgstr "Voorverbindings commando is mislukt"
 
 #: conn/socket.c:242
 #, c-format
@@ -1031,11 +1031,11 @@ msgstr "%s heeft onveilige rechten"
 
 #: conn/ssl.c:369
 msgid "SSL disabled due to the lack of entropy"
-msgstr "SSL is uitgeschakeld vanwege te weinig entropie"
+msgstr "SSL is uitgeschakeld vanwege een tekort aan entropie"
 
 #: conn/ssl.c:411 ncrypt/crypt_gpgme.c:1538
 msgid "Unknown"
-msgstr "Onbekende fout"
+msgstr "Onbekend"
 
 #: conn/ssl.c:430 conn/ssl_gnutls.c:270
 #, c-format
@@ -1378,7 +1378,7 @@ msgstr ""
 #: curs_main.c:830 pager.c:1858
 #, fuzzy
 msgid "Followup"
-msgstr "Reactie sturen naar %s%s?"
+msgstr "Opvolging"
 
 #: curs_main.c:1001
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1403,7 +1403,7 @@ msgstr "Niets te doen"
 #: curs_main.c:1249
 #, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Geef keyID: "
+msgstr "Geef bericht-ID in: "
 
 #: curs_main.c:1259
 msgid "Article has no parent reference"
@@ -1412,12 +1412,12 @@ msgstr ""
 #: curs_main.c:1283
 #, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "Beginbericht is niet zichtbaar in deze beperkte weergave"
+msgstr "Bericht is niet zichtbaar in deze beperkte weergave"
 
 #: curs_main.c:1289
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
-msgstr "Berichten op de server worden gewist..."
+msgstr "%s wordt van de server gehaald..."
 
 #: curs_main.c:1299
 #, c-format
@@ -1435,7 +1435,7 @@ msgstr "Headers worden opgehaald..."
 #: curs_main.c:1396
 #, fuzzy
 msgid "No deleted messages found in the thread"
-msgstr "wis alle berichten in thread"
+msgstr "Geen verwijderde berichten gevonden in de thread"
 
 #: curs_main.c:1416
 msgid "Jump to message: "
@@ -1461,7 +1461,7 @@ msgstr "Dat bericht is niet zichtbaar"
 #: curs_main.c:1463 curs_main.c:2890 pager.c:2996
 #, fuzzy
 msgid "Cannot delete messages"
-msgstr "Kan bericht niet verwijderen"
+msgstr "Kan berichten niet verwijderen"
 
 #: curs_main.c:1466
 msgid "Delete messages matching: "
@@ -1518,21 +1518,21 @@ msgstr "Uitgelogd uit IMAP-servers"
 #: curs_main.c:1841
 #, fuzzy
 msgid "No virtual folder, aborting"
-msgstr "Geen onderwerp. Operatie afgebroken"
+msgstr "Vituele map niet gevonden, stoppen"
 
 #: curs_main.c:1849
 msgid "Failed to read thread, aborting"
-msgstr ""
+msgstr "Kan reeks niet lezen, stoppen"
 
 #: curs_main.c:1881 mx.c:1472 mx.c:1489
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
-msgstr "SMTP-server ondersteunt geen authenticatie"
+msgstr "Map ondersteunt geen markeringen, stoppen"
 
 #: curs_main.c:1896
 #, fuzzy
 msgid "No tag specified, aborting"
-msgstr "Geen onderwerp. Operatie afgebroken"
+msgstr "Geen markering opgegeven, stoppen"
 
 #: curs_main.c:1908
 #, c-format
@@ -1546,11 +1546,11 @@ msgstr ""
 #: curs_main.c:1990
 #, fuzzy
 msgid "No query, aborting"
-msgstr "Geen onderwerp. Operatie afgebroken"
+msgstr "Geen vraag, stoppen"
 
 #: curs_main.c:1994 curs_main.c:2014 curs_main.c:2033
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "Kan geen vraag moken, stoppen"
 
 #: curs_main.c:2003 curs_main.c:2022
 msgid "Windowed queries disabled"
@@ -1567,7 +1567,7 @@ msgstr "Open postvak in schrijfbeveiligde modus"
 #: curs_main.c:2068
 #, fuzzy
 msgid "Open virtual folder"
-msgstr "open een ander postvak"
+msgstr "Open virtuele map"
 
 #: curs_main.c:2071
 msgid "Open mailbox"
@@ -1580,7 +1580,7 @@ msgstr "Geen postvak met nieuwe berichten"
 #: curs_main.c:2128
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Open postvak in schrijfbeveiligde modus"
+msgstr "Open nieuwsgroep in schrijfbeveiligde modus"
 
 #: curs_main.c:2130
 msgid "Open newsgroup"
