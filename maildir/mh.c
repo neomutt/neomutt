@@ -64,6 +64,9 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* These Config Variables are only used in maildir/mh.c */
 bool CheckNew; ///< Config: (maildir,mh) Check for new mail while the mailbox is open
@@ -105,7 +108,7 @@ struct MhSequences
  */
 struct MhData
 {
-  time_t mtime_cur;
+  struct timespec mtime_cur;
   mode_t mh_umask;
 };
 
@@ -300,7 +303,7 @@ static int mh_sequences_changed(struct Mailbox *b)
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return sb.st_mtime > b->last_visited;
+    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &b->last_visited) > 0);
   }
   return -1;
 }
@@ -321,7 +324,7 @@ static int mh_already_notified(struct Mailbox *b, int msgno)
   if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return sb.st_mtime <= b->last_visited;
+    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &b->last_visited) <= 0);
   }
   return -1;
 }
@@ -853,20 +856,20 @@ static void maildir_update_mtime(struct Context *ctx)
   {
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, "cur");
     if (stat(buf, &st) == 0)
-      data->mtime_cur = st.st_mtime;
+      mutt_get_stat_timespec(&data->mtime_cur, &st, MUTT_STAT_MTIME);
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, "new");
   }
   else
   {
     snprintf(buf, sizeof(buf), "%s/.mh_sequences", ctx->path);
     if (stat(buf, &st) == 0)
-      data->mtime_cur = st.st_mtime;
+      mutt_get_stat_timespec(&data->mtime_cur, &st, MUTT_STAT_MTIME);
 
     mutt_str_strfcpy(buf, ctx->path, sizeof(buf));
   }
 
   if (stat(buf, &st) == 0)
-    ctx->mtime = st.st_mtime;
+    mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
 }
 
 /**
@@ -2340,17 +2343,29 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
     return -1;
 
   /* determine which subdirectories need to be scanned */
-  if (st_new.st_mtime > ctx->mtime)
+  if (mutt_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &ctx->mtime) > 0)
     changed = 1;
-  if (st_cur.st_mtime > data->mtime_cur)
+  if (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0)
     changed |= 2;
 
   if (!changed)
     return 0; /* nothing to do */
 
-  /* update the modification times on the mailbox */
-  data->mtime_cur = st_cur.st_mtime;
-  ctx->mtime = st_new.st_mtime;
+    /* Update the modification times on the mailbox.
+   *
+   * The monitor code notices changes in the open mailbox too quickly.
+   * In practice, this sometimes leads to all the new messages not being
+   * noticed during the SAME group of mtime stat updates.  To work around
+   * the problem, don't update the stat times for a monitor caused check. */
+#ifdef USE_INOTIFY
+  if (MonitorContextChanged)
+    MonitorContextChanged = 0;
+  else
+#endif
+  {
+    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mtime, &st_new, MUTT_STAT_MTIME);
+  }
 
   /* do a fast scan of just the filenames in
    * the subdirectories that have changed.
@@ -2507,14 +2522,30 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   if (i == -1 && stat(buf, &st_cur) == -1)
     modified = true;
 
-  if (st.st_mtime > ctx->mtime || st_cur.st_mtime > data->mtime_cur)
+  if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mtime) > 0) ||
+      (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0))
+  {
     modified = true;
+  }
 
   if (!modified)
     return 0;
 
-  data->mtime_cur = st_cur.st_mtime;
-  ctx->mtime = st.st_mtime;
+    /* Update the modification times on the mailbox.
+     *
+     * The monitor code notices changes in the open mailbox too quickly.
+     * In practice, this sometimes leads to all the new messages not being
+     * noticed during the SAME group of mtime stat updates.  To work around
+     * the problem, don't update the stat times for a monitor caused check. */
+#ifdef USE_INOTIFY
+  if (MonitorContextChanged)
+    MonitorContextChanged = 0;
+  else
+#endif
+  {
+    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
+  }
 
   md = NULL;
   last = &md;

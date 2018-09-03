@@ -56,8 +56,8 @@ struct Context
   char *path;
   char *realpath; /**< used for mailbox comparison and the sidebar */
   FILE *fp;
-  time_t atime;
-  time_t mtime;
+  struct timespec atime;
+  struct timespec mtime;
   off_t size;
   off_t vsize;
   char *pattern;                 /**< limit pattern string */

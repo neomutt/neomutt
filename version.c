@@ -38,6 +38,9 @@
 #include "email/email.h"
 #include "mutt_curses.h"
 #include "ncrypt/crypt_gpgme.h"
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);
@@ -211,6 +214,11 @@ static struct CompileOptions comp_opts[] = {
   { "idn", 1 },
 #else
   { "idn", 0 },
+#endif
+#ifdef USE_INOTIFY
+  { "inotify", 1 },
+#else
+  { "inotify", 0 },
 #endif
 #ifdef LOCALES_HACK
   { "locales_hack", 1 },

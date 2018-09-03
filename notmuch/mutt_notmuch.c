@@ -1866,7 +1866,8 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
   read_threads_query(ctx, q, true, 0);
-  ctx->mtime = time(NULL);
+  ctx->mtime.tv_sec = time(NULL);
+  ctx->mtime.tv_nsec = 0;
   rc = 0;
 
   if (ctx->msgcount > data->oldmsgcount)
@@ -2076,7 +2077,10 @@ done:
   if (!is_longrun(data))
     release_db(data);
   if (hdr->changed)
-    ctx->mtime = time(NULL);
+  {
+    ctx->mtime.tv_sec = time(NULL);
+    ctx->mtime.tv_nsec = 0;
+  }
   mutt_debug(1, "nm: tags modify done [rc=%d]\n", rc);
   return rc;
 }
@@ -2179,7 +2183,8 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 
   if (!is_longrun(data))
     release_db(data);
-  ctx->mtime = time(NULL);
+  ctx->mtime.tv_sec = time(NULL);
+  ctx->mtime.tv_nsec = 0;
   return rc;
 }
 
@@ -2472,7 +2477,8 @@ static int nm_mbox_open(struct Context *ctx)
   if (!is_longrun(data))
     release_db(data);
 
-  ctx->mtime = time(NULL);
+  ctx->mtime.tv_sec = time(NULL);
+  ctx->mtime.tv_nsec = 0;
 
   mx_update_context(ctx, ctx->msgcount);
   data->oldmsgcount = 0;
@@ -2526,7 +2532,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   if (!data || (get_database_mtime(data, &mtime) != 0))
     return -1;
 
-  if (ctx->mtime >= mtime)
+  if (ctx->mtime.tv_sec >= mtime)
   {
     mutt_debug(2, "nm: check unnecessary (db=%lu ctx=%lu)\n", mtime, ctx->mtime);
     return 0;
@@ -2621,7 +2627,8 @@ done:
   if (!is_longrun(data))
     release_db(data);
 
-  ctx->mtime = time(NULL);
+  ctx->mtime.tv_sec = time(NULL);
+  ctx->mtime.tv_nsec = 0;
 
   mutt_debug(1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
              ctx->msgcount, new_flags, occult);
@@ -2709,7 +2716,10 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   if (!is_longrun(data))
     release_db(data);
   if (changed)
-    ctx->mtime = time(NULL);
+  {
+    ctx->mtime.tv_sec = time(NULL);
+    ctx->mtime.tv_nsec = 0;
+  }
 
   mutt_debug(1, "nm: .... sync done [rc=%d]\n", rc);
   return rc;

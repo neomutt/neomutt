@@ -83,6 +83,9 @@ NEOMUTTOBJS+=	remailer.o
 @if USE_LUA
 NEOMUTTOBJS+=	mutt_lua.o
 @endif
+@if USE_INOTIFY
+NEOMUTTOBJS+=	monitor.o
+@endif
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
 

@@ -61,6 +61,9 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/mutt_notmuch.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* These Config Variables are only used in curs_lib.c */
 bool MetaKey; ///< Config: Interpret 'ALT-x' as 'ESC-x'
@@ -83,6 +86,8 @@ static struct Event *MacroEvents;
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static struct Event *UngetKeyEvents;
+
+int MuttGetchTimeout = -1;
 
 /**
  * mutt_refresh - Force a refresh of the screen
@@ -117,6 +122,45 @@ void mutt_need_hard_redraw(void)
 }
 
 /**
+ * mutt_getch_timeout - Set the getch() timeout
+ * @param delay Timeout delay in ms
+ *
+ * delay is just like for timeout() or poll(): the number of milliseconds
+ * mutt_getch() should block for input.
+ * * delay == 0 means mutt_getch() is non-blocking.
+ * * delay < 0 means mutt_getch is blocking.
+ */
+void mutt_getch_timeout(int delay)
+{
+  MuttGetchTimeout = delay;
+  timeout(delay);
+}
+
+#ifdef USE_INOTIFY
+/**
+ * mutt_monitor_getch - Get a character and poll the filesystem monitor
+ * @retval num Character pressed
+ * @retval ERR Timeout
+ */
+static int mutt_monitor_getch(void)
+{
+  /* ncurses has its own internal buffer, so before we perform a poll,
+   * we need to make sure there isn't a character waiting */
+  timeout(0);
+  int ch = getch();
+  timeout(MuttGetchTimeout);
+  if (ch == ERR)
+  {
+    if (mutt_monitor_poll() != 0)
+      ch = ERR;
+    else
+      ch = getch();
+  }
+  return ch;
+}
+#endif /* USE_INOTIFY */
+
+/**
  * mutt_getch - Read a character from the input buffer
  * @retval obj Event to process
  *
@@ -149,7 +193,11 @@ struct Event mutt_getch(void)
   ch = KEY_RESIZE;
   while (ch == KEY_RESIZE)
 #endif /* KEY_RESIZE */
-    ch = getch();
+#ifdef USE_INOTIFY
+    ch = mutt_monitor_getch();
+#else
+  ch = getch();
+#endif /* USE_INOTIFY */
   mutt_sig_allow_interrupt(0);
 
   if (SigInt)
@@ -347,9 +395,9 @@ int mutt_yesorno(const char *msg, int def)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    timeout(30 * 1000);
+    mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
-    timeout(-1);
+    mutt_getch_timeout(-1);
     if (ch.ch == -2)
       continue;
     if (CI_is_return(ch.ch))
@@ -416,7 +464,7 @@ void mutt_query_exit(void)
   mutt_flushinp();
   curs_set(1);
   if (Timeout)
-    timeout(-1); /* restore blocking operation */
+    mutt_getch_timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(1);
@@ -567,7 +615,10 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
   mutt_window_clrtoeol(MuttMessageWindow);
   mutt_refresh();
 
-  ch = mutt_getch();
+  do
+  {
+    ch = mutt_getch();
+  } while (ch.ch == -2);
   if (ch.ch < 0)
   {
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -778,9 +829,9 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    timeout(30 * 1000);
+    mutt_getch_timeout(30 * 1000);
     ch = mutt_getch();
-    timeout(-1);
+    mutt_getch_timeout(-1);
     if (ch.ch == -2)
       continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */

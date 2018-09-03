@@ -58,6 +58,9 @@
 #ifdef USE_POP
 #include "pop/pop.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /* These Config Variables are only used in mailbox.c */
 short MailCheck; ///< Config: Number of seconds before NeoMutt checks for new mail
@@ -231,7 +234,8 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
    */
   if (check_new && MailCheckRecent)
   {
-    if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
+    if ((stat(path, &sb) == 0) &&
+        mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &mailbox->last_visited) < 0)
     {
       rc = 0;
       check_new = false;
@@ -273,8 +277,11 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
         {
           snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
           /* ensure this message was received since leaving this mailbox */
-          if (stat(msgpath, &sb) == 0 && (sb.st_ctime <= mailbox->last_visited))
+          if (stat(msgpath, &sb) == 0 &&
+              (mutt_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &mailbox->last_visited) <= 0))
+          {
             continue;
+          }
         }
         mailbox->new = true;
         rc = 1;
@@ -334,14 +341,17 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
     new_or_changed = (sb->st_size > mailbox->size);
   else
   {
-    new_or_changed = (sb->st_mtime > sb->st_atime) ||
-                     (mailbox->newly_created && (sb->st_ctime == sb->st_mtime) &&
-                      (sb->st_ctime == sb->st_atime));
+    new_or_changed =
+        (mutt_stat_compare(sb, MUTT_STAT_MTIME, sb, MUTT_STAT_ATIME) > 0) ||
+        (mailbox->newly_created &&
+         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_MTIME) == 0) &&
+         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_ATIME) == 0));
   }
 
   if (new_or_changed)
   {
-    if (!MailCheckRecent || sb->st_mtime > mailbox->last_visited)
+    if (!MailCheckRecent ||
+        (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &mailbox->last_visited) > 0))
     {
       rc = 1;
       mailbox->new = true;
@@ -356,7 +366,8 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
   if (mailbox->newly_created && (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
     mailbox->newly_created = false;
 
-  if (check_stats && (mailbox->stats_last_checked < sb->st_mtime))
+  if (check_stats &&
+      (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &mailbox->stats_last_checked) > 0))
   {
     struct Context *ctx =
         mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
@@ -528,7 +539,11 @@ static struct Mailbox *mailbox_get(const char *path)
  */
 void mutt_mailbox_cleanup(const char *path, struct stat *st)
 {
+#ifdef HAVE_UTIMENSAT
+  struct timespec ts[2];
+#else
   struct utimbuf ut;
+#endif
 
   if (CheckMboxSize)
   {
@@ -541,12 +556,30 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
     /* fix up the times so mailbox won't get confused */
     if (st->st_mtime > st->st_atime)
     {
+#ifdef HAVE_UTIMENSAT
+      ts[0].tv_sec = 0;
+      ts[0].tv_nsec = UTIME_OMIT;
+      ts[1].tv_sec = 0;
+      ts[1].tv_nsec = UTIME_NOW;
+      utimensat(0, buf, ts, 0);
+#else
       ut.actime = st->st_atime;
       ut.modtime = time(NULL);
       utime(path, &ut);
+#endif
     }
     else
+    {
+#ifdef HAVE_UTIMENSAT
+      ts[0].tv_sec = 0;
+      ts[0].tv_nsec = UTIME_NOW;
+      ts[1].tv_sec = 0;
+      ts[1].tv_nsec = UTIME_NOW;
+      utimensat(0, buf, ts, 0);
+#else
       utime(path, NULL);
+#endif
+    }
   }
 }
 
@@ -698,6 +731,10 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 #ifdef USE_SIDEBAR
     mutt_sb_notify_mailbox(b, true);
 #endif
+#ifdef USE_INOTIFY
+    b->magic = mx_path_probe(b->path, NULL);
+    mutt_monitor_add(b);
+#endif
   }
   return 0;
 }
@@ -756,6 +793,9 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       {
 #ifdef USE_SIDEBAR
         mutt_sb_notify_mailbox(np->b, false);
+#endif
+#ifdef USE_INOTIFY
+        mutt_monitor_remove(np->b);
 #endif
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
         mailbox_free(&np->b);
@@ -907,7 +947,12 @@ void mutt_mailbox_setnotified(const char *path)
     return;
 
   mailbox->notified = true;
-  time(&mailbox->last_visited);
+#if HAVE_CLOCK_GETTIME
+  clock_gettime(CLOCK_REALTIME, &mailbox->last_visited);
+#else
+  mailbox->last_visited.tv_nsec = 0;
+  time(&mailbox->last_visited.tv_sec);
+#endif
 }
 
 /**
