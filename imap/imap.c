@@ -624,7 +624,7 @@ int imap_access(const char *path)
   }
   FREE(&mx.mbox);
 
-  if (imap_mboxcache_get(idata, mailbox, 0))
+  if (imap_mboxcache_get(idata, mailbox, false))
   {
     mutt_debug(3, "found %s in cache\n", mailbox);
     return 0;
@@ -1581,7 +1581,7 @@ int imap_status(const char *path, bool queue)
     imap_exec(idata, buf, 0);
 
   queued = 0;
-  status = imap_mboxcache_get(idata, mbox, 0);
+  status = imap_mboxcache_get(idata, mbox, false);
   if (status)
     return status->messages;
 
@@ -1602,13 +1602,6 @@ int imap_status(const char *path, bool queue)
 struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, bool create)
 {
   struct ImapStatus *status = NULL;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-  void *uidvalidity = NULL;
-  void *uidnext = NULL;
-  unsigned long long *modseq = NULL;
-#endif
-
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &idata->mboxcache, entries)
   {
@@ -1625,17 +1618,17 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
     struct ImapStatus *scache = mutt_mem_calloc(1, sizeof(struct ImapStatus));
     scache->name = (char *) mbox;
     mutt_list_insert_tail(&idata->mboxcache, (char *) scache);
-    status = imap_mboxcache_get(idata, mbox, 0);
+    status = imap_mboxcache_get(idata, mbox, false);
     status->name = mutt_str_strdup(mbox);
   }
 
 #ifdef USE_HCACHE
-  hc = imap_hcache_open(idata, mbox);
+  header_cache_t *hc = imap_hcache_open(idata, mbox);
   if (hc)
   {
-    uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
-    uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
-    modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
+    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
+    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
+    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
     if (uidvalidity)
     {
       if (!status)
@@ -1644,13 +1637,13 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
         mutt_hcache_free(hc, &uidnext);
         mutt_hcache_free(hc, (void **) &modseq);
         mutt_hcache_close(hc);
-        return imap_mboxcache_get(idata, mbox, 1);
+        return imap_mboxcache_get(idata, mbox, true);
       }
       status->uidvalidity = *(unsigned int *) uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
       status->modseq = modseq ? *modseq : 0;
-      mutt_debug(3, "mboxcache: hcache uidvalidity %u, uidnext %u, modseq %llu\n",
-          status->uidvalidity, status->uidnext, status->modseq);
+      mutt_debug(3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
+                 status->uidvalidity, status->uidnext, status->modseq);
     }
     mutt_hcache_free(hc, &uidvalidity);
     mutt_hcache_free(hc, &uidnext);
@@ -2079,7 +2072,7 @@ static int imap_mbox_open(struct Context *ctx)
   if (ImapCheckSubscribed)
     imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   if (mutt_bit_isset(idata->capabilities, CONDSTORE) && ImapCondStore)
     condstore = " (CONDSTORE)";
   else
@@ -2093,7 +2086,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   imap_cmd_start(idata, bufout);
 
-  status = imap_mboxcache_get(idata, idata->mailbox, 1);
+  status = imap_mboxcache_get(idata, idata->mailbox, true);
 
   do
   {
@@ -2226,7 +2219,7 @@ static int imap_mbox_open(struct Context *ctx)
   ctx->v2r = mutt_mem_calloc(count, sizeof(int));
   ctx->msgcount = 0;
 
-  if (count && (imap_read_headers(idata, 1, count, 1) < 0))
+  if (count && (imap_read_headers(idata, 1, count, true) < 0))
   {
     mutt_error(_("Error opening mailbox"));
     goto fail;

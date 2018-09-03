@@ -272,14 +272,19 @@ struct ImapData
 #endif
 };
 
+/**
+ * struct SeqsetIterator - UID Sequence Set Iterator
+ */
 struct SeqsetIterator
 {
   char *full_seqset;
   char *eostr;
   int in_range;
   int down;
-  unsigned int range_cur, range_end;
-  char *substr_cur, *substr_end;
+  unsigned int range_cur;
+  unsigned int range_end;
+  char *substr_cur;
+  char *substr_end;
 };
 
 /* -- private IMAP functions -- */
@@ -314,8 +319,7 @@ int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
 void imap_free_header_data(struct ImapHeaderData **data);
-int imap_read_headers (struct ImapData* idata, unsigned int msn_begin, unsigned int msn_end,
-                       int initial_download);
+int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes);
 int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);
@@ -332,9 +336,9 @@ void imap_hcache_close(struct ImapData *idata);
 struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid);
 int imap_hcache_put(struct ImapData *idata, struct Header *h);
 int imap_hcache_del(struct ImapData *idata, unsigned int uid);
-int imap_hcache_store_uid_seqset (struct ImapData *idata);
-int imap_hcache_clear_uid_seqset (struct ImapData *idata);
-char *imap_hcache_get_uid_seqset (struct ImapData *idata);
+int imap_hcache_store_uid_seqset(struct ImapData *idata);
+int imap_hcache_clear_uid_seqset(struct ImapData *idata);
+char *imap_hcache_get_uid_seqset(struct ImapData *idata);
 #endif
 
 int imap_continue(const char *msg, const char *resp);
@@ -352,9 +356,9 @@ void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_back
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
-struct SeqsetIterator *mutt_seqset_iterator_new (const char *seqset);
-int mutt_seqset_iterator_next (struct SeqsetIterator *iter, unsigned int *next);
-void mutt_seqset_iterator_free (struct SeqsetIterator **p_iter);
+struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset);
+int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next);
+void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter);
 int imap_account_match(const struct Account *a1, const struct Account *a2);
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 

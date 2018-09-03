@@ -1423,16 +1423,16 @@ struct ConfigDef MuttVars[] = {
   */
   { "imap_condstore",  DT_BOOL, R_NONE, &ImapCondStore, 0 },
   /*
-   ** .pp
-   ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
-   ** if advertised by the server.  Mutt's current implementation is basic,
-   ** used only for initial message fetching and flag updates.
-   ** .pp
-   ** For some IMAP servers, enabling this will slightly speed up
-   ** downloading initial messages.  Unfortunately, Gmail is not one
-   ** those, and displays worse performance when enabled.  Your
-   ** mileage may vary.
-   */
+  ** .pp
+  ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
+  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** used only for initial message fetching and flag updates.
+  ** .pp
+  ** For some IMAP servers, enabling this will slightly speed up
+  ** downloading initial messages.  Unfortunately, Gmail is not one
+  ** those, and displays worse performance when enabled.  Your
+  ** mileage may vary.
+  */
   { "imap_delim_chars",         DT_STRING, R_NONE, &ImapDelimChars, IP "/." },
   /*
   ** .pp
@@ -1545,15 +1545,15 @@ struct ConfigDef MuttVars[] = {
   */
   { "imap_qresync",  DT_BOOL, R_NONE, &ImapQResync, 0 },
   /*
-   ** .pp
-   ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
-   ** if advertised by the server.  Mutt's current implementation is basic,
-   ** used only for initial message fetching and flag updates.
-   ** .pp
-   ** Note: this feature is currently experimental.  If you experience
-   ** strange behavior, such as duplicate or missing messages please
-   ** file a bug report to let us know.
-   */
+  ** .pp
+  ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
+  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** used only for initial message fetching and flag updates.
+  ** .pp
+  ** Note: this feature is currently experimental.  If you experience
+  ** strange behavior, such as duplicate or missing messages please
+  ** file a bug report to let us know.
+  */
   { "imap_servernoise",         DT_BOOL, R_NONE, &ImapServernoise, true },
   /*
   ** .pp

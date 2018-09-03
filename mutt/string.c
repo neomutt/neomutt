@@ -277,11 +277,16 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
   return 0;
 }
 
-/* NOTE: this function's return value is different from mutt_atol.
+/**
+ * mutt_str_atoull - Convert ASCII string to an unsigned long long
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters
+ * @retval  0 Successful conversion
+ * @retval -1 Invalid input
  *
- * returns: 1 - successful conversion, with trailing characters
- *          0 - successful conversion
- *         -1 - invalid input
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
  */
 int mutt_str_atoull(const char *str, unsigned long long *dst)
 {
@@ -298,9 +303,9 @@ int mutt_str_atoull(const char *str, unsigned long long *dst)
 
   errno = 0;
   *res = strtoull(str, &e, 10);
-  if (*res == ULLONG_MAX && errno == ERANGE)
+  if ((*res == ULLONG_MAX) && (errno == ERANGE))
     return -1;
-  if (e && *e != '\0')
+  if (e && (*e != '\0'))
     return 1;
   return 0;
 }

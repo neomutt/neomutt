@@ -210,26 +210,30 @@ void imap_clean_path(char *path, size_t plen)
 }
 
 #ifdef USE_HCACHE
-/* Generates a seqseq of the UIDs in msn_index to persist in the header cache.
+/**
+ * imap_msn_index_to_uid_seqset - Convert MSN index of UIDs to Seqset
+ * @param b     Buffer for the result
+ * @param idata Server data
  *
+ * Generates a seqseq of the UIDs in msn_index to persist in the header cache.
  * Empty spots are stored as 0.
  */
 static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapData *idata)
 {
-  int first = 1, state = 0, match = 0;
-  struct Header *cur_header;
-  unsigned int msn, cur_uid = 0, last_uid = 0;
+  int first = 1, state = 0;
+  bool match = false;
+  unsigned int cur_uid = 0, last_uid = 0;
   unsigned int range_begin = 0, range_end = 0;
 
-  for (msn = 1; msn <= idata->max_msn + 1; msn++)
+  for (unsigned int msn = 1; msn <= idata->max_msn + 1; msn++)
   {
-    match = 0;
+    match = false;
     if (msn <= idata->max_msn)
     {
-      cur_header = idata->msn_index[msn - 1];
+      struct Header *cur_header = idata->msn_index[msn - 1];
       cur_uid = cur_header ? HEADER_DATA(cur_header)->uid : 0;
-      if (!state || (cur_uid && (cur_uid - 1 == last_uid)))
-        match = 1;
+      if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
+        match = true;
       last_uid = cur_uid;
     }
 
@@ -392,31 +396,38 @@ int imap_hcache_del(struct ImapData *idata, unsigned int uid)
   return mutt_hcache_delete(idata->hcache, key, imap_hcache_keylen(key));
 }
 
+/**
+ * imap_hcache_store_uid_seqset - Store a UID Sequence Set in the header cache
+ * @param idata Server data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int imap_hcache_store_uid_seqset(struct ImapData *idata)
 {
-  struct Buffer *b;
-  size_t seqset_size;
-  int rc;
-
   if (!idata->hcache)
     return -1;
 
-  b = mutt_buffer_new();
+  struct Buffer *b = mutt_buffer_new();
   /* The seqset is likely large.  Preallocate to reduce reallocs */
   mutt_buffer_increase_size(b, HUGE_STRING);
   imap_msn_index_to_uid_seqset(b, idata);
 
-  seqset_size = b->dptr - b->data;
+  size_t seqset_size = b->dptr - b->data;
   if (seqset_size == 0)
     b->data[0] = '\0';
 
-  rc = mutt_hcache_store_raw(idata->hcache, "/UIDSEQSET", 10, b->data,
-                             seqset_size + 1);
+  int rc = mutt_hcache_store_raw(idata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
   mutt_debug(5, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
 }
 
+/**
+ * imap_hcache_clear_uid_seqset - Delete a UID Sequence Set from the header cache
+ * @param idata Server data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int imap_hcache_clear_uid_seqset(struct ImapData *idata)
 {
   if (!idata->hcache)
@@ -425,15 +436,19 @@ int imap_hcache_clear_uid_seqset(struct ImapData *idata)
   return mutt_hcache_delete(idata->hcache, "/UIDSEQSET", 10);
 }
 
+/**
+ * imap_hcache_get_uid_seqset - Get a UID Sequence Set from the header cache
+ * @param idata Server data
+ * @retval ptr  UID Sequence Set
+ * @retval NULL Error
+ */
 char *imap_hcache_get_uid_seqset(struct ImapData *idata)
 {
-  char *hc_seqset, *seqset;
-
   if (!idata->hcache)
     return NULL;
 
-  hc_seqset = mutt_hcache_fetch_raw(idata->hcache, "/UIDSEQSET", 10);
-  seqset = mutt_str_strdup(hc_seqset);
+  char *hc_seqset = mutt_hcache_fetch_raw(idata->hcache, "/UIDSEQSET", 10);
+  char *seqset = mutt_str_strdup(hc_seqset);
   mutt_hcache_free(idata->hcache, (void **) &hc_seqset);
   mutt_debug(5, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
@@ -1131,8 +1146,11 @@ int imap_account_match(const struct Account *a1, const struct Account *a2)
   return mutt_account_match(a1_canon, a2_canon);
 }
 
-/* Sequence set iteration */
-
+/**
+ * mutt_seqset_iterator_new - Create a new Sequence Set Iterator
+ * @param seqset Source Sequence Set
+ * @retval ptr Newly allocated Sequence Set Iterator
+ */
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
 {
   struct SeqsetIterator *iter;
@@ -1148,9 +1166,13 @@ struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
   return iter;
 }
 
-/* Returns: 0 when the next sequence is generated
- *          1 when the iterator is finished
- *         -1 on error
+/**
+ * mutt_seqset_iterator_next - Get the next UID from a Sequence Set
+ * @param[in]  iter Sequence Set Iterator
+ * @param[out] next Next UID in set
+ * @retval  0 Next sequence is generated
+ * @retval  1 Iterator is finished
+ * @retval -1 error
  */
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
 {
@@ -1161,9 +1183,11 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
 
   if (iter->in_range)
   {
-    if ((iter->down && iter->range_cur == (iter->range_end - 1)) ||
-        (!iter->down && iter->range_cur == (iter->range_end + 1)))
+    if ((iter->down && (iter->range_cur == (iter->range_end - 1))) ||
+        (!iter->down && (iter->range_cur == (iter->range_end + 1))))
+    {
       iter->in_range = 0;
+    }
   }
 
   if (!iter->in_range)
@@ -1184,11 +1208,11 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
     if (range_sep)
       *range_sep++ = '\0';
 
-    if (mutt_str_atoui(iter->substr_cur, &iter->range_cur))
+    if (mutt_str_atoui(iter->substr_cur, &iter->range_cur) != 0)
       return -1;
     if (range_sep)
     {
-      if (mutt_str_atoui(range_sep, &iter->range_end))
+      if (mutt_str_atoui(range_sep, &iter->range_end) != 0)
         return -1;
     }
     else
@@ -1207,14 +1231,16 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
   return 0;
 }
 
+/**
+ * mutt_seqset_iterator_free - Free a Sequence Set Iterator
+ * @param p_iter Iterator to free
+ */
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter)
 {
-  struct SeqsetIterator *iter;
-
   if (!p_iter || !*p_iter)
     return;
 
-  iter = *p_iter;
+  struct SeqsetIterator *iter = *p_iter;
   FREE(&iter->full_seqset);
-  FREE(p_iter); /* __FREE_CHECKED__ */
+  FREE(p_iter);
 }

@@ -275,16 +275,19 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
   idata->reopen |= IMAP_EXPUNGE_PENDING;
 }
 
-/* cmd_parse_vanished: handles VANISHED (RFC 7162), which is like
- *   expunge, but passes a seqset of UIDs.  An optional (EARLIER) argument
- *   specifies not to decrement subsequent MSNs. */
+/**
+ * cmd_parse_vanished - Parse vanished command
+ * @param idata Server data
+ * @param s     String containing MSN of message to expunge
+ *
+ * Handle VANISHED (RFC7162), which is like expunge, but passes a seqset of UIDs.
+ * An optional (EARLIER) argument specifies not to decrement subsequent MSNs.
+ */
 static void cmd_parse_vanished(struct ImapData *idata, char *s)
 {
-  int earlier = 0, rc;
-  char *end_of_seqset;
-  struct SeqsetIterator *iter;
-  unsigned int uid, exp_msn, cur;
-  struct Header *h;
+  bool earlier = false;
+  int rc;
+  unsigned int uid = 0;
 
   mutt_debug(2, "Handling VANISHED\n");
 
@@ -292,12 +295,11 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
   {
     /* The RFC says we should not decrement msns with the VANISHED EARLIER tag.
      * My experimentation says that's crap. */
-    /* earlier = 1; */
-    earlier = 1;
+    earlier = true;
     s = imap_next_word(s);
   }
 
-  end_of_seqset = s;
+  char *end_of_seqset = s;
   while (*end_of_seqset)
   {
     if (!strchr("0123456789:,", *end_of_seqset))
@@ -306,7 +308,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
       end_of_seqset++;
   }
 
-  iter = mutt_seqset_iterator_new(s);
+  struct SeqsetIterator *iter = mutt_seqset_iterator_new(s);
   if (!iter)
   {
     mutt_debug(2, "VANISHED: empty seqset [%s]?\n", s);
@@ -315,11 +317,11 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 
   while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
   {
-    h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
+    struct Header *h = mutt_hash_int_find(idata->uid_hash, uid);
     if (!h)
       continue;
 
-    exp_msn = HEADER_DATA(h)->msn;
+    unsigned int exp_msn = HEADER_DATA(h)->msn;
 
     /* imap_expunge_mailbox() will rewrite h->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
@@ -327,7 +329,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
     h->index = INT_MAX;
     HEADER_DATA(h)->msn = 0;
 
-    if (exp_msn < 1 || exp_msn > idata->max_msn)
+    if ((exp_msn < 1) || (exp_msn > idata->max_msn))
     {
       mutt_debug(1, "VANISHED: msn for UID %u is incorrect.\n", uid);
       continue;
@@ -343,7 +345,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
     if (!earlier)
     {
       /* decrement seqno of those above. */
-      for (cur = exp_msn; cur < idata->max_msn; cur++)
+      for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
       {
         h = idata->msn_index[cur];
         if (h)
@@ -467,7 +469,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
       SKIPWS(s);
       if (*s != '(')
       {
-        mutt_debug(1, "cmd_parse_fetch: bogus MODSEQ response: %s\n", s);
+        mutt_debug(1, "bogus MODSEQ response: %s\n", s);
         return;
       }
       s++;
@@ -477,7 +479,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
         s++;
       else
       {
-        mutt_debug(1, "cmd_parse_fetch: Unterminated MODSEQ response: %s\n", s);
+        mutt_debug(1, "Unterminated MODSEQ response: %s\n", s);
         return;
       }
     }
@@ -1012,7 +1014,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
     else if (mutt_str_strncasecmp("FETCH", s, 5) == 0)
       cmd_parse_fetch(idata, pn);
   }
-  else if ((idata->state >= IMAP_SELECTED) && mutt_str_strncasecmp("VANISHED", s, 8) == 0)
+  else if ((idata->state >= IMAP_SELECTED) && (mutt_str_strncasecmp("VANISHED", s, 8) == 0))
     cmd_parse_vanished(idata, pn);
   else if (mutt_str_strncasecmp("CAPABILITY", s, 10) == 0)
     cmd_parse_capability(idata, s);
@@ -1332,7 +1334,7 @@ void imap_cmd_finish(struct ImapData *idata)
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
       idata->check_status = IMAP_NEWMAIL_PENDING;
-      imap_read_headers(idata, idata->max_msn + 1, count, 0);
+      imap_read_headers(idata, idata->max_msn + 1, count, false);
     }
     else if (idata->reopen & IMAP_EXPUNGE_PENDING)
     {

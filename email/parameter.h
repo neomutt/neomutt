@@ -27,7 +27,7 @@
 #include "mutt/mutt.h"
 
 /**
- * struct ParameterList - List of parameters.
+ * struct ParameterList - List of parameters
  */
 TAILQ_HEAD(ParameterList, Parameter);
 
