@@ -534,6 +534,47 @@ static int smtp_auth_oauth(struct Connection *conn)
 }
 
 /**
+ * smtp_auth_plain - Authenticate using plain text
+ * @param conn SMTP Connection
+ * @retval  0 Success
+ * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ */
+static int smtp_auth_plain(struct Connection *conn)
+{
+  char buf[LONG_STRING];
+
+  /* Get username and password. Bail out of any cannot be retrieved. */
+  if ((mutt_account_getuser(&conn->account) < 0) ||
+      (mutt_account_getpass(&conn->account) < 0))
+  {
+    goto error;
+  }
+
+  /* Build the initial client response. */
+  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", conn->account.user,
+                                   conn->account.user, conn->account.pass);
+
+  /* Terminate as per SMTP protocol. Bail out if there's no room left. */
+  if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
+  {
+    goto error;
+  }
+
+  /* Send request, receive response (with a check for OK code). */
+  if ((mutt_socket_send(conn, buf) < 0) || smtp_get_resp(conn))
+  {
+    goto error;
+  }
+
+  /* If we got here, auth was successful. */
+  return 0;
+
+error:
+  mutt_error(_("SASL authentication failed"));
+  return -1;
+}
+
+/**
  * smtp_auth - Authenticate to an SMTP server
  * @param conn SMTP Connection
  * @retval  0 Success
@@ -562,6 +603,10 @@ static int smtp_auth(struct Connection *conn)
       if (strcmp(method, "oauthbearer") == 0)
       {
         r = smtp_auth_oauth(conn);
+      }
+      else if (strcmp(method, "plain") == 0)
+      {
+        r = smtp_auth_plain(conn);
       }
       else
       {
@@ -607,68 +652,6 @@ static int smtp_auth(struct Connection *conn)
 
   return (r == SMTP_AUTH_SUCCESS) ? 0 : -1;
 }
-
-#ifdef USE_SASL
-/**
- * smtp_auth_plain - Authenticate using plain text
- * @param conn SMTP Connection
- * @retval  0 Success
- * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
- */
-static int smtp_auth_plain(struct Connection *conn)
-{
-  char buf[LONG_STRING];
-  size_t len;
-  const char *method = NULL;
-  const char *delim = NULL;
-  const char *error = _("SASL authentication failed");
-
-  if (!SmtpAuthenticators || !*SmtpAuthenticators)
-  {
-    goto error;
-  }
-
-  /* Check if any elements in SmtpAuthenticators is "plain" */
-  for (method = SmtpAuthenticators, delim = SmtpAuthenticators;
-       *delim && (delim = mutt_str_strchrnul(method, ':')); method = delim + 1)
-  {
-    if (mutt_str_strncasecmp(method, "plain", 5) == 0)
-    {
-      /* Get username and password. Bail out of any cannot be retrieved. */
-      if ((mutt_account_getuser(&conn->account) < 0) ||
-          (mutt_account_getpass(&conn->account) < 0))
-      {
-        goto error;
-      }
-
-      /* Build the initial client response. */
-      len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", conn->account.user,
-                                conn->account.user, conn->account.pass);
-
-      /* Terminate as per SMTP protocol. Bail out if there's no room left. */
-      if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
-      {
-        goto error;
-      }
-
-      /* Send request, receive response (with a check for OK code). */
-      if ((mutt_socket_send(conn, buf) < 0) || smtp_get_resp(conn))
-      {
-        goto error;
-      }
-
-      /* If we got here, auth was successful. */
-      return 0;
-    }
-  }
-
-  error = _("No authenticators available");
-
-error:
-  mutt_error(error);
-  return -1;
-}
-#endif /* USE_SASL */
 
 /**
  * smtp_open - Open an SMTP Connection
@@ -735,9 +718,6 @@ static int smtp_open(struct Connection *conn, bool esmtp)
     }
 
     return smtp_auth(conn);
-#ifdef USE_SASL
-    return smtp_auth_plain(conn);
-#endif
   }
 
   return 0;
