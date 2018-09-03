@@ -1,23 +1,31 @@
-/*
+/**
+ * @file
+ * IMAP OAUTH authentication method
+ *
+ * @authors
  * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2018 Brandon Long <blong@fiction.net>
- * 
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
- * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* IMAP login/authentication code */
+/**
+ * @page imap_auth_oauth IMAP OAUTH authentication method
+ *
+ * IMAP OAUTH authentication method
+ */
 
 #include "config.h"
 #include "imap_private.h"
@@ -30,7 +38,12 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 
-/* imap_auth_oauth: AUTH=OAUTHBEARER support. See RFC 7628 */
+/**
+ * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER
+ * @param idata  Server data
+ * @param method Name of this authentication method (UNUSED)
+ * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
+ */
 enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
 {
   char *ibuf = NULL;
@@ -41,13 +54,15 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
   /* For now, we only support SASL_IR also and over TLS */
   if (!mutt_bit_isset(idata->capabilities, AUTH_OAUTHBEARER) ||
       !mutt_bit_isset(idata->capabilities, SASL_IR) || !idata->conn->ssf)
+  {
     return IMAP_AUTH_UNAVAIL;
+  }
 
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
   /* We get the access token from the imap_oauth_refresh_command */
   oauthbearer = mutt_account_getoauthbearer(&idata->conn->account);
-  if (oauthbearer == NULL)
+  if (!oauthbearer)
     return IMAP_AUTH_FAILURE;
 
   ilen = mutt_str_strlen(oauthbearer) + 30;
@@ -78,6 +93,5 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
   }
 
   mutt_error(_("OAUTHBEARER authentication failed."));
-  mutt_sleep(2);
   return IMAP_AUTH_FAILURE;
 }

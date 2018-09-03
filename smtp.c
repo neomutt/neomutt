@@ -503,26 +503,25 @@ fail:
 }
 #endif
 
-/* smtp_auth_oauth: AUTH=OAUTHBEARER support. See RFC 7628 */
+/**
+ * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
+ * @param conn Connection info
+ * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
+ */
 static int smtp_auth_oauth(struct Connection *conn)
 {
-  char *ibuf = NULL;
-  char *oauthbearer = NULL;
-  int ilen;
-  int rc;
-
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
   /* We get the access token from the smtp_oauth_refresh_command */
-  oauthbearer = mutt_account_getoauthbearer(&conn->account);
-  if (oauthbearer == NULL)
+  char *oauthbearer = mutt_account_getoauthbearer(&conn->account);
+  if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 
-  ilen = strlen(oauthbearer) + 30;
-  ibuf = mutt_mem_malloc(ilen);
+  size_t ilen = strlen(oauthbearer) + 30;
+  char *ibuf = mutt_mem_malloc(ilen);
   snprintf(ibuf, ilen, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
 
-  rc = mutt_socket_send(conn, ibuf);
+  int rc = mutt_socket_send(conn, ibuf);
   FREE(&oauthbearer);
   FREE(&ibuf);
 
@@ -560,7 +559,7 @@ static int smtp_auth(struct Connection *conn)
 
       mutt_debug(2, "Trying method %s\n", method);
 
-      if (!strcmp(method, "oauthbearer"))
+      if (strcmp(method, "oauthbearer") == 0)
       {
         r = smtp_auth_oauth(conn);
       }

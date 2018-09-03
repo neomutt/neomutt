@@ -41,14 +41,15 @@
 
 /* These Config Variables are only used in mutt_account.c */
 char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
-char *ImapOauthRefreshCmd;
+char *ImapOauthRefreshCmd; ///< Config: (imap) External command to generate OAUTH refresh token
 char *ImapPass; ///< Config: (imap) Password for the IMAP server
 char *NntpPass; ///< Config: (nntp) Password for the news server
 char *NntpUser; ///< Config: (nntp) Username for the news server
+char *PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
 char *PopPass;  ///< Config: (pop) Password of the POP server
 char *PopUser;  ///< Config: (pop) Username of the POP server
+char *SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
 char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
-char *SmtpOauthRefreshCmd;
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
@@ -335,11 +336,16 @@ void mutt_account_unsetpass(struct Account *account)
   account->flags &= ~MUTT_ACCT_PASS;
 }
 
-/* mutt_account_getoauthbearer: call external command to generate the
- * oauth refresh token for this ACCOUNT, then create and encode the
- * OAUTHBEARER token based on RFC 7628.  Returns NULL on failure.
- * Resulting token is dynamically allocated and should be FREE'd by the
- * caller.
+/**
+ * mutt_account_getoauthbearer - Get an OAUTHBEARER token
+ * @param account Account to use
+ * @retval ptr  OAuth token
+ * @retval NULL Error
+ *
+ * Run an external command to generate the oauth refresh token for an account,
+ * then create and encode the OAUTHBEARER token based on RFC7628.
+ *
+ * @note Caller should free the token
  */
 char *mutt_account_getoauthbearer(struct Account *account)
 {
@@ -370,35 +376,33 @@ char *mutt_account_getoauthbearer(struct Account *account)
     cmd = SmtpOauthRefreshCmd;
 #endif
 
-  if (cmd == NULL)
+  if (!cmd)
   {
     mutt_error(
         _("mutt_account_getoauthbearer: No OAUTH refresh command defined"));
     return NULL;
   }
 
-  if ((pid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
+  pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  if (pid < 0)
   {
     mutt_perror(
         _("mutt_account_getoauthbearer: Unable to run refresh command"));
     return NULL;
   }
 
-  /* read line */
   token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
   mutt_file_fclose(&fp);
   mutt_wait_filter(pid);
 
-  if (token == NULL || *token == '\0')
+  if (!token || *token == '\0')
   {
     mutt_error(_("mutt_account_getoauthbearer: Command returned empty string"));
     FREE(&token);
     return NULL;
   }
 
-  /* Determine the length of the keyed message digest, add 50 for
-   * overhead.
-   */
+  /* Determine the length of the keyed message digest, add 50 for overhead. */
   oalen = strlen(account->login) + strlen(account->host) + strlen(token) + 50;
   oauthbearer = mutt_mem_malloc(oalen);
 

@@ -34,10 +34,11 @@ extern char *ImapOauthRefreshCmd;
 extern char *ImapPass;
 extern char *NntpPass;
 extern char *NntpUser;
+extern char *PopOauthRefreshCmd;
 extern char *PopPass;
 extern char *PopUser;
-extern char *SmtpPass;
 extern char *SmtpOauthRefreshCmd;
+extern char *SmtpPass;
 
 /**
  * enum AccountType - account types

@@ -335,7 +335,12 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
   return POP_A_FAILURE;
 }
 
-/* OAUTHBEARER authenticator */
+/**
+ * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER
+ * @param pop_data POP Server data
+ * @param method Name of this authentication method (UNUSED)
+ * @retval num Result, e.g. #POP_A_SUCCESS
+ */
 static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *method)
 {
   char *oauthbearer = NULL;
@@ -348,7 +353,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
   oauthbearer = mutt_account_getoauthbearer(&pop_data->conn->account);
-  if (oauthbearer == NULL)
+  if (!oauthbearer)
     return POP_A_FAILURE;
 
   auth_cmd_len = strlen(oauthbearer) + 30;
@@ -359,7 +364,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   ret = pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
                     /* don't print the bearer token unless we're at the ungodly debugging level */
-                    DebugLevel < MUTT_SOCK_LOG_FULL ? "AUTH OAUTHBEARER *\r\n" :
+                    (DebugLevel < MUTT_SOCK_LOG_FULL) ? "AUTH OAUTHBEARER *\r\n" :
 #endif
                                                       NULL);
   FREE(&auth_cmd);
@@ -373,8 +378,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   }
 
   /* The error response was a SASL continuation, so "continue" it.
-   * See RFC 7628 3.2.3
-   */
+   * See RFC7628 3.2.3 */
   mutt_socket_send(pop_data->conn, "\001");
 
   err = pop_data->err_msg;
