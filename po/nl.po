@@ -165,7 +165,7 @@ msgstr "Geabonneerd op %s"
 #: browser.c:1159
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr "Beschikbare nieuwsgroepen"
+msgstr "Beschikbare nieuwsgroepen [%s]"
 
 #: browser.c:1169
 #, c-format
@@ -621,13 +621,13 @@ msgstr ""
 #: compose.c:160
 #, fuzzy
 msgid "Followup-To: "
-msgstr "Reactie sturen naar %s%s?"
+msgstr "Op te volgen: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:162
 #, fuzzy
 msgid "X-Comment-To: "
-msgstr "bewerk Reply-To-veld"
+msgstr ""
 
 #: compose.c:167 compose.c:183
 msgid "Send"
@@ -663,7 +663,7 @@ msgstr "Omschrijving"
 #: compose.c:185
 #, fuzzy
 msgid "Newsgroups"
-msgstr "Geen onderwerp."
+msgstr "Nieuwsgroep"
 
 #: compose.c:272
 msgid "Not supported"
@@ -1705,8 +1705,8 @@ msgstr "Kan bericht niet bewerken"
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
-msgstr[0] "%d labels veranderd"
-msgstr[1] "%d labels veranderd"
+msgstr[0] "%d label is veranderd"
+msgstr[1] "%d labels zijn veranderd"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
@@ -1723,7 +1723,7 @@ msgstr "Geen labels veranderd"
 #: curs_main.c:3130
 #, fuzzy
 msgid "Cannot mark messages as read"
-msgstr "Kan bericht(en) niet als gelezen markeren"
+msgstr "Kan berichten niet als gelezen markeren"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -1903,12 +1903,12 @@ msgstr "Verwijder markering"
 #: handler.c:95
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type: %s/%s, Codering: %s, Grootte: %s --]\n"
+msgstr "[-- Alternatief Type #%d: %s/%s%s%s, Codering: %s, Grootte: %s --]\n"
 
 #: handler.c:101
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type: %s/%s, Codering: %s, Grootte: %s --]\n"
+msgstr "[-- Type: %s/%s%s%s, Codering: %s, Grootte: %s --]\n"
 
 #: handler.c:554
 #, c-format
@@ -2037,8 +2037,8 @@ msgid ""
 "[-- expired. --]\n"
 msgstr ""
 "[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
-"[-- en de aangegeven externe bron --]\n"
-"[-- bestaat niet meer. --]\n"
+"[-- en de aangegeven externe bron is --]\n"
+"[-- vervallen. --]\n"
 
 # FIXME: why the split?
 #. L10N: If the translation of this string is a multi line string, then
@@ -2053,8 +2053,8 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
-"[-- en het access-type %s wordt niet ondersteund --]\n"
+"[-- Deze %s/%s bijlage is niet toegevoegd --]\n"
+"[-- en het aangegeven toegangs-type %s wordt niet ondersteund --]\n"
 
 #: handler.c:1071
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
@@ -2179,7 +2179,7 @@ msgstr "unhook: Kan geen %s wissen binnen een %s"
 #: imap/auth.c:119
 #, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Geen authenticeerders beschikbaar"
+msgstr "Geen aanmeldmogelijkheden of verkeerde logingegevens"
 
 #: imap/auth_anon.c:58
 msgid "Authenticating (anonymous)..."
@@ -2272,7 +2272,7 @@ msgstr "Postvak is hernoemd"
 #: imap/command.c:161
 #, fuzzy, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Postvak is gesloten."
+msgstr "Postvak %s@%s is gesloten."
 
 #: imap/command.c:1125 imap/command.c:1219
 #, fuzzy, c-format
@@ -2344,7 +2344,7 @@ msgstr "Abonnement op %s opgezegd"
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "%d berichten worden gekopieerd naar %s..."
+msgstr[0] "Een bericht word gekopieerd naar %s..."
 msgstr[1] "%d berichten worden gekopieerd naar %s..."
 
 #: imap/imap.c:1951 imap/imap.c:2241 imap/message.c:1492 muttlib.c:1451
@@ -2369,15 +2369,15 @@ msgstr "Verwijderen is mislukt"
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "%d berichten worden gemarkeerd voor verwijdering..."
-msgstr[1] "%d berichten worden gemarkeerd voor verwijdering..."
+msgstr[0] "Een bericht is gemarkeerd voor verwijdering..."
+msgstr[1] "%d berichten zijn gemarkeerd voor verwijdering..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2435
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Gewijzigde berichten worden opgeslagen... [%d/%d]"
+msgstr[0] "Gewijzigd bericht word opgeslaan...[%d/%d]"
 msgstr[1] "Gewijzigde berichten worden opgeslagen... [%d/%d]"
 
 #: imap/imap.c:2491
@@ -2399,12 +2399,12 @@ msgstr "imap_sync_mailbox: EXPUNGE is mislukt"
 #: imap/imap.c:2566
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
-msgstr "SMTP-server ondersteunt geen authenticatie"
+msgstr "IMAP server ondersteund geen zelfgemaakte markeringen"
 
 #: imap/imap.c:2610
 #, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "Ongeldig    "
+msgstr "Ongeldige IMAP markering"
 
 #: imap/message.c:476 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
 #: mutt/memory.c:142 mx.c:1340 safe_asprintf.c:61
@@ -2494,7 +2494,7 @@ msgstr "Fout in %s, regel %d: %s"
 #: init.c:878
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Fout in %s, regel %d: %s"
+msgstr "Fout in %s, op regel %d: %s"
 
 #: init.c:902
 #, c-format
@@ -2510,8 +2510,8 @@ msgstr "source: inlezen is gestaakt vanwege te veel fouten in %s"
 #, fuzzy, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: fouten in %s"
-msgstr[1] "source: fouten in %s"
+msgstr[0] "bron: fout in %s"
+msgstr[1] "bron: fouten in %s"
 
 #: init.c:946
 msgid "alias: no address"
@@ -2529,7 +2529,7 @@ msgstr "attachments: geen dispositie"
 #: init.c:1084
 #, fuzzy
 msgid "Current attachments settings:"
-msgstr "bewerk de omschrijving van een bijlage"
+msgstr "Huidige instellingen voor bijlagen:"
 
 #: init.c:1114
 msgid "attachments: invalid disposition"
@@ -2572,7 +2572,7 @@ msgstr "source: fout bij %s"
 #: init.c:1975
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
-msgstr "Berichten konden niet worden afgedrukt"
+msgstr "bron: bestand %s werd niet gevonden"
 
 #: init.c:2004
 msgid "spam: no matching pattern"
@@ -2585,12 +2585,12 @@ msgstr "nospam: geen overeenkomstig patroon"
 #: init.c:2187
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
-msgstr "Geabonneerd op %s"
+msgstr "Kan niet abonneren op %s"
 
 #: init.c:2203 init.c:2653
 #, fuzzy
 msgid "No folder specified"
-msgstr "Geen onderwerp."
+msgstr "Geen map gespecifieerd"
 
 #: init.c:2400
 msgid "unattachments: no disposition"
@@ -2603,7 +2603,7 @@ msgstr "unattachments: ongeldige dispositie"
 #: init.c:2637
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Abonnement op %s opgezegd"
+msgstr "Kan abbonnement op %s niet opzeggen"
 
 #: init.c:3400
 #, c-format
@@ -2613,7 +2613,7 @@ msgstr "%s: onbekend commando"
 #: init.c:4050 init.c:4074 init.c:4109
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Ongeldige waarde voor optie %s: \"%s\""
+msgstr "Ongeldige waarde voor optie %s: %s"
 
 #: init.c:4087
 #, c-format
@@ -2623,7 +2623,7 @@ msgstr ""
 #: init.c:4125
 #, fuzzy, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Functie wordt niet ondersteund in deze modus"
+msgstr "Optie %s kan niet ingesteld worden in 'attach-message' modus"
 
 #: keymap.c:315 keymap.c:323
 #, c-format
@@ -2705,7 +2705,7 @@ msgstr "Bericht kon niet naar schijf worden geschreven"
 #: maildir/mh.c:1863
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
-msgstr "_maildir_commit_message(): kan bestandstijd niet zetten"
+msgstr "md_commit_message(): Kan geen tijd op bestand zetten"
 
 #: maildir/mh.c:2606 mbox/mbox.c:1070 mx.c:593 notmuch/mutt_notmuch.c:2651
 #, c-format
@@ -2817,7 +2817,7 @@ msgstr "Optie '-E' gaat niet samen met standaardinvoer"
 #: main.c:982
 #, fuzzy, c-format
 msgid "Cannot parse message template: %s"
-msgstr "Kan bestand niet openen: %s"
+msgstr "Kan sjabloon bestand niet verwerken: %s"
 
 #: main.c:1047 mutt_header.c:342
 #, c-format
@@ -2964,7 +2964,7 @@ msgstr "Wacht op flock-poging... %d"
 #: mutt/file.c:1333
 #, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Fout tijdens verbinden met server: %s"
+msgstr "Fout: omzetten pad naar aboluut"
 
 #: mutt/history.c:229 mutt/history.c:271 mutt/history.c:602
 #, c-format
@@ -2974,17 +2974,17 @@ msgstr "Verkeerde indeling van geschiedenisbestand (regel %d)"
 #: mutt/logging.c:105
 #, fuzzy, c-format
 msgid "Closed log file: %s"
-msgstr "Kan bestand niet openen: %s"
+msgstr "Logboekbestand sluiten: %s"
 
 #: mutt/logging.c:136
 #, fuzzy, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Debug-informatie op niveau %d.\n"
+msgstr "Debug-informatie op niveau %d voor bestand '%s'"
 
 #: mutt/logging.c:187
 #, fuzzy, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Debug-informatie op niveau %d.\n"
+msgstr "Logging op niveau %d voor bestand '%s'"
 
 #: mutt/regex.c:291
 #, c-format
@@ -2998,12 +2998,12 @@ msgstr "Niet genoeg subexpressies voor sjabloon"
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Signaal %d (%s) ...\n"
+msgstr "Signaal %d (%s) ontvangen ... Afsluiten."
 
 #: mutt/signal.c:73
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Signaal %d...\n"
+msgstr "Signaal %d ontvangen ... Afsluiten.\n"
 
 #: muttlib.c:430
 #, c-format
@@ -3066,7 +3066,7 @@ msgstr "Bericht aan %s toevoegen?"
 #: muttlib.c:1428
 #, fuzzy
 msgid "Can't save message to news server"
-msgstr "Kan bericht op POP-server niet aanpassen"
+msgstr "Kan bericht niet opslaan op nieuws server"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:230
@@ -3158,12 +3158,12 @@ msgstr "Zoeken"
 #: mutt_history.c:95
 #, fuzzy, c-format
 msgid "History '%s'"
-msgstr "Zoekopdracht '%s'"
+msgstr "Geschiedenis '%s'"
 
 #: mutt_logging.c:330
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Ongeldige waarde voor optie %s: \"%s\""
+msgstr "Ongeldige waarde voor optie %s: %ld"
 
 #: mutt_lua.c:419
 msgid "Error: Couldn't load the lua interpreter"
@@ -3172,12 +3172,12 @@ msgstr ""
 #: mutt_lua.c:495
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Kan %s niet claimen.\n"
+msgstr "Kan lua bron niet verwerken"
 
 #: mutt_socket.c:90
 #, fuzzy, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL is niet beschikbaar."
+msgstr "SSL is niet beschikbaar. Kan niet verbinden met %s"
 
 #: mutt_thread.c:1128
 msgid "Parent message is not available"
@@ -3194,7 +3194,7 @@ msgstr "Voorafgaand bericht is niet zichtbaar in deze beperkte weergave"
 #: mx.c:521
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Het zoeken is onderbroken."
+msgstr "Het lezen van %s onderbroken,,,"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3203,8 +3203,8 @@ msgstr "Het zoeken is onderbroken."
 #, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "bericht(en) niet verwijderd"
-msgstr[1] "bericht(en) niet verwijderd"
+msgstr[0] "Het bericht is niet verwijderd"
+msgstr[1] "De berichten zijn niet verwijderd"
 
 #: mx.c:678
 msgid "Can't open trash folder"
@@ -3220,15 +3220,15 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Gelezen berichten naar %s verplaatsen?"
-msgstr[1] "Gelezen berichten naar %s verplaatsen?"
+msgstr[0] "Gelezen bericht %d naar %s verplaatsen?"
+msgstr[1] "Gelezen berichten %d  naar %s verplaatsen?"
 
 #: mx.c:781 mx.c:1091
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
-msgstr[0] "%d als gewist gemarkeerde berichten verwijderen?"
-msgstr[1] "%d als gewist gemarkeerde berichten verwijderen?"
+msgstr[0] "Een verwijderd bericht volledig verwijderen"
+msgstr[1] "%d verwijderde berichten volledig verwijderen?"
 
 #: mx.c:803
 #, c-format
@@ -3284,7 +3284,7 @@ msgstr "[-- %s uitvoer volgt%s --]\n"
 #: ncrypt/crypt.c:115
 #, fuzzy
 msgid "Passphrases forgotten"
-msgstr "Wachtwoord(en) zijn vergeten"
+msgstr "Wachtwoord vergeten"
 
 #: ncrypt/crypt.c:189
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
@@ -3297,12 +3297,12 @@ msgstr "Bericht is niet verzonden: inline PGP gaat niet met bijlagen"
 #: ncrypt/crypt.c:200
 #, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
-msgstr "Inline PGP is niet mogelijk met bijlagen.  PGP/MIME gebruiken?"
+msgstr "Inline PGP is niet mogelijk met 'format=flowed'. PGP/MIME gebruiken?"
 
 #: ncrypt/crypt.c:204
 #, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
-msgstr "Bericht is niet verzonden: inline PGP gaat niet met bijlagen"
+msgstr "Bericht is niet verzonden: inline PGP kan niet gebruikt worden  met 'format=flowed'"
 
 #: ncrypt/crypt.c:214 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:705
 #: ncrypt/pgpkey.c:905
