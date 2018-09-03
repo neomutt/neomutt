@@ -960,7 +960,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   mutt_menu_push_current(menu);
 
-  menu->max = mutt_array_size(part) * 2 + 10;
+  menu->max = mutt_array_size(part) * 2 + 11;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
@@ -997,8 +997,12 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
   snprintf(menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), buf);
   buf[0] = '\0';
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_md5);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), buf);
+  buf[40] = '\0'; /* Ensure the second printed line is null terminated */
+  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
+  buf[39] = '\0'; /* Divide into two lines of output */
+  snprintf(menu->dialog[row++], SHORT_STRING, "%s%s", _("SHA256 Fingerprint: "), buf);
+  snprintf(menu->dialog[row++], SHORT_STRING, "%*s%s",
+           (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
 
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
