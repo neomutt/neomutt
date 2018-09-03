@@ -124,17 +124,18 @@ enum ImapCaps
   IMAP4 = 0,
   IMAP4REV1,
   STATUS,
-  ACL,           /**< RFC2086: IMAP4 ACL extension */
-  NAMESPACE,     /**< RFC2342: IMAP4 Namespace */
-  ACRAM_MD5,     /**< RFC2195: CRAM-MD5 authentication */
-  AGSSAPI,       /**< RFC1731: GSSAPI authentication */
-  AUTH_ANON,     /**< AUTH=ANONYMOUS */
-  STARTTLS,      /**< RFC2595: STARTTLS */
-  LOGINDISABLED, /**<           LOGINDISABLED */
-  IDLE,          /**< RFC2177: IDLE */
-  SASL_IR,       /**< SASL initial response draft */
-  ENABLE,        /**< RFC5161 */
-  X_GM_EXT1,     /**< https://developers.google.com/gmail/imap/imap-extensions */
+  ACL,                   /**< RFC2086: IMAP4 ACL extension */
+  NAMESPACE,             /**< RFC2342: IMAP4 Namespace */
+  ACRAM_MD5,             /**< RFC2195: CRAM-MD5 authentication */
+  AGSSAPI,               /**< RFC1731: GSSAPI authentication */
+  AUTH_ANON,             /**< AUTH=ANONYMOUS */
+  AUTH_OAUTHBEARER,      /**< RFC7628: AUTH=OAUTHBEARER */
+  STARTTLS,              /**< RFC2595: STARTTLS */
+  LOGINDISABLED,         /**< RFC2595: LOGINDISABLED */
+  IDLE,                  /**< RFC2177: IDLE */
+  SASL_IR,               /**< SASL initial response draft */
+  ENABLE,                /**< RFC5161 */
+  X_GM_EXT1,             /**< https://developers.google.com/gmail/imap/imap-extensions */
   X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
 
   CAPMAX

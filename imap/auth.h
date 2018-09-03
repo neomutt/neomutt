@@ -63,5 +63,6 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method);
 #ifdef USE_SASL
 enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method);
 #endif
+enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method);
 
 #endif /* _IMAP_AUTH_H */
