@@ -1374,7 +1374,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         {
           char *att = files[i];
           new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->unowned = 1;
+          new->unowned = true;
           new->content = mutt_make_file_attach(att);
           if (new->content)
             update_idx(menu, actx, new);
