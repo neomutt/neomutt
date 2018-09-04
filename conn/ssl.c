@@ -345,7 +345,7 @@ static void ssl_dprint_err_stack(void)
  */
 static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 {
-  struct Account *account = (struct Account *) userdata;
+  struct Account *account = userdata;
 
   if (mutt_account_getuser(account) < 0)
     return 0;

@@ -1200,7 +1200,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   if (newpath)
   {
     /* remember that file has been moved -- nm_mbox_sync() will update the DB */
-    struct NmHdrData *hd = (struct NmHdrData *) h->data;
+    struct NmHdrData *hd = h->data;
 
     if (hd)
     {

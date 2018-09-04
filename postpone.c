@@ -195,7 +195,7 @@ void mutt_update_num_postponed(void)
  */
 static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Context *ctx = (struct Context *) menu->data;
+  struct Context *ctx = menu->data;
 
   mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->hdrs[num],
                          MUTT_FORMAT_ARROWCURSOR);

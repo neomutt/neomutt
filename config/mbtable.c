@@ -95,7 +95,7 @@ static void mbtable_destroy(const struct ConfigSet *cs, void *var, const struct 
   if (!cs || !var || !cdef)
     return; /* LCOV_EXCL_LINE */
 
-  struct MbTable **m = (struct MbTable **) var;
+  struct MbTable **m = var;
   if (!*m)
     return;
 

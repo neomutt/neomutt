@@ -217,7 +217,7 @@ static int mutt_sasl_start(void)
  */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
-  struct Account *account = (struct Account *) context;
+  struct Account *account = context;
 
   if (!result)
     return SASL_FAIL;
@@ -261,7 +261,7 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
  */
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
-  struct Account *account = (struct Account *) context;
+  struct Account *account = context;
   int len;
 
   if (!account || !psecret)
@@ -331,7 +331,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
  */
 static int mutt_sasl_conn_open(struct Connection *conn)
 {
-  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;
   int rc = (sasldata->msasl_open)(conn);
   conn->sockdata = sasldata;
@@ -350,7 +350,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
  */
 static int mutt_sasl_conn_close(struct Connection *conn)
 {
-  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
@@ -383,7 +383,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t buflen
   int rc;
   unsigned int olen;
 
-  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
 
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
@@ -453,7 +453,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
   const char *pbuf = NULL;
   unsigned int olen, plen;
 
-  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */

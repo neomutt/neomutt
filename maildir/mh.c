@@ -119,7 +119,7 @@ struct MhData
  */
 static inline struct MhData *mh_data(struct Context *ctx)
 {
-  return (struct MhData *) ctx->data;
+  return ctx->data;
 }
 
 /**
@@ -1365,7 +1365,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       keylen = maildir_hcache_keylen(key);
     }
     void *data = mutt_hcache_fetch(hc, key, keylen);
-    struct timeval *when = (struct timeval *) data;
+    struct timeval *when = data;
 
     if (data && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
