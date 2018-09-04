@@ -40,6 +40,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "mailbox.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -827,15 +828,15 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   msg = mx_msg_open_new(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
+  if (dest->mailbox->magic == MUTT_MBOX || dest->mailbox->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= (dest->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = mutt_copy_message_fp(msg->fp, fpin, hdr, flags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR && src->mailbox->magic == MUTT_NOTMUCH)
     nm_update_filename(src, NULL, msg->committed_path, hdr);
 #endif
 

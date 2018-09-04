@@ -46,6 +46,7 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
@@ -1418,10 +1419,10 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         if (Context)
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
           {
-            mutt_str_strfcpy(fname, Context->path, sizeof(fname));
+            mutt_str_strfcpy(fname, Context->mailbox->path, sizeof(fname));
             mutt_pretty_mailbox(fname, sizeof(fname));
           }
 
@@ -1459,7 +1460,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
         }
 
-        if (!ctx->msgcount)
+        if (!ctx->mailbox->msg_count)
         {
           mx_mbox_close(&ctx, NULL);
           mutt_error(_("No messages in that folder"));
@@ -1487,7 +1488,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
         }
 
-        for (i = 0; i < Context->msgcount; i++)
+        for (i = 0; i < Context->mailbox->msg_count; i++)
         {
           if (!message_is_tagged(Context, i))
             continue;
@@ -1509,7 +1510,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         else
         {
           mx_fastclose_mailbox(Context);
-          FREE(&Context);
+          mutt_context_free(&Context);
         }
 
         /* go back to the folder we started from */
@@ -1920,7 +1921,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         fname[0] = '\0';
         if (Context)
         {
-          mutt_str_strfcpy(fname, Context->path, sizeof(fname));
+          mutt_str_strfcpy(fname, Context->mailbox->path, sizeof(fname));
           mutt_pretty_mailbox(fname, sizeof(fname));
         }
         if (actx->idxlen)

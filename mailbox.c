@@ -182,7 +182,7 @@ static bool test_new_folder(const char *path)
  * @param path Path to the mailbox
  * @retval ptr New Mailbox
  */
-static struct Mailbox *mailbox_new(const char *path)
+struct Mailbox *mailbox_new(const char *path)
 {
   char rp[PATH_MAX] = "";
 
@@ -199,7 +199,7 @@ static struct Mailbox *mailbox_new(const char *path)
  * mailbox_free - Free a Mailbox
  * @param mailbox Mailbox to free
  */
-static void mailbox_free(struct Mailbox **mailbox)
+void mailbox_free(struct Mailbox **mailbox)
 {
   if (mailbox && *mailbox)
     FREE(&(*mailbox)->desc);
@@ -373,9 +373,9 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
         mx_mbox_open(mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
     {
-      mailbox->msg_count = ctx->msgcount;
-      mailbox->msg_unread = ctx->unread;
-      mailbox->msg_flagged = ctx->flagged;
+      mailbox->msg_count = ctx->mailbox->msg_count;
+      mailbox->msg_unread = ctx->mailbox->msg_unread;
+      mailbox->msg_flagged = ctx->mailbox->msg_flagged;
       mailbox->stats_last_checked = ctx->mtime;
       mx_mbox_close(&ctx, NULL);
     }
@@ -438,7 +438,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!Context || !Context->path ||
+  if (!Context || !Context->mailbox->path ||
       ((tmp->magic == MUTT_IMAP ||
 #ifdef USE_NNTP
         tmp->magic == MUTT_NNTP ||
@@ -447,7 +447,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
         tmp->magic == MUTT_NOTMUCH ||
 #endif
         tmp->magic == MUTT_POP) ?
-           (mutt_str_strcmp(tmp->path, Context->path) != 0) :
+           (mutt_str_strcmp(tmp->path, Context->mailbox->path) != 0) :
            (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
   {
     switch (tmp->magic)
@@ -483,7 +483,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
       default:; /* do nothing */
     }
   }
-  else if (CheckMboxSize && Context && Context->path)
+  else if (CheckMboxSize && Context && Context->mailbox->path)
     tmp->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -856,11 +856,11 @@ int mutt_mailbox_check(int force)
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
+  if (!Context || Context->mailbox->magic == MUTT_IMAP || Context->mailbox->magic == MUTT_POP
 #ifdef USE_NNTP
-      || Context->magic == MUTT_NNTP
+      || Context->mailbox->magic == MUTT_NNTP
 #endif
-      || stat(Context->path, &contex_sb) != 0)
+      || stat(Context->mailbox->path, &contex_sb) != 0)
   {
     contex_sb.st_dev = 0;
     contex_sb.st_ino = 0;
@@ -1043,3 +1043,17 @@ void mutt_mailbox_vfolder(char *buf, size_t buflen)
   *buf = '\0';
 }
 #endif
+
+/**
+ * mutt_context_free - Free a Context
+ * @param ctx Context to free
+ */
+void mutt_context_free(struct Context **ctx)
+{
+  if (!ctx || !*ctx)
+    return;
+
+  mailbox_free(&(*ctx)->mailbox);
+  FREE(ctx);
+}
+

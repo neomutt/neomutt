@@ -49,6 +49,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "handler.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_parse.h"
 #include "muttlib.h"
@@ -826,7 +827,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
 
   if (!h)
   {
-    for (int i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       if (!message_is_tagged(Context, i))
         continue;

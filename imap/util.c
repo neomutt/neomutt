@@ -51,6 +51,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
+#include "mailbox.h"
 #include "message.h"
 #include "mutt_account.h"
 #include "mx.h"
@@ -297,7 +298,7 @@ header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
     imap_cachepath(idata, path, mbox, sizeof(mbox));
   else
   {
-    if (!idata->ctx || imap_parse_path(idata->ctx->path, &mx) < 0)
+    if (!idata->ctx || imap_parse_path(idata->ctx->mailbox->path, &mx) < 0)
       return NULL;
 
     imap_cachepath(idata, mx.mbox, mbox, sizeof(mbox));
@@ -1107,7 +1108,7 @@ int imap_wait_keepalive(pid_t pid)
 void imap_allow_reopen(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || ctx->mailbox->magic != MUTT_IMAP)
     return;
 
   idata = ctx->data;
@@ -1122,7 +1123,7 @@ void imap_allow_reopen(struct Context *ctx)
 void imap_disallow_reopen(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || ctx->mailbox->magic != MUTT_IMAP)
     return;
 
   idata = ctx->data;

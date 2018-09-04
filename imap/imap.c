@@ -186,7 +186,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
   bool started = false;
   struct Header **hdrs = idata->ctx->hdrs;
 
-  for (n = *pos; n < idata->ctx->msgcount && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
+  for (n = *pos; n < idata->ctx->mailbox->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
@@ -240,12 +240,12 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
           mutt_buffer_printf(buf, ",%u", HEADER_DATA(hdrs[n])->uid);
       }
       /* tie up if the last message also matches */
-      else if (n == idata->ctx->msgcount - 1)
+      else if (n == idata->ctx->mailbox->msg_count - 1)
         mutt_buffer_printf(buf, ":%u", HEADER_DATA(hdrs[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (hdrs[n]->active || n == idata->ctx->msgcount - 1))
+    else if (setstart && (hdrs[n]->active || n == idata->ctx->mailbox->msg_count - 1))
     {
       if (HEADER_DATA(hdrs[n - 1])->uid > setstart)
         mutt_buffer_printf(buf, ":%u", HEADER_DATA(hdrs[n - 1])->uid);
@@ -843,7 +843,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
   Sort = SORT_ORDER;
   mutt_sort_headers(idata->ctx, false);
 
-  for (int i = 0; i < idata->ctx->msgcount; i++)
+  for (int i = 0; i < idata->ctx->mailbox->msg_count; i++)
   {
     h = idata->ctx->hdrs[i];
 
@@ -1202,11 +1202,11 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   if (Sort != SORT_ORDER)
   {
     hdrs = idata->ctx->hdrs;
-    idata->ctx->hdrs = mutt_mem_malloc(idata->ctx->msgcount * sizeof(struct Header *));
-    memcpy(idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof(struct Header *));
+    idata->ctx->hdrs = mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Header *));
+    memcpy(idata->ctx->hdrs, hdrs, idata->ctx->mailbox->msg_count * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(idata->ctx->hdrs, idata->ctx->msgcount, sizeof(struct Header *),
+    qsort(idata->ctx->hdrs, idata->ctx->mailbox->msg_count, sizeof(struct Header *),
           mutt_get_sort_func(SORT_ORDER));
   }
 
@@ -1556,7 +1556,7 @@ int imap_status(const char *path, bool queue)
    * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
    * make sure the idata really is open to a folder. */
   if (idata->ctx && !imap_mxcmp(buf, idata->mailbox))
-    return idata->ctx->msgcount;
+    return idata->ctx->mailbox->msg_count;
   else if (mutt_bit_isset(idata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(idata->capabilities, STATUS))
   {
@@ -1684,7 +1684,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat)
 {
   struct Buffer buf;
   struct ImapData *idata = ctx->data;
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
     ctx->hdrs[i]->matched = false;
 
   if (do_search(pat, 1) == 0)
@@ -1903,7 +1903,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   /* check that the save-to folder is in the same account */
   if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
     return 1;
   }
 
@@ -1913,7 +1913,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
   sync_cmd = mutt_buffer_new();
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (ctx->hdrs[i]->active && ctx->hdrs[i]->changed &&
         ctx->hdrs[i]->deleted && !ctx->hdrs[i]->purge)
@@ -2002,9 +2002,9 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
   {
-    mutt_error(_("%s is an invalid IMAP path"), ctx->path);
+    mutt_error(_("%s is an invalid IMAP mailbox->path"), ctx->mailbox->path);
     return -1;
   }
 
@@ -2026,10 +2026,8 @@ static int imap_mbox_open(struct Context *ctx)
   idata->mailbox = mutt_str_strdup(buf);
   imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
 
-  FREE(&(ctx->path));
-  FREE(&(ctx->realpath));
-  ctx->path = mutt_str_strdup(buf);
-  ctx->realpath = mutt_str_strdup(ctx->path);
+  mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
 
   idata->ctx = ctx;
 
@@ -2217,7 +2215,7 @@ static int imap_mbox_open(struct Context *ctx)
   ctx->hdrmax = count;
   ctx->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));
   ctx->v2r = mutt_mem_calloc(count, sizeof(int));
-  ctx->msgcount = 0;
+  ctx->mailbox->msg_count = 0;
 
   if (count && (imap_read_headers(idata, 1, count, true) < 0))
   {
@@ -2225,7 +2223,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
   }
 
-  mutt_debug(2, "msgcount is %d\n", ctx->msgcount);
+  mutt_debug(2, "mailbox->msg_count is %d\n", ctx->mailbox->msg_count);
   FREE(&mx.mbox);
   return 0;
 
@@ -2247,7 +2245,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
   struct ImapMbox mx;
   int rc;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
     return -1;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
@@ -2267,7 +2265,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
     mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
   FREE(&mx.mbox);
 
-  rc = imap_access(ctx->path);
+  rc = imap_access(ctx->mailbox->path);
   if (rc == 0)
     return 0;
 
@@ -2338,7 +2336,7 @@ static int imap_mbox_close(struct Context *ctx)
   }
 
   /* free IMAP part of headers */
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
@@ -2431,7 +2429,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     {
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
-      for (int i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->mailbox->msg_count; i++)
         if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->changed)
           ctx->hdrs[i]->active = false;
       mutt_message(ngettext("Marking %d message deleted...",
@@ -2445,7 +2443,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
 #endif
 
   /* save messages with real (non-flag) changes */
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     h = ctx->hdrs[i];
 
@@ -2470,10 +2468,10 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
       {
         /* L10N: The plural is choosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
-                              "Saving changed messages... [%d/%d]", ctx->msgcount),
-                     i + 1, ctx->msgcount);
+                              "Saving changed messages... [%d/%d]", ctx->mailbox->msg_count),
+                     i + 1, ctx->mailbox->msg_count);
         if (!appendctx)
-          appendctx = mx_mbox_open(ctx->path, MUTT_APPEND | MUTT_QUIET);
+          appendctx = mx_mbox_open(ctx->mailbox->path, MUTT_APPEND | MUTT_QUIET);
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else
@@ -2492,11 +2490,11 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   if (Sort != SORT_ORDER)
   {
     hdrs = ctx->hdrs;
-    ctx->hdrs = mutt_mem_malloc(ctx->msgcount * sizeof(struct Header *));
-    memcpy(ctx->hdrs, hdrs, ctx->msgcount * sizeof(struct Header *));
+    ctx->hdrs = mutt_mem_malloc(ctx->mailbox->msg_count * sizeof(struct Header *));
+    memcpy(ctx->hdrs, hdrs, ctx->mailbox->msg_count * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(ctx->hdrs, ctx->msgcount, sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
+    qsort(ctx->hdrs, ctx->mailbox->msg_count, sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
   }
 
   rc = sync_helper(idata, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
@@ -2541,7 +2539,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   /* Update local record of server state to reflect the synchronization just
    * completed.  imap_read_headers always overwrites hcache-origin flags, so
    * there is no need to mutate the hcache after flag-only changes. */
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     HEADER_DATA(ctx->hdrs[i])->deleted = ctx->hdrs[i]->deleted;
     HEADER_DATA(ctx->hdrs[i])->flagged = ctx->hdrs[i]->flagged;

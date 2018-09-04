@@ -2272,7 +2272,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_compile_help(buffer, sizeof(buffer), MENU_PAGER,
 #ifdef USE_NNTP
-                      (Context && (Context->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
+                      (Context && (Context->mailbox->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
 #endif
                                                                    PagerHelpExtra);
     snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
@@ -2336,15 +2336,15 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     if (Context && !OptAttachMsg)
     {
-      oldcount = Context ? Context->msgcount : 0;
+      oldcount = Context ? Context->mailbox->msg_count : 0;
       /* check for new mail */
       check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
       {
-        if (!Context->path)
+        if (!Context->mailbox->path)
         {
           /* fatal error occurred */
-          FREE(&Context);
+          mutt_context_free(&Context);
           pager_menu->redraw = REDRAW_FULL;
           break;
         }
@@ -2354,7 +2354,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* notify user of newly arrived mail */
         if (check == MUTT_NEW_MAIL)
         {
-          for (i = oldcount; i < Context->msgcount; i++)
+          for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
             struct Header *h = Context->hdrs[i];
 
@@ -2373,7 +2373,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           {
             /* After the mailbox has been updated,
              * rd.index->current might be invalid */
-            rd.index->current = MIN(rd.index->current, (Context->msgcount - 1));
+            rd.index->current = MIN(rd.index->current, (Context->mailbox->msg_count - 1));
             index_hint = Context->hdrs[Context->v2r[rd.index->current]]->index;
 
             bool q = Context->quiet;
@@ -3083,7 +3083,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_POST:
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
@@ -3095,7 +3095,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_FORWARD_TO_GROUP:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
-        if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+        if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
@@ -3121,7 +3121,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             query_quadoption(FollowupToPoster,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+          if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;

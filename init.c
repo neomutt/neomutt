@@ -132,7 +132,7 @@ static void alternates_clean(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
     Context->hdrs[i]->recip_valid = false;
 }
 
@@ -144,7 +144,7 @@ static void attachments_clean(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
     Context->hdrs[i]->attach_valid = false;
 }
 
@@ -204,7 +204,7 @@ static void clear_subject_mods(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
     FREE(&Context->hdrs[i]->env->disp_subj);
 }
 

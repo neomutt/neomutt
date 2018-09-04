@@ -33,6 +33,7 @@
 #include "mutt_thread.h"
 #include "context.h"
 #include "curs_lib.h"
+#include "mailbox.h"
 #include "mx.h"
 #include "protos.h"
 #include "sort.h"
@@ -117,7 +118,7 @@ bool need_display_subject(struct Context *ctx, struct Header *hdr)
 static void linearize_tree(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree;
-  struct Header **array = ctx->hdrs + ((Sort & SORT_REVERSE) ? ctx->msgcount - 1 : 0);
+  struct Header **array = ctx->hdrs + ((Sort & SORT_REVERSE) ? ctx->mailbox->msg_count - 1 : 0);
 
   while (tree)
   {
@@ -489,9 +490,9 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
  */
 static struct Hash *make_subj_hash(struct Context *ctx)
 {
-  struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+  struct Hash *hash = mutt_hash_create(ctx->mailbox->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     struct Header *hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
@@ -574,7 +575,7 @@ static void pseudo_threads(struct Context *ctx)
  */
 void mutt_clear_threads(struct Context *ctx)
 {
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     /* mailbox may have been only partially read */
     if (ctx->hdrs[i])
@@ -762,7 +763,7 @@ static void check_subjects(struct Context *ctx, bool init)
 {
   struct Header *cur = NULL;
   struct MuttThread *tmp = NULL;
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     cur = ctx->hdrs[i];
     if (cur->thread->check_subject)
@@ -817,7 +818,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   if (init)
   {
-    ctx->thread_hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+    ctx->thread_hash = mutt_hash_create(ctx->mailbox->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
     mutt_hash_set_destructor(ctx->thread_hash, thread_hash_destructor, 0);
   }
 
@@ -836,7 +837,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
    * exists.  otherwise, if there is a MuttThread that already has a message, thread
    * new message as an identical child.  if we didn't attach the message to a
    * MuttThread, make a new one for it. */
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     cur = ctx->hdrs[i];
 
@@ -928,7 +929,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   }
 
   /* thread by references */
-  for (i = 0; i < ctx->msgcount; i++)
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
     cur = ctx->hdrs[i];
     if (cur->threaded)
@@ -1156,7 +1157,7 @@ void mutt_set_virtual(struct Context *ctx)
   ctx->vsize = 0;
   int padding = mx_msg_padding_size(ctx);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     cur = ctx->hdrs[i];
     if (cur->virtual >= 0)
@@ -1377,7 +1378,7 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
   {
-    rc = (threads[1] ? threads[1]->message->msgno : ctx->msgcount) -
+    rc = (threads[1] ? threads[1]->message->msgno : ctx->mailbox->msg_count) -
          threads[0]->message->msgno;
   }
 
@@ -1394,9 +1395,9 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
  */
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
-  struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, 0);
+  struct Hash *hash = mutt_hash_create(ctx->mailbox->msg_count * 2, 0);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     struct Header *hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
@@ -1442,7 +1443,7 @@ int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *c
 
   if (!last)
   {
-    for (int i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
       if (message_is_tagged(ctx, i))
         changed |= link_threads(cur, ctx->hdrs[i], ctx);
   }

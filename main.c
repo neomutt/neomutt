@@ -1211,7 +1211,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
       mutt_index_menu();
       if (Context)
-        FREE(&Context);
+        mutt_context_free(&Context);
     }
 #ifdef USE_IMAP
     imap_logout_all();

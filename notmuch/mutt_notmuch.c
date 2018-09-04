@@ -237,13 +237,13 @@ static struct NmCtxData *new_ctxdata(const char *uri)
  */
 static int init_context(struct Context *ctx)
 {
-  if (!ctx || (ctx->magic != MUTT_NOTMUCH))
+  if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
   if (ctx->data)
     return 0;
 
-  ctx->data = new_ctxdata(ctx->path);
+  ctx->data = new_ctxdata(ctx->mailbox->path);
   if (!ctx->data)
     return -1;
 
@@ -282,7 +282,7 @@ static char *header_get_fullpath(struct Header *h, char *buf, size_t buflen)
  */
 static struct NmCtxData *get_ctxdata(struct Context *ctx)
 {
-  if (ctx && (ctx->magic == MUTT_NOTMUCH))
+  if (ctx && (ctx->mailbox->magic == MUTT_NOTMUCH))
     return ctx->data;
 
   return NULL;
@@ -1036,7 +1036,7 @@ static void progress_reset(struct Context *ctx)
     return;
 
   memset(&data->progress, 0, sizeof(data->progress));
-  data->oldmsgcount = ctx->msgcount;
+  data->oldmsgcount = ctx->mailbox->msg_count;
   data->ignmsgcount = 0;
   data->noprogress = false;
   data->progress_ready = false;
@@ -1076,7 +1076,7 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
   if (data->progress_ready)
   {
     mutt_progress_update(&data->progress,
-                         ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
+                         ctx->mailbox->msg_count + data->ignmsgcount - data->oldmsgcount, -1);
   }
 }
 
@@ -1150,10 +1150,10 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   if (!path)
     return;
 
-  mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n", ctx->msgcount,
+  mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n", ctx->mailbox->msg_count,
              notmuch_message_get_message_id(msg), path);
 
-  if (ctx->msgcount >= ctx->hdrmax)
+  if (ctx->mailbox->msg_count >= ctx->hdrmax)
   {
     mutt_debug(2, "nm: allocate mx memory\n");
     mx_alloc_memory(ctx);
@@ -1192,10 +1192,10 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   }
 
   h->active = true;
-  h->index = ctx->msgcount;
+  h->index = ctx->mailbox->msg_count;
   ctx->size += h->content->length + h->content->offset - h->content->hdr_offset;
-  ctx->hdrs[ctx->msgcount] = h;
-  ctx->msgcount++;
+  ctx->hdrs[ctx->mailbox->msg_count] = h;
+  ctx->mailbox->msg_count++;
 
   if (newpath)
   {
@@ -1292,7 +1292,7 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup
   msgs = notmuch_query_search_messages(q);
 #endif
 
-  for (; notmuch_messages_valid(msgs) && ((limit == 0) || (ctx->msgcount < limit));
+  for (; notmuch_messages_valid(msgs) && ((limit == 0) || (ctx->mailbox->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
   {
     if (SigInt == 1)
@@ -1334,7 +1334,7 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool ded
   threads = notmuch_query_search_threads(q);
 #endif
 
-  for (; notmuch_threads_valid(threads) && ((limit == 0) || (ctx->msgcount < limit));
+  for (; notmuch_threads_valid(threads) && ((limit == 0) || (ctx->mailbox->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
     if (SigInt == 1)
@@ -1849,7 +1849,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   if (!(db = get_db(data, false)) || !(msg = get_nm_message(db, h)))
     goto done;
 
-  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n", ctx->msgcount);
+  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n", ctx->mailbox->msg_count);
 
   progress_reset(ctx);
   id = notmuch_message_get_thread_id(msg);
@@ -1870,20 +1870,20 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   ctx->mtime.tv_nsec = 0;
   rc = 0;
 
-  if (ctx->msgcount > data->oldmsgcount)
-    mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
+  if (ctx->mailbox->msg_count > data->oldmsgcount)
+    mx_update_context(ctx, ctx->mailbox->msg_count - data->oldmsgcount);
 done:
   if (q)
     notmuch_query_destroy(q);
   if (!is_longrun(data))
     release_db(data);
 
-  if (ctx->msgcount == data->oldmsgcount)
+  if (ctx->mailbox->msg_count == data->oldmsgcount)
     mutt_message(_("No more messages in the thread"));
 
   data->oldmsgcount = 0;
   mutt_debug(1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
-             rc, ctx->msgcount);
+             rc, ctx->mailbox->msg_count);
   return rc;
 }
 
@@ -1973,7 +1973,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   if (!tmp_ctxdata)
     return false;
 
-  tmp_ctx.magic = MUTT_NOTMUCH;
+  tmp_ctx.mailbox->magic = MUTT_NOTMUCH;
   tmp_ctx.data = tmp_ctxdata;
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
@@ -2287,7 +2287,7 @@ char *nm_get_description(struct Context *ctx)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->b->desc && (strcmp(np->b->path, ctx->path) == 0))
+    if (np->b->desc && (strcmp(np->b->path, ctx->mailbox->path) == 0))
       return np->b->desc;
   }
 
@@ -2452,7 +2452,7 @@ static int nm_mbox_open(struct Context *ctx)
   if (!data)
     return -1;
 
-  mutt_debug(1, "nm: reading messages...[current count=%d]\n", ctx->msgcount);
+  mutt_debug(1, "nm: reading messages...[current count=%d]\n", ctx->mailbox->msg_count);
 
   progress_reset(ctx);
 
@@ -2480,10 +2480,10 @@ static int nm_mbox_open(struct Context *ctx)
   ctx->mtime.tv_sec = time(NULL);
   ctx->mtime.tv_nsec = 0;
 
-  mx_update_context(ctx, ctx->msgcount);
+  mx_update_context(ctx, ctx->mailbox->msg_count);
   data->oldmsgcount = 0;
 
-  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, ctx->msgcount);
+  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, ctx->mailbox->msg_count);
   return rc;
 }
 
@@ -2492,10 +2492,10 @@ static int nm_mbox_open(struct Context *ctx)
  */
 static int nm_mbox_close(struct Context *ctx)
 {
-  if (!ctx || (ctx->magic != MUTT_NOTMUCH))
+  if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     struct Header *h = ctx->hdrs[i];
     if (h)
@@ -2544,11 +2544,11 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   if (!q)
     goto done;
 
-  mutt_debug(1, "nm: start checking (count=%d)\n", ctx->msgcount);
-  data->oldmsgcount = ctx->msgcount;
+  mutt_debug(1, "nm: start checking (count=%d)\n", ctx->mailbox->msg_count);
+  data->oldmsgcount = ctx->mailbox->msg_count;
   data->noprogress = true;
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
     ctx->hdrs[i]->active = false;
 
   limit = get_limit(data);
@@ -2609,7 +2609,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
     notmuch_message_destroy(m);
   }
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!ctx->hdrs[i]->active)
     {
@@ -2618,8 +2618,8 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
     }
   }
 
-  if (ctx->msgcount > data->oldmsgcount)
-    mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
+  if (ctx->mailbox->msg_count > data->oldmsgcount)
+    mx_update_context(ctx, ctx->mailbox->msg_count - data->oldmsgcount);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2631,10 +2631,10 @@ done:
   ctx->mtime.tv_nsec = 0;
 
   mutt_debug(1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
-             ctx->msgcount, new_flags, occult);
+             ctx->mailbox->msg_count, new_flags, occult);
 
   return occult ? MUTT_REOPENED :
-                  (ctx->msgcount > data->oldmsgcount) ? MUTT_NEW_MAIL :
+                  (ctx->mailbox->msg_count > data->oldmsgcount) ? MUTT_NEW_MAIL :
                                                         new_flags ? MUTT_FLAGS : 0;
 }
 
@@ -2646,7 +2646,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   struct NmCtxData *data = get_ctxdata(ctx);
   int rc = 0;
   struct Progress progress;
-  char *uri = ctx->path;
+  char *uri = ctx->mailbox->path;
   bool changed = false;
 
   if (!data)
@@ -2658,11 +2658,11 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   {
     /* all is in this function so we don't use data->progress here */
     char msgbuf[PATH_MAX + 64];
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->mailbox->msg_count);
   }
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     char old[PATH_MAX], new[PATH_MAX];
     struct Header *h = ctx->hdrs[i];
@@ -2683,15 +2683,15 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     else
       header_get_fullpath(h, old, sizeof(old));
 
-    ctx->path = hd->folder;
-    ctx->magic = hd->magic;
+    mutt_str_strfcpy(ctx->mailbox->path, hd->folder, sizeof(ctx->mailbox->path));
+    ctx->mailbox->magic = hd->magic;
 #ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);
 #endif
-    ctx->path = uri;
-    ctx->magic = MUTT_NOTMUCH;
+    mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
+    ctx->mailbox->magic = MUTT_NOTMUCH;
 
     if (rc)
       break;
@@ -2710,8 +2710,8 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     FREE(&hd->oldpath);
   }
 
-  ctx->path = uri;
-  ctx->magic = MUTT_NOTMUCH;
+  mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
+  ctx->mailbox->magic = MUTT_NOTMUCH;
 
   if (!is_longrun(data))
     release_db(data);
@@ -2740,7 +2740,7 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) &&
-      ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_NOTMUCH)))
+      ((ctx->mailbox->magic == MUTT_MAILDIR) || (ctx->mailbox->magic == MUTT_NOTMUCH)))
   {
     msg->fp = maildir_open_find_message(folder, cur->path, NULL);
   }

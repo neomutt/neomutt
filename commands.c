@@ -182,7 +182,7 @@ int mutt_display_message(struct Header *cur)
 
   chflags = (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
-  if (Context->magic == MUTT_NOTMUCH)
+  if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
   res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
@@ -302,7 +302,7 @@ void ci_bounce_message(struct Header *h)
   else if (Context)
   {
     msgcount = 0; // count the precise number of messages.
-    for (rc = 0; rc < Context->msgcount; rc++)
+    for (rc = 0; rc < Context->mailbox->msg_count; rc++)
     {
       if (message_is_tagged(Context, rc) && !Context->hdrs[rc]->env->from)
       {
@@ -479,7 +479,7 @@ static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
     /* handle tagged messages */
     if ((WithCrypto != 0) && decode)
     {
-      for (int i = 0; i < Context->msgcount; i++)
+      for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
@@ -496,7 +496,7 @@ static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
 
     if (split)
     {
-      for (int i = 0; i < Context->msgcount; i++)
+      for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
@@ -530,7 +530,7 @@ static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
         return 1;
       }
       OptKeepQuiet = true;
-      for (int i = 0; i < Context->msgcount; i++)
+      for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
@@ -585,7 +585,7 @@ void mutt_print_message(struct Header *h)
   else if (Context)
   {
     msgcount = 0; // count the precise number of messages.
-    for (i = 0; i < Context->msgcount; i++)
+    for (i = 0; i < Context->mailbox->msg_count; i++)
       if (message_is_tagged(Context, i))
         msgcount++;
   }
@@ -911,7 +911,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   else
   {
     /* look for the first tagged message */
-    for (int i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       if (message_is_tagged(Context, i))
       {
@@ -968,7 +968,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
   mutt_message(_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if ((Context->magic == MUTT_IMAP) && !(decode || decrypt) &&
+  if ((Context->mailbox->magic == MUTT_IMAP) && !(decode || decrypt) &&
       (imap_path_probe(buf, NULL) == MUTT_IMAP))
   {
     switch (imap_copy_messages(Context, h, buf, delete))
@@ -995,7 +995,9 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
      * until the next open.  Until then, improvise. */
     struct Mailbox *cm = NULL;
     if (savectx->compress_info)
-      cm = mutt_find_mailbox(savectx->realpath);
+    {
+      cm = mutt_find_mailbox(savectx->mailbox->realpath);
+    }
     /* We probably haven't been opened yet */
     if (cm && (cm->msg_count == 0))
       cm = NULL;
@@ -1023,10 +1025,10 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       int rc = 0;
 
 #ifdef USE_NOTMUCH
-      if (Context->magic == MUTT_NOTMUCH)
+      if (Context->mailbox->magic == MUTT_NOTMUCH)
         nm_longrun_init(Context, true);
 #endif
-      for (int i = 0; i < Context->msgcount; i++)
+      for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(Context, i))
           continue;
@@ -1048,7 +1050,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #endif
       }
 #ifdef USE_NOTMUCH
-      if (Context->magic == MUTT_NOTMUCH)
+      if (Context->mailbox->magic == MUTT_NOTMUCH)
         nm_longrun_done(Context);
 #endif
       if (rc != 0)
@@ -1059,7 +1061,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
     }
 
     const bool need_mailbox_cleanup =
-        ((savectx->magic == MUTT_MBOX) || (savectx->magic == MUTT_MMDF));
+        ((savectx->mailbox->magic == MUTT_MBOX) || (savectx->mailbox->magic == MUTT_MMDF));
 
     mx_mbox_close(&savectx, NULL);
 
@@ -1222,7 +1224,7 @@ bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
     rc = check_traditional_pgp(h, redraw);
   else
   {
-    for (int i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       if (message_is_tagged(Context, i) && !(Context->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
       {

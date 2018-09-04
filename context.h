@@ -53,8 +53,6 @@ enum AclRights
  */
 struct Context
 {
-  char *path;
-  char *realpath; /**< used for mailbox comparison and the sidebar */
   FILE *fp;
   struct timespec atime;
   struct timespec mtime;
@@ -71,18 +69,13 @@ struct Context
   struct Hash *label_hash;  /**< hash table for x-labels */
   int *v2r;                 /**< mapping from virtual to real msgno */
   int hdrmax;               /**< number of pointers in hdrs */
-  int msgcount;             /**< number of messages in the mailbox */
   int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */
-  int unread;               /**< how many unread messages? */
   int deleted;              /**< how many deleted messages */
-  int flagged;              /**< how many flagged messages */
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
   struct Menu *menu; /**< needed for pattern compilation */
-
-  enum MailboxType magic; /**< mailbox type */
 
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
@@ -103,6 +96,8 @@ struct Context
   /* driver hooks */
   void *data; /**< driver specific data */
   const struct MxOps *mx_ops;
+
+  struct Mailbox *mailbox;
 };
 
 #endif /* _MUTT_CONTEXT_H */

@@ -31,6 +31,7 @@
 #include "where.h"
 
 struct Buffer;
+struct Context;
 struct stat;
 
 /* These Config Variables are only used in mailbox.c */
@@ -42,6 +43,9 @@ extern bool  MaildirCheckCur;
 /* parameter to mutt_parse_mailboxes */
 #define MUTT_NAMED   1
 #define MUTT_VIRTUAL 2
+
+#define MB_NORMAL 0
+#define MB_HIDDEN 1
 
 /**
  * struct Mailbox - A mailbox
@@ -63,8 +67,10 @@ struct Mailbox
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */
   bool newly_created;        /**< mbox or mmdf just popped into existence */
-  struct timespec last_visited; /**< time of last exit from this mailbox */
+  struct timespec last_visited;       /**< time of last exit from this mailbox */
   struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
+
+  int flags; /**< e.g. #MB_NORMAL */
 };
 
 /**
@@ -83,6 +89,10 @@ extern struct MailboxList AllMailboxes;
 #ifdef USE_NOTMUCH
 void mutt_mailbox_vfolder(char *buf, size_t buflen);
 #endif
+
+struct Mailbox *mailbox_new(const char *path);
+void            mailbox_free(struct Mailbox **mailbox);
+void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
 void mutt_update_mailbox(struct Mailbox *b);

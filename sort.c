@@ -30,6 +30,7 @@
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"
@@ -320,7 +321,7 @@ sort_t *mutt_get_sort_func(int method)
       return compare_label;
     case SORT_ORDER:
 #ifdef USE_NNTP
-      if (Context && (Context->magic == MUTT_NNTP))
+      if (Context && (Context->mailbox->magic == MUTT_NNTP))
         return nntp_compare_order;
       else
 #endif
@@ -359,7 +360,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx)
     return;
 
-  if (!ctx->msgcount)
+  if (!ctx->mailbox->msg_count)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
@@ -376,7 +377,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
 
   if (OptNeedRescore && Score)
   {
-    for (int i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
       mutt_score_message(ctx, ctx->hdrs[i], true);
   }
   OptNeedRescore = false;
@@ -412,11 +413,11 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     return;
   }
   else
-    qsort((void *) ctx->hdrs, ctx->msgcount, sizeof(struct Header *), sortfunc);
+    qsort((void *) ctx->hdrs, ctx->mailbox->msg_count, sizeof(struct Header *), sortfunc);
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     struct Header *cur = ctx->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))

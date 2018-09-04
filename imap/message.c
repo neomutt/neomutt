@@ -46,6 +46,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "imap/imap.h"
+#include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
@@ -661,7 +662,7 @@ static int read_headers_normal_eval_cache(struct ImapData *idata,
   char buf[LONG_STRING];
 
   struct Context *ctx = idata->ctx;
-  int idx = ctx->msgcount;
+  int idx = ctx->mailbox->msg_count;
 
   /* L10N:
      Comparing the cached data with the IMAP server's data */
@@ -751,7 +752,7 @@ static int read_headers_normal_eval_cache(struct ImapData *idata,
         STAILQ_INIT(&ctx->hdrs[idx]->tags);
         driver_tags_replace(&ctx->hdrs[idx]->tags, mutt_str_strdup(h.data->flags_remote));
 
-        ctx->msgcount++;
+        ctx->mailbox->msg_count++;
         ctx->size += ctx->hdrs[idx]->content->length;
 
         /* If this is the first time we are fetching, we need to
@@ -811,13 +812,13 @@ static int read_headers_qresync_eval_cache(struct ImapData *idata, char *uid_seq
       idata->max_msn = MAX(idata->max_msn, msn);
       idata->msn_index[msn - 1] = h;
 
-      if (ctx->msgcount >= ctx->hdrmax)
+      if (ctx->mailbox->msg_count >= ctx->hdrmax)
         mx_alloc_memory(ctx);
 
       struct ImapHeaderData *ihd = mutt_mem_calloc(1, sizeof(struct ImapHeaderData));
       h->data = ihd;
 
-      h->index = ctx->msgcount;
+      h->index = ctx->mailbox->msg_count;
       h->active = true;
       h->changed = false;
       ihd->read = h->read;
@@ -831,7 +832,7 @@ static int read_headers_qresync_eval_cache(struct ImapData *idata, char *uid_seq
       mutt_hash_int_insert(idata->uid_hash, uid, h);
 
       ctx->size += h->content->length;
-      ctx->hdrs[ctx->msgcount++] = h;
+      ctx->hdrs[ctx->mailbox->msg_count++] = h;
 
       msn++;
     }
@@ -951,7 +952,7 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
       "X-ORIGINAL-TO";
 
   struct Context *ctx = idata->ctx;
-  int idx = ctx->msgcount;
+  int idx = ctx->mailbox->msg_count;
 
   if (mutt_bit_isset(idata->capabilities, IMAP4REV1))
   {
@@ -1089,7 +1090,7 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
         imap_hcache_put(idata, ctx->hdrs[idx]);
 #endif /* USE_HCACHE */
 
-        ctx->msgcount++;
+        ctx->mailbox->msg_count++;
 
         h.data = NULL;
         idx++;
@@ -1173,7 +1174,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin,
   alloc_msn_index(idata, msn_end);
   imap_alloc_uid_hash(idata, msn_end);
 
-  oldmsgcount = ctx->msgcount;
+  oldmsgcount = ctx->mailbox->msg_count;
   idata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
   idata->new_mail_count = 0;
 
@@ -1305,12 +1306,12 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin,
   }
 #endif /* USE_HCACHE */
 
-  if (ctx->msgcount > oldmsgcount)
+  if (ctx->mailbox->msg_count > oldmsgcount)
   {
     /* TODO: it's not clear to me why we are calling mx_alloc_memory
      *       yet again. */
     mx_alloc_memory(ctx);
-    mx_update_context(ctx, ctx->msgcount - oldmsgcount);
+    mx_update_context(ctx, ctx->mailbox->msg_count - oldmsgcount);
   }
 
   idata->reopen |= IMAP_REOPEN_ALLOW;
@@ -1605,7 +1606,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
 
   struct ImapData *idata = ctx->data;
 
-  if (imap_parse_path(ctx->path, &mx))
+  if (imap_parse_path(ctx->mailbox->path, &mx))
     return -1;
 
   imap_fix_path(idata, mx.mbox, mailbox, sizeof(mailbox));
@@ -1748,7 +1749,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
   /* check that the save-to folder is in the same account */
   if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
     return 1;
   }
 
@@ -1775,7 +1776,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
        * remainder. */
-      for (int i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(ctx, i))
           continue;
@@ -1873,7 +1874,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool d
   {
     if (!h)
     {
-      for (int i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (!message_is_tagged(ctx, i))
           continue;
