@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-09-04 02:11+0100\n"
-"PO-Revision-Date: 2018-05-11 14:00+0000\n"
+"PO-Revision-Date: 2018-09-04 03:30+0000\n"
 "Last-Translator: Zero King <l2dy@macports.org>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -2335,7 +2335,7 @@ msgstr "无效的 IMAP 标记"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:476
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "要中止下载并关闭信箱吗？"
 
 #: imap/message.c:505 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
 #: mutt/memory.c:142 mx.c:1171 safe_asprintf.c:61
@@ -2350,12 +2350,10 @@ msgstr "正在评估缓存..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:869
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "正在取回信件信件头..."
+msgstr "正在取回标记更新..."
 
 #: imap/message.c:969
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "无法取回此版本的 IMAP 服务器的信件头"
 
@@ -2539,14 +2537,14 @@ msgid "Invalid value for option %s: %s"
 msgstr "选项 %s 的值无效：%s"
 
 #: init.c:3750
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "不能从 pager 设置或重置 %s 选项"
 
 #: init.c:3788
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "功能在附加信件(attach-message)模式下不被支持"
+msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
 
 #: keymap.c:319 keymap.c:327
 #, c-format
@@ -2976,9 +2974,8 @@ msgid "Logging at level %d to file '%s'"
 msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
 #: mutt/path.c:443
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "连接到服务器时出错：%s"
+msgstr "错误：转化路径到绝对路径"
 
 #: mutt/regex.c:269
 #, c-format
@@ -3073,17 +3070,16 @@ msgid "Password for %s@%s: "
 msgstr "%s@%s 的密码："
 
 #: mutt_account.c:381
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "查询命令未定义"
+msgstr "OAUTH 刷新命令未定义"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "无法运行刷新命令"
 
 #: mutt_account.c:398
 msgid "Command returned empty string"
-msgstr ""
+msgstr "命令返回了空字符串"
 
 #: mutt_attach.c:130 mutt_attach.c:264 mutt_attach.c:445 mutt_attach.c:1028
 msgid "Can't match nametemplate, continue?"
@@ -3173,7 +3169,7 @@ msgstr "选项 %s 的值无效：\"%s\""
 
 #: mutt_lua.c:420
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "错误：无法加载 lua 解释器"
 
 #: mutt_lua.c:496
 #, fuzzy, c-format
@@ -3204,9 +3200,9 @@ msgstr "读取 %s 已中断..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "无法附加 %s"
+msgstr "无法写入 %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3537,7 +3533,7 @@ msgstr "KeyID "
 
 #: ncrypt/crypt_gpgme.c:1541
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "无可用签名指纹"
 
 #: ncrypt/crypt_gpgme.c:1550 ncrypt/crypt_gpgme.c:1555
 msgid "created: "
@@ -4754,9 +4750,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "切换发送后是否删除文件"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "撰写新信件发给发件人"
+msgstr "撰写新信件给当前信件发件人"
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -5819,14 +5814,12 @@ msgid "Command USER is not supported by server"
 msgstr "服务器不支持 USER 命令"
 
 #: pop/pop_auth.c:353 smtp.c:513
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "正在验证 (SASL)..."
+msgstr "正在验证 (OAUTHBEARER)..."
 
 #: pop/pop_auth.c:392
-#, fuzzy
 msgid "Authentication failed"
-msgstr "SASL 认证失败"
+msgstr "认证失败"
 
 #: pop/pop_lib.c:81
 #, c-format
@@ -6035,9 +6028,8 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "无法解码所有已标记的附件。通过 MIME 封装其它的吗？"
 
 #: recvcmd.c:1051
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "您只能重发 message/rfc822 的部分"
+msgstr "您只能撰写 message/rfc822 部分给发件人"
 
 #: remailer.c:190
 msgid "<random>"
@@ -6188,7 +6180,7 @@ msgstr "已中止未修改过的信件"
 
 #: send.c:2020
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr "没有配置加密后端。已禁用信件安全设置"
+msgstr "没有配置加密后端。已禁用信件安全设置。"
 
 #: send.c:2058
 msgid "Article not posted"
@@ -6216,7 +6208,7 @@ msgstr "没有附件，取消发送？"
 
 #: send.c:2189
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr "信件内容匹配 \"$abort_noattach_regex\"。没有发送"
+msgstr "信件内容匹配 \"$abort_noattach_regex\"。没有发送。"
 
 #: send.c:2248 smtp.c:212
 msgid "Sending message..."
@@ -6258,7 +6250,7 @@ msgstr "%s 不是常规文件"
 
 #: sendlib.c:1170
 msgid "Could not find any mime.types file."
-msgstr "找不到任何 mime.types 文件"
+msgstr "找不到任何 mime.types 文件。"
 
 #: sendlib.c:1259
 #, c-format
@@ -6301,7 +6293,7 @@ msgstr "无效的 SMTP 链接(URL)：%s"
 #: smtp.c:616
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "SMTP 认证方式 %s 需要 SASL"
 
 #: smtp.c:623
 #, c-format
@@ -6309,9 +6301,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "%s 认证失败，正在尝试下一个方法"
 
 #: smtp.c:636
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI 认证失败"
+msgstr "SMTP 认证需要 SASL"
 
 #: smtp.c:716
 msgid "SMTP server does not support authentication"
