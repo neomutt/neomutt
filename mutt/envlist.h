@@ -22,8 +22,8 @@
 
 #include <stdbool.h>
 
-#ifndef _MUTT_ENVLIST_H
-#define _MUTT_ENVLIST_H
+#ifndef MUTT_LIB_ENVLIST_H
+#define MUTT_LIB_ENVLIST_H
 
 void   mutt_envlist_free(void);
 char **mutt_envlist_getlist(void);
@@ -31,4 +31,4 @@ void   mutt_envlist_init(char *envp[]);
 bool   mutt_envlist_set(const char *name, const char *value, bool overwrite);
 bool   mutt_envlist_unset(const char *name);
 
-#endif /* _MUTT_ENVLIST_H */
+#endif /* MUTT_LIB_ENVLIST_H */

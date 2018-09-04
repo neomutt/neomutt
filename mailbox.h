@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MAILBOX_H
-#define _MUTT_MAILBOX_H
+#ifndef MUTT_MAILBOX_H
+#define MUTT_MAILBOX_H
 
 #include <limits.h>
 #include <stdbool.h>
@@ -113,4 +113,4 @@ bool mutt_mailbox_notify(void);
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 
-#endif /* _MUTT_MAILBOX_H */
+#endif /* MUTT_MAILBOX_H */

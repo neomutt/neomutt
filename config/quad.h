@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_QUAD_H
-#define _CONFIG_QUAD_H
+#ifndef MUTT_CONFIG_QUAD_H
+#define MUTT_CONFIG_QUAD_H
 
 struct Buffer;
 struct ConfigSet;
@@ -44,4 +44,4 @@ enum QuadOption
 void quad_init(struct ConfigSet *cs);
 int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err);
 
-#endif /* _CONFIG_QUAD_H */
+#endif /* MUTT_CONFIG_QUAD_H */

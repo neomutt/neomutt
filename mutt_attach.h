@@ -22,8 +22,8 @@
 
 /* common protos for compose / attach menus */
 
-#ifndef _MUTT_ATTACH2_H
-#define _MUTT_ATTACH2_H
+#ifndef MUTT_MUTT_ATTACH_H
+#define MUTT_MUTT_ATTACH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -55,4 +55,4 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
 
-#endif /* _MUTT_ATTACH2_H */
+#endif /* MUTT_MUTT_ATTACH_H */

@@ -3158,7 +3158,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
  */
 static void crypt_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct CryptKeyInfo **key_table = (struct CryptKeyInfo **) menu->data;
+  struct CryptKeyInfo **key_table = menu->data;
   struct CryptEntry entry;
 
   entry.key = key_table[num];

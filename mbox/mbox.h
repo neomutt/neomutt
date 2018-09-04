@@ -30,8 +30,8 @@
  * | mbox/mbox.c | @subpage mbox_mbox |
  */
 
-#ifndef _MBOX_MBOX_H
-#define _MBOX_MBOX_H
+#ifndef MUTT_MBOX_MBOX_H
+#define MUTT_MBOX_MBOX_H
 
 struct Context;
 struct stat;
@@ -44,4 +44,4 @@ extern struct MxOps mx_mmdf_ops;
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
 int mbox_path_probe(const char *path, const struct stat *st);
 
-#endif /* _MBOX_MBOX_H */
+#endif /* MUTT_MBOX_MBOX_H */

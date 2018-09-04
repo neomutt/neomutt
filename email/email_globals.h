@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_GLOBALS_H
-#define _EMAIL_GLOBALS_H
+#ifndef MUTT_EMAIL_EMAIL_GLOBALS_H
+#define MUTT_EMAIL_EMAIL_GLOBALS_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
@@ -39,4 +39,4 @@ extern struct RegexList   NoSpamList;
 extern struct ReplaceList SpamList;
 extern struct ListHead    UnIgnore;
 
-#endif /* _EMAIL_GLOBALS_H */
+#endif /* MUTT_EMAIL_EMAIL_GLOBALS_H */

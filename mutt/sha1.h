@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SHA1_H
-#define _MUTT_SHA1_H
+#ifndef MUTT_LIB_SHA1_H
+#define MUTT_LIB_SHA1_H
 
 #include <stdint.h>
 
@@ -44,4 +44,4 @@ void mutt_sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32
 
 #define SHA_DIGEST_LENGTH 20
 
-#endif /* _MUTT_SHA1_H */
+#endif /* MUTT_LIB_SHA1_H */

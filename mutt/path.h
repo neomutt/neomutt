@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_PATH_H
-#define _MUTT_PATH_H
+#ifndef MUTT_LIB_PATH_H
+#define MUTT_LIB_PATH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -40,4 +40,4 @@ bool        mutt_path_tidy_dotdot(char *buf);
 bool        mutt_path_tidy_slash(char *buf);
 int         mutt_path_to_absolute(char *path, const char *reference);
 
-#endif /* _MUTT_PATH_H */
+#endif /* MUTT_LIB_PATH_H */

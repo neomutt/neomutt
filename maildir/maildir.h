@@ -30,8 +30,8 @@
  * | maildir/mh.c | @subpage maildir_maildir |
  */
 
-#ifndef _MAILDIR_MAILDIR_H
-#define _MAILDIR_MAILDIR_H
+#ifndef MUTT_MAILDIR_MAILDIR_H
+#define MUTT_MAILDIR_MAILDIR_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -75,4 +75,4 @@ int            mh_sync_mailbox_message(struct Context *ctx, int msgno, header_ca
 int            mh_sync_mailbox_message(struct Context *ctx, int msgno);
 #endif
 
-#endif /* _MAILDIR_MAILDIR_H */
+#endif /* MUTT_MAILDIR_MAILDIR_H */

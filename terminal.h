@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_TERMINAL_H
-#define _MUTT_TERMINAL_H
+#ifndef MUTT_TERMINAL_H
+#define MUTT_TERMINAL_H
 
 #include <stdbool.h>
 
@@ -31,4 +31,4 @@ bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
-#endif /* _MUTT_TERMINAL_H */
+#endif /* MUTT_TERMINAL_H */

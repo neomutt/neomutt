@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CHARSET_H
-#define _MUTT_CHARSET_H
+#ifndef MUTT_LIB_CHARSET_H
+#define MUTT_LIB_CHARSET_H
 
 #include <iconv.h>
 #include <stdbool.h>
@@ -106,4 +106,4 @@ void             mutt_ch_set_charset(const char *charset);
 #define mutt_ch_is_utf8(a)     mutt_ch_chscmp(a, "utf-8")
 #define mutt_ch_is_us_ascii(a) mutt_ch_chscmp(a, "us-ascii")
 
-#endif
+#endif /* MUTT_LIB_CHARSET_H */

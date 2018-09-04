@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_GLOBALS_H
-#define _CONN_GLOBALS_H
+#ifndef MUTT_CONN_CONN_GLOBALS_H
+#define MUTT_CONN_CONN_GLOBALS_H
 
 #include <stdbool.h>
 
@@ -58,4 +58,4 @@ extern bool SslVerifyDates;
 extern bool SslVerifyHost;
 #endif
 
-#endif /* _CONN_GLOBALS_H */
+#endif /* MUTT_CONN_CONN_GLOBALS_H */

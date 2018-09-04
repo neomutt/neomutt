@@ -343,12 +343,6 @@ struct Context *mx_mbox_open(const char *path, int flags)
  */
 void mx_fastclose_mailbox(struct Context *ctx)
 {
-#ifdef HAVE_UTIMENSAT
-  struct timespec ts[2];
-#else
-  struct utimbuf ut;
-#endif /* HAVE_UTIMENSAT */
-
   if (!ctx)
     return;
 
@@ -356,14 +350,16 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (ctx->peekonly && ctx->mailbox->path && (mutt_timespec_compare(&ctx->mtime, &ctx->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
+    struct timespec ts[2];
     ts[0] = ctx->atime;
     ts[1] = ctx->mtime;
     utimensat(0, ctx->mailbox->path, ts, 0);
 #else
+    struct utimbuf ut;
     ut.actime = ctx->atime.tv_sec;
     ut.modtime = ctx->mtime.tv_sec;
     utime(ctx->mailbox->path, &ut);
-#endif /* HAVE_UTIMENSAT */
+#endif
   }
 
   /* never announce that a mailbox we've just left has new mail. #3290

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_SMIME_H
-#define _NCRYPT_SMIME_H
+#ifndef MUTT_NCRYPT_SMIME_H
+#define MUTT_NCRYPT_SMIME_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -60,4 +60,4 @@ int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const 
 int          smime_class_verify_sender(struct Header *h);
 void         smime_class_void_passphrase(void);
 
-#endif /* _NCRYPT_SMIME_H */
+#endif /* MUTT_NCRYPT_SMIME_H */

@@ -20,9 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGPMICALG_H
-#define _NCRYPT_PGPMICALG_H
+#ifndef MUTT_NCRYPT_PGPMICALG_H
+#define MUTT_NCRYPT_PGPMICALG_H
 
 const char *pgp_micalg(const char *fname);
 
-#endif /* _NCRYPT_PGPMICALG_H */
+#endif /* MUTT_NCRYPT_PGPMICALG_H */

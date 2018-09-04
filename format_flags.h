@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FORMAT_FLAGS_H
-#define _MUTT_FORMAT_FLAGS_H
+#ifndef MUTT_FORMAT_FLAGS_H
+#define MUTT_FORMAT_FLAGS_H
 
 #include <stddef.h>
 
@@ -66,4 +66,4 @@ typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              const char *if_str, const char *else_str,
                              unsigned long data, enum FormatFlag flags);
 
-#endif /* _MUTT_FORMAT_FLAGS_H */
+#endif /* MUTT_FORMAT_FLAGS_H */

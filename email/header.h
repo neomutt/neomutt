@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_HEADER_H
-#define _EMAIL_HEADER_H
+#ifndef MUTT_EMAIL_HEADER_H
+#define MUTT_EMAIL_HEADER_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -118,4 +118,4 @@ bool           mutt_header_cmp_strict(const struct Header *h1, const struct Head
 void           mutt_header_free(struct Header **h);
 struct Header *mutt_header_new(void);
 
-#endif /* _EMAIL_HEADER_H */
+#endif /* MUTT_EMAIL_HEADER_H */

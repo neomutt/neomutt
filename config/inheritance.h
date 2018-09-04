@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_INHERITANCE_H
-#define _CONFIG_INHERITANCE_H
+#ifndef MUTT_CONFIG_INHERITANCE_H
+#define MUTT_CONFIG_INHERITANCE_H
 
 #include <stdint.h>
 
@@ -36,4 +36,4 @@ struct Inheritance
   intptr_t var;            /**< (Pointer to) value, of config item */
 };
 
-#endif /* _CONFIG_INHERITANCE_H */
+#endif /* MUTT_CONFIG_INHERITANCE_H */

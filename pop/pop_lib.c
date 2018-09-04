@@ -130,7 +130,7 @@ static void pop_error(struct PopData *pop_data, char *msg)
  */
 static int fetch_capa(char *line, void *data)
 {
-  struct PopData *pop_data = (struct PopData *) data;
+  struct PopData *pop_data = data;
   char *c = NULL;
 
   if (mutt_str_strncasecmp(line, "SASL", 4) == 0)
@@ -163,7 +163,7 @@ static int fetch_capa(char *line, void *data)
  */
 static int fetch_auth(char *line, void *data)
 {
-  struct PopData *pop_data = (struct PopData *) data;
+  struct PopData *pop_data = data;
 
   if (!pop_data->auth_list)
   {
@@ -421,7 +421,7 @@ err_conn:
  */
 void pop_logout(struct Context *ctx)
 {
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
 
   if (pop_data->status == POP_CONNECTED)
   {
@@ -576,7 +576,7 @@ int pop_fetch_data(struct PopData *pop_data, const char *query,
 static int check_uidl(char *line, void *data)
 {
   unsigned int index;
-  struct Context *ctx = (struct Context *) data;
+  struct Context *ctx = data;
   char *endp = NULL;
 
   errno = 0;
@@ -607,7 +607,7 @@ static int check_uidl(char *line, void *data)
  */
 int pop_reconnect(struct Context *ctx)
 {
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;

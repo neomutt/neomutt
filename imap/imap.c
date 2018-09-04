@@ -268,7 +268,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
  */
 static bool compare_flags_for_copy(struct Header *h)
 {
-  struct ImapHeaderData *hd = (struct ImapHeaderData *) h->data;
+  struct ImapHeaderData *hd = h->data;
 
   if (h->read != hd->read)
     return true;
@@ -2593,7 +2593,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 {
   char *new = NULL;
   char *checker = NULL;
-  struct ImapData *idata = (struct ImapData *) ctx->data;
+  struct ImapData *idata = ctx->data;
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&idata->flags, NULL))
@@ -2836,6 +2836,7 @@ struct MxOps mx_imap_ops = {
   .msg_open_new     = imap_msg_open_new,
   .msg_commit       = imap_msg_commit,
   .msg_close        = imap_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = imap_tags_edit,
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,

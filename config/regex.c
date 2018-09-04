@@ -49,7 +49,7 @@ static void regex_destroy(const struct ConfigSet *cs, void *var, const struct Co
   if (!cs || !var || !cdef)
     return; /* LCOV_EXCL_LINE */
 
-  struct Regex **r = (struct Regex **) var;
+  struct Regex **r = var;
   if (!*r)
     return;
 

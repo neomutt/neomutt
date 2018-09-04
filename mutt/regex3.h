@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_REGEX_H
-#define _MUTT_REGEX_H
+#ifndef MUTT_LIB_REGEX_H
+#define MUTT_LIB_REGEX_H
 
 #include <stddef.h>
 #include <regex.h>
@@ -101,4 +101,4 @@ bool                    mutt_replacelist_match(struct ReplaceList *rl, char *buf
 struct ReplaceListNode *mutt_replacelist_new(void);
 int                     mutt_replacelist_remove(struct ReplaceList *rl, const char *pat);
 
-#endif /* _MUTT_REGEX_H */
+#endif /* MUTT_LIB_REGEX_H */

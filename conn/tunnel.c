@@ -142,7 +142,7 @@ static int tunnel_socket_open(struct Connection *conn)
  */
 static int tunnel_socket_close(struct Connection *conn)
 {
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
+  struct TunnelData *tunnel = conn->sockdata;
   int status;
 
   close(tunnel->readfd);
@@ -168,7 +168,7 @@ static int tunnel_socket_close(struct Connection *conn)
  */
 static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 {
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
+  struct TunnelData *tunnel = conn->sockdata;
   int rc;
 
   rc = read(tunnel->readfd, buf, len);
@@ -190,7 +190,7 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
  */
 static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
+  struct TunnelData *tunnel = conn->sockdata;
   int rc;
 
   rc = write(tunnel->writefd, buf, len);
@@ -212,7 +212,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
  */
 static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 {
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
+  struct TunnelData *tunnel = conn->sockdata;
   int ofd;
   int rc;
 

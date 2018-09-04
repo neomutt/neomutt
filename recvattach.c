@@ -424,7 +424,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
  */
 static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
+  struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
                       attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
@@ -440,7 +440,7 @@ static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  */
 int mutt_tag_attach(struct Menu *menu, int n, int m)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
+  struct AttachCtx *actx = menu->data;
   struct Body *cur = actx->idx[actx->v2r[n]]->content;
   bool ot = cur->tagged;
 
@@ -1124,7 +1124,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
  */
 static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header *hdr,
                                           struct Body *m, FILE *fp,
-                                          int parent_type, int level, int decrypted)
+                                          int parent_type, int level, bool decrypted)
 {
   struct AttachPtr *new = NULL;
   struct Body *new_body = NULL;
@@ -1202,7 +1202,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
     }
     else
     {
-      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
 
       new->content = m;

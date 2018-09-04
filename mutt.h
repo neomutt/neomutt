@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_H
-#define _MUTT_H
+#ifndef MUTT_MUTT_H
+#define MUTT_MUTT_H
 
 #include <stddef.h>
 #include <limits.h>
@@ -255,4 +255,4 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
 int mutt_query_variables(struct ListHead *queries);
 void reset_value(const char *name);
 
-#endif /* _MUTT_H */
+#endif /* MUTT_MUTT_H */

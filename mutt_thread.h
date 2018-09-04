@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_THREAD2_H
-#define _MUTT_THREAD2_H
+#ifndef MUTT_MUTT_THREAD_H
+#define MUTT_MUTT_THREAD_H
 
 #include <stdbool.h>
 
@@ -73,4 +73,4 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, bool find_root)
 void mutt_set_virtual(struct Context *ctx);
 struct Hash *mutt_make_id_hash(struct Context *ctx);
 
-#endif /* _MUTT_THREAD2_H */
+#endif /* MUTT_MUTT_THREAD_H */

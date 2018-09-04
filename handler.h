@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HANDLER_H
-#define _MUTT_HANDLER_H
+#ifndef MUTT_HANDLER_H
+#define MUTT_HANDLER_H
 
 #include <stddef.h>
 #include <iconv.h>
@@ -43,4 +43,4 @@ bool mutt_can_decode(struct Body *a);
 void mutt_decode_attachment(struct Body *b, struct State *s);
 void mutt_decode_base64(struct State *s, size_t len, bool istext, iconv_t cd);
 
-#endif /* _MUTT_HANDLER_H */
+#endif /* MUTT_HANDLER_H */

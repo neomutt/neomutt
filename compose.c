@@ -256,7 +256,7 @@ static void init_header_padding(void)
  */
 static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
+  struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
                       attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
@@ -607,7 +607,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
     }
     else
     {
-      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
       new->content = m;
       m->aptr = new;
@@ -1373,8 +1373,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->unowned = 1;
+          new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+          new->unowned = true;
           new->content = mutt_make_file_attach(att);
           if (new->content)
             update_idx(menu, actx, new);
@@ -1493,7 +1493,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (!message_is_tagged(Context, i))
             continue;
 
-          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+          new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context, Context->hdrs[i], true);
           if (new->content)
             update_idx(menu, actx, new);
@@ -1790,7 +1790,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;
         }
-        new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+        new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
         fp = mutt_file_fopen(fname, "w");
         if (!fp)

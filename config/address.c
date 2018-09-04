@@ -46,7 +46,7 @@ static void address_destroy(const struct ConfigSet *cs, void *var, const struct 
   if (!cs || !var || !cdef)
     return; /* LCOV_EXCL_LINE */
 
-  struct Address **a = (struct Address **) var;
+  struct Address **a = var;
   if (!*a)
     return;
 

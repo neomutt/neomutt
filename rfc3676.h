@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC3676_H
-#define _MUTT_RFC3676_H
+#ifndef MUTT_RFC3676_H
+#define MUTT_RFC3676_H
 
 #include <stdbool.h>
 
@@ -38,4 +38,4 @@ extern short ReflowWrap;
 int rfc3676_handler(struct Body *a, struct State *s);
 void rfc3676_space_stuff(struct Header *hdr);
 
-#endif /* _MUTT_RFC3676_H */
+#endif /* MUTT_RFC3676_H */

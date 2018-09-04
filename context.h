@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CONTEXT_H
-#define _MUTT_CONTEXT_H
+#ifndef MUTT_CONTEXT_H
+#define MUTT_CONTEXT_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -100,4 +100,4 @@ struct Context
   struct Mailbox *mailbox;
 };
 
-#endif /* _MUTT_CONTEXT_H */
+#endif /* MUTT_CONTEXT_H */

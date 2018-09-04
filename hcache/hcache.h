@@ -45,8 +45,8 @@
  * | hcache/tc.c   | @subpage hc_tc   |
  */
 
-#ifndef _MUTT_HCACHE_H
-#define _MUTT_HCACHE_H
+#ifndef MUTT_HCACHE_HCACHE_H
+#define MUTT_HCACHE_HCACHE_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -208,4 +208,4 @@ const char *mutt_hcache_backend_list(void);
  */
 bool mutt_hcache_is_valid_backend(const char *s);
 
-#endif /* _MUTT_HCACHE_H */
+#endif /* MUTT_HCACHE_HCACHE_H */

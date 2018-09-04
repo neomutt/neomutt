@@ -34,4 +34,3 @@ extern short SortAlias;
 void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases);
 
 #endif /* MUTT_ADDRBOOK_H */
-

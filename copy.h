@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_COPY_H
-#define _MUTT_COPY_H
+#ifndef MUTT_COPY_H
+#define MUTT_COPY_H
 
 #include <stdio.h>
 
@@ -76,4 +76,4 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr, 
 
 int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags);
 
-#endif /* _MUTT_COPY_H */
+#endif /* MUTT_COPY_H */

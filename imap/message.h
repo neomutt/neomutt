@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAP_MESSAGE_H
-#define _IMAP_MESSAGE_H
+#ifndef MUTT_IMAP_MESSAGE_H
+#define MUTT_IMAP_MESSAGE_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -64,4 +64,4 @@ struct ImapHeader
 
 #define HEADER_DATA(ph) ((struct ImapHeaderData *) ((ph)->data))
 
-#endif /* _IMAP_MESSAGE_H */
+#endif /* MUTT_IMAP_MESSAGE_H */

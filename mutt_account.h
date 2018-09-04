@@ -22,8 +22,8 @@
 
 /* remote host account manipulation (POP/IMAP) */
 
-#ifndef _MUTT_ACCOUNT_H
-#define _MUTT_ACCOUNT_H
+#ifndef MUTT_MUTT_ACCOUNT_H
+#define MUTT_MUTT_ACCOUNT_H
 
 struct Account;
 struct Url;
@@ -68,4 +68,4 @@ int mutt_account_getpass(struct Account *account);
 void mutt_account_unsetpass(struct Account *account);
 char *mutt_account_getoauthbearer(struct Account *account);
 
-#endif /* _MUTT_ACCOUNT_H */
+#endif /* MUTT_MUTT_ACCOUNT_H */

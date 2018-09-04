@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_PARSE_H
-#define _EMAIL_PARSE_H
+#ifndef MUTT_EMAIL_PARSE_H
+#define MUTT_EMAIL_PARSE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -44,4 +44,4 @@ struct Body *    mutt_rfc822_parse_message(FILE *fp, struct Body *parent);
 struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_hdrs, bool weed);
 char *           mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen);
 
-#endif /* _EMAIL_PARSE_H */
+#endif /* MUTT_EMAIL_PARSE_H */

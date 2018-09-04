@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SORT_H
-#define _MUTT_SORT_H
+#ifndef MUTT_SORT_H
+#define MUTT_SORT_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
@@ -62,4 +62,4 @@ WHERE short SortAux; ///< Config: Secondary sort method for the index
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys
 
-#endif /* _MUTT_SORT_H */
+#endif /* MUTT_SORT_H */

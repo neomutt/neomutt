@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_STRING_H
-#define _CONFIG_STRING_H
+#ifndef MUTT_CONFIG_STRING_H
+#define MUTT_CONFIG_STRING_H
 
 struct ConfigSet;
 
 void string_init(struct ConfigSet *cs);
 
-#endif /* _CONFIG_STRING_H */
+#endif /* MUTT_CONFIG_STRING_H */

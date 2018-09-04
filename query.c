@@ -209,7 +209,7 @@ static struct Query *run_query(char *s, int quiet)
  */
 static int query_search(struct Menu *m, regex_t *re, int n)
 {
-  struct Entry *table = (struct Entry *) m->data;
+  struct Entry *table = m->data;
 
   if (table[n].data->name && !regexec(re, table[n].data->name, 0, NULL, 0))
     return 0;

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_INIT_H
-#define _MUTT_INIT_H
+#ifndef MUTT_INIT_H
+#define MUTT_INIT_H
 
 #ifdef _MAKEDOC
 #include "config.h"
@@ -4746,4 +4746,4 @@ const struct Command Commands[] = {
 };
 // clang-format on
 
-#endif /* _MUTT_INIT_H */
+#endif /* MUTT_INIT_H */

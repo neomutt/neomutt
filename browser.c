@@ -754,7 +754,7 @@ static void add_folder(struct Menu *m, struct BrowserState *state,
 #endif
 #ifdef USE_NNTP
   if (OptNews)
-    (state->entry)[state->entrylen].nd = (struct NntpData *) data;
+    (state->entry)[state->entrylen].nd = data;
 #endif
   (state->entrylen)++;
 }

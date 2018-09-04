@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_ACCOUNT_H
-#define _CONN_ACCOUNT_H
+#ifndef MUTT_CONN_ACCOUNT_H
+#define MUTT_CONN_ACCOUNT_H
 
 /**
  * struct Account - Login details for a remote server
@@ -37,4 +37,4 @@ struct Account
   unsigned char flags;
 };
 
-#endif /* _CONN_ACCOUNT_H */
+#endif /* MUTT_CONN_ACCOUNT_H */

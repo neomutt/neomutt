@@ -443,7 +443,7 @@ static char *smime_key_flags(int flags)
  */
 static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct SmimeKey **Table = (struct SmimeKey **) menu->data;
+  struct SmimeKey **Table = menu->data;
   struct SmimeKey *this = Table[num];
   char *truststate = NULL;
   switch (this->trust)

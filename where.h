@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_WHERE_H
-#define _MUTT_WHERE_H
+#ifndef MUTT_WHERE_H
+#define MUTT_WHERE_H
 
 #ifdef MAIN_C
 #define WHERE
@@ -31,4 +31,4 @@
 #define INITVAL(x)
 #endif
 
-#endif /* _MUTT_WHERE_H */
+#endif /* MUTT_WHERE_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGPINVOKE_H
-#define _NCRYPT_PGPINVOKE_H
+#ifndef MUTT_NCRYPT_PGPINVOKE_H
+#define MUTT_NCRYPT_PGPINVOKE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -46,4 +46,4 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgp
 pid_t pgp_invoke_verify     (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *fname, const char *sig_fname);
 pid_t pgp_invoke_verify_key (FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd, int pgperrfd, const char *uids);
 
-#endif /* _NCRYPT_PGPINVOKE_H */
+#endif /* MUTT_NCRYPT_PGPINVOKE_H */

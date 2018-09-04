@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_URL_H
-#define _EMAIL_URL_H
+#ifndef MUTT_EMAIL_URL_H
+#define MUTT_EMAIL_URL_H
 
 #include <stddef.h>
 #include "mutt/mutt.h"
@@ -81,4 +81,4 @@ int            url_pct_decode(char *s);
 void           url_pct_encode(char *buf, size_t buflen, const char *src);
 int            url_tostring(struct Url *u, char *buf, size_t buflen, int flags);
 
-#endif /* _EMAIL_URL_H */
+#endif /* MUTT_EMAIL_URL_H */

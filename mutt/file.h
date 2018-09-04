@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FILE_H
-#define _MUTT_FILE_H
+#ifndef MUTT_LIB_FILE_H
+#define MUTT_LIB_FILE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -69,4 +69,4 @@ void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
 int         mutt_file_unlock(int fd);
 
-#endif /* _MUTT_FILE_H */
+#endif /* MUTT_LIB_FILE_H */

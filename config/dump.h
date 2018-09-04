@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_DUMP_H
-#define _CONFIG_DUMP_H
+#ifndef MUTT_CONFIG_DUMP_H
+#define MUTT_CONFIG_DUMP_H
 
 #include <stddef.h>
 
@@ -47,4 +47,4 @@ size_t            escape_string(struct Buffer *buf, const char *src);
 struct HashElem **get_elem_list(struct ConfigSet *cs);
 size_t            pretty_var(const char *str, struct Buffer *buf);
 
-#endif /* _CONFIG_DUMP_H */
+#endif /* MUTT_CONFIG_DUMP_H */

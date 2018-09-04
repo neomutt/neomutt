@@ -24,8 +24,8 @@
  * proper and the PGP public key ring lister.
  */
 
-#ifndef _NCRYPT_PGPPACKET_H
-#define _NCRYPT_PGPPACKET_H
+#ifndef MUTT_NCRYPT_PGPPACKET_H
+#define MUTT_NCRYPT_PGPPACKET_H
 
 #include <stdio.h>
 
@@ -56,4 +56,4 @@ enum PacketTags
 unsigned char *pgp_read_packet(FILE *fp, size_t *len);
 void pgp_release_packet(void);
 
-#endif /* _NCRYPT_PGPPACKET_H */
+#endif /* MUTT_NCRYPT_PGPPACKET_H */

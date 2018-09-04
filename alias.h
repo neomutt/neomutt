@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_ALIAS_H
-#define _MUTT_ALIAS_H
+#ifndef MUTT_ALIAS_H
+#define MUTT_ALIAS_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -59,4 +59,4 @@ void mutt_alias_add_reverse(struct Alias *t);
 void mutt_alias_delete_reverse(struct Alias *t);
 struct Address *mutt_alias_reverse_lookup(struct Address *a);
 
-#endif /* _MUTT_ALIAS_H */
+#endif /* MUTT_ALIAS_H */

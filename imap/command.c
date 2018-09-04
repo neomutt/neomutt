@@ -552,7 +552,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   unsigned int litlen;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
-    list = (struct ImapList *) idata->cmddata;
+    list = idata->cmddata;
   else
     list = &lb;
 
@@ -752,7 +752,7 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
   {
     if (mutt_str_atoui(s, &uid) < 0)
       continue;
-    h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
+    h = mutt_hash_int_find(idata->uid_hash, uid);
     if (h)
       h->matched = true;
   }

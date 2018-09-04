@@ -334,7 +334,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
  */
 static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct PgpUid **KeyTable = (struct PgpUid **) menu->data;
+  struct PgpUid **KeyTable = menu->data;
   struct PgpEntry entry;
 
   entry.uid = KeyTable[num];

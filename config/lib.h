@@ -43,8 +43,8 @@
  * | config/string.c  | @subpage config-string  |
  */
 
-#ifndef _CONFIG_CONFIG_H
-#define _CONFIG_CONFIG_H
+#ifndef MUTT_CONFIG_LIB_H
+#define MUTT_CONFIG_LIB_H
 
 #include "address.h"
 #include "bool.h"
@@ -63,4 +63,4 @@
 #include "string3.h"
 #include "types.h"
 
-#endif /* _CONFIG_CONFIG_H */
+#endif /* MUTT_CONFIG_LIB_H */

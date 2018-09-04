@@ -202,8 +202,8 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 static int fetch_uidl(char *line, void *data)
 {
   int i, index;
-  struct Context *ctx = (struct Context *) data;
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct Context *ctx = data;
+  struct PopData *pop_data = ctx->data;
   char *endp = NULL;
 
   errno = 0;
@@ -247,10 +247,10 @@ static int fetch_uidl(char *line, void *data)
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  struct Context *ctx = (struct Context *) data;
+  struct Context *ctx = data;
   if (!ctx)
     return -1;
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
   if (!pop_data)
     return -1;
 
@@ -313,7 +313,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
  */
 static int pop_fetch_headers(struct Context *ctx)
 {
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
   struct Progress progress;
 
 #ifdef USE_HCACHE
@@ -574,7 +574,7 @@ static void pop_clear_cache(struct PopData *pop_data)
  */
 static int pop_mbox_close(struct Context *ctx)
 {
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
 
   if (!pop_data)
     return 0;
@@ -611,7 +611,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[PATH_MAX];
   struct Progress progressbar;
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
   struct PopCache *cache = NULL;
   struct Header *h = ctx->hdrs[msgno];
   unsigned short bcache = 1;
@@ -771,7 +771,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
   struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -854,7 +854,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 static int pop_mbox_check(struct Context *ctx, int *index_hint)
 {
   int ret;
-  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = ctx->data;
 
   if ((pop_data->check_time + PopCheckinterval) > time(NULL))
     return 0;
@@ -1134,6 +1134,7 @@ struct MxOps mx_pop_ops = {
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
   .msg_close        = pop_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_THREAD_H
-#define _EMAIL_THREAD_H
+#ifndef MUTT_EMAIL_THREAD_H
+#define MUTT_EMAIL_THREAD_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -57,4 +57,4 @@ void           mutt_break_thread(struct Header *hdr);
 void           thread_hash_destructor(int type, void *obj, intptr_t data);
 void           unlink_message(struct MuttThread **old, struct MuttThread *cur);
 
-#endif /* _EMAIL_THREAD_H */
+#endif /* MUTT_EMAIL_THREAD_H */

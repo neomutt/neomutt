@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MYVAR_H
-#define _MUTT_MYVAR_H
+#ifndef MUTT_MYVAR_H
+#define MUTT_MYVAR_H
 
 #include "mutt/mutt.h"
 
@@ -42,4 +42,4 @@ void        myvar_del(const char *var);
 const char *myvar_get(const char *var);
 void        myvar_set(const char *var, const char *val);
 
-#endif /* _MUTT_MYVAR_H */
+#endif /* MUTT_MYVAR_H */

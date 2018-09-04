@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_OPTIONS_H
-#define _MUTT_OPTIONS_H
+#ifndef MUTT_MUTT_OPTIONS_H
+#define MUTT_MUTT_OPTIONS_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -34,4 +34,4 @@ int  mutt_option_to_string(const struct ConfigDef *opt, char *val, size_t len);
 bool mutt_option_get(const char *s, struct ConfigDef *opt);
 int  mutt_option_set(const struct ConfigDef *val, struct Buffer *err);
 
-#endif /* _MUTT_OPTIONS_H */
+#endif /* MUTT_MUTT_OPTIONS_H */

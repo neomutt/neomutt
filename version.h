@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_VERSION_H
-#define _MUTT_VERSION_H
+#ifndef MUTT_VERSION_H
+#define MUTT_VERSION_H
 
 #include <stdbool.h>
 
@@ -29,4 +29,4 @@ void print_version(void);
 void print_copyright(void);
 bool feature_enabled(const char *name);
 
-#endif /* _MUTT_VERSION_H */
+#endif /* MUTT_VERSION_H */

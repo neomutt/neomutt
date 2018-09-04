@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_TYPES_H
-#define _CONFIG_TYPES_H
+#ifndef MUTT_CONFIG_TYPES_H
+#define MUTT_CONFIG_TYPES_H
 
 /* Data Types */
 #define DT_ADDRESS    1   /**< e-mail address */
@@ -73,4 +73,4 @@
 #define F_SENSITIVE   (1 << 10) /**< Config item contains sensitive value */
 #define IS_SENSITIVE(x) (((x).flags & F_SENSITIVE) == F_SENSITIVE)
 
-#endif /* _CONFIG_TYPES_H */
+#endif /* MUTT_CONFIG_TYPES_H */

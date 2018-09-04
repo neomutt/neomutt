@@ -1394,8 +1394,8 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         tmp->not = not;
         tmp->alladdr = alladdr;
         tmp->isalias = isalias;
-        tmp->stringmatch = (*ps.dptr == '=') ? true : false;
-        tmp->groupmatch = (*ps.dptr == '%') ? true : false;
+        tmp->stringmatch = (*ps.dptr == '=');
+        tmp->groupmatch = (*ps.dptr == '%');
         not = false;
         alladdr = false;
         isalias = false;

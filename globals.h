@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_GLOBALS_H
-#define _MUTT_GLOBALS_H
+#ifndef MUTT_GLOBALS_H
+#define MUTT_GLOBALS_H
 
 #include <signal.h>
 #include <stdbool.h>
@@ -288,4 +288,4 @@ WHERE bool XCommentTo;                     ///< Config: (nntp) Add 'X-Comment-To
 WHERE bool VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file
 #endif
 
-#endif /* _MUTT_GLOBALS_H */
+#endif /* MUTT_GLOBALS_H */

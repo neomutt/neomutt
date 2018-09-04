@@ -2371,7 +2371,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     if (Context && Context->mailbox->magic == MUTT_NNTP)
     {
       buf[0] = '\0';
-      if (nntp_query((struct NntpData *) Context->data, buf, sizeof(buf)) < 0)
+      if (nntp_query(Context->data, buf, sizeof(buf)) < 0)
         return -1;
     }
   }
@@ -2705,6 +2705,7 @@ struct MxOps mx_nntp_ops = {
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
   .msg_close        = nntp_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = nntp_path_probe,
