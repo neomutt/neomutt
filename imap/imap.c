@@ -2004,7 +2004,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   if (imap_parse_path(ctx->mailbox->path, &mx))
   {
-    mutt_error(_("%s is an invalid IMAP mailbox->path"), ctx->mailbox->path);
+    mutt_error(_("%s is an invalid IMAP path"), ctx->mailbox->path);
     return -1;
   }
 
@@ -2223,7 +2223,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
   }
 
-  mutt_debug(2, "mailbox->msg_count is %d\n", ctx->mailbox->msg_count);
+  mutt_debug(2, "msg_count is %d\n", ctx->mailbox->msg_count);
   FREE(&mx.mbox);
   return 0;
 

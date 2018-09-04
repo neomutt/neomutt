@@ -1048,7 +1048,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Header *hdr,
 {
   if (!check_all_msg(actx, cur, 0))
   {
-    mutt_error(_("You may only compose to sender with message/rfc822 parts."));
+    mutt_error(_("You may only compose to sender with message/rfc822 parts"));
     return;
   }
 

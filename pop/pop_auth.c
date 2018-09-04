@@ -389,7 +389,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
     decoded_err[len] = '\0';
     err = decoded_err;
   }
-  mutt_error("%s %s", _("Authentication failed."), err);
+  mutt_error("%s %s", _("Authentication failed"), err);
 
   return POP_A_FAILURE;
 }
