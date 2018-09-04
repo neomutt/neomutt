@@ -201,8 +201,13 @@ struct Mailbox *mailbox_new(const char *path)
  */
 void mailbox_free(struct Mailbox **mailbox)
 {
-  if (mailbox && *mailbox)
-    FREE(&(*mailbox)->desc);
+  if (!mailbox || !*mailbox)
+    return;
+
+  FREE(&(*mailbox)->desc);
+  if ((*mailbox)->free_data)
+    (*mailbox)->free_data((*mailbox)->data);
+
   FREE(mailbox);
 }
 
