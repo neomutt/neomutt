@@ -70,6 +70,8 @@ struct Mailbox
   struct timespec last_visited;       /**< time of last exit from this mailbox */
   struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 
+  const struct MxOps *mx_ops;
+
   int flags; /**< e.g. #MB_NORMAL */
 };
 
