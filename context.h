@@ -98,9 +98,6 @@ struct Context
   void *compress_info; /**< compressed mbox module private data */
 #endif                 /**< USE_COMPRESSED */
 
-  /* driver hooks */
-  void *data; /**< driver specific data */
-
   struct Mailbox *mailbox;
 };
 

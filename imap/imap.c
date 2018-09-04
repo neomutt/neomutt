@@ -488,7 +488,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
         break;
       case MUTT_SERVERSEARCH:
       {
-        struct ImapData *idata = ctx->data;
+        struct ImapData *idata = ctx->mailbox->data;
         if (!mutt_bit_isset(idata->capabilities, X_GM_EXT1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
@@ -713,7 +713,7 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
   char buf[PATH_MAX], mbox[PATH_MAX];
   struct ImapData *idata = NULL;
 
-  if (!ctx || !ctx->data)
+  if (!ctx || !ctx->mailbox->data)
   {
     idata = imap_conn_find(&mx->account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
     if (!idata)
@@ -724,7 +724,7 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
   }
   else
   {
-    idata = ctx->data;
+    idata = ctx->mailbox->data;
   }
 
   imap_munge_mbox_name(idata, mbox, sizeof(mbox), mx->mbox);
@@ -1367,7 +1367,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
  */
 int imap_check_mailbox(struct Context *ctx, bool force)
 {
-  return imap_check(ctx->data, force);
+  return imap_check(ctx->mailbox->data, force);
 }
 
 /**
@@ -1685,7 +1685,7 @@ void imap_mboxcache_free(struct ImapData *idata)
 int imap_search(struct Context *ctx, const struct Pattern *pat)
 {
   struct Buffer buf;
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
     ctx->hdrs[i]->matched = false;
 
@@ -1894,7 +1894,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
 
   if (imap_parse_path(dest, &mx))
   {
@@ -2018,7 +2018,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
 
   /* once again the context is new */
-  ctx->data = idata;
+  ctx->mailbox->data = idata;
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
@@ -2261,7 +2261,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
     return -1;
   }
 
-  ctx->data = idata;
+  ctx->mailbox->data = idata;
 
   imap_fix_path(idata, mx.mbox, mailbox, sizeof(mailbox));
   if (!*mailbox)
@@ -2292,7 +2292,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
  */
 static int imap_mbox_close(struct Context *ctx)
 {
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
   /* Check to see if the mailbox is actually open */
   if (!idata)
     return 0;
@@ -2380,7 +2380,7 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
   (void) index_hint;
 
   imap_allow_reopen(ctx);
-  rc = imap_check(ctx->data, false);
+  rc = imap_check(ctx->mailbox->data, false);
   imap_disallow_reopen(ctx);
 
   return rc;
@@ -2401,7 +2401,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   int oldsort;
   int rc;
 
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
 
   if (idata->state < IMAP_SELECTED)
   {
@@ -2597,7 +2597,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 {
   char *new = NULL;
   char *checker = NULL;
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&idata->flags, NULL))
@@ -2684,7 +2684,7 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
   struct Buffer *cmd = NULL;
   char uid[11];
 
-  struct ImapData *idata = ctx->data;
+  struct ImapData *idata = ctx->mailbox->data;
 
   if (*buf == '\0')
     buf = NULL;

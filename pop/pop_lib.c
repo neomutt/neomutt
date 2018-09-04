@@ -421,7 +421,7 @@ err_conn:
  */
 void pop_logout(struct Context *ctx)
 {
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
 
   if (pop_data->status == POP_CONNECTED)
   {
@@ -607,7 +607,7 @@ static int check_uidl(char *line, void *data)
  */
 int pop_reconnect(struct Context *ctx)
 {
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;

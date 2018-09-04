@@ -1729,7 +1729,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 #ifdef USE_NNTP
     if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP &&
         !msg->env->newsgroups)
-      msg->env->newsgroups = mutt_str_strdup(((struct NntpData *) ctx->data)->group);
+      msg->env->newsgroups =
+          mutt_str_strdup(((struct NntpData *) ctx->mailbox->data)->group);
 #endif
 
     if (!(flags & (SEND_MAILX | SEND_BATCH)) && !(Autoedit && EditHeaders) &&

@@ -240,11 +240,11 @@ static int init_context(struct Context *ctx)
   if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
-  if (ctx->data)
+  if (ctx->mailbox->data)
     return 0;
 
-  ctx->data = new_ctxdata(ctx->mailbox->path);
-  if (!ctx->data)
+  ctx->mailbox->data = new_ctxdata(ctx->mailbox->path);
+  if (!ctx->mailbox->data)
     return -1;
 
   return 0;
@@ -283,7 +283,7 @@ static char *header_get_fullpath(struct Header *h, char *buf, size_t buflen)
 static struct NmCtxData *get_ctxdata(struct Context *ctx)
 {
   if (ctx && (ctx->mailbox->magic == MUTT_NOTMUCH))
-    return ctx->data;
+    return ctx->mailbox->data;
 
   return NULL;
 }
@@ -1977,7 +1977,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
     return false;
 
   tmp_ctx.mailbox->magic = MUTT_NOTMUCH;
-  tmp_ctx.data = tmp_ctxdata;
+  tmp_ctx.mailbox->data = tmp_ctxdata;
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
@@ -2509,8 +2509,8 @@ static int nm_mbox_close(struct Context *ctx)
     }
   }
 
-  free_ctxdata(ctx->data);
-  ctx->data = NULL;
+  free_ctxdata(ctx->mailbox->data);
+  ctx->mailbox->data = NULL;
   return 0;
 }
 

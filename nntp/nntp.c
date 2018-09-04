@@ -1025,7 +1025,7 @@ static int get_description(struct NntpData *nntp_data, const char *wildmat, cons
  */
 static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
 
   char *buf = mutt_str_strdup(hdr->env->xref);
   char *p = buf;
@@ -1123,7 +1123,7 @@ static int parse_overview_line(char *line, void *data)
 {
   struct FetchCtx *fc = data;
   struct Context *ctx = fc->ctx;
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct Header *hdr = NULL;
   char *header = NULL, *field = NULL;
   bool save = true;
@@ -1277,7 +1277,7 @@ static int parse_overview_line(char *line, void *data)
 static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
                               anum_t last, int restore)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct FetchCtx fc;
   struct Header *hdr = NULL;
   char buf[HUGE_STRING];
@@ -1604,7 +1604,7 @@ static int nntp_mbox_open(struct Context *ctx)
   }
 
   time(&nserv->check_time);
-  ctx->data = nntp_data;
+  ctx->mailbox->data = nntp_data;
   if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
@@ -1643,7 +1643,7 @@ static int nntp_mbox_open(struct Context *ctx)
  */
 static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct Header *hdr = ctx->hdrs[msgno];
   char article[16];
 
@@ -1785,7 +1785,7 @@ int nntp_post(const char *msg)
   char buf[LONG_STRING];
 
   if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data = Context->data;
+    nntp_data = Context->mailbox->data;
   else
   {
     CurrentNewsSrv = nntp_select_server(NewsServer, false);
@@ -1911,7 +1911,7 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
  */
 static int check_mailbox(struct Context *ctx)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct NntpServer *nserv = nntp_data->nserv;
   time_t now = time(NULL);
   int rc, ret = 0;
@@ -2133,7 +2133,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
   int ret = check_mailbox(ctx);
   if (ret == 0)
   {
-    struct NntpData *nntp_data = ctx->data;
+    struct NntpData *nntp_data = ctx->mailbox->data;
     struct NntpServer *nserv = nntp_data->nserv;
     nntp_newsrc_close(nserv);
   }
@@ -2147,7 +2147,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   int rc;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -2208,7 +2208,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
  */
 static int nntp_mbox_close(struct Context *ctx)
 {
-  struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
+  struct NntpData *nntp_data = ctx->mailbox->data, *nntp_tmp = NULL;
 
   if (!nntp_data)
     return 0;
@@ -2371,7 +2371,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     if (Context && Context->mailbox->magic == MUTT_NNTP)
     {
       buf[0] = '\0';
-      if (nntp_query(Context->data, buf, sizeof(buf)) < 0)
+      if (nntp_query(Context->mailbox->data, buf, sizeof(buf)) < 0)
         return -1;
     }
   }
@@ -2384,7 +2384,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     return -1;
   nntp_data.nserv = nserv;
   if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data.group = ((struct NntpData *) Context->data)->group;
+    nntp_data.group = ((struct NntpData *) Context->mailbox->data)->group;
   else
     nntp_data.group = NULL;
   i = nserv->groups_num;
@@ -2451,7 +2451,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
  */
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   char buf[LONG_STRING];
 
   FILE *fp = mutt_file_mkstemp();
@@ -2553,7 +2553,7 @@ static int fetch_children(char *line, void *data)
  */
 int nntp_check_children(struct Context *ctx, const char *msgid)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct ChildCtx cc;
   char buf[STRING];
   int rc;

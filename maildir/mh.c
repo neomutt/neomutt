@@ -119,7 +119,7 @@ struct MhData
  */
 static inline struct MhData *mh_data(struct Context *ctx)
 {
-  return ctx->data;
+  return ctx->mailbox->data;
 }
 
 /**
@@ -1419,7 +1419,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
  */
 static int mh_mbox_close(struct Context *ctx)
 {
-  FREE(&ctx->data);
+  FREE(&ctx->mailbox->data);
 
   return 0;
 }
@@ -1448,9 +1448,9 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  if (!ctx->data)
+  if (!ctx->mailbox->data)
   {
-    ctx->data = mutt_mem_calloc(1, sizeof(struct MhData));
+    ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MhData));
   }
   data = mh_data(ctx);
 

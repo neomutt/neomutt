@@ -2990,7 +2990,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
-          struct NntpData *nntp_data = Context->data;
+          struct NntpData *nntp_data = Context->mailbox->data;
           if (mutt_newsgroup_catchup(nntp_data->nserv, nntp_data->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
@@ -3301,7 +3301,7 @@ int mutt_index_menu(void)
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->mailbox->magic == MUTT_NNTP &&
-              !((struct NntpData *) Context->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) Context->mailbox->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;
           }

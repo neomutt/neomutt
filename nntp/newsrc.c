@@ -323,7 +323,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
  */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   anum_t last = 0, first = 1;
   bool series;
   int save_sort = SORT_ORDER;
@@ -1216,7 +1216,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
  */
 void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
 
   if (group)
     nntp_data = mutt_hash_find(nntp_data->nserv->groups_hash, group);
@@ -1324,7 +1324,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
     nntp_data->newsrc_ent[0].last = nntp_data->last_message;
   }
   nntp_data->unread = 0;
-  if (Context && Context->data == nntp_data)
+  if (Context && Context->mailbox->data == nntp_data)
   {
     for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 1);
@@ -1357,7 +1357,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = nntp_data->first_message - 1;
   }
-  if (Context && Context->data == nntp_data)
+  if (Context && Context->mailbox->data == nntp_data)
   {
     nntp_data->unread = Context->mailbox->msg_count;
     for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
@@ -1387,7 +1387,8 @@ void nntp_mailbox(char *buf, size_t buflen)
       continue;
 
     if (Context && Context->mailbox->magic == MUTT_NNTP &&
-        (mutt_str_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
+        (mutt_str_strcmp(nntp_data->group,
+                         ((struct NntpData *) Context->mailbox->data)->group) == 0))
     {
       unsigned int unread = 0;
 
