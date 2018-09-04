@@ -2846,6 +2846,7 @@ struct MxOps mx_notmuch_ops = {
   .msg_open_new     = NULL,
   .msg_commit       = nm_msg_commit,
   .msg_close        = nm_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
   .path_probe       = nm_path_probe,

@@ -1134,6 +1134,7 @@ struct MxOps mx_pop_ops = {
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
   .msg_close        = pop_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,

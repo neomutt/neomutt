@@ -2705,6 +2705,7 @@ struct MxOps mx_nntp_ops = {
   .msg_open_new     = NULL,
   .msg_commit       = NULL,
   .msg_close        = nntp_msg_close,
+  .msg_padding_size = NULL,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = nntp_path_probe,

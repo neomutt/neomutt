@@ -208,7 +208,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*path_canon)     (char *buf, size_t buflen, const char *folder);
+  int (*path_canon)      (char *buf, size_t buflen, const char *folder);
   /**
    * path_pretty - Abbreviate a mailbox path
    * @param buf    Path to modify
