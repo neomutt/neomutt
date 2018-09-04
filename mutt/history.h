@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HISTORY_H
-#define _MUTT_HISTORY_H
+#ifndef MUTT_LIB_HISTORY_H
+#define MUTT_LIB_HISTORY_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -60,4 +60,4 @@ void  mutt_hist_reset_state(enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 int   mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches);
 
-#endif /* _MUTT_HISTORY_H */
+#endif /* MUTT_LIB_HISTORY_H */

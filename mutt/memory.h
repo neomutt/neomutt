@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MEMORY_H
-#define _MUTT_MEMORY_H
+#ifndef MUTT_LIB_MEMORY_H
+#define MUTT_LIB_MEMORY_H
 
 #include <stddef.h>
 
@@ -45,4 +45,4 @@ void  mutt_mem_realloc(void *ptr, size_t size);
 
 #define FREE(x) mutt_mem_free(x)
 
-#endif /* _MUTT_MEMORY_H */
+#endif /* MUTT_LIB_MEMORY_H */

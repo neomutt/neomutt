@@ -22,8 +22,8 @@
 
 /* common SASL helper routines */
 
-#ifndef _CONN_SASL_H
-#define _CONN_SASL_H
+#ifndef MUTT_CONN_SASL_H
+#define MUTT_CONN_SASL_H
 
 #include <stddef.h>
 #include <sasl/sasl.h>
@@ -59,4 +59,4 @@ struct SaslData
   int (*msasl_poll)(struct Connection *conn, time_t wait_secs);
 };
 
-#endif /* _CONN_SASL_H */
+#endif /* MUTT_CONN_SASL_H */

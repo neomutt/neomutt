@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_CONNECTION_H
-#define _CONN_CONNECTION_H
+#ifndef MUTT_CONN_CONNECTION_H
+#define MUTT_CONN_CONNECTION_H
 
 #include <stdio.h>
 #include <time.h>
@@ -56,4 +56,4 @@ struct Connection
   int (*conn_poll)(struct Connection *conn, time_t wait_secs);
 };
 
-#endif /* _CONN_CONNECTION_H */
+#endif /* MUTT_CONN_CONNECTION_H */

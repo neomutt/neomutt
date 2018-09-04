@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_SORT_H
-#define _CONFIG_SORT_H
+#ifndef MUTT_CONFIG_SORT_H
+#define MUTT_CONFIG_SORT_H
 
 #include "mutt/mapping.h"
 
@@ -80,4 +80,4 @@ extern const struct Mapping SortSidebarMethods[];
 
 void sort_init(struct ConfigSet *cs);
 
-#endif /* _CONFIG_SORT_H */
+#endif /* MUTT_CONFIG_SORT_H */

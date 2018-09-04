@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGPKEY_H
-#define _NCRYPT_PGPKEY_H
+#ifndef MUTT_NCRYPT_PGPKEY_H
+#define MUTT_NCRYPT_PGPKEY_H
 
 #include <stdbool.h>
 
@@ -42,4 +42,4 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, enum PgpRing keyring, bool oppenc_mode);
 struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring);
 
-#endif /* _NCRYPT_PGPKEY_H */
+#endif /* MUTT_NCRYPT_PGPKEY_H */

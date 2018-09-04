@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC1524_H
-#define _MUTT_RFC1524_H
+#ifndef MUTT_RFC1524_H
+#define MUTT_RFC1524_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -54,4 +54,4 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen);
 int rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, int opt);
 
-#endif /* _MUTT_RFC1524_H */
+#endif /* MUTT_RFC1524_H */

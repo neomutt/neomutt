@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_GROUP_H
-#define _MUTT_GROUP_H
+#ifndef MUTT_GROUP_H
+#define MUTT_GROUP_H
 
 #include <stdbool.h>
 
@@ -64,4 +64,4 @@ int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address 
 
 struct Group *mutt_pattern_group(const char *k);
 
-#endif /* _MUTT_GROUP_H */
+#endif /* MUTT_GROUP_H */

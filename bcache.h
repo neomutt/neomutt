@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BCACHE_H
-#define _MUTT_BCACHE_H
+#ifndef MUTT_BCACHE_H
+#define MUTT_BCACHE_H
 
 #include <stdio.h>
 
@@ -53,4 +53,4 @@ int               mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want
 struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox);
 FILE *            mutt_bcache_put(struct BodyCache *bcache, const char *id);
 
-#endif /* _MUTT_BCACHE_H */
+#endif /* MUTT_BCACHE_H */

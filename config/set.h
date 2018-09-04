@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_SET_H
-#define _CONFIG_SET_H
+#ifndef MUTT_CONFIG_SET_H
+#define MUTT_CONFIG_SET_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -229,4 +229,4 @@ int      cs_str_reset      (const struct ConfigSet *cs, const char *name,       
 int      cs_str_string_get (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
 int      cs_str_string_set (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 
-#endif /* _CONFIG_SET_H */
+#endif /* MUTT_CONFIG_SET_H */

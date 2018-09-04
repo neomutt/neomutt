@@ -36,4 +36,3 @@ int  mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data
 int  mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* MUTT_COLOR_H */
-

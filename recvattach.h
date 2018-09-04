@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RECVATTACH_H
-#define _MUTT_RECVATTACH_H
+#ifndef MUTT_RECVATTACH_H
+#define MUTT_RECVATTACH_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -43,4 +43,4 @@ void mutt_update_tree(struct AttachCtx *actx);
 const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, enum FormatFlag flags);
 void mutt_view_attachments(struct Header *hdr);
 
-#endif /* _MUTT_RECVATTACH_H */
+#endif /* MUTT_RECVATTACH_H */

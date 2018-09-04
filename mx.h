@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MX_H
-#define _MUTT_MX_H
+#ifndef MUTT_MX_H
+#define MUTT_MX_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -255,4 +255,4 @@ bool                mx_tags_is_supported(struct Context *ctx);
 void                mx_update_context(struct Context *ctx, int new_messages);
 void                mx_update_tables(struct Context *ctx, bool committing);
 
-#endif /* _MUTT_MX_H */
+#endif /* MUTT_MX_H */

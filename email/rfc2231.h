@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_RFC2231_H
-#define _EMAIL_RFC2231_H
+#ifndef MUTT_EMAIL_RFC2231_H
+#define MUTT_EMAIL_RFC2231_H
 
 #include <stdbool.h>
 
@@ -33,4 +33,4 @@ extern bool Rfc2047Parameters;
 void rfc2231_decode_parameters(struct ParameterList *p);
 int  rfc2231_encode_string(char **pd);
 
-#endif /* _EMAIL_RFC2231_H */
+#endif /* MUTT_EMAIL_RFC2231_H */

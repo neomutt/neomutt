@@ -23,8 +23,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HCACHE_BACKEND_H
-#define _MUTT_HCACHE_BACKEND_H
+#ifndef MUTT_HCACHE_BACKEND_H
+#define MUTT_HCACHE_BACKEND_H
 
 #include <stdlib.h>
 
@@ -113,4 +113,4 @@ struct HcacheOps
     .backend = hcache_##_name##_backend,                                       \
   };
 
-#endif /* _MUTT_HCACHE_BACKEND_H */
+#endif /* MUTT_HCACHE_BACKEND_H */

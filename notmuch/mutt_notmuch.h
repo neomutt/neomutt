@@ -30,8 +30,8 @@
  * | notmuch/mutt_notmuch.c | @subpage nm_notmuch |
  */
 
-#ifndef _MUTT_NOTMUCH_H
-#define _MUTT_NOTMUCH_H
+#ifndef MUTT_NOTMUCH_MUTT_NOTMUCH_H
+#define MUTT_NOTMUCH_MUTT_NOTMUCH_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -81,4 +81,4 @@ int nm_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_notmuch_ops;
 
-#endif /* _MUTT_NOTMUCH_H */
+#endif /* MUTT_NOTMUCH_MUTT_NOTMUCH_H */

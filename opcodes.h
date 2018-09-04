@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_OPCODES_H
-#define _MUTT_OPCODES_H
+#ifndef MUTT_OPCODES_H
+#define MUTT_OPCODES_H
 
 // clang-format off
 #define OPS_CORE(_fmt) \
@@ -316,4 +316,4 @@ enum mutt_ops {
 };
 // clang-format on
 
-#endif /* _MUTT_OPCODES_H */
+#endif /* MUTT_OPCODES_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HEADER2_H
-#define _MUTT_HEADER2_H
+#ifndef MUTT_MUTT_HEADER_H
+#define MUTT_MUTT_HEADER_H
 
 #include <stddef.h>
 
@@ -34,4 +34,4 @@ void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr);
 int  mutt_label_message(struct Header *hdr);
 void mutt_make_label_hash(struct Context *ctx);
 
-#endif /* _MUTT_HEADER2_H */
+#endif /* MUTT_MUTT_HEADER_H */

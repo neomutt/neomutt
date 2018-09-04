@@ -38,4 +38,3 @@ extern unsigned char Postpone;
 int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen, struct Header *cur, int flags);
 
 #endif /* MUTT_COMPOSE_H */
-

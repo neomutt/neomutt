@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_SOCKET_H
-#define _CONN_SOCKET_H
+#ifndef MUTT_CONN_SOCKET_H
+#define MUTT_CONN_SOCKET_H
 
 #include <stddef.h>
 #include <time.h>
@@ -67,4 +67,4 @@ int raw_socket_open(struct Connection *conn);
 int raw_socket_close(struct Connection *conn);
 int raw_socket_poll(struct Connection *conn, time_t wait_secs);
 
-#endif /* _CONN_SOCKET_H */
+#endif /* MUTT_CONN_SOCKET_H */

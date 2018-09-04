@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SIDEBAR_H
-#define _MUTT_SIDEBAR_H
+#ifndef MUTT_SIDEBAR_H
+#define MUTT_SIDEBAR_H
 
 #include <stdbool.h>
 
@@ -50,4 +50,4 @@ void mutt_sb_set_mailbox_stats(const struct Context *ctx);
 void mutt_sb_set_open_mailbox(void);
 void mutt_sb_toggle_virtual(void);
 
-#endif /* _MUTT_SIDEBAR_H */
+#endif /* MUTT_SIDEBAR_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PARSE_H
-#define MUTT_PARSE_H
+#ifndef MUTT_MUTT_PARSE_H
+#define MUTT_MUTT_PARSE_H
 
 struct Context;
 struct Header;
@@ -29,4 +29,4 @@ struct Header;
 int  mutt_count_body_parts(struct Context *ctx, struct Header *hdr);
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 
-#endif /* MUTT_PARSE_H */
+#endif /* MUTT_MUTT_PARSE_H */

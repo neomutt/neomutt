@@ -24,8 +24,8 @@
  * #include <string.h>
  */
 
-#ifndef _MUTT_STRING_H
-#define _MUTT_STRING_H
+#ifndef MUTT_LIB_STRING_H
+#define MUTT_LIB_STRING_H
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -103,4 +103,4 @@ char *      mutt_str_substr_dup(const char *begin, const char *end);
 const char *mutt_str_sysexit(int e);
 int         mutt_str_word_casecmp(const char *a, const char *b);
 
-#endif /* _MUTT_STRING_H */
+#endif /* MUTT_LIB_STRING_H */

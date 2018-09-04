@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_SASL_PLAIN_H
-#define _CONN_SASL_PLAIN_H
+#ifndef MUTT_CONN_SASL_PLAIN_H
+#define MUTT_CONN_SASL_PLAIN_H
 
 #include <stdlib.h>
 
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass);
 
-#endif /* _CONN_SASL_PLAIN_H */
+#endif /* MUTT_CONN_SASL_PLAIN_H */

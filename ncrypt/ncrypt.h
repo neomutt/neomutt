@@ -46,8 +46,8 @@
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
  */
 
-#ifndef _NCRYPT_NCRYPT_H
-#define _NCRYPT_NCRYPT_H
+#ifndef MUTT_NCRYPT_NCRYPT_H
+#define MUTT_NCRYPT_NCRYPT_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -214,4 +214,4 @@ int          crypt_smime_verify_sender(struct Header *h);
 /* crypt_mod.c */
 void crypto_module_free(void);
 
-#endif /* _NCRYPT_NCRYPT_H */
+#endif /* MUTT_NCRYPT_NCRYPT_H */

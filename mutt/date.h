@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_DATE_H
-#define _MUTT_DATE_H
+#ifndef MUTT_LIB_DATE_H
+#define MUTT_LIB_DATE_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -49,4 +49,4 @@ void   mutt_date_normalize_time(struct tm *tm);
 time_t mutt_date_parse_date(const char *s, struct Tz *tz_out);
 time_t mutt_date_parse_imap(char *s);
 
-#endif /* _MUTT_DATE_H */
+#endif /* MUTT_LIB_DATE_H */

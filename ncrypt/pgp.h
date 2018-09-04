@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGP_H
-#define _NCRYPT_PGP_H
+#ifndef MUTT_NCRYPT_PGP_H
+#define MUTT_NCRYPT_PGP_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -61,4 +61,4 @@ struct Body *pgp_class_sign_message(struct Body *a);
 
 int pgp_class_send_menu(struct Header *msg);
 
-#endif /* _NCRYPT_PGP_H */
+#endif /* MUTT_NCRYPT_PGP_H */

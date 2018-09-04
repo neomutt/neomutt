@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BROWSER_H
-#define _MUTT_BROWSER_H
+#ifndef MUTT_BROWSER_H
+#define MUTT_BROWSER_H
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -96,4 +96,4 @@ struct BrowserState
 void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int *numfiles);
 void mutt_browser_select_dir(char *f);
 
-#endif /* _MUTT_BROWSER_H */
+#endif /* MUTT_BROWSER_H */

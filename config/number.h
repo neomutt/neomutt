@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_NUMBER_H
-#define _CONFIG_NUMBER_H
+#ifndef MUTT_CONFIG_NUMBER_H
+#define MUTT_CONFIG_NUMBER_H
 
 struct ConfigSet;
 
 void number_init(struct ConfigSet *cs);
 
-#endif /* _CONFIG_NUMBER_H */
+#endif /* MUTT_CONFIG_NUMBER_H */

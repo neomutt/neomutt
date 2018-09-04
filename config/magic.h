@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_MAGIC_H
-#define _CONFIG_MAGIC_H
+#ifndef MUTT_CONFIG_MAGIC_H
+#define MUTT_CONFIG_MAGIC_H
 
 struct ConfigSet;
 
@@ -47,4 +47,4 @@ enum MailboxType
 
 void magic_init(struct ConfigSet *cs);
 
-#endif /* _CONFIG_MAGIC_H */
+#endif /* MUTT_CONFIG_MAGIC_H */

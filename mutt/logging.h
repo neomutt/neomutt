@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_LOGGING_H
-#define _MUTT_LOGGING_H
+#ifndef MUTT_LIB_LOGGING_H
+#define MUTT_LIB_LOGGING_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -105,4 +105,4 @@ int  log_file_set_filename(const char *file, bool verbose);
 int  log_file_set_level(int level, bool verbose);
 void log_file_set_version(const char *version);
 
-#endif /* _MUTT_LOGGING_H */
+#endif /* MUTT_LIB_LOGGING_H */

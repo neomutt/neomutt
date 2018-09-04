@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FUNCTIONS_H
-#define _MUTT_FUNCTIONS_H
+#ifndef MUTT_FUNCTIONS_H
+#define MUTT_FUNCTIONS_H
 
 /*
  * This file contains the structures needed to parse ``bind'' commands, as
@@ -616,4 +616,4 @@ const struct Binding OpMix[] = { /* map: mixmaster */
 #endif /* MIXMASTER */
 // clang-format on
 
-#endif /* _MUTT_FUNCTIONS_H */
+#endif /* MUTT_FUNCTIONS_H */

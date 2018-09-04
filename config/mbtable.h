@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_MBTABLE_H
-#define _CONFIG_MBTABLE_H
+#ifndef MUTT_CONFIG_MBTABLE_H
+#define MUTT_CONFIG_MBTABLE_H
 
 struct ConfigSet;
 
@@ -44,4 +44,4 @@ void mbtable_init(struct ConfigSet *cs);
 struct MbTable *mbtable_parse(const char *str);
 void mbtable_free(struct MbTable **table);
 
-#endif /* _CONFIG_MBTABLE_H */
+#endif /* MUTT_CONFIG_MBTABLE_H */

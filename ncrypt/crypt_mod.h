@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_CRYPT_MOD_H
-#define _NCRYPT_CRYPT_MOD_H
+#ifndef MUTT_NCRYPT_CRYPT_MOD_H
+#define MUTT_NCRYPT_CRYPT_MOD_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -207,4 +207,4 @@ struct CryptModuleSpecs
 void crypto_module_register(struct CryptModuleSpecs *specs);
 struct CryptModuleSpecs *crypto_module_lookup(int identifier);
 
-#endif /* _NCRYPT_CRYPT_MOD_H */
+#endif /* MUTT_NCRYPT_CRYPT_MOD_H */

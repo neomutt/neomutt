@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_PROTOS_H
-#define _MUTT_PROTOS_H
+#ifndef MUTT_PROTOS_H
+#define MUTT_PROTOS_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -77,4 +77,4 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
                          const char *name, enum ConfigEvent ev);
 
-#endif /* _MUTT_PROTOS_H */
+#endif /* MUTT_PROTOS_H */

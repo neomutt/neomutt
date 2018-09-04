@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_KEYMAP_H
-#define _MUTT_KEYMAP_H
+#ifndef MUTT_KEYMAP_H
+#define MUTT_KEYMAP_H
 
 #include <stddef.h>
 #include "mutt/mutt.h"
@@ -136,4 +136,4 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, st
 int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 
-#endif /* _MUTT_KEYMAP_H */
+#endif /* MUTT_KEYMAP_H */

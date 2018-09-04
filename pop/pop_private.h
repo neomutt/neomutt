@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _POP_PRIVATE_H
-#define _POP_PRIVATE_H
+#ifndef MUTT_POP_POP_PRIVATE_H
+#define MUTT_POP_POP_PRIVATE_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -124,4 +124,4 @@ int pop_fetch_data(struct PopData *pop_data, const char *query, struct Progress 
 int pop_reconnect(struct Context *ctx);
 void pop_logout(struct Context *ctx);
 
-#endif /* _POP_PRIVATE_H */
+#endif /* MUTT_POP_POP_PRIVATE_H */

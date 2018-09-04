@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _POP_POP_H
-#define _POP_POP_H
+#ifndef MUTT_POP_POP_H
+#define MUTT_POP_POP_H
 
 #include <stdbool.h>
 #include "mx.h"
@@ -56,4 +56,4 @@ extern struct MxOps mx_pop_ops;
 void pop_fetch_mail(void);
 int pop_path_probe(const char *path, const struct stat *st);
 
-#endif /* _POP_POP_H */
+#endif /* MUTT_POP_POP_H */

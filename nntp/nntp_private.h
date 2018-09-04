@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NNTP_PRIVATE_H
-#define _NNTP_PRIVATE_H
+#ifndef MUTT_NNTP_NNTP_PRIVATE_H
+#define MUTT_NNTP_NNTP_PRIVATE_H
 
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -62,4 +62,4 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
 void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc);
 #endif
 
-#endif /* _NNTP_PRIVATE_H */
+#endif /* MUTT_NNTP_NNTP_PRIVATE_H */

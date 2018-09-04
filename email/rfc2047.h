@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_RFC2047_H
-#define _EMAIL_RFC2047_H
+#ifndef MUTT_EMAIL_RFC2047_H
+#define MUTT_EMAIL_RFC2047_H
 
 struct Address;
 
@@ -33,4 +33,4 @@ void rfc2047_encode(char **pd, const char *specials, int col, const char *charse
 void rfc2047_decode_addrlist(struct Address *a);
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
 
-#endif /* _EMAIL_RFC2047_H */
+#endif /* MUTT_EMAIL_RFC2047_H */

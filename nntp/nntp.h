@@ -33,8 +33,8 @@
  * | nntp/nntp.c   | @subpage nntp_nntp   |
  */
 
-#ifndef _NNTP_NNTP_H
-#define _NNTP_NNTP_H
+#ifndef MUTT_NNTP_NNTP_H
+#define MUTT_NNTP_NNTP_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -178,4 +178,4 @@ int nntp_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_nntp_ops;
 
-#endif /* _NNTP_NNTP_H */
+#endif /* MUTT_NNTP_NNTP_H */

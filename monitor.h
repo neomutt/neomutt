@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MONITOR_H
-#define _MUTT_MONITOR_H
+#ifndef MUTT_MONITOR_H
+#define MUTT_MONITOR_H
 
 extern int MonitorFilesChanged;
 extern int MonitorContextChanged;
@@ -32,4 +32,4 @@ int mutt_monitor_add(struct Mailbox *b);
 int mutt_monitor_remove(struct Mailbox *b);
 int mutt_monitor_poll(void);
 
-#endif /* _MUTT_MONITOR_H */
+#endif /* MUTT_MONITOR_H */
