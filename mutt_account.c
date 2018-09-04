@@ -378,16 +378,14 @@ char *mutt_account_getoauthbearer(struct Account *account)
 
   if (!cmd)
   {
-    mutt_error(
-        _("mutt_account_getoauthbearer: No OAUTH refresh command defined"));
+    mutt_error(_("No OAUTH refresh command defined"));
     return NULL;
   }
 
   pid = mutt_create_filter(cmd, NULL, &fp, NULL);
   if (pid < 0)
   {
-    mutt_perror(
-        _("mutt_account_getoauthbearer: Unable to run refresh command"));
+    mutt_perror(_("Unable to run refresh command"));
     return NULL;
   }
 
@@ -397,7 +395,7 @@ char *mutt_account_getoauthbearer(struct Account *account)
 
   if (!token || *token == '\0')
   {
-    mutt_error(_("mutt_account_getoauthbearer: Command returned empty string"));
+    mutt_error(_("Command returned empty string"));
     FREE(&token);
     return NULL;
   }

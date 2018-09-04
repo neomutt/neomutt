@@ -490,7 +490,7 @@ static int pop_mbox_open(struct Context *ctx)
 
   if (pop_parse_path(ctx->mailbox->path, &acct))
   {
-    mutt_error(_("%s is an invalid POP mailbox->path"), ctx->mailbox->path);
+    mutt_error(_("%s is an invalid POP path"), ctx->mailbox->path);
     return -1;
   }
 
