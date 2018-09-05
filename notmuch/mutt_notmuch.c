@@ -1154,7 +1154,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n",
              ctx->mailbox->msg_count, notmuch_message_get_message_id(msg), path);
 
-  if (ctx->mailbox->msg_count >= ctx->hdrmax)
+  if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
   {
     mutt_debug(2, "nm: allocate mx memory\n");
     mx_alloc_memory(ctx);
@@ -1195,7 +1195,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   h->active = true;
   h->index = ctx->mailbox->msg_count;
   ctx->size += h->content->length + h->content->offset - h->content->hdr_offset;
-  ctx->hdrs[ctx->mailbox->msg_count] = h;
+  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = h;
   ctx->mailbox->msg_count++;
 
   if (newpath)
@@ -2501,7 +2501,7 @@ static int nm_mbox_close(struct Context *ctx)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Header *h = ctx->hdrs[i];
+    struct Header *h = ctx->mailbox->hdrs[i];
     if (h)
     {
       free_hdrdata(h->data);
@@ -2553,7 +2553,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   data->noprogress = true;
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    ctx->hdrs[i]->active = false;
+    ctx->mailbox->hdrs[i]->active = false;
 
   limit = get_limit(data);
 
@@ -2615,7 +2615,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    if (!ctx->hdrs[i]->active)
+    if (!ctx->mailbox->hdrs[i]->active)
     {
       occult = true;
       break;
@@ -2671,7 +2671,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     char old[PATH_MAX], new[PATH_MAX];
-    struct Header *h = ctx->hdrs[i];
+    struct Header *h = ctx->mailbox->hdrs[i];
     struct NmHdrData *hd = h->data;
 
     if (!ctx->quiet)
@@ -2738,7 +2738,7 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx || !msg)
     return 1;
-  struct Header *cur = ctx->hdrs[msgno];
+  struct Header *cur = ctx->mailbox->hdrs[msgno];
   char path[PATH_MAX];
   char *folder = nm_header_get_folder(cur);
 

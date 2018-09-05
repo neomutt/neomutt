@@ -589,29 +589,29 @@ static void mh_update_sequences(struct Context *ctx)
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < ctx->mailbox->msg_count; l++)
   {
-    if (ctx->hdrs[l]->deleted)
+    if (ctx->mailbox->hdrs[l]->deleted)
       continue;
 
-    p = strrchr(ctx->hdrs[l]->path, '/');
+    p = strrchr(ctx->mailbox->hdrs[l]->path, '/');
     if (p)
       p++;
     else
-      p = ctx->hdrs[l]->path;
+      p = ctx->mailbox->hdrs[l]->path;
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
 
-    if (!ctx->hdrs[l]->read)
+    if (!ctx->mailbox->hdrs[l]->read)
     {
       mhs_set(&mhs, i, MH_SEQ_UNSEEN);
       unseen++;
     }
-    if (ctx->hdrs[l]->flagged)
+    if (ctx->mailbox->hdrs[l]->flagged)
     {
       mhs_set(&mhs, i, MH_SEQ_FLAGGED);
       flagged++;
     }
-    if (ctx->hdrs[l]->replied)
+    if (ctx->mailbox->hdrs[l]->replied)
     {
       mhs_set(&mhs, i, MH_SEQ_REPLIED);
       replied++;
@@ -1040,11 +1040,11 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
       mutt_debug(2, "Adding header structure. Flags: %s%s%s%s%s\n",
                  md->h->flagged ? "f" : "", md->h->deleted ? "D" : "",
                  md->h->replied ? "r" : "", md->h->old ? "O" : "", md->h->read ? "R" : "");
-      if (ctx->mailbox->msg_count == ctx->hdrmax)
+      if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx);
 
-      ctx->hdrs[ctx->mailbox->msg_count] = md->h;
-      ctx->hdrs[ctx->mailbox->msg_count]->index = ctx->mailbox->msg_count;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = md->h;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count]->index = ctx->mailbox->msg_count;
       ctx->size += md->h->content->length + md->h->content->offset -
                    md->h->content->hdr_offset;
 
@@ -1669,7 +1669,7 @@ void maildir_flags(char *dest, size_t destlen, struct Header *hdr)
 static int maildir_mh_open_message(struct Context *ctx, struct Message *msg,
                                    int msgno, int is_maildir)
 {
-  struct Header *cur = ctx->hdrs[msgno];
+  struct Header *cur = ctx->mailbox->hdrs[msgno];
   char path[PATH_MAX];
 
   snprintf(path, sizeof(path), "%s/%s", ctx->mailbox->path, cur->path);
@@ -2004,7 +2004,7 @@ static int mh_msg_commit(struct Context *ctx, struct Message *msg)
  */
 static int mh_rewrite_message(struct Context *ctx, int msgno)
 {
-  struct Header *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->mailbox->hdrs[msgno];
   bool restore = true;
 
   long old_body_offset = h->content->offset;
@@ -2082,7 +2082,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
  */
 static int mh_sync_message(struct Context *ctx, int msgno)
 {
-  struct Header *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->mailbox->hdrs[msgno];
 
   if (h->attach_del || h->xlabel_changed ||
       (h->env && (h->env->refs_changed || h->env->irt_changed)))
@@ -2103,7 +2103,7 @@ static int mh_sync_message(struct Context *ctx, int msgno)
  */
 static int maildir_sync_message(struct Context *ctx, int msgno)
 {
-  struct Header *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->mailbox->hdrs[msgno];
 
   if (h->attach_del || h->xlabel_changed ||
       (h->env && (h->env->refs_changed || h->env->irt_changed)))
@@ -2176,7 +2176,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc)
 int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #endif
 {
-  struct Header *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->mailbox->hdrs[msgno];
 
   if (h->deleted && (ctx->mailbox->magic != MUTT_MAILDIR || !MaildirTrash))
   {
@@ -2293,11 +2293,11 @@ static void maildir_update_tables(struct Context *ctx, int *index_hint)
   const int old_count = ctx->mailbox->msg_count;
   for (int i = 0, j = 0; i < old_count; i++)
   {
-    if (ctx->hdrs[i]->active && index_hint && *index_hint == i)
+    if (ctx->mailbox->hdrs[i]->active && index_hint && *index_hint == i)
       *index_hint = j;
 
-    if (ctx->hdrs[i]->active)
-      ctx->hdrs[i]->index = j++;
+    if (ctx->mailbox->hdrs[i]->active)
+      ctx->mailbox->hdrs[i]->index = j++;
   }
 
   mx_update_tables(ctx, false);
@@ -2394,36 +2394,36 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   /* check for modifications and adjust flags */
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    ctx->hdrs[i]->active = false;
-    maildir_canon_filename(ctx->hdrs[i]->path, buf, sizeof(buf));
+    ctx->mailbox->hdrs[i]->active = false;
+    maildir_canon_filename(ctx->mailbox->hdrs[i]->path, buf, sizeof(buf));
     p = mutt_hash_find(fnames, buf);
     if (p && p->h)
     {
       /* message already exists, merge flags */
-      ctx->hdrs[i]->active = true;
+      ctx->mailbox->hdrs[i]->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.
        */
-      if (mutt_str_strcmp(ctx->hdrs[i]->path, p->h->path) != 0)
-        mutt_str_replace(&ctx->hdrs[i]->path, p->h->path);
+      if (mutt_str_strcmp(ctx->mailbox->hdrs[i]->path, p->h->path) != 0)
+        mutt_str_replace(&ctx->mailbox->hdrs[i]->path, p->h->path);
 
       /* if the user hasn't modified the flags on this message, update
        * the flags we just detected.
        */
-      if (!ctx->hdrs[i]->changed)
-        if (maildir_update_flags(ctx, ctx->hdrs[i], p->h))
+      if (!ctx->mailbox->hdrs[i]->changed)
+        if (maildir_update_flags(ctx, ctx->mailbox->hdrs[i], p->h))
           flags_changed = true;
 
-      if (ctx->hdrs[i]->deleted == ctx->hdrs[i]->trash)
+      if (ctx->mailbox->hdrs[i]->deleted == ctx->mailbox->hdrs[i]->trash)
       {
-        if (ctx->hdrs[i]->deleted != p->h->deleted)
+        if (ctx->mailbox->hdrs[i]->deleted != p->h->deleted)
         {
-          ctx->hdrs[i]->deleted = p->h->deleted;
+          ctx->mailbox->hdrs[i]->deleted = p->h->deleted;
           flags_changed = true;
         }
       }
-      ctx->hdrs[i]->trash = p->h->trash;
+      ctx->mailbox->hdrs[i]->trash = p->h->trash;
 
       /* this is a duplicate of an existing header, so remove it */
       mutt_header_free(&p->h);
@@ -2432,8 +2432,8 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
      * Check to see if we have enough information to know if the
      * message has disappeared out from underneath us.
      */
-    else if (((changed & 1) && (strncmp(ctx->hdrs[i]->path, "new/", 4) == 0)) ||
-             ((changed & 2) && (strncmp(ctx->hdrs[i]->path, "cur/", 4) == 0)))
+    else if (((changed & 1) && (strncmp(ctx->mailbox->hdrs[i]->path, "new/", 4) == 0)) ||
+             ((changed & 2) && (strncmp(ctx->mailbox->hdrs[i]->path, "cur/", 4) == 0)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
@@ -2447,7 +2447,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
        * modified, so we assume that it is still present and
        * unchanged.
        */
-      ctx->hdrs[i]->active = true;
+      ctx->mailbox->hdrs[i]->active = true;
     }
   }
 
@@ -2571,15 +2571,15 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    ctx->hdrs[i]->active = false;
+    ctx->mailbox->hdrs[i]->active = false;
 
-    p = mutt_hash_find(fnames, ctx->hdrs[i]->path);
-    if (p && p->h && mutt_header_cmp_strict(ctx->hdrs[i], p->h))
+    p = mutt_hash_find(fnames, ctx->mailbox->hdrs[i]->path);
+    if (p && p->h && mutt_header_cmp_strict(ctx->mailbox->hdrs[i], p->h))
     {
-      ctx->hdrs[i]->active = true;
+      ctx->mailbox->hdrs[i]->active = true;
       /* found the right message */
-      if (!ctx->hdrs[i]->changed)
-        if (maildir_update_flags(ctx, ctx->hdrs[i], p->h))
+      if (!ctx->mailbox->hdrs[i]->changed)
+        if (maildir_update_flags(ctx, ctx->mailbox->hdrs[i], p->h))
           flags_changed = true;
 
       mutt_header_free(&p->h);
@@ -2672,8 +2672,8 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
   {
     for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
     {
-      if (!ctx->hdrs[i]->deleted || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
-        ctx->hdrs[i]->index = j++;
+      if (!ctx->mailbox->hdrs[i]->deleted || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+        ctx->mailbox->hdrs[i]->index = j++;
     }
   }
 

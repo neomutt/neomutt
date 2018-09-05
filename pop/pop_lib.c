@@ -589,9 +589,9 @@ static int check_uidl(char *line, void *data)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    if (mutt_str_strcmp(ctx->hdrs[i]->data, line) == 0)
+    if (mutt_str_strcmp(ctx->mailbox->hdrs[i]->data, line) == 0)
     {
-      ctx->hdrs[i]->refno = index;
+      ctx->mailbox->hdrs[i]->refno = index;
       break;
     }
   }
@@ -626,7 +626,7 @@ int pop_reconnect(struct Context *ctx)
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
       for (int i = 0; i < ctx->mailbox->msg_count; i++)
-        ctx->hdrs[i]->refno = -1;
+        ctx->mailbox->hdrs[i]->refno = -1;
 
       ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);
       if (ret == -2)

@@ -36,6 +36,7 @@
 #include "curs_lib.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_window.h"
@@ -78,7 +79,7 @@ static int get_color(int index, unsigned char *s)
 {
   struct ColorLineHead *color = NULL;
   struct ColorLine *np = NULL;
-  struct Header *hdr = Context->hdrs[Context->v2r[index]];
+  struct Header *hdr = Context->mailbox->hdrs[Context->v2r[index]];
   int type = *s;
 
   switch (type)

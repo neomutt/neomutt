@@ -160,10 +160,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       if (!ctx->quiet)
         mutt_progress_update(&progress, count, (int) (loc / (ctx->size / 100 + 1)));
 
-      if (ctx->mailbox->msg_count == ctx->hdrmax)
+      if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx);
       hdr = mutt_header_new();
-      ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       hdr->offset = loc;
       hdr->index = ctx->mailbox->msg_count;
 
@@ -312,7 +312,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-        struct Header *h = ctx->hdrs[ctx->mailbox->msg_count - 1];
+        struct Header *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
         if (h->content->length < 0)
         {
           h->content->length = loc - h->content->offset - 1;
@@ -331,11 +331,11 @@ static int mbox_parse_mailbox(struct Context *ctx)
                              (int) (ftello(ctx->fp) / (ctx->size / 100 + 1)));
       }
 
-      if (ctx->mailbox->msg_count == ctx->hdrmax)
+      if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx);
 
-      ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-      curhdr = ctx->hdrs[ctx->mailbox->msg_count];
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+      curhdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
       curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
       curhdr->index = ctx->mailbox->msg_count;
@@ -437,7 +437,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
    */
   if (count > 0)
   {
-    struct Header *h = ctx->hdrs[ctx->mailbox->msg_count - 1];
+    struct Header *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
     if (h->content->length < 0)
     {
       h->content->length = ftello(ctx->fp) - h->content->offset - 1;
@@ -672,18 +672,18 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   if (ctx->readonly)
   {
     for (i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_header_free(&(ctx->hdrs[i])); /* nothing to do! */
-    FREE(&ctx->hdrs);
+      mutt_header_free(&(ctx->mailbox->hdrs[i])); /* nothing to do! */
+    FREE(&ctx->mailbox->hdrs);
   }
   else
   {
     /* save the old headers */
     old_msgcount = ctx->mailbox->msg_count;
-    old_hdrs = ctx->hdrs;
-    ctx->hdrs = NULL;
+    old_hdrs = ctx->mailbox->hdrs;
+    ctx->mailbox->hdrs = NULL;
   }
 
-  ctx->hdrmax = 0; /* force allocation of new headers */
+  ctx->mailbox->hdrmax = 0; /* force allocation of new headers */
   ctx->mailbox->msg_count = 0;
   ctx->vcount = 0;
   ctx->vsize = 0;
@@ -748,7 +748,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       {
         if (!old_hdrs[j])
           continue;
-        if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
+        if (cmp_headers(ctx->mailbox->hdrs[i], old_hdrs[j]))
         {
           found = true;
           break;
@@ -760,7 +760,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
         {
           if (!old_hdrs[j])
             continue;
-          if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
+          if (cmp_headers(ctx->mailbox->hdrs[i], old_hdrs[j]))
           {
             found = true;
             break;
@@ -780,14 +780,14 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes
            */
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_READ, old_hdrs[j]->read);
+          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
+          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
+          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
+          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_READ, old_hdrs[j]->read);
         }
-        mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
-        mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
-        mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
+        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
+        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
+        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
         /* we don't need this header any more */
         mutt_header_free(&(old_hdrs[j]));
@@ -937,7 +937,8 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 static bool mbox_has_new(struct Context *ctx)
 {
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read && !ctx->hdrs[i]->old)
+    if (!ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->read &&
+        !ctx->mailbox->hdrs[i]->old)
       return true;
   return false;
 }
@@ -1057,8 +1058,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* find the first deleted/changed message.  we save a lot of time by only
    * rewriting the mailbox from the point where it has actually changed.
    */
-  for (i = 0; (i < ctx->mailbox->msg_count) && !ctx->hdrs[i]->deleted &&
-              !ctx->hdrs[i]->changed && !ctx->hdrs[i]->attach_del;
+  for (i = 0; (i < ctx->mailbox->msg_count) && !ctx->mailbox->hdrs[i]->deleted &&
+              !ctx->mailbox->hdrs[i]->changed && !ctx->mailbox->hdrs[i]->attach_del;
        i++)
   {
   }
@@ -1078,7 +1079,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* save the index of the first changed/deleted message */
   first = i;
   /* where to start overwriting */
-  offset = ctx->hdrs[i]->offset;
+  offset = ctx->mailbox->hdrs[i]->offset;
 
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location
@@ -1106,12 +1107,12 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
      */
 
     old_offset[i - first].valid = true;
-    old_offset[i - first].hdr = ctx->hdrs[i]->offset;
-    old_offset[i - first].body = ctx->hdrs[i]->content->offset;
-    old_offset[i - first].lines = ctx->hdrs[i]->lines;
-    old_offset[i - first].length = ctx->hdrs[i]->content->length;
+    old_offset[i - first].hdr = ctx->mailbox->hdrs[i]->offset;
+    old_offset[i - first].body = ctx->mailbox->hdrs[i]->content->offset;
+    old_offset[i - first].lines = ctx->mailbox->hdrs[i]->lines;
+    old_offset[i - first].length = ctx->mailbox->hdrs[i]->content->length;
 
-    if (!ctx->hdrs[i]->deleted)
+    if (!ctx->mailbox->hdrs[i]->deleted)
     {
       j++;
 
@@ -1131,7 +1132,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, ctx, ctx->hdrs[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message_ctx(fp, ctx, ctx->mailbox->hdrs[i], MUTT_CM_UPDATE,
                                 CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
@@ -1145,8 +1146,9 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        * we just flush the in memory cache so that the message will be reparsed
        * if the user accesses it later.
        */
-      new_offset[i - first].body = ftello(fp) - ctx->hdrs[i]->content->length + offset;
-      mutt_body_free(&ctx->hdrs[i]->content->parts);
+      new_offset[i - first].body =
+          ftello(fp) - ctx->mailbox->hdrs[i]->content->length + offset;
+      mutt_body_free(&ctx->mailbox->hdrs[i]->content->parts);
 
       switch (ctx->mailbox->magic)
       {
@@ -1282,12 +1284,12 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* update the offsets of the rewritten messages */
   for (i = first, j = first; i < ctx->mailbox->msg_count; i++)
   {
-    if (!ctx->hdrs[i]->deleted)
+    if (!ctx->mailbox->hdrs[i]->deleted)
     {
-      ctx->hdrs[i]->offset = new_offset[i - first].hdr;
-      ctx->hdrs[i]->content->hdr_offset = new_offset[i - first].hdr;
-      ctx->hdrs[i]->content->offset = new_offset[i - first].body;
-      ctx->hdrs[i]->index = j++;
+      ctx->mailbox->hdrs[i]->offset = new_offset[i - first].hdr;
+      ctx->mailbox->hdrs[i]->content->hdr_offset = new_offset[i - first].hdr;
+      ctx->mailbox->hdrs[i]->content->offset = new_offset[i - first].body;
+      ctx->mailbox->hdrs[i]->index = j++;
     }
   }
   FREE(&new_offset);
@@ -1313,11 +1315,11 @@ bail: /* Come here in case of disaster */
   {
     for (i = first; (i < ctx->mailbox->msg_count) && old_offset[i - first].valid; i++)
     {
-      ctx->hdrs[i]->offset = old_offset[i - first].hdr;
-      ctx->hdrs[i]->content->hdr_offset = old_offset[i - first].hdr;
-      ctx->hdrs[i]->content->offset = old_offset[i - first].body;
-      ctx->hdrs[i]->lines = old_offset[i - first].lines;
-      ctx->hdrs[i]->content->length = old_offset[i - first].length;
+      ctx->mailbox->hdrs[i]->offset = old_offset[i - first].hdr;
+      ctx->mailbox->hdrs[i]->content->hdr_offset = old_offset[i - first].hdr;
+      ctx->mailbox->hdrs[i]->content->offset = old_offset[i - first].body;
+      ctx->mailbox->hdrs[i]->lines = old_offset[i - first].lines;
+      ctx->mailbox->hdrs[i]->content->length = old_offset[i - first].length;
     }
   }
 

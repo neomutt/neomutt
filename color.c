@@ -657,7 +657,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
     mutt_menu_set_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
     for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
-      Context->hdrs[i]->pair = 0;
+      Context->mailbox->hdrs[i]->pair = 0;
   }
   return 0;
 }
@@ -800,7 +800,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
   if (is_index)
   {
     for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
-      Context->hdrs[i]->pair = 0;
+      Context->mailbox->hdrs[i]->pair = 0;
   }
 
   return 0;

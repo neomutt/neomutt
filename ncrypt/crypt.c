@@ -832,7 +832,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *hi = Context->hdrs[i];
+      struct Header *hi = Context->mailbox->hdrs[i];
 
       mutt_parse_mime_message(Context, hi);
       if (hi->security & ENCRYPT && !crypt_valid_passphrase(hi->security))

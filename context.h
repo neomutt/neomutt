@@ -65,7 +65,6 @@ struct Context
   off_t vsize;
   char *pattern;                 /**< limit pattern string */
   struct Pattern *limit_pattern; /**< compiled limit pattern */
-  struct Header **hdrs;
   struct Header *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
   struct Hash *id_hash;     /**< hash table by msg id */
@@ -73,7 +72,6 @@ struct Context
   struct Hash *thread_hash; /**< hash table for threading */
   struct Hash *label_hash;  /**< hash table for x-labels */
   int *v2r;                 /**< mapping from virtual to real msgno */
-  int hdrmax;               /**< number of pointers in hdrs */
   int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */

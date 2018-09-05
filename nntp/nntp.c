@@ -1185,12 +1185,12 @@ static int parse_overview_line(char *line, void *data)
   rewind(fp);
 
   /* allocate memory for headers */
-  if (ctx->mailbox->msg_count >= ctx->hdrmax)
+  if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
     mx_alloc_memory(ctx);
 
   /* parse header */
-  ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-  hdr = ctx->hdrs[ctx->mailbox->msg_count];
+  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+  hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
@@ -1209,7 +1209,7 @@ static int parse_overview_line(char *line, void *data)
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       mutt_header_free(&hdr);
       hdr = mutt_hcache_restore(hdata);
-      ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       mutt_hcache_free(fc->hc, &hdata);
       hdr->data = NULL;
       hdr->read = false;
@@ -1369,7 +1369,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       continue;
 
     /* allocate memory for headers */
-    if (ctx->mailbox->msg_count >= ctx->hdrmax)
+    if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
       mx_alloc_memory(ctx);
 
 #ifdef USE_HCACHE
@@ -1379,7 +1379,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       hdr = mutt_hcache_restore(hdata);
-      ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       mutt_hcache_free(fc.hc, &hdata);
       hdr->data = NULL;
 
@@ -1452,8 +1452,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       }
 
       /* parse header */
-      ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-      hdr = ctx->hdrs[ctx->mailbox->msg_count];
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+      hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
       hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
@@ -1644,7 +1644,7 @@ static int nntp_mbox_open(struct Context *ctx)
 static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->mailbox->data;
-  struct Header *hdr = ctx->hdrs[msgno];
+  struct Header *hdr = ctx->mailbox->hdrs[msgno];
   char article[16];
 
   /* try to get article from cache */
@@ -1938,7 +1938,7 @@ static int check_mailbox(struct Context *ctx)
   if (nntp_data->last_message < nntp_data->last_loaded)
   {
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_header_free(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->mailbox->hdrs[i]);
     ctx->mailbox->msg_count = 0;
     ctx->tagged = 0;
 
@@ -1974,7 +1974,7 @@ static int check_mailbox(struct Context *ctx)
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
       bool flagged = false;
-      anum = NHDR(ctx->hdrs[i])->article_num;
+      anum = NHDR(ctx->mailbox->hdrs[i])->article_num;
 
 #ifdef USE_HCACHE
       /* check hcache for flagged and deleted flags */
@@ -2000,24 +2000,24 @@ static int check_mailbox(struct Context *ctx)
           /* header marked as deleted, removing from context */
           if (deleted)
           {
-            mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
-            mutt_header_free(&ctx->hdrs[i]);
+            mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_TAG, 0);
+            mutt_header_free(&ctx->mailbox->hdrs[i]);
             continue;
           }
         }
       }
 #endif
 
-      if (!ctx->hdrs[i]->changed)
+      if (!ctx->mailbox->hdrs[i]->changed)
       {
-        ctx->hdrs[i]->flagged = flagged;
-        ctx->hdrs[i]->read = false;
-        ctx->hdrs[i]->old = false;
-        nntp_article_status(ctx, ctx->hdrs[i], NULL, anum);
-        if (!ctx->hdrs[i]->read)
-          nntp_parse_xref(ctx, ctx->hdrs[i]);
+        ctx->mailbox->hdrs[i]->flagged = flagged;
+        ctx->mailbox->hdrs[i]->read = false;
+        ctx->mailbox->hdrs[i]->old = false;
+        nntp_article_status(ctx, ctx->mailbox->hdrs[i], NULL, anum);
+        if (!ctx->mailbox->hdrs[i]->read)
+          nntp_parse_xref(ctx, ctx->mailbox->hdrs[i]);
       }
-      ctx->hdrs[j++] = ctx->hdrs[i];
+      ctx->mailbox->hdrs[j++] = ctx->mailbox->hdrs[i];
     }
 
 #ifdef USE_HCACHE
@@ -2034,11 +2034,11 @@ static int check_mailbox(struct Context *ctx)
       if (hdata)
       {
         mutt_debug(2, "#2 mutt_hcache_fetch %s\n", buf);
-        if (ctx->mailbox->msg_count >= ctx->hdrmax)
+        if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
           mx_alloc_memory(ctx);
 
         hdr = mutt_hcache_restore(hdata);
-        ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+        ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
         mutt_hcache_free(hc, &hdata);
         hdr->data = NULL;
         if (hdr->deleted)
@@ -2166,7 +2166,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Header *hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->mailbox->hdrs[i];
     char buf[16];
 
     snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
@@ -2475,10 +2475,10 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   }
 
   /* parse header */
-  if (ctx->mailbox->msg_count == ctx->hdrmax)
+  if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
     mx_alloc_memory(ctx);
-  ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-  struct Header *hdr = ctx->hdrs[ctx->mailbox->msg_count];
+  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+  struct Header *hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   mutt_file_fclose(&fp);
@@ -2533,7 +2533,7 @@ static int fetch_children(char *line, void *data)
   if (!line || sscanf(line, ANUM, &anum) != 1)
     return 0;
   for (unsigned int i = 0; i < cc->ctx->mailbox->msg_count; i++)
-    if (NHDR(cc->ctx->hdrs[i])->article_num == anum)
+    if (NHDR(cc->ctx->mailbox->hdrs[i])->article_num == anum)
       return 0;
   if (cc->num >= cc->max)
   {

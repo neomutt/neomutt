@@ -354,9 +354,9 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = NHDR(ctx->hdrs[i])->article_num;
-      if (last >= nntp_data->first_message && !ctx->hdrs[i]->deleted &&
-          !ctx->hdrs[i]->read)
+      last = NHDR(ctx->mailbox->hdrs[i])->article_num;
+      if (last >= nntp_data->first_message && !ctx->mailbox->hdrs[i]->deleted &&
+          !ctx->mailbox->hdrs[i]->read)
       {
         if (nntp_data->newsrc_len >= entries)
         {
@@ -373,12 +373,12 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     /* search for first read */
     else
     {
-      if (ctx->hdrs[i]->deleted || ctx->hdrs[i]->read)
+      if (ctx->mailbox->hdrs[i]->deleted || ctx->mailbox->hdrs[i]->read)
       {
         first = last + 1;
         series = true;
       }
-      last = NHDR(ctx->hdrs[i])->article_num;
+      last = NHDR(ctx->mailbox->hdrs[i])->article_num;
     }
   }
 
@@ -1327,7 +1327,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
   if (Context && Context->mailbox->data == nntp_data)
   {
     for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
-      mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 1);
+      mutt_set_flag(Context, Context->mailbox->hdrs[i], MUTT_READ, 1);
   }
   return nntp_data;
 }
@@ -1361,7 +1361,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   {
     nntp_data->unread = Context->mailbox->msg_count;
     for (unsigned int i = 0; i < Context->mailbox->msg_count; i++)
-      mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 0);
+      mutt_set_flag(Context, Context->mailbox->hdrs[i], MUTT_READ, 0);
   }
   else
   {
@@ -1393,7 +1393,7 @@ void nntp_mailbox(char *buf, size_t buflen)
       unsigned int unread = 0;
 
       for (unsigned int j = 0; j < Context->mailbox->msg_count; j++)
-        if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
+        if (!Context->mailbox->hdrs[j]->read && !Context->mailbox->hdrs[j]->deleted)
           unread++;
       if (!unread)
         continue;

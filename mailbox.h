@@ -64,6 +64,9 @@ struct Mailbox
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
 
+  struct Header **hdrs;
+  int hdrmax;               /**< number of pointers in hdrs */
+
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */
   bool newly_created;        /**< mbox or mmdf just popped into existence */

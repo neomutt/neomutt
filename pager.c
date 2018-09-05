@@ -2357,7 +2357,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
-            struct Header *h = Context->hdrs[i];
+            struct Header *h = Context->mailbox->hdrs[i];
 
             if (h && !h->read)
             {
@@ -2376,7 +2376,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
              * rd.index->current might be invalid */
             rd.index->current =
                 MIN(rd.index->current, (Context->mailbox->msg_count - 1));
-            index_hint = Context->hdrs[Context->v2r[rd.index->current]]->index;
+            index_hint = Context->mailbox->hdrs[Context->v2r[rd.index->current]]->index;
 
             bool q = Context->quiet;
             Context->quiet = true;
@@ -2389,9 +2389,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
-            if (extra->hdr != Context->hdrs[Context->v2r[rd.index->current]])
+            if (extra->hdr != Context->mailbox->hdrs[Context->v2r[rd.index->current]])
             {
-              extra->hdr = Context->hdrs[Context->v2r[rd.index->current]];
+              extra->hdr = Context->mailbox->hdrs[Context->v2r[rd.index->current]];
               break;
             }
           }

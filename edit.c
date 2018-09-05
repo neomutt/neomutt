@@ -219,7 +219,8 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       if (Attribution)
       {
         setlocale(LC_TIME, NONULL(AttributionLocale));
-        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context, Context->hdrs[n]);
+        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
+                         Context->mailbox->hdrs[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
       }
@@ -228,14 +229,14 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = mutt_str_strdup(tmp);
 
-      bytes = Context->hdrs[n]->content->length;
+      bytes = Context->mailbox->hdrs[n]->content->length;
       if (inc_hdrs)
       {
-        offset = Context->hdrs[n]->offset;
-        bytes += Context->hdrs[n]->content->offset - offset;
+        offset = Context->mailbox->hdrs[n]->offset;
+        bytes += Context->mailbox->hdrs[n]->content->offset - offset;
       }
       else
-        offset = Context->hdrs[n]->content->offset;
+        offset = Context->mailbox->hdrs[n]->content->offset;
       buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
 
       if (*bufmax == *buflen)

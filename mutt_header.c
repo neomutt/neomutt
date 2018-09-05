@@ -156,7 +156,7 @@ int mutt_label_message(struct Header *hdr)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *h = Context->hdrs[i];
+      struct Header *h = Context->mailbox->hdrs[i];
       if (label_message(Context, h, new))
       {
         changed++;

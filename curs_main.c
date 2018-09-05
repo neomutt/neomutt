@@ -161,7 +161,7 @@ static const char *NoVisible = N_("No visible messages");
     break;                                                                     \
   }
 
-#define CURHDR Context->hdrs[Context->v2r[menu->current]]
+#define CURHDR Context->mailbox->hdrs[Context->v2r[menu->current]]
 #define UNREAD(h) mutt_thread_contains_unread(Context, h)
 #define FLAGGED(h) mutt_thread_contains_flagged(Context, h)
 
@@ -197,7 +197,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   else
     final = CURHDR->virtual;
 
-  base = Context->hdrs[Context->v2r[final]];
+  base = Context->mailbox->hdrs[Context->v2r[final]];
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
   top = Context->tree;
@@ -222,7 +222,7 @@ static void collapse_all(struct Menu *menu, int toggle)
   mutt_set_virtual(Context);
   for (int j = 0; j < Context->vcount; j++)
   {
-    if (Context->hdrs[Context->v2r[j]]->index == base->index)
+    if (Context->mailbox->hdrs[Context->v2r[j]]->index == base->index)
     {
       menu->current = j;
       break;
@@ -241,7 +241,7 @@ static void collapse_all(struct Menu *menu, int toggle)
 static int ci_next_undeleted(int msgno)
 {
   for (int i = msgno + 1; i < Context->vcount; i++)
-    if (!Context->hdrs[Context->v2r[i]]->deleted)
+    if (!Context->mailbox->hdrs[Context->v2r[i]]->deleted)
       return i;
   return -1;
 }
@@ -255,7 +255,7 @@ static int ci_next_undeleted(int msgno)
 static int ci_previous_undeleted(int msgno)
 {
   for (int i = msgno - 1; i >= 0; i--)
-    if (!Context->hdrs[Context->v2r[i]]->deleted)
+    if (!Context->mailbox->hdrs[Context->v2r[i]]->deleted)
       return i;
   return -1;
 }
@@ -275,9 +275,10 @@ static int ci_first_message(void)
   int old = -1;
   for (int i = 0; i < Context->vcount; i++)
   {
-    if (!Context->hdrs[Context->v2r[i]]->read && !Context->hdrs[Context->v2r[i]]->deleted)
+    if (!Context->mailbox->hdrs[Context->v2r[i]]->read &&
+        !Context->mailbox->hdrs[Context->v2r[i]]->deleted)
     {
-      if (!Context->hdrs[Context->v2r[i]]->old)
+      if (!Context->mailbox->hdrs[Context->v2r[i]]->old)
         return i;
       else if (old == -1)
         old = i;
@@ -350,7 +351,7 @@ static void resort_index(struct Menu *menu)
 
   for (int i = 0; i < Context->vcount; i++)
   {
-    if (Context->hdrs[Context->v2r[i]] == current)
+    if (Context->mailbox->hdrs[Context->v2r[i]] == current)
     {
       menu->current = i;
       break;
@@ -381,7 +382,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
   {
     save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->mailbox->msg_count - oldcount));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
-      save_new[i - oldcount] = ctx->hdrs[i];
+      save_new[i - oldcount] = ctx->mailbox->hdrs[i];
   }
 
   /* Sort first to thread the new messages, because some patterns
@@ -399,7 +400,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       if ((check != MUTT_REOPENED) && oldcount)
         h = save_new[i - oldcount];
       else
-        h = ctx->hdrs[i];
+        h = ctx->mailbox->hdrs[i];
 
       if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, h, NULL))
       {
@@ -468,14 +469,14 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
       }
 
       if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx,
-                            ctx->hdrs[i], NULL))
+                            ctx->mailbox->hdrs[i], NULL))
       {
         assert(ctx->vcount < ctx->mailbox->msg_count);
-        ctx->hdrs[i]->virtual = ctx->vcount;
+        ctx->mailbox->hdrs[i]->virtual = ctx->vcount;
         ctx->v2r[ctx->vcount] = i;
-        ctx->hdrs[i]->limited = true;
+        ctx->mailbox->hdrs[i]->limited = true;
         ctx->vcount++;
-        struct Body *b = ctx->hdrs[i]->content;
+        struct Body *b = ctx->mailbox->hdrs[i]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
@@ -518,7 +519,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     /* restore the current message to the message it was pointing to */
     for (int i = 0; i < ctx->vcount; i++)
     {
-      if (ctx->hdrs[ctx->v2r[i]]->index == menu->oldcurrent)
+      if (ctx->mailbox->hdrs[ctx->v2r[i]]->index == menu->oldcurrent)
       {
         menu->current = i;
         break;
@@ -648,10 +649,10 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
  */
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
+  if (!Context || !menu || (num < 0) || (num >= Context->mailbox->hdrmax))
     return;
 
-  struct Header *h = Context->hdrs[Context->v2r[num]];
+  struct Header *h = Context->mailbox->hdrs[Context->v2r[num]];
   if (!h)
     return;
 
@@ -726,7 +727,7 @@ int index_color(int index_no)
   if (!Context || (index_no < 0))
     return 0;
 
-  struct Header *h = Context->hdrs[Context->v2r[index_no]];
+  struct Header *h = Context->mailbox->hdrs[Context->v2r[index_no]];
 
   if (h && h->pair)
     return h->pair;
@@ -919,7 +920,7 @@ static void index_menu_redraw(struct Menu *menu)
   }
 #endif
 
-  if (Context && Context->hdrs && !(menu->current >= Context->vcount))
+  if (Context && Context->mailbox->hdrs && !(menu->current >= Context->vcount))
   {
     menu_check_recenter(menu);
 
@@ -1072,7 +1073,7 @@ int mutt_index_menu(void)
         {
           for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
-            if (!Context->hdrs[i]->read)
+            if (!Context->mailbox->hdrs[i]->read)
             {
               mutt_message(_("New mail in this mailbox"));
               if (BeepNew)
@@ -1358,7 +1359,7 @@ int mutt_index_menu(void)
             rc2 = nntp_check_msgid(Context, buf);
             if (rc2 == 0)
             {
-              hdr = Context->hdrs[Context->mailbox->msg_count - 1];
+              hdr = Context->mailbox->hdrs[Context->mailbox->msg_count - 1];
               mutt_sort_headers(Context, false);
               menu->current = hdr->virtual;
               menu->redraw = REDRAW_FULL;
@@ -1447,9 +1448,9 @@ int mutt_index_menu(void)
             {
               for (int k = 0; k < Context->mailbox->msg_count; k++)
               {
-                if (Context->hdrs[k]->index == oldindex)
+                if (Context->mailbox->hdrs[k]->index == oldindex)
                 {
-                  menu->current = Context->hdrs[k]->virtual;
+                  menu->current = Context->mailbox->hdrs[k]->virtual;
                   /* as an added courtesy, recenter the menu
                    * with the current entry at the middle of the screen */
                   menu_check_recenter(menu);
@@ -1494,7 +1495,7 @@ int mutt_index_menu(void)
           mutt_error(_("That message is not visible"));
         else
         {
-          struct Header *hdr = Context->hdrs[i - 1];
+          struct Header *hdr = Context->mailbox->hdrs[i - 1];
 
           if (mutt_messages_in_thread(Context, hdr, 1) != 1)
           {
@@ -1623,7 +1624,7 @@ int mutt_index_menu(void)
             menu->current = -1;
             for (i = 0; i < Context->vcount; i++)
             {
-              if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
+              if (Context->mailbox->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
               {
                 menu->current = i;
                 break;
@@ -1719,7 +1720,7 @@ int mutt_index_menu(void)
         {
           for (j = 0; j < Context->mailbox->msg_count; j++)
             if (message_is_visible(Context, j))
-              mutt_set_flag(Context, Context->hdrs[j], MUTT_TAG, 0);
+              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_TAG, 0);
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
@@ -1840,7 +1841,7 @@ int mutt_index_menu(void)
             if (newidx < 0)
               newidx = ci_previous_undeleted(menu->current);
             if (newidx >= 0)
-              newhdr = Context->hdrs[Context->v2r[newidx]];
+              newhdr = Context->mailbox->hdrs[Context->v2r[newidx]];
           }
 
           check = mx_mbox_sync(Context, &index_hint);
@@ -1850,7 +1851,7 @@ int mutt_index_menu(void)
             {
               for (j = 0; j < Context->vcount; j++)
               {
-                if (Context->hdrs[Context->v2r[j]] == newhdr)
+                if (Context->mailbox->hdrs[Context->v2r[j]] == newhdr)
                 {
                   menu->current = j;
                   break;
@@ -1891,7 +1892,7 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              Context->hdrs[j]->quasi_deleted = true;
+              Context->mailbox->hdrs[j]->quasi_deleted = true;
               Context->changed = true;
             }
           }
@@ -1990,15 +1991,16 @@ int mutt_index_menu(void)
 
             if (!Context->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context, Context->hdrs[j], buf);
+            mx_tags_commit(Context, Context->mailbox->hdrs[j], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
 #ifdef USE_NOTMUCH
               if (Context->mailbox->magic == MUTT_NOTMUCH)
-                still_queried = nm_message_is_still_queried(Context, Context->hdrs[j]);
+                still_queried =
+                    nm_message_is_still_queried(Context, Context->mailbox->hdrs[j]);
 #endif
-              Context->hdrs[j]->quasi_deleted = !still_queried;
+              Context->mailbox->hdrs[j]->quasi_deleted = !still_queried;
               Context->changed = true;
             }
           }
@@ -2265,7 +2267,7 @@ int mutt_index_menu(void)
         {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         }
-        int hint = Context->hdrs[Context->v2r[menu->current]]->index;
+        int hint = Context->mailbox->hdrs[Context->v2r[menu->current]]->index;
 
         /* If we are returning to the pager via an index menu redirection, we
          * need to reset the menu->menu.  Otherwise mutt_menu_pop_current() will
@@ -2568,7 +2570,7 @@ int mutt_index_menu(void)
             }
           }
 
-          struct Header *h = Context->hdrs[Context->v2r[i]];
+          struct Header *h = Context->mailbox->hdrs[Context->v2r[i]];
           if (h->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
           {
             if (UNREAD(h) && first_unread == -1)
@@ -2661,8 +2663,8 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              mutt_set_flag(Context, Context->hdrs[j], MUTT_FLAG,
-                            !Context->hdrs[j]->flagged);
+              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_FLAG,
+                            !Context->mailbox->hdrs[j]->flagged);
             }
           }
 
@@ -2703,10 +2705,10 @@ int mutt_index_menu(void)
             if (!message_is_tagged(Context, j))
               continue;
 
-            if (Context->hdrs[j]->read || Context->hdrs[j]->old)
-              mutt_set_flag(Context, Context->hdrs[j], MUTT_NEW, 1);
+            if (Context->mailbox->hdrs[j]->read || Context->mailbox->hdrs[j]->old)
+              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_NEW, 1);
             else
-              mutt_set_flag(Context, Context->hdrs[j], MUTT_READ, 1);
+              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_READ, 1);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
@@ -3277,7 +3279,7 @@ int mutt_index_menu(void)
           for (j = 0; j < Context->mailbox->msg_count; j++)
           {
             if (message_is_tagged(Context, j))
-              mutt_resend_message(NULL, Context, Context->hdrs[j]);
+              mutt_resend_message(NULL, Context, Context->mailbox->hdrs[j]);
           }
         }
         else
@@ -3533,7 +3535,7 @@ bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
   {
-    struct Envelope *e = Context->hdrs[i]->env;
+    struct Envelope *e = Context->mailbox->hdrs[i]->env;
     if (!e || !e->subject)
       continue;
 
