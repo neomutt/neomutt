@@ -30,20 +30,25 @@
 
 /**
  * enum AclRights - ACL Rights
+ *
+ * These permissions come from the 'MYRIGHTS' command from RFC4314.
+ * The quoted letter is the code returned by the server.
+ *
+ * These show permission to...
  */
 enum AclRights
 {
-  MUTT_ACL_LOOKUP = 0,
-  MUTT_ACL_READ,
-  MUTT_ACL_SEEN,
-  MUTT_ACL_WRITE,
-  MUTT_ACL_INSERT,
-  MUTT_ACL_POST,
-  MUTT_ACL_CREATE,
-  MUTT_ACL_DELMX,
-  MUTT_ACL_DELETE,
-  MUTT_ACL_EXPUNGE,
-  MUTT_ACL_ADMIN,
+  MUTT_ACL_ADMIN = 0, ///< 'a' administer the account (get/set permissions)
+  MUTT_ACL_CREATE,    ///< 'k' create a mailbox
+  MUTT_ACL_DELETE,    ///< 't' delete a message
+  MUTT_ACL_DELMX,     ///< 'x' delete a mailbox
+  MUTT_ACL_EXPUNGE,   ///< 'e' expunge messages
+  MUTT_ACL_INSERT,    ///< 'i' add/copy into the mailbox (used when editing a message)
+  MUTT_ACL_LOOKUP,    ///< 'l' lookup mailbox (visible to 'list')
+  MUTT_ACL_POST,      ///< 'p' post (submit messages to the server)
+  MUTT_ACL_READ,      ///< 'r' read the mailbox
+  MUTT_ACL_SEEN,      ///< 's' change the 'seen' status of a message
+  MUTT_ACL_WRITE,     ///< 'w' write to a message (for flagging, or linking threads)
 
   RIGHTSMAX
 };
