@@ -351,7 +351,7 @@ static int pop_fetch_headers(struct Context *ctx)
     }
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     mutt_progress_init(&progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
@@ -379,7 +379,7 @@ static int pop_fetch_headers(struct Context *ctx)
     bool hcached = false;
     for (i = old_count; i < new_count; i++)
     {
-      if (!ctx->quiet)
+      if (!ctx->mailbox->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
       void *data = mutt_hcache_fetch(hc, ctx->mailbox->hdrs[i]->data,
@@ -532,7 +532,7 @@ static int pop_mbox_open(struct Context *ctx)
     if (pop_reconnect(ctx) < 0)
       return -1;
 
-    ctx->size = pop_data->size;
+    ctx->mailbox->size = pop_data->size;
 
     mutt_message(_("Fetching list of messages..."));
 
@@ -799,7 +799,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
       if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->refno != -1)
       {
         j++;
-        if (!ctx->quiet)
+        if (!ctx->mailbox->quiet)
           mutt_progress_update(&progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->mailbox->hdrs[i]->refno);
         ret = pop_query(pop_data, buf, sizeof(buf));
@@ -870,7 +870,7 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
   if (pop_open_connection(pop_data) < 0)
     return -1;
 
-  ctx->size = pop_data->size;
+  ctx->mailbox->size = pop_data->size;
 
   mutt_message(_("Checking for new messages..."));
 

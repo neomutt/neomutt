@@ -61,7 +61,6 @@ struct Context
   FILE *fp;
   struct timespec atime;
   struct timespec mtime;
-  off_t size;
   off_t vsize;
   char *pattern;                 /**< limit pattern string */
   struct Pattern *limit_pattern; /**< compiled limit pattern */
@@ -83,13 +82,9 @@ struct Context
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
   bool locked : 1;    /**< is the mailbox locked? */
-  bool changed : 1;   /**< mailbox has been modified */
-  bool readonly : 1;  /**< don't allow changes to the mailbox */
   bool dontwrite : 1; /**< don't write the mailbox on close */
   bool append : 1;    /**< mailbox is opened in append mode */
-  bool quiet : 1;     /**< inhibit status messages? */
   bool collapsed : 1; /**< are all threads collapsed? */
-  bool closing : 1;   /**< mailbox is being closed */
   bool peekonly : 1;  /**< just taking a glance, revert atime */
 
 #ifdef USE_COMPRESSED

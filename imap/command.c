@@ -1319,7 +1319,7 @@ void imap_cmd_finish(struct ImapData *idata)
     return;
   }
 
-  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->closing)
+  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->mailbox->closing)
     return;
 
   if (idata->reopen & IMAP_REOPEN_ALLOW)

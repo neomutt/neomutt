@@ -754,7 +754,7 @@ static int read_headers_normal_eval_cache(struct ImapData *idata,
                             mutt_str_strdup(h.data->flags_remote));
 
         ctx->mailbox->msg_count++;
-        ctx->size += ctx->mailbox->hdrs[idx]->content->length;
+        ctx->mailbox->size += ctx->mailbox->hdrs[idx]->content->length;
 
         /* If this is the first time we are fetching, we need to
          * store the current state of flags back into the header cache */
@@ -832,7 +832,7 @@ static int read_headers_qresync_eval_cache(struct ImapData *idata, char *uid_seq
       ihd->uid = uid;
       mutt_hash_int_insert(idata->uid_hash, uid, h);
 
-      ctx->size += h->content->length;
+      ctx->mailbox->size += h->content->length;
       ctx->mailbox->hdrs[ctx->mailbox->msg_count++] = h;
 
       msn++;
@@ -910,7 +910,7 @@ static int read_headers_condstore_qresync_updates(struct ImapData *idata,
   /* The IMAP flag setting as part of cmd_parse_fetch() ends up
    * flipping these on. */
   idata->check_status &= ~IMAP_FLAGS_PENDING;
-  ctx->changed = false;
+  ctx->mailbox->changed = false;
 
   /* VANISHED handling: we need to empty out the messages */
   if (idata->reopen & IMAP_EXPUNGE_PENDING)
@@ -1087,7 +1087,7 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
             mutt_rfc822_read_header(fp, ctx->mailbox->hdrs[idx], false, false);
         /* content built as a side-effect of mutt_rfc822_read_header */
         ctx->mailbox->hdrs[idx]->content->length = h.content_length;
-        ctx->size += h.content_length;
+        ctx->mailbox->size += h.content_length;
 
 #ifdef USE_HCACHE
         imap_hcache_put(idata, ctx->mailbox->hdrs[idx]);
@@ -2001,8 +2001,8 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
    * read-write even if it's read-only, so *server* updates of
    * flags can be processed by mutt_set_flag. ctx->changed must
    * be restored afterwards */
-  readonly = ctx->readonly;
-  ctx->readonly = false;
+  readonly = ctx->mailbox->readonly;
+  ctx->mailbox->readonly = false;
 
   /* This is redundant with the following two checks. Removing:
    * mutt_set_flag (ctx, h, MUTT_NEW, !(hd->read || hd->old));
@@ -2022,8 +2022,8 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
    * marks things changed as a side-effect) */
   if (!local_changes)
     h->changed = false;
-  ctx->changed &= !readonly;
-  ctx->readonly = readonly;
+  ctx->mailbox->changed &= !readonly;
+  ctx->mailbox->readonly = readonly;
 
   return s;
 }

@@ -429,7 +429,7 @@ void pop_logout(struct Context *ctx)
     char buf[LONG_STRING];
     mutt_message(_("Closing connection to POP server..."));
 
-    if (ctx->readonly)
+    if (ctx->mailbox->readonly)
     {
       mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
       ret = pop_query(pop_data, buf, sizeof(buf));

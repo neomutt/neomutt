@@ -169,10 +169,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->mailbox->size : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->size)
+      else if (!Context || !Context->mailbox->size)
         optional = 0;
       break;
 
@@ -268,9 +268,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         i = OptAttachMsg ?
                 3 :
-                ((Context->readonly || Context->dontwrite) ?
+                ((Context->mailbox->readonly || Context->dontwrite) ?
                      2 :
-                     (Context->changed ||
+                     (Context->mailbox->changed ||
                       /* deleted doesn't necessarily mean changed in IMAP */
                       (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
                      1 :

@@ -77,6 +77,11 @@ struct Mailbox
   void *data; /**< driver specific data */
   const struct MxOps *mx_ops;
 
+  bool changed : 1;   /**< mailbox has been modified */
+  bool readonly : 1;  /**< don't allow changes to the mailbox */
+  bool quiet : 1;     /**< inhibit status messages? */
+  bool closing : 1;   /**< mailbox is being closed */
+
   int flags; /**< e.g. #MB_NORMAL */
 };
 

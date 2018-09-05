@@ -990,7 +990,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
     if (count)
     {
       (*count)++;
-      if (!ctx->quiet && progress)
+      if (!ctx->mailbox->quiet && progress)
         mutt_progress_update(progress, *count, -1);
     }
 
@@ -1045,8 +1045,8 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 
       ctx->mailbox->hdrs[ctx->mailbox->msg_count] = md->h;
       ctx->mailbox->hdrs[ctx->mailbox->msg_count]->index = ctx->mailbox->msg_count;
-      ctx->size += md->h->content->length + md->h->content->offset -
-                   md->h->content->hdr_offset;
+      ctx->mailbox->size += md->h->content->length + md->h->content->offset -
+                            md->h->content->hdr_offset;
 
       md->h = NULL;
       ctx->mailbox->msg_count++;
@@ -1325,7 +1325,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       continue;
     }
 
-    if (!ctx->quiet && progress)
+    if (!ctx->mailbox->quiet && progress)
       mutt_progress_update(progress, count, -1);
 
     if (!sort)
@@ -1442,7 +1442,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   char msgbuf[STRING];
   struct Progress progress;
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Scanning %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
@@ -1462,7 +1462,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   if (maildir_parse_dir(ctx, &last, subdir, &count, &progress) == -1)
     return -1;
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, count);
@@ -2633,7 +2633,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
     hc = mutt_hcache_open(HeaderCache, ctx->mailbox->path, NULL);
 #endif
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
@@ -2642,7 +2642,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 
   for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    if (!ctx->quiet)
+    if (!ctx->mailbox->quiet)
       mutt_progress_update(&progress, i, -1);
 
 #ifdef USE_HCACHE
@@ -2700,7 +2700,7 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
   /* save the global state here so we can reset it at the
    * end of list block if required.
    */
-  bool context_changed = ctx->changed;
+  bool context_changed = ctx->mailbox->changed;
   bool header_changed;
 
   /* user didn't modify this message.  alter the flags to match the
@@ -2730,7 +2730,7 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
    * be synchronized.
    */
   if (!context_changed)
-    ctx->changed = false;
+    ctx->mailbox->changed = false;
 
   return header_changed;
 }

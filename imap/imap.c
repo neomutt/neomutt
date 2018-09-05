@@ -853,7 +853,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
       mutt_debug(2, "Expunging message UID %u.\n", HEADER_DATA(h)->uid);
 
       h->active = false;
-      idata->ctx->size -= h->content->length;
+      idata->ctx->mailbox->size -= h->content->length;
 
       imap_cache_del(idata, h);
 #ifdef USE_HCACHE
@@ -2082,7 +2082,7 @@ static int imap_mbox_open(struct Context *ctx)
     condstore = "";
 
   snprintf(bufout, sizeof(bufout), "%s %s%s",
-           ctx->readonly ? "EXAMINE" : "SELECT", buf, condstore);
+           ctx->mailbox->readonly ? "EXAMINE" : "SELECT", buf, condstore);
 
   idata->state = IMAP_SELECTED;
 
@@ -2185,7 +2185,7 @@ static int imap_mbox_open(struct Context *ctx)
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
-    ctx->readonly = true;
+    ctx->mailbox->readonly = true;
   }
 
   /* dump the mailbox flags we've found */
@@ -2213,7 +2213,7 @@ static int imap_mbox_open(struct Context *ctx)
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_INSERT)))
   {
-    ctx->readonly = true;
+    ctx->mailbox->readonly = true;
   }
 
   ctx->mailbox->hdrmax = count;
@@ -2527,7 +2527,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
 
   if (rc < 0)
   {
-    if (ctx->closing)
+    if (ctx->mailbox->closing)
     {
       if (mutt_yesorno(_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
       {
@@ -2554,10 +2554,10 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     HEADER_DATA(ctx->mailbox->hdrs[i])->replied = ctx->mailbox->hdrs[i]->replied;
     ctx->mailbox->hdrs[i]->changed = false;
   }
-  ctx->changed = false;
+  ctx->mailbox->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
-  if (expunge && !(ctx->closing) && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+  if (expunge && !(ctx->mailbox->closing) && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
@@ -2572,7 +2572,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     idata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
   }
 
-  if (expunge && ctx->closing)
+  if (expunge && ctx->mailbox->closing)
   {
     imap_exec(idata, "CLOSE", IMAP_CMD_QUEUE);
     idata->state = IMAP_AUTHENTICATED;

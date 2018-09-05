@@ -137,7 +137,7 @@ static const char *NoVisible = N_("No visible messages");
   }
 
 #define CHECK_READONLY                                                         \
-  if (Context->readonly)                                                       \
+  if (Context->mailbox->readonly)                                              \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -317,7 +317,7 @@ static int mx_toggle_write(struct Context *ctx)
   if (!ctx)
     return -1;
 
-  if (ctx->readonly)
+  if (ctx->mailbox->readonly)
   {
     mutt_error(_("Cannot toggle write on a readonly mailbox"));
     return -1;
@@ -1095,10 +1095,10 @@ int mutt_index_menu(void)
         /* avoid the message being overwritten by mailbox */
         do_mailbox_notify = false;
 
-        bool q = Context->quiet;
-        Context->quiet = true;
+        bool q = Context->mailbox->quiet;
+        Context->mailbox->quiet = true;
         update_index(menu, Context, check, oldcount, index_hint);
-        Context->quiet = q;
+        Context->mailbox->quiet = q;
 
         menu->redraw = REDRAW_FULL;
         menu->max = Context->vcount;
@@ -1421,12 +1421,12 @@ int mutt_index_menu(void)
           {
             struct Header *oldcur = CURHDR;
             struct Header *hdr = NULL;
-            bool quiet = Context->quiet;
+            bool quiet = Context->mailbox->quiet;
 
             if (rc2 < 0)
-              Context->quiet = true;
+              Context->mailbox->quiet = true;
             mutt_sort_headers(Context, (op == OP_RECONSTRUCT_THREAD));
-            Context->quiet = quiet;
+            Context->mailbox->quiet = quiet;
 
             /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
                update the index */
@@ -1557,7 +1557,24 @@ int mutt_index_menu(void)
           break;
         }
 
-        log_queue_save(fp);
+        // log_queue_save(fp);
+
+        fprintf(fp, "path:     %s\n", Context->mailbox->path);
+        // fprintf(fp, "realpath: %s\n", Context->realpath);
+        fprintf(fp, "mailbox->size:     %ld\n", Context->mailbox->size);
+        fprintf(fp, "vsize:    %ld\n", Context->vsize);
+        fprintf(fp, "\n");
+
+        struct MailboxNode *np = NULL;
+        STAILQ_FOREACH(np, &AllMailboxes, entries)
+        {
+          fprintf(fp, "path:     %s\n", np->b->path);
+          fprintf(fp, "size:     %ld\n", np->b->size);
+          // fprintf(fp, "realpath: %s\n", np->b->realpath);
+          // fprintf(fp, "desc:     %s\n", np->b->desc);
+          fprintf(fp, "\n");
+        }
+
         mutt_file_fclose(&fp);
 
         mutt_do_pager("messages", tempfile, MUTT_PAGER_LOGS, NULL);
@@ -1893,14 +1910,14 @@ int mutt_index_menu(void)
             if (message_is_tagged(Context, j))
             {
               Context->mailbox->hdrs[j]->quasi_deleted = true;
-              Context->changed = true;
+              Context->mailbox->changed = true;
             }
           }
         }
         else
         {
           CURHDR->quasi_deleted = true;
-          Context->changed = true;
+          Context->mailbox->changed = true;
         }
         break;
 
@@ -1973,7 +1990,7 @@ int mutt_index_menu(void)
           struct Progress progress;
           int px;
 
-          if (!Context->quiet)
+          if (!Context->mailbox->quiet)
           {
             char msgbuf[STRING];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
@@ -1989,7 +2006,7 @@ int mutt_index_menu(void)
             if (!message_is_tagged(Context, j))
               continue;
 
-            if (!Context->quiet)
+            if (!Context->mailbox->quiet)
               mutt_progress_update(&progress, ++px, -1);
             mx_tags_commit(Context, Context->mailbox->hdrs[j], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
@@ -2001,7 +2018,7 @@ int mutt_index_menu(void)
                     nm_message_is_still_queried(Context, Context->mailbox->hdrs[j]);
 #endif
               Context->mailbox->hdrs[j]->quasi_deleted = !still_queried;
-              Context->changed = true;
+              Context->mailbox->changed = true;
             }
           }
 #ifdef USE_NOTMUCH
@@ -2025,7 +2042,7 @@ int mutt_index_menu(void)
               still_queried = nm_message_is_still_queried(Context, CURHDR);
 #endif
             CURHDR->quasi_deleted = !still_queried;
-            Context->changed = true;
+            Context->mailbox->changed = true;
           }
           if (menu->menu == MENU_PAGER)
           {
@@ -2332,7 +2349,7 @@ int mutt_index_menu(void)
             menu->current = oldcur->virtual;
           }
 
-          Context->changed = true;
+          Context->mailbox->changed = true;
           mutt_message(_("Thread broken"));
 
           if (menu->menu == MENU_PAGER)
@@ -2374,7 +2391,7 @@ int mutt_index_menu(void)
             mutt_sort_headers(Context, true);
             menu->current = oldcur->virtual;
 
-            Context->changed = true;
+            Context->mailbox->changed = true;
             mutt_message(_("Threads linked"));
           }
           else
@@ -3029,7 +3046,8 @@ int mutt_index_menu(void)
           edit = true;
         }
         else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
-          edit = !Context->readonly && mutt_bit_isset(Context->rights, MUTT_ACL_INSERT);
+          edit = !Context->mailbox->readonly &&
+                 mutt_bit_isset(Context->rights, MUTT_ACL_INSERT);
         else
           edit = false;
 
@@ -3084,7 +3102,7 @@ int mutt_index_menu(void)
         rc = mutt_label_message(tag ? NULL : CURHDR);
         if (rc > 0)
         {
-          Context->changed = true;
+          Context->mailbox->changed = true;
           menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
            * messages is edited. */
@@ -3439,7 +3457,7 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         mutt_view_attachments(CURHDR);
         if (Context && CURHDR->attach_del)
-          Context->changed = true;
+          Context->mailbox->changed = true;
         menu->redraw = REDRAW_FULL;
         break;
 

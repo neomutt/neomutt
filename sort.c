@@ -372,7 +372,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     return; /* nothing to do! */
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
     mutt_message(_("Sorting mailbox..."));
 
   if (OptNeedRescore && Score)
@@ -447,6 +447,6 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     mutt_set_virtual(ctx);
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
     mutt_clear_error();
 }

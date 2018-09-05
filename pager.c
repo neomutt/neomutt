@@ -112,7 +112,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_READONLY                                                         \
-  if (!Context || Context->readonly)                                           \
+  if (!Context || Context->mailbox->readonly)                                  \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -2378,10 +2378,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                 MIN(rd.index->current, (Context->mailbox->msg_count - 1));
             index_hint = Context->mailbox->hdrs[Context->v2r[rd.index->current]]->index;
 
-            bool q = Context->quiet;
-            Context->quiet = true;
+            bool q = Context->mailbox->quiet;
+            Context->mailbox->quiet = true;
             update_index(rd.index, Context, check, oldcount, index_hint);
-            Context->quiet = q;
+            Context->mailbox->quiet = q;
 
             rd.index->max = Context->vcount;
 
@@ -3354,7 +3354,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         mutt_view_attachments(extra->hdr);
         if (Context && extra->hdr->attach_del)
-          Context->changed = true;
+          Context->mailbox->changed = true;
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3375,7 +3375,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         rc = mutt_label_message(extra->hdr);
         if (rc > 0)
         {
-          Context->changed = true;
+          Context->mailbox->changed = true;
           pager_menu->redraw = REDRAW_FULL;
           mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
         }

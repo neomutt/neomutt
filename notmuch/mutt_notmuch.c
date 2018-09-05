@@ -1028,7 +1028,7 @@ static void progress_reset(struct Context *ctx)
 {
   struct NmCtxData *data = NULL;
 
-  if (ctx->quiet)
+  if (ctx->mailbox->quiet)
     return;
 
   data = get_ctxdata(ctx);
@@ -1051,7 +1051,7 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
 
-  if (ctx->quiet || !data || data->noprogress)
+  if (ctx->mailbox->quiet || !data || data->noprogress)
     return;
 
   if (!data->progress_ready && q)
@@ -1194,7 +1194,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
 
   h->active = true;
   h->index = ctx->mailbox->msg_count;
-  ctx->size += h->content->length + h->content->offset - h->content->hdr_offset;
+  ctx->mailbox->size += h->content->length + h->content->offset - h->content->hdr_offset;
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = h;
   ctx->mailbox->msg_count++;
 
@@ -2659,7 +2659,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 
   mutt_debug(1, "nm: sync start ...\n");
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     /* all is in this function so we don't use data->progress here */
     char msgbuf[PATH_MAX + 64];
@@ -2674,7 +2674,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     struct Header *h = ctx->mailbox->hdrs[i];
     struct NmHdrData *hd = h->data;
 
-    if (!ctx->quiet)
+    if (!ctx->mailbox->quiet)
       mutt_progress_update(&progress, i, -1);
 
     *old = '\0';

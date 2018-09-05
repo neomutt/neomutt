@@ -112,7 +112,7 @@ static int lock_realpath(struct Context *ctx, int excl)
   else if (excl == 0)
   {
     mutt_file_fclose(&ci->lockfp);
-    ctx->readonly = true;
+    ctx->mailbox->readonly = true;
     return 1;
   }
 
@@ -413,7 +413,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
   if (!ctx || !command || !progress)
     return 0;
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     mutt_message(progress, ctx->mailbox->realpath);
   }
@@ -455,7 +455,7 @@ static int comp_mbox_open(struct Context *ctx)
 
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->close || (access(ctx->mailbox->path, W_OK) != 0))
-    ctx->readonly = true;
+    ctx->mailbox->readonly = true;
 
   if (setup_paths(ctx) != 0)
     goto or_fail;
