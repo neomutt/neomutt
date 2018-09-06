@@ -85,15 +85,15 @@ struct ImapMbox
 
 /* imap.c */
 int imap_access(const char *path);
-int imap_check_mailbox(struct Context *ctx, bool force);
-int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
+int imap_check_mailbox(struct Mailbox *mailbox, bool force);
+int imap_delete_mailbox(struct Mailbox *mailbox, struct ImapMbox *mx);
 int imap_sync_mailbox(struct Context *ctx, bool expunge);
 int imap_mailbox_check(bool check_stats);
 int imap_status(const char *path, bool queue);
-int imap_search(struct Context *ctx, const struct Pattern *pat);
+int imap_search(struct Mailbox *mailbox, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
-int imap_fast_trash(struct Context *ctx, char *dest);
+int imap_fast_trash(struct Mailbox *mailbox, char *dest);
 int imap_path_probe(const char *path, const struct stat *st);
 
 extern struct MxOps mx_imap_ops;

@@ -398,9 +398,9 @@ static int do_search(const struct Pattern *search, int allpats)
 
 /**
  * compile_search - Convert NeoMutt pattern to IMAP search
- * @param ctx Context
- * @param pat Pattern to convert
- * @param buf Buffer for result
+ * @param mailbox Mailbox
+ * @param pat     Pattern to convert
+ * @param buf     Buffer for result
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -408,7 +408,8 @@ static int do_search(const struct Pattern *search, int allpats)
  * that require full-text search (neomutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexes).
  */
-static int compile_search(struct Context *ctx, const struct Pattern *pat, struct Buffer *buf)
+static int compile_search(struct Mailbox *mailbox, const struct Pattern *pat,
+                          struct Buffer *buf)
 {
   if (do_search(pat, 0) == 0)
     return 0;
@@ -435,7 +436,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
-          if (compile_search(ctx, clause, buf) < 0)
+          if (compile_search(mailbox, clause, buf) < 0)
             return -1;
 
           if (clauses)
@@ -488,7 +489,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
         break;
       case MUTT_SERVERSEARCH:
       {
-        struct ImapData *idata = ctx->mailbox->data;
+        struct ImapData *idata = mailbox->data;
         if (!mutt_bit_isset(idata->capabilities, X_GM_EXT1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
@@ -703,17 +704,17 @@ int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char 
 
 /**
  * imap_delete_mailbox - Delete a mailbox
- * @param ctx Context
- * @param mx  Mailbox to delete
+ * @param mailbox Mailbox
+ * @param mx      Mailbox to delete
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
+int imap_delete_mailbox(struct Mailbox *mailbox, struct ImapMbox *mx)
 {
   char buf[PATH_MAX], mbox[PATH_MAX];
   struct ImapData *idata = NULL;
 
-  if (!ctx || !ctx->mailbox->data)
+  if (!mailbox || !mailbox->data)
   {
     idata = imap_conn_find(&mx->account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
     if (!idata)
@@ -724,7 +725,7 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
   }
   else
   {
-    idata = ctx->mailbox->data;
+    idata = mailbox->data;
   }
 
   imap_munge_mbox_name(idata, mbox, sizeof(mbox), mx->mbox);
@@ -1359,16 +1360,16 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
 /**
  * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
- * @param ctx   Context
- * @param force Don't wait
+ * @param mailbox Mailbox
+ * @param force   Don't wait
  * @retval #MUTT_REOPENED  mailbox has been externally modified
  * @retval #MUTT_NEW_MAIL  new mail has arrived
  * @retval 0               no change
  * @retval -1              error
  */
-int imap_check_mailbox(struct Context *ctx, bool force)
+int imap_check_mailbox(struct Mailbox *mailbox, bool force)
 {
-  return imap_check(ctx->mailbox->data, force);
+  return imap_check(mailbox->data, force);
 }
 
 /**
@@ -1678,24 +1679,24 @@ void imap_mboxcache_free(struct ImapData *idata)
 
 /**
  * imap_search - Find a matching mailbox
- * @param ctx Context
+ * @param mailbox Mailbox
  * @param pat Pattern to match
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_search(struct Context *ctx, const struct Pattern *pat)
+int imap_search(struct Mailbox *mailbox, const struct Pattern *pat)
 {
   struct Buffer buf;
-  struct ImapData *idata = ctx->mailbox->data;
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    ctx->mailbox->hdrs[i]->matched = false;
+  struct ImapData *idata = mailbox->data;
+  for (int i = 0; i < mailbox->msg_count; i++)
+    mailbox->hdrs[i]->matched = false;
 
   if (do_search(pat, 1) == 0)
     return 0;
 
   mutt_buffer_init(&buf);
   mutt_buffer_addstr(&buf, "UID SEARCH ");
-  if (compile_search(ctx, pat, &buf) < 0)
+  if (compile_search(mailbox, pat, &buf) < 0)
   {
     FREE(&buf.data);
     return -1;
@@ -1878,13 +1879,13 @@ int imap_complete(char *buf, size_t buflen, char *path)
 
 /**
  * imap_fast_trash - Use server COPY command to copy deleted messages to trash
- * @param ctx  Context
- * @param dest Mailbox to move to
+ * @param mailbox Mailbox
+ * @param dest    Mailbox to move to
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_fast_trash(struct Context *ctx, char *dest)
+int imap_fast_trash(struct Mailbox *mailbox, char *dest)
 {
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
@@ -1895,7 +1896,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
-  struct ImapData *idata = ctx->mailbox->data;
+  struct ImapData *idata = mailbox->data;
 
   if (imap_parse_path(dest, &mx))
   {
@@ -1906,7 +1907,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   /* check that the save-to folder is in the same account */
   if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, mailbox->path);
     return 1;
   }
 
@@ -1916,12 +1917,12 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
   sync_cmd = mutt_buffer_new();
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < mailbox->msg_count; i++)
   {
-    if (ctx->mailbox->hdrs[i]->active && ctx->mailbox->hdrs[i]->changed &&
-        ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->purge)
+    if (mailbox->hdrs[i]->active && mailbox->hdrs[i]->changed &&
+        mailbox->hdrs[i]->deleted && !mailbox->hdrs[i]->purge)
     {
-      rc = imap_sync_message_for_copy(idata, ctx->mailbox->hdrs[i], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(idata, mailbox->hdrs[i], sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(1, "could not sync\n");

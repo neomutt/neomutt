@@ -2242,7 +2242,7 @@ int mutt_pattern_func(int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context, pat) < 0)
+  if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context->mailbox, pat) < 0)
     goto bail;
 #endif
 
@@ -2401,7 +2401,8 @@ int mutt_search_command(int cur, int op)
     for (int i = 0; i < Context->mailbox->msg_count; i++)
       Context->mailbox->hdrs[i]->searched = false;
 #ifdef USE_IMAP
-    if (Context->mailbox->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
+    if (Context->mailbox->magic == MUTT_IMAP &&
+        imap_search(Context->mailbox, SearchPattern) < 0)
       return -1;
 #endif
     OptSearchInvalid = false;

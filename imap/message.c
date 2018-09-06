@@ -377,23 +377,24 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 
 /**
  * msg_fetch_header - import IMAP FETCH response into an ImapHeader
- * @param ctx Context
- * @param h   ImapHeader
- * @param buf Server string containing FETCH response
- * @param fp  Connection to server
+ * @param mailbox Mailbox
+ * @param h       ImapHeader
+ * @param buf     Server string containing FETCH response
+ * @param fp      Connection to server
  * @retval  0 Success
  * @retval -1 String is not a fetch response
  * @retval -2 String is a corrupt fetch response
  *
  * Expects string beginning with * n FETCH.
  */
-static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf, FILE *fp)
+static int msg_fetch_header(struct Mailbox *mailbox, struct ImapHeader *h,
+                            char *buf, FILE *fp)
 {
   unsigned int bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
   int parse_rc;
 
-  struct ImapData *idata = ctx->mailbox->data;
+  struct ImapData *idata = mailbox->data;
 
   if (buf[0] != '*')
     return rc;
@@ -694,7 +695,7 @@ static int read_headers_normal_eval_cache(struct ImapData *idata,
       if (rc != IMAP_CMD_CONTINUE)
         break;
 
-      mfhrc = msg_fetch_header(ctx, &h, idata->buf, NULL);
+      mfhrc = msg_fetch_header(ctx->mailbox, &h, idata->buf, NULL);
       if (mfhrc < 0)
         continue;
 
@@ -1026,14 +1027,13 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
         if (rc != IMAP_CMD_CONTINUE)
           break;
 
-        mfhrc = msg_fetch_header(ctx, &h, idata->buf, fp);
+        mfhrc = msg_fetch_header(ctx->mailbox, &h, idata->buf, fp);
         if (mfhrc < 0)
           continue;
 
         if (!ftello(fp))
         {
-          mutt_debug(
-              2, "msg_fetch_header: ignoring fetch response with no body\n");
+          mutt_debug(2, "ignoring fetch response with no body\n");
           continue;
         }
 

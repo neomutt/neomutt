@@ -473,7 +473,7 @@ static int trash_append(struct Context *ctx)
 #ifdef USE_IMAP
   if (Context->mailbox->magic == MUTT_IMAP && (imap_path_probe(Trash, NULL) == MUTT_IMAP))
   {
-    if (imap_fast_trash(Context, Trash) == 0)
+    if (imap_fast_trash(Context->mailbox, Trash) == 0)
       return 0;
   }
 #endif

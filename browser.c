@@ -1804,7 +1804,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), mx.mbox);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (imap_delete_mailbox(Context, &mx) == 0)
+            if (imap_delete_mailbox(Context->mailbox, &mx) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&((state.entry)[nentry].name));
