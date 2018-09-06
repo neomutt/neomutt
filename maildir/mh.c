@@ -114,12 +114,12 @@ struct MhData
 
 /**
  * mh_data - Extract the MhData from the mailbox
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @retval ptr MhData
  */
-static inline struct MhData *mh_data(struct Context *ctx)
+static inline struct MhData *mh_data(struct Mailbox *mailbox)
 {
-  return ctx->mailbox->data;
+  return mailbox->data;
 }
 
 /**
@@ -268,20 +268,20 @@ out:
 
 /**
  * mh_umask - Create a umask from the mailbox directory
- * @param ctx Mailbox
- * @retval num Umask
+ * @param  mailbox Mailbox
+ * @retval num     Umask
  */
-static inline mode_t mh_umask(struct Context *ctx)
+static inline mode_t mh_umask(struct Mailbox *mailbox)
 {
   struct stat st;
-  struct MhData *data = mh_data(ctx);
+  struct MhData *data = mh_data(mailbox);
 
   if (data && data->mh_umask)
     return data->mh_umask;
 
-  if (stat(ctx->mailbox->path, &st))
+  if (stat(mailbox->path, &st))
   {
-    mutt_debug(1, "stat failed on %s\n", ctx->mailbox->path);
+    mutt_debug(1, "stat failed on %s\n", mailbox->path);
     return 077;
   }
 
@@ -445,7 +445,7 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   char path[PATH_MAX];
   mode_t omask;
 
-  omask = umask(mh_umask(dest));
+  omask = umask(mh_umask(dest->mailbox));
   while (true)
   {
     snprintf(path, sizeof(path), "%s/.neomutt-%s-%d-%" PRIu64, dest->mailbox->path,
@@ -850,7 +850,7 @@ static void maildir_update_mtime(struct Context *ctx)
 {
   char buf[PATH_MAX];
   struct stat st;
-  struct MhData *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx->mailbox);
 
   if (ctx->mailbox->magic == MUTT_MAILDIR)
   {
@@ -940,7 +940,7 @@ struct Header *maildir_parse_message(enum MailboxType magic, const char *fname,
 
 /**
  * maildir_parse_dir - Read a Maildir mailbox
- * @param ctx      Mailbox
+ * @param mailbox  Mailbox
  * @param last     Last Maildir
  * @param subdir   Subdirectory, e.g. 'new'
  * @param count    Counter for the progress bar
@@ -949,7 +949,7 @@ struct Header *maildir_parse_message(enum MailboxType magic, const char *fname,
  * @retval -1 Error
  * @retval -2 Aborted
  */
-static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
+static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
                              const char *subdir, int *count, struct Progress *progress)
 {
   DIR *dirp = NULL;
@@ -961,11 +961,11 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 
   if (subdir)
   {
-    snprintf(buf, sizeof(buf), "%s/%s", ctx->mailbox->path, subdir);
+    snprintf(buf, sizeof(buf), "%s/%s", mailbox->path, subdir);
     is_old = MarkOld ? (mutt_str_strcmp("cur", subdir) == 0) : false;
   }
   else
-    mutt_str_strfcpy(buf, ctx->mailbox->path, sizeof(buf));
+    mutt_str_strfcpy(buf, mailbox->path, sizeof(buf));
 
   dirp = opendir(buf);
   if (!dirp)
@@ -973,8 +973,8 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 
   while (((de = readdir(dirp))) && (SigInt != 1))
   {
-    if ((ctx->mailbox->magic == MUTT_MH && !mh_valid_message(de->d_name)) ||
-        (ctx->mailbox->magic == MUTT_MAILDIR && *de->d_name == '.'))
+    if (((mailbox->magic == MUTT_MH) && !mh_valid_message(de->d_name)) ||
+        ((mailbox->magic == MUTT_MAILDIR) && (*de->d_name == '.')))
     {
       continue;
     }
@@ -984,13 +984,13 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 
     h = mutt_header_new();
     h->old = is_old;
-    if (ctx->mailbox->magic == MUTT_MAILDIR)
+    if (mailbox->magic == MUTT_MAILDIR)
       maildir_parse_flags(h, de->d_name);
 
     if (count)
     {
       (*count)++;
-      if (!ctx->mailbox->quiet && progress)
+      if (!mailbox->quiet && progress)
         mutt_progress_update(progress, *count, -1);
     }
 
@@ -1255,16 +1255,16 @@ static struct Maildir *maildir_sort(struct Maildir *list, size_t len,
 
 /**
  * mh_sort_natural - Sort a Maildir list into its natural order
- * @param ctx Mailbox
- * @param md  Maildir list to sort
+ * @param mailbox Mailbox
+ * @param md      Maildir list to sort
  *
  * Currently only defined for MH where files are numbered.
  */
-static void mh_sort_natural(struct Context *ctx, struct Maildir **md)
+static void mh_sort_natural(struct Mailbox *mailbox, struct Maildir **md)
 {
-  if (!ctx || !md || !*md || ctx->mailbox->magic != MUTT_MH || Sort != SORT_ORDER)
+  if (!mailbox || !md || !*md || (mailbox->magic != MUTT_MH) || (Sort != SORT_ORDER))
     return;
-  mutt_debug(4, "maildir: sorting %s into natural order\n", ctx->mailbox->path);
+  mutt_debug(4, "maildir: sorting %s into natural order\n", mailbox->path);
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
 }
 
@@ -1295,11 +1295,11 @@ static struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
 
 /**
  * maildir_delayed_parsing - This function does the second parsing pass
- * @param ctx      Mailbox
+ * @param mailbox  Mailbox
  * @param md       Maildir to parse
  * @param progress Progress bar
  */
-static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
+static void maildir_delayed_parsing(struct Mailbox *mailbox, struct Maildir **md,
                                     struct Progress *progress)
 {
   struct Maildir *p, *last = NULL;
@@ -1314,7 +1314,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
 #endif
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = mutt_hcache_open(HeaderCache, ctx->mailbox->path, NULL);
+  header_cache_t *hc = mutt_hcache_open(HeaderCache, mailbox->path, NULL);
 #endif
 
   for (p = *md, count = 0; p; p = p->next, count++)
@@ -1325,12 +1325,12 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       continue;
     }
 
-    if (!ctx->mailbox->quiet && progress)
+    if (!mailbox->quiet && progress)
       mutt_progress_update(progress, count, -1);
 
     if (!sort)
     {
-      mutt_debug(4, "maildir: need to sort %s by inode\n", ctx->mailbox->path);
+      mutt_debug(4, "maildir: need to sort %s by inode\n", mailbox->path);
       p = maildir_sort(p, (size_t) -1, md_cmp_inode);
       if (!last)
         *md = p;
@@ -1338,10 +1338,10 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
         last->next = p;
       sort = 1;
       p = skip_duplicates(p, &last);
-      snprintf(fn, sizeof(fn), "%s/%s", ctx->mailbox->path, p->h->path);
+      snprintf(fn, sizeof(fn), "%s/%s", mailbox->path, p->h->path);
     }
 
-    snprintf(fn, sizeof(fn), "%s/%s", ctx->mailbox->path, p->h->path);
+    snprintf(fn, sizeof(fn), "%s/%s", mailbox->path, p->h->path);
 
 #ifdef USE_HCACHE
     if (MaildirHeaderCacheVerify)
@@ -1354,7 +1354,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       ret = 0;
     }
 
-    if (ctx->mailbox->magic == MUTT_MH)
+    if (mailbox->magic == MUTT_MH)
     {
       key = p->h->path;
       keylen = strlen(key);
@@ -1374,18 +1374,18 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       h->path = mutt_str_strdup(p->h->path);
       mutt_header_free(&p->h);
       p->h = h;
-      if (ctx->mailbox->magic == MUTT_MAILDIR)
+      if (mailbox->magic == MUTT_MAILDIR)
         maildir_parse_flags(p->h, fn);
     }
     else
     {
 #endif
 
-      if (maildir_parse_message(ctx->mailbox->magic, fn, p->h->old, p->h))
+      if (maildir_parse_message(mailbox->magic, fn, p->h->old, p->h))
       {
         p->header_parsed = 1;
 #ifdef USE_HCACHE
-        if (ctx->mailbox->magic == MUTT_MH)
+        if (mailbox->magic == MUTT_MH)
         {
           key = p->h->path;
           keylen = strlen(key);
@@ -1410,7 +1410,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
   mutt_hcache_close(hc);
 #endif
 
-  mh_sort_natural(ctx, md);
+  mh_sort_natural(mailbox, md);
 }
 
 /**
@@ -1452,14 +1452,14 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   {
     ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MhData));
   }
-  data = mh_data(ctx);
+  data = mh_data(ctx->mailbox);
 
   maildir_update_mtime(ctx);
 
   md = NULL;
   last = &md;
   count = 0;
-  if (maildir_parse_dir(ctx, &last, subdir, &count, &progress) == -1)
+  if (maildir_parse_dir(ctx->mailbox, &last, subdir, &count, &progress) == -1)
     return -1;
 
   if (!ctx->mailbox->quiet)
@@ -1467,7 +1467,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, count);
   }
-  maildir_delayed_parsing(ctx, &md, &progress);
+  maildir_delayed_parsing(ctx->mailbox, &md, &progress);
 
   if (ctx->mailbox->magic == MUTT_MH)
   {
@@ -1483,7 +1483,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   maildir_move_to_context(ctx, &md);
 
   if (!data->mh_umask)
-    data->mh_umask = mh_umask(ctx);
+    data->mh_umask = mh_umask(ctx->mailbox);
 
   return 0;
 }
@@ -1751,7 +1751,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
   else
     mutt_str_strfcpy(subdir, "new", sizeof(subdir));
 
-  omask = umask(mh_umask(ctx));
+  omask = umask(mh_umask(ctx->mailbox));
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
@@ -2329,7 +2329,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   int count = 0;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */
-  struct MhData *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx->mailbox);
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
   if (!CheckNew)
@@ -2374,9 +2374,9 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   md = NULL;
   last = &md;
   if (changed & 1)
-    maildir_parse_dir(ctx, &last, "new", &count, NULL);
+    maildir_parse_dir(ctx->mailbox, &last, "new", &count, NULL);
   if (changed & 2)
-    maildir_parse_dir(ctx, &last, "cur", &count, NULL);
+    maildir_parse_dir(ctx->mailbox, &last, "cur", &count, NULL);
 
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
@@ -2459,7 +2459,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
     maildir_update_tables(ctx, index_hint);
 
   /* do any delayed parsing we need to do. */
-  maildir_delayed_parsing(ctx, &md, NULL);
+  maildir_delayed_parsing(ctx->mailbox, &md, NULL);
 
   /* Incorporate new messages */
   have_new = maildir_move_to_context(ctx, &md);
@@ -2494,7 +2494,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   int count = 0;
   struct Hash *fnames = NULL;
   int i;
-  struct MhData *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx->mailbox);
 
   if (!CheckNew)
     return 0;
@@ -2551,8 +2551,8 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   md = NULL;
   last = &md;
 
-  maildir_parse_dir(ctx, &last, NULL, &count, NULL);
-  maildir_delayed_parsing(ctx, &md, NULL);
+  maildir_parse_dir(ctx->mailbox, &last, NULL, &count, NULL);
+  maildir_delayed_parsing(ctx->mailbox, &md, NULL);
 
   if (mh_read_sequences(&mhs, ctx->mailbox->path) < 0)
     return -1;
