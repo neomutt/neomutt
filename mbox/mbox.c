@@ -931,35 +931,35 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
 /**
  * mbox_has_new - Does the mailbox have new mail
- * @param ctx Context
+ * @param mailbox Mailbox
  * @retval true if the mailbox has at least 1 new messages (not old)
  * @retval false otherwise
  */
-static bool mbox_has_new(struct Context *ctx)
+static bool mbox_has_new(struct Mailbox *mailbox)
 {
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    if (!ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->read &&
-        !ctx->mailbox->hdrs[i]->old)
+  for (int i = 0; i < mailbox->msg_count; i++)
+    if (!mailbox->hdrs[i]->deleted && !mailbox->hdrs[i]->read &&
+        !mailbox->hdrs[i]->old)
       return true;
   return false;
 }
 
 /**
  * mbox_reset_atime - Reset the access time on the mailbox file
- * @param ctx Mailbox
- * @param st  Timestamp
+ * @param mailbox Mailbox
+ * @param st      Timestamp
  *
  * if mailbox has at least 1 new message, sets mtime > atime of mailbox so
  * mailbox check reports new mail
  */
-void mbox_reset_atime(struct Context *ctx, struct stat *st)
+void mbox_reset_atime(struct Mailbox *mailbox, struct stat *st)
 {
   struct utimbuf utimebuf;
   struct stat st2;
 
   if (!st)
   {
-    if (stat(ctx->mailbox->path, &st2) < 0)
+    if (stat(mailbox->path, &st2) < 0)
       return;
     st = &st2;
   }
@@ -970,12 +970,12 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
   /* When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!MailCheckRecent && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
+  if (!MailCheckRecent && utimebuf.actime >= utimebuf.modtime && mbox_has_new(mailbox))
   {
     utimebuf.actime = utimebuf.modtime - 1;
   }
 
-  utime(ctx->mailbox->path, &utimebuf);
+  utime(mailbox->path, &utimebuf);
 }
 
 /**
@@ -1268,7 +1268,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* Restore the previous access/modification times */
-  mbox_reset_atime(ctx, &statbuf);
+  mbox_reset_atime(ctx->mailbox, &statbuf);
 
   /* reopen the mailbox in read-only mode */
   ctx->fp = fopen(ctx->mailbox->path, "r");

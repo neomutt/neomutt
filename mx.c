@@ -697,7 +697,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     if (!ctx->mailbox->quiet)
       mutt_message(_("Mailbox is unchanged"));
     if (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF)
-      mbox_reset_atime(ctx, NULL);
+      mbox_reset_atime(ctx->mailbox, NULL);
     mx_fastclose_mailbox(ctx);
     FREE(pctx);
     return 0;
