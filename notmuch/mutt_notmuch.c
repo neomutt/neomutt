@@ -936,11 +936,8 @@ static char *get_folder_from_path(const char *path)
  */
 static void deinit_header(struct Header *h)
 {
-  if (h)
-  {
-    free_hdrdata(h->data);
-    h->data = NULL;
-  }
+  free_hdrdata(h->data);
+  h->data = NULL;
 }
 
 /**
@@ -2496,22 +2493,11 @@ static int nm_mbox_open(struct Context *ctx)
 
 /**
  * nm_mbox_close - Implements MxOps::mbox_close()
+ *
+ * Nothing to do.
  */
 static int nm_mbox_close(struct Context *ctx)
 {
-  if (!ctx || (ctx->mailbox->magic != MUTT_NOTMUCH))
-    return -1;
-
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-  {
-    struct Header *h = ctx->mailbox->hdrs[i];
-    if (h)
-    {
-      free_hdrdata(h->data);
-      h->data = NULL;
-    }
-  }
-
   return 0;
 }
 
