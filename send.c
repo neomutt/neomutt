@@ -1727,7 +1727,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       mutt_fix_reply_recipients(msg->env);
 
 #ifdef USE_NNTP
-    if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP && !msg->env->newsgroups)
+    if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP &&
+        !msg->env->newsgroups)
       msg->env->newsgroups = mutt_str_strdup(((struct NntpData *) ctx->data)->group);
 #endif
 

@@ -707,7 +707,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       if (!ctx->fp)
         rc = -1;
       else
-        rc = ((ctx->mailbox->magic == MUTT_MBOX) ? mbox_parse_mailbox : mmdf_parse_mailbox)(ctx);
+        rc = ((ctx->mailbox->magic == MUTT_MBOX) ? mbox_parse_mailbox :
+                                                   mmdf_parse_mailbox)(ctx);
       break;
 
     default:
@@ -1092,7 +1093,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->mailbox->msg_count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
+                       ctx->mailbox->msg_count);
   }
 
   for (i = first, j = 0; i < ctx->mailbox->msg_count; i++)

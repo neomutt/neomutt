@@ -118,7 +118,8 @@ bool need_display_subject(struct Context *ctx, struct Header *hdr)
 static void linearize_tree(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree;
-  struct Header **array = ctx->hdrs + ((Sort & SORT_REVERSE) ? ctx->mailbox->msg_count - 1 : 0);
+  struct Header **array =
+      ctx->hdrs + ((Sort & SORT_REVERSE) ? ctx->mailbox->msg_count - 1 : 0);
 
   while (tree)
   {

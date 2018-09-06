@@ -1754,8 +1754,9 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
   omask = umask(mh_umask(ctx));
   while (true)
   {
-    snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", ctx->mailbox->path, subdir,
-             (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
+    snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
+             ctx->mailbox->path, subdir, (long long) time(NULL), mutt_rand64(),
+             NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "Trying %s.\n", path);
 
@@ -2635,7 +2636,8 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->mailbox->msg_count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
+                       ctx->mailbox->msg_count);
   }
 
   for (i = 0; i < ctx->mailbox->msg_count; i++)

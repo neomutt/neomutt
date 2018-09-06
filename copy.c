@@ -838,7 +838,8 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR && src->mailbox->magic == MUTT_NOTMUCH)
+  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR &&
+      src->mailbox->magic == MUTT_NOTMUCH)
     nm_update_filename(src, NULL, msg->committed_path, hdr);
 #endif
 

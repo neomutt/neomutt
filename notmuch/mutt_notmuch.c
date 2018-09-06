@@ -1076,7 +1076,8 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
   if (data->progress_ready)
   {
     mutt_progress_update(&data->progress,
-                         ctx->mailbox->msg_count + data->ignmsgcount - data->oldmsgcount, -1);
+                         ctx->mailbox->msg_count + data->ignmsgcount - data->oldmsgcount,
+                         -1);
   }
 }
 
@@ -1150,8 +1151,8 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   if (!path)
     return;
 
-  mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n", ctx->mailbox->msg_count,
-             notmuch_message_get_message_id(msg), path);
+  mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n",
+             ctx->mailbox->msg_count, notmuch_message_get_message_id(msg), path);
 
   if (ctx->mailbox->msg_count >= ctx->hdrmax)
   {
@@ -1334,7 +1335,8 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool ded
   threads = notmuch_query_search_threads(q);
 #endif
 
-  for (; notmuch_threads_valid(threads) && ((limit == 0) || (ctx->mailbox->msg_count < limit));
+  for (; notmuch_threads_valid(threads) &&
+         ((limit == 0) || (ctx->mailbox->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
     if (SigInt == 1)
@@ -1849,7 +1851,8 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   if (!(db = get_db(data, false)) || !(msg = get_nm_message(db, h)))
     goto done;
 
-  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n", ctx->mailbox->msg_count);
+  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n",
+             ctx->mailbox->msg_count);
 
   progress_reset(ctx);
   id = notmuch_message_get_thread_id(msg);
@@ -2483,7 +2486,8 @@ static int nm_mbox_open(struct Context *ctx)
   mx_update_context(ctx, ctx->mailbox->msg_count);
   data->oldmsgcount = 0;
 
-  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, ctx->mailbox->msg_count);
+  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc,
+             ctx->mailbox->msg_count);
   return rc;
 }
 
@@ -2634,8 +2638,9 @@ done:
              ctx->mailbox->msg_count, new_flags, occult);
 
   return occult ? MUTT_REOPENED :
-                  (ctx->mailbox->msg_count > data->oldmsgcount) ? MUTT_NEW_MAIL :
-                                                        new_flags ? MUTT_FLAGS : 0;
+                  (ctx->mailbox->msg_count > data->oldmsgcount) ?
+                  MUTT_NEW_MAIL :
+                  new_flags ? MUTT_FLAGS : 0;
 }
 
 /**
@@ -2659,7 +2664,8 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     /* all is in this function so we don't use data->progress here */
     char msgbuf[PATH_MAX + 64];
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->mailbox->msg_count);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
+                       ctx->mailbox->msg_count);
   }
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)

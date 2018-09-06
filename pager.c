@@ -2272,9 +2272,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_compile_help(buffer, sizeof(buffer), MENU_PAGER,
 #ifdef USE_NNTP
-                      (Context && (Context->mailbox->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
+                      (Context && (Context->mailbox->magic == MUTT_NNTP)) ?
+                          PagerNewsHelpExtra :
 #endif
-                                                                   PagerHelpExtra);
+                          PagerHelpExtra);
     snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
   }
   if (!InHelp)
@@ -2373,7 +2374,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           {
             /* After the mailbox has been updated,
              * rd.index->current might be invalid */
-            rd.index->current = MIN(rd.index->current, (Context->mailbox->msg_count - 1));
+            rd.index->current =
+                MIN(rd.index->current, (Context->mailbox->msg_count - 1));
             index_hint = Context->hdrs[Context->v2r[rd.index->current]]->index;
 
             bool q = Context->quiet;

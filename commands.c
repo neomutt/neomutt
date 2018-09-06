@@ -1060,8 +1060,8 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       }
     }
 
-    const bool need_mailbox_cleanup =
-        ((savectx->mailbox->magic == MUTT_MBOX) || (savectx->mailbox->magic == MUTT_MMDF));
+    const bool need_mailbox_cleanup = ((savectx->mailbox->magic == MUTT_MBOX) ||
+                                       (savectx->mailbox->magic == MUTT_MMDF));
 
     mx_mbox_close(&savectx, NULL);
 

@@ -186,7 +186,8 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
   bool started = false;
   struct Header **hdrs = idata->ctx->hdrs;
 
-  for (n = *pos; n < idata->ctx->mailbox->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
+  for (n = *pos; n < idata->ctx->mailbox->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN;
+       n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
@@ -1202,12 +1203,13 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   if (Sort != SORT_ORDER)
   {
     hdrs = idata->ctx->hdrs;
-    idata->ctx->hdrs = mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Header *));
+    idata->ctx->hdrs =
+        mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Header *));
     memcpy(idata->ctx->hdrs, hdrs, idata->ctx->mailbox->msg_count * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(idata->ctx->hdrs, idata->ctx->mailbox->msg_count, sizeof(struct Header *),
-          mutt_get_sort_func(SORT_ORDER));
+    qsort(idata->ctx->hdrs, idata->ctx->mailbox->msg_count,
+          sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
   }
 
   pos = 0;
@@ -2027,7 +2029,8 @@ static int imap_mbox_open(struct Context *ctx)
   imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
 
   mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
+                   sizeof(ctx->mailbox->realpath));
 
   idata->ctx = ctx;
 
@@ -2494,7 +2497,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     memcpy(ctx->hdrs, hdrs, ctx->mailbox->msg_count * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(ctx->hdrs, ctx->mailbox->msg_count, sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
+    qsort(ctx->hdrs, ctx->mailbox->msg_count, sizeof(struct Header *),
+          mutt_get_sort_func(SORT_ORDER));
   }
 
   rc = sync_helper(idata, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");

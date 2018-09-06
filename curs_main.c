@@ -121,7 +121,7 @@ static const char *NoVisible = N_("No visible messages");
     mutt_error(_(No_mailbox_is_open));                                         \
     break;                                                                     \
   }                                                                            \
-  else if (!Context->mailbox->msg_count)                                                 \
+  else if (!Context->mailbox->msg_count)                                       \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(There_are_no_messages));                                      \
@@ -983,12 +983,12 @@ int mutt_index_menu(void)
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message();
-  menu->help =
-      mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
+  menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
 #ifdef USE_NNTP
-                        (Context && (Context->mailbox->magic == MUTT_NNTP)) ? IndexNewsHelp :
+                                 (Context && (Context->mailbox->magic == MUTT_NNTP)) ?
+                                     IndexNewsHelp :
 #endif
-                                                                     IndexHelp);
+                                     IndexHelp);
   menu->custom_menu_redraw = index_menu_redraw;
   mutt_menu_push_current(menu);
 

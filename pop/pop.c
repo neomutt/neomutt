@@ -502,7 +502,8 @@ static int pop_mbox_open(struct Context *ctx)
     return -1;
 
   mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
+                   sizeof(ctx->mailbox->realpath));
 
   pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;

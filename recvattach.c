@@ -1123,8 +1123,8 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
  * @param decrypted   True if attachment has been decrypted
  */
 static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header *hdr,
-                                          struct Body *m, FILE *fp,
-                                          int parent_type, int level, bool decrypted)
+                                          struct Body *m, FILE *fp, int parent_type,
+                                          int level, bool decrypted)
 {
   struct AttachPtr *new = NULL;
   struct Body *new_body = NULL;

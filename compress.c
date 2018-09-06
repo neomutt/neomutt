@@ -161,7 +161,8 @@ static int setup_paths(struct Context *ctx)
   char tmppath[PATH_MAX];
 
   /* Setup the right paths */
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
+                   sizeof(ctx->mailbox->realpath));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
@@ -516,7 +517,8 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   /* To append we need an append-hook or a close-hook */
   if (!ci->append && !ci->close)
   {
-    mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->mailbox->path);
+    mutt_error(_("Cannot append without an append-hook or close-hook : %s"),
+               ctx->mailbox->path);
     goto oa_fail1;
   }
 
@@ -798,7 +800,8 @@ bool mutt_comp_can_append(struct Context *ctx)
   if (ci->append || ci->close)
     return true;
 
-  mutt_error(_("Cannot append without an append-hook or close-hook : %s"), ctx->mailbox->path);
+  mutt_error(_("Cannot append without an append-hook or close-hook : %s"),
+             ctx->mailbox->path);
   return false;
 }
 

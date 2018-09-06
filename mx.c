@@ -257,7 +257,8 @@ struct Context *mx_mbox_open(const char *path, int flags)
   mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
 
   if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
-    mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path, sizeof(ctx->mailbox->realpath));
+    mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
+                     sizeof(ctx->mailbox->realpath));
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
@@ -286,7 +287,8 @@ struct Context *mx_mbox_open(const char *path, int flags)
   ctx->mailbox->magic = mx_path_probe(path, NULL);
   ctx->mx_ops = mx_get_ops(ctx->mailbox->magic);
 
-  if ((ctx->mailbox->magic == MUTT_UNKNOWN) || (ctx->mailbox->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
+  if ((ctx->mailbox->magic == MUTT_UNKNOWN) ||
+      (ctx->mailbox->magic == MUTT_MAILBOX_ERROR) || !ctx->mx_ops)
   {
     if (ctx->mailbox->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(path);
@@ -347,7 +349,8 @@ void mx_fastclose_mailbox(struct Context *ctx)
     return;
 
   /* fix up the times so mailbox won't get confused */
-  if (ctx->peekonly && ctx->mailbox->path && (mutt_timespec_compare(&ctx->mtime, &ctx->atime) > 0))
+  if (ctx->peekonly && ctx->mailbox->path &&
+      (mutt_timespec_compare(&ctx->mtime, &ctx->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
@@ -751,10 +754,12 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
                    ctx->mailbox->msg_count - ctx->deleted, read_msgs, ctx->deleted);
     }
     else
-      mutt_message(_("%d kept, %d deleted"), ctx->mailbox->msg_count - ctx->deleted, ctx->deleted);
+      mutt_message(_("%d kept, %d deleted"),
+                   ctx->mailbox->msg_count - ctx->deleted, ctx->deleted);
   }
 
-  if (ctx->mailbox->msg_count == ctx->deleted && (ctx->mailbox->magic == MUTT_MMDF || ctx->mailbox->magic == MUTT_MBOX) &&
+  if (ctx->mailbox->msg_count == ctx->deleted &&
+      (ctx->mailbox->magic == MUTT_MMDF || ctx->mailbox->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
   {
     mutt_file_unlink_empty(ctx->mailbox->path);
@@ -806,7 +811,8 @@ void mx_update_tables(struct Context *ctx, bool committing)
   for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
-        ((committing && (!ctx->hdrs[i]->deleted || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))) ||
+        ((committing && (!ctx->hdrs[i]->deleted ||
+                         (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))) ||
          (!committing && ctx->hdrs[i]->active)))
     {
       if (i != j)
@@ -973,7 +979,8 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
     mutt_sleep(0);
 
-    if (ctx->mailbox->msg_count == ctx->deleted && (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
+    if (ctx->mailbox->msg_count == ctx->deleted &&
+        (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
         !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
     {
       unlink(ctx->mailbox->path);
@@ -1040,7 +1047,8 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int fla
     if (ctx->mailbox->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
+    if ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
+        flags & MUTT_ADD_FROM)
     {
       if (hdr)
       {
@@ -1094,7 +1102,8 @@ struct Message *mx_msg_open(struct Context *ctx, int msgno)
 
   if (!ctx->mx_ops || !ctx->mx_ops->msg_open)
   {
-    mutt_debug(1, "function not implemented for mailbox type %d.\n", ctx->mailbox->magic);
+    mutt_debug(1, "function not implemented for mailbox type %d.\n",
+               ctx->mailbox->magic);
     return NULL;
   }
 
@@ -1196,7 +1205,8 @@ void mx_alloc_memory(struct Context *ctx)
 void mx_update_context(struct Context *ctx, int new_messages)
 {
   struct Header *h = NULL;
-  for (int msgno = ctx->mailbox->msg_count - new_messages; msgno < ctx->mailbox->msg_count; msgno++)
+  for (int msgno = ctx->mailbox->msg_count - new_messages;
+       msgno < ctx->mailbox->msg_count; msgno++)
   {
     h = ctx->hdrs[msgno];
 

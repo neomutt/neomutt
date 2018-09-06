@@ -95,7 +95,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   }
 
   const int chflags =
-      CH_NOLEN | ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+      CH_NOLEN |
+      ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
   rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
   oerrno = errno;
 
@@ -196,7 +197,9 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   }
 
   of = 0;
-  cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ? 0 : CH_NOSTATUS);
+  cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
+            0 :
+            CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {

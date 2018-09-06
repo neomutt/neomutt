@@ -1056,4 +1056,3 @@ void mutt_context_free(struct Context **ctx)
   mailbox_free(&(*ctx)->mailbox);
   FREE(ctx);
 }
-

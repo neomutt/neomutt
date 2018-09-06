@@ -125,7 +125,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     {
 #ifdef USE_NOTMUCH
       char *p = NULL;
-      if (Context && Context->mailbox->magic == MUTT_NOTMUCH && (p = nm_get_description(Context)))
+      if (Context && Context->mailbox->magic == MUTT_NOTMUCH &&
+          (p = nm_get_description(Context)))
         mutt_str_strfcpy(tmp, p, sizeof(tmp));
       else
 #endif
@@ -220,7 +221,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_unread - Context->new : 0);
+        snprintf(buf, buflen, fmt,
+                 Context ? Context->mailbox->msg_unread - Context->new : 0);
       }
       else if (!Context || !(Context->mailbox->msg_unread - Context->new))
         optional = 0;
@@ -264,14 +266,15 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = OptAttachMsg ? 3 :
-                           ((Context->readonly || Context->dontwrite) ?
-                                2 :
-                                (Context->changed ||
-                                 /* deleted doesn't necessarily mean changed in IMAP */
-                                 (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
-                                1 :
-                                0);
+        i = OptAttachMsg ?
+                3 :
+                ((Context->readonly || Context->dontwrite) ?
+                     2 :
+                     (Context->changed ||
+                      /* deleted doesn't necessarily mean changed in IMAP */
+                      (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
+                     1 :
+                     0);
       }
 
       if (!StatusChars || !StatusChars->len)
