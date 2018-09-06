@@ -145,30 +145,29 @@ static void unlock_realpath(struct Context *ctx)
 
 /**
  * setup_paths - Set the mailbox paths
- * @param ctx Mailbox to modify
+ * @param mailbox Mailbox to modify
  * @retval  0 Success
  * @retval -1 Error
  *
- * Save the compressed filename in ctx->realpath.
- * Create a temporary filename and put its name in ctx->path.
+ * Save the compressed filename in mailbox->realpath.
+ * Create a temporary filename and put its name in mailbox->path.
  * The temporary file is created to prevent symlink attacks.
  */
-static int setup_paths(struct Context *ctx)
+static int setup_paths(struct Mailbox *mailbox)
 {
-  if (!ctx)
+  if (!mailbox)
     return -1;
 
   char tmppath[PATH_MAX];
 
   /* Setup the right paths */
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
-                   sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(mailbox->realpath, mailbox->path, sizeof(mailbox->realpath));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
-  mutt_str_strfcpy(ctx->mailbox->path, tmppath, sizeof(ctx->mailbox->path));
+  mutt_str_strfcpy(mailbox->path, tmppath, sizeof(mailbox->path));
 
-  FILE *tmpfp = mutt_file_fopen(ctx->mailbox->path, "w");
+  FILE *tmpfp = mutt_file_fopen(mailbox->path, "w");
   if (!tmpfp)
     return -1;
 
@@ -352,17 +351,17 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   if (!buf || (data == 0))
     return src;
 
-  struct Context *ctx = (struct Context *) data;
+  struct Mailbox *mailbox = (struct Mailbox *) data;
 
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->mailbox->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(mailbox->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->mailbox->path)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(mailbox->path)));
       break;
   }
   return src;
@@ -370,10 +369,10 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
 
 /**
  * expand_command_str - Expand placeholders in command string
- * @param ctx    Mailbox for paths
- * @param cmd    Template command to be expanded
- * @param buf    Buffer to store the command
- * @param buflen Size of the buffer
+ * @param mailbox Mailbox for paths
+ * @param cmd     Template command to be expanded
+ * @param buf     Buffer to store the command
+ * @param buflen  Size of the buffer
  *
  * This function takes a hook command and expands the filename placeholders
  * within it.  The function calls mutt_expando_format() to do the replacement
@@ -385,18 +384,19 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
  * Result:
  *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
  */
-static void expand_command_str(const struct Context *ctx, const char *cmd, char *buf, int buflen)
+static void expand_command_str(const struct Mailbox *mailbox, const char *cmd,
+                               char *buf, int buflen)
 {
-  if (!ctx || !cmd || !buf)
+  if (!mailbox || !cmd || !buf)
     return;
 
   mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
-                      (unsigned long) ctx, 0);
+                      (unsigned long) mailbox, 0);
 }
 
 /**
  * execute_command - Run a system command
- * @param ctx      Mailbox to work with
+ * @param mailbox  Mailbox to work with
  * @param command  Command string to execute
  * @param progress Message to show the user
  * @retval 1 Success
@@ -405,24 +405,24 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
  * Run the supplied command, taking care of all the NeoMutt requirements,
  * such as locking files and blocking signals.
  */
-static int execute_command(struct Context *ctx, const char *command, const char *progress)
+static int execute_command(struct Mailbox *mailbox, const char *command, const char *progress)
 {
   int rc = 1;
   char sys_cmd[HUGE_STRING];
 
-  if (!ctx || !command || !progress)
+  if (!mailbox || !command || !progress)
     return 0;
 
-  if (!ctx->mailbox->quiet)
+  if (!mailbox->quiet)
   {
-    mutt_message(progress, ctx->mailbox->realpath);
+    mutt_message(progress, mailbox->realpath);
   }
 
   mutt_sig_block();
   endwin();
   fflush(stdout);
 
-  expand_command_str(ctx, command, sys_cmd, sizeof(sys_cmd));
+  expand_command_str(mailbox, command, sys_cmd, sizeof(sys_cmd));
 
   if (mutt_system(sys_cmd) != 0)
   {
@@ -457,7 +457,7 @@ static int comp_mbox_open(struct Context *ctx)
   if (!ci->close || (access(ctx->mailbox->path, W_OK) != 0))
     ctx->mailbox->readonly = true;
 
-  if (setup_paths(ctx) != 0)
+  if (setup_paths(ctx->mailbox) != 0)
     goto or_fail;
   store_size(ctx);
 
@@ -467,7 +467,7 @@ static int comp_mbox_open(struct Context *ctx)
     goto or_fail;
   }
 
-  int rc = execute_command(ctx, ci->open, _("Decompressing %s"));
+  int rc = execute_command(ctx->mailbox, ci->open, _("Decompressing %s"));
   if (rc == 0)
     goto or_fail;
 
@@ -522,7 +522,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
     goto oa_fail1;
   }
 
-  if (setup_paths(ctx) != 0)
+  if (setup_paths(ctx->mailbox) != 0)
     goto oa_fail2;
 
   /* Lock the realpath for the duration of the append.
@@ -536,7 +536,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   /* Open the existing mailbox, unless we are appending */
   if (!ci->append && (get_size(ctx->mailbox->realpath) > 0))
   {
-    int rc = execute_command(ctx, ci->open, _("Decompressing %s"));
+    int rc = execute_command(ctx->mailbox, ci->open, _("Decompressing %s"));
     if (rc == 0)
     {
       mutt_error(_("Compress command failed: %s"), ci->open);
@@ -630,7 +630,7 @@ static int comp_mbox_close(struct Context *ctx)
       msg = _("Compressing %s...");
     }
 
-    int rc = execute_command(ctx, append, msg);
+    int rc = execute_command(ctx->mailbox, append, msg);
     if (rc == 0)
     {
       mutt_any_key_to_continue(NULL);
@@ -685,7 +685,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  int rc = execute_command(ctx, ci->open, _("Decompressing %s"));
+  int rc = execute_command(ctx->mailbox, ci->open, _("Decompressing %s"));
   store_size(ctx);
   unlock_realpath(ctx);
   if (rc == 0)
@@ -865,7 +865,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
   if (rc != 0)
     goto sync_cleanup;
 
-  rc = execute_command(ctx, ci->close, _("Compressing %s"));
+  rc = execute_command(ctx->mailbox, ci->close, _("Compressing %s"));
   if (rc == 0)
   {
     rc = -1;
