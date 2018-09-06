@@ -28,6 +28,7 @@
 #endif
 
 struct Context;
+struct Mailbox;
 struct NntpData;
 struct NntpServer;
 
@@ -50,7 +51,7 @@ void nntp_acache_free(struct NntpData *nntp_data);
 int  nntp_active_save_cache(struct NntpServer *nserv);
 int  nntp_add_group(char *line, void *data);
 void nntp_bcache_update(struct NntpData *nntp_data);
-int  nntp_check_new_groups(struct NntpServer *nserv);
+int  nntp_check_new_groups(struct Mailbox *mailbox, struct NntpServer *nserv);
 void nntp_data_free(void *data);
 void nntp_delete_group_cache(struct NntpData *nntp_data);
 void nntp_group_unread_stat(struct NntpData *nntp_data);

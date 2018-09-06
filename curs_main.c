@@ -2217,7 +2217,7 @@ int mutt_index_menu(void)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_mailbox(buf, sizeof(buf));
+            nntp_mailbox(Context->mailbox, buf, sizeof(buf));
           }
           else
 #endif

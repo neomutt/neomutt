@@ -1072,7 +1072,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
       return NULL;
 
     /* check for new newsgroups */
-    if (!leave_lock && nntp_check_new_groups(nserv) < 0)
+    if (!leave_lock && nntp_check_new_groups(Context->mailbox, nserv) < 0)
       rc = -1;
 
     /* .newsrc has been externally modified */
@@ -1118,7 +1118,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   {
     /* try to load list of newsgroups from cache */
     if (nserv->cacheable && active_get_cache(nserv) == 0)
-      rc = nntp_check_new_groups(nserv);
+      rc = nntp_check_new_groups(Context->mailbox, nserv);
 
     /* load list of newsgroups from server */
     else
@@ -1204,19 +1204,19 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
 /**
  * nntp_article_status - Get status of articles from .newsrc
- * @param ctx   Mailbox
- * @param hdr   Email Header
- * @param group Newsgroup
- * @param anum  Article number
+ * @param mailbox Mailbox
+ * @param hdr     Email Header
+ * @param group   Newsgroup
+ * @param anum    Article number
  *
  * Full status flags are not supported by nntp, but we can fake some of them:
  * Read = a read message number is in the .newsrc
  * New = not read and not cached
  * Old = not read but cached
  */
-void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
+void nntp_article_status(struct Mailbox *mailbox, struct Header *hdr, char *group, anum_t anum)
 {
-  struct NntpData *nntp_data = ctx->mailbox->data;
+  struct NntpData *nntp_data = mailbox->data;
 
   if (group)
     nntp_data = mutt_hash_find(nntp_data->nserv->groups_hash, group);
@@ -1230,7 +1230,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
         (anum <= nntp_data->newsrc_ent[i].last))
     {
       /* can't use mutt_set_flag() because mx_update_context()
-         didn't called yet */
+         didn't get called yet */
       hdr->read = true;
       return;
     }
@@ -1374,11 +1374,15 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 
 /**
  * nntp_mailbox - Get first newsgroup with new messages
- * @param buf Buffer for result
- * @param buflen Length of buffer
+ * @param mailbox Mailbox
+ * @param buf     Buffer for result
+ * @param buflen  Length of buffer
  */
-void nntp_mailbox(char *buf, size_t buflen)
+void nntp_mailbox(struct Mailbox *mailbox, char *buf, size_t buflen)
 {
+  if (!mailbox)
+    return;
+
   for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
   {
     struct NntpData *nntp_data = CurrentNewsSrv->groups_list[i];
@@ -1386,14 +1390,13 @@ void nntp_mailbox(char *buf, size_t buflen)
     if (!nntp_data || !nntp_data->subscribed || !nntp_data->unread)
       continue;
 
-    if (Context && Context->mailbox->magic == MUTT_NNTP &&
-        (mutt_str_strcmp(nntp_data->group,
-                         ((struct NntpData *) Context->mailbox->data)->group) == 0))
+    if ((mailbox->magic == MUTT_NNTP) &&
+        (mutt_str_strcmp(nntp_data->group, ((struct NntpData *) mailbox->data)->group) == 0))
     {
       unsigned int unread = 0;
 
-      for (unsigned int j = 0; j < Context->mailbox->msg_count; j++)
-        if (!Context->mailbox->hdrs[j]->read && !Context->mailbox->hdrs[j]->deleted)
+      for (unsigned int j = 0; j < mailbox->msg_count; j++)
+        if (!mailbox->hdrs[j]->read && !mailbox->hdrs[j]->deleted)
           unread++;
       if (!unread)
         continue;

@@ -1018,14 +1018,14 @@ static int get_description(struct NntpData *nntp_data, const char *wildmat, cons
 
 /**
  * nntp_parse_xref - Parse cross-reference
- * @param ctx Mailbox
- * @param hdr Email header
+ * @param mailbox Mailbox
+ * @param hdr     Email header
  *
  * Update read flag and set article number if empty
  */
-static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
+static void nntp_parse_xref(struct Mailbox *mailbox, struct Header *hdr)
 {
-  struct NntpData *nntp_data = ctx->mailbox->data;
+  struct NntpData *nntp_data = mailbox->data;
 
   char *buf = mutt_str_strdup(hdr->env->xref);
   char *p = buf;
@@ -1050,7 +1050,7 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
     if (sscanf(colon, ANUM, &anum) != 1)
       continue;
 
-    nntp_article_status(ctx, hdr, grp, anum);
+    nntp_article_status(mailbox, hdr, grp, anum);
     if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
       NHDR(hdr)->article_num = anum;
   }
@@ -1248,9 +1248,9 @@ static int parse_overview_line(char *line, void *data)
       hdr->changed = true;
     else
     {
-      nntp_article_status(ctx, hdr, NULL, anum);
+      nntp_article_status(ctx->mailbox, hdr, NULL, anum);
       if (!hdr->read)
-        nntp_parse_xref(ctx, hdr);
+        nntp_parse_xref(ctx->mailbox, hdr);
     }
     if (anum > nntp_data->last_loaded)
       nntp_data->last_loaded = anum;
@@ -1470,9 +1470,9 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       hdr->changed = true;
     else
     {
-      nntp_article_status(ctx, hdr, NULL, NHDR(hdr)->article_num);
+      nntp_article_status(ctx->mailbox, hdr, NULL, NHDR(hdr)->article_num);
       if (!hdr->read)
-        nntp_parse_xref(ctx, hdr);
+        nntp_parse_xref(ctx->mailbox, hdr);
     }
     if (current > nntp_data->last_loaded)
       nntp_data->last_loaded = current;
@@ -1775,17 +1775,19 @@ static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * nntp_post - Post article
- * @param msg Message to post
+ * @param mailbox Mailbox
+ * @param msg     Message to post
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_post(const char *msg)
+int nntp_post(struct Mailbox *mailbox, const char *msg)
 {
-  struct NntpData *nntp_data, nntp_tmp;
+  struct NntpData *nntp_data = NULL;
+  struct NntpData nntp_tmp = { 0 };
   char buf[LONG_STRING];
 
-  if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data = Context->mailbox->data;
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data = mailbox->data;
   else
   {
     CurrentNewsSrv = nntp_select_server(NewsServer, false);
@@ -2013,9 +2015,9 @@ static int check_mailbox(struct Context *ctx)
         ctx->mailbox->hdrs[i]->flagged = flagged;
         ctx->mailbox->hdrs[i]->read = false;
         ctx->mailbox->hdrs[i]->old = false;
-        nntp_article_status(ctx, ctx->mailbox->hdrs[i], NULL, anum);
+        nntp_article_status(ctx->mailbox, ctx->mailbox->hdrs[i], NULL, anum);
         if (!ctx->mailbox->hdrs[i]->read)
-          nntp_parse_xref(ctx, ctx->mailbox->hdrs[i]);
+          nntp_parse_xref(ctx->mailbox, ctx->mailbox->hdrs[i]);
       }
       ctx->mailbox->hdrs[j++] = ctx->mailbox->hdrs[i];
     }
@@ -2057,9 +2059,9 @@ static int check_mailbox(struct Context *ctx)
         hdr->old = false;
         hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
         NHDR(hdr)->article_num = anum;
-        nntp_article_status(ctx, hdr, NULL, anum);
+        nntp_article_status(ctx->mailbox, hdr, NULL, anum);
         if (!hdr->read)
-          nntp_parse_xref(ctx, hdr);
+          nntp_parse_xref(ctx->mailbox, hdr);
       }
     }
     FREE(&messages);
@@ -2332,12 +2334,13 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
 
 /**
  * nntp_check_new_groups - Check for new groups/articles in subscribed groups
- * @param nserv NNTP server
+ * @param mailbox Mailbox
+ * @param nserv   NNTP server
  * @retval  1 New groups found
  * @retval  0 No new groups
  * @retval -1 Error
  */
-int nntp_check_new_groups(struct NntpServer *nserv)
+int nntp_check_new_groups(struct Mailbox *mailbox, struct NntpServer *nserv)
 {
   struct NntpData nntp_data;
   time_t now;
@@ -2368,10 +2371,10 @@ int nntp_check_new_groups(struct NntpServer *nserv)
       }
     }
     /* select current newsgroup */
-    if (Context && Context->mailbox->magic == MUTT_NNTP)
+    if (mailbox && (mailbox->magic == MUTT_NNTP))
     {
       buf[0] = '\0';
-      if (nntp_query(Context->mailbox->data, buf, sizeof(buf)) < 0)
+      if (nntp_query(mailbox->data, buf, sizeof(buf)) < 0)
         return -1;
     }
   }
@@ -2383,8 +2386,8 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   if (nntp_date(nserv, &now) < 0)
     return -1;
   nntp_data.nserv = nserv;
-  if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data.group = ((struct NntpData *) Context->mailbox->data)->group;
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data.group = ((struct NntpData *) mailbox->data)->group;
   else
     nntp_data.group = NULL;
   i = nserv->groups_num;
@@ -2485,7 +2488,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
 
   /* get article number */
   if (hdr->env->xref)
-    nntp_parse_xref(ctx, hdr);
+    nntp_parse_xref(ctx->mailbox, hdr);
   else
   {
     snprintf(buf, sizeof(buf), "STAT %s\r\n", msgid);
@@ -2513,7 +2516,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
  */
 struct ChildCtx
 {
-  struct Context *ctx;
+  struct Mailbox *mailbox;
   unsigned int num;
   unsigned int max;
   anum_t *child;
@@ -2532,8 +2535,8 @@ static int fetch_children(char *line, void *data)
 
   if (!line || sscanf(line, ANUM, &anum) != 1)
     return 0;
-  for (unsigned int i = 0; i < cc->ctx->mailbox->msg_count; i++)
-    if (NHDR(cc->ctx->mailbox->hdrs[i])->article_num == anum)
+  for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
+    if (NHDR(cc->mailbox->hdrs[i])->article_num == anum)
       return 0;
   if (cc->num >= cc->max)
   {
@@ -2566,7 +2569,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
     return 0;
 
   /* init context */
-  cc.ctx = ctx;
+  cc.mailbox = ctx->mailbox;
   cc.num = 0;
   cc.max = 10;
   cc.child = mutt_mem_malloc(sizeof(anum_t) * cc.max);
