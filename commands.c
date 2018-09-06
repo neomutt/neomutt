@@ -1026,7 +1026,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 
 #ifdef USE_NOTMUCH
       if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_longrun_init(Context, true);
+        nm_longrun_init(Context->mailbox, true);
 #endif
       for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
@@ -1051,7 +1051,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
       }
 #ifdef USE_NOTMUCH
       if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_longrun_done(Context);
+        nm_longrun_done(Context->mailbox);
 #endif
       if (rc != 0)
       {

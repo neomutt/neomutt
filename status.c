@@ -126,7 +126,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 #ifdef USE_NOTMUCH
       char *p = NULL;
       if (Context && Context->mailbox->magic == MUTT_NOTMUCH &&
-          (p = nm_get_description(Context)))
+          (p = nm_get_description(Context->mailbox)))
         mutt_str_strfcpy(tmp, p, sizeof(tmp));
       else
 #endif

@@ -2397,7 +2397,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
                               _("Mail sent"));
 #ifdef USE_NOTMUCH
     if (NmRecord)
-      nm_record_message(ctx, finalpath, cur);
+      nm_record_message(ctx->mailbox, finalpath, cur);
 #endif
   }
 

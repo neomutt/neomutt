@@ -1246,7 +1246,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context);
+      nm_debug_check(Context->mailbox);
 #endif
 
     switch (op)
@@ -1999,7 +1999,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_init(Context, true);
+            nm_longrun_init(Context->mailbox, true);
 #endif
           for (px = 0, j = 0; j < Context->mailbox->msg_count; j++)
           {
@@ -2014,8 +2014,8 @@ int mutt_index_menu(void)
               bool still_queried = false;
 #ifdef USE_NOTMUCH
               if (Context->mailbox->magic == MUTT_NOTMUCH)
-                still_queried =
-                    nm_message_is_still_queried(Context, Context->mailbox->hdrs[j]);
+                still_queried = nm_message_is_still_queried(
+                    Context->mailbox, Context->mailbox->hdrs[j]);
 #endif
               Context->mailbox->hdrs[j]->quasi_deleted = !still_queried;
               Context->mailbox->changed = true;
@@ -2023,7 +2023,7 @@ int mutt_index_menu(void)
           }
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_done(Context);
+            nm_longrun_done(Context->mailbox);
 #endif
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
         }
@@ -2039,7 +2039,7 @@ int mutt_index_menu(void)
             bool still_queried = false;
 #ifdef USE_NOTMUCH
             if (Context->mailbox->magic == MUTT_NOTMUCH)
-              still_queried = nm_message_is_still_queried(Context, CURHDR);
+              still_queried = nm_message_is_still_queried(Context->mailbox, CURHDR);
 #endif
             CURHDR->quasi_deleted = !still_queried;
             Context->mailbox->changed = true;
@@ -2079,7 +2079,7 @@ int mutt_index_menu(void)
           mutt_message(_("No query, aborting"));
           break;
         }
-        if (!nm_uri_from_query(Context, buf, sizeof(buf)))
+        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
           main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
@@ -2099,7 +2099,7 @@ int mutt_index_menu(void)
         }
         nm_query_window_backward();
         strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
-        if (!nm_uri_from_query(Context, buf, sizeof(buf)))
+        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
           main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
@@ -2118,7 +2118,7 @@ int mutt_index_menu(void)
         }
         nm_query_window_forward();
         strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
-        if (!nm_uri_from_query(Context, buf, sizeof(buf)))
+        if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
         {
@@ -3494,7 +3494,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context);
+      nm_debug_check(Context->mailbox);
 #endif
 
     if (menu->menu == MENU_PAGER)

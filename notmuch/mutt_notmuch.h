@@ -56,22 +56,22 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 char *nm_header_get_folder(struct Header *h);
 int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
 bool nm_normalize_uri(const char *uri, char *buf, size_t buflen);
-char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen);
-bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
+char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen);
+bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr);
 
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);
 
-void nm_longrun_init(struct Context *ctx, bool writable);
-void nm_longrun_done(struct Context *ctx);
+void nm_longrun_init(struct Mailbox *mailbox, bool writable);
+void nm_longrun_done(struct Mailbox *mailbox);
 
-char *nm_get_description(struct Context *ctx);
+char *nm_get_description(struct Mailbox *mailbox);
 int nm_description_to_path(const char *desc, char *buf, size_t buflen);
 
-int nm_record_message(struct Context *ctx, char *path, struct Header *h);
+int nm_record_message(struct Mailbox *mailbox, char *path, struct Header *h);
 
-void nm_debug_check(struct Context *ctx);
-int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
+void nm_debug_check(struct Mailbox *mailbox);
+int nm_get_all_tags(struct Mailbox *mailbox, char **tag_list, int *tag_count);
 
 /*
  * functions usable outside notmuch Context

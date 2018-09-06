@@ -170,7 +170,7 @@ static void free_hdrdata(struct NmHdrData *data)
  * free_mboxdata - Free data attached to the context
  * @param data Notmuch data
  *
- * The nm_mboxdata struct stores global Notmuch data, such as the connection to
+ * The NmMboxData struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
@@ -198,11 +198,11 @@ static void free_mboxdata(void *data)
 }
 
 /**
- * new_mboxdata - Create a new nm_mboxdata object from a query
+ * new_mboxdata - Create a new NmMboxData object from a query
  * @param uri Notmuch query string
- * @retval ptr New nm_mboxdata struct
+ * @retval ptr New NmMboxData struct
  *
- * A new nm_mboxdata struct is created, then the query is parsed and saved
+ * A new NmMboxData struct is created, then the query is parsed and saved
  * within it.  This should be freed using free_mboxdata().
  */
 static struct NmMboxData *new_mboxdata(const char *uri)
@@ -233,7 +233,7 @@ static struct NmMboxData *new_mboxdata(const char *uri)
  * @retval  0 Success
  * @retval -1 Error Bad format
  *
- * Create a new nm_mboxdata struct and add it Mailbox::data.
+ * Create a new NmMboxData struct and add it Mailbox::data.
  * Notmuch-specific data will be stored in this struct.
  * This struct can be freed using free_hdrdata().
  */
@@ -1022,21 +1022,21 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
 
 /**
  * progress_reset - Reset the progress counter
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  */
-static void progress_reset(struct Context *ctx)
+static void progress_reset(struct Mailbox *mailbox)
 {
   struct NmMboxData *data = NULL;
 
-  if (ctx->mailbox->quiet)
+  if (mailbox->quiet)
     return;
 
-  data = get_mboxdata(ctx->mailbox);
+  data = get_mboxdata(mailbox);
   if (!data)
     return;
 
   memset(&data->progress, 0, sizeof(data->progress));
-  data->oldmsgcount = ctx->mailbox->msg_count;
+  data->oldmsgcount = mailbox->msg_count;
   data->ignmsgcount = 0;
   data->noprogress = false;
   data->progress_ready = false;
@@ -1044,14 +1044,14 @@ static void progress_reset(struct Context *ctx)
 
 /**
  * progress_update - Update the progress counter
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @param q   Notmuch query
  */
-static void progress_update(struct Context *ctx, notmuch_query_t *q)
+static void progress_update(struct Mailbox *mailbox, notmuch_query_t *q)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
 
-  if (ctx->mailbox->quiet || !data || data->noprogress)
+  if (mailbox->quiet || !data || data->noprogress)
     return;
 
   if (!data->progress_ready && q)
@@ -1076,8 +1076,7 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
   if (data->progress_ready)
   {
     mutt_progress_update(&data->progress,
-                         ctx->mailbox->msg_count + data->ignmsgcount - data->oldmsgcount,
-                         -1);
+                         mailbox->msg_count + data->ignmsgcount - data->oldmsgcount, -1);
   }
 }
 
@@ -1141,8 +1140,8 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   if (dedup && get_mutt_header(ctx, msg))
   {
     data->ignmsgcount++;
-    progress_update(ctx, q);
-    mutt_debug(2, "nm: ignore id=%s, already in the context\n",
+    progress_update(ctx->mailbox, q);
+    mutt_debug(2, "nm: ignore id=%s, already in the mailbox\n",
                notmuch_message_get_message_id(msg));
     return;
   }
@@ -1209,7 +1208,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
       hd->oldpath = mutt_str_strdup(path);
     }
   }
-  progress_update(ctx, q);
+  progress_update(ctx->mailbox, q);
 done:
   FREE(&newpath);
 }
@@ -1786,12 +1785,12 @@ char *nm_header_get_folder(struct Header *h)
 
 /**
  * nm_longrun_init - Start a long transaction
- * @param ctx      Mailbox
+ * @param mailbox  Mailbox
  * @param writable Read/write?
  */
-void nm_longrun_init(struct Context *ctx, bool writable)
+void nm_longrun_init(struct Mailbox *mailbox, bool writable)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
 
   if (data && get_db(data, writable))
   {
@@ -1802,11 +1801,11 @@ void nm_longrun_init(struct Context *ctx, bool writable)
 
 /**
  * nm_longrun_done - Finish a long transaction
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  */
-void nm_longrun_done(struct Context *ctx)
+void nm_longrun_done(struct Mailbox *mailbox)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
 
   if (data && (release_db(data) == 0))
     mutt_debug(2, "nm: long run deinitialized\n");
@@ -1814,11 +1813,11 @@ void nm_longrun_done(struct Context *ctx)
 
 /**
  * nm_debug_check - Check if the database is open
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  */
-void nm_debug_check(struct Context *ctx)
+void nm_debug_check(struct Mailbox *mailbox)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   if (!data)
     return;
 
@@ -1854,7 +1853,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n",
              ctx->mailbox->msg_count);
 
-  progress_reset(ctx);
+  progress_reset(ctx->mailbox);
   id = notmuch_message_get_thread_id(msg);
   if (!id)
     goto done;
@@ -1892,16 +1891,16 @@ done:
 
 /**
  * nm_uri_from_query - Turn a query into a URI
- * @param ctx    Mailbox
- * @param buf    Buffer for URI
- * @param buflen Length of buffer
+ * @param mailbox Mailbox
+ * @param buf     Buffer for URI
+ * @param buflen  Length of buffer
  * @retval ptr  Query as a URI
  * @retval NULL Error
  */
-char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
+char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
 {
   mutt_debug(2, "(%s)\n", buf);
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   char uri[PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
   int added;
 
@@ -1970,14 +1969,14 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   char tmp[PATH_MAX];
   int rc = -1;
 
-  struct Context tmp_ctx = { 0 };
+  struct Mailbox tmp_mbox = { 0 };
   struct NmMboxData *tmp_mboxdata = new_mboxdata(uri);
 
   if (!tmp_mboxdata)
     return false;
 
-  tmp_ctx.mailbox->magic = MUTT_NOTMUCH;
-  tmp_ctx.mailbox->data = tmp_mboxdata;
+  tmp_mbox.magic = MUTT_NOTMUCH;
+  tmp_mbox.data = tmp_mboxdata;
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_mboxdata->db_query);
 
@@ -1988,7 +1987,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
 
   mutt_str_strfcpy(tmp, tmp_mboxdata->db_query, sizeof(tmp));
 
-  if (!nm_uri_from_query(&tmp_ctx, tmp, sizeof(tmp)))
+  if (!nm_uri_from_query(&tmp_mbox, tmp, sizeof(tmp)))
     goto gone;
 
   strncpy(buf, tmp, buflen);
@@ -2090,14 +2089,14 @@ done:
 
 /**
  * nm_message_is_still_queried - Is a message still visible in the query?
- * @param ctx Mailbox
- * @param hdr Email Header
+ * @param mailbox Mailbox
+ * @param hdr     Email Header
  * @retval true Message is still in query
  */
-bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
+bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr)
 {
   char *new_str = NULL;
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   bool result = false;
 
   notmuch_database_t *db = get_db(data, false);
@@ -2281,16 +2280,16 @@ done:
 
 /**
  * nm_get_description - Get the folder's description
- * @param ctx Mailbox
- * @retval ptr  Description
+ * @param  mailbox Mailbox
+ * @retval ptr     Description
  * @retval NULL No description
  */
-char *nm_get_description(struct Context *ctx)
+char *nm_get_description(struct Mailbox *mailbox)
 {
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->b->desc && (strcmp(np->b->path, ctx->mailbox->path) == 0))
+    if (np->b->desc && (strcmp(np->b->path, mailbox->path) == 0))
       return np->b->desc;
   }
 
@@ -2326,19 +2325,19 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
 
 /**
  * nm_record_message - Add a message to the Notmuch database
- * @param ctx  Mailbox
- * @param path Path of the email
- * @param h    Email Header
+ * @param mailbox Mailbox
+ * @param path    Path of the email
+ * @param h       Email Header
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nm_record_message(struct Context *ctx, char *path, struct Header *h)
+int nm_record_message(struct Mailbox *mailbox, char *path, struct Header *h)
 {
   notmuch_database_t *db = NULL;
   notmuch_status_t st;
   notmuch_message_t *msg = NULL;
   int rc = -1, trans;
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
 
   if (!path || !data || (access(path, F_OK) != 0))
     return 0;
@@ -2389,7 +2388,7 @@ done:
 
 /**
  * nm_get_all_tags - Fill a list with all notmuch tags
- * @param ctx       Mailbox
+ * @param mailbox   Mailbox
  * @param tag_list  List of tags
  * @param tag_count Number of tags
  * @retval  0 Success
@@ -2397,9 +2396,9 @@ done:
  *
  * If tag_list is NULL, just count the tags.
  */
-int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count)
+int nm_get_all_tags(struct Mailbox *mailbox, char **tag_list, int *tag_count)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   notmuch_database_t *db = NULL;
   notmuch_tags_t *tags = NULL;
   const char *tag = NULL;
@@ -2457,7 +2456,7 @@ static int nm_mbox_open(struct Context *ctx)
 
   mutt_debug(1, "nm: reading messages...[current count=%d]\n", ctx->mailbox->msg_count);
 
-  progress_reset(ctx);
+  progress_reset(ctx->mailbox);
 
   q = get_query(data, false);
   if (q)
