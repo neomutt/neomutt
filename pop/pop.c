@@ -247,10 +247,10 @@ static int fetch_uidl(char *line, void *data)
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  struct Context *ctx = data;
-  if (!ctx)
+  struct Mailbox *mailbox = data;
+  if (!mailbox)
     return -1;
-  struct PopData *pop_data = ctx->mailbox->data;
+  struct PopData *pop_data = mailbox->data;
   if (!pop_data)
     return -1;
 
@@ -260,11 +260,10 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
     return 0;
 #endif
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < mailbox->msg_count; i++)
   {
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (ctx->mailbox->hdrs[i]->data &&
-        (mutt_str_strcmp(ctx->mailbox->hdrs[i]->data, id) == 0))
+    if (mailbox->hdrs[i]->data && (mutt_str_strcmp(mailbox->hdrs[i]->data, id) == 0))
       return 0;
   }
 
@@ -470,7 +469,7 @@ static int pop_fetch_headers(struct Context *ctx)
    * the availability of our cache
    */
   if (MessageCacheClean)
-    mutt_bcache_list(pop_data->bcache, msg_cache_check, (void *) ctx);
+    mutt_bcache_list(pop_data->bcache, msg_cache_check, ctx->mailbox);
 
   mutt_clear_error();
   return new_count - old_count;
@@ -529,7 +528,7 @@ static int pop_mbox_open(struct Context *ctx)
 
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
     ctx->mailbox->size = pop_data->size;
@@ -582,7 +581,7 @@ static int pop_mbox_close(struct Context *ctx)
   if (!pop_data)
     return 0;
 
-  pop_logout(ctx);
+  pop_logout(ctx->mailbox);
 
   if (pop_data->status != POP_NONE)
     mutt_socket_close(pop_data->conn);
@@ -651,7 +650,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
     /* verify that massage index is correct */
@@ -784,7 +783,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
@@ -863,7 +862,7 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
   if ((pop_data->check_time + PopCheckinterval) > time(NULL))
     return 0;
 
-  pop_logout(ctx);
+  pop_logout(ctx->mailbox);
 
   mutt_socket_close(pop_data->conn);
 

@@ -417,11 +417,11 @@ err_conn:
 
 /**
  * pop_logout - logout from a POP server
- * @param ctx Context
+ * @param mailbox Mailbox
  */
-void pop_logout(struct Context *ctx)
+void pop_logout(struct Mailbox *mailbox)
 {
-  struct PopData *pop_data = ctx->mailbox->data;
+  struct PopData *pop_data = mailbox->data;
 
   if (pop_data->status == POP_CONNECTED)
   {
@@ -429,7 +429,7 @@ void pop_logout(struct Context *ctx)
     char buf[LONG_STRING];
     mutt_message(_("Closing connection to POP server..."));
 
-    if (ctx->mailbox->readonly)
+    if (mailbox->readonly)
     {
       mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
       ret = pop_query(pop_data, buf, sizeof(buf));
@@ -575,23 +575,25 @@ int pop_fetch_data(struct PopData *pop_data, const char *query,
  */
 static int check_uidl(char *line, void *data)
 {
-  unsigned int index;
-  struct Context *ctx = data;
+  if (!line || !data)
+    return -1;
+
   char *endp = NULL;
 
   errno = 0;
-  index = strtoul(line, &endp, 10);
-  if (errno)
+  unsigned int index = strtoul(line, &endp, 10);
+  if (errno != 0)
     return -1;
   while (*endp == ' ')
     endp++;
   memmove(line, endp, strlen(endp) + 1);
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  struct Mailbox *mailbox = data;
+  for (int i = 0; i < mailbox->msg_count; i++)
   {
-    if (mutt_str_strcmp(ctx->mailbox->hdrs[i]->data, line) == 0)
+    if (mutt_str_strcmp(mailbox->hdrs[i]->data, line) == 0)
     {
-      ctx->mailbox->hdrs[i]->refno = index;
+      mailbox->hdrs[i]->refno = index;
       break;
     }
   }
@@ -601,13 +603,13 @@ static int check_uidl(char *line, void *data)
 
 /**
  * pop_reconnect - reconnect and verify indexes if connection was lost
- * @param ctx Context
+ * @param mailbox Mailbox
  * @retval  0 Success
  * @retval -1 Error
  */
-int pop_reconnect(struct Context *ctx)
+int pop_reconnect(struct Mailbox *mailbox)
 {
-  struct PopData *pop_data = ctx->mailbox->data;
+  struct PopData *pop_data = mailbox->data;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;
@@ -625,10 +627,10 @@ int pop_reconnect(struct Context *ctx)
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
-      for (int i = 0; i < ctx->mailbox->msg_count; i++)
-        ctx->mailbox->hdrs[i]->refno = -1;
+      for (int i = 0; i < mailbox->msg_count; i++)
+        mailbox->hdrs[i]->refno = -1;
 
-      ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);
+      ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, mailbox);
       if (ret == -2)
       {
         mutt_error("%s", pop_data->err_msg);
@@ -637,7 +639,7 @@ int pop_reconnect(struct Context *ctx)
     if (ret == 0)
       return 0;
 
-    pop_logout(ctx);
+    pop_logout(mailbox);
 
     if (ret < -1)
       return -1;
