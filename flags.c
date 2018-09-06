@@ -71,7 +71,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
   {
     case MUTT_DELETE:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
@@ -123,7 +123,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_PURGE:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
@@ -137,7 +137,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_NEW:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -176,7 +176,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_OLD:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -208,7 +208,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_READ:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -244,7 +244,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_REPLIED:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)
@@ -279,7 +279,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
     case MUTT_FLAG:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)

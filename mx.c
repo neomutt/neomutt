@@ -264,7 +264,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
   ctx->collapsed = false;
 
   for (rc = 0; rc < RIGHTSMAX; rc++)
-    mutt_bit_set(ctx->rights, rc);
+    mutt_bit_set(ctx->mailbox->rights, rc);
 
   if (flags & MUTT_QUIET)
     ctx->mailbox->quiet = true;

@@ -128,7 +128,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ACL(aclbit, action)                                              \
-  if (!Context || !mutt_bit_isset(Context->rights, aclbit))                    \
+  if (!Context || !mutt_bit_isset(Context->mailbox->rights, aclbit))           \
   {                                                                            \
     mutt_flushinp();                                                           \
     /* L10N: %s is one of the CHECK_ACL entries below. */                      \

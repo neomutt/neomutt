@@ -48,6 +48,28 @@ extern bool  MaildirCheckCur;
 #define MB_HIDDEN 1
 
 /**
+ * enum AclRights - ACL Rights
+ *
+ * These show permission to...
+ */
+enum AclRights
+{
+  MUTT_ACL_ADMIN = 0, ///< administer the account (get/set permissions)
+  MUTT_ACL_CREATE,    ///< create a mailbox
+  MUTT_ACL_DELETE,    ///< delete a message
+  MUTT_ACL_DELMX,     ///< delete a mailbox
+  MUTT_ACL_EXPUNGE,   ///< expunge messages
+  MUTT_ACL_INSERT,    ///< add/copy into the mailbox (used when editing a message)
+  MUTT_ACL_LOOKUP,    ///< lookup mailbox (visible to 'list')
+  MUTT_ACL_POST,      ///< post (submit messages to the server)
+  MUTT_ACL_READ,      ///< read the mailbox
+  MUTT_ACL_SEEN,      ///< change the 'seen' status of a message
+  MUTT_ACL_WRITE,     ///< write to a message (for flagging, or linking threads)
+
+  RIGHTSMAX
+};
+
+/**
  * struct Mailbox - A mailbox
  */
 struct Mailbox
@@ -81,6 +103,8 @@ struct Mailbox
   bool readonly : 1;  /**< don't allow changes to the mailbox */
   bool quiet : 1;     /**< inhibit status messages? */
   bool closing : 1;   /**< mailbox is being closed */
+
+  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
   int flags; /**< e.g. #MB_NORMAL */
 };

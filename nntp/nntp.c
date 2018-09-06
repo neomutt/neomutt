@@ -1546,7 +1546,7 @@ static int nntp_mbox_open(struct Context *ctx)
     return -1;
   }
 
-  mutt_bit_unset(ctx->rights, MUTT_ACL_INSERT);
+  mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_INSERT);
   if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
     ctx->mailbox->readonly = true;
 
@@ -1623,8 +1623,8 @@ static int nntp_mbox_open(struct Context *ctx)
 #endif
   if (!hc)
   {
-    mutt_bit_unset(ctx->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(ctx->rights, MUTT_ACL_DELETE);
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_WRITE);
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_DELETE);
   }
   nntp_newsrc_close(nserv);
   rc = nntp_fetch_headers(ctx, hc, first, nntp_data->last_message, 0);

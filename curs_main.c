@@ -145,7 +145,7 @@ static const char *NoVisible = N_("No visible messages");
   }
 
 #define CHECK_ACL(aclbit, action)                                              \
-  if (!mutt_bit_isset(Context->rights, aclbit))                                \
+  if (!mutt_bit_isset(Context->mailbox->rights, aclbit))                       \
   {                                                                            \
     mutt_flushinp();                                                           \
     /* L10N: %s is one of the CHECK_ACL entries below. */                      \
@@ -3047,7 +3047,7 @@ int mutt_index_menu(void)
         }
         else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
           edit = !Context->mailbox->readonly &&
-                 mutt_bit_isset(Context->rights, MUTT_ACL_INSERT);
+                 mutt_bit_isset(Context->mailbox->rights, MUTT_ACL_INSERT);
         else
           edit = false;
 

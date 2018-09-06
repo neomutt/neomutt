@@ -29,31 +29,6 @@
 #include <time.h>
 
 /**
- * enum AclRights - ACL Rights
- *
- * These permissions come from the 'MYRIGHTS' command from RFC4314.
- * The quoted letter is the code returned by the server.
- *
- * These show permission to...
- */
-enum AclRights
-{
-  MUTT_ACL_ADMIN = 0, ///< 'a' administer the account (get/set permissions)
-  MUTT_ACL_CREATE,    ///< 'k' create a mailbox
-  MUTT_ACL_DELETE,    ///< 't' delete a message
-  MUTT_ACL_DELMX,     ///< 'x' delete a mailbox
-  MUTT_ACL_EXPUNGE,   ///< 'e' expunge messages
-  MUTT_ACL_INSERT,    ///< 'i' add/copy into the mailbox (used when editing a message)
-  MUTT_ACL_LOOKUP,    ///< 'l' lookup mailbox (visible to 'list')
-  MUTT_ACL_POST,      ///< 'p' post (submit messages to the server)
-  MUTT_ACL_READ,      ///< 'r' read the mailbox
-  MUTT_ACL_SEEN,      ///< 's' change the 'seen' status of a message
-  MUTT_ACL_WRITE,     ///< 'w' write to a message (for flagging, or linking threads)
-
-  RIGHTSMAX
-};
-
-/**
  * struct Context - The "current" mailbox
  */
 struct Context
@@ -76,8 +51,6 @@ struct Context
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
   struct Menu *menu; /**< needed for pattern compilation */
-
-  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
   bool dontwrite : 1; /**< don't write the mailbox on close */
   bool append : 1;    /**< mailbox is opened in append mode */

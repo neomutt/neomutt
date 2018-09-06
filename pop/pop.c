@@ -517,13 +517,13 @@ static int pop_mbox_open(struct Context *ctx)
   pop_data->bcache = mutt_bcache_open(&acct, NULL);
 
   /* init (hard-coded) ACL rights */
-  memset(ctx->rights, 0, sizeof(ctx->rights));
-  mutt_bit_set(ctx->rights, MUTT_ACL_SEEN);
-  mutt_bit_set(ctx->rights, MUTT_ACL_DELETE);
+  memset(ctx->mailbox->rights, 0, sizeof(ctx->mailbox->rights));
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_SEEN);
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_DELETE);
 #ifdef USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
-  mutt_bit_set(ctx->rights, MUTT_ACL_WRITE);
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_WRITE);
 #endif
 
   while (true)

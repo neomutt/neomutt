@@ -159,7 +159,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
 static void set_flag(struct ImapData *idata, int aclbit, int flag,
                      const char *str, char *flags, size_t flsize)
 {
-  if (mutt_bit_isset(idata->ctx->rights, aclbit))
+  if (mutt_bit_isset(idata->ctx->mailbox->rights, aclbit))
     if (flag && imap_has_flag(&idata->flags, str))
       mutt_str_strcat(flags, flsize, str);
 }
@@ -301,7 +301,7 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
   if (!idata->ctx)
     return -1;
 
-  if (!mutt_bit_isset(idata->ctx->rights, right))
+  if (!mutt_bit_isset(idata->ctx->mailbox->rights, right))
     return 0;
 
   if (right == MUTT_ACL_WRITE && !imap_has_flag(&idata->flags, name))
@@ -1290,7 +1290,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
   set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
            flags, sizeof(flags));
 
-  if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
+  if (mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE))
   {
     /* restore system flags */
     if (HEADER_DATA(hdr)->flags_system)
@@ -1318,7 +1318,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
              flags, sizeof(flags));
 
     /* erase custom flags */
-    if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) && HEADER_DATA(hdr)->flags_remote)
+    if (mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE) &&
+        HEADER_DATA(hdr)->flags_remote)
       mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
@@ -2038,7 +2039,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   /* clear mailbox status */
   idata->status = false;
-  memset(idata->ctx->rights, 0, sizeof(idata->ctx->rights));
+  memset(idata->ctx->mailbox->rights, 0, sizeof(idata->ctx->mailbox->rights));
   idata->new_mail_count = 0;
   idata->max_msn = 0;
 
@@ -2054,14 +2055,14 @@ static int imap_mbox_open(struct Context *ctx)
   /* assume we have all rights if ACL is unavailable */
   else
   {
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_LOOKUP);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_READ);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_SEEN);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
-    mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_READ);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_SEEN);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_WRITE);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_INSERT);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_POST);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+    mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELETE);
   }
   /* pipeline the postponed count if possible */
   pmx.mbox = NULL;
@@ -2209,10 +2210,10 @@ static int imap_mbox_open(struct Context *ctx)
     }
   }
 
-  if (!(mutt_bit_isset(idata->ctx->rights, MUTT_ACL_DELETE) ||
-        mutt_bit_isset(idata->ctx->rights, MUTT_ACL_SEEN) ||
-        mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) ||
-        mutt_bit_isset(idata->ctx->rights, MUTT_ACL_INSERT)))
+  if (!(mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_DELETE) ||
+        mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_SEEN) ||
+        mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE) ||
+        mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_INSERT)))
   {
     ctx->mailbox->readonly = true;
   }
@@ -2420,7 +2421,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
-  if (expunge && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+  if (expunge && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
   {
     rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
                           MUTT_DELETED, true, false);
@@ -2558,7 +2559,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   ctx->mailbox->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
-  if (expunge && !(ctx->mailbox->closing) && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+  if (expunge && !(ctx->mailbox->closing) && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
   {
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
@@ -2692,7 +2693,7 @@ static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
   if (*buf == '\0')
     buf = NULL;
 
-  if (!mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
+  if (!mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE))
     return 0;
 
   snprintf(uid, sizeof(uid), "%u", HEADER_DATA(hdr)->uid);
