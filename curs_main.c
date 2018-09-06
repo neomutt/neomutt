@@ -2210,7 +2210,7 @@ int mutt_index_menu(void)
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
             OptNews = true;
-            CurrentNewsSrv = nntp_select_server(NewsServer, false);
+            CurrentNewsSrv = nntp_select_server(Context, NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)
@@ -3010,7 +3010,7 @@ int mutt_index_menu(void)
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
           struct NntpData *nntp_data = Context->mailbox->data;
-          if (mutt_newsgroup_catchup(nntp_data->nserv, nntp_data->group))
+          if (mutt_newsgroup_catchup(Context, nntp_data->nserv, nntp_data->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;

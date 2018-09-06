@@ -74,7 +74,7 @@ void nm_debug_check(struct Mailbox *mailbox);
 int nm_get_all_tags(struct Mailbox *mailbox, char **tag_list, int *tag_count);
 
 /*
- * functions usable outside notmuch Context
+ * functions usable outside of notmuch
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
 int nm_path_probe(const char *path, const struct stat *st);

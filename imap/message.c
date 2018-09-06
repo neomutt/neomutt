@@ -601,7 +601,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapData *idata,
 
 /**
  * set_changed_flag - Have the flags of an email changed
- * @param[in]  ctx            Context
+ * @param[in]  ctx            Mailbox
  * @param[in]  h              Email Header
  * @param[in]  local_changes  Has the local mailbox been changed?
  * @param[out] server_changes Set to 1 if the flag has changed
@@ -1587,7 +1587,7 @@ int imap_msg_commit(struct Context *ctx, struct Message *msg)
 
 /**
  * imap_append_message - Write an email back to the server
- * @param ctx Context
+ * @param ctx Mailbox
  * @param msg Message to save
  * @retval  0 Success
  * @retval -1 Failure
@@ -1722,7 +1722,7 @@ fail:
 
 /**
  * imap_copy_messages - Server COPY messages to another folder
- * @param ctx    Context
+ * @param ctx    Mailbox
  * @param h      Header of the email
  * @param dest   Destination folder
  * @param delete Delete the original?

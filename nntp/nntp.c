@@ -1531,7 +1531,7 @@ static int nntp_mbox_open(struct Context *ctx)
   group = url.path;
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
-  nserv = nntp_select_server(server, true);
+  nserv = nntp_select_server(ctx, server, true);
   url_free(&url);
   if (!nserv)
     return -1;
@@ -1775,22 +1775,22 @@ static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * nntp_post - Post article
- * @param mailbox Mailbox
- * @param msg     Message to post
+ * @param ctx Mailbox
+ * @param msg Message to post
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_post(struct Mailbox *mailbox, const char *msg)
+int nntp_post(struct Context *ctx, const char *msg)
 {
   struct NntpData *nntp_data = NULL;
   struct NntpData nntp_tmp = { 0 };
   char buf[LONG_STRING];
 
-  if (mailbox && (mailbox->magic == MUTT_NNTP))
-    nntp_data = mailbox->data;
+  if (ctx && (ctx->mailbox->magic == MUTT_NNTP))
+    nntp_data = ctx->mailbox->data;
   else
   {
-    CurrentNewsSrv = nntp_select_server(NewsServer, false);
+    CurrentNewsSrv = nntp_select_server(ctx, NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 

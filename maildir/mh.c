@@ -1022,7 +1022,7 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
 }
 
 /**
- * maildir_add_to_context - Add the Maildir list to the Context
+ * maildir_add_to_context - Add the Maildir list to the Mailbox
  * @param ctx Mailbox
  * @param md  Maildir list to copy
  * @retval true If there's new mail
@@ -1063,7 +1063,7 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 }
 
 /**
- * maildir_move_to_context - Copy the Maildir list to the Context
+ * maildir_move_to_context - Copy the Maildir list to the Mailbox
  * @param ctx Mailbox
  * @param md  Maildir list to copy, then free
  * @retval 1 If there's new mail
@@ -2276,7 +2276,7 @@ static char *maildir_canon_filename(const char *src, char *buf, size_t buflen)
 }
 
 /**
- * maildir_update_tables - Update the Context Header tables
+ * maildir_update_tables - Update the Header tables
  * @param ctx        Mailbox
  * @param index_hint Current email in index
  */

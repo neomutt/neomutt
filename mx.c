@@ -527,7 +527,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
         return -1;
       }
       else if (rc == MUTT_YES)
-        mutt_newsgroup_catchup(nntp_data->nserv, nntp_data->group);
+        mutt_newsgroup_catchup(Context, nntp_data->nserv, nntp_data->group);
     }
   }
 #endif

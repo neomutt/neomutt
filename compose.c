@@ -1408,7 +1408,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         OptNews = false;
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
-          CurrentNewsSrv = nntp_select_server(NewsServer, false);
+          CurrentNewsSrv = nntp_select_server(Context, NewsServer, false);
           if (!CurrentNewsSrv)
             break;
 

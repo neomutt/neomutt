@@ -59,7 +59,7 @@ struct Header;
 /**
  * struct CompressInfo - Private data for compress
  *
- * This object gets attached to the mailbox's Context.
+ * This object gets attached to the Mailbox.
  */
 struct CompressInfo
 {

@@ -1103,7 +1103,7 @@ int imap_wait_keepalive(pid_t pid)
 
 /**
  * imap_allow_reopen - Allow re-opening a folder upon expunge
- * @param ctx Context
+ * @param ctx Mailbox
  */
 void imap_allow_reopen(struct Context *ctx)
 {
@@ -1118,7 +1118,7 @@ void imap_allow_reopen(struct Context *ctx)
 
 /**
  * imap_disallow_reopen - Disallow re-opening a folder upon expunge
- * @param ctx Context
+ * @param ctx Mailbox
  */
 void imap_disallow_reopen(struct Context *ctx)
 {

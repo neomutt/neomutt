@@ -195,7 +195,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 /**
  * fetch_uidl - parse UIDL
  * @param line String to parse
- * @param data Mailbox Context
+ * @param data Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -305,7 +305,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 
 /**
  * pop_fetch_headers - Read headers
- * @param ctx Context
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
@@ -477,7 +477,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
 /**
  * pop_mbox_open - open POP mailbox, fetch only headers
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -571,7 +571,7 @@ static void pop_clear_cache(struct PopData *pop_data)
 
 /**
  * pop_mbox_close - close POP mailbox
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @retval 0 Always
  */
 static int pop_mbox_close(struct Context *ctx)
@@ -601,7 +601,7 @@ static int pop_mbox_close(struct Context *ctx)
 
 /**
  * pop_msg_open - fetch message from POP server
- * @param ctx   Mailbox Context
+ * @param ctx   Mailbox
  * @param msg   Message
  * @param msgno Message number
  * @retval  0 Success
@@ -752,7 +752,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
 /**
  * pop_msg_close - Close POP Message
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @param msg Message
  * @retval 0   Success
  * @retval EOF Error, see errno
@@ -764,7 +764,7 @@ static int pop_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * pop_mbox_sync - update POP mailbox, delete messages from server
- * @param ctx        Mailbox Context
+ * @param ctx        Mailbox
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure
@@ -849,7 +849,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
 /**
  * pop_mbox_check - Check for new messages and fetch headers
- * @param ctx        Mailbox Context
+ * @param ctx        Mailbox
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure

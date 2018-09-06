@@ -2372,7 +2372,7 @@ static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct He
 
 /**
  * imap_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Context
+ * @param ctx        Mailbox
  * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
@@ -2391,7 +2391,7 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
 
 /**
  * imap_sync_mailbox - Sync all the changes to the server
- * @param ctx     Context
+ * @param ctx     Mailbox
  * @param expunge if true do expunge
  * @retval  0 Success
  * @retval -1 Error

@@ -2716,7 +2716,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
                         NONULL(Inews), nntp_format_str, 0, 0);
     if (!*cmd)
     {
-      i = nntp_post(Context->mailbox, msg);
+      i = nntp_post(Context, msg);
       unlink(msg);
       return i;
     }

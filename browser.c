@@ -2158,9 +2158,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             break;
 
           if (i == OP_CATCHUP)
-            nntp_data = mutt_newsgroup_catchup(CurrentNewsSrv, ff->name);
+            nntp_data = mutt_newsgroup_catchup(Context, CurrentNewsSrv, ff->name);
           else
-            nntp_data = mutt_newsgroup_uncatchup(CurrentNewsSrv, ff->name);
+            nntp_data = mutt_newsgroup_uncatchup(Context, CurrentNewsSrv, ff->name);
 
           if (nntp_data)
           {
