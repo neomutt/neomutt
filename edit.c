@@ -211,7 +211,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
   while ((msg = strtok(msg, " ,")))
   {
-    if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->mailbox->msg_count)
+    if ((mutt_str_atoi(msg, &n) == 0) && (n > 0) && (n <= Context->mailbox->msg_count))
     {
       n--;
 
@@ -237,7 +237,9 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       }
       else
         offset = Context->mailbox->hdrs[n]->content->offset;
-      buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
+      /* This only worked for mbox Mailboxes because they had Context->fp set.
+       * As that no longer exists, the code is now completely broken. */
+      // buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));

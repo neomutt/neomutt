@@ -348,23 +348,6 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (!ctx)
     return;
 
-  /* fix up the times so mailbox won't get confused */
-  if (ctx->peekonly && ctx->mailbox->path &&
-      (mutt_timespec_compare(&ctx->mtime, &ctx->atime) > 0))
-  {
-#ifdef HAVE_UTIMENSAT
-    struct timespec ts[2];
-    ts[0] = ctx->atime;
-    ts[1] = ctx->mtime;
-    utimensat(0, ctx->mailbox->path, ts, 0);
-#else
-    struct utimbuf ut;
-    ut.actime = ctx->atime.tv_sec;
-    ut.modtime = ctx->mtime.tv_sec;
-    utime(ctx->mailbox->path, &ut);
-#endif
-  }
-
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
@@ -373,10 +356,8 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (ctx->mailbox->mx_ops)
     ctx->mailbox->mx_ops->mbox_close(ctx);
 
-  if (ctx->subj_hash)
-    mutt_hash_destroy(&ctx->subj_hash);
-  if (ctx->id_hash)
-    mutt_hash_destroy(&ctx->id_hash);
+  mutt_hash_destroy(&ctx->subj_hash);
+  mutt_hash_destroy(&ctx->id_hash);
   mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
@@ -386,7 +367,6 @@ void mx_fastclose_mailbox(struct Context *ctx)
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);
-  mutt_file_fclose(&ctx->fp);
   memset(ctx, 0, sizeof(struct Context));
 }
 
