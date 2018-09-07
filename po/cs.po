@@ -13,6 +13,7 @@
 # folder - složka
 # tag - značka
 # flag - příznak
+# option - volba, přepínač (?)
 #
 msgid ""
 msgstr ""
@@ -103,9 +104,8 @@ msgid "Error reading alias file"
 msgstr "Chyba při čtení souboru s přezdívkami"
 
 #: alias.c:509
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Chyba při čtení souboru s přezdívkami"
+msgstr "Chyba během přidávání přezdívky"
 
 #: alias.c:511
 msgid "Alias added"
@@ -1080,9 +1080,8 @@ msgid "SHA1 Fingerprint: %s"
 msgstr "Otisk SHA1 klíče: %s"
 
 #: conn/ssl.c:1003 conn/ssl.c:1005 conn/ssl_gnutls.c:734 conn/ssl_gnutls.c:736
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Otisk SHA1 klíče: %s"
+msgstr "Otisk SHA256 klíče: "
 
 #: conn/ssl.c:1008 conn/ssl_gnutls.c:770
 #, c-format
@@ -2371,7 +2370,7 @@ msgstr "Neplatné IMAP příznaky"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:476
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Přerušit stahování a zavřít schránku?"
 
 #: imap/message.c:505 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
 #: mutt/memory.c:142 mx.c:1171 safe_asprintf.c:61
@@ -2386,14 +2385,12 @@ msgstr "Vyhodnocuji cache…"
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:869
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Stahuji hlavičky zpráv…"
+msgstr "Stahuji příznaky zpráv…"
 
 #: imap/message.c:969
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
-msgstr "Z IMAP serveru této verze hlavičky nelze stahovat"
+msgstr "Z IMAP serveru této verze nelze stahovat hlavičky"
 
 #: imap/message.c:979
 #, c-format
@@ -2441,12 +2438,12 @@ msgstr "příliš málo argumentů"
 #: init.c:774 init.c:1639
 #, c-format
 msgid "Error: impossible to build path of '%s'"
-msgstr ""
+msgstr "Chyba: nelze sestavit cestu k „%s“"
 
 #: init.c:791
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Chyba: zacyklení při vkládání konfiguračního souboru „%s“"
 
 #: init.c:822
 #, c-format
@@ -3018,9 +3015,8 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Úroveň ladění je %d do souboru „%s“"
 
 #: mutt/path.c:443
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Chyba při připojování k serveru: %s"
+msgstr "Chyba při konverzi cesty na absolutní"
 
 #: mutt/regex.c:269
 #, c-format
@@ -3115,9 +3111,8 @@ msgid "Password for %s@%s: "
 msgstr "Heslo pro %s@%s: "
 
 #: mutt_account.c:381
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Příkaz pro dotazy není definován"
+msgstr "Není definován příkaz pro obnovení OAUTH"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
@@ -3211,16 +3206,16 @@ msgstr "Historie „%s“"
 #: mutt_logging.c:330
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Neplatná hodnota přepínače %s: „%s“"
+msgstr "Neplatná hodnota přepínače %s: „%ld“"
 
 #: mutt_lua.c:420
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Chyba: nelze zavést interpret jazyka lua"
 
 #: mutt_lua.c:496
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "%s nelze zamknout.\n"
+msgstr "Nelze vložit lua zdroj: %s"
 
 #: mutt_socket.c:90
 #, c-format
@@ -3246,9 +3241,9 @@ msgstr "Čtení z %s bylo přerušeno…"
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "%s nelze připojit"
+msgstr "Nelze zapsat %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3585,7 +3580,7 @@ msgstr "ID klíče "
 
 #: ncrypt/crypt_gpgme.c:1541
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "není k dispozici žádný otisk podpisu"
 
 #: ncrypt/crypt_gpgme.c:1550 ncrypt/crypt_gpgme.c:1555
 msgid "created: "
@@ -4091,9 +4086,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:728
-#, fuzzy
 msgid "PGP message was not encrypted"
-msgstr "PGP zpráva byla úspěšně dešifrována"
+msgstr "PGP zpráva nebyla zašifrována"
 
 #: ncrypt/pgp.c:967
 msgid "Internal error.  Please submit a bug report."
@@ -4668,9 +4662,8 @@ msgid "check mailboxes for new mail"
 msgstr "zjistit zda schránky obsahují novou poštu"
 
 #: opcodes.h:44
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "uložit zprávu/přílohu do schránky/souboru"
+msgstr "spočítat statistiky zpráv ve všech schránkách"
 
 #: opcodes.h:45
 msgid "attach files to this message"
@@ -4809,7 +4802,6 @@ msgid "toggle whether to delete file after sending it"
 msgstr "přepnout, zda má být soubor po odeslání smazán"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "sepsat novou zprávu pro odesílatele"
 
@@ -5881,14 +5873,12 @@ msgid "Command USER is not supported by server"
 msgstr "Server nepodporuje příkaz USER"
 
 #: pop/pop_auth.c:353 smtp.c:513
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Ověřuji (SASL)…"
+msgstr "Ověřuji (OAUTHBEARER)…"
 
 #: pop/pop_auth.c:392
-#, fuzzy
 msgid "Authentication failed"
-msgstr "SASL autentizace se nezdařila"
+msgstr "Autentizace se nezdařila"
 
 #: pop/pop_lib.c:81
 #, c-format
@@ -6101,7 +6091,6 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Všechny označené přílohy nelze dekódovat. Zapouzdřit je do MIME formátu?"
 
 #: recvcmd.c:1051
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rfc822“"
 
@@ -6367,7 +6356,7 @@ msgstr "Neplatné SMTP URL: %s"
 #: smtp.c:616
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "SMTP ověření metodou %s vyžaduje SASL"
 
 #: smtp.c:623
 #, c-format
@@ -6375,9 +6364,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "%s autentizace se nezdařila, zkouším další metodu"
 
 #: smtp.c:636
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI ověření se nezdařilo"
+msgstr "SMTP ověření vyžaduje SASL"
 
 #: smtp.c:716
 msgid "SMTP server does not support authentication"
