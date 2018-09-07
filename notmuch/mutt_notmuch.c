@@ -2289,8 +2289,8 @@ char *nm_get_description(struct Mailbox *mailbox)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->b->desc && (strcmp(np->b->path, mailbox->path) == 0))
-      return np->b->desc;
+    if (np->m->desc && (strcmp(np->m->path, mailbox->path) == 0))
+      return np->m->desc;
   }
 
   return NULL;
@@ -2312,9 +2312,9 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((np->b->magic == MUTT_NOTMUCH) && np->b->desc && (strcmp(desc, np->b->desc) == 0))
+    if ((np->m->magic == MUTT_NOTMUCH) && np->m->desc && (strcmp(desc, np->m->desc) == 0))
     {
-      strncpy(buf, np->b->path, buflen);
+      strncpy(buf, np->m->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }

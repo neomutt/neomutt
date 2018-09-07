@@ -79,7 +79,7 @@ struct Mailbox
                             * comparison, and the sidebar */
   char *desc;
   off_t size;
-  bool new; /**< mailbox has new mail */
+  bool has_new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */
   int msg_count;             /**< total number of messages */
@@ -114,7 +114,7 @@ struct Mailbox
  */
 struct MailboxNode
 {
-  struct Mailbox *b;
+  struct Mailbox *m;
   STAILQ_ENTRY(MailboxNode) entries;
 };
 
@@ -131,7 +131,7 @@ void            mailbox_free(struct Mailbox **mailbox);
 void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
-void mutt_update_mailbox(struct Mailbox *b);
+void mutt_update_mailbox(struct Mailbox *m);
 
 void mutt_mailbox_cleanup(const char *path, struct stat *st);
 

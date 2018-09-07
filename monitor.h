@@ -28,8 +28,8 @@ extern int MonitorContextChanged;
 
 struct Mailbox;
 
-int mutt_monitor_add(struct Mailbox *b);
-int mutt_monitor_remove(struct Mailbox *b);
+int mutt_monitor_add(struct Mailbox *m);
+int mutt_monitor_remove(struct Mailbox *m);
 int mutt_monitor_poll(void);
 
 #endif /* MUTT_MONITOR_H */

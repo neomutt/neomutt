@@ -1442,7 +1442,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (CheckMboxSize)
   {
     tmp = mutt_find_mailbox(ctx->mailbox->path);
-    if (tmp && !tmp->new)
+    if (tmp && !tmp->has_new)
       mutt_update_mailbox(tmp);
   }
 

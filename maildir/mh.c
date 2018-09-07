@@ -290,41 +290,41 @@ static inline mode_t mh_umask(struct Mailbox *mailbox)
 
 /**
  * mh_sequences_changed - Has the mailbox changed
- * @param b Mailbox
+ * @param m Mailbox
  * @retval 1 mh_sequences last modification time is more recent than the last visit to this mailbox
  * @retval 0 modification time is older
  * @retval -1 Error
  */
-static int mh_sequences_changed(struct Mailbox *b)
+static int mh_sequences_changed(struct Mailbox *m)
 {
   char path[PATH_MAX];
   struct stat sb;
 
-  if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
+  if ((snprintf(path, sizeof(path), "%s/.mh_sequences", m->path) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &b->last_visited) > 0);
+    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0);
   }
   return -1;
 }
 
 /**
  * mh_already_notified - Has the message changed
- * @param b     Mailbox
+ * @param m     Mailbox
  * @param msgno Message number
  * @retval 1 Modification time on the message file is older than the last visit to this mailbox
  * @retval 0 Modification time on the message file is newer
  * @retval -1 Error
  */
-static int mh_already_notified(struct Mailbox *b, int msgno)
+static int mh_already_notified(struct Mailbox *m, int msgno)
 {
   char path[PATH_MAX];
   struct stat sb;
 
-  if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
+  if ((snprintf(path, sizeof(path), "%s/%d", m->path, msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &b->last_visited) <= 0);
+    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) <= 0);
   }
   return -1;
 }
@@ -398,7 +398,7 @@ bool mh_mailbox(struct Mailbox *mailbox, bool check_stats)
            last visit, don't notify about it */
         if (!MailCheckRecent || mh_already_notified(mailbox, i) == 0)
         {
-          mailbox->new = true;
+          mailbox->has_new = true;
           rc = true;
         }
         /* Because we are traversing from high to low, we can stop

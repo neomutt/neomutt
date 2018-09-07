@@ -289,7 +289,7 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
             continue;
           }
         }
-        mailbox->new = true;
+        mailbox->has_new = true;
         rc = 1;
         check_new = false;
         if (!check_stats)
@@ -360,7 +360,7 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
         (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &mailbox->last_visited) > 0))
     {
       rc = 1;
-      mailbox->new = true;
+      mailbox->has_new = true;
     }
   }
   else if (CheckMboxSize)
@@ -407,7 +407,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   memset(&sb, 0, sizeof(sb));
 
 #ifdef USE_SIDEBAR
-  orig_new = tmp->new;
+  orig_new = tmp->has_new;
   orig_count = tmp->msg_count;
   orig_unread = tmp->msg_unread;
   orig_flagged = tmp->msg_flagged;
@@ -415,7 +415,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
 
   if (tmp->magic != MUTT_IMAP)
   {
-    tmp->new = false;
+    tmp->has_new = false;
 #ifdef USE_POP
     if (pop_path_probe(tmp->path, NULL) == MUTT_POP)
       tmp->magic = MUTT_POP;
@@ -482,7 +482,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
         if (tmp->msg_unread > 0)
         {
           MailboxCount++;
-          tmp->new = true;
+          tmp->has_new = true;
         }
         break;
 #endif
@@ -493,14 +493,14 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
     tmp->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
-  if ((orig_new != tmp->new) || (orig_count != tmp->msg_count) ||
+  if ((orig_new != tmp->has_new) || (orig_count != tmp->msg_count) ||
       (orig_unread != tmp->msg_unread) || (orig_flagged != tmp->msg_flagged))
   {
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
   }
 #endif
 
-  if (!tmp->new)
+  if (!tmp->has_new)
     tmp->notified = false;
   else if (!tmp->notified)
     MailboxNotify++;
@@ -523,11 +523,11 @@ static struct Mailbox *mailbox_get(const char *path)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* must be done late because e.g. IMAP delimiter may change */
-    mutt_expand_path(np->b->path, sizeof(np->b->path));
-    if (mutt_str_strcmp(np->b->path, path) == 0)
+    mutt_expand_path(np->m->path, sizeof(np->m->path));
+    if (mutt_str_strcmp(np->m->path, path) == 0)
     {
       FREE(&epath);
-      return np->b;
+      return np->m;
     }
   }
 
@@ -553,9 +553,9 @@ void mutt_mailbox_cleanup(const char *path, struct stat *st)
 
   if (CheckMboxSize)
   {
-    struct Mailbox *b = mutt_find_mailbox(path);
-    if (b && !b->new)
-      mutt_update_mailbox(b);
+    struct Mailbox *m = mutt_find_mailbox(path);
+    if (m && !m->has_new)
+      mutt_update_mailbox(m);
   }
   else
   {
@@ -608,10 +608,10 @@ struct Mailbox *mutt_find_mailbox(const char *path)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((stat(np->b->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
+    if ((stat(np->m->path, &tmp_sb) == 0) && (sb.st_dev == tmp_sb.st_dev) &&
         (sb.st_ino == tmp_sb.st_ino))
     {
-      return np->b;
+      return np->m;
     }
   }
 
@@ -620,19 +620,19 @@ struct Mailbox *mutt_find_mailbox(const char *path)
 
 /**
  * mutt_update_mailbox - Get the mailbox's current size
- * @param b Mailbox to check
+ * @param m Mailbox to check
  */
-void mutt_update_mailbox(struct Mailbox *b)
+void mutt_update_mailbox(struct Mailbox *m)
 {
   struct stat sb;
 
-  if (!b)
+  if (!m)
     return;
 
-  if (stat(b->path, &sb) == 0)
-    b->size = (off_t) sb.st_size;
+  if (stat(m->path, &sb) == 0)
+    m->size = (off_t) sb.st_size;
   else
-    b->size = 0;
+    m->size = 0;
 }
 
 /**
@@ -689,9 +689,9 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (mutt_str_strcmp(p ? p : buf, np->b->realpath) == 0)
+      if (mutt_str_strcmp(p ? p : buf, np->m->realpath) == 0)
       {
-        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, np->b->path);
+        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, np->m->path);
         break;
       }
     }
@@ -702,17 +702,17 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
       continue;
     }
 
-    struct Mailbox *b = mailbox_new(buf);
+    struct Mailbox *m = mailbox_new(buf);
 
-    b->new = false;
-    b->notified = true;
-    b->newly_created = false;
-    b->desc = desc;
+    m->has_new = false;
+    m->notified = true;
+    m->newly_created = false;
+    m->desc = desc;
 #ifdef USE_NOTMUCH
-    if (nm_path_probe(b->path, NULL) == MUTT_NOTMUCH)
+    if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
     {
-      b->magic = MUTT_NOTMUCH;
-      b->size = 0;
+      m->magic = MUTT_NOTMUCH;
+      m->size = 0;
     }
     else
 #endif
@@ -721,25 +721,25 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
        * reading it), the size is set to 0 so that later when we check we see
        * that it increased. without check_mbox_size we probably don't care.
        */
-      if (CheckMboxSize && stat(b->path, &sb) == 0 && !test_new_folder(b->path))
+      if (CheckMboxSize && stat(m->path, &sb) == 0 && !test_new_folder(m->path))
       {
         /* some systems out there don't have an off_t type */
-        b->size = (off_t) sb.st_size;
+        m->size = (off_t) sb.st_size;
       }
       else
-        b->size = 0;
+        m->size = 0;
     }
 
     struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-    mn->b = b;
+    mn->m = m;
     STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
 
 #ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(b, true);
+    mutt_sb_notify_mailbox(m, true);
 #endif
 #ifdef USE_INOTIFY
-    b->magic = mx_path_probe(b->path, NULL);
-    mutt_monitor_add(b);
+    m->magic = mx_path_probe(m->path, NULL);
+    mutt_monitor_add(m);
 #endif
   }
   return 0;
@@ -790,21 +790,21 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
     STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, tmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
-      bool virt = ((np->b->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
-      bool norm = ((np->b->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
+      bool virt = ((np->m->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
+      bool norm = ((np->m->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
-      if (clear_this || (mutt_str_strcasecmp(buf, np->b->path) == 0) ||
-          (mutt_str_strcasecmp(buf, np->b->desc) == 0))
+      if (clear_this || (mutt_str_strcasecmp(buf, np->m->path) == 0) ||
+          (mutt_str_strcasecmp(buf, np->m->desc) == 0))
       {
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(np->b, false);
+        mutt_sb_notify_mailbox(np->m, false);
 #endif
 #ifdef USE_INOTIFY
-        mutt_monitor_remove(np->b);
+        mutt_monitor_remove(np->m);
 #endif
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
-        mailbox_free(&np->b);
+        mailbox_free(&np->m);
         FREE(&np);
         continue;
       }
@@ -875,7 +875,7 @@ int mutt_mailbox_check(int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    mailbox_check(np->b, &contex_sb, check_stats);
+    mailbox_check(np->m, &contex_sb, check_stats);
   }
 
   return MailboxCount;
@@ -900,10 +900,10 @@ bool mutt_mailbox_list(void)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* Is there new mail in this mailbox? */
-    if (!np->b->new || (have_unnotified && np->b->notified))
+    if (!np->m->has_new || (have_unnotified && np->m->notified))
       continue;
 
-    mutt_str_strfcpy(path, np->b->path, sizeof(path));
+    mutt_str_strfcpy(path, np->m->path, sizeof(path));
     mutt_pretty_mailbox(path, sizeof(path));
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
@@ -916,10 +916,10 @@ bool mutt_mailbox_list(void)
       pos += strlen(strncat(mailboxlist + pos, ", ", sizeof(mailboxlist) - 1 - pos));
 
     /* Prepend an asterisk to mailboxes not already notified */
-    if (!np->b->notified)
+    if (!np->m->notified)
     {
       /* pos += strlen (strncat(mailboxlist + pos, "*", sizeof(mailboxlist)-1-pos)); */
-      np->b->notified = true;
+      np->m->notified = true;
       MailboxNotify--;
     }
     pos += strlen(strncat(mailboxlist + pos, path, sizeof(mailboxlist) - 1 - pos));
@@ -993,16 +993,16 @@ void mutt_mailbox(char *s, size_t slen)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (np->b->magic == MUTT_NOTMUCH) /* only match real mailboxes */
+        if (np->m->magic == MUTT_NOTMUCH) /* only match real mailboxes */
           continue;
-        mutt_expand_path(np->b->path, sizeof(np->b->path));
-        if ((found || pass) && np->b->new)
+        mutt_expand_path(np->m->path, sizeof(np->m->path));
+        if ((found || pass) && np->m->has_new)
         {
-          mutt_str_strfcpy(s, np->b->path, slen);
+          mutt_str_strfcpy(s, np->m->path, slen);
           mutt_pretty_mailbox(s, slen);
           return;
         }
-        if (mutt_str_strcmp(s, np->b->path) == 0)
+        if (mutt_str_strcmp(s, np->m->path) == 0)
           found = 1;
       }
     }
@@ -1030,14 +1030,14 @@ void mutt_mailbox_vfolder(char *buf, size_t buflen)
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (np->b->magic != MUTT_NOTMUCH)
+        if (np->m->magic != MUTT_NOTMUCH)
           continue;
-        if ((found || pass) && np->b->new)
+        if ((found || pass) && np->m->has_new)
         {
-          mutt_str_strfcpy(buf, np->b->desc, buflen);
+          mutt_str_strfcpy(buf, np->m->desc, buflen);
           return;
         }
-        if (mutt_str_strcmp(buf, np->b->path) == 0)
+        if (mutt_str_strcmp(buf, np->m->path) == 0)
           found = true;
       }
     }

@@ -1568,10 +1568,10 @@ int mutt_index_menu(void)
         struct MailboxNode *np = NULL;
         STAILQ_FOREACH(np, &AllMailboxes, entries)
         {
-          fprintf(fp, "path:     %s\n", np->b->path);
-          fprintf(fp, "size:     %ld\n", np->b->size);
-          // fprintf(fp, "realpath: %s\n", np->b->realpath);
-          // fprintf(fp, "desc:     %s\n", np->b->desc);
+          fprintf(fp, "path:     %s\n", np->m->path);
+          fprintf(fp, "size:     %ld\n", np->m->size);
+          // fprintf(fp, "realpath: %s\n", np->m->realpath);
+          // fprintf(fp, "desc:     %s\n", np->m->desc);
           fprintf(fp, "\n");
         }
 

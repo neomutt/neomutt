@@ -547,16 +547,16 @@ static int complete_hosts(char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strncmp(buf, np->b->path, matchlen) != 0)
+    if (mutt_str_strncmp(buf, np->m->path, matchlen) != 0)
       continue;
 
     if (rc)
     {
-      mutt_str_strfcpy(buf, np->b->path, buflen);
+      mutt_str_strfcpy(buf, np->m->path, buflen);
       rc = 0;
     }
     else
-      longest_common_prefix(buf, np->b->path, matchlen, buflen);
+      longest_common_prefix(buf, np->m->path, matchlen, buflen);
   }
 
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
@@ -1454,18 +1454,18 @@ int imap_mailbox_check(bool check_stats)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* Init newly-added mailboxes */
-    if (np->b->magic == MUTT_UNKNOWN)
+    if (np->m->magic == MUTT_UNKNOWN)
     {
-      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
-        np->b->magic = MUTT_IMAP;
+      if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
+        np->m->magic = MUTT_IMAP;
     }
 
-    if (np->b->magic != MUTT_IMAP)
+    if (np->m->magic != MUTT_IMAP)
       continue;
 
-    if (get_mailbox(np->b->path, &idata, name, sizeof(name)) < 0)
+    if (get_mailbox(np->m->path, &idata, name, sizeof(name)) < 0)
     {
-      np->b->new = false;
+      np->m->has_new = false;
       continue;
     }
 
@@ -1475,7 +1475,7 @@ int imap_mailbox_check(bool check_stats)
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
     if (idata->mailbox && (imap_mxcmp(name, idata->mailbox) == 0))
     {
-      np->b->new = false;
+      np->m->has_new = false;
       continue;
     }
 
@@ -1527,7 +1527,7 @@ int imap_mailbox_check(bool check_stats)
   /* collect results */
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if ((np->b->magic == MUTT_IMAP) && np->b->new)
+    if ((np->m->magic == MUTT_IMAP) && np->m->has_new)
       buffies++;
   }
 

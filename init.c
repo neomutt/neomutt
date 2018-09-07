@@ -3085,9 +3085,9 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxNode *mp = NULL;
     STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (mp->b->magic == MUTT_NOTMUCH)
+      if (mp->m->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }
