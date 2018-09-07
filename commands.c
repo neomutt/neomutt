@@ -994,7 +994,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
     /* If we're saving to a compressed mailbox, the stats won't be updated
      * until the next open.  Until then, improvise. */
     struct Mailbox *cm = NULL;
-    if (savectx->compress_info)
+    if (savectx->mailbox->compress_info)
     {
       cm = mutt_find_mailbox(savectx->mailbox->realpath);
     }

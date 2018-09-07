@@ -573,7 +573,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
 #ifdef USE_COMPRESSED
-    if (Context->compress_info && Context->mailbox->realpath)
+    if (Context->mailbox->compress_info && Context->mailbox->realpath)
       new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
     else
 #endif

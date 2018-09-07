@@ -88,7 +88,7 @@ static int lock_realpath(struct Context *ctx, int excl)
   if (!ctx)
     return 0;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return 0;
 
@@ -130,7 +130,7 @@ static void unlock_realpath(struct Context *ctx)
   if (!ctx)
     return;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return;
 
@@ -204,7 +204,7 @@ static void store_size(const struct Context *ctx)
   if (!ctx)
     return;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return;
 
@@ -252,8 +252,8 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   if (!ctx || !ctx->mailbox->path)
     return NULL;
 
-  if (ctx->compress_info)
-    return ctx->compress_info;
+  if (ctx->mailbox->compress_info)
+    return ctx->mailbox->compress_info;
 
   /* Open is compulsory */
   const char *o = find_hook(MUTT_OPEN_HOOK, ctx->mailbox->path);
@@ -264,7 +264,7 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   const char *a = find_hook(MUTT_APPEND_HOOK, ctx->mailbox->path);
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
-  ctx->compress_info = ci;
+  ctx->mailbox->compress_info = ci;
 
   ci->open = mutt_str_strdup(o);
   ci->close = mutt_str_strdup(c);
@@ -281,17 +281,17 @@ static void free_compress_info(struct Context *ctx)
 {
   struct CompressInfo *ci = NULL;
 
-  if (!ctx || !ctx->compress_info)
+  if (!ctx || !ctx->mailbox->compress_info)
     return;
 
-  ci = ctx->compress_info;
+  ci = ctx->mailbox->compress_info;
   FREE(&ci->open);
   FREE(&ci->close);
   FREE(&ci->append);
 
   unlock_realpath(ctx);
 
-  FREE(&ctx->compress_info);
+  FREE(&ctx->mailbox->compress_info);
 }
 
 /**
@@ -587,7 +587,7 @@ static int comp_mbox_close(struct Context *ctx)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -667,7 +667,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -702,7 +702,7 @@ static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -722,7 +722,7 @@ static int comp_msg_close(struct Context *ctx, struct Message *msg)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -742,7 +742,7 @@ static int comp_msg_commit(struct Context *ctx, struct Message *msg)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -762,7 +762,7 @@ static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct He
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -837,7 +837,7 @@ static int comp_mbox_sync(struct Context *ctx, int *index_hint)
   if (!ctx)
     return -1;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return -1;
 
@@ -907,7 +907,7 @@ static int comp_msg_padding_size(struct Context *ctx)
   if (!ctx)
     return 0;
 
-  struct CompressInfo *ci = ctx->compress_info;
+  struct CompressInfo *ci = ctx->mailbox->compress_info;
   if (!ci)
     return 0;
 

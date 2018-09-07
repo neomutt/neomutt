@@ -106,6 +106,10 @@ struct Mailbox
 
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
+#ifdef USE_COMPRESSED
+  void *compress_info; /**< compressed mbox module private data */
+#endif
+
   int flags; /**< e.g. #MB_NORMAL */
 };
 

@@ -57,10 +57,6 @@ struct Context
   bool collapsed : 1; /**< are all threads collapsed? */
   bool peekonly : 1;  /**< just taking a glance, revert atime */
 
-#ifdef USE_COMPRESSED
-  void *compress_info; /**< compressed mbox module private data */
-#endif                 /**< USE_COMPRESSED */
-
   struct Mailbox *mailbox;
 };
 
