@@ -2220,7 +2220,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   ctx->mailbox->hdrmax = count;
   ctx->mailbox->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));
-  ctx->v2r = mutt_mem_calloc(count, sizeof(int));
+  ctx->mailbox->v2r = mutt_mem_calloc(count, sizeof(int));
   ctx->mailbox->msg_count = 0;
 
   if (count && (imap_read_headers(idata, 1, count, true) < 0))

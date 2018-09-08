@@ -800,7 +800,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   mutt_hash_destroy(&ctx->mailbox->subj_hash);
   mutt_hash_destroy(&ctx->mailbox->label_hash);
   mutt_clear_threads(ctx);
-  FREE(&ctx->v2r);
+  FREE(&ctx->mailbox->v2r);
   if (ctx->mailbox->readonly)
   {
     for (i = 0; i < ctx->mailbox->msg_count; i++)
@@ -817,7 +817,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 
   ctx->mailbox->hdrmax = 0; /* force allocation of new headers */
   ctx->mailbox->msg_count = 0;
-  ctx->vcount = 0;
+  ctx->mailbox->vcount = 0;
   ctx->vsize = 0;
   ctx->tagged = 0;
   ctx->deleted = 0;

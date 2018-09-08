@@ -2080,7 +2080,7 @@ static int check_mailbox(struct Context *ctx)
       mutt_hash_destroy(&ctx->mailbox->id_hash);
     mutt_clear_threads(ctx);
 
-    ctx->vcount = 0;
+    ctx->mailbox->vcount = 0;
     ctx->deleted = 0;
     ctx->new = 0;
     ctx->mailbox->msg_unread = 0;

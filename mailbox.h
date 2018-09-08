@@ -88,6 +88,8 @@ struct Mailbox
 
   struct Header **hdrs;
   int hdrmax;               /**< number of pointers in hdrs */
+  int *v2r;                 /**< mapping from virtual to real msgno */
+  int vcount;               /**< the number of virtual messages */
 
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */

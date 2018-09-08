@@ -363,7 +363,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
     mutt_header_free(&ctx->mailbox->hdrs[i]);
   FREE(&ctx->mailbox->hdrs);
-  FREE(&ctx->v2r);
+  FREE(&ctx->mailbox->v2r);
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);
@@ -781,7 +781,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
-  ctx->vcount = 0;
+  ctx->mailbox->vcount = 0;
   ctx->vsize = 0;
   ctx->tagged = 0;
   ctx->deleted = 0;
@@ -805,8 +805,8 @@ void mx_update_tables(struct Context *ctx, bool committing)
       ctx->mailbox->hdrs[j]->msgno = j;
       if (ctx->mailbox->hdrs[j]->virtual != -1)
       {
-        ctx->v2r[ctx->vcount] = j;
-        ctx->mailbox->hdrs[j]->virtual = ctx->vcount++;
+        ctx->mailbox->v2r[ctx->mailbox->vcount] = j;
+        ctx->mailbox->hdrs[j]->virtual = ctx->mailbox->vcount++;
         struct Body *b = ctx->mailbox->hdrs[j]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
@@ -1166,18 +1166,18 @@ void mx_alloc_memory(struct Context *ctx)
   {
     mutt_mem_realloc(&ctx->mailbox->hdrs,
                      sizeof(struct Header *) * (ctx->mailbox->hdrmax += 25));
-    mutt_mem_realloc(&ctx->v2r, sizeof(int) * ctx->mailbox->hdrmax);
+    mutt_mem_realloc(&ctx->mailbox->v2r, sizeof(int) * ctx->mailbox->hdrmax);
   }
   else
   {
     ctx->mailbox->hdrs =
         mutt_mem_calloc((ctx->mailbox->hdrmax += 25), sizeof(struct Header *));
-    ctx->v2r = mutt_mem_calloc(ctx->mailbox->hdrmax, sizeof(int));
+    ctx->mailbox->v2r = mutt_mem_calloc(ctx->mailbox->hdrmax, sizeof(int));
   }
   for (int i = ctx->mailbox->msg_count; i < ctx->mailbox->hdrmax; i++)
   {
     ctx->mailbox->hdrs[i] = NULL;
-    ctx->v2r[i] = -1;
+    ctx->mailbox->v2r[i] = -1;
   }
 }
 
@@ -1205,8 +1205,8 @@ void mx_update_context(struct Context *ctx, int new_messages)
 
     if (!ctx->pattern)
     {
-      ctx->v2r[ctx->vcount] = msgno;
-      h->virtual = ctx->vcount++;
+      ctx->mailbox->v2r[ctx->mailbox->vcount] = msgno;
+      h->virtual = ctx->mailbox->vcount++;
     }
     else
       h->virtual = -1;

@@ -1154,7 +1154,7 @@ void mutt_set_virtual(struct Context *ctx)
 {
   struct Header *cur = NULL;
 
-  ctx->vcount = 0;
+  ctx->mailbox->vcount = 0;
   ctx->vsize = 0;
   int padding = mx_msg_padding_size(ctx);
 
@@ -1163,9 +1163,9 @@ void mutt_set_virtual(struct Context *ctx)
     cur = ctx->mailbox->hdrs[i];
     if (cur->virtual >= 0)
     {
-      cur->virtual = ctx->vcount;
-      ctx->v2r[ctx->vcount] = i;
-      ctx->vcount++;
+      cur->virtual = ctx->mailbox->vcount;
+      ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
+      ctx->mailbox->vcount++;
       ctx->vsize += cur->content->length + cur->content->offset -
                     cur->content->hdr_offset + padding;
       cur->num_hidden = mutt_get_hidden(ctx, cur);

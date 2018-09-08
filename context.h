@@ -40,8 +40,6 @@ struct Context
   struct Header *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
   struct Hash *thread_hash; /**< hash table for threading */
-  int *v2r;                 /**< mapping from virtual to real msgno */
-  int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */
   int deleted;              /**< how many deleted messages */

@@ -173,9 +173,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->vcount : m->msg_count);
+        snprintf(buf, buflen, fmt, c ? Context->mailbox->vcount : m->msg_count);
       }
-      else if ((c && Context->vcount == m->msg_count) || !c)
+      else if ((c && Context->mailbox->vcount == m->msg_count) || !c)
         optional = 0;
       break;
 

@@ -201,7 +201,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->vcount : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->vcount : 0);
       }
       else if (!Context || !Context->pattern)
         optional = 0;
