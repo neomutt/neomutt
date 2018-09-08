@@ -2023,7 +2023,7 @@ static int imap_mbox_open(struct Context *ctx)
   /* once again the context is new */
   ctx->mailbox->data = idata;
 
-  /* Clean up path and replace the one in the ctx */
+  /* Clean up path and replace the one in the mailbox */
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
   if (!*buf)
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));

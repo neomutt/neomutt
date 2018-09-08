@@ -300,7 +300,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
     return NULL;
   }
 
-  mutt_make_label_hash(ctx);
+  mutt_make_label_hash(ctx->mailbox);
 
   /* if the user has a `push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
@@ -850,7 +850,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       if (ctx->mailbox->id_hash && ctx->mailbox->hdrs[i]->env->message_id)
         mutt_hash_delete(ctx->mailbox->id_hash, ctx->mailbox->hdrs[i]->env->message_id,
                          ctx->mailbox->hdrs[i]);
-      mutt_label_hash_remove(ctx, ctx->mailbox->hdrs[i]);
+      mutt_label_hash_remove(ctx->mailbox, ctx->mailbox->hdrs[i]);
       /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
        * can occur before a call to mx_mbox_sync(), resulting in
@@ -1150,34 +1150,32 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
 
 /**
  * mx_alloc_memory - Create storage for the emails
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  */
-void mx_alloc_memory(struct Context *ctx)
+void mx_alloc_memory(struct Mailbox *mailbox)
 {
   size_t s = MAX(sizeof(struct Header *), sizeof(int));
 
-  if ((ctx->mailbox->hdrmax + 25) * s < ctx->mailbox->hdrmax * s)
+  if ((mailbox->hdrmax + 25) * s < mailbox->hdrmax * s)
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
-  if (ctx->mailbox->hdrs)
+  if (mailbox->hdrs)
   {
-    mutt_mem_realloc(&ctx->mailbox->hdrs,
-                     sizeof(struct Header *) * (ctx->mailbox->hdrmax += 25));
-    mutt_mem_realloc(&ctx->mailbox->v2r, sizeof(int) * ctx->mailbox->hdrmax);
+    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Header *) * (mailbox->hdrmax += 25));
+    mutt_mem_realloc(&mailbox->v2r, sizeof(int) * mailbox->hdrmax);
   }
   else
   {
-    ctx->mailbox->hdrs =
-        mutt_mem_calloc((ctx->mailbox->hdrmax += 25), sizeof(struct Header *));
-    ctx->mailbox->v2r = mutt_mem_calloc(ctx->mailbox->hdrmax, sizeof(int));
+    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Header *));
+    mailbox->v2r = mutt_mem_calloc(mailbox->hdrmax, sizeof(int));
   }
-  for (int i = ctx->mailbox->msg_count; i < ctx->mailbox->hdrmax; i++)
+  for (int i = mailbox->msg_count; i < mailbox->hdrmax; i++)
   {
-    ctx->mailbox->hdrs[i] = NULL;
-    ctx->mailbox->v2r[i] = -1;
+    mailbox->hdrs[i] = NULL;
+    mailbox->v2r[i] = -1;
   }
 }
 
@@ -1217,7 +1215,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       struct Header *h2 = NULL;
 
       if (!ctx->mailbox->id_hash)
-        ctx->mailbox->id_hash = mutt_make_id_hash(ctx);
+        ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
 
       h2 = mutt_hash_find(ctx->mailbox->id_hash, h->env->supersedes);
       if (h2)
@@ -1233,7 +1231,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       mutt_hash_insert(ctx->mailbox->id_hash, h->env->message_id, h);
     if (ctx->mailbox->subj_hash && h->env->real_subj)
       mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
-    mutt_label_hash_add(ctx, h);
+    mutt_label_hash_add(ctx->mailbox, h);
 
     if (Score)
       mutt_score_message(ctx, h, false);

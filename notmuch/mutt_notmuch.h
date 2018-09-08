@@ -54,7 +54,7 @@ extern char *NmUnreadTag;
 int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 
 char *nm_header_get_folder(struct Header *h);
-int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
+int nm_update_filename(struct Mailbox *mailbox, const char *old, const char *new, struct Header *h);
 bool nm_normalize_uri(const char *uri, char *buf, size_t buflen);
 char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen);
 bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr);

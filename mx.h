@@ -251,7 +251,7 @@ int             mx_tags_commit     (struct Context *ctx, struct Header *hdr, cha
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 int                 mx_access(const char *path, int flags);
-void                mx_alloc_memory(struct Context *ctx);
+void                mx_alloc_memory(struct Mailbox *mailbox);
 int                 mx_check_empty(const char *path);
 int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
 void                mx_fastclose_mailbox(struct Context *ctx);

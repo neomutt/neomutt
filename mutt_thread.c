@@ -1391,16 +1391,16 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 
 /**
  * mutt_make_id_hash - Create a Hash Table for message-ids
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-struct Hash *mutt_make_id_hash(struct Context *ctx)
+struct Hash *mutt_make_id_hash(struct Mailbox *mailbox)
 {
-  struct Hash *hash = mutt_hash_create(ctx->mailbox->msg_count * 2, 0);
+  struct Hash *hash = mutt_hash_create(mailbox->msg_count * 2, 0);
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < mailbox->msg_count; i++)
   {
-    struct Header *hdr = ctx->mailbox->hdrs[i];
+    struct Header *hdr = mailbox->hdrs[i];
     if (hdr->env->message_id)
       mutt_hash_insert(hash, hdr->env->message_id, hdr);
   }

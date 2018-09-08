@@ -1145,7 +1145,7 @@ int main(int argc, char *argv[], char *envp[])
       if (flags & MUTT_NEWS)
       {
         OptNews = true;
-        CurrentNewsSrv = nntp_select_server(Context, NewsServer, false);
+        CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }

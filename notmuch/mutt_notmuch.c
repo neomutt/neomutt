@@ -1082,18 +1082,18 @@ static void progress_update(struct Mailbox *mailbox, notmuch_query_t *q)
 
 /**
  * get_mutt_header - Get the Header of a Notmuch message
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @param msg Notmuch message
  * @retval ptr  Email Header
  * @retval NULL Error
  */
-static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *msg)
+static struct Header *get_mutt_header(struct Mailbox *mailbox, notmuch_message_t *msg)
 {
   char *mid = NULL;
   const char *id = NULL;
   struct Header *h = NULL;
 
-  if (!ctx || !msg)
+  if (!mailbox || !msg)
     return NULL;
 
   id = notmuch_message_get_message_id(msg);
@@ -1102,45 +1102,45 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
 
   mutt_debug(2, "nm: neomutt header, id='%s'\n", id);
 
-  if (!ctx->mailbox->id_hash)
+  if (!mailbox->id_hash)
   {
     mutt_debug(2, "nm: init hash\n");
-    ctx->mailbox->id_hash = mutt_make_id_hash(ctx);
-    if (!ctx->mailbox->id_hash)
+    mailbox->id_hash = mutt_make_id_hash(mailbox);
+    if (!mailbox->id_hash)
       return NULL;
   }
 
   mid = nm2mutt_message_id(id);
   mutt_debug(2, "nm: neomutt id='%s'\n", mid);
 
-  h = mutt_hash_find(ctx->mailbox->id_hash, mid);
+  h = mutt_hash_find(mailbox->id_hash, mid);
   FREE(&mid);
   return h;
 }
 
 /**
  * append_message - Associate a message
- * @param ctx   Mailbox
- * @param q     Notmuch query
- * @param msg   Notmuch message
- * @param dedup De-duplicate results
+ * @param mailbox Mailbox
+ * @param q       Notmuch query
+ * @param msg     Notmuch message
+ * @param dedup   De-duplicate results
  */
-static void append_message(struct Context *ctx, notmuch_query_t *q,
+static void append_message(struct Mailbox *mailbox, notmuch_query_t *q,
                            notmuch_message_t *msg, bool dedup)
 {
   char *newpath = NULL;
   const char *path = NULL;
   struct Header *h = NULL;
 
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   if (!data)
     return;
 
   /* deduplicate */
-  if (dedup && get_mutt_header(ctx, msg))
+  if (dedup && get_mutt_header(mailbox, msg))
   {
     data->ignmsgcount++;
-    progress_update(ctx->mailbox, q);
+    progress_update(mailbox, q);
     mutt_debug(2, "nm: ignore id=%s, already in the mailbox\n",
                notmuch_message_get_message_id(msg));
     return;
@@ -1151,12 +1151,12 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
     return;
 
   mutt_debug(2, "nm: appending message, i=%d, id=%s, path=%s\n",
-             ctx->mailbox->msg_count, notmuch_message_get_message_id(msg), path);
+             mailbox->msg_count, notmuch_message_get_message_id(msg), path);
 
-  if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
+  if (mailbox->msg_count >= mailbox->hdrmax)
   {
     mutt_debug(2, "nm: allocate mx memory\n");
-    mx_alloc_memory(ctx);
+    mx_alloc_memory(mailbox);
   }
   if (access(path, F_OK) == 0)
     h = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
@@ -1192,10 +1192,10 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   }
 
   h->active = true;
-  h->index = ctx->mailbox->msg_count;
-  ctx->mailbox->size += h->content->length + h->content->offset - h->content->hdr_offset;
-  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = h;
-  ctx->mailbox->msg_count++;
+  h->index = mailbox->msg_count;
+  mailbox->size += h->content->length + h->content->offset - h->content->hdr_offset;
+  mailbox->hdrs[mailbox->msg_count] = h;
+  mailbox->msg_count++;
 
   if (newpath)
   {
@@ -1208,21 +1208,21 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
       hd->oldpath = mutt_str_strdup(path);
     }
   }
-  progress_update(ctx->mailbox, q);
+  progress_update(mailbox, q);
 done:
   FREE(&newpath);
 }
 
 /**
  * append_replies - add all the replies to a given messages into the display
- * @param ctx   Mailbox
- * @param q     Notmuch query
- * @param top   Notmuch message
- * @param dedup De-duplicate the results
+ * @param mailbox Mailbox
+ * @param q       Notmuch query
+ * @param top     Notmuch message
+ * @param dedup   De-duplicate the results
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(struct Context *ctx, notmuch_query_t *q,
+static void append_replies(struct Mailbox *mailbox, notmuch_query_t *q,
                            notmuch_message_t *top, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -1231,24 +1231,24 @@ static void append_replies(struct Context *ctx, notmuch_query_t *q,
        notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    append_message(ctx, q, m, dedup);
+    append_message(mailbox, q, m, dedup);
     /* recurse through all the replies to this message too */
-    append_replies(ctx, q, m, dedup);
+    append_replies(mailbox, q, m, dedup);
     notmuch_message_destroy(m);
   }
 }
 
 /**
  * append_thread - add each top level reply in the thread
- * @param ctx    Mailbox
- * @param q      Notmuch query
- * @param thread Notmuch thread
- * @param dedup  De-duplicate the results
+ * @param mailbox Mailbox
+ * @param q       Notmuch query
+ * @param thread  Notmuch thread
+ * @param dedup   De-duplicate the results
  *
  * add each top level reply in the thread, and then add each reply to the top
  * level replies
  */
-static void append_thread(struct Context *ctx, notmuch_query_t *q,
+static void append_thread(struct Mailbox *mailbox, notmuch_query_t *q,
                           notmuch_thread_t *thread, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
@@ -1257,23 +1257,23 @@ static void append_thread(struct Context *ctx, notmuch_query_t *q,
        notmuch_messages_valid(msgs); notmuch_messages_move_to_next(msgs))
   {
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    append_message(ctx, q, m, dedup);
-    append_replies(ctx, q, m, dedup);
+    append_message(mailbox, q, m, dedup);
+    append_replies(mailbox, q, m, dedup);
     notmuch_message_destroy(m);
   }
 }
 
 /**
  * read_mesgs_query - Search for matching messages
- * @param ctx   Mailbox
- * @param q     Notmuch query
- * @param dedup De-duplicate the results
+ * @param mailbox Mailbox
+ * @param q       Notmuch query
+ * @param dedup   De-duplicate the results
  * @retval true  Success
  * @retval false Failure
  */
-static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup)
+static bool read_mesgs_query(struct Mailbox *mailbox, notmuch_query_t *q, bool dedup)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   int limit;
   notmuch_messages_t *msgs = NULL;
 
@@ -1292,7 +1292,7 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup
   msgs = notmuch_query_search_messages(q);
 #endif
 
-  for (; notmuch_messages_valid(msgs) && ((limit == 0) || (ctx->mailbox->msg_count < limit));
+  for (; notmuch_messages_valid(msgs) && ((limit == 0) || (mailbox->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
   {
     if (SigInt == 1)
@@ -1301,7 +1301,7 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup
       return false;
     }
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    append_message(ctx, q, m, dedup);
+    append_message(mailbox, q, m, dedup);
     notmuch_message_destroy(m);
   }
   return true;
@@ -1309,16 +1309,16 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup
 
 /**
  * read_threads_query - Perform a query with threads
- * @param ctx   Mailbox
- * @param q     Query type
- * @param dedup Should the results be de-duped?
- * @param limit Maximum number of results
+ * @param mailbox Mailbox
+ * @param q       Query type
+ * @param dedup   Should the results be de-duped?
+ * @param limit   Maximum number of results
  * @retval true  Success
  * @retval false Failure
  */
-static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool dedup, int limit)
+static bool read_threads_query(struct Mailbox *mailbox, notmuch_query_t *q, bool dedup, int limit)
 {
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
   notmuch_threads_t *threads = NULL;
 
   if (!data)
@@ -1335,7 +1335,7 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool ded
 #endif
 
   for (; notmuch_threads_valid(threads) &&
-         ((limit == 0) || (ctx->mailbox->msg_count < limit));
+         ((limit == 0) || (mailbox->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
     if (SigInt == 1)
@@ -1344,7 +1344,7 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool ded
       return false;
     }
     notmuch_thread_t *thread = notmuch_threads_get(threads);
-    append_thread(ctx, q, thread, dedup);
+    append_thread(mailbox, q, thread, dedup);
     notmuch_thread_destroy(thread);
   }
   return true;
@@ -1867,7 +1867,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
-  read_threads_query(ctx, q, true, 0);
+  read_threads_query(ctx->mailbox, q, true, 0);
   ctx->mailbox->mtime.tv_sec = time(NULL);
   ctx->mailbox->mtime.tv_nsec = 0;
   rc = 0;
@@ -2158,19 +2158,19 @@ bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr)
 
 /**
  * nm_update_filename - Change the filename
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @param old Old filename
  * @param new New filename
  * @param h   Email Header
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nm_update_filename(struct Context *ctx, const char *old, const char *new,
+int nm_update_filename(struct Mailbox *mailbox, const char *old, const char *new,
                        struct Header *h)
 {
   char buf[PATH_MAX];
   int rc;
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  struct NmMboxData *data = get_mboxdata(mailbox);
 
   if (!data || !new)
     return -1;
@@ -2185,8 +2185,8 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 
   if (!is_longrun(data))
     release_db(data);
-  ctx->mailbox->mtime.tv_sec = time(NULL);
-  ctx->mailbox->mtime.tv_nsec = 0;
+  mailbox->mtime.tv_sec = time(NULL);
+  mailbox->mtime.tv_nsec = 0;
   return rc;
 }
 
@@ -2465,11 +2465,11 @@ static int nm_mbox_open(struct Context *ctx)
     switch (data->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
-        if (!read_mesgs_query(ctx, q, false))
+        if (!read_mesgs_query(ctx->mailbox, q, false))
           rc = -2;
         break;
       case NM_QUERY_TYPE_THREADS:
-        if (!read_threads_query(ctx, q, false, get_limit(data)))
+        if (!read_threads_query(ctx->mailbox, q, false, get_limit(data)))
           rc = -2;
         break;
     }
@@ -2524,12 +2524,12 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
 
   if (ctx->mailbox->mtime.tv_sec >= mtime)
   {
-    mutt_debug(2, "nm: check unnecessary (db=%lu ctx=%lu)\n", mtime,
+    mutt_debug(2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime,
                ctx->mailbox->mtime);
     return 0;
   }
 
-  mutt_debug(1, "nm: checking (db=%lu ctx=%lu)\n", mtime, ctx->mailbox->mtime);
+  mutt_debug(1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, ctx->mailbox->mtime);
 
   q = get_query(data, false);
   if (!q)
@@ -2561,12 +2561,12 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
     const char *new = NULL;
 
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    struct Header *h = get_mutt_header(ctx, m);
+    struct Header *h = get_mutt_header(ctx->mailbox, m);
 
     if (!h)
     {
       /* new email */
-      append_message(ctx, NULL, m, 0);
+      append_message(ctx->mailbox, NULL, m, 0);
       notmuch_message_destroy(m);
       continue;
     }

@@ -1332,7 +1332,7 @@ int mutt_index_menu(void)
                              sizeof(buf));
           }
           if (!Context->mailbox->id_hash)
-            Context->mailbox->id_hash = mutt_make_id_hash(Context);
+            Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
           hdr = mutt_hash_find(Context->mailbox->id_hash, buf);
           if (hdr)
           {
@@ -1390,7 +1390,7 @@ int mutt_index_menu(void)
 
           mutt_message(_("Fetching message headers..."));
           if (!Context->mailbox->id_hash)
-            Context->mailbox->id_hash = mutt_make_id_hash(Context);
+            Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
           mutt_str_strfcpy(buf, CURHDR->env->message_id, sizeof(buf));
 
           /* trying to find msgid of the root message */
@@ -2210,7 +2210,7 @@ int mutt_index_menu(void)
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
             OptNews = true;
-            CurrentNewsSrv = nntp_select_server(Context, NewsServer, false);
+            CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)

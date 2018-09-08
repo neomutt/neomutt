@@ -1186,7 +1186,7 @@ static int parse_overview_line(char *line, void *data)
 
   /* allocate memory for headers */
   if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
-    mx_alloc_memory(ctx);
+    mx_alloc_memory(ctx->mailbox);
 
   /* parse header */
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
@@ -1370,7 +1370,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
     /* allocate memory for headers */
     if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
-      mx_alloc_memory(ctx);
+      mx_alloc_memory(ctx->mailbox);
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
@@ -1531,7 +1531,7 @@ static int nntp_mbox_open(struct Context *ctx)
   group = url.path;
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
-  nserv = nntp_select_server(ctx, server, true);
+  nserv = nntp_select_server(ctx->mailbox, server, true);
   url_free(&url);
   if (!nserv)
     return -1;
@@ -1775,22 +1775,22 @@ static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * nntp_post - Post article
- * @param ctx Mailbox
- * @param msg Message to post
+ * @param mailbox Mailbox
+ * @param msg     Message to post
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_post(struct Context *ctx, const char *msg)
+int nntp_post(struct Mailbox *mailbox, const char *msg)
 {
   struct NntpData *nntp_data = NULL;
   struct NntpData nntp_tmp = { 0 };
   char buf[LONG_STRING];
 
-  if (ctx && (ctx->mailbox->magic == MUTT_NNTP))
-    nntp_data = ctx->mailbox->data;
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data = mailbox->data;
   else
   {
-    CurrentNewsSrv = nntp_select_server(ctx, NewsServer, false);
+    CurrentNewsSrv = nntp_select_server(mailbox, NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -2037,7 +2037,7 @@ static int check_mailbox(struct Context *ctx)
       {
         mutt_debug(2, "#2 mutt_hcache_fetch %s\n", buf);
         if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
-          mx_alloc_memory(ctx);
+          mx_alloc_memory(ctx->mailbox);
 
         hdr = mutt_hcache_restore(hdata);
         ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
@@ -2479,7 +2479,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
 
   /* parse header */
   if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
-    mx_alloc_memory(ctx);
+    mx_alloc_memory(ctx->mailbox);
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
   struct Header *hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));

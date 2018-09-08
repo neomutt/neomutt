@@ -999,7 +999,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 
 /**
  * nntp_select_server - Open a connection to an NNTP server
- * @param ctx        Mailbox
+ * @param mailbox    Mailbox
  * @param server     Server URI
  * @param leave_lock Leave the server locked?
  * @retval ptr  NNTP server
@@ -1010,7 +1010,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpServer *nntp_select_server(struct Context *ctx, char *server, bool leave_lock)
+struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock)
 {
   char file[PATH_MAX];
 #ifdef USE_HCACHE
@@ -1073,7 +1073,7 @@ struct NntpServer *nntp_select_server(struct Context *ctx, char *server, bool le
       return NULL;
 
     /* check for new newsgroups */
-    if (!leave_lock && nntp_check_new_groups(ctx->mailbox, nserv) < 0)
+    if (!leave_lock && nntp_check_new_groups(mailbox, nserv) < 0)
       rc = -1;
 
     /* .newsrc has been externally modified */
@@ -1119,7 +1119,7 @@ struct NntpServer *nntp_select_server(struct Context *ctx, char *server, bool le
   {
     /* try to load list of newsgroups from cache */
     if (nserv->cacheable && active_get_cache(nserv) == 0)
-      rc = nntp_check_new_groups(ctx->mailbox, nserv);
+      rc = nntp_check_new_groups(mailbox, nserv);
 
     /* load list of newsgroups from server */
     else

@@ -29,9 +29,9 @@ struct Context;
 struct Header;
 
 void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Context *ctx, struct Header *hdr);
-void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr);
+void mutt_label_hash_add(struct Mailbox *mailbox, struct Header *hdr);
+void mutt_label_hash_remove(struct Mailbox *mailbox, struct Header *hdr);
 int  mutt_label_message(struct Header *hdr);
-void mutt_make_label_hash(struct Context *ctx);
+void mutt_make_label_hash(struct Mailbox *mailbox);
 
 #endif /* MUTT_MUTT_HEADER_H */
