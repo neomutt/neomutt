@@ -200,7 +200,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
       if (errno == ENOENT)
       {
 #ifdef USE_COMPRESSED
-        if (mutt_comp_can_append(ctx))
+        if (mutt_comp_can_append(ctx->mailbox))
           ctx->mailbox->magic = MUTT_COMPRESSED;
         else
 #endif
