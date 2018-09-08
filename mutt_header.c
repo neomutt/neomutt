@@ -49,14 +49,14 @@
  */
 static void label_ref_dec(struct Context *ctx, char *label)
 {
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(ctx->mailbox->label_hash, label);
   if (!elem)
     return;
 
   uintptr_t count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(ctx->label_hash, label, NULL);
+    mutt_hash_delete(ctx->mailbox->label_hash, label, NULL);
     return;
   }
 
@@ -73,11 +73,11 @@ static void label_ref_inc(struct Context *ctx, char *label)
 {
   uintptr_t count;
 
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(ctx->mailbox->label_hash, label);
   if (!elem)
   {
     count = 1;
-    mutt_hash_insert(ctx->label_hash, label, (void *) count);
+    mutt_hash_insert(ctx->mailbox->label_hash, label, (void *) count);
     return;
   }
 
@@ -123,7 +123,7 @@ int mutt_label_message(struct Header *hdr)
   char buf[LONG_STRING], *new = NULL;
   int changed;
 
-  if (!Context || !Context->label_hash)
+  if (!Context || !Context->mailbox->label_hash)
     return 0;
 
   *buf = '\0';
@@ -372,7 +372,7 @@ void mutt_make_label_hash(struct Context *ctx)
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a mailbox.
    */
-  ctx->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  ctx->mailbox->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 /**
@@ -382,7 +382,7 @@ void mutt_make_label_hash(struct Context *ctx)
  */
 void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
 {
-  if (!ctx || !ctx->label_hash)
+  if (!ctx || !ctx->mailbox->label_hash)
     return;
   if (hdr->env->x_label)
     label_ref_inc(ctx, hdr->env->x_label);
@@ -395,7 +395,7 @@ void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
  */
 void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
 {
-  if (!ctx || !ctx->label_hash)
+  if (!ctx || !ctx->mailbox->label_hash)
     return;
   if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);

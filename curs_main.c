@@ -1331,9 +1331,9 @@ int mutt_index_menu(void)
             mutt_str_strfcpy(buf, STAILQ_FIRST(&CURHDR->env->references)->data,
                              sizeof(buf));
           }
-          if (!Context->id_hash)
-            Context->id_hash = mutt_make_id_hash(Context);
-          hdr = mutt_hash_find(Context->id_hash, buf);
+          if (!Context->mailbox->id_hash)
+            Context->mailbox->id_hash = mutt_make_id_hash(Context);
+          hdr = mutt_hash_find(Context->mailbox->id_hash, buf);
           if (hdr)
           {
             if (hdr->virtual != -1)
@@ -1389,8 +1389,8 @@ int mutt_index_menu(void)
           }
 
           mutt_message(_("Fetching message headers..."));
-          if (!Context->id_hash)
-            Context->id_hash = mutt_make_id_hash(Context);
+          if (!Context->mailbox->id_hash)
+            Context->mailbox->id_hash = mutt_make_id_hash(Context);
           mutt_str_strfcpy(buf, CURHDR->env->message_id, sizeof(buf));
 
           /* trying to find msgid of the root message */
@@ -1399,7 +1399,7 @@ int mutt_index_menu(void)
             struct ListNode *ref = NULL;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
-              if (!mutt_hash_find(Context->id_hash, ref->data))
+              if (!mutt_hash_find(Context->mailbox->id_hash, ref->data))
               {
                 rc2 = nntp_check_msgid(Context, ref->data);
                 if (rc2 < 0)
@@ -1439,7 +1439,7 @@ int mutt_index_menu(void)
             }
 
             /* if the root message was retrieved, move to it */
-            hdr = mutt_hash_find(Context->id_hash, buf);
+            hdr = mutt_hash_find(Context->mailbox->id_hash, buf);
             if (hdr)
               menu->current = hdr->virtual;
 

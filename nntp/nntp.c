@@ -1729,18 +1729,18 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
-  if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr);
-  if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_delete(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
   hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
 
-  if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
-  if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_insert(ctx->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_insert(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
 
   /* fix content length */
   fseek(msg->fp, 0, SEEK_END);
@@ -2074,10 +2074,10 @@ static int check_mailbox(struct Context *ctx)
   /* some headers were removed, context must be updated */
   if (ret == MUTT_REOPENED)
   {
-    if (ctx->subj_hash)
-      mutt_hash_destroy(&ctx->subj_hash);
-    if (ctx->id_hash)
-      mutt_hash_destroy(&ctx->id_hash);
+    if (ctx->mailbox->subj_hash)
+      mutt_hash_destroy(&ctx->mailbox->subj_hash);
+    if (ctx->mailbox->id_hash)
+      mutt_hash_destroy(&ctx->mailbox->id_hash);
     mutt_clear_threads(ctx);
 
     ctx->vcount = 0;
@@ -2086,8 +2086,8 @@ static int check_mailbox(struct Context *ctx)
     ctx->mailbox->msg_unread = 0;
     ctx->mailbox->msg_flagged = 0;
     ctx->mailbox->changed = false;
-    ctx->id_hash = NULL;
-    ctx->subj_hash = NULL;
+    ctx->mailbox->id_hash = NULL;
+    ctx->mailbox->subj_hash = NULL;
     mx_update_context(ctx, ctx->mailbox->msg_count);
   }
 

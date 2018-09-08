@@ -356,9 +356,9 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (ctx->mailbox->mx_ops)
     ctx->mailbox->mx_ops->mbox_close(ctx);
 
-  mutt_hash_destroy(&ctx->subj_hash);
-  mutt_hash_destroy(&ctx->id_hash);
-  mutt_hash_destroy(&ctx->label_hash);
+  mutt_hash_destroy(&ctx->mailbox->subj_hash);
+  mutt_hash_destroy(&ctx->mailbox->id_hash);
+  mutt_hash_destroy(&ctx->mailbox->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
     mutt_header_free(&ctx->mailbox->hdrs[i]);
@@ -844,11 +844,11 @@ void mx_update_tables(struct Context *ctx, bool committing)
                                ctx->mailbox->hdrs[i]->content->hdr_offset);
       }
       /* remove message from the hash tables */
-      if (ctx->subj_hash && ctx->mailbox->hdrs[i]->env->real_subj)
-        mutt_hash_delete(ctx->subj_hash, ctx->mailbox->hdrs[i]->env->real_subj,
+      if (ctx->mailbox->subj_hash && ctx->mailbox->hdrs[i]->env->real_subj)
+        mutt_hash_delete(ctx->mailbox->subj_hash, ctx->mailbox->hdrs[i]->env->real_subj,
                          ctx->mailbox->hdrs[i]);
-      if (ctx->id_hash && ctx->mailbox->hdrs[i]->env->message_id)
-        mutt_hash_delete(ctx->id_hash, ctx->mailbox->hdrs[i]->env->message_id,
+      if (ctx->mailbox->id_hash && ctx->mailbox->hdrs[i]->env->message_id)
+        mutt_hash_delete(ctx->mailbox->id_hash, ctx->mailbox->hdrs[i]->env->message_id,
                          ctx->mailbox->hdrs[i]);
       mutt_label_hash_remove(ctx, ctx->mailbox->hdrs[i]);
       /* The path mx_mbox_check() -> imap_check_mailbox() ->
@@ -1216,10 +1216,10 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       struct Header *h2 = NULL;
 
-      if (!ctx->id_hash)
-        ctx->id_hash = mutt_make_id_hash(ctx);
+      if (!ctx->mailbox->id_hash)
+        ctx->mailbox->id_hash = mutt_make_id_hash(ctx);
 
-      h2 = mutt_hash_find(ctx->id_hash, h->env->supersedes);
+      h2 = mutt_hash_find(ctx->mailbox->id_hash, h->env->supersedes);
       if (h2)
       {
         h2->superseded = true;
@@ -1229,10 +1229,10 @@ void mx_update_context(struct Context *ctx, int new_messages)
     }
 
     /* add this message to the hash tables */
-    if (ctx->id_hash && h->env->message_id)
-      mutt_hash_insert(ctx->id_hash, h->env->message_id, h);
-    if (ctx->subj_hash && h->env->real_subj)
-      mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
+    if (ctx->mailbox->id_hash && h->env->message_id)
+      mutt_hash_insert(ctx->mailbox->id_hash, h->env->message_id, h);
+    if (ctx->mailbox->subj_hash && h->env->real_subj)
+      mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add(ctx, h);
 
     if (Score)

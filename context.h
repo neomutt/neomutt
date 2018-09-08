@@ -39,10 +39,7 @@ struct Context
   struct Pattern *limit_pattern; /**< compiled limit pattern */
   struct Header *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
-  struct Hash *id_hash;     /**< hash table by msg id */
-  struct Hash *subj_hash;   /**< hash table by subject */
   struct Hash *thread_hash; /**< hash table for threading */
-  struct Hash *label_hash;  /**< hash table for x-labels */
   int *v2r;                 /**< mapping from virtual to real msgno */
   int vcount;               /**< the number of virtual messages */
   int tagged;               /**< how many messages are tagged? */

@@ -348,9 +348,9 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
         p = mutt_str_skip_email_wsp(np->data + 18);
-        if (!ctx->id_hash)
-          ctx->id_hash = mutt_make_id_hash(ctx);
-        *cur = mutt_hash_find(ctx->id_hash, p);
+        if (!ctx->mailbox->id_hash)
+          ctx->mailbox->id_hash = mutt_make_id_hash(ctx);
+        *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
       }
       if (*cur)
         code |= SEND_REPLY;

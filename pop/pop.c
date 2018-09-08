@@ -720,13 +720,13 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   uidl = h->data;
 
   /* we replace envelop, key in subj_hash has to be updated as well */
-  if (ctx->subj_hash && h->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h);
+  if (ctx->mailbox->subj_hash && h->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, h->env->real_subj, h);
   mutt_label_hash_remove(ctx, h);
   mutt_env_free(&h->env);
   h->env = mutt_rfc822_read_header(msg->fp, h, false, false);
-  if (ctx->subj_hash && h->env->real_subj)
-    mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
+  if (ctx->mailbox->subj_hash && h->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
   mutt_label_hash_add(ctx, h);
 
   h->data = uidl;

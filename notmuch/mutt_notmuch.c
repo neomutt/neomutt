@@ -1102,18 +1102,18 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
 
   mutt_debug(2, "nm: neomutt header, id='%s'\n", id);
 
-  if (!ctx->id_hash)
+  if (!ctx->mailbox->id_hash)
   {
     mutt_debug(2, "nm: init hash\n");
-    ctx->id_hash = mutt_make_id_hash(ctx);
-    if (!ctx->id_hash)
+    ctx->mailbox->id_hash = mutt_make_id_hash(ctx);
+    if (!ctx->mailbox->id_hash)
       return NULL;
   }
 
   mid = nm2mutt_message_id(id);
   mutt_debug(2, "nm: neomutt id='%s'\n", mid);
 
-  h = mutt_hash_find(ctx->id_hash, mid);
+  h = mutt_hash_find(ctx->mailbox->id_hash, mid);
   FREE(&mid);
   return h;
 }

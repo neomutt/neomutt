@@ -796,9 +796,9 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   old_msgcount = 0;
 
   /* simulate a close */
-  mutt_hash_destroy(&ctx->id_hash);
-  mutt_hash_destroy(&ctx->subj_hash);
-  mutt_hash_destroy(&ctx->label_hash);
+  mutt_hash_destroy(&ctx->mailbox->id_hash);
+  mutt_hash_destroy(&ctx->mailbox->subj_hash);
+  mutt_hash_destroy(&ctx->mailbox->label_hash);
   mutt_clear_threads(ctx);
   FREE(&ctx->v2r);
   if (ctx->mailbox->readonly)
@@ -825,8 +825,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   ctx->mailbox->msg_unread = 0;
   ctx->mailbox->msg_flagged = 0;
   ctx->mailbox->changed = false;
-  ctx->id_hash = NULL;
-  ctx->subj_hash = NULL;
+  ctx->mailbox->id_hash = NULL;
+  ctx->mailbox->subj_hash = NULL;
   mutt_make_label_hash(ctx);
 
   switch (ctx->mailbox->magic)

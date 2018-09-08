@@ -3421,7 +3421,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  if (!Context || !Context->label_hash)
+  if (!Context || !Context->mailbox->label_hash)
     return 0;
 
   SKIPWS(buf);
@@ -3437,7 +3437,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
-    while ((entry = mutt_hash_walk(Context->label_hash, &state)))
+    while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
     qsort(Matches, NumMatched, sizeof(char *), (sort_t *) mutt_str_strcasecmp);

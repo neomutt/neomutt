@@ -462,7 +462,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &subjects, entries)
   {
-    for (ptr = mutt_hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
+    for (ptr = mutt_hash_find_bucket(ctx->mailbox->subj_hash, np->data); ptr; ptr = ptr->next)
     {
       tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
@@ -515,8 +515,8 @@ static void pseudo_threads(struct Context *ctx)
   struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL,
                     *nextchild = NULL;
 
-  if (!ctx->subj_hash)
-    ctx->subj_hash = make_subj_hash(ctx);
+  if (!ctx->mailbox->subj_hash)
+    ctx->mailbox->subj_hash = make_subj_hash(ctx);
 
   while (tree)
   {

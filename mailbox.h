@@ -110,6 +110,10 @@ struct Mailbox
   void *compress_info; /**< compressed mbox module private data */
 #endif
 
+  struct Hash *id_hash;     /**< hash table by msg id */
+  struct Hash *subj_hash;   /**< hash table by subject */
+  struct Hash *label_hash;  /**< hash table for x-labels */
+
   int flags; /**< e.g. #MB_NORMAL */
 };
 
