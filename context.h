@@ -33,7 +33,6 @@
  */
 struct Context
 {
-  struct timespec mtime;
   off_t vsize;
   char *pattern;                 /**< limit pattern string */
   struct Pattern *limit_pattern; /**< compiled limit pattern */

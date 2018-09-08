@@ -27,6 +27,7 @@
 
 struct Context;
 struct Header;
+struct Mailbox;
 struct MuttThread;
 
 /* These Config Variables are only used in mutt_thread.c */

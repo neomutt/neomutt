@@ -210,7 +210,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     return -1;
   }
   mutt_get_stat_timespec(&mdata->atime, &sb, MUTT_STAT_ATIME);
-  mutt_get_stat_timespec(&ctx->mtime, &sb, MUTT_STAT_MTIME);
+  mutt_get_stat_timespec(&ctx->mailbox->mtime, &sb, MUTT_STAT_MTIME);
   ctx->mailbox->size = sb.st_size;
 
   buf[sizeof(buf) - 1] = '\0';
@@ -376,7 +376,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
   }
 
   ctx->mailbox->size = sb.st_size;
-  mutt_get_stat_timespec(&ctx->mtime, &sb, MUTT_STAT_MTIME);
+  mutt_get_stat_timespec(&ctx->mailbox->mtime, &sb, MUTT_STAT_MTIME);
   mutt_get_stat_timespec(&mdata->atime, &sb, MUTT_STAT_ATIME);
 
   if (!ctx->mailbox->readonly)
@@ -643,17 +643,17 @@ static int mbox_mbox_close(struct Context *ctx)
 
   /* fix up the times so mailbox won't get confused */
   if (ctx->peekonly && ctx->mailbox->path &&
-      (mutt_timespec_compare(&ctx->mtime, &mdata->atime) > 0))
+      (mutt_timespec_compare(&ctx->mailbox->mtime, &mdata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
     ts[0] = mdata->atime;
-    ts[1] = ctx->mtime;
+    ts[1] = ctx->mailbox->mtime;
     utimensat(0, ctx->mailbox->path, ts, 0);
 #else
     struct utimbuf ut;
     ut.actime = mdata->atime.tv_sec;
-    ut.modtime = ctx->mtime.tv_sec;
+    ut.modtime = ctx->mailbox->mtime.tv_sec;
     utime(ctx->mailbox->path, &ut);
 #endif
   }
@@ -965,7 +965,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (stat(ctx->mailbox->path, &st) == 0)
   {
-    if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mtime) == 0) &&
+    if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mailbox->mtime) == 0) &&
         st.st_size == ctx->mailbox->size)
     {
       return 0;
@@ -974,7 +974,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
     if (st.st_size == ctx->mailbox->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
-      mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
+      mutt_get_stat_timespec(&ctx->mailbox->mtime, &st, MUTT_STAT_MTIME);
       return 0;
     }
 

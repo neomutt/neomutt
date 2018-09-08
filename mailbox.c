@@ -382,7 +382,7 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
       mailbox->msg_count = ctx->mailbox->msg_count;
       mailbox->msg_unread = ctx->mailbox->msg_unread;
       mailbox->msg_flagged = ctx->mailbox->msg_flagged;
-      mailbox->stats_last_checked = ctx->mtime;
+      mailbox->stats_last_checked = ctx->mailbox->mtime;
       mx_mbox_close(&ctx, NULL);
     }
   }

@@ -869,7 +869,7 @@ static void maildir_update_mtime(struct Context *ctx)
   }
 
   if (stat(buf, &st) == 0)
-    mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mailbox->mtime, &st, MUTT_STAT_MTIME);
 }
 
 /**
@@ -2344,7 +2344,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
     return -1;
 
   /* determine which subdirectories need to be scanned */
-  if (mutt_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &ctx->mtime) > 0)
+  if (mutt_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &ctx->mailbox->mtime) > 0)
     changed = 1;
   if (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0)
     changed |= 2;
@@ -2365,7 +2365,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 #endif
   {
     mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec(&ctx->mtime, &st_new, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mailbox->mtime, &st_new, MUTT_STAT_MTIME);
   }
 
   /* do a fast scan of just the filenames in
@@ -2523,7 +2523,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   if (i == -1 && stat(buf, &st_cur) == -1)
     modified = true;
 
-  if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mtime) > 0) ||
+  if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mailbox->mtime) > 0) ||
       (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0))
   {
     modified = true;
@@ -2545,7 +2545,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
 #endif
   {
     mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec(&ctx->mtime, &st, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&ctx->mailbox->mtime, &st, MUTT_STAT_MTIME);
   }
 
   md = NULL;

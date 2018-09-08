@@ -50,6 +50,7 @@
 #include "alias.h"
 #include "browser.h"
 #include "color.h"
+#include "context.h"
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
