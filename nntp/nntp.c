@@ -2635,10 +2635,10 @@ int nntp_path_probe(const char *path, const struct stat *st)
     return MUTT_UNKNOWN;
 
   if (mutt_str_strncasecmp(path, "news://", 7) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_NNTP;
 
   if (mutt_str_strncasecmp(path, "snews://", 8) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_NNTP;
 
   return MUTT_UNKNOWN;
 }
