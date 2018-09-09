@@ -178,7 +178,7 @@ static bool test_new_folder(const char *path)
 }
 
 /**
- * mailbox_new - Create a new Maibox
+ * mailbox_new - Create a new Mailbox
  * @param path Path to the mailbox
  * @retval ptr New Mailbox
  */

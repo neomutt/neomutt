@@ -228,7 +228,7 @@ static struct NmMboxData *new_mboxdata(const char *uri)
 }
 
 /**
- * init_mailbox - Add Notmuch data to the Maibox
+ * init_mailbox - Add Notmuch data to the Mailbox
  * @param mailbox Mailbox
  * @retval  0 Success
  * @retval -1 Error Bad format
@@ -1969,7 +1969,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   char tmp[PATH_MAX];
   int rc = -1;
 
-  struct Mailbox tmp_mbox = {{ 0 }};
+  struct Mailbox tmp_mbox = { 0 };
   struct NmMboxData *tmp_mboxdata = new_mboxdata(uri);
 
   if (!tmp_mboxdata)

@@ -74,6 +74,8 @@ enum AclRights
  */
 struct Mailbox
 {
+  enum MailboxType magic;    /**< mailbox type */
+
   char path[PATH_MAX];
   char realpath[PATH_MAX]; /**< used for duplicate detection, context
                             * comparison, and the sidebar */
@@ -92,7 +94,6 @@ struct Mailbox
   int vcount;               /**< the number of virtual messages */
 
   bool notified;             /**< user has been notified */
-  enum MailboxType magic;    /**< mailbox type */
   bool newly_created;        /**< mbox or mmdf just popped into existence */
   struct timespec mtime;
   struct timespec last_visited;       /**< time of last exit from this mailbox */

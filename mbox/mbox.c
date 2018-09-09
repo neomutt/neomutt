@@ -102,7 +102,7 @@ static void free_mboxdata(void *data)
 }
 
 /**
- * init_mailbox - Add Mbox data to the Maibox
+ * init_mailbox - Add Mbox data to the Mailbox
  * @param mailbox Mailbox
  * @retval  0 Success
  * @retval -1 Error Bad format
