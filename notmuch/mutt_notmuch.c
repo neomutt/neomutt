@@ -1316,7 +1316,8 @@ static bool read_mesgs_query(struct Mailbox *mailbox, notmuch_query_t *q, bool d
  * @retval true  Success
  * @retval false Failure
  */
-static bool read_threads_query(struct Mailbox *mailbox, notmuch_query_t *q, bool dedup, int limit)
+static bool read_threads_query(struct Mailbox *mailbox, notmuch_query_t *q,
+                               bool dedup, int limit)
 {
   struct NmMboxData *data = get_mboxdata(mailbox);
   notmuch_threads_t *threads = NULL;
@@ -1334,8 +1335,7 @@ static bool read_threads_query(struct Mailbox *mailbox, notmuch_query_t *q, bool
   threads = notmuch_query_search_threads(q);
 #endif
 
-  for (; notmuch_threads_valid(threads) &&
-         ((limit == 0) || (mailbox->msg_count < limit));
+  for (; notmuch_threads_valid(threads) && ((limit == 0) || (mailbox->msg_count < limit));
        notmuch_threads_move_to_next(threads))
   {
     if (SigInt == 1)
@@ -2165,8 +2165,8 @@ bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nm_update_filename(struct Mailbox *mailbox, const char *old, const char *new,
-                       struct Header *h)
+int nm_update_filename(struct Mailbox *mailbox, const char *old,
+                       const char *new, struct Header *h)
 {
   char buf[PATH_MAX];
   int rc;

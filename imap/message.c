@@ -91,7 +91,7 @@ static struct BodyCache *msg_cache_open(struct ImapData *idata)
   if (idata->bcache)
     return idata->bcache;
 
-  imap_cachepath(idata, idata->mailbox, mailbox, sizeof(mailbox));
+  imap_cachepath(idata, idata->mbox_name, mailbox, sizeof(mailbox));
 
   return mutt_bcache_open(&idata->conn->account, mailbox);
 }
@@ -1267,7 +1267,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin,
   if (read_headers_fetch_new(idata, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
-  if (maxuid && (status = imap_mboxcache_get(idata, idata->mailbox, 0)) &&
+  if (maxuid && (status = imap_mboxcache_get(idata, idata->mbox_name, 0)) &&
       (status->uidnext < maxuid + 1))
   {
     status->uidnext = maxuid + 1;

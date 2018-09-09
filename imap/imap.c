@@ -619,7 +619,7 @@ int imap_access(const char *path)
     mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
 
   /* we may already be in the folder we're checking */
-  if (mutt_str_strcmp(idata->mailbox, mx.mbox) == 0)
+  if (mutt_str_strcmp(idata->mbox_name, mx.mbox) == 0)
   {
     FREE(&mx.mbox);
     return 0;
@@ -1473,7 +1473,7 @@ int imap_mailbox_check(bool check_stats)
      * IDLEd elsewhere.
      * idata->mailbox may be NULL for connections other than the current
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
-    if (idata->mailbox && (imap_mxcmp(name, idata->mailbox) == 0))
+    if (idata->mbox_name && (imap_mxcmp(name, idata->mbox_name) == 0))
     {
       np->m->has_new = false;
       continue;
@@ -1560,7 +1560,7 @@ int imap_status(const char *path, bool queue)
    *
    * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
    * make sure the idata really is open to a folder. */
-  if (idata->ctx && !imap_mxcmp(buf, idata->mailbox))
+  if (idata->ctx && !imap_mxcmp(buf, idata->mbox_name))
     return idata->ctx->mailbox->msg_count;
   else if (mutt_bit_isset(idata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(idata->capabilities, STATUS))
@@ -2027,9 +2027,9 @@ static int imap_mbox_open(struct Context *ctx)
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
   if (!*buf)
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
-  FREE(&(idata->mailbox));
-  idata->mailbox = mutt_str_strdup(buf);
-  imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
+  FREE(&(idata->mbox_name));
+  idata->mbox_name = mutt_str_strdup(buf);
+  imap_qualify_path(buf, sizeof(buf), &mx, idata->mbox_name);
 
   mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
   mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
@@ -2043,8 +2043,8 @@ static int imap_mbox_open(struct Context *ctx)
   idata->new_mail_count = 0;
   idata->max_msn = 0;
 
-  mutt_message(_("Selecting %s..."), idata->mailbox);
-  imap_munge_mbox_name(idata, buf, sizeof(buf), idata->mailbox);
+  mutt_message(_("Selecting %s..."), idata->mbox_name);
+  imap_munge_mbox_name(idata, buf, sizeof(buf), idata->mbox_name);
 
   /* pipeline ACL test */
   if (mutt_bit_isset(idata->capabilities, ACL))
@@ -2090,7 +2090,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   imap_cmd_start(idata, bufout);
 
-  status = imap_mboxcache_get(idata, idata->mailbox, true);
+  status = imap_mboxcache_get(idata, idata->mbox_name, true);
 
   do
   {
@@ -2320,7 +2320,7 @@ static int imap_mbox_close(struct Context *ctx)
     }
 
     idata->reopen &= IMAP_REOPEN_ALLOW;
-    FREE(&(idata->mailbox));
+    FREE(&(idata->mbox_name));
     mutt_list_free(&idata->flags);
     idata->ctx = NULL;
 

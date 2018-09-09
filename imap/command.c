@@ -1002,7 +1002,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       {
         if (!(idata->reopen & IMAP_EXPUNGE_PENDING))
         {
-          mutt_debug(2, "New mail in %s - %d messages total.\n", idata->mailbox, count);
+          mutt_debug(2, "New mail in %s - %d messages total.\n", idata->mbox_name, count);
           idata->reopen |= IMAP_NEWMAIL_PENDING;
         }
         idata->new_mail_count = count;
