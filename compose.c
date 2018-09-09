@@ -1408,7 +1408,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         OptNews = false;
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
-          CurrentNewsSrv = nntp_select_server(NewsServer, false);
+          CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
           if (!CurrentNewsSrv)
             break;
 
@@ -1494,7 +1494,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
             continue;
 
           new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->content = mutt_make_message_attach(Context, Context->hdrs[i], true);
+          new->content =
+              mutt_make_message_attach(Context, Context->mailbox->hdrs[i], true);
           if (new->content)
             update_idx(menu, actx, new);
           else

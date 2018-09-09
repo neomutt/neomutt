@@ -48,6 +48,28 @@ extern bool  MaildirCheckCur;
 #define MB_HIDDEN 1
 
 /**
+ * enum AclRights - ACL Rights
+ *
+ * These show permission to...
+ */
+enum AclRights
+{
+  MUTT_ACL_ADMIN = 0, ///< administer the account (get/set permissions)
+  MUTT_ACL_CREATE,    ///< create a mailbox
+  MUTT_ACL_DELETE,    ///< delete a message
+  MUTT_ACL_DELMX,     ///< delete a mailbox
+  MUTT_ACL_EXPUNGE,   ///< expunge messages
+  MUTT_ACL_INSERT,    ///< add/copy into the mailbox (used when editing a message)
+  MUTT_ACL_LOOKUP,    ///< lookup mailbox (visible to 'list')
+  MUTT_ACL_POST,      ///< post (submit messages to the server)
+  MUTT_ACL_READ,      ///< read the mailbox
+  MUTT_ACL_SEEN,      ///< change the 'seen' status of a message
+  MUTT_ACL_WRITE,     ///< write to a message (for flagging, or linking threads)
+
+  RIGHTSMAX
+};
+
+/**
  * struct Mailbox - A mailbox
  */
 struct Mailbox
@@ -57,18 +79,43 @@ struct Mailbox
                             * comparison, and the sidebar */
   char *desc;
   off_t size;
-  bool new; /**< mailbox has new mail */
+  bool has_new; /**< mailbox has new mail */
 
   /* These next three are only set when MailCheckStats is set */
   int msg_count;             /**< total number of messages */
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
 
+  struct Header **hdrs;
+  int hdrmax;               /**< number of pointers in hdrs */
+  int *v2r;                 /**< mapping from virtual to real msgno */
+  int vcount;               /**< the number of virtual messages */
+
   bool notified;             /**< user has been notified */
   enum MailboxType magic;    /**< mailbox type */
   bool newly_created;        /**< mbox or mmdf just popped into existence */
+  struct timespec mtime;
   struct timespec last_visited;       /**< time of last exit from this mailbox */
   struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
+
+  void *data;                /**< driver specific data */
+  void (*free_data)(void *); /**< driver-specific data free function */
+  const struct MxOps *mx_ops;
+
+  bool changed : 1;   /**< mailbox has been modified */
+  bool readonly : 1;  /**< don't allow changes to the mailbox */
+  bool quiet : 1;     /**< inhibit status messages? */
+  bool closing : 1;   /**< mailbox is being closed */
+
+  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
+
+#ifdef USE_COMPRESSED
+  void *compress_info; /**< compressed mbox module private data */
+#endif
+
+  struct Hash *id_hash;     /**< hash table by msg id */
+  struct Hash *subj_hash;   /**< hash table by subject */
+  struct Hash *label_hash;  /**< hash table for x-labels */
 
   int flags; /**< e.g. #MB_NORMAL */
 };
@@ -78,7 +125,7 @@ struct Mailbox
  */
 struct MailboxNode
 {
-  struct Mailbox *b;
+  struct Mailbox *m;
   STAILQ_ENTRY(MailboxNode) entries;
 };
 
@@ -95,7 +142,7 @@ void            mailbox_free(struct Mailbox **mailbox);
 void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);
-void mutt_update_mailbox(struct Mailbox *b);
+void mutt_update_mailbox(struct Mailbox *m);
 
 void mutt_mailbox_cleanup(const char *path, struct stat *st);
 

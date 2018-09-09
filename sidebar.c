@@ -135,11 +135,11 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   buf[0] = 0; /* Just in case there's nothing to do */
 
-  struct Mailbox *b = sbe->mailbox;
-  if (!b)
+  struct Mailbox *m = sbe->mailbox;
+  if (!m)
     return src;
 
-  int c = Context && (mutt_str_strcmp(Context->mailbox->realpath, b->realpath) == 0);
+  int c = Context && (mutt_str_strcmp(Context->mailbox->realpath, m->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
@@ -163,9 +163,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, b->msg_flagged);
+        snprintf(buf, buflen, fmt, m->msg_flagged);
       }
-      else if (b->msg_flagged == 0)
+      else if (m->msg_flagged == 0)
         optional = 0;
       break;
 
@@ -173,9 +173,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->vcount : b->msg_count);
+        snprintf(buf, buflen, fmt, c ? Context->mailbox->vcount : m->msg_count);
       }
-      else if ((c && Context->vcount == b->msg_count) || !c)
+      else if ((c && Context->mailbox->vcount == m->msg_count) || !c)
         optional = 0;
       break;
 
@@ -183,9 +183,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, b->msg_unread);
+        snprintf(buf, buflen, fmt, m->msg_unread);
       }
-      else if (b->msg_unread == 0)
+      else if (m->msg_unread == 0)
         optional = 0;
       break;
 
@@ -193,9 +193,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, b->new ? 'N' : ' ');
+        snprintf(buf, buflen, fmt, m->has_new ? 'N' : ' ');
       }
-      else if (b->new == false)
+      else if (m->has_new == false)
         optional = 0;
       break;
 
@@ -203,9 +203,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, b->msg_count);
+        snprintf(buf, buflen, fmt, m->msg_count);
       }
-      else if (b->msg_count == 0)
+      else if (m->msg_count == 0)
         optional = 0;
       break;
 
@@ -220,15 +220,15 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case '!':
-      if (b->msg_flagged == 0)
+      if (m->msg_flagged == 0)
         mutt_format_s(buf, buflen, prec, "");
-      else if (b->msg_flagged == 1)
+      else if (m->msg_flagged == 1)
         mutt_format_s(buf, buflen, prec, "!");
-      else if (b->msg_flagged == 2)
+      else if (m->msg_flagged == 2)
         mutt_format_s(buf, buflen, prec, "!!");
       else
       {
-        snprintf(fmt, sizeof(fmt), "%d!", b->msg_flagged);
+        snprintf(fmt, sizeof(fmt), "%d!", m->msg_flagged);
         mutt_format_s(buf, buflen, prec, fmt);
       }
       break;
@@ -302,39 +302,39 @@ static int cb_qsort_sbe(const void *a, const void *b)
 {
   const struct SbEntry *sbe1 = *(const struct SbEntry **) a;
   const struct SbEntry *sbe2 = *(const struct SbEntry **) b;
-  struct Mailbox *b1 = sbe1->mailbox;
-  struct Mailbox *b2 = sbe2->mailbox;
+  struct Mailbox *m1 = sbe1->mailbox;
+  struct Mailbox *m2 = sbe2->mailbox;
 
   int result = 0;
 
   switch ((SidebarSortMethod & SORT_MASK))
   {
     case SORT_COUNT:
-      if (b2->msg_count == b1->msg_count)
-        result = mutt_str_strcoll(b1->path, b2->path);
+      if (m2->msg_count == m1->msg_count)
+        result = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (b2->msg_count - b1->msg_count);
+        result = (m2->msg_count - m1->msg_count);
       break;
     case SORT_UNREAD:
-      if (b2->msg_unread == b1->msg_unread)
-        result = mutt_str_strcoll(b1->path, b2->path);
+      if (m2->msg_unread == m1->msg_unread)
+        result = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (b2->msg_unread - b1->msg_unread);
+        result = (m2->msg_unread - m1->msg_unread);
       break;
     case SORT_DESC:
-      result = mutt_str_strcmp(b1->desc, b2->desc);
+      result = mutt_str_strcmp(m1->desc, m2->desc);
       break;
     case SORT_FLAGGED:
-      if (b2->msg_flagged == b1->msg_flagged)
-        result = mutt_str_strcoll(b1->path, b2->path);
+      if (m2->msg_flagged == m1->msg_flagged)
+        result = mutt_str_strcoll(m1->path, m2->path);
       else
-        result = (b2->msg_flagged - b1->msg_flagged);
+        result = (m2->msg_flagged - m1->msg_flagged);
       break;
     case SORT_PATH:
     {
-      result = mutt_inbox_cmp(b1->path, b2->path);
+      result = mutt_inbox_cmp(m1->path, m2->path);
       if (result == 0)
-        result = mutt_str_strcoll(b1->path, b2->path);
+        result = mutt_str_strcoll(m1->path, m2->path);
       break;
     }
   }
@@ -379,7 +379,7 @@ static void update_entries_visibility(void)
       continue;
 
     if ((i == OpnIndex) || (sbe->mailbox->msg_unread > 0) ||
-        sbe->mailbox->new || (sbe->mailbox->msg_flagged > 0))
+        sbe->mailbox->has_new || (sbe->mailbox->msg_flagged > 0))
     {
       continue;
     }
@@ -415,7 +415,7 @@ static void unsort_entries(void)
       break;
 
     int j = i;
-    while ((j < EntryCount) && (Entries[j]->mailbox != np->b))
+    while ((j < EntryCount) && (Entries[j]->mailbox != np->m))
       j++;
     if (j < EntryCount)
     {
@@ -499,7 +499,7 @@ static int select_next_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->new && !Entries[entry]->mailbox->msg_unread);
+  } while (!Entries[entry]->mailbox->has_new && !Entries[entry]->mailbox->msg_unread);
 
   HilIndex = entry;
   return true;
@@ -554,7 +554,7 @@ static bool select_prev_new(void)
     }
     if (entry == HilIndex)
       return false;
-  } while (!Entries[entry]->mailbox->new && !Entries[entry]->mailbox->msg_unread);
+  } while (!Entries[entry]->mailbox->has_new && !Entries[entry]->mailbox->msg_unread);
 
   HilIndex = entry;
   return true;
@@ -819,7 +819,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
   struct SbEntry *entry = NULL;
-  struct Mailbox *b = NULL;
+  struct Mailbox *m = NULL;
   if (TopIndex < 0)
     return;
 
@@ -830,7 +830,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     entry = Entries[entryidx];
     if (entry->is_hidden)
       continue;
-    b = entry->mailbox;
+    m = entry->mailbox;
 
     if (entryidx == OpnIndex)
     {
@@ -841,12 +841,12 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if (entryidx == HilIndex)
       SETCOLOR(MT_COLOR_HIGHLIGHT);
-    else if ((b->msg_unread > 0) || (b->new))
+    else if ((m->msg_unread > 0) || (m->has_new))
       SETCOLOR(MT_COLOR_NEW);
-    else if (b->msg_flagged > 0)
+    else if (m->msg_flagged > 0)
       SETCOLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(b->path, Spoolfile) == 0))
+             (mutt_str_strcmp(m->path, Spoolfile) == 0))
     {
       SETCOLOR(MT_COLOR_SB_SPOOLFILE);
     }
@@ -864,18 +864,18 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     mutt_window_move(MuttSidebarWindow, row, col);
     if (Context && Context->mailbox->realpath &&
-        (mutt_str_strcmp(b->realpath, Context->mailbox->realpath) == 0))
+        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
-      if (b->magic == MUTT_NOTMUCH)
-        nm_nonctx_get_count(b->realpath, &b->msg_count, &b->msg_unread);
+      if (m->magic == MUTT_NOTMUCH)
+        nm_nonctx_get_count(m->realpath, &m->msg_count, &m->msg_unread);
       else
 #endif
       {
-        b->msg_unread = Context->mailbox->msg_unread;
-        b->msg_count = Context->mailbox->msg_count;
+        m->msg_unread = Context->mailbox->msg_unread;
+        m->msg_count = Context->mailbox->msg_count;
       }
-      b->msg_flagged = Context->mailbox->msg_flagged;
+      m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
     /* compute length of Folder without trailing separator */
@@ -885,9 +885,9 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     /* check whether Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
-    if ((mutt_str_strlen(b->path) > maildirlen) &&
-        (mutt_str_strncmp(Folder, b->path, maildirlen) == 0) &&
-        SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
+    if ((mutt_str_strlen(m->path) > maildirlen) &&
+        (mutt_str_strncmp(Folder, m->path, maildirlen) == 0) &&
+        SidebarDelimChars && strchr(SidebarDelimChars, m->path[maildirlen]))
     {
       maildir_is_prefix = true;
     }
@@ -898,7 +898,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if (SidebarShortPath)
     {
       /* disregard a trailing separator, so strlen() - 2 */
-      sidebar_folder_name = b->path;
+      sidebar_folder_name = m->path;
       for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, sidebar_folder_name[i]))
@@ -910,7 +910,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if ((SidebarComponentDepth > 0) && SidebarDelimChars)
     {
-      sidebar_folder_name = b->path + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = m->path + maildir_is_prefix * (maildirlen + 1);
       for (int i = 0; i < SidebarComponentDepth; i++)
       {
         char *chars_after_delim = strpbrk(sidebar_folder_name, SidebarDelimChars);
@@ -921,16 +921,16 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       }
     }
     else
-      sidebar_folder_name = b->path + maildir_is_prefix * (maildirlen + 1);
+      sidebar_folder_name = m->path + maildir_is_prefix * (maildirlen + 1);
 
-    if (b->desc)
+    if (m->desc)
     {
-      sidebar_folder_name = b->desc;
+      sidebar_folder_name = m->desc;
     }
     else if (maildir_is_prefix && SidebarFolderIndent)
     {
       int lastsep = 0;
-      const char *tmp_folder_name = b->path + maildirlen + 1;
+      const char *tmp_folder_name = m->path + maildirlen + 1;
       int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {
@@ -993,7 +993,7 @@ void mutt_sb_draw(void)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      mutt_sb_notify_mailbox(np->b, true);
+      mutt_sb_notify_mailbox(np->m, true);
     }
   }
 
@@ -1077,11 +1077,11 @@ void mutt_sb_set_mailbox_stats(const struct Context *ctx)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strcmp(np->b->realpath, ctx->mailbox->realpath) == 0)
+    if (mutt_str_strcmp(np->m->realpath, ctx->mailbox->realpath) == 0)
     {
-      np->b->msg_unread = ctx->mailbox->msg_unread;
-      np->b->msg_count = ctx->mailbox->msg_count;
-      np->b->msg_flagged = ctx->mailbox->msg_flagged;
+      np->m->msg_unread = ctx->mailbox->msg_unread;
+      np->m->msg_count = ctx->mailbox->msg_count;
+      np->m->msg_flagged = ctx->mailbox->msg_flagged;
       break;
     }
   }
@@ -1130,7 +1130,7 @@ void mutt_sb_set_open_mailbox(void)
 
 /**
  * mutt_sb_notify_mailbox - The state of a Mailbox is about to change
- * @param b       Folder
+ * @param m       Folder
  * @param created True if folder created, false if deleted
  *
  * We receive a notification:
@@ -1139,9 +1139,9 @@ void mutt_sb_set_open_mailbox(void)
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(struct Mailbox *b, bool created)
+void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
 {
-  if (!b)
+  if (!m)
     return;
 
   /* Any new/deleted mailboxes will cause a refresh.  As long as
@@ -1155,14 +1155,14 @@ void mutt_sb_notify_mailbox(struct Mailbox *b, bool created)
       mutt_mem_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
     Entries[EntryCount] = mutt_mem_calloc(1, sizeof(struct SbEntry));
-    Entries[EntryCount]->mailbox = b;
+    Entries[EntryCount]->mailbox = m;
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
-        (mutt_str_strcmp(b->realpath, Context->mailbox->realpath) == 0))
+        (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
       OpnIndex = EntryCount;
 
     EntryCount++;
@@ -1171,7 +1171,7 @@ void mutt_sb_notify_mailbox(struct Mailbox *b, bool created)
   {
     int del_index;
     for (del_index = 0; del_index < EntryCount; del_index++)
-      if (Entries[del_index]->mailbox == b)
+      if (Entries[del_index]->mailbox == m)
         break;
     if (del_index == EntryCount)
       return;
@@ -1221,10 +1221,10 @@ void mutt_sb_toggle_virtual(void)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     /* and reintroduce the ones that are visible */
-    if (((np->b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((np->b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    if (((np->m->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((np->m->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
     {
-      mutt_sb_notify_mailbox(np->b, true);
+      mutt_sb_notify_mailbox(np->m, true);
     }
   }
 

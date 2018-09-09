@@ -1018,14 +1018,14 @@ static int get_description(struct NntpData *nntp_data, const char *wildmat, cons
 
 /**
  * nntp_parse_xref - Parse cross-reference
- * @param ctx Mailbox
- * @param hdr Email header
+ * @param mailbox Mailbox
+ * @param hdr     Email header
  *
  * Update read flag and set article number if empty
  */
-static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
+static void nntp_parse_xref(struct Mailbox *mailbox, struct Header *hdr)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = mailbox->data;
 
   char *buf = mutt_str_strdup(hdr->env->xref);
   char *p = buf;
@@ -1050,7 +1050,7 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
     if (sscanf(colon, ANUM, &anum) != 1)
       continue;
 
-    nntp_article_status(ctx, hdr, grp, anum);
+    nntp_article_status(mailbox, hdr, grp, anum);
     if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
       NHDR(hdr)->article_num = anum;
   }
@@ -1123,7 +1123,7 @@ static int parse_overview_line(char *line, void *data)
 {
   struct FetchCtx *fc = data;
   struct Context *ctx = fc->ctx;
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct Header *hdr = NULL;
   char *header = NULL, *field = NULL;
   bool save = true;
@@ -1148,7 +1148,7 @@ static int parse_overview_line(char *line, void *data)
   if (!fc->messages[anum - fc->first])
   {
     /* progress */
-    if (!ctx->quiet)
+    if (!ctx->mailbox->quiet)
       mutt_progress_update(&fc->progress, anum - fc->first + 1, -1);
     return 0;
   }
@@ -1185,12 +1185,12 @@ static int parse_overview_line(char *line, void *data)
   rewind(fp);
 
   /* allocate memory for headers */
-  if (ctx->mailbox->msg_count >= ctx->hdrmax)
-    mx_alloc_memory(ctx);
+  if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
+    mx_alloc_memory(ctx->mailbox);
 
   /* parse header */
-  ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-  hdr = ctx->hdrs[ctx->mailbox->msg_count];
+  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+  hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
@@ -1209,7 +1209,7 @@ static int parse_overview_line(char *line, void *data)
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       mutt_header_free(&hdr);
       hdr = mutt_hcache_restore(hdata);
-      ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       mutt_hcache_free(fc->hc, &hdata);
       hdr->data = NULL;
       hdr->read = false;
@@ -1248,9 +1248,9 @@ static int parse_overview_line(char *line, void *data)
       hdr->changed = true;
     else
     {
-      nntp_article_status(ctx, hdr, NULL, anum);
+      nntp_article_status(ctx->mailbox, hdr, NULL, anum);
       if (!hdr->read)
-        nntp_parse_xref(ctx, hdr);
+        nntp_parse_xref(ctx->mailbox, hdr);
     }
     if (anum > nntp_data->last_loaded)
       nntp_data->last_loaded = anum;
@@ -1259,7 +1259,7 @@ static int parse_overview_line(char *line, void *data)
     mutt_header_free(&hdr);
 
   /* progress */
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
     mutt_progress_update(&fc->progress, anum - fc->first + 1, -1);
   return 0;
 }
@@ -1277,7 +1277,7 @@ static int parse_overview_line(char *line, void *data)
 static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
                               anum_t last, int restore)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct FetchCtx fc;
   struct Header *hdr = NULL;
   char buf[HUGE_STRING];
@@ -1308,7 +1308,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   /* fetch list of articles */
   if (NntpListgroup && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
   {
-    if (!ctx->quiet)
+    if (!ctx->mailbox->quiet)
       mutt_message(_("Fetching list of articles..."));
     if (nntp_data->nserv->hasLISTGROUPrange)
       snprintf(buf, sizeof(buf), "LISTGROUP %s %u-%u\r\n", nntp_data->group, first, last);
@@ -1350,14 +1350,14 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   }
 
   /* fetching header from cache or server, or fallback to fetch overview */
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     mutt_progress_init(&fc.progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
   }
   for (current = first; current <= last && rc == 0; current++)
   {
-    if (!ctx->quiet)
+    if (!ctx->mailbox->quiet)
       mutt_progress_update(&fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
@@ -1369,8 +1369,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       continue;
 
     /* allocate memory for headers */
-    if (ctx->mailbox->msg_count >= ctx->hdrmax)
-      mx_alloc_memory(ctx);
+    if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
+      mx_alloc_memory(ctx->mailbox);
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
@@ -1379,7 +1379,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
       hdr = mutt_hcache_restore(hdata);
-      ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       mutt_hcache_free(fc.hc, &hdata);
       hdr->data = NULL;
 
@@ -1452,8 +1452,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       }
 
       /* parse header */
-      ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-      hdr = ctx->hdrs[ctx->mailbox->msg_count];
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+      hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
       hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
@@ -1470,9 +1470,9 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       hdr->changed = true;
     else
     {
-      nntp_article_status(ctx, hdr, NULL, NHDR(hdr)->article_num);
+      nntp_article_status(ctx->mailbox, hdr, NULL, NHDR(hdr)->article_num);
       if (!hdr->read)
-        nntp_parse_xref(ctx, hdr);
+        nntp_parse_xref(ctx->mailbox, hdr);
     }
     if (current > nntp_data->last_loaded)
       nntp_data->last_loaded = current;
@@ -1531,7 +1531,7 @@ static int nntp_mbox_open(struct Context *ctx)
   group = url.path;
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
-  nserv = nntp_select_server(server, true);
+  nserv = nntp_select_server(ctx->mailbox, server, true);
   url_free(&url);
   if (!nserv)
     return -1;
@@ -1546,9 +1546,9 @@ static int nntp_mbox_open(struct Context *ctx)
     return -1;
   }
 
-  mutt_bit_unset(ctx->rights, MUTT_ACL_INSERT);
+  mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_INSERT);
   if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
-    ctx->readonly = true;
+    ctx->mailbox->readonly = true;
 
   /* select newsgroup */
   mutt_message(_("Selecting %s..."), group);
@@ -1604,7 +1604,7 @@ static int nntp_mbox_open(struct Context *ctx)
   }
 
   time(&nserv->check_time);
-  ctx->data = nntp_data;
+  ctx->mailbox->data = nntp_data;
   if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
@@ -1623,8 +1623,8 @@ static int nntp_mbox_open(struct Context *ctx)
 #endif
   if (!hc)
   {
-    mutt_bit_unset(ctx->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(ctx->rights, MUTT_ACL_DELETE);
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_WRITE);
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_DELETE);
   }
   nntp_newsrc_close(nserv);
   rc = nntp_fetch_headers(ctx, hc, first, nntp_data->last_message, 0);
@@ -1643,8 +1643,8 @@ static int nntp_mbox_open(struct Context *ctx)
  */
 static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
-  struct NntpData *nntp_data = ctx->data;
-  struct Header *hdr = ctx->hdrs[msgno];
+  struct NntpData *nntp_data = ctx->mailbox->data;
+  struct Header *hdr = ctx->mailbox->hdrs[msgno];
   char article[16];
 
   /* try to get article from cache */
@@ -1729,18 +1729,18 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
-  if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr);
-  if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_delete(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
   hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
 
-  if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
-  if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_insert(ctx->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_insert(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
 
   /* fix content length */
   fseek(msg->fp, 0, SEEK_END);
@@ -1775,20 +1775,22 @@ static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * nntp_post - Post article
- * @param msg Message to post
+ * @param mailbox Mailbox
+ * @param msg     Message to post
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_post(const char *msg)
+int nntp_post(struct Mailbox *mailbox, const char *msg)
 {
-  struct NntpData *nntp_data, nntp_tmp;
+  struct NntpData *nntp_data = NULL;
+  struct NntpData nntp_tmp = { 0 };
   char buf[LONG_STRING];
 
-  if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data = Context->data;
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data = mailbox->data;
   else
   {
-    CurrentNewsSrv = nntp_select_server(NewsServer, false);
+    CurrentNewsSrv = nntp_select_server(mailbox, NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -1911,7 +1913,7 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
  */
 static int check_mailbox(struct Context *ctx)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct NntpServer *nserv = nntp_data->nserv;
   time_t now = time(NULL);
   int rc, ret = 0;
@@ -1938,7 +1940,7 @@ static int check_mailbox(struct Context *ctx)
   if (nntp_data->last_message < nntp_data->last_loaded)
   {
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_header_free(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->mailbox->hdrs[i]);
     ctx->mailbox->msg_count = 0;
     ctx->tagged = 0;
 
@@ -1974,7 +1976,7 @@ static int check_mailbox(struct Context *ctx)
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
     {
       bool flagged = false;
-      anum = NHDR(ctx->hdrs[i])->article_num;
+      anum = NHDR(ctx->mailbox->hdrs[i])->article_num;
 
 #ifdef USE_HCACHE
       /* check hcache for flagged and deleted flags */
@@ -2000,24 +2002,24 @@ static int check_mailbox(struct Context *ctx)
           /* header marked as deleted, removing from context */
           if (deleted)
           {
-            mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
-            mutt_header_free(&ctx->hdrs[i]);
+            mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_TAG, 0);
+            mutt_header_free(&ctx->mailbox->hdrs[i]);
             continue;
           }
         }
       }
 #endif
 
-      if (!ctx->hdrs[i]->changed)
+      if (!ctx->mailbox->hdrs[i]->changed)
       {
-        ctx->hdrs[i]->flagged = flagged;
-        ctx->hdrs[i]->read = false;
-        ctx->hdrs[i]->old = false;
-        nntp_article_status(ctx, ctx->hdrs[i], NULL, anum);
-        if (!ctx->hdrs[i]->read)
-          nntp_parse_xref(ctx, ctx->hdrs[i]);
+        ctx->mailbox->hdrs[i]->flagged = flagged;
+        ctx->mailbox->hdrs[i]->read = false;
+        ctx->mailbox->hdrs[i]->old = false;
+        nntp_article_status(ctx->mailbox, ctx->mailbox->hdrs[i], NULL, anum);
+        if (!ctx->mailbox->hdrs[i]->read)
+          nntp_parse_xref(ctx->mailbox, ctx->mailbox->hdrs[i]);
       }
-      ctx->hdrs[j++] = ctx->hdrs[i];
+      ctx->mailbox->hdrs[j++] = ctx->mailbox->hdrs[i];
     }
 
 #ifdef USE_HCACHE
@@ -2034,11 +2036,11 @@ static int check_mailbox(struct Context *ctx)
       if (hdata)
       {
         mutt_debug(2, "#2 mutt_hcache_fetch %s\n", buf);
-        if (ctx->mailbox->msg_count >= ctx->hdrmax)
-          mx_alloc_memory(ctx);
+        if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
+          mx_alloc_memory(ctx->mailbox);
 
         hdr = mutt_hcache_restore(hdata);
-        ctx->hdrs[ctx->mailbox->msg_count] = hdr;
+        ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
         mutt_hcache_free(hc, &hdata);
         hdr->data = NULL;
         if (hdr->deleted)
@@ -2057,9 +2059,9 @@ static int check_mailbox(struct Context *ctx)
         hdr->old = false;
         hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
         NHDR(hdr)->article_num = anum;
-        nntp_article_status(ctx, hdr, NULL, anum);
+        nntp_article_status(ctx->mailbox, hdr, NULL, anum);
         if (!hdr->read)
-          nntp_parse_xref(ctx, hdr);
+          nntp_parse_xref(ctx->mailbox, hdr);
       }
     }
     FREE(&messages);
@@ -2072,20 +2074,20 @@ static int check_mailbox(struct Context *ctx)
   /* some headers were removed, context must be updated */
   if (ret == MUTT_REOPENED)
   {
-    if (ctx->subj_hash)
-      mutt_hash_destroy(&ctx->subj_hash);
-    if (ctx->id_hash)
-      mutt_hash_destroy(&ctx->id_hash);
+    if (ctx->mailbox->subj_hash)
+      mutt_hash_destroy(&ctx->mailbox->subj_hash);
+    if (ctx->mailbox->id_hash)
+      mutt_hash_destroy(&ctx->mailbox->id_hash);
     mutt_clear_threads(ctx);
 
-    ctx->vcount = 0;
+    ctx->mailbox->vcount = 0;
     ctx->deleted = 0;
     ctx->new = 0;
     ctx->mailbox->msg_unread = 0;
     ctx->mailbox->msg_flagged = 0;
-    ctx->changed = false;
-    ctx->id_hash = NULL;
-    ctx->subj_hash = NULL;
+    ctx->mailbox->changed = false;
+    ctx->mailbox->id_hash = NULL;
+    ctx->mailbox->subj_hash = NULL;
     mx_update_context(ctx, ctx->mailbox->msg_count);
   }
 
@@ -2093,8 +2095,8 @@ static int check_mailbox(struct Context *ctx)
   if (nntp_data->last_message > nntp_data->last_loaded)
   {
     int oldmsgcount = ctx->mailbox->msg_count;
-    bool quiet = ctx->quiet;
-    ctx->quiet = true;
+    bool quiet = ctx->mailbox->quiet;
+    ctx->mailbox->quiet = true;
 #ifdef USE_HCACHE
     if (!hc)
     {
@@ -2103,7 +2105,7 @@ static int check_mailbox(struct Context *ctx)
     }
 #endif
     rc = nntp_fetch_headers(ctx, hc, nntp_data->last_loaded + 1, nntp_data->last_message, 0);
-    ctx->quiet = quiet;
+    ctx->mailbox->quiet = quiet;
     if (rc >= 0)
       nntp_data->last_loaded = nntp_data->last_message;
     if (ret == 0 && ctx->mailbox->msg_count > oldmsgcount)
@@ -2133,7 +2135,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
   int ret = check_mailbox(ctx);
   if (ret == 0)
   {
-    struct NntpData *nntp_data = ctx->data;
+    struct NntpData *nntp_data = ctx->mailbox->data;
     struct NntpServer *nserv = nntp_data->nserv;
     nntp_newsrc_close(nserv);
   }
@@ -2147,7 +2149,7 @@ static int nntp_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   int rc;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -2166,7 +2168,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Header *hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->mailbox->hdrs[i];
     char buf[16];
 
     snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
@@ -2208,7 +2210,7 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
  */
 static int nntp_mbox_close(struct Context *ctx)
 {
-  struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
+  struct NntpData *nntp_data = ctx->mailbox->data, *nntp_tmp = NULL;
 
   if (!nntp_data)
     return 0;
@@ -2332,12 +2334,13 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
 
 /**
  * nntp_check_new_groups - Check for new groups/articles in subscribed groups
- * @param nserv NNTP server
+ * @param mailbox Mailbox
+ * @param nserv   NNTP server
  * @retval  1 New groups found
  * @retval  0 No new groups
  * @retval -1 Error
  */
-int nntp_check_new_groups(struct NntpServer *nserv)
+int nntp_check_new_groups(struct Mailbox *mailbox, struct NntpServer *nserv)
 {
   struct NntpData nntp_data;
   time_t now;
@@ -2368,10 +2371,10 @@ int nntp_check_new_groups(struct NntpServer *nserv)
       }
     }
     /* select current newsgroup */
-    if (Context && Context->mailbox->magic == MUTT_NNTP)
+    if (mailbox && (mailbox->magic == MUTT_NNTP))
     {
       buf[0] = '\0';
-      if (nntp_query(Context->data, buf, sizeof(buf)) < 0)
+      if (nntp_query(mailbox->data, buf, sizeof(buf)) < 0)
         return -1;
     }
   }
@@ -2383,8 +2386,8 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   if (nntp_date(nserv, &now) < 0)
     return -1;
   nntp_data.nserv = nserv;
-  if (Context && Context->mailbox->magic == MUTT_NNTP)
-    nntp_data.group = ((struct NntpData *) Context->data)->group;
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data.group = ((struct NntpData *) mailbox->data)->group;
   else
     nntp_data.group = NULL;
   i = nserv->groups_num;
@@ -2451,7 +2454,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
  */
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   char buf[LONG_STRING];
 
   FILE *fp = mutt_file_mkstemp();
@@ -2475,17 +2478,17 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   }
 
   /* parse header */
-  if (ctx->mailbox->msg_count == ctx->hdrmax)
-    mx_alloc_memory(ctx);
-  ctx->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
-  struct Header *hdr = ctx->hdrs[ctx->mailbox->msg_count];
+  if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
+    mx_alloc_memory(ctx->mailbox);
+  ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+  struct Header *hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
   mutt_file_fclose(&fp);
 
   /* get article number */
   if (hdr->env->xref)
-    nntp_parse_xref(ctx, hdr);
+    nntp_parse_xref(ctx->mailbox, hdr);
   else
   {
     snprintf(buf, sizeof(buf), "STAT %s\r\n", msgid);
@@ -2513,7 +2516,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
  */
 struct ChildCtx
 {
-  struct Context *ctx;
+  struct Mailbox *mailbox;
   unsigned int num;
   unsigned int max;
   anum_t *child;
@@ -2532,8 +2535,8 @@ static int fetch_children(char *line, void *data)
 
   if (!line || sscanf(line, ANUM, &anum) != 1)
     return 0;
-  for (unsigned int i = 0; i < cc->ctx->mailbox->msg_count; i++)
-    if (NHDR(cc->ctx->hdrs[i])->article_num == anum)
+  for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
+    if (NHDR(cc->mailbox->hdrs[i])->article_num == anum)
       return 0;
   if (cc->num >= cc->max)
   {
@@ -2553,7 +2556,7 @@ static int fetch_children(char *line, void *data)
  */
 int nntp_check_children(struct Context *ctx, const char *msgid)
 {
-  struct NntpData *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->mailbox->data;
   struct ChildCtx cc;
   char buf[STRING];
   int rc;
@@ -2566,7 +2569,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
     return 0;
 
   /* init context */
-  cc.ctx = ctx;
+  cc.mailbox = ctx->mailbox;
   cc.num = 0;
   cc.max = 10;
   cc.child = mutt_mem_malloc(sizeof(anum_t) * cc.max);
@@ -2592,8 +2595,8 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   }
 
   /* fetch all found messages */
-  quiet = ctx->quiet;
-  ctx->quiet = true;
+  quiet = ctx->mailbox->quiet;
+  ctx->mailbox->quiet = true;
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(nntp_data);
 #endif
@@ -2606,7 +2609,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  ctx->quiet = quiet;
+  ctx->mailbox->quiet = quiet;
   FREE(&cc.child);
   return (rc < 0) ? -1 : 0;
 }

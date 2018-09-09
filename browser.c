@@ -654,7 +654,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       break;
 
     case 'n':
-      if (Context && Context->data == folder->ff->nd)
+      if (Context && Context->mailbox->data == folder->ff->nd)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->new);
@@ -686,7 +686,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
                               group_index_format_str, data, flags);
         }
       }
-      else if (Context && Context->data == folder->ff->nd)
+      else if (Context && Context->mailbox->data == folder->ff->nd)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->mailbox->msg_unread);
@@ -704,25 +704,25 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
 
 /**
  * add_folder - Add a folder to the browser list
- * @param m     Menu to use
+ * @param menu  Menu to use
  * @param state Browser state
  * @param name  Name of folder
  * @param desc  Description of folder
  * @param s     stat info for the folder
- * @param b     Mailbox
+ * @param m     Mailbox
  * @param data  Data to associate with the folder
  */
-static void add_folder(struct Menu *m, struct BrowserState *state,
+static void add_folder(struct Menu *menu, struct BrowserState *state,
                        const char *name, const char *desc, const struct stat *s,
-                       struct Mailbox *b, void *data)
+                       struct Mailbox *m, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
     mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(&state->entry[state->entrylen], 0, sizeof(struct FolderFile) * 256);
-    if (m)
-      m->data = state->entry;
+    if (menu)
+      menu->data = state->entry;
   }
 
   if (s)
@@ -739,12 +739,12 @@ static void add_folder(struct Menu *m, struct BrowserState *state,
   else
     (state->entry)[state->entrylen].local = false;
 
-  if (b)
+  if (m)
   {
     (state->entry)[state->entrylen].has_mailbox = true;
-    (state->entry)[state->entrylen].new = b->new;
-    (state->entry)[state->entrylen].msg_count = b->msg_count;
-    (state->entry)[state->entrylen].msg_unread = b->msg_unread;
+    (state->entry)[state->entrylen].new = m->has_new;
+    (state->entry)[state->entrylen].msg_count = m->msg_count;
+    (state->entry)[state->entrylen].msg_unread = m->msg_unread;
   }
 
   (state->entry)[state->entrylen].name = mutt_str_strdup(name);
@@ -881,17 +881,17 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &AllMailboxes, entries)
       {
-        if (mutt_str_strcmp(buffer, np->b->path) != 0)
+        if (mutt_str_strcmp(buffer, np->m->path) != 0)
           break;
       }
 
       if (np && Context &&
-          (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
+          (mutt_str_strcmp(np->m->realpath, Context->mailbox->realpath) == 0))
       {
-        np->b->msg_count = Context->mailbox->msg_count;
-        np->b->msg_unread = Context->mailbox->msg_unread;
+        np->m->msg_count = Context->mailbox->msg_count;
+        np->m->msg_unread = Context->mailbox->msg_unread;
       }
-      add_folder(menu, state, de->d_name, NULL, &s, np ? np->b : NULL, NULL);
+      add_folder(menu, state, de->d_name, NULL, &s, np ? np->m : NULL, NULL);
     }
     closedir(dp);
   }
@@ -919,10 +919,10 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (nm_path_probe(np->b->path, NULL) == MUTT_NOTMUCH)
+    if (nm_path_probe(np->m->path, NULL) == MUTT_NOTMUCH)
     {
-      nm_nonctx_get_count(np->b->path, &np->b->msg_count, &np->b->msg_unread);
-      add_folder(menu, state, np->b->path, np->b->desc, NULL, np->b, NULL);
+      nm_nonctx_get_count(np->m->path, &np->m->msg_count, &np->m->msg_unread);
+      add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
       continue;
     }
   }
@@ -972,60 +972,60 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
+      if (Context && (mutt_str_strcmp(np->m->realpath, Context->mailbox->realpath) == 0))
       {
-        np->b->msg_count = Context->mailbox->msg_count;
-        np->b->msg_unread = Context->mailbox->msg_unread;
+        np->m->msg_count = Context->mailbox->msg_count;
+        np->m->msg_unread = Context->mailbox->msg_unread;
       }
 
       char buffer[PATH_MAX];
-      mutt_str_strfcpy(buffer, np->b->path, sizeof(buffer));
+      mutt_str_strfcpy(buffer, np->m->path, sizeof(buffer));
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
-      if (imap_path_probe(np->b->path, NULL) == MUTT_IMAP)
+      if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
       {
-        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->m, NULL);
         continue;
       }
 #endif
 #ifdef USE_POP
-      if (pop_path_probe(np->b->path, NULL) == MUTT_POP)
+      if (pop_path_probe(np->m->path, NULL) == MUTT_POP)
       {
-        add_folder(menu, state, buffer, NULL, NULL, np->b, NULL);
+        add_folder(menu, state, buffer, NULL, NULL, np->m, NULL);
         continue;
       }
 #endif
 #ifdef USE_NNTP
-      if (nntp_path_probe(np->b->path, NULL) == MUTT_NNTP)
+      if (nntp_path_probe(np->m->path, NULL) == MUTT_NNTP)
       {
-        add_folder(menu, state, np->b->path, NULL, NULL, np->b, NULL);
+        add_folder(menu, state, np->m->path, NULL, NULL, np->m, NULL);
         continue;
       }
 #endif
-      if (lstat(np->b->path, &s) == -1)
+      if (lstat(np->m->path, &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (maildir_path_probe(np->b->path, NULL) == MUTT_MAILDIR)
+      if (maildir_path_probe(np->m->path, NULL) == MUTT_MAILDIR)
       {
         struct stat st2;
         char md[PATH_MAX];
 
-        snprintf(md, sizeof(md), "%s/new", np->b->path);
+        snprintf(md, sizeof(md), "%s/new", np->m->path);
         if (stat(md, &s) < 0)
           s.st_mtime = 0;
-        snprintf(md, sizeof(md), "%s/cur", np->b->path);
+        snprintf(md, sizeof(md), "%s/cur", np->m->path);
         if (stat(md, &st2) < 0)
           st2.st_mtime = 0;
         if (st2.st_mtime > s.st_mtime)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buffer, NULL, &s, np->b, NULL);
+      add_folder(menu, state, buffer, NULL, &s, np->m, NULL);
     }
   }
   browser_sort(state);
@@ -1804,7 +1804,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), mx.mbox);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (imap_delete_mailbox(Context, &mx) == 0)
+            if (imap_delete_mailbox(Context->mailbox, &mx) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&((state.entry)[nentry].name));
@@ -2158,9 +2158,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             break;
 
           if (i == OP_CATCHUP)
-            nntp_data = mutt_newsgroup_catchup(CurrentNewsSrv, ff->name);
+            nntp_data = mutt_newsgroup_catchup(Context, CurrentNewsSrv, ff->name);
           else
-            nntp_data = mutt_newsgroup_uncatchup(CurrentNewsSrv, ff->name);
+            nntp_data = mutt_newsgroup_uncatchup(Context, CurrentNewsSrv, ff->name);
 
           if (nntp_data)
           {

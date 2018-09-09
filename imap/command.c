@@ -680,54 +680,54 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
   s = imap_next_word((char *) s);
 
   /* zero out current rights set */
-  memset(idata->ctx->rights, 0, sizeof(idata->ctx->rights));
+  memset(idata->ctx->mailbox->rights, 0, sizeof(idata->ctx->mailbox->rights));
 
   while (*s && !isspace((unsigned char) *s))
   {
     switch (*s)
     {
       case 'a':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_ADMIN);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_ADMIN);
         break;
       case 'e':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       case 'i':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_INSERT);
         break;
       case 'k':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_CREATE);
         break;
       case 'l':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_LOOKUP);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
         break;
       case 'p':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_POST);
         break;
       case 'r':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_READ);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_READ);
         break;
       case 's':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_SEEN);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_SEEN);
         break;
       case 't':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELETE);
         break;
       case 'w':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_WRITE);
         break;
       case 'x':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELMX);
         break;
 
       /* obsolete rights */
       case 'c':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELMX);
         break;
       case 'd':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       default:
         mutt_debug(1, "Unknown right: %c\n", *s);
@@ -863,12 +863,12 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (np->b->magic != MUTT_IMAP)
+    if (np->m->magic != MUTT_IMAP)
       continue;
 
-    if (imap_parse_path(np->b->path, &mx) < 0)
+    if (imap_parse_path(np->m->path, &mx) < 0)
     {
-      mutt_debug(1, "Error parsing mailbox %s, skipping\n", np->b->path);
+      mutt_debug(1, "Error parsing mailbox %s, skipping\n", np->m->path);
       continue;
     }
 
@@ -907,18 +907,18 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
           new = (status->unseen > 0);
 
 #ifdef USE_SIDEBAR
-        if ((np->b->new != new) || (np->b->msg_count != status->messages) ||
-            (np->b->msg_unread != status->unseen))
+        if ((np->m->has_new != new) || (np->m->msg_count != status->messages) ||
+            (np->m->msg_unread != status->unseen))
         {
           mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
         }
 #endif
-        np->b->new = new;
+        np->m->has_new = new;
         if (new_msg_count)
-          np->b->msg_count = status->messages;
-        np->b->msg_unread = status->unseen;
+          np->m->msg_count = status->messages;
+        np->m->msg_unread = status->unseen;
 
-        if (np->b->new)
+        if (np->m->has_new)
         {
           /* force back to keep detecting new mail until the mailbox is
              opened */
@@ -1002,7 +1002,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       {
         if (!(idata->reopen & IMAP_EXPUNGE_PENDING))
         {
-          mutt_debug(2, "New mail in %s - %d messages total.\n", idata->mailbox, count);
+          mutt_debug(2, "New mail in %s - %d messages total.\n", idata->mbox_name, count);
           idata->reopen |= IMAP_NEWMAIL_PENDING;
         }
         idata->new_mail_count = count;
@@ -1319,7 +1319,7 @@ void imap_cmd_finish(struct ImapData *idata)
     return;
   }
 
-  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->closing)
+  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->mailbox->closing)
     return;
 
   if (idata->reopen & IMAP_REOPEN_ALLOW)

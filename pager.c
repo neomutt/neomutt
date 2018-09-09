@@ -112,7 +112,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_READONLY                                                         \
-  if (!Context || Context->readonly)                                           \
+  if (!Context || Context->mailbox->readonly)                                  \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -128,7 +128,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ACL(aclbit, action)                                              \
-  if (!Context || !mutt_bit_isset(Context->rights, aclbit))                    \
+  if (!Context || !mutt_bit_isset(Context->mailbox->rights, aclbit))           \
   {                                                                            \
     mutt_flushinp();                                                           \
     /* L10N: %s is one of the CHECK_ACL entries below. */                      \
@@ -1904,8 +1904,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     move(0, 0);
     clrtobot();
 
-    if (IsHeader(rd->extra) && Context && ((Context->vcount + 1) < PagerIndexLines))
-      rd->indexlen = Context->vcount + 1;
+    if (IsHeader(rd->extra) && Context && ((Context->mailbox->vcount + 1) < PagerIndexLines))
+      rd->indexlen = Context->mailbox->vcount + 1;
     else
       rd->indexlen = PagerIndexLines;
 
@@ -1989,7 +1989,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
         rd->index = mutt_menu_new(MENU_MAIN);
         rd->index->make_entry = index_make_entry;
         rd->index->color = index_color;
-        rd->index->max = Context ? Context->vcount : 0;
+        rd->index->max = Context ? Context->mailbox->vcount : 0;
         rd->index->current = rd->extra->hdr->virtual;
         rd->index->indexwin = rd->index_window;
         rd->index->statuswin = rd->index_status_window;
@@ -2357,7 +2357,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
-            struct Header *h = Context->hdrs[i];
+            struct Header *h = Context->mailbox->hdrs[i];
 
             if (h && !h->read)
             {
@@ -2376,22 +2376,25 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
              * rd.index->current might be invalid */
             rd.index->current =
                 MIN(rd.index->current, (Context->mailbox->msg_count - 1));
-            index_hint = Context->hdrs[Context->v2r[rd.index->current]]->index;
+            index_hint =
+                Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]]->index;
 
-            bool q = Context->quiet;
-            Context->quiet = true;
+            bool q = Context->mailbox->quiet;
+            Context->mailbox->quiet = true;
             update_index(rd.index, Context, check, oldcount, index_hint);
-            Context->quiet = q;
+            Context->mailbox->quiet = q;
 
-            rd.index->max = Context->vcount;
+            rd.index->max = Context->mailbox->vcount;
 
             /* If these header pointers don't match, then our email may have
              * been deleted.  Make the pointer safe, then leave the pager.
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
-            if (extra->hdr != Context->hdrs[Context->v2r[rd.index->current]])
+            if (extra->hdr !=
+                Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]])
             {
-              extra->hdr = Context->hdrs[Context->v2r[rd.index->current]];
+              extra->hdr =
+                  Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]];
               break;
             }
           }
@@ -3086,7 +3089,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->mailbox->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
         }
@@ -3098,7 +3101,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->mailbox->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
         {
           break;
         }
@@ -3124,7 +3127,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->mailbox->magic == MUTT_NNTP &&
-              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) extra->ctx->mailbox->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;
           }
@@ -3354,7 +3357,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         mutt_view_attachments(extra->hdr);
         if (Context && extra->hdr->attach_del)
-          Context->changed = true;
+          Context->mailbox->changed = true;
         pager_menu->redraw = REDRAW_FULL;
         break;
 
@@ -3375,7 +3378,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         rc = mutt_label_message(extra->hdr);
         if (rc > 0)
         {
-          Context->changed = true;
+          Context->mailbox->changed = true;
           pager_menu->redraw = REDRAW_FULL;
           mutt_message(ngettext("%d label changed", "%d labels changed", rc), rc);
         }

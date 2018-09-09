@@ -116,21 +116,16 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strcmp(tmp, np->b->path) == 0)
+    if (mutt_str_strcmp(tmp, np->m->path) == 0)
       break;
   }
 
   if (np)
   {
-    if (Context && (mutt_str_strcmp(np->b->realpath, Context->mailbox->realpath) == 0))
-    {
-      np->b->msg_count = Context->mailbox->msg_count;
-      np->b->msg_unread = Context->mailbox->msg_unread;
-    }
     (state->entry)[state->entrylen].has_mailbox = true;
-    (state->entry)[state->entrylen].new = np->b->new;
-    (state->entry)[state->entrylen].msg_count = np->b->msg_count;
-    (state->entry)[state->entrylen].msg_unread = np->b->msg_unread;
+    (state->entry)[state->entrylen].new = np->m->has_new;
+    (state->entry)[state->entrylen].msg_count = np->m->msg_count;
+    (state->entry)[state->entrylen].msg_unread = np->m->msg_unread;
   }
 
   (state->entrylen)++;

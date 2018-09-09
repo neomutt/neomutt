@@ -197,8 +197,8 @@ static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Context *ctx = menu->data;
 
-  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->hdrs[num],
-                         MUTT_FORMAT_ARROWCURSOR);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx,
+                         ctx->mailbox->hdrs[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -233,7 +233,7 @@ static struct Header *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
+        mutt_set_flag(PostContext, PostContext->mailbox->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
         if (Resolve && menu->current < menu->max - 1)
@@ -266,7 +266,7 @@ static struct Header *select_msg(void)
   Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  return r > -1 ? PostContext->hdrs[r] : NULL;
+  return r > -1 ? PostContext->mailbox->hdrs[r] : NULL;
 }
 
 /**
@@ -310,7 +310,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (PostContext->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    h = PostContext->hdrs[0];
+    h = PostContext->mailbox->hdrs[0];
   }
   else if (!(h = select_msg()))
   {
@@ -348,9 +348,9 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
         p = mutt_str_skip_email_wsp(np->data + 18);
-        if (!ctx->id_hash)
-          ctx->id_hash = mutt_make_id_hash(ctx);
-        *cur = mutt_hash_find(ctx->id_hash, p);
+        if (!ctx->mailbox->id_hash)
+          ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
+        *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
       }
       if (*cur)
         code |= SEND_REPLY;

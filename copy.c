@@ -655,9 +655,9 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
         body->offset = new_offset;
 
         /* update the total size of the mailbox to reflect this deletion */
-        Context->size -= body->length - new_length;
+        Context->mailbox->size -= body->length - new_length;
         /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (Context->v2r[hdr->msgno] != -1)
+        if (Context->mailbox->v2r[hdr->msgno] != -1)
           Context->vsize -= body->length - new_length;
 
         body->length = new_length;
@@ -840,7 +840,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 #ifdef USE_NOTMUCH
   if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR &&
       src->mailbox->magic == MUTT_NOTMUCH)
-    nm_update_filename(src, NULL, msg->committed_path, hdr);
+    nm_update_filename(src->mailbox, NULL, msg->committed_path, hdr);
 #endif
 
   mx_msg_close(dest, &msg);

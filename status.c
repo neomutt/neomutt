@@ -126,12 +126,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 #ifdef USE_NOTMUCH
       char *p = NULL;
       if (Context && Context->mailbox->magic == MUTT_NOTMUCH &&
-          (p = nm_get_description(Context)))
+          (p = nm_get_description(Context->mailbox)))
         mutt_str_strfcpy(tmp, p, sizeof(tmp));
       else
 #endif
 #ifdef USE_COMPRESSED
-          if (Context && Context->compress_info && Context->mailbox->realpath)
+          if (Context && Context->mailbox->compress_info && Context->mailbox->realpath)
       {
         mutt_str_strfcpy(tmp, Context->mailbox->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
@@ -169,10 +169,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->mailbox->size : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->size)
+      else if (!Context || !Context->mailbox->size)
         optional = 0;
       break;
 
@@ -201,7 +201,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->vcount : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->vcount : 0);
       }
       else if (!Context || !Context->pattern)
         optional = 0;
@@ -268,9 +268,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         i = OptAttachMsg ?
                 3 :
-                ((Context->readonly || Context->dontwrite) ?
+                ((Context->mailbox->readonly || Context->dontwrite) ?
                      2 :
-                     (Context->changed ||
+                     (Context->mailbox->changed ||
                       /* deleted doesn't necessarily mean changed in IMAP */
                       (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
                      1 :

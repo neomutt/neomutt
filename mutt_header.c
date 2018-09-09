@@ -44,19 +44,19 @@
 
 /**
  * label_ref_dec - Decrease the refcount of a label
- * @param ctx   Mailbox
+ * @param mailbox   Mailbox
  * @param label Label
  */
-static void label_ref_dec(struct Context *ctx, char *label)
+static void label_ref_dec(struct Mailbox *mailbox, char *label)
 {
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(mailbox->label_hash, label);
   if (!elem)
     return;
 
   uintptr_t count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(ctx->label_hash, label, NULL);
+    mutt_hash_delete(mailbox->label_hash, label, NULL);
     return;
   }
 
@@ -66,18 +66,18 @@ static void label_ref_dec(struct Context *ctx, char *label)
 
 /**
  * label_ref_inc - Increase the refcount of a label
- * @param ctx   Mailbox
+ * @param mailbox   Mailbox
  * @param label Label
  */
-static void label_ref_inc(struct Context *ctx, char *label)
+static void label_ref_inc(struct Mailbox *mailbox, char *label)
 {
   uintptr_t count;
 
-  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(mailbox->label_hash, label);
   if (!elem)
   {
     count = 1;
-    mutt_hash_insert(ctx->label_hash, label, (void *) count);
+    mutt_hash_insert(mailbox->label_hash, label, (void *) count);
     return;
   }
 
@@ -88,12 +88,12 @@ static void label_ref_inc(struct Context *ctx, char *label)
 
 /**
  * label_message - add an X-Label: field
- * @param[in]  ctx Mailbox
+ * @param[in]  mailbox Mailbox
  * @param[in]  hdr Header of email
  * @param[out] new Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
+static bool label_message(struct Mailbox *mailbox, struct Header *hdr, char *new)
 {
   if (!hdr)
     return false;
@@ -101,10 +101,10 @@ static bool label_message(struct Context *ctx, struct Header *hdr, char *new)
     return false;
 
   if (hdr->env->x_label)
-    label_ref_dec(ctx, hdr->env->x_label);
+    label_ref_dec(mailbox, hdr->env->x_label);
   mutt_str_replace(&hdr->env->x_label, new);
   if (hdr->env->x_label)
-    label_ref_inc(ctx, hdr->env->x_label);
+    label_ref_inc(mailbox, hdr->env->x_label);
 
   hdr->changed = true;
   hdr->xlabel_changed = true;
@@ -123,7 +123,7 @@ int mutt_label_message(struct Header *hdr)
   char buf[LONG_STRING], *new = NULL;
   int changed;
 
-  if (!Context || !Context->label_hash)
+  if (!Context || !Context->mailbox->label_hash)
     return 0;
 
   *buf = '\0';
@@ -143,7 +143,7 @@ int mutt_label_message(struct Header *hdr)
   changed = 0;
   if (hdr)
   {
-    if (label_message(Context, hdr, new))
+    if (label_message(Context->mailbox, hdr, new))
     {
       changed++;
       mutt_set_header_color(Context, hdr);
@@ -156,8 +156,8 @@ int mutt_label_message(struct Header *hdr)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *h = Context->hdrs[i];
-      if (label_message(Context, h, new))
+      struct Header *h = Context->mailbox->hdrs[i];
+      if (label_message(Context->mailbox, h, new))
       {
         changed++;
         mutt_set_flag(Context, h, MUTT_TAG, 0);
@@ -365,38 +365,38 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 
 /**
  * mutt_make_label_hash - Create a Hash Table to store the labels
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  */
-void mutt_make_label_hash(struct Context *ctx)
+void mutt_make_label_hash(struct Mailbox *mailbox)
 {
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a mailbox.
    */
-  ctx->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  mailbox->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 /**
  * mutt_label_hash_add - Add a message's labels to the Hash Table
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @param hdr Header of message
  */
-void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
+void mutt_label_hash_add(struct Mailbox *mailbox, struct Header *hdr)
 {
-  if (!ctx || !ctx->label_hash)
+  if (!mailbox || !mailbox->label_hash)
     return;
   if (hdr->env->x_label)
-    label_ref_inc(ctx, hdr->env->x_label);
+    label_ref_inc(mailbox, hdr->env->x_label);
 }
 
 /**
  * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
- * @param ctx Mailbox
+ * @param mailbox Mailbox
  * @param hdr Header of message
  */
-void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
+void mutt_label_hash_remove(struct Mailbox *mailbox, struct Header *hdr)
 {
-  if (!ctx || !ctx->label_hash)
+  if (!mailbox || !mailbox->label_hash)
     return;
   if (hdr->env->x_label)
-    label_ref_dec(ctx, hdr->env->x_label);
+    label_ref_dec(mailbox, hdr->env->x_label);
 }

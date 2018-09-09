@@ -133,7 +133,7 @@ static void alternates_clean(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->hdrs[i]->recip_valid = false;
+    Context->mailbox->hdrs[i]->recip_valid = false;
 }
 
 /**
@@ -145,7 +145,7 @@ static void attachments_clean(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->hdrs[i]->attach_valid = false;
+    Context->mailbox->hdrs[i]->attach_valid = false;
 }
 
 /**
@@ -205,7 +205,7 @@ static void clear_subject_mods(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    FREE(&Context->hdrs[i]->env->disp_subj);
+    FREE(&Context->mailbox->hdrs[i]->env->disp_subj);
 }
 
 #ifdef USE_NOTMUCH
@@ -225,10 +225,10 @@ static int complete_all_nm_tags(const char *pt)
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
-  nm_longrun_init(Context, false);
+  nm_longrun_init(Context->mailbox, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
+  if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || tag_count_1 == 0)
     goto done;
 
   /* Free the old list, if any. */
@@ -243,11 +243,11 @@ static int complete_all_nm_tags(const char *pt)
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(Context, nm_tags, &tag_count_2) || tag_count_1 != tag_count_2)
+  if (nm_get_all_tags(Context->mailbox, nm_tags, &tag_count_2) || tag_count_1 != tag_count_2)
   {
     FREE(&nm_tags);
     nm_tags = NULL;
-    nm_longrun_done(Context);
+    nm_longrun_done(Context->mailbox);
     return -1;
   }
 
@@ -261,7 +261,7 @@ static int complete_all_nm_tags(const char *pt)
   Matches[NumMatched++] = UserTyped;
 
 done:
-  nm_longrun_done(Context);
+  nm_longrun_done(Context->mailbox);
   return 0;
 }
 #endif
@@ -3085,9 +3085,9 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxNode *mp = NULL;
     STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (mp->b->magic == MUTT_NOTMUCH)
+      if (mp->m->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }
@@ -3421,7 +3421,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  if (!Context || !Context->label_hash)
+  if (!Context || !Context->mailbox->label_hash)
     return 0;
 
   SKIPWS(buf);
@@ -3437,7 +3437,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
-    while ((entry = mutt_hash_walk(Context->label_hash, &state)))
+    while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
     qsort(Matches, NumMatched, sizeof(char *), (sort_t *) mutt_str_strcasecmp);

@@ -173,15 +173,11 @@ struct MxOps
    */
   int (*msg_close)       (struct Context *ctx, struct Message *msg);
   /**
-   * tags_commit - Save the tags to a message
+   * msg_padding_size - Bytes of padding between messages
    * @param ctx Mailbox
-   * @param hdr Email Header
-   * @param buf Buffer containing tags
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval num Bytes of padding
    */
   int (*msg_padding_size)(struct Context *ctx);
-  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
   /**
    * tags_edit - Prompt and validate new messages tags
    * @param ctx    Mailbox
@@ -191,6 +187,15 @@ struct MxOps
    * @retval -1 Error
    * @retval  0 No valid user input
    * @retval  1 Buf set
+   */
+  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  /**
+   * tags_commit - Save the tags to a message
+   * @param ctx Mailbox
+   * @param hdr Email Header
+   * @param buf Buffer containing tags
+   * @retval  0 Success
+   * @retval -1 Failure
    */
   int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
   /**
@@ -246,7 +251,7 @@ int             mx_tags_commit     (struct Context *ctx, struct Header *hdr, cha
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 int                 mx_access(const char *path, int flags);
-void                mx_alloc_memory(struct Context *ctx);
+void                mx_alloc_memory(struct Mailbox *mailbox);
 int                 mx_check_empty(const char *path);
 int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
 void                mx_fastclose_mailbox(struct Context *ctx);

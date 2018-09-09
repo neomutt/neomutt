@@ -280,7 +280,7 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
     if (!message_is_tagged(ctx, i))
       continue;
 
-    if (edit_or_view_one_message(edit, ctx, ctx->hdrs[i]) == -1)
+    if (edit_or_view_one_message(edit, ctx, ctx->mailbox->hdrs[i]) == -1)
       return -1;
   }
 

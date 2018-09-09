@@ -251,7 +251,7 @@ struct ImapData
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
   struct Context *ctx;
-  char *mailbox;
+  char *mbox_name;
   unsigned short check_status;
   unsigned char reopen;
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */

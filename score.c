@@ -78,8 +78,8 @@ void mutt_check_rescore(struct Context *ctx)
 
     for (int i = 0; ctx && i < ctx->mailbox->msg_count; i++)
     {
-      mutt_score_message(ctx, ctx->hdrs[i], true);
-      ctx->hdrs[i]->pair = 0;
+      mutt_score_message(ctx, ctx->mailbox->hdrs[i], true);
+      ctx->mailbox->hdrs[i]->pair = 0;
     }
   }
   OptNeedRescore = false;

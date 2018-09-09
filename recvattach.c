@@ -74,7 +74,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
 #define CHECK_READONLY                                                         \
-  if (Context->readonly)                                                       \
+  if (Context->mailbox->readonly)                                              \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \

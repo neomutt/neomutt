@@ -2716,7 +2716,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
                         NONULL(Inews), nntp_format_str, 0, 0);
     if (!*cmd)
     {
-      i = nntp_post(msg);
+      i = nntp_post(Context->mailbox, msg);
       unlink(msg);
       return i;
     }
@@ -2968,7 +2968,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->mailbox->msg_count; i++)
       if (message_is_tagged(Context, i))
-        rc |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
+        rc |= bounce_message(fp, Context->mailbox->hdrs[i], to, resent_from, env_from);
     return rc;
   }
 

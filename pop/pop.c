@@ -195,15 +195,15 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 /**
  * fetch_uidl - parse UIDL
  * @param line String to parse
- * @param data Mailbox Context
+ * @param data Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int fetch_uidl(char *line, void *data)
 {
   int i, index;
-  struct Context *ctx = data;
-  struct PopData *pop_data = ctx->data;
+  struct Mailbox *mailbox = data;
+  struct PopData *pop_data = mailbox->data;
   char *endp = NULL;
 
   errno = 0;
@@ -218,26 +218,26 @@ static int fetch_uidl(char *line, void *data)
   if (strlen(line) == 0)
     return -1;
 
-  for (i = 0; i < ctx->mailbox->msg_count; i++)
-    if (mutt_str_strcmp(line, ctx->hdrs[i]->data) == 0)
+  for (i = 0; i < mailbox->msg_count; i++)
+    if (mutt_str_strcmp(line, mailbox->hdrs[i]->data) == 0)
       break;
 
-  if (i == ctx->mailbox->msg_count)
+  if (i == mailbox->msg_count)
   {
     mutt_debug(1, "new header %d %s\n", index, line);
 
-    if (i >= ctx->hdrmax)
-      mx_alloc_memory(ctx);
+    if (i >= mailbox->hdrmax)
+      mx_alloc_memory(mailbox);
 
-    ctx->mailbox->msg_count++;
-    ctx->hdrs[i] = mutt_header_new();
-    ctx->hdrs[i]->data = mutt_str_strdup(line);
+    mailbox->msg_count++;
+    mailbox->hdrs[i] = mutt_header_new();
+    mailbox->hdrs[i]->data = mutt_str_strdup(line);
   }
-  else if (ctx->hdrs[i]->index != index - 1)
+  else if (mailbox->hdrs[i]->index != index - 1)
     pop_data->clear_cache = true;
 
-  ctx->hdrs[i]->refno = index;
-  ctx->hdrs[i]->index = index - 1;
+  mailbox->hdrs[i]->refno = index;
+  mailbox->hdrs[i]->index = index - 1;
 
   return 0;
 }
@@ -247,10 +247,10 @@ static int fetch_uidl(char *line, void *data)
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  struct Context *ctx = data;
-  if (!ctx)
+  struct Mailbox *mailbox = data;
+  if (!mailbox)
     return -1;
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = mailbox->data;
   if (!pop_data)
     return -1;
 
@@ -260,10 +260,10 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
     return 0;
 #endif
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < mailbox->msg_count; i++)
   {
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (ctx->hdrs[i]->data && (mutt_str_strcmp(ctx->hdrs[i]->data, id) == 0))
+    if (mailbox->hdrs[i]->data && (mutt_str_strcmp(mailbox->hdrs[i]->data, id) == 0))
       return 0;
   }
 
@@ -305,7 +305,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 
 /**
  * pop_fetch_headers - Read headers
- * @param ctx Context
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
@@ -313,7 +313,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
  */
 static int pop_fetch_headers(struct Context *ctx)
 {
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
   struct Progress progress;
 
 #ifdef USE_HCACHE
@@ -324,10 +324,10 @@ static int pop_fetch_headers(struct Context *ctx)
   pop_data->clear_cache = false;
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    ctx->hdrs[i]->refno = -1;
+    ctx->mailbox->hdrs[i]->refno = -1;
 
   const int old_count = ctx->mailbox->msg_count;
-  int ret = pop_fetch_data(pop_data, "UIDL\r\n", NULL, fetch_uidl, ctx);
+  int ret = pop_fetch_data(pop_data, "UIDL\r\n", NULL, fetch_uidl, ctx->mailbox);
   const int new_count = ctx->mailbox->msg_count;
   ctx->mailbox->msg_count = old_count;
 
@@ -350,7 +350,7 @@ static int pop_fetch_headers(struct Context *ctx)
     }
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
   {
     mutt_progress_init(&progress, _("Fetching message headers..."),
                        MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
@@ -361,9 +361,9 @@ static int pop_fetch_headers(struct Context *ctx)
     int i, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
     {
-      if (ctx->hdrs[i]->refno == -1)
+      if (ctx->mailbox->hdrs[i]->refno == -1)
       {
-        ctx->hdrs[i]->deleted = true;
+        ctx->mailbox->hdrs[i]->deleted = true;
         deleted++;
       }
     }
@@ -378,15 +378,16 @@ static int pop_fetch_headers(struct Context *ctx)
     bool hcached = false;
     for (i = old_count; i < new_count; i++)
     {
-      if (!ctx->quiet)
+      if (!ctx->mailbox->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
-      void *data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
+      void *data = mutt_hcache_fetch(hc, ctx->mailbox->hdrs[i]->data,
+                                     strlen(ctx->mailbox->hdrs[i]->data));
       if (data)
       {
-        char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
-        int refno = ctx->hdrs[i]->refno;
-        int index = ctx->hdrs[i]->index;
+        char *uidl = mutt_str_strdup(ctx->mailbox->hdrs[i]->data);
+        int refno = ctx->mailbox->hdrs[i]->refno;
+        int index = ctx->mailbox->hdrs[i]->index;
         /* - POP dynamically numbers headers and relies on h->refno
          *   to map messages; so restore header and overwrite restored
          *   refno with current refno, same for index
@@ -397,23 +398,23 @@ static int pop_fetch_headers(struct Context *ctx)
          */
         struct Header *h = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
-        mutt_header_free(&ctx->hdrs[i]);
-        ctx->hdrs[i] = h;
-        ctx->hdrs[i]->refno = refno;
-        ctx->hdrs[i]->index = index;
-        ctx->hdrs[i]->data = uidl;
+        mutt_header_free(&ctx->mailbox->hdrs[i]);
+        ctx->mailbox->hdrs[i] = h;
+        ctx->mailbox->hdrs[i]->refno = refno;
+        ctx->mailbox->hdrs[i]->index = index;
+        ctx->mailbox->hdrs[i]->data = uidl;
         ret = 0;
         hcached = true;
       }
       else
 #endif
-          if ((ret = pop_read_header(pop_data, ctx->hdrs[i])) < 0)
+          if ((ret = pop_read_header(pop_data, ctx->mailbox->hdrs[i])) < 0)
         break;
 #ifdef USE_HCACHE
       else
       {
-        mutt_hcache_store(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
-                          ctx->hdrs[i], 0);
+        mutt_hcache_store(hc, ctx->mailbox->hdrs[i]->data,
+                          strlen(ctx->mailbox->hdrs[i]->data), ctx->mailbox->hdrs[i], 0);
       }
 #endif
 
@@ -429,20 +430,20 @@ static int pop_fetch_headers(struct Context *ctx)
        *        - if we don't have a body: new
        */
       const bool bcached =
-          (mutt_bcache_exists(pop_data->bcache, cache_id(ctx->hdrs[i]->data)) == 0);
-      ctx->hdrs[i]->old = false;
-      ctx->hdrs[i]->read = false;
+          (mutt_bcache_exists(pop_data->bcache, cache_id(ctx->mailbox->hdrs[i]->data)) == 0);
+      ctx->mailbox->hdrs[i]->old = false;
+      ctx->mailbox->hdrs[i]->read = false;
       if (hcached)
       {
         if (bcached)
-          ctx->hdrs[i]->read = true;
+          ctx->mailbox->hdrs[i]->read = true;
         else if (MarkOld)
-          ctx->hdrs[i]->old = true;
+          ctx->mailbox->hdrs[i]->old = true;
       }
       else
       {
         if (bcached)
-          ctx->hdrs[i]->read = true;
+          ctx->mailbox->hdrs[i]->read = true;
       }
 
       ctx->mailbox->msg_count++;
@@ -459,7 +460,7 @@ static int pop_fetch_headers(struct Context *ctx)
   if (ret < 0)
   {
     for (int i = ctx->mailbox->msg_count; i < new_count; i++)
-      mutt_header_free(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->mailbox->hdrs[i]);
     return ret;
   }
 
@@ -468,7 +469,7 @@ static int pop_fetch_headers(struct Context *ctx)
    * the availability of our cache
    */
   if (MessageCacheClean)
-    mutt_bcache_list(pop_data->bcache, msg_cache_check, (void *) ctx);
+    mutt_bcache_list(pop_data->bcache, msg_cache_check, ctx->mailbox);
 
   mutt_clear_error();
   return new_count - old_count;
@@ -476,7 +477,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
 /**
  * pop_mbox_open - open POP mailbox, fetch only headers
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -507,7 +508,7 @@ static int pop_mbox_open(struct Context *ctx)
 
   pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
-  ctx->data = pop_data;
+  ctx->mailbox->data = pop_data;
 
   if (pop_open_connection(pop_data) < 0)
     return -1;
@@ -516,21 +517,21 @@ static int pop_mbox_open(struct Context *ctx)
   pop_data->bcache = mutt_bcache_open(&acct, NULL);
 
   /* init (hard-coded) ACL rights */
-  memset(ctx->rights, 0, sizeof(ctx->rights));
-  mutt_bit_set(ctx->rights, MUTT_ACL_SEEN);
-  mutt_bit_set(ctx->rights, MUTT_ACL_DELETE);
+  memset(ctx->mailbox->rights, 0, sizeof(ctx->mailbox->rights));
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_SEEN);
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_DELETE);
 #ifdef USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
-  mutt_bit_set(ctx->rights, MUTT_ACL_WRITE);
+  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_WRITE);
 #endif
 
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
-    ctx->size = pop_data->size;
+    ctx->mailbox->size = pop_data->size;
 
     mutt_message(_("Fetching list of messages..."));
 
@@ -570,17 +571,17 @@ static void pop_clear_cache(struct PopData *pop_data)
 
 /**
  * pop_mbox_close - close POP mailbox
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @retval 0 Always
  */
 static int pop_mbox_close(struct Context *ctx)
 {
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
 
   if (!pop_data)
     return 0;
 
-  pop_logout(ctx);
+  pop_logout(ctx->mailbox);
 
   if (pop_data->status != POP_NONE)
     mutt_socket_close(pop_data->conn);
@@ -600,7 +601,7 @@ static int pop_mbox_close(struct Context *ctx)
 
 /**
  * pop_msg_open - fetch message from POP server
- * @param ctx   Mailbox Context
+ * @param ctx   Mailbox
  * @param msg   Message
  * @param msgno Message number
  * @retval  0 Success
@@ -612,9 +613,9 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[PATH_MAX];
   struct Progress progressbar;
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
   struct PopCache *cache = NULL;
-  struct Header *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->mailbox->hdrs[msgno];
   unsigned short bcache = 1;
 
   /* see if we already have the message in body cache */
@@ -649,7 +650,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
     /* verify that massage index is correct */
@@ -719,21 +720,21 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   uidl = h->data;
 
   /* we replace envelop, key in subj_hash has to be updated as well */
-  if (ctx->subj_hash && h->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h);
-  mutt_label_hash_remove(ctx, h);
+  if (ctx->mailbox->subj_hash && h->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, h->env->real_subj, h);
+  mutt_label_hash_remove(ctx->mailbox, h);
   mutt_env_free(&h->env);
   h->env = mutt_rfc822_read_header(msg->fp, h, false, false);
-  if (ctx->subj_hash && h->env->real_subj)
-    mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
-  mutt_label_hash_add(ctx, h);
+  if (ctx->mailbox->subj_hash && h->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
+  mutt_label_hash_add(ctx->mailbox, h);
 
   h->data = uidl;
   h->lines = 0;
   fgets(buf, sizeof(buf), msg->fp);
   while (!feof(msg->fp))
   {
-    ctx->hdrs[msgno]->lines++;
+    ctx->mailbox->hdrs[msgno]->lines++;
     fgets(buf, sizeof(buf), msg->fp);
   }
 
@@ -751,7 +752,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
 /**
  * pop_msg_close - Close POP Message
- * @param ctx Mailbox Context
+ * @param ctx Mailbox
  * @param msg Message
  * @retval 0   Success
  * @retval EOF Error, see errno
@@ -763,7 +764,7 @@ static int pop_msg_close(struct Context *ctx, struct Message *msg)
 
 /**
  * pop_mbox_sync - update POP mailbox, delete messages from server
- * @param ctx        Mailbox Context
+ * @param ctx        Mailbox
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure
@@ -772,7 +773,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
   struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -780,13 +781,20 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
   pop_data->check_time = 0;
 
+  int num_deleted = 0;
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
+  {
+    if (ctx->mailbox->hdrs[i]->deleted)
+      num_deleted++;
+  }
+
   while (true)
   {
-    if (pop_reconnect(ctx) < 0)
+    if (pop_reconnect(ctx->mailbox) < 0)
       return -1;
 
     mutt_progress_init(&progress, _("Marking messages deleted..."),
-                       MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
+                       MUTT_PROGRESS_MSG, WriteInc, num_deleted);
 
 #ifdef USE_HCACHE
     hc = pop_hcache_open(pop_data, ctx->mailbox->path);
@@ -794,27 +802,28 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
     for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->mailbox->msg_count; i++)
     {
-      if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->refno != -1)
+      if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->refno != -1)
       {
         j++;
-        if (!ctx->quiet)
+        if (!ctx->mailbox->quiet)
           mutt_progress_update(&progress, j, -1);
-        snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
+        snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->mailbox->hdrs[i]->refno);
         ret = pop_query(pop_data, buf, sizeof(buf));
         if (ret == 0)
         {
-          mutt_bcache_del(pop_data->bcache, cache_id(ctx->hdrs[i]->data));
+          mutt_bcache_del(pop_data->bcache, cache_id(ctx->mailbox->hdrs[i]->data));
 #ifdef USE_HCACHE
-          mutt_hcache_delete(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
+          mutt_hcache_delete(hc, ctx->mailbox->hdrs[i]->data,
+                             strlen(ctx->mailbox->hdrs[i]->data));
 #endif
         }
       }
 
 #ifdef USE_HCACHE
-      if (ctx->hdrs[i]->changed)
+      if (ctx->mailbox->hdrs[i]->changed)
       {
-        mutt_hcache_store(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
-                          ctx->hdrs[i], 0);
+        mutt_hcache_store(hc, ctx->mailbox->hdrs[i]->data,
+                          strlen(ctx->mailbox->hdrs[i]->data), ctx->mailbox->hdrs[i], 0);
       }
 #endif
     }
@@ -847,7 +856,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
 /**
  * pop_mbox_check - Check for new messages and fetch headers
- * @param ctx        Mailbox Context
+ * @param ctx        Mailbox
  * @param index_hint Current Message
  * @retval  0 Success
  * @retval -1 Failure
@@ -855,19 +864,19 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 static int pop_mbox_check(struct Context *ctx, int *index_hint)
 {
   int ret;
-  struct PopData *pop_data = ctx->data;
+  struct PopData *pop_data = ctx->mailbox->data;
 
   if ((pop_data->check_time + PopCheckinterval) > time(NULL))
     return 0;
 
-  pop_logout(ctx);
+  pop_logout(ctx->mailbox);
 
   mutt_socket_close(pop_data->conn);
 
   if (pop_open_connection(pop_data) < 0)
     return -1;
 
-  ctx->size = pop_data->size;
+  ctx->mailbox->size = pop_data->size;
 
   mutt_message(_("Checking for new messages..."));
 

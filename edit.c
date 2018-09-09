@@ -211,7 +211,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
   while ((msg = strtok(msg, " ,")))
   {
-    if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->mailbox->msg_count)
+    if ((mutt_str_atoi(msg, &n) == 0) && (n > 0) && (n <= Context->mailbox->msg_count))
     {
       n--;
 
@@ -219,7 +219,8 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       if (Attribution)
       {
         setlocale(LC_TIME, NONULL(AttributionLocale));
-        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context, Context->hdrs[n]);
+        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
+                         Context->mailbox->hdrs[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
       }
@@ -228,15 +229,17 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = mutt_str_strdup(tmp);
 
-      bytes = Context->hdrs[n]->content->length;
+      bytes = Context->mailbox->hdrs[n]->content->length;
       if (inc_hdrs)
       {
-        offset = Context->hdrs[n]->offset;
-        bytes += Context->hdrs[n]->content->offset - offset;
+        offset = Context->mailbox->hdrs[n]->offset;
+        bytes += Context->mailbox->hdrs[n]->content->offset - offset;
       }
       else
-        offset = Context->hdrs[n]->content->offset;
-      buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
+        offset = Context->mailbox->hdrs[n]->content->offset;
+      /* This only worked for mbox Mailboxes because they had Context->fp set.
+       * As that no longer exists, the code is now completely broken. */
+      // buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));

@@ -1220,10 +1220,10 @@ int mutt_strwidth(const char *s)
  */
 bool message_is_visible(struct Context *ctx, int index)
 {
-  if (!ctx || !ctx->hdrs || (index >= ctx->mailbox->msg_count))
+  if (!ctx || !ctx->mailbox->hdrs || (index >= ctx->mailbox->msg_count))
     return false;
 
-  return !ctx->pattern || ctx->hdrs[index]->limited;
+  return !ctx->pattern || ctx->mailbox->hdrs[index]->limited;
 }
 
 /**
@@ -1236,5 +1236,5 @@ bool message_is_visible(struct Context *ctx, int index)
  */
 bool message_is_tagged(struct Context *ctx, int index)
 {
-  return message_is_visible(ctx, index) && ctx->hdrs[index]->tagged;
+  return message_is_visible(ctx, index) && ctx->mailbox->hdrs[index]->tagged;
 }
