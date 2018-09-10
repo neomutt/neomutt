@@ -444,7 +444,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
   }
 
   /* check to see if the folder is the currently selected folder before polling */
-  if (!Context || !Context->mailbox->path ||
+  if (!Context || (Context->mailbox->path[0] == '\0') ||
       ((tmp->magic == MUTT_IMAP ||
 #ifdef USE_NNTP
         tmp->magic == MUTT_NNTP ||
@@ -489,7 +489,7 @@ static void mailbox_check(struct Mailbox *tmp, struct stat *contex_sb, bool chec
       default:; /* do nothing */
     }
   }
-  else if (CheckMboxSize && Context && Context->mailbox->path)
+  else if (CheckMboxSize && Context && (Context->mailbox->path[0] != '\0'))
     tmp->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR

@@ -563,7 +563,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
   }
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
-  if (Context && !Context->mailbox->path)
+  if (Context && (Context->mailbox->path[0] == '\0'))
     mutt_context_free(&Context);
 
   if (Context)
@@ -573,7 +573,8 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
 #ifdef USE_COMPRESSED
-    if (Context->mailbox->compress_info && Context->mailbox->realpath)
+    if (Context->mailbox->compress_info &&
+        (Context->mailbox->realpath[0] != '\0'))
       new_last_folder = mutt_str_strdup(Context->mailbox->realpath);
     else
 #endif
@@ -1052,7 +1053,7 @@ int mutt_index_menu(void)
       check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
       {
-        if (!Context->mailbox->path)
+        if (Context->mailbox->path[0] == '\0')
         {
           /* fatal error occurred */
           mutt_context_free(&Context);
@@ -1887,7 +1888,7 @@ int mutt_index_menu(void)
         }
 
         /* check for a fatal error, or all messages deleted */
-        if (!Context->mailbox->path)
+        if (Context->mailbox->path[0] == '\0')
           mutt_context_free(&Context);
 
         /* if we were in the pager, redisplay the message */
@@ -2160,7 +2161,8 @@ int mutt_index_menu(void)
           cp = _("Open mailbox");
 
         buf[0] = '\0';
-        if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context && Context->mailbox->path)
+        if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context &&
+            (Context->mailbox->path[0] != '\0'))
         {
           mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
@@ -2201,7 +2203,8 @@ int mutt_index_menu(void)
 #endif
         else
         {
-          if (ChangeFolderNext && Context && Context->mailbox->path)
+          if (ChangeFolderNext && Context &&
+              (Context->mailbox->path[0] != '\0'))
           {
             mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
             mutt_pretty_mailbox(buf, sizeof(buf));

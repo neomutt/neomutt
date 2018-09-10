@@ -863,7 +863,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       col = div_width;
 
     mutt_window_move(MuttSidebarWindow, row, col);
-    if (Context && Context->mailbox->realpath &&
+    if (Context && (Context->mailbox->realpath[0] != '\0') &&
         (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
