@@ -1459,7 +1459,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   md = NULL;
   last = &md;
   count = 0;
-  if (maildir_parse_dir(ctx->mailbox, &last, subdir, &count, &progress) == -1)
+  if (maildir_parse_dir(ctx->mailbox, &last, subdir, &count, &progress) < 0)
     return -1;
 
   if (!ctx->mailbox->quiet)
