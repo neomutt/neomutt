@@ -1969,7 +1969,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   char tmp[PATH_MAX];
   int rc = -1;
 
-  struct Mailbox tmp_mbox = { 0 };
+  struct Mailbox tmp_mbox = {{ 0 }};
   struct NmMboxData *tmp_mboxdata = new_mboxdata(uri);
 
   if (!tmp_mboxdata)
