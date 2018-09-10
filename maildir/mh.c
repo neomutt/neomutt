@@ -1305,7 +1305,7 @@ static void maildir_delayed_parsing(struct Mailbox *mailbox, struct Maildir **md
   struct Maildir *p, *last = NULL;
   char fn[PATH_MAX];
   int count;
-  int sort = 0;
+  bool sort = false;
 #ifdef USE_HCACHE
   const char *key = NULL;
   size_t keylen;
@@ -1336,7 +1336,7 @@ static void maildir_delayed_parsing(struct Mailbox *mailbox, struct Maildir **md
         *md = p;
       else
         last->next = p;
-      sort = 1;
+      sort = true;
       p = skip_duplicates(p, &last);
       snprintf(fn, sizeof(fn), "%s/%s", mailbox->path, p->h->path);
     }

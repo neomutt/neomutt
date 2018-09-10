@@ -1010,8 +1010,8 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 /**
  * mutt_file_lock - (try to) lock a file using fcntl()
  * @param fd      File descriptor to file
- * @param excl    If set, try to lock exclusively
- * @param timeout Retry after this time
+ * @param excl    If true, try to lock exclusively
+ * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -1019,20 +1019,17 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(int fd, int excl, int timeout)
+int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  int count;
-  int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
+  int count = 0;
+  int attempt = 0;
 
   struct flock lck;
-
   memset(&lck, 0, sizeof(struct flock));
   lck.l_type = excl ? F_WRLCK : F_RDLCK;
   lck.l_whence = SEEK_SET;
 
-  count = 0;
-  attempt = 0;
   while (fcntl(fd, F_SETLK, &lck) == -1)
   {
     mutt_debug(1, "fcntl errno %d.\n", errno);
@@ -1085,8 +1082,8 @@ int mutt_file_unlock(int fd)
 /**
  * mutt_file_lock - (try to) lock a file using flock()
  * @param fd      File descriptor to file
- * @param excl    If set, try to lock exclusively
- * @param timeout Retry after this time
+ * @param excl    If true, try to lock exclusively
+ * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -1094,21 +1091,19 @@ int mutt_file_unlock(int fd)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(int fd, int excl, int timeout)
+int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  int count;
-  int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
-  int r = 0;
+  int rc = 0;
+  int count = 0;
+  int attempt = 0;
 
-  count = 0;
-  attempt = 0;
   while (flock(fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
   {
     if (errno != EWOULDBLOCK)
     {
       mutt_perror("flock");
-      r = -1;
+      rc = -1;
       break;
     }
 
@@ -1123,7 +1118,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
     {
       if (timeout)
         mutt_error(_("Timeout exceeded while attempting flock lock"));
-      r = -1;
+      rc = -1;
       break;
     }
 
@@ -1134,12 +1129,12 @@ int mutt_file_lock(int fd, int excl, int timeout)
   }
 
   /* release any other locks obtained in this routine */
-  if (r != 0)
+  if (rc != 0)
   {
     flock(fd, LOCK_UN);
   }
 
-  return r;
+  return rc;
 }
 
 /**
@@ -1169,7 +1164,7 @@ void mutt_file_unlink_empty(const char *path)
   if (fd == -1)
     return;
 
-  if (mutt_file_lock(fd, 1, 1) == -1)
+  if (mutt_file_lock(fd, true, true) == -1)
   {
     close(fd);
     return;

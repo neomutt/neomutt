@@ -298,7 +298,7 @@ static void be_print_header(struct Envelope *env)
  * @param e     Message headers
  * @param force override the $ask* vars (used for the ~h command)
  */
-static void be_edit_header(struct Envelope *e, int force)
+static void be_edit_header(struct Envelope *e, bool force)
 {
   char tmp[HUGE_STRING];
 
@@ -399,7 +399,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   scrollok(stdscr, true);
 
-  be_edit_header(msg->env, 0);
+  be_edit_header(msg->env, false);
 
   addstr(_("(End message with a . on a line by itself)\n"));
 
@@ -440,7 +440,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           msg->env->cc = mutt_expand_aliases(msg->env->cc);
           break;
         case 'h':
-          be_edit_header(msg->env, 1);
+          be_edit_header(msg->env, true);
           break;
         case 'F':
         case 'f':

@@ -213,7 +213,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
 
   /* lock it */
   mutt_debug(1, "Locking %s\n", nserv->newsrc_file);
-  if (mutt_file_lock(fileno(nserv->newsrc_fp), 0, 1))
+  if (mutt_file_lock(fileno(nserv->newsrc_fp), false, true))
   {
     mutt_file_fclose(&nserv->newsrc_fp);
     return -1;

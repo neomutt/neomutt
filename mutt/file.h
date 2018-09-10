@@ -49,7 +49,7 @@ void        mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *f
 int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
-int         mutt_file_lock(int fd, int excl, int timeout);
+int         mutt_file_lock(int fd, bool excl, bool timeout);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)

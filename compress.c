@@ -105,7 +105,7 @@ static bool lock_realpath(struct Mailbox *mailbox, bool excl)
     return false;
   }
 
-  int r = mutt_file_lock(fileno(ci->lockfp), excl, 1);
+  int r = mutt_file_lock(fileno(ci->lockfp), excl, true);
   if (r == 0)
     ci->locked = true;
   else if (excl)
