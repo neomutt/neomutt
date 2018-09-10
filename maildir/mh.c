@@ -2901,7 +2901,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe
+ * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe()
  */
 int maildir_path_probe(const char *path, const struct stat *st)
 {
@@ -2922,7 +2922,7 @@ int maildir_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe
+ * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe()
  */
 int mh_path_probe(const char *path, const struct stat *st)
 {
@@ -2965,7 +2965,7 @@ int mh_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int maildir_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -2986,7 +2986,7 @@ int maildir_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * maildir_path_pretty - Implements MxOps::path_pretty
+ * maildir_path_pretty - Implements MxOps::path_pretty()
  */
 int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -3003,7 +3003,7 @@ int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * maildir_path_parent - Implements MxOps::path_parent
+ * maildir_path_parent - Implements MxOps::path_parent()
  */
 int maildir_path_parent(char *buf, size_t buflen)
 {

@@ -2630,7 +2630,7 @@ int nntp_compare_order(const void *a, const void *b)
 }
 
 /**
- * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe
+ * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe()
  */
 int nntp_path_probe(const char *path, const struct stat *st)
 {
@@ -2647,7 +2647,7 @@ int nntp_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * nntp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * nntp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int nntp_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -2675,7 +2675,7 @@ int nntp_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nntp_path_pretty - Implements MxOps::path_pretty
+ * nntp_path_pretty - Implements MxOps::path_pretty()
  */
 int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2684,7 +2684,7 @@ int nntp_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nntp_path_parent - Implements MxOps::path_parent
+ * nntp_path_parent - Implements MxOps::path_parent()
  */
 int nntp_path_parent(char *buf, size_t buflen)
 {

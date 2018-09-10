@@ -2764,7 +2764,7 @@ static int nm_msg_commit(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe
+ * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe()
  */
 int nm_path_probe(const char *path, const struct stat *st)
 {
@@ -2778,7 +2778,7 @@ int nm_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int nm_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -2806,7 +2806,7 @@ int nm_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nm_path_pretty - Implements MxOps::path_pretty
+ * nm_path_pretty - Implements MxOps::path_pretty()
  */
 int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -2815,7 +2815,7 @@ int nm_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * nm_path_parent - Implements MxOps::path_parent
+ * nm_path_parent - Implements MxOps::path_parent()
  */
 int nm_path_parent(char *buf, size_t buflen)
 {

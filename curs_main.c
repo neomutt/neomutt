@@ -3541,7 +3541,7 @@ void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 }
 
 /**
- * mutt_reply_listener - Listen for config changes to "reply_regex" - Implements ::cs_listener
+ * mutt_reply_listener - Listen for config changes to "reply_regex" - Implements ::cs_listener()
  */
 bool mutt_reply_listener(const struct ConfigSet *cs, struct HashElem *he,
                          const char *name, enum ConfigEvent ev)

@@ -735,7 +735,7 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct He
 }
 
 /**
- * mbox_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * mbox_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
  * @param ctx Mailbox
  * @retval 1 Always
  */
@@ -745,7 +745,7 @@ static int mbox_msg_padding_size(struct Context *ctx)
 }
 
 /**
- * mmdf_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * mmdf_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
  * @param ctx Mailbox
  * @retval 10 Always
  */
@@ -1491,7 +1491,7 @@ bail: /* Come here in case of disaster */
 }
 
 /**
- * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe
+ * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe()
  */
 int mbox_path_probe(const char *path, const struct stat *st)
 {
@@ -1552,7 +1552,7 @@ int mbox_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mbox_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * mbox_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int mbox_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -1573,7 +1573,7 @@ int mbox_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mbox_path_pretty - Implements MxOps::path_pretty
+ * mbox_path_pretty - Implements MxOps::path_pretty()
  */
 int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1590,7 +1590,7 @@ int mbox_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * mbox_path_parent - Implements MxOps::path_parent
+ * mbox_path_parent - Implements MxOps::path_parent()
  */
 int mbox_path_parent(char *buf, size_t buflen)
 {

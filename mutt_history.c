@@ -142,7 +142,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener
+ * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener()
  */
 bool mutt_hist_listener(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)

@@ -895,7 +895,7 @@ static int comp_msg_close(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * comp_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size
+ * comp_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
  * @param ctx Mailbox
  * @retval num Number of bytes of padding
  */
@@ -916,7 +916,7 @@ static int comp_msg_padding_size(struct Context *ctx)
 }
 
 /**
- * comp_tags_edit - Implements MxOps::tags_edit
+ * comp_tags_edit - Implements MxOps::tags_edit()
  */
 static int comp_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
@@ -935,7 +935,7 @@ static int comp_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 }
 
 /**
- * comp_tags_commit - Implements MxOps::tags_commit
+ * comp_tags_commit - Implements MxOps::tags_commit()
  */
 static int comp_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
 {
@@ -954,7 +954,7 @@ static int comp_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
 }
 
 /**
- * comp_path_probe - Is this a compressed mailbox? - Implements MxOps::path_probe
+ * comp_path_probe - Is this a compressed mailbox? - Implements MxOps::path_probe()
  */
 int comp_path_probe(const char *path, const struct stat *st)
 {
@@ -971,7 +971,7 @@ int comp_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * comp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * comp_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int comp_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -992,7 +992,7 @@ int comp_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * comp_path_pretty - Implements MxOps::path_pretty
+ * comp_path_pretty - Implements MxOps::path_pretty()
  */
 int comp_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1009,7 +1009,7 @@ int comp_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * comp_path_parent - Implements MxOps::path_parent
+ * comp_path_parent - Implements MxOps::path_parent()
  */
 int comp_path_parent(char *buf, size_t buflen)
 {

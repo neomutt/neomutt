@@ -1066,7 +1066,7 @@ fail:
 }
 
 /**
- * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe
+ * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe()
  */
 int pop_path_probe(const char *path, const struct stat *st)
 {
@@ -1083,7 +1083,7 @@ int pop_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * pop_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon
+ * pop_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
 int pop_path_canon(char *buf, size_t buflen, const char *folder)
 {
@@ -1111,7 +1111,7 @@ int pop_path_canon(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * pop_path_pretty - Implements MxOps::path_pretty
+ * pop_path_pretty - Implements MxOps::path_pretty()
  */
 int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 {
@@ -1120,7 +1120,7 @@ int pop_path_pretty(char *buf, size_t buflen, const char *folder)
 }
 
 /**
- * pop_path_parent - Implements MxOps::path_parent
+ * pop_path_parent - Implements MxOps::path_parent()
  */
 int pop_path_parent(char *buf, size_t buflen)
 {
