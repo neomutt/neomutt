@@ -160,7 +160,7 @@ static void mhs_free_sequences(struct MhSequences *mhs)
  */
 static short mhs_check(struct MhSequences *mhs, int i)
 {
-  if (!mhs->flags || i > mhs->max)
+  if (!mhs->flags || (i > mhs->max))
     return 0;
   else
     return mhs->flags[i];
@@ -194,7 +194,7 @@ static int mh_read_token(char *t, int *first, int *last)
   if (p)
   {
     *p++ = '\0';
-    if (mutt_str_atoi(t, first) < 0 || mutt_str_atoi(p, last) < 0)
+    if ((mutt_str_atoi(t, first) < 0) || (mutt_str_atoi(p, last) < 0))
       return -1;
   }
   else
@@ -217,7 +217,6 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
 {
   int line = 1;
   char *buf = NULL;
-  char *t = NULL;
   size_t sz = 0;
 
   short f;
@@ -232,7 +231,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
 
   while ((buf = mutt_file_read_line(buf, &sz, fp, &line, 0)))
   {
-    t = strtok(buf, " \t:");
+    char *t = strtok(buf, " \t:");
     if (!t)
       continue;
 
@@ -273,12 +272,11 @@ out:
  */
 static inline mode_t mh_umask(struct Mailbox *mailbox)
 {
-  struct stat st;
   struct MhData *data = mh_data(mailbox);
-
   if (data && data->mh_umask)
     return data->mh_umask;
 
+  struct stat st;
   if (stat(mailbox->path, &st))
   {
     mutt_debug(1, "stat failed on %s\n", mailbox->path);
@@ -361,9 +359,8 @@ static int mh_mkstemp(struct Mailbox *mailbox, FILE **fp, char **tgt)
 {
   int fd;
   char path[PATH_MAX];
-  mode_t omask;
 
-  omask = umask(mh_umask(mailbox));
+  mode_t omask = umask(mh_umask(mailbox));
   while (true)
   {
     snprintf(path, sizeof(path), "%s/.neomutt-%s-%d-%" PRIu64, mailbox->path,
@@ -407,11 +404,10 @@ static int mh_mkstemp(struct Mailbox *mailbox, FILE **fp, char **tgt)
  */
 static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs, short f, const char *tag)
 {
-  int first, last;
   fprintf(fp, "%s:", tag);
 
-  first = -1;
-  last = -1;
+  int first = -1;
+  int last = -1;
 
   for (int i = 0; i <= mhs->max; i++)
   {
@@ -570,9 +566,9 @@ static void mh_update_sequences(struct Mailbox *mailbox)
 static void mh_sequences_add_one(struct Mailbox *mailbox, int n, bool unseen,
                                  bool flagged, bool replied)
 {
-  short unseen_done = 0;
-  short flagged_done = 0;
-  short replied_done = 0;
+  bool unseen_done = false;
+  bool flagged_done = false;
+  bool replied_done = false;
 
   FILE *ofp = NULL, *nfp = NULL;
 
@@ -603,17 +599,17 @@ static void mh_sequences_add_one(struct Mailbox *mailbox, int n, bool unseen,
       if (unseen && (strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
       {
         fprintf(nfp, "%s %d\n", buf, n);
-        unseen_done = 1;
+        unseen_done = true;
       }
       else if (flagged && (strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0))
       {
         fprintf(nfp, "%s %d\n", buf, n);
-        flagged_done = 1;
+        flagged_done = true;
       }
       else if (replied && (strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0))
       {
         fprintf(nfp, "%s %d\n", buf, n);
-        replied_done = 1;
+        replied_done = true;
       }
       else
         fprintf(nfp, "%s\n", buf);
@@ -646,12 +642,10 @@ static void mh_sequences_add_one(struct Mailbox *mailbox, int n, bool unseen,
 static void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
 {
   int i;
-  short f;
-  char *p = NULL;
 
   for (; md; md = md->next)
   {
-    p = strrchr(md->h->path, '/');
+    char *p = strrchr(md->h->path, '/');
     if (p)
       p++;
     else
@@ -659,7 +653,7 @@ static void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
-    f = mhs_check(mhs, i);
+    short f = mhs_check(mhs, i);
 
     md->h->read = (f & MH_SEQ_UNSEEN) ? false : true;
     md->h->flagged = (f & MH_SEQ_FLAGGED) ? true : false;
@@ -689,10 +683,10 @@ static void maildir_free_entry(struct Maildir **md)
  */
 static void maildir_free_maildir(struct Maildir **md)
 {
-  struct Maildir *p = NULL, *q = NULL;
-
   if (!md || !*md)
     return;
+
+  struct Maildir *p = NULL, *q = NULL;
 
   for (p = *md; p; p = q)
   {
@@ -745,7 +739,6 @@ static void maildir_update_mtime(struct Mailbox *mailbox)
 static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
                              const char *subdir, int *count, struct Progress *progress)
 {
-  DIR *dirp = NULL;
   struct dirent *de = NULL;
   char buf[PATH_MAX];
   int is_old = 0;
@@ -760,7 +753,7 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
   else
     mutt_str_strfcpy(buf, mailbox->path, sizeof(buf));
 
-  dirp = opendir(buf);
+  DIR *dirp = opendir(buf);
   if (!dirp)
     return -1;
 
@@ -1224,8 +1217,6 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   struct Maildir *md = NULL;
   struct MhSequences mhs = { 0 };
   struct Maildir **last = NULL;
-  struct MhData *data = NULL;
-  int count;
   char msgbuf[STRING];
   struct Progress progress;
 
@@ -1239,13 +1230,13 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   {
     ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MhData));
   }
-  data = mh_data(ctx->mailbox);
+  struct MhData *data = mh_data(ctx->mailbox);
 
   maildir_update_mtime(ctx->mailbox);
 
   md = NULL;
   last = &md;
-  count = 0;
+  int count = 0;
   if (maildir_parse_dir(ctx->mailbox, &last, subdir, &count, &progress) < 0)
     return -1;
 
@@ -1286,7 +1277,7 @@ static int maildir_read_dir(struct Context *ctx)
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages
    */
-  if (mh_read_dir(ctx, "new") == -1 || mh_read_dir(ctx, "cur") == -1)
+  if ((mh_read_dir(ctx, "new") == -1) || (mh_read_dir(ctx, "cur") == -1))
     return -1;
 
   return 0;
@@ -1348,7 +1339,6 @@ static int maildir_mh_open_message(struct Mailbox *mailbox, struct Message *msg,
 static int mh_commit_msg(struct Mailbox *mailbox, struct Message *msg,
                          struct Header *hdr, bool updseq)
 {
-  DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *cp = NULL, *dep = NULL;
   unsigned int n, hi = 0;
@@ -1361,7 +1351,7 @@ static int mh_commit_msg(struct Mailbox *mailbox, struct Message *msg,
     return -1;
   }
 
-  dirp = opendir(mailbox->path);
+  DIR *dirp = opendir(mailbox->path);
   if (!dirp)
   {
     mutt_perror(mailbox->path);
@@ -1452,7 +1442,6 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
   char suffix[16];
   char path[PATH_MAX];
   char full[PATH_MAX];
-  char *s = NULL;
 
   if (mutt_file_fsync_close(&msg->fp))
   {
@@ -1461,7 +1450,7 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
   }
 
   /* extract the subdir */
-  s = strrchr(msg->path, '/') + 1;
+  char *s = strrchr(msg->path, '/') + 1;
   mutt_str_strfcpy(subdir, s, 4);
 
   /* extract the flags */
@@ -2139,7 +2128,6 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
    * end of list block if required.
    */
   bool context_changed = ctx->mailbox->changed;
-  bool header_changed;
 
   /* user didn't modify this message.  alter the flags to match the
    * current state on disk.  This may not actually do
@@ -2160,7 +2148,7 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
    * context to match the current on-disk state of the
    * message.
    */
-  header_changed = o->changed;
+  bool header_changed = o->changed;
   o->changed = false;
 
   /* if the mailbox was not modified before we made these
@@ -2284,10 +2272,7 @@ int mh_check_empty(const char *path)
 }
 
 /**
- * maildir_mbox_open - Open a Maildir mailbox
- * @param ctx Mailbox
- * @retval  0 Success
- * @retval -1 Failure
+ * maildir_mbox_open - Implements MxOps::mbox_open()
  */
 static int maildir_mbox_open(struct Context *ctx)
 {
@@ -2535,7 +2520,6 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
   char path[PATH_MAX];
   char suffix[16];
   char subdir[16];
-  mode_t omask;
 
   if (hdr)
   {
@@ -2554,7 +2538,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
   else
     mutt_str_strfcpy(subdir, "new", sizeof(subdir));
 
-  omask = umask(mh_umask(ctx->mailbox));
+  mode_t omask = umask(mh_umask(ctx->mailbox));
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
@@ -2739,7 +2723,6 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   struct MhSequences mhs = { 0 };
   int count = 0;
   struct Hash *fnames = NULL;
-  int i;
   struct MhData *data = mh_data(ctx->mailbox);
 
   if (!CheckNew)
@@ -2751,7 +2734,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", ctx->mailbox->path);
-  i = stat(buf, &st_cur);
+  int i = stat(buf, &st_cur);
   if ((i == -1) && (errno == ENOENT))
   {
     char *tmp = NULL;
@@ -2971,11 +2954,7 @@ static int mh_msg_commit(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * mh_msg_close - Close a message
- * @param ctx Mailbox
- * @param msg Message to close
- * @retval 0   Success
- * @retval EOF Error, see errno
+ * mh_msg_close - Implements MxOps::msg_close()
  *
  * @note May also return EOF Failure, see errno
  */
