@@ -75,6 +75,42 @@ bool ShowNewNews; ///< Config: (nntp) Check for new newsgroups when entering the
 
 struct NntpServer *CurrentNewsSrv;
 
+const char *OverviewFmt = "Subject:\0"
+                          "From:\0"
+                          "Date:\0"
+                          "Message-ID:\0"
+                          "References:\0"
+                          "Content-Length:\0"
+                          "Lines:\0"
+                          "\0";
+
+/**
+ * struct FetchCtx - Keep track when getting data from a server
+ */
+struct FetchCtx
+{
+  struct Context *ctx;
+  anum_t first;
+  anum_t last;
+  int restore;
+  unsigned char *messages;
+  struct Progress progress;
+#ifdef USE_HCACHE
+  header_cache_t *hc;
+#endif
+};
+
+/**
+ * struct ChildCtx - Keep track of the children of an article
+ */
+struct ChildCtx
+{
+  struct Mailbox *mailbox;
+  unsigned int num;
+  unsigned int max;
+  anum_t *child;
+};
+
 /**
  * nntp_connect_error - Signal a failed connection
  * @param nserv NNTP server
@@ -189,15 +225,6 @@ static int nntp_capabilities(struct NntpServer *nserv)
   mutt_error(_("Server doesn't support reader mode"));
   return -1;
 }
-
-const char *OverviewFmt = "Subject:\0"
-                          "From:\0"
-                          "Date:\0"
-                          "Message-ID:\0"
-                          "References:\0"
-                          "Content-Length:\0"
-                          "Lines:\0"
-                          "\0";
 
 /**
  * nntp_attempt_features - Detect supported commands
@@ -630,166 +657,6 @@ static int nntp_auth(struct NntpServer *nserv)
 }
 
 /**
- * nntp_open_connection - Connect to server, authenticate and get capabilities
- * @param nserv NNTP server
- * @retval  0 Success
- * @retval -1 Failure
- */
-int nntp_open_connection(struct NntpServer *nserv)
-{
-  struct Connection *conn = nserv->conn;
-  char buf[STRING];
-  int cap;
-  bool posting = false, auth = true;
-
-  if (nserv->status == NNTP_OK)
-    return 0;
-  if (nserv->status == NNTP_BYE)
-    return -1;
-  nserv->status = NNTP_NONE;
-
-  if (mutt_socket_open(conn) < 0)
-    return -1;
-
-  if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-    return nntp_connect_error(nserv);
-
-  if (mutt_str_strncmp("200", buf, 3) == 0)
-    posting = true;
-  else if (mutt_str_strncmp("201", buf, 3) != 0)
-  {
-    mutt_socket_close(conn);
-    mutt_str_remove_trailing_ws(buf);
-    mutt_error("%s", buf);
-    return -1;
-  }
-
-  /* get initial capabilities */
-  cap = nntp_capabilities(nserv);
-  if (cap < 0)
-    return -1;
-
-  /* tell news server to switch to mode reader if it isn't so */
-  if (cap > 0)
-  {
-    if (mutt_socket_send(conn, "MODE READER\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-    {
-      return nntp_connect_error(nserv);
-    }
-
-    if (mutt_str_strncmp("200", buf, 3) == 0)
-      posting = true;
-    else if (mutt_str_strncmp("201", buf, 3) == 0)
-      posting = false;
-    /* error if has capabilities, ignore result if no capabilities */
-    else if (nserv->hasCAPABILITIES)
-    {
-      mutt_socket_close(conn);
-      mutt_error(_("Could not switch to reader mode"));
-      return -1;
-    }
-
-    /* recheck capabilities after MODE READER */
-    if (nserv->hasCAPABILITIES)
-    {
-      cap = nntp_capabilities(nserv);
-      if (cap < 0)
-        return -1;
-    }
-  }
-
-  mutt_message(_("Connected to %s. %s"), conn->account.host,
-               posting ? _("Posting is ok") : _("Posting is NOT ok"));
-  mutt_sleep(1);
-
-#ifdef USE_SSL
-  /* Attempt STARTTLS if available and desired. */
-  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || SslForceTls))
-  {
-    if (nserv->use_tls == 0)
-    {
-      nserv->use_tls =
-          SslForceTls || query_quadoption(SslStarttls,
-                                          _("Secure connection with TLS?")) == MUTT_YES ?
-              2 :
-              1;
-    }
-    if (nserv->use_tls == 2)
-    {
-      if (mutt_socket_send(conn, "STARTTLS\r\n") < 0 ||
-          mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-      {
-        return nntp_connect_error(nserv);
-      }
-      if (mutt_str_strncmp("382", buf, 3) != 0)
-      {
-        nserv->use_tls = 0;
-        mutt_error("STARTTLS: %s", buf);
-      }
-      else if (mutt_ssl_starttls(conn))
-      {
-        nserv->use_tls = 0;
-        nserv->status = NNTP_NONE;
-        mutt_socket_close(nserv->conn);
-        mutt_error(_("Could not negotiate TLS connection"));
-        return -1;
-      }
-      else
-      {
-        /* recheck capabilities after STARTTLS */
-        cap = nntp_capabilities(nserv);
-        if (cap < 0)
-          return -1;
-      }
-    }
-  }
-#endif
-
-  /* authentication required? */
-  if (conn->account.flags & MUTT_ACCT_USER)
-  {
-    if (!conn->account.user[0])
-      auth = false;
-  }
-  else
-  {
-    if (mutt_socket_send(conn, "STAT\r\n") < 0 ||
-        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-    {
-      return nntp_connect_error(nserv);
-    }
-    if (mutt_str_strncmp("480", buf, 3) != 0)
-      auth = false;
-  }
-
-  /* authenticate */
-  if (auth && nntp_auth(nserv) < 0)
-    return -1;
-
-  /* get final capabilities after authentication */
-  if (nserv->hasCAPABILITIES && (auth || cap > 0))
-  {
-    cap = nntp_capabilities(nserv);
-    if (cap < 0)
-      return -1;
-    if (cap > 0)
-    {
-      mutt_socket_close(conn);
-      mutt_error(_("Could not switch to reader mode"));
-      return -1;
-    }
-  }
-
-  /* attempt features */
-  if (nntp_attempt_features(nserv) < 0)
-    return -1;
-
-  nserv->status = NNTP_OK;
-  return 0;
-}
-
-/**
  * nntp_query - Send data from buffer and receive answer to same buffer
  * @param nntp_data NNTP server data
  * @param line      Buffer containing data
@@ -1074,22 +941,6 @@ static int fetch_tempfile(char *line, void *data)
     return -1;
   return 0;
 }
-
-/**
- * struct FetchCtx - Keep track when getting data from a server
- */
-struct FetchCtx
-{
-  struct Context *ctx;
-  anum_t first;
-  anum_t last;
-  int restore;
-  unsigned char *messages;
-  struct Progress progress;
-#ifdef USE_HCACHE
-  header_cache_t *hc;
-#endif
-};
 
 /**
  * fetch_numbers - Parse article number
@@ -1505,357 +1356,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 }
 
 /**
- * nntp_mbox_open - Implements MxOps::mbox_open()
- */
-static int nntp_mbox_open(struct Context *ctx)
-{
-  struct NntpServer *nserv = NULL;
-  struct NntpData *nntp_data = NULL;
-  char buf[HUGE_STRING];
-  char server[LONG_STRING];
-  char *group = NULL;
-  int rc;
-  void *hc = NULL;
-  anum_t first, last, count = 0;
-  struct Url url;
-
-  mutt_str_strfcpy(buf, ctx->mailbox->path, sizeof(buf));
-  if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
-  {
-    url_free(&url);
-    mutt_error(_("%s is an invalid newsgroup specification"), ctx->mailbox->path);
-    return -1;
-  }
-
-  group = url.path;
-  url.path = strchr(url.path, '\0');
-  url_tostring(&url, server, sizeof(server), 0);
-  nserv = nntp_select_server(ctx->mailbox, server, true);
-  url_free(&url);
-  if (!nserv)
-    return -1;
-  CurrentNewsSrv = nserv;
-
-  /* find news group data structure */
-  nntp_data = mutt_hash_find(nserv->groups_hash, group);
-  if (!nntp_data)
-  {
-    nntp_newsrc_close(nserv);
-    mutt_error(_("Newsgroup %s not found on the server"), group);
-    return -1;
-  }
-
-  mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_INSERT);
-  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
-    ctx->mailbox->readonly = true;
-
-  /* select newsgroup */
-  mutt_message(_("Selecting %s..."), group);
-  buf[0] = '\0';
-  if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
-  {
-    nntp_newsrc_close(nserv);
-    return -1;
-  }
-
-  /* newsgroup not found, remove it */
-  if (mutt_str_strncmp("411", buf, 3) == 0)
-  {
-    mutt_error(_("Newsgroup %s has been removed from the server"), nntp_data->group);
-    if (!nntp_data->deleted)
-    {
-      nntp_data->deleted = true;
-      nntp_active_save_cache(nserv);
-    }
-    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
-    {
-      FREE(&nntp_data->newsrc_ent);
-      nntp_data->newsrc_len = 0;
-      nntp_delete_group_cache(nntp_data);
-      nntp_newsrc_update(nserv);
-    }
-  }
-
-  /* parse newsgroup info */
-  else
-  {
-    if (sscanf(buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
-    {
-      nntp_newsrc_close(nserv);
-      mutt_error("GROUP: %s", buf);
-      return -1;
-    }
-    nntp_data->first_message = first;
-    nntp_data->last_message = last;
-    nntp_data->deleted = false;
-
-    /* get description if empty */
-    if (NntpLoadDescription && !nntp_data->desc)
-    {
-      if (get_description(nntp_data, NULL, NULL) < 0)
-      {
-        nntp_newsrc_close(nserv);
-        return -1;
-      }
-      if (nntp_data->desc)
-        nntp_active_save_cache(nserv);
-    }
-  }
-
-  time(&nserv->check_time);
-  ctx->mailbox->data = nntp_data;
-  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
-    nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
-
-  /* strip off extra articles if adding context is greater than $nntp_context */
-  first = nntp_data->first_message;
-  if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
-    first = nntp_data->last_message - NntpContext + 1;
-  nntp_data->last_loaded = first ? first - 1 : 0;
-  count = nntp_data->first_message;
-  nntp_data->first_message = first;
-  nntp_bcache_update(nntp_data);
-  nntp_data->first_message = count;
-#ifdef USE_HCACHE
-  hc = nntp_hcache_open(nntp_data);
-  nntp_hcache_update(nntp_data, hc);
-#endif
-  if (!hc)
-  {
-    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_DELETE);
-  }
-  nntp_newsrc_close(nserv);
-  rc = nntp_fetch_headers(ctx, hc, first, nntp_data->last_message, 0);
-#ifdef USE_HCACHE
-  mutt_hcache_close(hc);
-#endif
-  if (rc < 0)
-    return -1;
-  nntp_data->last_loaded = nntp_data->last_message;
-  nserv->newsrc_modified = false;
-  return 0;
-}
-
-/**
- * nntp_msg_open - Implements MxOps::msg_open()
- */
-static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
-{
-  struct NntpData *nntp_data = ctx->mailbox->data;
-  struct Header *hdr = ctx->mailbox->hdrs[msgno];
-  char article[16];
-
-  /* try to get article from cache */
-  struct NntpAcache *acache = &nntp_data->acache[hdr->index % NNTP_ACACHE_LEN];
-  if (acache->path)
-  {
-    if (acache->index == hdr->index)
-    {
-      msg->fp = mutt_file_fopen(acache->path, "r");
-      if (msg->fp)
-        return 0;
-    }
-    /* clear previous entry */
-    else
-    {
-      unlink(acache->path);
-      FREE(&acache->path);
-    }
-  }
-  snprintf(article, sizeof(article), "%d", NHDR(hdr)->article_num);
-  msg->fp = mutt_bcache_get(nntp_data->bcache, article);
-  if (msg->fp)
-  {
-    if (NHDR(hdr)->parsed)
-      return 0;
-  }
-  else
-  {
-    char buf[PATH_MAX];
-    /* don't try to fetch article from removed newsgroup */
-    if (nntp_data->deleted)
-      return -1;
-
-    /* create new cache file */
-    const char *fetch_msg = _("Fetching message...");
-    mutt_message(fetch_msg);
-    msg->fp = mutt_bcache_put(nntp_data->bcache, article);
-    if (!msg->fp)
-    {
-      mutt_mktemp(buf, sizeof(buf));
-      acache->path = mutt_str_strdup(buf);
-      acache->index = hdr->index;
-      msg->fp = mutt_file_fopen(acache->path, "w+");
-      if (!msg->fp)
-      {
-        mutt_perror(acache->path);
-        unlink(acache->path);
-        FREE(&acache->path);
-        return -1;
-      }
-    }
-
-    /* fetch message to cache file */
-    snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
-             NHDR(hdr)->article_num ? article : hdr->env->message_id);
-    const int rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg,
-                                    fetch_tempfile, msg->fp);
-    if (rc)
-    {
-      mutt_file_fclose(&msg->fp);
-      if (acache->path)
-      {
-        unlink(acache->path);
-        FREE(&acache->path);
-      }
-      if (rc > 0)
-      {
-        if (mutt_str_strncmp(NHDR(hdr)->article_num ? "423" : "430", buf, 3) == 0)
-        {
-          mutt_error(_("Article %d not found on the server"),
-                     NHDR(hdr)->article_num ? article : hdr->env->message_id);
-        }
-        else
-          mutt_error("ARTICLE: %s", buf);
-      }
-      return -1;
-    }
-
-    if (!acache->path)
-      mutt_bcache_commit(nntp_data->bcache, article);
-  }
-
-  /* replace envelope with new one
-   * hash elements must be updated because pointers will be changed */
-  if (ctx->mailbox->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
-  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
-
-  mutt_env_free(&hdr->env);
-  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
-
-  if (ctx->mailbox->id_hash && hdr->env->message_id)
-    mutt_hash_insert(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
-  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
-    mutt_hash_insert(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
-
-  /* fix content length */
-  fseek(msg->fp, 0, SEEK_END);
-  hdr->content->length = ftell(msg->fp) - hdr->content->offset;
-
-  /* this is called in neomutt before the open which fetches the message,
-   * which is probably wrong, but we just call it again here to handle
-   * the problem instead of fixing it */
-  NHDR(hdr)->parsed = true;
-  mutt_parse_mime_message(ctx, hdr);
-
-  /* these would normally be updated in mx_update_context(), but the
-   * full headers aren't parsed with overview, so the information wasn't
-   * available then */
-  if (WithCrypto)
-    hdr->security = crypt_query(hdr->content);
-
-  rewind(msg->fp);
-  mutt_clear_error();
-  return 0;
-}
-
-/**
- * nntp_msg_close - Implements MxOps::msg_close()
- *
- * @note May also return EOF Failure, see errno
- */
-static int nntp_msg_close(struct Context *ctx, struct Message *msg)
-{
-  return mutt_file_fclose(&msg->fp);
-}
-
-/**
- * nntp_post - Post article
- * @param mailbox Mailbox
- * @param msg     Message to post
- * @retval  0 Success
- * @retval -1 Failure
- */
-int nntp_post(struct Mailbox *mailbox, const char *msg)
-{
-  struct NntpData *nntp_data = NULL;
-  struct NntpData nntp_tmp = { 0 };
-  char buf[LONG_STRING];
-
-  if (mailbox && (mailbox->magic == MUTT_NNTP))
-    nntp_data = mailbox->data;
-  else
-  {
-    CurrentNewsSrv = nntp_select_server(mailbox, NewsServer, false);
-    if (!CurrentNewsSrv)
-      return -1;
-
-    nntp_data = &nntp_tmp;
-    nntp_data->nserv = CurrentNewsSrv;
-    nntp_data->group = NULL;
-  }
-
-  FILE *fp = mutt_file_fopen(msg, "r");
-  if (!fp)
-  {
-    mutt_perror(msg);
-    return -1;
-  }
-
-  mutt_str_strfcpy(buf, "POST\r\n", sizeof(buf));
-  if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
-  {
-    mutt_file_fclose(&fp);
-    return -1;
-  }
-  if (buf[0] != '3')
-  {
-    mutt_error(_("Can't post article: %s"), buf);
-    mutt_file_fclose(&fp);
-    return -1;
-  }
-
-  buf[0] = '.';
-  buf[1] = '\0';
-  while (fgets(buf + 1, sizeof(buf) - 2, fp))
-  {
-    size_t len = strlen(buf);
-    if (buf[len - 1] == '\n')
-    {
-      buf[len - 1] = '\r';
-      buf[len] = '\n';
-      len++;
-      buf[len] = '\0';
-    }
-    if (mutt_socket_send_d(nntp_data->nserv->conn,
-                           buf[1] == '.' ? buf : buf + 1, MUTT_SOCK_LOG_HDR) < 0)
-    {
-      mutt_file_fclose(&fp);
-      return nntp_connect_error(nntp_data->nserv);
-    }
-  }
-  mutt_file_fclose(&fp);
-
-  if ((buf[strlen(buf) - 1] != '\n' &&
-       mutt_socket_send_d(nntp_data->nserv->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
-      mutt_socket_send_d(nntp_data->nserv->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
-      mutt_socket_readln(buf, sizeof(buf), nntp_data->nserv->conn) < 0)
-  {
-    return nntp_connect_error(nntp_data->nserv);
-  }
-  if (buf[0] != '2')
-  {
-    mutt_error(_("Can't post article: %s"), buf);
-    return -1;
-  }
-  return 0;
-}
-
-/**
  * nntp_group_poll - Check newsgroup for new articles
  * @param nntp_data   NNTP server data
  * @param update_stat Update the stats?
@@ -2122,112 +1622,6 @@ static int check_mailbox(struct Context *ctx)
 }
 
 /**
- * nntp_mbox_check - Implements MxOps::mbox_check()
- * @param ctx        Mailbox
- * @param index_hint Current message (UNUSED)
- * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
- * @retval #MUTT_NEW_MAIL New articles found
- * @retval  0             No change
- * @retval -1             Lost connection
- */
-static int nntp_mbox_check(struct Context *ctx, int *index_hint)
-{
-  int ret = check_mailbox(ctx);
-  if (ret == 0)
-  {
-    struct NntpData *nntp_data = ctx->mailbox->data;
-    struct NntpServer *nserv = nntp_data->nserv;
-    nntp_newsrc_close(nserv);
-  }
-  return ret;
-}
-
-/**
- * nntp_mbox_sync - Implements MxOps::mbox_sync()
- *
- * @note May also return values from check_mailbox()
- */
-static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
-{
-  struct NntpData *nntp_data = ctx->mailbox->data;
-  int rc;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-#endif
-
-  /* check for new articles */
-  nntp_data->nserv->check_time = 0;
-  rc = check_mailbox(ctx);
-  if (rc)
-    return rc;
-
-#ifdef USE_HCACHE
-  nntp_data->last_cached = 0;
-  hc = nntp_hcache_open(nntp_data);
-#endif
-
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-  {
-    struct Header *hdr = ctx->mailbox->hdrs[i];
-    char buf[16];
-
-    snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
-    if (nntp_data->bcache && hdr->deleted)
-    {
-      mutt_debug(2, "mutt_bcache_del %s\n", buf);
-      mutt_bcache_del(nntp_data->bcache, buf);
-    }
-
-#ifdef USE_HCACHE
-    if (hc && (hdr->changed || hdr->deleted))
-    {
-      if (hdr->deleted && !hdr->read)
-        nntp_data->unread--;
-      mutt_debug(2, "mutt_hcache_store %s\n", buf);
-      mutt_hcache_store(hc, buf, strlen(buf), hdr, 0);
-    }
-#endif
-  }
-
-#ifdef USE_HCACHE
-  if (hc)
-  {
-    mutt_hcache_close(hc);
-    nntp_data->last_cached = nntp_data->last_loaded;
-  }
-#endif
-
-  /* save .newsrc entries */
-  nntp_newsrc_gen_entries(ctx);
-  nntp_newsrc_update(nntp_data->nserv);
-  nntp_newsrc_close(nntp_data->nserv);
-  return 0;
-}
-
-/**
- * nntp_mbox_close - Implements MxOps::mbox_close()
- * @retval 0 Always
- */
-static int nntp_mbox_close(struct Context *ctx)
-{
-  struct NntpData *nntp_data = ctx->mailbox->data, *nntp_tmp = NULL;
-
-  if (!nntp_data)
-    return 0;
-
-  nntp_data->unread = ctx->mailbox->msg_unread;
-
-  nntp_acache_free(nntp_data);
-  if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
-    return 0;
-
-  nntp_tmp = mutt_hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
-  if (!nntp_tmp || nntp_tmp != nntp_data)
-    nntp_data_free(nntp_data);
-  return 0;
-}
-
-/**
  * nntp_date - Get date and time from server
  * @param nserv NNTP server
  * @param now   Server time
@@ -2263,6 +1657,273 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
     }
   }
   time(now);
+  return 0;
+}
+
+/**
+ * fetch_children - Parse XPAT line
+ * @param line String to parse
+ * @param data ChildCtx
+ * @retval 0 Always
+ */
+static int fetch_children(char *line, void *data)
+{
+  struct ChildCtx *cc = data;
+  anum_t anum;
+
+  if (!line || sscanf(line, ANUM, &anum) != 1)
+    return 0;
+  for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
+    if (NHDR(cc->mailbox->hdrs[i])->article_num == anum)
+      return 0;
+  if (cc->num >= cc->max)
+  {
+    cc->max *= 2;
+    mutt_mem_realloc(&cc->child, sizeof(anum_t) * cc->max);
+  }
+  cc->child[cc->num++] = anum;
+  return 0;
+}
+
+/**
+ * nntp_open_connection - Connect to server, authenticate and get capabilities
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int nntp_open_connection(struct NntpServer *nserv)
+{
+  struct Connection *conn = nserv->conn;
+  char buf[STRING];
+  int cap;
+  bool posting = false, auth = true;
+
+  if (nserv->status == NNTP_OK)
+    return 0;
+  if (nserv->status == NNTP_BYE)
+    return -1;
+  nserv->status = NNTP_NONE;
+
+  if (mutt_socket_open(conn) < 0)
+    return -1;
+
+  if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    return nntp_connect_error(nserv);
+
+  if (mutt_str_strncmp("200", buf, 3) == 0)
+    posting = true;
+  else if (mutt_str_strncmp("201", buf, 3) != 0)
+  {
+    mutt_socket_close(conn);
+    mutt_str_remove_trailing_ws(buf);
+    mutt_error("%s", buf);
+    return -1;
+  }
+
+  /* get initial capabilities */
+  cap = nntp_capabilities(nserv);
+  if (cap < 0)
+    return -1;
+
+  /* tell news server to switch to mode reader if it isn't so */
+  if (cap > 0)
+  {
+    if (mutt_socket_send(conn, "MODE READER\r\n") < 0 ||
+        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
+      return nntp_connect_error(nserv);
+    }
+
+    if (mutt_str_strncmp("200", buf, 3) == 0)
+      posting = true;
+    else if (mutt_str_strncmp("201", buf, 3) == 0)
+      posting = false;
+    /* error if has capabilities, ignore result if no capabilities */
+    else if (nserv->hasCAPABILITIES)
+    {
+      mutt_socket_close(conn);
+      mutt_error(_("Could not switch to reader mode"));
+      return -1;
+    }
+
+    /* recheck capabilities after MODE READER */
+    if (nserv->hasCAPABILITIES)
+    {
+      cap = nntp_capabilities(nserv);
+      if (cap < 0)
+        return -1;
+    }
+  }
+
+  mutt_message(_("Connected to %s. %s"), conn->account.host,
+               posting ? _("Posting is ok") : _("Posting is NOT ok"));
+  mutt_sleep(1);
+
+#ifdef USE_SSL
+  /* Attempt STARTTLS if available and desired. */
+  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || SslForceTls))
+  {
+    if (nserv->use_tls == 0)
+    {
+      nserv->use_tls =
+          SslForceTls || query_quadoption(SslStarttls,
+                                          _("Secure connection with TLS?")) == MUTT_YES ?
+              2 :
+              1;
+    }
+    if (nserv->use_tls == 2)
+    {
+      if (mutt_socket_send(conn, "STARTTLS\r\n") < 0 ||
+          mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+      {
+        return nntp_connect_error(nserv);
+      }
+      if (mutt_str_strncmp("382", buf, 3) != 0)
+      {
+        nserv->use_tls = 0;
+        mutt_error("STARTTLS: %s", buf);
+      }
+      else if (mutt_ssl_starttls(conn))
+      {
+        nserv->use_tls = 0;
+        nserv->status = NNTP_NONE;
+        mutt_socket_close(nserv->conn);
+        mutt_error(_("Could not negotiate TLS connection"));
+        return -1;
+      }
+      else
+      {
+        /* recheck capabilities after STARTTLS */
+        cap = nntp_capabilities(nserv);
+        if (cap < 0)
+          return -1;
+      }
+    }
+  }
+#endif
+
+  /* authentication required? */
+  if (conn->account.flags & MUTT_ACCT_USER)
+  {
+    if (!conn->account.user[0])
+      auth = false;
+  }
+  else
+  {
+    if (mutt_socket_send(conn, "STAT\r\n") < 0 ||
+        mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
+      return nntp_connect_error(nserv);
+    }
+    if (mutt_str_strncmp("480", buf, 3) != 0)
+      auth = false;
+  }
+
+  /* authenticate */
+  if (auth && nntp_auth(nserv) < 0)
+    return -1;
+
+  /* get final capabilities after authentication */
+  if (nserv->hasCAPABILITIES && (auth || cap > 0))
+  {
+    cap = nntp_capabilities(nserv);
+    if (cap < 0)
+      return -1;
+    if (cap > 0)
+    {
+      mutt_socket_close(conn);
+      mutt_error(_("Could not switch to reader mode"));
+      return -1;
+    }
+  }
+
+  /* attempt features */
+  if (nntp_attempt_features(nserv) < 0)
+    return -1;
+
+  nserv->status = NNTP_OK;
+  return 0;
+}
+
+/**
+ * nntp_post - Post article
+ * @param mailbox Mailbox
+ * @param msg     Message to post
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int nntp_post(struct Mailbox *mailbox, const char *msg)
+{
+  struct NntpData *nntp_data = NULL;
+  struct NntpData nntp_tmp = { 0 };
+  char buf[LONG_STRING];
+
+  if (mailbox && (mailbox->magic == MUTT_NNTP))
+    nntp_data = mailbox->data;
+  else
+  {
+    CurrentNewsSrv = nntp_select_server(mailbox, NewsServer, false);
+    if (!CurrentNewsSrv)
+      return -1;
+
+    nntp_data = &nntp_tmp;
+    nntp_data->nserv = CurrentNewsSrv;
+    nntp_data->group = NULL;
+  }
+
+  FILE *fp = mutt_file_fopen(msg, "r");
+  if (!fp)
+  {
+    mutt_perror(msg);
+    return -1;
+  }
+
+  mutt_str_strfcpy(buf, "POST\r\n", sizeof(buf));
+  if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
+  {
+    mutt_file_fclose(&fp);
+    return -1;
+  }
+  if (buf[0] != '3')
+  {
+    mutt_error(_("Can't post article: %s"), buf);
+    mutt_file_fclose(&fp);
+    return -1;
+  }
+
+  buf[0] = '.';
+  buf[1] = '\0';
+  while (fgets(buf + 1, sizeof(buf) - 2, fp))
+  {
+    size_t len = strlen(buf);
+    if (buf[len - 1] == '\n')
+    {
+      buf[len - 1] = '\r';
+      buf[len] = '\n';
+      len++;
+      buf[len] = '\0';
+    }
+    if (mutt_socket_send_d(nntp_data->nserv->conn,
+                           buf[1] == '.' ? buf : buf + 1, MUTT_SOCK_LOG_HDR) < 0)
+    {
+      mutt_file_fclose(&fp);
+      return nntp_connect_error(nntp_data->nserv);
+    }
+  }
+  mutt_file_fclose(&fp);
+
+  if ((buf[strlen(buf) - 1] != '\n' &&
+       mutt_socket_send_d(nntp_data->nserv->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
+      mutt_socket_send_d(nntp_data->nserv->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
+      mutt_socket_readln(buf, sizeof(buf), nntp_data->nserv->conn) < 0)
+  {
+    return nntp_connect_error(nntp_data->nserv);
+  }
+  if (buf[0] != '2')
+  {
+    mutt_error(_("Can't post article: %s"), buf);
+    return -1;
+  }
   return 0;
 }
 
@@ -2512,42 +2173,6 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
 }
 
 /**
- * struct ChildCtx - Keep track of the children of an article
- */
-struct ChildCtx
-{
-  struct Mailbox *mailbox;
-  unsigned int num;
-  unsigned int max;
-  anum_t *child;
-};
-
-/**
- * fetch_children - Parse XPAT line
- * @param line String to parse
- * @param data ChildCtx
- * @retval 0 Always
- */
-static int fetch_children(char *line, void *data)
-{
-  struct ChildCtx *cc = data;
-  anum_t anum;
-
-  if (!line || sscanf(line, ANUM, &anum) != 1)
-    return 0;
-  for (unsigned int i = 0; i < cc->mailbox->msg_count; i++)
-    if (NHDR(cc->mailbox->hdrs[i])->article_num == anum)
-      return 0;
-  if (cc->num >= cc->max)
-  {
-    cc->max *= 2;
-    mutt_mem_realloc(&cc->child, sizeof(anum_t) * cc->max);
-  }
-  cc->child[cc->num++] = anum;
-  return 0;
-}
-
-/**
  * nntp_check_children - Fetch children of article with the Message-ID
  * @param ctx   Mailbox
  * @param msgid Message ID to find
@@ -2627,6 +2252,381 @@ int nntp_compare_order(const void *a, const void *b)
   int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
+}
+
+/**
+ * nntp_mbox_open - Implements MxOps::mbox_open()
+ */
+static int nntp_mbox_open(struct Context *ctx)
+{
+  struct NntpServer *nserv = NULL;
+  struct NntpData *nntp_data = NULL;
+  char buf[HUGE_STRING];
+  char server[LONG_STRING];
+  char *group = NULL;
+  int rc;
+  void *hc = NULL;
+  anum_t first, last, count = 0;
+  struct Url url;
+
+  mutt_str_strfcpy(buf, ctx->mailbox->path, sizeof(buf));
+  if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
+      !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
+  {
+    url_free(&url);
+    mutt_error(_("%s is an invalid newsgroup specification"), ctx->mailbox->path);
+    return -1;
+  }
+
+  group = url.path;
+  url.path = strchr(url.path, '\0');
+  url_tostring(&url, server, sizeof(server), 0);
+  nserv = nntp_select_server(ctx->mailbox, server, true);
+  url_free(&url);
+  if (!nserv)
+    return -1;
+  CurrentNewsSrv = nserv;
+
+  /* find news group data structure */
+  nntp_data = mutt_hash_find(nserv->groups_hash, group);
+  if (!nntp_data)
+  {
+    nntp_newsrc_close(nserv);
+    mutt_error(_("Newsgroup %s not found on the server"), group);
+    return -1;
+  }
+
+  mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_INSERT);
+  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
+    ctx->mailbox->readonly = true;
+
+  /* select newsgroup */
+  mutt_message(_("Selecting %s..."), group);
+  buf[0] = '\0';
+  if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
+  {
+    nntp_newsrc_close(nserv);
+    return -1;
+  }
+
+  /* newsgroup not found, remove it */
+  if (mutt_str_strncmp("411", buf, 3) == 0)
+  {
+    mutt_error(_("Newsgroup %s has been removed from the server"), nntp_data->group);
+    if (!nntp_data->deleted)
+    {
+      nntp_data->deleted = true;
+      nntp_active_save_cache(nserv);
+    }
+    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
+    {
+      FREE(&nntp_data->newsrc_ent);
+      nntp_data->newsrc_len = 0;
+      nntp_delete_group_cache(nntp_data);
+      nntp_newsrc_update(nserv);
+    }
+  }
+
+  /* parse newsgroup info */
+  else
+  {
+    if (sscanf(buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
+    {
+      nntp_newsrc_close(nserv);
+      mutt_error("GROUP: %s", buf);
+      return -1;
+    }
+    nntp_data->first_message = first;
+    nntp_data->last_message = last;
+    nntp_data->deleted = false;
+
+    /* get description if empty */
+    if (NntpLoadDescription && !nntp_data->desc)
+    {
+      if (get_description(nntp_data, NULL, NULL) < 0)
+      {
+        nntp_newsrc_close(nserv);
+        return -1;
+      }
+      if (nntp_data->desc)
+        nntp_active_save_cache(nserv);
+    }
+  }
+
+  time(&nserv->check_time);
+  ctx->mailbox->data = nntp_data;
+  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
+    nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
+
+  /* strip off extra articles if adding context is greater than $nntp_context */
+  first = nntp_data->first_message;
+  if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
+    first = nntp_data->last_message - NntpContext + 1;
+  nntp_data->last_loaded = first ? first - 1 : 0;
+  count = nntp_data->first_message;
+  nntp_data->first_message = first;
+  nntp_bcache_update(nntp_data);
+  nntp_data->first_message = count;
+#ifdef USE_HCACHE
+  hc = nntp_hcache_open(nntp_data);
+  nntp_hcache_update(nntp_data, hc);
+#endif
+  if (!hc)
+  {
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_WRITE);
+    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_DELETE);
+  }
+  nntp_newsrc_close(nserv);
+  rc = nntp_fetch_headers(ctx, hc, first, nntp_data->last_message, 0);
+#ifdef USE_HCACHE
+  mutt_hcache_close(hc);
+#endif
+  if (rc < 0)
+    return -1;
+  nntp_data->last_loaded = nntp_data->last_message;
+  nserv->newsrc_modified = false;
+  return 0;
+}
+
+/**
+ * nntp_mbox_check - Implements MxOps::mbox_check()
+ * @param ctx        Mailbox
+ * @param index_hint Current message (UNUSED)
+ * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
+ * @retval #MUTT_NEW_MAIL New articles found
+ * @retval  0             No change
+ * @retval -1             Lost connection
+ */
+static int nntp_mbox_check(struct Context *ctx, int *index_hint)
+{
+  int ret = check_mailbox(ctx);
+  if (ret == 0)
+  {
+    struct NntpData *nntp_data = ctx->mailbox->data;
+    struct NntpServer *nserv = nntp_data->nserv;
+    nntp_newsrc_close(nserv);
+  }
+  return ret;
+}
+
+/**
+ * nntp_mbox_sync - Implements MxOps::mbox_sync()
+ *
+ * @note May also return values from check_mailbox()
+ */
+static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
+{
+  struct NntpData *nntp_data = ctx->mailbox->data;
+  int rc;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+#endif
+
+  /* check for new articles */
+  nntp_data->nserv->check_time = 0;
+  rc = check_mailbox(ctx);
+  if (rc)
+    return rc;
+
+#ifdef USE_HCACHE
+  nntp_data->last_cached = 0;
+  hc = nntp_hcache_open(nntp_data);
+#endif
+
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  {
+    struct Header *hdr = ctx->mailbox->hdrs[i];
+    char buf[16];
+
+    snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
+    if (nntp_data->bcache && hdr->deleted)
+    {
+      mutt_debug(2, "mutt_bcache_del %s\n", buf);
+      mutt_bcache_del(nntp_data->bcache, buf);
+    }
+
+#ifdef USE_HCACHE
+    if (hc && (hdr->changed || hdr->deleted))
+    {
+      if (hdr->deleted && !hdr->read)
+        nntp_data->unread--;
+      mutt_debug(2, "mutt_hcache_store %s\n", buf);
+      mutt_hcache_store(hc, buf, strlen(buf), hdr, 0);
+    }
+#endif
+  }
+
+#ifdef USE_HCACHE
+  if (hc)
+  {
+    mutt_hcache_close(hc);
+    nntp_data->last_cached = nntp_data->last_loaded;
+  }
+#endif
+
+  /* save .newsrc entries */
+  nntp_newsrc_gen_entries(ctx);
+  nntp_newsrc_update(nntp_data->nserv);
+  nntp_newsrc_close(nntp_data->nserv);
+  return 0;
+}
+
+/**
+ * nntp_mbox_close - Implements MxOps::mbox_close()
+ * @retval 0 Always
+ */
+static int nntp_mbox_close(struct Context *ctx)
+{
+  struct NntpData *nntp_data = ctx->mailbox->data, *nntp_tmp = NULL;
+
+  if (!nntp_data)
+    return 0;
+
+  nntp_data->unread = ctx->mailbox->msg_unread;
+
+  nntp_acache_free(nntp_data);
+  if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
+    return 0;
+
+  nntp_tmp = mutt_hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
+  if (!nntp_tmp || nntp_tmp != nntp_data)
+    nntp_data_free(nntp_data);
+  return 0;
+}
+
+/**
+ * nntp_msg_open - Implements MxOps::msg_open()
+ */
+static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+{
+  struct NntpData *nntp_data = ctx->mailbox->data;
+  struct Header *hdr = ctx->mailbox->hdrs[msgno];
+  char article[16];
+
+  /* try to get article from cache */
+  struct NntpAcache *acache = &nntp_data->acache[hdr->index % NNTP_ACACHE_LEN];
+  if (acache->path)
+  {
+    if (acache->index == hdr->index)
+    {
+      msg->fp = mutt_file_fopen(acache->path, "r");
+      if (msg->fp)
+        return 0;
+    }
+    /* clear previous entry */
+    else
+    {
+      unlink(acache->path);
+      FREE(&acache->path);
+    }
+  }
+  snprintf(article, sizeof(article), "%d", NHDR(hdr)->article_num);
+  msg->fp = mutt_bcache_get(nntp_data->bcache, article);
+  if (msg->fp)
+  {
+    if (NHDR(hdr)->parsed)
+      return 0;
+  }
+  else
+  {
+    char buf[PATH_MAX];
+    /* don't try to fetch article from removed newsgroup */
+    if (nntp_data->deleted)
+      return -1;
+
+    /* create new cache file */
+    const char *fetch_msg = _("Fetching message...");
+    mutt_message(fetch_msg);
+    msg->fp = mutt_bcache_put(nntp_data->bcache, article);
+    if (!msg->fp)
+    {
+      mutt_mktemp(buf, sizeof(buf));
+      acache->path = mutt_str_strdup(buf);
+      acache->index = hdr->index;
+      msg->fp = mutt_file_fopen(acache->path, "w+");
+      if (!msg->fp)
+      {
+        mutt_perror(acache->path);
+        unlink(acache->path);
+        FREE(&acache->path);
+        return -1;
+      }
+    }
+
+    /* fetch message to cache file */
+    snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
+             NHDR(hdr)->article_num ? article : hdr->env->message_id);
+    const int rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg,
+                                    fetch_tempfile, msg->fp);
+    if (rc)
+    {
+      mutt_file_fclose(&msg->fp);
+      if (acache->path)
+      {
+        unlink(acache->path);
+        FREE(&acache->path);
+      }
+      if (rc > 0)
+      {
+        if (mutt_str_strncmp(NHDR(hdr)->article_num ? "423" : "430", buf, 3) == 0)
+        {
+          mutt_error(_("Article %d not found on the server"),
+                     NHDR(hdr)->article_num ? article : hdr->env->message_id);
+        }
+        else
+          mutt_error("ARTICLE: %s", buf);
+      }
+      return -1;
+    }
+
+    if (!acache->path)
+      mutt_bcache_commit(nntp_data->bcache, article);
+  }
+
+  /* replace envelope with new one
+   * hash elements must be updated because pointers will be changed */
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_delete(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
+
+  mutt_env_free(&hdr->env);
+  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
+
+  if (ctx->mailbox->id_hash && hdr->env->message_id)
+    mutt_hash_insert(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
+  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
+
+  /* fix content length */
+  fseek(msg->fp, 0, SEEK_END);
+  hdr->content->length = ftell(msg->fp) - hdr->content->offset;
+
+  /* this is called in neomutt before the open which fetches the message,
+   * which is probably wrong, but we just call it again here to handle
+   * the problem instead of fixing it */
+  NHDR(hdr)->parsed = true;
+  mutt_parse_mime_message(ctx, hdr);
+
+  /* these would normally be updated in mx_update_context(), but the
+   * full headers aren't parsed with overview, so the information wasn't
+   * available then */
+  if (WithCrypto)
+    hdr->security = crypt_query(hdr->content);
+
+  rewind(msg->fp);
+  mutt_clear_error();
+  return 0;
+}
+
+/**
+ * nntp_msg_close - Implements MxOps::msg_close()
+ *
+ * @note May also return EOF Failure, see errno
+ */
+static int nntp_msg_close(struct Context *ctx, struct Message *msg)
+{
+  return mutt_file_fclose(&msg->fp);
 }
 
 /**
