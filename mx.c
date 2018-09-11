@@ -247,14 +247,12 @@ struct Context *mx_mbox_open(const char *path, int flags)
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
 
-  ctx->mailbox = mutt_find_mailbox(ctx->mailbox->path);
+  ctx->mailbox = mutt_find_mailbox(path);
   if (!ctx->mailbox)
   {
-    ctx->mailbox = mailbox_new(ctx->mailbox->path);
+    ctx->mailbox = mailbox_new(path);
     ctx->mailbox->flags = MB_HIDDEN;
   }
-
-  mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
 
   if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
     mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
