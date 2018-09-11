@@ -131,7 +131,7 @@ struct NmMboxData
 
   struct Url db_url;   /**< Parsed view url of the Notmuch database */
   char *db_url_holder; /**< The storage string used by db_url, we keep it
-                                *   to be able to free db_url */
+                        *   to be able to free db_url */
   char *db_query;      /**< Previous query */
   int db_limit;        /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
@@ -2021,54 +2021,6 @@ void nm_query_window_backward(void)
 }
 
 /**
- * nm_tags_edit - Implements MxOps::tags_edit()
- */
-static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
-{
-  *buf = '\0';
-  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
-    return -1;
-  return 1;
-}
-
-/**
- * nm_tags_commit - Implements MxOps::tags_commit()
- */
-static int nm_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
-{
-  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
-  if (!buf || !*buf || !data)
-    return -1;
-
-  notmuch_database_t *db = NULL;
-  notmuch_message_t *msg = NULL;
-  int rc = -1;
-
-  if (!(db = get_db(data, true)) || !(msg = get_nm_message(db, hdr)))
-    goto done;
-
-  mutt_debug(1, "nm: tags modify: '%s'\n", buf);
-
-  update_tags(msg, buf);
-  update_header_flags(ctx, hdr, buf);
-  update_header_tags(hdr, msg);
-  mutt_set_header_color(ctx, hdr);
-
-  rc = 0;
-  hdr->changed = true;
-done:
-  if (!is_longrun(data))
-    release_db(data);
-  if (hdr->changed)
-  {
-    ctx->mailbox->mtime.tv_sec = time(NULL);
-    ctx->mailbox->mtime.tv_nsec = 0;
-  }
-  mutt_debug(1, "nm: tags modify done [rc=%d]\n", rc);
-  return rc;
-}
-
-/**
  * nm_message_is_still_queried - Is a message still visible in the query?
  * @param mailbox Mailbox
  * @param hdr     Email Header
@@ -2467,16 +2419,6 @@ static int nm_mbox_open(struct Context *ctx)
 }
 
 /**
- * nm_mbox_close - Implements MxOps::mbox_close()
- *
- * Nothing to do.
- */
-static int nm_mbox_close(struct Context *ctx)
-{
-  return 0;
-}
-
-/**
  * nm_mbox_check - Implements MxOps::mbox_check()
  * @param ctx         Mailbox
  * @param index_hint  Remember our place in the index
@@ -2694,6 +2636,16 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 }
 
 /**
+ * nm_mbox_close - Implements MxOps::mbox_close()
+ *
+ * Nothing to do.
+ */
+static int nm_mbox_close(struct Context *ctx)
+{
+  return 0;
+}
+
+/**
  * nm_msg_open - Implements MxOps::msg_open()
  */
 static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
@@ -2718,6 +2670,16 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 }
 
 /**
+ * nm_msg_commit - Implements MxOps::msg_commit()
+ * @retval -1 Always
+ */
+static int nm_msg_commit(struct Context *ctx, struct Message *msg)
+{
+  mutt_error(_("Can't write to virtual folder"));
+  return -1;
+}
+
+/**
  * nm_msg_close - Implements MxOps::msg_close()
  */
 static int nm_msg_close(struct Context *ctx, struct Message *msg)
@@ -2729,13 +2691,51 @@ static int nm_msg_close(struct Context *ctx, struct Message *msg)
 }
 
 /**
- * nm_msg_commit - Implements MxOps::msg_commit()
- * @retval -1 Always
+ * nm_tags_edit - Implements MxOps::tags_edit()
  */
-static int nm_msg_commit(struct Context *ctx, struct Message *msg)
+static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
-  mutt_error(_("Can't write to virtual folder"));
-  return -1;
+  *buf = '\0';
+  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
+    return -1;
+  return 1;
+}
+
+/**
+ * nm_tags_commit - Implements MxOps::tags_commit()
+ */
+static int nm_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
+{
+  struct NmMboxData *data = get_mboxdata(ctx->mailbox);
+  if (!buf || !*buf || !data)
+    return -1;
+
+  notmuch_database_t *db = NULL;
+  notmuch_message_t *msg = NULL;
+  int rc = -1;
+
+  if (!(db = get_db(data, true)) || !(msg = get_nm_message(db, hdr)))
+    goto done;
+
+  mutt_debug(1, "nm: tags modify: '%s'\n", buf);
+
+  update_tags(msg, buf);
+  update_header_flags(ctx, hdr, buf);
+  update_header_tags(hdr, msg);
+  mutt_set_header_color(ctx, hdr);
+
+  rc = 0;
+  hdr->changed = true;
+done:
+  if (!is_longrun(data))
+    release_db(data);
+  if (hdr->changed)
+  {
+    ctx->mailbox->mtime.tv_sec = time(NULL);
+    ctx->mailbox->mtime.tv_nsec = 0;
+  }
+  mutt_debug(1, "nm: tags modify done [rc=%d]\n", rc);
+  return rc;
 }
 
 /**
