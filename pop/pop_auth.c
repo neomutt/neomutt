@@ -58,8 +58,6 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
-  char *buf = NULL;
-  size_t bufsize = 0;
   char inbuf[LONG_STRING];
   const char *mech = NULL;
   const char *pc = NULL;
@@ -102,8 +100,8 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
 
   mutt_message(_("Authenticating (SASL)..."));
 
-  bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
-  buf = mutt_mem_malloc(bufsize);
+  size_t bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
+  char *buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   olen = strlen(buf);
@@ -281,9 +279,6 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
  */
 static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
 {
-  char buf[LONG_STRING];
-  int ret;
-
   if (!pop_data->cmd_user)
     return POP_A_UNAVAIL;
 
@@ -292,8 +287,9 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
 
   mutt_message(_("Logging in..."));
 
+  char buf[LONG_STRING];
   snprintf(buf, sizeof(buf), "USER %s\r\n", pop_data->conn->account.user);
-  ret = pop_query(pop_data, buf, sizeof(buf));
+  int ret = pop_query(pop_data, buf, sizeof(buf));
 
   if (pop_data->cmd_user == 2)
   {
@@ -343,21 +339,14 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
  */
 static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *method)
 {
-  char *oauthbearer = NULL;
-  char decoded_err[LONG_STRING];
-  char *err = NULL;
-  char *auth_cmd = NULL;
-  size_t auth_cmd_len;
-  int len;
-
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
-  oauthbearer = mutt_account_getoauthbearer(&pop_data->conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&pop_data->conn->account);
   if (!oauthbearer)
     return POP_A_FAILURE;
 
-  auth_cmd_len = strlen(oauthbearer) + 30;
-  auth_cmd = mutt_mem_malloc(auth_cmd_len);
+  size_t auth_cmd_len = strlen(oauthbearer) + 30;
+  char *auth_cmd = mutt_mem_malloc(auth_cmd_len);
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
@@ -382,8 +371,9 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
    * See RFC7628 3.2.3 */
   mutt_socket_send(pop_data->conn, "\001");
 
-  err = pop_data->err_msg;
-  len = mutt_b64_decode(pop_data->err_msg, decoded_err, sizeof(decoded_err) - 1);
+  char *err = pop_data->err_msg;
+  char decoded_err[LONG_STRING];
+  int len = mutt_b64_decode(pop_data->err_msg, decoded_err, sizeof(decoded_err) - 1);
   if (len >= 0)
   {
     decoded_err[len] = '\0';

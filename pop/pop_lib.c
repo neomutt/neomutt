@@ -304,11 +304,9 @@ int pop_connect(struct PopData *pop_data)
 */
 int pop_open_connection(struct PopData *pop_data)
 {
-  int rc;
-  unsigned int n, size;
   char buf[LONG_STRING];
 
-  rc = pop_connect(pop_data);
+  int rc = pop_connect(pop_data);
   if (rc < 0)
   {
     mutt_sleep(2);
@@ -405,6 +403,7 @@ int pop_open_connection(struct PopData *pop_data)
     return rc;
   }
 
+  unsigned int n = 0, size = 0;
   sscanf(buf, "+OK %u %u", &n, &size);
   pop_data->size = size;
   return 0;
@@ -463,7 +462,6 @@ void pop_logout(struct Mailbox *mailbox)
 int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 {
   int dbg = MUTT_SOCK_LOG_CMD;
-  char *c = NULL;
 
   if (pop_data->status != POP_CONNECTED)
     return -1;
@@ -477,7 +475,7 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 
   mutt_socket_send_d(pop_data->conn, buf, dbg);
 
-  c = strpbrk(buf, " \r\n");
+  char *c = strpbrk(buf, " \r\n");
   if (c)
     *c = '\0';
   snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s: ", buf);
