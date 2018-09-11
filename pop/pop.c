@@ -476,6 +476,200 @@ static int pop_fetch_headers(struct Context *ctx)
 }
 
 /**
+ * pop_clear_cache - delete all cached messages
+ * @param pop_data POP server data
+ */
+static void pop_clear_cache(struct PopData *pop_data)
+{
+  if (!pop_data->clear_cache)
+    return;
+
+  mutt_debug(1, "delete cached messages\n");
+
+  for (int i = 0; i < POP_CACHE_LEN; i++)
+  {
+    if (pop_data->cache[i].path)
+    {
+      unlink(pop_data->cache[i].path);
+      FREE(&pop_data->cache[i].path);
+    }
+  }
+}
+
+/**
+ * pop_fetch_mail - Fetch messages and save them in $spoolfile
+ */
+void pop_fetch_mail(void)
+{
+  char buffer[LONG_STRING];
+  char msgbuf[SHORT_STRING];
+  char *url = NULL, *p = NULL;
+  int delanswer, last = 0, msgs, bytes, rset = 0, ret;
+  struct Connection *conn = NULL;
+  struct Message *msg = NULL;
+  struct ConnAccount acct;
+  struct PopData *pop_data = NULL;
+
+  if (!PopHost)
+  {
+    mutt_error(_("POP host is not defined"));
+    return;
+  }
+
+  p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
+  url = p;
+  if (url_check_scheme(PopHost) == U_UNKNOWN)
+  {
+    strcpy(url, "pop://");
+    p = strchr(url, '\0');
+  }
+  strcpy(p, PopHost);
+
+  ret = pop_parse_path(url, &acct);
+  FREE(&url);
+  if (ret)
+  {
+    mutt_error(_("%s is an invalid POP path"), PopHost);
+    return;
+  }
+
+  conn = mutt_conn_find(NULL, &acct);
+  if (!conn)
+    return;
+
+  pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
+  pop_data->conn = conn;
+
+  if (pop_open_connection(pop_data) < 0)
+  {
+    mutt_socket_free(pop_data->conn);
+    FREE(&pop_data);
+    return;
+  }
+
+  conn->data = pop_data;
+
+  mutt_message(_("Checking for new messages..."));
+
+  /* find out how many messages are in the mailbox. */
+  mutt_str_strfcpy(buffer, "STAT\r\n", sizeof(buffer));
+  ret = pop_query(pop_data, buffer, sizeof(buffer));
+  if (ret == -1)
+    goto fail;
+  if (ret == -2)
+  {
+    mutt_error("%s", pop_data->err_msg);
+    goto finish;
+  }
+
+  sscanf(buffer, "+OK %d %d", &msgs, &bytes);
+
+  /* only get unread messages */
+  if (msgs > 0 && PopLast)
+  {
+    mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
+    ret = pop_query(pop_data, buffer, sizeof(buffer));
+    if (ret == -1)
+      goto fail;
+    if (ret == 0)
+      sscanf(buffer, "+OK %d", &last);
+  }
+
+  if (msgs <= last)
+  {
+    mutt_message(_("No new mail in POP mailbox"));
+    goto finish;
+  }
+
+  struct Context *ctx = mx_mbox_open(Spoolfile, MUTT_APPEND);
+  if (!ctx)
+    goto finish;
+
+  delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
+
+  snprintf(msgbuf, sizeof(msgbuf),
+           ngettext("Reading new messages (%d byte)...",
+                    "Reading new messages (%d bytes)...", bytes),
+           bytes);
+  mutt_message("%s", msgbuf);
+
+  for (int i = last + 1; i <= msgs; i++)
+  {
+    msg = mx_msg_open_new(ctx, NULL, MUTT_ADD_FROM);
+    if (!msg)
+      ret = -3;
+    else
+    {
+      snprintf(buffer, sizeof(buffer), "RETR %d\r\n", i);
+      ret = pop_fetch_data(pop_data, buffer, NULL, fetch_message, msg->fp);
+      if (ret == -3)
+        rset = 1;
+
+      if (ret == 0 && mx_msg_commit(ctx, msg) != 0)
+      {
+        rset = 1;
+        ret = -3;
+      }
+
+      mx_msg_close(ctx, &msg);
+    }
+
+    if (ret == 0 && delanswer == MUTT_YES)
+    {
+      /* delete the message on the server */
+      snprintf(buffer, sizeof(buffer), "DELE %d\r\n", i);
+      ret = pop_query(pop_data, buffer, sizeof(buffer));
+    }
+
+    if (ret == -1)
+    {
+      mx_mbox_close(&ctx, NULL);
+      goto fail;
+    }
+    if (ret == -2)
+    {
+      mutt_error("%s", pop_data->err_msg);
+      break;
+    }
+    if (ret == -3)
+    {
+      mutt_error(_("Error while writing mailbox"));
+      break;
+    }
+
+    /* L10N: The plural is picked by the second numerical argument, i.e.
+     * the %d right before 'messages', i.e. the total number of messages. */
+    mutt_message(ngettext("%s [%d of %d message read]",
+                          "%s [%d of %d messages read]", msgs - last),
+                 msgbuf, i - last, msgs - last);
+  }
+
+  mx_mbox_close(&ctx, NULL);
+
+  if (rset)
+  {
+    /* make sure no messages get deleted */
+    mutt_str_strfcpy(buffer, "RSET\r\n", sizeof(buffer));
+    if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
+      goto fail;
+  }
+
+finish:
+  /* exit gracefully */
+  mutt_str_strfcpy(buffer, "QUIT\r\n", sizeof(buffer));
+  if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
+    goto fail;
+  mutt_socket_close(conn);
+  FREE(&pop_data);
+  return;
+
+fail:
+  mutt_error(_("Server closed connection"));
+  mutt_socket_close(conn);
+  FREE(&pop_data);
+}
+
+/**
  * pop_mbox_open - open POP mailbox, fetch only headers
  * @param ctx Mailbox
  * @retval  0 Success
@@ -549,22 +743,131 @@ static int pop_mbox_open(struct Context *ctx)
 }
 
 /**
- * pop_clear_cache - delete all cached messages
- * @param pop_data POP server data
+ * pop_mbox_check - Check for new messages and fetch headers
+ * @param ctx        Mailbox
+ * @param index_hint Current Message
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-static void pop_clear_cache(struct PopData *pop_data)
+static int pop_mbox_check(struct Context *ctx, int *index_hint)
 {
-  if (!pop_data->clear_cache)
-    return;
+  int ret;
+  struct PopData *pop_data = ctx->mailbox->data;
 
-  mutt_debug(1, "delete cached messages\n");
+  if ((pop_data->check_time + PopCheckinterval) > time(NULL))
+    return 0;
 
-  for (int i = 0; i < POP_CACHE_LEN; i++)
+  pop_logout(ctx->mailbox);
+
+  mutt_socket_close(pop_data->conn);
+
+  if (pop_open_connection(pop_data) < 0)
+    return -1;
+
+  ctx->mailbox->size = pop_data->size;
+
+  mutt_message(_("Checking for new messages..."));
+
+  ret = pop_fetch_headers(ctx);
+  pop_clear_cache(pop_data);
+
+  if (ret < 0)
+    return -1;
+
+  if (ret > 0)
+    return MUTT_NEW_MAIL;
+
+  return 0;
+}
+
+/**
+ * pop_mbox_sync - update POP mailbox, delete messages from server
+ * @param ctx        Mailbox
+ * @param index_hint Current Message
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+static int pop_mbox_sync(struct Context *ctx, int *index_hint)
+{
+  int i, j, ret = 0;
+  char buf[LONG_STRING];
+  struct PopData *pop_data = ctx->mailbox->data;
+  struct Progress progress;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+#endif
+
+  pop_data->check_time = 0;
+
+  int num_deleted = 0;
+  for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    if (pop_data->cache[i].path)
+    if (ctx->mailbox->hdrs[i]->deleted)
+      num_deleted++;
+  }
+
+  while (true)
+  {
+    if (pop_reconnect(ctx->mailbox) < 0)
+      return -1;
+
+    mutt_progress_init(&progress, _("Marking messages deleted..."),
+                       MUTT_PROGRESS_MSG, WriteInc, num_deleted);
+
+#ifdef USE_HCACHE
+    hc = pop_hcache_open(pop_data, ctx->mailbox->path);
+#endif
+
+    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->mailbox->msg_count; i++)
     {
-      unlink(pop_data->cache[i].path);
-      FREE(&pop_data->cache[i].path);
+      if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->refno != -1)
+      {
+        j++;
+        if (!ctx->mailbox->quiet)
+          mutt_progress_update(&progress, j, -1);
+        snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->mailbox->hdrs[i]->refno);
+        ret = pop_query(pop_data, buf, sizeof(buf));
+        if (ret == 0)
+        {
+          mutt_bcache_del(pop_data->bcache, cache_id(ctx->mailbox->hdrs[i]->data));
+#ifdef USE_HCACHE
+          mutt_hcache_delete(hc, ctx->mailbox->hdrs[i]->data,
+                             strlen(ctx->mailbox->hdrs[i]->data));
+#endif
+        }
+      }
+
+#ifdef USE_HCACHE
+      if (ctx->mailbox->hdrs[i]->changed)
+      {
+        mutt_hcache_store(hc, ctx->mailbox->hdrs[i]->data,
+                          strlen(ctx->mailbox->hdrs[i]->data), ctx->mailbox->hdrs[i], 0);
+      }
+#endif
+    }
+
+#ifdef USE_HCACHE
+    mutt_hcache_close(hc);
+#endif
+
+    if (ret == 0)
+    {
+      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      ret = pop_query(pop_data, buf, sizeof(buf));
+    }
+
+    if (ret == 0)
+    {
+      pop_data->clear_cache = true;
+      pop_clear_cache(pop_data);
+      pop_data->status = POP_DISCONNECTED;
+      return 0;
+    }
+
+    if (ret == -2)
+    {
+      mutt_error("%s", pop_data->err_msg);
+      return -1;
     }
   }
 }
@@ -760,309 +1063,6 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 static int pop_msg_close(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
-}
-
-/**
- * pop_mbox_sync - update POP mailbox, delete messages from server
- * @param ctx        Mailbox
- * @param index_hint Current Message
- * @retval  0 Success
- * @retval -1 Failure
- */
-static int pop_mbox_sync(struct Context *ctx, int *index_hint)
-{
-  int i, j, ret = 0;
-  char buf[LONG_STRING];
-  struct PopData *pop_data = ctx->mailbox->data;
-  struct Progress progress;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-#endif
-
-  pop_data->check_time = 0;
-
-  int num_deleted = 0;
-  for (i = 0; i < ctx->mailbox->msg_count; i++)
-  {
-    if (ctx->mailbox->hdrs[i]->deleted)
-      num_deleted++;
-  }
-
-  while (true)
-  {
-    if (pop_reconnect(ctx->mailbox) < 0)
-      return -1;
-
-    mutt_progress_init(&progress, _("Marking messages deleted..."),
-                       MUTT_PROGRESS_MSG, WriteInc, num_deleted);
-
-#ifdef USE_HCACHE
-    hc = pop_hcache_open(pop_data, ctx->mailbox->path);
-#endif
-
-    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->mailbox->msg_count; i++)
-    {
-      if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->refno != -1)
-      {
-        j++;
-        if (!ctx->mailbox->quiet)
-          mutt_progress_update(&progress, j, -1);
-        snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->mailbox->hdrs[i]->refno);
-        ret = pop_query(pop_data, buf, sizeof(buf));
-        if (ret == 0)
-        {
-          mutt_bcache_del(pop_data->bcache, cache_id(ctx->mailbox->hdrs[i]->data));
-#ifdef USE_HCACHE
-          mutt_hcache_delete(hc, ctx->mailbox->hdrs[i]->data,
-                             strlen(ctx->mailbox->hdrs[i]->data));
-#endif
-        }
-      }
-
-#ifdef USE_HCACHE
-      if (ctx->mailbox->hdrs[i]->changed)
-      {
-        mutt_hcache_store(hc, ctx->mailbox->hdrs[i]->data,
-                          strlen(ctx->mailbox->hdrs[i]->data), ctx->mailbox->hdrs[i], 0);
-      }
-#endif
-    }
-
-#ifdef USE_HCACHE
-    mutt_hcache_close(hc);
-#endif
-
-    if (ret == 0)
-    {
-      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
-      ret = pop_query(pop_data, buf, sizeof(buf));
-    }
-
-    if (ret == 0)
-    {
-      pop_data->clear_cache = true;
-      pop_clear_cache(pop_data);
-      pop_data->status = POP_DISCONNECTED;
-      return 0;
-    }
-
-    if (ret == -2)
-    {
-      mutt_error("%s", pop_data->err_msg);
-      return -1;
-    }
-  }
-}
-
-/**
- * pop_mbox_check - Check for new messages and fetch headers
- * @param ctx        Mailbox
- * @param index_hint Current Message
- * @retval  0 Success
- * @retval -1 Failure
- */
-static int pop_mbox_check(struct Context *ctx, int *index_hint)
-{
-  int ret;
-  struct PopData *pop_data = ctx->mailbox->data;
-
-  if ((pop_data->check_time + PopCheckinterval) > time(NULL))
-    return 0;
-
-  pop_logout(ctx->mailbox);
-
-  mutt_socket_close(pop_data->conn);
-
-  if (pop_open_connection(pop_data) < 0)
-    return -1;
-
-  ctx->mailbox->size = pop_data->size;
-
-  mutt_message(_("Checking for new messages..."));
-
-  ret = pop_fetch_headers(ctx);
-  pop_clear_cache(pop_data);
-
-  if (ret < 0)
-    return -1;
-
-  if (ret > 0)
-    return MUTT_NEW_MAIL;
-
-  return 0;
-}
-
-/**
- * pop_fetch_mail - Fetch messages and save them in $spoolfile
- */
-void pop_fetch_mail(void)
-{
-  char buffer[LONG_STRING];
-  char msgbuf[SHORT_STRING];
-  char *url = NULL, *p = NULL;
-  int delanswer, last = 0, msgs, bytes, rset = 0, ret;
-  struct Connection *conn = NULL;
-  struct Message *msg = NULL;
-  struct ConnAccount acct;
-  struct PopData *pop_data = NULL;
-
-  if (!PopHost)
-  {
-    mutt_error(_("POP host is not defined"));
-    return;
-  }
-
-  p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
-  url = p;
-  if (url_check_scheme(PopHost) == U_UNKNOWN)
-  {
-    strcpy(url, "pop://");
-    p = strchr(url, '\0');
-  }
-  strcpy(p, PopHost);
-
-  ret = pop_parse_path(url, &acct);
-  FREE(&url);
-  if (ret)
-  {
-    mutt_error(_("%s is an invalid POP path"), PopHost);
-    return;
-  }
-
-  conn = mutt_conn_find(NULL, &acct);
-  if (!conn)
-    return;
-
-  pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
-  pop_data->conn = conn;
-
-  if (pop_open_connection(pop_data) < 0)
-  {
-    mutt_socket_free(pop_data->conn);
-    FREE(&pop_data);
-    return;
-  }
-
-  conn->data = pop_data;
-
-  mutt_message(_("Checking for new messages..."));
-
-  /* find out how many messages are in the mailbox. */
-  mutt_str_strfcpy(buffer, "STAT\r\n", sizeof(buffer));
-  ret = pop_query(pop_data, buffer, sizeof(buffer));
-  if (ret == -1)
-    goto fail;
-  if (ret == -2)
-  {
-    mutt_error("%s", pop_data->err_msg);
-    goto finish;
-  }
-
-  sscanf(buffer, "+OK %d %d", &msgs, &bytes);
-
-  /* only get unread messages */
-  if (msgs > 0 && PopLast)
-  {
-    mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
-    ret = pop_query(pop_data, buffer, sizeof(buffer));
-    if (ret == -1)
-      goto fail;
-    if (ret == 0)
-      sscanf(buffer, "+OK %d", &last);
-  }
-
-  if (msgs <= last)
-  {
-    mutt_message(_("No new mail in POP mailbox"));
-    goto finish;
-  }
-
-  struct Context *ctx = mx_mbox_open(Spoolfile, MUTT_APPEND);
-  if (!ctx)
-    goto finish;
-
-  delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
-
-  snprintf(msgbuf, sizeof(msgbuf),
-           ngettext("Reading new messages (%d byte)...",
-                    "Reading new messages (%d bytes)...", bytes),
-           bytes);
-  mutt_message("%s", msgbuf);
-
-  for (int i = last + 1; i <= msgs; i++)
-  {
-    msg = mx_msg_open_new(ctx, NULL, MUTT_ADD_FROM);
-    if (!msg)
-      ret = -3;
-    else
-    {
-      snprintf(buffer, sizeof(buffer), "RETR %d\r\n", i);
-      ret = pop_fetch_data(pop_data, buffer, NULL, fetch_message, msg->fp);
-      if (ret == -3)
-        rset = 1;
-
-      if (ret == 0 && mx_msg_commit(ctx, msg) != 0)
-      {
-        rset = 1;
-        ret = -3;
-      }
-
-      mx_msg_close(ctx, &msg);
-    }
-
-    if (ret == 0 && delanswer == MUTT_YES)
-    {
-      /* delete the message on the server */
-      snprintf(buffer, sizeof(buffer), "DELE %d\r\n", i);
-      ret = pop_query(pop_data, buffer, sizeof(buffer));
-    }
-
-    if (ret == -1)
-    {
-      mx_mbox_close(&ctx, NULL);
-      goto fail;
-    }
-    if (ret == -2)
-    {
-      mutt_error("%s", pop_data->err_msg);
-      break;
-    }
-    if (ret == -3)
-    {
-      mutt_error(_("Error while writing mailbox"));
-      break;
-    }
-
-    /* L10N: The plural is picked by the second numerical argument, i.e.
-     * the %d right before 'messages', i.e. the total number of messages. */
-    mutt_message(ngettext("%s [%d of %d message read]",
-                          "%s [%d of %d messages read]", msgs - last),
-                 msgbuf, i - last, msgs - last);
-  }
-
-  mx_mbox_close(&ctx, NULL);
-
-  if (rset)
-  {
-    /* make sure no messages get deleted */
-    mutt_str_strfcpy(buffer, "RSET\r\n", sizeof(buffer));
-    if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
-      goto fail;
-  }
-
-finish:
-  /* exit gracefully */
-  mutt_str_strfcpy(buffer, "QUIT\r\n", sizeof(buffer));
-  if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
-    goto fail;
-  mutt_socket_close(conn);
-  FREE(&pop_data);
-  return;
-
-fail:
-  mutt_error(_("Server closed connection"));
-  mutt_socket_close(conn);
-  FREE(&pop_data);
 }
 
 /**

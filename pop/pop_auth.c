@@ -348,7 +348,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   char *err = NULL;
   char *auth_cmd = NULL;
   size_t auth_cmd_len;
-  int ret, len;
+  int len;
 
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
@@ -361,7 +361,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
-  ret =
+  int ret =
       pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
                   /* don't print the bearer token unless we're at the ungodly debugging level */
