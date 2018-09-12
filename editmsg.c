@@ -53,7 +53,7 @@
  * @param edit true if the message should be editable. If false, changes
  *            to the message (in the editor) will be ignored.
  * @param ctx Context
- * @param cur Header of email
+ * @param cur Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
@@ -265,15 +265,15 @@ bail:
  * edit_or_view_message - Edit an email or view it in an external editor
  * @param edit true: Edit the email; false: view the email
  * @param ctx  Mailbox Context
- * @param hdr  Email Header
+ * @param e   Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int edit_or_view_message(bool edit, struct Context *ctx, struct Email *hdr)
+int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
 {
-  if (hdr)
-    return edit_or_view_one_message(edit, ctx, hdr);
+  if (e)
+    return edit_or_view_one_message(edit, ctx, e);
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
@@ -290,25 +290,25 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Email *hdr)
 /**
  * mutt_edit_message - Edit a message
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_edit_message(struct Context *ctx, struct Email *hdr)
+int mutt_edit_message(struct Context *ctx, struct Email *e)
 {
-  return edit_or_view_message(true, ctx, hdr); /* true means edit */
+  return edit_or_view_message(true, ctx, e); /* true means edit */
 }
 
 /**
  * mutt_view_message - Edit a message
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_view_message(struct Context *ctx, struct Email *hdr)
+int mutt_view_message(struct Context *ctx, struct Email *e)
 {
-  return edit_or_view_message(false, ctx, hdr); /* false means only view */
+  return edit_or_view_message(false, ctx, e); /* false means only view */
 }

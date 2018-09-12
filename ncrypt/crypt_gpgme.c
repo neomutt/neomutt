@@ -5032,7 +5032,7 @@ void smime_gpgme_init(void)
 
 /**
  * gpgme_send_menu - Show the user the encryption/signing menu
- * @param msg      Header of email
+ * @param msg      Email
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #ENCRYPT
  */
@@ -5212,23 +5212,23 @@ int smime_gpgme_send_menu(struct Email *msg)
 
 /**
  * verify_sender - Verify the sender of a message
- * @param h Header of the email
+ * @param e Email
  * @retval true If sender is verified
  */
-static bool verify_sender(struct Email *h)
+static bool verify_sender(struct Email *e)
 {
   struct Address *sender = NULL;
   bool rc = true;
 
-  if (h->env->from)
+  if (e->env->from)
   {
-    h->env->from = mutt_expand_aliases(h->env->from);
-    sender = h->env->from;
+    e->env->from = mutt_expand_aliases(e->env->from);
+    sender = e->env->from;
   }
-  else if (h->env->sender)
+  else if (e->env->sender)
   {
-    h->env->sender = mutt_expand_aliases(h->env->sender);
-    sender = h->env->sender;
+    e->env->sender = mutt_expand_aliases(e->env->sender);
+    sender = e->env->sender;
   }
 
   if (sender)
@@ -5292,9 +5292,9 @@ static bool verify_sender(struct Email *h)
 /**
  * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_gpgme_verify_sender(struct Email *h)
+int smime_gpgme_verify_sender(struct Email *e)
 {
-  return verify_sender(h);
+  return verify_sender(e);
 }
 
 /**

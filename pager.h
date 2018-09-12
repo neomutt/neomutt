@@ -63,7 +63,7 @@ extern bool          Tilde;
 struct Pager
 {
   struct Context *ctx;    /**< current mailbox */
-  struct Email *hdr;     /**< current message */
+  struct Email *email;    /**< current message */
   struct Body *bdy;       /**< current attachment */
   FILE *fp;               /**< source stream */
   struct AttachCtx *actx; /**< attachment information */

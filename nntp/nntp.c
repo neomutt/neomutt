@@ -886,15 +886,15 @@ static int get_description(struct NntpData *nntp_data, const char *wildmat, cons
 /**
  * nntp_parse_xref - Parse cross-reference
  * @param mailbox Mailbox
- * @param hdr     Email header
+ * @param e     Email header
  *
  * Update read flag and set article number if empty
  */
-static void nntp_parse_xref(struct Mailbox *mailbox, struct Email *hdr)
+static void nntp_parse_xref(struct Mailbox *mailbox, struct Email *e)
 {
   struct NntpData *nntp_data = mailbox->data;
 
-  char *buf = mutt_str_strdup(hdr->env->xref);
+  char *buf = mutt_str_strdup(e->env->xref);
   char *p = buf;
   while (p)
   {
@@ -917,9 +917,9 @@ static void nntp_parse_xref(struct Mailbox *mailbox, struct Email *hdr)
     if (sscanf(colon, ANUM, &anum) != 1)
       continue;
 
-    nntp_article_status(mailbox, hdr, grp, anum);
-    if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
-      NHDR(hdr)->article_num = anum;
+    nntp_article_status(mailbox, e, grp, anum);
+    if (!NHDR(e)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
+      NHDR(e)->article_num = anum;
   }
   FREE(&buf);
 }
@@ -975,7 +975,7 @@ static int parse_overview_line(char *line, void *data)
   struct FetchCtx *fc = data;
   struct Context *ctx = fc->ctx;
   struct NntpData *nntp_data = ctx->mailbox->data;
-  struct Email *hdr = NULL;
+  struct Email *e = NULL;
   char *header = NULL, *field = NULL;
   bool save = true;
   anum_t anum;
@@ -1041,10 +1041,10 @@ static int parse_overview_line(char *line, void *data)
 
   /* parse header */
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
-  hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
-  hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
-  hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
-  hdr->received = hdr->date_sent;
+  e = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
+  e->env = mutt_rfc822_read_header(fp, e, false, false);
+  e->env->newsgroups = mutt_str_strdup(nntp_data->group);
+  e->received = e->date_sent;
   mutt_file_fclose(&fp);
 
 #ifdef USE_HCACHE
@@ -1058,16 +1058,16 @@ static int parse_overview_line(char *line, void *data)
     if (hdata)
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
-      mutt_email_free(&hdr);
-      hdr = mutt_hcache_restore(hdata);
-      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
+      mutt_email_free(&e);
+      e = mutt_hcache_restore(hdata);
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
       mutt_hcache_free(fc->hc, &hdata);
-      hdr->data = NULL;
-      hdr->read = false;
-      hdr->old = false;
+      e->data = NULL;
+      e->read = false;
+      e->old = false;
 
       /* skip header marked as deleted in cache */
-      if (hdr->deleted && !fc->restore)
+      if (e->deleted && !fc->restore)
       {
         if (nntp_data->bcache)
         {
@@ -1082,32 +1082,32 @@ static int parse_overview_line(char *line, void *data)
     else
     {
       mutt_debug(2, "mutt_hcache_store %s\n", buf);
-      mutt_hcache_store(fc->hc, buf, strlen(buf), hdr, 0);
+      mutt_hcache_store(fc->hc, buf, strlen(buf), e, 0);
     }
   }
 #endif
 
   if (save)
   {
-    hdr->index = ctx->mailbox->msg_count++;
-    hdr->read = false;
-    hdr->old = false;
-    hdr->deleted = false;
-    hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-    NHDR(hdr)->article_num = anum;
+    e->index = ctx->mailbox->msg_count++;
+    e->read = false;
+    e->old = false;
+    e->deleted = false;
+    e->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
+    NHDR(e)->article_num = anum;
     if (fc->restore)
-      hdr->changed = true;
+      e->changed = true;
     else
     {
-      nntp_article_status(ctx->mailbox, hdr, NULL, anum);
-      if (!hdr->read)
-        nntp_parse_xref(ctx->mailbox, hdr);
+      nntp_article_status(ctx->mailbox, e, NULL, anum);
+      if (!e->read)
+        nntp_parse_xref(ctx->mailbox, e);
     }
     if (anum > nntp_data->last_loaded)
       nntp_data->last_loaded = anum;
   }
   else
-    mutt_email_free(&hdr);
+    mutt_email_free(&e);
 
   /* progress */
   if (!ctx->mailbox->quiet)
@@ -1130,7 +1130,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 {
   struct NntpData *nntp_data = ctx->mailbox->data;
   struct FetchCtx fc;
-  struct Email *hdr = NULL;
+  struct Email *e = NULL;
   char buf[HUGE_STRING];
   int rc = 0;
   int oldmsgcount = ctx->mailbox->msg_count;
@@ -1229,15 +1229,15 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     if (hdata)
     {
       mutt_debug(2, "mutt_hcache_fetch %s\n", buf);
-      hdr = mutt_hcache_restore(hdata);
-      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
+      e = mutt_hcache_restore(hdata);
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
       mutt_hcache_free(fc.hc, &hdata);
-      hdr->data = NULL;
+      e->data = NULL;
 
       /* skip header marked as deleted in cache */
-      if (hdr->deleted && !restore)
+      if (e->deleted && !restore)
       {
-        mutt_email_free(&hdr);
+        mutt_email_free(&e);
         if (nntp_data->bcache)
         {
           mutt_debug(2, "#2 mutt_bcache_del %s\n", buf);
@@ -1246,8 +1246,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
         continue;
       }
 
-      hdr->read = false;
-      hdr->old = false;
+      e->read = false;
+      e->old = false;
     }
     else
 #endif
@@ -1304,26 +1304,26 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
       /* parse header */
       ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
-      hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
-      hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
-      hdr->received = hdr->date_sent;
+      e = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
+      e->env = mutt_rfc822_read_header(fp, e, false, false);
+      e->received = e->date_sent;
       mutt_file_fclose(&fp);
     }
 
     /* save header in context */
-    hdr->index = ctx->mailbox->msg_count++;
-    hdr->read = false;
-    hdr->old = false;
-    hdr->deleted = false;
-    hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-    NHDR(hdr)->article_num = current;
+    e->index = ctx->mailbox->msg_count++;
+    e->read = false;
+    e->old = false;
+    e->deleted = false;
+    e->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
+    NHDR(e)->article_num = current;
     if (restore)
-      hdr->changed = true;
+      e->changed = true;
     else
     {
-      nntp_article_status(ctx->mailbox, hdr, NULL, NHDR(hdr)->article_num);
-      if (!hdr->read)
-        nntp_parse_xref(ctx->mailbox, hdr);
+      nntp_article_status(ctx->mailbox, e, NULL, NHDR(e)->article_num);
+      if (!e->read)
+        nntp_parse_xref(ctx->mailbox, e);
     }
     if (current > nntp_data->last_loaded)
       nntp_data->last_loaded = current;
@@ -1460,7 +1460,7 @@ static int check_mailbox(struct Context *ctx)
     unsigned char *messages = NULL;
     char buf[16];
     void *hdata = NULL;
-    struct Email *hdr = NULL;
+    struct Email *e = NULL;
     anum_t first = nntp_data->first_message;
 
     if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
@@ -1492,12 +1492,12 @@ static int check_mailbox(struct Context *ctx)
           bool deleted;
 
           mutt_debug(2, "#1 mutt_hcache_fetch %s\n", buf);
-          hdr = mutt_hcache_restore(hdata);
+          e = mutt_hcache_restore(hdata);
           mutt_hcache_free(hc, &hdata);
-          hdr->data = NULL;
-          deleted = hdr->deleted;
-          flagged = hdr->flagged;
-          mutt_email_free(&hdr);
+          e->data = NULL;
+          deleted = e->deleted;
+          flagged = e->flagged;
+          mutt_email_free(&e);
 
           /* header marked as deleted, removing from context */
           if (deleted)
@@ -1539,13 +1539,13 @@ static int check_mailbox(struct Context *ctx)
         if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
           mx_alloc_memory(ctx->mailbox);
 
-        hdr = mutt_hcache_restore(hdata);
-        ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
+        e = mutt_hcache_restore(hdata);
+        ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
         mutt_hcache_free(hc, &hdata);
-        hdr->data = NULL;
-        if (hdr->deleted)
+        e->data = NULL;
+        if (e->deleted)
         {
-          mutt_email_free(&hdr);
+          mutt_email_free(&e);
           if (nntp_data->bcache)
           {
             mutt_debug(2, "mutt_bcache_del %s\n", buf);
@@ -1555,13 +1555,13 @@ static int check_mailbox(struct Context *ctx)
         }
 
         ctx->mailbox->msg_count++;
-        hdr->read = false;
-        hdr->old = false;
-        hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-        NHDR(hdr)->article_num = anum;
-        nntp_article_status(ctx->mailbox, hdr, NULL, anum);
-        if (!hdr->read)
-          nntp_parse_xref(ctx->mailbox, hdr);
+        e->read = false;
+        e->old = false;
+        e->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
+        NHDR(e)->article_num = anum;
+        nntp_article_status(ctx->mailbox, e, NULL, anum);
+        if (!e->read)
+          nntp_parse_xref(ctx->mailbox, e);
       }
     }
     FREE(&messages);
@@ -2142,32 +2142,32 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
     mx_alloc_memory(ctx->mailbox);
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
-  struct Email *hdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
-  hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-  hdr->env = mutt_rfc822_read_header(fp, hdr, false, false);
+  struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
+  e->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
+  e->env = mutt_rfc822_read_header(fp, e, false, false);
   mutt_file_fclose(&fp);
 
   /* get article number */
-  if (hdr->env->xref)
-    nntp_parse_xref(ctx->mailbox, hdr);
+  if (e->env->xref)
+    nntp_parse_xref(ctx->mailbox, e);
   else
   {
     snprintf(buf, sizeof(buf), "STAT %s\r\n", msgid);
     if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
     {
-      mutt_email_free(&hdr);
+      mutt_email_free(&e);
       return -1;
     }
-    sscanf(buf + 4, ANUM, &NHDR(hdr)->article_num);
+    sscanf(buf + 4, ANUM, &NHDR(e)->article_num);
   }
 
   /* reset flags */
-  hdr->read = false;
-  hdr->old = false;
-  hdr->deleted = false;
-  hdr->changed = true;
-  hdr->received = hdr->date_sent;
-  hdr->index = ctx->mailbox->msg_count++;
+  e->read = false;
+  e->old = false;
+  e->deleted = false;
+  e->changed = true;
+  e->received = e->date_sent;
+  e->index = ctx->mailbox->msg_count++;
   mx_update_context(ctx, 1);
   return 0;
 }
@@ -2244,11 +2244,11 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
  */
 int nntp_compare_order(const void *a, const void *b)
 {
-  struct Email **ha = (struct Email **) a;
-  struct Email **hb = (struct Email **) b;
+  struct Email **ea = (struct Email **) a;
+  struct Email **eb = (struct Email **) b;
 
-  anum_t na = NHDR(*ha)->article_num;
-  anum_t nb = NHDR(*hb)->article_num;
+  anum_t na = NHDR(*ea)->article_num;
+  anum_t nb = NHDR(*eb)->article_num;
   int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -2435,23 +2435,23 @@ static int nntp_mbox_sync(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Email *hdr = ctx->mailbox->hdrs[i];
+    struct Email *e = ctx->mailbox->hdrs[i];
     char buf[16];
 
-    snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
-    if (nntp_data->bcache && hdr->deleted)
+    snprintf(buf, sizeof(buf), "%d", NHDR(e)->article_num);
+    if (nntp_data->bcache && e->deleted)
     {
       mutt_debug(2, "mutt_bcache_del %s\n", buf);
       mutt_bcache_del(nntp_data->bcache, buf);
     }
 
 #ifdef USE_HCACHE
-    if (hc && (hdr->changed || hdr->deleted))
+    if (hc && (e->changed || e->deleted))
     {
-      if (hdr->deleted && !hdr->read)
+      if (e->deleted && !e->read)
         nntp_data->unread--;
       mutt_debug(2, "mutt_hcache_store %s\n", buf);
-      mutt_hcache_store(hc, buf, strlen(buf), hdr, 0);
+      mutt_hcache_store(hc, buf, strlen(buf), e, 0);
     }
 #endif
   }
@@ -2500,14 +2500,14 @@ static int nntp_mbox_close(struct Context *ctx)
 static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->mailbox->data;
-  struct Email *hdr = ctx->mailbox->hdrs[msgno];
+  struct Email *e = ctx->mailbox->hdrs[msgno];
   char article[16];
 
   /* try to get article from cache */
-  struct NntpAcache *acache = &nntp_data->acache[hdr->index % NNTP_ACACHE_LEN];
+  struct NntpAcache *acache = &nntp_data->acache[e->index % NNTP_ACACHE_LEN];
   if (acache->path)
   {
-    if (acache->index == hdr->index)
+    if (acache->index == e->index)
     {
       msg->fp = mutt_file_fopen(acache->path, "r");
       if (msg->fp)
@@ -2520,11 +2520,11 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       FREE(&acache->path);
     }
   }
-  snprintf(article, sizeof(article), "%d", NHDR(hdr)->article_num);
+  snprintf(article, sizeof(article), "%d", NHDR(e)->article_num);
   msg->fp = mutt_bcache_get(nntp_data->bcache, article);
   if (msg->fp)
   {
-    if (NHDR(hdr)->parsed)
+    if (NHDR(e)->parsed)
       return 0;
   }
   else
@@ -2542,7 +2542,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     {
       mutt_mktemp(buf, sizeof(buf));
       acache->path = mutt_str_strdup(buf);
-      acache->index = hdr->index;
+      acache->index = e->index;
       msg->fp = mutt_file_fopen(acache->path, "w+");
       if (!msg->fp)
       {
@@ -2555,7 +2555,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
     /* fetch message to cache file */
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
-             NHDR(hdr)->article_num ? article : hdr->env->message_id);
+             NHDR(e)->article_num ? article : e->env->message_id);
     const int rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg,
                                     fetch_tempfile, msg->fp);
     if (rc)
@@ -2568,10 +2568,10 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       }
       if (rc > 0)
       {
-        if (mutt_str_strncmp(NHDR(hdr)->article_num ? "423" : "430", buf, 3) == 0)
+        if (mutt_str_strncmp(NHDR(e)->article_num ? "423" : "430", buf, 3) == 0)
         {
           mutt_error(_("Article %d not found on the server"),
-                     NHDR(hdr)->article_num ? article : hdr->env->message_id);
+                     NHDR(e)->article_num ? article : e->env->message_id);
         }
         else
           mutt_error("ARTICLE: %s", buf);
@@ -2585,34 +2585,34 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
-  if (ctx->mailbox->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
-  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && e->env->message_id)
+    mutt_hash_delete(ctx->mailbox->id_hash, e->env->message_id, e);
+  if (ctx->mailbox->subj_hash && e->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, e->env->real_subj, e);
 
-  mutt_env_free(&hdr->env);
-  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, false, false);
+  mutt_env_free(&e->env);
+  e->env = mutt_rfc822_read_header(msg->fp, e, false, false);
 
-  if (ctx->mailbox->id_hash && hdr->env->message_id)
-    mutt_hash_insert(ctx->mailbox->id_hash, hdr->env->message_id, hdr);
-  if (ctx->mailbox->subj_hash && hdr->env->real_subj)
-    mutt_hash_insert(ctx->mailbox->subj_hash, hdr->env->real_subj, hdr);
+  if (ctx->mailbox->id_hash && e->env->message_id)
+    mutt_hash_insert(ctx->mailbox->id_hash, e->env->message_id, e);
+  if (ctx->mailbox->subj_hash && e->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, e->env->real_subj, e);
 
   /* fix content length */
   fseek(msg->fp, 0, SEEK_END);
-  hdr->content->length = ftell(msg->fp) - hdr->content->offset;
+  e->content->length = ftell(msg->fp) - e->content->offset;
 
   /* this is called in neomutt before the open which fetches the message,
    * which is probably wrong, but we just call it again here to handle
    * the problem instead of fixing it */
-  NHDR(hdr)->parsed = true;
-  mutt_parse_mime_message(ctx, hdr);
+  NHDR(e)->parsed = true;
+  mutt_parse_mime_message(ctx, e);
 
   /* these would normally be updated in mx_update_context(), but the
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
   if (WithCrypto)
-    hdr->security = crypt_query(hdr->content);
+    e->security = crypt_query(e->content);
 
   rewind(msg->fp);
   mutt_clear_error();

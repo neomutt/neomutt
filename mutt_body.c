@@ -93,8 +93,8 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
    * XXX this may change in the future
    */
 
-  if (b->hdr)
-    b->hdr = NULL;
+  if (b->email)
+    b->email = NULL;
 
   /* copy parameters */
   struct Parameter *np, *new;

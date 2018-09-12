@@ -342,7 +342,7 @@ struct Email *imap_hcache_get(struct ImapData *idata, unsigned int uid)
 {
   char key[16];
   void *uv = NULL;
-  struct Email *h = NULL;
+  struct Email *e = NULL;
 
   if (!idata->hcache)
     return NULL;
@@ -352,31 +352,31 @@ struct Email *imap_hcache_get(struct ImapData *idata, unsigned int uid)
   if (uv)
   {
     if (*(unsigned int *) uv == idata->uid_validity)
-      h = mutt_hcache_restore(uv);
+      e = mutt_hcache_restore(uv);
     else
       mutt_debug(3, "hcache uidvalidity mismatch: %u\n", *(unsigned int *) uv);
     mutt_hcache_free(idata->hcache, &uv);
   }
 
-  return h;
+  return e;
 }
 
 /**
  * imap_hcache_put - Add an entry to the header cache
  * @param idata Server data
- * @param h     Email Header
+ * @param e     Email Header
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_hcache_put(struct ImapData *idata, struct Email *h)
+int imap_hcache_put(struct ImapData *idata, struct Email *e)
 {
   char key[16];
 
   if (!idata->hcache)
     return -1;
 
-  sprintf(key, "/%u", HEADER_DATA(h)->uid);
-  return mutt_hcache_store(idata->hcache, key, imap_hcache_keylen(key), h, idata->uid_validity);
+  sprintf(key, "/%u", HEADER_DATA(e)->uid);
+  return mutt_hcache_store(idata->hcache, key, imap_hcache_keylen(key), e, idata->uid_validity);
 }
 
 /**

@@ -441,10 +441,10 @@ char *mutt_find_hook(int type, const char *pat)
 /**
  * mutt_message_hook - Perform a message hook
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
  */
-void mutt_message_hook(struct Context *ctx, struct Email *hdr, int type)
+void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
@@ -463,7 +463,7 @@ void mutt_message_hook(struct Context *ctx, struct Email *hdr, int type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
           hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
@@ -493,12 +493,12 @@ void mutt_message_hook(struct Context *ctx, struct Email *hdr, int type)
  * @param pathlen Length of buffer
  * @param type    Type e.g. #MUTT_FCC_HOOK
  * @param ctx     Mailbox Context
- * @param hdr     Email Header
+ * @param e     Email Header
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
-                     struct Email *hdr)
+                     struct Email *e)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -511,10 +511,10 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
           hook->regex.not)
       {
-        mutt_make_string(path, pathlen, hook->command, ctx, hdr);
+        mutt_make_string(path, pathlen, hook->command, ctx, e);
         return 0;
       }
     }
@@ -527,16 +527,16 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
  * mutt_default_save - Find the default save path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of buffer
- * @param hdr     Email Header
+ * @param e       Email Header
  */
-void mutt_default_save(char *path, size_t pathlen, struct Email *hdr)
+void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, hdr) == 0)
+  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, e) == 0)
     return;
 
   struct Address *addr = NULL;
-  struct Envelope *env = hdr->env;
+  struct Envelope *env = e->env;
   bool from_me = mutt_addr_is_user(env->from);
 
   if (!from_me && env->reply_to && env->reply_to->mailbox)
@@ -561,13 +561,13 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *hdr)
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of the buffer
- * @param hdr     Email Header
+ * @param e       Email Header
  */
-void mutt_select_fcc(char *path, size_t pathlen, struct Email *hdr)
+void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {
-  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, hdr) != 0)
+  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
   {
-    struct Envelope *env = hdr->env;
+    struct Envelope *env = e->env;
     if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
       struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);

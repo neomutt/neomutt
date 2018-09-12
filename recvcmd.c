@@ -172,7 +172,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
    * messages without one */
   if (cur)
   {
-    if (!cur->hdr->env->from)
+    if (!cur->email->env->from)
     {
       mutt_error(_("Warning: message contains no From: header"));
       mutt_clear_error();
@@ -184,7 +184,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     {
       if (actx->idx[i]->content->tagged)
       {
-        if (!actx->idx[i]->content->hdr->env->from)
+        if (!actx->idx[i]->content->email->env->from)
         {
           mutt_error(_("Warning: message contains no From: header"));
           mutt_clear_error();
@@ -248,13 +248,13 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->hdr, addr);
+    ret = mutt_bounce_message(fp, cur->email, addr);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->hdr, addr))
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->email, addr))
           ret = 1;
     }
   }
@@ -279,12 +279,12 @@ void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     return;
 
   if (cur)
-    mutt_resend_message(fp, Context, cur->hdr);
+    mutt_resend_message(fp, Context, cur->email);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
       if (actx->idx[i]->content->tagged)
-        mutt_resend_message(actx->idx[i]->fp, Context, actx->idx[i]->content->hdr);
+        mutt_resend_message(actx->idx[i]->fp, Context, actx->idx[i]->content->email);
   }
 }
 
@@ -382,11 +382,11 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
  * include_header - Write an email header to a file, optionally quoting it
  * @param quote  If true, prefix the lines
  * @param ifp    File to read from
- * @param hdr    Header of email
+ * @param e    Email
  * @param ofp    File to write to
  * @param prefix Prefix for each line (OPTIONAL)
  */
-static void include_header(bool quote, FILE *ifp, struct Email *hdr, FILE *ofp, char *prefix)
+static void include_header(bool quote, FILE *ifp, struct Email *e, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
   char prefix2[SHORT_STRING];
@@ -401,7 +401,7 @@ static void include_header(bool quote, FILE *ifp, struct Email *hdr, FILE *ofp, 
     else if (!TextFlowed)
     {
       mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString),
-                             Context, hdr, 0);
+                             Context, e, 0);
     }
     else
       mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
@@ -409,7 +409,7 @@ static void include_header(bool quote, FILE *ifp, struct Email *hdr, FILE *ofp, 
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix2 : NULL);
+  mutt_copy_header(ifp, e, ofp, chflags, quote ? prefix2 : NULL);
 }
 
 /**
@@ -439,14 +439,14 @@ static struct Body **copy_problematic_attachments(struct Body **last,
 /**
  * attach_forward_bodies - forward one or several MIME bodies
  * @param fp      File to read from
- * @param hdr     Header of email
+ * @param e     Email
  * @param actx    Attachment Context
  * @param cur     Body of email
  * @param nattach Number of tagged attachments
  *
  * (non-message types)
  */
-static void attach_forward_bodies(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
+static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *actx,
                                   struct Body *cur, short nattach)
 {
   bool mime_fwd_all = false;
@@ -464,12 +464,12 @@ static void attach_forward_bodies(FILE *fp, struct Email *hdr, struct AttachCtx 
   struct AttachPtr *parent = find_parent(actx, cur, nattach);
   if (parent)
   {
-    parent_hdr = parent->content->hdr;
+    parent_hdr = parent->content->email;
     parent_fp = parent->fp;
   }
   else
   {
-    parent_hdr = hdr;
+    parent_hdr = e;
     parent_fp = actx->root_fp;
   }
 
@@ -630,14 +630,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   int chflags = CH_XMIT;
 
   if (cur)
-    curhdr = cur->hdr;
+    curhdr = cur->email;
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
       {
-        curhdr = actx->idx[i]->content->hdr;
+        curhdr = actx->idx[i]->content->email;
         break;
       }
     }
@@ -682,9 +682,9 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
     if (cur)
     {
-      mutt_forward_intro(Context, cur->hdr, tmpfp);
-      mutt_copy_message_fp(tmpfp, fp, cur->hdr, cmflags, chflags);
-      mutt_forward_trailer(Context, cur->hdr, tmpfp);
+      mutt_forward_intro(Context, cur->email, tmpfp);
+      mutt_copy_message_fp(tmpfp, fp, cur->email, cmflags, chflags);
+      mutt_forward_trailer(Context, cur->email, tmpfp);
     }
     else
     {
@@ -692,10 +692,10 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
       {
         if (actx->idx[i]->content->tagged)
         {
-          mutt_forward_intro(Context, actx->idx[i]->content->hdr, tmpfp);
+          mutt_forward_intro(Context, actx->idx[i]->content->email, tmpfp);
           mutt_copy_message_fp(tmpfp, actx->idx[i]->fp,
-                               actx->idx[i]->content->hdr, cmflags, chflags);
-          mutt_forward_trailer(Context, actx->idx[i]->content->hdr, tmpfp);
+                               actx->idx[i]->content->email, cmflags, chflags);
+          mutt_forward_trailer(Context, actx->idx[i]->content->email, tmpfp);
         }
       }
     }
@@ -727,12 +727,12 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 /**
  * mutt_attach_forward - Forward an Attachment
  * @param fp    Handle to the attachmenT
- * @param hdr   Header of message
+ * @param e   Header of message
  * @param actx  Attachment Context
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
  */
-void mutt_attach_forward(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
+void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
                          struct Body *cur, int flags)
 {
   if (check_all_msg(actx, cur, false))
@@ -740,7 +740,7 @@ void mutt_attach_forward(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
   else
   {
     const short nattach = count_tagged(actx);
-    attach_forward_bodies(fp, hdr, actx, cur, nattach);
+    attach_forward_bodies(fp, e, actx, cur, nattach);
   }
 }
 
@@ -752,7 +752,7 @@ void mutt_attach_forward(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
  * attach_reply_envelope_defaults - Create the envelope defaults for a reply
  * @param env    Envelope to fill in
  * @param actx   Attachment Context
- * @param parent Header of parent email
+ * @param parent Parent Email
  * @param flags  Flags, e.g. #SEND_LIST_REPLY
  * @retval  0 Success
  * @retval -1 Error
@@ -779,7 +779,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     {
       if (actx->idx[i]->content->tagged)
       {
-        curhdr = actx->idx[i]->content->hdr;
+        curhdr = actx->idx[i]->content->email;
         curenv = curhdr->env;
         break;
       }
@@ -820,7 +820,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged &&
-            mutt_fetch_recips(env, actx->idx[i]->content->hdr->env, flags) == -1)
+            mutt_fetch_recips(env, actx->idx[i]->content->email->env, flags) == -1)
         {
           return -1;
         }
@@ -844,7 +844,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        mutt_add_to_reference_headers(env, actx->idx[i]->content->hdr->env);
+        mutt_add_to_reference_headers(env, actx->idx[i]->content->email->env);
     }
   }
 
@@ -855,7 +855,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
  * @param fp    File handle to attachment
  * @param tmpfp File handle to temporary file
- * @param cur   Header of email
+ * @param cur   Email
  */
 static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 {
@@ -879,12 +879,12 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 /**
  * mutt_attach_reply - Attach a reply
  * @param fp    File handle to reply
- * @param hdr   Header of message
+ * @param e   Header of message
  * @param actx  Attachment Context
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
  */
-void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
+void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
                        struct Body *cur, int flags)
 {
   bool mime_reply_any = false;
@@ -914,12 +914,12 @@ void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
     parent = find_parent(actx, cur, nattach);
     if (parent)
     {
-      parent_hdr = parent->content->hdr;
+      parent_hdr = parent->content->email;
       parent_fp = parent->fp;
     }
     else
     {
-      parent_hdr = hdr;
+      parent_hdr = e;
       parent_fp = actx->root_fp;
     }
   }
@@ -941,7 +941,7 @@ void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
   tmphdr->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
-          tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)
+          tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->email : NULL), flags) == -1)
   {
     mutt_email_free(&tmphdr);
     return;
@@ -959,13 +959,13 @@ void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
   if (!parent_hdr)
   {
     if (cur)
-      attach_include_reply(fp, tmpfp, cur->hdr);
+      attach_include_reply(fp, tmpfp, cur->email);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged)
-          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->hdr);
+          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->email);
       }
     }
   }
@@ -1030,21 +1030,21 @@ void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
   mutt_file_fclose(&tmpfp);
 
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
-                      parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)
+                      parent_hdr ? parent_hdr : (cur ? cur->email : NULL)) == 0)
   {
-    mutt_set_flag(Context, hdr, MUTT_REPLIED, 1);
+    mutt_set_flag(Context, e, MUTT_REPLIED, 1);
   }
 }
 
 /**
  * mutt_attach_mail_sender - Compose an email to the sender in the email attachment
  * @param fp   File containing attachment (UNUSED)
- * @param hdr  Header of email (UNUSED)
+ * @param e  Email (UNUSED)
  * @param actx Attachment Context
  * @param cur  Current attachment
  */
-void mutt_attach_mail_sender(FILE *fp, struct Email *hdr,
-                             struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
+                             struct Body *cur)
 {
   if (!check_all_msg(actx, cur, 0))
   {
@@ -1057,7 +1057,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *hdr,
 
   if (cur)
   {
-    if (mutt_fetch_recips(tmphdr->env, cur->hdr->env, SEND_TO_SENDER) == -1)
+    if (mutt_fetch_recips(tmphdr->env, cur->email->env, SEND_TO_SENDER) == -1)
       return;
   }
   else
@@ -1065,7 +1065,8 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *hdr,
     for (int i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged &&
-          mutt_fetch_recips(tmphdr->env, actx->idx[i]->content->hdr->env, SEND_TO_SENDER) == -1)
+          mutt_fetch_recips(tmphdr->env, actx->idx[i]->content->email->env,
+                            SEND_TO_SENDER) == -1)
         return;
     }
   }

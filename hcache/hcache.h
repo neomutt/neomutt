@@ -161,13 +161,13 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
  * @param h           Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key         Message identification string
  * @param keylen      Length of the string pointed to by key
- * @param header      Message header to store
+ * @param e           Email to store
  * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      struct Email *header, unsigned int uidvalidity);
+                      struct Email *e, unsigned int uidvalidity);
 
 /**
  * mutt_hcache_store_raw - store a key / data pair

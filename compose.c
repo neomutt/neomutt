@@ -629,7 +629,7 @@ static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, 
 {
   if (init)
   {
-    mutt_gen_compose_attach_list(actx, actx->hdr->content, -1, 0);
+    mutt_gen_compose_attach_list(actx, actx->email->content, -1, 0);
     mutt_attach_init(actx);
     menu->data = actx;
   }
@@ -929,7 +929,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
-  actx->hdr = msg;
+  actx->email = msg;
   mutt_update_compose_menu(actx, menu, true);
 
   while (loop)

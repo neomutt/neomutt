@@ -54,7 +54,7 @@ void         smime_gpgme_init(void);
 int          smime_gpgme_send_menu(struct Email *msg);
 struct Body *smime_gpgme_sign_message(struct Body *a);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_gpgme_verify_sender(struct Email *h);
+int          smime_gpgme_verify_sender(struct Email *e);
 
 const char  *mutt_gpgme_print_version(void);
 

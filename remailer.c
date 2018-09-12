@@ -762,7 +762,7 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
- * @param msg Header of email
+ * @param msg Email
  * @retval  0 Success
  * @retval -1 Error
  */

@@ -1206,7 +1206,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
 /**
  * nntp_article_status - Get status of articles from .newsrc
  * @param mailbox Mailbox
- * @param hdr     Email Header
+ * @param e     Email Header
  * @param group   Newsgroup
  * @param anum    Article number
  *
@@ -1215,7 +1215,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
  * New = not read and not cached
  * Old = not read but cached
  */
-void nntp_article_status(struct Mailbox *mailbox, struct Email *hdr, char *group, anum_t anum)
+void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, anum_t anum)
 {
   struct NntpData *nntp_data = mailbox->data;
 
@@ -1232,7 +1232,7 @@ void nntp_article_status(struct Mailbox *mailbox, struct Email *hdr, char *group
     {
       /* can't use mutt_set_flag() because mx_update_context()
          didn't get called yet */
-      hdr->read = true;
+      e->read = true;
       return;
     }
   }
@@ -1243,7 +1243,7 @@ void nntp_article_status(struct Mailbox *mailbox, struct Email *hdr, char *group
 
   /* article isn't read but cached, it's old */
   if (MarkOld)
-    hdr->old = true;
+    e->old = true;
 }
 
 /**

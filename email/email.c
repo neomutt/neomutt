@@ -36,25 +36,25 @@
 
 /**
  * mutt_email_free - Free an Email
- * @param h Email to free
+ * @param e Email to free
  */
-void mutt_email_free(struct Email **h)
+void mutt_email_free(struct Email **e)
 {
-  if (!h || !*h)
+  if (!e || !*e)
     return;
-  mutt_env_free(&(*h)->env);
-  mutt_body_free(&(*h)->content);
-  FREE(&(*h)->maildir_flags);
-  FREE(&(*h)->tree);
-  FREE(&(*h)->path);
+  mutt_env_free(&(*e)->env);
+  mutt_body_free(&(*e)->content);
+  FREE(&(*e)->maildir_flags);
+  FREE(&(*e)->tree);
+  FREE(&(*e)->path);
 #ifdef MIXMASTER
-  mutt_list_free(&(*h)->chain);
+  mutt_list_free(&(*e)->chain);
 #endif
-  driver_tags_free(&(*h)->tags);
-  if ((*h)->free_cb)
-    (*h)->free_cb(*h);
-  FREE(&(*h)->data);
-  FREE(h);
+  driver_tags_free(&(*e)->tags);
+  if ((*e)->free_cb)
+    (*e)->free_cb(*e);
+  FREE(&(*e)->data);
+  FREE(e);
 }
 
 /**
@@ -63,30 +63,30 @@ void mutt_email_free(struct Email **h)
  */
 struct Email *mutt_email_new(void)
 {
-  struct Email *h = mutt_mem_calloc(1, sizeof(struct Email));
+  struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
 #ifdef MIXMASTER
-  STAILQ_INIT(&h->chain);
+  STAILQ_INIT(&e->chain);
 #endif
-  STAILQ_INIT(&h->tags);
-  return h;
+  STAILQ_INIT(&e->tags);
+  return e;
 }
 
 /**
  * mutt_email_cmp_strict - Strictly compare message emails
- * @param h1 First Email
- * @param h2 Second Email
+ * @param e1 First Email
+ * @param e2 Second Email
  * @retval true Emails are strictly identical
  */
-bool mutt_email_cmp_strict(const struct Email *h1, const struct Email *h2)
+bool mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2)
 {
-  if (h1 && h2)
+  if (e1 && e2)
   {
-    if ((h1->received != h2->received) || (h1->date_sent != h2->date_sent) ||
-        (h1->content->length != h2->content->length) ||
-        (h1->lines != h2->lines) || (h1->zhours != h2->zhours) ||
-        (h1->zminutes != h2->zminutes) || (h1->zoccident != h2->zoccident) ||
-        (h1->mime != h2->mime) || !mutt_env_cmp_strict(h1->env, h2->env) ||
-        !mutt_body_cmp_strict(h1->content, h2->content))
+    if ((e1->received != e2->received) || (e1->date_sent != e2->date_sent) ||
+        (e1->content->length != e2->content->length) ||
+        (e1->lines != e2->lines) || (e1->zhours != e2->zhours) ||
+        (e1->zminutes != e2->zminutes) || (e1->zoccident != e2->zoccident) ||
+        (e1->mime != e2->mime) || !mutt_env_cmp_strict(e1->env, e2->env) ||
+        !mutt_body_cmp_strict(e1->content, e2->content))
     {
       return false;
     }
@@ -95,7 +95,7 @@ bool mutt_email_cmp_strict(const struct Email *h1, const struct Email *h2)
   }
   else
   {
-    if (!h1 && !h2)
+    if (!e1 && !e2)
       return true;
     else
       return false;

@@ -113,7 +113,7 @@ struct CryptModuleSpecs
   int          (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
   /**
    * send_menu - Ask the user whether to sign and/or encrypt the email
-   * @param msg Header of the email
+   * @param msg Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #ENCRYPT
    */
   int          (*send_menu)(struct Email *msg);
@@ -182,11 +182,11 @@ struct CryptModuleSpecs
   void         (*smime_getkeys)(struct Envelope *env);
   /**
    * smime_verify_sender - Does the sender match the certificate?
-   * @param h Header of the email
+   * @param e Email
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int          (*smime_verify_sender)(struct Email *h);
+  int          (*smime_verify_sender)(struct Email *e);
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients
    * @param a        Body of email

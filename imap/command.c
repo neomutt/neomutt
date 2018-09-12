@@ -243,30 +243,30 @@ static int cmd_status(const char *s)
 static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 {
   unsigned int exp_msn;
-  struct Email *h = NULL;
+  struct Email *e = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
   if (mutt_str_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > idata->max_msn)
     return;
 
-  h = idata->msn_index[exp_msn - 1];
-  if (h)
+  e = idata->msn_index[exp_msn - 1];
+  if (e)
   {
-    /* imap_expunge_mailbox() will rewrite h->index.
+    /* imap_expunge_mailbox() will rewrite e->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
-    h->index = INT_MAX;
-    HEADER_DATA(h)->msn = 0;
+    e->index = INT_MAX;
+    HEADER_DATA(e)->msn = 0;
   }
 
   /* decrement seqno of those above. */
   for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
   {
-    h = idata->msn_index[cur];
-    if (h)
-      HEADER_DATA(h)->msn--;
-    idata->msn_index[cur - 1] = h;
+    e = idata->msn_index[cur];
+    if (e)
+      HEADER_DATA(e)->msn--;
+    idata->msn_index[cur - 1] = e;
   }
 
   idata->msn_index[idata->max_msn - 1] = NULL;
@@ -317,24 +317,24 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 
   while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
   {
-    struct Email *h = mutt_hash_int_find(idata->uid_hash, uid);
-    if (!h)
+    struct Email *e = mutt_hash_int_find(idata->uid_hash, uid);
+    if (!e)
       continue;
 
-    unsigned int exp_msn = HEADER_DATA(h)->msn;
+    unsigned int exp_msn = HEADER_DATA(e)->msn;
 
-    /* imap_expunge_mailbox() will rewrite h->index.
+    /* imap_expunge_mailbox() will rewrite e->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
-    h->index = INT_MAX;
-    HEADER_DATA(h)->msn = 0;
+    e->index = INT_MAX;
+    HEADER_DATA(e)->msn = 0;
 
     if ((exp_msn < 1) || (exp_msn > idata->max_msn))
     {
       mutt_debug(1, "VANISHED: msn for UID %u is incorrect.\n", uid);
       continue;
     }
-    if (idata->msn_index[exp_msn - 1] != h)
+    if (idata->msn_index[exp_msn - 1] != e)
     {
       mutt_debug(1, "VANISHED: msn_index for UID %u is incorrect.\n", uid);
       continue;
@@ -347,10 +347,10 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
       /* decrement seqno of those above. */
       for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
       {
-        h = idata->msn_index[cur];
-        if (h)
-          HEADER_DATA(h)->msn--;
-        idata->msn_index[cur - 1] = h;
+        e = idata->msn_index[cur];
+        if (e)
+          HEADER_DATA(e)->msn--;
+        idata->msn_index[cur - 1] = e;
       }
 
       idata->msn_index[idata->max_msn - 1] = NULL;
@@ -378,7 +378,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
   unsigned int msn, uid;
-  struct Email *h = NULL;
+  struct Email *e = NULL;
   char *flags = NULL;
   int uid_checked = 0;
   int server_changes = 0;
@@ -397,14 +397,14 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     return;
   }
 
-  h = idata->msn_index[msn - 1];
-  if (!h || !h->active)
+  e = idata->msn_index[msn - 1];
+  if (!e || !e->active)
   {
     mutt_debug(3, "Skipping FETCH response - MSN %u not in msn_index\n", msn);
     return;
   }
 
-  mutt_debug(2, "Message UID %u updated\n", HEADER_DATA(h)->uid);
+  mutt_debug(2, "Message UID %u updated\n", HEADER_DATA(e)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -453,7 +453,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
         mutt_debug(1, "Illegal UID.  Skipping update.\n");
         return;
       }
-      if (uid != HEADER_DATA(h)->uid)
+      if (uid != HEADER_DATA(e)->uid)
       {
         mutt_debug(1, "UID vs MSN mismatch.  Skipping update.\n");
         return;
@@ -494,11 +494,11 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
   if (flags)
   {
-    imap_set_flags(idata, h, flags, &server_changes);
+    imap_set_flags(idata, e, flags, &server_changes);
     if (server_changes)
     {
       /* If server flags could conflict with mutt's flags, reopen the mailbox. */
-      if (h->changed)
+      if (e->changed)
         idata->reopen |= IMAP_EXPUNGE_PENDING;
       else
         idata->check_status = IMAP_FLAGS_PENDING;
@@ -744,7 +744,7 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 static void cmd_parse_search(struct ImapData *idata, const char *s)
 {
   unsigned int uid;
-  struct Email *h = NULL;
+  struct Email *e = NULL;
 
   mutt_debug(2, "Handling SEARCH\n");
 
@@ -752,9 +752,9 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
   {
     if (mutt_str_atoui(s, &uid) < 0)
       continue;
-    h = mutt_hash_int_find(idata->uid_hash, uid);
-    if (h)
-      h->matched = true;
+    e = mutt_hash_int_find(idata->uid_hash, uid);
+    if (e)
+      e->matched = true;
   }
 }
 

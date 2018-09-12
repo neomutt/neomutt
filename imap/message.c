@@ -99,54 +99,54 @@ static struct BodyCache *msg_cache_open(struct ImapData *idata)
 /**
  * msg_cache_get - Get the message cache entry for an email
  * @param idata Server data
- * @param h     Email header
+ * @param e     Email header
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
-static FILE *msg_cache_get(struct ImapData *idata, struct Email *h)
+static FILE *msg_cache_get(struct ImapData *idata, struct Email *e)
 {
-  if (!idata || !h)
+  if (!idata || !e)
     return NULL;
 
   idata->bcache = msg_cache_open(idata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(e)->uid);
   return mutt_bcache_get(idata->bcache, id);
 }
 
 /**
  * msg_cache_put - Put an email into the message cache
  * @param idata Server data
- * @param h     Email header
+ * @param e     Email header
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
-static FILE *msg_cache_put(struct ImapData *idata, struct Email *h)
+static FILE *msg_cache_put(struct ImapData *idata, struct Email *e)
 {
-  if (!idata || !h)
+  if (!idata || !e)
     return NULL;
 
   idata->bcache = msg_cache_open(idata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(e)->uid);
   return mutt_bcache_put(idata->bcache, id);
 }
 
 /**
  * msg_cache_commit - Add to the message cache
  * @param idata Server data
- * @param h     Email header
+ * @param e     Email header
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int msg_cache_commit(struct ImapData *idata, struct Email *h)
+static int msg_cache_commit(struct ImapData *idata, struct Email *e)
 {
-  if (!idata || !h)
+  if (!idata || !e)
     return -1;
 
   idata->bcache = msg_cache_open(idata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(e)->uid);
 
   return mutt_bcache_commit(idata->bcache, id);
 }
@@ -602,7 +602,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapData *idata,
 /**
  * set_changed_flag - Have the flags of an email changed
  * @param[in]  ctx            Mailbox
- * @param[in]  h              Email Header
+ * @param[in]  e              Email Header
  * @param[in]  local_changes  Has the local mailbox been changed?
  * @param[out] server_changes Set to 1 if the flag has changed
  * @param[in]  flag_name      Flag to check, e.g. #MUTT_FLAG
@@ -614,7 +614,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapData *idata,
  * case of local_changes, if a change to a flag _would_ have been
  * made.
  */
-static void set_changed_flag(struct Context *ctx, struct Email *h,
+static void set_changed_flag(struct Context *ctx, struct Email *e,
                              int local_changes, int *server_changes, int flag_name,
                              int old_hd_flag, int new_hd_flag, int h_flag)
 {
@@ -634,7 +634,7 @@ static void set_changed_flag(struct Context *ctx, struct Email *h,
 
   /* Local changes have priority */
   if (!local_changes)
-    mutt_set_flag(ctx, h, flag_name, new_hd_flag);
+    mutt_set_flag(ctx, e, flag_name, new_hd_flag);
 }
 
 #ifdef USE_HCACHE
@@ -808,33 +808,33 @@ static int read_headers_qresync_eval_cache(struct ImapData *idata, char *uid_seq
     if (msn > idata->msn_index_size)
       alloc_msn_index(idata, msn);
 
-    struct Email *h = imap_hcache_get(idata, uid);
-    if (h)
+    struct Email *e = imap_hcache_get(idata, uid);
+    if (e)
     {
       idata->max_msn = MAX(idata->max_msn, msn);
-      idata->msn_index[msn - 1] = h;
+      idata->msn_index[msn - 1] = e;
 
       if (ctx->mailbox->msg_count >= ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx->mailbox);
 
       struct ImapHeaderData *ihd = mutt_mem_calloc(1, sizeof(struct ImapHeaderData));
-      h->data = ihd;
+      e->data = ihd;
 
-      h->index = ctx->mailbox->msg_count;
-      h->active = true;
-      h->changed = false;
-      ihd->read = h->read;
-      ihd->old = h->old;
-      ihd->deleted = h->deleted;
-      ihd->flagged = h->flagged;
-      ihd->replied = h->replied;
+      e->index = ctx->mailbox->msg_count;
+      e->active = true;
+      e->changed = false;
+      ihd->read = e->read;
+      ihd->old = e->old;
+      ihd->deleted = e->deleted;
+      ihd->flagged = e->flagged;
+      ihd->replied = e->replied;
 
       ihd->msn = msn;
       ihd->uid = uid;
-      mutt_hash_int_insert(idata->uid_hash, uid, h);
+      mutt_hash_int_insert(idata->uid_hash, uid, e);
 
-      ctx->mailbox->size += h->content->length;
-      ctx->mailbox->hdrs[ctx->mailbox->msg_count++] = h;
+      ctx->mailbox->size += e->content->length;
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count++] = e;
 
       msn++;
     }
@@ -1468,14 +1468,14 @@ fail:
 /**
  * imap_copy_messages - Server COPY messages to another folder
  * @param ctx    Mailbox
- * @param h      Header of the email
+ * @param e      Email
  * @param dest   Destination folder
  * @param delete Delete the original?
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool delete)
+int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete)
 {
   struct Buffer cmd, sync_cmd;
   char mbox[PATH_MAX];
@@ -1501,7 +1501,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool de
     return 1;
   }
 
-  if (h && h->attach_del)
+  if (e && e->attach_del)
   {
     mutt_debug(3, "#1 Message contains attachments to be deleted\n");
     return 1;
@@ -1519,7 +1519,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool de
     mutt_buffer_init(&cmd);
 
     /* Null Header* means copy tagged messages */
-    if (!h)
+    if (!e)
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
@@ -1567,12 +1567,12 @@ int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool de
     }
     else
     {
-      mutt_message(_("Copying message %d to %s..."), h->index + 1, mbox);
-      mutt_buffer_printf(&cmd, "UID COPY %u %s", HEADER_DATA(h)->uid, mmbox);
+      mutt_message(_("Copying message %d to %s..."), e->index + 1, mbox);
+      mutt_buffer_printf(&cmd, "UID COPY %u %s", HEADER_DATA(e)->uid, mmbox);
 
-      if (h->active && h->changed)
+      if (e->active && e->changed)
       {
-        rc = imap_sync_message_for_copy(idata, h, &sync_cmd, &err_continue);
+        rc = imap_sync_message_for_copy(idata, e, &sync_cmd, &err_continue);
         if (rc < 0)
         {
           mutt_debug(1, "#2 could not sync\n");
@@ -1621,7 +1621,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool de
   /* cleanup */
   if (delete)
   {
-    if (!h)
+    if (!e)
     {
       for (int i = 0; i < ctx->mailbox->msg_count; i++)
       {
@@ -1636,10 +1636,10 @@ int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool de
     }
     else
     {
-      mutt_set_flag(ctx, h, MUTT_DELETE, 1);
-      mutt_set_flag(ctx, h, MUTT_PURGE, 1);
+      mutt_set_flag(ctx, e, MUTT_DELETE, 1);
+      mutt_set_flag(ctx, e, MUTT_PURGE, 1);
       if (DeleteUntag)
-        mutt_set_flag(ctx, h, MUTT_TAG, 0);
+        mutt_set_flag(ctx, e, MUTT_TAG, 0);
     }
   }
 
@@ -1658,18 +1658,18 @@ out:
 /**
  * imap_cache_del - Delete an email from the body cache
  * @param idata Server data
- * @param h     Email header
+ * @param e     Email header
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_cache_del(struct ImapData *idata, struct Email *h)
+int imap_cache_del(struct ImapData *idata, struct Email *e)
 {
-  if (!idata || !h)
+  if (!idata || !e)
     return -1;
 
   idata->bcache = msg_cache_open(idata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(e)->uid);
   return mutt_bcache_del(idata->bcache, id);
 }
 
@@ -1704,7 +1704,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
 /**
  * imap_set_flags - fill the message header according to the server flags
  * @param[in]  idata          Server data
- * @param[in]  h              Email Header
+ * @param[in]  e              Email Header
  * @param[in]  s              Command string
  * @param[out] server_changes Flags have changed
  * @retval ptr  The end of flags string
@@ -1716,10 +1716,10 @@ void imap_free_header_data(struct ImapHeaderData **data)
  * the server. Expects a flags line of the form "FLAGS (flag flag ...)"
  *
  * Sets server_changes to 1 if a change to a flag is made, or in the
- * case of h->changed, if a change to a flag _would_ have been
+ * case of e->changed, if a change to a flag _would_ have been
  * made.
  */
-char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *server_changes)
+char *imap_set_flags(struct ImapData *idata, struct Email *e, char *s, int *server_changes)
 {
   struct Context *ctx = idata->ctx;
   struct ImapHeader newh = { 0 };
@@ -1727,9 +1727,9 @@ char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *serv
   bool readonly;
   int local_changes;
 
-  local_changes = h->changed;
+  local_changes = e->changed;
 
-  struct ImapHeaderData *hd = h->data;
+  struct ImapHeaderData *hd = e->data;
   newh.data = hd;
 
   memcpy(&old_hd, hd, sizeof(old_hd));
@@ -1740,7 +1740,7 @@ char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *serv
     return NULL;
 
   /* Update tags system */
-  driver_tags_replace(&h->tags, mutt_str_strdup(hd->flags_remote));
+  driver_tags_replace(&e->tags, mutt_str_strdup(hd->flags_remote));
 
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of
@@ -1750,23 +1750,23 @@ char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *serv
   ctx->mailbox->readonly = false;
 
   /* This is redundant with the following two checks. Removing:
-   * mutt_set_flag (ctx, h, MUTT_NEW, !(hd->read || hd->old));
+   * mutt_set_flag (ctx, e, MUTT_NEW, !(hd->read || hd->old));
    */
-  set_changed_flag(ctx, h, local_changes, server_changes, MUTT_OLD, old_hd.old,
-                   hd->old, h->old);
-  set_changed_flag(ctx, h, local_changes, server_changes, MUTT_READ,
-                   old_hd.read, hd->read, h->read);
-  set_changed_flag(ctx, h, local_changes, server_changes, MUTT_DELETE,
-                   old_hd.deleted, hd->deleted, h->deleted);
-  set_changed_flag(ctx, h, local_changes, server_changes, MUTT_FLAG,
-                   old_hd.flagged, hd->flagged, h->flagged);
-  set_changed_flag(ctx, h, local_changes, server_changes, MUTT_REPLIED,
-                   old_hd.replied, hd->replied, h->replied);
+  set_changed_flag(ctx, e, local_changes, server_changes, MUTT_OLD, old_hd.old,
+                   hd->old, e->old);
+  set_changed_flag(ctx, e, local_changes, server_changes, MUTT_READ,
+                   old_hd.read, hd->read, e->read);
+  set_changed_flag(ctx, e, local_changes, server_changes, MUTT_DELETE,
+                   old_hd.deleted, hd->deleted, e->deleted);
+  set_changed_flag(ctx, e, local_changes, server_changes, MUTT_FLAG,
+                   old_hd.flagged, hd->flagged, e->flagged);
+  set_changed_flag(ctx, e, local_changes, server_changes, MUTT_REPLIED,
+                   old_hd.replied, hd->replied, e->replied);
 
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
   if (!local_changes)
-    h->changed = false;
+    e->changed = false;
   ctx->mailbox->changed &= !readonly;
   ctx->mailbox->readonly = readonly;
 
@@ -1797,12 +1797,12 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   int output_progress;
 
   struct ImapData *idata = ctx->mailbox->data;
-  struct Email *h = ctx->mailbox->hdrs[msgno];
+  struct Email *e = ctx->mailbox->hdrs[msgno];
 
-  msg->fp = msg_cache_get(idata, h);
+  msg->fp = msg_cache_get(idata, e);
   if (msg->fp)
   {
-    if (HEADER_DATA(h)->parsed)
+    if (HEADER_DATA(e)->parsed)
       return 0;
     else
       goto parsemsg;
@@ -1810,13 +1810,13 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* we still do some caching even if imap_cachedir is unset */
   /* see if we already have the message in our cache */
-  cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
+  cacheno = HEADER_DATA(e)->uid % IMAP_CACHE_LEN;
   cache = &idata->cache[cacheno];
 
   if (cache->path)
   {
     /* don't treat cache errors as fatal, just fall back. */
-    if (cache->uid == HEADER_DATA(h)->uid && (msg->fp = fopen(cache->path, "r")))
+    if (cache->uid == HEADER_DATA(e)->uid && (msg->fp = fopen(cache->path, "r")))
       return 0;
     else
     {
@@ -1831,10 +1831,10 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (output_progress)
     mutt_message(_("Fetching message..."));
 
-  msg->fp = msg_cache_put(idata, h);
+  msg->fp = msg_cache_put(idata, e);
   if (!msg->fp)
   {
-    cache->uid = HEADER_DATA(h)->uid;
+    cache->uid = HEADER_DATA(e)->uid;
     mutt_mktemp(path, sizeof(path));
     cache->path = mutt_str_strdup(path);
     msg->fp = mutt_file_fopen(path, "w+");
@@ -1848,9 +1848,9 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   /* mark this header as currently inactive so the command handler won't
    * also try to update it. HACK until all this code can be moved into the
    * command handler */
-  h->active = false;
+  e->active = false;
 
-  snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
+  snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(e)->uid,
            (mutt_bit_isset(idata->capabilities, IMAP4REV1) ?
                 (ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
@@ -1878,7 +1878,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
           pc = imap_next_word(pc);
           if (mutt_str_atoui(pc, &uid) < 0)
             goto bail;
-          if (uid != HEADER_DATA(h)->uid)
+          if (uid != HEADER_DATA(e)->uid)
           {
             mutt_error(_(
                 "The message index is incorrect. Try reopening the mailbox."));
@@ -1915,9 +1915,9 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
          * change (eg from \Unseen to \Seen).
          * Uncommitted changes in neomutt take precedence. If we decide to
          * incrementally update flags later, this won't stop us syncing */
-        else if ((mutt_str_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
+        else if ((mutt_str_strncasecmp("FLAGS", pc, 5) == 0) && !e->changed)
         {
-          pc = imap_set_flags(idata, h, pc, NULL);
+          pc = imap_set_flags(idata, e, pc, NULL);
           if (!pc)
             goto bail;
         }
@@ -1926,7 +1926,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   } while (rc == IMAP_CMD_CONTINUE);
 
   /* see comment before command start. */
-  h->active = true;
+  e->active = true;
 
   fflush(msg->fp);
   if (ferror(msg->fp))
@@ -1941,7 +1941,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   if (!fetched || !imap_code(idata->buf))
     goto bail;
 
-  msg_cache_commit(idata, h);
+  msg_cache_commit(idata, e);
 
 parsemsg:
   /* Update the header information.  Previously, we only downloaded a
@@ -1953,36 +1953,36 @@ parsemsg:
    * the server's notion of 'read' and if it differs from the message info
    * picked up in mutt_rfc822_read_header, we mark the message (and context
    * changed). Another possibility: ignore Status on IMAP? */
-  read = h->read;
-  newenv = mutt_rfc822_read_header(msg->fp, h, false, false);
-  mutt_env_merge(h->env, &newenv);
+  read = e->read;
+  newenv = mutt_rfc822_read_header(msg->fp, e, false, false);
+  mutt_env_merge(e->env, &newenv);
 
-  /* see above. We want the new status in h->read, so we unset it manually
+  /* see above. We want the new status in e->read, so we unset it manually
    * and let mutt_set_flag set it correctly, updating context. */
-  if (read != h->read)
+  if (read != e->read)
   {
-    h->read = read;
-    mutt_set_flag(ctx, h, MUTT_NEW, read);
+    e->read = read;
+    mutt_set_flag(ctx, e, MUTT_NEW, read);
   }
 
-  h->lines = 0;
+  e->lines = 0;
   fgets(buf, sizeof(buf), msg->fp);
   while (!feof(msg->fp))
   {
-    h->lines++;
+    e->lines++;
     fgets(buf, sizeof(buf), msg->fp);
   }
 
-  h->content->length = ftell(msg->fp) - h->content->offset;
+  e->content->length = ftell(msg->fp) - e->content->offset;
 
   mutt_clear_error();
   rewind(msg->fp);
-  HEADER_DATA(h)->parsed = true;
+  HEADER_DATA(e)->parsed = true;
 
   /* retry message parse if cached message is empty */
-  if (!retried && ((h->lines == 0) || (h->content->length == 0)))
+  if (!retried && ((e->lines == 0) || (e->content->length == 0)))
   {
-    imap_cache_del(idata, h);
+    imap_cache_del(idata, e);
     retried = true;
     goto parsemsg;
   }
@@ -1991,7 +1991,7 @@ parsemsg:
 
 bail:
   mutt_file_fclose(&msg->fp);
-  imap_cache_del(idata, h);
+  imap_cache_del(idata, e);
   if (cache->path)
   {
     unlink(cache->path);

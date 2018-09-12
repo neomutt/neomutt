@@ -79,11 +79,11 @@ void mutt_body_free(struct Body **p)
     FREE(&b->description);
     FREE(&b->form_name);
 
-    if (b->hdr)
+    if (b->email)
     {
       /* Don't free twice (b->hdr->content = b->parts) */
-      b->hdr->content = NULL;
-      mutt_email_free(&b->hdr);
+      b->email->content = NULL;
+      mutt_email_free(&b->email);
     }
 
     if (b->parts)

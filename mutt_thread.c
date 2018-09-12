@@ -52,41 +52,41 @@ bool ThreadReceived; ///< Config: Sort threaded messages by their received date
 
 /**
  * is_visible - Is the message visible?
- * @param hdr Header of message
+ * @param e Header of message
  * @param ctx Mailbox
  * @retval true If the message is not hidden in some way
  */
-static bool is_visible(struct Email *hdr, struct Context *ctx)
+static bool is_visible(struct Email *e, struct Context *ctx)
 {
-  return hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited));
+  return e->virtual >= 0 || (e->collapsed && (!ctx->pattern || e->limited));
 }
 
 /**
  * need_display_subject - Determines whether to display a message's subject
  * @param ctx Mailbox
- * @param hdr Header of email
+ * @param e Email
  * @retval true If the subject should be displayed
  */
-bool need_display_subject(struct Context *ctx, struct Email *hdr)
+bool need_display_subject(struct Context *ctx, struct Email *e)
 {
-  struct MuttThread *tmp = NULL, *tree = hdr->thread;
+  struct MuttThread *tmp = NULL, *tree = e->thread;
 
   /* if the user disabled subject hiding, display it */
   if (!HideThreadSubject)
     return true;
 
   /* if our subject is different from our parent's, display it */
-  if (hdr->subject_changed)
+  if (e->subject_changed)
     return true;
 
   /* if our subject is different from that of our closest previously displayed
    * sibling, display the subject */
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
-    hdr = tmp->message;
-    if (hdr && is_visible(hdr, ctx))
+    e = tmp->message;
+    if (e && is_visible(e, ctx))
     {
-      if (hdr->subject_changed)
+      if (e->subject_changed)
         return true;
       else
         break;
@@ -97,12 +97,12 @@ bool need_display_subject(struct Context *ctx, struct Email *hdr)
    * closest displayed ancestor, display the subject */
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
   {
-    hdr = tmp->message;
-    if (hdr)
+    e = tmp->message;
+    if (e)
     {
-      if (is_visible(hdr, ctx))
+      if (is_visible(e, ctx))
         return false;
-      else if (hdr->subject_changed)
+      else if (e->subject_changed)
         return true;
     }
   }
@@ -495,9 +495,9 @@ static struct Hash *make_subj_hash(struct Context *ctx)
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Email *hdr = ctx->mailbox->hdrs[i];
-    if (hdr->env->real_subj)
-      mutt_hash_insert(hash, hdr->env->real_subj, hdr);
+    struct Email *e = ctx->mailbox->hdrs[i];
+    if (e->env->real_subj)
+      mutt_hash_insert(hash, e->env->real_subj, e);
   }
 
   return hash;
@@ -1035,12 +1035,12 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
 /**
  * mutt_aside_thread - Find the next/previous (sub)thread
- * @param hdr        Search from this message
+ * @param e        Search from this message
  * @param forwards   Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval num Index into the virtual email table
  */
-int mutt_aside_thread(struct Email *hdr, bool forwards, bool subthreads)
+int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 {
   struct MuttThread *cur = NULL;
   struct Email *tmp = NULL;
@@ -1048,10 +1048,10 @@ int mutt_aside_thread(struct Email *hdr, bool forwards, bool subthreads)
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
-    return hdr->virtual;
+    return e->virtual;
   }
 
-  cur = hdr->thread;
+  cur = e->thread;
 
   if (!subthreads)
   {
@@ -1099,12 +1099,12 @@ int mutt_aside_thread(struct Email *hdr, bool forwards, bool subthreads)
 /**
  * mutt_parent_message - Find the parent of a message
  * @param ctx       Mailbox
- * @param hdr       Header of current message
+ * @param e       Header of current message
  * @param find_root If true, find the root message
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error
  */
-int mutt_parent_message(struct Context *ctx, struct Email *hdr, bool find_root)
+int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root)
 {
   struct MuttThread *thread = NULL;
   struct Email *parent = NULL;
@@ -1112,19 +1112,19 @@ int mutt_parent_message(struct Context *ctx, struct Email *hdr, bool find_root)
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error(_("Threading is not enabled"));
-    return hdr->virtual;
+    return e->virtual;
   }
 
   /* Root may be the current message */
   if (find_root)
-    parent = hdr;
+    parent = e;
 
-  for (thread = hdr->thread->parent; thread; thread = thread->parent)
+  for (thread = e->thread->parent; thread; thread = thread->parent)
   {
-    hdr = thread->message;
-    if (hdr)
+    e = thread->message;
+    if (e)
     {
-      parent = hdr;
+      parent = e;
       if (!find_root)
         break;
     }
@@ -1348,26 +1348,26 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag)
 /**
  * mutt_messages_in_thread - Count the messages in a thread
  * @param ctx  Mailbox
- * @param hdr  Header of email
+ * @param e  Email
  * @param flag Flag, see notes below
  * @retval num Number of message / Our position
  *
  * If flag is 0, we want to know how many messages are in the thread.
  * If flag is 1, we want to know our position in the thread.
  */
-int mutt_messages_in_thread(struct Context *ctx, struct Email *hdr, int flag)
+int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
 {
   struct MuttThread *threads[2];
   int rc;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS || !hdr->thread)
+  if ((Sort & SORT_MASK) != SORT_THREADS || !e->thread)
     return 1;
 
-  threads[0] = hdr->thread;
+  threads[0] = e->thread;
   while (threads[0]->parent)
     threads[0] = threads[0]->parent;
 
-  threads[1] = flag ? hdr->thread : threads[0]->next;
+  threads[1] = flag ? e->thread : threads[0]->next;
 
   for (int i = 0; i < ((flag || !threads[1]) ? 1 : 2); i++)
   {
@@ -1400,9 +1400,9 @@ struct Hash *mutt_make_id_hash(struct Mailbox *mailbox)
 
   for (int i = 0; i < mailbox->msg_count; i++)
   {
-    struct Email *hdr = mailbox->hdrs[i];
-    if (hdr->env->message_id)
-      mutt_hash_insert(hash, hdr->env->message_id, hdr);
+    struct Email *e = mailbox->hdrs[i];
+    if (e->env->message_id)
+      mutt_hash_insert(hash, e->env->message_id, e);
   }
 
   return hash;

@@ -200,7 +200,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   int lines;
   time_t t;
   LOFF_T loc, tmploc;
-  struct Email *hdr = NULL;
+  struct Email *e = NULL;
   struct stat sb;
   struct Progress progress;
 
@@ -243,10 +243,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
       if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx->mailbox);
-      hdr = mutt_email_new();
-      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
-      hdr->offset = loc;
-      hdr->index = ctx->mailbox->msg_count;
+      e = mutt_email_new();
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
+      e->offset = loc;
+      e->index = ctx->mailbox->msg_count;
 
       if (!fgets(buf, sizeof(buf) - 1, mdata->fp))
       {
@@ -267,17 +267,17 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         }
       }
       else
-        hdr->received = t - mutt_date_local_tz(t);
+        e->received = t - mutt_date_local_tz(t);
 
-      hdr->env = mutt_rfc822_read_header(mdata->fp, hdr, false, false);
+      e->env = mutt_rfc822_read_header(mdata->fp, e, false, false);
 
       loc = ftello(mdata->fp);
       if (loc < 0)
         return -1;
 
-      if (hdr->content->length > 0 && hdr->lines > 0)
+      if (e->content->length > 0 && e->lines > 0)
       {
-        tmploc = loc + hdr->content->length;
+        tmploc = loc + e->content->length;
 
         if ((tmploc > 0) && (tmploc < ctx->mailbox->size))
         {
@@ -287,16 +287,16 @@ static int mmdf_parse_mailbox(struct Context *ctx)
           {
             if (fseeko(mdata->fp, loc, SEEK_SET) != 0)
               mutt_debug(1, "#2 fseek() failed\n");
-            hdr->content->length = -1;
+            e->content->length = -1;
           }
         }
         else
-          hdr->content->length = -1;
+          e->content->length = -1;
       }
       else
-        hdr->content->length = -1;
+        e->content->length = -1;
 
-      if (hdr->content->length < 0)
+      if (e->content->length < 0)
       {
         lines = -1;
         do
@@ -309,15 +309,15 @@ static int mmdf_parse_mailbox(struct Context *ctx)
           lines++;
         } while (mutt_str_strcmp(buf, MMDF_SEP) != 0);
 
-        hdr->lines = lines;
-        hdr->content->length = loc - hdr->content->offset;
+        e->lines = lines;
+        e->content->length = loc - e->content->offset;
       }
 
-      if (!hdr->env->return_path && return_path[0])
-        hdr->env->return_path = mutt_addr_parse_list(hdr->env->return_path, return_path);
+      if (!e->env->return_path && return_path[0])
+        e->env->return_path = mutt_addr_parse_list(e->env->return_path, return_path);
 
-      if (!hdr->env->from)
-        hdr->env->from = mutt_addr_copy_list(hdr->env->return_path, false);
+      if (!e->env->from)
+        e->env->from = mutt_addr_copy_list(e->env->return_path, false);
 
       ctx->mailbox->msg_count++;
     }
@@ -397,15 +397,15 @@ static int mbox_parse_mailbox(struct Context *ctx)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-        struct Email *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
-        if (h->content->length < 0)
+        struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
+        if (e->content->length < 0)
         {
-          h->content->length = loc - h->content->offset - 1;
-          if (h->content->length < 0)
-            h->content->length = 0;
+          e->content->length = loc - e->content->offset - 1;
+          if (e->content->length < 0)
+            e->content->length = 0;
         }
-        if (!h->lines)
-          h->lines = lines ? lines - 1 : 0;
+        if (!e->lines)
+          e->lines = lines ? lines - 1 : 0;
       }
 
       count++;
@@ -523,16 +523,16 @@ static int mbox_parse_mailbox(struct Context *ctx)
    */
   if (count > 0)
   {
-    struct Email *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
-    if (h->content->length < 0)
+    struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
+    if (e->content->length < 0)
     {
-      h->content->length = ftello(mdata->fp) - h->content->offset - 1;
-      if (h->content->length < 0)
-        h->content->length = 0;
+      e->content->length = ftello(mdata->fp) - e->content->offset - 1;
+      if (e->content->length < 0)
+        e->content->length = 0;
     }
 
-    if (!h->lines)
-      h->lines = lines ? lines - 1 : 0;
+    if (!e->lines)
+      e->lines = lines ? lines - 1 : 0;
 
     mx_update_context(ctx, count);
   }
@@ -1415,7 +1415,7 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  * mbox_msg_open_new - Implements MxOps::msg_open_new()
  * @retval 0 Always
  */
-static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *hdr)
+static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
 {
   struct MboxData *mdata = get_mboxdata(ctx->mailbox);
   if (!mdata)

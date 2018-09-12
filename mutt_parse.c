@@ -39,7 +39,7 @@ struct Context;
 /**
  * mutt_parse_mime_message - Parse a MIME email
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  */
 void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
 {
@@ -208,33 +208,33 @@ static int count_body_parts(struct Body *body, int flags)
 /**
  * mutt_count_body_parts - Count the MIME Body parts
  * @param ctx Mailbox
- * @param hdr Header of email
+ * @param e Email
  * @retval num Number of MIME Body parts
  */
-int mutt_count_body_parts(struct Context *ctx, struct Email *hdr)
+int mutt_count_body_parts(struct Context *ctx, struct Email *e)
 {
   bool keep_parts = false;
 
-  if (hdr->attach_valid)
-    return hdr->attach_total;
+  if (e->attach_valid)
+    return e->attach_total;
 
-  if (hdr->content->parts)
+  if (e->content->parts)
     keep_parts = true;
   else
-    mutt_parse_mime_message(ctx, hdr);
+    mutt_parse_mime_message(ctx, e);
 
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
   {
-    hdr->attach_total = count_body_parts(hdr->content, MUTT_PARTS_TOPLEVEL);
+    e->attach_total = count_body_parts(e->content, MUTT_PARTS_TOPLEVEL);
   }
   else
-    hdr->attach_total = 0;
+    e->attach_total = 0;
 
-  hdr->attach_valid = true;
+  e->attach_valid = true;
 
   if (!keep_parts)
-    mutt_body_free(&hdr->content->parts);
+    mutt_body_free(&e->content->parts);
 
-  return hdr->attach_total;
+  return e->attach_total;
 }

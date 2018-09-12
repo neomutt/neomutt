@@ -184,72 +184,72 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
   unsigned int setstart = 0; /* start of current message range */
   int n;
   bool started = false;
-  struct Email **hdrs = idata->ctx->mailbox->hdrs;
+  struct Email **emails = idata->ctx->mailbox->hdrs;
 
   for (n = *pos; n < idata->ctx->mailbox->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN;
        n++)
   {
     bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
-    if (hdrs[n]->active)
+    if (emails[n]->active)
     {
       switch (flag)
       {
         case MUTT_DELETED:
-          if (hdrs[n]->deleted != HEADER_DATA(hdrs[n])->deleted)
-            match = invert ^ hdrs[n]->deleted;
+          if (emails[n]->deleted != HEADER_DATA(emails[n])->deleted)
+            match = invert ^ emails[n]->deleted;
           break;
         case MUTT_FLAG:
-          if (hdrs[n]->flagged != HEADER_DATA(hdrs[n])->flagged)
-            match = invert ^ hdrs[n]->flagged;
+          if (emails[n]->flagged != HEADER_DATA(emails[n])->flagged)
+            match = invert ^ emails[n]->flagged;
           break;
         case MUTT_OLD:
-          if (hdrs[n]->old != HEADER_DATA(hdrs[n])->old)
-            match = invert ^ hdrs[n]->old;
+          if (emails[n]->old != HEADER_DATA(emails[n])->old)
+            match = invert ^ emails[n]->old;
           break;
         case MUTT_READ:
-          if (hdrs[n]->read != HEADER_DATA(hdrs[n])->read)
-            match = invert ^ hdrs[n]->read;
+          if (emails[n]->read != HEADER_DATA(emails[n])->read)
+            match = invert ^ emails[n]->read;
           break;
         case MUTT_REPLIED:
-          if (hdrs[n]->replied != HEADER_DATA(hdrs[n])->replied)
-            match = invert ^ hdrs[n]->replied;
+          if (emails[n]->replied != HEADER_DATA(emails[n])->replied)
+            match = invert ^ emails[n]->replied;
           break;
         case MUTT_TAG:
-          if (hdrs[n]->tagged)
+          if (emails[n]->tagged)
             match = true;
           break;
         case MUTT_TRASH:
-          if (hdrs[n]->deleted && !hdrs[n]->purge)
+          if (emails[n]->deleted && !emails[n]->purge)
             match = true;
           break;
       }
     }
 
-    if (match && (!changed || hdrs[n]->changed))
+    if (match && (!changed || emails[n]->changed))
     {
       count++;
       if (setstart == 0)
       {
-        setstart = HEADER_DATA(hdrs[n])->uid;
+        setstart = HEADER_DATA(emails[n])->uid;
         if (!started)
         {
-          mutt_buffer_printf(buf, "%u", HEADER_DATA(hdrs[n])->uid);
+          mutt_buffer_printf(buf, "%u", HEADER_DATA(emails[n])->uid);
           started = true;
         }
         else
-          mutt_buffer_printf(buf, ",%u", HEADER_DATA(hdrs[n])->uid);
+          mutt_buffer_printf(buf, ",%u", HEADER_DATA(emails[n])->uid);
       }
       /* tie up if the last message also matches */
       else if (n == idata->ctx->mailbox->msg_count - 1)
-        mutt_buffer_printf(buf, ":%u", HEADER_DATA(hdrs[n])->uid);
+        mutt_buffer_printf(buf, ":%u", HEADER_DATA(emails[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
-    else if (setstart && (hdrs[n]->active || n == idata->ctx->mailbox->msg_count - 1))
+    else if (setstart && (emails[n]->active || n == idata->ctx->mailbox->msg_count - 1))
     {
-      if (HEADER_DATA(hdrs[n - 1])->uid > setstart)
-        mutt_buffer_printf(buf, ":%u", HEADER_DATA(hdrs[n - 1])->uid);
+      if (HEADER_DATA(emails[n - 1])->uid > setstart)
+        mutt_buffer_printf(buf, ":%u", HEADER_DATA(emails[n - 1])->uid);
       setstart = 0;
     }
   }
@@ -261,23 +261,23 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
 
 /**
  * compare_flags_for_copy - Compare local flags against the server
- * @param h Header of email
+ * @param e Email
  * @retval true  Flags have changed
  * @retval false Flags match cached server flags
  *
  * The comparison of flags EXCLUDES the deleted flag.
  */
-static bool compare_flags_for_copy(struct Email *h)
+static bool compare_flags_for_copy(struct Email *e)
 {
-  struct ImapHeaderData *hd = h->data;
+  struct ImapHeaderData *hd = e->data;
 
-  if (h->read != hd->read)
+  if (e->read != hd->read)
     return true;
-  if (h->old != hd->old)
+  if (e->old != hd->old)
     return true;
-  if (h->flagged != hd->flagged)
+  if (e->flagged != hd->flagged)
     return true;
-  if (h->replied != hd->replied)
+  if (e->replied != hd->replied)
     return true;
 
   return false;
@@ -833,7 +833,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
  */
 void imap_expunge_mailbox(struct ImapData *idata)
 {
-  struct Email *h = NULL;
+  struct Email *e = NULL;
   int cacheno;
   short old_sort;
 
@@ -847,37 +847,37 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
   for (int i = 0; i < idata->ctx->mailbox->msg_count; i++)
   {
-    h = idata->ctx->mailbox->hdrs[i];
+    e = idata->ctx->mailbox->hdrs[i];
 
-    if (h->index == INT_MAX)
+    if (e->index == INT_MAX)
     {
-      mutt_debug(2, "Expunging message UID %u.\n", HEADER_DATA(h)->uid);
+      mutt_debug(2, "Expunging message UID %u.\n", HEADER_DATA(e)->uid);
 
-      h->active = false;
-      idata->ctx->mailbox->size -= h->content->length;
+      e->active = false;
+      idata->ctx->mailbox->size -= e->content->length;
 
-      imap_cache_del(idata, h);
+      imap_cache_del(idata, e);
 #ifdef USE_HCACHE
-      imap_hcache_del(idata, HEADER_DATA(h)->uid);
+      imap_hcache_del(idata, HEADER_DATA(e)->uid);
 #endif
 
       /* free cached body from disk, if necessary */
-      cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
-      if (idata->cache[cacheno].uid == HEADER_DATA(h)->uid &&
+      cacheno = HEADER_DATA(e)->uid % IMAP_CACHE_LEN;
+      if (idata->cache[cacheno].uid == HEADER_DATA(e)->uid &&
           idata->cache[cacheno].path)
       {
         unlink(idata->cache[cacheno].path);
         FREE(&idata->cache[cacheno].path);
       }
 
-      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h);
+      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(e)->uid, e);
 
-      imap_free_header_data((struct ImapHeaderData **) &h->data);
+      imap_free_header_data((struct ImapHeaderData **) &e->data);
     }
     else
     {
-      h->index = i;
-      /* NeoMutt has several places where it turns off h->active as a
+      e->index = i;
+      /* NeoMutt has several places where it turns off e->active as a
        * hack.  For example to avoid FLAG updates, or to exclude from
        * imap_exec_msgset.
        *
@@ -893,7 +893,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
        * So this is another hack to work around the hacks.  We don't want to
        * remove the messages, so make sure active is on.
        */
-      h->active = true;
+      e->active = true;
     }
   }
 
@@ -1189,7 +1189,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, bool changed, bool invert)
 {
-  struct Email **hdrs = NULL;
+  struct Email **emails = NULL;
   short oldsort;
   int pos;
   int rc;
@@ -1203,10 +1203,10 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
-    hdrs = idata->ctx->mailbox->hdrs;
+    emails = idata->ctx->mailbox->hdrs;
     idata->ctx->mailbox->hdrs =
         mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Email *));
-    memcpy(idata->ctx->mailbox->hdrs, hdrs,
+    memcpy(idata->ctx->mailbox->hdrs, emails,
            idata->ctx->mailbox->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
@@ -1241,7 +1241,7 @@ out:
   {
     Sort = oldsort;
     FREE(&idata->ctx->mailbox->hdrs);
-    idata->ctx->mailbox->hdrs = hdrs;
+    idata->ctx->mailbox->hdrs = emails;
   }
 
   return rc;
@@ -1250,7 +1250,7 @@ out:
 /**
  * imap_sync_message_for_copy - Update server to reflect the flags of a single message
  * @param[in]  idata        Server data
- * @param[in]  hdr          Header of the email
+ * @param[in]  e            Email
  * @param[in]  cmd          Buffer for the command string
  * @param[out] err_continue Did the user force a continue?
  * @retval  0 Success
@@ -1262,41 +1262,41 @@ out:
  * @note This does not sync the "deleted" flag state, because it is not
  *       desirable to propagate that flag into the copy.
  */
-int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr,
+int imap_sync_message_for_copy(struct ImapData *idata, struct Email *e,
                                struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char *tags = NULL;
   char uid[11];
 
-  if (!compare_flags_for_copy(hdr))
+  if (!compare_flags_for_copy(e))
   {
-    if (hdr->deleted == HEADER_DATA(hdr)->deleted)
-      hdr->changed = false;
+    if (e->deleted == HEADER_DATA(e)->deleted)
+      e->changed = false;
     return 0;
   }
 
-  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(hdr)->uid);
+  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(e)->uid);
   cmd->dptr = cmd->data;
   mutt_buffer_addstr(cmd, "UID STORE ");
   mutt_buffer_addstr(cmd, uid);
 
   flags[0] = '\0';
 
-  set_flag(idata, MUTT_ACL_SEEN, hdr->read, "\\Seen ", flags, sizeof(flags));
-  set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
-  set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
-  set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
-  set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
-           flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_SEEN, e->read, "\\Seen ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, e->old, "Old ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(e)->deleted, "\\Deleted ", flags,
+           sizeof(flags));
 
   if (mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE))
   {
     /* restore system flags */
-    if (HEADER_DATA(hdr)->flags_system)
-      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
+    if (HEADER_DATA(e)->flags_system)
+      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(e)->flags_system);
     /* set custom flags */
-    tags = driver_tags_get_with_hidden(&hdr->tags);
+    tags = driver_tags_get_with_hidden(&e->tags);
     if (tags)
     {
       mutt_str_strcat(flags, sizeof(flags), tags);
@@ -1314,13 +1314,13 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr,
     set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
     set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
     set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted, "\\Deleted ",
+    set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(e)->deleted, "\\Deleted ",
              flags, sizeof(flags));
 
     /* erase custom flags */
     if (mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE) &&
-        HEADER_DATA(hdr)->flags_remote)
-      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_remote);
+        HEADER_DATA(e)->flags_remote)
+      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(e)->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
 
@@ -1333,7 +1333,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr,
   mutt_buffer_addstr(cmd, ")");
 
   /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
-  hdr->active = false;
+  e->active = false;
 
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
@@ -1343,18 +1343,18 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr,
     *err_continue = imap_continue("imap_sync_message: STORE failed", idata->buf);
     if (*err_continue != MUTT_YES)
     {
-      hdr->active = true;
+      e->active = true;
       return -1;
     }
   }
 
   /* server have now the updated flags */
-  FREE(&HEADER_DATA(hdr)->flags_remote);
-  HEADER_DATA(hdr)->flags_remote = driver_tags_get_with_hidden(&hdr->tags);
+  FREE(&HEADER_DATA(e)->flags_remote);
+  HEADER_DATA(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
 
-  hdr->active = true;
-  if (hdr->deleted == HEADER_DATA(hdr)->deleted)
-    hdr->changed = false;
+  e->active = true;
+  if (e->deleted == HEADER_DATA(e)->deleted)
+    e->changed = false;
 
   return 0;
 }
@@ -2003,8 +2003,8 @@ out:
 int imap_sync_mailbox(struct Context *ctx, bool expunge)
 {
   struct Context *appendctx = NULL;
-  struct Email *h = NULL;
-  struct Email **hdrs = NULL;
+  struct Email *e = NULL;
+  struct Email **emails = NULL;
   int oldsort;
   int rc;
 
@@ -2055,26 +2055,26 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   /* save messages with real (non-flag) changes */
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    h = ctx->mailbox->hdrs[i];
+    e = ctx->mailbox->hdrs[i];
 
-    if (h->deleted)
+    if (e->deleted)
     {
-      imap_cache_del(idata, h);
+      imap_cache_del(idata, e);
 #ifdef USE_HCACHE
-      imap_hcache_del(idata, HEADER_DATA(h)->uid);
+      imap_hcache_del(idata, HEADER_DATA(e)->uid);
 #endif
     }
 
-    if (h->active && h->changed)
+    if (e->active && e->changed)
     {
 #ifdef USE_HCACHE
-      imap_hcache_put(idata, h);
+      imap_hcache_put(idata, e);
 #endif
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
-      if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
-          h->attach_del || h->xlabel_changed)
+      if ((e->env && (e->env->refs_changed || e->env->irt_changed)) ||
+          e->attach_del || e->xlabel_changed)
       {
         /* L10N: The plural is choosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
@@ -2085,8 +2085,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else
-          mutt_save_message_ctx(h, true, false, false, appendctx);
-        h->xlabel_changed = false;
+          mutt_save_message_ctx(e, true, false, false, appendctx);
+        e->xlabel_changed = false;
       }
     }
   }
@@ -2099,10 +2099,10 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
-    hdrs = ctx->mailbox->hdrs;
+    emails = ctx->mailbox->hdrs;
     ctx->mailbox->hdrs =
         mutt_mem_malloc(ctx->mailbox->msg_count * sizeof(struct Email *));
-    memcpy(ctx->mailbox->hdrs, hdrs, ctx->mailbox->msg_count * sizeof(struct Email *));
+    memcpy(ctx->mailbox->hdrs, emails, ctx->mailbox->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
     qsort(ctx->mailbox->hdrs, ctx->mailbox->msg_count, sizeof(struct Email *),
@@ -2123,7 +2123,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   {
     Sort = oldsort;
     FREE(&ctx->mailbox->hdrs);
-    ctx->mailbox->hdrs = hdrs;
+    ctx->mailbox->hdrs = emails;
   }
 
   /* Flush the queued flags if any were changed in sync_helper. */
@@ -2579,7 +2579,7 @@ static int imap_mbox_close(struct Context *ctx)
 /**
  * imap_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *hdr)
+static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
 {
   char tmp[PATH_MAX];
 
@@ -2683,7 +2683,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
+static int imap_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 {
   struct Buffer *cmd = NULL;
   char uid[11];
@@ -2696,10 +2696,10 @@ static int imap_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
   if (!mutt_bit_isset(idata->ctx->mailbox->rights, MUTT_ACL_WRITE))
     return 0;
 
-  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(hdr)->uid);
+  snprintf(uid, sizeof(uid), "%u", HEADER_DATA(e)->uid);
 
   /* Remove old custom flags */
-  if (HEADER_DATA(hdr)->flags_remote)
+  if (HEADER_DATA(e)->flags_remote)
   {
     cmd = mutt_buffer_new();
     if (!cmd)
@@ -2711,7 +2711,7 @@ static int imap_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);
     mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, HEADER_DATA(hdr)->flags_remote);
+    mutt_buffer_addstr(cmd, HEADER_DATA(e)->flags_remote);
     mutt_buffer_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
@@ -2753,9 +2753,9 @@ static int imap_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
 
   /* We are good sync them */
   mutt_debug(1, "NEW TAGS: %d\n", buf);
-  driver_tags_replace(&hdr->tags, buf);
-  FREE(&HEADER_DATA(hdr)->flags_remote);
-  HEADER_DATA(hdr)->flags_remote = driver_tags_get_with_hidden(&hdr->tags);
+  driver_tags_replace(&e->tags, buf);
+  FREE(&HEADER_DATA(e)->flags_remote);
+  HEADER_DATA(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
   return 0;
 }
 

@@ -360,7 +360,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * @param fp     Source file stream. Can be NULL
  * @param a      The message body containing the attachment
  * @param flag   Option flag for how the attachment should be viewed
- * @param hdr    Message header for the current message. Can be NULL
+ * @param e    Message header for the current message. Can be NULL
  * @param actx   Attachment context
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
@@ -374,7 +374,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * attachment this way will block the main neomutt process until the viewer process
  * exits.
  */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *hdr,
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
                          struct AttachCtx *actx)
 {
   char tempfile[PATH_MAX] = "";
@@ -391,8 +391,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *hdr,
   bool unlink_tempfile = false;
 
   bool is_message = mutt_is_message_type(a->type, a->subtype);
-  if ((WithCrypto != 0) && is_message && a->hdr &&
-      (a->hdr->security & ENCRYPT) && !crypt_valid_passphrase(a->hdr->security))
+  if ((WithCrypto != 0) && is_message && a->email &&
+      (a->email->security & ENCRYPT) && !crypt_valid_passphrase(a->email->security))
   {
     return rc;
   }
@@ -620,7 +620,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *hdr,
     info.bdy = a;
     info.ctx = Context;
     info.actx = actx;
-    info.hdr = hdr;
+    info.email = e;
 
     rc = mutt_do_pager(descrip, pagerfile,
                        MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : 0),
@@ -773,11 +773,11 @@ static FILE *save_attachment_open(char *path, int flags)
  * @param m     Email Body
  * @param path  Where to save the attachment
  * @param flags Flags, e.g. #MUTT_SAVE_APPEND
- * @param hdr   Message header for the current message. Can be NULL
+ * @param e   Message header for the current message. Can be NULL
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *hdr)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *e)
 {
   if (!m)
     return -1;
@@ -786,7 +786,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
   {
     /* recv mode */
 
-    if (hdr && m->hdr && m->encoding != ENC_BASE64 && m->encoding != ENC_QUOTED_PRINTABLE &&
+    if (e && m->email && m->encoding != ENC_BASE64 && m->encoding != ENC_QUOTED_PRINTABLE &&
         mutt_is_message_type(m->type, m->subtype))
     {
       /* message type attachments are written to mail folders. */
@@ -796,9 +796,9 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       int chflags = 0;
       int r = -1;
 
-      struct Email *hn = m->hdr;
-      hn->msgno = hdr->msgno; /* required for MH/maildir */
-      hn->read = true;
+      struct Email *en = m->email;
+      en->msgno = e->msgno; /* required for MH/maildir */
+      en->read = true;
 
       if (fseeko(fp, m->offset, SEEK_SET) < 0)
         return -1;
@@ -807,7 +807,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       struct Context *ctx = mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
         return -1;
-      msg = mx_msg_open_new(ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(ctx, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)
       {
         mx_mbox_close(&ctx, NULL);
@@ -816,7 +816,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if ((ctx->mailbox->magic == MUTT_MBOX) || (ctx->mailbox->magic == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-      if ((mutt_copy_message_fp(msg->fp, fp, hn, 0, chflags) == 0) &&
+      if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
           (mx_msg_commit(ctx, msg) == 0))
       {
         r = 0;
@@ -952,7 +952,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     m->length = st.st_size;
     m->offset = 0;
     saved_parts = m->parts;
-    saved_hdr = m->hdr;
+    saved_hdr = m->email;
     mutt_parse_part(s.fpin, m);
 
     if (m->noconv || is_multipart(m))
@@ -977,9 +977,9 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     m->encoding = saved_encoding;
     if (saved_parts)
     {
-      mutt_email_free(&m->hdr);
+      mutt_email_free(&m->email);
       m->parts = saved_parts;
-      m->hdr = saved_hdr;
+      m->email = saved_hdr;
     }
     mutt_file_fclose(&s.fpin);
   }

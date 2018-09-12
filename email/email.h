@@ -30,7 +30,7 @@
 #include "tags.h"
 
 /**
- * struct Email - The email/envelope of an email
+ * struct Email - The envelope/body of an email
  */
 struct Email
 {
@@ -114,8 +114,8 @@ struct Email
   char *maildir_flags; /**< unknown maildir flags */
 };
 
-bool          mutt_email_cmp_strict(const struct Email *h1, const struct Email *h2);
-void          mutt_email_free(struct Email **h);
+bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
+void          mutt_email_free(struct Email **e);
 struct Email *mutt_email_new(void);
 
 #endif /* MUTT_EMAIL_EMAIL_H */

@@ -302,7 +302,7 @@ struct ImapData *imap_conn_find(const struct ConnAccount *account, int flags);
 int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
-int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr, struct Buffer *cmd, int *err_continue);
+int imap_sync_message_for_copy(struct ImapData *idata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 
 /* auth.c */
@@ -320,8 +320,8 @@ int imap_cmd_idle(struct ImapData *idata);
 /* message.c */
 void imap_free_header_data(struct ImapHeaderData **data);
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
-char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *server_changes);
-int imap_cache_del(struct ImapData *idata, struct Email *h);
+char *imap_set_flags(struct ImapData *idata, struct Email *e, char *s, int *server_changes);
+int imap_cache_del(struct ImapData *idata, struct Email *e);
 int imap_cache_clean(struct ImapData *idata);
 int imap_append_message(struct Context *ctx, struct Message *msg);
 
@@ -334,7 +334,7 @@ int imap_msg_commit(struct Context *ctx, struct Message *msg);
 header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path);
 void imap_hcache_close(struct ImapData *idata);
 struct Email *imap_hcache_get(struct ImapData *idata, unsigned int uid);
-int imap_hcache_put(struct ImapData *idata, struct Email *h);
+int imap_hcache_put(struct ImapData *idata, struct Email *e);
 int imap_hcache_del(struct ImapData *idata, unsigned int uid);
 int imap_hcache_store_uid_seqset(struct ImapData *idata);
 int imap_hcache_clear_uid_seqset(struct ImapData *idata);

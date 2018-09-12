@@ -208,11 +208,11 @@ static int compare_date_received(const void *a, const void *b)
  */
 static int compare_order(const void *a, const void *b)
 {
-  struct Email **ha = (struct Email **) a;
-  struct Email **hb = (struct Email **) b;
+  struct Email **ea = (struct Email **) a;
+  struct Email **eb = (struct Email **) b;
 
   /* no need to auxsort because you will never have equality here */
-  return SORTCODE((*ha)->index - (*hb)->index);
+  return SORTCODE((*ea)->index - (*eb)->index);
 }
 
 /**
@@ -351,7 +351,7 @@ sort_t *mutt_get_sort_func(int method)
  */
 void mutt_sort_headers(struct Context *ctx, bool init)
 {
-  struct Email *h = NULL;
+  struct Email *e = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
@@ -438,10 +438,10 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     {
       while (!thread->message)
         thread = thread->child;
-      h = thread->message;
+      e = thread->message;
 
-      if (h->collapsed)
-        mutt_collapse_thread(ctx, h);
+      if (e->collapsed)
+        mutt_collapse_thread(ctx, e);
       top = top->next;
     }
     mutt_set_virtual(ctx);

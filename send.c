@@ -486,7 +486,7 @@ static void process_user_header(struct Envelope *env)
 /**
  * mutt_forward_intro - Add the "start of forwarded message" text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param fp  File to write to
  */
 void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
@@ -505,7 +505,7 @@ void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
 /**
  * mutt_forward_trailer - Add a "end of forwarded message" text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param fp  File to write to
  */
 void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
@@ -525,7 +525,7 @@ void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
 /**
  * include_forward - Write out a forwarded message
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
@@ -570,7 +570,7 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
 /**
  * mutt_make_attribution - Add "on DATE, PERSON wrote" header
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  */
 void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
@@ -589,7 +589,7 @@ void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
 /**
  * mutt_make_post_indent - Add suffix to replied email text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  */
 void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
@@ -606,7 +606,7 @@ void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
 /**
  * include_reply - Generate the reply text for an email
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
@@ -840,7 +840,7 @@ void mutt_fix_reply_recipients(struct Envelope *env)
  * mutt_make_forward_subject - Create a subject for a forwarded email
  * @param env Envelope for result
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  */
 void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Email *cur)
 {
@@ -931,7 +931,7 @@ static void make_reference_headers(struct Envelope *curenv,
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
  * @param ctx   Mailbox
- * @param cur   Header of email
+ * @param cur   Email
  * @param flags Flags, e.g. #SEND_REPLY
  * @retval  0 Success
  * @retval -1 Failure
@@ -1285,7 +1285,7 @@ struct Address *mutt_default_from(void)
 
 /**
  * send_message - Send an email
- * @param msg Header of the email
+ * @param msg Email
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -1413,7 +1413,7 @@ static void fix_end_of_file(const char *data)
  * mutt_resend_message - Resend an email
  * @param fp  File containing email
  * @param ctx Mailbox
- * @param cur Header of email to resend
+ * @param cur Email to resend
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
@@ -1454,8 +1454,8 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 
 /**
  * is_reply - Is one email a reply to another?
- * @param reply Header of email to test
- * @param orig  Header of original email
+ * @param reply Email to test
+ * @param orig  Original email
  * @retval 1 It is a reply
  * @retval 0 It is not a reply
  */

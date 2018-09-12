@@ -89,36 +89,36 @@ static void label_ref_inc(struct Mailbox *mailbox, char *label)
 /**
  * label_message - add an X-Label: field
  * @param[in]  mailbox Mailbox
- * @param[in]  hdr Header of email
+ * @param[in]  e Email
  * @param[out] new Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Mailbox *mailbox, struct Email *hdr, char *new)
+static bool label_message(struct Mailbox *mailbox, struct Email *e, char *new)
 {
-  if (!hdr)
+  if (!e)
     return false;
-  if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
+  if (mutt_str_strcmp(e->env->x_label, new) == 0)
     return false;
 
-  if (hdr->env->x_label)
-    label_ref_dec(mailbox, hdr->env->x_label);
-  mutt_str_replace(&hdr->env->x_label, new);
-  if (hdr->env->x_label)
-    label_ref_inc(mailbox, hdr->env->x_label);
+  if (e->env->x_label)
+    label_ref_dec(mailbox, e->env->x_label);
+  mutt_str_replace(&e->env->x_label, new);
+  if (e->env->x_label)
+    label_ref_inc(mailbox, e->env->x_label);
 
-  hdr->changed = true;
-  hdr->xlabel_changed = true;
+  e->changed = true;
+  e->xlabel_changed = true;
   return true;
 }
 
 /**
  * mutt_label_message - Let the user label a message
- * @param hdr Header of the message (OPTIONAL)
+ * @param e Email (OPTIONAL)
  * @retval num Number of messages changed
  *
- * If hdr isn't given, then tagged messages will be labelled.
+ * If e isn't given, then tagged messages will be labelled.
  */
-int mutt_label_message(struct Email *hdr)
+int mutt_label_message(struct Email *e)
 {
   char buf[LONG_STRING], *new = NULL;
   int changed;
@@ -127,9 +127,9 @@ int mutt_label_message(struct Email *hdr)
     return 0;
 
   *buf = '\0';
-  if (hdr && hdr->env->x_label)
+  if (e && e->env->x_label)
   {
-    mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
+    mutt_str_strfcpy(buf, e->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
@@ -141,12 +141,12 @@ int mutt_label_message(struct Email *hdr)
     new = NULL;
 
   changed = 0;
-  if (hdr)
+  if (e)
   {
-    if (label_message(Context->mailbox, hdr, new))
+    if (label_message(Context->mailbox, e, new))
     {
       changed++;
-      mutt_set_header_color(Context, hdr);
+      mutt_set_header_color(Context, e);
     }
   }
   else
@@ -156,11 +156,11 @@ int mutt_label_message(struct Email *hdr)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Email *h = Context->mailbox->hdrs[i];
-      if (label_message(Context->mailbox, h, new))
+      struct Email *e2 = Context->mailbox->hdrs[i];
+      if (label_message(Context->mailbox, e2, new))
       {
         changed++;
-        mutt_set_flag(Context, h, MUTT_TAG, 0);
+        mutt_set_flag(Context, e2, MUTT_TAG, 0);
         /* mutt_set_flag re-evals the header color */
       }
     }
@@ -378,25 +378,25 @@ void mutt_make_label_hash(struct Mailbox *mailbox)
 /**
  * mutt_label_hash_add - Add a message's labels to the Hash Table
  * @param mailbox Mailbox
- * @param hdr Header of message
+ * @param e Header of message
  */
-void mutt_label_hash_add(struct Mailbox *mailbox, struct Email *hdr)
+void mutt_label_hash_add(struct Mailbox *mailbox, struct Email *e)
 {
   if (!mailbox || !mailbox->label_hash)
     return;
-  if (hdr->env->x_label)
-    label_ref_inc(mailbox, hdr->env->x_label);
+  if (e->env->x_label)
+    label_ref_inc(mailbox, e->env->x_label);
 }
 
 /**
  * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
  * @param mailbox Mailbox
- * @param hdr Header of message
+ * @param e Header of message
  */
-void mutt_label_hash_remove(struct Mailbox *mailbox, struct Email *hdr)
+void mutt_label_hash_remove(struct Mailbox *mailbox, struct Email *e)
 {
   if (!mailbox || !mailbox->label_hash)
     return;
-  if (hdr->env->x_label)
-    label_ref_dec(mailbox, hdr->env->x_label);
+  if (e->env->x_label)
+    label_ref_dec(mailbox, e->env->x_label);
 }

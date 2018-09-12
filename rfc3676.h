@@ -36,6 +36,6 @@ extern bool  ReflowSpaceQuotes;
 extern short ReflowWrap;
 
 int rfc3676_handler(struct Body *a, struct State *s);
-void rfc3676_space_stuff(struct Email *hdr);
+void rfc3676_space_stuff(struct Email *e);
 
 #endif /* MUTT_RFC3676_H */

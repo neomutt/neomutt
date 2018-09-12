@@ -178,7 +178,7 @@ extern char *SmimeVerifyOpaqueCommand;
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void         crypt_extract_keys_from_messages(struct Email *h);
+void         crypt_extract_keys_from_messages(struct Email *e);
 void         crypt_forget_passphrase(void);
 int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
 void         crypt_opportunistic_encrypt(struct Email *msg);
@@ -209,7 +209,7 @@ int          crypt_smime_application_handler(struct Body *m, struct State *s);
 int          crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
 void         crypt_smime_getkeys(struct Envelope *env);
 int          crypt_smime_send_menu(struct Email *msg);
-int          crypt_smime_verify_sender(struct Email *h);
+int          crypt_smime_verify_sender(struct Email *e);
 
 /* crypt_mod.c */
 void crypto_module_free(void);

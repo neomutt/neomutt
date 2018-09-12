@@ -981,7 +981,7 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   FILE *fp = NULL;
   long lng = 0;
-  struct Email *h = ctx->mailbox->hdrs[msgno];
+  struct Email *e = ctx->mailbox->hdrs[msgno];
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
   size_t tempsize;
@@ -1012,13 +1012,13 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 #endif
 
     if (pat->op != MUTT_BODY)
-      mutt_copy_header(msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
+      mutt_copy_header(msg->fp, e, s.fpout, CH_FROM | CH_DECODE, NULL);
 
     if (pat->op != MUTT_HEADER)
     {
-      mutt_parse_mime_message(ctx, h);
+      mutt_parse_mime_message(ctx, e);
 
-      if ((WithCrypto != 0) && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
+      if ((WithCrypto != 0) && (e->security & ENCRYPT) && !crypt_valid_passphrase(e->security))
       {
         mx_msg_close(ctx, &msg);
         if (s.fpout)
@@ -1031,8 +1031,8 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
         return false;
       }
 
-      fseeko(msg->fp, h->offset, SEEK_SET);
-      mutt_body_handler(h->content, &s);
+      fseeko(msg->fp, e->offset, SEEK_SET);
+      mutt_body_handler(e->content, &s);
     }
 
 #ifdef USE_FMEMOPEN
@@ -1071,14 +1071,14 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     fp = msg->fp;
     if (pat->op != MUTT_BODY)
     {
-      fseeko(fp, h->offset, SEEK_SET);
-      lng = h->content->offset - h->offset;
+      fseeko(fp, e->offset, SEEK_SET);
+      lng = e->content->offset - e->offset;
     }
     if (pat->op != MUTT_HEADER)
     {
       if (pat->op == MUTT_BODY)
-        fseeko(fp, h->content->offset, SEEK_SET);
-      lng += h->content->length;
+        fseeko(fp, e->content->offset, SEEK_SET);
+      lng += e->content->length;
     }
   }
 
@@ -1498,15 +1498,15 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
  * @param pat   Patterns to test
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param ctx   Mailbox
- * @param hdr   Header of email
+ * @param e   Email
  * @param cache Cached Patterns
  * @retval true If ALL of the Patterns evaluates to true
  */
 static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
-                        struct Context *ctx, struct Email *hdr, struct PatternCache *cache)
+                        struct Context *ctx, struct Email *e, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
+    if (mutt_pattern_exec(pat, flags, ctx, e, cache) <= 0)
       return false;
   return true;
 }
@@ -1516,15 +1516,15 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
  * @param pat   Patterns to test
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param ctx   Mailbox
- * @param hdr   Header of email
+ * @param e   Email
  * @param cache Cached Patterns
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
 static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Email *hdr, struct PatternCache *cache)
+                      struct Context *ctx, struct Email *e, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
+    if (mutt_pattern_exec(pat, flags, ctx, e, cache) > 0)
       return true;
   return false;
 }
@@ -1655,13 +1655,13 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
                                 int left, int up, int right, int down)
 {
   int a;
-  struct Email *h = NULL;
+  struct Email *e = NULL;
 
   if (!t)
     return 0;
-  h = t->message;
-  if (h)
-    if (mutt_pattern_exec(pat, flags, ctx, h, NULL))
+  e = t->message;
+  if (e)
+    if (mutt_pattern_exec(pat, flags, ctx, e, NULL))
       return 1;
 
   if (up && (a = match_threadcomplete(pat, flags, ctx, t->parent, 1, 1, 1, 0)))
@@ -1751,15 +1751,15 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
  * match_mime_content_type - Match a Pattern against an email's Content-Type
  * @param pat   Pattern to match
  * @param ctx   Mailbox
- * @param hdr   Header of email
+ * @param e   Email
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
  */
 static int match_mime_content_type(const struct Pattern *pat,
-                                   struct Context *ctx, struct Email *hdr)
+                                   struct Context *ctx, struct Email *e)
 {
-  mutt_parse_mime_message(ctx, hdr);
-  return match_content_type(pat, hdr->content);
+  mutt_parse_mime_message(ctx, e);
+  return match_content_type(pat, e->content);
 }
 
 /**
@@ -1800,7 +1800,7 @@ static int is_pattern_cache_set(int cache_entry)
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
  * @param ctx   Mailbox
- * @param h     Header of the email
+ * @param e     Email
  * @param cache Cache for common Patterns
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
@@ -1811,7 +1811,7 @@ static int is_pattern_cache_set(int cache_entry)
  *        store some of the cacheable pattern matches in this structure.
  */
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Email *h, struct PatternCache *cache)
+                      struct Context *ctx, struct Email *e, struct PatternCache *cache)
 {
   int result;
   int *cache_entry = NULL;
@@ -1819,60 +1819,60 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
   switch (pat->op)
   {
     case MUTT_AND:
-      return pat->not ^ (perform_and(pat->child, flags, ctx, h, cache) > 0);
+      return pat->not ^ (perform_and(pat->child, flags, ctx, e, cache) > 0);
     case MUTT_OR:
-      return pat->not ^ (perform_or(pat->child, flags, ctx, h, cache) > 0);
+      return pat->not ^ (perform_or(pat->child, flags, ctx, e, cache) > 0);
     case MUTT_THREAD:
       return pat->not ^
-             match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1);
+             match_threadcomplete(pat->child, flags, ctx, e->thread, 1, 1, 1, 1);
     case MUTT_PARENT:
-      return pat->not ^ match_threadparent(pat->child, flags, ctx, h->thread);
+      return pat->not ^ match_threadparent(pat->child, flags, ctx, e->thread);
     case MUTT_CHILDREN:
-      return pat->not ^ match_threadchildren(pat->child, flags, ctx, h->thread);
+      return pat->not ^ match_threadchildren(pat->child, flags, ctx, e->thread);
     case MUTT_ALL:
       return !pat->not;
     case MUTT_EXPIRED:
-      return pat->not ^ h->expired;
+      return pat->not ^ e->expired;
     case MUTT_SUPERSEDED:
-      return pat->not ^ h->superseded;
+      return pat->not ^ e->superseded;
     case MUTT_FLAG:
-      return pat->not ^ h->flagged;
+      return pat->not ^ e->flagged;
     case MUTT_TAG:
-      return pat->not ^ h->tagged;
+      return pat->not ^ e->tagged;
     case MUTT_NEW:
-      return pat->not? h->old || h->read : !(h->old || h->read);
+      return pat->not? e->old || e->read : !(e->old || e->read);
     case MUTT_UNREAD:
-      return pat->not? h->read : !h->read;
+      return pat->not? e->read : !e->read;
     case MUTT_REPLIED:
-      return pat->not ^ h->replied;
+      return pat->not ^ e->replied;
     case MUTT_OLD:
-      return pat->not? (!h->old || h->read) : (h->old && !h->read);
+      return pat->not? (!e->old || e->read) : (e->old && !e->read);
     case MUTT_READ:
-      return pat->not ^ h->read;
+      return pat->not ^ e->read;
     case MUTT_DELETED:
-      return pat->not ^ h->deleted;
+      return pat->not ^ e->deleted;
     case MUTT_MESSAGE:
-      return pat->not ^ ((HMSG(h) >= pat->min) && (HMSG(h) <= pat->max));
+      return pat->not ^ ((HMSG(e) >= pat->min) && (HMSG(e) <= pat->max));
     case MUTT_DATE:
-      return pat->not ^ (h->date_sent >= pat->min && h->date_sent <= pat->max);
+      return pat->not ^ (e->date_sent >= pat->min && e->date_sent <= pat->max);
     case MUTT_DATE_RECEIVED:
-      return pat->not ^ (h->received >= pat->min && h->received <= pat->max);
+      return pat->not ^ (e->received >= pat->min && e->received <= pat->max);
     case MUTT_BODY:
     case MUTT_HEADER:
     case MUTT_WHOLE_MSG:
       /* ctx can be NULL in certain cases, such as when replying to a message
-       * from the attachment menu and the user has a reply-hook using "~h" (bug
+       * from the attachment menu and the user has a reply-hook using "~e" (bug
        * #2190).
        * This is also the case when message scoring.
        */
       if (!ctx)
         return 0;
 #ifdef USE_IMAP
-      /* IMAP search sets h->matched at search compile time */
+      /* IMAP search sets e->matched at search compile time */
       if (ctx->mailbox->magic == MUTT_IMAP && pat->stringmatch)
-        return h->matched;
+        return e->matched;
 #endif
-      return pat->not ^ msg_search(ctx, pat, h->msgno);
+      return pat->not ^ msg_search(ctx, pat, e->msgno);
     case MUTT_SERVERSEARCH:
 #ifdef USE_IMAP
       if (!ctx)
@@ -1880,7 +1880,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       if (ctx->mailbox->magic == MUTT_IMAP)
       {
         if (pat->stringmatch)
-          return h->matched;
+          return e->matched;
         return 0;
       }
       mutt_error(_("error: server custom search only supported with IMAP"));
@@ -1890,57 +1890,57 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return -1;
 #endif
     case MUTT_SENDER:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                       1, h->env->sender);
+                                       1, e->env->sender);
     case MUTT_FROM:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^
-             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->from);
+             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, e->env->from);
     case MUTT_TO:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^
-             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->to);
+             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, e->env->to);
     case MUTT_CC:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^
-             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, h->env->cc);
+             match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS), 1, e->env->cc);
     case MUTT_SUBJECT:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (h->env->subject && patmatch(pat, h->env->subject) == 0);
+      return pat->not ^ (e->env->subject && patmatch(pat, e->env->subject) == 0);
     case MUTT_ID:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (h->env->message_id && patmatch(pat, h->env->message_id) == 0);
+      return pat->not ^ (e->env->message_id && patmatch(pat, e->env->message_id) == 0);
     case MUTT_SCORE:
-      return pat->not ^ (h->score >= pat->min &&
-                         (pat->max == MUTT_MAXRANGE || h->score <= pat->max));
+      return pat->not ^ (e->score >= pat->min &&
+                         (pat->max == MUTT_MAXRANGE || e->score <= pat->max));
     case MUTT_SIZE:
-      return pat->not ^ (h->content->length >= pat->min &&
-                         (pat->max == MUTT_MAXRANGE || h->content->length <= pat->max));
+      return pat->not ^ (e->content->length >= pat->min &&
+                         (pat->max == MUTT_MAXRANGE || e->content->length <= pat->max));
     case MUTT_REFERENCE:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (match_reference(pat, &h->env->references) ||
-                         match_reference(pat, &h->env->in_reply_to));
+      return pat->not ^ (match_reference(pat, &e->env->references) ||
+                         match_reference(pat, &e->env->in_reply_to));
     case MUTT_ADDRESS:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                       4, h->env->from, h->env->sender,
-                                       h->env->to, h->env->cc);
+                                       4, e->env->from, e->env->sender,
+                                       e->env->to, e->env->cc);
     case MUTT_RECIPIENT:
-      if (!h->env)
+      if (!e->env)
         return 0;
       return pat->not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
-                                       2, h->env->to, h->env->cc);
+                                       2, e->env->to, e->env->cc);
     case MUTT_LIST: /* known list, subscribed or not */
-      if (!h->env)
+      if (!e->env)
         return 0;
       if (cache)
       {
@@ -1948,15 +1948,15 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(
-              cache_entry, mutt_is_list_cc(pat->alladdr, h->env->to, h->env->cc));
+              cache_entry, mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_cc(pat->alladdr, h->env->to, h->env->cc);
+        result = mutt_is_list_cc(pat->alladdr, e->env->to, e->env->cc);
       return pat->not ^ result;
     case MUTT_SUBSCRIBED_LIST:
-      if (!h->env)
+      if (!e->env)
         return 0;
       if (cache)
       {
@@ -1965,15 +1965,15 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         {
           set_pattern_cache_value(
               cache_entry,
-              mutt_is_list_recipient(pat->alladdr, h->env->to, h->env->cc));
+              mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = mutt_is_list_recipient(pat->alladdr, h->env->to, h->env->cc);
+        result = mutt_is_list_recipient(pat->alladdr, e->env->to, e->env->cc);
       return pat->not ^ result;
     case MUTT_PERSONAL_RECIP:
-      if (!h->env)
+      if (!e->env)
         return 0;
       if (cache)
       {
@@ -1981,83 +1981,83 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
         if (!is_pattern_cache_set(*cache_entry))
         {
           set_pattern_cache_value(cache_entry,
-                                  match_user(pat->alladdr, h->env->to, h->env->cc));
+                                  match_user(pat->alladdr, e->env->to, e->env->cc));
         }
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, h->env->to, h->env->cc);
+        result = match_user(pat->alladdr, e->env->to, e->env->cc);
       return pat->not ^ result;
     case MUTT_PERSONAL_FROM:
-      if (!h->env)
+      if (!e->env)
         return 0;
       if (cache)
       {
         cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set(*cache_entry))
-          set_pattern_cache_value(cache_entry, match_user(pat->alladdr, h->env->from, NULL));
+          set_pattern_cache_value(cache_entry, match_user(pat->alladdr, e->env->from, NULL));
         result = get_pattern_cache_value(*cache_entry);
       }
       else
-        result = match_user(pat->alladdr, h->env->from, NULL);
+        result = match_user(pat->alladdr, e->env->from, NULL);
       return pat->not ^ result;
     case MUTT_COLLAPSED:
-      return pat->not ^ (h->collapsed && h->num_hidden > 1);
+      return pat->not ^ (e->collapsed && e->num_hidden > 1);
     case MUTT_CRYPT_SIGN:
       if (!WithCrypto)
         break;
-      return pat->not ^ ((h->security & SIGN) ? 1 : 0);
+      return pat->not ^ ((e->security & SIGN) ? 1 : 0);
     case MUTT_CRYPT_VERIFIED:
       if (!WithCrypto)
         break;
-      return pat->not ^ ((h->security & GOODSIGN) ? 1 : 0);
+      return pat->not ^ ((e->security & GOODSIGN) ? 1 : 0);
     case MUTT_CRYPT_ENCRYPT:
       if (!WithCrypto)
         break;
-      return pat->not ^ ((h->security & ENCRYPT) ? 1 : 0);
+      return pat->not ^ ((e->security & ENCRYPT) ? 1 : 0);
     case MUTT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
         break;
-      return pat->not ^ ((h->security & PGP_KEY) == PGP_KEY);
+      return pat->not ^ ((e->security & PGP_KEY) == PGP_KEY);
     case MUTT_XLABEL:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (h->env->x_label && patmatch(pat, h->env->x_label) == 0);
+      return pat->not ^ (e->env->x_label && patmatch(pat, e->env->x_label) == 0);
     case MUTT_DRIVER_TAGS:
     {
-      char *tags = driver_tags_get(&h->tags);
+      char *tags = driver_tags_get(&e->tags);
       bool ret = (pat->not ^ (tags && patmatch(pat, tags) == 0));
       FREE(&tags);
       return ret;
     }
     case MUTT_HORMEL:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (h->env->spam && h->env->spam->data &&
-                         patmatch(pat, h->env->spam->data) == 0);
+      return pat->not ^ (e->env->spam && e->env->spam->data &&
+                         patmatch(pat, e->env->spam->data) == 0);
     case MUTT_DUPLICATED:
-      return pat->not ^ (h->thread && h->thread->duplicate_thread);
+      return pat->not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_MIMEATTACH:
       if (!ctx)
         return 0;
       {
-        int count = mutt_count_body_parts(ctx, h);
+        int count = mutt_count_body_parts(ctx, e);
         return pat->not ^ (count >= pat->min &&
                            (pat->max == MUTT_MAXRANGE || count <= pat->max));
       }
     case MUTT_MIMETYPE:
       if (!ctx)
         return 0;
-      return pat->not ^ match_mime_content_type(pat, ctx, h);
+      return pat->not ^ match_mime_content_type(pat, ctx, e);
     case MUTT_UNREFERENCED:
-      return pat->not ^ (h->thread && !h->thread->child);
+      return pat->not ^ (e->thread && !e->thread->child);
     case MUTT_BROKEN:
-      return pat->not ^ (h->thread && h->thread->fake_thread);
+      return pat->not ^ (e->thread && e->thread->fake_thread);
 #ifdef USE_NNTP
     case MUTT_NEWSGROUPS:
-      if (!h->env)
+      if (!e->env)
         return 0;
-      return pat->not ^ (h->env->newsgroups && patmatch(pat, h->env->newsgroups) == 0);
+      return pat->not ^ (e->env->newsgroups && patmatch(pat, e->env->newsgroups) == 0);
 #endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
@@ -2145,18 +2145,18 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
 
 /**
  * top_of_thread - Find the first email in the current thread
- * @param h Header of current email
+ * @param e Current Email
  * @retval ptr  Success, email found
  * @retval NULL Error
  */
-static struct MuttThread *top_of_thread(struct Email *h)
+static struct MuttThread *top_of_thread(struct Email *e)
 {
   struct MuttThread *t = NULL;
 
-  if (!h)
+  if (!e)
     return NULL;
 
-  t = h->thread;
+  t = e->thread;
 
   while (t && t->parent)
     t = t->parent;
@@ -2166,18 +2166,18 @@ static struct MuttThread *top_of_thread(struct Email *h)
 
 /**
  * mutt_limit_current_thread - Limit the email view to the current thread
- * @param h Header of current email
+ * @param e Current Email
  * @retval true Success
  * @retval false Failure
  */
-bool mutt_limit_current_thread(struct Email *h)
+bool mutt_limit_current_thread(struct Email *e)
 {
   struct MuttThread *me = NULL;
 
-  if (!h)
+  if (!e)
     return false;
 
-  me = top_of_thread(h);
+  me = top_of_thread(e);
   if (!me)
     return false;
 
@@ -2444,11 +2444,11 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
-    if (h->searched)
+    struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
+    if (e->searched)
     {
       /* if we've already evaluated this message, use the cached value */
-      if (h->matched)
+      if (e->matched)
       {
         mutt_clear_error();
         if (msg && *msg)
@@ -2459,10 +2459,10 @@ int mutt_search_command(int cur, int op)
     else
     {
       /* remember that we've already searched this message */
-      h->searched = true;
-      h->matched =
-          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context, h, NULL);
-      if (h->matched > 0)
+      e->searched = true;
+      e->matched =
+          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context, e, NULL);
+      if (e->matched > 0)
       {
         mutt_clear_error();
         if (msg && *msg)

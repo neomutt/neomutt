@@ -79,7 +79,7 @@ static int get_color(int index, unsigned char *s)
 {
   struct ColorLineHead *color = NULL;
   struct ColorLine *np = NULL;
-  struct Email *hdr = Context->mailbox->hdrs[Context->mailbox->v2r[index]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[index]];
   int type = *s;
 
   switch (type)
@@ -112,7 +112,7 @@ static int get_color(int index, unsigned char *s)
 
   STAILQ_FOREACH(np, color, entries)
   {
-    if (mutt_pattern_exec(np->color_pattern, MUTT_MATCH_FULL_ADDRESS, Context, hdr, NULL))
+    if (mutt_pattern_exec(np->color_pattern, MUTT_MATCH_FULL_ADDRESS, Context, e, NULL))
       return np->pair;
   }
 

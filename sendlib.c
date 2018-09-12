@@ -1318,7 +1318,7 @@ cleanup:
   }
   a->length = sb.st_size;
   mutt_body_free(&a->parts);
-  a->hdr->content = NULL;
+  a->email->content = NULL;
 }
 
 /**
@@ -1445,24 +1445,24 @@ void mutt_update_encoding(struct Body *a)
 /**
  * mutt_make_message_attach - Create a message attachment
  * @param ctx        Mailbox
- * @param hdr        Header of email
+ * @param e        Email
  * @param attach_msg true if attaching a message
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *hdr, bool attach_msg)
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool attach_msg)
 {
   char buffer[LONG_STRING];
   struct Body *body = NULL;
   FILE *fp = NULL;
   int cmflags, chflags;
-  int pgp = WithCrypto ? hdr->security : 0;
+  int pgp = WithCrypto ? e->security : 0;
 
   if (WithCrypto)
   {
-    if ((MimeForwardDecode || ForwardDecrypt) && (hdr->security & ENCRYPT))
+    if ((MimeForwardDecode || ForwardDecrypt) && (e->security & ENCRYPT))
     {
-      if (!crypt_valid_passphrase(hdr->security))
+      if (!crypt_valid_passphrase(e->security))
         return NULL;
     }
   }
@@ -1481,7 +1481,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *hdr, bo
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  mutt_parse_mime_message(ctx, hdr);
+  mutt_parse_mime_message(ctx, e);
 
   chflags = CH_XMIT;
   cmflags = 0;
@@ -1496,23 +1496,23 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *hdr, bo
     if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIME_ENCRYPT;
   }
-  else if ((WithCrypto != 0) && ForwardDecrypt && (hdr->security & ENCRYPT))
+  else if ((WithCrypto != 0) && ForwardDecrypt && (e->security & ENCRYPT))
   {
-    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(hdr->content))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(e->content))
     {
       chflags |= CH_MIME | CH_NONEWLINE;
       cmflags = MUTT_CM_DECODE_PGP;
       pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             ((mutt_is_application_pgp(hdr->content) & PGP_ENCRYPT) == PGP_ENCRYPT))
+             ((mutt_is_application_pgp(e->content) & PGP_ENCRYPT) == PGP_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~PGP_ENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             ((mutt_is_application_smime(hdr->content) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
+             ((mutt_is_application_smime(e->content) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1520,19 +1520,19 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *hdr, bo
     }
   }
 
-  mutt_copy_message_ctx(fp, ctx, hdr, cmflags, chflags);
+  mutt_copy_message_ctx(fp, ctx, e, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);
 
-  body->hdr = mutt_email_new();
-  body->hdr->offset = 0;
+  body->email = mutt_email_new();
+  body->email->offset = 0;
   /* we don't need the user headers here */
-  body->hdr->env = mutt_rfc822_read_header(fp, body->hdr, false, false);
+  body->email->env = mutt_rfc822_read_header(fp, body->email, false, false);
   if (WithCrypto)
-    body->hdr->security = pgp;
+    body->email->security = pgp;
   mutt_update_encoding(body);
-  body->parts = body->hdr->content;
+  body->parts = body->email->content;
 
   mutt_file_fclose(&fp);
 
@@ -2948,14 +2948,14 @@ void mutt_unprepare_envelope(struct Envelope *env)
 /**
  * bounce_message - Bounce an email message
  * @param fp          Handle of message
- * @param h           Header of email
+ * @param e           Email
  * @param to          Address to bounce to
  * @param resent_from Address of new sender
  * @param env_from    Envelope of original sender
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
+static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
   int rc = 0;
@@ -2963,7 +2963,7 @@ static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
   char tempfile[PATH_MAX];
   struct Message *msg = NULL;
 
-  if (!h)
+  if (!e)
   {
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->mailbox->msg_count; i++)
@@ -2973,7 +2973,7 @@ static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
   }
 
   /* If we failed to open a message, return with error */
-  if (!fp && !(msg = mx_msg_open(Context, h->msgno)))
+  if (!fp && !(msg = mx_msg_open(Context, e->msgno)))
     return -1;
 
   if (!fp)
@@ -2990,16 +2990,16 @@ static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
     if (!BounceDelivered)
       ch_flags |= CH_WEED_DELIVERED;
 
-    fseeko(fp, h->offset, SEEK_SET);
+    fseeko(fp, e->offset, SEEK_SET);
     fprintf(f, "Resent-From: %s", resent_from);
     fprintf(f, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
     msgid_str = gen_msgid();
     fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
     fputs("Resent-To: ", f);
     mutt_write_address_list(to, f, 11, 0);
-    mutt_copy_header(fp, h, f, ch_flags, NULL);
+    mutt_copy_header(fp, e, f, ch_flags, NULL);
     fputc('\n', f);
-    mutt_file_copy_bytes(fp, f, h->content->length);
+    mutt_file_copy_bytes(fp, f, e->content->length);
     FREE(&msgid_str);
     if (mutt_file_fclose(&f) != 0)
     {
@@ -3009,11 +3009,11 @@ static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
     }
 #ifdef USE_SMTP
     if (SmtpUrl)
-      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC_8BIT);
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, e->content->encoding == ENC_8BIT);
     else
 #endif /* USE_SMTP */
       rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
-                                h->content->encoding == ENC_8BIT);
+                                e->content->encoding == ENC_8BIT);
   }
 
   if (msg)
@@ -3025,12 +3025,12 @@ static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
 /**
  * mutt_bounce_message - Bounce an email message
  * @param fp Handle of message
- * @param h  Header of the email
+ * @param e  Email
  * @param to Address to bounce to
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_bounce_message(FILE *fp, struct Email *h, struct Address *to)
+int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
 {
   const char *fqdn = mutt_fqdn(true);
   char resent_from[STRING];
@@ -3071,7 +3071,7 @@ int mutt_bounce_message(FILE *fp, struct Email *h, struct Address *to)
   struct Address *resent_to = mutt_addr_copy_list(to, false);
   rfc2047_encode_addrlist(resent_to, "Resent-To");
 
-  int rc = bounce_message(fp, h, resent_to, resent_from, from);
+  int rc = bounce_message(fp, e, resent_to, resent_from, from);
 
   mutt_addr_free(&resent_to);
   mutt_addr_free(&from);
@@ -3103,7 +3103,7 @@ static void set_noconv_flags(struct Body *b, bool flag)
 /**
  * mutt_write_multiple_fcc - Handle FCC with multiple, comma separated entries
  * @param[in]  path      Path to mailboxes (comma separated)
- * @param[in]  hdr       Header of the email
+ * @param[in]  e       Email
  * @param[in]  msgid     Message id
  * @param[in]  post      If true, postpone message
  * @param[in]  fcc       fcc setting to save (postpone only)
@@ -3111,7 +3111,7 @@ static void set_noconv_flags(struct Body *b, bool flag)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msgid,
+int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid,
                             bool post, char *fcc, char **finalpath)
 {
   char fcc_tok[PATH_MAX];
@@ -3125,7 +3125,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msg
 
   mutt_debug(1, "Fcc: initial mailbox = '%s'\n", tok);
   /* mutt_expand_path already called above for the first token */
-  int status = mutt_write_fcc(tok, hdr, msgid, post, fcc, finalpath);
+  int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath);
   if (status != 0)
     return status;
 
@@ -3139,7 +3139,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msg
     mutt_str_strfcpy(fcc_expanded, tok, sizeof(fcc_expanded));
     mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
     mutt_debug(1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
-    status = mutt_write_fcc(fcc_expanded, hdr, msgid, post, fcc, finalpath);
+    status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath);
     if (status != 0)
       return status;
   }
@@ -3150,7 +3150,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msg
 /**
  * mutt_write_fcc - Write email to FCC mailbox
  * @param[in]  path      Path to mailbox
- * @param[in]  hdr       Header of the email
+ * @param[in]  e       Email
  * @param[in]  msgid     Message id
  * @param[in]  post      If true, postpone message
  * @param[in]  fcc       fcc setting to save (postpone only)
@@ -3158,7 +3158,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msg
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
+int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
                    bool post, char *fcc, char **finalpath)
 {
   struct Message *msg = NULL;
@@ -3171,7 +3171,7 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
   int onm_flags;
 
   if (post)
-    set_noconv_flags(hdr->content, true);
+    set_noconv_flags(e->content, true);
 
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path);
@@ -3201,11 +3201,11 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
     stat(path, &st);
   }
 
-  hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
+  e->read = !post; /* make sure to put it in the `cur' directory (maildir) */
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_msg_open_new(f, hdr, onm_flags);
+  msg = mx_msg_open_new(f, e, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
@@ -3216,7 +3216,7 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
   /* post == 1 => postpone message. Set mode = -1 in mutt_rfc822_write_header()
    * post == 0 => Normal mode. Set mode = 0 in mutt_rfc822_write_header()
    */
-  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -1 : 0, false);
+  mutt_rfc822_write_header(msg->fp, e->env, e->content, post ? -1 : 0, false);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -3242,43 +3242,43 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
     fprintf(msg->fp, "%s", mutt_date_make_date(buf, sizeof(buf)));
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
-  if (((WithCrypto & APPLICATION_PGP) != 0) && post && (hdr->security & APPLICATION_PGP))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && post && (e->security & APPLICATION_PGP))
   {
     fputs("X-Mutt-PGP: ", msg->fp);
-    if (hdr->security & ENCRYPT)
+    if (e->security & ENCRYPT)
       fputc('E', msg->fp);
-    if (hdr->security & OPPENCRYPT)
+    if (e->security & OPPENCRYPT)
       fputc('O', msg->fp);
-    if (hdr->security & SIGN)
+    if (e->security & SIGN)
     {
       fputc('S', msg->fp);
       if (PgpSignAs && *PgpSignAs)
         fprintf(msg->fp, "<%s>", PgpSignAs);
     }
-    if (hdr->security & INLINE)
+    if (e->security & INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (hdr->security & APPLICATION_SMIME))
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (e->security & APPLICATION_SMIME))
   {
     fputs("X-Mutt-SMIME: ", msg->fp);
-    if (hdr->security & ENCRYPT)
+    if (e->security & ENCRYPT)
     {
       fputc('E', msg->fp);
       if (SmimeEncryptWith && *SmimeEncryptWith)
         fprintf(msg->fp, "C<%s>", SmimeEncryptWith);
     }
-    if (hdr->security & OPPENCRYPT)
+    if (e->security & OPPENCRYPT)
       fputc('O', msg->fp);
-    if (hdr->security & SIGN)
+    if (e->security & SIGN)
     {
       fputc('S', msg->fp);
       if (SmimeSignAs && *SmimeSignAs)
         fprintf(msg->fp, "<%s>", SmimeSignAs);
     }
-    if (hdr->security & INLINE)
+    if (e->security & INLINE)
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }
@@ -3288,11 +3288,11 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
    * chain, save that information
    */
 
-  if (post && !STAILQ_EMPTY(&hdr->chain))
+  if (post && !STAILQ_EMPTY(&e->chain))
   {
     fputs("X-Mutt-Mix:", msg->fp);
     struct ListNode *p = NULL;
-    STAILQ_FOREACH(p, &hdr->chain, entries)
+    STAILQ_FOREACH(p, &e->chain, entries)
     {
       fprintf(msg->fp, " %s", (char *) p->data);
     }
@@ -3306,7 +3306,7 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
     char sasha[LONG_STRING];
     int lines = 0;
 
-    mutt_write_mime_body(hdr->content, tempfp);
+    mutt_write_mime_body(e->content, tempfp);
 
     /* make sure the last line ends with a newline.  Emacs doesn't ensure
      * this will happen, and it can cause problems parsing the mailbox
@@ -3350,7 +3350,7 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
   else
   {
     fputc('\n', msg->fp); /* finish off the header */
-    rc = mutt_write_mime_body(hdr->content, msg->fp);
+    rc = mutt_write_mime_body(e->content, msg->fp);
   }
 
   if (mx_msg_commit(f, msg) != 0)
@@ -3364,7 +3364,7 @@ int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
     mutt_mailbox_cleanup(path, &st);
 
   if (post)
-    set_noconv_flags(hdr->content, false);
+    set_noconv_flags(e->content, false);
 
 done:
 #ifdef RECORD_FOLDER_HOOK

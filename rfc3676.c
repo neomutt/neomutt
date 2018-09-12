@@ -377,7 +377,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
 /**
  * rfc3676_space_stuff - Perform required RFC3676 space stuffing
- * @param hdr Header of email
+ * @param e Email
  *
  * Space stuffing means that we have to add leading spaces to
  * certain lines:
@@ -391,7 +391,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
  * freshly created copy in a tempfile and modifies the file's mtime so we don't
  * trigger code paths watching for mtime changes
  */
-void rfc3676_space_stuff(struct Email *hdr)
+void rfc3676_space_stuff(struct Email *e)
 {
   int lc = 0;
   size_t len = 0;
@@ -400,12 +400,12 @@ void rfc3676_space_stuff(struct Email *hdr)
   char buf[LONG_STRING];
   char tmpfile[PATH_MAX];
 
-  if (!hdr || !hdr->content || !hdr->content->filename)
+  if (!e || !e->content || !e->content->filename)
     return;
 
-  mutt_debug(2, "f=f: postprocess %s\n", hdr->content->filename);
+  mutt_debug(2, "f=f: postprocess %s\n", e->content->filename);
 
-  in = mutt_file_fopen(hdr->content->filename, "r");
+  in = mutt_file_fopen(e->content->filename, "r");
   if (!in)
     return;
 
@@ -437,7 +437,7 @@ void rfc3676_space_stuff(struct Email *hdr)
   }
   mutt_file_fclose(&in);
   mutt_file_fclose(&out);
-  mutt_file_set_mtime(hdr->content->filename, tmpfile);
-  unlink(hdr->content->filename);
-  mutt_str_replace(&hdr->content->filename, tmpfile);
+  mutt_file_set_mtime(e->content->filename, tmpfile);
+  unlink(e->content->filename);
+  mutt_str_replace(&e->content->filename, tmpfile);
 }

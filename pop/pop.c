@@ -113,13 +113,13 @@ static int fetch_message(char *line, void *file)
 /**
  * pop_read_header - Read header
  * @param pop_data POP data
- * @param h        Email header
+ * @param e        Email header
  * @retval  0 Success
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
  * @retval -3 Error writing to tempfile
  */
-static int pop_read_header(struct PopData *pop_data, struct Email *h)
+static int pop_read_header(struct PopData *pop_data, struct Email *e)
 {
   FILE *f = mutt_file_mkstemp();
   if (!f)
@@ -132,13 +132,13 @@ static int pop_read_header(struct PopData *pop_data, struct Email *h)
   size_t length = 0;
   char buf[LONG_STRING];
 
-  snprintf(buf, sizeof(buf), "LIST %d\r\n", h->refno);
+  snprintf(buf, sizeof(buf), "LIST %d\r\n", e->refno);
   int rc = pop_query(pop_data, buf, sizeof(buf));
   if (rc == 0)
   {
     sscanf(buf, "+OK %d %zu", &index, &length);
 
-    snprintf(buf, sizeof(buf), "TOP %d 0\r\n", h->refno);
+    snprintf(buf, sizeof(buf), "TOP %d 0\r\n", e->refno);
     rc = pop_fetch_data(pop_data, buf, NULL, fetch_message, f);
 
     if (pop_data->cmd_top == 2)
@@ -166,12 +166,12 @@ static int pop_read_header(struct PopData *pop_data, struct Email *h)
     case 0:
     {
       rewind(f);
-      h->env = mutt_rfc822_read_header(f, h, false, false);
-      h->content->length = length - h->content->offset + 1;
+      e->env = mutt_rfc822_read_header(f, e, false, false);
+      e->content->length = length - e->content->offset + 1;
       rewind(f);
       while (!feof(f))
       {
-        h->content->length--;
+        e->content->length--;
         fgets(buf, sizeof(buf), f);
       }
       break;
@@ -389,18 +389,18 @@ static int pop_fetch_headers(struct Context *ctx)
         char *uidl = mutt_str_strdup(ctx->mailbox->hdrs[i]->data);
         int refno = ctx->mailbox->hdrs[i]->refno;
         int index = ctx->mailbox->hdrs[i]->index;
-        /* - POP dynamically numbers headers and relies on h->refno
+        /* - POP dynamically numbers headers and relies on e->refno
          *   to map messages; so restore header and overwrite restored
          *   refno with current refno, same for index
-         * - h->data needs to a separate pointer as it's driver-specific
+         * - e->data needs to a separate pointer as it's driver-specific
          *   data freed separately elsewhere
-         *   (the old h->data should point inside a malloc'd block from
+         *   (the old e->data should point inside a malloc'd block from
          *   hcache so there shouldn't be a memleak here)
          */
-        struct Email *h = mutt_hcache_restore((unsigned char *) data);
+        struct Email *e = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
         mutt_email_free(&ctx->mailbox->hdrs[i]);
-        ctx->mailbox->hdrs[i] = h;
+        ctx->mailbox->hdrs[i] = e;
         ctx->mailbox->hdrs[i]->refno = refno;
         ctx->mailbox->hdrs[i]->index = index;
         ctx->mailbox->hdrs[i]->data = uidl;
@@ -896,22 +896,22 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   char path[PATH_MAX];
   struct Progress progressbar;
   struct PopData *pop_data = ctx->mailbox->data;
-  struct Email *h = ctx->mailbox->hdrs[msgno];
+  struct Email *e = ctx->mailbox->hdrs[msgno];
   bool bcache = true;
 
   /* see if we already have the message in body cache */
-  msg->fp = mutt_bcache_get(pop_data->bcache, cache_id(h->data));
+  msg->fp = mutt_bcache_get(pop_data->bcache, cache_id(e->data));
   if (msg->fp)
     return 0;
 
   /* see if we already have the message in our cache in
    * case $message_cachedir is unset
    */
-  struct PopCache *cache = &pop_data->cache[h->index % POP_CACHE_LEN];
+  struct PopCache *cache = &pop_data->cache[e->index % POP_CACHE_LEN];
 
   if (cache->path)
   {
-    if (cache->index == h->index)
+    if (cache->index == e->index)
     {
       /* yes, so just return a pointer to the message */
       msg->fp = fopen(cache->path, "r");
@@ -935,7 +935,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       return -1;
 
     /* verify that massage index is correct */
-    if (h->refno < 0)
+    if (e->refno < 0)
     {
       mutt_error(
           _("The message index is incorrect. Try reopening the mailbox."));
@@ -943,10 +943,10 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     }
 
     mutt_progress_init(&progressbar, _("Fetching message..."), MUTT_PROGRESS_SIZE,
-                       NetInc, h->content->length + h->content->offset - 1);
+                       NetInc, e->content->length + e->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
-    msg->fp = mutt_bcache_put(pop_data->bcache, cache_id(h->data));
+    msg->fp = mutt_bcache_put(pop_data->bcache, cache_id(e->data));
     if (!msg->fp)
     {
       /* no */
@@ -960,7 +960,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       }
     }
 
-    snprintf(buf, sizeof(buf), "RETR %d\r\n", h->refno);
+    snprintf(buf, sizeof(buf), "RETR %d\r\n", e->refno);
 
     const int ret = pop_fetch_data(pop_data, buf, &progressbar, fetch_message, msg->fp);
     if (ret == 0)
@@ -991,27 +991,27 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
    * portion of the headers, those required for the main display.
    */
   if (bcache)
-    mutt_bcache_commit(pop_data->bcache, cache_id(h->data));
+    mutt_bcache_commit(pop_data->bcache, cache_id(e->data));
   else
   {
-    cache->index = h->index;
+    cache->index = e->index;
     cache->path = mutt_str_strdup(path);
   }
   rewind(msg->fp);
-  void *uidl = h->data;
+  void *uidl = e->data;
 
   /* we replace envelope, key in subj_hash has to be updated as well */
-  if (ctx->mailbox->subj_hash && h->env->real_subj)
-    mutt_hash_delete(ctx->mailbox->subj_hash, h->env->real_subj, h);
-  mutt_label_hash_remove(ctx->mailbox, h);
-  mutt_env_free(&h->env);
-  h->env = mutt_rfc822_read_header(msg->fp, h, false, false);
-  if (ctx->mailbox->subj_hash && h->env->real_subj)
-    mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
-  mutt_label_hash_add(ctx->mailbox, h);
+  if (ctx->mailbox->subj_hash && e->env->real_subj)
+    mutt_hash_delete(ctx->mailbox->subj_hash, e->env->real_subj, e);
+  mutt_label_hash_remove(ctx->mailbox, e);
+  mutt_env_free(&e->env);
+  e->env = mutt_rfc822_read_header(msg->fp, e, false, false);
+  if (ctx->mailbox->subj_hash && e->env->real_subj)
+    mutt_hash_insert(ctx->mailbox->subj_hash, e->env->real_subj, e);
+  mutt_label_hash_add(ctx->mailbox, e);
 
-  h->data = uidl;
-  h->lines = 0;
+  e->data = uidl;
+  e->lines = 0;
   fgets(buf, sizeof(buf), msg->fp);
   while (!feof(msg->fp))
   {
@@ -1019,11 +1019,11 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     fgets(buf, sizeof(buf), msg->fp);
   }
 
-  h->content->length = ftello(msg->fp) - h->content->offset;
+  e->content->length = ftello(msg->fp) - e->content->offset;
 
   /* This needs to be done in case this is a multipart message */
   if (!WithCrypto)
-    h->security = crypt_query(h->content);
+    e->security = crypt_query(e->content);
 
   mutt_clear_error();
   rewind(msg->fp);

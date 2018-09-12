@@ -801,11 +801,11 @@ void crypt_convert_to_7bit(struct Body *a)
 
 /**
  * crypt_extract_keys_from_messages - Extract keys from a message
- * @param h Header of email
+ * @param e Email
  *
  * The extracted keys will be added to the user's keyring.
  */
-void crypt_extract_keys_from_messages(struct Email *h)
+void crypt_extract_keys_from_messages(struct Email *e)
 {
   char tempfname[PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
@@ -825,25 +825,25 @@ void crypt_extract_keys_from_messages(struct Email *h)
   if (WithCrypto & APPLICATION_PGP)
     OptDontHandlePgpKeys = true;
 
-  if (!h)
+  if (!e)
   {
     for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Email *hi = Context->mailbox->hdrs[i];
+      struct Email *ei = Context->mailbox->hdrs[i];
 
-      mutt_parse_mime_message(Context, hi);
-      if (hi->security & ENCRYPT && !crypt_valid_passphrase(hi->security))
+      mutt_parse_mime_message(Context, ei);
+      if (ei->security & ENCRYPT && !crypt_valid_passphrase(ei->security))
       {
         mutt_file_fclose(&fpout);
         break;
       }
 
-      if (((WithCrypto & APPLICATION_PGP) != 0) && (hi->security & APPLICATION_PGP))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && (ei->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context, hi, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context, ei, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
         mutt_endwin();
@@ -851,22 +851,22 @@ void crypt_extract_keys_from_messages(struct Email *h)
         crypt_pgp_invoke_import(tempfname);
       }
 
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && (hi->security & APPLICATION_SMIME))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && (ei->security & APPLICATION_SMIME))
       {
-        if (hi->security & ENCRYPT)
+        if (ei->security & ENCRYPT)
         {
-          mutt_copy_message_ctx(fpout, Context, hi,
+          mutt_copy_message_ctx(fpout, Context, ei,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
         }
         else
-          mutt_copy_message_ctx(fpout, Context, hi, 0, 0);
+          mutt_copy_message_ctx(fpout, Context, ei, 0, 0);
         fflush(fpout);
 
-        if (hi->env->from)
-          tmp = mutt_expand_aliases(hi->env->from);
-        else if (hi->env->sender)
-          tmp = mutt_expand_aliases(hi->env->sender);
+        if (ei->env->from)
+          tmp = mutt_expand_aliases(ei->env->from);
+        else if (ei->env->sender)
+          tmp = mutt_expand_aliases(ei->env->sender);
         mbox = tmp ? tmp->mailbox : NULL;
         if (mbox)
         {
@@ -882,34 +882,34 @@ void crypt_extract_keys_from_messages(struct Email *h)
   }
   else
   {
-    mutt_parse_mime_message(Context, h);
-    if (!(h->security & ENCRYPT && !crypt_valid_passphrase(h->security)))
+    mutt_parse_mime_message(Context, e);
+    if (!(e->security & ENCRYPT && !crypt_valid_passphrase(e->security)))
     {
-      if (((WithCrypto & APPLICATION_PGP) != 0) && (h->security & APPLICATION_PGP))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
         mutt_endwin();
         puts(_("Trying to extract PGP keys...\n"));
         crypt_pgp_invoke_import(tempfname);
       }
 
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && (h->security & APPLICATION_SMIME))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
       {
-        if (h->security & ENCRYPT)
+        if (e->security & ENCRYPT)
         {
-          mutt_copy_message_ctx(fpout, Context, h,
+          mutt_copy_message_ctx(fpout, Context, e,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
         }
         else
-          mutt_copy_message_ctx(fpout, Context, h, 0, 0);
+          mutt_copy_message_ctx(fpout, Context, e, 0, 0);
 
         fflush(fpout);
-        if (h->env->from)
-          tmp = mutt_expand_aliases(h->env->from);
-        else if (h->env->sender)
-          tmp = mutt_expand_aliases(h->env->sender);
+        if (e->env->from)
+          tmp = mutt_expand_aliases(e->env->from);
+        else if (e->env->sender)
+          tmp = mutt_expand_aliases(e->env->sender);
         mbox = tmp ? tmp->mailbox : NULL;
         if (mbox) /* else ? */
         {
@@ -1011,7 +1011,7 @@ int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 
 /**
  * crypt_opportunistic_encrypt - Can all recipients be determined
- * @param msg Header of email
+ * @param msg Email
  *
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.

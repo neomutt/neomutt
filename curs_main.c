@@ -181,7 +181,7 @@ static const char *NoVisible = N_("No visible messages");
  */
 static void collapse_all(struct Menu *menu, int toggle)
 {
-  struct Email *h = NULL, *base = NULL;
+  struct Email *e = NULL, *base = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
@@ -206,14 +206,14 @@ static void collapse_all(struct Menu *menu, int toggle)
   {
     while (!thread->message)
       thread = thread->child;
-    h = thread->message;
+    e = thread->message;
 
-    if (h->collapsed != Context->collapsed)
+    if (e->collapsed != Context->collapsed)
     {
-      if (h->collapsed)
-        mutt_uncollapse_thread(Context, h);
-      else if (CAN_COLLAPSE(h))
-        mutt_collapse_thread(Context, h);
+      if (e->collapsed)
+        mutt_uncollapse_thread(Context, e);
+      else if (CAN_COLLAPSE(e))
+        mutt_collapse_thread(Context, e);
     }
     top = top->next;
   }
@@ -395,19 +395,19 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
   {
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
-      struct Email *h = NULL;
+      struct Email *e = NULL;
 
       if ((check != MUTT_REOPENED) && oldcount)
-        h = save_new[i - oldcount];
+        e = save_new[i - oldcount];
       else
-        h = ctx->mailbox->hdrs[i];
+        e = ctx->mailbox->hdrs[i];
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, h, NULL))
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, e, NULL))
       {
         /* virtual will get properly set by mutt_set_virtual(), which
          * is called by mutt_sort_headers() just below. */
-        h->virtual = 1;
-        h->limited = true;
+        e->virtual = 1;
+        e->limited = true;
       }
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
@@ -652,17 +652,17 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
   if (!Context || !menu || (num < 0) || (num >= Context->mailbox->hdrmax))
     return;
 
-  struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
-  if (!h)
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
+  if (!e)
     return;
 
   enum FormatFlag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
 
-  if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
+  if ((Sort & SORT_MASK) == SORT_THREADS && e->tree)
   {
     flag |= MUTT_FORMAT_TREE; /* display the thread tree */
-    if (h->display_subject)
+    if (e->display_subject)
       flag |= MUTT_FORMAT_FORCESUBJ;
     else
     {
@@ -678,7 +678,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       else
         edgemsgno = Context->mailbox->v2r[menu->top];
 
-      for (tmp = h->thread->parent; tmp; tmp = tmp->parent)
+      for (tmp = e->thread->parent; tmp; tmp = tmp->parent)
       {
         if (!tmp->message)
           continue;
@@ -695,7 +695,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       }
       if (flag & MUTT_FORMAT_FORCESUBJ)
       {
-        for (tmp = h->thread->prev; tmp; tmp = tmp->prev)
+        for (tmp = e->thread->prev; tmp; tmp = tmp->prev)
         {
           if (!tmp->message)
             continue;
@@ -713,7 +713,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
     }
   }
 
-  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, h, flag);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, e, flag);
 }
 
 /**
@@ -727,14 +727,14 @@ int index_color(int index_no)
   if (!Context || (index_no < 0))
     return 0;
 
-  struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
 
-  if (h && h->pair)
-    return h->pair;
+  if (e && e->pair)
+    return e->pair;
 
-  mutt_set_header_color(Context, h);
-  if (h)
-    return h->pair;
+  mutt_set_header_color(Context, e);
+  if (e)
+    return e->pair;
 
   return 0;
 }
@@ -1310,7 +1310,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (Context->mailbox->magic == MUTT_NNTP)
         {
-          struct Email *hdr = NULL;
+          struct Email *e = NULL;
 
           if (op == OP_GET_MESSAGE)
           {
@@ -1333,19 +1333,19 @@ int mutt_index_menu(void)
           }
           if (!Context->mailbox->id_hash)
             Context->mailbox->id_hash = mutt_make_id_hash(Context->mailbox);
-          hdr = mutt_hash_find(Context->mailbox->id_hash, buf);
-          if (hdr)
+          e = mutt_hash_find(Context->mailbox->id_hash, buf);
+          if (e)
           {
-            if (hdr->virtual != -1)
+            if (e->virtual != -1)
             {
-              menu->current = hdr->virtual;
+              menu->current = e->virtual;
               menu->redraw = REDRAW_MOTION_RESYNCH;
             }
-            else if (hdr->collapsed)
+            else if (e->collapsed)
             {
-              mutt_uncollapse_thread(Context, hdr);
+              mutt_uncollapse_thread(Context, e);
               mutt_set_virtual(Context);
-              menu->current = hdr->virtual;
+              menu->current = e->virtual;
               menu->redraw = REDRAW_MOTION_RESYNCH;
             }
             else
@@ -1359,9 +1359,9 @@ int mutt_index_menu(void)
             rc2 = nntp_check_msgid(Context, buf);
             if (rc2 == 0)
             {
-              hdr = Context->mailbox->hdrs[Context->mailbox->msg_count - 1];
+              e = Context->mailbox->hdrs[Context->mailbox->msg_count - 1];
               mutt_sort_headers(Context, false);
-              menu->current = hdr->virtual;
+              menu->current = e->virtual;
               menu->redraw = REDRAW_FULL;
             }
             else if (rc2 > 0)
@@ -1420,7 +1420,7 @@ int mutt_index_menu(void)
           if (Context->mailbox->msg_count > oldmsgcount)
           {
             struct Email *oldcur = CURHDR;
-            struct Email *hdr = NULL;
+            struct Email *e = NULL;
             bool quiet = Context->mailbox->quiet;
 
             if (rc2 < 0)
@@ -1439,9 +1439,9 @@ int mutt_index_menu(void)
             }
 
             /* if the root message was retrieved, move to it */
-            hdr = mutt_hash_find(Context->mailbox->id_hash, buf);
-            if (hdr)
-              menu->current = hdr->virtual;
+            e = mutt_hash_find(Context->mailbox->id_hash, buf);
+            if (e)
+              menu->current = e->virtual;
 
             /* try to restore old position */
             else
@@ -1495,14 +1495,14 @@ int mutt_index_menu(void)
           mutt_error(_("That message is not visible"));
         else
         {
-          struct Email *hdr = Context->mailbox->hdrs[i - 1];
+          struct Email *e = Context->mailbox->hdrs[i - 1];
 
-          if (mutt_messages_in_thread(Context, hdr, 1) != 1)
+          if (mutt_messages_in_thread(Context, e, 1) != 1)
           {
-            mutt_uncollapse_thread(Context, hdr);
+            mutt_uncollapse_thread(Context, e);
             mutt_set_virtual(Context);
           }
-          menu->current = hdr->virtual;
+          menu->current = e->virtual;
         }
 
         if (menu->menu == MENU_PAGER)
@@ -2588,19 +2588,19 @@ int mutt_index_menu(void)
             }
           }
 
-          struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
-          if (h->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
+          struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
+          if (e->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
           {
-            if (UNREAD(h) && first_unread == -1)
+            if (UNREAD(e) && first_unread == -1)
               first_unread = i;
-            if (UNREAD(h) == 1 && first_new == -1)
+            if (UNREAD(e) == 1 && first_new == -1)
               first_new = i;
           }
-          else if ((!h->deleted && !h->read))
+          else if ((!e->deleted && !e->read))
           {
             if (first_unread == -1)
               first_unread = i;
-            if ((!h->old) && first_new == -1)
+            if ((!e->old) && first_new == -1)
               first_new = i;
           }
 
