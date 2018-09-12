@@ -1654,7 +1654,7 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
     if (p)
       *p = '\0';
 
-    maildir_flags(suffix, sizeof(suffix), h);
+    maildir_gen_flags(suffix, sizeof(suffix), h);
 
     snprintf(partpath, sizeof(partpath), "%s/%s%s",
              (h->read || h->old) ? "cur" : "new", newpath, suffix);
@@ -1998,7 +1998,7 @@ struct Header *maildir_parse_message(enum MailboxType magic, const char *fname,
  * @param destlen Length of buffer
  * @param hdr     Header of the email
  */
-void maildir_flags(char *dest, size_t destlen, struct Header *hdr)
+void maildir_gen_flags(char *dest, size_t destlen, struct Header *hdr)
 {
   *dest = '\0';
 
@@ -2526,7 +2526,7 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
     bool deleted = hdr->deleted;
     hdr->deleted = false;
 
-    maildir_flags(suffix, sizeof(suffix), hdr);
+    maildir_gen_flags(suffix, sizeof(suffix), hdr);
 
     hdr->deleted = deleted;
   }

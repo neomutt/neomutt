@@ -52,8 +52,8 @@ struct Header;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
- * maibox->path     == plaintext file
- * maibox->realpath == compressed file
+ * - mailbox->path     == plaintext file
+ * - mailbox->realpath == compressed file
  */
 
 /**

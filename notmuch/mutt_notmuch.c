@@ -1544,7 +1544,7 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen,
     *p = '\0';
 
   /* compose new flags */
-  maildir_flags(suffix, sizeof(suffix), h);
+  maildir_gen_flags(suffix, sizeof(suffix), h);
 
   snprintf(buf, buflen, "%s/%s/%s%s", folder,
            (h->read || h->old) ? "cur" : "new", filename, suffix);
