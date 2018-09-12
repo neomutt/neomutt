@@ -1031,6 +1031,11 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 {
   int oldmsgcount = ctx->mailbox->msg_count;
 
+  /* Allocate some memory to get started */
+  ctx->mailbox->msg_count = 1;
+  mx_alloc_memory(ctx->mailbox);
+  ctx->mailbox->msg_count = 0;
+
   while (md)
   {
     mutt_debug(2, "Considering %s\n", NONULL(md->canon_fname));
