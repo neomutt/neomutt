@@ -1215,7 +1215,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
  * New = not read and not cached
  * Old = not read but cached
  */
-void nntp_article_status(struct Mailbox *mailbox, struct Header *hdr, char *group, anum_t anum)
+void nntp_article_status(struct Mailbox *mailbox, struct Email *hdr, char *group, anum_t anum)
 {
   struct NntpData *nntp_data = mailbox->data;
 

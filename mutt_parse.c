@@ -41,7 +41,7 @@ struct Context;
  * @param ctx Mailbox
  * @param cur Header of email
  */
-void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
+void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
 {
   struct Message *msg = NULL;
 
@@ -211,7 +211,7 @@ static int count_body_parts(struct Body *body, int flags)
  * @param hdr Header of email
  * @retval num Number of MIME Body parts
  */
-int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
+int mutt_count_body_parts(struct Context *ctx, struct Email *hdr)
 {
   bool keep_parts = false;
 

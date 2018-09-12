@@ -45,7 +45,7 @@
 #include "mx.h"
 
 struct ConnAccount;
-struct Header;
+struct Email;
 struct Context;
 
 /* These Config Variables are only used in nntp/nntp.c */
@@ -169,7 +169,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
                             const char *src, const char *prec, const char *if_str,
                             const char *else_str, unsigned long data, enum FormatFlag flags);
 
-void nntp_article_status(struct Mailbox *mailbox, struct Header *hdr, char *group, anum_t anum);
+void nntp_article_status(struct Mailbox *mailbox, struct Email *hdr, char *group, anum_t anum);
 
 extern struct NntpServer *CurrentNewsSrv;
 

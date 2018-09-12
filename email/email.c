@@ -1,6 +1,6 @@
 /**
  * @file
- * Representation of the email's header
+ * Representation of an email
  *
  * @authors
  * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
@@ -21,24 +21,24 @@
  */
 
 /**
- * @page email_header Representation of the email's header
+ * @page email_email Representation of an email
  *
- * Representation of the email's header
+ * Representation of an email
  */
 
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/mutt.h"
-#include "header.h"
+#include "email.h"
 #include "body.h"
 #include "envelope.h"
 #include "tags.h"
 
 /**
- * mutt_header_free - Free an email Header
- * @param h Header to free
+ * mutt_email_free - Free an Email
+ * @param h Email to free
  */
-void mutt_header_free(struct Header **h)
+void mutt_email_free(struct Email **h)
 {
   if (!h || !*h)
     return;
@@ -58,12 +58,12 @@ void mutt_header_free(struct Header **h)
 }
 
 /**
- * mutt_header_new - Create a new email Header
- * @retval ptr Newly created Header
+ * mutt_email_new - Create a new Email
+ * @retval ptr Newly created Email
  */
-struct Header *mutt_header_new(void)
+struct Email *mutt_email_new(void)
 {
-  struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
+  struct Email *h = mutt_mem_calloc(1, sizeof(struct Email));
 #ifdef MIXMASTER
   STAILQ_INIT(&h->chain);
 #endif
@@ -72,12 +72,12 @@ struct Header *mutt_header_new(void)
 }
 
 /**
- * mutt_header_cmp_strict - Strictly compare message headers
- * @param h1 First Header
- * @param h2 Second Header
- * @retval true Headers are strictly identical
+ * mutt_email_cmp_strict - Strictly compare message emails
+ * @param h1 First Email
+ * @param h2 Second Email
+ * @retval true Emails are strictly identical
  */
-bool mutt_header_cmp_strict(const struct Header *h1, const struct Header *h2)
+bool mutt_email_cmp_strict(const struct Email *h1, const struct Email *h2)
 {
   if (h1 && h2)
   {

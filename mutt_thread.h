@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 struct Context;
-struct Header;
+struct Email;
 struct Mailbox;
 struct MuttThread;
 
@@ -49,13 +49,13 @@ extern bool ThreadReceived;
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4)
 #define MUTT_THREAD_FLAGGED     (1 << 5)
 
-int mutt_aside_thread(struct Header *hdr, bool forwards, bool subthreads);
+int mutt_aside_thread(struct Email *hdr, bool forwards, bool subthreads);
 #define mutt_next_thread(x)        mutt_aside_thread(x, true,  false)
 #define mutt_previous_thread(x)    mutt_aside_thread(x, false, false)
 #define mutt_next_subthread(x)     mutt_aside_thread(x, true,  true)
 #define mutt_previous_subthread(x) mutt_aside_thread(x, false, true)
 
-int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag);
+int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag);
 #define mutt_collapse_thread(x, y)         mutt_traverse_thread(x, y, MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(x, y)       mutt_traverse_thread(x, y, MUTT_THREAD_UNCOLLAPSE)
 #define mutt_get_hidden(x, y)              mutt_traverse_thread(x, y, MUTT_THREAD_GET_HIDDEN)
@@ -63,14 +63,14 @@ int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag);
 #define mutt_thread_contains_flagged(x, y) mutt_traverse_thread(x, y, MUTT_THREAD_FLAGGED)
 #define mutt_thread_next_unread(x, y)      mutt_traverse_thread(x, y, MUTT_THREAD_NEXT_UNREAD)
 
-int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx);
-int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag);
+int mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx);
+int mutt_messages_in_thread(struct Context *ctx, struct Email *hdr, int flag);
 void mutt_draw_tree(struct Context *ctx);
 
 void mutt_clear_threads(struct Context *ctx);
 struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init);
 void mutt_sort_threads(struct Context *ctx, bool init);
-int mutt_parent_message(struct Context *ctx, struct Header *hdr, bool find_root);
+int mutt_parent_message(struct Context *ctx, struct Email *hdr, bool find_root);
 void mutt_set_virtual(struct Context *ctx);
 struct Hash *mutt_make_id_hash(struct Mailbox *mailbox);
 

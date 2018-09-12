@@ -572,10 +572,10 @@ void serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *of
  * This function transforms a header into a char so that it is useable by
  * db_store.
  */
-void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
+void *mutt_hcache_dump(header_cache_t *h, const struct Email *header, int *off,
                        unsigned int uidvalidity)
 {
-  struct Header nh;
+  struct Email nh;
   bool convert = !CharsetIsUtf8;
 
   *off = 0;
@@ -593,8 +593,8 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
 
   d = serial_dump_int(h->crc, d, off);
 
-  lazy_realloc(&d, *off + sizeof(struct Header));
-  memcpy(&nh, header, sizeof(struct Header));
+  lazy_realloc(&d, *off + sizeof(struct Email));
+  memcpy(&nh, header, sizeof(struct Email));
 
   /* some fields are not safe to cache */
   nh.tagged = false;
@@ -618,8 +618,8 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
 #endif
   nh.data = NULL;
 
-  memcpy(d + *off, &nh, sizeof(struct Header));
-  *off += sizeof(struct Header);
+  memcpy(d + *off, &nh, sizeof(struct Email));
+  *off += sizeof(struct Email);
 
   d = serial_dump_envelope(nh.env, d, off, convert);
   d = serial_dump_body(nh.content, d, off, convert);
@@ -633,10 +633,10 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
  * @param d Binary blob
  * @retval ptr Reconstructed Header
  */
-struct Header *mutt_hcache_restore(const unsigned char *d)
+struct Email *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  struct Header *h = mutt_header_new();
+  struct Email *h = mutt_email_new();
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */
@@ -645,8 +645,8 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   /* skip crc */
   off += sizeof(unsigned int);
 
-  memcpy(h, d + off, sizeof(struct Header));
-  off += sizeof(struct Header);
+  memcpy(h, d + off, sizeof(struct Email));
+  off += sizeof(struct Email);
 
   STAILQ_INIT(&h->tags);
 #ifdef MIXMASTER

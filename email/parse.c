@@ -37,10 +37,10 @@
 #include "parse.h"
 #include "address.h"
 #include "body.h"
+#include "email.h"
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
-#include "header.h"
 #include "mime.h"
 #include "parameter.h"
 #include "rfc2047.h"
@@ -495,7 +495,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
  * Process a line from an email header.  Each line that is recognised is parsed
  * and the information put in the Envelope or Header.
  */
-int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
+int mutt_rfc822_parse_line(struct Envelope *e, struct Email *hdr, char *line,
                            char *p, bool user_hdrs, bool weed, bool do_2047)
 {
   bool matched = false;
@@ -960,7 +960,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
  *
  * Caller should free the Envelope using mutt_env_free().
  */
-struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr, bool user_hdrs, bool weed)
+struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *hdr, bool user_hdrs, bool weed)
 {
   struct Envelope *e = mutt_env_new();
   char *line = mutt_mem_malloc(LONG_STRING);
@@ -1374,7 +1374,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
  */
 struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {
-  parent->hdr = mutt_header_new();
+  parent->hdr = mutt_email_new();
   parent->hdr->offset = ftello(fp);
   parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, false, false);
   struct Body *msg = parent->hdr->content;

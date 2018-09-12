@@ -33,7 +33,7 @@
  * | email/email_globals.c  | @subpage email_globals   |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
- * | email/header.c         | @subpage email_header    |
+ * | email/email.c          | @subpage email_email     |
  * | email/idna.c           | @subpage email_idna      |
  * | email/mime.c           | @subpage email_mime      |
  * | email/parameter.c      | @subpage email_parameter |
@@ -52,10 +52,10 @@
 #include "attach.h"
 #include "body.h"
 #include "content.h"
+#include "email.h"
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
-#include "header.h"
 #include "idna2.h"
 #include "mime.h"
 #include "parameter.h"

@@ -399,7 +399,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * prefix
  * * string to use if CH_PREFIX is set
  */
-int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Email *h, FILE *out, int flags, const char *prefix)
 {
   if (h->env)
   {
@@ -577,7 +577,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
  * * #MUTT_CM_CHARCONV   perform character set conversion
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *hdr, int flags, int chflags)
 {
   struct Body *body = hdr->content;
   char prefix[SHORT_STRING];
@@ -786,7 +786,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *hdr,
                           int flags, int chflags)
 {
   struct Message *msg = mx_msg_open(src, hdr->msgno);
@@ -816,7 +816,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
  * @retval -1 Error
  */
 static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
-                          struct Header *hdr, int flags, int chflags)
+                          struct Email *hdr, int flags, int chflags)
 {
   char buf[STRING];
   struct Message *msg = NULL;
@@ -858,7 +858,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
  * @retval -1 Failure
  */
 int mutt_append_message(struct Context *dest, struct Context *src,
-                        struct Header *hdr, int cmflags, int chflags)
+                        struct Email *hdr, int cmflags, int chflags)
 {
   struct Message *msg = mx_msg_open(src, hdr->msgno);
   if (!msg)

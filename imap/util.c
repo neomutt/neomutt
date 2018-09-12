@@ -231,7 +231,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapData *idat
     match = false;
     if (msn <= idata->max_msn)
     {
-      struct Header *cur_header = idata->msn_index[msn - 1];
+      struct Email *cur_header = idata->msn_index[msn - 1];
       cur_uid = cur_header ? HEADER_DATA(cur_header)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;
@@ -338,11 +338,11 @@ void imap_hcache_close(struct ImapData *idata)
  * @retval ptr Email Header
  * @retval NULL Failure
  */
-struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid)
+struct Email *imap_hcache_get(struct ImapData *idata, unsigned int uid)
 {
   char key[16];
   void *uv = NULL;
-  struct Header *h = NULL;
+  struct Email *h = NULL;
 
   if (!idata->hcache)
     return NULL;
@@ -368,7 +368,7 @@ struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_hcache_put(struct ImapData *idata, struct Header *h)
+int imap_hcache_put(struct ImapData *idata, struct Email *h)
 {
   char key[16];
 

@@ -33,7 +33,7 @@
 struct Context;
 struct EnterState;
 struct Envelope;
-struct Header;
+struct Email;
 
 /**
  * enum XdgType - XDG variable types
@@ -49,23 +49,23 @@ int mutt_system(const char *cmd);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
-void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool bf, bool upd_ctx);
+void mutt_set_flag_update(struct Context *ctx, struct Email *h, int flag, bool bf, bool upd_ctx);
 #define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, true)
 void mutt_signal_init(void);
 void mutt_tag_set_flag(int flag, int bf);
-int mutt_change_flag(struct Header *h, int bf);
+int mutt_change_flag(struct Email *h, int bf);
 
 int mutt_complete(char *buf, size_t buflen);
-int mutt_edit_message(struct Context *ctx, struct Header *hdr);
-int mutt_view_message(struct Context *ctx, struct Header *hdr);
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, bool resend);
+int mutt_edit_message(struct Context *ctx, struct Email *hdr);
+int mutt_view_message(struct Context *ctx, struct Email *hdr);
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr, struct Email *hdr, bool resend);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
                        char ***files, int *numfiles, struct EnterState *state);
-int mutt_get_postponed(struct Context *ctx, struct Header *hdr, struct Header **cur, char *fcc, size_t fcclen);
+int mutt_get_postponed(struct Context *ctx, struct Email *hdr, struct Email **cur, char *fcc, size_t fcclen);
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 int mutt_num_postponed(bool force);
-int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread);
+int mutt_thread_set_flag(struct Email *hdr, int flag, int bf, int subthread);
 void mutt_update_num_postponed(void);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int mutt_is_quote_line(char *buf, regmatch_t *pmatch);

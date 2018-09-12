@@ -119,7 +119,7 @@ static int fetch_message(char *line, void *file)
  * @retval -2 Invalid command or execution error
  * @retval -3 Error writing to tempfile
  */
-static int pop_read_header(struct PopData *pop_data, struct Header *h)
+static int pop_read_header(struct PopData *pop_data, struct Email *h)
 {
   FILE *f = mutt_file_mkstemp();
   if (!f)
@@ -230,7 +230,7 @@ static int fetch_uidl(char *line, void *data)
       mx_alloc_memory(mailbox);
 
     mailbox->msg_count++;
-    mailbox->hdrs[i] = mutt_header_new();
+    mailbox->hdrs[i] = mutt_email_new();
     mailbox->hdrs[i]->data = mutt_str_strdup(line);
   }
   else if (mailbox->hdrs[i]->index != index - 1)
@@ -397,9 +397,9 @@ static int pop_fetch_headers(struct Context *ctx)
          *   (the old h->data should point inside a malloc'd block from
          *   hcache so there shouldn't be a memleak here)
          */
-        struct Header *h = mutt_hcache_restore((unsigned char *) data);
+        struct Email *h = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
-        mutt_header_free(&ctx->mailbox->hdrs[i]);
+        mutt_email_free(&ctx->mailbox->hdrs[i]);
         ctx->mailbox->hdrs[i] = h;
         ctx->mailbox->hdrs[i]->refno = refno;
         ctx->mailbox->hdrs[i]->index = index;
@@ -461,7 +461,7 @@ static int pop_fetch_headers(struct Context *ctx)
   if (ret < 0)
   {
     for (int i = ctx->mailbox->msg_count; i < new_count; i++)
-      mutt_header_free(&ctx->mailbox->hdrs[i]);
+      mutt_email_free(&ctx->mailbox->hdrs[i]);
     return ret;
   }
 
@@ -896,7 +896,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   char path[PATH_MAX];
   struct Progress progressbar;
   struct PopData *pop_data = ctx->mailbox->data;
-  struct Header *h = ctx->mailbox->hdrs[msgno];
+  struct Email *h = ctx->mailbox->hdrs[msgno];
   bool bcache = true;
 
   /* see if we already have the message in body cache */

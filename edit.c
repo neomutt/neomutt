@@ -388,7 +388,7 @@ static void be_edit_header(struct Envelope *e, bool force)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
+int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
 {
   char **buf = NULL;
   int bufmax = 0, buflen = 0;

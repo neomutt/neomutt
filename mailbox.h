@@ -88,7 +88,7 @@ struct Mailbox
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
 
-  struct Header **hdrs;
+  struct Email **hdrs;
   int hdrmax;               /**< number of pointers in hdrs */
   int *v2r;                 /**< mapping from virtual to real msgno */
   int vcount;               /**< the number of virtual messages */

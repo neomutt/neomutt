@@ -374,7 +374,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * attachment this way will block the main neomutt process until the viewer process
  * exits.
  */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *hdr,
                          struct AttachCtx *actx)
 {
   char tempfile[PATH_MAX] = "";
@@ -777,7 +777,7 @@ static FILE *save_attachment_open(char *path, int flags)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *hdr)
 {
   if (!m)
     return -1;
@@ -796,7 +796,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       int chflags = 0;
       int r = -1;
 
-      struct Header *hn = m->hdr;
+      struct Email *hn = m->hdr;
       hn->msgno = hdr->msgno; /* required for MH/maildir */
       hn->read = true;
 
@@ -907,7 +907,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   struct State s = { 0 };
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
-  struct Header *saved_hdr = NULL;
+  struct Email *saved_hdr = NULL;
   int rc = 0;
 
   s.flags = displaying;
@@ -977,7 +977,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     m->encoding = saved_encoding;
     if (saved_parts)
     {
-      mutt_header_free(&m->hdr);
+      mutt_email_free(&m->hdr);
       m->parts = saved_parts;
       m->hdr = saved_hdr;
     }

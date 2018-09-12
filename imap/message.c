@@ -103,7 +103,7 @@ static struct BodyCache *msg_cache_open(struct ImapData *idata)
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
-static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
+static FILE *msg_cache_get(struct ImapData *idata, struct Email *h)
 {
   if (!idata || !h)
     return NULL;
@@ -121,7 +121,7 @@ static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
-static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
+static FILE *msg_cache_put(struct ImapData *idata, struct Email *h)
 {
   if (!idata || !h)
     return NULL;
@@ -139,7 +139,7 @@ static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int msg_cache_commit(struct ImapData *idata, struct Header *h)
+static int msg_cache_commit(struct ImapData *idata, struct Email *h)
 {
   if (!idata || !h)
     return -1;
@@ -501,7 +501,7 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
   /* This is a conservative check to protect against a malicious imap
    * server.  Most likely size_t is bigger than an unsigned int, but
    * if msn_count is this big, we have a serious problem. */
-  if (msn_count >= (UINT_MAX / sizeof(struct Header *)))
+  if (msn_count >= (UINT_MAX / sizeof(struct Email *)))
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
@@ -511,12 +511,12 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
   new_size = msn_count + 25;
 
   if (!idata->msn_index)
-    idata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Header *));
+    idata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Email *));
   else
   {
-    mutt_mem_realloc(&idata->msn_index, sizeof(struct Header *) * new_size);
+    mutt_mem_realloc(&idata->msn_index, sizeof(struct Email *) * new_size);
     memset(idata->msn_index + idata->msn_index_size, 0,
-           sizeof(struct Header *) * (new_size - idata->msn_index_size));
+           sizeof(struct Email *) * (new_size - idata->msn_index_size));
   }
 
   idata->msn_index_size = new_size;
@@ -614,7 +614,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapData *idata,
  * case of local_changes, if a change to a flag _would_ have been
  * made.
  */
-static void set_changed_flag(struct Context *ctx, struct Header *h,
+static void set_changed_flag(struct Context *ctx, struct Email *h,
                              int local_changes, int *server_changes, int flag_name,
                              int old_hd_flag, int new_hd_flag, int h_flag)
 {
@@ -808,7 +808,7 @@ static int read_headers_qresync_eval_cache(struct ImapData *idata, char *uid_seq
     if (msn > idata->msn_index_size)
       alloc_msn_index(idata, msn);
 
-    struct Header *h = imap_hcache_get(idata, uid);
+    struct Email *h = imap_hcache_get(idata, uid);
     if (h)
     {
       idata->max_msn = MAX(idata->max_msn, msn);
@@ -1055,7 +1055,7 @@ static int read_headers_fetch_new(struct ImapData *idata, unsigned int msn_begin
           continue;
         }
 
-        ctx->mailbox->hdrs[idx] = mutt_header_new();
+        ctx->mailbox->hdrs[idx] = mutt_email_new();
 
         idata->max_msn = MAX(idata->max_msn, h.data->msn);
         idata->msn_index[h.data->msn - 1] = ctx->mailbox->hdrs[idx];
@@ -1475,7 +1475,7 @@ fail:
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete)
+int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool delete)
 {
   struct Buffer cmd, sync_cmd;
   char mbox[PATH_MAX];
@@ -1662,7 +1662,7 @@ out:
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_cache_del(struct ImapData *idata, struct Header *h)
+int imap_cache_del(struct ImapData *idata, struct Email *h)
 {
   if (!idata || !h)
     return -1;
@@ -1719,7 +1719,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
  * case of h->changed, if a change to a flag _would_ have been
  * made.
  */
-char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes)
+char *imap_set_flags(struct ImapData *idata, struct Email *h, char *s, int *server_changes)
 {
   struct Context *ctx = idata->ctx;
   struct ImapHeader newh = { 0 };
@@ -1797,7 +1797,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   int output_progress;
 
   struct ImapData *idata = ctx->mailbox->data;
-  struct Header *h = ctx->mailbox->hdrs[msgno];
+  struct Email *h = ctx->mailbox->hdrs[msgno];
 
   msg->fp = msg_cache_get(idata, h);
   if (msg->fp)

@@ -184,7 +184,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
   unsigned int setstart = 0; /* start of current message range */
   int n;
   bool started = false;
-  struct Header **hdrs = idata->ctx->mailbox->hdrs;
+  struct Email **hdrs = idata->ctx->mailbox->hdrs;
 
   for (n = *pos; n < idata->ctx->mailbox->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN;
        n++)
@@ -267,7 +267,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
  *
  * The comparison of flags EXCLUDES the deleted flag.
  */
-static bool compare_flags_for_copy(struct Header *h)
+static bool compare_flags_for_copy(struct Email *h)
 {
   struct ImapHeaderData *hd = h->data;
 
@@ -833,7 +833,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
  */
 void imap_expunge_mailbox(struct ImapData *idata)
 {
-  struct Header *h = NULL;
+  struct Email *h = NULL;
   int cacheno;
   short old_sort;
 
@@ -1189,7 +1189,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, bool changed, bool invert)
 {
-  struct Header **hdrs = NULL;
+  struct Email **hdrs = NULL;
   short oldsort;
   int pos;
   int rc;
@@ -1205,13 +1205,13 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   {
     hdrs = idata->ctx->mailbox->hdrs;
     idata->ctx->mailbox->hdrs =
-        mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Header *));
+        mutt_mem_malloc(idata->ctx->mailbox->msg_count * sizeof(struct Email *));
     memcpy(idata->ctx->mailbox->hdrs, hdrs,
-           idata->ctx->mailbox->msg_count * sizeof(struct Header *));
+           idata->ctx->mailbox->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
     qsort(idata->ctx->mailbox->hdrs, idata->ctx->mailbox->msg_count,
-          sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
+          sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
   pos = 0;
@@ -1262,7 +1262,7 @@ out:
  * @note This does not sync the "deleted" flag state, because it is not
  *       desirable to propagate that flag into the copy.
  */
-int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
+int imap_sync_message_for_copy(struct ImapData *idata, struct Email *hdr,
                                struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
@@ -2003,8 +2003,8 @@ out:
 int imap_sync_mailbox(struct Context *ctx, bool expunge)
 {
   struct Context *appendctx = NULL;
-  struct Header *h = NULL;
-  struct Header **hdrs = NULL;
+  struct Email *h = NULL;
+  struct Email **hdrs = NULL;
   int oldsort;
   int rc;
 
@@ -2101,11 +2101,11 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   {
     hdrs = ctx->mailbox->hdrs;
     ctx->mailbox->hdrs =
-        mutt_mem_malloc(ctx->mailbox->msg_count * sizeof(struct Header *));
-    memcpy(ctx->mailbox->hdrs, hdrs, ctx->mailbox->msg_count * sizeof(struct Header *));
+        mutt_mem_malloc(ctx->mailbox->msg_count * sizeof(struct Email *));
+    memcpy(ctx->mailbox->hdrs, hdrs, ctx->mailbox->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
-    qsort(ctx->mailbox->hdrs, ctx->mailbox->msg_count, sizeof(struct Header *),
+    qsort(ctx->mailbox->hdrs, ctx->mailbox->msg_count, sizeof(struct Email *),
           mutt_get_sort_func(SORT_ORDER));
   }
 
@@ -2424,7 +2424,7 @@ static int imap_mbox_open(struct Context *ctx)
   }
 
   ctx->mailbox->hdrmax = count;
-  ctx->mailbox->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));
+  ctx->mailbox->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
   ctx->mailbox->v2r = mutt_mem_calloc(count, sizeof(int));
   ctx->mailbox->msg_count = 0;
 
@@ -2579,7 +2579,7 @@ static int imap_mbox_close(struct Context *ctx)
 /**
  * imap_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *hdr)
 {
   char tmp[PATH_MAX];
 
@@ -2683,7 +2683,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
+static int imap_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
 {
   struct Buffer *cmd = NULL;
   char uid[11];

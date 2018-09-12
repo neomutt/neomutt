@@ -68,7 +68,7 @@ int perform_auxsort(int retval, const void *a, const void *b)
   /* If the items still match, use their index positions
    * to maintain a stable sort order */
   if (retval == 0)
-    retval = (*((struct Header **) a))->index - (*((struct Header **) b))->index;
+    retval = (*((struct Email **) a))->index - (*((struct Email **) b))->index;
   return retval;
 }
 
@@ -77,8 +77,8 @@ int perform_auxsort(int retval, const void *a, const void *b)
  */
 static int compare_score(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -89,8 +89,8 @@ static int compare_score(const void *a, const void *b)
  */
 static int compare_size(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->content->length - (*pb)->content->length;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -101,8 +101,8 @@ static int compare_size(const void *a, const void *b)
  */
 static int compare_date_sent(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -113,8 +113,8 @@ static int compare_date_sent(const void *a, const void *b)
  */
 static int compare_subject(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int rc;
 
   if (!(*pa)->env->real_subj)
@@ -164,8 +164,8 @@ const char *mutt_get_name(struct Address *a)
  */
 static int compare_to(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char fa[SHORT_STRING];
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
@@ -180,8 +180,8 @@ static int compare_to(const void *a, const void *b)
  */
 static int compare_from(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char fa[SHORT_STRING];
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
@@ -196,8 +196,8 @@ static int compare_from(const void *a, const void *b)
  */
 static int compare_date_received(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->received - (*pb)->received;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -208,8 +208,8 @@ static int compare_date_received(const void *a, const void *b)
  */
 static int compare_order(const void *a, const void *b)
 {
-  struct Header **ha = (struct Header **) a;
-  struct Header **hb = (struct Header **) b;
+  struct Email **ha = (struct Email **) a;
+  struct Email **hb = (struct Email **) b;
 
   /* no need to auxsort because you will never have equality here */
   return SORTCODE((*ha)->index - (*hb)->index);
@@ -220,8 +220,8 @@ static int compare_order(const void *a, const void *b)
  */
 static int compare_spam(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char *aptr = NULL, *bptr = NULL;
   int ahas, bhas;
   int result = 0;
@@ -276,8 +276,8 @@ static int compare_spam(const void *a, const void *b)
  */
 static int compare_label(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   int ahas, bhas, result = 0;
 
   /* As with compare_spam, not all messages will have the x-label
@@ -351,7 +351,7 @@ sort_t *mutt_get_sort_func(int method)
  */
 void mutt_sort_headers(struct Context *ctx, bool init)
 {
-  struct Header *h = NULL;
+  struct Email *h = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
@@ -414,13 +414,13 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   }
   else
     qsort((void *) ctx->mailbox->hdrs, ctx->mailbox->msg_count,
-          sizeof(struct Header *), sortfunc);
+          sizeof(struct Email *), sortfunc);
 
   /* adjust the virtual message numbers */
   ctx->mailbox->vcount = 0;
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Header *cur = ctx->mailbox->hdrs[i];
+    struct Email *cur = ctx->mailbox->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))
     {
       cur->virtual = ctx->mailbox->vcount;

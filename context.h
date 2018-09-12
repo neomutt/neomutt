@@ -36,7 +36,7 @@ struct Context
   off_t vsize;
   char *pattern;                 /**< limit pattern string */
   struct Pattern *limit_pattern; /**< compiled limit pattern */
-  struct Header *last_tag;  /**< last tagged msg. used to link threads */
+  struct Email *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
   struct Hash *thread_hash; /**< hash table for threading */
   int tagged;               /**< how many messages are tagged? */

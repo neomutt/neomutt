@@ -407,7 +407,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
   char *cli_nntp = NULL;
 #endif
-  struct Header *msg = NULL;
+  struct Email *msg = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
   struct ListHead queries = STAILQ_HEAD_INITIALIZER(queries);
@@ -636,7 +636,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
-    msg = mutt_header_new();
+    msg = mutt_email_new();
     msg->env = mutt_env_new();
 
     struct ListNode *np = NULL;
@@ -849,7 +849,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_flushinp();
 
     if (!msg)
-      msg = mutt_header_new();
+      msg = mutt_email_new();
     if (!msg->env)
       msg->env = mutt_env_new();
 
@@ -969,7 +969,7 @@ int main(int argc, char *argv[], char *envp[])
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.
          */
-        struct Header *context_hdr = mutt_header_new();
+        struct Email *context_hdr = mutt_email_new();
         context_hdr->offset = 0;
         context_hdr->content = mutt_body_new();
         if (fstat(fileno(fin), &st) != 0)
@@ -983,7 +983,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Cannot parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
-          mutt_header_free(&context_hdr);
+          mutt_email_free(&context_hdr);
           goto main_curses;
         }
 
@@ -1009,7 +1009,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 
         mutt_env_free(&opts_env);
-        mutt_header_free(&context_hdr);
+        mutt_email_free(&context_hdr);
       }
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.
@@ -1105,7 +1105,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_file_fclose(&fout);
       }
 
-      mutt_header_free(&msg);
+      mutt_email_free(&msg);
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */

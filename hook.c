@@ -444,7 +444,7 @@ char *mutt_find_hook(int type, const char *pat)
  * @param hdr Email Header
  * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
  */
-void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
+void mutt_message_hook(struct Context *ctx, struct Email *hdr, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
@@ -498,7 +498,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
  * @retval -1 Failure
  */
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
-                     struct Header *hdr)
+                     struct Email *hdr)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -529,7 +529,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
  * @param pathlen Length of buffer
  * @param hdr     Email Header
  */
-void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
+void mutt_default_save(char *path, size_t pathlen, struct Email *hdr)
 {
   *path = '\0';
   if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, hdr) == 0)
@@ -563,7 +563,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
  * @param pathlen Length of the buffer
  * @param hdr     Email Header
  */
-void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
+void mutt_select_fcc(char *path, size_t pathlen, struct Email *hdr)
 {
   if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, hdr) != 0)
   {

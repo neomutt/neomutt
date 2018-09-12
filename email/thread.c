@@ -32,8 +32,8 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "thread.h"
+#include "email.h"
 #include "envelope.h"
-#include "header.h"
 
 /**
  * is_descendant - Is one thread a descendant of another
@@ -114,7 +114,7 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  * @param reverse If true, reverse the direction of the search
  * @retval ptr Matching Header
  */
-struct Header *find_virtual(struct MuttThread *cur, int reverse)
+struct Email *find_virtual(struct MuttThread *cur, int reverse)
 {
   struct MuttThread *top = NULL;
 
@@ -193,7 +193,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
     if (done)
     {
-      struct Header *h = cur->message;
+      struct Email *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
       struct ListNode *np = NULL;
@@ -214,7 +214,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
  * mutt_break_thread - Break the email Thread
  * @param hdr Email Header to break at
  */
-void mutt_break_thread(struct Header *hdr)
+void mutt_break_thread(struct Email *hdr)
 {
   mutt_list_free(&hdr->env->in_reply_to);
   mutt_list_free(&hdr->env->references);

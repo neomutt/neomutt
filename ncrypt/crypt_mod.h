@@ -29,7 +29,7 @@
 struct Address;
 struct Body;
 struct Envelope;
-struct Header;
+struct Email;
 struct State;
 
 /**
@@ -116,7 +116,7 @@ struct CryptModuleSpecs
    * @param msg Header of the email
    * @retval num Flags, e.g. #APPLICATION_PGP | #ENCRYPT
    */
-  int          (*send_menu)(struct Header *msg);
+  int          (*send_menu)(struct Email *msg);
   /**
    * set_sender - Set the sender of the email
    * @param sender Email address
@@ -186,7 +186,7 @@ struct CryptModuleSpecs
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int          (*smime_verify_sender)(struct Header *h);
+  int          (*smime_verify_sender)(struct Email *h);
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients
    * @param a        Body of email

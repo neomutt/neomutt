@@ -48,7 +48,7 @@ struct AttachPtr
  */
 struct AttachCtx
 {
-  struct Header *hdr; /**< used by recvattach for updating */
+  struct Email *hdr; /**< used by recvattach for updating */
   FILE *root_fp;      /**< used by recvattach for updating */
 
   struct AttachPtr **idx;

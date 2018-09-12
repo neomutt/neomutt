@@ -93,7 +93,7 @@ static void label_ref_inc(struct Mailbox *mailbox, char *label)
  * @param[out] new Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Mailbox *mailbox, struct Header *hdr, char *new)
+static bool label_message(struct Mailbox *mailbox, struct Email *hdr, char *new)
 {
   if (!hdr)
     return false;
@@ -118,7 +118,7 @@ static bool label_message(struct Mailbox *mailbox, struct Header *hdr, char *new
  *
  * If hdr isn't given, then tagged messages will be labelled.
  */
-int mutt_label_message(struct Header *hdr)
+int mutt_label_message(struct Email *hdr)
 {
   char buf[LONG_STRING], *new = NULL;
   int changed;
@@ -156,7 +156,7 @@ int mutt_label_message(struct Header *hdr)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *h = Context->mailbox->hdrs[i];
+      struct Email *h = Context->mailbox->hdrs[i];
       if (label_message(Context->mailbox, h, new))
       {
         changed++;
@@ -177,7 +177,7 @@ int mutt_label_message(struct Header *hdr)
  * @param fcc    Buffer for the fcc field
  * @param fcclen Length of buffer
  */
-void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
+void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
                        char *fcc, size_t fcclen)
 {
   char path[PATH_MAX]; /* tempfile used to edit headers + body */
@@ -380,7 +380,7 @@ void mutt_make_label_hash(struct Mailbox *mailbox)
  * @param mailbox Mailbox
  * @param hdr Header of message
  */
-void mutt_label_hash_add(struct Mailbox *mailbox, struct Header *hdr)
+void mutt_label_hash_add(struct Mailbox *mailbox, struct Email *hdr)
 {
   if (!mailbox || !mailbox->label_hash)
     return;
@@ -393,7 +393,7 @@ void mutt_label_hash_add(struct Mailbox *mailbox, struct Header *hdr)
  * @param mailbox Mailbox
  * @param hdr Header of message
  */
-void mutt_label_hash_remove(struct Mailbox *mailbox, struct Header *hdr)
+void mutt_label_hash_remove(struct Mailbox *mailbox, struct Email *hdr)
 {
   if (!mailbox || !mailbox->label_hash)
     return;

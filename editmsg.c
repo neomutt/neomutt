@@ -58,7 +58,7 @@
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
+static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email *cur)
 {
   char tmp[PATH_MAX];
   char buf[STRING];
@@ -270,7 +270,7 @@ bail:
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
+int edit_or_view_message(bool edit, struct Context *ctx, struct Email *hdr)
 {
   if (hdr)
     return edit_or_view_one_message(edit, ctx, hdr);
@@ -295,7 +295,7 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_edit_message(struct Context *ctx, struct Header *hdr)
+int mutt_edit_message(struct Context *ctx, struct Email *hdr)
 {
   return edit_or_view_message(true, ctx, hdr); /* true means edit */
 }
@@ -308,7 +308,7 @@ int mutt_edit_message(struct Context *ctx, struct Header *hdr)
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_view_message(struct Context *ctx, struct Header *hdr)
+int mutt_view_message(struct Context *ctx, struct Email *hdr)
 {
   return edit_or_view_message(false, ctx, hdr); /* false means only view */
 }

@@ -981,7 +981,7 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   FILE *fp = NULL;
   long lng = 0;
-  struct Header *h = ctx->mailbox->hdrs[msgno];
+  struct Email *h = ctx->mailbox->hdrs[msgno];
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
   size_t tempsize;
@@ -1503,7 +1503,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
  * @retval true If ALL of the Patterns evaluates to true
  */
 static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
-                        struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
+                        struct Context *ctx, struct Email *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
@@ -1521,7 +1521,7 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
 static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
+                      struct Context *ctx, struct Email *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1655,7 +1655,7 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
                                 int left, int up, int right, int down)
 {
   int a;
-  struct Header *h = NULL;
+  struct Email *h = NULL;
 
   if (!t)
     return 0;
@@ -1756,7 +1756,7 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
  * @retval  0 Pattern did not match
  */
 static int match_mime_content_type(const struct Pattern *pat,
-                                   struct Context *ctx, struct Header *hdr)
+                                   struct Context *ctx, struct Email *hdr)
 {
   mutt_parse_mime_message(ctx, hdr);
   return match_content_type(pat, hdr->content);
@@ -1811,7 +1811,7 @@ static int is_pattern_cache_set(int cache_entry)
  *        store some of the cacheable pattern matches in this structure.
  */
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Header *h, struct PatternCache *cache)
+                      struct Context *ctx, struct Email *h, struct PatternCache *cache)
 {
   int result;
   int *cache_entry = NULL;
@@ -2149,7 +2149,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  * @retval ptr  Success, email found
  * @retval NULL Error
  */
-static struct MuttThread *top_of_thread(struct Header *h)
+static struct MuttThread *top_of_thread(struct Email *h)
 {
   struct MuttThread *t = NULL;
 
@@ -2170,7 +2170,7 @@ static struct MuttThread *top_of_thread(struct Header *h)
  * @retval true Success
  * @retval false Failure
  */
-bool mutt_limit_current_thread(struct Header *h)
+bool mutt_limit_current_thread(struct Email *h)
 {
   struct MuttThread *me = NULL;
 
@@ -2444,7 +2444,7 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    struct Header *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
+    struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
     if (h->searched)
     {
       /* if we've already evaluated this message, use the cached value */

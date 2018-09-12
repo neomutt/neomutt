@@ -766,7 +766,7 @@ void mix_make_chain(struct ListHead *chainhead)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mix_check_message(struct Header *msg)
+int mix_check_message(struct Email *msg)
 {
   const char *fqdn = NULL;
   bool need_hostname = false;

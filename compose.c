@@ -267,7 +267,7 @@ static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  * redraw_crypt_lines - Update the encryption info in the compose window
  * @param msg Header of message
  */
-static void redraw_crypt_lines(struct Header *msg)
+static void redraw_crypt_lines(struct Email *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, "%*s",
@@ -455,7 +455,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
  * @param msg Header of the message
  * @param fcc Fcc field
  */
-static void draw_envelope(struct Header *msg, char *fcc)
+static void draw_envelope(struct Email *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -670,7 +670,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  */
 struct ComposeRedrawData
 {
-  struct Header *msg;
+  struct Email *msg;
   char *fcc;
 };
 
@@ -887,8 +887,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
-                      struct Header *cur, int flags)
+int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];

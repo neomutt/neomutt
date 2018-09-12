@@ -53,7 +53,7 @@
  * @param bf      true: set the flag; false: clear the flag
  * @param upd_ctx true: update the Context
  */
-void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool bf, bool upd_ctx)
+void mutt_set_flag_update(struct Context *ctx, struct Email *h, int flag, bool bf, bool upd_ctx)
 {
   if (!ctx || !h)
     return;
@@ -368,7 +368,7 @@ void mutt_tag_set_flag(int flag, int bf)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
+int mutt_thread_set_flag(struct Email *hdr, int flag, int bf, int subthread)
 {
   struct MuttThread *start = NULL, *cur = hdr->thread;
 
@@ -424,7 +424,7 @@ done:
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Header *h, int bf)
+int mutt_change_flag(struct Email *h, int bf)
 {
   int i, flag;
   struct Event event;

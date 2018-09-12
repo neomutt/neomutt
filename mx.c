@@ -359,7 +359,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&ctx->mailbox->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    mutt_header_free(&ctx->mailbox->hdrs[i]);
+    mutt_email_free(&ctx->mailbox->hdrs[i]);
   FREE(&ctx->mailbox->hdrs);
   FREE(&ctx->mailbox->v2r);
   FREE(&ctx->pattern);
@@ -856,7 +856,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
        */
       if (ctx->last_tag == ctx->mailbox->hdrs[i])
         ctx->last_tag = NULL;
-      mutt_header_free(&ctx->mailbox->hdrs[i]);
+      mutt_email_free(&ctx->mailbox->hdrs[i]);
     }
   }
   ctx->mailbox->msg_count = j;
@@ -999,7 +999,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message
  */
-struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags)
+struct Message *mx_msg_open_new(struct Context *ctx, struct Email *hdr, int flags)
 {
   struct Address *p = NULL;
   struct Message *msg = NULL;
@@ -1152,7 +1152,7 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
  */
 void mx_alloc_memory(struct Mailbox *mailbox)
 {
-  size_t s = MAX(sizeof(struct Header *), sizeof(int));
+  size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
   if ((mailbox->hdrmax + 25) * s < mailbox->hdrmax * s)
   {
@@ -1162,12 +1162,12 @@ void mx_alloc_memory(struct Mailbox *mailbox)
 
   if (mailbox->hdrs)
   {
-    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Header *) * (mailbox->hdrmax += 25));
+    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Email *) * (mailbox->hdrmax += 25));
     mutt_mem_realloc(&mailbox->v2r, sizeof(int) * mailbox->hdrmax);
   }
   else
   {
-    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Header *));
+    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Email *));
     mailbox->v2r = mutt_mem_calloc(mailbox->hdrmax, sizeof(int));
   }
   for (int i = mailbox->msg_count; i < mailbox->hdrmax; i++)
@@ -1187,7 +1187,7 @@ void mx_alloc_memory(struct Mailbox *mailbox)
  */
 void mx_update_context(struct Context *ctx, int new_messages)
 {
-  struct Header *h = NULL;
+  struct Email *h = NULL;
   for (int msgno = ctx->mailbox->msg_count - new_messages;
        msgno < ctx->mailbox->msg_count; msgno++)
   {
@@ -1210,7 +1210,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
 
     if (h->env->supersedes)
     {
-      struct Header *h2 = NULL;
+      struct Email *h2 = NULL;
 
       if (!ctx->mailbox->id_hash)
         ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
@@ -1311,7 +1311,7 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
+int mx_tags_commit(struct Context *ctx, struct Email *hdr, char *tags)
 {
   if (ctx->mailbox->mx_ops->tags_commit)
     return ctx->mailbox->mx_ops->tags_commit(ctx, hdr, tags);
@@ -1441,14 +1441,14 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
       if (!alias)
         break;
 
-      struct Header *h = mutt_header_new();
+      struct Email *h = mutt_email_new();
       h->env = mutt_env_new();
       h->env->from = alias;
       h->env->to = alias;
       mutt_default_save(buf, buflen, h);
       h->env->from = NULL;
       h->env->to = NULL;
-      mutt_header_free(&h);
+      mutt_email_free(&h);
       break;
     }
     else

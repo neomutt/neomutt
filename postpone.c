@@ -205,7 +205,7 @@ static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  * select_msg - Create a Menu to select a postponed message
  * @retval ptr Email Header
  */
-static struct Header *select_msg(void)
+static struct Email *select_msg(void)
 {
   int r = -1;
   bool done = false;
@@ -280,10 +280,10 @@ static struct Header *select_msg(void)
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
-int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
-                       struct Header **cur, char *fcc, size_t fcclen)
+int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
+                       struct Email **cur, char *fcc, size_t fcclen)
 {
-  struct Header *h = NULL;
+  struct Email *h = NULL;
   int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
@@ -555,8 +555,8 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
-                          struct Header *hdr, bool resend)
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
+                          struct Email *hdr, bool resend)
 {
   struct Message *msg = NULL;
   char file[PATH_MAX];

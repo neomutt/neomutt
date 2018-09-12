@@ -165,7 +165,7 @@ int crypt_valid_passphrase(int flags)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_protect(struct Header *msg, char *keylist)
+int mutt_protect(struct Email *msg, char *keylist)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
@@ -805,7 +805,7 @@ void crypt_convert_to_7bit(struct Body *a)
  *
  * The extracted keys will be added to the user's keyring.
  */
-void crypt_extract_keys_from_messages(struct Header *h)
+void crypt_extract_keys_from_messages(struct Email *h)
 {
   char tempfname[PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
@@ -832,7 +832,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *hi = Context->mailbox->hdrs[i];
+      struct Email *hi = Context->mailbox->hdrs[i];
 
       mutt_parse_mime_message(Context, hi);
       if (hi->security & ENCRYPT && !crypt_valid_passphrase(hi->security))
@@ -944,7 +944,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
+int crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode)
 {
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(true);
@@ -1016,7 +1016,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode)
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-void crypt_opportunistic_encrypt(struct Header *msg)
+void crypt_opportunistic_encrypt(struct Email *msg)
 {
   char *pgpkeylist = NULL;
 

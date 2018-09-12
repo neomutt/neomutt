@@ -134,20 +134,20 @@ static int fseek_last_message(FILE *f)
  */
 static bool test_last_status_new(FILE *f)
 {
-  struct Header *hdr = NULL;
+  struct Email *hdr = NULL;
   struct Envelope *tmp_envelope = NULL;
   bool result = false;
 
   if (fseek_last_message(f) == -1)
     return false;
 
-  hdr = mutt_header_new();
+  hdr = mutt_email_new();
   tmp_envelope = mutt_rfc822_read_header(f, hdr, false, false);
   if (!(hdr->read || hdr->old))
     result = true;
 
   mutt_env_free(&tmp_envelope);
-  mutt_header_free(&hdr);
+  mutt_email_free(&hdr);
 
   return result;
 }

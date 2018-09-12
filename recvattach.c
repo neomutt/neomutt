@@ -480,8 +480,7 @@ static void prepend_curdir(char *buf, size_t buflen)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int query_save_attachment(FILE *fp, struct Body *body,
-                                 struct Header *hdr, char **directory)
+static int query_save_attachment(FILE *fp, struct Body *body, struct Email *hdr, char **directory)
 {
   char *prompt = NULL;
   char buf[PATH_MAX], tfile[PATH_MAX];
@@ -576,7 +575,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
  * @param menu Menu listing attachments
  */
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, struct Header *hdr, struct Menu *menu)
+                               struct Body *top, struct Email *hdr, struct Menu *menu)
 {
   char buf[PATH_MAX], tfile[PATH_MAX];
   char *directory = NULL;
@@ -1016,7 +1015,7 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
  * @param hdr  Header of the email
  */
 static void recvattach_edit_content_type(struct AttachCtx *actx,
-                                         struct Menu *menu, struct Header *hdr)
+                                         struct Menu *menu, struct Email *hdr)
 {
   if (mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp) != 1)
     return;
@@ -1045,7 +1044,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
  * @param recv true if these are received attachments (rather than in compose)
  * @retval num Operation performed
  */
-int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
+int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *hdr,
                              struct AttachCtx *actx, bool recv)
 {
   do
@@ -1122,7 +1121,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
  * @param level       Attachment depth
  * @param decrypted   True if attachment has been decrypted
  */
-static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header *hdr,
+static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *hdr,
                                           struct Body *m, FILE *fp, int parent_type,
                                           int level, bool decrypted)
 {
@@ -1309,7 +1308,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
  * mutt_view_attachments - Show the attachments in a Menu
  * @param hdr Header of the email
  */
-void mutt_view_attachments(struct Header *hdr)
+void mutt_view_attachments(struct Email *hdr)
 {
   char helpstr[LONG_STRING];
   struct Body *cur = NULL;

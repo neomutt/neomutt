@@ -26,12 +26,12 @@
 #include <stddef.h>
 
 struct Context;
-struct Header;
+struct Email;
 
-void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Mailbox *mailbox, struct Header *hdr);
-void mutt_label_hash_remove(struct Mailbox *mailbox, struct Header *hdr);
-int  mutt_label_message(struct Header *hdr);
+void mutt_edit_headers(const char *editor, const char *body, struct Email *msg, char *fcc, size_t fcclen);
+void mutt_label_hash_add(struct Mailbox *mailbox, struct Email *hdr);
+void mutt_label_hash_remove(struct Mailbox *mailbox, struct Email *hdr);
+int  mutt_label_message(struct Email *hdr);
 void mutt_make_label_hash(struct Mailbox *mailbox);
 
 #endif /* MUTT_MUTT_HEADER_H */

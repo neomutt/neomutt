@@ -46,7 +46,7 @@
 struct Address;
 struct Body;
 struct Envelope;
-struct Header;
+struct Email;
 struct State;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */
@@ -321,7 +321,7 @@ int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
 /**
  * crypt_pgp_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-int crypt_pgp_send_menu(struct Header *msg)
+int crypt_pgp_send_menu(struct Email *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
     return CRYPT_MOD_CALL(PGP, send_menu)(msg);
@@ -412,7 +412,7 @@ void crypt_smime_getkeys(struct Envelope *env)
 /**
  * crypt_smime_verify_sender - Wrapper for CryptModuleSpecs::smime_verify_sender()
  */
-int crypt_smime_verify_sender(struct Header *h)
+int crypt_smime_verify_sender(struct Email *h)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
     return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(h);
@@ -476,7 +476,7 @@ int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tem
 /**
  * crypt_smime_send_menu - Wrapper for CryptModuleSpecs::send_menu()
  */
-int crypt_smime_send_menu(struct Header *msg)
+int crypt_smime_send_menu(struct Email *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
     return CRYPT_MOD_CALL(SMIME, send_menu)(msg);

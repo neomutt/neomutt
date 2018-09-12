@@ -333,7 +333,7 @@ static int query_tag(struct Menu *menu, int n, int m)
 static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
-  struct Header *msg = NULL;
+  struct Email *msg = NULL;
   struct Entry *QueryTable = NULL;
   struct Query *queryp = NULL;
   char title[STRING];
@@ -484,7 +484,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
         /* fallthrough */
         case OP_MAIL:
-          msg = mutt_header_new();
+          msg = mutt_email_new();
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {

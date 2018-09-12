@@ -168,7 +168,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
  * @param hdr     Email header
  * @param upd_ctx If true, update the Context too
  */
-void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx)
+void mutt_score_message(struct Context *ctx, struct Email *hdr, bool upd_ctx)
 {
   struct Score *tmp = NULL;
   struct PatternCache cache = { 0 };

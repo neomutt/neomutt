@@ -219,14 +219,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         struct Address *alias = mutt_alias_lookup(buf + 1);
         if (alias)
         {
-          struct Header *h = mutt_header_new();
+          struct Email *h = mutt_email_new();
           h->env = mutt_env_new();
           h->env->from = alias;
           h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
           h->env->from = NULL;
           h->env->to = NULL;
-          mutt_header_free(&h);
+          mutt_email_free(&h);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
             recurse = true;

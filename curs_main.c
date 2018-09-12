@@ -181,7 +181,7 @@ static const char *NoVisible = N_("No visible messages");
  */
 static void collapse_all(struct Menu *menu, int toggle)
 {
-  struct Header *h = NULL, *base = NULL;
+  struct Email *h = NULL, *base = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
@@ -343,7 +343,7 @@ static int mx_toggle_write(struct Context *ctx)
  */
 static void resort_index(struct Menu *menu)
 {
-  struct Header *current = CURHDR;
+  struct Email *current = CURHDR;
 
   menu->current = -1;
   mutt_sort_headers(Context, false);
@@ -375,12 +375,12 @@ static void resort_index(struct Menu *menu)
  */
 static void update_index_threaded(struct Context *ctx, int check, int oldcount)
 {
-  struct Header **save_new = NULL;
+  struct Email **save_new = NULL;
 
   /* save the list of new messages */
   if ((check != MUTT_REOPENED) && oldcount && (ctx->pattern || UncollapseNew))
   {
-    save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->mailbox->msg_count - oldcount));
+    save_new = mutt_mem_malloc(sizeof(struct Email *) * (ctx->mailbox->msg_count - oldcount));
     for (int i = oldcount; i < ctx->mailbox->msg_count; i++)
       save_new[i - oldcount] = ctx->mailbox->hdrs[i];
   }
@@ -395,7 +395,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
   {
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
-      struct Header *h = NULL;
+      struct Email *h = NULL;
 
       if ((check != MUTT_REOPENED) && oldcount)
         h = save_new[i - oldcount];
@@ -652,7 +652,7 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
   if (!Context || !menu || (num < 0) || (num >= Context->mailbox->hdrmax))
     return;
 
-  struct Header *h = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
+  struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
   if (!h)
     return;
 
@@ -727,7 +727,7 @@ int index_color(int index_no)
   if (!Context || (index_no < 0))
     return 0;
 
-  struct Header *h = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
+  struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
 
   if (h && h->pair)
     return h->pair;
@@ -1310,7 +1310,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (Context->mailbox->magic == MUTT_NNTP)
         {
-          struct Header *hdr = NULL;
+          struct Email *hdr = NULL;
 
           if (op == OP_GET_MESSAGE)
           {
@@ -1419,8 +1419,8 @@ int mutt_index_menu(void)
           /* at least one message has been loaded */
           if (Context->mailbox->msg_count > oldmsgcount)
           {
-            struct Header *oldcur = CURHDR;
-            struct Header *hdr = NULL;
+            struct Email *oldcur = CURHDR;
+            struct Email *hdr = NULL;
             bool quiet = Context->mailbox->quiet;
 
             if (rc2 < 0)
@@ -1495,7 +1495,7 @@ int mutt_index_menu(void)
           mutt_error(_("That message is not visible"));
         else
         {
-          struct Header *hdr = Context->mailbox->hdrs[i - 1];
+          struct Email *hdr = Context->mailbox->hdrs[i - 1];
 
           if (mutt_messages_in_thread(Context, hdr, 1) != 1)
           {
@@ -1845,7 +1845,7 @@ int mutt_index_menu(void)
           int ovc = Context->mailbox->vcount;
           int oc = Context->mailbox->msg_count;
           int check;
-          struct Header *newhdr = NULL;
+          struct Email *newhdr = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
           if (menu->current < Context->mailbox->vcount)
@@ -1939,7 +1939,7 @@ int mutt_index_menu(void)
         }
         if (oc < Context->mailbox->msg_count)
         {
-          struct Header *oldcur = CURHDR;
+          struct Email *oldcur = CURHDR;
 
           if ((Sort & SORT_MASK) == SORT_THREADS)
             mutt_sort_headers(Context, false);
@@ -2343,7 +2343,7 @@ int mutt_index_menu(void)
                  !STAILQ_EMPTY(&CURHDR->env->references))
         {
           {
-            struct Header *oldcur = CURHDR;
+            struct Email *oldcur = CURHDR;
 
             mutt_break_thread(CURHDR);
             mutt_sort_headers(Context, true);
@@ -2385,7 +2385,7 @@ int mutt_index_menu(void)
           mutt_error(_("First, please tag a message to be linked here"));
         else
         {
-          struct Header *oldcur = CURHDR;
+          struct Email *oldcur = CURHDR;
 
           if (mutt_link_threads(CURHDR, tag ? NULL : Context->last_tag, Context))
           {
@@ -2588,7 +2588,7 @@ int mutt_index_menu(void)
             }
           }
 
-          struct Header *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
+          struct Email *h = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
           if (h->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
           {
             if (UNREAD(h) && first_unread == -1)
@@ -3519,7 +3519,7 @@ int mutt_index_menu(void)
  * @param ctx    Mailbox
  * @param curhdr Header of message
  */
-void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
+void mutt_set_header_color(struct Context *ctx, struct Email *curhdr)
 {
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };

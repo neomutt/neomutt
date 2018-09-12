@@ -1450,7 +1450,7 @@ void mutt_update_encoding(struct Body *a)
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, bool attach_msg)
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *hdr, bool attach_msg)
 {
   char buffer[LONG_STRING];
   struct Body *body = NULL;
@@ -1525,7 +1525,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, b
   fflush(fp);
   rewind(fp);
 
-  body->hdr = mutt_header_new();
+  body->hdr = mutt_email_new();
   body->hdr->offset = 0;
   /* we don't need the user headers here */
   body->hdr->env = mutt_rfc822_read_header(fp, body->hdr, false, false);
@@ -2955,7 +2955,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
+static int bounce_message(FILE *fp, struct Email *h, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
   int rc = 0;
@@ -3030,7 +3030,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
+int mutt_bounce_message(FILE *fp, struct Email *h, struct Address *to)
 {
   const char *fqdn = mutt_fqdn(true);
   char resent_from[STRING];
@@ -3111,7 +3111,7 @@ static void set_noconv_flags(struct Body *b, bool flag)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid,
+int mutt_write_multiple_fcc(const char *path, struct Email *hdr, const char *msgid,
                             bool post, char *fcc, char **finalpath)
 {
   char fcc_tok[PATH_MAX];
@@ -3158,7 +3158,7 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
+int mutt_write_fcc(const char *path, struct Email *hdr, const char *msgid,
                    bool post, char *fcc, char **finalpath)
 {
   struct Message *msg = NULL;

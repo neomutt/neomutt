@@ -55,7 +55,7 @@
 
 struct BrowserState;
 struct Context;
-struct Header;
+struct Email;
 struct Pattern;
 
 /* These Config Variables are only used in imap/auth.c */
@@ -104,7 +104,7 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *mailbox);
 
 /* message.c */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete);
+int imap_copy_messages(struct Context *ctx, struct Email *h, char *dest, bool delete);
 
 /* socket.c */
 void imap_logout_all(void);

@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "body.h"
-#include "header.h"
+#include "email.h"
 #include "mime.h"
 #include "parameter.h"
 
@@ -83,7 +83,7 @@ void mutt_body_free(struct Body **p)
     {
       /* Don't free twice (b->hdr->content = b->parts) */
       b->hdr->content = NULL;
-      mutt_header_free(&b->hdr);
+      mutt_email_free(&b->hdr);
     }
 
     if (b->parts)

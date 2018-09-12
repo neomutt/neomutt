@@ -397,7 +397,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
  * mutt_hcache_store - Multiplexor for HcacheOps::store
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      struct Header *header, unsigned int uidvalidity)
+                      struct Email *header, unsigned int uidvalidity)
 {
   char *data = NULL;
   int dlen;

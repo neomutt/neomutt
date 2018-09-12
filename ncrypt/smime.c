@@ -1427,7 +1427,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_class_verify_sender(struct Header *h)
+int smime_class_verify_sender(struct Email *h)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
   int retval = 1;
@@ -2285,7 +2285,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Header *msg)
+int smime_class_send_menu(struct Email *msg)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;

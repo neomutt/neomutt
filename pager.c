@@ -101,7 +101,7 @@ static const char *Function_not_permitted_in_attach_message_mode =
 
 /* hack to return to position when returning from index to same message */
 static int TopLine = 0;
-static struct Header *OldHdr = NULL;
+static struct Email *OldHdr = NULL;
 
 #define CHECK_MODE(x)                                                          \
   if (!(x))                                                                    \
@@ -2357,7 +2357,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
-            struct Header *h = Context->mailbox->hdrs[i];
+            struct Email *h = Context->mailbox->hdrs[i];
 
             if (h && !h->read)
             {

@@ -386,7 +386,7 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
  * @param ofp    File to write to
  * @param prefix Prefix for each line (OPTIONAL)
  */
-static void include_header(bool quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
+static void include_header(bool quote, FILE *ifp, struct Email *hdr, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
   char prefix2[SHORT_STRING];
@@ -446,12 +446,12 @@ static struct Body **copy_problematic_attachments(struct Body **last,
  *
  * (non-message types)
  */
-static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
+static void attach_forward_bodies(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
                                   struct Body *cur, short nattach)
 {
   bool mime_fwd_all = false;
   bool mime_fwd_any = true;
-  struct Header *parent_hdr = NULL;
+  struct Email *parent_hdr = NULL;
   FILE *parent_fp = NULL;
   char tmpbody[PATH_MAX];
   char prefix[STRING];
@@ -473,7 +473,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     parent_fp = actx->root_fp;
   }
 
-  struct Header *tmphdr = mutt_header_new();
+  struct Email *tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
@@ -482,7 +482,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (!tmpfp)
   {
     mutt_error(_("Can't open temporary file %s"), tmpbody);
-    mutt_header_free(&tmphdr);
+    mutt_email_free(&tmphdr);
     return;
   }
 
@@ -600,7 +600,7 @@ bail:
     mutt_file_unlink(tmpbody);
   }
 
-  mutt_header_free(&tmphdr);
+  mutt_email_free(&tmphdr);
 }
 
 /**
@@ -619,8 +619,8 @@ bail:
  */
 static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
 {
-  struct Header *curhdr = NULL;
-  struct Header *tmphdr = NULL;
+  struct Email *curhdr = NULL;
+  struct Email *tmphdr = NULL;
   int rc;
 
   struct Body **last = NULL;
@@ -643,7 +643,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     }
   }
 
-  tmphdr = mutt_header_new();
+  tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, curhdr);
 
@@ -659,7 +659,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     if (!tmpfp)
     {
       mutt_error(_("Can't create %s"), tmpbody);
-      mutt_header_free(&tmphdr);
+      mutt_email_free(&tmphdr);
       return;
     }
 
@@ -719,7 +719,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     }
   }
   else
-    mutt_header_free(&tmphdr);
+    mutt_email_free(&tmphdr);
 
   ci_send_message(flags, tmphdr, *tmpbody ? tmpbody : NULL, NULL, curhdr);
 }
@@ -732,7 +732,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
  */
-void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
+void mutt_attach_forward(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
                          struct Body *cur, int flags)
 {
   if (check_all_msg(actx, cur, false))
@@ -768,10 +768,10 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
  * Note that this code is horribly similar to envelope_defaults() from send.c.
  */
 static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx *actx,
-                                          struct Header *parent, int flags)
+                                          struct Email *parent, int flags)
 {
   struct Envelope *curenv = NULL;
-  struct Header *curhdr = NULL;
+  struct Email *curhdr = NULL;
 
   if (!parent)
   {
@@ -857,7 +857,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
  * @param tmpfp File handle to temporary file
  * @param cur   Header of email
  */
-static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
+static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
@@ -884,16 +884,16 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
  */
-void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
+void mutt_attach_reply(FILE *fp, struct Email *hdr, struct AttachCtx *actx,
                        struct Body *cur, int flags)
 {
   bool mime_reply_any = false;
 
   short nattach = 0;
   struct AttachPtr *parent = NULL;
-  struct Header *parent_hdr = NULL;
+  struct Email *parent_hdr = NULL;
   FILE *parent_fp = NULL;
-  struct Header *tmphdr = NULL;
+  struct Email *tmphdr = NULL;
 
   struct State st;
   char tmpbody[PATH_MAX];
@@ -937,13 +937,13 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   else if (nattach == 1)
     mime_reply_any = true;
 
-  tmphdr = mutt_header_new();
+  tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
           tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)
   {
-    mutt_header_free(&tmphdr);
+    mutt_email_free(&tmphdr);
     return;
   }
 
@@ -952,7 +952,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   if (!tmpfp)
   {
     mutt_error(_("Can't create %s"), tmpbody);
-    mutt_header_free(&tmphdr);
+    mutt_email_free(&tmphdr);
     return;
   }
 
@@ -1021,7 +1021,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
     if (mime_reply_any && !cur && !copy_problematic_attachments(&tmphdr->content, actx, false))
     {
-      mutt_header_free(&tmphdr);
+      mutt_email_free(&tmphdr);
       mutt_file_fclose(&tmpfp);
       return;
     }
@@ -1043,7 +1043,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
  * @param actx Attachment Context
  * @param cur  Current attachment
  */
-void mutt_attach_mail_sender(FILE *fp, struct Header *hdr,
+void mutt_attach_mail_sender(FILE *fp, struct Email *hdr,
                              struct AttachCtx *actx, struct Body *cur)
 {
   if (!check_all_msg(actx, cur, 0))
@@ -1052,7 +1052,7 @@ void mutt_attach_mail_sender(FILE *fp, struct Header *hdr,
     return;
   }
 
-  struct Header *tmphdr = mutt_header_new();
+  struct Email *tmphdr = mutt_email_new();
   tmphdr->env = mutt_env_new();
 
   if (cur)

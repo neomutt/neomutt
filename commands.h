@@ -29,7 +29,7 @@
 struct Body;
 struct Context;
 struct Envelope;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in commands.c */
 extern unsigned char CryptVerifySig; /* verify PGP signatures */
@@ -41,17 +41,17 @@ extern bool          PrintDecode;
 extern bool          PrintSplit;
 extern bool          PromptAfter;
 
-void ci_bounce_message(struct Header *h);
+void ci_bounce_message(struct Email *h);
 void mutt_check_stats(void);
-bool mutt_check_traditional_pgp(struct Header *h, int *redraw);
+bool mutt_check_traditional_pgp(struct Email *h, int *redraw);
 void mutt_display_address(struct Envelope *env);
-int  mutt_display_message(struct Header *cur);
-int  mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp);
+int  mutt_display_message(struct Email *cur);
+int  mutt_edit_content_type(struct Email *h, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
-void mutt_pipe_message(struct Header *h);
-void mutt_print_message(struct Header *h);
-int  mutt_save_message_ctx(struct Header *h, bool delete, bool decode, bool decrypt, struct Context *ctx);
-int  mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt);
+void mutt_pipe_message(struct Email *h);
+void mutt_print_message(struct Email *h);
+int  mutt_save_message_ctx(struct Email *h, bool delete, bool decode, bool decrypt, struct Context *ctx);
+int  mutt_save_message(struct Email *h, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Representation of the email's header
+ * Representation of an email
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_HEADER_H
-#define MUTT_EMAIL_HEADER_H
+#ifndef MUTT_EMAIL_EMAIL_H
+#define MUTT_EMAIL_EMAIL_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -30,14 +30,14 @@
 #include "tags.h"
 
 /**
- * struct Header - The header/envelope of an email
+ * struct Email - The email/envelope of an email
  */
-struct Header
+struct Email
 {
   unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.
                                  see: mutt_crypt.h pgplib.h, smime.h */
 
-  bool mime            : 1; /**< has a MIME-Version header? */
+  bool mime            : 1; /**< has a MIME-Version email? */
   bool flagged         : 1; /**< marked important? */
   bool tagged          : 1;
   bool deleted         : 1;
@@ -108,14 +108,14 @@ struct Header
 
   struct TagHead tags; /**< for drivers that support server tagging */
 
-  void *data;                       /**< driver-specific data */
-  void (*free_cb)(struct Header *); /**< driver-specific data free function */
+  void *data;                      /**< driver-specific data */
+  void (*free_cb)(struct Email *); /**< driver-specific data free function */
 
   char *maildir_flags; /**< unknown maildir flags */
 };
 
-bool           mutt_header_cmp_strict(const struct Header *h1, const struct Header *h2);
-void           mutt_header_free(struct Header **h);
-struct Header *mutt_header_new(void);
+bool          mutt_email_cmp_strict(const struct Email *h1, const struct Email *h2);
+void          mutt_email_free(struct Email **h);
+struct Email *mutt_email_new(void);
 
-#endif /* MUTT_EMAIL_HEADER_H */
+#endif /* MUTT_EMAIL_EMAIL_H */

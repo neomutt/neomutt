@@ -1808,7 +1808,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_class_send_menu(struct Header *msg)
+int pgp_class_send_menu(struct Email *msg)
 {
   struct PgpKeyInfo *p = NULL;
   const char *prompt = NULL;

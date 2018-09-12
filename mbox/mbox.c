@@ -200,7 +200,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   int lines;
   time_t t;
   LOFF_T loc, tmploc;
-  struct Header *hdr = NULL;
+  struct Email *hdr = NULL;
   struct stat sb;
   struct Progress progress;
 
@@ -243,7 +243,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
       if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx->mailbox);
-      hdr = mutt_header_new();
+      hdr = mutt_email_new();
       ctx->mailbox->hdrs[ctx->mailbox->msg_count] = hdr;
       hdr->offset = loc;
       hdr->index = ctx->mailbox->msg_count;
@@ -362,7 +362,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
-  struct Header *curhdr = NULL;
+  struct Email *curhdr = NULL;
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;
@@ -397,7 +397,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-        struct Header *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
+        struct Email *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
         if (h->content->length < 0)
         {
           h->content->length = loc - h->content->offset - 1;
@@ -419,7 +419,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
         mx_alloc_memory(ctx->mailbox);
 
-      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_header_new();
+      ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
       curhdr = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
       curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
@@ -523,7 +523,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
    */
   if (count > 0)
   {
-    struct Header *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
+    struct Email *h = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
     if (h->content->length < 0)
     {
       h->content->length = ftello(mdata->fp) - h->content->offset - 1;
@@ -559,8 +559,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   if (!mdata)
     return -1;
 
-  bool (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
-  struct Header **old_hdrs = NULL;
+  bool (*cmp_headers)(const struct Email *, const struct Email *) = NULL;
+  struct Email **old_hdrs = NULL;
   int old_msgcount;
   bool msg_mod = false;
   bool index_hint_set;
@@ -596,7 +596,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   if (ctx->mailbox->readonly)
   {
     for (i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_header_free(&(ctx->mailbox->hdrs[i])); /* nothing to do! */
+      mutt_email_free(&(ctx->mailbox->hdrs[i])); /* nothing to do! */
     FREE(&ctx->mailbox->hdrs);
   }
   else
@@ -625,7 +625,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      cmp_headers = mutt_header_cmp_strict;
+      cmp_headers = mutt_email_cmp_strict;
       mutt_file_fclose(&mdata->fp);
       mdata->fp = mutt_file_fopen(ctx->mailbox->path, "r");
       if (!mdata->fp)
@@ -644,7 +644,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     /* free the old headers */
     for (j = 0; j < old_msgcount; j++)
-      mutt_header_free(&(old_hdrs[j]));
+      mutt_email_free(&(old_hdrs[j]));
     FREE(&old_hdrs);
 
     ctx->mailbox->quiet = false;
@@ -714,7 +714,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
         mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
         /* we don't need this header any more */
-        mutt_header_free(&(old_hdrs[j]));
+        mutt_email_free(&(old_hdrs[j]));
       }
     }
 
@@ -723,7 +723,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     {
       if (old_hdrs[j])
       {
-        mutt_header_free(&(old_hdrs[j]));
+        mutt_email_free(&(old_hdrs[j]));
         msg_mod = true;
       }
     }
@@ -1415,7 +1415,7 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  * mbox_msg_open_new - Implements MxOps::msg_open_new()
  * @retval 0 Always
  */
-static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *hdr)
 {
   struct MboxData *mdata = get_mboxdata(ctx->mailbox);
   if (!mdata)

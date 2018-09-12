@@ -30,21 +30,21 @@
 
 struct AttachCtx;
 struct Menu;
-struct Header;
+struct Email;
 struct Body;
 
 int mutt_tag_attach(struct Menu *menu, int n, int m);
-int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
+int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *hdr,
                              struct AttachCtx *actx, bool recv);
 
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, struct Header *hdr, struct Menu *menu);
+                               struct Body *top, struct Email *hdr, struct Menu *menu);
 void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, bool filter);
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                 struct Body *top);
 
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachCtx *actx);
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *hdr, struct AttachCtx *actx);
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
@@ -53,6 +53,6 @@ int mutt_edit_attachment(struct Body *a);
 int mutt_get_tmp_attachment(struct Body *a);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *hdr);
 
 #endif /* MUTT_MUTT_ATTACH_H */

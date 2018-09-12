@@ -391,7 +391,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
  * freshly created copy in a tempfile and modifies the file's mtime so we don't
  * trigger code paths watching for mtime changes
  */
-void rfc3676_space_stuff(struct Header *hdr)
+void rfc3676_space_stuff(struct Email *hdr)
 {
   int lc = 0;
   size_t len = 0;

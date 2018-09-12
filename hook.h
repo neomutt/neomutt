@@ -29,7 +29,7 @@
 struct Address;
 struct Buffer;
 struct Context;
-struct Header;
+struct Email;
 struct ListHead;
 
 /* These Config Variables are only used in hook.c */
@@ -62,14 +62,14 @@ extern bool  SaveName;
 
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
-void  mutt_default_save(char *path, size_t pathlen, struct Header *hdr);
+void  mutt_default_save(char *path, size_t pathlen, struct Email *hdr);
 void  mutt_delete_hooks(int type);
 char *mutt_find_hook(int type, const char *pat);
 void  mutt_folder_hook(const char *path);
-void  mutt_message_hook(struct Context *ctx, struct Header *hdr, int type);
+void  mutt_message_hook(struct Context *ctx, struct Email *hdr, int type);
 int   mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int   mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-void  mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr);
+void  mutt_select_fcc(char *path, size_t pathlen, struct Email *hdr);
 void  mutt_startup_shutdown_hook(int type);
 void  mutt_timeout_hook(void);
 

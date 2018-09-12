@@ -383,7 +383,7 @@ static bool user_in_addr(struct Address *a)
  * @retval 4 User is originator
  * @retval 5 Sent to a subscribed mailinglist
  */
-static int user_is_recipient(struct Header *h)
+static int user_is_recipient(struct Email *h)
 {
   if (!h || !h->env)
     return 0;
@@ -446,7 +446,7 @@ static char *apply_subject_mods(struct Envelope *env)
  * @param hdr Header of an email
  * @retval true If thread contains new mail
  */
-static bool thread_is_new(struct Context *ctx, struct Header *hdr)
+static bool thread_is_new(struct Context *ctx, struct Email *hdr)
 {
   return hdr->collapsed && (hdr->num_hidden > 1) &&
          (mutt_thread_contains_unread(ctx, hdr) == 1);
@@ -458,7 +458,7 @@ static bool thread_is_new(struct Context *ctx, struct Header *hdr)
  * @param hdr Header of an email
  * @retval true If thread contains unread mail
  */
-static bool thread_is_old(struct Context *ctx, struct Header *hdr)
+static bool thread_is_old(struct Context *ctx, struct Email *hdr)
 {
   return hdr->collapsed && (hdr->num_hidden > 1) &&
          (mutt_thread_contains_unread(ctx, hdr) == 2);
@@ -532,7 +532,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   int is_index = (flags & MUTT_FORMAT_INDEX);
   size_t colorlen;
 
-  struct Header *hdr = hfi->hdr;
+  struct Email *hdr = hfi->hdr;
   struct Context *ctx = hfi->ctx;
 
   if (!hdr || !hdr->env)
@@ -1239,7 +1239,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (hdr->env->x_label)
       {
         i = 1; /* reduce reuse recycle */
-        struct Header *htmp = NULL;
+        struct Email *htmp = NULL;
         if (flags & MUTT_FORMAT_TREE && (hdr->thread->prev && hdr->thread->prev->message &&
                                          hdr->thread->prev->message->env->x_label))
         {
@@ -1425,7 +1425,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param flags  Format flags
  */
 void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
-                            struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
+                            struct Context *ctx, struct Email *hdr, enum FormatFlag flags)
 {
   struct HdrFormatInfo hfi;
 

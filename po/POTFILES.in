@@ -39,10 +39,10 @@ editmsg.c
 email/address.c
 email/attach.c
 email/body.c
+email/email.c
 email/email_globals.c
 email/envelope.c
 email/from.c
-email/header.c
 email/idna.c
 email/mime.c
 email/parameter.c

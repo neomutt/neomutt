@@ -48,7 +48,7 @@
 #include "mx.h"
 #include "protos.h"
 
-struct Header;
+struct Email;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
@@ -837,7 +837,7 @@ static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 /**
  * comp_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *hdr)
 {
   if (!ctx)
     return -1;
@@ -937,7 +937,7 @@ static int comp_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 /**
  * comp_tags_commit - Implements MxOps::tags_commit()
  */
-static int comp_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
+static int comp_tags_commit(struct Context *ctx, struct Email *hdr, char *buf)
 {
   if (!ctx)
     return 0;

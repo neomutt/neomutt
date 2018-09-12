@@ -89,7 +89,7 @@ static char LastSaveFolder[PATH_MAX] = "";
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_display_message(struct Header *cur)
+int mutt_display_message(struct Email *cur)
 {
   char tempfile[PATH_MAX], buf[LONG_STRING];
   int rc = 0;
@@ -279,7 +279,7 @@ int mutt_display_message(struct Header *cur)
  * ci_bounce_message - Bounce an email
  * @param h Header of email to bounce
  */
-void ci_bounce_message(struct Header *h)
+void ci_bounce_message(struct Email *h)
 {
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
@@ -409,7 +409,7 @@ static void pipe_set_flags(bool decode, bool print, int *cmflags, int *chflags)
  * @param decode If true, decode the message
  * @param print  If true, message is for printing
  */
-static void pipe_msg(struct Header *h, FILE *fp, bool decode, bool print)
+static void pipe_msg(struct Email *h, FILE *fp, bool decode, bool print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
@@ -442,7 +442,7 @@ static void pipe_msg(struct Header *h, FILE *fp, bool decode, bool print)
  *
  * The following code is shared between printing and piping.
  */
-static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
+static int pipe_message(struct Email *h, char *cmd, bool decode, bool print,
                         bool split, const char *sep)
 {
   int rc = 0;
@@ -557,7 +557,7 @@ static int pipe_message(struct Header *h, char *cmd, bool decode, bool print,
  * mutt_pipe_message - Pipe a message
  * @param h Header of message to pipe
  */
-void mutt_pipe_message(struct Header *h)
+void mutt_pipe_message(struct Email *h)
 {
   char buffer[LONG_STRING];
 
@@ -576,7 +576,7 @@ void mutt_pipe_message(struct Header *h)
  * mutt_print_message - Print a message
  * @param h Header of message to print
  */
-void mutt_print_message(struct Header *h)
+void mutt_print_message(struct Email *h)
 {
   int i;
   int msgcount; // for L10N with ngettext
@@ -781,7 +781,7 @@ void mutt_display_address(struct Envelope *env)
  * @param[out] cmflags Copy message flags, e.g. MUTT_CM_DECODE
  * @param[out] chflags Copy header flags, e.g. CH_DECODE
  */
-static void set_copy_flags(struct Header *hdr, bool decode, bool decrypt,
+static void set_copy_flags(struct Email *hdr, bool decode, bool decrypt,
                            int *cmflags, int *chflags)
 {
   *cmflags = 0;
@@ -835,7 +835,7 @@ static void set_copy_flags(struct Header *hdr, bool decode, bool decrypt,
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Header *h, bool delete, bool decode,
+int mutt_save_message_ctx(struct Email *h, bool delete, bool decode,
                           bool decrypt, struct Context *ctx)
 {
   int cmflags, chflags;
@@ -870,7 +870,7 @@ int mutt_save_message_ctx(struct Header *h, bool delete, bool decode,
  * @retval  0 Copy/save was successful
  * @retval -1 Error/abort
  */
-int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
+int mutt_save_message(struct Email *h, bool delete, bool decode, bool decrypt)
 {
   bool need_passphrase = false;
   int app = 0;
@@ -1040,7 +1040,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
 #ifdef USE_COMPRESSED
         if (cm)
         {
-          struct Header *h2 = Context->mailbox->hdrs[i];
+          struct Email *h2 = Context->mailbox->hdrs[i];
           cm->msg_count++;
           if (!h2->read)
             cm->msg_unread++;
@@ -1085,7 +1085,7 @@ int mutt_save_message(struct Header *h, bool delete, bool decode, bool decrypt)
  *
  * recvattach requires the return code to know when to regenerate the actx.
  */
-int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
+int mutt_edit_content_type(struct Email *h, struct Body *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
@@ -1163,7 +1163,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     structure_changed = 1;
     b->hdr->content = NULL;
-    mutt_header_free(&b->hdr);
+    mutt_email_free(&b->hdr);
   }
 
   if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))
@@ -1189,7 +1189,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-static bool check_traditional_pgp(struct Header *h, int *redraw)
+static bool check_traditional_pgp(struct Email *h, int *redraw)
 {
   bool rc = false;
 
@@ -1217,7 +1217,7 @@ static bool check_traditional_pgp(struct Header *h, int *redraw)
  * @param[out] redraw Set of #REDRAW_FULL if the screen may need redrawing
  * @retval true If message contains inline PGP content
  */
-bool mutt_check_traditional_pgp(struct Header *h, int *redraw)
+bool mutt_check_traditional_pgp(struct Email *h, int *redraw)
 {
   bool rc = false;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))

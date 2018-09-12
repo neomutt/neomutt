@@ -5036,7 +5036,7 @@ void smime_gpgme_init(void)
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #ENCRYPT
  */
-static int gpgme_send_menu(struct Header *msg, int is_smime)
+static int gpgme_send_menu(struct Email *msg, int is_smime)
 {
   struct CryptKeyInfo *p = NULL;
   const char *prompt = NULL;
@@ -5197,7 +5197,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
 /**
  * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_gpgme_send_menu(struct Header *msg)
+int pgp_gpgme_send_menu(struct Email *msg)
 {
   return gpgme_send_menu(msg, 0);
 }
@@ -5205,7 +5205,7 @@ int pgp_gpgme_send_menu(struct Header *msg)
 /**
  * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_gpgme_send_menu(struct Header *msg)
+int smime_gpgme_send_menu(struct Email *msg)
 {
   return gpgme_send_menu(msg, 1);
 }
@@ -5215,7 +5215,7 @@ int smime_gpgme_send_menu(struct Header *msg)
  * @param h Header of the email
  * @retval true If sender is verified
  */
-static bool verify_sender(struct Header *h)
+static bool verify_sender(struct Email *h)
 {
   struct Address *sender = NULL;
   bool rc = true;
@@ -5292,7 +5292,7 @@ static bool verify_sender(struct Header *h)
 /**
  * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_gpgme_verify_sender(struct Header *h)
+int smime_gpgme_verify_sender(struct Email *h)
 {
   return verify_sender(h);
 }

@@ -243,7 +243,7 @@ static int cmd_status(const char *s)
 static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 {
   unsigned int exp_msn;
-  struct Header *h = NULL;
+  struct Email *h = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
@@ -317,7 +317,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 
   while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
   {
-    struct Header *h = mutt_hash_int_find(idata->uid_hash, uid);
+    struct Email *h = mutt_hash_int_find(idata->uid_hash, uid);
     if (!h)
       continue;
 
@@ -378,7 +378,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
   unsigned int msn, uid;
-  struct Header *h = NULL;
+  struct Email *h = NULL;
   char *flags = NULL;
   int uid_checked = 0;
   int server_changes = 0;
@@ -744,7 +744,7 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 static void cmd_parse_search(struct ImapData *idata, const char *s)
 {
   unsigned int uid;
-  struct Header *h = NULL;
+  struct Email *h = NULL;
 
   mutt_debug(2, "Handling SEARCH\n");
 
