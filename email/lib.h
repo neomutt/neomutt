@@ -45,8 +45,8 @@
  * | email/url.c            | @subpage email_url       |
  */
 
-#ifndef MUTT_EMAIL_EMAIL_H
-#define MUTT_EMAIL_EMAIL_H
+#ifndef MUTT_EMAIL_LIB_H
+#define MUTT_EMAIL_LIB_H
 
 #include "address.h"
 #include "attach.h"
@@ -66,4 +66,4 @@
 #include "thread.h"
 #include "url.h"
 
-#endif /* MUTT_EMAIL_EMAIL_H */
+#endif /* MUTT_EMAIL_LIB_H */

@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "curs_lib.h"

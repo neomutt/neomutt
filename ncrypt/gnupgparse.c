@@ -42,7 +42,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "filter.h"
 #include "globals.h"
 #include "ncrypt.h"

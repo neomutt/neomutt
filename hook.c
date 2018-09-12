@@ -34,7 +34,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "hook.h"
 #include "alias.h"

@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "group.h"
 #include "globals.h"
 #include "send.h"

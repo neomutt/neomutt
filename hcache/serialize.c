@@ -36,7 +36,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "hcache.h"
 
 /**

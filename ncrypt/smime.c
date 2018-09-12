@@ -37,7 +37,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "copy.h"

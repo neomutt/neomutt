@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "bcache.h"
 #include "mutt_account.h"
 #include "muttlib.h"

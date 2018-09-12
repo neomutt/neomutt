@@ -31,7 +31,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "curs_lib.h"

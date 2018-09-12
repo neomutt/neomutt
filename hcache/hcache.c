@@ -32,7 +32,7 @@
  */
 
 #include "config.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "muttlib.h"
 #include "serialize.h"
 

@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt_socket.h"
 #include "hook.h"

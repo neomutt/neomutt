@@ -44,7 +44,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"

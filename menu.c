@@ -27,7 +27,7 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "menu.h"
 #include "color.h"

@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "globals.h"
 
