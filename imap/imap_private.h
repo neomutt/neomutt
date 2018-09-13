@@ -318,7 +318,7 @@ int imap_exec(struct ImapMboxData *mdata, const char *cmdstr, int flags);
 int imap_cmd_idle(struct ImapMboxData *mdata);
 
 /* message.c */
-void imap_free_email_data(struct ImapEmailData **data);
+void imap_free_emaildata(void **data);
 int imap_read_headers(struct ImapMboxData *mdata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
 char *imap_set_flags(struct ImapMboxData *mdata, struct Email *e, char *s, int *server_changes);
 int imap_cache_del(struct ImapMboxData *mdata, struct Email *e);

@@ -257,7 +257,7 @@ static void cmd_parse_expunge(struct ImapMboxData *mdata, const char *s)
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    HEADER_DATA(e)->msn = 0;
+    IMAP_EDATA(e)->msn = 0;
   }
 
   /* decrement seqno of those above. */
@@ -265,7 +265,7 @@ static void cmd_parse_expunge(struct ImapMboxData *mdata, const char *s)
   {
     e = mdata->msn_index[cur];
     if (e)
-      HEADER_DATA(e)->msn--;
+      IMAP_EDATA(e)->msn--;
     mdata->msn_index[cur - 1] = e;
   }
 
@@ -321,13 +321,13 @@ static void cmd_parse_vanished(struct ImapMboxData *mdata, char *s)
     if (!e)
       continue;
 
-    unsigned int exp_msn = HEADER_DATA(e)->msn;
+    unsigned int exp_msn = IMAP_EDATA(e)->msn;
 
     /* imap_expunge_mailbox() will rewrite e->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    HEADER_DATA(e)->msn = 0;
+    IMAP_EDATA(e)->msn = 0;
 
     if ((exp_msn < 1) || (exp_msn > mdata->max_msn))
     {
@@ -349,7 +349,7 @@ static void cmd_parse_vanished(struct ImapMboxData *mdata, char *s)
       {
         e = mdata->msn_index[cur];
         if (e)
-          HEADER_DATA(e)->msn--;
+          IMAP_EDATA(e)->msn--;
         mdata->msn_index[cur - 1] = e;
       }
 
@@ -404,7 +404,7 @@ static void cmd_parse_fetch(struct ImapMboxData *mdata, char *s)
     return;
   }
 
-  mutt_debug(2, "Message UID %u updated\n", HEADER_DATA(e)->uid);
+  mutt_debug(2, "Message UID %u updated\n", IMAP_EDATA(e)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -453,7 +453,7 @@ static void cmd_parse_fetch(struct ImapMboxData *mdata, char *s)
         mutt_debug(1, "Illegal UID.  Skipping update.\n");
         return;
       }
-      if (uid != HEADER_DATA(e)->uid)
+      if (uid != IMAP_EDATA(e)->uid)
       {
         mutt_debug(1, "UID vs MSN mismatch.  Skipping update.\n");
         return;

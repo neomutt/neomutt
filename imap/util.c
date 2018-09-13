@@ -232,7 +232,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapMboxData *
     if (msn <= mdata->max_msn)
     {
       struct Email *cur_header = mdata->msn_index[msn - 1];
-      cur_uid = cur_header ? HEADER_DATA(cur_header)->uid : 0;
+      cur_uid = cur_header ? IMAP_EDATA(cur_header)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;
       last_uid = cur_uid;
@@ -375,7 +375,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
   if (!mdata->hcache)
     return -1;
 
-  sprintf(key, "/%u", HEADER_DATA(e)->uid);
+  sprintf(key, "/%u", IMAP_EDATA(e)->uid);
   return mutt_hcache_store(mdata->hcache, key, imap_hcache_keylen(key), e, mdata->uid_validity);
 }
 
