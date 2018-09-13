@@ -98,9 +98,9 @@ struct NntpServer
 };
 
 /**
- * struct NntpHeaderData - NNTP-specific header data
+ * struct NntpEmailData - NNTP data attached to an Email - @extends Email
  */
-struct NntpHeaderData
+struct NntpEmailData
 {
   anum_t article_num;
   bool parsed : 1;
@@ -128,9 +128,9 @@ struct NewsrcEntry
 #define NNTP_ACACHE_LEN 10
 
 /**
- * struct NntpData - NNTP-specific server data
+ * struct NntpMboxData - NNTP server data attached to a Mailbox - @extends Mailbox
  */
-struct NntpData
+struct NntpMboxData
 {
   char *group;
   char *desc;
@@ -151,10 +151,10 @@ struct NntpData
 };
 
 struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock);
-struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group);
-struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group);
-struct NntpData *mutt_newsgroup_catchup(struct Context *ctx, struct NntpServer *nserv, char *group);
-struct NntpData *mutt_newsgroup_uncatchup(struct Context *ctx, struct NntpServer *nserv, char *group);
+struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group);
+struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group);
+struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx, struct NntpServer *nserv, char *group);
+struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx, struct NntpServer *nserv, char *group);
 int nntp_active_fetch(struct NntpServer *nserv, bool new);
 int nntp_newsrc_update(struct NntpServer *nserv);
 int nntp_post(struct Mailbox *mailbox, const char *msg);
