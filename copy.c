@@ -476,7 +476,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char
   if (flags & CH_VIRTUAL)
   {
     /* Add some fake headers based on notmuch data */
-    char *folder = nm_header_get_folder(e);
+    char *folder = nm_email_get_folder(e);
     if (folder && !(Weed && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
