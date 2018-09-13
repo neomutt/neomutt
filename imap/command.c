@@ -78,12 +78,12 @@ static const char *const Capabilities[] = {
 
 /**
  * cmd_queue_full - Is the IMAP command queue full?
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @retval true Queue is full
  */
-static bool cmd_queue_full(struct ImapData *idata)
+static bool cmd_queue_full(struct ImapMboxData *mdata)
 {
-  if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
+  if ((mdata->nextcmd + 1) % mdata->cmdslots == mdata->lastcmd)
     return true;
 
   return false;
@@ -91,26 +91,26 @@ static bool cmd_queue_full(struct ImapData *idata)
 
 /**
  * cmd_new - Create and queue a new command control block
- * @param idata IMAP data
+ * @param mdata Imap Mailbox data
  * @retval NULL if the pipeline is full
  * @retval ptr New command
  */
-static struct ImapCommand *cmd_new(struct ImapData *idata)
+static struct ImapCommand *cmd_new(struct ImapMboxData *mdata)
 {
   struct ImapCommand *cmd = NULL;
 
-  if (cmd_queue_full(idata))
+  if (cmd_queue_full(mdata))
   {
     mutt_debug(3, "IMAP command queue full\n");
     return NULL;
   }
 
-  cmd = idata->cmds + idata->nextcmd;
-  idata->nextcmd = (idata->nextcmd + 1) % idata->cmdslots;
+  cmd = mdata->cmds + mdata->nextcmd;
+  mdata->nextcmd = (mdata->nextcmd + 1) % mdata->cmdslots;
 
-  snprintf(cmd->seq, sizeof(cmd->seq), "a%04u", idata->seqno++);
-  if (idata->seqno > 9999)
-    idata->seqno = 0;
+  snprintf(cmd->seq, sizeof(cmd->seq), "a%04u", mdata->seqno++);
+  if (mdata->seqno > 9999)
+    mdata->seqno = 0;
 
   cmd->state = IMAP_CMD_NEW;
 
@@ -119,7 +119,7 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
 
 /**
  * cmd_queue - Add a IMAP command to the queue
- * @param idata  Server data
+ * @param mdata Imap Mailbox data
  * @param cmdstr Command string
  * @param flags  Server flags, e.g. #IMAP_CMD_POLL
  * @retval  0 Success
@@ -127,89 +127,89 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
  *
  * If the queue is full, attempts to drain it.
  */
-static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
+static int cmd_queue(struct ImapMboxData *mdata, const char *cmdstr, int flags)
 {
-  if (cmd_queue_full(idata))
+  if (cmd_queue_full(mdata))
   {
     mutt_debug(3, "Draining IMAP command pipeline\n");
 
-    const int rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
+    const int rc = imap_exec(mdata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
 
     if (rc < 0 && rc != -2)
       return rc;
   }
 
-  struct ImapCommand *cmd = cmd_new(idata);
+  struct ImapCommand *cmd = cmd_new(mdata);
   if (!cmd)
     return IMAP_CMD_BAD;
 
-  if (mutt_buffer_printf(idata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
+  if (mutt_buffer_printf(mdata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
     return IMAP_CMD_BAD;
 
   return 0;
 }
 
 /**
- * cmd_handle_fatal - When ImapData is in fatal state, do what we can
- * @param idata Server data
+ * cmd_handle_fatal - When ImapMboxData is in fatal state, do what we can
+ * @param mdata Imap Mailbox data
  */
-static void cmd_handle_fatal(struct ImapData *idata)
+static void cmd_handle_fatal(struct ImapMboxData *mdata)
 {
-  idata->status = IMAP_FATAL;
+  mdata->status = IMAP_FATAL;
 
-  if ((idata->state >= IMAP_SELECTED) && (idata->reopen & IMAP_REOPEN_ALLOW))
+  if ((mdata->state >= IMAP_SELECTED) && (mdata->reopen & IMAP_REOPEN_ALLOW))
   {
-    mx_fastclose_mailbox(idata->ctx);
-    mutt_socket_close(idata->conn);
-    mutt_error(_("Mailbox %s@%s closed"), idata->conn->account.login,
-               idata->conn->account.host);
-    idata->state = IMAP_DISCONNECTED;
+    mx_fastclose_mailbox(mdata->ctx);
+    mutt_socket_close(mdata->conn);
+    mutt_error(_("Mailbox %s@%s closed"), mdata->conn->account.login,
+               mdata->conn->account.host);
+    mdata->state = IMAP_DISCONNECTED;
   }
 
-  imap_close_connection(idata);
-  if (!idata->recovering)
+  imap_close_connection(mdata);
+  if (!mdata->recovering)
   {
-    idata->recovering = true;
-    if (imap_conn_find(&idata->conn->account, 0))
+    mdata->recovering = true;
+    if (imap_conn_find(&mdata->conn->account, 0))
       mutt_clear_error();
-    idata->recovering = false;
+    mdata->recovering = false;
   }
 }
 
 /**
  * cmd_start - Start a new IMAP command
- * @param idata  Server data
+ * @param mdata Imap Mailbox data
  * @param cmdstr Command string
  * @param flags  Command flags, e.g. #IMAP_CMD_QUEUE
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  */
-static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
+static int cmd_start(struct ImapMboxData *mdata, const char *cmdstr, int flags)
 {
   int rc;
 
-  if (idata->status == IMAP_FATAL)
+  if (mdata->status == IMAP_FATAL)
   {
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
     return -1;
   }
 
-  if (cmdstr && ((rc = cmd_queue(idata, cmdstr, flags)) < 0))
+  if (cmdstr && ((rc = cmd_queue(mdata, cmdstr, flags)) < 0))
     return rc;
 
   if (flags & IMAP_CMD_QUEUE)
     return 0;
 
-  if (idata->cmdbuf->dptr == idata->cmdbuf->data)
+  if (mdata->cmdbuf->dptr == mdata->cmdbuf->data)
     return IMAP_CMD_BAD;
 
-  rc = mutt_socket_send_d(idata->conn, idata->cmdbuf->data,
+  rc = mutt_socket_send_d(mdata->conn, mdata->cmdbuf->data,
                           (flags & IMAP_CMD_PASS) ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  idata->cmdbuf->dptr = idata->cmdbuf->data;
+  mdata->cmdbuf->dptr = mdata->cmdbuf->data;
 
   /* unidle when command queue is flushed */
-  if (idata->state == IMAP_IDLE)
-    idata->state = IMAP_SELECTED;
+  if (mdata->state == IMAP_IDLE)
+    mdata->state = IMAP_SELECTED;
 
   return (rc < 0) ? IMAP_CMD_BAD : 0;
 }
@@ -234,23 +234,23 @@ static int cmd_status(const char *s)
 
 /**
  * cmd_parse_expunge - Parse expunge command
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     String containing MSN of message to expunge
  *
- * cmd_parse_expunge: mark headers with new sequence ID and mark idata to be
+ * cmd_parse_expunge: mark headers with new sequence ID and mark mdata to be
  * reopened at our earliest convenience
  */
-static void cmd_parse_expunge(struct ImapData *idata, const char *s)
+static void cmd_parse_expunge(struct ImapMboxData *mdata, const char *s)
 {
   unsigned int exp_msn;
   struct Email *e = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
-  if (mutt_str_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > idata->max_msn)
+  if (mutt_str_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > mdata->max_msn)
     return;
 
-  e = idata->msn_index[exp_msn - 1];
+  e = mdata->msn_index[exp_msn - 1];
   if (e)
   {
     /* imap_expunge_mailbox() will rewrite e->index.
@@ -261,29 +261,29 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
   }
 
   /* decrement seqno of those above. */
-  for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
+  for (unsigned int cur = exp_msn; cur < mdata->max_msn; cur++)
   {
-    e = idata->msn_index[cur];
+    e = mdata->msn_index[cur];
     if (e)
       HEADER_DATA(e)->msn--;
-    idata->msn_index[cur - 1] = e;
+    mdata->msn_index[cur - 1] = e;
   }
 
-  idata->msn_index[idata->max_msn - 1] = NULL;
-  idata->max_msn--;
+  mdata->msn_index[mdata->max_msn - 1] = NULL;
+  mdata->max_msn--;
 
-  idata->reopen |= IMAP_EXPUNGE_PENDING;
+  mdata->reopen |= IMAP_EXPUNGE_PENDING;
 }
 
 /**
  * cmd_parse_vanished - Parse vanished command
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     String containing MSN of message to expunge
  *
  * Handle VANISHED (RFC7162), which is like expunge, but passes a seqset of UIDs.
  * An optional (EARLIER) argument specifies not to decrement subsequent MSNs.
  */
-static void cmd_parse_vanished(struct ImapData *idata, char *s)
+static void cmd_parse_vanished(struct ImapMboxData *mdata, char *s)
 {
   bool earlier = false;
   int rc;
@@ -317,7 +317,7 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
 
   while ((rc = mutt_seqset_iterator_next(iter, &uid)) == 0)
   {
-    struct Email *e = mutt_hash_int_find(idata->uid_hash, uid);
+    struct Email *e = mutt_hash_int_find(mdata->uid_hash, uid);
     if (!e)
       continue;
 
@@ -329,53 +329,53 @@ static void cmd_parse_vanished(struct ImapData *idata, char *s)
     e->index = INT_MAX;
     HEADER_DATA(e)->msn = 0;
 
-    if ((exp_msn < 1) || (exp_msn > idata->max_msn))
+    if ((exp_msn < 1) || (exp_msn > mdata->max_msn))
     {
       mutt_debug(1, "VANISHED: msn for UID %u is incorrect.\n", uid);
       continue;
     }
-    if (idata->msn_index[exp_msn - 1] != e)
+    if (mdata->msn_index[exp_msn - 1] != e)
     {
       mutt_debug(1, "VANISHED: msn_index for UID %u is incorrect.\n", uid);
       continue;
     }
 
-    idata->msn_index[exp_msn - 1] = NULL;
+    mdata->msn_index[exp_msn - 1] = NULL;
 
     if (!earlier)
     {
       /* decrement seqno of those above. */
-      for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
+      for (unsigned int cur = exp_msn; cur < mdata->max_msn; cur++)
       {
-        e = idata->msn_index[cur];
+        e = mdata->msn_index[cur];
         if (e)
           HEADER_DATA(e)->msn--;
-        idata->msn_index[cur - 1] = e;
+        mdata->msn_index[cur - 1] = e;
       }
 
-      idata->msn_index[idata->max_msn - 1] = NULL;
-      idata->max_msn--;
+      mdata->msn_index[mdata->max_msn - 1] = NULL;
+      mdata->max_msn--;
     }
   }
 
   if (rc < 0)
     mutt_debug(1, "VANISHED: illegal seqset %s\n", s);
 
-  idata->reopen |= IMAP_EXPUNGE_PENDING;
+  mdata->reopen |= IMAP_EXPUNGE_PENDING;
 
   mutt_seqset_iterator_free(&iter);
 }
 
 /**
- * cmd_parse_fetch - Load fetch response into ImapData
- * @param idata Server data
+ * cmd_parse_fetch - Load fetch response into ImapMboxData
+ * @param mdata Imap Mailbox data
  * @param s     String containing MSN of message to fetch
  *
  * Currently only handles unanticipated FETCH responses, and only FLAGS data.
  * We get these if another client has changed flags for a mailbox we've
  * selected.  Of course, a lot of code here duplicates code in message.c.
  */
-static void cmd_parse_fetch(struct ImapData *idata, char *s)
+static void cmd_parse_fetch(struct ImapMboxData *mdata, char *s)
 {
   unsigned int msn, uid;
   struct Email *e = NULL;
@@ -391,13 +391,13 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     return;
   }
 
-  if ((msn < 1) || (msn > idata->max_msn))
+  if ((msn < 1) || (msn > mdata->max_msn))
   {
     mutt_debug(3, "Skipping FETCH response - MSN %u out of range\n", msn);
     return;
   }
 
-  e = idata->msn_index[msn - 1];
+  e = mdata->msn_index[msn - 1];
   if (!e || !e->active)
   {
     mutt_debug(3, "Skipping FETCH response - MSN %u not in msn_index\n", msn);
@@ -494,24 +494,24 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
   if (flags)
   {
-    imap_set_flags(idata, e, flags, &server_changes);
+    imap_set_flags(mdata, e, flags, &server_changes);
     if (server_changes)
     {
       /* If server flags could conflict with mutt's flags, reopen the mailbox. */
       if (e->changed)
-        idata->reopen |= IMAP_EXPUNGE_PENDING;
+        mdata->reopen |= IMAP_EXPUNGE_PENDING;
       else
-        idata->check_status = IMAP_FLAGS_PENDING;
+        mdata->check_status = IMAP_FLAGS_PENDING;
     }
   }
 }
 
 /**
  * cmd_parse_capability - set capability bits according to CAPABILITY response
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with capabilities
  */
-static void cmd_parse_capability(struct ImapData *idata, char *s)
+static void cmd_parse_capability(struct ImapMboxData *mdata, char *s)
 {
   mutt_debug(3, "Handling CAPABILITY\n");
 
@@ -519,10 +519,10 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
   char *bracket = strchr(s, ']');
   if (bracket)
     *bracket = '\0';
-  FREE(&idata->capstr);
-  idata->capstr = mutt_str_strdup(s);
+  FREE(&mdata->capstr);
+  mdata->capstr = mutt_str_strdup(s);
 
-  memset(idata->capabilities, 0, sizeof(idata->capabilities));
+  memset(mdata->capabilities, 0, sizeof(mdata->capabilities));
 
   while (*s)
   {
@@ -530,7 +530,7 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
     {
       if (mutt_str_word_casecmp(Capabilities[i], s) == 0)
       {
-        mutt_bit_set(idata->capabilities, i);
+        mutt_bit_set(mdata->capabilities, i);
         mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[i], i);
         break;
       }
@@ -541,18 +541,18 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_list - Parse a server LIST command (list mailboxes)
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with folder list
  */
-static void cmd_parse_list(struct ImapData *idata, char *s)
+static void cmd_parse_list(struct ImapMboxData *mdata, char *s)
 {
   struct ImapList *list = NULL;
   struct ImapList lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
   unsigned int litlen;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
-    list = idata->cmddata;
+  if (mdata->cmddata && mdata->cmdtype == IMAP_CT_LIST)
+    list = mdata->cmddata;
   else
     list = &lb;
 
@@ -595,32 +595,32 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   /* Notes often responds with literals here. We need a real tokenizer. */
   if (imap_get_literal_count(s, &litlen) == 0)
   {
-    if (imap_cmd_step(idata) != IMAP_CMD_CONTINUE)
+    if (imap_cmd_step(mdata) != IMAP_CMD_CONTINUE)
     {
-      idata->status = IMAP_FATAL;
+      mdata->status = IMAP_FATAL;
       return;
     }
-    list->name = idata->buf;
+    list->name = mdata->buf;
   }
   else
   {
-    imap_unmunge_mbox_name(idata, s);
+    imap_unmunge_mbox_name(mdata, s);
     list->name = s;
   }
 
   if (list->name[0] == '\0')
   {
-    idata->delim = list->delim;
-    mutt_debug(3, "Root delimiter: %c\n", idata->delim);
+    mdata->delim = list->delim;
+    mutt_debug(3, "Root delimiter: %c\n", mdata->delim);
   }
 }
 
 /**
  * cmd_parse_lsub - Parse a server LSUB (list subscribed mailboxes)
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with folder list
  */
-static void cmd_parse_lsub(struct ImapData *idata, char *s)
+static void cmd_parse_lsub(struct ImapMboxData *mdata, char *s)
 {
   char buf[STRING];
   char errstr[STRING];
@@ -628,20 +628,20 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   struct Url url;
   struct ImapList list;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
+  if (mdata->cmddata && mdata->cmdtype == IMAP_CT_LIST)
   {
     /* caller will handle response itself */
-    cmd_parse_list(idata, s);
+    cmd_parse_list(mdata, s);
     return;
   }
 
   if (!ImapCheckSubscribed)
     return;
 
-  idata->cmdtype = IMAP_CT_LIST;
-  idata->cmddata = &list;
-  cmd_parse_list(idata, s);
-  idata->cmddata = NULL;
+  mdata->cmdtype = IMAP_CT_LIST;
+  mdata->cmddata = &list;
+  cmd_parse_list(mdata, s);
+  mdata->cmddata = NULL;
   /* noselect is for a gmail quirk (#3445) */
   if (!list.name || list.noselect)
     return;
@@ -649,7 +649,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   mutt_debug(3, "Subscribing to %s\n", list.name);
 
   mutt_str_strfcpy(buf, "mailboxes \"", sizeof(buf));
-  mutt_account_tourl(&idata->conn->account, &url);
+  mutt_account_tourl(&mdata->conn->account, &url);
   /* escape \ and " */
   imap_quote_string(errstr, sizeof(errstr), list.name, true);
   url.path = errstr + 1;
@@ -669,10 +669,10 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_myrights - Set rights bits according to MYRIGHTS response
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with rights info
  */
-static void cmd_parse_myrights(struct ImapData *idata, const char *s)
+static void cmd_parse_myrights(struct ImapMboxData *mdata, const char *s)
 {
   mutt_debug(2, "Handling MYRIGHTS\n");
 
@@ -680,54 +680,54 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
   s = imap_next_word((char *) s);
 
   /* zero out current rights set */
-  memset(idata->ctx->mailbox->rights, 0, sizeof(idata->ctx->mailbox->rights));
+  memset(mdata->ctx->mailbox->rights, 0, sizeof(mdata->ctx->mailbox->rights));
 
   while (*s && !isspace((unsigned char) *s))
   {
     switch (*s)
     {
       case 'a':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_ADMIN);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_ADMIN);
         break;
       case 'e':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       case 'i':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_INSERT);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_INSERT);
         break;
       case 'k':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_CREATE);
         break;
       case 'l':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
         break;
       case 'p':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_POST);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_POST);
         break;
       case 'r':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_READ);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_READ);
         break;
       case 's':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_SEEN);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_SEEN);
         break;
       case 't':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_DELETE);
         break;
       case 'w':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_WRITE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_WRITE);
         break;
       case 'x':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_DELMX);
         break;
 
       /* obsolete rights */
       case 'c':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_CREATE);
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_DELMX);
         break;
       case 'd':
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_DELETE);
-        mutt_bit_set(idata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(mdata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       default:
         mutt_debug(1, "Unknown right: %c\n", *s);
@@ -738,10 +738,10 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 
 /**
  * cmd_parse_search - store SEARCH response for later use
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with search results
  */
-static void cmd_parse_search(struct ImapData *idata, const char *s)
+static void cmd_parse_search(struct ImapMboxData *mdata, const char *s)
 {
   unsigned int uid;
   struct Email *e = NULL;
@@ -752,7 +752,7 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
   {
     if (mutt_str_atoui(s, &uid) < 0)
       continue;
-    e = mutt_hash_int_find(idata->uid_hash, uid);
+    e = mutt_hash_int_find(mdata->uid_hash, uid);
     if (e)
       e->matched = true;
   }
@@ -760,13 +760,13 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
 
 /**
  * cmd_parse_status - Parse status from server
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string with status info
  *
  * first cut: just do mailbox update. Later we may wish to cache all mailbox
  * information, even that not desired by mailbox
  */
-static void cmd_parse_status(struct ImapData *idata, char *s)
+static void cmd_parse_status(struct ImapMboxData *mdata, char *s)
 {
   char *value = NULL;
   struct ImapMbox mx;
@@ -781,19 +781,19 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   /* We need a real tokenizer. */
   if (imap_get_literal_count(mailbox, &litlen) == 0)
   {
-    if (imap_cmd_step(idata) != IMAP_CMD_CONTINUE)
+    if (imap_cmd_step(mdata) != IMAP_CMD_CONTINUE)
     {
-      idata->status = IMAP_FATAL;
+      mdata->status = IMAP_FATAL;
       return;
     }
 
-    if (strlen(idata->buf) < litlen)
+    if (strlen(mdata->buf) < litlen)
     {
       mutt_debug(1, "Error parsing STATUS mailbox\n");
       return;
     }
 
-    mailbox = idata->buf;
+    mailbox = mdata->buf;
     s = mailbox + litlen;
     *s = '\0';
     s++;
@@ -803,10 +803,10 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   {
     s = imap_next_word(mailbox);
     *(s - 1) = '\0';
-    imap_unmunge_mbox_name(idata, mailbox);
+    imap_unmunge_mbox_name(mdata, mailbox);
   }
 
-  status = imap_mboxcache_get(idata, mailbox, 1);
+  status = imap_mboxcache_get(mdata, mailbox, 1);
   olduv = status->uidvalidity;
   oldun = status->uidnext;
 
@@ -851,9 +851,9 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
              status->messages, status->recent, status->unseen);
 
   /* caller is prepared to handle the result herself */
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)
+  if (mdata->cmddata && mdata->cmdtype == IMAP_CT_STATUS)
   {
-    memcpy(idata->cmddata, status, sizeof(struct ImapStatus));
+    memcpy(mdata->cmddata, status, sizeof(struct ImapStatus));
     return;
   }
 
@@ -872,12 +872,12 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
       continue;
     }
 
-    if (imap_account_match(&idata->conn->account, &mx.account))
+    if (imap_account_match(&mdata->conn->account, &mx.account))
     {
       if (mx.mbox)
       {
         value = mutt_str_strdup(mx.mbox);
-        imap_fix_path(idata, mx.mbox, value, mutt_str_strlen(value) + 1);
+        imap_fix_path(mdata, mx.mbox, value, mutt_str_strlen(value) + 1);
         FREE(&mx.mbox);
       }
       else
@@ -938,10 +938,10 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_enabled - Record what the server has enabled
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @param s     Command string containing acceptable encodings
  */
-static void cmd_parse_enabled(struct ImapData *idata, const char *s)
+static void cmd_parse_enabled(struct ImapMboxData *mdata, const char *s)
 {
   mutt_debug(2, "Handling ENABLED\n");
 
@@ -950,26 +950,26 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
     if ((mutt_str_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
         (mutt_str_strncasecmp(s, "UTF8=ONLY", 9) == 0))
     {
-      idata->unicode = 1;
+      mdata->unicode = 1;
     }
     if (mutt_str_strncasecmp(s, "QRESYNC", 7) == 0)
-      idata->qresync = 1;
+      mdata->qresync = 1;
   }
 }
 
 /**
  * cmd_handle_untagged - fallback parser for otherwise unhandled messages
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int cmd_handle_untagged(struct ImapData *idata)
+static int cmd_handle_untagged(struct ImapMboxData *mdata)
 {
   unsigned int count = 0;
-  char *s = imap_next_word(idata->buf);
+  char *s = imap_next_word(mdata->buf);
   char *pn = imap_next_word(s);
 
-  if ((idata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
+  if ((mdata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
   {
     pn = s;
     s = imap_next_word(s);
@@ -987,7 +987,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
         mutt_debug(1, "Malformed EXISTS: '%s'\n", pn);
       }
 
-      if (!(idata->reopen & IMAP_EXPUNGE_PENDING) && count < idata->max_msn)
+      if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && count < mdata->max_msn)
       {
         /* Notes 6.0.3 has a tendency to report fewer messages exist than
          * it should. */
@@ -996,57 +996,57 @@ static int cmd_handle_untagged(struct ImapData *idata)
       }
       /* at least the InterChange server sends EXISTS messages freely,
        * even when there is no new mail */
-      else if (count == idata->max_msn)
+      else if (count == mdata->max_msn)
         mutt_debug(3, "superfluous EXISTS message.\n");
       else
       {
-        if (!(idata->reopen & IMAP_EXPUNGE_PENDING))
+        if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
         {
-          mutt_debug(2, "New mail in %s - %d messages total.\n", idata->mbox_name, count);
-          idata->reopen |= IMAP_NEWMAIL_PENDING;
+          mutt_debug(2, "New mail in %s - %d messages total.\n", mdata->mbox_name, count);
+          mdata->reopen |= IMAP_NEWMAIL_PENDING;
         }
-        idata->new_mail_count = count;
+        mdata->new_mail_count = count;
       }
     }
     /* pn vs. s: need initial seqno */
     else if (mutt_str_strncasecmp("EXPUNGE", s, 7) == 0)
-      cmd_parse_expunge(idata, pn);
+      cmd_parse_expunge(mdata, pn);
     else if (mutt_str_strncasecmp("FETCH", s, 5) == 0)
-      cmd_parse_fetch(idata, pn);
+      cmd_parse_fetch(mdata, pn);
   }
-  else if ((idata->state >= IMAP_SELECTED) && (mutt_str_strncasecmp("VANISHED", s, 8) == 0))
-    cmd_parse_vanished(idata, pn);
+  else if ((mdata->state >= IMAP_SELECTED) && (mutt_str_strncasecmp("VANISHED", s, 8) == 0))
+    cmd_parse_vanished(mdata, pn);
   else if (mutt_str_strncasecmp("CAPABILITY", s, 10) == 0)
-    cmd_parse_capability(idata, s);
+    cmd_parse_capability(mdata, s);
   else if (mutt_str_strncasecmp("OK [CAPABILITY", s, 14) == 0)
-    cmd_parse_capability(idata, pn);
+    cmd_parse_capability(mdata, pn);
   else if (mutt_str_strncasecmp("OK [CAPABILITY", pn, 14) == 0)
-    cmd_parse_capability(idata, imap_next_word(pn));
+    cmd_parse_capability(mdata, imap_next_word(pn));
   else if (mutt_str_strncasecmp("LIST", s, 4) == 0)
-    cmd_parse_list(idata, s);
+    cmd_parse_list(mdata, s);
   else if (mutt_str_strncasecmp("LSUB", s, 4) == 0)
-    cmd_parse_lsub(idata, s);
+    cmd_parse_lsub(mdata, s);
   else if (mutt_str_strncasecmp("MYRIGHTS", s, 8) == 0)
-    cmd_parse_myrights(idata, s);
+    cmd_parse_myrights(mdata, s);
   else if (mutt_str_strncasecmp("SEARCH", s, 6) == 0)
-    cmd_parse_search(idata, s);
+    cmd_parse_search(mdata, s);
   else if (mutt_str_strncasecmp("STATUS", s, 6) == 0)
-    cmd_parse_status(idata, s);
+    cmd_parse_status(mdata, s);
   else if (mutt_str_strncasecmp("ENABLED", s, 7) == 0)
-    cmd_parse_enabled(idata, s);
+    cmd_parse_enabled(mdata, s);
   else if (mutt_str_strncasecmp("BYE", s, 3) == 0)
   {
     mutt_debug(2, "Handling BYE\n");
 
     /* check if we're logging out */
-    if (idata->status == IMAP_BYE)
+    if (mdata->status == IMAP_BYE)
       return 0;
 
     /* server shut down our connection */
     s += 3;
     SKIPWS(s);
     mutt_error("%s", s);
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
 
     return -1;
   }
@@ -1063,28 +1063,28 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
 /**
  * imap_cmd_start - Given an IMAP command, send it to the server
- * @param idata  Server data
+ * @param mdata Imap Mailbox data
  * @param cmdstr Command string to send
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * If cmdstr is NULL, sends queued commands.
  */
-int imap_cmd_start(struct ImapData *idata, const char *cmdstr)
+int imap_cmd_start(struct ImapMboxData *mdata, const char *cmdstr)
 {
-  return cmd_start(idata, cmdstr, 0);
+  return cmd_start(mdata, cmdstr, 0);
 }
 
 /**
  * imap_cmd_step - Reads server responses from an IMAP command
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * detects tagged completion response, handles untagged messages, can read
  * arbitrarily large strings (using malloc, so don't make it _too_ large!).
  */
-int imap_cmd_step(struct ImapData *idata)
+int imap_cmd_step(struct ImapMboxData *mdata)
 {
   size_t len = 0;
   int c;
@@ -1092,9 +1092,9 @@ int imap_cmd_step(struct ImapData *idata)
   int stillrunning = 0;
   struct ImapCommand *cmd = NULL;
 
-  if (idata->status == IMAP_FATAL)
+  if (mdata->status == IMAP_FATAL)
   {
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
     return IMAP_CMD_BAD;
   }
 
@@ -1102,21 +1102,21 @@ int imap_cmd_step(struct ImapData *idata)
    * line */
   do
   {
-    if (len == idata->blen)
+    if (len == mdata->blen)
     {
-      mutt_mem_realloc(&idata->buf, idata->blen + IMAP_CMD_BUFSIZE);
-      idata->blen = idata->blen + IMAP_CMD_BUFSIZE;
-      mutt_debug(3, "grew buffer to %u bytes\n", idata->blen);
+      mutt_mem_realloc(&mdata->buf, mdata->blen + IMAP_CMD_BUFSIZE);
+      mdata->blen = mdata->blen + IMAP_CMD_BUFSIZE;
+      mutt_debug(3, "grew buffer to %u bytes\n", mdata->blen);
     }
 
     /* back up over '\0' */
     if (len)
       len--;
-    c = mutt_socket_readln(idata->buf + len, idata->blen - len, idata->conn);
+    c = mutt_socket_readln(mdata->buf + len, mdata->blen - len, mdata->conn);
     if (c <= 0)
     {
       mutt_debug(1, "Error reading server response.\n");
-      cmd_handle_fatal(idata);
+      cmd_handle_fatal(mdata);
       return IMAP_CMD_BAD;
     }
 
@@ -1125,28 +1125,28 @@ int imap_cmd_step(struct ImapData *idata)
   /* if we've read all the way to the end of the buffer, we haven't read a
    * full line (mutt_socket_readln strips the \r, so we always have at least
    * one character free when we've read a full line) */
-  while (len == idata->blen);
+  while (len == mdata->blen);
 
   /* don't let one large string make cmd->buf hog memory forever */
-  if ((idata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
+  if ((mdata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
   {
-    mutt_mem_realloc(&idata->buf, IMAP_CMD_BUFSIZE);
-    idata->blen = IMAP_CMD_BUFSIZE;
-    mutt_debug(3, "shrank buffer to %u bytes\n", idata->blen);
+    mutt_mem_realloc(&mdata->buf, IMAP_CMD_BUFSIZE);
+    mdata->blen = IMAP_CMD_BUFSIZE;
+    mutt_debug(3, "shrank buffer to %u bytes\n", mdata->blen);
   }
 
-  idata->lastread = time(NULL);
+  mdata->lastread = time(NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if (((mutt_str_strncmp(idata->buf, "* ", 2) == 0) ||
-       (mutt_str_strncmp(imap_next_word(idata->buf), "OK [", 4) == 0)) &&
-      cmd_handle_untagged(idata))
+  if (((mutt_str_strncmp(mdata->buf, "* ", 2) == 0) ||
+       (mutt_str_strncmp(imap_next_word(mdata->buf), "OK [", 4) == 0)) &&
+      cmd_handle_untagged(mdata))
   {
     return IMAP_CMD_BAD;
   }
 
   /* server demands a continuation response from us */
-  if (idata->buf[0] == '+')
+  if (mdata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
   /* Look for tagged command completions.
@@ -1156,24 +1156,24 @@ int imap_cmd_step(struct ImapData *idata)
    * completions.
    * (e.g. FETCH->set_flag->set_header_color->~h pattern match.)
    *
-   * Other callers don't even create an idata->cmds entry.
+   * Other callers don't even create an mdata->cmds entry.
    *
    * For both these cases, we default to returning OK */
   rc = IMAP_CMD_OK;
-  c = idata->lastcmd;
+  c = mdata->lastcmd;
   do
   {
-    cmd = &idata->cmds[c];
+    cmd = &mdata->cmds[c];
     if (cmd->state == IMAP_CMD_NEW)
     {
-      if (mutt_str_strncmp(idata->buf, cmd->seq, SEQLEN) == 0)
+      if (mutt_str_strncmp(mdata->buf, cmd->seq, SEQLEN) == 0)
       {
         if (!stillrunning)
         {
           /* first command in queue has finished - move queue pointer up */
-          idata->lastcmd = (idata->lastcmd + 1) % idata->cmdslots;
+          mdata->lastcmd = (mdata->lastcmd + 1) % mdata->cmdslots;
         }
-        cmd->state = cmd_status(idata->buf);
+        cmd->state = cmd_status(mdata->buf);
         /* bogus - we don't know which command result to return here. Caller
          * should provide a tag. */
         rc = cmd->state;
@@ -1182,15 +1182,15 @@ int imap_cmd_step(struct ImapData *idata)
         stillrunning++;
     }
 
-    c = (c + 1) % idata->cmdslots;
-  } while (c != idata->nextcmd);
+    c = (c + 1) % mdata->cmdslots;
+  } while (c != mdata->nextcmd);
 
   if (stillrunning)
     rc = IMAP_CMD_CONTINUE;
   else
   {
     mutt_debug(3, "IMAP queue drained\n");
-    imap_cmd_finish(idata);
+    imap_cmd_finish(mdata);
   }
 
   return rc;
@@ -1209,14 +1209,14 @@ bool imap_code(const char *s)
 
 /**
  * imap_cmd_trailer - Extra information after tagged command response if any
- * @param idata Server data
- * @retval ptr Extra command information (pointer into idata->buf)
+ * @param mdata Imap Mailbox data
+ * @retval ptr Extra command information (pointer into mdata->buf)
  * @retval ""  Error (static string)
  */
-const char *imap_cmd_trailer(struct ImapData *idata)
+const char *imap_cmd_trailer(struct ImapMboxData *mdata)
 {
   static const char *notrailer = "";
-  const char *s = idata->buf;
+  const char *s = mdata->buf;
 
   if (!s)
   {
@@ -1229,7 +1229,7 @@ const char *imap_cmd_trailer(struct ImapData *idata)
              (mutt_str_strncasecmp(s, "NO", 2) != 0) &&
              (mutt_str_strncasecmp(s, "BAD", 3) != 0)))
   {
-    mutt_debug(2, "not a command completion: %s\n", idata->buf);
+    mutt_debug(2, "not a command completion: %s\n", mdata->buf);
     return notrailer;
   }
 
@@ -1242,7 +1242,7 @@ const char *imap_cmd_trailer(struct ImapData *idata)
 
 /**
  * imap_exec - Execute a command and wait for the response from the server
- * @param idata  IMAP data
+ * @param mdata Imap Mailbox data
  * @param cmdstr Command to execute
  * @param flags  Flags (see below)
  * @retval  0 Success
@@ -1258,14 +1258,14 @@ const char *imap_cmd_trailer(struct ImapData *idata)
  * * IMAP_CMD_QUEUE: only queue command, do not execute.
  * * IMAP_CMD_POLL: poll the socket for a response before running imap_cmd_step.
  */
-int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
+int imap_exec(struct ImapMboxData *mdata, const char *cmdstr, int flags)
 {
   int rc;
 
-  rc = cmd_start(idata, cmdstr, flags);
+  rc = cmd_start(mdata, cmdstr, flags);
   if (rc < 0)
   {
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
     return -1;
   }
 
@@ -1273,17 +1273,17 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
     return 0;
 
   if ((flags & IMAP_CMD_POLL) && (ImapPollTimeout > 0) &&
-      (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
+      (mutt_socket_poll(mdata->conn, ImapPollTimeout)) == 0)
   {
-    mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
-    cmd_handle_fatal(idata);
+    mutt_error(_("Connection to %s timed out"), mdata->conn->account.host);
+    cmd_handle_fatal(mdata);
     return -1;
   }
 
   /* Allow interruptions, particularly useful if there are network problems. */
   mutt_sig_allow_interrupt(1);
   do
-    rc = imap_cmd_step(idata);
+    rc = imap_cmd_step(mdata);
   while (rc == IMAP_CMD_CONTINUE);
   mutt_sig_allow_interrupt(0);
 
@@ -1292,10 +1292,10 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 
   if (rc != IMAP_CMD_OK)
   {
-    if ((flags & IMAP_CMD_FAIL_OK) && idata->status != IMAP_FATAL)
+    if ((flags & IMAP_CMD_FAIL_OK) && mdata->status != IMAP_FATAL)
       return -2;
 
-    mutt_debug(1, "command failed: %s\n", idata->buf);
+    mutt_debug(1, "command failed: %s\n", mdata->buf);
     return -1;
   }
 
@@ -1304,86 +1304,86 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 
 /**
  * imap_cmd_finish - Attempt to perform cleanup
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  *
  * Attempts to perform cleanup (eg fetch new mail if detected, do expunge).
  * Called automatically by imap_cmd_step(), but may be called at any time.
  * Called by imap_check_mailbox() just before the index is refreshed, for
  * instance.
  */
-void imap_cmd_finish(struct ImapData *idata)
+void imap_cmd_finish(struct ImapMboxData *mdata)
 {
-  if (idata->status == IMAP_FATAL)
+  if (mdata->status == IMAP_FATAL)
   {
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
     return;
   }
 
-  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->mailbox->closing)
+  if (!(mdata->state >= IMAP_SELECTED) || mdata->ctx->mailbox->closing)
     return;
 
-  if (idata->reopen & IMAP_REOPEN_ALLOW)
+  if (mdata->reopen & IMAP_REOPEN_ALLOW)
   {
-    unsigned int count = idata->new_mail_count;
+    unsigned int count = mdata->new_mail_count;
 
-    if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
-        (idata->reopen & IMAP_NEWMAIL_PENDING) && count > idata->max_msn)
+    if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) &&
+        (mdata->reopen & IMAP_NEWMAIL_PENDING) && count > mdata->max_msn)
     {
       /* read new mail messages */
       mutt_debug(2, "Fetching new mail\n");
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
-      idata->check_status = IMAP_NEWMAIL_PENDING;
-      imap_read_headers(idata, idata->max_msn + 1, count, false);
+      mdata->check_status = IMAP_NEWMAIL_PENDING;
+      imap_read_headers(mdata, mdata->max_msn + 1, count, false);
     }
-    else if (idata->reopen & IMAP_EXPUNGE_PENDING)
+    else if (mdata->reopen & IMAP_EXPUNGE_PENDING)
     {
       mutt_debug(2, "Expunging mailbox\n");
-      imap_expunge_mailbox(idata);
+      imap_expunge_mailbox(mdata);
       /* Detect whether we've gotten unexpected EXPUNGE messages */
-      if ((idata->reopen & IMAP_EXPUNGE_PENDING) && !(idata->reopen & IMAP_EXPUNGE_EXPECTED))
-        idata->check_status = IMAP_EXPUNGE_PENDING;
-      idata->reopen &=
+      if ((mdata->reopen & IMAP_EXPUNGE_PENDING) && !(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
+        mdata->check_status = IMAP_EXPUNGE_PENDING;
+      mdata->reopen &=
           ~(IMAP_EXPUNGE_PENDING | IMAP_NEWMAIL_PENDING | IMAP_EXPUNGE_EXPECTED);
     }
   }
 
-  idata->status = false;
+  mdata->status = false;
 }
 
 /**
  * imap_cmd_idle - Enter the IDLE state
- * @param idata Server data
+ * @param mdata Imap Mailbox data
  * @retval  0 Success
  * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  */
-int imap_cmd_idle(struct ImapData *idata)
+int imap_cmd_idle(struct ImapMboxData *mdata)
 {
   int rc;
 
-  if (cmd_start(idata, "IDLE", IMAP_CMD_POLL) < 0)
+  if (cmd_start(mdata, "IDLE", IMAP_CMD_POLL) < 0)
   {
-    cmd_handle_fatal(idata);
+    cmd_handle_fatal(mdata);
     return -1;
   }
 
-  if ((ImapPollTimeout > 0) && (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
+  if ((ImapPollTimeout > 0) && (mutt_socket_poll(mdata->conn, ImapPollTimeout)) == 0)
   {
-    mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
-    cmd_handle_fatal(idata);
+    mutt_error(_("Connection to %s timed out"), mdata->conn->account.host);
+    cmd_handle_fatal(mdata);
     return -1;
   }
 
   do
-    rc = imap_cmd_step(idata);
+    rc = imap_cmd_step(mdata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc == IMAP_CMD_RESPOND)
   {
     /* successfully entered IDLE state */
-    idata->state = IMAP_IDLE;
+    mdata->state = IMAP_IDLE;
     /* queue automatic exit when next command is issued */
-    mutt_buffer_printf(idata->cmdbuf, "DONE\r\n");
+    mutt_buffer_printf(mdata->cmdbuf, "DONE\r\n");
     rc = IMAP_CMD_OK;
   }
   if (rc != IMAP_CMD_OK)
