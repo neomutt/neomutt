@@ -3202,7 +3202,7 @@ msgstr ""
 #: mutt_lua.c:496
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Kan lua bron niet verwerken"
+msgstr "Kan lua bron niet verwerken: %s"
 
 #: mutt_socket.c:90
 #, fuzzy, c-format
@@ -3224,7 +3224,7 @@ msgstr "Voorafgaand bericht is niet zichtbaar in deze beperkte weergave"
 #: mx.c:328
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Het lezen van %s onderbroken,,,"
+msgstr "Het lezen van %s is onderbroken,,,"
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
@@ -3380,7 +3380,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Inconsistente multipart/signed-structuur --]\n"
+"[-- Fout: Ontbrekende of foutieve meerdelige handtekening --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1170
@@ -3767,42 +3767,42 @@ msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige DN)]"
 #: ncrypt/crypt_gpgme.c:3699
 #, fuzzy
 msgid "Name: "
-msgstr "Naam ......: "
+msgstr "Naam: "
 
 #: ncrypt/crypt_gpgme.c:3699
 #, fuzzy
 msgid "Valid From: "
-msgstr "Geldig van : %s\n"
+msgstr "Geldig vanaf: "
 
 #: ncrypt/crypt_gpgme.c:3699
 #, fuzzy
 msgid "Valid To: "
-msgstr "Geldig tot : %s\n"
+msgstr "Geldig tot: "
 
 #: ncrypt/crypt_gpgme.c:3700
 #, fuzzy
 msgid "Key Type: "
-msgstr "Slt.gebruik: "
+msgstr "Sleutel type: "
 
 #: ncrypt/crypt_gpgme.c:3700
 #, fuzzy
 msgid "Key Usage: "
-msgstr "Slt.gebruik: "
+msgstr "Sleutel gebruik: "
 
 #: ncrypt/crypt_gpgme.c:3700
 #, fuzzy
 msgid "Serial-No: "
-msgstr "Serienummer: 0x%s\n"
+msgstr "Serienummer: "
 
 #: ncrypt/crypt_gpgme.c:3701
 #, fuzzy
 msgid "Issued By: "
-msgstr "Uitg. door : "
+msgstr "Uitg. door: "
 
 #: ncrypt/crypt_gpgme.c:3701
 #, fuzzy
 msgid "Subkey: "
-msgstr "Subsleutel : 0x%s"
+msgstr "Subsleutel: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -3816,13 +3816,13 @@ msgstr "[Ongeldig]"
 #, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
-msgstr[0] "Sltl.type .: %s, %lu bit %s\n"
-msgstr[1] "Sltl.type .: %s, %lu bit %s\n"
+msgstr[0] "%s, %lu bit %s\n"
+msgstr[1] "%s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3806 ncrypt/crypt_gpgme.c:3947
 msgid "encryption"
-msgstr "versleuteling "
+msgstr "versleuteling"
 
 #: ncrypt/crypt_gpgme.c:3807 ncrypt/crypt_gpgme.c:3813
 #: ncrypt/crypt_gpgme.c:3948 ncrypt/crypt_gpgme.c:3953
@@ -3948,7 +3948,7 @@ msgstr "Dit ID is niet geldig. Wilt U deze sleutel gebruiken?"
 #: ncrypt/crypt_gpgme.c:4444 ncrypt/pgpkey.c:782
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "Dit ID is slechts marginaal vertrouwd. Wilt U deze sleutel gebruiken?"
+msgstr "Dit ID is slechts marginaal geldig. Wilt U deze sleutel gebruiken?"
 
 #: ncrypt/crypt_gpgme.c:4452 ncrypt/pgpkey.c:775 ncrypt/smime.c:596
 #, fuzzy
@@ -4090,7 +4090,7 @@ msgstr ""
 #: ncrypt/pgp.c:728
 #, fuzzy
 msgid "PGP message was not encrypted"
-msgstr "PGP-bericht succesvol ontsleuteld"
+msgstr "PGP bericht is niet geëncrypteerd"
 
 #: ncrypt/pgp.c:967
 msgid "Internal error.  Please submit a bug report."
@@ -4470,7 +4470,7 @@ msgstr ""
 #: nntp/newsrc.c:1041
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
-msgstr "%s is een ongeldig POP-pad"
+msgstr "%s is geen geldige nieuws server specificatie"
 
 #: nntp/nntp.c:86 nntp/nntp.c:625 pop/pop.c:1053 pop/pop_lib.c:414
 msgid "Server closed connection"
@@ -4479,7 +4479,7 @@ msgstr "Server heeft verbinding gesloten"
 #: nntp/nntp.c:189
 #, fuzzy
 msgid "Server doesn't support reader mode"
-msgstr "SMTP-server ondersteunt geen authenticatie"
+msgstr "Het is niet mogelijk van de server te lezen"
 
 #: nntp/nntp.c:394 pop/pop_auth.c:522 smtp.c:650
 msgid "No authenticators available"
@@ -4488,41 +4488,41 @@ msgstr "Geen authenticeerders beschikbaar"
 #: nntp/nntp.c:614
 #, fuzzy, c-format
 msgid "%s authentication failed"
-msgstr "SASL-authenticatie is mislukt"
+msgstr "%s authenticatie is mislukt"
 
 #: nntp/nntp.c:689 nntp/nntp.c:779
 #, fuzzy
 msgid "Could not switch to reader mode"
-msgstr "Tijdelijke postmap kon niet worden aangemaakt: %s"
+msgstr "Kan niet wisselen naar lees-modus"
 
 #: nntp/nntp.c:702
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
-msgstr "Bezig met verbinden met %s..."
+msgstr "Bezig met verbinden met %s. %s"
 
 #: nntp/nntp.c:703
 #, fuzzy
 msgid "Posting is ok"
-msgstr "Niets te doen"
+msgstr "Posting is ok"
 
 #: nntp/nntp.c:703
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Pasting is niet ok"
 
 #: nntp/nntp.c:834
 #, fuzzy, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "Verbinding met %s beëindigd"
+msgstr "Verbinding met %s is verloren. Opnieuw proberen?"
 
 #: nntp/nntp.c:1312
 #, fuzzy
 msgid "Fetching list of articles..."
-msgstr "Berichtenlijst ophalen..."
+msgstr "Artikel lijst ophalen..."
 
 #: nntp/nntp.c:1527
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
-msgstr "%s is een ongeldig POP-pad"
+msgstr "De specificatie van de nieuwsgroep %s is incorrect"
 
 #: nntp/nntp.c:1545
 #, c-format
@@ -4542,7 +4542,7 @@ msgstr ""
 #: nntp/nntp.c:1815 nntp/nntp.c:1850
 #, fuzzy, c-format
 msgid "Can't post article: %s"
-msgstr "Kan status van %s niet opvragen: %s"
+msgstr "Kan artikel niet plaatsen: %s"
 
 #: nntp/nntp.c:1923 nntp/nntp.c:2356 pop/pop.c:871 pop/pop.c:938
 msgid "Checking for new messages..."
@@ -4551,17 +4551,17 @@ msgstr "Controleren op nieuwe berichten..."
 #: nntp/nntp.c:2282
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Berichten op de server worden gewist..."
+msgstr "De lijst met groepen wordt geladen van de server %s"
 
 #: nntp/nntp.c:2324 nntp/nntp.c:2424
 #, fuzzy
 msgid "Loading descriptions..."
-msgstr "Aanmelden..."
+msgstr "Omschrijvingen laden..."
 
 #: nntp/nntp.c:2346
 #, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Controleren op nieuwe berichten..."
+msgstr "Controleren op nieuwsgroepen..."
 
 #: nntp/nntp.c:2587
 msgid "Unable to find child articles because server does not support XPAT command"
@@ -4571,7 +4571,7 @@ msgstr ""
 #: notmuch/mutt_notmuch.c:2211
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr "Kan mailto: koppeling niet verwerken\n"
+msgstr "Kan 'notmuch uri' niet verwerken: %s"
 
 #: notmuch/mutt_notmuch.c:303
 #, c-format
@@ -4585,27 +4585,27 @@ msgstr ""
 #: notmuch/mutt_notmuch.c:475
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Kan mailto: koppeling niet verwerken\n"
+msgstr "Kan 'notmuch' limiet niet verwerken: %s"
 
 #: notmuch/mutt_notmuch.c:587
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Wacht op fcntl-claim... %d"
+msgstr "Wachten op 'notmuch' DB... (%d sec)"
 
 #: notmuch/mutt_notmuch.c:605
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Kan 'notmuch' database niet openen:%s %s"
 
 #: notmuch/mutt_notmuch.c:606
 #, fuzzy
 msgid "unknown reason"
-msgstr "onbekende fout"
+msgstr "Ongekende reden"
 
 #: notmuch/mutt_notmuch.c:1061
 #, fuzzy, c-format
 msgid "Reading messages..."
-msgstr "Versturen van bericht..."
+msgstr "Berichten inladen..."
 
 #: notmuch/mutt_notmuch.c:1882
 #, fuzzy
@@ -4615,7 +4615,7 @@ msgstr "Geen nieuwe berichten in deze beperkte weergave"
 #: notmuch/mutt_notmuch.c:2769
 #, fuzzy
 msgid "Can't write to virtual folder"
-msgstr "Kan prullenmap niet openen"
+msgstr "Kan niet schrijven in de virtuele map"
 
 #: opcodes.h:28
 msgid "null operation"
@@ -4653,7 +4653,7 @@ msgstr "kies een nieuw bestand in deze map"
 #: opcodes.h:36
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "aanmelden voor huidig postvak (alleen met IMAP)"
+msgstr "aanmelden voor huidig postvak (alleen met IMAP/NNTP)"
 
 #: opcodes.h:37
 msgid "display the currently selected file's name"
@@ -4666,7 +4666,7 @@ msgstr "omschakelen van weergave alle/aangemelde postvakken (alleen met IMAP)"
 #: opcodes.h:39
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "afmelden voor huidig postvak (alleen met IMAP)"
+msgstr "afmelden voor huidig postvak (alleen met IMAP/NNTP)"
 
 #: opcodes.h:40
 msgid "view file"
@@ -4687,7 +4687,7 @@ msgstr "controleer postvakken op nieuwe berichten"
 #: opcodes.h:44
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "sla bericht/bijlage op in een postvak/bestand"
+msgstr "Bericht statistieken voor alle postvakken worden berekend"
 
 #: opcodes.h:45
 #, fuzzy
@@ -4702,7 +4702,7 @@ msgstr "voeg bericht(en) aan dit bericht toe"
 #: opcodes.h:47
 #, fuzzy
 msgid "attach news articles to this message"
-msgstr "voeg bestand(en) aan dit bericht toe"
+msgstr "voeg nieuwsbericht(en) aan dit bericht toe"
 
 #: opcodes.h:48
 msgid "edit the BCC list"
@@ -4731,7 +4731,7 @@ msgstr "bewerk het bij te voegen bestand"
 #: opcodes.h:54
 #, fuzzy
 msgid "edit the Followup-To field"
-msgstr "bewerk Reply-To-veld"
+msgstr "bewerk het Opvolg veld"
 
 #: opcodes.h:55
 msgid "edit the from field"
@@ -4744,7 +4744,7 @@ msgstr "bewerk het bericht (inclusief header)"
 #: opcodes.h:57
 #, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "bewerk het bij te voegen bestand"
+msgstr "Bewerk de taal van de bijlage"
 
 #: opcodes.h:58
 msgid "edit the message"
@@ -4757,7 +4757,7 @@ msgstr "bewerk bijlage volgens mailcap"
 #: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
-msgstr "bewerk de CC-lijst"
+msgstr "Bewerk de nieuwsgroeplijst"
 
 #: opcodes.h:61
 msgid "edit the Reply-To field"
@@ -4774,7 +4774,7 @@ msgstr "bewerk ontvangers (To-veld)"
 #: opcodes.h:64
 #, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "bewerk Reply-To-veld"
+msgstr "bewerk het 'X-Comment-To' veld"
 
 #: opcodes.h:65
 msgid "get a temporary copy of an attachment"
