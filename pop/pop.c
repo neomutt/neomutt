@@ -129,9 +129,12 @@ static struct PopEmailData *new_emaildata(const char *uid)
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
-static void free_mboxdata(void *data)
+static void free_mboxdata(void **data)
 {
-  FREE(&data);
+  if (!data || !*data)
+    return;
+
+  FREE(data);
 }
 
 /**

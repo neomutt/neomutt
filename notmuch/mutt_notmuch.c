@@ -177,14 +177,14 @@ static struct NmEmailData *new_emaildata(void)
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
-static void free_mboxdata(void *data)
+static void free_mboxdata(void **data)
 {
-  if (!data)
+  if (!data || !*data)
     return;
 
   mutt_debug(1, "nm: freeing context data %p\n", data);
 
-  struct NmMboxData *mdata = data;
+  struct NmMboxData *mdata = *data;
 
   if (mdata->db)
 #ifdef NOTMUCH_API_3
@@ -197,7 +197,7 @@ static void free_mboxdata(void *data)
   url_free(&mdata->db_url);
   FREE(&mdata->db_url_holder);
   FREE(&mdata->db_query);
-  FREE(&mdata);
+  FREE(data);
 }
 
 /**

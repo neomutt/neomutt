@@ -205,10 +205,8 @@ void mailbox_free(struct Mailbox **mailbox)
     return;
 
   FREE(&(*mailbox)->desc);
-  if ((*mailbox)->free_data)
-    (*mailbox)->free_data((*mailbox)->data);
-  (*mailbox)->data = NULL;
-
+  if ((*mailbox)->data && (*mailbox)->free_data)
+    (*mailbox)->free_data(&(*mailbox)->data);
   FREE(mailbox);
 }
 

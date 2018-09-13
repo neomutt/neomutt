@@ -91,12 +91,12 @@ static struct MboxData *new_mboxdata(void)
  * free_mboxdata - Free data attached to the Mailbox
  * @param data Private mailbox data
  */
-static void free_mboxdata(void *data)
+static void free_mboxdata(void **data)
 {
-  if (!data)
+  if (!data || !*data)
     return;
 
-  struct MboxData *m = data;
+  struct MboxData *m = *data;
 
   mutt_file_fclose(&m->fp);
 }
