@@ -99,6 +99,14 @@ struct PopMboxData
 };
 
 /**
+ * struct PopEmailData - POP data attached to an Email - @extends Email
+ */
+struct PopEmailData
+{
+  const char *uid;
+};
+
+/**
  * struct PopAuth - POP authentication multiplexor
  */
 struct PopAuth

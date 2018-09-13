@@ -589,7 +589,8 @@ static int check_uidl(char *line, void *data)
   struct Mailbox *mailbox = data;
   for (int i = 0; i < mailbox->msg_count; i++)
   {
-    if (mutt_str_strcmp(mailbox->hdrs[i]->data, line) == 0)
+    struct PopEmailData *edata = mailbox->hdrs[i]->data;
+    if (mutt_str_strcmp(edata->uid, line) == 0)
     {
       mailbox->hdrs[i]->refno = index;
       break;
