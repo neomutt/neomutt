@@ -343,8 +343,9 @@ static int get_mailbox(const char *path, struct ImapMboxData **hidata, char *buf
     mutt_debug(1, "Error parsing %s\n", path);
     return -1;
   }
-  if (!(*hidata = imap_conn_find(&(mx.account), ImapPassive ? MUTT_IMAP_CONN_NONEW : 0)) ||
-      (*hidata)->state < IMAP_AUTHENTICATED)
+
+  *hidata = imap_conn_find(&(mx.account), ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
+  if (!*hidata)
   {
     FREE(&mx.mbox);
     return -1;
@@ -912,8 +913,8 @@ void imap_expunge_mailbox(struct ImapMboxData *mdata)
  * imap_conn_find - Find an open IMAP connection
  * @param account ConnAccount to search
  * @param flags   Flags, e.g. #MUTT_IMAP_CONN_NONEW
- * @retval ptr  Matching connection
- * @retval NULL Failure
+ * @retval ptr  Authenticated connection
+ * @retval NULL Failure, or no matching authenticated connections
  *
  * Find an open IMAP connection matching account, or open a new one if none can
  * be found.
@@ -953,16 +954,11 @@ struct ImapMboxData *imap_conn_find(const struct ConnAccount *account, int flags
   if (!conn)
     return NULL; /* this happens when the initial connection fails */
 
+  /* The current connection is a new connection */
   if (!mdata)
   {
     /* The current connection is a new connection */
     mdata = imap_mdata_new();
-    if (!mdata)
-    {
-      mutt_socket_free(conn);
-      return NULL;
-    }
-
     conn->data = mdata;
     mdata->conn = conn;
     new = true;
@@ -1008,6 +1004,9 @@ struct ImapMboxData *imap_conn_find(const struct ConnAccount *account, int flags
     /* we may need the root delimiter before we open a mailbox */
     imap_exec(mdata, NULL, IMAP_CMD_FAIL_OK);
   }
+
+  if (mdata->state < IMAP_AUTHENTICATED)
+    return NULL;
 
   return mdata;
 }
