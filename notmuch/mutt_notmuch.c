@@ -104,26 +104,20 @@ enum NmQueryType
 };
 
 /**
- * struct NmHdrData - Notmuch data attached to an email
- *
- * This stores all the Notmuch data associated with an email.
- *
- * @sa Header#data, MUTT_MBOX
+ * struct NmEmailData - Notmuch data attached to an Email - Extends Email
  */
-struct NmHdrData
+struct NmEmailData
 {
-  char *folder; /**< Location of the email */
+  char *folder; /**< Location of the Email */
   char *oldpath;
   char *virtual_id;       /**< Unique Notmuch Id */
-  enum MailboxType magic; /**< Type of mailbox the email is in */
+  enum MailboxType magic; /**< Type of Mailbox the Email is in */
 };
 
 /**
- * struct NmMboxData - Notmuch data attached to a context
+ * struct NmMboxData - Notmuch data attached to a Mailbox - Extends Mailbox
  *
  * This stores the global Notmuch data, such as the database connection.
- *
- * @sa Mailbox#data, NmDbLimit, NM_QUERY_TYPE_MESGS
  */
 struct NmMboxData
 {
@@ -147,36 +141,36 @@ struct NmMboxData
 };
 
 /**
- * free_hdrdata - Free header data attached to an email
- * @param data Header data
+ * free_emaildata - Free data attached to an Email
+ * @param data Email data
  *
- * Each email can have an attached nm_hdrdata struct, which contains things
- * like the tags (labels).  This function frees all the resources and the
- * nm_hdrdata struct itself.
+ * Each email has an attached NmEmailData, which contains things like the tags
+ * (labels).
  */
-static void free_hdrdata(struct NmHdrData *data)
+static void free_emaildata(void **data)
 {
-  if (!data)
+  if (!data || !*data)
     return;
 
-  mutt_debug(2, "nm: freeing header %p\n", (void *) data);
-  FREE(&data->folder);
-  FREE(&data->oldpath);
-  FREE(&data->virtual_id);
-  FREE(&data);
+  struct NmEmailData *ed = *data;
+  mutt_debug(2, "nm: freeing header %p\n", (void *) ed);
+  FREE(&ed->folder);
+  FREE(&ed->oldpath);
+  FREE(&ed->virtual_id);
+  FREE(data);
 }
 
 /**
- * new_hdrdata - Create a new NmHdrData for an email
- * @retval ptr New NmHdrData struct
+ * new_emaildata - Create a new NmEmailData for an email
+ * @retval ptr New NmEmailData struct
  */
-static struct NmHdrData *new_hdrdata(void)
+static struct NmEmailData *new_emaildata(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct NmHdrData));
+  return mutt_mem_calloc(1, sizeof(struct NmEmailData));
 }
 
 /**
- * free_mboxdata - Free data attached to the context
+ * free_mboxdata - Free data attached to the Mailbox
  * @param data Notmuch data
  *
  * The NmMboxData struct stores global Notmuch data, such as the connection to
@@ -242,7 +236,7 @@ static struct NmMboxData *new_mboxdata(const char *uri)
  *
  * Create a new NmMboxData struct and add it Mailbox::data.
  * Notmuch-specific data will be stored in this struct.
- * This struct can be freed using free_hdrdata().
+ * This struct can be freed using free_emaildata().
  */
 static int init_mailbox(struct Mailbox *mailbox)
 {
@@ -268,7 +262,7 @@ static int init_mailbox(struct Mailbox *mailbox)
  */
 static char *header_get_id(struct Email *e)
 {
-  return (e && e->data) ? ((struct NmHdrData *) e->data)->virtual_id : NULL;
+  return (e && e->data) ? ((struct NmEmailData *) e->data)->virtual_id : NULL;
 }
 
 /**
@@ -825,7 +819,7 @@ err:
  */
 static int update_header_tags(struct Email *e, notmuch_message_t *msg)
 {
-  struct NmHdrData *data = e->data;
+  struct NmEmailData *data = e->data;
   char *new_tags = NULL;
   char *old_tags = NULL;
 
@@ -875,7 +869,7 @@ static int update_header_tags(struct Email *e, notmuch_message_t *msg)
  */
 static int update_message_path(struct Email *e, const char *path)
 {
-  struct NmHdrData *data = e->data;
+  struct NmEmailData *data = e->data;
 
   mutt_debug(2, "nm: path update requested path=%s, (%s)\n", path, data->virtual_id);
 
@@ -929,16 +923,6 @@ static char *get_folder_from_path(const char *path)
 }
 
 /**
- * deinit_header - Free the Notmuch data
- * @param e Email Header
- */
-static void deinit_header(struct Email *e)
-{
-  free_hdrdata(e->data);
-  e->data = NULL;
-}
-
-/**
  * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
  * @param id Notmuch ID to convert
  * @retval ptr NeoMutt message ID
@@ -972,9 +956,9 @@ static int init_header(struct Email *e, const char *path, notmuch_message_t *msg
   if (e->data)
     return 0;
 
-  struct NmHdrData *hd = new_hdrdata();
+  struct NmEmailData *hd = new_emaildata();
   e->data = hd;
-  e->free_cb = deinit_header;
+  e->free_data = free_emaildata;
 
   /* Notmuch ensures that message Id exists (if not notmuch Notmuch will
    * generate an ID), so it's more safe than use neomutt Header->env->id
@@ -1187,7 +1171,7 @@ static void append_message(struct Mailbox *mailbox, notmuch_query_t *q,
   if (newpath)
   {
     /* remember that file has been moved -- nm_mbox_sync() will update the DB */
-    struct NmHdrData *hd = e->data;
+    struct NmEmailData *hd = e->data;
 
     if (hd)
     {
@@ -1759,7 +1743,7 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr)
  */
 char *nm_header_get_folder(struct Email *e)
 {
-  return (e && e->data) ? ((struct NmHdrData *) e->data)->folder : NULL;
+  return (e && e->data) ? ((struct NmEmailData *) e->data)->folder : NULL;
 }
 
 /**
@@ -2575,7 +2559,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   {
     char old[PATH_MAX], new[PATH_MAX];
     struct Email *e = ctx->mailbox->hdrs[i];
-    struct NmHdrData *hd = e->data;
+    struct NmEmailData *hd = e->data;
 
     if (!ctx->mailbox->quiet)
       mutt_progress_update(&progress, i, -1);

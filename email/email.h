@@ -108,8 +108,8 @@ struct Email
 
   struct TagHead tags; /**< for drivers that support server tagging */
 
-  void *data;                      /**< driver-specific data */
-  void (*free_cb)(struct Email *); /**< driver-specific data free function */
+  void *data;                 /**< driver-specific data */
+  void (*free_data)(void **); /**< driver-specific data free function */
 
   char *maildir_flags; /**< unknown maildir flags */
 };
