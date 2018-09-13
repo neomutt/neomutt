@@ -37,7 +37,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "copy.h"
@@ -1427,7 +1427,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_class_verify_sender(struct Header *h)
+int smime_class_verify_sender(struct Email *e)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
   int retval = 1;
@@ -1440,26 +1440,26 @@ int smime_class_verify_sender(struct Header *h)
     return 1;
   }
 
-  if (h->security & ENCRYPT)
+  if (e->security & ENCRYPT)
   {
-    mutt_copy_message_ctx(fpout, Context, h, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+    mutt_copy_message_ctx(fpout, Context, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message_ctx(fpout, Context, h, 0, 0);
+    mutt_copy_message_ctx(fpout, Context, e, 0, 0);
 
   fflush(fpout);
   mutt_file_fclose(&fpout);
 
-  if (h->env->from)
+  if (e->env->from)
   {
-    h->env->from = mutt_expand_aliases(h->env->from);
-    mbox = h->env->from->mailbox;
+    e->env->from = mutt_expand_aliases(e->env->from);
+    mbox = e->env->from->mailbox;
   }
-  else if (h->env->sender)
+  else if (e->env->sender)
   {
-    h->env->sender = mutt_expand_aliases(h->env->sender);
-    mbox = h->env->sender->mailbox;
+    e->env->sender = mutt_expand_aliases(e->env->sender);
+    mbox = e->env->sender->mailbox;
   }
 
   if (mbox)
@@ -2285,7 +2285,7 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Header *msg)
+int smime_class_send_menu(struct Email *msg)
 {
   struct SmimeKey *key = NULL;
   const char *prompt = NULL;

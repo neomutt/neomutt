@@ -38,7 +38,7 @@
 #include "mx.h"
 
 struct Context;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 extern int   NmDbLimit;
@@ -51,34 +51,24 @@ extern char *NmQueryWindowTimebase;
 extern char *NmRecordTags;
 extern char *NmUnreadTag;
 
-int nm_read_entire_thread(struct Context *ctx, struct Header *h);
-
-char *nm_header_get_folder(struct Header *h);
-int nm_update_filename(struct Mailbox *mailbox, const char *old, const char *new, struct Header *h);
-bool nm_normalize_uri(const char *uri, char *buf, size_t buflen);
-char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen);
-bool nm_message_is_still_queried(struct Mailbox *mailbox, struct Header *hdr);
-
-void nm_query_window_backward(void);
-void nm_query_window_forward(void);
-
-void nm_longrun_init(struct Mailbox *mailbox, bool writable);
-void nm_longrun_done(struct Mailbox *mailbox);
-
-char *nm_get_description(struct Mailbox *mailbox);
-int nm_description_to_path(const char *desc, char *buf, size_t buflen);
-
-int nm_record_message(struct Mailbox *mailbox, char *path, struct Header *h);
-
-void nm_debug_check(struct Mailbox *mailbox);
-int nm_get_all_tags(struct Mailbox *mailbox, char **tag_list, int *tag_count);
-
-/*
- * functions usable outside of notmuch
- */
-int nm_nonctx_get_count(char *path, int *all, int *new);
-int nm_path_probe(const char *path, const struct stat *st);
-
 extern struct MxOps mx_notmuch_ops;
+
+void  nm_debug_check             (struct Mailbox *mailbox);
+int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);
+int   nm_get_all_tags            (struct Mailbox *mailbox, char **tag_list, int *tag_count);
+char *nm_get_description         (struct Mailbox *mailbox);
+char *nm_email_get_folder        (struct Email *e);
+void  nm_longrun_done            (struct Mailbox *mailbox);
+void  nm_longrun_init            (struct Mailbox *mailbox, bool writable);
+bool  nm_message_is_still_queried(struct Mailbox *mailbox, struct Email *e);
+int   nm_nonctx_get_count        (char *path, int *all, int *new);
+bool  nm_normalize_uri           (const char *uri, char *buf, size_t buflen);
+int   nm_path_probe              (const char *path, const struct stat *st);
+void  nm_query_window_backward   (void);
+void  nm_query_window_forward    (void);
+int   nm_read_entire_thread      (struct Context *ctx, struct Email *e);
+int   nm_record_message          (struct Mailbox *mailbox, char *path, struct Email *e);
+int   nm_update_filename         (struct Mailbox *mailbox, const char *old, const char *new, struct Email *e);
+char *nm_uri_from_query          (struct Mailbox *mailbox, char *buf, size_t buflen);
 
 #endif /* MUTT_NOTMUCH_MUTT_NOTMUCH_H */

@@ -29,7 +29,7 @@
 
 struct Address;
 struct Context;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in hdrline.c */
 extern struct MbTable *FlagChars;
@@ -42,13 +42,13 @@ extern struct MbTable *ToChars;
 struct HdrFormatInfo
 {
   struct Context *ctx;
-  struct Header *hdr;
+  struct Email *email;
   const char *pager_progress;
 };
 
 bool mutt_is_mail_list(struct Address *addr);
 bool mutt_is_subscribed_list(struct Address *addr);
-void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx, struct Header *hdr, enum FormatFlag flags);
+void mutt_make_string_flags(char *buf, size_t buflen, const char *s, struct Context *ctx, struct Email *e, enum FormatFlag flags);
 void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s, struct HdrFormatInfo *hfi, enum FormatFlag flags);
 
 #define mutt_make_string(A, B, C, D, E) mutt_make_string_flags(A, B, C, D, E, 0)

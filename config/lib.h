@@ -27,6 +27,7 @@
  *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
+ * | config/account.c | @subpage config-account |
  * | config/address.c | @subpage config-address |
  * | config/bool.c    | @subpage config-bool    |
  * | config/command.c | @subpage config-command |
@@ -46,6 +47,7 @@
 #ifndef MUTT_CONFIG_LIB_H
 #define MUTT_CONFIG_LIB_H
 
+#include "account.h"
 #include "address.h"
 #include "bool.h"
 #include "command.h"

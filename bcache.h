@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-struct Account;
+struct ConnAccount;
 struct BodyCache;
 
 /* These Config Variables are only used in bcache.c */
@@ -50,7 +50,7 @@ int               mutt_bcache_del(struct BodyCache *bcache, const char *id);
 int               mutt_bcache_exists(struct BodyCache *bcache, const char *id);
 FILE *            mutt_bcache_get(struct BodyCache *bcache, const char *id);
 int               mutt_bcache_list(struct BodyCache *bcache, bcache_list_t *want_id, void *data);
-struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox);
+struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mailbox);
 FILE *            mutt_bcache_put(struct BodyCache *bcache, const char *id);
 
 #endif /* MUTT_BCACHE_H */

@@ -32,8 +32,8 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "thread.h"
+#include "email.h"
 #include "envelope.h"
-#include "header.h"
 
 /**
  * is_descendant - Is one thread a descendant of another
@@ -114,7 +114,7 @@ void thread_hash_destructor(int type, void *obj, intptr_t data)
  * @param reverse If true, reverse the direction of the search
  * @retval ptr Matching Header
  */
-struct Header *find_virtual(struct MuttThread *cur, int reverse)
+struct Email *find_virtual(struct MuttThread *cur, int reverse)
 {
   struct MuttThread *top = NULL;
 
@@ -193,7 +193,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
     if (done)
     {
-      struct Header *h = cur->message;
+      struct Email *e = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
       struct ListNode *np = NULL;
@@ -204,23 +204,23 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
         FREE(&np);
       }
 
-      h->env->refs_changed = true;
-      h->changed = true;
+      e->env->refs_changed = true;
+      e->changed = true;
     }
   }
 }
 
 /**
  * mutt_break_thread - Break the email Thread
- * @param hdr Email Header to break at
+ * @param e Email Header to break at
  */
-void mutt_break_thread(struct Header *hdr)
+void mutt_break_thread(struct Email *e)
 {
-  mutt_list_free(&hdr->env->in_reply_to);
-  mutt_list_free(&hdr->env->references);
-  hdr->env->irt_changed = true;
-  hdr->env->refs_changed = true;
-  hdr->changed = true;
+  mutt_list_free(&e->env->in_reply_to);
+  mutt_list_free(&e->env->references);
+  e->env->irt_changed = true;
+  e->env->refs_changed = true;
+  e->changed = true;
 
-  clean_references(hdr->thread, hdr->thread->child);
+  clean_references(e->thread, e->thread->child);
 }

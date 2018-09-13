@@ -56,7 +56,7 @@ struct Body
                                    * is required when sending mail.  */
   struct Body *next;              /**< next attachment in the list */
   struct Body *parts;             /**< parts of a multipart or message/rfc822 */
-  struct Header *hdr;             /**< header information for message/rfc822 */
+  struct Email *email;             /**< header information for message/rfc822 */
 
   struct AttachPtr *aptr;         /**< Menu information, used in recvattach.c */
 

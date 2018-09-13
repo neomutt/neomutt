@@ -38,53 +38,53 @@
 
 /**
  * imap_auth_plain - SASL PLAIN support
- * @param idata  Server data
+ * @param mdata Imap Mailbox data
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_plain(struct ImapMboxData *mdata, const char *method)
 {
   int rc = IMAP_CMD_CONTINUE;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
   static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
   char buf[STRING] = { 0 };
 
-  if (mutt_account_getuser(&idata->conn->account) < 0)
+  if (mutt_account_getuser(&mdata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account) < 0)
+  if (mutt_account_getpass(&mdata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
   mutt_message(_("Logging in..."));
 
   /* Prepare full AUTHENTICATE PLAIN message */
-  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, idata->conn->account.user,
-                      idata->conn->account.user, idata->conn->account.pass);
+  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, mdata->conn->account.user,
+                      mdata->conn->account.user, mdata->conn->account.pass);
 
-  if (mutt_bit_isset(idata->capabilities, SASL_IR))
+  if (mutt_bit_isset(mdata->capabilities, SASL_IR))
   {
-    imap_cmd_start(idata, buf);
+    imap_cmd_start(mdata, buf);
   }
   else
   {
     /* Split the message so we send AUTHENTICATE PLAIN first, and the
      * credentials after the first command continuation request */
     buf[sizeof(auth_plain_cmd) - 1] = '\0';
-    imap_cmd_start(idata, buf);
+    imap_cmd_start(mdata, buf);
     while (rc == IMAP_CMD_CONTINUE)
     {
-      rc = imap_cmd_step(idata);
+      rc = imap_cmd_step(mdata);
     }
     if (rc == IMAP_CMD_RESPOND)
     {
       mutt_str_strcat(buf + sizeof(auth_plain_cmd),
                       sizeof(buf) - sizeof(auth_plain_cmd), "\r\n");
-      mutt_socket_send(idata->conn, buf + sizeof(auth_plain_cmd));
+      mutt_socket_send(mdata->conn, buf + sizeof(auth_plain_cmd));
     }
   }
 
   while (rc == IMAP_CMD_CONTINUE)
   {
-    rc = imap_cmd_step(idata);
+    rc = imap_cmd_step(mdata);
   }
 
   if (rc == IMAP_CMD_BAD)

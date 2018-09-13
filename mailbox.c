@@ -32,7 +32,7 @@
 #include <utime.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "mailbox.h"
 #include "context.h"
@@ -134,20 +134,20 @@ static int fseek_last_message(FILE *f)
  */
 static bool test_last_status_new(FILE *f)
 {
-  struct Header *hdr = NULL;
+  struct Email *e = NULL;
   struct Envelope *tmp_envelope = NULL;
   bool result = false;
 
   if (fseek_last_message(f) == -1)
     return false;
 
-  hdr = mutt_header_new();
-  tmp_envelope = mutt_rfc822_read_header(f, hdr, false, false);
-  if (!(hdr->read || hdr->old))
+  e = mutt_email_new();
+  tmp_envelope = mutt_rfc822_read_header(f, e, false, false);
+  if (!(e->read || e->old))
     result = true;
 
   mutt_env_free(&tmp_envelope);
-  mutt_header_free(&hdr);
+  mutt_email_free(&e);
 
   return result;
 }
@@ -205,10 +205,8 @@ void mailbox_free(struct Mailbox **mailbox)
     return;
 
   FREE(&(*mailbox)->desc);
-  if ((*mailbox)->free_data)
-    (*mailbox)->free_data((*mailbox)->data);
-  (*mailbox)->data = NULL;
-
+  if ((*mailbox)->data && (*mailbox)->free_data)
+    (*mailbox)->free_data(&(*mailbox)->data);
   FREE(mailbox);
 }
 

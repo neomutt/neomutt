@@ -1,6 +1,6 @@
 /**
  * @file
- * Account object used by POP and IMAP
+ * ConnAccount object used by POP and IMAP
  *
  * @authors
  * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
@@ -21,16 +21,16 @@
  */
 
 /**
- * @page mutt_account Account object used by POP and IMAP
+ * @page mutt_account ConnAccount object used by POP and IMAP
  *
- * Account object used by POP and IMAP
+ * ConnAccount object used by POP and IMAP
  */
 
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
 #include "curs_lib.h"
@@ -53,12 +53,12 @@ char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
- * @param a1 First Account
- * @param a2 Second Account
+ * @param a1 First ConnAccount
+ * @param a2 Second ConnAccount
  * @retval 1 Accounts match
  * @retval 0 Accounts match
  */
-int mutt_account_match(const struct Account *a1, const struct Account *a2)
+int mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
   const char *user = NONULL(Username);
 
@@ -102,13 +102,13 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 }
 
 /**
- * mutt_account_fromurl - Fill Account with information from url
- * @param account Account to fill
+ * mutt_account_fromurl - Fill ConnAccount with information from url
+ * @param account ConnAccount to fill
  * @param url     Url to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct Account *account, struct Url *url)
+int mutt_account_fromurl(struct ConnAccount *account, struct Url *url)
 {
   /* must be present */
   if (url->host)
@@ -137,14 +137,14 @@ int mutt_account_fromurl(struct Account *account, struct Url *url)
 
 /**
  * mutt_account_tourl - Fill URL with info from account
- * @param account Source Account
+ * @param account Source ConnAccount
  * @param url     Url to fill
  *
  * The URL information is a set of pointers into account - don't free or edit
  * account until you've finished with url (make a copy of account if you need
  * it for a while).
  */
-void mutt_account_tourl(struct Account *account, struct Url *url)
+void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;
@@ -202,12 +202,12 @@ void mutt_account_tourl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_getuser - Retrieve username into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getuser - Retrieve username into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getuser(struct Account *account)
+int mutt_account_getuser(struct ConnAccount *account)
 {
   char prompt[STRING];
 
@@ -244,12 +244,12 @@ int mutt_account_getuser(struct Account *account)
 }
 
 /**
- * mutt_account_getlogin - Retrieve login info into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getlogin - Retrieve login info into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getlogin(struct Account *account)
+int mutt_account_getlogin(struct ConnAccount *account)
 {
   /* already set */
   if (account->flags & MUTT_ACCT_LOGIN)
@@ -283,12 +283,12 @@ int mutt_account_getlogin(struct Account *account)
 }
 
 /**
- * mutt_account_getpass - Fetch password into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getpass - Fetch password into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getpass(struct Account *account)
+int mutt_account_getpass(struct ConnAccount *account)
 {
   char prompt[STRING];
 
@@ -328,10 +328,10 @@ int mutt_account_getpass(struct Account *account)
 }
 
 /**
- * mutt_account_unsetpass - Unset Account's password
- * @param account Account to modify
+ * mutt_account_unsetpass - Unset ConnAccount's password
+ * @param account ConnAccount to modify
  */
-void mutt_account_unsetpass(struct Account *account)
+void mutt_account_unsetpass(struct ConnAccount *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;
 }
@@ -347,7 +347,7 @@ void mutt_account_unsetpass(struct Account *account)
  *
  * @note Caller should free the token
  */
-char *mutt_account_getoauthbearer(struct Account *account)
+char *mutt_account_getoauthbearer(struct ConnAccount *account)
 {
   FILE *fp;
   char *cmd = NULL;

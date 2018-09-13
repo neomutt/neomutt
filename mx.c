@@ -39,7 +39,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "mx.h"
 #include "alias.h"
@@ -359,7 +359,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&ctx->mailbox->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    mutt_header_free(&ctx->mailbox->hdrs[i]);
+    mutt_email_free(&ctx->mailbox->hdrs[i]);
   FREE(&ctx->mailbox->hdrs);
   FREE(&ctx->mailbox->v2r);
   FREE(&ctx->pattern);
@@ -514,7 +514,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 #ifdef USE_NNTP
   if (ctx->mailbox->msg_unread && ctx->mailbox->magic == MUTT_NNTP)
   {
-    struct NntpData *nntp_data = ctx->mailbox->data;
+    struct NntpMboxData *nntp_data = ctx->mailbox->data;
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
@@ -856,7 +856,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
        */
       if (ctx->last_tag == ctx->mailbox->hdrs[i])
         ctx->last_tag = NULL;
-      mutt_header_free(&ctx->mailbox->hdrs[i]);
+      mutt_email_free(&ctx->mailbox->hdrs[i]);
     }
   }
   ctx->mailbox->msg_count = j;
@@ -995,11 +995,11 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 /**
  * mx_msg_open_new - Open a new message
  * @param ctx   Destination mailbox
- * @param hdr   Message being copied (required for maildir support, because the filename depends on the message flags)
+ * @param e   Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message
  */
-struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags)
+struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
 {
   struct Address *p = NULL;
   struct Message *msg = NULL;
@@ -1013,19 +1013,19 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int fla
   msg = mutt_mem_calloc(1, sizeof(struct Message));
   msg->write = true;
 
-  if (hdr)
+  if (e)
   {
-    msg->flags.flagged = hdr->flagged;
-    msg->flags.replied = hdr->replied;
-    msg->flags.read = hdr->read;
+    msg->flags.flagged = e->flagged;
+    msg->flags.replied = e->replied;
+    msg->flags.read = e->read;
     msg->flags.draft = (flags & MUTT_SET_DRAFT) ? true : false;
-    msg->received = hdr->received;
+    msg->received = e->received;
   }
 
   if (msg->received == 0)
     time(&msg->received);
 
-  if (ctx->mailbox->mx_ops->msg_open_new(ctx, msg, hdr) == 0)
+  if (ctx->mailbox->mx_ops->msg_open_new(ctx, msg, e) == 0)
   {
     if (ctx->mailbox->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
@@ -1033,14 +1033,14 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int fla
     if ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
         flags & MUTT_ADD_FROM)
     {
-      if (hdr)
+      if (e)
       {
-        if (hdr->env->return_path)
-          p = hdr->env->return_path;
-        else if (hdr->env->sender)
-          p = hdr->env->sender;
+        if (e->env->return_path)
+          p = e->env->return_path;
+        else if (e->env->sender)
+          p = e->env->sender;
         else
-          p = hdr->env->from;
+          p = e->env->from;
       }
 
       fprintf(msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username),
@@ -1152,7 +1152,7 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
  */
 void mx_alloc_memory(struct Mailbox *mailbox)
 {
-  size_t s = MAX(sizeof(struct Header *), sizeof(int));
+  size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
   if ((mailbox->hdrmax + 25) * s < mailbox->hdrmax * s)
   {
@@ -1162,12 +1162,12 @@ void mx_alloc_memory(struct Mailbox *mailbox)
 
   if (mailbox->hdrs)
   {
-    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Header *) * (mailbox->hdrmax += 25));
+    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Email *) * (mailbox->hdrmax += 25));
     mutt_mem_realloc(&mailbox->v2r, sizeof(int) * mailbox->hdrmax);
   }
   else
   {
-    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Header *));
+    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Email *));
     mailbox->v2r = mutt_mem_calloc(mailbox->hdrmax, sizeof(int));
   }
   for (int i = mailbox->msg_count; i < mailbox->hdrmax; i++)
@@ -1187,63 +1187,63 @@ void mx_alloc_memory(struct Mailbox *mailbox)
  */
 void mx_update_context(struct Context *ctx, int new_messages)
 {
-  struct Header *h = NULL;
+  struct Email *e = NULL;
   for (int msgno = ctx->mailbox->msg_count - new_messages;
        msgno < ctx->mailbox->msg_count; msgno++)
   {
-    h = ctx->mailbox->hdrs[msgno];
+    e = ctx->mailbox->hdrs[msgno];
 
     if (WithCrypto)
     {
       /* NOTE: this _must_ be done before the check for mailcap! */
-      h->security = crypt_query(h->content);
+      e->security = crypt_query(e->content);
     }
 
     if (!ctx->pattern)
     {
       ctx->mailbox->v2r[ctx->mailbox->vcount] = msgno;
-      h->virtual = ctx->mailbox->vcount++;
+      e->virtual = ctx->mailbox->vcount++;
     }
     else
-      h->virtual = -1;
-    h->msgno = msgno;
+      e->virtual = -1;
+    e->msgno = msgno;
 
-    if (h->env->supersedes)
+    if (e->env->supersedes)
     {
-      struct Header *h2 = NULL;
+      struct Email *e2 = NULL;
 
       if (!ctx->mailbox->id_hash)
         ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
 
-      h2 = mutt_hash_find(ctx->mailbox->id_hash, h->env->supersedes);
-      if (h2)
+      e2 = mutt_hash_find(ctx->mailbox->id_hash, e->env->supersedes);
+      if (e2)
       {
-        h2->superseded = true;
+        e2->superseded = true;
         if (Score)
-          mutt_score_message(ctx, h2, true);
+          mutt_score_message(ctx, e2, true);
       }
     }
 
     /* add this message to the hash tables */
-    if (ctx->mailbox->id_hash && h->env->message_id)
-      mutt_hash_insert(ctx->mailbox->id_hash, h->env->message_id, h);
-    if (ctx->mailbox->subj_hash && h->env->real_subj)
-      mutt_hash_insert(ctx->mailbox->subj_hash, h->env->real_subj, h);
-    mutt_label_hash_add(ctx->mailbox, h);
+    if (ctx->mailbox->id_hash && e->env->message_id)
+      mutt_hash_insert(ctx->mailbox->id_hash, e->env->message_id, e);
+    if (ctx->mailbox->subj_hash && e->env->real_subj)
+      mutt_hash_insert(ctx->mailbox->subj_hash, e->env->real_subj, e);
+    mutt_label_hash_add(ctx->mailbox, e);
 
     if (Score)
-      mutt_score_message(ctx, h, false);
+      mutt_score_message(ctx, e, false);
 
-    if (h->changed)
+    if (e->changed)
       ctx->mailbox->changed = true;
-    if (h->flagged)
+    if (e->flagged)
       ctx->mailbox->msg_flagged++;
-    if (h->deleted)
+    if (e->deleted)
       ctx->deleted++;
-    if (!h->read)
+    if (!e->read)
     {
       ctx->mailbox->msg_unread++;
-      if (!h->old)
+      if (!e->old)
         ctx->new ++;
     }
   }
@@ -1306,15 +1306,15 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
 /**
  * mx_tags_commit - save tags to the mailbox
  * @param ctx  Mailbox
- * @param hdr  Email Header
+ * @param e  Email Header
  * @param tags Tags to save
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Header *hdr, char *tags)
+int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
 {
   if (ctx->mailbox->mx_ops->tags_commit)
-    return ctx->mailbox->mx_ops->tags_commit(ctx, hdr, tags);
+    return ctx->mailbox->mx_ops->tags_commit(ctx, e, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
@@ -1441,14 +1441,14 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
       if (!alias)
         break;
 
-      struct Header *h = mutt_header_new();
-      h->env = mutt_env_new();
-      h->env->from = alias;
-      h->env->to = alias;
-      mutt_default_save(buf, buflen, h);
-      h->env->from = NULL;
-      h->env->to = NULL;
-      mutt_header_free(&h);
+      struct Email *e = mutt_email_new();
+      e->env = mutt_env_new();
+      e->env->from = alias;
+      e->env->to = alias;
+      mutt_default_save(buf, buflen, e);
+      e->env->from = NULL;
+      e->env->to = NULL;
+      mutt_email_free(&e);
       break;
     }
     else

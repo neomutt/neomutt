@@ -224,7 +224,7 @@ ALLOBJS+=	$(PGPEWRAPOBJS)
 ###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/command.o config/dump.o \
+LIBCONFIGOBJS=	config/account.o config/address.o config/bool.o config/command.o config/dump.o \
 		config/long.o config/magic.o config/mbtable.o config/number.o \
 		config/path.o config/quad.o config/regex.o config/set.o \
 		config/sort.o config/string.o
@@ -238,7 +238,7 @@ ALLOBJS+=	$(LIBCONFIGOBJS)
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/address.o email/attach.o email/body.o \
 		email/email_globals.o email/envelope.o email/from.o \
-		email/header.o email/idna.o email/mime.o email/parameter.o \
+		email/email.o email/idna.o email/mime.o email/parameter.o \
 		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
 		email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
@@ -377,8 +377,8 @@ git_ver.h: $(ALL_FILES)
 
 hcache/hcversion.h:	$(SRCDIR)/email/address.h \
 			$(SRCDIR)/email/body.h \
+			$(SRCDIR)/email/email.h \
 			$(SRCDIR)/email/envelope.h \
-			$(SRCDIR)/email/header.h \
 			$(SRCDIR)/email/parameter.h \
 			$(SRCDIR)/mutt/buffer.h \
 			$(SRCDIR)/mutt/list.h \
@@ -387,8 +387,8 @@ hcache/hcversion.h:	$(SRCDIR)/email/address.h \
 	( echo '#include "config.h"'; \
 	echo '#include "email/address.h"'; \
 	echo '#include "email/body.h"'; \
+	echo '#include "email/email.h"'; \
 	echo '#include "email/envelope.h"'; \
-	echo '#include "email/header.h"'; \
 	echo '#include "email/parameter.h"'; \
 	echo '#include "mutt/buffer.h"'; \
 	echo '#include "mutt/list.h"';) | $(CPP) $(CFLAGS) - | \

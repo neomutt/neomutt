@@ -32,7 +32,7 @@
 #include "hcache/hcache.h"
 #endif
 
-struct Header;
+struct Email;
 struct Context;
 struct Mailbox;
 struct stat;
@@ -151,11 +151,11 @@ struct MxOps
    * msg_open_new - Open a new message in a mailbox
    * @param ctx Mailbox
    * @param msg  Message to open
-   * @param hdr Email header
+   * @param e Email header
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Header *hdr);
+  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Email *e);
   /**
    * msg_commit - Save changes to an email
    * @param ctx Mailbox
@@ -192,12 +192,12 @@ struct MxOps
   /**
    * tags_commit - Save the tags to a message
    * @param ctx Mailbox
-   * @param hdr Email Header
+   * @param e Email Header
    * @param buf Buffer containing tags
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
+  int (*tags_commit)     (struct Context *ctx, struct Email *e, char *buf);
   /**
    * path_probe - Does this mailbox type recognise this path?
    * @param path Path to examine
@@ -240,14 +240,14 @@ struct Context *mx_mbox_open       (const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
 int             mx_msg_close       (struct Context *ctx, struct Message **msg);
 int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Context *ctx, struct Header *hdr, int flags);
+struct Message *mx_msg_open_new    (struct Context *ctx, struct Email *e, int flags);
 struct Message *mx_msg_open        (struct Context *ctx, int msgno);
 int             mx_msg_padding_size(struct Context *ctx);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
 int             mx_path_probe      (const char *path, const struct stat *st);
-int             mx_tags_commit     (struct Context *ctx, struct Header *hdr, char *tags);
+int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 int                 mx_access(const char *path, int flags);

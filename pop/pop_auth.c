@@ -32,7 +32,7 @@
 #include <string.h>
 #include "pop_private.h"
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -49,33 +49,31 @@ bool PopAuthTryAll; ///< Config: (pop) Try all available authentication methods
 #ifdef USE_SASL
 /**
  * pop_auth_sasl - POP SASL authenticator
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @param method   Authentication method
  * @retval num Result, e.g. #POP_A_SUCCESS
  */
-static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_sasl(struct PopMboxData *mdata, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
-  char *buf = NULL;
-  size_t bufsize = 0;
   char inbuf[LONG_STRING];
   const char *mech = NULL;
   const char *pc = NULL;
   unsigned int len = 0, olen = 0, client_start;
 
-  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+  if (mutt_account_getpass(&mdata->conn->account) || !mdata->conn->account.pass[0])
     return POP_A_FAILURE;
 
-  if (mutt_sasl_client_new(pop_data->conn, &saslconn) < 0)
+  if (mutt_sasl_client_new(mdata->conn, &saslconn) < 0)
   {
     mutt_debug(1, "Error allocating SASL connection.\n");
     return POP_A_FAILURE;
   }
 
   if (!method)
-    method = pop_data->auth_list;
+    method = mdata->auth_list;
 
   while (true)
   {
@@ -102,8 +100,8 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
 
   mutt_message(_("Authenticating (SASL)..."));
 
-  bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
-  buf = mutt_mem_malloc(bufsize);
+  size_t bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
+  char *buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   olen = strlen(buf);
@@ -112,11 +110,11 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   while (true)
   {
     mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
-    mutt_socket_send(pop_data->conn, buf);
-    if (mutt_socket_readln(inbuf, sizeof(inbuf), pop_data->conn) < 0)
+    mutt_socket_send(mdata->conn, buf);
+    if (mutt_socket_readln(inbuf, sizeof(inbuf), mdata->conn) < 0)
     {
       sasl_dispose(&saslconn);
-      pop_data->status = POP_DISCONNECTED;
+      mdata->status = POP_DISCONNECTED;
       FREE(&buf);
       return POP_A_SOCKET;
     }
@@ -179,7 +177,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
 
   if (mutt_str_strncmp(inbuf, "+OK", 3) == 0)
   {
-    mutt_sasl_setup_conn(pop_data->conn, saslconn);
+    mutt_sasl_setup_conn(mdata->conn, saslconn);
     FREE(&buf);
     return POP_A_SUCCESS;
   }
@@ -191,7 +189,7 @@ bail:
   if (mutt_str_strncmp(inbuf, "+ ", 2) == 0)
   {
     snprintf(buf, bufsize, "*\r\n");
-    if (pop_query(pop_data, buf, bufsize) == -1)
+    if (pop_query(mdata, buf, bufsize) == -1)
     {
       FREE(&buf);
       return POP_A_SOCKET;
@@ -207,42 +205,42 @@ bail:
 
 /**
  * pop_apop_timestamp - Get the server timestamp for APOP authentication
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @param buf      Timestamp string
  */
-void pop_apop_timestamp(struct PopData *pop_data, char *buf)
+void pop_apop_timestamp(struct PopMboxData *mdata, char *buf)
 {
   char *p1 = NULL, *p2 = NULL;
 
-  FREE(&pop_data->timestamp);
+  FREE(&mdata->timestamp);
 
   if ((p1 = strchr(buf, '<')) && (p2 = strchr(p1, '>')))
   {
     p2[1] = '\0';
-    pop_data->timestamp = mutt_str_strdup(p1);
+    mdata->timestamp = mutt_str_strdup(p1);
   }
 }
 
 /**
  * pop_auth_apop - APOP authenticator
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @param method   Authentication method
  * @retval num Result, e.g. #POP_A_SUCCESS
  */
-static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_apop(struct PopMboxData *mdata, const char *method)
 {
   struct Md5Ctx ctx;
   unsigned char digest[16];
   char hash[33];
   char buf[LONG_STRING];
 
-  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+  if (mutt_account_getpass(&mdata->conn->account) || !mdata->conn->account.pass[0])
     return POP_A_FAILURE;
 
-  if (!pop_data->timestamp)
+  if (!mdata->timestamp)
     return POP_A_UNAVAIL;
 
-  if (!mutt_addr_valid_msgid(pop_data->timestamp))
+  if (!mutt_addr_valid_msgid(mdata->timestamp))
   {
     mutt_error(_("POP timestamp is invalid"));
     return POP_A_UNAVAIL;
@@ -252,15 +250,15 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 
   /* Compute the authentication hash to send to the server */
   mutt_md5_init_ctx(&ctx);
-  mutt_md5_process(pop_data->timestamp, &ctx);
-  mutt_md5_process(pop_data->conn->account.pass, &ctx);
+  mutt_md5_process(mdata->timestamp, &ctx);
+  mutt_md5_process(mdata->conn->account.pass, &ctx);
   mutt_md5_finish_ctx(&ctx, digest);
   mutt_md5_toascii(digest, hash);
 
   /* Send APOP command to server */
-  snprintf(buf, sizeof(buf), "APOP %s %s\r\n", pop_data->conn->account.user, hash);
+  snprintf(buf, sizeof(buf), "APOP %s %s\r\n", mdata->conn->account.user, hash);
 
-  switch (pop_query(pop_data, buf, sizeof(buf)))
+  switch (pop_query(mdata, buf, sizeof(buf)))
   {
     case 0:
       return POP_A_SUCCESS;
@@ -275,49 +273,47 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 
 /**
  * pop_auth_user - USER authenticator
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @param method   Authentication method
  * @retval num Result, e.g. #POP_A_SUCCESS
  */
-static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_user(struct PopMboxData *mdata, const char *method)
 {
-  char buf[LONG_STRING];
-  int ret;
-
-  if (!pop_data->cmd_user)
+  if (!mdata->cmd_user)
     return POP_A_UNAVAIL;
 
-  if (mutt_account_getpass(&pop_data->conn->account) || !pop_data->conn->account.pass[0])
+  if (mutt_account_getpass(&mdata->conn->account) || !mdata->conn->account.pass[0])
     return POP_A_FAILURE;
 
   mutt_message(_("Logging in..."));
 
-  snprintf(buf, sizeof(buf), "USER %s\r\n", pop_data->conn->account.user);
-  ret = pop_query(pop_data, buf, sizeof(buf));
+  char buf[LONG_STRING];
+  snprintf(buf, sizeof(buf), "USER %s\r\n", mdata->conn->account.user);
+  int ret = pop_query(mdata, buf, sizeof(buf));
 
-  if (pop_data->cmd_user == 2)
+  if (mdata->cmd_user == 2)
   {
     if (ret == 0)
     {
-      pop_data->cmd_user = 1;
+      mdata->cmd_user = 1;
 
       mutt_debug(1, "set USER capability\n");
     }
 
     if (ret == -2)
     {
-      pop_data->cmd_user = 0;
+      mdata->cmd_user = 0;
 
       mutt_debug(1, "unset USER capability\n");
-      snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
+      snprintf(mdata->err_msg, sizeof(mdata->err_msg), "%s",
                _("Command USER is not supported by server"));
     }
   }
 
   if (ret == 0)
   {
-    snprintf(buf, sizeof(buf), "PASS %s\r\n", pop_data->conn->account.pass);
-    ret = pop_query_d(pop_data, buf, sizeof(buf),
+    snprintf(buf, sizeof(buf), "PASS %s\r\n", mdata->conn->account.pass);
+    ret = pop_query_d(mdata, buf, sizeof(buf),
                       /* don't print the password unless we're at the ungodly debugging level */
                       DebugLevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" : NULL);
   }
@@ -330,39 +326,32 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
       return POP_A_SOCKET;
   }
 
-  mutt_error("%s %s", _("Login failed"), pop_data->err_msg);
+  mutt_error("%s %s", _("Login failed"), mdata->err_msg);
 
   return POP_A_FAILURE;
 }
 
 /**
  * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @param method Name of this authentication method (UNUSED)
  * @retval num Result, e.g. #POP_A_SUCCESS
  */
-static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_oauth(struct PopMboxData *mdata, const char *method)
 {
-  char *oauthbearer = NULL;
-  char decoded_err[LONG_STRING];
-  char *err = NULL;
-  char *auth_cmd = NULL;
-  size_t auth_cmd_len;
-  int ret, len;
-
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
-  oauthbearer = mutt_account_getoauthbearer(&pop_data->conn->account);
+  char *oauthbearer = mutt_account_getoauthbearer(&mdata->conn->account);
   if (!oauthbearer)
     return POP_A_FAILURE;
 
-  auth_cmd_len = strlen(oauthbearer) + 30;
-  auth_cmd = mutt_mem_malloc(auth_cmd_len);
+  size_t auth_cmd_len = strlen(oauthbearer) + 30;
+  char *auth_cmd = mutt_mem_malloc(auth_cmd_len);
   snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
-  ret =
-      pop_query_d(pop_data, auth_cmd, strlen(auth_cmd),
+  int ret =
+      pop_query_d(mdata, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
                   /* don't print the bearer token unless we're at the ungodly debugging level */
                   (DebugLevel < MUTT_SOCK_LOG_FULL) ? "AUTH OAUTHBEARER *\r\n" :
@@ -380,10 +369,11 @@ static enum PopAuthRes pop_auth_oauth(struct PopData *pop_data, const char *meth
 
   /* The error response was a SASL continuation, so "continue" it.
    * See RFC7628 3.2.3 */
-  mutt_socket_send(pop_data->conn, "\001");
+  mutt_socket_send(mdata->conn, "\001");
 
-  err = pop_data->err_msg;
-  len = mutt_b64_decode(pop_data->err_msg, decoded_err, sizeof(decoded_err) - 1);
+  char *err = mdata->err_msg;
+  char decoded_err[LONG_STRING];
+  int len = mutt_b64_decode(mdata->err_msg, decoded_err, sizeof(decoded_err) - 1);
   if (len >= 0)
   {
     decoded_err[len] = '\0';
@@ -404,16 +394,16 @@ static const struct PopAuth pop_authenticators[] = {
 
 /**
  * pop_authenticate - Authenticate with a POP server
- * @param pop_data POP Server data
+ * @param mdata POP Mailbox data
  * @retval num Result, e.g. #POP_A_SUCCESS
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Login failed
  * @retval -3 Authentication cancelled
  */
-int pop_authenticate(struct PopData *pop_data)
+int pop_authenticate(struct PopMboxData *mdata)
 {
-  struct Account *acct = &pop_data->conn->account;
+  struct ConnAccount *acct = &mdata->conn->account;
   const struct PopAuth *authenticator = NULL;
   char *methods = NULL;
   char *comma = NULL;
@@ -445,14 +435,14 @@ int pop_authenticate(struct PopData *pop_data)
         if (!authenticator->method ||
             (mutt_str_strcasecmp(authenticator->method, method) == 0))
         {
-          ret = authenticator->authenticate(pop_data, method);
+          ret = authenticator->authenticate(mdata, method);
           if (ret == POP_A_SOCKET)
           {
-            switch (pop_connect(pop_data))
+            switch (pop_connect(mdata))
             {
               case 0:
               {
-                ret = authenticator->authenticate(pop_data, method);
+                ret = authenticator->authenticate(mdata, method);
                 break;
               }
               case -2:
@@ -485,14 +475,14 @@ int pop_authenticate(struct PopData *pop_data)
 
     while (authenticator->authenticate)
     {
-      ret = authenticator->authenticate(pop_data, authenticator->method);
+      ret = authenticator->authenticate(mdata, authenticator->method);
       if (ret == POP_A_SOCKET)
       {
-        switch (pop_connect(pop_data))
+        switch (pop_connect(mdata))
         {
           case 0:
           {
-            ret = authenticator->authenticate(pop_data, authenticator->method);
+            ret = authenticator->authenticate(mdata, authenticator->method);
             break;
           }
           case -2:

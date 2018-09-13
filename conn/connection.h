@@ -27,16 +27,14 @@
 #include <stdio.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "account.h"
-
-#define LONG_STRING 1024
+#include "connaccount.h"
 
 /**
  * struct Connection - An open network connection (socket)
  */
 struct Connection
 {
-  struct Account account;
+  struct ConnAccount account;
   unsigned int ssf; /**< security strength factor, in bits */
   void *data;
 

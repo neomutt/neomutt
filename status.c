@@ -131,15 +131,15 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else
 #endif
 #ifdef USE_COMPRESSED
-      if (Context && Context->mailbox->compress_info &&
-          (Context->mailbox->realpath[0] != '\0'))
+          if (Context && Context->mailbox->compress_info &&
+              (Context->mailbox->realpath[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, Context->mailbox->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
-      if (Context && (Context->mailbox->path[0] != '\0'))
+          if (Context && (Context->mailbox->path[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, Context->mailbox->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));

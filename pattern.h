@@ -29,7 +29,7 @@
 
 struct Address;
 struct Buffer;
-struct Header;
+struct Email;
 struct Context;
 
 /* These Config Variables are only used in pattern.c */
@@ -91,7 +91,7 @@ struct PatternCache
 
 struct Pattern *mutt_pattern_new(void);
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Header *h, struct PatternCache *cache);
+                      struct Context *ctx, struct Email *e, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(struct Pattern **pat);
@@ -102,6 +102,6 @@ int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_search_command(int cur, int op);
 
-bool mutt_limit_current_thread(struct Header *h);
+bool mutt_limit_current_thread(struct Email *e);
 
 #endif /* MUTT_PATTERN_H */

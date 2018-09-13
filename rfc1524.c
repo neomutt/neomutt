@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "rfc1524.h"
 #include "globals.h"

@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-struct Header;
+struct Email;
 
 /**
  * struct MuttThread - An email conversation
@@ -45,15 +45,15 @@ struct MuttThread
   struct MuttThread *child;
   struct MuttThread *next;
   struct MuttThread *prev;
-  struct Header *message;
-  struct Header *sort_key;
+  struct Email *message;
+  struct Email *sort_key;
 };
 
 void           clean_references(struct MuttThread *brk, struct MuttThread *cur);
-struct Header *find_virtual(struct MuttThread *cur, int reverse);
+struct Email *find_virtual(struct MuttThread *cur, int reverse);
 void           insert_message(struct MuttThread **new, struct MuttThread *newparent, struct MuttThread *cur);
 bool           is_descendant(struct MuttThread *a, struct MuttThread *b);
-void           mutt_break_thread(struct Header *hdr);
+void           mutt_break_thread(struct Email *e);
 void           thread_hash_destructor(int type, void *obj, intptr_t data);
 void           unlink_message(struct MuttThread **old, struct MuttThread *cur);
 

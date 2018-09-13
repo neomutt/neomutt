@@ -33,7 +33,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "globals.h"
@@ -301,12 +301,12 @@ static bool addresses_use_unicode(const struct Address *a)
 }
 
 /**
- * smtp_fill_account - Create Account object from SMTP Url
- * @param account Account to populate
+ * smtp_fill_account - Create ConnAccount object from SMTP Url
+ * @param account ConnAccount to populate
  * @retval  0 Success
  * @retval -1 Error
  */
-static int smtp_fill_account(struct Account *account)
+static int smtp_fill_account(struct ConnAccount *account)
 {
   struct Url url;
 
@@ -739,7 +739,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
                    const char *msgfile, bool eightbit)
 {
   struct Connection *conn = NULL;
-  struct Account account;
+  struct ConnAccount account;
   const char *envfrom = NULL;
   char buf[1024];
   int rc = -1;

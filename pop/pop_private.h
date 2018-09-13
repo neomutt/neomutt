@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-struct Account;
+struct ConnAccount;
 struct Context;
 struct Mailbox;
 struct Progress;
@@ -72,9 +72,9 @@ struct PopCache
 };
 
 /**
- * struct PopData - POP-specific server data
+ * struct PopMboxData - POP data attached to a Mailbox - @extends Mailbox
  */
-struct PopData
+struct PopMboxData
 {
   struct Connection *conn;
   unsigned int status : 2;
@@ -99,28 +99,36 @@ struct PopData
 };
 
 /**
+ * struct PopEmailData - POP data attached to an Email - @extends Email
+ */
+struct PopEmailData
+{
+  const char *uid;
+};
+
+/**
  * struct PopAuth - POP authentication multiplexor
  */
 struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  enum PopAuthRes (*authenticate)(struct PopData *, const char *);
+  enum PopAuthRes (*authenticate)(struct PopMboxData *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
 };
 
 /* pop_auth.c */
-int pop_authenticate(struct PopData *pop_data);
-void pop_apop_timestamp(struct PopData *pop_data, char *buf);
+int pop_authenticate(struct PopMboxData *mdata);
+void pop_apop_timestamp(struct PopMboxData *mdata, char *buf);
 
 /* pop_lib.c */
 #define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
-int pop_parse_path(const char *path, struct Account *acct);
-int pop_connect(struct PopData *pop_data);
-int pop_open_connection(struct PopData *pop_data);
-int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg);
-int pop_fetch_data(struct PopData *pop_data, const char *query, struct Progress *progressbar,
+int pop_parse_path(const char *path, struct ConnAccount *acct);
+int pop_connect(struct PopMboxData *mdata);
+int pop_open_connection(struct PopMboxData *mdata);
+int pop_query_d(struct PopMboxData *mdata, char *buf, size_t buflen, char *msg);
+int pop_fetch_data(struct PopMboxData *mdata, const char *query, struct Progress *progressbar,
                    int (*func)(char *, void *), void *data);
 int pop_reconnect(struct Mailbox *mailbox);
 void pop_logout(struct Mailbox *mailbox);

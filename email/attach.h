@@ -40,7 +40,7 @@ struct AttachPtr
   int level;
   int num;
   bool unowned : 1;   /**< don't unlink on detach */
-  bool decrypted : 1; /**< not part of message as stored in the hdr->content. */
+  bool decrypted : 1; /**< not part of message as stored in the email->content. */
 };
 
 /**
@@ -48,8 +48,8 @@ struct AttachPtr
  */
 struct AttachCtx
 {
-  struct Header *hdr; /**< used by recvattach for updating */
-  FILE *root_fp;      /**< used by recvattach for updating */
+  struct Email *email; /**< used by recvattach for updating */
+  FILE *root_fp;       /**< used by recvattach for updating */
 
   struct AttachPtr **idx;
   short idxlen;

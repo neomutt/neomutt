@@ -72,7 +72,7 @@ struct FolderFile
   bool local : 1; /**< folder is on local filesystem */
   bool tagged : 1;
 #ifdef USE_NNTP
-  struct NntpData *nd;
+  struct NntpMboxData *nd;
 #endif
 };
 

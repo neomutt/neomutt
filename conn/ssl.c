@@ -49,11 +49,11 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "ssl.h"
-#include "account.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
 #include "keymap.h"
@@ -339,13 +339,13 @@ static void ssl_dprint_err_stack(void)
  * @param buf      Buffer for the password
  * @param buflen   Length of the buffer
  * @param rwflag   0 if writing, 1 if reading (UNUSED)
- * @param userdata Account whose password is requested
+ * @param userdata ConnAccount whose password is requested
  * @retval >0 Success, number of chars written to buf
  * @retval  0 Error
  */
 static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 {
-  struct Account *account = userdata;
+  struct ConnAccount *account = userdata;
 
   if (mutt_account_getuser(account) < 0)
     return 0;

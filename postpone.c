@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "context.h"
@@ -205,7 +205,7 @@ static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  * select_msg - Create a Menu to select a postponed message
  * @retval ptr Email Header
  */
-static struct Header *select_msg(void)
+static struct Email *select_msg(void)
 {
   int r = -1;
   bool done = false;
@@ -280,10 +280,10 @@ static struct Header *select_msg(void)
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
-int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
-                       struct Header **cur, char *fcc, size_t fcclen)
+int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
+                       struct Email **cur, char *fcc, size_t fcclen)
 {
-  struct Header *h = NULL;
+  struct Email *e = NULL;
   int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
@@ -310,15 +310,15 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (PostContext->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    h = PostContext->mailbox->hdrs[0];
+    e = PostContext->mailbox->hdrs[0];
   }
-  else if (!(h = select_msg()))
+  else if (!(e = select_msg()))
   {
     mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, h, false) < 0)
+  if (mutt_prepare_template(NULL, PostContext, hdr, e, false) < 0)
   {
     mx_fastclose_mailbox(PostContext);
     FREE(&PostContext);
@@ -326,8 +326,8 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(PostContext, h, MUTT_DELETE, 1);
-  mutt_set_flag(PostContext, h, MUTT_PURGE, 1);
+  mutt_set_flag(PostContext, e, MUTT_DELETE, 1);
+  mutt_set_flag(PostContext, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
   PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
@@ -548,15 +548,15 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @param fp      If not NULL, file containing the template
  * @param ctx     If fp is NULL, the context containing the header with the template
  * @param newhdr  The template is read into this Header
- * @param hdr     The message to recall/resend
+ * @param e     The message to recall/resend
  * @param resend  Set if resending (as opposed to recalling a postponed msg).
  *                Resent messages enable header weeding, and also
  *                discard any existing Message-ID and Mail-Followup-To.
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
-                          struct Header *hdr, bool resend)
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
+                          struct Email *e, bool resend)
 {
   struct Message *msg = NULL;
   char file[PATH_MAX];
@@ -566,7 +566,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && !(msg = mx_msg_open(ctx, hdr->msgno)))
+  if (!fp && !(msg = mx_msg_open(ctx, e->msgno)))
     return -1;
 
   if (!fp)
@@ -576,11 +576,11 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
   /* parse the message header and MIME structure */
 
-  fseeko(fp, hdr->offset, SEEK_SET);
-  newhdr->offset = hdr->offset;
+  fseeko(fp, e->offset, SEEK_SET);
+  newhdr->offset = e->offset;
   /* enable header weeding for resent messages */
   newhdr->env = mutt_rfc822_read_header(fp, newhdr, true, resend);
-  newhdr->content->length = hdr->content->length;
+  newhdr->content->length = e->content->length;
   mutt_parse_part(fp, newhdr->content);
 
   /* If resending a message, don't keep message_id or mail_followup_to.
@@ -746,8 +746,8 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_stamp_attachment(b);
 
     mutt_body_free(&b->parts);
-    if (b->hdr)
-      b->hdr->content = NULL; /* avoid dangling pointer */
+    if (b->email)
+      b->email->content = NULL; /* avoid dangling pointer */
   }
 
   /* Fix encryption flags. */

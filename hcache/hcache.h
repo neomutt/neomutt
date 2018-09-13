@@ -52,24 +52,24 @@
 #include <stddef.h>
 #include <sys/time.h>
 
-struct Header;
+struct Email;
 
 /**
- * struct HeaderCache - header cache structure
+ * struct EmailCache - header cache structure
  *
  * This struct holds both the backend-agnostic and the backend-specific parts
  * of the header cache. Backend code MUST initialize the fetch, store,
  * delete and close function pointers in hcache_open, and MAY store
  * backend-specific context in the ctx pointer.
  */
-struct HeaderCache
+struct EmailCache
 {
   char *folder;
   unsigned int crc;
   void *ctx;
 };
 
-typedef struct HeaderCache header_cache_t;
+typedef struct EmailCache header_cache_t;
 
 /**
  * typedef hcache_namer_t - Prototype for function to compose hcache file names
@@ -152,22 +152,22 @@ void mutt_hcache_free(header_cache_t *h, void **data);
  * @retval ptr Success, the restored header (cannot be NULL)
  *
  * @note The returned Header must be free'd by caller code with
- *       mutt_header_free().
+ *       mutt_email_free().
  */
-struct Header *mutt_hcache_restore(const unsigned char *d);
+struct Email *mutt_hcache_restore(const unsigned char *d);
 
 /**
  * mutt_hcache_store - store a Header along with a validity datum
  * @param h           Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key         Message identification string
  * @param keylen      Length of the string pointed to by key
- * @param header      Message header to store
+ * @param e           Email to store
  * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      struct Header *header, unsigned int uidvalidity);
+                      struct Email *e, unsigned int uidvalidity);
 
 /**
  * mutt_hcache_store_raw - store a key / data pair

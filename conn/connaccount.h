@@ -1,6 +1,6 @@
 /**
  * @file
- * Account object
+ * ConnAccount object
  *
  * @authors
  * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
@@ -24,9 +24,9 @@
 #define MUTT_CONN_ACCOUNT_H
 
 /**
- * struct Account - Login details for a remote server
+ * struct ConnAccount - Login details for a remote server
  */
-struct Account
+struct ConnAccount
 {
   char user[128];
   char login[128];

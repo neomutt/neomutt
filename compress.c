@@ -48,12 +48,12 @@
 #include "mx.h"
 #include "protos.h"
 
-struct Header;
+struct Email;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
- * maibox->path     == plaintext file
- * maibox->realpath == compressed file
+ * - mailbox->path     == plaintext file
+ * - mailbox->realpath == compressed file
  */
 
 /**
@@ -837,7 +837,7 @@ static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 /**
  * comp_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
 {
   if (!ctx)
     return -1;
@@ -851,7 +851,7 @@ static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct He
     return -1;
 
   /* Delegate */
-  return ops->msg_open_new(ctx, msg, hdr);
+  return ops->msg_open_new(ctx, msg, e);
 }
 
 /**
@@ -937,7 +937,7 @@ static int comp_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 /**
  * comp_tags_commit - Implements MxOps::tags_commit()
  */
-static int comp_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
+static int comp_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 {
   if (!ctx)
     return 0;
@@ -950,7 +950,7 @@ static int comp_tags_commit(struct Context *ctx, struct Header *hdr, char *buf)
   if (!ops || !ops->tags_commit)
     return 0;
 
-  return ops->tags_commit(ctx, hdr, buf);
+  return ops->tags_commit(ctx, e, buf);
 }
 
 /**

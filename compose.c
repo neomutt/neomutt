@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "compose.h"
@@ -267,7 +267,7 @@ static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  * redraw_crypt_lines - Update the encryption info in the compose window
  * @param msg Header of message
  */
-static void redraw_crypt_lines(struct Header *msg)
+static void redraw_crypt_lines(struct Email *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, "%*s",
@@ -455,7 +455,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
  * @param msg Header of the message
  * @param fcc Fcc field
  */
-static void draw_envelope(struct Header *msg, char *fcc)
+static void draw_envelope(struct Email *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -629,7 +629,7 @@ static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, 
 {
   if (init)
   {
-    mutt_gen_compose_attach_list(actx, actx->hdr->content, -1, 0);
+    mutt_gen_compose_attach_list(actx, actx->email->content, -1, 0);
     mutt_attach_init(actx);
     menu->data = actx;
   }
@@ -670,7 +670,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  */
 struct ComposeRedrawData
 {
-  struct Header *msg;
+  struct Email *msg;
   char *fcc;
 };
 
@@ -887,8 +887,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
-                      struct Header *cur, int flags)
+int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
@@ -930,7 +929,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
-  actx->hdr = msg;
+  actx->email = msg;
   mutt_update_compose_menu(actx, menu, true);
 
   while (loop)

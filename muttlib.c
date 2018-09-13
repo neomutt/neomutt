@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "muttlib.h"
@@ -219,14 +219,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         struct Address *alias = mutt_alias_lookup(buf + 1);
         if (alias)
         {
-          struct Header *h = mutt_header_new();
-          h->env = mutt_env_new();
-          h->env->from = alias;
-          h->env->to = alias;
-          mutt_default_save(p, sizeof(p), h);
-          h->env->from = NULL;
-          h->env->to = NULL;
-          mutt_header_free(&h);
+          struct Email *e = mutt_email_new();
+          e->env = mutt_env_new();
+          e->env->from = alias;
+          e->env->to = alias;
+          mutt_default_save(p, sizeof(p), e);
+          e->env->from = NULL;
+          e->env->to = NULL;
+          mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
             recurse = true;

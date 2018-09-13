@@ -27,7 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
 #include "filter.h"
@@ -762,11 +762,11 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
- * @param msg Header of email
+ * @param msg Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mix_check_message(struct Header *msg)
+int mix_check_message(struct Email *msg)
 {
   const char *fqdn = NULL;
   bool need_hostname = false;

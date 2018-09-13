@@ -29,7 +29,7 @@
 #include "format_flags.h"
 
 struct AttachCtx;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in recvattach.c */
 extern char *AttachSep;
@@ -41,6 +41,6 @@ void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
 
 const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, enum FormatFlag flags);
-void mutt_view_attachments(struct Header *hdr);
+void mutt_view_attachments(struct Email *e);
 
 #endif /* MUTT_RECVATTACH_H */

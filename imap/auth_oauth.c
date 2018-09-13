@@ -40,11 +40,11 @@
 
 /**
  * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER
- * @param idata  Server data
+ * @param mdata Imap Mailbox data
  * @param method Name of this authentication method (UNUSED)
  * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_oauth(struct ImapMboxData *mdata, const char *method)
 {
   char *ibuf = NULL;
   char *oauthbearer = NULL;
@@ -52,8 +52,8 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
   int rc;
 
   /* For now, we only support SASL_IR also and over TLS */
-  if (!mutt_bit_isset(idata->capabilities, AUTH_OAUTHBEARER) ||
-      !mutt_bit_isset(idata->capabilities, SASL_IR) || !idata->conn->ssf)
+  if (!mutt_bit_isset(mdata->capabilities, AUTH_OAUTHBEARER) ||
+      !mutt_bit_isset(mdata->capabilities, SASL_IR) || !mdata->conn->ssf)
   {
     return IMAP_AUTH_UNAVAIL;
   }
@@ -61,7 +61,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
   mutt_message(_("Authenticating (OAUTHBEARER)..."));
 
   /* We get the access token from the imap_oauth_refresh_command */
-  oauthbearer = mutt_account_getoauthbearer(&idata->conn->account);
+  oauthbearer = mutt_account_getoauthbearer(&mdata->conn->account);
   if (!oauthbearer)
     return IMAP_AUTH_FAILURE;
 
@@ -72,7 +72,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
   /* This doesn't really contain a password, but the token is good for
    * an hour, so suppress it anyways.
    */
-  rc = imap_exec(idata, ibuf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
+  rc = imap_exec(mdata, ibuf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
 
   FREE(&oauthbearer);
   FREE(&ibuf);
@@ -82,8 +82,8 @@ enum ImapAuthRes imap_auth_oauth(struct ImapData *idata, const char *method)
     /* The error response was in SASL continuation, so continue the SASL
      * to cause a failure and exit SASL input.  See RFC 7628 3.2.3
      */
-    mutt_socket_send(idata->conn, "\001");
-    rc = imap_exec(idata, ibuf, IMAP_CMD_FAIL_OK);
+    mutt_socket_send(mdata->conn, "\001");
+    rc = imap_exec(mdata, ibuf, IMAP_CMD_FAIL_OK);
   }
 
   if (!rc)

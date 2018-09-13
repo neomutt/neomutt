@@ -33,7 +33,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "send.h"
 #include "alias.h"
@@ -486,10 +486,10 @@ static void process_user_header(struct Envelope *env)
 /**
  * mutt_forward_intro - Add the "start of forwarded message" text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param fp  File to write to
  */
-void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
+void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
 {
   if (!ForwardAttributionIntro || !fp)
     return;
@@ -505,10 +505,10 @@ void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 /**
  * mutt_forward_trailer - Add a "end of forwarded message" text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param fp  File to write to
  */
-void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
+void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
 {
   if (!ForwardAttributionTrailer || !fp)
     return;
@@ -525,12 +525,12 @@ void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 /**
  * include_forward - Write out a forwarded message
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
+static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
@@ -570,10 +570,10 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 /**
  * mutt_make_attribution - Add "on DATE, PERSON wrote" header
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  */
-void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
+void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
 {
   if (!Attribution || !out)
     return;
@@ -589,10 +589,10 @@ void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 /**
  * mutt_make_post_indent - Add suffix to replied email text
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  */
-void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
+void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
 {
   if (!PostIndentString || !out)
     return;
@@ -606,12 +606,12 @@ void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 /**
  * include_reply - Generate the reply text for an email
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  * @param out File to write to
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
+static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
@@ -840,9 +840,9 @@ void mutt_fix_reply_recipients(struct Envelope *env)
  * mutt_make_forward_subject - Create a subject for a forwarded email
  * @param env Envelope for result
  * @param ctx Mailbox
- * @param cur Header of email
+ * @param cur Email
  */
-void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur)
+void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Email *cur)
 {
   if (!env)
     return;
@@ -931,13 +931,13 @@ static void make_reference_headers(struct Envelope *curenv,
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
  * @param ctx   Mailbox
- * @param cur   Header of email
+ * @param cur   Email
  * @param flags Flags, e.g. #SEND_REPLY
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
-                             struct Header *cur, int flags)
+                             struct Email *cur, int flags)
 {
   struct Envelope *curenv = NULL;
   bool tag = false;
@@ -1030,8 +1030,8 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int generate_body(FILE *tempfp, struct Header *msg, int flags,
-                         struct Context *ctx, struct Header *cur)
+static int generate_body(FILE *tempfp, struct Email *msg, int flags,
+                         struct Context *ctx, struct Email *cur)
 {
   int i;
   struct Body *tmp = NULL;
@@ -1285,11 +1285,11 @@ struct Address *mutt_default_from(void)
 
 /**
  * send_message - Send an email
- * @param msg Header of the email
+ * @param msg Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int send_message(struct Header *msg)
+static int send_message(struct Email *msg)
 {
   char tempfile[PATH_MAX];
   int i;
@@ -1413,18 +1413,18 @@ static void fix_end_of_file(const char *data)
  * mutt_resend_message - Resend an email
  * @param fp  File containing email
  * @param ctx Mailbox
- * @param cur Header of email to resend
+ * @param cur Email to resend
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
+int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 {
-  struct Header *msg = mutt_header_new();
+  struct Email *msg = mutt_email_new();
 
   if (mutt_prepare_template(fp, ctx, msg, cur, true) < 0)
   {
-    mutt_header_free(&msg);
+    mutt_email_free(&msg);
     return -1;
   }
 
@@ -1454,12 +1454,12 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 
 /**
  * is_reply - Is one email a reply to another?
- * @param reply Header of email to test
- * @param orig  Header of original email
+ * @param reply Email to test
+ * @param orig  Original email
  * @retval 1 It is a reply
  * @retval 0 It is not a reply
  */
-static int is_reply(struct Header *reply, struct Header *orig)
+static int is_reply(struct Email *reply, struct Email *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
@@ -1518,8 +1518,8 @@ static bool search_attach_keyword(char *filename)
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int ci_send_message(int flags, struct Header *msg, char *tempfile,
-                    struct Context *ctx, struct Header *cur)
+int ci_send_message(int flags, struct Email *msg, char *tempfile,
+                    struct Context *ctx, struct Email *cur)
 {
   char buffer[LONG_STRING];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
@@ -1578,7 +1578,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   if (!msg)
   {
-    msg = mutt_header_new();
+    msg = mutt_email_new();
 
     if (flags == SEND_POSTPONED)
     {
@@ -1730,7 +1730,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP &&
         !msg->env->newsgroups)
       msg->env->newsgroups =
-          mutt_str_strdup(((struct NntpData *) ctx->mailbox->data)->group);
+          mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->data)->group);
 #endif
 
     if (!(flags & (SEND_MAILX | SEND_BATCH)) && !(Autoedit && EditHeaders) &&
@@ -2446,7 +2446,7 @@ cleanup:
 
   mutt_file_fclose(&tempfp);
   if (!(flags & SEND_NO_FREE_HEADER))
-    mutt_header_free(&msg);
+    mutt_email_free(&msg);
 
   FREE(&finalpath);
   return rc;

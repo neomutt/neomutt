@@ -27,15 +27,15 @@
 
 struct AttachCtx;
 struct Body;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in recvcmd.c */
 extern unsigned char MimeForwardRest;
 
 void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
-void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
-void mutt_attach_mail_sender(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur);
+void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur, int flags);
+void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur, int flags);
+void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur);
 
 #endif /* MUTT_RECVCMD_H */

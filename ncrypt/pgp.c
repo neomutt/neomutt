@@ -43,7 +43,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -1808,7 +1808,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_class_send_menu(struct Header *msg)
+int pgp_class_send_menu(struct Email *msg)
 {
   struct PgpKeyInfo *p = NULL;
   const char *prompt = NULL;

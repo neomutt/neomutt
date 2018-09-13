@@ -44,8 +44,8 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
-#include "conn/account.h"
+#include "email/lib.h"
+#include "conn/connaccount.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "curs_lib.h"

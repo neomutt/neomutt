@@ -32,7 +32,7 @@
  */
 
 #include "config.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "muttlib.h"
 #include "serialize.h"
 
@@ -397,7 +397,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
  * mutt_hcache_store - Multiplexor for HcacheOps::store
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      struct Header *header, unsigned int uidvalidity)
+                      struct Email *e, unsigned int uidvalidity)
 {
   char *data = NULL;
   int dlen;
@@ -406,7 +406,7 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
   if (!h)
     return -1;
 
-  data = mutt_hcache_dump(h, header, &dlen, uidvalidity);
+  data = mutt_hcache_dump(h, e, &dlen, uidvalidity);
   ret = mutt_hcache_store_raw(h, key, keylen, data, dlen);
 
   FREE(&data);

@@ -26,14 +26,14 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "email/email.h"
+#include "email/lib.h"
 
 /**
- * struct ImapHeaderData - IMAP-specific header data
+ * struct ImapEmailData - IMAP-specific header data
  *
  * IMAP-specific header data, stored as Header->data
  */
-struct ImapHeaderData
+struct ImapEmailData
 {
   /* server-side flags */
   bool read : 1;
@@ -56,12 +56,12 @@ struct ImapHeaderData
  */
 struct ImapHeader
 {
-  struct ImapHeaderData *data;
+  struct ImapEmailData *data;
 
   time_t received;
   long content_length;
 };
 
-#define HEADER_DATA(ph) ((struct ImapHeaderData *) ((ph)->data))
+#define IMAP_EDATA(email) ((struct ImapEmailData *) ((email)->data))
 
 #endif /* MUTT_IMAP_MESSAGE_H */

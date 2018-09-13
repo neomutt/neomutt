@@ -24,9 +24,9 @@
 #define MUTT_MUTT_PARSE_H
 
 struct Context;
-struct Header;
+struct Email;
 
-int  mutt_count_body_parts(struct Context *ctx, struct Header *hdr);
-void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
+int  mutt_count_body_parts(struct Context *ctx, struct Email *e);
+void mutt_parse_mime_message(struct Context *ctx, struct Email *cur);
 
 #endif /* MUTT_MUTT_PARSE_H */

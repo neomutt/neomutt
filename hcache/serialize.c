@@ -36,7 +36,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "hcache.h"
 
 /**
@@ -423,7 +423,7 @@ unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool
   nb.charset = NULL;
   nb.next = NULL;
   nb.parts = NULL;
-  nb.hdr = NULL;
+  nb.email = NULL;
   nb.aptr = NULL;
 
   lazy_realloc(&d, *off + sizeof(struct Body));
@@ -564,18 +564,17 @@ void serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 /**
  * mutt_hcache_dump - Serialise a Header object
  * @param h           Header cache handle
- * @param header      Header to serialise
+ * @param e           Email to serialise
  * @param off         Size of the binary blob
  * @param uidvalidity IMAP server identifier
  * @retval ptr Binary blob representing the Header
  *
- * This function transforms a header into a char so that it is useable by
+ * This function transforms a e into a char so that it is useable by
  * db_store.
  */
-void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
-                       unsigned int uidvalidity)
+void *mutt_hcache_dump(header_cache_t *h, const struct Email *e, int *off, unsigned int uidvalidity)
 {
-  struct Header nh;
+  struct Email nh;
   bool convert = !CharsetIsUtf8;
 
   *off = 0;
@@ -593,8 +592,8 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
 
   d = serial_dump_int(h->crc, d, off);
 
-  lazy_realloc(&d, *off + sizeof(struct Header));
-  memcpy(&nh, header, sizeof(struct Header));
+  lazy_realloc(&d, *off + sizeof(struct Email));
+  memcpy(&nh, e, sizeof(struct Email));
 
   /* some fields are not safe to cache */
   nh.tagged = false;
@@ -618,8 +617,8 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
 #endif
   nh.data = NULL;
 
-  memcpy(d + *off, &nh, sizeof(struct Header));
-  *off += sizeof(struct Header);
+  memcpy(d + *off, &nh, sizeof(struct Email));
+  *off += sizeof(struct Email);
 
   d = serial_dump_envelope(nh.env, d, off, convert);
   d = serial_dump_body(nh.content, d, off, convert);
@@ -633,10 +632,10 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off,
  * @param d Binary blob
  * @retval ptr Reconstructed Header
  */
-struct Header *mutt_hcache_restore(const unsigned char *d)
+struct Email *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  struct Header *h = mutt_header_new();
+  struct Email *e = mutt_email_new();
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */
@@ -645,21 +644,21 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   /* skip crc */
   off += sizeof(unsigned int);
 
-  memcpy(h, d + off, sizeof(struct Header));
-  off += sizeof(struct Header);
+  memcpy(e, d + off, sizeof(struct Email));
+  off += sizeof(struct Email);
 
-  STAILQ_INIT(&h->tags);
+  STAILQ_INIT(&e->tags);
 #ifdef MIXMASTER
-  STAILQ_INIT(&h->chain);
+  STAILQ_INIT(&e->chain);
 #endif
 
-  h->env = mutt_env_new();
-  serial_restore_envelope(h->env, d, &off, convert);
+  e->env = mutt_env_new();
+  serial_restore_envelope(e->env, d, &off, convert);
 
-  h->content = mutt_body_new();
-  serial_restore_body(h->content, d, &off, convert);
+  e->content = mutt_body_new();
+  serial_restore_body(e->content, d, &off, convert);
 
-  serial_restore_char(&h->maildir_flags, d, &off, convert);
+  serial_restore_char(&e->maildir_flags, d, &off, convert);
 
-  return h;
+  return e;
 }

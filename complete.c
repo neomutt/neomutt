@@ -84,7 +84,7 @@ int mutt_complete(char *buf, size_t buflen)
     {
       for (; n < nserv->groups_num; n++)
       {
-        struct NntpData *nntp_data = nserv->groups_list[n];
+        struct NntpMboxData *nntp_data = nserv->groups_list[n];
 
         if (nntp_data && nntp_data->subscribed)
         {
@@ -98,7 +98,7 @@ int mutt_complete(char *buf, size_t buflen)
 
     for (; n < nserv->groups_num; n++)
     {
-      struct NntpData *nntp_data = nserv->groups_list[n];
+      struct NntpMboxData *nntp_data = nserv->groups_list[n];
 
       if (nntp_data && nntp_data->subscribed &&
           (mutt_str_strncmp(nntp_data->group, filepart, len) == 0))
