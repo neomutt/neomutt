@@ -1557,24 +1557,7 @@ int mutt_index_menu(void)
           break;
         }
 
-        // log_queue_save(fp);
-
-        fprintf(fp, "path:     %s\n", Context->mailbox->path);
-        // fprintf(fp, "realpath: %s\n", Context->realpath);
-        fprintf(fp, "mailbox->size:     %ld\n", Context->mailbox->size);
-        fprintf(fp, "vsize:    %ld\n", Context->vsize);
-        fprintf(fp, "\n");
-
-        struct MailboxNode *np = NULL;
-        STAILQ_FOREACH(np, &AllMailboxes, entries)
-        {
-          fprintf(fp, "path:     %s\n", np->m->path);
-          fprintf(fp, "size:     %ld\n", np->m->size);
-          // fprintf(fp, "realpath: %s\n", np->m->realpath);
-          // fprintf(fp, "desc:     %s\n", np->m->desc);
-          fprintf(fp, "\n");
-        }
-
+        log_queue_save(fp);
         mutt_file_fclose(&fp);
 
         mutt_do_pager("messages", tempfile, MUTT_PAGER_LOGS, NULL);
