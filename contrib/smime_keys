@@ -425,8 +425,7 @@ sub openssl_verify ($$) {
   my ($issuer_path, $cert_path) = @_;
 
   my @args = ("verify", $root_certs_switch, $root_certs_path,
-              "-purpose", "smimesign", "-purpose", "smimeencrypt", "-untrusted",
-              $issuer_path, $cert_path);
+              "-untrusted", $issuer_path, $cert_path);
   my $output = join("", openssl_exec(@args));
 
   chomp($output);
