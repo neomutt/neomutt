@@ -740,7 +740,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!STAILQ_EMPTY(&queries))
   {
     rc = mutt_query_variables(&queries);
-    mutt_list_free(&queries);
     goto main_curses;
   }
 
@@ -1238,6 +1237,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();
   mutt_envlist_free();
