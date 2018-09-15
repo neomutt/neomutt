@@ -1268,7 +1268,7 @@ static int file_tag(struct Menu *menu, int n, int m)
  *
  * We could check if the sort method is appropriate with this feature.
  */
-void mutt_browser_select_dir(char *f)
+void mutt_browser_select_dir(const char *f)
 {
   mutt_str_strfcpy(OldLastDir, f, sizeof(OldLastDir));
 
