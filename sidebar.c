@@ -1062,32 +1062,6 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_set_mailbox_stats - Update the Mailbox's message counts from the Context
- * @param ctx  A mailbox Context
- *
- * Given a mailbox Context, find a matching mailbox Mailbox and copy the message
- * counts into it.
- */
-void mutt_sb_set_mailbox_stats(const struct Context *ctx)
-{
-  if (!ctx)
-    return;
-
-  /* Even if the sidebar's hidden, we should take note of the new data. */
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if (mutt_str_strcmp(np->m->realpath, ctx->mailbox->realpath) == 0)
-    {
-      np->m->msg_unread = ctx->mailbox->msg_unread;
-      np->m->msg_count = ctx->mailbox->msg_count;
-      np->m->msg_flagged = ctx->mailbox->msg_flagged;
-      break;
-    }
-  }
-}
-
-/**
  * mutt_sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
  * @retval ptr Mailbox path
  *

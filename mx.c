@@ -757,8 +757,6 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->flagged)
         ctx->mailbox->msg_flagged--;
     }
-    ctx->mailbox->msg_count -= ctx->deleted;
-    mutt_sb_set_mailbox_stats(ctx);
     ctx->mailbox->msg_count = orig_msgcount;
   }
 #endif

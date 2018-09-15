@@ -486,8 +486,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);
     }
-    snprintf(buf + off, buflen - off, "%s%c ", mdata->group,
-             mdata->subscribed ? ':' : '!');
+    snprintf(buf + off, buflen - off, "%s%c ", mdata->group, mdata->subscribed ? ':' : '!');
     off += strlen(buf + off);
 
     /* write entries */
@@ -504,8 +503,8 @@ int nntp_newsrc_update(struct NntpServer *nserv)
         snprintf(buf + off, buflen - off, "%u", mdata->newsrc_ent[j].first);
       else if (mdata->newsrc_ent[j].first < mdata->newsrc_ent[j].last)
       {
-        snprintf(buf + off, buflen - off, "%u-%u",
-                 mdata->newsrc_ent[j].first, mdata->newsrc_ent[j].last);
+        snprintf(buf + off, buflen - off, "%u-%u", mdata->newsrc_ent[j].first,
+                 mdata->newsrc_ent[j].last);
       }
       off += strlen(buf + off);
     }
@@ -693,9 +692,8 @@ int nntp_active_save_cache(struct NntpServer *nserv)
       mutt_mem_realloc(&buf, buflen);
     }
     snprintf(buf + off, buflen - off, "%s %u %u %c%s%s\n", mdata->group,
-             mdata->last_message, mdata->first_message,
-             mdata->allowed ? 'y' : 'n', mdata->desc ? " " : "",
-             mdata->desc ? mdata->desc : "");
+             mdata->last_message, mdata->first_message, mdata->allowed ? 'y' : 'n',
+             mdata->desc ? " " : "", mdata->desc ? mdata->desc : "");
     off += strlen(buf + off);
   }
 
@@ -737,9 +735,8 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
   struct Url url;
   char file[PATH_MAX];
 
-  if (!mdata->nserv || !mdata->nserv->cacheable ||
-      !mdata->nserv->conn || !mdata->group ||
-      !(mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
+  if (!mdata->nserv || !mdata->nserv->cacheable || !mdata->nserv->conn ||
+      !mdata->group || !(mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
   {
     return NULL;
   }
@@ -1226,8 +1223,7 @@ void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, 
 
   for (unsigned int i = 0; i < mdata->newsrc_len; i++)
   {
-    if ((anum >= mdata->newsrc_ent[i].first) &&
-        (anum <= mdata->newsrc_ent[i].last))
+    if ((anum >= mdata->newsrc_ent[i].first) && (anum <= mdata->newsrc_ent[i].last))
     {
       /* can't use mutt_set_flag() because mx_update_context()
          didn't get called yet */
@@ -1307,7 +1303,7 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *
  * @retval NULL Error
  */
 struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
-                                        struct NntpServer *nserv, char *group)
+                                            struct NntpServer *nserv, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 
@@ -1343,7 +1339,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
  * @retval NULL Error
  */
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
-                                          struct NntpServer *nserv, char *group)
+                                              struct NntpServer *nserv, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 

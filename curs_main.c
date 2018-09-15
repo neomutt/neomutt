@@ -914,10 +914,7 @@ static void index_menu_redraw(struct Menu *menu)
 
 #ifdef USE_SIDEBAR
   if (menu->redraw & REDRAW_SIDEBAR)
-  {
-    mutt_sb_set_mailbox_stats(Context);
     menu_redraw_sidebar(menu);
-  }
 #endif
 
   if (Context && Context->mailbox->hdrs && !(menu->current >= Context->mailbox->vcount))

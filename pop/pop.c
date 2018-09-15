@@ -291,7 +291,6 @@ static int fetch_uidl(char *line, void *data)
 
     mailbox->hdrs[i]->data = new_emaildata(line);
     mailbox->hdrs[i]->free_data = free_emaildata;
-
   }
   else if (mailbox->hdrs[i]->index != index - 1)
     mdata->clear_cache = true;
@@ -494,7 +493,8 @@ static int pop_fetch_headers(struct Context *ctx)
        *        - if we also have a body: read
        *        - if we don't have a body: new
        */
-      const bool bcached = (mutt_bcache_exists(mdata->bcache, cache_id(edata->uid)) == 0);
+      const bool bcached =
+          (mutt_bcache_exists(mdata->bcache, cache_id(edata->uid)) == 0);
       ctx->mailbox->hdrs[i]->old = false;
       ctx->mailbox->hdrs[i]->read = false;
       if (hcached)

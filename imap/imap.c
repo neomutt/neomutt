@@ -177,8 +177,8 @@ static void set_flag(struct ImapMboxData *mdata, int aclbit, int flag,
  * @note Headers must be in SORT_ORDER. See imap_exec_msgset() for args.
  * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
  */
-static int make_msg_set(struct ImapMboxData *mdata, struct Buffer *buf, int flag,
-                        bool changed, bool invert, int *pos)
+static int make_msg_set(struct ImapMboxData *mdata, struct Buffer *buf,
+                        int flag, bool changed, bool invert, int *pos)
 {
   int count = 0;             /* number of messages in message set */
   unsigned int setstart = 0; /* start of current message range */
@@ -1186,8 +1186,8 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
  * Prepares commands for all messages matching conditions
  * (must be flushed with imap_exec)
  */
-int imap_exec_msgset(struct ImapMboxData *mdata, const char *pre, const char *post,
-                     int flag, bool changed, bool invert)
+int imap_exec_msgset(struct ImapMboxData *mdata, const char *pre,
+                     const char *post, int flag, bool changed, bool invert)
 {
   struct Email **emails = NULL;
   short oldsort;

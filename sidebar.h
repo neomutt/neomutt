@@ -46,7 +46,6 @@ void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);
 const char *mutt_sb_get_highlight(void);
 void mutt_sb_notify_mailbox(struct Mailbox *m, bool created);
-void mutt_sb_set_mailbox_stats(const struct Context *ctx);
 void mutt_sb_set_open_mailbox(void);
 void mutt_sb_toggle_virtual(void);
 

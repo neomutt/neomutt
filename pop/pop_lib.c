@@ -523,8 +523,7 @@ int pop_fetch_data(struct PopMboxData *mdata, const char *query,
 
   while (true)
   {
-    const int chunk =
-        mutt_socket_readln_d(buf, sizeof(buf), mdata->conn, MUTT_SOCK_LOG_HDR);
+    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->conn, MUTT_SOCK_LOG_HDR);
     if (chunk < 0)
     {
       mdata->status = POP_DISCONNECTED;

@@ -791,8 +791,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     while (true)
     {
       char *p = NULL;
-      int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->nserv->conn,
-                                       MUTT_SOCK_LOG_HDR);
+      int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->nserv->conn, MUTT_SOCK_LOG_HDR);
       if (chunk < 0)
       {
         mdata->nserv->status = NNTP_NONE;
@@ -1924,8 +1923,8 @@ int nntp_post(struct Mailbox *mailbox, const char *msg)
       len++;
       buf[len] = '\0';
     }
-    if (mutt_socket_send_d(mdata->nserv->conn,
-                           buf[1] == '.' ? buf : buf + 1, MUTT_SOCK_LOG_HDR) < 0)
+    if (mutt_socket_send_d(mdata->nserv->conn, buf[1] == '.' ? buf : buf + 1,
+                           MUTT_SOCK_LOG_HDR) < 0)
     {
       mutt_file_fclose(&fp);
       return nntp_connect_error(mdata->nserv);
@@ -2577,8 +2576,8 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     /* fetch message to cache file */
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
              NNTP_EDATA(e)->article_num ? article : e->env->message_id);
-    const int rc = nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg,
-                                    fetch_tempfile, msg->fp);
+    const int rc =
+        nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg, fetch_tempfile, msg->fp);
     if (rc)
     {
       mutt_file_fclose(&msg->fp);
