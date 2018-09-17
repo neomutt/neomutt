@@ -37,9 +37,9 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
 /**
- * struct SaslData - SASL authentication API
+ * struct SaslSockData - SASL authentication API
  */
-struct SaslData
+struct SaslSockData
 {
   sasl_conn_t *saslconn;
   const sasl_ssf_t *ssf;

@@ -331,7 +331,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *account)
  */
 static int mutt_sasl_conn_open(struct Connection *conn)
 {
-  struct SaslData *sasldata = conn->sockdata;
+  struct SaslSockData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;
   int rc = (sasldata->msasl_open)(conn);
   conn->sockdata = sasldata;
@@ -350,7 +350,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
  */
 static int mutt_sasl_conn_close(struct Connection *conn)
 {
-  struct SaslData *sasldata = conn->sockdata;
+  struct SaslSockData *sasldata = conn->sockdata;
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
@@ -383,7 +383,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t buflen
   int rc;
   unsigned int olen;
 
-  struct SaslData *sasldata = conn->sockdata;
+  struct SaslSockData *sasldata = conn->sockdata;
 
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
@@ -453,7 +453,7 @@ static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t
   const char *pbuf = NULL;
   unsigned int olen, plen;
 
-  struct SaslData *sasldata = conn->sockdata;
+  struct SaslSockData *sasldata = conn->sockdata;
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */
@@ -504,7 +504,7 @@ fail:
  */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {
-  struct SaslData *sasldata = conn->sockdata;
+  struct SaslSockData *sasldata = conn->sockdata;
   int rc;
 
   conn->sockdata = sasldata->sockdata;
@@ -666,7 +666,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  struct SaslData *sasldata = mutt_mem_malloc(sizeof(struct SaslData));
+  struct SaslSockData *sasldata = mutt_mem_malloc(sizeof(struct SaslSockData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 
