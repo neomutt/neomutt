@@ -702,11 +702,10 @@ void imap_error(const char *where, const char *msg)
 }
 
 /**
- * imap_new_idata - Allocate and initialise a new ImapMboxData structure
- * @retval NULL Failure (no mem)
+ * imap_mdata_new - Allocate and initialise a new ImapMboxData structure
  * @retval ptr New ImapMboxData
  */
-struct ImapMboxData *imap_new_idata(void)
+struct ImapMboxData *imap_mdata_new(void)
 {
   struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
@@ -721,10 +720,10 @@ struct ImapMboxData *imap_new_idata(void)
 }
 
 /**
- * imap_free_idata - Release and clear storage in an ImapMboxData structure
+ * imap_mdata_free - Release and clear storage in an ImapMboxData structure
  * @param mdata Imap Mailbox data
  */
-void imap_free_idata(struct ImapMboxData **mdata)
+void imap_mdata_free(struct ImapMboxData **mdata)
 {
   if (!mdata)
     return;

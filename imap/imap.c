@@ -956,7 +956,7 @@ struct ImapMboxData *imap_conn_find(const struct ConnAccount *account, int flags
   if (!mdata)
   {
     /* The current connection is a new connection */
-    mdata = imap_new_idata();
+    mdata = imap_mdata_new();
     if (!mdata)
     {
       mutt_socket_free(conn);
@@ -1141,7 +1141,7 @@ void imap_logout(struct ImapMboxData **mdata)
   }
 
   mutt_socket_close((*mdata)->conn);
-  imap_free_idata(mdata);
+  imap_mdata_free(mdata);
 }
 
 /**

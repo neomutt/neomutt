@@ -343,8 +343,10 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 
 int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
-struct ImapMboxData *imap_new_idata(void);
-void imap_free_idata(struct ImapMboxData **mdata);
+struct ImapMboxData *imap_mdata_new(void);
+void imap_mdata_free(struct ImapMboxData **mdata);
+struct ImapAccountData *imap_adata_new(void);
+void imap_adata_free(void **adata);
 char *imap_fix_path(struct ImapMboxData *mdata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapMboxData *mdata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
