@@ -63,6 +63,8 @@
 
 #define CERT_SEP "-----BEGIN"
 
+static int tls_socket_close(struct Connection *conn);
+
 /**
  * struct TlsSockData - TLS socket data
  */
@@ -94,104 +96,6 @@ static int tls_init(void)
 
   init_complete = true;
   return 0;
-}
-
-/**
- * tls_socket_read - Read data from a TLS socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  struct TlsSockData *data = conn->sockdata;
-  int rc;
-
-  if (!data)
-  {
-    mutt_error(_("Error: no TLS socket open"));
-    return -1;
-  }
-
-  do
-  {
-    rc = gnutls_record_recv(data->state, buf, len);
-    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
-    {
-      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
-      return -1;
-    }
-  } while (rc == GNUTLS_E_AGAIN);
-
-  return rc;
-}
-
-/**
- * tls_socket_write - Write data to a TLS socket
- * @param conn Connection to a server
- * @param buf  Buffer to read into
- * @param len  Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  struct TlsSockData *data = conn->sockdata;
-  size_t sent = 0;
-
-  if (!data)
-  {
-    mutt_error(_("Error: no TLS socket open"));
-    return -1;
-  }
-
-  do
-  {
-    const int ret = gnutls_record_send(data->state, buf + sent, len - sent);
-    if (ret < 0)
-    {
-      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
-      {
-        mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
-        return -1;
-      }
-      return ret;
-    }
-    sent += ret;
-  } while (sent < len);
-
-  return sent;
-}
-
-/**
- * tls_socket_close - Close a TLS socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
- */
-static int tls_socket_close(struct Connection *conn)
-{
-  struct TlsSockData *data = conn->sockdata;
-  if (data)
-  {
-    /* shut down only the write half to avoid hanging waiting for the remote to respond.
-     *
-     * RFC5246 7.2.1. "Closure Alerts"
-     *
-     * It is not required for the initiator of the close to wait for the
-     * responding close_notify alert before closing the read side of the
-     * connection.
-     */
-    gnutls_bye(data->state, GNUTLS_SHUT_WR);
-
-    gnutls_certificate_free_credentials(data->xcred);
-    gnutls_deinit(data->state);
-    FREE(&conn->sockdata);
-  }
-
-  return raw_socket_close(conn);
 }
 
 /**
@@ -1234,10 +1138,7 @@ fail:
 }
 
 /**
- * tls_socket_open - Open a TLS socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
+ * tls_socket_open - Open a TLS socket - Implements Connection::conn_open()
  */
 static int tls_socket_open(struct Connection *conn)
 {
@@ -1251,6 +1152,91 @@ static int tls_socket_open(struct Connection *conn)
   }
 
   return 0;
+}
+
+/**
+ * tls_socket_read - Read data from a TLS socket - Implements Connection::conn_read()
+ */
+static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
+{
+  struct TlsSockData *data = conn->sockdata;
+  int rc;
+
+  if (!data)
+  {
+    mutt_error(_("Error: no TLS socket open"));
+    return -1;
+  }
+
+  do
+  {
+    rc = gnutls_record_recv(data->state, buf, len);
+    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
+    {
+      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
+      return -1;
+    }
+  } while (rc == GNUTLS_E_AGAIN);
+
+  return rc;
+}
+
+/**
+ * tls_socket_write - Write data to a TLS socket - Implements Connection::conn_write()
+ */
+static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
+{
+  struct TlsSockData *data = conn->sockdata;
+  size_t sent = 0;
+
+  if (!data)
+  {
+    mutt_error(_("Error: no TLS socket open"));
+    return -1;
+  }
+
+  do
+  {
+    const int ret = gnutls_record_send(data->state, buf + sent, len - sent);
+    if (ret < 0)
+    {
+      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
+      {
+        mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
+        return -1;
+      }
+      return ret;
+    }
+    sent += ret;
+  } while (sent < len);
+
+  return sent;
+}
+
+/**
+ * tls_socket_close - Close a TLS socket - Implements Connection::conn_close()
+ */
+static int tls_socket_close(struct Connection *conn)
+{
+  struct TlsSockData *data = conn->sockdata;
+  if (data)
+  {
+    /* shut down only the write half to avoid hanging waiting for the remote to respond.
+     *
+     * RFC5246 7.2.1. "Closure Alerts"
+     *
+     * It is not required for the initiator of the close to wait for the
+     * responding close_notify alert before closing the read side of the
+     * connection.
+     */
+    gnutls_bye(data->state, GNUTLS_SHUT_WR);
+
+    gnutls_certificate_free_credentials(data->xcred);
+    gnutls_deinit(data->state);
+    FREE(&conn->sockdata);
+  }
+
+  return raw_socket_close(conn);
 }
 
 /**

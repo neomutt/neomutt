@@ -355,10 +355,10 @@ static int mutt_sasl_conn_close(struct Connection *conn)
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
   conn->conn_open = sasldata->msasl_open;
-  conn->conn_close = sasldata->msasl_close;
   conn->conn_read = sasldata->msasl_read;
   conn->conn_write = sasldata->msasl_write;
   conn->conn_poll = sasldata->msasl_poll;
+  conn->conn_close = sasldata->msasl_close;
 
   /* release sasl resources */
   sasl_dispose(&sasldata->saslconn);
@@ -689,18 +689,18 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
   /* preserve old functions */
   sasldata->sockdata = conn->sockdata;
   sasldata->msasl_open = conn->conn_open;
-  sasldata->msasl_close = conn->conn_close;
   sasldata->msasl_read = conn->conn_read;
   sasldata->msasl_write = conn->conn_write;
   sasldata->msasl_poll = conn->conn_poll;
+  sasldata->msasl_close = conn->conn_close;
 
   /* and set up new functions */
   conn->sockdata = sasldata;
   conn->conn_open = mutt_sasl_conn_open;
-  conn->conn_close = mutt_sasl_conn_close;
   conn->conn_read = mutt_sasl_conn_read;
   conn->conn_write = mutt_sasl_conn_write;
   conn->conn_poll = mutt_sasl_conn_poll;
+  conn->conn_close = mutt_sasl_conn_close;
 }
 
 /**

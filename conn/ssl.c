@@ -95,6 +95,8 @@ static int SkipModeExDataIndex = -1;
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
 
+static int ssl_socket_close(struct Connection *conn);
+
 /**
  * struct SslSockData - SSL socket data
  */
@@ -371,31 +373,6 @@ static int ssl_socket_open_err(struct Connection *conn)
 }
 
 /**
- * ssl_socket_close - Close an SSL connection
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
- */
-static int ssl_socket_close(struct Connection *conn)
-{
-  struct SslSockData *data = conn->sockdata;
-
-  if (data)
-  {
-    if (data->isopen)
-      SSL_shutdown(data->ssl);
-
-    /* hold onto this for the life of neomutt, in case we want to reconnect.
-     * The purist in me wants a mutt_exit hook. */
-    SSL_free(data->ssl);
-    SSL_CTX_free(data->ctx);
-    FREE(&conn->sockdata);
-  }
-
-  return raw_socket_close(conn);
-}
-
-/**
  * x509_get_part - Retrieve from X509 data
  * @param name Name of data to retrieve
  * @param nid  ID of the item to retrieve
@@ -624,59 +601,6 @@ static int ssl_init(void)
   SSL_library_init();
   init_complete = true;
   return 0;
-}
-
-/**
- * ssl_socket_read - Read data from an SSL socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  struct SslSockData *data = conn->sockdata;
-  int rc;
-
-  rc = SSL_read(data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
-  {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    data->isopen = 0;
-    ssl_err(data, rc);
-  }
-
-  return rc;
-}
-
-/**
- * ssl_socket_write - Write data to an SSL socket
- * @param conn Connection to a server
- * @param buf  Buffer to read into
- * @param len  Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  struct SslSockData *data = conn->sockdata;
-  int rc;
-
-  rc = SSL_write(data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
-  {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    ssl_err(data, rc);
-  }
-
-  return rc;
 }
 
 /**
@@ -1397,23 +1321,83 @@ free_sasldata:
 }
 
 /**
- * ssl_socket_open - Open an SSL socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
+ * ssl_socket_open - Open an SSL socket - Implements Connection::conn_open()
  */
 static int ssl_socket_open(struct Connection *conn)
 {
-  int ret;
-
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  ret = ssl_setup(conn);
+  int ret = ssl_setup(conn);
   if (ret)
     raw_socket_close(conn);
 
   return ret;
+}
+
+/**
+ * ssl_socket_read - Read data from an SSL socket - Implements Connection::conn_read()
+ */
+static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
+{
+  struct SslSockData *data = conn->sockdata;
+  int rc;
+
+  rc = SSL_read(data->ssl, buf, len);
+  if (rc <= 0 || errno == EINTR)
+  {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
+    data->isopen = 0;
+    ssl_err(data, rc);
+  }
+
+  return rc;
+}
+
+/**
+ * ssl_socket_write - Write data to an SSL socket - Implements Connection::conn_write()
+ */
+static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len)
+{
+  struct SslSockData *data = conn->sockdata;
+  int rc;
+
+  rc = SSL_write(data->ssl, buf, len);
+  if (rc <= 0 || errno == EINTR)
+  {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
+    ssl_err(data, rc);
+  }
+
+  return rc;
+}
+
+/**
+ * ssl_socket_close - Close an SSL connection - Implements Connection::conn_close()
+ */
+static int ssl_socket_close(struct Connection *conn)
+{
+  struct SslSockData *data = conn->sockdata;
+
+  if (data)
+  {
+    if (data->isopen)
+      SSL_shutdown(data->ssl);
+
+    /* hold onto this for the life of neomutt, in case we want to reconnect.
+     * The purist in me wants a mutt_exit hook. */
+    SSL_free(data->ssl);
+    SSL_CTX_free(data->ctx);
+    FREE(&conn->sockdata);
+  }
+
+  return raw_socket_close(conn);
 }
 
 /**
@@ -1424,12 +1408,10 @@ static int ssl_socket_open(struct Connection *conn)
  */
 int mutt_ssl_starttls(struct Connection *conn)
 {
-  int ret;
-
   if (ssl_init())
     return -1;
 
-  ret = ssl_setup(conn);
+  int ret = ssl_setup(conn);
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->conn_read = ssl_socket_read;
@@ -1456,8 +1438,8 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   conn->conn_open = ssl_socket_open;
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
-  conn->conn_close = ssl_socket_close;
   conn->conn_poll = raw_socket_poll;
+  conn->conn_close = ssl_socket_close;
 
   return 0;
 }
