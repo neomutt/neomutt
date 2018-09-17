@@ -227,11 +227,8 @@ struct ImapMboxData
   char *buf;
   size_t blen;
 
-  /* If nonzero, we can send UTF-8, and the server will use UTF8 rather
-   * than mUTF7 */
-  int unicode;
-
-  int qresync;  /* Set to 1 if QRESYNC is successfully ENABLE'd */
+  bool unicode; /* If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7 */
+  bool qresync; /* true, if QRESYNC is successfully ENABLE'd */
 
   /* if set, the response parser will store results for complicated commands
    * here. */

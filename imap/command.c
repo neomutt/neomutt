@@ -950,10 +950,10 @@ static void cmd_parse_enabled(struct ImapMboxData *mdata, const char *s)
     if ((mutt_str_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
         (mutt_str_strncasecmp(s, "UTF8=ONLY", 9) == 0))
     {
-      mdata->unicode = 1;
+      mdata->unicode = true;
     }
     if (mutt_str_strncasecmp(s, "QRESYNC", 7) == 0)
-      mdata->qresync = 1;
+      mdata->qresync = true;
   }
 }
 
