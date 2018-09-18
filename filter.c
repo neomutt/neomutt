@@ -34,6 +34,9 @@
 #include "mutt.h"
 #include "filter.h"
 #include "mutt_window.h"
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
 
 /**
  * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)
@@ -226,6 +229,34 @@ int mutt_wait_filter(pid_t pid)
   int rc;
 
   waitpid(pid, &rc, 0);
+  mutt_sig_unblock_system(true);
+  rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
+
+  return rc;
+}
+
+/**
+ * mutt_wait_interactive_filter - Wait after an interactive filter
+ * @param pid Process id of the process to wait for
+ * @retval num Exit status of the process identified by pid
+ * @retval -1  Error
+ *
+ * This is used for filters that are actually interactive commands
+ * with input piped in: e.g. in mutt_view_attachment(), a mailcap
+ * entry without copiousoutput _and_ without a %s.
+ *
+ * For those cases, we treat it like a blocking system command, and
+ * poll IMAP to keep connections open.
+ */
+int mutt_wait_interactive_filter(pid_t pid)
+{
+  int rc;
+
+#ifdef USE_IMAP
+  rc = imap_wait_keepalive(pid);
+#else
+  waitpid(pid, &rc, 0);
+#endif
   mutt_sig_unblock_system(true);
   rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
 
