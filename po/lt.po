@@ -1067,12 +1067,11 @@ msgstr "    iki %s"
 #: conn/ssl.c:998 conn/ssl_gnutls.c:729
 #, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "SHA1 pirštų antspaudas: %s"
+msgstr "SHA1 pirštų atspaudas: %s"
 
 #: conn/ssl.c:1003 conn/ssl.c:1005 conn/ssl_gnutls.c:734 conn/ssl_gnutls.c:736
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "SHA1 pirštų antspaudas: %s"
+msgstr "SHA256 pirštų atspaudas: %s"
 
 #: conn/ssl.c:1008 conn/ssl_gnutls.c:770
 #, c-format
@@ -2358,7 +2357,7 @@ msgstr "Blogos IMAP vėliavėlės"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:476
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Nutraukti siuntimą ir uždaryti pašto dėžutę?"
 
 #: imap/message.c:505 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
 #: mutt/memory.c:142 mx.c:1171 safe_asprintf.c:61
@@ -2373,12 +2372,10 @@ msgstr "Tikrinu podėlį..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:869
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Paimu laiškų antraštes..."
+msgstr "Paimu vėliavėlių pakeitimus..."
 
 #: imap/message.c:969
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Negaliu paimti antraščių iš šios IMAP serverio versijos"
 
@@ -3102,17 +3099,16 @@ msgid "Password for %s@%s: "
 msgstr "%s@%s slaptažodis: "
 
 #: mutt_account.c:381
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Užklausos komanda nenurodyta"
+msgstr "OAUTH atnaujinimo komanda nenurodyta"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Nepavyko įvykdyti atnaujinimo komandos"
 
 #: mutt_account.c:398
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Komanda grąžino tuščią rezultatą"
 
 #: mutt_attach.c:130 mutt_attach.c:264 mutt_attach.c:445 mutt_attach.c:1028
 msgid "Can't match nametemplate, continue?"
@@ -3233,9 +3229,9 @@ msgstr "Skaitymas iš %s pertrauktas..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "Negaliu prisegti %s"
+msgstr "Negaliu rašyti %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3547,7 +3543,7 @@ msgstr "PKA patikrinto pasirašiusiojo adresas yra "
 
 #: ncrypt/crypt_gpgme.c:1407 ncrypt/crypt_gpgme.c:3700
 msgid "Fingerprint: "
-msgstr "Pirštų antspaudas: "
+msgstr "Pirštų atspaudas: "
 
 #: ncrypt/crypt_gpgme.c:1472
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
@@ -3572,7 +3568,7 @@ msgstr "Rakto ID "
 
 #: ncrypt/crypt_gpgme.c:1541
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "nėra parašo pirštų atspaudo"
 
 #: ncrypt/crypt_gpgme.c:1550 ncrypt/crypt_gpgme.c:1555
 msgid "created: "
@@ -4791,9 +4787,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "perjungti, ar ištrinti bylą, ją išsiuntus"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "sukurti naują laišką siuntėjui"
+msgstr "sukurti naują laišką dabartinio laiško siuntėjui"
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -5862,14 +5857,12 @@ msgid "Command USER is not supported by server"
 msgstr "Serveris nepalaiko komandos USER"
 
 #: pop/pop_auth.c:353 smtp.c:513
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Autentikuojuosi (SASL)..."
+msgstr "Autentikuojuosi (OAUTHBEARER)..."
 
 #: pop/pop_auth.c:392
-#, fuzzy
 msgid "Authentication failed"
-msgstr "SASL autentikacija nepavyko"
+msgstr "Autentikacija nepavyko"
 
 #: pop/pop_lib.c:81
 #, c-format
@@ -6082,9 +6075,8 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Negaliu dekoduoti visų pažymėtų priedų.  Enkapsuliuoti kitus MIME formatu?"
 
 #: recvcmd.c:1051
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Tu gali nukreipti tik message/rfc822 priedus"
+msgstr "Tu gali sukurti naują laišką tik message/rfc822 priedo siuntėjui"
 
 #: remailer.c:190
 msgid "<random>"
@@ -6348,7 +6340,7 @@ msgstr "Blogas SMTP URL: %s"
 #: smtp.c:616
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "SMTP autentikacijos metodui %s reikia SASL"
 
 #: smtp.c:623
 #, c-format
@@ -6356,9 +6348,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "%s autentikacija nepavyko, bandau kitą metodą"
 
 #: smtp.c:636
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI autentikacija nepavyko"
+msgstr "SMTP autentikacijai reikia SASL"
 
 #: smtp.c:716
 msgid "SMTP server does not support authentication"
@@ -6463,7 +6454,7 @@ msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
 #~ msgid "MD5 Fingerprint: %s"
-#~ msgstr "MD5 pirštų antspaudas: %s"
+#~ msgstr "MD5 pirštų atspaudas: %s"
 
 #~ msgid "%s: unknown sorting method"
 #~ msgstr "%s: nežinomas rikiavimo metodas"
