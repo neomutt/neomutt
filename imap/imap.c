@@ -2508,6 +2508,8 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
 
   imap_allow_reopen(ctx);
   rc = imap_check(ctx->mailbox->data, false);
+  /* NOTE - ctx might have been changed at this point. In particular,
+   * ctx->mailbox could be NULL. Beware. */
   imap_disallow_reopen(ctx);
 
   return rc;
