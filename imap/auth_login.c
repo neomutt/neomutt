@@ -44,8 +44,8 @@
  */
 enum ImapAuthRes imap_auth_login(struct ImapMboxData *mdata, const char *method)
 {
-  char q_user[SHORT_STRING], q_pass[SHORT_STRING];
-  char buf[STRING];
+  char q_user[STRING], q_pass[STRING];
+  char buf[LONG_STRING];
   int rc;
 
   if (mutt_bit_isset(mdata->capabilities, LOGINDISABLED))
