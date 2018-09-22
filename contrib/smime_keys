@@ -52,7 +52,7 @@ sub openssl_crl_text($);
 sub openssl_trust_flag ($$;$);
 sub openssl_parse_pem ($$);
 sub openssl_dump_cert ($);
-sub openssl_purpose_flag ($);
+sub openssl_purpose_flag ($$);
 
 # key/certificate management methods
 sub cm_list_certs ();
@@ -619,8 +619,10 @@ sub openssl_dump_cert ($) {
   return $output;
 }
 
-sub openssl_purpose_flag ($) {
-  my ($filename) = @_;
+sub openssl_purpose_flag ($$) {
+  my ($filename, $certhash) = @_;
+
+  print "==> checking purpose flags for $certhash\n";
 
   my $purpose = "";
 
@@ -629,14 +631,18 @@ sub openssl_purpose_flag ($) {
 
   foreach my $line (@output) {
     if ($line =~ /^S\/MIME signing\s*:\s*Yes/) {
+      print "\t$line";
       $purpose .= "s";
     }
     elsif ($line =~ /^S\/MIME encryption\s*:\s*Yes/) {
+      print "\t$line";
       $purpose .= "e";
     }
   }
 
   if (! $purpose) {
+    print "\tWARNING: neither encryption nor signing flags are enabled.\n";
+    print "\t         $certhash will not be usable by Mutt.\n";
     $purpose = "-";
   }
 
@@ -795,7 +801,7 @@ sub cm_add_indexed_cert ($$$) {
   $cert_data->{hashvalue} = cm_add_cert($filename);
   $cert_data->{mailboxes} = [ openssl_emails($filename) ];
   $cert_data->{trust} = openssl_trust_flag($cert_data->{hashvalue}, $issuer_hash);
-  $cert_data->{purpose} = openssl_purpose_flag($filename);
+  $cert_data->{purpose} = openssl_purpose_flag($filename, $cert_data->{hashvalue});
 
   foreach my $mailbox (@{$cert_data->{mailboxes}}) {
     cm_add_entry($mailbox, $cert_data->{hashvalue}, 1, $label,
@@ -936,7 +942,7 @@ sub cm_refresh_index () {
       }
 
       if ($#fields < 5) {
-        $fields[5] = openssl_purpose_flag("$certificates_path/$fields[1]");
+        $fields[5] = openssl_purpose_flag("$certificates_path/$fields[1]", $fields[1]);
       }
 
       # To update an old private keys index format, always push the trust
