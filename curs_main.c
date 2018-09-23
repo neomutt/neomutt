@@ -1898,8 +1898,25 @@ int mutt_index_menu(void)
       {
         if (!Context || (Context->mailbox->magic != MUTT_NOTMUCH))
         {
-          mutt_message(_("No virtual folder, aborting"));
-          break;
+          if (!CURHDR || !CURHDR->env || !CURHDR->env->message_id)
+          {
+            mutt_message(_("No virtual folder and no Message-Id, aborting"));
+            break;
+          } // no virtual folder, but we have message-id, reconstruct thread on-the-fly
+          strncpy(buf, "id:", sizeof(buf));
+          int msg_id_offset = 0;
+          if ((CURHDR->env->message_id)[0] == '<')
+            msg_id_offset = 1;
+          mutt_str_strcat(buf, sizeof(buf), (CURHDR->env->message_id) + msg_id_offset);
+          if (buf[strlen(buf) - 1] == '>')
+            buf[strlen(buf) - 1] = '\0';
+          if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
+          {
+            mutt_message(_("Failed to create query, aborting"));
+            break;
+          }
+          else
+            main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         }
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
