@@ -14326,7 +14326,7 @@ bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># This variable specifies private notmuch tags which should not be printed</emphasis>
 <emphasis role="comment"># on screen (index, pager).</emphasis>
-set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
@@ -14365,7 +14365,7 @@ bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'</emphasis>
 
 <emphasis role="comment"># The %G formatting sequence may display all tags including tags hidden by</emphasis>
-<emphasis role="comment"># nm_hidden_tags.</emphasis>
+<emphasis role="comment"># hidden_tags.</emphasis>
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># COLORS – some unpleasant examples are given</emphasis>
