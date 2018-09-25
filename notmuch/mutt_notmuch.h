@@ -56,7 +56,6 @@ extern struct MxOps mx_notmuch_ops;
 void  nm_debug_check             (struct Mailbox *mailbox);
 int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);
 int   nm_get_all_tags            (struct Mailbox *mailbox, char **tag_list, int *tag_count);
-char *nm_get_description         (struct Mailbox *mailbox);
 char *nm_email_get_folder        (struct Email *e);
 void  nm_longrun_done            (struct Mailbox *mailbox);
 void  nm_longrun_init            (struct Mailbox *mailbox, bool writable);

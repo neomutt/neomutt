@@ -123,25 +123,23 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'f':
     {
+      struct Mailbox *m = Context ? Context->mailbox : NULL;
 #ifdef USE_NOTMUCH
-      char *p = NULL;
-      if (Context && Context->mailbox->magic == MUTT_NOTMUCH &&
-          (p = nm_get_description(Context->mailbox)))
-        mutt_str_strfcpy(tmp, p, sizeof(tmp));
+      if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
+        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
       else
 #endif
 #ifdef USE_COMPRESSED
-          if (Context && Context->mailbox->compress_info &&
-              (Context->mailbox->realpath[0] != '\0'))
+          if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
-        mutt_str_strfcpy(tmp, Context->mailbox->realpath, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
-          if (Context && (Context->mailbox->path[0] != '\0'))
+          if (m && (m->path[0] != '\0'))
       {
-        mutt_str_strfcpy(tmp, Context->mailbox->path, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else

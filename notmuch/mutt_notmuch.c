@@ -2192,24 +2192,6 @@ done:
 }
 
 /**
- * nm_get_description - Get the folder's description
- * @param  mailbox Mailbox
- * @retval ptr     Description
- * @retval NULL No description
- */
-char *nm_get_description(struct Mailbox *mailbox)
-{
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if (np->m->desc && (strcmp(np->m->path, mailbox->path) == 0))
-      return np->m->desc;
-  }
-
-  return NULL;
-}
-
-/**
  * nm_description_to_path - Find a path from a folder's description
  * @param desc   Description
  * @param buf    Buffer for path
