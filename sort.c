@@ -64,6 +64,8 @@ int perform_auxsort(int retval, const void *a, const void *b)
     OptAuxSort = true;
     retval = AuxSort(a, b);
     OptAuxSort = false;
+    if (retval != 0)
+      return retval;
   }
   /* If the items still match, use their index positions
    * to maintain a stable sort order */

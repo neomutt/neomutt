@@ -3922,6 +3922,9 @@ struct ConfigDef MuttVars[] = {
   { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, &SortAux, SORT_DATE },
   /*
   ** .pp
+  ** This provides a secondary sort for messages in the ``index'' menu, used
+  ** when the $$sort value is equal for two messages.
+  ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
   ** in relation to other threads, and how the branches of the thread trees
   ** are sorted.  This can be set to any value that $$sort can, except
@@ -3938,8 +3941,8 @@ struct ConfigDef MuttVars[] = {
   ** thread, that thread becomes the last one displayed (or the first, if
   ** you have ``\fCset sort=reverse-threads\fP''.)
   ** .pp
-  ** Note: For reversed $$sort
-  ** order $$sort_aux is reversed again (which is not the right thing to do,
+  ** Note: For reversed-threads $$sort
+  ** order, $$sort_aux is reversed again (which is not the right thing to do,
   ** but kept to not break any existing configuration setting).
   */
   { "sort_browser",     DT_SORT|DT_SORT_BROWSER, R_NONE, &SortBrowser, SORT_ALPHA },

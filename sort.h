@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "options.h"
 #include "where.h"
 
 struct Address;
@@ -34,7 +35,7 @@ struct Context;
 /* These Config Variables are only used in sort.c */
 extern bool ReverseAlias;
 
-#define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
+#define SORTCODE(x) ((OptAuxSort ? SortAux : Sort) & SORT_REVERSE) ? -(x) : x
 
 /**
  * typedef sort_t - Prototype for a function to compare two emails
