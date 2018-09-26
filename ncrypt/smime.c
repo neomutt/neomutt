@@ -435,13 +435,13 @@ static char *smime_key_flags(int flags)
 }
 
 /**
- * smime_entry - Format a menu item for the smime key list
+ * smime_make_entry - Format a menu item for the smime key list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct SmimeKey **Table = menu->data;
   struct SmimeKey *this = Table[num];
@@ -567,7 +567,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   /* Create the menu */
   menu = mutt_menu_new(MENU_SMIME);
   menu->max = table_index;
-  menu->menu_make_entry = smime_entry;
+  menu->menu_make_entry = smime_make_entry;
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;

@@ -105,13 +105,13 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * alias_entry - Format a menu item for the alias list
+ * alias_make_entry - Format a menu item for the alias list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void alias_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
                       (unsigned long) ((struct Alias **) menu->data)[num],
@@ -211,7 +211,7 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   }
 
   menu = mutt_menu_new(MENU_ALIAS);
-  menu->menu_make_entry = alias_entry;
+  menu->menu_make_entry = alias_make_entry;
   menu->menu_tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);

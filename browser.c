@@ -1065,13 +1065,13 @@ static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 #endif
 
 /**
- * folder_entry - Format a menu item for the folder browser
+ * folder_make_entry - Format a menu item for the folder browser
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
@@ -1096,13 +1096,13 @@ static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 #ifdef USE_NOTMUCH
 /**
- * vfolder_entry - Format a menu item for the virtual folder list
+ * vfolder_make_entry - Format a menu item for the virtual folder list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void vfolder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void vfolder_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
@@ -1505,7 +1505,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       goto bail;
   }
   menu = mutt_menu_new(MENU_FOLDER);
-  menu->menu_make_entry = folder_entry;
+  menu->menu_make_entry = folder_make_entry;
   menu->menu_search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
@@ -1515,12 +1515,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #ifdef USE_NOTMUCH
   if (flags & MUTT_SEL_VFOLDER)
   {
-    menu->menu_make_entry = vfolder_entry;
+    menu->menu_make_entry = vfolder_make_entry;
     menu->menu_search = select_vfolder_search;
   }
   else
 #endif
-    menu->menu_make_entry = folder_entry;
+    menu->menu_make_entry = folder_make_entry;
 
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP

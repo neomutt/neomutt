@@ -187,13 +187,13 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * post_entry - Format a menu item for the email list
+ * post_make_entry - Format a menu item for the email list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Context *ctx = menu->data;
 
@@ -212,7 +212,7 @@ static struct Email *select_msg(void)
   char helpstr[LONG_STRING];
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
-  menu->menu_make_entry = post_entry;
+  menu->menu_make_entry = post_make_entry;
   menu->max = PostContext->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;

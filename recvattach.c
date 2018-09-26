@@ -416,13 +416,13 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * attach_entry - Format a menu item for the attachment list
+ * attach_make_entry - Format a menu item for the attachment list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = menu->data;
 
@@ -432,13 +432,13 @@ static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 }
 
 /**
- * mutt_tag_attach - Tag an attachment
+ * attach_tag - Tag an attachment
  * @param menu Menu listing attachments
  * @param n    Index number of the attachment
  * @param m    Action: 0 untag, 1 tag, -1 toggle
  * @retval num Net change in number of tagged attachments
  */
-int mutt_tag_attach(struct Menu *menu, int n, int m)
+int attach_tag(struct Menu *menu, int n, int m)
 {
   struct AttachCtx *actx = menu->data;
   struct Body *cur = actx->idx[actx->v2r[n]]->content;
@@ -1325,8 +1325,8 @@ void mutt_view_attachments(struct Email *e)
 
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
   menu->title = _("Attachments");
-  menu->menu_make_entry = attach_entry;
-  menu->menu_tag = mutt_tag_attach;
+  menu->menu_make_entry = attach_make_entry;
+  menu->menu_tag = attach_tag;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 

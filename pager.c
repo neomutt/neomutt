@@ -1885,10 +1885,10 @@ struct PagerRedrawData
 };
 
 /**
- * pager_menu_redraw - Redraw the pager window
+ * pager_custom_redraw - Redraw the pager window
  * @param pager_menu Pager Menu
  */
-static void pager_menu_redraw(struct Menu *pager_menu)
+static void pager_custom_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   char buffer[LONG_STRING];
@@ -2291,7 +2291,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
   pager_menu = mutt_menu_new(MENU_PAGER);
-  pager_menu->menu_custom_redraw = pager_menu_redraw;
+  pager_menu->menu_custom_redraw = pager_custom_redraw;
   pager_menu->redraw_data = &rd;
   mutt_menu_push_current(pager_menu);
 
@@ -2299,7 +2299,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   {
     mutt_curs_set(0);
 
-    pager_menu_redraw(pager_menu);
+    pager_custom_redraw(pager_menu);
 
     if (BrailleFriendly)
     {

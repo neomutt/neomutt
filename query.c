@@ -292,13 +292,13 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * query_entry - Format a menu item for the query list
+ * query_make_entry - Format a menu item for the query list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Entry *entry = &((struct Entry *) menu->data)[num];
 
@@ -352,7 +352,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
     menu = mutt_menu_new(MENU_QUERY);
-    menu->menu_make_entry = query_entry;
+    menu->menu_make_entry = query_make_entry;
     menu->menu_search = query_search;
     menu->menu_tag = query_tag;
     menu->title = title;
@@ -407,7 +407,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               mutt_menu_pop_current(menu);
               mutt_menu_destroy(&menu);
               menu = mutt_menu_new(MENU_QUERY);
-              menu->menu_make_entry = query_entry;
+              menu->menu_make_entry = query_make_entry;
               menu->menu_search = query_search;
               menu->menu_tag = query_tag;
               menu->title = title;

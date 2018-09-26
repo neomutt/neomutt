@@ -943,14 +943,14 @@ static int default_color(int i)
 }
 
 /**
- * menu_search_generic - Search a menu for a item matching a regex
+ * generic_search - Search a menu for a item matching a regex
  * @param m  Menu to search
  * @param re Regex to match
  * @param n  Index number
  * @retval  0 Success
- * @retval >0 Error, e.g. REG_BADPAT
+ * @retval >0 Error, e.g. REG_NOMATCH
  */
-static int menu_search_generic(struct Menu *m, regex_t *re, int n)
+static int generic_search(struct Menu *m, regex_t *re, int n)
 {
   char buf[LONG_STRING];
 
@@ -990,7 +990,7 @@ struct Menu *mutt_menu_new(int menu)
   p->helpwin = MuttHelpWindow;
   p->messagewin = MuttMessageWindow;
   p->menu_color = default_color;
-  p->menu_search = menu_search_generic;
+  p->menu_search = generic_search;
 
   return p;
 }

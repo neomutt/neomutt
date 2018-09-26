@@ -901,10 +901,10 @@ struct Mapping IndexNewsHelp[] = {
 #endif
 
 /**
- * index_menu_redraw - Redraw the index
+ * index_custom_redraw - Redraw the index
  * @param menu Current Menu
  */
-static void index_menu_redraw(struct Menu *menu)
+static void index_custom_redraw(struct Menu *menu)
 {
   if (menu->redraw & REDRAW_FULL)
   {
@@ -987,7 +987,7 @@ int mutt_index_menu(void)
                                      IndexNewsHelp :
 #endif
                                      IndexHelp);
-  menu->menu_custom_redraw = index_menu_redraw;
+  menu->menu_custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
 
   if (!attach_msg)
@@ -1136,7 +1136,7 @@ int mutt_index_menu(void)
 
     if (menu->menu == MENU_MAIN)
     {
-      index_menu_redraw(menu);
+      index_custom_redraw(menu);
 
       /* give visual indication that the next command is a tag- command */
       if (tag)

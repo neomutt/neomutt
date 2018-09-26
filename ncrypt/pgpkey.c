@@ -326,13 +326,13 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * pgp_entry - Format a menu item for the pgp key list
+ * pgp_make_entry - Format a menu item for the pgp key list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
  * @param[in]  menu   Menu containing aliases
  * @param[in]  num    Index into the menu
  */
-static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct PgpUid **KeyTable = menu->data;
   struct PgpEntry entry;
@@ -675,7 +675,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   menu = mutt_menu_new(MENU_PGP);
   menu->max = i;
-  menu->menu_make_entry = pgp_entry;
+  menu->menu_make_entry = pgp_make_entry;
   menu->help = helpstr;
   menu->data = KeyTable;
   mutt_menu_push_current(menu);
