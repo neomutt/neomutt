@@ -978,8 +978,8 @@ int mutt_index_menu(void)
   int attach_msg = OptAttachMsg;
 
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
-  menu->make_entry = index_make_entry;
-  menu->color = index_color;
+  menu->menu_make_entry = index_make_entry;
+  menu->menu_color = index_color;
   menu->current = ci_first_message();
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
 #ifdef USE_NNTP
@@ -987,7 +987,7 @@ int mutt_index_menu(void)
                                      IndexNewsHelp :
 #endif
                                      IndexHelp);
-  menu->custom_menu_redraw = index_menu_redraw;
+  menu->menu_custom_redraw = index_menu_redraw;
   mutt_menu_push_current(menu);
 
   if (!attach_msg)

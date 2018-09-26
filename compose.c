@@ -916,15 +916,15 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
-  menu->make_entry = snd_entry;
-  menu->tag = mutt_tag_attach;
+  menu->menu_make_entry = snd_entry;
+  menu->menu_tag = mutt_tag_attach;
 #ifdef USE_NNTP
   if (news)
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeNewsHelp);
   else
 #endif
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
-  menu->custom_menu_redraw = compose_menu_redraw;
+  menu->menu_custom_redraw = compose_menu_redraw;
   menu->redraw_data = &rd;
   mutt_menu_push_current(menu);
 

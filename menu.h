@@ -81,21 +81,21 @@ struct Menu
   char *keys;    /**< keys used in the prompt */
 
   /* callback to generate an index line for the requested element */
-  void (*make_entry)(char *buf, size_t buflen, struct Menu *menu, int num);
+  void (*menu_make_entry)(char *buf, size_t buflen, struct Menu *menu, int num);
 
   /* how to search the menu */
-  int (*search)(struct Menu *, regex_t *re, int n);
+  int (*menu_search)(struct Menu *, regex_t *re, int n);
 
-  int (*tag)(struct Menu *, int i, int m);
+  int (*menu_tag)(struct Menu *, int i, int m);
 
   /* these are used for custom redrawing callbacks */
-  void (*custom_menu_redraw)(struct Menu *);
+  void (*menu_custom_redraw)(struct Menu *);
   void *redraw_data;
 
   /* color pair to be used for the requested element
    * (default function returns ColorDefs[MT_COLOR_NORMAL])
    */
-  int (*color)(int i);
+  int (*menu_color)(int i);
 
   /* the following are used only by mutt_menu_loop() */
   int top;        /**< entry that is the top of the current page */

@@ -212,7 +212,7 @@ static struct Email *select_msg(void)
   char helpstr[LONG_STRING];
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
-  menu->make_entry = post_entry;
+  menu->menu_make_entry = post_entry;
   menu->max = PostContext->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;

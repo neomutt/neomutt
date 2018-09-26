@@ -211,8 +211,8 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   }
 
   menu = mutt_menu_new(MENU_ALIAS);
-  menu->make_entry = alias_entry;
-  menu->tag = alias_tag;
+  menu->menu_make_entry = alias_entry;
+  menu->menu_tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
   mutt_menu_push_current(menu);

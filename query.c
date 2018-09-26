@@ -352,9 +352,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
     menu = mutt_menu_new(MENU_QUERY);
-    menu->make_entry = query_entry;
-    menu->search = query_search;
-    menu->tag = query_tag;
+    menu->menu_make_entry = query_entry;
+    menu->menu_search = query_search;
+    menu->menu_tag = query_tag;
     menu->title = title;
     char helpstr[LONG_STRING];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
@@ -407,9 +407,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               mutt_menu_pop_current(menu);
               mutt_menu_destroy(&menu);
               menu = mutt_menu_new(MENU_QUERY);
-              menu->make_entry = query_entry;
-              menu->search = query_search;
-              menu->tag = query_tag;
+              menu->menu_make_entry = query_entry;
+              menu->menu_search = query_search;
+              menu->menu_tag = query_tag;
               menu->title = title;
               menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
               mutt_menu_push_current(menu);

@@ -567,7 +567,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   /* Create the menu */
   menu = mutt_menu_new(MENU_SMIME);
   menu->max = table_index;
-  menu->make_entry = smime_entry;
+  menu->menu_make_entry = smime_entry;
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;

@@ -1505,22 +1505,22 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       goto bail;
   }
   menu = mutt_menu_new(MENU_FOLDER);
-  menu->make_entry = folder_entry;
-  menu->search = select_file_search;
+  menu->menu_make_entry = folder_entry;
+  menu->menu_search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
   if (multiple)
-    menu->tag = file_tag;
+    menu->menu_tag = file_tag;
 
 #ifdef USE_NOTMUCH
   if (flags & MUTT_SEL_VFOLDER)
   {
-    menu->make_entry = vfolder_entry;
-    menu->search = select_vfolder_search;
+    menu->menu_make_entry = vfolder_entry;
+    menu->menu_search = select_vfolder_search;
   }
   else
 #endif
-    menu->make_entry = folder_entry;
+    menu->menu_make_entry = folder_entry;
 
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP

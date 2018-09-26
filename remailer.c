@@ -590,8 +590,8 @@ void mix_make_chain(struct ListHead *chainhead)
 
   menu = mutt_menu_new(MENU_MIX);
   menu->max = ttll;
-  menu->make_entry = mix_entry;
-  menu->tag = NULL;
+  menu->menu_make_entry = mix_entry;
+  menu->menu_tag = NULL;
   menu->title = _("Select a remailer chain");
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);

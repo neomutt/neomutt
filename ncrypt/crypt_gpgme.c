@@ -4357,7 +4357,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   struct Menu *menu = mutt_menu_new(menu_to_use);
   menu->max = i;
-  menu->make_entry = crypt_entry;
+  menu->menu_make_entry = crypt_entry;
   menu->help = helpstr;
   menu->data = key_table;
   mutt_menu_push_current(menu);

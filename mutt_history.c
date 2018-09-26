@@ -95,7 +95,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  menu->make_entry = history_entry;
+  menu->menu_make_entry = history_entry;
   menu->title = title;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, HistoryHelp);
   mutt_menu_push_current(menu);

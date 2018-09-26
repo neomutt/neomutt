@@ -1325,8 +1325,8 @@ void mutt_view_attachments(struct Email *e)
 
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
   menu->title = _("Attachments");
-  menu->make_entry = attach_entry;
-  menu->tag = mutt_tag_attach;
+  menu->menu_make_entry = attach_entry;
+  menu->menu_tag = mutt_tag_attach;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 

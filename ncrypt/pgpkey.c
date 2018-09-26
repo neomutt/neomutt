@@ -675,7 +675,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   menu = mutt_menu_new(MENU_PGP);
   menu->max = i;
-  menu->make_entry = pgp_entry;
+  menu->menu_make_entry = pgp_entry;
   menu->help = helpstr;
   menu->data = KeyTable;
   mutt_menu_push_current(menu);
