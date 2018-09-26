@@ -641,18 +641,14 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 }
 
 /**
- * index_make_entry - Format a menu item for the index list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * index_make_entry - Format a menu item for the index list - Implements Menu::menu_make_entry()
  */
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  if (!Context || !menu || (num < 0) || (num >= Context->mailbox->hdrmax))
+  if (!Context || !menu || (line < 0) || (line >= Context->mailbox->hdrmax))
     return;
 
-  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[line]];
   if (!e)
     return;
 
@@ -717,17 +713,14 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 }
 
 /**
- * index_color - Calculate the colour for a line of the index
- * @param index_no Index line number
- * @retval >0 Colour pair
- * @retval  0 No colour
+ * index_color - Calculate the colour for a line of the index - Implements Menu::menu_color()
  */
-int index_color(int index_no)
+int index_color(int line)
 {
-  if (!Context || (index_no < 0))
+  if (!Context || (line < 0))
     return 0;
 
-  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[line]];
 
   if (e && e->pair)
     return e->pair;
@@ -901,8 +894,7 @@ struct Mapping IndexNewsHelp[] = {
 #endif
 
 /**
- * index_custom_redraw - Redraw the index
- * @param menu Current Menu
+ * index_custom_redraw - Redraw the index - Implements Menu::menu_custom_redraw()
  */
 static void index_custom_redraw(struct Menu *menu)
 {

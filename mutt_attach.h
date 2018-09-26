@@ -33,7 +33,7 @@ struct Menu;
 struct Email;
 struct Body;
 
-int attach_tag(struct Menu *menu, int n, int m);
+int attach_tag(struct Menu *menu, int sel, int act);
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
                              struct AttachCtx *actx, bool recv);
 

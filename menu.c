@@ -933,29 +933,22 @@ static void menu_prev_entry(struct Menu *menu)
 }
 
 /**
- * default_color - Get the default colour
- * @param i Colour index (UNUSED)
- * @retval num Colour pair in an integer
+ * default_color - Get the default colour for a line of the menu - Implements Menu::menu_color()
  */
-static int default_color(int i)
+static int default_color(int line)
 {
   return ColorDefs[MT_COLOR_NORMAL];
 }
 
 /**
- * generic_search - Search a menu for a item matching a regex
- * @param m  Menu to search
- * @param re Regex to match
- * @param n  Index number
- * @retval  0 Success
- * @retval >0 Error, e.g. REG_NOMATCH
+ * generic_search - Search a menu for a item matching a regex - Implements Menu::menu_search()
  */
-static int generic_search(struct Menu *m, regex_t *re, int n)
+static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
   char buf[LONG_STRING];
 
-  menu_make_entry(buf, sizeof(buf), m, n);
-  return regexec(re, buf, 0, NULL, 0);
+  menu_make_entry(buf, sizeof(buf), menu, line);
+  return regexec(rx, buf, 0, NULL, 0);
 }
 
 /**

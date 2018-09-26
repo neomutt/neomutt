@@ -416,35 +416,27 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * attach_make_entry - Format a menu item for the attachment list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * attach_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
  */
-static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * attach_tag - Tag an attachment
- * @param menu Menu listing attachments
- * @param n    Index number of the attachment
- * @param m    Action: 0 untag, 1 tag, -1 toggle
- * @retval num Net change in number of tagged attachments
+ * attach_tag - Tag an attachment - Implements Menu::menu_tag()
  */
-int attach_tag(struct Menu *menu, int n, int m)
+int attach_tag(struct Menu *menu, int sel, int act)
 {
   struct AttachCtx *actx = menu->data;
-  struct Body *cur = actx->idx[actx->v2r[n]]->content;
+  struct Body *cur = actx->idx[actx->v2r[sel]]->content;
   bool ot = cur->tagged;
 
-  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  cur->tagged = ((act >= 0) ? act : !cur->tagged);
   return cur->tagged - ot;
 }
 

@@ -1885,8 +1885,7 @@ struct PagerRedrawData
 };
 
 /**
- * pager_custom_redraw - Redraw the pager window
- * @param pager_menu Pager Menu
+ * pager_custom_redraw - Redraw the pager window - Implements Menu::menu_custom_redraw()
  */
 static void pager_custom_redraw(struct Menu *pager_menu)
 {

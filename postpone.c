@@ -187,18 +187,14 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * post_make_entry - Format a menu item for the email list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * post_make_entry - Format a menu item for the email list - Implements Menu::menu_make_entry()
  */
-static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct Context *ctx = menu->data;
 
   mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx,
-                         ctx->mailbox->hdrs[num], MUTT_FORMAT_ARROWCURSOR);
+                         ctx->mailbox->hdrs[line], MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

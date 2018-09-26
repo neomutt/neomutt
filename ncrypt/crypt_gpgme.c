@@ -3150,19 +3150,15 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * crypt_make_entry - Format a menu item for the key selection list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::menu_make_entry()
  */
-static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct CryptKeyInfo **key_table = menu->data;
   struct CryptEntry entry;
 
-  entry.key = key_table[num];
-  entry.num = num + 1;
+  entry.key = key_table[line];
+  entry.num = line + 1;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
                       crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);

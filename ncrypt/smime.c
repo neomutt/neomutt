@@ -435,16 +435,12 @@ static char *smime_key_flags(int flags)
 }
 
 /**
- * smime_make_entry - Format a menu item for the smime key list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * smime_make_entry - Format a menu item for the smime key list - Implements Menu::menu_make_entry()
  */
-static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct SmimeKey **Table = menu->data;
-  struct SmimeKey *this = Table[num];
+  struct SmimeKey *this = Table[line];
   char *truststate = NULL;
   switch (this->trust)
   {
