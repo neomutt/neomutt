@@ -1136,7 +1136,7 @@ void imap_disallow_reopen(struct Context *ctx)
  * @param a2 Second ConnAccount
  * @retval true Accounts match
  */
-int imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
+bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
   struct ImapMboxData *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
   struct ImapMboxData *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
