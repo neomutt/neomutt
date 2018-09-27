@@ -1335,3 +1335,21 @@ void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const cha
     mutt_str_strcat(dest, destlen, src);
   }
 }
+
+/**
+ * mutt_file_get_size - Get the size of a file
+ * @param path File to measure
+ * @retval num Size in bytes
+ * @retval 0   Error
+ */
+long mutt_file_get_size(const char *path)
+{
+  if (!path)
+    return 0;
+
+  struct stat sb;
+  if (stat(path, &sb) != 0)
+    return 0;
+
+  return sb.st_size;
+}

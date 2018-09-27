@@ -174,24 +174,6 @@ static int setup_paths(struct Mailbox *mailbox)
 }
 
 /**
- * get_size - Get the size of a file
- * @param path File to measure
- * @retval num Size in bytes
- * @retval 0   Error
- */
-static long get_size(const char *path)
-{
-  if (!path)
-    return 0;
-
-  struct stat sb;
-  if (stat(path, &sb) != 0)
-    return 0;
-
-  return sb.st_size;
-}
-
-/**
  * store_size - Save the size of the compressed file
  * @param mailbox Mailbox
  *
@@ -206,7 +188,7 @@ static void store_size(const struct Mailbox *mailbox)
   if (!ci)
     return;
 
-  ci->size = get_size(mailbox->realpath);
+  ci->size = mutt_file_get_size(mailbox->realpath);
 }
 
 /**
@@ -599,7 +581,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
   }
 
   /* Open the existing mailbox, unless we are appending */
-  if (!ci->append && (get_size(ctx->mailbox->realpath) > 0))
+  if (!ci->append && (mutt_file_get_size(ctx->mailbox->realpath) > 0))
   {
     int rc = execute_command(ctx->mailbox, ci->open, _("Decompressing %s"));
     if (rc == 0)
@@ -669,7 +651,7 @@ static int comp_mbox_check(struct Context *ctx, int *index_hint)
   if (!ops)
     return -1;
 
-  int size = get_size(ctx->mailbox->realpath);
+  int size = mutt_file_get_size(ctx->mailbox->realpath);
   if (size == ci->size)
     return 0;
 
