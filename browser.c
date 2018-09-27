@@ -1033,50 +1033,36 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 }
 
 /**
- * select_file_search - Menu search callback for matching files
- * @param menu Current menu
- * @param re   Regex to match
- * @param n    Index of menu entry to match
- * @retval 0 Success
- * @retval 1 No match
+ * select_file_search - Menu search callback for matching files - Implements Menu::menu_search()
  */
-static int select_file_search(struct Menu *menu, regex_t *re, int n)
+static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
 #ifdef USE_NNTP
   if (OptNews)
-    return regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0);
+    return regexec(rx, ((struct FolderFile *) menu->data)[line].desc, 0, NULL, 0);
 #endif
-  return regexec(re, ((struct FolderFile *) menu->data)[n].name, 0, NULL, 0);
+  return regexec(rx, ((struct FolderFile *) menu->data)[line].name, 0, NULL, 0);
 }
 
 #ifdef USE_NOTMUCH
 /**
- * select_vfolder_search - Menu search callback for virtual folders
- * @param menu Current menu
- * @param re   Regex to match
- * @param n    Index of menu entry to match
- * @retval 0 Success
- * @retval 1 No match
+ * select_vfolder_search - Menu search callback for virtual folders - Implements Menu::menu_search()
  */
-static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
+static int select_vfolder_search(struct Menu *menu, regex_t *rx, int line)
 {
-  return regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0);
+  return regexec(rx, ((struct FolderFile *) menu->data)[line].desc, 0, NULL, 0);
 }
 #endif
 
 /**
- * folder_entry - Format a menu item for the folder browser
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * folder_make_entry - Format a menu item for the folder browser - Implements Menu::menu_make_entry()
  */
-static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct Folder folder;
 
-  folder.ff = &((struct FolderFile *) menu->data)[num];
-  folder.num = num;
+  folder.ff = &((struct FolderFile *) menu->data)[line];
+  folder.num = line;
 
 #ifdef USE_NNTP
   if (OptNews)
@@ -1096,18 +1082,14 @@ static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 #ifdef USE_NOTMUCH
 /**
- * vfolder_entry - Format a menu item for the virtual folder list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * vfolder_make_entry - Format a menu item for the virtual folder list - Implements Menu::menu_make_entry()
  */
-static void vfolder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void vfolder_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct Folder folder;
 
-  folder.ff = &((struct FolderFile *) menu->data)[num];
-  folder.num = num;
+  folder.ff = &((struct FolderFile *) menu->data)[line];
+  folder.num = line;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
                       folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
@@ -1237,15 +1219,11 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
 }
 
 /**
- * file_tag - Tag an entry in the menu
- * @param menu Current menu
- * @param n    Index of menu entry to tag
- * @param m    If >=0 then multiple tags are allowed
- * @retval num Number of tagged menu items
+ * file_tag - Tag an entry in the menu - Implements Menu::menu_tag()
  */
-static int file_tag(struct Menu *menu, int n, int m)
+static int file_tag(struct Menu *menu, int sel, int act)
 {
-  struct FolderFile *ff = &(((struct FolderFile *) menu->data)[n]);
+  struct FolderFile *ff = &(((struct FolderFile *) menu->data)[sel]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(LastDir, ff->name)))
   {
     mutt_error(_("Can't attach a directory"));
@@ -1253,7 +1231,7 @@ static int file_tag(struct Menu *menu, int n, int m)
   }
 
   bool ot = ff->tagged;
-  ff->tagged = (m >= 0 ? m : !ff->tagged);
+  ff->tagged = ((act >= 0) ? act : !ff->tagged);
 
   return ff->tagged - ot;
 }
@@ -1505,22 +1483,22 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       goto bail;
   }
   menu = mutt_menu_new(MENU_FOLDER);
-  menu->make_entry = folder_entry;
-  menu->search = select_file_search;
+  menu->menu_make_entry = folder_make_entry;
+  menu->menu_search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
   if (multiple)
-    menu->tag = file_tag;
+    menu->menu_tag = file_tag;
 
 #ifdef USE_NOTMUCH
   if (flags & MUTT_SEL_VFOLDER)
   {
-    menu->make_entry = vfolder_entry;
-    menu->search = select_vfolder_search;
+    menu->menu_make_entry = vfolder_make_entry;
+    menu->menu_search = select_vfolder_search;
   }
   else
 #endif
-    menu->make_entry = folder_entry;
+    menu->menu_make_entry = folder_make_entry;
 
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP

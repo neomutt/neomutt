@@ -248,18 +248,14 @@ static void init_header_padding(void)
 }
 
 /**
- * snd_entry - Format a menu item for the attachment list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * snd_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
  */
-static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -678,10 +674,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p);
 
 /**
- * compose_menu_redraw - Redraw the compose menu
- * @param menu Current menu
+ * compose_custom_redraw - Redraw the compose menu - Implements Menu::menu_custom_redraw()
  */
-static void compose_menu_redraw(struct Menu *menu)
+static void compose_custom_redraw(struct Menu *menu)
 {
   struct ComposeRedrawData *rd = menu->redraw_data;
 
@@ -916,15 +911,15 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
-  menu->make_entry = snd_entry;
-  menu->tag = mutt_tag_attach;
+  menu->menu_make_entry = snd_make_entry;
+  menu->menu_tag = attach_tag;
 #ifdef USE_NNTP
   if (news)
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeNewsHelp);
   else
 #endif
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
-  menu->custom_menu_redraw = compose_menu_redraw;
+  menu->menu_custom_redraw = compose_custom_redraw;
   menu->redraw_data = &rd;
   mutt_menu_push_current(menu);
 

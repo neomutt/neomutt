@@ -1885,10 +1885,9 @@ struct PagerRedrawData
 };
 
 /**
- * pager_menu_redraw - Redraw the pager window
- * @param pager_menu Pager Menu
+ * pager_custom_redraw - Redraw the pager window - Implements Menu::menu_custom_redraw()
  */
-static void pager_menu_redraw(struct Menu *pager_menu)
+static void pager_custom_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   char buffer[LONG_STRING];
@@ -1987,8 +1986,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
         /* only allocate the space if/when we need the index.
            Initialise the menu as per the main index */
         rd->index = mutt_menu_new(MENU_MAIN);
-        rd->index->make_entry = index_make_entry;
-        rd->index->color = index_color;
+        rd->index->menu_make_entry = index_make_entry;
+        rd->index->menu_color = index_color;
         rd->index->max = Context ? Context->mailbox->vcount : 0;
         rd->index->current = rd->extra->email->virtual;
         rd->index->indexwin = rd->index_window;
@@ -2291,7 +2290,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
   pager_menu = mutt_menu_new(MENU_PAGER);
-  pager_menu->custom_menu_redraw = pager_menu_redraw;
+  pager_menu->menu_custom_redraw = pager_custom_redraw;
   pager_menu->redraw_data = &rd;
   mutt_menu_push_current(pager_menu);
 
@@ -2299,7 +2298,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   {
     mutt_curs_set(0);
 
-    pager_menu_redraw(pager_menu);
+    pager_custom_redraw(pager_menu);
 
     if (BrailleFriendly)
     {

@@ -641,18 +641,14 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 }
 
 /**
- * index_make_entry - Format a menu item for the index list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * index_make_entry - Format a menu item for the index list - Implements Menu::menu_make_entry()
  */
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  if (!Context || !menu || (num < 0) || (num >= Context->mailbox->hdrmax))
+  if (!Context || !menu || (line < 0) || (line >= Context->mailbox->hdrmax))
     return;
 
-  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[num]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[line]];
   if (!e)
     return;
 
@@ -717,17 +713,14 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 }
 
 /**
- * index_color - Calculate the colour for a line of the index
- * @param index_no Index line number
- * @retval >0 Colour pair
- * @retval  0 No colour
+ * index_color - Calculate the colour for a line of the index - Implements Menu::menu_color()
  */
-int index_color(int index_no)
+int index_color(int line)
 {
-  if (!Context || (index_no < 0))
+  if (!Context || (line < 0))
     return 0;
 
-  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[index_no]];
+  struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[line]];
 
   if (e && e->pair)
     return e->pair;
@@ -901,10 +894,9 @@ struct Mapping IndexNewsHelp[] = {
 #endif
 
 /**
- * index_menu_redraw - Redraw the index
- * @param menu Current Menu
+ * index_custom_redraw - Redraw the index - Implements Menu::menu_custom_redraw()
  */
-static void index_menu_redraw(struct Menu *menu)
+static void index_custom_redraw(struct Menu *menu)
 {
   if (menu->redraw & REDRAW_FULL)
   {
@@ -978,8 +970,8 @@ int mutt_index_menu(void)
   int attach_msg = OptAttachMsg;
 
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
-  menu->make_entry = index_make_entry;
-  menu->color = index_color;
+  menu->menu_make_entry = index_make_entry;
+  menu->menu_color = index_color;
   menu->current = ci_first_message();
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MAIN,
 #ifdef USE_NNTP
@@ -987,7 +979,7 @@ int mutt_index_menu(void)
                                      IndexNewsHelp :
 #endif
                                      IndexHelp);
-  menu->custom_menu_redraw = index_menu_redraw;
+  menu->menu_custom_redraw = index_custom_redraw;
   mutt_menu_push_current(menu);
 
   if (!attach_msg)
@@ -1136,7 +1128,7 @@ int mutt_index_menu(void)
 
     if (menu->menu == MENU_MAIN)
     {
-      index_menu_redraw(menu);
+      index_custom_redraw(menu);
 
       /* give visual indication that the next command is a tag- command */
       if (tag)

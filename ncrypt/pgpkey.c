@@ -326,19 +326,15 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * pgp_entry - Format a menu item for the pgp key list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::menu_make_entry()
  */
-static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void pgp_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   struct PgpUid **KeyTable = menu->data;
   struct PgpEntry entry;
 
-  entry.uid = KeyTable[num];
-  entry.num = num + 1;
+  entry.uid = KeyTable[line];
+  entry.num = line + 1;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
@@ -675,7 +671,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   menu = mutt_menu_new(MENU_PGP);
   menu->max = i;
-  menu->make_entry = pgp_entry;
+  menu->menu_make_entry = pgp_make_entry;
   menu->help = helpstr;
   menu->data = KeyTable;
   mutt_menu_push_current(menu);

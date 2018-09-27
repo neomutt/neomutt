@@ -40,8 +40,8 @@ extern bool  PgpAutoDecode;
 extern bool  UncollapseJump;
 extern bool  UncollapseNew;
 
-int  index_color(int index_no);
-void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num);
+int  index_color(int line);
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 int  mutt_index_menu(void);
 void mutt_set_header_color(struct Context *ctx, struct Email *curhdr);
