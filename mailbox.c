@@ -634,20 +634,14 @@ void mutt_update_mailbox(struct Mailbox *m)
 }
 
 /**
- * mutt_parse_mailboxes - Parse the 'mailboxes' command
- * @param path Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_mailboxes - Parse the 'mailboxes' command - Implements ::command_t
  *
  * This is also used by 'virtual-mailboxes'.
  */
-int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
+int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  char buf[PATH_MAX];
+  char tmp[PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
   char *p = NULL;
@@ -658,38 +652,38 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     if (data & MUTT_NAMED)
     {
-      mutt_extract_token(path, s, 0);
-      if (path->data && *path->data)
-        desc = mutt_str_strdup(path->data);
+      mutt_extract_token(buf, s, 0);
+      if (buf->data && *buf->data)
+        desc = mutt_str_strdup(buf->data);
       else
         continue;
     }
 
-    mutt_extract_token(path, s, 0);
+    mutt_extract_token(buf, s, 0);
 #ifdef USE_NOTMUCH
-    if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
-      nm_normalize_uri(path->data, buf, sizeof(buf));
+    if (nm_path_probe(buf->data, NULL) == MUTT_NOTMUCH)
+      nm_normalize_uri(buf->data, tmp, sizeof(tmp));
     else
 #endif
-      mutt_str_strfcpy(buf, path->data, sizeof(buf));
+      mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
 
-    mutt_expand_path(buf, sizeof(buf));
+    mutt_expand_path(tmp, sizeof(tmp));
 
     /* Skip empty tokens. */
-    if (!*buf)
+    if (!*tmp)
     {
       FREE(&desc);
       continue;
     }
 
     /* avoid duplicates */
-    p = realpath(buf, f1);
+    p = realpath(tmp, f1);
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (mutt_str_strcmp(p ? p : buf, np->m->realpath) == 0)
+      if (mutt_str_strcmp(p ? p : tmp, np->m->realpath) == 0)
       {
-        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, np->m->path);
+        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", tmp, np->m->path);
         break;
       }
     }
@@ -700,7 +694,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
       continue;
     }
 
-    struct Mailbox *m = mailbox_new(buf);
+    struct Mailbox *m = mailbox_new(tmp);
 
     m->has_new = false;
     m->notified = true;
