@@ -690,17 +690,20 @@ int imap_rename_mailbox(struct ImapMboxData *mdata, struct ImapMbox *mx, const c
 {
   char oldmbox[LONG_STRING];
   char newmbox[LONG_STRING];
-  char buf[HUGE_STRING];
+  int rc = 0;
 
   imap_munge_mbox_name(mdata, oldmbox, sizeof(oldmbox), mx->mbox);
   imap_munge_mbox_name(mdata, newmbox, sizeof(newmbox), newname);
 
-  snprintf(buf, sizeof(buf), "RENAME %s %s", oldmbox, newmbox);
+  struct Buffer *b = mutt_buffer_alloc(LONG_STRING);
+  mutt_buffer_printf(b, "RENAME %s %s", oldmbox, newmbox);
 
-  if (imap_exec(mdata, buf, 0) != 0)
-    return -1;
+  if (imap_exec(mdata, b->data, 0) != 0)
+    rc = -1;
 
-  return 0;
+  mutt_buffer_free(&b);
+
+  return rc;
 }
 
 /**
