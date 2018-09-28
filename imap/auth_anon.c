@@ -36,31 +36,31 @@
 
 /**
  * imap_auth_anon - Authenticate anonymously
- * @param mdata Imap Mailbox data
+ * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * this is basically a stripped-down version of the cram-md5 method.
  */
-enum ImapAuthRes imap_auth_anon(struct ImapMboxData *mdata, const char *method)
+enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *method)
 {
   int rc;
 
-  if (!mutt_bit_isset(mdata->capabilities, AUTH_ANON))
+  if (!mutt_bit_isset(adata->capabilities, AUTH_ANON))
     return IMAP_AUTH_UNAVAIL;
 
-  if (mutt_account_getuser(&mdata->conn->account) < 0)
+  if (mutt_account_getuser(&adata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
-  if (mdata->conn->account.user[0] != '\0')
+  if (adata->conn->account.user[0] != '\0')
     return IMAP_AUTH_UNAVAIL;
 
   mutt_message(_("Authenticating (anonymous)..."));
 
-  imap_cmd_start(mdata, "AUTHENTICATE ANONYMOUS");
+  imap_cmd_start(adata, "AUTHENTICATE ANONYMOUS");
 
   do
-    rc = imap_cmd_step(mdata);
+    rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -69,10 +69,10 @@ enum ImapAuthRes imap_auth_anon(struct ImapMboxData *mdata, const char *method)
     goto bail;
   }
 
-  mutt_socket_send(mdata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
+  mutt_socket_send(adata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
 
   do
-    rc = imap_cmd_step(mdata);
+    rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_OK)
@@ -81,7 +81,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapMboxData *mdata, const char *method)
     goto bail;
   }
 
-  if (imap_code(mdata->buf))
+  if (imap_code(adata->buf))
     return IMAP_AUTH_SUCCESS;
 
 bail:

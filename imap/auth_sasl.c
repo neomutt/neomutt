@@ -42,11 +42,11 @@
 
 /**
  * imap_auth_sasl - Default authenticator if available
- * @param mdata Imap Mailbox data
+ * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
+enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
@@ -58,7 +58,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
   unsigned int len = 0, olen = 0;
   bool client_start;
 
-  if (mutt_sasl_client_new(mdata->conn, &saslconn) < 0)
+  if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
   {
     mutt_debug(1, "Error allocating SASL connection.\n");
     return IMAP_AUTH_FAILURE;
@@ -69,25 +69,25 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
   /* If the user hasn't specified a method, use any available */
   if (!method)
   {
-    method = mdata->capstr;
+    method = adata->capstr;
 
     /* hack for SASL ANONYMOUS support:
      * 1. Fetch username. If it's "" or "anonymous" then
      * 2. attempt sasl_client_start with only "AUTH=ANONYMOUS" capability
      * 3. if sasl_client_start fails, fall through... */
 
-    if (mutt_account_getuser(&mdata->conn->account) < 0)
+    if (mutt_account_getuser(&adata->conn->account) < 0)
       return IMAP_AUTH_FAILURE;
 
-    if (mutt_bit_isset(mdata->capabilities, AUTH_ANON) &&
-        (!mdata->conn->account.user[0] ||
-         (mutt_str_strncmp(mdata->conn->account.user, "anonymous", 9) == 0)))
+    if (mutt_bit_isset(adata->capabilities, AUTH_ANON) &&
+        (!adata->conn->account.user[0] ||
+         (mutt_str_strncmp(adata->conn->account.user, "anonymous", 9) == 0)))
     {
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
     }
   }
   else if ((mutt_str_strcasecmp("login", method) == 0) &&
-           !strstr(NONULL(mdata->capstr), "AUTH=LOGIN"))
+           !strstr(NONULL(adata->capstr), "AUTH=LOGIN"))
   {
     /* do not use SASL login for regular IMAP login (#3556) */
     return IMAP_AUTH_UNAVAIL;
@@ -126,7 +126,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
   buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
-  if (mutt_bit_isset(mdata->capabilities, SASL_IR) && client_start)
+  if (mutt_bit_isset(adata->capabilities, SASL_IR) && client_start)
   {
     len = mutt_str_strlen(buf);
     buf[len++] = ' ';
@@ -138,14 +138,14 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
     client_start = false;
     olen = 0;
   }
-  imap_cmd_start(mdata, buf);
+  imap_cmd_start(adata, buf);
   irc = IMAP_CMD_CONTINUE;
 
   /* looping protocol */
   while (rc == SASL_CONTINUE || olen > 0)
   {
     do
-      irc = imap_cmd_step(mdata);
+      irc = imap_cmd_step(adata);
     while (irc == IMAP_CMD_CONTINUE);
 
     if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
@@ -154,14 +154,14 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
     if (irc == IMAP_CMD_RESPOND)
     {
       /* Exchange incorrectly returns +\r\n instead of + \r\n */
-      if (mdata->buf[1] == '\0')
+      if (adata->buf[1] == '\0')
       {
         buf[0] = '\0';
         len = 0;
       }
       else
       {
-        len = strlen(mdata->buf + 2);
+        len = strlen(adata->buf + 2);
         if (len > bufsize)
         {
           bufsize = len;
@@ -169,7 +169,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
         }
         /* For sasl_decode64, the fourth parameter, outmax, doesn't
          * include space for the trailing null */
-        if (sasl_decode64(mdata->buf + 2, len, buf, bufsize - 1, &len) != SASL_OK)
+        if (sasl_decode64(adata->buf + 2, len, buf, bufsize - 1, &len) != SASL_OK)
         {
           mutt_debug(1, "error base64-decoding server response.\n");
           goto bail;
@@ -210,13 +210,13 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
     if (irc == IMAP_CMD_RESPOND)
     {
       mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
-      mutt_socket_send(mdata->conn, buf);
+      mutt_socket_send(adata->conn, buf);
     }
 
     /* If SASL has errored out, send an abort string to the server */
     if (rc < 0)
     {
-      mutt_socket_send(mdata->conn, "*\r\n");
+      mutt_socket_send(adata->conn, "*\r\n");
       mutt_debug(1, "sasl_client_step error %d\n", rc);
     }
 
@@ -225,7 +225,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
 
   while (irc != IMAP_CMD_OK)
   {
-    irc = imap_cmd_step(mdata);
+    irc = imap_cmd_step(adata);
     if (irc != IMAP_CMD_CONTINUE)
       break;
   }
@@ -233,9 +233,9 @@ enum ImapAuthRes imap_auth_sasl(struct ImapMboxData *mdata, const char *method)
   if (rc != SASL_OK)
     goto bail;
 
-  if (imap_code(mdata->buf))
+  if (imap_code(adata->buf))
   {
-    mutt_sasl_setup_conn(mdata->conn, saslconn);
+    mutt_sasl_setup_conn(adata->conn, saslconn);
     FREE(&buf);
     return IMAP_AUTH_SUCCESS;
   }

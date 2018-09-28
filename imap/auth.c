@@ -58,13 +58,13 @@ static const struct ImapAuth imap_authenticators[] = {
 
 /**
  * imap_authenticate - Authenticate to an IMAP server
- * @param mdata Imap Mailbox data
+ * @param adata Imap Account data
  * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * Attempt to authenticate using either user-specified authentication method if
  * specified, or any.
  */
-int imap_authenticate(struct ImapMboxData *mdata)
+int imap_authenticate(struct ImapAccountData *adata)
 {
   int r = IMAP_AUTH_FAILURE;
 
@@ -91,7 +91,7 @@ int imap_authenticate(struct ImapMboxData *mdata)
         const struct ImapAuth *auth = &imap_authenticators[i];
         if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
         {
-          r = auth->authenticate(mdata, method);
+          r = auth->authenticate(adata, method);
           if (r == IMAP_AUTH_SUCCESS)
           {
             FREE(&methods);
@@ -110,7 +110,7 @@ int imap_authenticate(struct ImapMboxData *mdata)
 
     for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
     {
-      r = imap_authenticators[i].authenticate(mdata, NULL);
+      r = imap_authenticators[i].authenticate(adata, NULL);
       if (r == IMAP_AUTH_SUCCESS)
         return r;
     }

@@ -38,40 +38,40 @@
 
 /**
  * imap_auth_login - Plain LOGIN support
- * @param mdata Imap Mailbox data
+ * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_login(struct ImapMboxData *mdata, const char *method)
+enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *method)
 {
   char q_user[STRING], q_pass[STRING];
   char buf[LONG_STRING];
   int rc;
 
-  if (mutt_bit_isset(mdata->capabilities, LOGINDISABLED))
+  if (mutt_bit_isset(adata->capabilities, LOGINDISABLED))
   {
     mutt_message(_("LOGIN disabled on this server"));
     return IMAP_AUTH_UNAVAIL;
   }
 
-  if (mutt_account_getuser(&mdata->conn->account) < 0)
+  if (mutt_account_getuser(&adata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&mdata->conn->account) < 0)
+  if (mutt_account_getpass(&adata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
   mutt_message(_("Logging in..."));
 
-  imap_quote_string(q_user, sizeof(q_user), mdata->conn->account.user, false);
-  imap_quote_string(q_pass, sizeof(q_pass), mdata->conn->account.pass, false);
+  imap_quote_string(q_user, sizeof(q_user), adata->conn->account.user, false);
+  imap_quote_string(q_pass, sizeof(q_pass), adata->conn->account.pass, false);
 
   /* don't print the password unless we're at the ungodly debugging level
    * of 5 or higher */
 
   if (DebugLevel < IMAP_LOG_PASS)
-    mutt_debug(2, "Sending LOGIN command for %s...\n", mdata->conn->account.user);
+    mutt_debug(2, "Sending LOGIN command for %s...\n", adata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
-  rc = imap_exec(mdata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
+  rc = imap_exec(adata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
 
   if (!rc)
   {
