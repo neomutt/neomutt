@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,6 +36,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mailbox.h"
+#include "account.h"
 #include "context.h"
 #include "globals.h"
 #include "maildir/maildir.h"
@@ -78,10 +80,9 @@ struct MailboxList AllMailboxes = STAILQ_HEAD_INITIALIZER(AllMailboxes);
 
 /**
  * mailbox_new - Create a new Mailbox
- * @param path Path to the mailbox
  * @retval ptr New Mailbox
  */
-struct Mailbox *mailbox_new(const char *path)
+struct Mailbox *mailbox_new(void)
 {
   // char rp[PATH_MAX] = "";
 
@@ -420,6 +421,9 @@ static struct Mailbox *mailbox_get(const char *path)
     return NULL;
 
   char *epath = mutt_str_strdup(path);
+  if (!epath)
+    return NULL;
+
   mutt_expand_path(epath, mutt_str_strlen(epath));
 
   struct MailboxNode *np = NULL;
@@ -546,49 +550,95 @@ void mutt_update_mailbox(struct Mailbox *m)
 int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  char tmp[PATH_MAX];
-  struct stat sb;
+  // char canon[PATH_MAX];
+  // struct stat sb = { 0 };
+#if 0
   char f1[PATH_MAX];
   char *p = NULL;
+#endif
 
   while (MoreArgs(s))
   {
-    char *desc = NULL;
+    // char *desc = NULL;
+
+    struct Mailbox *m = mailbox_new();
 
     if (data & MUTT_NAMED)
     {
       mutt_extract_token(buf, s, 0);
       if (buf->data && *buf->data)
-        desc = mutt_str_strdup(buf->data);
+      {
+        m->desc = mutt_str_strdup(buf->data);
+      }
       else
+      {
+        mailbox_free(&m);
         continue;
+      }
     }
 
     mutt_extract_token(buf, s, 0);
+    if (mutt_buffer_is_empty(buf))
+    {
+      /* Skip empty tokens. */
+      mailbox_free(&m);
+      continue;
+    }
+
+    mutt_str_strfcpy(m->path, buf->data, sizeof(m->path));
+    /* int rc = */ mx_path_canon2(m, Folder);
+
+    bool new_account = false;
+    struct Account *a = mx_ac_find(m);
+    if (!a)
+    {
+      a = account_create();
+      a->type = m->magic;
+      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+      new_account = true;
+    }
+
+    if (!new_account && mx_mbox_find(a, m))
+    {
+      mutt_error("mailbox exists: %s", m->path);
+      mailbox_free(&m);
+      continue;
+    }
+
+    if (mx_ac_add(a, m) < 0)
+    {
+      //error
+      mailbox_free(&m);
+      continue;
+    }
+
+    // SUCCESS
+
+#if 0
 #ifdef USE_NOTMUCH
     if (nm_path_probe(buf->data, NULL) == MUTT_NOTMUCH)
-      nm_normalize_uri(buf->data, tmp, sizeof(tmp));
+      nm_normalize_uri(buf->data, canon, sizeof(canon));
     else
 #endif
-      mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
+      mutt_str_strfcpy(canon, buf->data, sizeof(canon));
 
-    mutt_expand_path(tmp, sizeof(tmp));
+    mutt_expand_path(canon, sizeof(canon));
 
     /* Skip empty tokens. */
-    if (!*tmp)
+    if (!*canon)
     {
       FREE(&desc);
       continue;
     }
 
     /* avoid duplicates */
-    p = realpath(tmp, f1);
+    p = realpath(canon, f1);
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &AllMailboxes, entries)
     {
-      if (mutt_str_strcmp(p ? p : tmp, np->m->realpath) == 0)
+      if (mutt_str_strcmp(p ? p : canon, np->m->realpath) == 0)
       {
-        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", tmp, np->m->path);
+        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", canon, np->m->path);
         break;
       }
     }
@@ -599,17 +649,14 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       continue;
     }
 
-    struct Mailbox *m = mailbox_new(tmp);
+    m = mailbox_new(canon);
 
-    m->has_new = false;
     m->notified = true;
-    m->newly_created = false;
     m->desc = desc;
 #ifdef USE_NOTMUCH
     if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
     {
       m->magic = MUTT_NOTMUCH;
-      m->size = 0;
     }
     else
 #endif
@@ -623,9 +670,8 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         /* some systems out there don't have an off_t type */
         m->size = (off_t) sb.st_size;
       }
-      else
-        m->size = 0;
     }
+#endif
 
     struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
     mn->m = m;

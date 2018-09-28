@@ -47,6 +47,7 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "color.h"

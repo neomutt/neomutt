@@ -34,6 +34,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "curs_main.h"
+#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "commands.h"
@@ -46,6 +47,7 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -555,7 +557,7 @@ static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
   else
 #endif
   {
-    mutt_expand_path(buf, buflen);
+    mx_path_canon(buf, buflen, Folder, NULL);
   }
 
   enum MailboxType magic = mx_path_probe(buf, NULL);
@@ -2208,14 +2210,15 @@ int mutt_index_menu(void)
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
             OptNews = true;
-            CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
+            m = Context ? Context->mailbox : NULL;
+            CurrentNewsSrv = nntp_select_server(m, NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_mailbox(Context->mailbox, buf, sizeof(buf));
+            nntp_mailbox(m, buf, sizeof(buf));
           }
           else
 #endif
@@ -2245,6 +2248,9 @@ int mutt_index_menu(void)
             break;
           }
         }
+
+        if (!m)
+          m = mx_mbox_find2(buf);
 
         main_change_folder(menu, op, m, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP

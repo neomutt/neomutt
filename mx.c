@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2016-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +43,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mx.h"
+#include "account.h"
 #include "alias.h"
 #include "context.h"
 #include "copy.h"
@@ -245,19 +247,20 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     return NULL;
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
-
-  ctx->mailbox = mutt_find_mailbox(path);
+  ctx->mailbox = m;
   if (!ctx->mailbox)
   {
-    ctx->mailbox = mailbox_new(path);
+    ctx->mailbox = mailbox_new();
     ctx->mailbox->flags = MB_HIDDEN;
   }
 
+#if 0
   if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
   {
     mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
                      sizeof(ctx->mailbox->realpath));
   }
+#endif
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
@@ -286,6 +289,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   ctx->mailbox->magic = mx_path_probe(path, NULL);
   ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
 
+  if (ctx->mailbox->path[0] == '\0')
+    mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
+
   if ((ctx->mailbox->magic == MUTT_UNKNOWN) ||
       (ctx->mailbox->magic == MUTT_MAILBOX_ERROR) || !ctx->mailbox->mx_ops)
   {
@@ -297,6 +303,20 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     mx_fastclose_mailbox(ctx);
     mutt_context_free(&ctx);
     return NULL;
+  }
+
+  if (!ctx->mailbox->account)
+  {
+    struct Account *a = account_create();
+    a->type = ctx->mailbox->magic;
+    TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+
+    if (mx_ac_add(a, ctx->mailbox) < 0)
+    {
+      //error
+      mailbox_free(&ctx->mailbox);
+      return NULL;
+    }
   }
 
   mutt_make_label_hash(ctx->mailbox);
@@ -358,10 +378,13 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&ctx->mailbox->subj_hash);
   mutt_hash_destroy(&ctx->mailbox->id_hash);
   mutt_hash_destroy(&ctx->mailbox->label_hash);
-  mutt_clear_threads(ctx);
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    mutt_email_free(&ctx->mailbox->hdrs[i]);
-  FREE(&ctx->mailbox->hdrs);
+  if (ctx->mailbox->hdrs)
+  {
+    mutt_clear_threads(ctx);
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
+      mutt_email_free(&ctx->mailbox->hdrs[i]);
+    FREE(&ctx->mailbox->hdrs);
+  }
   FREE(&ctx->mailbox->v2r);
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
@@ -533,6 +556,8 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
   for (i = 0; i < ctx->mailbox->msg_count; i++)
   {
+    if (!ctx->mailbox->hdrs[i])
+      break;
     if (!ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->read &&
         !(ctx->mailbox->hdrs[i]->flagged && KeepFlagged))
     {
@@ -775,6 +800,9 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
  */
 void mx_update_tables(struct Context *ctx, bool committing)
 {
+  if (!ctx)
+    return;
+
   int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
@@ -1394,7 +1422,7 @@ int mx_path_probe(const char *path, struct stat *st)
 /**
  * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
  */
-int mx_path_canon(char *buf, size_t buflen, const char *folder)
+int mx_path_canon(char *buf, size_t buflen, const char *folder, int *magic)
 {
   if (!buf)
     return -1;
@@ -1431,6 +1459,15 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
       {
         mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
       }
+      else if (buf[0] == '~')
+      {
+        mutt_str_inline_replace(buf, buflen, 1, HomeDir);
+      }
+    }
+    else if ((buf[0] == '+') || (buf[0] == '='))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, Folder);
     }
     else if (buf[0] == '@')
     {
@@ -1455,11 +1492,13 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
     }
   }
 
-  if (!folder)
-    return -1;
+  // if (!folder) //XXX - use inherited version, or pass NULL to backend?
+  //   return -1;
 
-  int magic = mx_path_probe(folder, NULL);
-  const struct MxOps *ops = mx_get_ops(magic);
+  int magic2 = mx_path_probe(buf, NULL);
+  if (magic)
+    *magic = magic2;
+  const struct MxOps *ops = mx_get_ops(magic2);
   if (!ops || !ops->path_canon)
     return -1;
 
@@ -1469,6 +1508,29 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder)
   }
 
   return 0;
+}
+
+/**
+ * mx_path_canon2 - XXX
+ * canonicalise the path to realpath
+ */
+int mx_path_canon2(struct Mailbox *m, const char *folder)
+{
+  if (!m)
+    return -1;
+
+  if (m->realpath[0] == '\0')
+    mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+
+  int rc = mx_path_canon(m->realpath, sizeof(m->realpath), folder, &m->magic);
+  if (rc >= 0)
+  {
+    m->mx_ops = mx_get_ops(m->magic);
+    // temp?
+    mutt_str_strfcpy(m->path, m->realpath, sizeof(m->path));
+  }
+
+  return rc;
 }
 
 /**
@@ -1521,4 +1583,80 @@ int mx_msg_padding_size(struct Context *ctx)
     return 0;
 
   return ctx->mailbox->mx_ops->msg_padding_size(ctx);
+}
+
+/**
+ * mx_ac_find - XXX
+ */
+struct Account *mx_ac_find(struct Mailbox *m)
+{
+  if (!m || !m->mx_ops)
+    return NULL;
+
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
+  {
+    if (np->type != m->magic)
+      continue;
+
+    if (m->mx_ops->ac_find(np, m->realpath))
+      return np;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_mbox_find - XXX
+ *
+ * find a mailbox on an account
+ */
+struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return NULL;
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    if (mutt_str_strcmp(np->m->realpath, m->realpath) == 0)
+      return m;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_mbox_find2 - XXX
+ *
+ * find a mailbox on an account
+ */
+struct Mailbox *mx_mbox_find2(const char *path)
+{
+  if (!path)
+    return NULL;
+
+  char buf[PATH_MAX];
+  mutt_str_strfcpy(buf, path, sizeof(buf));
+  mx_path_canon(buf, sizeof(buf), Folder, NULL);
+
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (mutt_str_strcmp(np->m->realpath, buf) == 0)
+      return np->m;
+  }
+
+  return NULL;
+}
+
+/**
+ * mx_ac_add - Add a Mailbox to an Account - Wrapper for MxOps::ac_add
+ */
+int mx_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m || !m->mx_ops || !m->mx_ops->ac_add)
+    return -1;
+
+  return m->mx_ops->ac_add(a, m);
 }

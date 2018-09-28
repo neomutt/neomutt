@@ -261,12 +261,19 @@ int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Context *ctx, struct Email *e, int flags);
 struct Message *mx_msg_open        (struct Context *ctx, int msgno);
 int             mx_msg_padding_size(struct Context *ctx);
-int             mx_path_canon      (char *buf, size_t buflen, const char *folder);
+int             mx_path_canon      (char *buf, size_t buflen, const char *folder, int *magic);
+int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
 int             mx_path_probe      (const char *path, struct stat *st);
 int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+
+struct Account *mx_ac_find(struct Mailbox *m);
+struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m);
+struct Mailbox *mx_mbox_find2(const char *path);
+int mx_ac_add(struct Account *a, struct Mailbox *m);
+int mx_ac_remove(struct Account *a, struct Mailbox *m);
 
 int                 mx_access(const char *path, int flags);
 void                mx_alloc_memory(struct Mailbox *m);

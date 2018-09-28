@@ -576,6 +576,9 @@ static void pseudo_threads(struct Context *ctx)
  */
 void mutt_clear_threads(struct Context *ctx)
 {
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+    return;
+
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     /* mailbox may have been only partially read */
