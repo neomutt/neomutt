@@ -36,6 +36,35 @@
 #include "hook.h"
 #include "mutt_account.h"
 
+struct Connection *mutt_conn_new(const struct ConnAccount *account)
+{
+  enum ConnectionType conn_type;
+
+  if (Tunnel && *Tunnel)
+    conn_type = MUTT_CONNECTION_TUNNEL;
+  else if (account->flags & MUTT_ACCT_SSL)
+    conn_type = MUTT_CONNECTION_SSL;
+  else
+    conn_type = MUTT_CONNECTION_SIMPLE;
+
+  struct Connection *conn = mutt_socket_new(conn_type);
+  if (conn)
+  {
+    memcpy(&conn->account, account, sizeof(struct ConnAccount));
+  }
+  else
+  {
+    if (conn_type == MUTT_CONNECTION_SSL)
+    {
+#ifndef USE_SSL
+      /* that's probably why it failed */
+      mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
+#endif
+    }
+  }
+  return conn;
+}
+
 /**
  * mutt_conn_find - Find a connection from a list
  * @param start   First connection to try
@@ -51,7 +80,6 @@
 struct Connection *mutt_conn_find(const struct Connection *start,
                                   const struct ConnAccount *account)
 {
-  enum ConnectionType conn_type;
   struct Url url;
   char hook[LONG_STRING];
 
@@ -70,28 +98,5 @@ struct Connection *mutt_conn_find(const struct Connection *start,
     conn = TAILQ_NEXT(conn, entries);
   }
 
-  if (Tunnel && *Tunnel)
-    conn_type = MUTT_CONNECTION_TUNNEL;
-  else if (account->flags & MUTT_ACCT_SSL)
-    conn_type = MUTT_CONNECTION_SSL;
-  else
-    conn_type = MUTT_CONNECTION_SIMPLE;
-
-  conn = mutt_socket_new(conn_type);
-  if (conn)
-  {
-    memcpy(&conn->account, account, sizeof(struct ConnAccount));
-  }
-  else
-  {
-    if (conn_type == MUTT_CONNECTION_SSL)
-    {
-#ifndef USE_SSL
-      /* that's probably why it failed */
-      mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
-#endif
-    }
-  }
-
-  return conn;
+  return mutt_conn_new(account);
 }
