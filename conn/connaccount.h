@@ -33,8 +33,8 @@ struct ConnAccount
   char pass[256];
   char host[128];
   unsigned short port;
-  unsigned char type;
-  unsigned char flags;
+  unsigned char type;  ///< Connection type, e.g. #MUTT_ACCT_TYPE_IMAP
+  unsigned char flags; ///< Which fields are initialised, e.g. #MUTT_ACCT_USER
 };
 
 #endif /* MUTT_CONN_ACCOUNT_H */

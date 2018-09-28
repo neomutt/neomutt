@@ -41,8 +41,8 @@ extern short MailCheckStatsInterval;
 extern bool  MaildirCheckCur;
 
 /* parameter to mutt_parse_mailboxes */
-#define MUTT_NAMED   1
-#define MUTT_VIRTUAL 2
+#define MUTT_NAMED   (1 << 0)
+#define MUTT_VIRTUAL (1 << 1)
 
 #define MB_NORMAL 0
 #define MB_HIDDEN 1
