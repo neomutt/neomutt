@@ -820,25 +820,26 @@ int mix_check_message(struct Email *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  char cmd[HUGE_STRING];
-  char tmp[HUGE_STRING];
+  struct Buffer *cmd = NULL;
   char cd_quoted[STRING];
-  int i;
+  int i = 0;
 
-  snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
+  cmd = mutt_buffer_new();
+  mutt_buffer_increase_size(cmd, HUGE_STRING);
+  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, Mixmaster);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
-    mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
+    mutt_buffer_addstr(cmd, i ? "," : " -l ");
     mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
-    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
-             (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
+    mutt_buffer_addstr(cmd, cd_quoted);
+    i = 1;
   }
 
   mutt_endwin();
 
-  i = mutt_system(cmd);
+  i = mutt_system(cmd->data);
   if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
@@ -849,6 +850,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
     }
   }
 
+  mutt_buffer_free(&cmd);
   unlink(tempfile);
   return i;
 }
