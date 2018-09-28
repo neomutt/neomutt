@@ -243,8 +243,6 @@ struct Context *mx_mbox_open(const char *path, int flags)
   if (!path || !path[0])
     return NULL;
 
-  int rc;
-
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
 
   ctx->mailbox = mutt_find_mailbox(path);
@@ -261,8 +259,8 @@ struct Context *mx_mbox_open(const char *path, int flags)
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
-  for (rc = 0; rc < RIGHTSMAX; rc++)
-    mutt_bit_set(ctx->mailbox->rights, rc);
+  for (int i = 0; i < RIGHTSMAX; i++)
+    mutt_bit_set(ctx->mailbox->rights, i);
 
   if (flags & MUTT_QUIET)
     ctx->mailbox->quiet = true;
@@ -310,7 +308,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
   if (!ctx->mailbox->quiet)
     mutt_message(_("Reading %s..."), ctx->mailbox->path);
 
-  rc = ctx->mailbox->mx_ops->mbox_open(ctx);
+  int rc = ctx->mailbox->mx_ops->mbox_open(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
