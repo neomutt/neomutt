@@ -25,6 +25,11 @@
  * @page compress Compressed mbox local mailbox type
  *
  * Compressed mbox local mailbox type
+ *
+ * @note
+ * Any references to compressed files also apply to encrypted files.
+ * - mailbox->path     == plaintext file
+ * - mailbox->realpath == compressed file
  */
 
 #include "config.h"
@@ -49,12 +54,6 @@
 #include "protos.h"
 
 struct Email;
-
-/* Notes:
- * Any references to compressed files also apply to encrypted files.
- * - mailbox->path     == plaintext file
- * - mailbox->realpath == compressed file
- */
 
 /**
  * struct CompressInfo - Private data for compress

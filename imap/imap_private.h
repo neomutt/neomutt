@@ -210,8 +210,8 @@ struct ImapMboxData
 {
   struct Connection *conn;
   bool recovering;
-  unsigned char state;
-  unsigned char status;
+  unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
+  unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).
    * we have 3 options:
    *   1. rerun CAPABILITY inside SASL function.
@@ -249,8 +249,8 @@ struct ImapMboxData
   char delim;
   struct Context *ctx;
   char *mbox_name;
-  unsigned short check_status;
-  unsigned char reopen;
+  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
+  unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;

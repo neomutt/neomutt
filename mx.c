@@ -243,8 +243,6 @@ struct Context *mx_mbox_open(const char *path, int flags)
   if (!path || !path[0])
     return NULL;
 
-  int rc;
-
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
 
   ctx->mailbox = mutt_find_mailbox(path);
@@ -261,8 +259,8 @@ struct Context *mx_mbox_open(const char *path, int flags)
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
-  for (rc = 0; rc < RIGHTSMAX; rc++)
-    mutt_bit_set(ctx->mailbox->rights, rc);
+  for (int i = 0; i < RIGHTSMAX; i++)
+    mutt_bit_set(ctx->mailbox->rights, i);
 
   if (flags & MUTT_QUIET)
     ctx->mailbox->quiet = true;
@@ -310,7 +308,7 @@ struct Context *mx_mbox_open(const char *path, int flags)
   if (!ctx->mailbox->quiet)
     mutt_message(_("Reading %s..."), ctx->mailbox->path);
 
-  rc = ctx->mailbox->mx_ops->mbox_open(ctx);
+  int rc = ctx->mailbox->mx_ops->mbox_open(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -1330,11 +1328,11 @@ bool mx_tags_is_supported(struct Context *ctx)
 
 /**
  * mx_path_probe - Find a mailbox that understands a path
- * @param path  Path to examine
- * @param st    stat buffer (for local filesystems)
+ * @param[in]  path  Path to examine
+ * @param[out] st    stat buffer (OPTIONAL, for local filesystems)
  * @retval num Type, e.g. #MUTT_IMAP
  */
-int mx_path_probe(const char *path, const struct stat *st)
+int mx_path_probe(const char *path, struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -1372,13 +1370,12 @@ int mx_path_probe(const char *path, const struct stat *st)
 
   struct stat st2 = { 0 };
   if (!st)
-  {
     st = &st2;
-    if (stat(path, &st2) != 0)
-    {
-      mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
-      return MUTT_UNKNOWN;
-    }
+
+  if (stat(path, st) != 0)
+  {
+    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+    return MUTT_UNKNOWN;
   }
 
   for (size_t i = 0; i < mutt_array_size(with_stat); i++)

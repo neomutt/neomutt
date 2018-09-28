@@ -1348,7 +1348,7 @@ void imap_cmd_finish(struct ImapMboxData *mdata)
     }
   }
 
-  mdata->status = false;
+  mdata->status = 0;
 }
 
 /**

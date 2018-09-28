@@ -55,50 +55,47 @@ char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
  * mutt_account_match - Compare account info (host/port/user)
  * @param a1 First ConnAccount
  * @param a2 Second ConnAccount
- * @retval 1 Accounts match
- * @retval 0 Accounts match
+ * @retval true Accounts match
  */
-int mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
+bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
-  const char *user = NONULL(Username);
-
   if (a1->type != a2->type)
-    return 0;
+    return false;
   if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
-    return 0;
+    return false;
   if (a1->port != a2->port)
-    return 0;
-
-#ifdef USE_IMAP
-  if (a1->type == MUTT_ACCT_TYPE_IMAP)
-  {
-    if (ImapUser)
-      user = ImapUser;
-  }
-#endif
-
-#ifdef USE_POP
-  if (a1->type == MUTT_ACCT_TYPE_POP && PopUser)
-    user = PopUser;
-#endif
-
-#ifdef USE_NNTP
-  if (a1->type == MUTT_ACCT_TYPE_NNTP && NntpUser)
-    user = NntpUser;
-#endif
-
+    return false;
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
     return strcmp(a1->user, a2->user) == 0;
+
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
     return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
 #endif
+
+  const char *user = NONULL(Username);
+
+#ifdef USE_IMAP
+  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
+    user = ImapUser;
+#endif
+
+#ifdef USE_POP
+  if ((a1->type == MUTT_ACCT_TYPE_POP) && PopUser)
+    user = PopUser;
+#endif
+
+#ifdef USE_NNTP
+  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
+    user = NntpUser;
+#endif
+
   if (a1->flags & MUTT_ACCT_USER)
     return strcmp(a1->user, user) == 0;
   if (a2->flags & MUTT_ACCT_USER)
     return strcmp(a2->user, user) == 0;
 
-  return 1;
+  return true;
 }
 
 /**
