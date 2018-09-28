@@ -600,7 +600,7 @@ int imap_access(const char *path)
 {
   struct ImapMboxData *mdata = NULL;
   struct ImapMbox mx;
-  char buf[LONG_STRING];
+  char buf[LONG_STRING * 2];
   char mailbox[LONG_STRING];
   char mbox[LONG_STRING];
   int rc;
@@ -664,7 +664,7 @@ int imap_access(const char *path)
  */
 int imap_create_mailbox(struct ImapMboxData *mdata, char *mailbox)
 {
-  char buf[LONG_STRING], mbox[LONG_STRING];
+  char buf[LONG_STRING * 2], mbox[LONG_STRING];
 
   imap_munge_mbox_name(mdata, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
@@ -690,7 +690,7 @@ int imap_rename_mailbox(struct ImapMboxData *mdata, struct ImapMbox *mx, const c
 {
   char oldmbox[LONG_STRING];
   char newmbox[LONG_STRING];
-  char buf[LONG_STRING];
+  char buf[HUGE_STRING];
 
   imap_munge_mbox_name(mdata, oldmbox, sizeof(oldmbox), mx->mbox);
   imap_munge_mbox_name(mdata, newmbox, sizeof(newmbox), newname);
@@ -1445,7 +1445,7 @@ int imap_mailbox_check(bool check_stats)
   struct ImapMboxData *mdata = NULL;
   struct ImapMboxData *lastdata = NULL;
   char name[LONG_STRING];
-  char command[LONG_STRING];
+  char command[LONG_STRING * 2];
   char munged[LONG_STRING];
   int buffies = 0;
 
@@ -1548,7 +1548,7 @@ int imap_status(const char *path, bool queue)
   static int queued = 0;
 
   struct ImapMboxData *mdata = NULL;
-  char buf[LONG_STRING];
+  char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
   struct ImapStatus *status = NULL;
 
@@ -1721,7 +1721,7 @@ int imap_search(struct Mailbox *mailbox, const struct Pattern *pat)
 int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapMboxData *mdata = NULL;
-  char buf[LONG_STRING];
+  char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
   char errstr[STRING];
   struct Buffer err, token;
@@ -1793,7 +1793,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
 {
   struct ImapMboxData *mdata = NULL;
   char list[LONG_STRING];
-  char tmp[LONG_STRING];
+  char tmp[LONG_STRING * 2];
   struct ImapList listresp;
   char completion[LONG_STRING];
   int clen;

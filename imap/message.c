@@ -1340,7 +1340,7 @@ bail:
 int imap_append_message(struct Context *ctx, struct Message *msg)
 {
   FILE *fp = NULL;
-  char buf[LONG_STRING];
+  char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING];
   char internaldate[IMAP_DATELEN];
