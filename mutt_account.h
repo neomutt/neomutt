@@ -59,7 +59,7 @@ enum AccountType
 #define MUTT_ACCT_PASS  (1 << 3)
 #define MUTT_ACCT_SSL   (1 << 4)
 
-int mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
+bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
 int mutt_account_fromurl(struct ConnAccount *account, struct Url *url);
 void mutt_account_tourl(struct ConnAccount *account, struct Url *url);
 int mutt_account_getuser(struct ConnAccount *account);
