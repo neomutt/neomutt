@@ -246,7 +246,7 @@ int             mx_msg_padding_size(struct Context *ctx);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
-int             mx_path_probe      (const char *path, const struct stat *st);
+int             mx_path_probe      (const char *path, struct stat *st);
 int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 

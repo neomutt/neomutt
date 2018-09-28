@@ -1330,11 +1330,11 @@ bool mx_tags_is_supported(struct Context *ctx)
 
 /**
  * mx_path_probe - Find a mailbox that understands a path
- * @param path  Path to examine
- * @param st    stat buffer (for local filesystems)
+ * @param[in]  path  Path to examine
+ * @param[out] st    stat buffer (OPTIONAL, for local filesystems)
  * @retval num Type, e.g. #MUTT_IMAP
  */
-int mx_path_probe(const char *path, const struct stat *st)
+int mx_path_probe(const char *path, struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -1372,13 +1372,12 @@ int mx_path_probe(const char *path, const struct stat *st)
 
   struct stat st2 = { 0 };
   if (!st)
-  {
     st = &st2;
-    if (stat(path, &st2) != 0)
-    {
-      mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
-      return MUTT_UNKNOWN;
-    }
+
+  if (stat(path, st) != 0)
+  {
+    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
+    return MUTT_UNKNOWN;
   }
 
   for (size_t i = 0; i < mutt_array_size(with_stat); i++)
