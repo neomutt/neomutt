@@ -134,12 +134,12 @@ static int tunnel_socket_open(struct Connection *conn)
 /**
  * tunnel_socket_read - Read data from a tunnel socket - Implements Connection::conn_read()
  */
-static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
+static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
 {
   struct TunnelSockData *tunnel = conn->sockdata;
   int rc;
 
-  rc = read(tunnel->readfd, buf, len);
+  rc = read(tunnel->readfd, buf, count);
   if (rc == -1)
   {
     mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
@@ -151,12 +151,12 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 /**
  * tunnel_socket_write - Write data to a tunnel socket - Implements Connection::conn_write()
  */
-static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
+static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   struct TunnelSockData *tunnel = conn->sockdata;
   int rc;
 
-  rc = write(tunnel->writefd, buf, len);
+  rc = write(tunnel->writefd, buf, count);
   if (rc == -1)
   {
     mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));

@@ -99,10 +99,7 @@ static int tls_init(void)
 }
 
 /**
- * tls_starttls_close - Close a TLS connection
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
+ * tls_starttls_close - Close a TLS connection - Implements Connection::conn_close()
  */
 static int tls_starttls_close(struct Connection *conn)
 {
@@ -1157,7 +1154,7 @@ static int tls_socket_open(struct Connection *conn)
 /**
  * tls_socket_read - Read data from a TLS socket - Implements Connection::conn_read()
  */
-static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
+static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
 {
   struct TlsSockData *data = conn->sockdata;
   int rc;
@@ -1170,7 +1167,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 
   do
   {
-    rc = gnutls_record_recv(data->state, buf, len);
+    rc = gnutls_record_recv(data->state, buf, count);
     if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
     {
       mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
@@ -1184,7 +1181,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 /**
  * tls_socket_write - Write data to a TLS socket - Implements Connection::conn_write()
  */
-static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
+static int tls_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   struct TlsSockData *data = conn->sockdata;
   size_t sent = 0;
@@ -1197,7 +1194,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
 
   do
   {
-    const int ret = gnutls_record_send(data->state, buf + sent, len - sent);
+    const int ret = gnutls_record_send(data->state, buf + sent, count - sent);
     if (ret < 0)
     {
       if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
@@ -1208,7 +1205,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
       return ret;
     }
     sent += ret;
-  } while (sent < len);
+  } while (sent < count);
 
   return sent;
 }

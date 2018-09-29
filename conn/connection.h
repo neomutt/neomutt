@@ -57,18 +57,18 @@ struct Connection
   int (*conn_open) (struct Connection *conn);
   /**
    * conn_read - Read from a socket Connection
-   * @param conn Connection to a server
-   * @param buf Buffer to store the data
-   * @param len Number of bytes to read
+   * @param conn  Connection to a server
+   * @param buf   Buffer to store the data
+   * @param count Number of bytes to read
    * @retval >0 Success, number of bytes read
    * @retval -1 Error, see errno
    */
-  int (*conn_read) (struct Connection *conn, char *buf, size_t len);
+  int (*conn_read) (struct Connection *conn, char *buf, size_t count);
   /**
    * conn_write - Write to a socket Connection
-   * @param conn Connection to a server
-   * @param buf  Buffer to read into
-   * @param len  Number of bytes to read
+   * @param conn  Connection to a server
+   * @param buf   Buffer to read into
+   * @param count Number of bytes to read
    * @retval >0 Success, number of bytes written
    * @retval -1 Error, see errno
    */
