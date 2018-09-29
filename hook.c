@@ -71,13 +71,7 @@ static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 static int current_hook_type = 0;
 
 /**
- * mutt_parse_hook - Parse the 'hook' family of commands
- * @param buf  Temporary Buffer
- * @param s    Buffer containing command
- * @param data Data from Command definition
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Failure
+ * mutt_parse_hook - Parse the 'hook' family of commands - Implements ::command_t
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
@@ -323,13 +317,7 @@ void mutt_delete_hooks(int type)
 }
 
 /**
- * mutt_parse_unhook - Parse the 'unhook' command
- * @param buf  Temporary Buffer
- * @param s    Buffer containing command
- * @param data Data from Command definition
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Failure
+ * mutt_parse_unhook - Parse the 'unhook' command - Implements ::command_t
  */
 int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
