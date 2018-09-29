@@ -1082,13 +1082,7 @@ void km_error_key(int menu)
 }
 
 /**
- * mutt_parse_push - Parse the 'push' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_push - Parse the 'push' command - Implements ::command_t
  */
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
@@ -1247,13 +1241,7 @@ const struct Binding *km_get_table(int menu)
 }
 
 /**
- * mutt_parse_bind - Parse the 'bind' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_bind - Parse the 'bind' command - Implements ::command_t
  *
  * bind menu-name `<key_sequence>` function-name
  */
@@ -1310,13 +1298,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_macro - Parse the 'macro' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_macro - Parse the 'macro' command - Implements ::command_t
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
@@ -1370,13 +1352,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_exec - Parse the 'exec' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_exec - Parse the 'exec' command - Implements ::command_t
  */
 int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)

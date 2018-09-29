@@ -104,13 +104,13 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 
 /**
  * mutt_hcache_close - close the connection to the header cache
- * @param h Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc Pointer to the header_cache_t structure got by mutt_hcache_open
  */
-void mutt_hcache_close(header_cache_t *h);
+void mutt_hcache_close(header_cache_t *hc);
 
 /**
  * mutt_hcache_fetch - fetch and validate a  message's header from the cache
- * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval ptr  Succees, data if found and valid
@@ -122,11 +122,11 @@ void mutt_hcache_close(header_cache_t *h);
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
  *       must be done before closing the header cache with mutt_hcache_close.
  */
-void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
+void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_fetch_raw - fetch a message's header from the cache
- * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval ptr  Success, the data if found
@@ -137,14 +137,14 @@ void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
  *       must be done before closing the header cache with mutt_hcache_close.
  */
-void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
+void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_free - free previously fetched data
- * @param h    Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc   Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param data Pointer to the data got using hcache_fetch or hcache_fetch_raw
  */
-void mutt_hcache_free(header_cache_t *h, void **data);
+void mutt_hcache_free(header_cache_t *hc, void **data);
 
 /**
  * mutt_hcache_restore - restore a Header from data retrieved from the cache
@@ -158,7 +158,7 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
 
 /**
  * mutt_hcache_store - store a Header along with a validity datum
- * @param h           Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc          Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key         Message identification string
  * @param keylen      Length of the string pointed to by key
  * @param e           Email to store
@@ -166,12 +166,12 @@ struct Email *mutt_hcache_restore(const unsigned char *d);
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
+int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity);
 
 /**
  * mutt_hcache_store_raw - store a key / data pair
- * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @param data   Payload to associate with key
@@ -179,18 +179,18 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @retval 0   success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
+int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
 /**
  * mutt_hcache_delete - delete a key / data pair
- * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
+ * @param hc     Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
+int mutt_hcache_delete(header_cache_t *hc, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_backend_list - get a list of backend identification strings

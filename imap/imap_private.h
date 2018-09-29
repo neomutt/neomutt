@@ -358,7 +358,7 @@ void imap_unmunge_mbox_name(struct ImapMboxData *mdata, char *s);
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset);
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next);
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter);
-int imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
+bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */

@@ -738,56 +738,50 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_parse_unmailboxes - Parse the 'unmailboxes' command
- * @param path Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_unmailboxes - Parse the 'unmailboxes' command - Implements ::command_t
  *
  * This is also used by 'unvirtual-mailboxes'
  */
-int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
+int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
 {
-  char buf[PATH_MAX];
+  char tmp[PATH_MAX];
   bool clear_all = false;
 
   while (!clear_all && MoreArgs(s))
   {
-    mutt_extract_token(path, s, 0);
+    mutt_extract_token(buf, s, 0);
 
-    if (mutt_str_strcmp(path->data, "*") == 0)
+    if (mutt_str_strcmp(buf->data, "*") == 0)
     {
       clear_all = true;
     }
     else
     {
 #ifdef USE_NOTMUCH
-      if (nm_path_probe(path->data, NULL) == MUTT_NOTMUCH)
+      if (nm_path_probe(buf->data, NULL) == MUTT_NOTMUCH)
       {
-        nm_normalize_uri(path->data, buf, sizeof(buf));
+        nm_normalize_uri(buf->data, tmp, sizeof(tmp));
       }
       else
 #endif
       {
-        mutt_str_strfcpy(buf, path->data, sizeof(buf));
-        mutt_expand_path(buf, sizeof(buf));
+        mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
+        mutt_expand_path(tmp, sizeof(tmp));
       }
     }
 
     struct MailboxNode *np = NULL;
-    struct MailboxNode *tmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, tmp)
+    struct MailboxNode *nptmp = NULL;
+    STAILQ_FOREACH_SAFE(np, &AllMailboxes, entries, nptmp)
     {
       /* Decide whether to delete all normal mailboxes or all virtual */
       bool virt = ((np->m->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
       bool norm = ((np->m->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt || norm);
 
-      if (clear_this || (mutt_str_strcasecmp(buf, np->m->path) == 0) ||
-          (mutt_str_strcasecmp(buf, np->m->desc) == 0))
+      if (clear_this || (mutt_str_strcasecmp(tmp, np->m->path) == 0) ||
+          (mutt_str_strcasecmp(tmp, np->m->desc) == 0))
       {
 #ifdef USE_SIDEBAR
         mutt_sb_notify_mailbox(np->m, false);

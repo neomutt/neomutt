@@ -262,12 +262,12 @@ int raw_socket_open(struct Connection *conn)
 /**
  * raw_socket_read - Read data from a socket - Implements Connection::conn_read()
  */
-int raw_socket_read(struct Connection *conn, char *buf, size_t len)
+int raw_socket_read(struct Connection *conn, char *buf, size_t count)
 {
   int rc;
 
   mutt_sig_allow_interrupt(1);
-  rc = read(conn->fd, buf, len);
+  rc = read(conn->fd, buf, count);
   if (rc == -1)
   {
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));

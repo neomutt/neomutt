@@ -86,13 +86,7 @@ void mutt_check_rescore(struct Context *ctx)
 }
 
 /**
- * mutt_parse_score - Parse the 'score' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_score - Parse the 'score' command - Implements ::command_t
  */
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
@@ -198,13 +192,7 @@ void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)
 }
 
 /**
- * mutt_parse_unscore - Parse the 'unscore' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_unscore - Parse the 'unscore' command - Implements ::command_t
  */
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)

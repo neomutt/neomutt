@@ -70,7 +70,7 @@ bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
-    return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
+    return (a1->flags & MUTT_ACCT_USER) && a1->user[0] ? false : true;
 #endif
 
   const char *user = NONULL(Username);

@@ -14333,7 +14333,7 @@ set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypt
 <emphasis role="comment"># modify (notmuch/imap) tags</emphasis>
 bind index,pager \` modify-labels
 <emphasis role="comment"># modify (notmuch/imap) tag non-interactively.</emphasis>
-bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
+macro index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># modify labels and then hide message</emphasis>
 <emphasis role="comment"># bind index,pager ??? modify-labels-then-hide</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>

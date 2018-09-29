@@ -563,7 +563,7 @@ void serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 
 /**
  * mutt_hcache_dump - Serialise a Header object
- * @param h           Header cache handle
+ * @param hc          Header cache handle
  * @param e           Email to serialise
  * @param off         Size of the binary blob
  * @param uidvalidity IMAP server identifier
@@ -572,7 +572,7 @@ void serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *of
  * This function transforms a e into a char so that it is useable by
  * db_store.
  */
-void *mutt_hcache_dump(header_cache_t *h, const struct Email *e, int *off, unsigned int uidvalidity)
+void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity)
 {
   struct Email nh;
   bool convert = !CharsetIsUtf8;
@@ -590,7 +590,7 @@ void *mutt_hcache_dump(header_cache_t *h, const struct Email *e, int *off, unsig
     memcpy(d, &uidvalidity, sizeof(uidvalidity));
   *off += sizeof(union Validate);
 
-  d = serial_dump_int(h->crc, d, off);
+  d = serial_dump_int(hc->crc, d, off);
 
   lazy_realloc(&d, *off + sizeof(struct Email));
   memcpy(&nh, e, sizeof(struct Email));

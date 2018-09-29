@@ -258,7 +258,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   if (!ops)
     return NULL;
 
-  header_cache_t *h = mutt_mem_calloc(1, sizeof(header_cache_t));
+  header_cache_t *hc = mutt_mem_calloc(1, sizeof(header_cache_t));
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0)
@@ -296,32 +296,32 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     hcachever = digest.intval;
   }
 
-  h->folder = get_foldername(folder);
-  h->crc = hcachever;
+  hc->folder = get_foldername(folder);
+  hc->crc = hcachever;
 
   if (!path || path[0] == '\0')
   {
-    FREE(&h->folder);
-    FREE(&h);
+    FREE(&hc->folder);
+    FREE(&hc);
     return NULL;
   }
 
-  path = hcache_per_folder(path, h->folder, namer);
+  path = hcache_per_folder(path, hc->folder, namer);
 
-  h->ctx = ops->open(path);
-  if (h->ctx)
-    return h;
+  hc->ctx = ops->open(path);
+  if (hc->ctx)
+    return hc;
   else
   {
     /* remove a possibly incompatible version */
     if (unlink(path) == 0)
     {
-      h->ctx = ops->open(path);
-      if (h->ctx)
-        return h;
+      hc->ctx = ops->open(path);
+      if (hc->ctx)
+        return hc;
     }
-    FREE(&h->folder);
-    FREE(&h);
+    FREE(&hc->folder);
+    FREE(&hc);
 
     return NULL;
   }
@@ -330,31 +330,31 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 /**
  * mutt_hcache_close - Multiplexor for HcacheOps::close
  */
-void mutt_hcache_close(header_cache_t *h)
+void mutt_hcache_close(header_cache_t *hc)
 {
   const struct HcacheOps *ops = hcache_get_ops();
-  if (!h || !ops)
+  if (!hc || !ops)
     return;
 
-  ops->close(&h->ctx);
-  FREE(&h->folder);
-  FREE(&h);
+  ops->close(&hc->ctx);
+  FREE(&hc->folder);
+  FREE(&hc);
 }
 
 /**
  * mutt_hcache_fetch - Multiplexor for HcacheOps::fetch
  */
-void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
+void *mutt_hcache_fetch(header_cache_t *hc, const char *key, size_t keylen)
 {
-  void *data = mutt_hcache_fetch_raw(h, key, keylen);
+  void *data = mutt_hcache_fetch_raw(hc, key, keylen);
   if (!data)
   {
     return NULL;
   }
 
-  if (!crc_matches(data, h->crc))
+  if (!crc_matches(data, hc->crc))
   {
-    mutt_hcache_free(h, &data);
+    mutt_hcache_free(hc, &data);
     return NULL;
   }
 
@@ -363,51 +363,51 @@ void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
 
 /**
  * mutt_hcache_fetch_raw - Find the data for a key in a database backend
- * @param h      Header cache handle
+ * @param hc     Header cache handle
  * @param key    A message identification string
  * @param keylen The length of the string pointed to by key
  */
-void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
+void *mutt_hcache_fetch_raw(header_cache_t *hc, const char *key, size_t keylen)
 {
   char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
-  if (!h || !ops)
+  if (!hc || !ops)
     return NULL;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", h->folder, key);
+  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
 
-  return ops->fetch(h->ctx, path, keylen);
+  return ops->fetch(hc->ctx, path, keylen);
 }
 
 /**
  * mutt_hcache_free - Multiplexor for HcacheOps::free
  */
-void mutt_hcache_free(header_cache_t *h, void **data)
+void mutt_hcache_free(header_cache_t *hc, void **data)
 {
   const struct HcacheOps *ops = hcache_get_ops();
 
-  if (!h || !ops)
+  if (!hc || !ops)
     return;
 
-  ops->free(h->ctx, data);
+  ops->free(hc->ctx, data);
 }
 
 /**
  * mutt_hcache_store - Multiplexor for HcacheOps::store
  */
-int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
+int mutt_hcache_store(header_cache_t *hc, const char *key, size_t keylen,
                       struct Email *e, unsigned int uidvalidity)
 {
   char *data = NULL;
   int dlen;
   int ret;
 
-  if (!h)
+  if (!hc)
     return -1;
 
-  data = mutt_hcache_dump(h, e, &dlen, uidvalidity);
-  ret = mutt_hcache_store_raw(h, key, keylen, data, dlen);
+  data = mutt_hcache_dump(hc, e, &dlen, uidvalidity);
+  ret = mutt_hcache_store_raw(hc, key, keylen, data, dlen);
 
   FREE(&data);
 
@@ -416,7 +416,7 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
 
 /**
  * mutt_hcache_store_raw - Store some data in a database backend
- * @param h      Header cache handle
+ * @param hc     Header cache handle
  * @param key    A message identification string
  * @param keylen The length of the string pointed to by key
  * @param data   Binary blob
@@ -424,34 +424,34 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
+int mutt_hcache_store_raw(header_cache_t *hc, const char *key, size_t keylen,
                           void *data, size_t dlen)
 {
   char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
-  if (!h || !ops)
+  if (!hc || !ops)
     return -1;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", h->folder, key);
+  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
 
-  return ops->store(h->ctx, path, keylen, data, dlen);
+  return ops->store(hc->ctx, path, keylen, data, dlen);
 }
 
 /**
  * mutt_hcache_delete - Multiplexor for HcacheOps::delete
  */
-int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
+int mutt_hcache_delete(header_cache_t *hc, const char *key, size_t keylen)
 {
   char path[PATH_MAX];
   const struct HcacheOps *ops = hcache_get_ops();
 
-  if (!h)
+  if (!hc)
     return -1;
 
-  keylen = snprintf(path, sizeof(path), "%s%s", h->folder, key);
+  keylen = snprintf(path, sizeof(path), "%s%s", hc->folder, key);
 
-  return ops->delete (h->ctx, path, keylen);
+  return ops->delete (hc->ctx, path, keylen);
 }
 
 /**
