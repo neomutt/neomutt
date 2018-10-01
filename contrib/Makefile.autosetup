@@ -10,7 +10,9 @@ clean-contrib:
 install-contrib:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples
 	for f in $(SAMPLES); do \
-		$(INSTALL) -m 644 $(SRCDIR)/contrib/$$f $(DESTDIR)$(docdir)/samples || exit 1; \
+		sed -e 's!/usr/libexec!$(libexecdir)!g' $(SRCDIR)/contrib/$$f > $(SRCDIR)/contrib/$$f.tmp; \
+		$(INSTALL) -m 644 $(SRCDIR)/contrib/$$f.tmp $(DESTDIR)$(docdir)/samples/$$f || exit 1; \
+		rm -f -- $(SRCDIR)/contrib/$$f.tmp; \
 	done
 	for d in $(CONTRIB_DIRS); do \
 		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
