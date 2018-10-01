@@ -34,6 +34,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
@@ -748,6 +749,108 @@ static bool mbox_has_new(struct Mailbox *mailbox)
         !mailbox->hdrs[i]->old)
       return true;
   return false;
+}
+
+/**
+ * fseek_last_message - Find the last message in the file
+ * @param f File to search
+ * @retval  0 Success
+ * @retval -1 No message found
+ */
+static int fseek_last_message(FILE *f)
+{
+  LOFF_T pos;
+  char buffer[BUFSIZ + 9] = { 0 }; /* 7 for "\n\nFrom " */
+  size_t bytes_read;
+
+  fseek(f, 0, SEEK_END);
+  pos = ftello(f);
+
+  /* Set `bytes_read' to the size of the last, probably partial, buffer;
+   * 0 < `bytes_read' <= `BUFSIZ'.  */
+  bytes_read = pos % BUFSIZ;
+  if (bytes_read == 0)
+    bytes_read = BUFSIZ;
+  /* Make `pos' a multiple of `BUFSIZ' (0 if the file is short), so that all
+   * reads will be on block boundaries, which might increase efficiency.  */
+  while ((pos -= bytes_read) >= 0)
+  {
+    /* we save in the buffer at the end the first 7 chars from the last read */
+    strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
+    fseeko(f, pos, SEEK_SET);
+    bytes_read = fread(buffer, sizeof(char), bytes_read, f);
+    if (bytes_read == 0)
+      return -1;
+    /* 'i' is Index into `buffer' for scanning.  */
+    for (int i = bytes_read; i >= 0; i--)
+    {
+      if (mutt_str_strncmp(buffer + i, "\n\nFrom ", mutt_str_strlen("\n\nFrom ")) == 0)
+      { /* found it - go to the beginning of the From */
+        fseeko(f, pos + i + 2, SEEK_SET);
+        return 0;
+      }
+    }
+    bytes_read = BUFSIZ;
+  }
+
+  /* here we are at the beginning of the file */
+  if (mutt_str_strncmp("From ", buffer, 5) == 0)
+  {
+    fseek(f, 0, SEEK_SET);
+    return 0;
+  }
+
+  return -1;
+}
+
+/**
+ * test_last_status_new - Is the last message new
+ * @param f File to check
+ * @retval true if the last message is new
+ */
+static bool test_last_status_new(FILE *f)
+{
+  struct Email *e = NULL;
+  struct Envelope *tmp_envelope = NULL;
+  bool result = false;
+
+  if (fseek_last_message(f) == -1)
+    return false;
+
+  e = mutt_email_new();
+  tmp_envelope = mutt_rfc822_read_header(f, e, false, false);
+  if (!(e->read || e->old))
+    result = true;
+
+  mutt_env_free(&tmp_envelope);
+  mutt_email_free(&e);
+
+  return result;
+}
+
+/**
+ * mbox_test_new_folder - Test if an mbox or mmdf mailbox has new mail
+ * @param path Path to the mailbox
+ * @retval bool true if the folder contains new mail
+ */
+bool mbox_test_new_folder(const char *path)
+{
+  FILE *f = NULL;
+  bool rc = false;
+
+  enum MailboxType magic = mx_path_probe(path, NULL);
+
+  if ((magic != MUTT_MBOX) && (magic != MUTT_MMDF))
+    return false;
+
+  f = fopen(path, "rb");
+  if (f)
+  {
+    rc = test_last_status_new(f);
+    mutt_file_fclose(&f);
+  }
+
+  return rc;
 }
 
 /**

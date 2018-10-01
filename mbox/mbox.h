@@ -33,6 +33,8 @@
 #ifndef MUTT_MBOX_MBOX_H
 #define MUTT_MBOX_MBOX_H
 
+#include <stdbool.h>
+
 struct Mailbox;
 struct stat;
 
@@ -43,5 +45,6 @@ extern struct MxOps mx_mmdf_ops;
 
 void mbox_reset_atime(struct Mailbox *mailbox, struct stat *st);
 int mbox_path_probe(const char *path, const struct stat *st);
+bool mbox_test_new_folder(const char *path);
 
 #endif /* MUTT_MBOX_MBOX_H */
