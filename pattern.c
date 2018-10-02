@@ -748,7 +748,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
     return true;
 
   /* Nope. */
-  mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
+  mutt_buffer_strcpy(err, _("No current message"));
   return false;
 }
 
@@ -882,7 +882,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   {
     if (!Context->menu)
     {
-      mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
+      mutt_buffer_strcpy(err, _("No current message"));
       return RANGE_E_CTX;
     }
     pat->max = CTX_MSGNO(Context);
@@ -911,7 +911,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   /* We need a Context for pretty much anything. */
   if (!Context)
   {
-    mutt_str_strfcpy(err->data, _("No Context"), err->dsize);
+    mutt_buffer_strcpy(err, _("No Context"));
     return false;
   }
 
@@ -1480,7 +1480,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   }
   if (!curlist)
   {
-    mutt_str_strfcpy(err->data, _("empty pattern"), err->dsize);
+    mutt_buffer_strcpy(err, _("empty pattern"));
     return NULL;
   }
   if (curlist->next)

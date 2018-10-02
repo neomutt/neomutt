@@ -149,7 +149,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (mutt_str_atoi(pc, &ptr->val) < 0)
   {
     FREE(&pattern);
-    mutt_str_strfcpy(err->data, _("Error: score: invalid number"), err->dsize);
+    mutt_buffer_strcpy(err, _("Error: score: invalid number"));
     return -1;
   }
   OptNeedRescore = true;

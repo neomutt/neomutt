@@ -1316,7 +1316,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
   /* make sure the macro sequence is not an empty string */
   if (!*buf->data)
   {
-    mutt_str_strfcpy(err->data, _("macro: empty key sequence"), err->dsize);
+    mutt_buffer_strcpy(err, _("macro: empty key sequence"));
   }
   else
   {
@@ -1364,7 +1364,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("exec: no arguments"), err->dsize);
+    mutt_buffer_strcpy(err, _("exec: no arguments"));
     return -1;
   }
 

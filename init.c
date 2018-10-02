@@ -541,7 +541,7 @@ static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
   {
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("-group: no group name"), err->dsize);
+      mutt_buffer_strcpy(err, _("-group: no group name"));
       goto bail;
     }
 
@@ -551,7 +551,7 @@ static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
 
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("out of arguments"), err->dsize);
+      mutt_buffer_strcpy(err, _("out of arguments"));
       goto bail;
     }
 
@@ -892,7 +892,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("alias: no address"), err->dsize);
+    mutt_buffer_strcpy(err, _("alias: no address"));
     return -1;
   }
 
@@ -1007,7 +1007,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
   {
-    mutt_str_strfcpy(err->data, _("attachments: no disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("attachments: no disposition"));
     return -1;
   }
 
@@ -1048,7 +1048,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("attachments: invalid disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("attachments: invalid disposition"));
     return -1;
   }
 
@@ -1328,7 +1328,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
   {
-    mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
+    mutt_buffer_strcpy(err, _("invalid header field"));
     return -1;
   }
   keylen = p - buf->data + 1;
@@ -1866,9 +1866,9 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     if (data == MUTT_SPAM)
-      mutt_str_strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+      mutt_buffer_strcpy(err, _("spam: no matching pattern"));
     else
-      mutt_str_strfcpy(err->data, _("nospam: no matching pattern"), err->dsize);
+      mutt_buffer_strcpy(err, _("nospam: no matching pattern"));
     return -1;
   }
 
@@ -1924,7 +1924,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   }
 
   /* This should not happen. */
-  mutt_str_strfcpy(err->data, "This is no good at all.", err->dsize);
+  mutt_buffer_strcpy(err, "This is no good at all.");
   return -1;
 }
 
@@ -2208,7 +2208,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
   {
-    mutt_str_strfcpy(err->data, _("unattachments: no disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("unattachments: no disposition"));
     return -1;
   }
 
@@ -2235,7 +2235,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("unattachments: invalid disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("unattachments: invalid disposition"));
     return -1;
   }
 
@@ -3201,8 +3201,8 @@ int mutt_query_variables(struct ListHead *queries)
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
     {
       mutt_buffer_reset(tmp);
-      size_t len = pretty_var(value->data, tmp);
-      mutt_str_strfcpy(value->data, tmp->data, len + 1);
+      pretty_var(value->data, tmp);
+      mutt_buffer_strcpy(value, tmp->data);
     }
 
     dump_config_neo(Config, he, value, NULL, 0);

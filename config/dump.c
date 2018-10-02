@@ -284,8 +284,8 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
           mutt_buffer_reset(tmp);
-          size_t len = pretty_var(value->data, tmp);
-          mutt_str_strfcpy(value->data, tmp->data, len + 1);
+          pretty_var(value->data, tmp);
+          mutt_buffer_strcpy(value, tmp->data);
         }
       }
 
@@ -306,8 +306,8 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
           mutt_buffer_reset(tmp);
-          size_t len = pretty_var(initial->data, tmp);
-          mutt_str_strfcpy(initial->data, tmp->data, len + 1);
+          pretty_var(initial->data, tmp);
+          mutt_buffer_strcpy(initial, tmp->data);
         }
       }
     }

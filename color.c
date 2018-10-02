@@ -1032,7 +1032,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
    * a rc file.
    */
   {
-    mutt_str_strfcpy(err->data, _("default colors not supported"), err->dsize);
+    mutt_buffer_strcpy(err, _("default colors not supported"));
     return -1;
   }
 #endif /* HAVE_USE_DEFAULT_COLORS */

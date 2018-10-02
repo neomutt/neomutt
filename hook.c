@@ -131,7 +131,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * common mistake */
     if ((*pattern.data == '^') && (!CurrentFolder))
     {
-      mutt_str_strfcpy(err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
+      mutt_buffer_strcpy(err, _("current mailbox shortcut '^' is unset"));
       goto error;
     }
 
@@ -142,7 +142,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * This is likely a mistake too */
     if (!*path && *pattern.data)
     {
-      mutt_str_strfcpy(err->data, _("mailbox shortcut expanded to empty regex"), err->dsize);
+      mutt_buffer_strcpy(err, _("mailbox shortcut expanded to empty regex"));
       goto error;
     }
 
@@ -155,7 +155,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     if (mutt_comp_valid_command(command.data) == 0)
     {
-      mutt_str_strfcpy(err->data, _("badly formatted command string"), err->dsize);
+      mutt_buffer_strcpy(err, _("badly formatted command string"));
       return -1;
     }
   }
