@@ -2334,9 +2334,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     bool do_new_mail = false;
 
-    if (Context && !OptAttachMsg)
+    if (Context && Context->mailbox && !OptAttachMsg)
     {
-      oldcount = Context ? Context->mailbox->msg_count : 0;
+      oldcount = Context->mailbox->msg_count;
       /* check for new mail */
       check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
