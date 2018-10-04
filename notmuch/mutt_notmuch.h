@@ -39,6 +39,7 @@
 
 struct Context;
 struct Email;
+struct NmMboxData;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 extern int   NmDbLimit;
@@ -62,6 +63,7 @@ void  nm_longrun_init            (struct Mailbox *mailbox, bool writable);
 bool  nm_message_is_still_queried(struct Mailbox *mailbox, struct Email *e);
 int   nm_nonctx_get_count        (char *path, int *all, int *new);
 bool  nm_normalize_uri           (const char *uri, char *buf, size_t buflen);
+void  nm_parse_type_from_query   (struct NmMboxData *data, char *buf);
 int   nm_path_probe              (const char *path, const struct stat *st);
 void  nm_query_window_backward   (void);
 void  nm_query_window_forward    (void);

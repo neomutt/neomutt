@@ -1856,6 +1856,36 @@ done:
 }
 
 /**
+ * Parse a query type out of a query.
+ * @param data Mailbox, used for the query_type
+ * @param buf  Buffer for URI
+ *
+ * If a user writes a query for a vfolder and includes a type= statement, that
+ * type= will be encoded, which Notmuch will treat as part of the query=
+ * statement. This method will remove the type= and set it within the Mailbox
+ * struct.
+ */
+void nm_parse_type_from_query(struct NmMboxData *data, char *buf)
+{
+  // The six variations of how type= could appear.
+  const char *variants[6] = { "&type=threads", "&type=messages",
+                              "type=threads&", "type=messages&",
+                              "type=threads",  "type=messages" };
+
+  int variants_size = mutt_array_size(variants);
+  for (int i = 0; i < variants_size; i++)
+  {
+    if (mutt_str_strcasestr(buf, variants[i]) != NULL)
+    {
+      // variants[] is setup such that type can be determined via modulo 2.
+      data->query_type = (i % 2) == 0 ? NM_QUERY_TYPE_THREADS : NM_QUERY_TYPE_MESGS;
+
+      mutt_str_remall_strcasestr(buf, variants[i]);
+    }
+  }
+}
+
+/**
  * nm_uri_from_query - Turn a query into a URI
  * @param mailbox Mailbox
  * @param buf     Buffer for URI
@@ -1872,6 +1902,8 @@ char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
 
   if (mdata)
   {
+    nm_parse_type_from_query(mdata, buf);
+
     if (get_limit(mdata) != NmDbLimit)
     {
       added = snprintf(uri, sizeof(uri),
