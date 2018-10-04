@@ -272,6 +272,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * @param buf      Buffer to store the result
  * @param buflen   Size of the buffer
  * @param do_lists Should we check for mailing lists?
+ * @param flags    Format flags, e.g. #MUTT_FORMAT_PLAIN
  *
  * Generate the %F or %L field in $index_format.
  * This is the author, or recipient of the email.
