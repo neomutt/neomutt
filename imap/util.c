@@ -222,13 +222,12 @@ void imap_clean_path(char *path, size_t plen)
 static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapMboxData *mdata)
 {
   int first = 1, state = 0;
-  bool match = false;
   unsigned int cur_uid = 0, last_uid = 0;
   unsigned int range_begin = 0, range_end = 0;
 
   for (unsigned int msn = 1; msn <= mdata->max_msn + 1; msn++)
   {
-    match = false;
+    bool match = false;
     if (msn <= mdata->max_msn)
     {
       struct Email *cur_header = mdata->msn_index[msn - 1];
@@ -1176,8 +1175,6 @@ struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
  */
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
 {
-  char *range_sep;
-
   if (!iter || !next)
     return -1;
 
@@ -1204,7 +1201,7 @@ int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next)
     else
       *(iter->substr_end) = '\0';
 
-    range_sep = strchr(iter->substr_cur, ':');
+    char *range_sep = strchr(iter->substr_cur, ':');
     if (range_sep)
       *range_sep++ = '\0';
 

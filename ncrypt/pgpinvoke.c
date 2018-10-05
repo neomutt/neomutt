@@ -524,12 +524,9 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)
 {
-  struct Buffer *uids = NULL;
   char quoted[HUGE_STRING];
 
-  pid_t rc;
-
-  uids = mutt_buffer_new();
+  struct Buffer *uids = mutt_buffer_new();
   mutt_buffer_increase_size(uids, HUGE_STRING);
 
   struct ListNode *np = NULL;
@@ -541,9 +538,9 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
       mutt_buffer_addch(uids, ' ');
   }
 
-  rc = pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0, NULL,
-                  NULL, uids->data,
-                  keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+  pid_t rc = pgp_invoke(
+      pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0, NULL, NULL, uids->data,
+      keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
 
   mutt_buffer_free(&uids);
   return rc;
