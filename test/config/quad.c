@@ -243,7 +243,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
   {
-    VarElderberry = i;
+    VarElderberry = valid[i];
     mutt_buffer_reset(err);
     rc = cs_str_string_get(cs, name, err);
     if (CSR_RESULT(rc) != CSR_SUCCESS)
