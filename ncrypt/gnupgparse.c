@@ -268,7 +268,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         time.tm_sec = 0;
         time.tm_min = 0;
         time.tm_hour = 12;
-        strncpy(tstr, p, 11);
+        mutt_str_strfcpy(tstr, p, sizeof(tstr));
         tstr[4] = '\0';
         tstr[7] = '\0';
         if (mutt_str_atoi(tstr, &time.tm_year) < 0)

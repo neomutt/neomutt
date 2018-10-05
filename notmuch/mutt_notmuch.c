@@ -1938,7 +1938,7 @@ char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
 
   url_pct_encode(&uri[added], sizeof(uri) - added, buf);
 
-  strncpy(buf, uri, buflen);
+  mutt_str_strfcpy(buf, uri, buflen);
   buf[buflen - 1] = '\0';
 
   mutt_debug(1, "nm: uri from query '%s'\n", buf);
@@ -1988,7 +1988,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
   if (!nm_uri_from_query(&tmp_mbox, tmp, sizeof(tmp)))
     goto gone;
 
-  strncpy(buf, tmp, buflen);
+  mutt_str_strfcpy(buf, tmp, buflen);
 
   mutt_debug(2, "#3 (%s) -> %s\n", uri, buf);
 
@@ -2243,7 +2243,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t buflen)
   {
     if ((np->m->magic == MUTT_NOTMUCH) && np->m->desc && (strcmp(desc, np->m->desc) == 0))
     {
-      strncpy(buf, np->m->path, buflen);
+      mutt_str_strfcpy(buf, np->m->path, buflen);
       buf[buflen - 1] = '\0';
       return 0;
     }
@@ -2585,7 +2585,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 
     if (edata->oldpath)
     {
-      strncpy(old, edata->oldpath, sizeof(old));
+      mutt_str_strfcpy(old, edata->oldpath, sizeof(old));
       old[sizeof(old) - 1] = '\0';
       mutt_debug(2, "nm: fixing obsolete path '%s'\n", old);
     }

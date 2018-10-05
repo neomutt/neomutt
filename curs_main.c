@@ -2070,7 +2070,7 @@ int mutt_index_menu(void)
           break;
         }
         nm_query_window_backward();
-        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_strfcpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
@@ -2089,7 +2089,7 @@ int mutt_index_menu(void)
           break;
         }
         nm_query_window_forward();
-        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
+        mutt_str_strfcpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
@@ -2150,7 +2150,7 @@ int mutt_index_menu(void)
           const char *path = mutt_sb_get_highlight();
           if (!path || !*path)
             break;
-          strncpy(buf, path, sizeof(buf));
+          mutt_str_strfcpy(buf, path, sizeof(buf));
 
           /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(buf);

@@ -483,7 +483,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
         case 'r':
           if (*p)
           {
-            strncpy(tmp, p, sizeof(tmp));
+            mutt_str_strfcpy(tmp, p, sizeof(tmp));
             mutt_expand_path(tmp, sizeof(tmp));
             buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }
