@@ -201,6 +201,22 @@ static void free_mboxdata(void **data)
 }
 
 /**
+ * string_to_query_type - Lookup a query type
+ * @param str String to lookup
+ * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
+ */
+static enum NmQueryType string_to_query_type(const char *str)
+{
+  if (mutt_str_strcmp(str, "threads") == 0)
+    return NM_QUERY_TYPE_THREADS;
+  else if (mutt_str_strcmp(str, "messages") == 0)
+    return NM_QUERY_TYPE_MESGS;
+
+  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
+  return NM_QUERY_TYPE_MESGS;
+}
+
+/**
  * new_mboxdata - Create a new NmMboxData object from a query
  * @param uri Notmuch query string
  * @retval ptr New NmMboxData struct
@@ -217,6 +233,7 @@ static struct NmMboxData *new_mboxdata(const char *uri)
   mutt_debug(1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
 
   mdata->db_limit = NmDbLimit;
+  mdata->query_type = string_to_query_type(NmQueryType);
   mdata->db_url_holder = mutt_str_strdup(uri);
 
   if (url_parse(&mdata->db_url, mdata->db_url_holder) < 0)
@@ -226,6 +243,28 @@ static struct NmMboxData *new_mboxdata(const char *uri)
     return NULL;
   }
   return mdata;
+}
+
+/**
+ * nm_get_default_data - Create a Mailbox with default Notmuch settings
+ * @retval ptr  Mailbox with default Notmuch settings
+ * @retval NULL Error, it's impossible to create an NmMboxData
+ */
+struct NmMboxData *nm_get_default_data(void)
+{
+  // path to DB + query + URI "decoration"
+  char uri[PATH_MAX + LONG_STRING + 32];
+
+  // Try to use NmDefaultUri or Folder.
+  // If neither are set, it is impossible to create a Notmuch URI.
+  if (NmDefaultUri)
+    snprintf(uri, sizeof(uri), "%s", NmDefaultUri);
+  else if (Folder)
+    snprintf(uri, sizeof(uri), "notmuch://%s", Folder);
+  else
+    return NULL;
+
+  return new_mboxdata(uri);
 }
 
 /**
@@ -290,22 +329,6 @@ static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 {
   snprintf(buf, buflen, "%s/%s", nm_email_get_folder(e), e->path);
   return buf;
-}
-
-/**
- * string_to_query_type - Lookup a query type
- * @param str String to lookup
- * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
- */
-static enum NmQueryType string_to_query_type(const char *str)
-{
-  if (mutt_str_strcmp(str, "threads") == 0)
-    return NM_QUERY_TYPE_THREADS;
-  else if (mutt_str_strcmp(str, "messages") == 0)
-    return NM_QUERY_TYPE_MESGS;
-
-  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
-  return NM_QUERY_TYPE_MESGS;
 }
 
 /**
@@ -1899,6 +1922,14 @@ char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
   struct NmMboxData *mdata = get_mboxdata(mailbox);
   char uri[PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
   int added;
+  bool using_default_data = false;
+
+  // No existing data. Try to get a default NmMboxData.
+  if (!mdata)
+  {
+    mdata = nm_get_default_data();
+    using_default_data = true;
+  }
 
   if (mdata)
   {
@@ -1917,16 +1948,6 @@ char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
                        query_type_to_string(mdata->query_type));
     }
   }
-  else if (NmDefaultUri)
-  {
-    added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
-                     query_type_to_string(string_to_query_type(NmQueryType)));
-  }
-  else if (Folder)
-  {
-    added = snprintf(uri, sizeof(uri), "notmuch://%s?type=%s&query=", Folder,
-                     query_type_to_string(string_to_query_type(NmQueryType)));
-  }
   else
     return NULL;
 
@@ -1940,6 +1961,9 @@ char *nm_uri_from_query(struct Mailbox *mailbox, char *buf, size_t buflen)
 
   mutt_str_strfcpy(buf, uri, buflen);
   buf[buflen - 1] = '\0';
+
+  if (using_default_data)
+    free_mboxdata((void **) mdata);
 
   mutt_debug(1, "nm: uri from query '%s'\n", buf);
   return buf;
