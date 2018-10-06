@@ -2870,6 +2870,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_create(64, 0);
 
   mutt_menu_init();
+  mutt_buffer_pool_init();
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
