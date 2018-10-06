@@ -386,13 +386,12 @@ int mutt_monitor_poll(void)
           {
             MonitorFilesChanged = 1;
             mutt_debug(3, "file change(s) detected\n");
-            int len;
             char *ptr = buf;
             const struct inotify_event *event;
 
             while (true)
             {
-              len = read(INotifyFd, buf, sizeof(buf));
+              int len = read(INotifyFd, buf, sizeof(buf));
               if (len == -1)
               {
                 if (errno != EAGAIN)

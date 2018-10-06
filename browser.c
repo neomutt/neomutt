@@ -632,7 +632,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       break;
 
     case 'f':
-      strncpy(fn, folder->ff->name, sizeof(fn) - 1);
+      mutt_str_strfcpy(fn, folder->ff->name, sizeof(fn));
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
       break;

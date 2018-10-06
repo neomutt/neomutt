@@ -2608,7 +2608,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 
   *buf = '\0';
   if (tags)
-    strncpy(buf, tags, buflen);
+    mutt_str_strfcpy(buf, tags, buflen);
 
   if (mutt_get_field("Tags: ", buf, buflen, 0) != 0)
     return -1;

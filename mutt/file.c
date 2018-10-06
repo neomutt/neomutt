@@ -91,11 +91,10 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
 {
   const char *basename = NULL;
   char parent[PATH_MAX];
-  char *p = NULL;
 
   mutt_str_strfcpy(parent, path, sizeof(parent));
 
-  p = strrchr(parent, '/');
+  char *p = strrchr(parent, '/');
   if (p)
   {
     *p = '\0';

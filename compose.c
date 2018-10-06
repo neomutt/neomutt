@@ -1255,9 +1255,8 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
         }
 
         /* traverse to see whether all the parts have Content-Language: set */
-        struct Body *b = msg->content;
         int tagged_with_lang_num = 0;
-        for (i = 0; b; b = b->next)
+        for (struct Body *b = msg->content; b; b = b->next)
           if (b->tagged && b->language && *b->language)
             tagged_with_lang_num++;
 

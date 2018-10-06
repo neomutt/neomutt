@@ -203,7 +203,8 @@ static void be_free_memory(char **buf, int buflen)
 static char **be_include_messages(char *msg, char **buf, int *bufmax,
                                   int *buflen, int pfx, int inc_hdrs)
 {
-  int offset, bytes, n;
+  int n;
+  // int offset, bytes;
   char tmp[LONG_STRING];
 
   if (!msg || !buf || !bufmax || !buflen)
@@ -229,6 +230,9 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = mutt_str_strdup(tmp);
 
+#if 0
+      /* This only worked for mbox Mailboxes because they had Context->fp set.
+       * As that no longer exists, the code is now completely broken. */
       bytes = Context->mailbox->hdrs[n]->content->length;
       if (inc_hdrs)
       {
@@ -237,9 +241,8 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       }
       else
         offset = Context->mailbox->hdrs[n]->content->offset;
-      /* This only worked for mbox Mailboxes because they had Context->fp set.
-       * As that no longer exists, the code is now completely broken. */
-      // buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
+      buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
+#endif
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
@@ -480,7 +483,7 @@ int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
         case 'r':
           if (*p)
           {
-            strncpy(tmp, p, sizeof(tmp));
+            mutt_str_strfcpy(tmp, p, sizeof(tmp));
             mutt_expand_path(tmp, sizeof(tmp));
             buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }

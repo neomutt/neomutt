@@ -836,7 +836,6 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
   regmatch_t pmatch_internal[1], smatch[1];
-  char c;
 
   if (!pmatch)
     pmatch = pmatch_internal;
@@ -847,7 +846,7 @@ int mutt_is_quote_line(char *line, regmatch_t *pmatch)
     {
       if (smatch[0].rm_so > 0)
       {
-        c = line[smatch[0].rm_so];
+        char c = line[smatch[0].rm_so];
         line[smatch[0].rm_so] = 0;
 
         if (regexec(QuoteRegex->regex, line, 1, pmatch, 0) == 0)

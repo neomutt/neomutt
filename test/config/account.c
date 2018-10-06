@@ -164,8 +164,8 @@ void config_account(void)
 
   const char *name = "fruit:Apple";
   mutt_buffer_reset(&err);
-  int result = cs_str_string_get(cs, name, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_str_string_get(cs, name, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = '%s'\n", name, err.data);
   }
@@ -176,8 +176,8 @@ void config_account(void)
   }
 
   mutt_buffer_reset(&err);
-  result = cs_str_native_set(cs, name, 42, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_str_native_set(cs, name, 42, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }
@@ -192,19 +192,15 @@ void config_account(void)
     return;
 
   mutt_buffer_reset(&err);
-  result = cs_str_initial_set(cs, name, "42", &err);
+  rc = cs_str_initial_set(cs, name, "42", &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error\n");
-  }
-  else
-  {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("%s\n", err.data);
     return;
   }
 
   mutt_buffer_reset(&err);
-  result = cs_str_initial_get(cs, name, &err);
+  rc = cs_str_initial_get(cs, name, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error\n");
@@ -221,8 +217,8 @@ void config_account(void)
     return;
 
   mutt_buffer_reset(&err);
-  result = cs_he_native_set(cs, he, 42, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_he_native_set(cs, he, 42, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }

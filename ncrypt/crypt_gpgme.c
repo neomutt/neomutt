@@ -4564,9 +4564,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
     if (match)
     {
-      struct CryptKeyInfo *tmp = NULL;
-
-      tmp = crypt_copy_key(k);
+      struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
       matches_endp = &tmp->next;
 
@@ -4656,11 +4654,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      struct CryptKeyInfo *tmp = NULL;
-
       mutt_debug(5, "match.\n");
 
-      tmp = crypt_copy_key(k);
+      struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
       matches_endp = &tmp->next;
     }

@@ -1191,14 +1191,13 @@ bail:
 static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  bool res = false;
   struct Buffer token = { 0 };
 
   mutt_extract_token(buf, s, 0);
 
   /* is the item defined as a variable? */
   struct HashElem *he = cs_get_elem(Config, buf->data);
-  res = (he != NULL);
+  bool res = (he != NULL);
 
   /* is the item a compiled-in feature? */
   if (!res)

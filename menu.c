@@ -317,7 +317,7 @@ static void menu_make_entry(char *buf, size_t buflen, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
-    strncpy(buf, menu->dialog[i], buflen);
+    mutt_str_strfcpy(buf, menu->dialog[i], buflen);
     menu->current = -1; /* hide menubar */
   }
   else

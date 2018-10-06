@@ -820,11 +820,10 @@ int mix_check_message(struct Email *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  struct Buffer *cmd = NULL;
   char cd_quoted[STRING];
   int i = 0;
 
-  cmd = mutt_buffer_new();
+  struct Buffer *cmd = mutt_buffer_new();
   mutt_buffer_increase_size(cmd, HUGE_STRING);
   mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, Mixmaster);
 
