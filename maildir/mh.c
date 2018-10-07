@@ -1641,6 +1641,9 @@ static int mh_sync_message(struct Context *ctx, int msgno)
 static int maildir_sync_message(struct Context *ctx, int msgno)
 {
   struct Email *e = ctx->mailbox->hdrs[msgno];
+  struct Buffer *newpath = NULL, *partpath = NULL, *fullpath = NULL, *oldpath = NULL;
+  char suffix[16];
+  int rc = 0;
 
   if (e->attach_del || e->xlabel_changed ||
       (e->env && (e->env->refs_changed || e->env->irt_changed)))
@@ -1653,12 +1656,6 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
   {
     /* we just have to rename the file. */
 
-    char newpath[PATH_MAX];
-    char partpath[PATH_MAX];
-    char fullpath[PATH_MAX];
-    char oldpath[PATH_MAX];
-    char suffix[16];
-
     char *p = strrchr(e->path, '/');
     if (!p)
     {
@@ -1666,37 +1663,52 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
       return -1;
     }
     p++;
-    mutt_str_strfcpy(newpath, p, sizeof(newpath));
+    newpath = mutt_buffer_pool_get();
+    partpath = mutt_buffer_pool_get();
+    fullpath = mutt_buffer_pool_get();
+    oldpath = mutt_buffer_pool_get();
 
-    /* kill the previous flags */
-    p = strchr(newpath, ':');
-    if (p)
+    mutt_buffer_strcpy(newpath, p);
+
+    /* kill the previous flags. */
+    if ((p = strchr(newpath->data, ':')) != NULL)
+    {
       *p = '\0';
+      newpath->dptr = p; /* fix buffer up, just to be safe */
+    }
 
     maildir_gen_flags(suffix, sizeof(suffix), e);
 
-    snprintf(partpath, sizeof(partpath), "%s/%s%s",
-             (e->read || e->old) ? "cur" : "new", newpath, suffix);
-    snprintf(fullpath, sizeof(fullpath), "%s/%s", ctx->mailbox->path, partpath);
-    snprintf(oldpath, sizeof(oldpath), "%s/%s", ctx->mailbox->path, e->path);
+    mutt_buffer_printf(partpath, "%s/%s%s", (e->read || e->old) ? "cur" : "new",
+                       mutt_b2s(newpath), suffix);
+    mutt_buffer_printf(fullpath, "%s/%s", ctx->mailbox->path, mutt_b2s(partpath));
+    mutt_buffer_printf(oldpath, "%s/%s", ctx->mailbox->path, e->path);
 
-    if (mutt_str_strcmp(fullpath, oldpath) == 0)
+    if (mutt_str_strcmp(mutt_b2s(fullpath), mutt_b2s(oldpath)) == 0)
     {
       /* message hasn't really changed */
-      return 0;
+      goto cleanup;
     }
 
     /* record that the message is possibly marked as trashed on disk */
     e->trash = e->deleted;
 
-    if (rename(oldpath, fullpath) != 0)
+    if (rename(mutt_b2s(oldpath), mutt_b2s(fullpath)) != 0)
     {
       mutt_perror("rename");
-      return -1;
+      rc = -1;
+      goto cleanup;
     }
-    mutt_str_replace(&e->path, partpath);
+    mutt_str_replace(&e->path, mutt_b2s(partpath));
   }
-  return 0;
+
+cleanup:
+  mutt_buffer_pool_release(&newpath);
+  mutt_buffer_pool_release(&partpath);
+  mutt_buffer_pool_release(&fullpath);
+  mutt_buffer_pool_release(&oldpath);
+
+  return rc;
 }
 
 /**
