@@ -2559,13 +2559,13 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   struct Progress progress;
   char *uri = ctx->mailbox->path;
   bool changed = false;
+  char msgbuf[PATH_MAX + 64];
 
   mutt_debug(1, "nm: sync start ...\n");
 
   if (!ctx->mailbox->quiet)
   {
     /* all is in this function so we don't use data->progress here */
-    char msgbuf[PATH_MAX + 64];
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
                        ctx->mailbox->msg_count);
