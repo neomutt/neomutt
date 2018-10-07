@@ -1452,8 +1452,8 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
 {
   char subdir[4];
   char suffix[16];
-  char path[PATH_MAX];
-  char full[PATH_MAX];
+  int rc = 0;
+  struct Buffer *path = NULL, *full = NULL;
 
   if (mutt_file_fsync_close(&msg->fp))
   {
@@ -1473,15 +1473,17 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
     suffix[0] = '\0';
 
   /* construct a new file name. */
+  path = mutt_buffer_pool_get();
+  full = mutt_buffer_pool_get();
   while (true)
   {
-    snprintf(path, sizeof(path), "%s/%lld.R%" PRIu64 ".%s%s", subdir,
-             (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
-    snprintf(full, sizeof(full), "%s/%s", mailbox->path, path);
+    mutt_buffer_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir, (long long) time(NULL),
+                       mutt_rand64(), NONULL(ShortHostname), suffix);
+    mutt_buffer_printf(full, "%s/%s", mailbox->path, mutt_b2s(path));
 
-    mutt_debug(2, "renaming %s to %s.\n", msg->path, full);
+    mutt_debug(2, "renaming %s to %s.\n", msg->path, mutt_b2s(full));
 
-    if (mutt_file_safe_rename(msg->path, full) == 0)
+    if (mutt_file_safe_rename(msg->path, mutt_b2s(full)) == 0)
     {
       /* Adjust the mtime on the file to match the time at which this
        * message was received.  Currently this is only set when copying
@@ -1494,33 +1496,38 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
 
         ut.actime = msg->received;
         ut.modtime = msg->received;
-        if (utime(full, &ut))
+        if (utime(mutt_b2s(full), &ut))
         {
           mutt_perror(_("md_commit_message(): unable to set time on file"));
-          goto post_rename_err;
+          rc = -1;
+          goto cleanup;
         }
       }
 
 #ifdef USE_NOTMUCH
       if (mailbox->magic == MUTT_NOTMUCH)
-        nm_update_filename(mailbox, e->path, full, e);
+        nm_update_filename(mailbox, e->path, mutt_b2s(full), e);
 #endif
       if (e)
-        mutt_str_replace(&e->path, path);
-      mutt_str_replace(&msg->committed_path, full);
+        mutt_str_replace(&e->path, mutt_b2s(path));
+      mutt_str_replace(&msg->committed_path, mutt_b2s(full));
       FREE(&msg->path);
 
-      return 0;
-
-    post_rename_err:
-      return -1;
+      goto cleanup;
     }
     else if (errno != EEXIST)
     {
       mutt_perror(mailbox->path);
-      return -1;
+      rc = -1;
+      goto cleanup;
     }
   }
+
+cleanup:
+  mutt_buffer_pool_release(&path);
+  mutt_buffer_pool_release(&full);
+
+  return rc;
 }
 
 /**
