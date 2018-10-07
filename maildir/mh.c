@@ -740,22 +740,27 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
                              const char *subdir, int *count, struct Progress *progress)
 {
   struct dirent *de = NULL;
-  char buf[PATH_MAX];
-  int is_old = 0;
+  struct Buffer *buf = NULL;
+  int rc = 0, is_old = 0;
   struct Maildir *entry = NULL;
   struct Email *e = NULL;
 
+  buf = mutt_buffer_pool_get();
+
   if (subdir)
   {
-    snprintf(buf, sizeof(buf), "%s/%s", mailbox->path, subdir);
+    mutt_buffer_printf(buf, "%s/%s", mailbox->path, subdir);
     is_old = MarkOld ? (mutt_str_strcmp("cur", subdir) == 0) : false;
   }
   else
-    mutt_str_strfcpy(buf, mailbox->path, sizeof(buf));
+    mutt_buffer_strcpy(buf, mailbox->path);
 
-  DIR *dirp = opendir(buf);
+  DIR *dirp = opendir(mutt_b2s(buf));
   if (!dirp)
-    return -1;
+  {
+    rc = -1;
+    goto cleanup;
+  }
 
   while (((de = readdir(dirp))) && (SigInt != 1))
   {
@@ -782,9 +787,8 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
 
     if (subdir)
     {
-      char tmp[LONG_STRING];
-      snprintf(tmp, sizeof(tmp), "%s/%s", subdir, de->d_name);
-      e->path = mutt_str_strdup(tmp);
+      mutt_buffer_printf(buf, "%s/%s", subdir, de->d_name);
+      e->path = mutt_str_strdup(mutt_b2s(buf));
     }
     else
       e->path = mutt_str_strdup(de->d_name);
@@ -804,7 +808,10 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
     return -2; /* action aborted */
   }
 
-  return 0;
+cleanup:
+  mutt_buffer_pool_release(&buf);
+
+  return rc;
 }
 
 /**
