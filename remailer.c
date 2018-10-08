@@ -823,8 +823,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   char cd_quoted[STRING];
   int i = 0;
 
-  struct Buffer *cmd = mutt_buffer_new();
-  mutt_buffer_increase_size(cmd, HUGE_STRING);
+  struct Buffer *cmd = mutt_buffer_pool_get();
   mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, Mixmaster);
 
   struct ListNode *np = NULL;
@@ -849,7 +848,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
     }
   }
 
-  mutt_buffer_free(&cmd);
+  mutt_buffer_pool_release(&cmd);
   unlink(tempfile);
   return i;
 }
