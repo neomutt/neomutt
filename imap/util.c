@@ -261,9 +261,9 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapAccountDat
         mutt_buffer_addch(b, ',');
 
       if (state == 1)
-        mutt_buffer_printf(b, "%u", range_begin);
+        mutt_buffer_add_printf(b, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_printf(b, "%u:%u", range_begin, range_end);
+        mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
 
       state = 1;
       range_begin = cur_uid;

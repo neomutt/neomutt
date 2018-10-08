@@ -234,22 +234,22 @@ static int make_msg_set(struct ImapAccountData *adata, struct Buffer *buf,
         setstart = IMAP_EDATA(emails[n])->uid;
         if (!started)
         {
-          mutt_buffer_printf(buf, "%u", IMAP_EDATA(emails[n])->uid);
+          mutt_buffer_add_printf(buf, "%u", IMAP_EDATA(emails[n])->uid);
           started = true;
         }
         else
-          mutt_buffer_printf(buf, ",%u", IMAP_EDATA(emails[n])->uid);
+          mutt_buffer_add_printf(buf, ",%u", IMAP_EDATA(emails[n])->uid);
       }
       /* tie up if the last message also matches */
       else if (n == adata->ctx->mailbox->msg_count - 1)
-        mutt_buffer_printf(buf, ":%u", IMAP_EDATA(emails[n])->uid);
+        mutt_buffer_add_printf(buf, ":%u", IMAP_EDATA(emails[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
     else if (setstart && (emails[n]->active || n == adata->ctx->mailbox->msg_count - 1))
     {
       if (IMAP_EDATA(emails[n - 1])->uid > setstart)
-        mutt_buffer_printf(buf, ":%u", IMAP_EDATA(emails[n - 1])->uid);
+        mutt_buffer_add_printf(buf, ":%u", IMAP_EDATA(emails[n - 1])->uid);
       setstart = 0;
     }
   }
@@ -1221,11 +1221,11 @@ int imap_exec_msgset(struct ImapAccountData *adata, const char *pre,
   do
   {
     cmd->dptr = cmd->data;
-    mutt_buffer_printf(cmd, "%s ", pre);
+    mutt_buffer_add_printf(cmd, "%s ", pre);
     rc = make_msg_set(adata, cmd, flag, changed, invert, &pos);
     if (rc > 0)
     {
-      mutt_buffer_printf(cmd, " %s", post);
+      mutt_buffer_add_printf(cmd, " %s", post);
       if (imap_exec(adata, cmd->data, IMAP_CMD_QUEUE))
       {
         rc = -1;

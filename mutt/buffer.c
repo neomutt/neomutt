@@ -146,21 +146,20 @@ void mutt_buffer_free(struct Buffer **p)
 }
 
 /**
- * mutt_buffer_printf - Format a string into a Buffer
+ * buffer_printf - Format a string into a Buffer
  * @param buf Buffer
  * @param fmt printf-style format string
- * @param ... Arguments to be formatted
+ * @param ap  Arguments to be formatted
  * @retval num Characters written
  */
-int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
+static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
 {
   if (!buf)
     return 0;
 
-  va_list ap, ap_retry;
+  va_list ap_retry;
   int len, blen, doff;
 
-  va_start(ap, fmt);
   va_copy(ap_retry, ap);
 
   if (!buf->dptr)
@@ -186,8 +185,44 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
   if (len > 0)
     buf->dptr += len;
 
-  va_end(ap);
   va_end(ap_retry);
+
+  return len;
+}
+
+/**
+ * mutt_buffer_printf - Format a string overwriting a Buffer
+ * @param buf Buffer
+ * @param fmt printf-style format string
+ * @param ... Arguments to be formatted
+ * @retval num Characters written
+ */
+int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
+{
+  va_list ap;
+
+  va_start(ap, fmt);
+  mutt_buffer_reset(buf);
+  int len = buffer_printf(buf, fmt, ap);
+  va_end(ap);
+
+  return len;
+}
+
+/**
+ * mutt_buffer_add_printf - Format a string appending a Buffer
+ * @param buf Buffer
+ * @param fmt printf-style format string
+ * @param ... Arguments to be formatted
+ * @retval num Characters written
+ */
+int mutt_buffer_add_printf(struct Buffer *buf, const char *fmt, ...)
+{
+  va_list ap;
+
+  va_start(ap, fmt);
+  int len = buffer_printf(buf, fmt, ap);
+  va_end(ap);
 
   return len;
 }

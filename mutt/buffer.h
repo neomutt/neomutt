@@ -46,6 +46,7 @@ struct Buffer
 size_t         mutt_buffer_add          (struct Buffer *buf, const char *s, size_t len);
 size_t         mutt_buffer_addch        (struct Buffer *buf, char c);
 size_t         mutt_buffer_addstr       (struct Buffer *buf, const char *s);
+int            mutt_buffer_add_printf   (struct Buffer *buf, const char *fmt, ...);
 struct Buffer *mutt_buffer_alloc        (size_t size);
 void           mutt_buffer_free         (struct Buffer **p);
 struct Buffer *mutt_buffer_from         (const char *seed);
