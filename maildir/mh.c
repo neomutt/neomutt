@@ -817,10 +817,14 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 {
   int oldmsgcount = ctx->mailbox->msg_count;
 
-  /* Allocate some memory to get started */
-  ctx->mailbox->msg_count = 1;
-  mx_alloc_memory(ctx->mailbox);
-  ctx->mailbox->msg_count = 0;
+  if (!ctx->mailbox->hdrs)
+  {
+    /* Allocate some memory to get started */
+    ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
+    ctx->mailbox->msg_count = 0;
+    ctx->mailbox->vcount = 0;
+    mx_alloc_memory(ctx->mailbox);
+  }
 
   while (md)
   {
