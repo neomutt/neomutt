@@ -2410,7 +2410,7 @@ static int imap_mbox_open(struct Context *ctx)
       mutt_buffer_printf(&flag_buffer, "Mailbox flags: ");
       STAILQ_FOREACH(np, &adata->flags, entries)
       {
-        mutt_buffer_printf(&flag_buffer, "[%s] ", np->data);
+        mutt_buffer_add_printf(&flag_buffer, "[%s] ", np->data);
       }
       mutt_debug(3, "%s\n", flag_buffer.data);
       FREE(&flag_buffer.data);
