@@ -122,16 +122,14 @@ void mailbox_free(struct Mailbox **mailbox)
 static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_name,
                                      bool check_new, bool check_stats)
 {
-  struct Buffer *path = NULL;
-  struct Buffer *msgpath = NULL;
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
   int rc = 0;
   struct stat sb;
 
-  path = mutt_buffer_pool_get();
-  msgpath = mutt_buffer_pool_get();
+  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *msgpath = mutt_buffer_pool_get();
   mutt_buffer_printf(path, "%s/%s", mailbox->path, dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since

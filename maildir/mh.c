@@ -740,12 +740,11 @@ static int maildir_parse_dir(struct Mailbox *mailbox, struct Maildir ***last,
                              const char *subdir, int *count, struct Progress *progress)
 {
   struct dirent *de = NULL;
-  struct Buffer *buf = NULL;
   int rc = 0, is_old = 0;
   struct Maildir *entry = NULL;
   struct Email *e = NULL;
 
-  buf = mutt_buffer_pool_get();
+  struct Buffer *buf = mutt_buffer_pool_get();
 
   if (subdir)
   {
@@ -1453,7 +1452,6 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
   char subdir[4];
   char suffix[16];
   int rc = 0;
-  struct Buffer *path = NULL, *full = NULL;
 
   if (mutt_file_fsync_close(&msg->fp))
   {
@@ -1473,8 +1471,8 @@ static int md_commit_message(struct Mailbox *mailbox, struct Message *msg, struc
     suffix[0] = '\0';
 
   /* construct a new file name. */
-  path = mutt_buffer_pool_get();
-  full = mutt_buffer_pool_get();
+  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *full = mutt_buffer_pool_get();
   while (true)
   {
     mutt_buffer_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir, (long long) time(NULL),
@@ -1641,7 +1639,10 @@ static int mh_sync_message(struct Context *ctx, int msgno)
 static int maildir_sync_message(struct Context *ctx, int msgno)
 {
   struct Email *e = ctx->mailbox->hdrs[msgno];
-  struct Buffer *newpath = NULL, *partpath = NULL, *fullpath = NULL, *oldpath = NULL;
+  struct Buffer *newpath = NULL;
+  struct Buffer *partpath = NULL;
+  struct Buffer *fullpath = NULL;
+  struct Buffer *oldpath = NULL;
   char suffix[16];
   int rc = 0;
 
@@ -1670,8 +1671,9 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
 
     mutt_buffer_strcpy(newpath, p);
 
-    /* kill the previous flags. */
-    if ((p = strchr(newpath->data, ':')) != NULL)
+    /* kill the previous flags */
+    p = strchr(newpath->data, ':');
+    if (p)
     {
       *p = '\0';
       newpath->dptr = p; /* fix buffer up, just to be safe */
@@ -1797,7 +1799,7 @@ static FILE *md_open_find_message(const char *folder, const char *unique,
   {
     maildir_canon_filename(tunique, de->d_name);
 
-    if (!mutt_str_strcmp(mutt_b2s(tunique), unique))
+    if (mutt_str_strcmp(mutt_b2s(tunique), unique) == 0)
     {
       mutt_buffer_printf(fname, "%s/%s/%s", folder, subfolder, de->d_name);
       fp = fopen(mutt_b2s(fname), "r");
@@ -2204,11 +2206,9 @@ bool maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n)
  */
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname)
 {
-  struct Buffer *unique = NULL;
-
   static unsigned int new_hits = 0, cur_hits = 0; /* simple dynamic optimization */
 
-  unique = mutt_buffer_pool_get();
+  struct Buffer *unique = mutt_buffer_pool_get();
   maildir_canon_filename(unique, msg);
 
   FILE *fp = md_open_find_message(folder, mutt_b2s(unique),
@@ -2385,7 +2385,6 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct stat st_new; /* status of the "new" subdirectory */
   struct stat st_cur; /* status of the "cur" subdirectory */
-  struct Buffer *buf = NULL;
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
   bool occult = false;        /* messages were removed from the mailbox */
@@ -2402,7 +2401,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   if (!CheckNew)
     return 0;
 
-  buf = mutt_buffer_pool_get();
+  struct Buffer *buf = mutt_buffer_pool_get();
   mutt_buffer_printf(buf, "%s/new", ctx->mailbox->path);
   if (stat(mutt_b2s(buf), &st_new) == -1)
   {

@@ -777,8 +777,8 @@ void imap_logout_all(void)
  * @note Strips `\r` from `\r\n`.
  *       Apparently even literals use `\r\n`-terminated strings ?!
  */
-int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes,
-                      struct Progress *pbar)
+int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
+                      unsigned long bytes, struct Progress *pbar)
 {
   char c;
   bool r = false;
@@ -1606,7 +1606,8 @@ int imap_status(const char *path, bool queue)
  *
  * return cached mailbox stats or NULL if create is 0
  */
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, const char *mbox, bool create)
+struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata,
+                                      const char *mbox, bool create)
 {
   struct ImapStatus *status = NULL;
   struct ListNode *np = NULL;

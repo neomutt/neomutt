@@ -997,7 +997,8 @@ void imap_unquote_string(char *s)
  * @param dlen  Length of buffer
  * @param src   Mailbox name
  */
-void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest, size_t dlen, const char *src)
+void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest,
+                          size_t dlen, const char *src)
 {
   char *buf = mutt_str_strdup(src);
   imap_utf_encode(adata, &buf);

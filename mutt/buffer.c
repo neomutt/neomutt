@@ -122,7 +122,7 @@ size_t mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
     return 0;
 
   if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
-    mutt_buffer_increase_size(buf, buf->dsize + (len < 128 ? 128 : len + 1));
+    mutt_buffer_increase_size(buf, buf->dsize + ((len < 128) ? 128 : len + 1));
   if (!buf->dptr)
     return 0;
   memcpy(buf->dptr, s, len);
