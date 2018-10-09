@@ -2340,7 +2340,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       check = mx_mbox_check(Context, &index_hint);
       if (check < 0)
       {
-        if (Context->mailbox->path[0] == '\0')
+        if (!Context->mailbox || Context->mailbox->path[0] == '\0')
         {
           /* fatal error occurred */
           mutt_context_free(&Context);
