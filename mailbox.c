@@ -122,22 +122,22 @@ void mailbox_free(struct Mailbox **mailbox)
 static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_name,
                                      bool check_new, bool check_stats)
 {
-  char path[PATH_MAX];
-  char msgpath[PATH_MAX];
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
   int rc = 0;
   struct stat sb;
 
-  snprintf(path, sizeof(path), "%s/%s", mailbox->path, dir_name);
+  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *msgpath = mutt_buffer_pool_get();
+  mutt_buffer_printf(path, "%s/%s", mailbox->path, dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the mailbox, then we know there is no recent mail.
    */
   if (check_new && MailCheckRecent)
   {
-    if ((stat(path, &sb) == 0) &&
+    if (stat(mutt_b2s(path), &sb) == 0 &&
         mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &mailbox->last_visited) < 0)
     {
       rc = 0;
@@ -146,13 +146,14 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
   }
 
   if (!(check_new || check_stats))
-    return rc;
+    goto cleanup;
 
-  dirp = opendir(path);
+  dirp = opendir(mutt_b2s(path));
   if (!dirp)
   {
     mailbox->magic = MUTT_UNKNOWN;
-    return 0;
+    rc = 0;
+    goto cleanup;
   }
 
   while ((de = readdir(dirp)))
@@ -178,9 +179,9 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
       {
         if (MailCheckRecent)
         {
-          snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
+          mutt_buffer_printf(msgpath, "%s/%s", mutt_b2s(path), de->d_name);
           /* ensure this message was received since leaving this mailbox */
-          if (stat(msgpath, &sb) == 0 &&
+          if (stat(mutt_b2s(msgpath), &sb) == 0 &&
               (mutt_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &mailbox->last_visited) <= 0))
           {
             continue;
@@ -196,6 +197,10 @@ static int mailbox_maildir_check_dir(struct Mailbox *mailbox, const char *dir_na
   }
 
   closedir(dirp);
+
+cleanup:
+  mutt_buffer_pool_release(&path);
+  mutt_buffer_pool_release(&msgpath);
 
   return rc;
 }

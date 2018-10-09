@@ -261,9 +261,9 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapAccountDat
         mutt_buffer_addch(b, ',');
 
       if (state == 1)
-        mutt_buffer_printf(b, "%u", range_begin);
+        mutt_buffer_add_printf(b, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_printf(b, "%u:%u", range_begin, range_end);
+        mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
 
       state = 1;
       range_begin = cur_uid;
@@ -997,7 +997,8 @@ void imap_unquote_string(char *s)
  * @param dlen  Length of buffer
  * @param src   Mailbox name
  */
-void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest, size_t dlen, const char *src)
+void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest,
+                          size_t dlen, const char *src)
 {
   char *buf = mutt_str_strdup(src);
   imap_utf_encode(adata, &buf);

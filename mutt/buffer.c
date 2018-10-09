@@ -33,8 +33,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
+
+static size_t BufferPoolCount = 0;
+static size_t BufferPoolLen = 0;
+static struct Buffer **BufferPool = NULL;
 
 /**
  * mutt_buffer_new - Create and initialise a Buffer
@@ -53,32 +58,32 @@ struct Buffer *mutt_buffer_new(void)
 
 /**
  * mutt_buffer_init - Initialise a new Buffer
- * @param b Buffer to initialise
+ * @param buf Buffer to initialise
  * @retval ptr Initialised Buffer
  *
  * This must not be called on a Buffer that already contains data.
  */
-struct Buffer *mutt_buffer_init(struct Buffer *b)
+struct Buffer *mutt_buffer_init(struct Buffer *buf)
 {
-  if (!b)
+  if (!buf)
     return NULL;
-  memset(b, 0, sizeof(struct Buffer));
-  return b;
+  memset(buf, 0, sizeof(struct Buffer));
+  return buf;
 }
 
 /**
  * mutt_buffer_reset - Reset an existing Buffer
- * @param b Buffer to reset
+ * @param buf Buffer to reset
  *
  * This can be called on a Buffer to reset the pointers,
  * effectively emptying it.
  */
-void mutt_buffer_reset(struct Buffer *b)
+void mutt_buffer_reset(struct Buffer *buf)
 {
-  if (!b)
+  if (!buf)
     return;
-  memset(b->data, 0, b->dsize);
-  b->dptr = b->data;
+  memset(buf->data, 0, buf->dsize);
+  buf->dptr = buf->data;
 }
 
 /**
@@ -117,12 +122,7 @@ size_t mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
     return 0;
 
   if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
-  {
-    size_t offset = buf->dptr - buf->data;
-    buf->dsize += (len < 128) ? 128 : len + 1;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
-  }
+    mutt_buffer_increase_size(buf, buf->dsize + ((len < 128) ? 128 : len + 1));
   if (!buf->dptr)
     return 0;
   memcpy(buf->dptr, s, len);
@@ -146,21 +146,20 @@ void mutt_buffer_free(struct Buffer **p)
 }
 
 /**
- * mutt_buffer_printf - Format a string into a Buffer
+ * buffer_printf - Format a string into a Buffer
  * @param buf Buffer
  * @param fmt printf-style format string
- * @param ... Arguments to be formatted
+ * @param ap  Arguments to be formatted
  * @retval num Characters written
  */
-int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
+static int buffer_printf(struct Buffer *buf, const char *fmt, va_list ap)
 {
   if (!buf)
     return 0;
 
-  va_list ap, ap_retry;
+  va_list ap_retry;
   int len, blen, doff;
 
-  va_start(ap, fmt);
   va_copy(ap_retry, ap);
 
   if (!buf->dptr)
@@ -172,9 +171,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
   if (blen == 0)
   {
     blen = 128;
-    buf->dsize += blen;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + doff;
+    mutt_buffer_increase_size(buf, buf->dsize + blen);
   }
   len = vsnprintf(buf->dptr, blen, fmt, ap);
   if (len >= blen)
@@ -182,16 +179,50 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
     blen = ++len - blen;
     if (blen < 128)
       blen = 128;
-    buf->dsize += blen;
-    mutt_mem_realloc(&buf->data, buf->dsize);
-    buf->dptr = buf->data + doff;
+    mutt_buffer_increase_size(buf, buf->dsize + blen);
     len = vsnprintf(buf->dptr, len, fmt, ap_retry);
   }
   if (len > 0)
     buf->dptr += len;
 
-  va_end(ap);
   va_end(ap_retry);
+
+  return len;
+}
+
+/**
+ * mutt_buffer_printf - Format a string overwriting a Buffer
+ * @param buf Buffer
+ * @param fmt printf-style format string
+ * @param ... Arguments to be formatted
+ * @retval num Characters written
+ */
+int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
+{
+  va_list ap;
+
+  va_start(ap, fmt);
+  mutt_buffer_reset(buf);
+  int len = buffer_printf(buf, fmt, ap);
+  va_end(ap);
+
+  return len;
+}
+
+/**
+ * mutt_buffer_add_printf - Format a string appending a Buffer
+ * @param buf Buffer
+ * @param fmt printf-style format string
+ * @param ... Arguments to be formatted
+ * @retval num Characters written
+ */
+int mutt_buffer_add_printf(struct Buffer *buf, const char *fmt, ...)
+{
+  va_list ap;
+
+  va_start(ap, fmt);
+  int len = buffer_printf(buf, fmt, ap);
+  va_end(ap);
 
   return len;
 }
@@ -256,6 +287,19 @@ struct Buffer *mutt_buffer_alloc(size_t size)
 }
 
 /**
+ * mutt_buffer_strcpy - Copy a string into a Buffer
+ * @param buf Buffer to overwrite
+ * @param s   String to copy
+ *
+ * Overwrites any existing content.
+ */
+void mutt_buffer_strcpy(struct Buffer *buf, const char *s)
+{
+  mutt_buffer_reset(buf);
+  mutt_buffer_addstr(buf, s);
+}
+
+/**
  * mutt_buffer_increase_size - Increase the allocated size of a buffer
  * @param buf      Buffer to change
  * @param new_size New size
@@ -272,4 +316,82 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
   buf->dsize = new_size;
   mutt_mem_realloc(&buf->data, buf->dsize);
   buf->dptr = buf->data + offset;
+}
+
+/**
+ * increase_buffer_pool - Increase the size of the Buffer pool
+ */
+static void increase_buffer_pool(void)
+{
+  struct Buffer *newbuf;
+
+  BufferPoolLen += 5;
+  mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
+  while (BufferPoolCount < 5)
+  {
+    newbuf = mutt_buffer_alloc(LONG_STRING);
+    BufferPool[BufferPoolCount++] = newbuf;
+  }
+}
+
+/**
+ * mutt_buffer_pool_init - Initialise the Buffer pool
+ */
+void mutt_buffer_pool_init(void)
+{
+  increase_buffer_pool();
+}
+
+/**
+ * mutt_buffer_pool_free - Release the Buffer pool
+ */
+void mutt_buffer_pool_free(void)
+{
+  if (BufferPoolCount != BufferPoolLen)
+  {
+    mutt_debug(1, "Buffer pool leak: %zu/%zu\n", BufferPoolCount, BufferPoolLen);
+  }
+  while (BufferPoolCount)
+    mutt_buffer_free(&BufferPool[--BufferPoolCount]);
+  FREE(&BufferPool);
+  BufferPoolLen = 0;
+}
+
+/**
+ * mutt_buffer_pool_get - Get a Buffer from the pool
+ * @retval ptr Buffer
+ */
+struct Buffer *mutt_buffer_pool_get(void)
+{
+  if (BufferPoolCount == 0)
+    increase_buffer_pool();
+  return BufferPool[--BufferPoolCount];
+}
+
+/**
+ * mutt_buffer_pool_release - Free a Buffer from the pool
+ * @param pbuf Buffer to free
+ */
+void mutt_buffer_pool_release(struct Buffer **pbuf)
+{
+  if (!pbuf || !*pbuf)
+    return;
+
+  if (BufferPoolCount >= BufferPoolLen)
+  {
+    mutt_debug(1, "Internal buffer pool error\n");
+    mutt_buffer_free(pbuf);
+    return;
+  }
+
+  struct Buffer *buf = *pbuf;
+  if (buf->dsize > (LONG_STRING * 2))
+  {
+    buf->dsize = LONG_STRING;
+    mutt_mem_realloc(&buf->data, buf->dsize);
+  }
+  mutt_buffer_reset(buf);
+  BufferPool[BufferPoolCount++] = buf;
+
+  *pbuf = NULL;
 }

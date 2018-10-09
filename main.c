@@ -1240,6 +1240,7 @@ main_exit:
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();
+  mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_free_opts();
   mutt_free_keys();

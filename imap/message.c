@@ -583,9 +583,9 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
         break;
 
       if (state == 1)
-        mutt_buffer_printf(b, "%u", range_begin);
+        mutt_buffer_add_printf(b, "%u", range_begin);
       else if (state == 2)
-        mutt_buffer_printf(b, "%u:%u", range_begin, range_end);
+        mutt_buffer_add_printf(b, "%u:%u", range_begin, range_end);
       state = 0;
     }
   }
@@ -594,7 +594,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
   if ((chunks == 150) || (mutt_str_strlen(b->data) > 500))
   {
     b->dptr = b->data;
-    mutt_buffer_printf(b, "%u:%u", msn_begin, msn_end);
+    mutt_buffer_add_printf(b, "%u:%u", msn_begin, msn_end);
   }
 }
 
@@ -996,7 +996,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
       imap_fetch_msn_seqset(b, adata, msn_begin, msn_end);
     }
     else
-      mutt_buffer_printf(b, "%u:%u", msn_begin, msn_end);
+      mutt_buffer_add_printf(b, "%u:%u", msn_begin, msn_end);
 
     fetch_msn_end = msn_end;
     char *cmd = NULL;
@@ -1568,7 +1568,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     else
     {
       mutt_message(_("Copying message %d to %s..."), e->index + 1, mbox);
-      mutt_buffer_printf(&cmd, "UID COPY %u %s", IMAP_EDATA(e)->uid, mmbox);
+      mutt_buffer_add_printf(&cmd, "UID COPY %u %s", IMAP_EDATA(e)->uid, mmbox);
 
       if (e->active && e->changed)
       {

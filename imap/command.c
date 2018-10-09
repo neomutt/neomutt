@@ -143,7 +143,7 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, int flag
   if (!cmd)
     return IMAP_CMD_BAD;
 
-  if (mutt_buffer_printf(adata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
+  if (mutt_buffer_add_printf(adata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)
     return IMAP_CMD_BAD;
 
   return 0;
@@ -1383,7 +1383,7 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     /* successfully entered IDLE state */
     adata->state = IMAP_IDLE;
     /* queue automatic exit when next command is issued */
-    mutt_buffer_printf(adata->cmdbuf, "DONE\r\n");
+    mutt_buffer_addstr(adata->cmdbuf, "DONE\r\n");
     rc = IMAP_CMD_OK;
   }
   if (rc != IMAP_CMD_OK)

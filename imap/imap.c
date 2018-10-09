@@ -234,22 +234,22 @@ static int make_msg_set(struct ImapAccountData *adata, struct Buffer *buf,
         setstart = IMAP_EDATA(emails[n])->uid;
         if (!started)
         {
-          mutt_buffer_printf(buf, "%u", IMAP_EDATA(emails[n])->uid);
+          mutt_buffer_add_printf(buf, "%u", IMAP_EDATA(emails[n])->uid);
           started = true;
         }
         else
-          mutt_buffer_printf(buf, ",%u", IMAP_EDATA(emails[n])->uid);
+          mutt_buffer_add_printf(buf, ",%u", IMAP_EDATA(emails[n])->uid);
       }
       /* tie up if the last message also matches */
       else if (n == adata->ctx->mailbox->msg_count - 1)
-        mutt_buffer_printf(buf, ":%u", IMAP_EDATA(emails[n])->uid);
+        mutt_buffer_add_printf(buf, ":%u", IMAP_EDATA(emails[n])->uid);
     }
     /* End current set if message doesn't match or we've reached the end
      * of the mailbox via inactive messages following the last match. */
     else if (setstart && (emails[n]->active || n == adata->ctx->mailbox->msg_count - 1))
     {
       if (IMAP_EDATA(emails[n - 1])->uid > setstart)
-        mutt_buffer_printf(buf, ":%u", IMAP_EDATA(emails[n - 1])->uid);
+        mutt_buffer_add_printf(buf, ":%u", IMAP_EDATA(emails[n - 1])->uid);
       setstart = 0;
     }
   }
@@ -695,13 +695,13 @@ int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, cons
   imap_munge_mbox_name(adata, oldmbox, sizeof(oldmbox), mx->mbox);
   imap_munge_mbox_name(adata, newmbox, sizeof(newmbox), newname);
 
-  struct Buffer *b = mutt_buffer_alloc(LONG_STRING);
+  struct Buffer *b = mutt_buffer_pool_get();
   mutt_buffer_printf(b, "RENAME %s %s", oldmbox, newmbox);
 
-  if (imap_exec(adata, b->data, 0) != 0)
+  if (imap_exec(adata, mutt_b2s(b), 0) != 0)
     rc = -1;
 
-  mutt_buffer_free(&b);
+  mutt_buffer_pool_release(&b);
 
   return rc;
 }
@@ -777,8 +777,8 @@ void imap_logout_all(void)
  * @note Strips `\r` from `\r\n`.
  *       Apparently even literals use `\r\n`-terminated strings ?!
  */
-int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes,
-                      struct Progress *pbar)
+int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
+                      unsigned long bytes, struct Progress *pbar)
 {
   char c;
   bool r = false;
@@ -1221,11 +1221,11 @@ int imap_exec_msgset(struct ImapAccountData *adata, const char *pre,
   do
   {
     cmd->dptr = cmd->data;
-    mutt_buffer_printf(cmd, "%s ", pre);
+    mutt_buffer_add_printf(cmd, "%s ", pre);
     rc = make_msg_set(adata, cmd, flag, changed, invert, &pos);
     if (rc > 0)
     {
-      mutt_buffer_printf(cmd, " %s", post);
+      mutt_buffer_add_printf(cmd, " %s", post);
       if (imap_exec(adata, cmd->data, IMAP_CMD_QUEUE))
       {
         rc = -1;
@@ -1606,7 +1606,8 @@ int imap_status(const char *path, bool queue)
  *
  * return cached mailbox stats or NULL if create is 0
  */
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, const char *mbox, bool create)
+struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata,
+                                      const char *mbox, bool create)
 {
   struct ImapStatus *status = NULL;
   struct ListNode *np = NULL;

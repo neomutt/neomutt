@@ -226,7 +226,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     if (r != 0)
     {
       regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
-      mutt_buffer_printf(err, "'%s': %s", buf.data, errmsg);
+      mutt_buffer_add_printf(err, "'%s': %s", buf.data, errmsg);
       FREE(&buf.data);
       FREE(&pat->p.regex);
       return false;
