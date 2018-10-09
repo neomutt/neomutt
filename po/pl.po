@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-09-04 02:11+0100\n"
-"PO-Revision-Date: 2018-03-19 09:22+0100\n"
+"PO-Revision-Date: 2018-10-09 17:40+0200\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -96,9 +96,8 @@ msgid "Error reading alias file"
 msgstr "Błąd podczas czytania pliku aliasów"
 
 #: alias.c:509
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Błąd podczas czytania pliku aliasów"
+msgstr "Błąd podczas dodawania aliasów"
 
 #: alias.c:511
 msgid "Alias added"
@@ -369,12 +368,10 @@ msgid "Warning: message contains no From: header"
 msgstr "Ostrzeżenie: wiadomość nie zawiera pola From: w nagłówku"
 
 #: commands.c:322 recvcmd.c:198
-#, fuzzy
 msgid "Bounce message to: "
 msgstr "Wyślij kopię listu do: "
 
 #: commands.c:324 recvcmd.c:200
-#, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Wyślij kopie zaznaczonych listów do: "
 
@@ -383,7 +380,7 @@ msgid "Error parsing address"
 msgstr "Błąd interpretacji adresu"
 
 #: commands.c:352 recvcmd.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Wyślij kopię listu do %s"
@@ -391,7 +388,6 @@ msgstr[1] "Wyślij kopie listów do %s"
 msgstr[2] "Wyślij kopie listów do %s"
 
 #: commands.c:367 recvcmd.c:244
-#, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Kopia nie została wysłana"
@@ -399,7 +395,6 @@ msgstr[1] "Kopie nie zostały wysłane"
 msgstr[2] "Kopie nie zostały wysłane"
 
 #: commands.c:377 recvcmd.c:263
-#, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Kopia została wysłana"
@@ -419,17 +414,14 @@ msgid "No printing command has been defined"
 msgstr "Polecenie drukowania nie zostało skonfigurowane"
 
 #: commands.c:601
-#, fuzzy
 msgid "Print message?"
 msgstr "Wydrukować list?"
 
 #: commands.c:601
-#, fuzzy
 msgid "Print tagged messages?"
 msgstr "Wydrukować zaznaczone listy?"
 
 #: commands.c:607
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "List został wydrukowany"
@@ -437,7 +429,6 @@ msgstr[1] "Listy zostały wydrukowane"
 msgstr[2] "Listy zostały wydrukowane"
 
 #: commands.c:610
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "List nie został wydrukowany "
@@ -464,62 +455,50 @@ msgid "Shell command: "
 msgstr "Polecenie powłoki: "
 
 #: commands.c:885
-#, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Dekoduj-zapisz do skrzynki"
 
 #: commands.c:885
-#, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "Dekoduj-zapisz zaznaczone do skrzynki"
 
 #: commands.c:887
-#, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Rozszyfruj-zapisz do skrzynki"
 
 #: commands.c:887
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Rozszyfruj-zapisz zaznaczone do skrzynki"
 
 #: commands.c:889
-#, fuzzy
 msgid "Save to mailbox"
 msgstr "Zapisz do skrzynki"
 
 #: commands.c:889
-#, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "Zapisz zaznaczone do skrzynki"
 
 #: commands.c:894
-#, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Dekoduj-kopiuj do skrzynki"
 
 #: commands.c:894
-#, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "Dekoduj-kopiuj zaznaczone do skrzynki"
 
 #: commands.c:896
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Rozszyfruj-kopiuj do skrzynki"
 
 #: commands.c:896
-#, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Rozszyfruj-kopiuj zaznaczone do skrzynki"
 
 #: commands.c:898
-#, fuzzy
 msgid "Copy to mailbox"
 msgstr "Kopiuj do skrzynki"
 
 #: commands.c:898
-#, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "Kopiuj zaznaczone do skrzynki"
 
@@ -539,12 +518,12 @@ msgid "Content-Type changed to %s"
 msgstr "Typ \"Content-Type\" zmieniono na %s"
 
 #: commands.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Zestaw znaków został zmieniony na %s; bez konwersji"
 
 #: commands.c:1151
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Zestaw znaków został zmieniony na %s; konwertowanie"
 
@@ -733,19 +712,16 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "Błędny IDN w '%s': '%s'"
 
 #: compose.c:1143
-#, fuzzy
 msgid "Attachment is already at top"
-msgstr "Załącznik został zapisany"
+msgstr "Załącznik jest już na samej górze"
 
 #: compose.c:1148 compose.c:1164
-#, fuzzy
 msgid "The fundamental part cannot be moved"
-msgstr "Bieżący załacznik nie zostanie przekonwertowany"
+msgstr "Fundamentalna część nie może być przeniesiona"
 
 #: compose.c:1159
-#, fuzzy
 msgid "Attachment is already at bottom"
-msgstr "Załącznik przefiltrowany"
+msgstr "Załącznik jest już na samym dole"
 
 #: compose.c:1177
 msgid "Grouping alternatives requires at least 2 tagged messages"
@@ -760,15 +736,13 @@ msgid "Not all parts have Content-Language: set, continue?"
 msgstr ""
 
 #: compose.c:1275
-#, fuzzy
 msgid "Not sending this message"
 msgstr "Błąd podczas wysyłania listu"
 
 #: compose.c:1370
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Dołączanie wybranych listów..."
+msgstr[0] "Dołączanie wybranego listu..."
 msgstr[1] "Dołączanie wybranych listów..."
 msgstr[2] "Dołączanie wybranych listów..."
 
@@ -1096,9 +1070,8 @@ msgid "SHA1 Fingerprint: %s"
 msgstr "Odcisk SHA1: %s"
 
 #: conn/ssl.c:1003 conn/ssl.c:1005 conn/ssl_gnutls.c:734 conn/ssl_gnutls.c:736
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "Odcisk SHA1: %s"
+msgstr "Odcisk SHA256: %s"
 
 #: conn/ssl.c:1008 conn/ssl_gnutls.c:770
 #, c-format
@@ -1452,9 +1425,8 @@ msgstr "Ten list nie jest widoczny"
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1531 curs_main.c:2960 pager.c:2978
-#, fuzzy
 msgid "Cannot delete messages"
-msgstr "Nie można skasować listu"
+msgstr "Nie można skasować listów"
 
 #: curs_main.c:1534
 msgid "Delete messages matching: "
@@ -1492,9 +1464,8 @@ msgstr "Zaznacz pasujące listy: "
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:1764 curs_main.c:3403 pager.c:3313
-#, fuzzy
 msgid "Cannot undelete messages"
-msgstr "Nieudane przywrócenie listu"
+msgstr "Nieudane przywrócenie listów"
 
 #: curs_main.c:1767
 msgid "Undelete messages matching: "
@@ -1686,11 +1657,11 @@ msgstr "Nie można edytować listu"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:3089 pager.c:3378
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
-msgstr[0] "%d zmienionych etykiet"
-msgstr[1] "%d zmienionych etykiet"
+msgstr[0] "%d zmieniona etykieta"
+msgstr[1] "%d zmienione etykiety"
 msgstr[2] "%d zmienionych etykiet"
 
 #. L10N: This is displayed when editing an x-label, but no messages
@@ -1706,7 +1677,6 @@ msgstr "Nie zmieniono etykiet"
 #. "messages". Your language might have other means to express this.
 #.
 #: curs_main.c:3200
-#, fuzzy
 msgid "Cannot mark messages as read"
 msgstr "Nie można oznaczyć widomości jako przeczytane"
 
@@ -1884,14 +1854,14 @@ msgid "Clear flag"
 msgstr "Wyczyść flagę"
 
 #: handler.c:95
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Alternative Type #%d: %s/%s%s%s, Kodowanie: %s, Rozmiar: %s --]\n"
+msgstr "[-- Alternatywny Typ #%d: %s/%s%s%s, Kodowanie: %s, Rozmiar: %s --]\n"
 
 #: handler.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type: %s/%s%s%s, Kodowanie: %s, Rozmiar: %s --]\n"
+msgstr "[-- Typ: %s/%s%s%s, Kodowanie: %s, Rozmiar: %s --]\n"
 
 #: handler.c:554
 #, c-format
@@ -1940,7 +1910,7 @@ msgstr "[-- Błąd: message/external-body nie ma ustawionego rodzaju dostępu --
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:795
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -1951,10 +1921,10 @@ msgstr[0] ""
 "[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
 "[-- na %s --]\n"
 msgstr[1] ""
-"[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
+"[-- Te załączniki typu %s/%s (o wielkości %s bajtów) zostały usunięte --]\n"
 "[-- na %s --]\n"
 msgstr[2] ""
-"[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
+"[-- Te załączniki typu %s/%s (o wielkości %s bajtów) zostały usunięte --]\n"
 "[-- na %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -1973,12 +1943,12 @@ msgstr[2] ""
 #. mutt_str_pretty_size() in mutt/string.c.
 #.
 #: handler.c:819
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr[0] "[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
-msgstr[1] "[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
-msgstr[2] "[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
+msgstr[1] "[-- Te załączniki typu %s/%s (o wielkości %s bajtów) zostały usunięte --]\n"
+msgstr[2] "[-- Te załączniki typu %s/%s (o wielkości %s bajtów) zostały usunięte --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1989,7 +1959,6 @@ msgstr[2] "[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usun
 #. in this translation!
 #.
 #: handler.c:838
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -2002,7 +1971,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:847
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Ten załącznik typu %s/%s został usunięty --]\n"
 
@@ -2016,7 +1985,7 @@ msgstr "[-- nazwa: %s --]\n"
 #. The "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:872
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -2033,7 +2002,7 @@ msgstr ""
 #. "LOCAL-FILE", "MAIL-SERVER".
 #.
 #: handler.c:890
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -2047,12 +2016,12 @@ msgstr "[--Błąd: Nie można wyświetlić żadnego z fragmentów Multipart/Alte
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1213
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Załącznik #%d: %s --]\n"
 
 #: handler.c:1218
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Załącznik #%d --]\n"
 
@@ -2077,34 +2046,31 @@ msgid "Error: multipart/signed has no protocol"
 msgstr "Błąd: multipart/signed nie ma protokołu"
 
 #: handler.c:1627
-#, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[-- To jest załącznik (użyj '%3$s' do oglądania tego fragmentu) --]\n"
 
 #: handler.c:1635
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- typ %s/%s nie jest obsługiwany (użyj '%s' do oglądania tego fragmentu) --]\n"
 
 #: handler.c:1642
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- To jest załącznik (przypisz 'view-attachments' do klawisza) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1648
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- typ %s/%s nie jest obsługiwany (przypisz 'view-attachments' do klawisza) --]\n"
 
 #: handler.c:1656
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- To jest załącznik --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1660
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- typ %s/%s nie jest obsługiwany --]\n"
 
@@ -2161,9 +2127,8 @@ msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Nie można skasować %s z wewnątrz %s"
 
 #: imap/auth.c:119
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Żadna z metod uwierzytelniania nie jest dostępna"
+msgstr "Żadna z metod uwierzytelniania nie jest dostępna albo złe uwierzytelnienie"
 
 #: imap/auth_anon.c:58
 msgid "Authenticating (anonymous)..."
@@ -2324,10 +2289,10 @@ msgid "Unsubscribed from %s"
 msgstr "Odsubskrybowano %s"
 
 #: imap/imap.c:1947 imap/message.c:1815
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Kopiowanie %d listów do %s..."
+msgstr[0] "Kopiowanie %d listu do %s..."
 msgstr[1] "Kopiowanie %d listów do %s..."
 msgstr[2] "Kopiowanie %d listów do %s..."
 
@@ -2350,19 +2315,19 @@ msgid "Expunge failed"
 msgstr "Skasowanie nie powiodło się"
 
 #: imap/imap.c:2435
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Zaznaczanie %d listów jako skasowanych..."
+msgstr[0] "Zaznaczanie %d listu jako skasowanego..."
 msgstr[1] "Zaznaczanie %d listów jako skasowanych..."
 msgstr[2] "Zaznaczanie %d listów jako skasowanych..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2470
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Zapisywanie zmienionych listów... [%d/%d]"
+msgstr[0] "Zapisywanie zmienionego listu... [%d/%d]"
 msgstr[1] "Zapisywanie zmienionych listów... [%d/%d]"
 msgstr[2] "Zapisywanie zmienionych listów... [%d/%d]"
 
@@ -2408,12 +2373,10 @@ msgstr "Sprawdzanie pamięci podręcznej..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:869
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Pobieranie nagłówków..."
+msgstr "Pobieranie aktualnych flag..."
 
 #: imap/message.c:969
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Nie można pobrać nagłówków z serwera IMAP w tej wersji"
 
@@ -2491,12 +2454,12 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: wczytywanie zaniechane z powodu zbyt wielu błędów w %s"
 
 #: init.c:866
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source: %d ostrzeżenia w %s"
+msgstr[0] "source: %d ostrzeżenie w %s"
 msgstr[1] "source: %d ostrzeżenia w %s"
-msgstr[2] "source: %d ostrzeżenia w %s"
+msgstr[2] "source: %d ostrzeżeń w %s"
 
 #: init.c:895
 msgid "alias: no address"
@@ -2594,7 +2557,7 @@ msgid "%s: unknown command"
 msgstr "%s: nieznane polecenie"
 
 #: init.c:3713 init.c:3737 init.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Niewłaściwa wartość opcji %s: \"%s\""
 
@@ -2604,9 +2567,9 @@ msgid "Option %s may not be set or reset from the pager"
 msgstr ""
 
 #: init.c:3788
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Funkcja niedostępna w trybie załączania"
+msgstr "Funkcja %s nie może zostać ustawiona w trybie załączania"
 
 #: keymap.c:319 keymap.c:327
 #, c-format
@@ -2982,9 +2945,8 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Zapisywanie logu na poziomie %d do pliku '%s'"
 
 #: mutt/path.c:443
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Błąd łączenia z serwerem: %s"
+msgstr "Błąd: konwersja do absolutnej ścieżki"
 
 #: mutt/regex.c:269
 #, c-format
@@ -2996,12 +2958,12 @@ msgid "Not enough subexpressions for template"
 msgstr "Zbyt mało podwyrażeń dla wzorca"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
 msgstr "Otrzymano sygnał %d (%s) ... Koniec pracy.\n"
 
 #: mutt/signal.c:73
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "Otrzymano sygnał %d ... Koniec pracy.\n"
 
@@ -3079,9 +3041,8 @@ msgid "Password for %s@%s: "
 msgstr "Hasło dla %s@%s: "
 
 #: mutt_account.c:381
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Pytanie nie zostało określone"
+msgstr "Brak zdefiniowanej komendy odświeżania OAUTH"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
@@ -3173,18 +3134,18 @@ msgid "History '%s'"
 msgstr "Historia '%s'"
 
 #: mutt_logging.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Niewłaściwa wartość opcji %s: \"%s\""
+msgstr "Niewłaściwa wartość opcji %s: %ld"
 
 #: mutt_lua.c:420
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
 #: mutt_lua.c:496
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Nie można zablokować %s\n"
+msgstr "Nie można wczytać kodu lua: %s"
 
 #: mutt_socket.c:90
 #, c-format
@@ -3210,20 +3171,19 @@ msgstr "Przerwano wczytywanie z %s..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "Nie można dołączyć %s"
+msgstr "Nie można zapisać %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #.
 #: mx.c:464
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "wiadomości nie zostały usunięte"
+msgstr[0] "wiadomość nie została usunięta"
 msgstr[1] "wiadomości nie zostały usunięte"
-msgstr[2] "wiadomości nie zostały usunięte"
+msgstr[2] "wiadomości nie zostało usuniętych"
 
 #: mx.c:502
 msgid "Can't open trash folder"
@@ -3236,20 +3196,20 @@ msgstr "Zaznaczyć wszystkie artykuły jako przeczytane?"
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:591
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Przenieść %d przeczytanych listów do %s?"
-msgstr[1] "Przenieść %d przeczytanych listów do %s?"
+msgstr[0] "Przenieść %d przeczytany list do %s?"
+msgstr[1] "Przenieść %d przeczytane listy do %s?"
 msgstr[2] "Przenieść %d przeczytanych listów do %s?"
 
 #: mx.c:608 mx.c:922
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Usunąć NIEODWOŁALNIE %d zaznaczony list?"
 msgstr[1] "Usunąć NIEODWOŁALNIE %d zaznaczone listy?"
-msgstr[2] "Usunąć NIEODWOŁALNIE %d zaznaczone listy?"
+msgstr[2] "Usunąć NIEODWOŁALNIE %d zaznaczonych listy?"
 
 #: mx.c:630
 #, c-format
@@ -3303,7 +3263,6 @@ msgstr "[-- Wynik działania %s %s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:116
-#, fuzzy
 msgid "Passphrases forgotten"
 msgstr "Hasło(a) zostało(y) zapomniane"
 
@@ -3358,12 +3317,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1128
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Błąd: Niespójna struktura multipart/signed  --]\n"
+"[-- Błąd: Niespójna struktura podpisu multipart/signed  --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1170
@@ -3790,11 +3748,11 @@ msgstr "[Błędny]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3798 ncrypt/crypt_gpgme.c:3940
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
-msgstr[0] "%s, %lu bitów %s\n"
-msgstr[1] "%s, %lu bitów %s\n"
+msgstr[0] "%s, %lu bit %s\n"
+msgstr[1] "%s, %lu bity %s\n"
 msgstr[2] "%s, %lu bitów %s\n"
 
 #. L10N: value in Key Usage: field
@@ -3914,22 +3872,18 @@ msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Nie można użyć tego klucza: wygasł, został wyłączony lub wyprowadzony"
 
 #: ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:767 ncrypt/smime.c:592
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "Identyfikator wygasł, został wyłączony lub wyprowadzony. Czy naprawdę chcesz użyć tego klucza?"
 
 #: ncrypt/crypt_gpgme.c:4441 ncrypt/pgpkey.c:779
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "Nieprawidłowy identyfikator. Czy naprawdę chcesz użyć tego klucza?"
 
 #: ncrypt/crypt_gpgme.c:4444 ncrypt/pgpkey.c:782
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "Ten identyfikator jest tylko częściowo ważny. Czy naprawdę chcesz użyć tego klucza?"
 
 #: ncrypt/crypt_gpgme.c:4452 ncrypt/pgpkey.c:775 ncrypt/smime.c:596
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "Poziom ważności tego identyfikatora nie został określony. Czy naprawdę chcesz użyć tego klucza?"
 
@@ -4062,9 +4016,8 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:728
-#, fuzzy
 msgid "PGP message was not encrypted"
-msgstr "List PGP został poprawnie odszyfrowany"
+msgstr "List PGP nie został odszyfrowany"
 
 #: ncrypt/pgp.c:967
 msgid "Internal error.  Please submit a bug report."
@@ -4283,7 +4236,6 @@ msgid "S/MIME certificates matching \"%s\""
 msgstr "Certyfikat S/MIME dla \"%s\""
 
 #: ncrypt/smime.c:600
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Niezaufany identyfikator. Czy naprawdę chcesz użyć tego klucza?"
 
@@ -4637,22 +4589,18 @@ msgid "check mailboxes for new mail"
 msgstr "szukaj nowych listów w skrzynkach"
 
 #: opcodes.h:44
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "zapisz list/załącznik do skrzynki/pliku"
+msgstr "liczę statystyki wiadomości dla wszystkich skrzynek"
 
 #: opcodes.h:45
-#, fuzzy
 msgid "attach files to this message"
-msgstr "załącz pliki do li(s)tu"
+msgstr "załącz pliki do listu"
 
 #: opcodes.h:46
-#, fuzzy
 msgid "attach messages to this message"
 msgstr "dołącz list(y) do tego listu"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "attach news articles to this message"
 msgstr "załącz nowe artykuły do tego listu"
 
@@ -4693,9 +4641,8 @@ msgid "edit the message with headers"
 msgstr "edytuj treść listu i nagłówków"
 
 #: opcodes.h:57
-#, fuzzy
 msgid "edit the Content-Language of the attachment"
-msgstr "podaj nazwę pliku załącznika"
+msgstr "edytuj Content-Language pliku załącznika"
 
 #: opcodes.h:58
 msgid "edit the message"
@@ -4742,14 +4689,12 @@ msgid "run ispell on the message"
 msgstr "sprawdź poprawność pisowni listu"
 
 #: opcodes.h:69
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Wyślij załącznik o nazwie: "
+msgstr "przesuń załącznik w dół listy załączników"
 
 #: opcodes.h:70
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Wyślij załącznik o nazwie: "
+msgstr "przesuń załącznik w górę listy załączników"
 
 #: opcodes.h:71
 msgid "compose new attachment using mailcap entry"
@@ -4784,9 +4729,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "ustala czy usunąć plik po wysłaniu"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "utwórz nowy list do nadawcy"
+msgstr "utwórz nowy list do nadawcy bieżącego listu"
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -5369,9 +5313,8 @@ msgid "invoke a command in a subshell"
 msgstr "wywołaj polecenie w podpowłoce"
 
 #: opcodes.h:225
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "pokaż listy"
+msgstr "pokaż log (i debug) wiadmości"
 
 #: opcodes.h:226
 msgid "sort messages"
@@ -5478,7 +5421,6 @@ msgid "extract supported public keys"
 msgstr "kopiuj klucze publiczne"
 
 #: opcodes.h:254
-#, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "wymaż hasło z pamięci operacyjnej"
 
@@ -5778,11 +5720,11 @@ msgid "Command UIDL is not supported by server"
 msgstr "Polecenie UIDL nie jest obsługiwane przez serwer"
 
 #: pop/pop.c:373
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d wiadomości zostało utraconych. Spróbuj ponownie otworzyć skrzynkę."
-msgstr[1] "%d wiadomości zostało utraconych. Spróbuj ponownie otworzyć skrzynkę."
+msgstr[0] "%d wiadomość została utracona. Spróbuj ponownie otworzyć skrzynkę."
+msgstr[1] "%d wiadomości zostały utracone. Spróbuj ponownie otworzyć skrzynkę."
 msgstr[2] "%d wiadomości zostało utraconych. Spróbuj ponownie otworzyć skrzynkę."
 
 #: pop/pop.c:493 pop/pop.c:918
@@ -5815,11 +5757,11 @@ msgid "Delete messages from server?"
 msgstr "Usunąć listy z serwera?"
 
 #: pop/pop.c:977
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Czytanie nowych listów (%d bajtów)..."
-msgstr[1] "Czytanie nowych listów (%d bajtów)..."
+msgstr[0] "Czytanie nowych listów (%d bajt)..."
+msgstr[1] "Czytanie nowych listów (%d bajty)..."
 msgstr[2] "Czytanie nowych listów (%d bajtów)..."
 
 #: pop/pop.c:1022
@@ -5829,10 +5771,10 @@ msgstr "Błąd podczas zapisywania skrzynki"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop/pop.c:1028
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [przeczytano %d spośród %d listów]"
+msgstr[0] "%s [przeczytano %d list]"
 msgstr[1] "%s [przeczytano %d spośród %d listów]"
 msgstr[2] "%s [przeczytano %d spośród %d listów]"
 
@@ -5857,14 +5799,12 @@ msgid "Command USER is not supported by server"
 msgstr "Polecenie USER nie jest obsługiwane przez serwer"
 
 #: pop/pop_auth.c:353 smtp.c:513
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Uwierzytelnianie (SASL)..."
+msgstr "Uwierzytelnianie (OAUTHBEARER)..."
 
 #: pop/pop_auth.c:392
-#, fuzzy
 msgid "Authentication failed"
-msgstr "Uwierzytelnianie SASL nie powiodło się"
+msgstr "Uwierzytelnianie nie powiodło się"
 
 #: pop/pop_lib.c:81
 #, c-format
@@ -5983,12 +5923,12 @@ msgstr "Nie wiem jak wydrukować %s załączników"
 #. do not show it to the user.  So feel free to use a "generic
 #. plural" as plural translation if your language has one.
 #: recvattach.c:946
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Wydrukować zaznaczony(e) załącznik(i)?"
-msgstr[1] "Wydrukować zaznaczony(e) załącznik(i)?"
-msgstr[2] "Wydrukować zaznaczony(e) załącznik(i)?"
+msgstr[0] "Wydrukować zaznaczony załącznik?"
+msgstr[1] "Wydrukować zaznaczonye załączniki?"
+msgstr[2] "Wydrukować zaznaczonye załączniki?"
 
 #: recvattach.c:947
 #, c-format
@@ -6036,7 +5976,6 @@ msgid "You may only bounce message/rfc822 parts"
 msgstr "Możesz wysyłać kopie tylko listów zgodnych z RFC 822"
 
 #: recvcmd.c:265
-#, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Błąd wysyłania kopii"
@@ -6078,9 +6017,8 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Nie można zdekodować wszystkich wybranych zał. Załączyć (MIME) pozostałe?"
 
 #: recvcmd.c:1051
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Możesz wysyłać kopie tylko listów zgodnych z RFC 822"
+msgstr "Możesz tylko tworzyć do nadawcy z częściami message/rfc822"
 
 #: remailer.c:190
 msgid "<random>"
@@ -6352,9 +6290,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "%s uwierzytelnianie nie powiodło się, próbuje innej metody"
 
 #: smtp.c:636
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Uwierzytelnianie GSSAPI nie powiodło się"
+msgstr "Uwierzytelnianie SMTP wymaga SASL"
 
 #: smtp.c:716
 msgid "SMTP server does not support authentication"
@@ -6397,7 +6334,6 @@ msgstr ""
 "wniosło wiele nowego kodu, poprawek i sugestii.\n"
 
 #: version.c:73
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
