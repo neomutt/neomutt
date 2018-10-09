@@ -727,7 +727,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
             fprintf(fp, "#H %s %s\n", hostname, fpbuf);
             done = 1;
           }
-          if (certerr & CERTERR_NOTTRUSTED)
+          /* Save the cert for all other errors */
+          if (certerr ^ CERTERR_HOSTNAME)
           {
             done = 0;
             ret = gnutls_pem_base64_encode_alloc("CERTIFICATE", certdata, &pemdata);
