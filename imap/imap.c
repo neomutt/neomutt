@@ -325,7 +325,7 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
 /**
  * get_mailbox - Split mailbox URI
  * @param path   Mailbox URI
- * @param hidata Server data
+ * @param adata  Imap Account data
  * @param buf    Buffer to store mailbox name
  * @param buflen Length of buffer
  * @retval  0 Success
@@ -334,7 +334,7 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * Split up a mailbox URI.  The connection info is stored in the ImapAccountData and
  * the mailbox name is stored in buf.
  */
-static int get_mailbox(const char *path, struct ImapAccountData **hidata, char *buf, size_t buflen)
+static int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
 {
   struct ImapMbox mx;
 
@@ -344,14 +344,14 @@ static int get_mailbox(const char *path, struct ImapAccountData **hidata, char *
     return -1;
   }
 
-  *hidata = imap_conn_find(&(mx.account), ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
-  if (!*hidata)
+  *adata = imap_conn_find(&(mx.account), ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
+  if (!*adata)
   {
     FREE(&mx.mbox);
     return -1;
   }
 
-  imap_fix_path(*hidata, mx.mbox, buf, buflen);
+  imap_fix_path(*adata, mx.mbox, buf, buflen);
   if (!*buf)
     mutt_str_strfcpy(buf, "INBOX", buflen);
   FREE(&mx.mbox);
@@ -1449,7 +1449,7 @@ int imap_mailbox_check(bool check_stats)
   char name[LONG_STRING];
   char command[LONG_STRING * 2];
   char munged[LONG_STRING];
-  int buffies = 0;
+  int mbcount = 0;
 
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
@@ -1529,10 +1529,10 @@ int imap_mailbox_check(bool check_stats)
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if ((np->m->magic == MUTT_IMAP) && np->m->has_new)
-      buffies++;
+      mbcount++;
   }
 
-  return buffies;
+  return mbcount;
 }
 
 /**
@@ -2223,7 +2223,7 @@ static int imap_mbox_open(struct Context *ctx)
   /* we require a connection which isn't currently in IMAP_SELECTED state */
   adata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NOSELECT);
   if (!adata)
-    goto fail_noidata;
+    goto fail_noadata;
   if (adata->state < IMAP_AUTHENTICATED)
     goto fail;
 
@@ -2443,7 +2443,7 @@ static int imap_mbox_open(struct Context *ctx)
 fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
-fail_noidata:
+fail_noadata:
   FREE(&mx.mbox);
   return -1;
 }
