@@ -2211,9 +2211,11 @@ int mutt_index_menu(void)
           }
           else
 #endif
+          {
             /* By default, fill buf with the next mailbox that contains unread
              * mail */
             mutt_mailbox(buf, sizeof(buf));
+          }
 
           if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)
           {

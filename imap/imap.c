@@ -1121,7 +1121,7 @@ void imap_close_connection(struct ImapAccountData *adata)
   adata->seqno = false;
   adata->nextcmd = false;
   adata->lastcmd = false;
-  adata->status = false;
+  adata->status = 0;
   memset(adata->cmds, 0, sizeof(struct ImapCommand) * adata->cmdslots);
 }
 
@@ -2212,7 +2212,7 @@ static int imap_mbox_open(struct Context *ctx)
   int count = 0;
   struct ImapMbox mx, pmx;
   int rc;
-  const char *condstore;
+  const char *condstore = NULL;
 
   if (imap_parse_path(ctx->mailbox->path, &mx))
   {
@@ -2245,7 +2245,7 @@ static int imap_mbox_open(struct Context *ctx)
   adata->ctx = ctx;
 
   /* clear mailbox status */
-  adata->status = false;
+  adata->status = 0;
   memset(adata->ctx->mailbox->rights, 0, sizeof(adata->ctx->mailbox->rights));
   adata->new_mail_count = 0;
   adata->max_msn = 0;

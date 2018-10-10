@@ -253,8 +253,10 @@ struct Context *mx_mbox_open(const char *path, int flags)
   }
 
   if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
+  {
     mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
                      sizeof(ctx->mailbox->realpath));
+  }
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;

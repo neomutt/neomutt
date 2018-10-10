@@ -85,8 +85,6 @@ WHERE struct RegexList SubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(Subscribe
 WHERE struct RegexList UnSubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(UnSubscribedLists));
 WHERE struct ReplaceList SubjectRegexList INITVAL(STAILQ_HEAD_INITIALIZER(SubjectRegexList));
 
-WHERE unsigned short Counter;
-
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
 WHERE SIG_ATOMIC_VOLATILE_T SigInt;

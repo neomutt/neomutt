@@ -300,19 +300,13 @@ static int mailbox_mbox_check(struct Mailbox *mailbox, struct stat *sb, bool che
  */
 static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_stats)
 {
-  struct stat sb;
-#ifdef USE_SIDEBAR
-  short orig_new;
-  int orig_count, orig_unread, orig_flagged;
-#endif
-
-  memset(&sb, 0, sizeof(sb));
+  struct stat sb = { 0 };
 
 #ifdef USE_SIDEBAR
-  orig_new = m->has_new;
-  orig_count = m->msg_count;
-  orig_unread = m->msg_unread;
-  orig_flagged = m->msg_flagged;
+  short orig_new = m->has_new;
+  int orig_count = m->msg_count;
+  int orig_unread = m->msg_unread;
+  int orig_flagged = m->msg_flagged;
 #endif
 
   if (m->magic != MUTT_IMAP)
@@ -333,8 +327,7 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
     else
 #endif
         if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            ((m->magic == MUTT_UNKNOWN) &&
-             (m->magic = mx_path_probe(m->path, NULL)) <= 0))
+            ((m->magic == MUTT_UNKNOWN) && (m->magic = mx_path_probe(m->path, NULL)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to be
        * ready for when it does. */

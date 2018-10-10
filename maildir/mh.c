@@ -2383,8 +2383,8 @@ static int maildir_mbox_open_append(struct Context *ctx, int flags)
  */
 static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 {
-  struct stat st_new; /* status of the "new" subdirectory */
-  struct stat st_cur; /* status of the "cur" subdirectory */
+  struct stat st_new;         /* status of the "new" subdirectory */
+  struct stat st_cur;         /* status of the "cur" subdirectory */
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
   bool occult = false;        /* messages were removed from the mailbox */
