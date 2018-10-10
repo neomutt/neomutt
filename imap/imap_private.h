@@ -37,6 +37,7 @@ struct Context;
 struct Email;
 struct ImapEmailData;
 struct ImapMbox;
+struct Mailbox;
 struct Message;
 struct Progress;
 
@@ -327,6 +328,7 @@ int imap_msg_close(struct Context *ctx, struct Message *msg);
 int imap_msg_commit(struct Context *ctx, struct Message *msg);
 
 /* util.c */
+struct ImapAccountData *imap_get_adata(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);

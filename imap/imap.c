@@ -490,7 +490,7 @@ static int compile_search(struct Mailbox *mailbox, const struct Pattern *pat,
         break;
       case MUTT_SERVERSEARCH:
       {
-        struct ImapAccountData *adata = mailbox->data;
+        struct ImapAccountData *adata = imap_get_adata(mailbox);
         if (!mutt_bit_isset(adata->capabilities, X_GM_EXT1))
         {
           mutt_error(_("Server-side custom search not supported: %s"), pat->p.str);
@@ -716,9 +716,9 @@ int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, cons
 int imap_delete_mailbox(struct Mailbox *mailbox, struct ImapMbox *mx)
 {
   char buf[PATH_MAX], mbox[PATH_MAX];
-  struct ImapAccountData *adata = NULL;
+  struct ImapAccountData *adata = imap_get_adata(mailbox);
 
-  if (!mailbox || !mailbox->data)
+  if (!mailbox || !adata)
   {
     adata = imap_conn_find(&mx->account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
     if (!adata)
@@ -1371,7 +1371,8 @@ int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
  */
 int imap_check_mailbox(struct Mailbox *mailbox, bool force)
 {
-  return imap_check(mailbox->data, force);
+  struct ImapAccountData *adata = imap_get_adata(mailbox);
+  return imap_check(adata, force);
 }
 
 /**
@@ -1690,7 +1691,7 @@ void imap_mboxcache_free(struct ImapAccountData *adata)
 int imap_search(struct Mailbox *mailbox, const struct Pattern *pat)
 {
   struct Buffer buf;
-  struct ImapAccountData *adata = mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(mailbox);
   for (int i = 0; i < mailbox->msg_count; i++)
     mailbox->hdrs[i]->matched = false;
 
@@ -1899,7 +1900,7 @@ int imap_fast_trash(struct Mailbox *mailbox, char *dest)
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
-  struct ImapAccountData *adata = mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(mailbox);
 
   if (imap_parse_path(dest, &mx))
   {
@@ -2010,7 +2011,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   int oldsort;
   int rc;
 
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
 
   if (adata->state < IMAP_SELECTED)
   {
@@ -2505,11 +2506,11 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
  */
 static int imap_mbox_check(struct Context *ctx, int *index_hint)
 {
-  int rc;
   (void) index_hint;
 
   imap_allow_reopen(ctx);
-  rc = imap_check(ctx->mailbox->data, false);
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  int rc = imap_check(adata, false);
   /* NOTE - ctx might have been changed at this point. In particular,
    * ctx->mailbox could be NULL. Beware. */
   imap_disallow_reopen(ctx);
@@ -2523,7 +2524,7 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int imap_mbox_close(struct Context *ctx)
 {
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
   /* Check to see if the mailbox is actually open */
   if (!adata)
     return 0;
@@ -2597,7 +2598,7 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
 {
   char *new = NULL;
   char *checker = NULL;
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&adata->flags, NULL))
@@ -2684,7 +2685,7 @@ static int imap_tags_commit(struct Context *ctx, struct Email *e, char *buf)
   struct Buffer *cmd = NULL;
   char uid[11];
 
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
 
   if (*buf == '\0')
     buf = NULL;

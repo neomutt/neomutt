@@ -393,7 +393,7 @@ static int msg_fetch_header(struct Mailbox *mailbox, struct ImapHeader *h,
   int rc = -1; /* default now is that string isn't FETCH response */
   int parse_rc;
 
-  struct ImapAccountData *adata = mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(mailbox);
 
   if (buf[0] != '*')
     return rc;
@@ -1352,7 +1352,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   struct ImapMbox mx;
   int rc;
 
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
 
   if (imap_parse_path(ctx->mailbox->path, &mx))
     return -1;
@@ -1486,7 +1486,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   int err_continue = MUTT_NO;
   int triedcreate = 0;
 
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
 
   if (imap_parse_path(dest, &mx))
   {
@@ -1797,7 +1797,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   bool fetched = false;
   int output_progress;
 
-  struct ImapAccountData *adata = ctx->mailbox->data;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
   struct Email *e = ctx->mailbox->hdrs[msgno];
 
   msg->fp = msg_cache_get(adata, e);

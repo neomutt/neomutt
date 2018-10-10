@@ -65,6 +65,16 @@ char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in I
 short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
+ * imap_get_adata - Get the Account data for this mailbox
+ */
+struct ImapAccountData *imap_get_adata(struct Mailbox *m)
+{
+  if (!m || (m->magic != MUTT_IMAP))
+    return NULL;
+  return m->data;
+}
+
+/**
  * imap_expand_path - Canonicalise an IMAP path
  * @param buf Buffer containing path
  * @param buflen  Buffer length
@@ -1106,11 +1116,12 @@ int imap_wait_keepalive(pid_t pid)
  */
 void imap_allow_reopen(struct Context *ctx)
 {
-  struct ImapAccountData *adata = NULL;
-  if (!ctx || !ctx->mailbox->data || ctx->mailbox->magic != MUTT_IMAP)
+  if (!ctx)
+    return;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  if (!adata)
     return;
 
-  adata = ctx->mailbox->data;
   if (adata->ctx == ctx)
     adata->reopen |= IMAP_REOPEN_ALLOW;
 }
@@ -1121,11 +1132,12 @@ void imap_allow_reopen(struct Context *ctx)
  */
 void imap_disallow_reopen(struct Context *ctx)
 {
-  struct ImapAccountData *adata = NULL;
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->data || ctx->mailbox->magic != MUTT_IMAP)
+  if (!ctx)
+    return;
+  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  if (!adata)
     return;
 
-  adata = ctx->mailbox->data;
   if (adata->ctx == ctx)
     adata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
