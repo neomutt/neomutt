@@ -347,6 +347,10 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
+  /* Note: tls_negotiate() contains a call to
+   * gnutls_certificate_set_verify_flags() with a flag disabling
+   * GnuTLS checking of the dates.  So certstat shouldn't have the
+   * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
   if (SslVerifyDates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
