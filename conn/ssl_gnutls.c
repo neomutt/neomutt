@@ -60,6 +60,7 @@
 #define CERTERR_HOSTNAME 16
 #define CERTERR_SIGNERNOTCA 32
 #define CERTERR_INSECUREALG 64
+#define CERTERR_OTHER 128
 
 #define CERT_SEP "-----BEGIN"
 
@@ -346,6 +347,10 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
+  /* Note: tls_negotiate() contains a call to
+   * gnutls_certificate_set_verify_flags() with a flag disabling
+   * GnuTLS checking of the dates.  So certstat shouldn't have the
+   * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
   if (SslVerifyDates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
@@ -361,46 +366,25 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     *certerr |= CERTERR_HOSTNAME;
   }
 
+  if (certstat & GNUTLS_CERT_REVOKED)
+  {
+    *certerr |= CERTERR_REVOKED;
+    certstat ^= GNUTLS_CERT_REVOKED;
+  }
+
   /* see whether certificate is in our cache (certificates file) */
   if (tls_compare_certificates(certdata))
   {
     *savedcert = 1;
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INVALID))
+    /* We check above for certs with bad dates or that are revoked.
+     * These must be accepted manually each time.  Otherwise, we
+     * accept saved certificates as valid. */
+    if (*certerr == CERTERR_VALID)
     {
-      /* doesn't matter - have decided is valid because server
-       certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_INVALID;
+      gnutls_x509_crt_deinit(cert);
+      return 0;
     }
-
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
-    {
-      /* doesn't matter that we haven't found the signer, since
-       certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_SIGNER_NOT_FOUND;
-    }
-
-    if (chainidx <= 1 && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
-    {
-      /* Hmm. Not really sure how to handle this, but let's say
-       that we don't care if the CA certificate hasn't got the
-       correct X.509 basic constraints if server or first signer
-       certificate is in our cache. */
-      certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
-    }
-
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
-    {
-      /* doesn't matter that it was signed using an insecure
-         algorithm, since certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
-    }
-  }
-
-  if (certstat & GNUTLS_CERT_REVOKED)
-  {
-    *certerr |= CERTERR_REVOKED;
-    certstat ^= GNUTLS_CERT_REVOKED;
   }
 
   if (certstat & GNUTLS_CERT_INVALID)
@@ -430,12 +414,15 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
   }
 
+  /* we've been zeroing the interesting bits in certstat -
+   * don't return OK if there are any unhandled bits we don't
+   * understand */
+  if (certstat != 0)
+    *certerr |= CERTERR_OTHER;
+
   gnutls_x509_crt_deinit(cert);
 
-  /* we've been zeroing the interesting bits in certstat -
-   don't return OK if there are any unhandled bits we don't
-   understand */
-  if (*certerr == CERTERR_VALID && certstat == 0)
+  if (*certerr == CERTERR_VALID)
     return 0;
 
   return -1;
@@ -479,17 +466,6 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
 
-  /* skip signers if insecure algorithm was used */
-  if (idx && (certerr & CERTERR_INSECUREALG))
-  {
-    if (idx == 1)
-    {
-      mutt_error(_("Warning: Server certificate was signed using an insecure "
-                   "algorithm"));
-    }
-    return 0;
-  }
-
   /* interactive check from user */
   if (gnutls_x509_crt_init(&cert) < 0)
   {
@@ -505,7 +481,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   }
 
   menu = mutt_menu_new(MENU_GENERIC);
-  menu->max = 25;
+  menu->max = 27;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
@@ -727,7 +703,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
             fprintf(fp, "#H %s %s\n", hostname, fpbuf);
             done = 1;
           }
-          if (certerr & CERTERR_NOTTRUSTED)
+          /* Save the cert for all other errors */
+          if (certerr ^ CERTERR_HOSTNAME)
           {
             done = 0;
             ret = gnutls_pem_base64_encode_alloc("CERTIFICATE", certdata, &pemdata);
@@ -1003,6 +980,12 @@ static int tls_set_priority(struct TlsSockData *data)
   {
     mutt_error(
         _("Explicit ciphersuite selection via $ssl_ciphers not supported"));
+  }
+  if (certerr & CERTERR_INSECUREALG)
+  {
+    row++;
+    strfcpy(menu->dialog[row], _("Warning: Server certificate was signed using an insecure algorithm"),
+            SHORT_STRING);
   }
 
   /* We use default priorities (see gnutls documentation),
