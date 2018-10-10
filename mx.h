@@ -98,8 +98,8 @@ struct Message
  */
 struct MxOps
 {
-  const int magic;
-  const char *name;
+  const int magic;  ///< Mailbox type, e.g. #MUTT_IMAP
+  const char *name; ///< Mailbox name, e.g. "imap"
   /**
    * mbox_open - Open a mailbox
    * @param ctx Mailbox to open

@@ -960,7 +960,6 @@ struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int fl
   /* The current connection is a new connection */
   if (!adata)
   {
-    /* The current connection is a new connection */
     adata = imap_adata_new();
     conn->data = adata;
     adata->conn = conn;

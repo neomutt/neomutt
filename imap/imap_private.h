@@ -187,8 +187,8 @@ struct ImapList
  */
 struct ImapCommand
 {
-  char seq[SEQLEN + 1];
-  int state;
+  char seq[SEQLEN + 1]; ///< Command tag, e.g. 'a0001'
+  int state;            ///< Command state, e.g. #IMAP_CMD_NEW
 };
 
 /**
@@ -222,7 +222,7 @@ struct ImapAccountData
    * it's just no fun to get the same information twice */
   char *capstr;
   unsigned char capabilities[(CAPMAX + 7) / 8];
-  unsigned int seqno;
+  unsigned int seqno; ///< tag sequence number, e.g. 'a0001'
   time_t lastread; /**< last time we read a command for the server */
   char *buf;
   size_t blen;

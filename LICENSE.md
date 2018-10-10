@@ -1,7 +1,6 @@
-GNU General Public License
-==========================
+The GNU General Public License, Version 2, June 1991 (GPLv2)
+============================================================
 
-_Version 2, June 1991_
 _Copyright © 1989, 1991 Free Software Foundation, Inc.,_
 _51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA_
 

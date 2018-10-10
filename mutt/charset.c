@@ -703,7 +703,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
  * @param[in,out] ps    String to convert
  * @param[in]     from  Current character set
  * @param[in]     to    Target character set
- * @param[in]     flags Flags, e.g.
+ * @param[in]     flags Flags, e.g. #MUTT_ICONV_HOOK_FROM
  * @retval 0      Success
  * @retval -1     Invalid arguments or failure to open an iconv channel
  * @retval errno  Failure in iconv conversion
