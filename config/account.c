@@ -146,7 +146,7 @@ int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Bu
 }
 
 /**
- * ac_get_value - Get an Account-specific config item
+ * ac_get_value - Get an account-specific config item
  * @param ac     Account-specific config items
  * @param vid    Value ID (index into Account's HashElem's)
  * @param result Buffer for results or error messages

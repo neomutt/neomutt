@@ -32,7 +32,7 @@ struct Inheritance
 {
   struct HashElem *parent; /**< HashElem of parent config item */
   const char *name;        /**< Name of this config item */
-  struct Account *ac;      /**< Account holding this config item */
+  struct Account *ac;   /**< Account holding this config item */
   intptr_t var;            /**< (Pointer to) value, of config item */
 };
 
