@@ -4685,6 +4685,7 @@ const struct Command Commands[] = {
   { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
+  { "named-mailboxes",     mutt_parse_mailboxes,   MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
 #ifdef USE_COMPRESSED
   { "open-hook",           mutt_parse_hook,        MUTT_OPEN_HOOK },
