@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for the Account object
+ * Test code for the CfgAccount object
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -68,7 +68,7 @@ void config_account(void)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, BrokenVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, BrokenVarStr);
   if (TEST_CHECK(!ac))
   {
     TEST_MSG("Expected error:\n");
@@ -80,14 +80,14 @@ void config_account(void)
     return;
   }
 
-  const char *AccountVarStr2[] = {
+  const char *CfgAccountVarStr2[] = {
     "Apple",
     "Apple",
     NULL,
   };
 
   TEST_MSG("Expect error for next test\n");
-  ac = ac_create(cs, account, AccountVarStr2);
+  ac = ac_create(cs, account, CfgAccountVarStr2);
   if (!TEST_CHECK(!ac))
   {
     ac_free(cs, &ac);
@@ -96,13 +96,13 @@ void config_account(void)
   }
 
   account = "fruit";
-  const char *AccountVarStr[] = {
+  const char *CfgAccountVarStr[] = {
     "Apple",
     "Cherry",
     NULL,
   };
 
-  ac = ac_create(cs, account, AccountVarStr);
+  ac = ac_create(cs, account, CfgAccountVarStr);
   if (!TEST_CHECK(ac != NULL))
     return;
 
@@ -134,7 +134,7 @@ void config_account(void)
   }
   else
   {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
   }
 
   index++;
@@ -146,7 +146,7 @@ void config_account(void)
   }
   else
   {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
   }
 
   mutt_buffer_reset(&err);

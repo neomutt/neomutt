@@ -25,31 +25,31 @@
  *
  * User configurable variables.
  *
- * | File             | Description             |
- * | :--------------- | :---------------------- |
- * | config/account.c | @subpage config-account |
- * | config/address.c | @subpage config-address |
- * | config/bool.c    | @subpage config-bool    |
- * | config/command.c | @subpage config-command |
- * | config/dump.c    | @subpage config-dump    |
- * | config/long.c    | @subpage config-long    |
- * | config/magic.c   | @subpage config-magic   |
- * | config/mbtable.c | @subpage config-mbtable |
- * | config/number.c  | @subpage config-number  |
- * | config/path.c    | @subpage config-path    |
- * | config/quad.c    | @subpage config-quad    |
- * | config/regex.c   | @subpage config-regex   |
- * | config/set.c     | @subpage config-set     |
- * | config/sort.c    | @subpage config-sort    |
- * | config/string.c  | @subpage config-string  |
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | config/address.c    | @subpage config-address    |
+ * | config/bool.c       | @subpage config-bool       |
+ * | config/cfgaccount.c | @subpage config-cfgaccount |
+ * | config/command.c    | @subpage config-command    |
+ * | config/dump.c       | @subpage config-dump       |
+ * | config/long.c       | @subpage config-long       |
+ * | config/magic.c      | @subpage config-magic      |
+ * | config/mbtable.c    | @subpage config-mbtable    |
+ * | config/number.c     | @subpage config-number     |
+ * | config/path.c       | @subpage config-path       |
+ * | config/quad.c       | @subpage config-quad       |
+ * | config/regex.c      | @subpage config-regex      |
+ * | config/set.c        | @subpage config-set        |
+ * | config/sort.c       | @subpage config-sort       |
+ * | config/string.c     | @subpage config-string     |
  */
 
 #ifndef MUTT_CONFIG_LIB_H
 #define MUTT_CONFIG_LIB_H
 
-#include "account.h"
 #include "address.h"
 #include "bool.h"
+#include "cfgaccount.h"
 #include "command.h"
 #include "dump.h"
 #include "inheritance.h"

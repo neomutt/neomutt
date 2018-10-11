@@ -532,7 +532,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
 
   // set parent
   mutt_buffer_reset(err);

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-account Account-specific config items
+ * @page config-cfgaccount Account-specific config items
  *
  * A collection of account-specific config items.
  */
@@ -35,19 +35,19 @@
 #include "mutt/logging.h"
 #include "mutt/memory.h"
 #include "mutt/string2.h"
-#include "account.h"
+#include "cfgaccount.h"
 #include "inheritance.h"
 #include "set.h"
 #include "types.h"
 
 /**
- * ac_create - Create an Account
+ * ac_create - Create an CfgAccount
  * @param cs        Config items
- * @param name      Name of Account
+ * @param name      Name of CfgAccount
  * @param var_names List of config items (NULL terminated)
- * @retval ptr New Account object
+ * @retval ptr New CfgAccount object
  */
-struct Account *ac_create(const struct ConfigSet *cs, const char *name,
+struct CfgAccount *ac_create(const struct ConfigSet *cs, const char *name,
                           const char *var_names[])
 {
   if (!cs || !name || !var_names)
@@ -57,7 +57,7 @@ struct Account *ac_create(const struct ConfigSet *cs, const char *name,
   for (; var_names[count]; count++)
     ;
 
-  struct Account *ac = mutt_mem_calloc(1, sizeof(*ac));
+  struct CfgAccount *ac = mutt_mem_calloc(1, sizeof(*ac));
   ac->name = mutt_str_strdup(name);
   ac->cs = cs;
   ac->var_names = var_names;
@@ -95,11 +95,11 @@ struct Account *ac_create(const struct ConfigSet *cs, const char *name,
 }
 
 /**
- * ac_free - Free an Account object
+ * ac_free - Free an CfgAccount object
  * @param cs Config items
- * @param ac Account to free
+ * @param ac CfgAccount to free
  */
-void ac_free(const struct ConfigSet *cs, struct Account **ac)
+void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac)
 {
   if (!cs || !ac || !*ac)
     return; /* LCOV_EXCL_LINE */
@@ -127,14 +127,14 @@ void ac_free(const struct ConfigSet *cs, struct Account **ac)
 }
 
 /**
- * ac_set_value - Set an Account-specific config item
- * @param ac    Account-specific config items
- * @param vid   Value ID (index into Account's HashElem's)
+ * ac_set_value - Set an CfgAccount-specific config item
+ * @param ac    CfgAccount-specific config items
+ * @param vid   Value ID (index into CfgAccount's HashElem's)
  * @param value Native pointer/value to set
  * @param err   Buffer for error messages
  * @retval int Result, e.g. #CSR_SUCCESS
  */
-int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Buffer *err)
+int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct Buffer *err)
 {
   if (!ac)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
@@ -148,11 +148,11 @@ int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Bu
 /**
  * ac_get_value - Get an account-specific config item
  * @param ac     Account-specific config items
- * @param vid    Value ID (index into Account's HashElem's)
+ * @param vid    Value ID (index into CfgAccount's HashElem's)
  * @param result Buffer for results or error messages
  * @retval int Result, e.g. #CSR_SUCCESS
  */
-int ac_get_value(const struct Account *ac, size_t vid, struct Buffer *result)
+int ac_get_value(const struct CfgAccount *ac, size_t vid, struct Buffer *result)
 {
   if (!ac)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
