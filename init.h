@@ -3419,6 +3419,7 @@ struct ConfigDef MuttVars[] = {
   ** sequences:
   ** .dl
   ** .dt %B  .dd Name of the mailbox
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
   ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
@@ -4157,6 +4158,7 @@ struct ConfigDef MuttVars[] = {
   ** .dl
   ** .dt %b  .dd Number of mailboxes with new mail *
   ** .dt %d  .dd Number of deleted messages *
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %f  .dd The full pathname of the current mailbox
   ** .dt %F  .dd Number of flagged messages *
   ** .dt %h  .dd Local hostname
