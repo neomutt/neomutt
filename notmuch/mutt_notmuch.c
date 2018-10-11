@@ -1731,15 +1731,15 @@ done:
 }
 
 /**
- * count_query_messages - Count the number of messages in all queried threads
+ * count_query_thread_messages - Count the number of messages in all queried threads
  * @param query Executed query
  * @retval num Number of messages
  */
 static unsigned int count_query_thread_messages(notmuch_query_t *q)
 {
   unsigned int count = 0;
-  notmuch_threads_t *threads;
-  notmuch_thread_t *thread;
+  notmuch_threads_t *threads = NULL;
+  notmuch_thread_t *thread = NULL;
 
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
   notmuch_query_search_threads(q, &threads);
