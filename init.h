@@ -995,6 +995,7 @@ struct ConfigDef MuttVars[] = {
   **             ``@'' to symbolic links and ``*'' to executable files)
   ** .dt %F  .dd File permissions
   ** .dt %g  .dd Group name (or numeric gid, if missing)
+  ** .dt %i  .dd Description of the folder
   ** .dt %l  .dd Number of hard links
   ** .dt %m  .dd Number of messages in the mailbox *
   ** .dt %n  .dd Number of unread messages in the mailbox *
