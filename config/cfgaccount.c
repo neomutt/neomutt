@@ -48,7 +48,7 @@
  * @retval ptr New CfgAccount object
  */
 struct CfgAccount *ac_create(const struct ConfigSet *cs, const char *name,
-                          const char *var_names[])
+                             const char *var_names[])
 {
   if (!cs || !name || !var_names)
     return NULL; /* LCOV_EXCL_LINE */

@@ -1732,7 +1732,7 @@ done:
 
 /**
  * count_query_thread_messages - Count the number of messages in all queried threads
- * @param query Executed query
+ * @param q Executed query
  * @retval num Number of messages
  */
 static unsigned int count_query_thread_messages(notmuch_query_t *q)
@@ -1764,7 +1764,7 @@ static unsigned int count_query_thread_messages(notmuch_query_t *q)
 
 /**
  * count_query_messages - Count the number of queried messages
- * @param query Executed query
+ * @param q Executed query
  * @retval num Number of messages
  */
 static unsigned int count_query_messages(notmuch_query_t *q)
@@ -1788,6 +1788,7 @@ static unsigned int count_query_messages(notmuch_query_t *q)
  * count_query - Count the results of a query
  * @param db   Notmuch database
  * @param qstr Query to execute
+ * @param type Query type, e.g. #NM_QUERY_TYPE_MESGS
  * @retval num Number of results
  */
 static unsigned int count_query(notmuch_database_t *db, const char *qstr, enum NmQueryType type)
