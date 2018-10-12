@@ -15,22 +15,21 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-09-04 02:11+0100\n"
-"PO-Revision-Date: 2018-06-29 23:35+0200\n"
-"Last-Translator: Floyd Anderson <f.a@31c0.net>\n"
+"PO-Revision-Date: 2018-10-12 16:29+0200\n"
+"Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2\n"
 
-#: addrbook.c:55 browser.c:83 browser.c:93 mutt_history.c:36 pager.c:1815
-#: postpone.c:67 query.c:71 recvattach.c:87
+#: addrbook.c:55 browser.c:83 browser.c:93 mutt_history.c:36 pager.c:1815 postpone.c:67 query.c:71 recvattach.c:87
 msgid "Exit"
 msgstr "Verlassen"
 
-#: addrbook.c:55 curs_main.c:878 curs_main.c:891 pager.c:1823 pager.c:1833
-#: postpone.c:68
+#: addrbook.c:55 curs_main.c:878 curs_main.c:891 pager.c:1823 pager.c:1833 postpone.c:68
 msgid "Del"
 msgstr "Lösch."
 
@@ -42,74 +41,69 @@ msgstr "Behalten"
 msgid "Select"
 msgstr "Auswählen"
 
-#: addrbook.c:57 browser.c:87 browser.c:99 compose.c:184 compose.c:196
-#: conn/ssl.c:1050 conn/ssl_gnutls.c:801 curs_main.c:884 curs_main.c:897
-#: mutt_history.c:39 ncrypt/crypt_gpgme.c:4355 ncrypt/pgpkey.c:673
-#: ncrypt/smime.c:564 pager.c:2283 postpone.c:70 query.c:76 recvattach.c:88
+#: addrbook.c:57 browser.c:87 browser.c:99 compose.c:184 compose.c:196 conn/ssl.c:1050 conn/ssl_gnutls.c:801 curs_main.c:884 curs_main.c:897
+#: mutt_history.c:39 ncrypt/crypt_gpgme.c:4355 ncrypt/pgpkey.c:673 ncrypt/smime.c:564 pager.c:2283 postpone.c:70 query.c:76 recvattach.c:88
 msgid "Help"
 msgstr "Hilfe"
 
 #: addrbook.c:209
 msgid "You have no aliases"
-msgstr "Keine Einträge im Adressbuch"
+msgstr "Keine Kurznamen vorhanden"
 
 #: addrbook.c:216
 msgid "Aliases"
-msgstr "Adressbuch"
+msgstr "Kurznamen"
 
 #. L10N: prompt to add a new alias
 #: alias.c:394
 msgid "Alias as: "
-msgstr "Kurzname für Adressbuch: "
+msgstr "Kurzname anlegen: "
 
 #: alias.c:400
 msgid "You already have an alias defined with that name"
-msgstr "Es wurde bereits ein Adressbucheintrag mit diesem Kurznamen definiert"
+msgstr "Dieser Kurzname wird bereits verwendet"
 
 #: alias.c:406
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Warnung: Dieser Kurzname für das Adressbuch könnte Probleme bereiten. Korrigieren?"
+msgstr "Warnung: Dieser Kurzname könnte Probleme bereiten. Korrigieren?"
 
 #: alias.c:430
 msgid "Address: "
 msgstr "Adresse: "
 
-#: alias.c:441 commands.c:341 compose.c:536 conn/conn_raw.c:268
-#: conn/conn_raw.c:326 recvcmd.c:217 send.c:294
+#: alias.c:441 commands.c:341 compose.c:536 conn/conn_raw.c:268 conn/conn_raw.c:326 recvcmd.c:217 send.c:294
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Ungültige IDN: '%s'"
 
 #: alias.c:451
 msgid "Personal name: "
-msgstr "Name: "
+msgstr "Ihr Name: "
 
 #: alias.c:460
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Akzeptieren?"
 
-#: alias.c:472 recvattach.c:510 recvattach.c:534 recvattach.c:548
-#: recvattach.c:562 recvattach.c:607
+#: alias.c:472 recvattach.c:510 recvattach.c:534 recvattach.c:548 recvattach.c:562 recvattach.c:607
 msgid "Save to file: "
 msgstr "Speichern in Datei: "
 
 #: alias.c:487
 msgid "Error reading alias file"
-msgstr "Fehler beim Lesen der Adressbuchdatei"
+msgstr "Fehler beim Lesen der Kurznamendatei"
 
 #: alias.c:509
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Fehler beim Lesen der Adressbuchdatei"
+msgstr "Problem bei Hinzufügen des Kurznamens"
 
 #: alias.c:511
 msgid "Alias added"
-msgstr "Adresse eingetragen"
+msgstr "Kurzname eingetragen"
 
 #: alias.c:519
 msgid "Error seeking in alias file"
-msgstr "Fehler beim Suchen in Adressbuchdatei"
+msgstr "Fehler bei der Suche in Kurznamendatei"
 
 #: bcache.c:207
 #, c-format
@@ -293,8 +287,7 @@ msgstr "%s: Objekt unbekannt"
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: Kommando ist nur für Index-/Body-/Header-Objekte gültig"
 
-#: color.c:609 color.c:824 color.c:850 color.c:896 color.c:907 color.c:934
-#: color.c:1013 hook.c:111 hook.c:124 init.c:580 init.c:588 init.c:677
+#: color.c:609 color.c:824 color.c:850 color.c:896 color.c:907 color.c:934 color.c:1013 hook.c:111 hook.c:124 init.c:580 init.c:588 init.c:677
 #: init.c:1066 init.c:1250 init.c:1756 init.c:1815 keymap.c:1168 score.c:107
 #, c-format
 msgid "%s: too few arguments"
@@ -305,8 +298,7 @@ msgstr "%s: Zu wenige Parameter"
 msgid "%s: no such attribute"
 msgstr "%s: Attribut unbekannt"
 
-#: color.c:1022 color.c:1078 hook.c:130 init.c:1090 init.c:2019 init.c:2401
-#: keymap.c:1101 keymap.c:1274 keymap.c:1348 mutt_lua.c:488 score.c:116
+#: color.c:1022 color.c:1078 hook.c:130 init.c:1090 init.c:2019 init.c:2401 keymap.c:1101 keymap.c:1274 keymap.c:1348 mutt_lua.c:488 score.c:116
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: Zu viele Parameter"
@@ -356,8 +348,7 @@ msgstr "PGP-Unterschrift erfolgreich überprüft"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP-Unterschrift konnte NICHT überprüft werden"
 
-#: commands.c:260 compose.c:1911 compress.c:430 curs_lib.c:313 curs_lib.c:581
-#: curs_main.c:1085 curs_main.c:1128 mutt_attach.c:151 mutt_attach.c:284
+#: commands.c:260 compose.c:1911 compress.c:430 curs_lib.c:313 curs_lib.c:581 curs_main.c:1085 curs_main.c:1128 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2411 sendlib.c:1562
 #, c-format
 msgid "Error running \"%s\""
@@ -584,8 +575,7 @@ msgstr "Sicherheit: "
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:162 ncrypt/crypt_gpgme.c:5128 ncrypt/pgp.c:1939
-#: ncrypt/smime.c:2343
+#: compose.c:162 ncrypt/crypt_gpgme.c:5128 ncrypt/pgp.c:1939 ncrypt/smime.c:2343
 msgid "Sign as: "
 msgstr "Signiere als: "
 
@@ -1068,9 +1058,8 @@ msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1-Fingerabdruck: %s"
 
 #: conn/ssl.c:1003 conn/ssl.c:1005 conn/ssl_gnutls.c:734 conn/ssl_gnutls.c:736
-#, fuzzy
 msgid "SHA256 Fingerprint: "
-msgstr "SHA1-Fingerabdruck: %s"
+msgstr "SHA256-Fingerabdruck:"
 
 #: conn/ssl.c:1008 conn/ssl_gnutls.c:770
 #, c-format
@@ -1103,8 +1092,7 @@ msgstr "(z)urückweisen, (e)inmal akzeptieren, über(g)ehen"
 msgid "(r)eject, accept (o)nce"
 msgstr "(z)urückweisen, (e)inmal akzeptieren"
 
-#: conn/ssl.c:1048 conn/ssl_gnutls.c:799 ncrypt/crypt_gpgme.c:4349
-#: ncrypt/pgpkey.c:667 ncrypt/smime.c:560
+#: conn/ssl.c:1048 conn/ssl_gnutls.c:799 ncrypt/crypt_gpgme.c:4349 ncrypt/pgpkey.c:667 ncrypt/smime.c:560
 msgid "Exit  "
 msgstr "Ende  "
 
@@ -1249,8 +1237,8 @@ msgstr "Tunnel-Fehler bei Verbindung mit %s: %s"
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Die Längenberechnung weicht um %ld Byte(s) ab"
+msgstr[1] "Die Längenberechnung weicht um %ld Byte(s) ab"
 
 #: copy.c:725
 msgid "No decryption engine available for message"
@@ -1550,8 +1538,7 @@ msgstr "NeoMutt verlassen, ohne Änderungen zu speichern?"
 msgid "Cannot break thread"
 msgstr "Kann Diskussionsfaden nicht zerteilen"
 
-#: curs_main.c:2321 curs_main.c:2361 curs_main.c:2842 curs_main.c:2874
-#: flags.c:377 mutt_thread.c:1049 mutt_thread.c:1113 mutt_thread.c:1194
+#: curs_main.c:2321 curs_main.c:2361 curs_main.c:2842 curs_main.c:2874 flags.c:377 mutt_thread.c:1049 mutt_thread.c:1113 mutt_thread.c:1194
 msgid "Threading is not enabled"
 msgstr "Die Darstellung von Diskussionsfäden ist abgeschaltet"
 
@@ -1870,9 +1857,7 @@ msgstr "[-- Automatische Anzeige mittels %s --]\n"
 msgid "Invoking autoview command: %s"
 msgstr "Automatische Anzeige mittels: %s"
 
-#: handler.c:583 mutt_attach.c:516 mutt_attach.c:695 mutt_attach.c:728
-#: mutt_attach.c:1063 mutt_attach.c:1125 ncrypt/pgpkey.c:724
-#: ncrypt/pgpkey.c:920
+#: handler.c:583 mutt_attach.c:516 mutt_attach.c:695 mutt_attach.c:728 mutt_attach.c:1063 mutt_attach.c:1125 ncrypt/pgpkey.c:724 ncrypt/pgpkey.c:920
 msgid "Can't create filter"
 msgstr "Kann Filter nicht erzeugen"
 
@@ -2074,11 +2059,11 @@ msgstr "Kann %s nicht anlegen: %s"
 
 #: help.c:391
 msgid "ERROR: please report this bug"
-msgstr "ERROR: Diesen Fehler bitte melden"
+msgstr "INTERNER FEHLER: Diesen Fehler bitte melden (bug report)"
 
 #: help.c:443
 msgid "<UNKNOWN>"
-msgstr "<unbekannt>"
+msgstr "<UNBEKANNT>"
 
 #: help.c:457
 msgid "Generic bindings:"
@@ -2348,10 +2333,9 @@ msgstr "Ungültige IMAP-Statusindikatoren"
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:476
 msgid "Abort download and close mailbox?"
-msgstr ""
+msgstr "Download abbrechen und Mailbox schließen?"
 
-#: imap/message.c:505 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108
-#: mutt/memory.c:142 mx.c:1171 safe_asprintf.c:61
+#: imap/message.c:505 mutt/memory.c:60 mutt/memory.c:67 mutt/memory.c:108 mutt/memory.c:142 mx.c:1171 safe_asprintf.c:61
 msgid "Out of memory"
 msgstr "Kein Speicher verfügbar"
 
@@ -2363,14 +2347,12 @@ msgstr "Werte Cache aus..."
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
 #: imap/message.c:869
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Hole Kopfdaten von Nachricht..."
+msgstr "Hole aktualisierte Markierungen..."
 
 #: imap/message.c:969
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
-msgstr "Kann von dieser Version des IMAP-Servers keine Nachrichtenköpfe erhalten"
+msgstr "Kann keine Nachrichtenköpfe von dieser Version des IMAP-Servers laden"
 
 #: imap/message.c:979
 #, c-format
@@ -2418,12 +2400,12 @@ msgstr "Zu wenige Parameter"
 #: init.c:774 init.c:1639
 #, c-format
 msgid "Error: impossible to build path of '%s'"
-msgstr ""
+msgstr "Fehler: Es gibt keinen Pfad zu '%s'"
 
 #: init.c:791
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr ""
+msgstr "Fehler: Endlosschleife beim Einlesen der Konfigurationsdatei '%s'"
 
 #: init.c:822
 #, c-format
@@ -2454,7 +2436,7 @@ msgstr[1] "source: %d Warnungen in %s"
 
 #: init.c:895
 msgid "alias: no address"
-msgstr "alias (Kurzname): Keine Adresse"
+msgstr "Kurzname: fehlende Adresse"
 
 #: init.c:937
 #, c-format
@@ -2463,7 +2445,7 @@ msgstr "Warnung: Ungültige IDN '%s' in Kurzname '%s'"
 
 #: init.c:1010
 msgid "attachments: no disposition"
-msgstr "attachments: keine disposition"
+msgstr "attachments: keine Disposition"
 
 #: init.c:1021
 msgid "Current attachments settings:"
@@ -2486,11 +2468,11 @@ msgstr "%sgroup: Warnung: Ungültige IDN '%s'"
 #: init.c:1261
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Fehler: %s"
 
 #: init.c:1332
 msgid "invalid header field"
-msgstr "my_hdr: Ungültiges Kopffeld"
+msgstr "Ungültiges Kopffeld"
 
 #: init.c:1598 init.c:1700
 #, c-format
@@ -2531,7 +2513,7 @@ msgstr "Kein Ordner angegeben"
 
 #: init.c:2212
 msgid "unattachments: no disposition"
-msgstr "unattachments: keine disposition"
+msgstr "unattachments: keine Disposition"
 
 #: init.c:2239
 msgid "unattachments: invalid disposition"
@@ -2548,24 +2530,24 @@ msgid "%s: unknown command"
 msgstr "%s: Unbekanntes Kommando"
 
 #: init.c:3713 init.c:3737 init.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Ungültiger Wert für Option %s: \"%s\""
+msgstr "Ungültiger Wert für Option %s: %s"
 
 #: init.c:3750
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "Option %s kann vom Pager aus weder gesetzt noch zurückgesetzt werden "
 
 #: init.c:3788
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "Funktion steht beim Anhängen von Nachrichten nicht zur Verfügung."
+msgstr "Option %s kann im Anhängemodus nicht gesetzt werden."
 
 #: keymap.c:319 keymap.c:327
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Tastenkombination '%s' überdeckt '%s'. Setze zuerst: 'bind %s %s noop', siehe auch https://neomutt.org/guide/configuration.html#bind-warnings."
+msgstr "Tastenkombination '%s' überdeckt '%s'. Setze zuerst: 'bind %s %s noop', siehe auch https://neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:686
 msgid "Macros are currently disabled"
@@ -2737,7 +2719,7 @@ msgstr ""
 "Optionen:\n"
 "  --            Spezielles Argument, das NeoMutt anzeigt, nachfolgende Argumente\n"
 "                grundsätzlich als Empfängeradressen zu interpretieren\n"
-"  -A <alias>    Zeige Wert von Alias auf der Standardausgabe (stdout) und beende\n"
+"  -A <alias>    Zeige Wert des Kurznamens auf der Standardausgabe (stdout) und beende\n"
 "  -a <file>     Hänge eine/mehrere Dateien der Nachricht an (Option muss zuletzt\n"
 "                notiert und mittels '--' von Empfängeradressen separiert werden)\n"
 "  -B            Benutze den Batch-Modus (startet ohne ncurses Oberfläche)\n"
@@ -2882,8 +2864,7 @@ msgstr "Springe zu: "
 msgid "Invalid index number"
 msgstr "Ungültige Indexnummer"
 
-#: menu.c:640 menu.c:665 menu.c:738 menu.c:804 menu.c:822 menu.c:837 menu.c:852
-#: menu.c:867 menu.c:884 menu.c:901 menu.c:1534
+#: menu.c:640 menu.c:665 menu.c:738 menu.c:804 menu.c:822 menu.c:837 menu.c:852 menu.c:867 menu.c:884 menu.c:901 menu.c:1534
 msgid "No entries"
 msgstr "Keine Einträge"
 
@@ -2917,7 +2898,7 @@ msgstr "Suche nach: "
 
 #: menu.c:1156 pager.c:2636 pattern.c:2357
 msgid "Reverse search for: "
-msgstr "Suche rückwärts nach: "
+msgstr "Rückwärtssuche nach: "
 
 #: menu.c:1209 pager.c:2586 pager.c:2609 pager.c:2740 pattern.c:2480
 msgid "Not found"
@@ -2962,20 +2943,12 @@ msgstr "Warte auf flock-Versuch... %d"
 msgid "Bad history file format (line %d)"
 msgstr "Falsches Format der Verlaufdatei (Zeile %d)"
 
-#: mutt/history.c:261 ncrypt/crypt_gpgme.c:698 ncrypt/crypt_gpgme.c:2029
-#: ncrypt/crypt_gpgme.c:2049 ncrypt/crypt_gpgme.c:2102
-#: ncrypt/crypt_gpgme.c:2119 ncrypt/crypt_gpgme.c:2154
-#: ncrypt/crypt_gpgme.c:2172 ncrypt/crypt_gpgme.c:2260
-#: ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863
-#: ncrypt/crypt_gpgme.c:3981 ncrypt/pgp.c:580 ncrypt/pgp.c:588 ncrypt/pgp.c:891
-#: ncrypt/pgp.c:1003 ncrypt/pgp.c:1145 ncrypt/pgp.c:1165 ncrypt/pgp.c:1199
-#: ncrypt/pgp.c:1529 ncrypt/pgpkey.c:711 ncrypt/pgpkey.c:902
-#: ncrypt/pgpmicalg.c:185 ncrypt/smime.c:1106 ncrypt/smime.c:1114
-#: ncrypt/smime.c:1199 ncrypt/smime.c:1306 ncrypt/smime.c:1367
-#: ncrypt/smime.c:1375 ncrypt/smime.c:1567 ncrypt/smime.c:1943
-#: ncrypt/smime.c:2019 ncrypt/smime.c:2026 ncrypt/smime.c:2137
-#: ncrypt/smime.c:2235 ncrypt/smime.c:2251 nntp/nntp.c:1423 nntp/nntp.c:2460
-#: pattern.c:1009 pop/pop.c:131
+#: mutt/history.c:261 ncrypt/crypt_gpgme.c:698 ncrypt/crypt_gpgme.c:2029 ncrypt/crypt_gpgme.c:2049 ncrypt/crypt_gpgme.c:2102 ncrypt/crypt_gpgme.c:2119
+#: ncrypt/crypt_gpgme.c:2154 ncrypt/crypt_gpgme.c:2172 ncrypt/crypt_gpgme.c:2260 ncrypt/crypt_gpgme.c:2787 ncrypt/crypt_gpgme.c:2863
+#: ncrypt/crypt_gpgme.c:3981 ncrypt/pgp.c:580 ncrypt/pgp.c:588 ncrypt/pgp.c:891 ncrypt/pgp.c:1003 ncrypt/pgp.c:1145 ncrypt/pgp.c:1165 ncrypt/pgp.c:1199
+#: ncrypt/pgp.c:1529 ncrypt/pgpkey.c:711 ncrypt/pgpkey.c:902 ncrypt/pgpmicalg.c:185 ncrypt/smime.c:1106 ncrypt/smime.c:1114 ncrypt/smime.c:1199
+#: ncrypt/smime.c:1306 ncrypt/smime.c:1367 ncrypt/smime.c:1375 ncrypt/smime.c:1567 ncrypt/smime.c:1943 ncrypt/smime.c:2019 ncrypt/smime.c:2026
+#: ncrypt/smime.c:2137 ncrypt/smime.c:2235 ncrypt/smime.c:2251 nntp/nntp.c:1423 nntp/nntp.c:2460 pattern.c:1009 pop/pop.c:131
 msgid "Can't create temporary file"
 msgstr "Kann Temporärdatei nicht erzeugen"
 
@@ -2995,9 +2968,8 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Schreibe Protokoll der Stufe %d nach Datei '%s'"
 
 #: mutt/path.c:443
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Fehler beim Verbinden mit dem Server: %s"
+msgstr "Fehler: kann Pfad nicht in absoluten Pfad konvertieren"
 
 #: mutt/regex.c:269
 #, c-format
@@ -3092,17 +3064,16 @@ msgid "Password for %s@%s: "
 msgstr "Passwort für %s@%s: "
 
 #: mutt_account.c:381
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Kein Abfragekommando definiert"
+msgstr "Kein OAUTH Kommando zur Aktualisierung definiert"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Kann Kommando zur Aktualisierung nicht ausführen"
 
 #: mutt_account.c:398
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Kommando gibt leere Zeichenkette zurück"
 
 #: mutt_attach.c:130 mutt_attach.c:264 mutt_attach.c:445 mutt_attach.c:1028
 msgid "Can't match nametemplate, continue?"
@@ -3186,18 +3157,18 @@ msgid "History '%s'"
 msgstr "Verlauf '%s'"
 
 #: mutt_logging.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Ungültiger Wert für Option %s: \"%s\""
+msgstr "Ungültiger Wert für Option %s: %ld"
 
 #: mutt_lua.c:420
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Fehler: Kann Lua Interpreter nicht laden"
 
 #: mutt_lua.c:496
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Konnte %s nicht für exklusiven Zugriff sperren.\n"
+msgstr "Konnte Lua-Datei nicht laden: %s"
 
 #: mutt_socket.c:90
 #, c-format
@@ -3223,9 +3194,9 @@ msgstr "Lesen von %s unterbrochen..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:416
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "Kann %s nicht anhängen"
+msgstr "Kann %s nicht schreiben"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
@@ -3331,8 +3302,7 @@ msgstr "Inline-PGP funktioniert nicht mit format=flowed. PGP/MIME verwenden?"
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Mail nicht versandt: Inline-PGP funktioniert nicht mit format=flowed"
 
-#: ncrypt/crypt.c:215 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:715
-#: ncrypt/pgpkey.c:915
+#: ncrypt/crypt.c:215 ncrypt/cryptglue.c:141 ncrypt/pgpkey.c:715 ncrypt/pgpkey.c:915
 msgid "Invoking PGP..."
 msgstr "Rufe PGP auf..."
 
@@ -3429,8 +3399,7 @@ msgstr "Fehler beim Aktivieren des CMS-Protokolls : %s"
 msgid "error creating gpgme data object: %s"
 msgstr "Fehler beim Erzeugen des GPGME-Datenobjekts: %s"
 
-#: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1708
-#: ncrypt/crypt_gpgme.c:2453
+#: ncrypt/crypt_gpgme.c:604 ncrypt/crypt_gpgme.c:626 ncrypt/crypt_gpgme.c:1708 ncrypt/crypt_gpgme.c:2453
 #, c-format
 msgid "error allocating data object: %s"
 msgstr "Fehler beim Anlegen des Datenobjekts: %s"
@@ -3548,8 +3517,7 @@ msgstr "WARNUNG: Der Schlüssel gehört NICHT zur oben genannten Person\n"
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "WARNUNG: Es ist NICHT sicher, dass der Schlüssel zur oben genannten Person gehört\n"
 
-#: ncrypt/crypt_gpgme.c:1519 ncrypt/crypt_gpgme.c:1524
-#: ncrypt/crypt_gpgme.c:3699
+#: ncrypt/crypt_gpgme.c:1519 ncrypt/crypt_gpgme.c:1524 ncrypt/crypt_gpgme.c:3699
 msgid "aka: "
 msgstr "auch bekannt als: "
 
@@ -3559,7 +3527,7 @@ msgstr "KeyID "
 
 #: ncrypt/crypt_gpgme.c:1541
 msgid "no signature fingerprint available"
-msgstr ""
+msgstr "Kein Fingerabdruck zur Unterschrift verfügbar"
 
 #: ncrypt/crypt_gpgme.c:1550 ncrypt/crypt_gpgme.c:1555
 msgid "created: "
@@ -3589,8 +3557,7 @@ msgstr "Problematische Unterschrift von:"
 msgid "               expires: "
 msgstr "              läuft ab: "
 
-#: ncrypt/crypt_gpgme.c:1716 ncrypt/crypt_gpgme.c:1948
-#: ncrypt/crypt_gpgme.c:2665
+#: ncrypt/crypt_gpgme.c:1716 ncrypt/crypt_gpgme.c:1948 ncrypt/crypt_gpgme.c:2665
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Anfang der Unterschrift --]\n"
 
@@ -3608,8 +3575,7 @@ msgstr "*** Anfang Darstellung (Unterschrift von: %s) ***\n"
 msgid "*** End Notation ***\n"
 msgstr "*** Ende Darstellung ***\n"
 
-#: ncrypt/crypt_gpgme.c:1805 ncrypt/crypt_gpgme.c:1964
-#: ncrypt/crypt_gpgme.c:2677
+#: ncrypt/crypt_gpgme.c:1805 ncrypt/crypt_gpgme.c:1964 ncrypt/crypt_gpgme.c:2677
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -3711,8 +3677,7 @@ msgstr "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
 msgid "PGP message successfully decrypted"
 msgstr "PGP-Nachricht erfolgreich entschlüsselt"
 
-#: ncrypt/crypt_gpgme.c:2839 ncrypt/pgp.c:672 ncrypt/pgp.c:726
-#: ncrypt/pgp.c:1241
+#: ncrypt/crypt_gpgme.c:2839 ncrypt/pgp.c:672 ncrypt/pgp.c:726 ncrypt/pgp.c:1241
 msgid "Could not decrypt PGP message"
 msgstr "Konnte PGP-Nachricht nicht entschlüsseln"
 
@@ -3808,8 +3773,7 @@ msgstr[1] "%s, %lu Bit %s\n"
 msgid "encryption"
 msgstr "Verschlüsselung"
 
-#: ncrypt/crypt_gpgme.c:3807 ncrypt/crypt_gpgme.c:3813
-#: ncrypt/crypt_gpgme.c:3948 ncrypt/crypt_gpgme.c:3953
+#: ncrypt/crypt_gpgme.c:3807 ncrypt/crypt_gpgme.c:3813 ncrypt/crypt_gpgme.c:3948 ncrypt/crypt_gpgme.c:3953
 msgid ", "
 msgstr ", "
 
@@ -3935,8 +3899,7 @@ msgstr "Diese Gültigkeit dieser ID ist grenzwertig. Soll dieser Schlüssel wirk
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "Die Gültigkeit dieser ID ist undefiniert. Soll dieser Schlüssel wirklich benutzt werden?"
 
-#: ncrypt/crypt_gpgme.c:4521 ncrypt/crypt_gpgme.c:4635 ncrypt/pgpkey.c:1018
-#: ncrypt/pgpkey.c:1144
+#: ncrypt/crypt_gpgme.c:4521 ncrypt/crypt_gpgme.c:4635 ncrypt/pgpkey.c:1018 ncrypt/pgpkey.c:1144
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Suche nach Schlüsseln, die auf \"%s\" passen..."
@@ -3951,8 +3914,7 @@ msgstr "Keine passenden Schlüssel für \"%s\" gefunden"
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Benutze KeyID = \"%s\" für %s?"
 
-#: ncrypt/crypt_gpgme.c:4855 ncrypt/pgp.c:1466 ncrypt/smime.c:955
-#: ncrypt/smime.c:1062
+#: ncrypt/crypt_gpgme.c:4855 ncrypt/pgp.c:1466 ncrypt/smime.c:955 ncrypt/smime.c:1062
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "KeyID für %s: "
@@ -4079,8 +4041,7 @@ msgstr ""
 "[-- Fehler: Konnte PGP-Subprozess nicht erzeugen --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1064 ncrypt/pgp.c:1089 ncrypt/smime.c:2124 postpone.c:706
-#: postpone.c:729
+#: ncrypt/pgp.c:1064 ncrypt/pgp.c:1089 ncrypt/smime.c:2124 postpone.c:706 postpone.c:729
 msgid "Decryption failed"
 msgstr "Entschlüsselung gescheitert"
 
@@ -4296,8 +4257,7 @@ msgstr "KeyID eingeben: "
 msgid "No (valid) certificate found for %s"
 msgstr "Kein (gültiges) Zertifikat für %s gefunden"
 
-#: ncrypt/smime.c:1122 ncrypt/smime.c:1151 ncrypt/smime.c:1219
-#: ncrypt/smime.c:1260 ncrypt/smime.c:1325 ncrypt/smime.c:1402
+#: ncrypt/smime.c:1122 ncrypt/smime.c:1151 ncrypt/smime.c:1219 ncrypt/smime.c:1260 ncrypt/smime.c:1325 ncrypt/smime.c:1402
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Fehler: Kann keinen OpenSSL-Unterprozess erzeugen"
 
@@ -4525,8 +4485,7 @@ msgstr "Prüfe auf neue Newsgroups..."
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Kann keine Folgeartikel finden, weil der Server das XPAT-Kommando nicht unterstützt"
 
-#: notmuch/mutt_notmuch.c:221 notmuch/mutt_notmuch.c:2002
-#: notmuch/mutt_notmuch.c:2211
+#: notmuch/mutt_notmuch.c:221 notmuch/mutt_notmuch.c:2002 notmuch/mutt_notmuch.c:2211
 #, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Fehler beim Verwenden von Notmuch-URI: %s"
@@ -4637,9 +4596,8 @@ msgid "check mailboxes for new mail"
 msgstr "Überprüfe Mailboxen auf neue Nachrichten"
 
 #: opcodes.h:44
-#, fuzzy
 msgid "calculate message statistics for all mailboxes"
-msgstr "Speichere Nachricht/Anhang in Mailbox/Datei"
+msgstr "Berechne Nachrichtenstatistik für alle Mailboxen"
 
 #: opcodes.h:45
 msgid "attach files to this message"
@@ -4778,9 +4736,8 @@ msgid "toggle whether to delete file after sending it"
 msgstr "Wähle, ob Datei nach Versand gelöscht wird"
 
 #: opcodes.h:79
-#, fuzzy
 msgid "compose new message to the current message sender"
-msgstr "Erzeuge neue Nachricht an den Absender"
+msgstr "Erzeuge neue Nachricht an den aktuellen Absender"
 
 #: opcodes.h:80
 msgid "update an attachment's encoding info"
@@ -4796,7 +4753,7 @@ msgstr "Kopiere Nachricht in Datei/Mailbox"
 
 #: opcodes.h:83
 msgid "create an alias from a message sender"
-msgstr "Erzeuge Adressbucheintrag für Absender"
+msgstr "Erzeuge Kurzname aus dem Absender"
 
 #: opcodes.h:84
 msgid "create a new mailbox (IMAP only)"
@@ -4872,7 +4829,7 @@ msgstr "Kapitalisiere das Wort (Anfang groß, Rest klein)"
 
 #: opcodes.h:102
 msgid "complete filename or alias"
-msgstr "Vervollständige Dateinamen oder Kurznamen"
+msgstr "Vervollständige Dateiname oder Kurzname"
 
 #: opcodes.h:103
 msgid "complete address with query"
@@ -5846,14 +5803,12 @@ msgid "Command USER is not supported by server"
 msgstr "Kommando USER wird vom Server nicht unterstützt"
 
 #: pop/pop_auth.c:353 smtp.c:513
-#, fuzzy
 msgid "Authenticating (OAUTHBEARER)..."
-msgstr "Authentifiziere (SASL)..."
+msgstr "Authentifiziere (OAUTHBEARER)…"
 
 #: pop/pop_auth.c:392
-#, fuzzy
 msgid "Authentication failed"
-msgstr "SASL-Authentifizierung fehlgeschlagen"
+msgstr "Authentifizierung fehlgeschlagen"
 
 #: pop/pop_lib.c:81
 #, c-format
@@ -5907,7 +5862,7 @@ msgstr "Neue Abfrage"
 
 #: query.c:74
 msgid "Make Alias"
-msgstr "Kurznamen erzeugen"
+msgstr "Erzeuge Kurzname"
 
 #: query.c:151
 msgid "Waiting for response..."
@@ -6064,9 +6019,8 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-encapsulate für den Rest verwenden?"
 
 #: recvcmd.c:1051
-#, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
-msgstr "Nur message/rfc822-Anhänge können erneut versendet werden"
+msgstr "Nur message/rfc822-Anhänge können an den Adressaten versendet werden"
 
 #: remailer.c:190
 msgid "<random>"
@@ -6330,7 +6284,7 @@ msgstr "Ungültige SMTP-URL: %s"
 #: smtp.c:616
 #, c-format
 msgid "SMTP authentication method %s requires SASL"
-msgstr ""
+msgstr "SMTP Authentifizierungsmethode %s benötigt SASL"
 
 #: smtp.c:623
 #, c-format
@@ -6338,9 +6292,8 @@ msgid "%s authentication failed, trying next method"
 msgstr "%s Authentifizierung fehlgeschlagen, versuche nächste Methode"
 
 #: smtp.c:636
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI-Authentifizierung fehlgeschlagen"
+msgstr "SMTP-Authentifizierung benötigt SASL"
 
 #: smtp.c:716
 msgid "SMTP server does not support authentication"
