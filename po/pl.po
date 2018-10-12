@@ -5926,9 +5926,9 @@ msgstr "Nie wiem jak wydrukować %s załączników"
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "Wydrukować zaznaczony załącznik?"
-msgstr[1] "Wydrukować zaznaczonye załączniki?"
-msgstr[2] "Wydrukować zaznaczonye załączniki?"
+msgstr[0] "Wydrukować %d zaznaczony załącznik?"
+msgstr[1] "Wydrukować %d zaznaczonye załączniki?"
+msgstr[2] "Wydrukować %d zaznaczonye załączniki?"
 
 #: recvattach.c:947
 #, c-format
