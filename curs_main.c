@@ -1854,8 +1854,11 @@ int mutt_index_menu(void)
 
           /* do a sanity check even if mx_mbox_sync failed.  */
 
-          if (menu->current < 0 || menu->current >= Context->mailbox->vcount)
+          if ((menu->current < 0) || (Context && Context->mailbox &&
+                                      (menu->current >= Context->mailbox->vcount)))
+          {
             menu->current = ci_first_message();
+          }
         }
 
         /* check for a fatal error, or all messages deleted */
