@@ -352,6 +352,7 @@ static bool link_is_dir(const char *folder, const char *path)
  * | \%F     | File permissions
  * | \%f     | Filename (with suffix '/', '@' or '*')
  * | \%g     | Group name (or numeric gid, if missing)
+ * | \%i     | Description of the folder
  * | \%l     | Number of hard links
  * | \%m     | Number of messages in the mailbox *
  * | \%N     | N if mailbox has new mail, blank otherwise
@@ -491,6 +492,27 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       else
         mutt_format_s(buf, buflen, prec, "");
       break;
+
+    case 'i':
+    {
+      char *s = NULL;
+      if (folder->ff->desc)
+        s = folder->ff->desc;
+      else
+        s = folder->ff->name;
+
+      snprintf(fn, sizeof(fn), "%s%s", s,
+               folder->ff->local ?
+                   (S_ISLNK(folder->ff->mode) ?
+                        "@" :
+                        (S_ISDIR(folder->ff->mode) ?
+                             "/" :
+                             ((folder->ff->mode & S_IXUSR) != 0 ? "*" : ""))) :
+                   "");
+
+      mutt_format_s(buf, buflen, prec, fn);
+      break;
+    }
 
     case 'l':
       if (folder->ff->local)
@@ -986,21 +1008,21 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 #ifdef USE_IMAP
       if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
       {
-        add_folder(menu, state, buffer, NULL, NULL, np->m, NULL);
+        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
         continue;
       }
 #endif
 #ifdef USE_POP
       if (pop_path_probe(np->m->path, NULL) == MUTT_POP)
       {
-        add_folder(menu, state, buffer, NULL, NULL, np->m, NULL);
+        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
         continue;
       }
 #endif
 #ifdef USE_NNTP
       if (nntp_path_probe(np->m->path, NULL) == MUTT_NNTP)
       {
-        add_folder(menu, state, np->m->path, NULL, NULL, np->m, NULL);
+        add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
         continue;
       }
 #endif
@@ -1025,7 +1047,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
           s.st_mtime = st2.st_mtime;
       }
 
-      add_folder(menu, state, buffer, NULL, &s, np->m, NULL);
+      add_folder(menu, state, buffer, np->m->desc, &s, np->m, NULL);
     }
   }
   browser_sort(state);

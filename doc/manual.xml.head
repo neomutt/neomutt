@@ -743,10 +743,17 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%S</entry>
-                    <entry>* †</entry>
+                    <entry>%d</entry>
+                    <entry>* ‡</entry>
                     <entry>
-                      Size of mailbox (total number of messages)
+                      Number of deleted messages
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%D</entry>
+                    <entry></entry>
+                    <entry>
+                      Description of the mailbox
                     </entry>
                   </row>
                   <row>
@@ -757,10 +764,10 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%N</entry>
-                    <entry>* †</entry>
+                    <entry>%L</entry>
+                    <entry>* ‡</entry>
                     <entry>
-                      Number of New messages in the mailbox
+                      Number of messages after limiting
                     </entry>
                   </row>
                   <row>
@@ -772,26 +779,17 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%!</entry>
-                    <entry></entry>
+                    <entry>%N</entry>
+                    <entry>* †</entry>
                     <entry>
-                      <quote>!</quote>: one flagged message; <quote>!!</quote>:
-                      two flagged messages; <quote>n!</quote>: n flagged
-                      messages (for n &gt; 2). Otherwise prints nothing.
+                      Number of New messages in the mailbox
                     </entry>
                   </row>
                   <row>
-                    <entry>%d</entry>
-                    <entry>* ‡</entry>
+                    <entry>%S</entry>
+                    <entry>* †</entry>
                     <entry>
-                      Number of deleted messages
-                    </entry>
-                  </row>
-                  <row>
-                    <entry>%L</entry>
-                    <entry>* ‡</entry>
-                    <entry>
-                      Number of messages after limiting
+                      Size of mailbox (total number of messages)
                     </entry>
                   </row>
                   <row>
@@ -799,6 +797,15 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>* ‡</entry>
                     <entry>
                       Number of tagged messages
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%!</entry>
+                    <entry></entry>
+                    <entry>
+                      <quote>!</quote>: one flagged message; <quote>!!</quote>:
+                      two flagged messages; <quote>n!</quote>: n flagged
+                      messages (for n &gt; 2). Otherwise prints nothing.
                     </entry>
                   </row>
                   <row>
@@ -5249,6 +5256,21 @@ unignore posted-to:
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">mailbox</replaceable>
         </arg>
+        <command>named-mailboxes</command>
+        <arg choice="plain">
+          <replaceable class="parameter">description</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">mailbox</replaceable>
+          </arg>
+        </arg>
+        <group choice="req" rep="repeat">
+          <arg choice="plain">
+            <replaceable class="parameter">description</replaceable>
+            <arg choice="plain">
+              <replaceable class="parameter">mailbox</replaceable>
+            </arg>
+          </arg>
+        </group>
         <command>unmailboxes</command>
         <group choice="req">
           <arg choice="plain">
@@ -5281,8 +5303,10 @@ unignore posted-to:
       </para>
       <para>
         The <quote>unmailboxes</quote> command is used to remove a token from
-        the list of folders which receive mail. Use
-        <quote>unmailboxes&#160;*</quote> to remove all tokens.
+        the list of folders which receive mail. <quote>unmailboxes</quote> can
+        be used on the mailbox path, <quote>$folder</quote>-abbreviated path,
+        or description. Use <quote>unmailboxes&#160;*</quote> to remove all
+        tokens.
       </para>
       <note>
         <para>
@@ -17787,6 +17811,20 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="opt" rep="repeat">
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
+            <command>
+              <link linkend="mailboxes">named-mailboxes</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">description</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">mailbox</replaceable>
+            </arg>
+            <group choice="opt" rep="repeat">
+              <arg choice="plain">
+                <replaceable class="parameter">description mailbox</replaceable>
+              </arg>
+            </group>
             <command>
               <link linkend="mailboxes">unmailboxes</link>
             </command>

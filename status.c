@@ -69,6 +69,7 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
  * |:--------|:--------------------------------------------------------
  * | \%b     | Number of incoming folders with unread messages
  * | \%d     | Number of deleted messages
+ * | \%D     | Description of the mailbox
  * | \%f     | Full mailbox path
  * | \%F     | Number of flagged messages
  * | \%h     | Hostname
@@ -121,6 +122,19 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         optional = 0;
       break;
 
+    case 'D':
+    {
+      struct Mailbox *mbox = Context ? Context->mailbox : NULL;
+      // If there's a description, use it. Otherwise, fall-through
+      if (mbox && mbox->desc)
+      {
+        mutt_str_strfcpy(tmp, mbox->desc, sizeof(tmp));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, tmp);
+        break;
+      }
+    }
+    /* fallthrough */
     case 'f':
     {
       struct Mailbox *m = Context ? Context->mailbox : NULL;

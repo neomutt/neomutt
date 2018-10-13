@@ -77,6 +77,23 @@ static short MailboxNotify = 0; /**< # of unnotified new boxes */
 struct MailboxList AllMailboxes = STAILQ_HEAD_INITIALIZER(AllMailboxes);
 
 /**
+ * get_mailbox_description - Find a mailbox's description given a path.
+ * @param path Path to the mailbox
+ * @retval ptr Description
+ * @retval NULL No mailbox matching path
+ */
+static char *get_mailbox_description(const char *path)
+{
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (np->m->desc && (strcmp(np->m->path, path) == 0))
+      return np->m->desc;
+  }
+  return NULL;
+}
+
+/**
  * mailbox_new - Create a new Mailbox
  * @param path Path to the mailbox
  * @retval ptr New Mailbox
@@ -90,6 +107,7 @@ struct Mailbox *mailbox_new(const char *path)
   char *r = realpath(path, rp);
   mutt_str_strfcpy(mailbox->realpath, r ? rp : path, sizeof(mailbox->realpath));
   mailbox->magic = MUTT_UNKNOWN;
+  mailbox->desc = get_mailbox_description(mailbox->path);
 
   return mailbox;
 }

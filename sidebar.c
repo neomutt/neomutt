@@ -113,6 +113,7 @@ enum SidebarSrc
  * |:--------|:--------------------------------------------------------
  * | \%B     | Name of the mailbox
  * | \%d     | Number of deleted messages
+ * | \%D     | Description of the mailbox
  * | \%F     | Number of Flagged messages in the mailbox
  * | \%L     | Number of messages after limiting
  * | \%n     | N if mailbox has new mail, blank otherwise
@@ -157,6 +158,13 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       }
       else if ((c && Context->deleted == 0) || !c)
         optional = 0;
+      break;
+
+    case 'D':
+      if (sbe->mailbox->desc)
+        mutt_format_s(buf, buflen, prec, sbe->mailbox->desc);
+      else
+        mutt_format_s(buf, buflen, prec, sbe->box);
       break;
 
     case 'F':

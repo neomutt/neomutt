@@ -995,6 +995,7 @@ struct ConfigDef MuttVars[] = {
   **             ``@'' to symbolic links and ``*'' to executable files)
   ** .dt %F  .dd File permissions
   ** .dt %g  .dd Group name (or numeric gid, if missing)
+  ** .dt %i  .dd Description of the folder
   ** .dt %l  .dd Number of hard links
   ** .dt %m  .dd Number of messages in the mailbox *
   ** .dt %n  .dd Number of unread messages in the mailbox *
@@ -3419,6 +3420,7 @@ struct ConfigDef MuttVars[] = {
   ** sequences:
   ** .dl
   ** .dt %B  .dd Name of the mailbox
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
   ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
@@ -4157,6 +4159,7 @@ struct ConfigDef MuttVars[] = {
   ** .dl
   ** .dt %b  .dd Number of mailboxes with new mail *
   ** .dt %d  .dd Number of deleted messages *
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %f  .dd The full pathname of the current mailbox
   ** .dt %F  .dd Number of flagged messages *
   ** .dt %h  .dd Local hostname
@@ -4683,6 +4686,7 @@ const struct Command Commands[] = {
   { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
+  { "named-mailboxes",     mutt_parse_mailboxes,   MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
 #ifdef USE_COMPRESSED
   { "open-hook",           mutt_parse_hook,        MUTT_OPEN_HOOK },
