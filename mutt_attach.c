@@ -1035,35 +1035,37 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
  */
 int mutt_print_attachment(FILE *fp, struct Body *a)
 {
-  char newfile[PATH_MAX] = "";
   char type[256];
   pid_t pid;
   FILE *fp_in = NULL, *fp_out = NULL;
   bool unlink_newfile = false;
+  struct Buffer *newfile = mutt_buffer_pool_get();
+  struct Buffer *cmd = mutt_buffer_pool_get();
+
+  int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
 
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_MC_PRINT))
   {
-    char cmd[STR_COMMAND];
     int piped = false;
 
     mutt_debug(LL_DEBUG2, "Using mailcap\n");
 
     struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_PRINT);
-    if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
+    if (mutt_buffer_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
     {
       if (!fp)
       {
-        if (mutt_file_symlink(a->filename, newfile) == -1)
+        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
         {
           if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           {
             rfc1524_free_entry(&entry);
-            return 0;
+            goto out;
           }
-          mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
+          mutt_buffer_strcpy(newfile, a->filename);
         }
         else
           unlink_newfile = true;
@@ -1071,32 +1073,32 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp && (mutt_save_attachment(fp, a, newfile, MUTT_SAVE_NO_FLAGS, NULL) != 0))
+    if (fp && (mutt_save_attachment(fp, a, mutt_b2s(newfile), MUTT_SAVE_NO_FLAGS, NULL) != 0))
       return 0;
 
-    mutt_str_strfcpy(cmd, entry->printcommand, sizeof(cmd));
-    piped = rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd));
+    mutt_buffer_strcpy(cmd, entry->printcommand);
+    piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd);
 
     mutt_endwin();
 
     /* interactive program */
     if (piped)
     {
-      fp_in = fopen(newfile, "r");
+      fp_in = fopen(mutt_b2s(newfile), "r");
       if (!fp_in)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
-        return 0;
+        goto out;
       }
 
-      pid = mutt_create_filter(cmd, &fp_out, NULL, NULL);
+      pid = mutt_create_filter(mutt_b2s(cmd), &fp_out, NULL, NULL);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
         mutt_file_fclose(&fp_in);
-        return 0;
+        goto out;
       }
       mutt_file_copy_stream(fp_in, fp_out);
       mutt_file_fclose(&fp_out);
@@ -1106,50 +1108,51 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
     else
     {
-      int rc = mutt_system(cmd);
-      if (rc == -1)
+      int rc2 = mutt_system(mutt_b2s(cmd));
+      if (rc2 == -1)
         mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
-      if ((rc != 0) || C_WaitKey)
+      if ((rc2 != 0) || C_WaitKey)
         mutt_any_key_to_continue(NULL);
     }
 
     if (fp)
-      mutt_file_unlink(newfile);
+      mutt_file_unlink(mutt_b2s(newfile));
     else if (unlink_newfile)
-      unlink(newfile);
+      unlink(mutt_b2s(newfile));
 
     rfc1524_free_entry(&entry);
-    return 1;
+    rc = 1;
+    goto out;
   }
 
   if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
       (mutt_str_strcasecmp("application/postscript", type) == 0))
   {
-    return mutt_pipe_attachment(fp, a, NONULL(C_PrintCommand), NULL);
+    rc = (mutt_pipe_attachment(fp, a, NONULL(C_PrintCommand), NULL));
+    goto out;
   }
   else if (mutt_can_decode(a))
   {
     /* decode and print */
 
-    int rc = 0;
-
     fp_in = NULL;
     fp_out = NULL;
 
-    mutt_mktemp(newfile, sizeof(newfile));
-    if (mutt_decode_save_attachment(fp, a, newfile, MUTT_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
+    mutt_buffer_mktemp(newfile);
+    if (mutt_decode_save_attachment(fp, a, mutt_b2s(newfile), MUTT_PRINTING, 0) == 0)
     {
-      mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n", type, newfile);
+      mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",
+                 type, mutt_b2s(newfile));
 
-      fp_in = fopen(newfile, "r");
+      fp_in = fopen(mutt_b2s(newfile), "r");
       if (!fp_in)
       {
         mutt_perror("fopen");
         goto bail0;
       }
 
-      mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", newfile);
+      mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", mutt_b2s(newfile));
 
       mutt_endwin();
       pid = mutt_create_filter(NONULL(C_PrintCommand), &fp_out, NULL, NULL);
@@ -1173,14 +1176,19 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   bail0:
     mutt_file_fclose(&fp_in);
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(newfile);
-    return rc;
+    mutt_file_unlink(mutt_b2s(newfile));
   }
   else
   {
     mutt_error(_("I don't know how to print that"));
-    return 0;
+    rc = 0;
   }
+
+out:
+  mutt_buffer_pool_release(&newfile);
+  mutt_buffer_pool_release(&cmd);
+
+  return rc;
 }
 
 /**
