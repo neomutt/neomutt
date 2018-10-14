@@ -67,37 +67,43 @@
 int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[256];
-  char tempfile[PATH_MAX];
   struct stat st;
 
   if (a->unlink)
     return 0;
 
+  struct Buffer *tmpfile = mutt_buffer_pool_get();
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_NO_FLAGS);
-  rfc1524_expand_filename(entry->nametemplate, a->filename, tempfile, sizeof(tempfile));
+  mutt_buffer_rfc1524_expand_filename(entry->nametemplate, a->filename, tmpfile);
 
   rfc1524_free_entry(&entry);
 
   if (stat(a->filename, &st) == -1)
+  {
+    mutt_buffer_pool_release(&tmpfile);
     return -1;
+  }
 
   FILE *fp_in = NULL, *fp_out = NULL;
-  if ((fp_in = fopen(a->filename, "r")) && (fp_out = mutt_file_fopen(tempfile, "w")))
+  if ((fp_in = fopen(a->filename, "r")) &&
+      (fp_out = mutt_file_fopen(mutt_b2s(tmpfile), "w")))
   {
     mutt_file_copy_stream(fp_in, fp_out);
-    mutt_str_replace(&a->filename, tempfile);
+    mutt_str_replace(&a->filename, mutt_b2s(tmpfile));
     a->unlink = true;
 
     if (a->stamp >= st.st_mtime)
       mutt_stamp_attachment(a);
   }
   else
-    mutt_perror(fp_in ? tempfile : a->filename);
+    mutt_perror(fp_in ? mutt_b2s(tmpfile) : a->filename);
 
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
+
+  mutt_buffer_pool_release(&tmpfile);
 
   return a->unlink ? 0 : -1;
 }
