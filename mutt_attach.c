@@ -259,22 +259,22 @@ bailout:
 int mutt_edit_attachment(struct Body *a)
 {
   char type[256];
-  char cmd[STR_COMMAND];
-  char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
   int rc = 0;
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *newfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
     {
-      mutt_str_strfcpy(cmd, entry->editcommand, sizeof(cmd));
-      if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
+      mutt_buffer_strcpy(cmd, entry->editcommand);
+      if (mutt_buffer_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
       {
-        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
-        if (mutt_file_symlink(a->filename, newfile) == -1)
+        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
         {
           if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
@@ -283,9 +283,9 @@ int mutt_edit_attachment(struct Body *a)
           unlink_newfile = true;
       }
       else
-        mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
+        mutt_buffer_strcpy(newfile, a->filename);
 
-      if (rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd)))
+      if (mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap Edit entry requires %%s"));
@@ -294,9 +294,9 @@ int mutt_edit_attachment(struct Body *a)
       else
       {
         mutt_endwin();
-        if (mutt_system(cmd) == -1)
+        if (mutt_system(mutt_b2s(cmd)) == -1)
         {
-          mutt_error(_("Error running \"%s\""), cmd);
+          mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
           goto bailout;
         }
       }
@@ -309,9 +309,9 @@ int mutt_edit_attachment(struct Body *a)
   }
   else
   {
-    rfc1524_free_entry(&entry);
     mutt_error(_("No mailcap edit entry for %s"), type);
-    return 0;
+    rc = 0;
+    goto bailout;
   }
 
   rc = 1;
@@ -319,7 +319,10 @@ int mutt_edit_attachment(struct Body *a)
 bailout:
 
   if (unlink_newfile)
-    unlink(newfile);
+    unlink(mutt_b2s(newfile));
+
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&newfile);
 
   rfc1524_free_entry(&entry);
   return rc;
