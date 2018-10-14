@@ -394,13 +394,10 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
                          struct Email *e, struct AttachCtx *actx)
 {
-  char tempfile[PATH_MAX] = "";
-  char pagerfile[PATH_MAX] = "";
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
   char type[256];
-  char cmd[STR_COMMAND];
   char desc[256];
   char *fname = NULL;
   struct Rfc1524MailcapEntry *entry = NULL;
@@ -413,6 +410,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
   {
     return rc;
   }
+
+  struct Buffer *tmpfile = mutt_buffer_pool_get();
+  struct Buffer *pagerfile = mutt_buffer_pool_get();
+  struct Buffer *cmd = mutt_buffer_pool_get();
+
   use_mailcap =
       (mode == MUTT_VA_MAILCAP || (mode == MUTT_VA_REGULAR && mutt_needs_mailcap(a)));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
@@ -442,7 +444,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       mutt_error(_("MIME type not defined.  Can't view attachment."));
       goto return_error;
     }
-    mutt_str_strfcpy(cmd, entry->command, sizeof(cmd));
+    mutt_buffer_strcpy(cmd, entry->command);
 
     if (fp)
     {
@@ -452,15 +454,15 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
       fname = a->filename;
 
-    if (rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile)))
+    if (mutt_buffer_rfc1524_expand_filename(entry->nametemplate, fname, tmpfile))
     {
-      if (!fp && (mutt_str_strcmp(tempfile, a->filename) != 0))
+      if (!fp && (mutt_str_strcmp(mutt_b2s(tmpfile), a->filename) != 0))
       {
         /* send case: the file is already there */
-        if (mutt_file_symlink(a->filename, tempfile) == -1)
+        if (mutt_file_symlink(a->filename, mutt_b2s(tmpfile)) == -1)
         {
           if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) == MUTT_YES)
-            mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
+            mutt_buffer_strcpy(tmpfile, a->filename);
           else
             goto return_error;
         }
@@ -469,18 +471,18 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       }
     }
     else if (!fp) /* send case */
-      mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
+      mutt_buffer_strcpy(tmpfile, a->filename);
 
     if (fp)
     {
       /* recv case: we need to save the attachment to a file */
       FREE(&fname);
-      if (mutt_save_attachment(fp, a, tempfile, MUTT_SAVE_NO_FLAGS, NULL) == -1)
+      if (mutt_save_attachment(fp, a, mutt_b2s(tmpfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
         goto return_error;
-      mutt_file_chmod(tempfile, S_IRUSR);
+      mutt_file_chmod(mutt_b2s(tmpfile), S_IRUSR);
     }
 
-    use_pipe = rfc1524_expand_command(a, tempfile, type, cmd, sizeof(cmd));
+    use_pipe = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tmpfile), type, cmd);
     use_pager = entry->copiousoutput;
   }
 
@@ -489,11 +491,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     if (fp && !use_mailcap && a->filename)
     {
       /* recv case */
-      mutt_str_strfcpy(pagerfile, a->filename, sizeof(pagerfile));
-      mutt_adv_mktemp(pagerfile, sizeof(pagerfile));
+      mutt_buffer_strcpy(pagerfile, a->filename);
+      mutt_buffer_adv_mktemp(pagerfile);
     }
     else
-      mutt_mktemp(pagerfile, sizeof(pagerfile));
+      mutt_buffer_mktemp(pagerfile);
   }
 
   if (use_mailcap)
@@ -506,13 +508,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
 
     if (use_pager || use_pipe)
     {
-      if (use_pager &&
-          ((fd_pager = mutt_file_open(pagerfile, O_CREAT | O_EXCL | O_WRONLY)) == -1))
+      if (use_pager && ((fd_pager = mutt_file_open(mutt_b2s(pagerfile),
+                                                   O_CREAT | O_EXCL | O_WRONLY)) == -1))
       {
         mutt_perror("open");
         goto return_error;
       }
-      if (use_pipe && ((fd_temp = open(tempfile, 0)) == -1))
+      if (use_pipe && ((fd_temp = open(mutt_b2s(tmpfile), 0)) == -1))
       {
         if (fd_pager != -1)
           close(fd_pager);
@@ -520,7 +522,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         goto return_error;
       }
 
-      pid = mutt_create_filter_fd(cmd, NULL, NULL, NULL, use_pipe ? fd_temp : -1,
+      pid = mutt_create_filter_fd(mutt_b2s(cmd), NULL, NULL, NULL,
+                                  use_pipe ? fd_temp : -1,
                                   use_pager ? fd_pager : -1, -1);
       if (pid == -1)
       {
@@ -539,11 +542,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         if (a->description)
         {
           snprintf(desc, sizeof(desc), _("---Command: %-20.20s Description: %s"),
-                   cmd, a->description);
+                   mutt_b2s(cmd), a->description);
         }
         else
         {
-          snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"), cmd, type);
+          snprintf(desc, sizeof(desc), _("---Command: %-30.30s Attachment: %s"),
+                   mutt_b2s(cmd), type);
         }
       }
 
@@ -558,7 +562,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
     {
       /* interactive cmd */
-      int rv = mutt_system(cmd);
+      int rv = mutt_system(mutt_b2s(cmd));
       if (rv == -1)
         mutt_debug(LL_DEBUG1, "Error running \"%s\"", cmd);
 
@@ -581,27 +585,27 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
          * conversion since this will be displayed by the internal pager.  */
         struct State decode_state = { 0 };
 
-        decode_state.fp_out = mutt_file_fopen(pagerfile, "w");
+        decode_state.fp_out = mutt_file_fopen(mutt_b2s(pagerfile), "w");
         if (!decode_state.fp_out)
         {
-          mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile,
-                     errno, strerror(errno));
-          mutt_perror(pagerfile);
+          mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n",
+                     mutt_b2s(pagerfile), errno, strerror(errno));
+          mutt_perror(mutt_b2s(pagerfile));
           goto return_error;
         }
         decode_state.fp_in = fp;
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
         if (fclose(decode_state.fp_out) == EOF)
-          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", pagerfile, errno,
-                     strerror(errno));
+          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n", mutt_b2s(pagerfile),
+                     errno, strerror(errno));
       }
       else
       {
         /* in compose mode, just copy the file.  we can't use
          * mutt_decode_attachment() since it assumes the content-encoding has
          * already been applied */
-        if (mutt_save_attachment(fp, a, pagerfile, MUTT_SAVE_NO_FLAGS, NULL))
+        if (mutt_save_attachment(fp, a, mutt_b2s(pagerfile), MUTT_SAVE_NO_FLAGS, NULL))
           goto return_error;
       }
     }
@@ -610,7 +614,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       /* Use built-in handler */
       OptViewAttach = true; /* disable the "use 'v' to view this part"
                              * message in case of error */
-      if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, MUTT_SAVE_NO_FLAGS))
+      if (mutt_decode_save_attachment(fp, a, mutt_b2s(pagerfile), MUTT_DISPLAY, MUTT_SAVE_NO_FLAGS))
       {
         OptViewAttach = false;
         goto return_error;
@@ -637,10 +641,10 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     info.actx = actx;
     info.email = e;
 
-    rc = mutt_do_pager(desc, pagerfile,
+    rc = mutt_do_pager(desc, mutt_b2s(pagerfile),
                        MUTT_PAGER_ATTACHMENT | (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS),
                        &info);
-    *pagerfile = '\0';
+    mutt_buffer_reset(pagerfile);
   }
   else
     rc = 0;
@@ -649,22 +653,26 @@ return_error:
 
   if (!entry || !entry->xneomuttkeep)
   {
-    if (fp && tempfile[0])
+    if (fp && mutt_b2s(tmpfile)[0])
     {
       /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
-      mutt_add_temp_attachment(tempfile);
+      mutt_add_temp_attachment(mutt_b2s(tmpfile));
     }
     else if (unlink_tempfile)
     {
-      unlink(tempfile);
+      unlink(mutt_b2s(tmpfile));
     }
   }
 
   if (entry)
     rfc1524_free_entry(&entry);
 
-  if (pagerfile[0] != '\0')
-    mutt_file_unlink(pagerfile);
+  if (mutt_b2s(pagerfile)[0] != '\0')
+    mutt_file_unlink(mutt_b2s(pagerfile));
+
+  mutt_buffer_pool_release(&tmpfile);
+  mutt_buffer_pool_release(&pagerfile);
+  mutt_buffer_pool_release(&cmd);
 
   return rc;
 }
@@ -775,7 +783,7 @@ bail:
  * @param opt  Save option, see #SaveAttach
  * @retval ptr File handle to attachment file
  */
-static FILE *save_attachment_open(char *path, enum SaveAttach opt)
+static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
     return fopen(path, "a");
@@ -795,7 +803,7 @@ static FILE *save_attachment_open(char *path, enum SaveAttach opt)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
+int mutt_save_attachment(FILE *fp, struct Body *m, const char *path,
                          enum SaveAttach opt, struct Email *e)
 {
   if (!m)
@@ -926,7 +934,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path,
  * @retval 0  Success
  * @retval -1 Error
  */
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path,
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
                                 int displaying, enum SaveAttach opt)
 {
   struct State s = { 0 };
@@ -1179,7 +1187,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
  * mutt_add_temp_attachment - Add file to list of temporary attachments
  * @param filename filename with full path
  */
-void mutt_add_temp_attachment(char *filename)
+void mutt_add_temp_attachment(const char *filename)
 {
   mutt_list_insert_tail(&TempAttachmentsList, mutt_str_strdup(filename));
 }

@@ -71,15 +71,15 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, str
 
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 int mutt_compose_attachment(struct Body *a);
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, enum SaveAttach opt);
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path, int displaying, enum SaveAttach opt);
 int mutt_edit_attachment(struct Body *a);
 int mutt_get_tmp_attachment(struct Body *a);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, enum SaveAttach opt, struct Email *e);
+int mutt_save_attachment(FILE *fp, struct Body *m, const char *path, enum SaveAttach opt, struct Email *e);
 
 /* small helper functions to handle temporary attachment files */
-void mutt_add_temp_attachment(char *filename);
+void mutt_add_temp_attachment(const char *filename);
 void mutt_unlink_temp_attachments(void);
 
 #endif /* MUTT_MUTT_ATTACH_H */
