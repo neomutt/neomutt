@@ -117,11 +117,12 @@ int mutt_get_tmp_attachment(struct Body *a)
 int mutt_compose_attachment(struct Body *a)
 {
   char type[256];
-  char cmd[STR_COMMAND];
-  char newfile[PATH_MAX] = "";
   struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   bool unlink_newfile = false;
   int rc = 0;
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  struct Buffer *newfile = mutt_buffer_pool_get();
+  struct Buffer *tmpfile = mutt_buffer_pool_get();
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   if (rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_COMPOSE))
@@ -129,13 +130,14 @@ int mutt_compose_attachment(struct Body *a)
     if (entry->composecommand || entry->composetypecommand)
     {
       if (entry->composetypecommand)
-        mutt_str_strfcpy(cmd, entry->composetypecommand, sizeof(cmd));
+        mutt_buffer_strcpy(cmd, entry->composetypecommand);
       else
-        mutt_str_strfcpy(cmd, entry->composecommand, sizeof(cmd));
-      if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
+        mutt_buffer_strcpy(cmd, entry->composecommand);
+
+      if (mutt_buffer_rfc1524_expand_filename(entry->nametemplate, a->filename, newfile))
       {
-        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
-        if (mutt_file_symlink(a->filename, newfile) == -1)
+        mutt_debug(LL_DEBUG1, "oldfile: %s\t newfile: %s\n", a->filename, mutt_b2s(newfile));
+        if (mutt_file_symlink(a->filename, mutt_b2s(newfile)) == -1)
         {
           if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
             goto bailout;
@@ -144,9 +146,9 @@ int mutt_compose_attachment(struct Body *a)
           unlink_newfile = true;
       }
       else
-        mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
+        mutt_buffer_strcpy(newfile, a->filename);
 
-      if (rfc1524_expand_command(a, newfile, type, cmd, sizeof(cmd)))
+      if (mutt_buffer_rfc1524_expand_command(a, mutt_b2s(newfile), type, cmd))
       {
         /* For now, editing requires a file, no piping */
         mutt_error(_("Mailcap compose entry requires %%s"));
@@ -156,14 +158,13 @@ int mutt_compose_attachment(struct Body *a)
         int r;
 
         mutt_endwin();
-        r = mutt_system(cmd);
+        r = mutt_system(mutt_b2s(cmd));
         if (r == -1)
-          mutt_error(_("Error running \"%s\""), cmd);
+          mutt_error(_("Error running \"%s\""), mutt_b2s(cmd));
 
         if ((r != -1) && entry->composetypecommand)
         {
           struct Body *b = NULL;
-          char tempfile[PATH_MAX];
 
           FILE *fp = mutt_file_fopen(a->filename, "r");
           if (!fp)
@@ -198,8 +199,8 @@ int mutt_compose_attachment(struct Body *a)
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
             mutt_body_free(&b);
-            mutt_mktemp(tempfile, sizeof(tempfile));
-            FILE *fp_tmp = mutt_file_fopen(tempfile, "w");
+            mutt_buffer_mktemp(tmpfile);
+            FILE *fp_tmp = mutt_file_fopen(mutt_b2s(tmpfile), "w");
             if (!fp_tmp)
             {
               mutt_perror(_("Failure to open file to strip headers"));
@@ -210,7 +211,7 @@ int mutt_compose_attachment(struct Body *a)
             mutt_file_fclose(&fp);
             mutt_file_fclose(&fp_tmp);
             mutt_file_unlink(a->filename);
-            if (mutt_file_rename(tempfile, a->filename) != 0)
+            if (mutt_file_rename(mutt_b2s(tmpfile), a->filename) != 0)
             {
               mutt_perror(_("Failure to rename file"));
               goto bailout;
@@ -222,9 +223,9 @@ int mutt_compose_attachment(struct Body *a)
   }
   else
   {
-    rfc1524_free_entry(&entry);
     mutt_message(_("No mailcap compose entry for %s, creating empty file"), type);
-    return 1;
+    rc = 1;
+    goto bailout;
   }
 
   rc = 1;
@@ -232,7 +233,11 @@ int mutt_compose_attachment(struct Body *a)
 bailout:
 
   if (unlink_newfile)
-    unlink(newfile);
+    unlink(mutt_b2s(newfile));
+
+  mutt_buffer_pool_release(&cmd);
+  mutt_buffer_pool_release(&newfile);
+  mutt_buffer_pool_release(&tmpfile);
 
   rfc1524_free_entry(&entry);
   return rc;
