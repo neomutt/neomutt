@@ -503,6 +503,28 @@ uint64_t mutt_rand64(void)
 }
 
 /**
+ * mutt_buffer_mktemp_full - Create a temporary file
+ * @param buf    Buffer for result
+ * @param prefix Prefix for filename
+ * @param suffix Suffix for filename
+ * @param src    Source file of caller
+ * @param line   Source line number of caller
+ */
+void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
+                             const char *suffix, const char *src, int line)
+{
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(Tmpdir), NONULL(prefix),
+                     NONULL(Hostname), (int) getuid(), (int) getpid(), random(),
+                     random(), suffix ? "." : "", NONULL(suffix));
+  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
+  if (unlink(mutt_b2s(buf)) && errno != ENOENT)
+  {
+    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+               mutt_b2s(buf), strerror(errno), errno);
+  }
+}
+
+/**
  * mutt_mktemp_full - Create a temporary filename
  * @param buf    Buffer for result
  * @param buflen Length of buffer

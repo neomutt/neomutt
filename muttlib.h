@@ -42,6 +42,7 @@ extern struct Regex *GecosMask;
 #define MUTT_RANDTAG_LEN 16
 
 void        mutt_adv_mktemp(char *s, size_t l);
+void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 int         mutt_check_overwrite(const char *attname, const char *path, char *fname, size_t flen, int *append, char **directory);
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);
 void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, enum FormatFlag flags);
@@ -68,5 +69,8 @@ void        mutt_sleep(short s);
 
 #define mutt_mktemp(a, b)               mutt_mktemp_pfx_sfx(a, b, "neomutt", NULL)
 #define mutt_mktemp_pfx_sfx(a, b, c, d) mutt_mktemp_full(a, b, c, d, __FILE__, __LINE__)
+
+#define mutt_buffer_mktemp(a)               mutt_buffer_mktemp_pfx_sfx(a, "neomutt", NULL)
+#define mutt_buffer_mktemp_pfx_sfx(a, b, c) mutt_buffer_mktemp_full(a, b, c, __FILE__, __LINE__)
 
 #endif /* MUTT_MUTTLIB_H */
