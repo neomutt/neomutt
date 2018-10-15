@@ -72,6 +72,40 @@ static const char *xdg_defaults[] = {
 };
 
 /**
+ * mutt_buffer_adv_mktemp - Create a temporary file
+ * @param buf Buffer for the name
+ */
+void mutt_buffer_adv_mktemp(struct Buffer *buf)
+{
+  if (!(buf->data && buf->data[0]))
+  {
+    mutt_buffer_mktemp(buf);
+  }
+  else
+  {
+    struct Buffer *prefix = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(prefix, buf->data);
+    mutt_file_sanitize_filename(prefix->data, 1);
+    mutt_buffer_printf(buf, "%s/%s", NONULL(Tmpdir), mutt_b2s(prefix));
+
+    struct stat sb;
+    if (lstat(mutt_b2s(buf), &sb) == -1 && errno == ENOENT)
+      goto out;
+
+    char *suffix = strrchr(prefix->data, '.');
+    if (suffix)
+    {
+      *suffix = 0;
+      suffix++;
+    }
+    mutt_buffer_mktemp_pfx_sfx(buf, mutt_b2s(prefix), suffix);
+
+  out:
+    mutt_buffer_pool_release(&prefix);
+  }
+}
+
+/**
  * mutt_adv_mktemp - Advanced mktemp(3)
  * @param buf    Buffer for result
  * @param buflen Length of buffer
