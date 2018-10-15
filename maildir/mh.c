@@ -104,22 +104,24 @@ struct MhSequences
 };
 
 /**
- * struct MhData - MH-specific mailbox data
+ * struct MaildirMboxData - Maildir-specific mailbox data
  */
-struct MhData
+struct MaildirMboxData
 {
   struct timespec mtime_cur;
   mode_t mh_umask;
 };
 
 /**
- * mh_data - Extract the MhData from the mailbox
- * @param mailbox Mailbox
- * @retval ptr MhData
+ * maildir_get_mdata - Get the private data for this Mailbox
+ * @param m Mailbox
+ * @retval ptr MaildirMboxData
  */
-static inline struct MhData *mh_data(struct Mailbox *mailbox)
+static struct MaildirMboxData *maildir_get_mdata(struct Mailbox *m)
 {
-  return mailbox->data;
+  if (!m || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
+    return NULL;
+  return m->data;
 }
 
 /**
@@ -272,9 +274,9 @@ out:
  */
 static inline mode_t mh_umask(struct Mailbox *mailbox)
 {
-  struct MhData *data = mh_data(mailbox);
-  if (data && data->mh_umask)
-    return data->mh_umask;
+  struct MaildirMboxData *mdata = maildir_get_mdata(mailbox);
+  if (mdata && mdata->mh_umask)
+    return mdata->mh_umask;
 
   struct stat st;
   if (stat(mailbox->path, &st))
@@ -703,20 +705,20 @@ static void maildir_update_mtime(struct Mailbox *mailbox)
 {
   char buf[PATH_MAX];
   struct stat st;
-  struct MhData *data = mh_data(mailbox);
+  struct MaildirMboxData *mdata = maildir_get_mdata(mailbox);
 
   if (mailbox->magic == MUTT_MAILDIR)
   {
     snprintf(buf, sizeof(buf), "%s/%s", mailbox->path, "cur");
     if (stat(buf, &st) == 0)
-      mutt_get_stat_timespec(&data->mtime_cur, &st, MUTT_STAT_MTIME);
+      mutt_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
     snprintf(buf, sizeof(buf), "%s/%s", mailbox->path, "new");
   }
   else
   {
     snprintf(buf, sizeof(buf), "%s/.mh_sequences", mailbox->path);
     if (stat(buf, &st) == 0)
-      mutt_get_stat_timespec(&data->mtime_cur, &st, MUTT_STAT_MTIME);
+      mutt_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
 
     mutt_str_strfcpy(buf, mailbox->path, sizeof(buf));
   }
@@ -1239,9 +1241,9 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 
   if (!ctx->mailbox->data)
   {
-    ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MhData));
+    ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
   }
-  struct MhData *data = mh_data(ctx->mailbox);
+  struct MaildirMboxData *mdata = maildir_get_mdata(ctx->mailbox);
 
   maildir_update_mtime(ctx->mailbox);
 
@@ -1271,8 +1273,8 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 
   maildir_move_to_context(ctx, &md);
 
-  if (!data->mh_umask)
-    data->mh_umask = mh_umask(ctx->mailbox);
+  if (!mdata->mh_umask)
+    mdata->mh_umask = mh_umask(ctx->mailbox);
 
   return 0;
 }
@@ -2395,7 +2397,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   int count = 0;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                  for a maildir message */
-  struct MhData *data = mh_data(ctx->mailbox);
+  struct MaildirMboxData *mdata = maildir_get_mdata(ctx->mailbox);
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
   if (!CheckNew)
@@ -2419,7 +2421,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   /* determine which subdirectories need to be scanned */
   if (mutt_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &ctx->mailbox->mtime) > 0)
     changed = 1;
-  if (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0)
+  if (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0)
     changed |= 2;
 
   if (!changed)
@@ -2440,7 +2442,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   else
 #endif
   {
-    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
     mutt_get_stat_timespec(&ctx->mailbox->mtime, &st_new, MUTT_STAT_MTIME);
   }
 
@@ -2776,7 +2778,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   struct MhSequences mhs = { 0 };
   int count = 0;
   struct Hash *fnames = NULL;
-  struct MhData *data = mh_data(ctx->mailbox);
+  struct MaildirMboxData *mdata = maildir_get_mdata(ctx->mailbox);
 
   if (!CheckNew)
     return 0;
@@ -2806,7 +2808,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
     modified = true;
 
   if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &ctx->mailbox->mtime) > 0) ||
-      (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &data->mtime_cur) > 0))
+      (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0))
   {
     modified = true;
   }
@@ -2826,7 +2828,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   else
 #endif
   {
-    mutt_get_stat_timespec(&data->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
     mutt_get_stat_timespec(&ctx->mailbox->mtime, &st, MUTT_STAT_MTIME);
   }
 

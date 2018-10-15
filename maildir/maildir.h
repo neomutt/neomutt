@@ -55,24 +55,24 @@ extern char *MhSeqUnseen;
 extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mh_ops;
 
-int            maildir_check_empty(const char *path);
-void           maildir_gen_flags(char *dest, size_t destlen, struct Email *e);
-FILE *         maildir_open_find_message(const char *folder, const char *msg, char **newname);
-void           maildir_parse_flags(struct Email *e, const char *path);
+int           maildir_check_empty(const char *path);
+void          maildir_gen_flags(char *dest, size_t destlen, struct Email *e);
+FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
+void          maildir_parse_flags(struct Email *e, const char *path);
 struct Email *maildir_parse_message(enum MailboxType magic, const char *fname, bool is_old, struct Email *e);
 struct Email *maildir_parse_stream(enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Email *e);
-bool           maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n);
+bool          maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n);
 
-bool           mh_mailbox(struct Mailbox *mailbox, bool check_stats);
-int            mh_check_empty(const char *path);
+bool          mh_mailbox(struct Mailbox *mailbox, bool check_stats);
+int           mh_check_empty(const char *path);
 
-int            maildir_path_probe(const char *path, const struct stat *st);
-int            mh_path_probe(const char *path, const struct stat *st);
+int           maildir_path_probe(const char *path, const struct stat *st);
+int           mh_path_probe(const char *path, const struct stat *st);
 
 #ifdef USE_HCACHE
-int            mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
+int           mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
 #else
-int            mh_sync_mailbox_message(struct Context *ctx, int msgno);
+int           mh_sync_mailbox_message(struct Context *ctx, int msgno);
 #endif
 
 #endif /* MUTT_MAILDIR_MAILDIR_H */
