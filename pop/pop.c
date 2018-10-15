@@ -468,6 +468,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
         /* Reattach the private data */
         ctx->mailbox->hdrs[i]->data = edata;
+        ctx->mailbox->hdrs[i]->free_data = free_emaildata;
         ret = 0;
         hcached = true;
       }
@@ -1078,6 +1079,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* Reattach the private data */
   e->data = edata;
+  e->free_data = free_emaildata;
 
   e->lines = 0;
   fgets(buf, sizeof(buf), msg->fp);
@@ -1118,10 +1120,10 @@ int pop_path_probe(const char *path, const struct stat *st)
     return MUTT_UNKNOWN;
 
   if (mutt_str_strncasecmp(path, "pop://", 6) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_POP;
 
   if (mutt_str_strncasecmp(path, "pops://", 7) == 0)
-    return MUTT_NOTMUCH;
+    return MUTT_POP;
 
   return MUTT_UNKNOWN;
 }

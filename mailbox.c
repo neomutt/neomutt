@@ -332,16 +332,23 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
     m->has_new = false;
 #ifdef USE_POP
     if (pop_path_probe(m->path, NULL) == MUTT_POP)
+    {
       m->magic = MUTT_POP;
+    }
     else
 #endif
 #ifdef USE_NNTP
         if ((m->magic == MUTT_NNTP) || (nntp_path_probe(m->path, NULL) == MUTT_NNTP))
+    {
       m->magic = MUTT_NNTP;
+    }
+    else
 #endif
 #ifdef USE_NOTMUCH
     if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
+    {
       m->magic = MUTT_NOTMUCH;
+    }
     else
 #endif
         if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
