@@ -481,12 +481,17 @@ shown in the help screens if they contain a \fIdescription\fP.
 .PP
 .nf
 \fBmailboxes\fP \fImailbox\fP [ \fImailbox\fP ... ]
+\fBnamed-mailboxes\fP \fIdescription\fP \fImailbox\fP [\fIdescription\fP \fImailbox\fP ... ]
 \fBunmailboxes\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
 The \fBmailboxes\fP specifies folders which can receive mail and which will be
 checked for new messages. When changing folders, pressing space will cycle
 through folders with new mail.
+.IP
+The \fBnamed-mailboxes\fP is an alternative to \fBmailboxes\fP that allows
+adding a description for a mailbox. NeoMutt can be configured to display the
+description instead of the mailbox path.
 .IP
 The \fBunmailboxes\fP command is used to remove a file name from the list of
 folders which can receive mail. If \(lq\fB*\fP\(rq is specified as the file
