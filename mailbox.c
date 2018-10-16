@@ -345,7 +345,7 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
     else
 #endif
 #ifdef USE_NOTMUCH
-    if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
+        if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
     {
       m->magic = MUTT_NOTMUCH;
     }

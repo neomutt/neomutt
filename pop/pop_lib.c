@@ -420,7 +420,7 @@ err_conn:
  */
 void pop_logout(struct Mailbox *mailbox)
 {
-  struct PopMboxData *mdata = mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(mailbox);
 
   if (mdata->status == POP_CONNECTED)
   {
@@ -607,7 +607,7 @@ static int check_uidl(char *line, void *data)
  */
 int pop_reconnect(struct Mailbox *mailbox)
 {
-  struct PopMboxData *mdata = mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(mailbox);
 
   if (mdata->status == POP_CONNECTED)
     return 0;
@@ -648,4 +648,16 @@ int pop_reconnect(struct Mailbox *mailbox)
       return -1;
     }
   }
+}
+
+/**
+ * pop_get_mdata - Get the private data for this Mailbox
+ * @param m Mailbox
+ * @retval ptr PopMboxData
+ */
+struct PopMboxData *pop_get_mdata(struct Mailbox *m)
+{
+  if (!m || (m->magic != MUTT_POP))
+    return NULL;
+  return m->data;
 }

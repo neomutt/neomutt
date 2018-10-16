@@ -256,7 +256,7 @@ static int pop_read_header(struct PopMboxData *mdata, struct Email *e)
 static int fetch_uidl(char *line, void *data)
 {
   struct Mailbox *mailbox = data;
-  struct PopMboxData *mdata = mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(mailbox);
   char *endp = NULL;
 
   errno = 0;
@@ -310,7 +310,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   if (!mailbox)
     return -1;
 
-  struct PopMboxData *mdata = mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(mailbox);
   if (!mdata)
     return -1;
 
@@ -374,7 +374,7 @@ static header_cache_t *pop_hcache_open(struct PopMboxData *mdata, const char *pa
  */
 static int pop_fetch_headers(struct Context *ctx)
 {
-  struct PopMboxData *mdata = ctx->mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(ctx->mailbox);
   struct Progress progress;
 
 #ifdef USE_HCACHE
@@ -807,7 +807,7 @@ static int pop_mbox_open(struct Context *ctx)
  */
 static int pop_mbox_check(struct Context *ctx, int *index_hint)
 {
-  struct PopMboxData *mdata = ctx->mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(ctx->mailbox);
 
   if ((mdata->check_time + PopCheckinterval) > time(NULL))
     return 0;
@@ -844,7 +844,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
-  struct PopMboxData *mdata = ctx->mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(ctx->mailbox);
   struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -929,7 +929,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
  */
 static int pop_mbox_close(struct Context *ctx)
 {
-  struct PopMboxData *mdata = ctx->mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(ctx->mailbox);
   if (!mdata)
     return 0;
 
@@ -959,7 +959,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[PATH_MAX];
   struct Progress progressbar;
-  struct PopMboxData *mdata = ctx->mailbox->data;
+  struct PopMboxData *mdata = pop_get_mdata(ctx->mailbox);
   struct Email *e = ctx->mailbox->hdrs[msgno];
   struct PopEmailData *edata = e->data;
   bool bcache = true;
