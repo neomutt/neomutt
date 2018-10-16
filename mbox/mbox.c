@@ -68,9 +68,9 @@ struct MUpdate
 };
 
 /**
- * struct MboxData - Private data attached to an email
+ * struct MboxMboxData - Private data attached to an email
  */
-struct MboxData
+struct MboxMboxData
 {
   FILE *fp;              /**< Mailbox file */
   struct timespec atime; /**< File's last-access time */
@@ -80,12 +80,12 @@ struct MboxData
 };
 
 /**
- * new_mboxdata - Create a new MboxData struct
- * @retval ptr New MboxData
+ * new_mboxdata - Create a new MboxMboxData struct
+ * @retval ptr New MboxMboxData
  */
-static struct MboxData *new_mboxdata(void)
+static struct MboxMboxData *new_mboxdata(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct MboxData));
+  return mutt_mem_calloc(1, sizeof(struct MboxMboxData));
 }
 
 /**
@@ -97,7 +97,7 @@ static void free_mboxdata(void **data)
   if (!data || !*data)
     return;
 
-  struct MboxData *m = *data;
+  struct MboxMboxData *m = *data;
 
   mutt_file_fclose(&m->fp);
 }
@@ -125,16 +125,15 @@ static int init_mailbox(struct Mailbox *mailbox)
 }
 
 /**
- * get_mboxdata - Get the private data associated with a Mailbox
+ * mbox_get_mdata - Get the private data associated with a Mailbox
  * @param mailbox Mailbox
  * @retval ptr Private data
  */
-struct MboxData *get_mboxdata(struct Mailbox *mailbox)
+struct MboxMboxData *mbox_get_mdata(struct Mailbox *m)
 {
-  if (mailbox && (mailbox->magic == MUTT_MBOX))
-    return mailbox->data;
-
-  return NULL;
+  if (!m || (m->magic != MUTT_MBOX))
+    return NULL;
+  return m->data;
 }
 
 /**
@@ -147,7 +146,7 @@ struct MboxData *get_mboxdata(struct Mailbox *mailbox)
  */
 static int mbox_lock_mailbox(struct Mailbox *mailbox, bool excl, bool retry)
 {
-  struct MboxData *mdata = get_mboxdata(mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(mailbox);
   if (!mdata)
     return -1;
 
@@ -169,7 +168,7 @@ static int mbox_lock_mailbox(struct Mailbox *mailbox, bool excl, bool retry)
  */
 static void mbox_unlock_mailbox(struct Mailbox *mailbox)
 {
-  struct MboxData *mdata = get_mboxdata(mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(mailbox);
   if (!mdata)
     return;
 
@@ -191,7 +190,7 @@ static void mbox_unlock_mailbox(struct Mailbox *mailbox)
  */
 static int mmdf_parse_mailbox(struct Context *ctx)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -357,7 +356,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
  */
 static int mbox_parse_mailbox(struct Context *ctx)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -556,7 +555,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
  */
 static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -897,7 +896,7 @@ static int mbox_mbox_open(struct Context *ctx)
   if (init_mailbox(mailbox) != 0)
     return -1;
 
-  struct MboxData *mdata = get_mboxdata(mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(mailbox);
   if (!mdata)
     return -1;
 
@@ -938,7 +937,7 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
   if (init_mailbox(mailbox) != 0)
     return -1;
 
-  struct MboxData *mdata = get_mboxdata(mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(mailbox);
   if (!mdata)
     return -1;
 
@@ -973,7 +972,7 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
  */
 static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -1087,7 +1086,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -1465,7 +1464,7 @@ bail: /* Come here in case of disaster */
  */
 static int mbox_mbox_close(struct Context *ctx)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -1505,7 +1504,7 @@ static int mbox_mbox_close(struct Context *ctx)
  */
 static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
@@ -1520,7 +1519,7 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  */
 static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
 {
-  struct MboxData *mdata = get_mboxdata(ctx->mailbox);
+  struct MboxMboxData *mdata = mbox_get_mdata(ctx->mailbox);
   if (!mdata)
     return -1;
 
