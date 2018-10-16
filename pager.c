@@ -1432,14 +1432,6 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       {
         space = ch;
       }
-      /* no-break space, narrow no-break space */
-      else if (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F))
-      {
-        /* Convert non-breaking space to normal space. The local variable
-         * `space' is not set here so that the caller of this function won't
-         * attempt to wrap at this character. */
-        wc = ' ';
-      }
       t = wcwidth(wc);
       if (col + t > wrap_cols)
         break;
