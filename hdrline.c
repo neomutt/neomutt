@@ -383,6 +383,7 @@ static bool user_in_addr(struct Address *a)
  * @retval 3 User is in the CC list
  * @retval 4 User is originator
  * @retval 5 Sent to a subscribed mailinglist
+ * @retval 6 User is in the Reply-To list
  */
 static int user_is_recipient(struct Email *e)
 {
@@ -410,6 +411,8 @@ static int user_is_recipient(struct Email *e)
       e->recipient = 5;
     else if (check_for_mailing_list(env->cc, NULL, NULL, 0))
       e->recipient = 5;
+    else if (user_in_addr(env->reply_to))
+      e->recipient = 6;
     else
       e->recipient = 0;
   }
