@@ -65,9 +65,9 @@ extern char *Newsrc;
 #define ANUM "%u"
 
 /**
- * struct NntpServer - NNTP-specific server data
+ * struct NntpAccountData - NNTP-specific server data
  */
-struct NntpServer
+struct NntpAccountData
 {
   bool hasCAPABILITIES    : 1;
   bool hasSTARTTLS        : 1;
@@ -145,33 +145,33 @@ struct NntpMboxData
   bool deleted    : 1;
   unsigned int newsrc_len;
   struct NewsrcEntry *newsrc_ent;
-  struct NntpServer *nserv;
+  struct NntpAccountData *adata;
   struct NntpAcache acache[NNTP_ACACHE_LEN];
   struct BodyCache *bcache;
 };
 
-struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock);
-struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group);
-struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group);
-struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx, struct NntpServer *nserv, char *group);
-struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx, struct NntpServer *nserv, char *group);
-int nntp_active_fetch(struct NntpServer *nserv, bool new);
-int nntp_newsrc_update(struct NntpServer *nserv);
+struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock);
+struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group);
+struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group);
+struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx, struct NntpAccountData *adata, char *group);
+struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx, struct NntpAccountData *adata, char *group);
+int nntp_active_fetch(struct NntpAccountData *adata, bool new);
+int nntp_newsrc_update(struct NntpAccountData *adata);
 int nntp_post(struct Mailbox *mailbox, const char *msg);
 int nntp_check_msgid(struct Context *ctx, const char *msgid);
 int nntp_check_children(struct Context *ctx, const char *msgid);
-int nntp_newsrc_parse(struct NntpServer *nserv);
-void nntp_newsrc_close(struct NntpServer *nserv);
+int nntp_newsrc_parse(struct NntpAccountData *adata);
+void nntp_newsrc_close(struct NntpAccountData *adata);
 void nntp_mailbox(struct Mailbox *mailbox, char *buf, size_t buflen);
 void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
-void nntp_clear_cache(struct NntpServer *nserv);
+void nntp_clear_cache(struct NntpAccountData *adata);
 const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
                             const char *src, const char *prec, const char *if_str,
                             const char *else_str, unsigned long data, enum FormatFlag flags);
 
 void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, anum_t anum);
 
-extern struct NntpServer *CurrentNewsSrv;
+extern struct NntpAccountData *CurrentNewsSrv;
 
 int nntp_compare_order(const void *a, const void *b);
 int nntp_path_probe(const char *path, const struct stat *st);

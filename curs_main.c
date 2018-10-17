@@ -3004,8 +3004,8 @@ int mutt_index_menu(void)
         CHECK_ATTACH
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
-          struct NntpMboxData *nntp_data = Context->mailbox->data;
-          if (mutt_newsgroup_catchup(Context, nntp_data->nserv, nntp_data->group))
+          struct NntpMboxData *mdata = Context->mailbox->data;
+          if (mutt_newsgroup_catchup(Context, mdata->adata, mdata->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;

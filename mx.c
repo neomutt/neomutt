@@ -514,9 +514,9 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 #ifdef USE_NNTP
   if (ctx->mailbox->msg_unread && ctx->mailbox->magic == MUTT_NNTP)
   {
-    struct NntpMboxData *nntp_data = ctx->mailbox->data;
+    struct NntpMboxData *mdata = ctx->mailbox->data;
 
-    if (nntp_data && nntp_data->nserv && nntp_data->group)
+    if (mdata && mdata->adata && mdata->group)
     {
       int rc = query_quadoption(CatchupNewsgroup, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
@@ -525,7 +525,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
         return -1;
       }
       else if (rc == MUTT_YES)
-        mutt_newsgroup_catchup(Context, nntp_data->nserv, nntp_data->group);
+        mutt_newsgroup_catchup(Context, mdata->adata, mdata->group);
     }
   }
 #endif

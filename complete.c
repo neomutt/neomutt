@@ -72,7 +72,7 @@ int mutt_complete(char *buf, size_t buflen)
 #ifdef USE_NNTP
   if (OptNews)
   {
-    struct NntpServer *nserv = CurrentNewsSrv;
+    struct NntpAccountData *adata = CurrentNewsSrv;
     unsigned int n = 0;
 
     mutt_str_strfcpy(filepart, buf, sizeof(filepart));
@@ -82,13 +82,13 @@ int mutt_complete(char *buf, size_t buflen)
     len = mutt_str_strlen(filepart);
     if (len == 0)
     {
-      for (; n < nserv->groups_num; n++)
+      for (; n < adata->groups_num; n++)
       {
-        struct NntpMboxData *nntp_data = nserv->groups_list[n];
+        struct NntpMboxData *mdata = adata->groups_list[n];
 
-        if (nntp_data && nntp_data->subscribed)
+        if (mdata && mdata->subscribed)
         {
-          mutt_str_strfcpy(filepart, nntp_data->group, sizeof(filepart));
+          mutt_str_strfcpy(filepart, mdata->group, sizeof(filepart));
           init = 1;
           n++;
           break;
@@ -96,18 +96,18 @@ int mutt_complete(char *buf, size_t buflen)
       }
     }
 
-    for (; n < nserv->groups_num; n++)
+    for (; n < adata->groups_num; n++)
     {
-      struct NntpMboxData *nntp_data = nserv->groups_list[n];
+      struct NntpMboxData *mdata = adata->groups_list[n];
 
-      if (nntp_data && nntp_data->subscribed &&
-          (mutt_str_strncmp(nntp_data->group, filepart, len) == 0))
+      if (mdata && mdata->subscribed &&
+          (mutt_str_strncmp(mdata->group, filepart, len) == 0))
       {
         if (init)
         {
-          for (i = 0; filepart[i] && nntp_data->group[i]; i++)
+          for (i = 0; filepart[i] && mdata->group[i]; i++)
           {
-            if (filepart[i] != nntp_data->group[i])
+            if (filepart[i] != mdata->group[i])
             {
               filepart[i] = '\0';
               break;
@@ -117,7 +117,7 @@ int mutt_complete(char *buf, size_t buflen)
         }
         else
         {
-          mutt_str_strfcpy(filepart, nntp_data->group, sizeof(filepart));
+          mutt_str_strfcpy(filepart, mdata->group, sizeof(filepart));
           init = 1;
         }
       }

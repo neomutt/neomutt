@@ -69,14 +69,14 @@ struct BodyCache;
 
 /**
  * mdata_find - Find NntpMboxData for given newsgroup or add it
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-static struct NntpMboxData *mdata_find(struct NntpServer *nserv, const char *group)
+static struct NntpMboxData *mdata_find(struct NntpAccountData *adata, const char *group)
 {
-  struct NntpMboxData *mdata = mutt_hash_find(nserv->groups_hash, group);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
   if (mdata)
     return mdata;
 
@@ -85,17 +85,17 @@ static struct NntpMboxData *mdata_find(struct NntpServer *nserv, const char *gro
   mdata = mutt_mem_calloc(1, sizeof(struct NntpMboxData) + len);
   mdata->group = (char *) mdata + sizeof(struct NntpMboxData);
   mutt_str_strfcpy(mdata->group, group, len);
-  mdata->nserv = nserv;
+  mdata->adata = adata;
   mdata->deleted = true;
-  mutt_hash_insert(nserv->groups_hash, mdata->group, mdata);
+  mutt_hash_insert(adata->groups_hash, mdata->group, mdata);
 
   /* add NntpMboxData to list */
-  if (nserv->groups_num >= nserv->groups_max)
+  if (adata->groups_num >= adata->groups_max)
   {
-    nserv->groups_max *= 2;
-    mutt_mem_realloc(&nserv->groups_list, nserv->groups_max * sizeof(mdata));
+    adata->groups_max *= 2;
+    mutt_mem_realloc(&adata->groups_list, adata->groups_max * sizeof(mdata));
   }
-  nserv->groups_list[nserv->groups_num++] = mdata;
+  adata->groups_list[adata->groups_num++] = mdata;
 
   return mdata;
 }
@@ -143,16 +143,16 @@ void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 
 /**
  * nntp_newsrc_close - Unlock and close .newsrc file
- * @param nserv NNTP server
+ * @param adata NNTP server
  */
-void nntp_newsrc_close(struct NntpServer *nserv)
+void nntp_newsrc_close(struct NntpAccountData *adata)
 {
-  if (!nserv->newsrc_fp)
+  if (!adata->newsrc_fp)
     return;
 
-  mutt_debug(1, "Unlocking %s\n", nserv->newsrc_file);
-  mutt_file_unlock(fileno(nserv->newsrc_fp));
-  mutt_file_fclose(&nserv->newsrc_fp);
+  mutt_debug(1, "Unlocking %s\n", adata->newsrc_file);
+  mutt_file_unlock(fileno(adata->newsrc_fp));
+  mutt_file_fclose(&adata->newsrc_fp);
 }
 
 /**
@@ -181,63 +181,63 @@ void nntp_group_unread_stat(struct NntpMboxData *mdata)
 
 /**
  * nntp_newsrc_parse - Parse .newsrc file
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @retval  0 Not changed
  * @retval  1 Parsed
  * @retval -1 Error
  */
-int nntp_newsrc_parse(struct NntpServer *nserv)
+int nntp_newsrc_parse(struct NntpAccountData *adata)
 {
   char *line = NULL;
   struct stat sb;
 
-  if (nserv->newsrc_fp)
+  if (adata->newsrc_fp)
   {
     /* if we already have a handle, close it and reopen */
-    mutt_file_fclose(&nserv->newsrc_fp);
+    mutt_file_fclose(&adata->newsrc_fp);
   }
   else
   {
     /* if file doesn't exist, create it */
-    nserv->newsrc_fp = mutt_file_fopen(nserv->newsrc_file, "a");
-    mutt_file_fclose(&nserv->newsrc_fp);
+    adata->newsrc_fp = mutt_file_fopen(adata->newsrc_file, "a");
+    mutt_file_fclose(&adata->newsrc_fp);
   }
 
   /* open .newsrc */
-  nserv->newsrc_fp = mutt_file_fopen(nserv->newsrc_file, "r");
-  if (!nserv->newsrc_fp)
+  adata->newsrc_fp = mutt_file_fopen(adata->newsrc_file, "r");
+  if (!adata->newsrc_fp)
   {
-    mutt_perror(nserv->newsrc_file);
+    mutt_perror(adata->newsrc_file);
     return -1;
   }
 
   /* lock it */
-  mutt_debug(1, "Locking %s\n", nserv->newsrc_file);
-  if (mutt_file_lock(fileno(nserv->newsrc_fp), false, true))
+  mutt_debug(1, "Locking %s\n", adata->newsrc_file);
+  if (mutt_file_lock(fileno(adata->newsrc_fp), false, true))
   {
-    mutt_file_fclose(&nserv->newsrc_fp);
+    mutt_file_fclose(&adata->newsrc_fp);
     return -1;
   }
 
-  if (stat(nserv->newsrc_file, &sb))
+  if (stat(adata->newsrc_file, &sb))
   {
-    mutt_perror(nserv->newsrc_file);
-    nntp_newsrc_close(nserv);
+    mutt_perror(adata->newsrc_file);
+    nntp_newsrc_close(adata);
     return -1;
   }
 
-  if (nserv->size == sb.st_size && nserv->mtime == sb.st_mtime)
+  if (adata->size == sb.st_size && adata->mtime == sb.st_mtime)
     return 0;
 
-  nserv->size = sb.st_size;
-  nserv->mtime = sb.st_mtime;
-  nserv->newsrc_modified = true;
-  mutt_debug(1, "Parsing %s\n", nserv->newsrc_file);
+  adata->size = sb.st_size;
+  adata->mtime = sb.st_mtime;
+  adata->newsrc_modified = true;
+  mutt_debug(1, "Parsing %s\n", adata->newsrc_file);
 
   /* .newsrc has been externally modified or hasn't been loaded yet */
-  for (unsigned int i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < adata->groups_num; i++)
   {
-    struct NntpMboxData *mdata = nserv->groups_list[i];
+    struct NntpMboxData *mdata = adata->groups_list[i];
 
     if (!mdata)
       continue;
@@ -248,7 +248,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   }
 
   line = mutt_mem_malloc(sb.st_size + 1);
-  while (sb.st_size && fgets(line, sb.st_size + 1, nserv->newsrc_fp))
+  while (sb.st_size && fgets(line, sb.st_size + 1, adata->newsrc_fp))
   {
     char *b = NULL, *h = NULL;
     unsigned int j = 1;
@@ -265,7 +265,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     *p++ = '\0';
 
     /* get newsgroup data */
-    struct NntpMboxData *mdata = mdata_find(nserv, line);
+    struct NntpMboxData *mdata = mdata_find(adata, line);
     FREE(&mdata->newsrc_ent);
 
     /* count number of entries */
@@ -455,17 +455,17 @@ static int update_file(char *filename, char *buf)
 
 /**
  * nntp_newsrc_update - Update .newsrc file
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_newsrc_update(struct NntpServer *nserv)
+int nntp_newsrc_update(struct NntpAccountData *adata)
 {
   char *buf = NULL;
   size_t buflen, off;
   int rc = -1;
 
-  if (!nserv)
+  if (!adata)
     return -1;
 
   buflen = 10 * LONG_STRING;
@@ -473,9 +473,9 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   off = 0;
 
   /* we will generate full newsrc here */
-  for (unsigned int i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < adata->groups_num; i++)
   {
-    struct NntpMboxData *mdata = nserv->groups_list[i];
+    struct NntpMboxData *mdata = adata->groups_list[i];
 
     if (!mdata || !mdata->newsrc_ent)
       continue;
@@ -513,20 +513,20 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   buf[off] = '\0';
 
   /* newrc being fully rewritten */
-  mutt_debug(1, "Updating %s\n", nserv->newsrc_file);
-  if (nserv->newsrc_file && update_file(nserv->newsrc_file, buf) == 0)
+  mutt_debug(1, "Updating %s\n", adata->newsrc_file);
+  if (adata->newsrc_file && update_file(adata->newsrc_file, buf) == 0)
   {
     struct stat sb;
 
-    rc = stat(nserv->newsrc_file, &sb);
+    rc = stat(adata->newsrc_file, &sb);
     if (rc == 0)
     {
-      nserv->size = sb.st_size;
-      nserv->mtime = sb.st_mtime;
+      adata->size = sb.st_size;
+      adata->mtime = sb.st_mtime;
     }
     else
     {
-      mutt_perror(nserv->newsrc_file);
+      mutt_perror(adata->newsrc_file);
     }
   }
   FREE(&buf);
@@ -591,14 +591,14 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct)
  */
 int nntp_add_group(char *line, void *data)
 {
-  struct NntpServer *nserv = data;
+  struct NntpAccountData *adata = data;
   struct NntpMboxData *mdata = NULL;
   char group[LONG_STRING] = "";
   char desc[HUGE_STRING] = "";
   char mod;
   anum_t first, last;
 
-  if (!nserv || !line)
+  if (!adata || !line)
     return 0;
 
   /* These sscanf limits must match the sizes of the group and desc arrays */
@@ -609,7 +609,7 @@ int nntp_add_group(char *line, void *data)
     return 0;
   }
 
-  mdata = mdata_find(nserv, group);
+  mdata = mdata_find(adata, group);
   mdata->deleted = false;
   mdata->first_message = first;
   mdata->last_message = last;
@@ -626,17 +626,17 @@ int nntp_add_group(char *line, void *data)
 
 /**
  * active_get_cache - Load list of all newsgroups from cache
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int active_get_cache(struct NntpServer *nserv)
+static int active_get_cache(struct NntpAccountData *adata)
 {
   char buf[HUGE_STRING];
   char file[PATH_MAX];
   time_t t;
 
-  cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
+  cache_expand(file, sizeof(file), &adata->conn->account, ".active");
   mutt_debug(1, "Parsing %s\n", file);
   FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
@@ -647,11 +647,11 @@ static int active_get_cache(struct NntpServer *nserv)
     mutt_file_fclose(&fp);
     return -1;
   }
-  nserv->newgroups_time = t;
+  adata->newgroups_time = t;
 
   mutt_message(_("Loading list of groups from cache..."));
   while (fgets(buf, sizeof(buf), fp))
-    nntp_add_group(buf, nserv);
+    nntp_add_group(buf, adata);
   nntp_add_group(NULL, NULL);
   mutt_file_fclose(&fp);
   mutt_clear_error();
@@ -660,28 +660,28 @@ static int active_get_cache(struct NntpServer *nserv)
 
 /**
  * nntp_active_save_cache - Save list of all newsgroups to cache
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_active_save_cache(struct NntpServer *nserv)
+int nntp_active_save_cache(struct NntpAccountData *adata)
 {
   char file[PATH_MAX];
   char *buf = NULL;
   size_t buflen, off;
   int rc;
 
-  if (!nserv->cacheable)
+  if (!adata->cacheable)
     return 0;
 
   buflen = 10 * LONG_STRING;
   buf = mutt_mem_calloc(1, buflen);
-  snprintf(buf, buflen, "%lu\n", (unsigned long) nserv->newgroups_time);
+  snprintf(buf, buflen, "%lu\n", (unsigned long) adata->newgroups_time);
   off = strlen(buf);
 
-  for (unsigned int i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < adata->groups_num; i++)
   {
-    struct NntpMboxData *mdata = nserv->groups_list[i];
+    struct NntpMboxData *mdata = adata->groups_list[i];
 
     if (!mdata || mdata->deleted)
       continue;
@@ -697,7 +697,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
     off += strlen(buf + off);
   }
 
-  cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
+  cache_expand(file, sizeof(file), &adata->conn->account, ".active");
   mutt_debug(1, "Updating %s\n", file);
   rc = update_file(file, buf);
   FREE(&buf);
@@ -735,13 +735,13 @@ header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata)
   struct Url url;
   char file[PATH_MAX];
 
-  if (!mdata->nserv || !mdata->nserv->cacheable || !mdata->nserv->conn ||
+  if (!mdata->adata || !mdata->adata->cacheable || !mdata->adata->conn ||
       !mdata->group || !(mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
   {
     return NULL;
   }
 
-  mutt_account_tourl(&mdata->nserv->conn->account, &url);
+  mutt_account_tourl(&mdata->adata->conn->account, &url);
   url.path = mdata->group;
   url_tostring(&url, file, sizeof(file), U_PATH);
   return mutt_hcache_open(NewsCacheDir, file, nntp_hcache_namer);
@@ -831,13 +831,13 @@ void nntp_bcache_update(struct NntpMboxData *mdata)
  */
 void nntp_delete_group_cache(struct NntpMboxData *mdata)
 {
-  if (!mdata || !mdata->nserv || !mdata->nserv->cacheable)
+  if (!mdata || !mdata->adata || !mdata->adata->cacheable)
     return;
 
 #ifdef USE_HCACHE
   char file[PATH_MAX];
   nntp_hcache_namer(mdata->group, file, sizeof(file));
-  cache_expand(file, sizeof(file), &mdata->nserv->conn->account, file);
+  cache_expand(file, sizeof(file), &mdata->adata->conn->account, file);
   unlink(file);
   mdata->last_cached = 0;
   mutt_debug(2, "%s\n", file);
@@ -845,7 +845,7 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
 
   if (!mdata->bcache)
   {
-    mdata->bcache = mutt_bcache_open(&mdata->nserv->conn->account, mdata->group);
+    mdata->bcache = mutt_bcache_open(&mdata->adata->conn->account, mdata->group);
   }
   if (mdata->bcache)
   {
@@ -857,21 +857,21 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
 
 /**
  * nntp_clear_cache - Clear the NNTP cache
- * @param nserv NNTP server
+ * @param adata NNTP server
  *
  * Remove hcache and bcache of all unexistent and unsubscribed newsgroups
  */
-void nntp_clear_cache(struct NntpServer *nserv)
+void nntp_clear_cache(struct NntpAccountData *adata)
 {
   char file[PATH_MAX];
   char *fp = NULL;
   struct dirent *entry = NULL;
   DIR *dp = NULL;
 
-  if (!nserv || !nserv->cacheable)
+  if (!adata || !adata->cacheable)
     return;
 
-  cache_expand(file, sizeof(file), &nserv->conn->account, NULL);
+  cache_expand(file, sizeof(file), &adata->conn->account, NULL);
   dp = opendir(file);
   if (dp)
   {
@@ -882,7 +882,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
       char *group = entry->d_name;
       struct stat sb;
       struct NntpMboxData *mdata = NULL;
-      struct NntpMboxData nntp_tmp;
+      struct NntpMboxData tmp_mdata;
 
       if ((mutt_str_strcmp(group, ".") == 0) || (mutt_str_strcmp(group, "..") == 0))
         continue;
@@ -904,11 +904,11 @@ void nntp_clear_cache(struct NntpServer *nserv)
           if (!S_ISDIR(sb.st_mode))
         continue;
 
-      mdata = mutt_hash_find(nserv->groups_hash, group);
+      mdata = mutt_hash_find(adata->groups_hash, group);
       if (!mdata)
       {
-        mdata = &nntp_tmp;
-        mdata->nserv = nserv;
+        mdata = &tmp_mdata;
+        mdata->adata = adata;
         mdata->group = group;
         mdata->bcache = NULL;
       }
@@ -942,8 +942,8 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
                             const char *src, const char *prec, const char *if_str,
                             const char *else_str, unsigned long data, enum FormatFlag flags)
 {
-  struct NntpServer *nserv = (struct NntpServer *) data;
-  struct ConnAccount *acct = &nserv->conn->account;
+  struct NntpAccountData *adata = (struct NntpAccountData *) data;
+  struct ConnAccount *acct = &adata->conn->account;
   struct Url url;
   char fn[SHORT_STRING], fmt[SHORT_STRING], *p = NULL;
 
@@ -1006,7 +1006,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock)
+struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock)
 {
   char file[PATH_MAX];
 #ifdef USE_HCACHE
@@ -1014,7 +1014,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
 #endif
   int rc;
   struct ConnAccount acct;
-  struct NntpServer *nserv = NULL;
+  struct NntpAccountData *adata = NULL;
   struct NntpMboxData *mdata = NULL;
   struct Connection *conn = NULL;
   struct Url url;
@@ -1056,42 +1056,42 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
   }
 
   /* news server already exists */
-  nserv = conn->data;
-  if (nserv)
+  adata = conn->data;
+  if (adata)
   {
-    if (nserv->status == NNTP_BYE)
-      nserv->status = NNTP_NONE;
-    if (nntp_open_connection(nserv) < 0)
+    if (adata->status == NNTP_BYE)
+      adata->status = NNTP_NONE;
+    if (nntp_open_connection(adata) < 0)
       return NULL;
 
-    rc = nntp_newsrc_parse(nserv);
+    rc = nntp_newsrc_parse(adata);
     if (rc < 0)
       return NULL;
 
     /* check for new newsgroups */
-    if (!leave_lock && nntp_check_new_groups(mailbox, nserv) < 0)
+    if (!leave_lock && nntp_check_new_groups(mailbox, adata) < 0)
       rc = -1;
 
     /* .newsrc has been externally modified */
     if (rc > 0)
-      nntp_clear_cache(nserv);
+      nntp_clear_cache(adata);
     if (rc < 0 || !leave_lock)
-      nntp_newsrc_close(nserv);
-    return (rc < 0) ? NULL : nserv;
+      nntp_newsrc_close(adata);
+    return (rc < 0) ? NULL : adata;
   }
 
   /* new news server */
-  nserv = mutt_mem_calloc(1, sizeof(struct NntpServer));
-  nserv->conn = conn;
-  nserv->groups_hash = mutt_hash_create(1009, 0);
-  mutt_hash_set_destructor(nserv->groups_hash, nntp_hash_destructor_t, 0);
-  nserv->groups_max = 16;
-  nserv->groups_list = mutt_mem_malloc(nserv->groups_max * sizeof(mdata));
+  adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
+  adata->conn = conn;
+  adata->groups_hash = mutt_hash_create(1009, 0);
+  mutt_hash_set_destructor(adata->groups_hash, nntp_hash_destructor_t, 0);
+  adata->groups_max = 16;
+  adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(mdata));
 
-  rc = nntp_open_connection(nserv);
+  rc = nntp_open_connection(adata);
 
   /* try to create cache directory and enable caching */
-  nserv->cacheable = false;
+  adata->cacheable = false;
   if (rc >= 0 && NewsCacheDir && *NewsCacheDir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
@@ -1099,35 +1099,35 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
     {
       mutt_error(_("Can't create %s: %s"), file, strerror(errno));
     }
-    nserv->cacheable = true;
+    adata->cacheable = true;
   }
 
   /* load .newsrc */
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                        NONULL(Newsrc), nntp_format_str, (unsigned long) nserv, 0);
+                        NONULL(Newsrc), nntp_format_str, (unsigned long) adata, 0);
     mutt_expand_path(file, sizeof(file));
-    nserv->newsrc_file = mutt_str_strdup(file);
-    rc = nntp_newsrc_parse(nserv);
+    adata->newsrc_file = mutt_str_strdup(file);
+    rc = nntp_newsrc_parse(adata);
   }
   if (rc >= 0)
   {
     /* try to load list of newsgroups from cache */
-    if (nserv->cacheable && active_get_cache(nserv) == 0)
-      rc = nntp_check_new_groups(mailbox, nserv);
+    if (adata->cacheable && active_get_cache(adata) == 0)
+      rc = nntp_check_new_groups(mailbox, adata);
 
     /* load list of newsgroups from server */
     else
-      rc = nntp_active_fetch(nserv, false);
+      rc = nntp_active_fetch(adata, false);
   }
 
   if (rc >= 0)
-    nntp_clear_cache(nserv);
+    nntp_clear_cache(adata);
 
 #ifdef USE_HCACHE
   /* check cache files */
-  if (rc >= 0 && nserv->cacheable)
+  if (rc >= 0 && adata->cacheable)
   {
     struct dirent *entry = NULL;
     DIR *dp = opendir(file);
@@ -1144,7 +1144,7 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
         if (strlen(group) < 8 || (strcmp(p, ".hcache") != 0))
           continue;
         *p = '\0';
-        mdata = mutt_hash_find(nserv->groups_hash, group);
+        mdata = mutt_hash_find(adata->groups_hash, group);
         if (!mdata)
           continue;
 
@@ -1181,22 +1181,22 @@ struct NntpServer *nntp_select_server(struct Mailbox *mailbox, char *server, boo
 #endif
 
   if (rc < 0 || !leave_lock)
-    nntp_newsrc_close(nserv);
+    nntp_newsrc_close(adata);
 
   if (rc < 0)
   {
-    mutt_hash_destroy(&nserv->groups_hash);
-    FREE(&nserv->groups_list);
-    FREE(&nserv->newsrc_file);
-    FREE(&nserv->authenticators);
-    FREE(&nserv);
+    mutt_hash_destroy(&adata->groups_hash);
+    FREE(&adata->groups_list);
+    FREE(&adata->newsrc_file);
+    FREE(&adata->authenticators);
+    FREE(&adata);
     mutt_socket_close(conn);
     mutt_socket_free(conn);
     return NULL;
   }
 
-  conn->data = nserv;
-  return nserv;
+  conn->data = adata;
+  return adata;
 }
 
 /**
@@ -1216,7 +1216,7 @@ void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, 
   struct NntpMboxData *mdata = mailbox->data;
 
   if (group)
-    mdata = mutt_hash_find(mdata->nserv->groups_hash, group);
+    mdata = mutt_hash_find(mdata->adata->groups_hash, group);
 
   if (!mdata)
     return;
@@ -1243,19 +1243,19 @@ void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, 
 
 /**
  * mutt_newsgroup_subscribe - Subscribe newsgroup
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
+struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 
-  if (!nserv || !nserv->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mdata_find(nserv, group);
+  mdata = mdata_find(adata, group);
   mdata->subscribed = true;
   if (!mdata->newsrc_ent)
   {
@@ -1269,19 +1269,19 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *gr
 
 /**
  * mutt_newsgroup_unsubscribe - Unsubscribe newsgroup
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group)
+struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 
-  if (!nserv || !nserv->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(nserv->groups_hash, group);
+  mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 
@@ -1297,20 +1297,20 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *
 /**
  * mutt_newsgroup_catchup - Catchup newsgroup
  * @param ctx   Mailbox
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
 struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
-                                            struct NntpServer *nserv, char *group)
+                                            struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 
-  if (!nserv || !nserv->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(nserv->groups_hash, group);
+  mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 
@@ -1333,20 +1333,20 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
 /**
  * mutt_newsgroup_uncatchup - Uncatchup newsgroup
  * @param ctx   Mailbox
- * @param nserv NNTP server
+ * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
 struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
-                                              struct NntpServer *nserv, char *group)
+                                              struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
 
-  if (!nserv || !nserv->groups_hash || !group || !*group)
+  if (!adata || !adata->groups_hash || !group || !*group)
     return NULL;
 
-  mdata = mutt_hash_find(nserv->groups_hash, group);
+  mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
     return NULL;
 

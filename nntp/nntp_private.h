@@ -30,7 +30,7 @@
 struct Context;
 struct Mailbox;
 struct NntpMboxData;
-struct NntpServer;
+struct NntpAccountData;
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563
@@ -47,20 +47,20 @@ enum NntpStatus
 
 #define NNTP_EDATA(email) ((struct NntpEmailData *) ((email)->data))
 
-void nntp_acache_free(struct NntpMboxData *nntp_data);
-int  nntp_active_save_cache(struct NntpServer *nserv);
+void nntp_acache_free(struct NntpMboxData *mdata);
+int  nntp_active_save_cache(struct NntpAccountData *adata);
 int  nntp_add_group(char *line, void *data);
-void nntp_bcache_update(struct NntpMboxData *nntp_data);
-int  nntp_check_new_groups(struct Mailbox *mailbox, struct NntpServer *nserv);
+void nntp_bcache_update(struct NntpMboxData *mdata);
+int  nntp_check_new_groups(struct Mailbox *mailbox, struct NntpAccountData *adata);
 void nntp_data_free(void *data);
-void nntp_delete_group_cache(struct NntpMboxData *nntp_data);
-void nntp_group_unread_stat(struct NntpMboxData *nntp_data);
+void nntp_delete_group_cache(struct NntpMboxData *mdata);
+void nntp_group_unread_stat(struct NntpMboxData *mdata);
 void nntp_newsrc_gen_entries(struct Context *ctx);
-int  nntp_open_connection(struct NntpServer *nserv);
+int  nntp_open_connection(struct NntpAccountData *adata);
 
 #ifdef USE_HCACHE
-header_cache_t *nntp_hcache_open(struct NntpMboxData *nntp_data);
-void nntp_hcache_update(struct NntpMboxData *nntp_data, header_cache_t *hc);
+header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata);
+void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc);
 #endif
 
 #endif /* MUTT_NNTP_NNTP_PRIVATE_H */

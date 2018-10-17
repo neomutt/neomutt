@@ -813,23 +813,23 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 #ifdef USE_NNTP
   if (OptNews)
   {
-    struct NntpServer *nserv = CurrentNewsSrv;
+    struct NntpAccountData *adata = CurrentNewsSrv;
 
     init_state(state, menu);
 
-    for (unsigned int i = 0; i < nserv->groups_num; i++)
+    for (unsigned int i = 0; i < adata->groups_num; i++)
     {
-      struct NntpMboxData *nntp_data = nserv->groups_list[i];
-      if (!nntp_data)
+      struct NntpMboxData *mdata = adata->groups_list[i];
+      if (!mdata)
         continue;
-      if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
+      if (prefix && *prefix && (strncmp(prefix, mdata->group, strlen(prefix)) != 0))
         continue;
       if (Mask && Mask->regex &&
-          !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
+          !((regexec(Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ Mask->not))
       {
         continue;
       }
-      add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
+      add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
     }
   }
   else
@@ -968,17 +968,17 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 #ifdef USE_NNTP
   if (OptNews)
   {
-    struct NntpServer *nserv = CurrentNewsSrv;
+    struct NntpAccountData *adata = CurrentNewsSrv;
 
     init_state(state, menu);
 
-    for (unsigned int i = 0; i < nserv->groups_num; i++)
+    for (unsigned int i = 0; i < adata->groups_num; i++)
     {
-      struct NntpMboxData *nntp_data = nserv->groups_list[i];
-      if (nntp_data && (nntp_data->new || (nntp_data->subscribed &&
-                                           (nntp_data->unread || !ShowOnlyUnread))))
+      struct NntpMboxData *mdata = adata->groups_list[i];
+      if (mdata && (mdata->new || (mdata->subscribed &&
+                                           (mdata->unread || !ShowOnlyUnread))))
       {
-        add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
+        add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
       }
     }
   }
@@ -1313,14 +1313,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       mutt_str_strfcpy(prefix, file, sizeof(prefix));
     else
     {
-      struct NntpServer *nserv = CurrentNewsSrv;
+      struct NntpAccountData *adata = CurrentNewsSrv;
 
       /* default state for news reader mode is browse subscribed newsgroups */
       mailbox = false;
-      for (unsigned int j = 0; j < nserv->groups_num; j++)
+      for (unsigned int j = 0; j < adata->groups_num; j++)
       {
-        struct NntpMboxData *nntp_data = nserv->groups_list[j];
-        if (nntp_data && nntp_data->subscribed)
+        struct NntpMboxData *mdata = adata->groups_list[j];
+        if (mdata && mdata->subscribed)
         {
           mailbox = true;
           break;
@@ -2151,18 +2151,18 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         if (OptNews)
         {
           struct FolderFile *ff = &state.entry[menu->current];
-          struct NntpMboxData *nntp_data = NULL;
+          struct NntpMboxData *mdata = NULL;
 
           int rc = nntp_newsrc_parse(CurrentNewsSrv);
           if (rc < 0)
             break;
 
           if (i == OP_CATCHUP)
-            nntp_data = mutt_newsgroup_catchup(Context, CurrentNewsSrv, ff->name);
+            mdata = mutt_newsgroup_catchup(Context, CurrentNewsSrv, ff->name);
           else
-            nntp_data = mutt_newsgroup_uncatchup(Context, CurrentNewsSrv, ff->name);
+            mdata = mutt_newsgroup_uncatchup(Context, CurrentNewsSrv, ff->name);
 
-          if (nntp_data)
+          if (mdata)
           {
             nntp_newsrc_update(CurrentNewsSrv);
             if (menu->current + 1 < menu->max)
@@ -2178,20 +2178,20 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_LOAD_ACTIVE:
         if (OptNews)
         {
-          struct NntpServer *nserv = CurrentNewsSrv;
+          struct NntpAccountData *adata = CurrentNewsSrv;
 
-          if (nntp_newsrc_parse(nserv) < 0)
+          if (nntp_newsrc_parse(adata) < 0)
             break;
 
-          for (unsigned int j = 0; j < nserv->groups_num; j++)
+          for (unsigned int j = 0; j < adata->groups_num; j++)
           {
-            struct NntpMboxData *nntp_data = nserv->groups_list[j];
-            if (nntp_data)
-              nntp_data->deleted = true;
+            struct NntpMboxData *mdata = adata->groups_list[j];
+            if (mdata)
+              mdata->deleted = true;
           }
-          nntp_active_fetch(nserv, true);
-          nntp_newsrc_update(nserv);
-          nntp_newsrc_close(nserv);
+          nntp_active_fetch(adata, true);
+          nntp_newsrc_update(adata);
+          nntp_newsrc_close(adata);
 
           destroy_state(&state);
           if (mailbox)
@@ -2215,7 +2215,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
       case OP_UNSUBSCRIBE_PATTERN:
         if (OptNews)
         {
-          struct NntpServer *nserv = CurrentNewsSrv;
+          struct NntpAccountData *adata = CurrentNewsSrv;
           regex_t rx;
           memset(&rx, 0, sizeof(rx));
           char *s = buf;
@@ -2253,7 +2253,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             break;
           }
 
-          int rc = nntp_newsrc_parse(nserv);
+          int rc = nntp_newsrc_parse(adata);
           if (rc < 0)
             break;
 
@@ -2265,9 +2265,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
                 regexec(&rx, ff->name, 0, NULL, 0) == 0)
             {
               if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
-                mutt_newsgroup_subscribe(nserv, ff->name);
+                mutt_newsgroup_subscribe(adata, ff->name);
               else
-                mutt_newsgroup_unsubscribe(nserv, ff->name);
+                mutt_newsgroup_unsubscribe(adata, ff->name);
             }
             if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
             {
@@ -2279,15 +2279,15 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
           if (i == OP_SUBSCRIBE_PATTERN)
           {
-            for (unsigned int k = 0; nserv && (k < nserv->groups_num); k++)
+            for (unsigned int k = 0; adata && (k < adata->groups_num); k++)
             {
-              struct NntpMboxData *nntp_data = nserv->groups_list[k];
-              if (nntp_data && nntp_data->group && !nntp_data->subscribed)
+              struct NntpMboxData *mdata = adata->groups_list[k];
+              if (mdata && mdata->group && !mdata->subscribed)
               {
-                if (regexec(&rx, nntp_data->group, 0, NULL, 0) == 0)
+                if (regexec(&rx, mdata->group, 0, NULL, 0) == 0)
                 {
-                  mutt_newsgroup_subscribe(nserv, nntp_data->group);
-                  add_folder(menu, &state, nntp_data->group, NULL, NULL, NULL, nntp_data);
+                  mutt_newsgroup_subscribe(adata, mdata->group);
+                  add_folder(menu, &state, mdata->group, NULL, NULL, NULL, mdata);
                 }
               }
             }
@@ -2295,9 +2295,9 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
           if (rc > 0)
             menu->redraw = REDRAW_FULL;
-          nntp_newsrc_update(nserv);
-          nntp_clear_cache(nserv);
-          nntp_newsrc_close(nserv);
+          nntp_newsrc_update(adata);
+          nntp_clear_cache(adata);
+          nntp_newsrc_close(adata);
           if (i != OP_BROWSER_SUBSCRIBE && i != OP_BROWSER_UNSUBSCRIBE)
             regfree(&rx);
         }
