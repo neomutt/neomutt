@@ -336,6 +336,8 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
   buf->dsize = new_size;
   mutt_mem_realloc(&buf->data, buf->dsize);
   buf->dptr = buf->data + offset;
+  /* This ensures an initially NULL buf->data is now properly terminated. */
+  *buf->dptr = '\0';
 }
 
 /**
