@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -100,6 +101,23 @@ struct MxOps
 {
   const int magic;  ///< Mailbox type, e.g. #MUTT_IMAP
   const char *name; ///< Mailbox name, e.g. "imap"
+
+  /**
+   * ac_find - Find an Account for a Mailbox path
+   * @param a    Account to search
+   * @param path Path to search for
+   * @retval  0 Success
+   * @retval -1 Error
+   */
+  struct Account *(*ac_find)  (struct Account *a, const char *path);
+  /**
+   * ac_add - Add a Mailbox to an Account
+   * @param a Account to add to
+   * @param m Mailbox to add
+   * @retval  0 Success
+   * @retval -1 Error
+   */
+  int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
    * mbox_open - Open a mailbox
    * @param ctx Mailbox to open

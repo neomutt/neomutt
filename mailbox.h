@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,6 +33,7 @@
 
 struct Buffer;
 struct Context;
+struct Account;
 struct stat;
 
 /* These Config Variables are only used in mailbox.c */
@@ -114,6 +116,8 @@ struct Mailbox
   struct Hash *id_hash;     /**< hash table by msg id */
   struct Hash *subj_hash;   /**< hash table by subject */
   struct Hash *label_hash;  /**< hash table for x-labels */
+
+  struct Account *account;
 
   int flags; /**< e.g. #MB_NORMAL */
 
