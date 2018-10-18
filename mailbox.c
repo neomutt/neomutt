@@ -635,7 +635,7 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
        * reading it), the size is set to 0 so that later when we check we see
        * that it increased. without check_mbox_size we probably don't care.
        */
-      if (CheckMboxSize && stat(m->path, &sb) == 0 && !mbox_test_new_folder(m->path))
+      if (CheckMboxSize && (stat(m->path, &sb) == 0) && !mbox_test_new_folder(m->path))
       {
         /* some systems out there don't have an off_t type */
         m->size = (off_t) sb.st_size;

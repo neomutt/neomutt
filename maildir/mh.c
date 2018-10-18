@@ -2033,7 +2033,7 @@ struct Email *maildir_parse_message(enum MailboxType magic, const char *fname,
 }
 
 /**
- * maildir_flags - Generate the Maildir flags for an email
+ * maildir_gen_flags - Generate the Maildir flags for an email
  * @param dest    Buffer for the result
  * @param destlen Length of buffer
  * @param e     Email

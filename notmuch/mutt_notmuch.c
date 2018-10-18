@@ -1879,7 +1879,7 @@ done:
 }
 
 /**
- * Parse a query type out of a query.
+ * nm_parse_type_from_query - Parse a query type out of a query
  * @param data Mailbox, used for the query_type
  * @param buf  Buffer for URI
  *

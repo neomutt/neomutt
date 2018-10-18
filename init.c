@@ -1730,7 +1730,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
     else
     {
-      rc = cs_str_string_set(Config, buf->data, NULL, err);
+      rc = cs_he_string_set(Config, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return -1;
     }

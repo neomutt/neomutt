@@ -1269,10 +1269,11 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     }
     else
 #endif
-
-        /* don't try to fetch header from removed newsgroup */
         if (mdata->deleted)
+    {
+      /* don't try to fetch header from removed newsgroup */
       continue;
+    }
 
     /* fallback to fetch overview */
     else if (mdata->adata->hasOVER || mdata->adata->hasXOVER)
