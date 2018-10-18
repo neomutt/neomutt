@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
- * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +42,7 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "compress.h"
+#include "account.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "format_flags.h"
@@ -463,6 +464,33 @@ int mutt_comp_valid_command(const char *cmd)
     return 0;
 
   return strstr(cmd, "%f") && strstr(cmd, "%t");
+}
+
+/**
+ * comp_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *comp_ac_find(struct Account *a, const char *path)
+{
+  return NULL;
+}
+
+/**
+ * comp_ac_add - Add a Mailbox to a Account
+ */
+int comp_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_COMPRESSED)
+    return -1;
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
 }
 
 /**
@@ -1001,6 +1029,8 @@ int comp_path_parent(char *buf, size_t buflen)
 struct MxOps mx_comp_ops = {
   .magic            = MUTT_COMPRESSED,
   .name             = "compressed",
+  .ac_find          = comp_ac_find,
+  .ac_add           = comp_ac_add,
   .mbox_open        = comp_mbox_open,
   .mbox_open_append = comp_mbox_open_append,
   .mbox_check       = comp_mbox_check,
