@@ -4323,7 +4323,7 @@ struct ConfigDef MuttVars[] = {
   ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
   ** used.  Failing that, then ``\fC/tmp\fP'' is used.
   */
-  { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFL" },
+  { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFLR" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.
@@ -4335,6 +4335,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 4 .dd C .dd Your address is specified in the ``Cc:'' header field, but you are not the only recipient.
   ** .dt 5 .dd F .dd Indicates the mail that was sent by \fIyou\fP.
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
+  ** .dt 7 .dd R .dd Your address appears in the ``Reply-To:'' header field but none of the above applies.
   ** .de
   */
   { "trash",            DT_PATH|DT_MAILBOX, R_NONE, &Trash, 0 },

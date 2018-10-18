@@ -1803,6 +1803,10 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
                 <entry>L</entry>
                 <entry>message is sent to a subscribed mailing list</entry>
               </row>
+              <row>
+                <entry>R</entry>
+                <entry>message has your address in the Reply-To field</entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
