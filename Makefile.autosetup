@@ -61,7 +61,7 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	addrbook.o alias.o bcache.o browser.o color.o commands.o \
+NEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		complete.o compose.o compress.o conststrings.o copy.o \
 		curs_lib.o curs_main.o edit.o editmsg.o enriched.o enter.o \
 		filter.o flags.o group.o handler.o hdrline.o help.o hook.o \
