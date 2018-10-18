@@ -659,5 +659,5 @@ struct PopMboxData *pop_get_mdata(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_POP))
     return NULL;
-  return m->data;
+  return m->mdata;
 }

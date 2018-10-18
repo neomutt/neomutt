@@ -676,7 +676,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       break;
 
     case 'n':
-      if (Context && Context->mailbox->data == folder->ff->nd)
+      if (Context && Context->mailbox->mdata == folder->ff->nd)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->new);
@@ -708,7 +708,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
                               group_index_format_str, data, flags);
         }
       }
-      else if (Context && Context->mailbox->data == folder->ff->nd)
+      else if (Context && Context->mailbox->mdata == folder->ff->nd)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->mailbox->msg_unread);

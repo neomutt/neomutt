@@ -761,8 +761,8 @@ static int pop_mbox_open(struct Context *ctx)
 
   struct PopMboxData *mdata = new_mboxdata();
   mdata->conn = conn;
-  ctx->mailbox->data = mdata;
-  ctx->mailbox->free_data = free_mboxdata;
+  ctx->mailbox->mdata = mdata;
+  ctx->mailbox->free_mdata = free_mboxdata;
 
   if (pop_open_connection(mdata) < 0)
     return -1;

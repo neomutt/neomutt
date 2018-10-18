@@ -113,14 +113,14 @@ static int init_mailbox(struct Mailbox *mailbox)
   if (!mailbox || (mailbox->magic != MUTT_MBOX))
     return -1;
 
-  if (mailbox->data)
+  if (mailbox->mdata)
     return 0;
 
-  mailbox->data = new_mboxdata();
-  if (!mailbox->data)
+  mailbox->mdata = new_mboxdata();
+  if (!mailbox->mdata)
     return -1;
 
-  mailbox->free_data = free_mboxdata;
+  mailbox->free_mdata = free_mboxdata;
   return 0;
 }
 
@@ -133,7 +133,7 @@ struct MboxMboxData *mbox_get_mdata(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_MBOX))
     return NULL;
-  return m->data;
+  return m->mdata;
 }
 
 /**

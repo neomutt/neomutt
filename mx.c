@@ -514,7 +514,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 #ifdef USE_NNTP
   if (ctx->mailbox->msg_unread && ctx->mailbox->magic == MUTT_NNTP)
   {
-    struct NntpMboxData *mdata = ctx->mailbox->data;
+    struct NntpMboxData *mdata = ctx->mailbox->mdata;
 
     if (mdata && mdata->adata && mdata->group)
     {

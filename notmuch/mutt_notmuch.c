@@ -276,7 +276,7 @@ struct NmMboxData *nm_get_default_data(void)
 static struct NmMboxData *get_mboxdata(struct Mailbox *mailbox)
 {
   if (mailbox && (mailbox->magic == MUTT_NOTMUCH))
-    return mailbox->data;
+    return mailbox->mdata;
 
   return NULL;
 }
@@ -296,14 +296,14 @@ static int init_mailbox(struct Mailbox *mailbox)
   if (!mailbox || (mailbox->magic != MUTT_NOTMUCH))
     return -1;
 
-  if (mailbox->data)
+  if (mailbox->mdata)
     return 0;
 
-  mailbox->data = new_mboxdata(mailbox->path);
-  if (!mailbox->data)
+  mailbox->mdata = new_mboxdata(mailbox->path);
+  if (!mailbox->mdata)
     return -1;
 
-  mailbox->free_data = free_mboxdata;
+  mailbox->free_mdata = free_mboxdata;
   return 0;
 }
 
@@ -1998,7 +1998,7 @@ bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
     return false;
 
   tmp_mbox.magic = MUTT_NOTMUCH;
-  tmp_mbox.data = tmp_mdata;
+  tmp_mbox.mdata = tmp_mdata;
 
   mutt_debug(2, "#1 () -> db_query: %s\n", tmp_mdata->db_query);
 

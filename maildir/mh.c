@@ -121,7 +121,7 @@ static struct MaildirMboxData *maildir_get_mdata(struct Mailbox *m)
 {
   if (!m || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
     return NULL;
-  return m->data;
+  return m->mdata;
 }
 
 /**
@@ -1239,9 +1239,9 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  if (!ctx->mailbox->data)
+  if (!ctx->mailbox->mdata)
   {
-    ctx->mailbox->data = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
+    ctx->mailbox->mdata = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
   }
   struct MaildirMboxData *mdata = maildir_get_mdata(ctx->mailbox);
 
@@ -2977,7 +2977,7 @@ err:
  */
 static int mh_mbox_close(struct Context *ctx)
 {
-  FREE(&ctx->mailbox->data);
+  FREE(&ctx->mailbox->mdata);
 
   return 0;
 }

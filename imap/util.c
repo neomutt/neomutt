@@ -71,7 +71,7 @@ struct ImapAccountData *imap_get_adata(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_IMAP))
     return NULL;
-  return m->data;
+  return m->mdata;
 }
 
 /**

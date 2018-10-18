@@ -98,8 +98,6 @@ struct Mailbox
   struct timespec last_visited;       /**< time of last exit from this mailbox */
   struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 
-  void *data;                 /**< driver specific data */
-  void (*free_data)(void **); /**< driver-specific data free function */
   const struct MxOps *mx_ops;
 
   bool changed : 1;   /**< mailbox has been modified */
@@ -118,6 +116,9 @@ struct Mailbox
   struct Hash *label_hash;  /**< hash table for x-labels */
 
   int flags; /**< e.g. #MB_NORMAL */
+
+  void *mdata;                 /**< driver specific data */
+  void (*free_mdata)(void **); /**< driver-specific data free function */
 };
 
 /**

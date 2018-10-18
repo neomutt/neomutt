@@ -729,7 +729,7 @@ int imap_delete_mailbox(struct Mailbox *mailbox, struct ImapMbox *mx)
   }
   else
   {
-    adata = mailbox->data;
+    adata = mailbox->mdata;
   }
 
   imap_munge_mbox_name(adata, mbox, sizeof(mbox), mx->mbox);
@@ -2229,7 +2229,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
 
   /* once again the context is new */
-  ctx->mailbox->data = adata;
+  ctx->mailbox->mdata = adata;
 
   /* Clean up path and replace the one in the mailbox */
   imap_fix_path(adata, mx.mbox, buf, sizeof(buf));
@@ -2472,7 +2472,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
     return -1;
   }
 
-  ctx->mailbox->data = adata;
+  ctx->mailbox->mdata = adata;
 
   imap_fix_path(adata, mx.mbox, mailbox, sizeof(mailbox));
   if (!*mailbox)
