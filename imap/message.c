@@ -748,7 +748,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         }
 
         /*  mailbox->hdrs[msgno]->received is restored from mutt_hcache_restore */
-        ctx->mailbox->hdrs[idx]->data = h.data;
+        ctx->mailbox->hdrs[idx]->edata = h.data;
         STAILQ_INIT(&ctx->mailbox->hdrs[idx]->tags);
         driver_tags_replace(&ctx->mailbox->hdrs[idx]->tags,
                             mutt_str_strdup(h.data->flags_remote));
@@ -817,8 +817,8 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
         mx_alloc_memory(ctx->mailbox);
 
       struct ImapEmailData *edata = new_emaildata();
-      e->data = edata;
-      e->free_data = imap_free_emaildata;
+      e->edata = edata;
+      e->free_edata = imap_free_emaildata;
 
       e->index = ctx->mailbox->msg_count;
       e->active = true;
@@ -1072,7 +1072,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
         ctx->mailbox->hdrs[idx]->flagged = h.data->flagged;
         ctx->mailbox->hdrs[idx]->replied = h.data->replied;
         ctx->mailbox->hdrs[idx]->received = h.received;
-        ctx->mailbox->hdrs[idx]->data = (void *) (h.data);
+        ctx->mailbox->hdrs[idx]->edata = (void *) (h.data);
         STAILQ_INIT(&ctx->mailbox->hdrs[idx]->tags);
         driver_tags_replace(&ctx->mailbox->hdrs[idx]->tags,
                             mutt_str_strdup(h.data->flags_remote));
@@ -1730,7 +1730,7 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
 
   local_changes = e->changed;
 
-  struct ImapEmailData *edata = e->data;
+  struct ImapEmailData *edata = e->edata;
   newh.data = edata;
 
   memcpy(&old_edata, edata, sizeof(old_edata));

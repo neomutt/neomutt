@@ -45,7 +45,7 @@ enum NntpStatus
   NNTP_BYE
 };
 
-#define NNTP_EDATA(email) ((struct NntpEmailData *) ((email)->data))
+#define NNTP_EDATA(email) ((struct NntpEmailData *) ((email)->edata))
 
 void nntp_acache_free(struct NntpMboxData *mdata);
 int  nntp_active_save_cache(struct NntpAccountData *adata);

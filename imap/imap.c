@@ -269,7 +269,7 @@ static int make_msg_set(struct ImapAccountData *adata, struct Buffer *buf,
  */
 static bool compare_flags_for_copy(struct Email *e)
 {
-  struct ImapEmailData *edata = e->data;
+  struct ImapEmailData *edata = e->edata;
 
   if (e->read != edata->read)
     return true;
@@ -876,7 +876,7 @@ void imap_expunge_mailbox(struct ImapAccountData *adata)
 
       mutt_hash_int_delete(adata->uid_hash, IMAP_EDATA(e)->uid, e);
 
-      imap_free_emaildata((void **) &e->data);
+      imap_free_emaildata((void **) &e->edata);
     }
     else
     {

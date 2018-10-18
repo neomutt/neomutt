@@ -1079,7 +1079,7 @@ static int parse_overview_line(char *line, void *data)
       e = mutt_hcache_restore(hdata);
       ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
       mutt_hcache_free(fc->hc, &hdata);
-      e->data = NULL;
+      e->edata = NULL;
       e->read = false;
       e->old = false;
 
@@ -1110,8 +1110,8 @@ static int parse_overview_line(char *line, void *data)
     e->read = false;
     e->old = false;
     e->deleted = false;
-    e->data = new_emaildata();
-    e->free_data = free_emaildata;
+    e->edata = new_emaildata();
+    e->free_edata = free_emaildata;
     NNTP_EDATA(e)->article_num = anum;
     if (fc->restore)
       e->changed = true;
@@ -1250,7 +1250,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       e = mutt_hcache_restore(hdata);
       ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
       mutt_hcache_free(fc.hc, &hdata);
-      e->data = NULL;
+      e->edata = NULL;
 
       /* skip header marked as deleted in cache */
       if (e->deleted && !restore)
@@ -1333,8 +1333,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     e->read = false;
     e->old = false;
     e->deleted = false;
-    e->data = new_emaildata();
-    e->free_data = free_emaildata;
+    e->edata = new_emaildata();
+    e->free_edata = free_emaildata;
     NNTP_EDATA(e)->article_num = current;
     if (restore)
       e->changed = true;
@@ -1513,7 +1513,7 @@ static int check_mailbox(struct Context *ctx)
           mutt_debug(2, "#1 mutt_hcache_fetch %s\n", buf);
           e = mutt_hcache_restore(hdata);
           mutt_hcache_free(hc, &hdata);
-          e->data = NULL;
+          e->edata = NULL;
           deleted = e->deleted;
           flagged = e->flagged;
           mutt_email_free(&e);
@@ -1561,7 +1561,7 @@ static int check_mailbox(struct Context *ctx)
         e = mutt_hcache_restore(hdata);
         ctx->mailbox->hdrs[ctx->mailbox->msg_count] = e;
         mutt_hcache_free(hc, &hdata);
-        e->data = NULL;
+        e->edata = NULL;
         if (e->deleted)
         {
           mutt_email_free(&e);
@@ -1576,8 +1576,8 @@ static int check_mailbox(struct Context *ctx)
         ctx->mailbox->msg_count++;
         e->read = false;
         e->old = false;
-        e->data = new_emaildata();
-        e->free_data = free_emaildata;
+        e->edata = new_emaildata();
+        e->free_edata = free_emaildata;
         NNTP_EDATA(e)->article_num = anum;
         nntp_article_status(ctx->mailbox, e, NULL, anum);
         if (!e->read)
@@ -2163,8 +2163,8 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
     mx_alloc_memory(ctx->mailbox);
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
   struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
-  e->data = new_emaildata();
-  e->free_data = free_emaildata;
+  e->edata = new_emaildata();
+  e->free_edata = free_emaildata;
   e->env = mutt_rfc822_read_header(fp, e, false, false);
   mutt_file_fclose(&fp);
 

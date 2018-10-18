@@ -615,7 +615,7 @@ void *mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsi
 #ifdef MIXMASTER
   STAILQ_INIT(&nh.chain);
 #endif
-  nh.data = NULL;
+  nh.edata = NULL;
 
   memcpy(d + *off, &nh, sizeof(struct Email));
   *off += sizeof(struct Email);
