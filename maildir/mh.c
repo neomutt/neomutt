@@ -6,6 +6,7 @@
  * Copyright (C) 1996-2002,2007,2009 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2005 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,6 +48,7 @@
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "account.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -104,20 +106,11 @@ struct MhSequences
 };
 
 /**
- * struct MaildirMboxData - Maildir-specific mailbox data
- */
-struct MaildirMboxData
-{
-  struct timespec mtime_cur;
-  mode_t mh_umask;
-};
-
-/**
  * maildir_get_mdata - Get the private data for this Mailbox
  * @param m Mailbox
  * @retval ptr MaildirMboxData
  */
-static struct MaildirMboxData *maildir_get_mdata(struct Mailbox *m)
+struct MaildirMboxData *maildir_get_mdata(struct Mailbox *m)
 {
   if (!m || ((m->magic != MUTT_MAILDIR) && (m->magic != MUTT_MH)))
     return NULL;
@@ -2316,6 +2309,36 @@ int mh_check_empty(const char *path)
 }
 
 /**
+ * maildir_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *maildir_ac_find(struct Account *a, const char *path)
+{
+  if (!a || !path)
+    return NULL;
+
+  return a;
+}
+
+/**
+ * maildir_ac_add - Add a Mailbox to a Account
+ */
+int maildir_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_MAILDIR)
+    return -1;
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * maildir_mbox_open - Implements MxOps::mbox_open()
  */
 static int maildir_mbox_open(struct Context *ctx)
@@ -3068,6 +3091,8 @@ int mh_path_probe(const char *path, const struct stat *st)
 struct MxOps mx_maildir_ops = {
   .magic            = MUTT_MAILDIR,
   .name             = "maildir",
+  .ac_find          = maildir_ac_find,
+  .ac_add           = maildir_ac_add,
   .mbox_open        = maildir_mbox_open,
   .mbox_open_append = maildir_mbox_open_append,
   .mbox_check       = maildir_mbox_check,
@@ -3092,6 +3117,8 @@ struct MxOps mx_maildir_ops = {
 struct MxOps mx_mh_ops = {
   .magic            = MUTT_MH,
   .name             = "mh",
+  .ac_find          = maildir_ac_find,
+  .ac_add           = maildir_ac_add,
   .mbox_open        = mh_mbox_open,
   .mbox_open_append = mh_mbox_open_append,
   .mbox_check       = mh_mbox_check,
