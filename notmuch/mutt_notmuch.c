@@ -53,6 +53,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
+#include "notmuch_private.h"
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -92,60 +93,6 @@ char *NmUnreadTag; ///< Config: (notmuch) Tag to use for unread messages
    (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
-
-/**
- * struct NmAccountData - Account-specific Notmuch data - @extends Account
- */
-struct NmAccountData
-{
-  int dummy;
-};
-
-/**
- * enum NmQueryType - Notmuch Query Types
- *
- * Read whole-thread or matching messages only?
- */
-enum NmQueryType
-{
-  NM_QUERY_TYPE_MESGS = 1, /**< Default: Messages only */
-  NM_QUERY_TYPE_THREADS    /**< Whole threads */
-};
-
-/**
- * struct NmEmailData - Notmuch data attached to an Email - @extends Email
- */
-struct NmEmailData
-{
-  char *folder; /**< Location of the Email */
-  char *oldpath;
-  char *virtual_id;       /**< Unique Notmuch Id */
-  enum MailboxType magic; /**< Type of Mailbox the Email is in */
-};
-
-/**
- * struct NmMboxData - Mailbox-specific Notmuch data - @extends Mailbox
- */
-struct NmMboxData
-{
-  notmuch_database_t *db;
-
-  struct Url db_url;   /**< Parsed view url of the Notmuch database */
-  char *db_url_holder; /**< The storage string used by db_url, we keep it
-                        *   to be able to free db_url */
-  char *db_query;      /**< Previous query */
-  int db_limit;        /**< Maximum number of results to return */
-  enum NmQueryType query_type; /**< Messages or Threads */
-
-  struct Progress progress; /**< A progress bar */
-  int oldmsgcount;
-  int ignmsgcount; /**< Ignored messages */
-
-  bool noprogress : 1;     /**< Don't show the progress bar */
-  bool longrun : 1;        /**< A long-lived action is in progress */
-  bool trans : 1;          /**< Atomic transaction in progress */
-  bool progress_ready : 1; /**< A progress bar has been initialised */
-};
 
 /**
  * nm_adata_new - Allocate and initialise a new NmAccountData structure
