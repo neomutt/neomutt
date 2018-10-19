@@ -32,7 +32,9 @@
  */
 struct NmAccountData
 {
-  int dummy;
+  notmuch_database_t *db;
+  bool longrun : 1;    /**< A long-lived action is in progress */
+  bool trans : 1;      /**< Atomic transaction in progress */
 };
 
 /**
@@ -51,8 +53,6 @@ enum NmQueryType
  */
 struct NmMboxData
 {
-  notmuch_database_t *db;
-
   struct Url db_url;   /**< Parsed view url of the Notmuch database */
   char *db_url_holder; /**< The storage string used by db_url, we keep it
                         *   to be able to free db_url */
@@ -65,8 +65,6 @@ struct NmMboxData
   int ignmsgcount; /**< Ignored messages */
 
   bool noprogress : 1;     /**< Don't show the progress bar */
-  bool longrun : 1;        /**< A long-lived action is in progress */
-  bool trans : 1;          /**< Atomic transaction in progress */
   bool progress_ready : 1; /**< A progress bar has been initialised */
 };
 
