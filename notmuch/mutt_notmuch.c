@@ -58,6 +58,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
+#include "account.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "curs_main.h"
@@ -93,6 +94,14 @@ char *NmUnreadTag; ///< Config: (notmuch) Tag to use for unread messages
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
 /**
+ * struct NmAccountData - Account-specific Notmuch data - @extends Account
+ */
+struct NmAccountData
+{
+  int dummy;
+};
+
+/**
  * enum NmQueryType - Notmuch Query Types
  *
  * Read whole-thread or matching messages only?
@@ -115,9 +124,7 @@ struct NmEmailData
 };
 
 /**
- * struct NmMboxData - Notmuch data attached to a Mailbox - @extends Mailbox
- *
- * This stores the global Notmuch data, such as the database connection.
+ * struct NmMboxData - Mailbox-specific Notmuch data - @extends Mailbox
  */
 struct NmMboxData
 {
@@ -139,6 +146,31 @@ struct NmMboxData
   bool trans : 1;          /**< Atomic transaction in progress */
   bool progress_ready : 1; /**< A progress bar has been initialised */
 };
+
+/**
+ * nm_adata_new - Allocate and initialise a new NmAccountData structure
+ * @retval ptr New NmAccountData
+ */
+struct NmAccountData *nm_adata_new(void)
+{
+  struct NmAccountData *adata = mutt_mem_calloc(1, sizeof(struct NmAccountData));
+
+  return adata;
+}
+
+/**
+ * nm_adata_free - Release and clear storage in an NmAccountData structure
+ * @param ptr Nm Account data
+ */
+void nm_adata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  // struct NmAccountData *adata = *ptr;
+
+  FREE(ptr);
+}
 
 /**
  * free_emaildata - Free data attached to an Email
@@ -2392,6 +2424,44 @@ done:
 }
 
 /**
+ * nm_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *nm_ac_find(struct Account *a, const char *path)
+{
+  if (!a || (a->type != MUTT_NOTMUCH) || !path)
+    return NULL;
+
+  return a;
+}
+
+/**
+ * nm_ac_add - Add a Mailbox to a Account
+ */
+int nm_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_NOTMUCH)
+    return -1;
+
+  if (!a->adata)
+  {
+    struct NmAccountData *adata = nm_adata_new();
+    a->type = MUTT_NOTMUCH;
+    a->adata = adata;
+    a->free_adata = nm_adata_free;
+  }
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * nm_mbox_open - Implements MxOps::mbox_open()
  */
 static int nm_mbox_open(struct Context *ctx)
@@ -2408,6 +2478,15 @@ static int nm_mbox_open(struct Context *ctx)
   mutt_debug(1, "nm: reading messages...[current count=%d]\n", ctx->mailbox->msg_count);
 
   progress_reset(ctx->mailbox);
+
+  if (!ctx->mailbox->hdrs)
+  {
+    /* Allocate some memory to get started */
+    ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
+    ctx->mailbox->msg_count = 0;
+    ctx->mailbox->vcount = 0;
+    mx_alloc_memory(ctx->mailbox);
+  }
 
   notmuch_query_t *q = get_query(mdata, false);
   if (q)
@@ -2828,6 +2907,8 @@ int nm_path_parent(char *buf, size_t buflen)
 struct MxOps mx_notmuch_ops = {
   .magic            = MUTT_NOTMUCH,
   .name             = "notmuch",
+  .ac_find          = nm_ac_find,
+  .ac_add           = nm_ac_add,
   .mbox_open        = nm_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = nm_mbox_check,
