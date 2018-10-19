@@ -117,7 +117,7 @@ ALLOBJS+=	$(LIBMBOXOBJS)
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o
+LIBNOTMUCHOBJS=	notmuch/mutt_notmuch.o notmuch/nm_db.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 MUTTLIBS+=	$(LIBNOTMUCH)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)

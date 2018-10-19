@@ -1240,7 +1240,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context->mailbox);
+      nm_db_debug_check(Context->mailbox);
 #endif
 
     switch (op)
@@ -1996,7 +1996,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_init(Context->mailbox, true);
+            nm_db_longrun_init(Context->mailbox, true);
 #endif
           for (px = 0, j = 0; j < Context->mailbox->msg_count; j++)
           {
@@ -2020,7 +2020,7 @@ int mutt_index_menu(void)
           }
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_done(Context->mailbox);
+            nm_db_longrun_done(Context->mailbox);
 #endif
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
         }
@@ -3501,7 +3501,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context->mailbox);
+      nm_db_debug_check(Context->mailbox);
 #endif
 
     if (menu->menu == MENU_PAGER)

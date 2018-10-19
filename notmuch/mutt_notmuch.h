@@ -54,12 +54,12 @@ extern char *NmUnreadTag;
 
 extern struct MxOps mx_notmuch_ops;
 
-void  nm_debug_check             (struct Mailbox *m);
+void  nm_db_debug_check             (struct Mailbox *m);
 int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);
 int   nm_get_all_tags            (struct Mailbox *m, char **tag_list, int *tag_count);
 char *nm_email_get_folder        (struct Email *e);
-void  nm_longrun_done            (struct Mailbox *m);
-void  nm_longrun_init            (struct Mailbox *m, bool writable);
+void  nm_db_longrun_done            (struct Mailbox *m);
+void  nm_db_longrun_init            (struct Mailbox *m, bool writable);
 bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
 int   nm_nonctx_get_count        (char *path, int *all, int *new);
 bool  nm_normalize_uri           (const char *uri, char *buf, size_t buflen);
