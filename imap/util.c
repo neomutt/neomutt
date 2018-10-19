@@ -690,7 +690,7 @@ void imap_pretty_mailbox(char *path, const char *folder)
     return;
 
   tlen = mutt_str_strlen(target.mbox);
-  /* check whether we can do '=' substitution */
+  /* check whether we can do '+' substitution */
   if ((imap_path_probe(folder, NULL) == MUTT_IMAP) && !imap_parse_path(folder, &home))
   {
     hlen = mutt_str_strlen(home.mbox);
@@ -709,10 +709,10 @@ void imap_pretty_mailbox(char *path, const char *folder)
     FREE(&home.mbox);
   }
 
-  /* do the '=' substitution */
+  /* do the '+' substitution */
   if (home_match)
   {
-    *path++ = '=';
+    *path++ = '+';
     /* copy remaining path, skipping delimiter */
     if (hlen == 0)
       hlen = -1;
@@ -1051,19 +1051,20 @@ void imap_unmunge_mbox_name(struct ImapAccountData *adata, char *s)
  */
 void imap_keepalive(void)
 {
-  struct Connection *conn = NULL;
-  struct ImapAccountData *adata = NULL;
   time_t now = time(NULL);
-
-  TAILQ_FOREACH(conn, mutt_socket_head(), entries)
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (conn->account.type == MUTT_ACCT_TYPE_IMAP)
+    if (np->type != MUTT_IMAP)
+      continue;
+
+    struct ImapAccountData *adata = np->adata;
+    if (!adata)
+      continue;
+
+    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + ImapKeepalive)))
     {
-      adata = conn->data;
-      if (adata->state >= IMAP_AUTHENTICATED && now >= adata->lastread + ImapKeepalive)
-      {
-        imap_check(adata, true);
-      }
+      imap_check(adata, true);
     }
   }
 }
