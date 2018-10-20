@@ -6,6 +6,7 @@
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
  * Copyright (C) 2000-2017 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,6 +42,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "nntp.h"
+#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -2277,6 +2279,54 @@ int nntp_compare_order(const void *a, const void *b)
 }
 
 /**
+ * nntp_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *nntp_ac_find(struct Account *a, const char *path)
+{
+#if 0
+  if (!a || (a->type != MUTT_NNTP) || !path)
+    return NULL;
+
+  struct Url url;
+  char tmp[PATH_MAX];
+  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  url_parse(&url, tmp);
+
+  struct ImapAccountData *adata = a->data;
+  struct ConnAccount *ac = &adata->conn_account;
+
+  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
+    return NULL;
+
+  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
+    return NULL;
+
+  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
+  //   return a;
+#endif
+  return a;
+}
+
+/**
+ * nntp_ac_add - Add a Mailbox to a Account
+ */
+int nntp_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_NNTP)
+    return -1;
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * nntp_mbox_open - Implements MxOps::mbox_open()
  */
 static int nntp_mbox_open(struct Context *ctx)
@@ -2311,6 +2361,11 @@ static int nntp_mbox_open(struct Context *ctx)
   if (!adata)
     return -1;
   CurrentNewsSrv = adata;
+
+  ctx->mailbox->account->adata = adata;
+
+  if (group[0] == '/')
+    group++;
 
   /* find news group data structure */
   mdata = mutt_hash_find(adata->groups_hash, group);
@@ -2723,6 +2778,8 @@ int nntp_path_parent(char *buf, size_t buflen)
 struct MxOps mx_nntp_ops = {
   .magic            = MUTT_NNTP,
   .name             = "nntp",
+  .ac_find          = nntp_ac_find,
+  .ac_add           = nntp_ac_add,
   .mbox_open        = nntp_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = nntp_mbox_check,
