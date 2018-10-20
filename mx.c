@@ -226,6 +226,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
 
 /**
  * mx_mbox_open - Open a mailbox and parse it
+ * @param m     Mailbox to open
  * @param path  Path to the mailbox
  * @param flags See below
  * @retval ptr  Mailbox context
@@ -238,7 +239,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  * * #MUTT_QUIET    only print error messages
  * * #MUTT_PEEK     revert atime where applicable
  */
-struct Context *mx_mbox_open(const char *path, int flags)
+struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 {
   if (!path || !path[0])
     return NULL;
@@ -456,7 +457,7 @@ static int trash_append(struct Context *ctx)
   }
 #endif
 
-  struct Context *ctx_trash = mx_mbox_open(Trash, MUTT_APPEND);
+  struct Context *ctx_trash = mx_mbox_open(NULL, Trash, MUTT_APPEND);
   if (ctx_trash)
   {
     /* continue from initial scan above */
@@ -641,7 +642,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     else /* use regular append-copy mode */
 #endif
     {
-      struct Context *f = mx_mbox_open(mbox, MUTT_APPEND);
+      struct Context *f = mx_mbox_open(NULL, mbox, MUTT_APPEND);
       if (!f)
       {
         ctx->mailbox->closing = false;

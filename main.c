@@ -1204,7 +1204,8 @@ int main(int argc, char *argv[], char *envp[])
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;
-    Context = mx_mbox_open(folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
+    Context = mx_mbox_open(NULL, folder,
+                           ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR

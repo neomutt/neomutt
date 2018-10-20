@@ -534,6 +534,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 /**
  * main_change_folder - Change to a different mailbox
  * @param menu       Current Menu
+ * @param m          Mailbox
  * @param op         Operation, e.g. OP_MAIN_CHANGE_FOLDER_READONLY
  * @param buf        Folder to change to
  * @param buflen     Length of buffer
@@ -542,8 +543,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
  * @retval  0 Success
  * @retval -1 Error
  */
-static int main_change_folder(struct Menu *menu, int op, char *buf,
-                              size_t buflen, int *oldcount, int *index_hint)
+static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
+                              char *buf, size_t buflen, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -616,7 +617,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 
   const int flags =
       (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
-  Context = mx_mbox_open(buf, flags);
+  Context = mx_mbox_open(m, buf, flags);
   if (Context)
   {
     menu->current = ci_first_message();
@@ -1921,7 +1922,7 @@ int mutt_index_menu(void)
             break;
           }
           else
-            main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+            main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
@@ -2076,7 +2077,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -2096,7 +2097,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2117,7 +2118,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
 
@@ -2133,6 +2134,8 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_MAIN_CHANGE_GROUP:
       case OP_MAIN_CHANGE_GROUP_READONLY:
+      {
+        struct Mailbox *m = NULL;
         OptNews = false;
 #endif
         if (attach_msg || ReadOnly ||
@@ -2169,13 +2172,13 @@ int mutt_index_menu(void)
 #ifdef USE_SIDEBAR
         else if (op == OP_SIDEBAR_OPEN)
         {
-          const char *path = mutt_sb_get_highlight();
-          if (!path || !*path)
+          m = mutt_sb_get_highlight();
+          if (!m)
             break;
-          mutt_str_strfcpy(buf, path, sizeof(buf));
+          mutt_str_strfcpy(buf, m->path, sizeof(buf));
 
           /* Mark the selected dir for the neomutt browser */
-          mutt_browser_select_dir(buf);
+          mutt_browser_select_dir(m->path);
         }
 #endif
 #ifdef USE_NOTMUCH
@@ -2243,7 +2246,7 @@ int mutt_index_menu(void)
           }
         }
 
-        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+        main_change_folder(menu, op, m, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP
         /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
@@ -2255,6 +2258,7 @@ int mutt_index_menu(void)
         mutt_sb_set_open_mailbox();
 #endif
         break;
+      }
 
       case OP_DISPLAY_MESSAGE:
       case OP_DISPLAY_HEADERS: /* don't weed the headers */
