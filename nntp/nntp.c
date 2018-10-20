@@ -114,19 +114,19 @@ struct ChildCtx
 };
 
 /**
- * free_emaildata - Free data attached to an Email
+ * nntp_edata_free - Free data attached to an Email
  * @param data Email data
  */
-static void free_emaildata(void **data)
+static void nntp_edata_free(void **data)
 {
   FREE(data);
 }
 
 /**
- * new_emaildata - Create a new NntpEmailData for an Email
+ * nntp_edata_new - Create a new NntpEmailData for an Email
  * @retval ptr New NntpEmailData struct
  */
-static struct NntpEmailData *new_emaildata(void)
+static struct NntpEmailData *nntp_edata_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct NntpEmailData));
 }
@@ -904,14 +904,14 @@ static int get_description(struct NntpMboxData *mdata, const char *wildmat, cons
 
 /**
  * nntp_parse_xref - Parse cross-reference
- * @param mailbox Mailbox
- * @param e       Email
+ * @param m Mailbox
+ * @param e Email
  *
  * Update read flag and set article number if empty
  */
-static void nntp_parse_xref(struct Mailbox *mailbox, struct Email *e)
+static void nntp_parse_xref(struct Mailbox *m, struct Email *e)
 {
-  struct NntpMboxData *mdata = mailbox->mdata;
+  struct NntpMboxData *mdata = m->mdata;
 
   char *buf = mutt_str_strdup(e->env->xref);
   char *p = buf;
@@ -936,7 +936,7 @@ static void nntp_parse_xref(struct Mailbox *mailbox, struct Email *e)
     if (sscanf(colon, ANUM, &anum) != 1)
       continue;
 
-    nntp_article_status(mailbox, e, grp, anum);
+    nntp_article_status(m, e, grp, anum);
     if (!NNTP_EDATA(e)->article_num && (mutt_str_strcmp(mdata->group, grp) == 0))
       NNTP_EDATA(e)->article_num = anum;
   }
@@ -1112,8 +1112,8 @@ static int parse_overview_line(char *line, void *data)
     e->read = false;
     e->old = false;
     e->deleted = false;
-    e->edata = new_emaildata();
-    e->free_edata = free_emaildata;
+    e->edata = nntp_edata_new();
+    e->free_edata = nntp_edata_free;
     NNTP_EDATA(e)->article_num = anum;
     if (fc->restore)
       e->changed = true;
@@ -1336,8 +1336,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     e->read = false;
     e->old = false;
     e->deleted = false;
-    e->edata = new_emaildata();
-    e->free_edata = free_emaildata;
+    e->edata = nntp_edata_new();
+    e->free_edata = nntp_edata_free;
     NNTP_EDATA(e)->article_num = current;
     if (restore)
       e->changed = true;
@@ -1579,8 +1579,8 @@ static int check_mailbox(struct Context *ctx)
         ctx->mailbox->msg_count++;
         e->read = false;
         e->old = false;
-        e->edata = new_emaildata();
-        e->free_edata = free_emaildata;
+        e->edata = nntp_edata_new();
+        e->free_edata = nntp_edata_free;
         NNTP_EDATA(e)->article_num = anum;
         nntp_article_status(ctx->mailbox, e, NULL, anum);
         if (!e->read)
@@ -1870,22 +1870,22 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
 /**
  * nntp_post - Post article
- * @param mailbox Mailbox
- * @param msg     Message to post
+ * @param m   Mailbox
+ * @param msg Message to post
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nntp_post(struct Mailbox *mailbox, const char *msg)
+int nntp_post(struct Mailbox *m, const char *msg)
 {
   struct NntpMboxData *mdata = NULL;
   struct NntpMboxData tmp_mdata = { 0 };
   char buf[LONG_STRING];
 
-  if (mailbox && (mailbox->magic == MUTT_NNTP))
-    mdata = mailbox->mdata;
+  if (m && (m->magic == MUTT_NNTP))
+    mdata = m->mdata;
   else
   {
-    CurrentNewsSrv = nntp_select_server(mailbox, NewsServer, false);
+    CurrentNewsSrv = nntp_select_server(m, NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -2018,13 +2018,13 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool new)
 
 /**
  * nntp_check_new_groups - Check for new groups/articles in subscribed groups
- * @param mailbox Mailbox
- * @param adata   NNTP server
+ * @param m     Mailbox
+ * @param adata NNTP server
  * @retval  1 New groups found
  * @retval  0 No new groups
  * @retval -1 Error
  */
-int nntp_check_new_groups(struct Mailbox *mailbox, struct NntpAccountData *adata)
+int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 {
   struct NntpMboxData tmp_mdata;
   time_t now;
@@ -2166,8 +2166,8 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
     mx_alloc_memory(ctx->mailbox);
   ctx->mailbox->hdrs[ctx->mailbox->msg_count] = mutt_email_new();
   struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count];
-  e->edata = new_emaildata();
-  e->free_edata = free_emaildata;
+  e->edata = nntp_edata_new();
+  e->free_edata = nntp_edata_free;
   e->env = mutt_rfc822_read_header(fp, e, false, false);
   mutt_file_fclose(&fp);
 
