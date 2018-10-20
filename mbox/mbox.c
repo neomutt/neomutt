@@ -70,51 +70,42 @@ struct MUpdate
 };
 
 /**
- * struct MboxMboxData - Private data attached to an email
- */
-struct MboxMboxData
-{
-  FILE *fp;              /**< Mailbox file */
-  struct timespec atime; /**< File's last-access time */
-
-  bool locked : 1; /**< is the mailbox locked? */
-  bool append : 1; /**< mailbox is opened in append mode */
-};
-
-/**
- * mbox_mdata_free - Free data attached to the Mailbox
+ * mbox_adata_free - Free data attached to the Mailbox
  * @param ptr Private mailbox data
  */
-static void mbox_mdata_free(void **ptr)
+static void mbox_adata_free(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct MboxMboxData *m = *ptr;
+  struct MboxAccountData *m = *ptr;
 
   mutt_file_fclose(&m->fp);
   FREE(ptr);
 }
 
 /**
- * mbox_mdata_new - Create a new MboxMboxData struct
- * @retval ptr New MboxMboxData
+ * mbox_adata_new - Create a new MboxAccountData struct
+ * @retval ptr New MboxAccountData
  */
-static struct MboxMboxData *mbox_mdata_new(void)
+static struct MboxAccountData *mbox_adata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct MboxMboxData));
+  return mutt_mem_calloc(1, sizeof(struct MboxAccountData));
 }
 
 /**
- * mbox_mdata_get - Get the private data associated with a Mailbox
+ * mbox_adata_get - Get the private data associated with a Mailbox
  * @param m Mailbox
  * @retval ptr Private data
  */
-static struct MboxMboxData *mbox_mdata_get(struct Mailbox *m)
+static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_MBOX))
     return NULL;
-  return m->mdata;
+  struct Account *a = m->account;
+  if (!a)
+    return NULL;
+  return a->adata;
 }
 
 /**
@@ -128,14 +119,11 @@ static int init_mailbox(struct Mailbox *m)
   if (!m || (m->magic != MUTT_MBOX))
     return -1;
 
-  if (m->mdata)
+  if (m->account && m->account->adata)
     return 0;
 
-  m->mdata = mbox_mdata_new();
-  if (!m->mdata)
-    return -1;
-
-  m->free_mdata = mbox_mdata_free;
+  m->account->adata = mbox_adata_new();
+  m->account->free_adata = mbox_adata_free;
   return 0;
 }
 
@@ -149,13 +137,13 @@ static int init_mailbox(struct Mailbox *m)
  */
 static int mbox_lock_mailbox(struct Mailbox *m, bool excl, bool retry)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(m);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(m);
+  if (!adata)
     return -1;
 
-  int r = mutt_file_lock(fileno(mdata->fp), excl, retry);
+  int r = mutt_file_lock(fileno(adata->fp), excl, retry);
   if (r == 0)
-    mdata->locked = true;
+    adata->locked = true;
   else if (retry && !excl)
   {
     m->readonly = true;
@@ -171,16 +159,16 @@ static int mbox_lock_mailbox(struct Mailbox *m, bool excl, bool retry)
  */
 static void mbox_unlock_mailbox(struct Mailbox *m)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(m);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(m);
+  if (!adata)
     return;
 
-  if (mdata->locked)
+  if (adata->locked)
   {
-    fflush(mdata->fp);
+    fflush(adata->fp);
 
-    mutt_file_unlock(fileno(mdata->fp));
-    mdata->locked = false;
+    mutt_file_unlock(fileno(adata->fp));
+    adata->locked = false;
   }
 }
 
@@ -193,8 +181,8 @@ static void mbox_unlock_mailbox(struct Mailbox *m)
  */
 static int mmdf_parse_mailbox(struct Context *ctx)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
   char buf[HUGE_STRING];
@@ -212,7 +200,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     mutt_perror(ctx->mailbox->path);
     return -1;
   }
-  mutt_get_stat_timespec(&mdata->atime, &sb, MUTT_STAT_ATIME);
+  mutt_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
   mutt_get_stat_timespec(&ctx->mailbox->mtime, &sb, MUTT_STAT_MTIME);
   ctx->mailbox->size = sb.st_size;
 
@@ -227,7 +215,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
   while (true)
   {
-    if (!fgets(buf, sizeof(buf) - 1, mdata->fp))
+    if (!fgets(buf, sizeof(buf) - 1, adata->fp))
       break;
 
     if (SigInt == 1)
@@ -235,7 +223,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
     if (mutt_str_strcmp(buf, MMDF_SEP) == 0)
     {
-      loc = ftello(mdata->fp);
+      loc = ftello(adata->fp);
       if (loc < 0)
         return -1;
 
@@ -251,7 +239,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       e->offset = loc;
       e->index = ctx->mailbox->msg_count;
 
-      if (!fgets(buf, sizeof(buf) - 1, mdata->fp))
+      if (!fgets(buf, sizeof(buf) - 1, adata->fp))
       {
         /* TODO: memory leak??? */
         mutt_debug(1, "unexpected EOF\n");
@@ -262,7 +250,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
       if (!is_from(buf, return_path, sizeof(return_path), &t))
       {
-        if (fseeko(mdata->fp, loc, SEEK_SET) != 0)
+        if (fseeko(adata->fp, loc, SEEK_SET) != 0)
         {
           mutt_debug(1, "#1 fseek() failed\n");
           mutt_error(_("Mailbox is corrupt"));
@@ -272,9 +260,9 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       else
         e->received = t - mutt_date_local_tz(t);
 
-      e->env = mutt_rfc822_read_header(mdata->fp, e, false, false);
+      e->env = mutt_rfc822_read_header(adata->fp, e, false, false);
 
-      loc = ftello(mdata->fp);
+      loc = ftello(adata->fp);
       if (loc < 0)
         return -1;
 
@@ -284,11 +272,11 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
         if ((tmploc > 0) && (tmploc < ctx->mailbox->size))
         {
-          if (fseeko(mdata->fp, tmploc, SEEK_SET) != 0 ||
-              !fgets(buf, sizeof(buf) - 1, mdata->fp) ||
+          if (fseeko(adata->fp, tmploc, SEEK_SET) != 0 ||
+              !fgets(buf, sizeof(buf) - 1, adata->fp) ||
               (mutt_str_strcmp(MMDF_SEP, buf) != 0))
           {
-            if (fseeko(mdata->fp, loc, SEEK_SET) != 0)
+            if (fseeko(adata->fp, loc, SEEK_SET) != 0)
               mutt_debug(1, "#2 fseek() failed\n");
             e->content->length = -1;
           }
@@ -304,10 +292,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         lines = -1;
         do
         {
-          loc = ftello(mdata->fp);
+          loc = ftello(adata->fp);
           if (loc < 0)
             return -1;
-          if (!fgets(buf, sizeof(buf) - 1, mdata->fp))
+          if (!fgets(buf, sizeof(buf) - 1, adata->fp))
             break;
           lines++;
         } while (mutt_str_strcmp(buf, MMDF_SEP) != 0);
@@ -359,8 +347,8 @@ static int mmdf_parse_mailbox(struct Context *ctx)
  */
 static int mbox_parse_mailbox(struct Context *ctx)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
   struct stat sb;
@@ -380,7 +368,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
   ctx->mailbox->size = sb.st_size;
   mutt_get_stat_timespec(&ctx->mailbox->mtime, &sb, MUTT_STAT_MTIME);
-  mutt_get_stat_timespec(&mdata->atime, &sb, MUTT_STAT_ATIME);
+  mutt_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
 
   if (!ctx->mailbox->readonly)
     ctx->mailbox->readonly = access(ctx->mailbox->path, W_OK) ? true : false;
@@ -392,8 +380,17 @@ static int mbox_parse_mailbox(struct Context *ctx)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  loc = ftello(mdata->fp);
-  while ((fgets(buf, sizeof(buf), mdata->fp)) && (SigInt != 1))
+  if (!ctx->mailbox->hdrs)
+  {
+    /* Allocate some memory to get started */
+    ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
+    ctx->mailbox->msg_count = 0;
+    ctx->mailbox->vcount = 0;
+    mx_alloc_memory(ctx->mailbox);
+  }
+
+  loc = ftello(adata->fp);
+  while ((fgets(buf, sizeof(buf), adata->fp)) && (SigInt != 1))
   {
     if (is_from(buf, return_path, sizeof(return_path), &t))
     {
@@ -416,7 +413,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       if (!ctx->mailbox->quiet)
       {
         mutt_progress_update(&progress, count,
-                             (int) (ftello(mdata->fp) / (ctx->mailbox->size / 100 + 1)));
+                             (int) (ftello(adata->fp) / (ctx->mailbox->size / 100 + 1)));
       }
 
       if (ctx->mailbox->msg_count == ctx->mailbox->hdrmax)
@@ -428,7 +425,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       curhdr->offset = loc;
       curhdr->index = ctx->mailbox->msg_count;
 
-      curhdr->env = mutt_rfc822_read_header(mdata->fp, curhdr, false, false);
+      curhdr->env = mutt_rfc822_read_header(adata->fp, curhdr, false, false);
 
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will
@@ -438,7 +435,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
       {
         LOFF_T tmploc;
 
-        loc = ftello(mdata->fp);
+        loc = ftello(adata->fp);
 
         /* The test below avoids a potential integer overflow if the
          * content-length is huge (thus necessarily invalid).
@@ -452,15 +449,15 @@ static int mbox_parse_mailbox(struct Context *ctx)
           /* check to see if the content-length looks valid.  we expect to
            * to see a valid message separator at this point in the stream
            */
-          if (fseeko(mdata->fp, tmploc, SEEK_SET) != 0 ||
-              !fgets(buf, sizeof(buf), mdata->fp) ||
+          if (fseeko(adata->fp, tmploc, SEEK_SET) != 0 ||
+              !fgets(buf, sizeof(buf), adata->fp) ||
               (mutt_str_strncmp("From ", buf, 5) != 0))
           {
             mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
                        curhdr->index, curhdr->content->length);
             mutt_debug(1, "\tLINE: %s", buf);
             /* nope, return the previous position */
-            if ((loc < 0) || (fseeko(mdata->fp, loc, SEEK_SET) != 0))
+            if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
             {
               mutt_debug(1, "#1 fseek() failed\n");
             }
@@ -485,17 +482,17 @@ static int mbox_parse_mailbox(struct Context *ctx)
             int cl = curhdr->content->length;
 
             /* count the number of lines in this message */
-            if ((loc < 0) || (fseeko(mdata->fp, loc, SEEK_SET) != 0))
+            if ((loc < 0) || (fseeko(adata->fp, loc, SEEK_SET) != 0))
               mutt_debug(1, "#2 fseek() failed\n");
             while (cl-- > 0)
             {
-              if (fgetc(mdata->fp) == '\n')
+              if (fgetc(adata->fp) == '\n')
                 curhdr->lines++;
             }
           }
 
           /* return to the offset of the next message separator */
-          if (fseeko(mdata->fp, tmploc, SEEK_SET) != 0)
+          if (fseeko(adata->fp, tmploc, SEEK_SET) != 0)
             mutt_debug(1, "#3 fseek() failed\n");
         }
       }
@@ -516,7 +513,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
     else
       lines++;
 
-    loc = ftello(mdata->fp);
+    loc = ftello(adata->fp);
   }
 
   /* Only set the content-length of the previous message if we have read more
@@ -529,7 +526,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
     struct Email *e = ctx->mailbox->hdrs[ctx->mailbox->msg_count - 1];
     if (e->content->length < 0)
     {
-      e->content->length = ftello(mdata->fp) - e->content->offset - 1;
+      e->content->length = ftello(adata->fp) - e->content->offset - 1;
       if (e->content->length < 0)
         e->content->length = 0;
     }
@@ -558,8 +555,8 @@ static int mbox_parse_mailbox(struct Context *ctx)
  */
 static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
   bool (*cmp_headers)(const struct Email *, const struct Email *) = NULL;
@@ -629,9 +626,9 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     case MUTT_MBOX:
     case MUTT_MMDF:
       cmp_headers = mutt_email_cmp_strict;
-      mutt_file_fclose(&mdata->fp);
-      mdata->fp = mutt_file_fopen(ctx->mailbox->path, "r");
-      if (!mdata->fp)
+      mutt_file_fclose(&adata->fp);
+      adata->fp = mutt_file_fopen(ctx->mailbox->path, "r");
+      if (!adata->fp)
         rc = -1;
       else
         rc = ((ctx->mailbox->magic == MUTT_MBOX) ? mbox_parse_mailbox :
@@ -654,7 +651,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  mutt_file_touch_atime(fileno(mdata->fp));
+  mutt_file_touch_atime(fileno(adata->fp));
 
   /* now try to recover the old flags */
 
@@ -925,12 +922,12 @@ static int mbox_mbox_open(struct Context *ctx)
   if (init_mailbox(m) != 0)
     return -1;
 
-  struct MboxMboxData *mdata = mbox_mdata_get(m);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(m);
+  if (!adata)
     return -1;
 
-  mdata->fp = fopen(m->path, "r");
-  if (!mdata->fp)
+  adata->fp = fopen(m->path, "r");
+  if (!adata->fp)
   {
     mutt_perror(m->path);
     return -1;
@@ -949,7 +946,7 @@ static int mbox_mbox_open(struct Context *ctx)
     rc = mmdf_parse_mailbox(ctx);
   else
     rc = -1;
-  mutt_file_touch_atime(fileno(mdata->fp));
+  mutt_file_touch_atime(fileno(adata->fp));
 
   mbox_unlock_mailbox(m);
   mutt_sig_unblock();
@@ -966,12 +963,12 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
   if (init_mailbox(m) != 0)
     return -1;
 
-  struct MboxMboxData *mdata = mbox_mdata_get(m);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(m);
+  if (!adata)
     return -1;
 
-  mdata->fp = mutt_file_fopen(m->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
-  if (!mdata->fp)
+  adata->fp = mutt_file_fopen(m->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
+  if (!adata->fp)
   {
     mutt_perror(m->path);
     return -1;
@@ -980,11 +977,11 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
   if (mbox_lock_mailbox(m, true, true) != false)
   {
     mutt_error(_("Couldn't lock %s"), m->path);
-    mutt_file_fclose(&mdata->fp);
+    mutt_file_fclose(&adata->fp);
     return -1;
   }
 
-  fseek(mdata->fp, 0, SEEK_END);
+  fseek(adata->fp, 0, SEEK_END);
 
   return 0;
 }
@@ -1001,8 +998,8 @@ static int mbox_mbox_open_append(struct Context *ctx, int flags)
  */
 static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
   struct stat st;
@@ -1027,7 +1024,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
     if (st.st_size > ctx->mailbox->size)
     {
       /* lock the file if it isn't already */
-      if (!mdata->locked)
+      if (!adata->locked)
       {
         mutt_sig_block();
         if (mbox_lock_mailbox(ctx->mailbox, false, false) == -1)
@@ -1048,14 +1045,14 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
        * folder.
        */
       char buffer[LONG_STRING];
-      if (fseeko(mdata->fp, ctx->mailbox->size, SEEK_SET) != 0)
+      if (fseeko(adata->fp, ctx->mailbox->size, SEEK_SET) != 0)
         mutt_debug(1, "#1 fseek() failed\n");
-      if (fgets(buffer, sizeof(buffer), mdata->fp))
+      if (fgets(buffer, sizeof(buffer), adata->fp))
       {
         if ((ctx->mailbox->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buffer, 5) == 0)) ||
             (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buffer) == 0)))
         {
-          if (fseeko(mdata->fp, ctx->mailbox->size, SEEK_SET) != 0)
+          if (fseeko(adata->fp, ctx->mailbox->size, SEEK_SET) != 0)
             mutt_debug(1, "#2 fseek() failed\n");
           if (ctx->mailbox->magic == MUTT_MBOX)
             mbox_parse_mailbox(ctx);
@@ -1115,8 +1112,8 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
  */
 static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
   char tempfile[PATH_MAX];
@@ -1147,8 +1144,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* need to open the file for writing in such a way that it does not truncate
    * the file, so use read-write mode.
    */
-  mdata->fp = freopen(ctx->mailbox->path, "r+", mdata->fp);
-  if (!mdata->fp)
+  adata->fp = freopen(ctx->mailbox->path, "r+", adata->fp);
+  if (!adata->fp)
   {
     mx_fastclose_mailbox(ctx);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
@@ -1239,7 +1236,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   {
     if (!ctx->mailbox->quiet)
       mutt_progress_update(&progress, i,
-                           (int) (ftello(mdata->fp) / (ctx->mailbox->size / 100 + 1)));
+                           (int) (ftello(adata->fp) / (ctx->mailbox->size / 100 + 1)));
     /* back up some information which is needed to restore offsets when
      * something fails.
      */
@@ -1339,9 +1336,9 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  if (fseeko(mdata->fp, offset, SEEK_SET) != 0 || /* seek the append location */
+  if (fseeko(adata->fp, offset, SEEK_SET) != 0 || /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
-      !fgets(buf, sizeof(buf), mdata->fp) ||
+      !fgets(buf, sizeof(buf), adata->fp) ||
       (ctx->mailbox->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buf, 5) != 0)) ||
       (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
@@ -1351,7 +1348,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   }
   else
   {
-    if (fseeko(mdata->fp, offset, SEEK_SET) != 0) /* return to proper offset */
+    if (fseeko(adata->fp, offset, SEEK_SET) != 0) /* return to proper offset */
     {
       i = -1;
       mutt_debug(1, "fseek() failed\n");
@@ -1363,16 +1360,16 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        */
       if (!ctx->mailbox->quiet)
         mutt_message(_("Committing changes..."));
-      i = mutt_file_copy_stream(fp, mdata->fp);
+      i = mutt_file_copy_stream(fp, adata->fp);
 
-      if (ferror(mdata->fp))
+      if (ferror(adata->fp))
         i = -1;
     }
     if (i == 0)
     {
-      ctx->mailbox->size = ftello(mdata->fp); /* update the mailbox->size of the mailbox */
+      ctx->mailbox->size = ftello(adata->fp); /* update the mailbox->size of the mailbox */
       if ((ctx->mailbox->size < 0) ||
-          (ftruncate(fileno(mdata->fp), ctx->mailbox->size) != 0))
+          (ftruncate(fileno(adata->fp), ctx->mailbox->size) != 0))
       {
         i = -1;
         mutt_debug(1, "ftruncate() failed\n");
@@ -1384,7 +1381,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   fp = NULL;
   mbox_unlock_mailbox(ctx->mailbox);
 
-  if (mutt_file_fclose(&mdata->fp) != 0 || i == -1)
+  if (mutt_file_fclose(&adata->fp) != 0 || i == -1)
   {
     /* error occurred while writing the mailbox back, so keep the temp copy
      * around
@@ -1408,8 +1405,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   mbox_reset_atime(ctx->mailbox, &statbuf);
 
   /* reopen the mailbox in read-only mode */
-  mdata->fp = fopen(ctx->mailbox->path, "r");
-  if (!mdata->fp)
+  adata->fp = fopen(ctx->mailbox->path, "r");
+  if (!adata->fp)
   {
     unlink(tempfile);
     mutt_sig_unblock();
@@ -1469,8 +1466,8 @@ bail: /* Come here in case of disaster */
   FREE(&new_offset);
   FREE(&old_offset);
 
-  mdata->fp = freopen(ctx->mailbox->path, "r", mdata->fp);
-  if (!mdata->fp)
+  adata->fp = freopen(ctx->mailbox->path, "r", adata->fp);
+  if (!adata->fp)
   {
     mutt_error(_("Could not reopen mailbox"));
     mx_fastclose_mailbox(ctx);
@@ -1493,33 +1490,33 @@ bail: /* Come here in case of disaster */
  */
 static int mbox_mbox_close(struct Context *ctx)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
-  if (!mdata->fp)
+  if (!adata->fp)
     return 0;
 
-  if (mdata->append)
+  if (adata->append)
   {
-    mutt_file_unlock(fileno(mdata->fp));
+    mutt_file_unlock(fileno(adata->fp));
     mutt_sig_unblock();
   }
 
-  mutt_file_fclose(&mdata->fp);
+  mutt_file_fclose(&adata->fp);
 
   /* fix up the times so mailbox won't get confused */
   if (ctx->peekonly && (ctx->mailbox->path[0] != '\0') &&
-      (mutt_timespec_compare(&ctx->mailbox->mtime, &mdata->atime) > 0))
+      (mutt_timespec_compare(&ctx->mailbox->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
-    ts[0] = mdata->atime;
+    ts[0] = adata->atime;
     ts[1] = ctx->mailbox->mtime;
     utimensat(0, ctx->mailbox->path, ts, 0);
 #else
     struct utimbuf ut;
-    ut.actime = mdata->atime.tv_sec;
+    ut.actime = adata->atime.tv_sec;
     ut.modtime = ctx->mailbox->mtime.tv_sec;
     utime(ctx->mailbox->path, &ut);
 #endif
@@ -1533,11 +1530,11 @@ static int mbox_mbox_close(struct Context *ctx)
  */
 static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
-  msg->fp = mdata->fp;
+  msg->fp = adata->fp;
 
   return 0;
 }
@@ -1548,11 +1545,11 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  */
 static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
 {
-  struct MboxMboxData *mdata = mbox_mdata_get(ctx->mailbox);
-  if (!mdata)
+  struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
+  if (!adata)
     return -1;
 
-  msg->fp = mdata->fp;
+  msg->fp = adata->fp;
   return 0;
 }
 

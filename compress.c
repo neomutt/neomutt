@@ -544,6 +544,7 @@ static int comp_mbox_open(struct Context *ctx)
     goto cmo_fail;
   }
 
+  ctx->mailbox->account->type = ctx->mailbox->magic;
   return ci->child_ops->mbox_open(ctx);
 
 cmo_fail:
