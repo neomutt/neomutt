@@ -44,15 +44,6 @@ struct Mailbox;
 struct Context;
 struct Email;
 
-/**
- * struct MaildirMboxData - MH-specific mailbox data
- */
-struct MaildirMboxData
-{
-  struct timespec mtime_cur;
-  mode_t mh_umask;
-};
-
 /* These Config Variables are only used in maildir/mh.c */
 extern bool  CheckNew;
 extern bool  MaildirHeaderCacheVerify;

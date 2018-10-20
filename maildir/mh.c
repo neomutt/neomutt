@@ -45,6 +45,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "maildir_private.h"
 #include "mutt/mutt.h"
 #include "email/lib.h"
 #include "mutt.h"
@@ -83,27 +84,6 @@ char *MhSeqUnseen;  ///< Config: MH sequence for unseen messages
 #define MH_SEQ_UNSEEN (1 << 0)
 #define MH_SEQ_REPLIED (1 << 1)
 #define MH_SEQ_FLAGGED (1 << 2)
-
-/**
- * struct Maildir - A Maildir mailbox
- */
-struct Maildir
-{
-  struct Email *email;
-  char *canon_fname;
-  bool header_parsed : 1;
-  ino_t inode;
-  struct Maildir *next;
-};
-
-/**
- * struct MhSequences - Set of MH sequence numbers
- */
-struct MhSequences
-{
-  int max;
-  short *flags;
-};
 
 /**
  * maildir_mdata_free - Free data attached to the Mailbox
