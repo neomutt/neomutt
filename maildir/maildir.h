@@ -72,7 +72,7 @@ struct Email *maildir_parse_message(enum MailboxType magic, const char *fname, b
 struct Email *maildir_parse_stream(enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Email *e);
 bool          maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n);
 
-bool          mh_mailbox(struct Mailbox *mailbox, bool check_stats);
+bool          mh_mailbox(struct Mailbox *m, bool check_stats);
 int           mh_check_empty(const char *path);
 
 int           maildir_path_probe(const char *path, const struct stat *st);
