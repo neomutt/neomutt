@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
  * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,6 +44,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "pop.h"
+#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
@@ -731,6 +733,33 @@ fail:
 }
 
 /**
+ * pop_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *pop_ac_find(struct Account *a, const char *path)
+{
+  return NULL;
+}
+
+/**
+ * pop_ac_add - Add a Mailbox to a Account
+ */
+int pop_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_POP)
+    return -1;
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * pop_mbox_open - Implements MxOps::mbox_open()
  *
  * Fetch only headers
@@ -1181,6 +1210,8 @@ int pop_path_parent(char *buf, size_t buflen)
 struct MxOps mx_pop_ops = {
   .magic            = MUTT_POP,
   .name             = "pop",
+  .ac_find          = pop_ac_find,
+  .ac_add           = pop_ac_add,
   .mbox_open        = pop_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = pop_mbox_check,
