@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,6 +44,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "mbox.h"
+#include "account.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
@@ -887,6 +889,33 @@ void mbox_reset_atime(struct Mailbox *mailbox, struct stat *st)
 }
 
 /**
+ * mbox_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *mbox_ac_find(struct Account *a, const char *path)
+{
+  return NULL;
+}
+
+/**
+ * mbox_ac_add - Add a Mailbox to a Account
+ */
+int mbox_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_MBOX)
+    return -1;
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * mbox_mbox_open - Implements MxOps::mbox_open()
  */
 static int mbox_mbox_open(struct Context *ctx)
@@ -1718,6 +1747,8 @@ static int mmdf_msg_padding_size(struct Context *ctx)
 struct MxOps mx_mbox_ops = {
   .magic            = MUTT_MBOX,
   .name             = "mbox",
+  .ac_find          = mbox_ac_find,
+  .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
@@ -1742,6 +1773,8 @@ struct MxOps mx_mbox_ops = {
 struct MxOps mx_mmdf_ops = {
   .magic            = MUTT_MMDF,
   .name             = "mmdf",
+  .ac_find          = mbox_ac_find,
+  .ac_add           = mbox_ac_add,
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
