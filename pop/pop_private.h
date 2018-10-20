@@ -130,8 +130,8 @@ int pop_open_connection(struct PopMboxData *mdata);
 int pop_query_d(struct PopMboxData *mdata, char *buf, size_t buflen, char *msg);
 int pop_fetch_data(struct PopMboxData *mdata, const char *query, struct Progress *progressbar,
                    int (*func)(char *, void *), void *data);
-int pop_reconnect(struct Mailbox *mailbox);
-void pop_logout(struct Mailbox *mailbox);
+int pop_reconnect(struct Mailbox *m);
+void pop_logout(struct Mailbox *m);
 struct PopMboxData *pop_get_mdata(struct Mailbox *m);
 
 #endif /* MUTT_POP_POP_PRIVATE_H */

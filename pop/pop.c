@@ -95,43 +95,14 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * free_emaildata - Free data attached to an Email
- * @param data Email data
- *
- * Each email has an attached PopEmailData, which contains things like the tags
- * (labels).
- */
-static void free_emaildata(void **data)
-{
-  if (!data || !*data)
-    return;
-
-  struct PopEmailData *edata = *data;
-  FREE(&edata->uid);
-  FREE(data);
-}
-
-/**
- * new_emaildata - Create a new PopEmailData for an email
- * @param uid Email UID
- * @retval ptr New PopEmailData struct
- */
-static struct PopEmailData *new_emaildata(const char *uid)
-{
-  struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
-  edata->uid = mutt_str_strdup(uid);
-  return edata;
-}
-
-/**
- * free_mboxdata - Free data attached to the Mailbox
+ * pop_mdata_free - Free data attached to the Mailbox
  * @param data POP data
  *
  * The PopMboxData struct stores global POP data, such as the connection to
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
-static void free_mboxdata(void **data)
+static void pop_mdata_free(void **data)
 {
   if (!data || !*data)
     return;
@@ -140,12 +111,41 @@ static void free_mboxdata(void **data)
 }
 
 /**
- * new_mboxdata - Create a new PopMboxData object
+ * pop_mdata_new - Create a new PopMboxData object
  * @retval ptr New PopMboxData struct
  */
-static struct PopMboxData *new_mboxdata(void)
+static struct PopMboxData *pop_mdata_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct PopMboxData));
+}
+
+/**
+ * pop_edata_free - Free data attached to an Email
+ * @param ptr Email data
+ *
+ * Each email has an attached PopEmailData, which contains things like the tags
+ * (labels).
+ */
+static void pop_edata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct PopEmailData *edata = *ptr;
+  FREE(&edata->uid);
+  FREE(ptr);
+}
+
+/**
+ * pop_edata_new - Create a new PopEmailData for an email
+ * @param uid Email UID
+ * @retval ptr New PopEmailData struct
+ */
+static struct PopEmailData *pop_edata_new(const char *uid)
+{
+  struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
+  edata->uid = mutt_str_strdup(uid);
+  return edata;
 }
 
 /**
@@ -257,8 +257,8 @@ static int pop_read_header(struct PopMboxData *mdata, struct Email *e)
  */
 static int fetch_uidl(char *line, void *data)
 {
-  struct Mailbox *mailbox = data;
-  struct PopMboxData *mdata = pop_get_mdata(mailbox);
+  struct Mailbox *m = data;
+  struct PopMboxData *mdata = pop_get_mdata(m);
   char *endp = NULL;
 
   errno = 0;
@@ -274,31 +274,31 @@ static int fetch_uidl(char *line, void *data)
     return -1;
 
   int i;
-  for (i = 0; i < mailbox->msg_count; i++)
+  for (i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = mailbox->hdrs[i]->edata;
+    struct PopEmailData *edata = m->hdrs[i]->edata;
     if (mutt_str_strcmp(line, edata->uid) == 0)
       break;
   }
 
-  if (i == mailbox->msg_count)
+  if (i == m->msg_count)
   {
     mutt_debug(1, "new header %d %s\n", index, line);
 
-    if (i >= mailbox->hdrmax)
-      mx_alloc_memory(mailbox);
+    if (i >= m->hdrmax)
+      mx_alloc_memory(m);
 
-    mailbox->msg_count++;
-    mailbox->hdrs[i] = mutt_email_new();
+    m->msg_count++;
+    m->hdrs[i] = mutt_email_new();
 
-    mailbox->hdrs[i]->edata = new_emaildata(line);
-    mailbox->hdrs[i]->free_edata = free_emaildata;
+    m->hdrs[i]->edata = pop_edata_new(line);
+    m->hdrs[i]->free_edata = pop_edata_free;
   }
-  else if (mailbox->hdrs[i]->index != index - 1)
+  else if (m->hdrs[i]->index != index - 1)
     mdata->clear_cache = true;
 
-  mailbox->hdrs[i]->refno = index;
-  mailbox->hdrs[i]->index = index - 1;
+  m->hdrs[i]->refno = index;
+  m->hdrs[i]->index = index - 1;
 
   return 0;
 }
@@ -308,11 +308,11 @@ static int fetch_uidl(char *line, void *data)
  */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  struct Mailbox *mailbox = data;
-  if (!mailbox)
+  struct Mailbox *m = data;
+  if (!m)
     return -1;
 
-  struct PopMboxData *mdata = pop_get_mdata(mailbox);
+  struct PopMboxData *mdata = pop_get_mdata(m);
   if (!mdata)
     return -1;
 
@@ -322,9 +322,9 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
     return 0;
 #endif
 
-  for (int i = 0; i < mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = mailbox->hdrs[i]->edata;
+    struct PopEmailData *edata = m->hdrs[i]->edata;
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (edata->uid && (mutt_str_strcmp(edata->uid, id) == 0))
       return 0;
@@ -470,7 +470,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
         /* Reattach the private data */
         ctx->mailbox->hdrs[i]->edata = edata;
-        ctx->mailbox->hdrs[i]->free_edata = free_emaildata;
+        ctx->mailbox->hdrs[i]->free_edata = pop_edata_free;
         ret = 0;
         hcached = true;
       }
@@ -600,13 +600,13 @@ void pop_fetch_mail(void)
   if (!conn)
     return;
 
-  struct PopMboxData *mdata = new_mboxdata();
+  struct PopMboxData *mdata = pop_mdata_new();
   mdata->conn = conn;
 
   if (pop_open_connection(mdata) < 0)
   {
     mutt_socket_free(mdata->conn);
-    FREE(&mdata);
+    pop_mdata_free((void **) &mdata);
     return;
   }
 
@@ -723,13 +723,13 @@ finish:
   if (pop_query(mdata, buffer, sizeof(buffer)) == -1)
     goto fail;
   mutt_socket_close(conn);
-  FREE(&mdata);
+  pop_mdata_free((void **) &mdata);
   return;
 
 fail:
   mutt_error(_("Server closed connection"));
   mutt_socket_close(conn);
-  FREE(&mdata);
+  pop_mdata_free((void **) &mdata);
 }
 
 /**
@@ -788,10 +788,10 @@ static int pop_mbox_open(struct Context *ctx)
   mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
                    sizeof(ctx->mailbox->realpath));
 
-  struct PopMboxData *mdata = new_mboxdata();
+  struct PopMboxData *mdata = pop_mdata_new();
   mdata->conn = conn;
   ctx->mailbox->mdata = mdata;
-  ctx->mailbox->free_mdata = free_mboxdata;
+  ctx->mailbox->free_mdata = pop_mdata_free;
 
   if (pop_open_connection(mdata) < 0)
     return -1;
@@ -1108,7 +1108,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   /* Reattach the private data */
   e->edata = edata;
-  e->free_edata = free_emaildata;
+  e->free_edata = pop_edata_free;
 
   e->lines = 0;
   fgets(buf, sizeof(buf), msg->fp);
