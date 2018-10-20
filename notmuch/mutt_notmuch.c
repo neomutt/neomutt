@@ -1731,67 +1731,12 @@ done:
 }
 
 /**
- * count_query_thread_messages - Count the number of messages in all queried threads
- * @param q Executed query
- * @retval num Number of messages
- */
-static unsigned int count_query_thread_messages(notmuch_query_t *q)
-{
-  unsigned int count = 0;
-  notmuch_threads_t *threads = NULL;
-  notmuch_thread_t *thread = NULL;
-
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  notmuch_query_search_threads(q, &threads);
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  notmuch_query_search_threads_st(q, &threads);
-#else
-  threads = notmuch_query_search_threads(q);
-#endif
-
-  for (; // Initialisation is done above to improve readability of for loop.
-       notmuch_threads_valid(threads); notmuch_threads_move_to_next(threads))
-  {
-    thread = notmuch_threads_get(threads);
-
-    count += notmuch_thread_get_total_messages(thread);
-
-    notmuch_thread_destroy(thread);
-  }
-
-  return count;
-}
-
-/**
- * count_query_messages - Count the number of queried messages
- * @param q Executed query
- * @retval num Number of messages
- */
-static unsigned int count_query_messages(notmuch_query_t *q)
-{
-  unsigned int count = 0;
-
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_count_messages(q, &count) != NOTMUCH_STATUS_SUCCESS)
-    count = 0; /* may not be defined on error */
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_count_messages_st(q, &count) != NOTMUCH_STATUS_SUCCESS)
-    count = 0; /* may not be defined on error */
-#else
-  count = notmuch_query_count_messages(q);
-#endif
-
-  return count;
-}
-
-/**
  * count_query - Count the results of a query
  * @param db   Notmuch database
  * @param qstr Query to execute
- * @param type Query type, e.g. #NM_QUERY_TYPE_MESGS
- * @retval num Number of results
+ * @retval num Numner of results
  */
-static unsigned int count_query(notmuch_database_t *db, const char *qstr, enum NmQueryType type)
+static unsigned int count_query(notmuch_database_t *db, const char *qstr)
 {
   notmuch_query_t *q = notmuch_query_create(db, qstr);
   if (!q)
@@ -1800,12 +1745,15 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr, enum N
   unsigned int res = 0;
 
   apply_exclude_tags(q);
-
-  if (type == NM_QUERY_TYPE_MESGS)
-    res = count_query_messages(q);
-  else if (type == NM_QUERY_TYPE_THREADS)
-    res = count_query_thread_messages(q);
-
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_count_messages(q, &res) != NOTMUCH_STATUS_SUCCESS)
+    res = 0; /* may not be defined on error */
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+  if (notmuch_query_count_messages_st(q, &res) != NOTMUCH_STATUS_SUCCESS)
+    res = 0; /* may not be defined on error */
+#else
+  res = notmuch_query_count_messages(q);
+#endif
   notmuch_query_destroy(q);
   mutt_debug(1, "nm: count '%s', result=%d\n", qstr, res);
 
@@ -2227,7 +2175,6 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   struct Url url = { U_UNKNOWN };
   char *url_holder = mutt_str_strdup(path);
   char *db_filename = NULL, *db_query = NULL;
-  enum NmQueryType db_query_type = string_to_query_type(NmQueryType);
   notmuch_database_t *db = NULL;
   int rc = -1;
   mutt_debug(1, "nm: count\n");
@@ -2243,10 +2190,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     if (item->value && (strcmp(item->name, "query") == 0))
     {
       db_query = item->value;
-    }
-    else if (item->value && (strcmp(item->name, "type") == 0))
-    {
-      db_query_type = string_to_query_type(item->value);
+      break;
     }
   }
 
@@ -2275,7 +2219,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   /* all emails */
   if (all)
-    *all = count_query(db, db_query, db_query_type);
+    *all = count_query(db, db_query);
 
   /* new messages */
   if (new)
@@ -2283,7 +2227,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     char *qstr = NULL;
 
     safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NmUnreadTag);
-    *new = count_query(db, qstr, db_query_type);
+    *new = count_query(db, qstr);
     FREE(&qstr);
   }
 
