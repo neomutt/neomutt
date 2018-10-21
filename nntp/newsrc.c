@@ -117,28 +117,11 @@ void nntp_acache_free(struct NntpMboxData *mdata)
 }
 
 /**
- * nntp_data_free - Free NntpMboxData, used to destroy hash elements
- * @param data NNTP data
- */
-void nntp_data_free(void *data)
-{
-  struct NntpMboxData *mdata = data;
-
-  if (!mdata)
-    return;
-  nntp_acache_free(mdata);
-  mutt_bcache_close(&mdata->bcache);
-  FREE(&mdata->newsrc_ent);
-  FREE(&mdata->desc);
-  FREE(&data);
-}
-
-/**
  * nntp_hash_destructor_t - Free our hash table data - Implements ::hash_destructor_t
  */
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 {
-  nntp_data_free(obj);
+  nntp_mdata_free(obj);
 }
 
 /**
@@ -354,7 +337,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = NNTP_EDATA(ctx->mailbox->hdrs[i])->article_num;
+      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
       if (last >= mdata->first_message && !ctx->mailbox->hdrs[i]->deleted &&
           !ctx->mailbox->hdrs[i]->read)
       {
@@ -378,7 +361,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
         first = last + 1;
         series = true;
       }
-      last = NNTP_EDATA(ctx->mailbox->hdrs[i])->article_num;
+      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
     }
   }
 
@@ -1015,7 +998,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   int rc;
   struct ConnAccount acct;
   struct NntpAccountData *adata = NULL;
-  struct NntpMboxData *mdata = NULL;
   struct Connection *conn = NULL;
   struct Url url;
 
@@ -1081,12 +1063,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   }
 
   /* new news server */
-  adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
-  adata->conn = conn;
-  adata->groups_hash = mutt_hash_create(1009, 0);
-  mutt_hash_set_destructor(adata->groups_hash, nntp_hash_destructor_t, 0);
-  adata->groups_max = 16;
-  adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(mdata));
+  adata = nntp_adata_new(conn);
 
   rc = nntp_open_connection(adata);
 
@@ -1144,7 +1121,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
         if (strlen(group) < 8 || (strcmp(p, ".hcache") != 0))
           continue;
         *p = '\0';
-        mdata = mutt_hash_find(adata->groups_hash, group);
+        struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
         if (!mdata)
           continue;
 
