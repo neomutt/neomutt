@@ -271,26 +271,26 @@ static int monitor_handle_ignore(int desc)
 
 /**
  * monitor_resolve - Get the monitor for a mailbox
- * @param[out] info    Details of the mailbox's monitor
- * @param[in]  mailbox Mailbox
+ * @param[out] info Details of the mailbox's monitor
+ * @param[in]  m    Mailbox
  * @retval >=0 mailbox is valid and locally accessible:
  *               0: no monitor / 1: preexisting monitor
  * @retval  -3 no mailbox (MonitorInfo: no fields set)
  * @retval  -2 magic not set
  * @retval  -1 stat() failed (see errno; MonitorInfo fields: magic, isdir, path)
  *
- * If mailbox is NULL, the current mailbox (Context) is used.
+ * If m is NULL, the current mailbox (Context) is used.
  */
-static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *mailbox)
+static int monitor_resolve(struct MonitorInfo *info, struct Mailbox *m)
 {
   struct Monitor *iter;
   char *fmt = NULL;
   struct stat sb;
 
-  if (mailbox)
+  if (m)
   {
-    info->magic = mailbox->magic;
-    info->path = mailbox->realpath;
+    info->magic = m->magic;
+    info->path = m->realpath;
   }
   else if (Context)
   {
@@ -425,20 +425,20 @@ int mutt_monitor_poll(void)
 
 /**
  * mutt_monitor_add - Add a watch for a mailbox
- * @param mailbox Mailbox to watch
+ * @param m Mailbox to watch
  * @retval  0 success: new or already existing monitor
  * @retval -1 failed:  no mailbox, inaccessible file, create monitor/watcher failed
  *
  * If mailbox is NULL, the current mailbox (Context) is used.
  */
-int mutt_monitor_add(struct Mailbox *mailbox)
+int mutt_monitor_add(struct Mailbox *m)
 {
   struct MonitorInfo info;
 
-  int desc = monitor_resolve(&info, mailbox);
+  int desc = monitor_resolve(&info, m);
   if (desc != RESOLVERES_OK_NOTEXISTING)
   {
-    if (!mailbox && (desc == RESOLVERES_OK_EXISTING))
+    if (!m && (desc == RESOLVERES_OK_EXISTING))
       MonitorContextDescriptor = info.monitor->desc;
     return (desc == RESOLVERES_OK_EXISTING) ? 0 : -1;
   }
@@ -453,7 +453,7 @@ int mutt_monitor_add(struct Mailbox *mailbox)
   }
 
   mutt_debug(3, "inotify_add_watch descriptor=%d for '%s'\n", desc, info.path);
-  if (!mailbox)
+  if (!m)
     MonitorContextDescriptor = desc;
 
   monitor_create(&info, desc);
@@ -462,29 +462,29 @@ int mutt_monitor_add(struct Mailbox *mailbox)
 
 /**
  * mutt_monitor_remove - Remove a watch for a mailbox
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @retval 0 monitor removed (not shared)
  * @retval 1 monitor not removed (shared)
  * @retval 2 no monitor
  *
  * If mailbox is NULL, the current mailbox (Context) is used.
  */
-int mutt_monitor_remove(struct Mailbox *mailbox)
+int mutt_monitor_remove(struct Mailbox *m)
 {
   struct MonitorInfo info, info2;
 
-  if (!mailbox)
+  if (!m)
   {
     MonitorContextDescriptor = -1;
     MonitorContextChanged = 0;
   }
 
-  if (monitor_resolve(&info, mailbox) != RESOLVERES_OK_EXISTING)
+  if (monitor_resolve(&info, m) != RESOLVERES_OK_EXISTING)
     return 2;
 
   if (Context)
   {
-    if (mailbox)
+    if (m)
     {
       if ((monitor_resolve(&info2, NULL) == RESOLVERES_OK_EXISTING) &&
           (info.st_ino == info2.st_ino) && (info.st_dev == info2.st_dev))

@@ -139,7 +139,7 @@ void mutt_mailbox_vfolder(char *buf, size_t buflen);
 #endif
 
 struct Mailbox *mailbox_new(const char *path);
-void            mailbox_free(struct Mailbox **mailbox);
+void            mailbox_free(struct Mailbox **m);
 void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);

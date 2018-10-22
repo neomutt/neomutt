@@ -72,6 +72,6 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init);
 void mutt_sort_threads(struct Context *ctx, bool init);
 int mutt_parent_message(struct Context *ctx, struct Email *e, bool find_root);
 void mutt_set_virtual(struct Context *ctx);
-struct Hash *mutt_make_id_hash(struct Mailbox *mailbox);
+struct Hash *mutt_make_id_hash(struct Mailbox *m);
 
 #endif /* MUTT_MUTT_THREAD_H */

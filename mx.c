@@ -1146,32 +1146,32 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
 
 /**
  * mx_alloc_memory - Create storage for the emails
- * @param mailbox Mailbox
+ * @param m Mailbox
  */
-void mx_alloc_memory(struct Mailbox *mailbox)
+void mx_alloc_memory(struct Mailbox *m)
 {
   size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
-  if ((mailbox->hdrmax + 25) * s < mailbox->hdrmax * s)
+  if ((m->hdrmax + 25) * s < m->hdrmax * s)
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
-  if (mailbox->hdrs)
+  if (m->hdrs)
   {
-    mutt_mem_realloc(&mailbox->hdrs, sizeof(struct Email *) * (mailbox->hdrmax += 25));
-    mutt_mem_realloc(&mailbox->v2r, sizeof(int) * mailbox->hdrmax);
+    mutt_mem_realloc(&m->hdrs, sizeof(struct Email *) * (m->hdrmax += 25));
+    mutt_mem_realloc(&m->v2r, sizeof(int) * m->hdrmax);
   }
   else
   {
-    mailbox->hdrs = mutt_mem_calloc((mailbox->hdrmax += 25), sizeof(struct Email *));
-    mailbox->v2r = mutt_mem_calloc(mailbox->hdrmax, sizeof(int));
+    m->hdrs = mutt_mem_calloc((m->hdrmax += 25), sizeof(struct Email *));
+    m->v2r = mutt_mem_calloc(m->hdrmax, sizeof(int));
   }
-  for (int i = mailbox->msg_count; i < mailbox->hdrmax; i++)
+  for (int i = m->msg_count; i < m->hdrmax; i++)
   {
-    mailbox->hdrs[i] = NULL;
-    mailbox->v2r[i] = -1;
+    m->hdrs[i] = NULL;
+    m->v2r[i] = -1;
   }
 }
 
