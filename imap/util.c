@@ -67,9 +67,48 @@ char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in I
 short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
- * imap_get_adata - Get the Account data for this mailbox
+ * imap_adata_free - Release and clear storage in an ImapAccountData structure
+ * @param ptr Imap Account data
  */
-struct ImapAccountData *imap_get_adata(struct Mailbox *m)
+void imap_adata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ImapAccountData *adata = *ptr;
+
+  FREE(&adata->capstr);
+  mutt_list_free(&adata->flags);
+  imap_mboxcache_free(adata);
+  mutt_buffer_free(&adata->cmdbuf);
+  FREE(&adata->buf);
+  mutt_bcache_close(&adata->bcache);
+  FREE(&adata->cmds);
+  FREE(ptr);
+}
+
+/**
+ * imap_adata_new - Allocate and initialise a new ImapAccountData structure
+ * @retval ptr New ImapAccountData
+ */
+struct ImapAccountData *imap_adata_new(void)
+{
+  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
+
+  adata->cmdbuf = mutt_buffer_new();
+  adata->cmdslots = ImapPipelineDepth + 2;
+  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
+
+  STAILQ_INIT(&adata->flags);
+  STAILQ_INIT(&adata->mboxcache);
+
+  return adata;
+}
+
+/**
+ * imap_adata_get - Get the Account data for this mailbox
+ */
+struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_IMAP))
     return NULL;
@@ -246,7 +285,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapAccountDat
     if (msn <= adata->max_msn)
     {
       struct Email *cur_header = adata->msn_index[msn - 1];
-      cur_uid = cur_header ? IMAP_EDATA(cur_header)->uid : 0;
+      cur_uid = cur_header ? imap_edata_get(cur_header)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;
       last_uid = cur_uid;
@@ -389,7 +428,7 @@ int imap_hcache_put(struct ImapAccountData *adata, struct Email *e)
   if (!adata->hcache)
     return -1;
 
-  sprintf(key, "/%u", IMAP_EDATA(e)->uid);
+  sprintf(key, "/%u", imap_edata_get(e)->uid);
   return mutt_hcache_store(adata->hcache, key, imap_hcache_keylen(key), e, adata->uid_validity);
 }
 
@@ -713,45 +752,6 @@ int imap_continue(const char *msg, const char *resp)
 void imap_error(const char *where, const char *msg)
 {
   mutt_error("%s [%s]\n", where, msg);
-}
-
-/**
- * imap_adata_new - Allocate and initialise a new ImapAccountData structure
- * @retval ptr New ImapAccountData
- */
-struct ImapAccountData *imap_adata_new(void)
-{
-  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
-
-  adata->cmdbuf = mutt_buffer_new();
-  adata->cmdslots = ImapPipelineDepth + 2;
-  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
-
-  STAILQ_INIT(&adata->flags);
-  STAILQ_INIT(&adata->mboxcache);
-
-  return adata;
-}
-
-/**
- * imap_adata_free - Release and clear storage in an ImapAccountData structure
- * @param ptr Imap Account data
- */
-void imap_adata_free(void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct ImapAccountData *adata = *ptr;
-
-  FREE(&adata->capstr);
-  mutt_list_free(&adata->flags);
-  imap_mboxcache_free(adata);
-  mutt_buffer_free(&adata->cmdbuf);
-  FREE(&adata->buf);
-  mutt_bcache_close(&adata->bcache);
-  FREE(&adata->cmds);
-  FREE(ptr);
 }
 
 /**
@@ -1125,7 +1125,7 @@ void imap_allow_reopen(struct Mailbox *m)
 {
   if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(m);
+  struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata)
     return;
 
@@ -1141,7 +1141,7 @@ void imap_disallow_reopen(struct Mailbox *m)
 {
   if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(m);
+  struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata)
     return;
 

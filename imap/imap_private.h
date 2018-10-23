@@ -320,7 +320,8 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags);
 int imap_cmd_idle(struct ImapAccountData *adata);
 
 /* message.c */
-void imap_free_emaildata(void **data);
+void imap_edata_free(void **ptr);
+struct ImapEmailData *imap_edata_get(struct Email *e);
 int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
 char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, int *server_changes);
 int imap_cache_del(struct ImapAccountData *adata, struct Email *e);
@@ -332,7 +333,7 @@ int imap_msg_close(struct Context *ctx, struct Message *msg);
 int imap_msg_commit(struct Context *ctx, struct Message *msg);
 
 /* util.c */
-struct ImapAccountData *imap_get_adata(struct Mailbox *m);
+struct ImapAccountData *imap_adata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);

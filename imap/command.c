@@ -258,7 +258,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    IMAP_EDATA(e)->msn = 0;
+    imap_edata_get(e)->msn = 0;
   }
 
   /* decrement seqno of those above. */
@@ -266,7 +266,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   {
     e = adata->msn_index[cur];
     if (e)
-      IMAP_EDATA(e)->msn--;
+      imap_edata_get(e)->msn--;
     adata->msn_index[cur - 1] = e;
   }
 
@@ -322,13 +322,13 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     if (!e)
       continue;
 
-    unsigned int exp_msn = IMAP_EDATA(e)->msn;
+    unsigned int exp_msn = imap_edata_get(e)->msn;
 
     /* imap_expunge_mailbox() will rewrite e->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    IMAP_EDATA(e)->msn = 0;
+    imap_edata_get(e)->msn = 0;
 
     if ((exp_msn < 1) || (exp_msn > adata->max_msn))
     {
@@ -350,7 +350,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
       {
         e = adata->msn_index[cur];
         if (e)
-          IMAP_EDATA(e)->msn--;
+          imap_edata_get(e)->msn--;
         adata->msn_index[cur - 1] = e;
       }
 
@@ -405,7 +405,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  mutt_debug(2, "Message UID %u updated\n", IMAP_EDATA(e)->uid);
+  mutt_debug(2, "Message UID %u updated\n", imap_edata_get(e)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -454,7 +454,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         mutt_debug(1, "Illegal UID.  Skipping update.\n");
         return;
       }
-      if (uid != IMAP_EDATA(e)->uid)
+      if (uid != imap_edata_get(e)->uid)
       {
         mutt_debug(1, "UID vs MSN mismatch.  Skipping update.\n");
         return;
