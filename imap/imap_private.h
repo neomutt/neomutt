@@ -368,8 +368,8 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 /* utf7.c */
 void imap_utf_encode(struct ImapAccountData *adata, char **s);
 void imap_utf_decode(struct ImapAccountData *adata, char **s);
-void imap_allow_reopen(struct Context *ctx);
-void imap_disallow_reopen(struct Context *ctx);
+void imap_allow_reopen(struct Mailbox *m);
+void imap_disallow_reopen(struct Mailbox *m);
 
 #ifdef USE_HCACHE
 #define imap_hcache_keylen mutt_str_strlen

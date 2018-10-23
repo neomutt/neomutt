@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1998,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2011 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -680,54 +681,54 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   s = imap_next_word((char *) s);
 
   /* zero out current rights set */
-  memset(adata->ctx->mailbox->rights, 0, sizeof(adata->ctx->mailbox->rights));
+  memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
 
   while (*s && !isspace((unsigned char) *s))
   {
     switch (*s)
     {
       case 'a':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_ADMIN);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_ADMIN);
         break;
       case 'e':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       case 'i':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_INSERT);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_INSERT);
         break;
       case 'k':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
         break;
       case 'l':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_LOOKUP);
         break;
       case 'p':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_POST);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_POST);
         break;
       case 'r':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_READ);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_READ);
         break;
       case 's':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_SEEN);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_SEEN);
         break;
       case 't':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
         break;
       case 'w':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_WRITE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_WRITE);
         break;
       case 'x':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
         break;
 
       /* obsolete rights */
       case 'c':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_CREATE);
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
         break;
       case 'd':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELETE);
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       default:
         mutt_debug(1, "Unknown right: %c\n", *s);
@@ -1325,7 +1326,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     return;
   }
 
-  if (!(adata->state >= IMAP_SELECTED) || adata->ctx->mailbox->closing)
+  if (!(adata->state >= IMAP_SELECTED) || (adata->mailbox && adata->mailbox->closing))
     return;
 
   if (adata->reopen & IMAP_REOPEN_ALLOW)

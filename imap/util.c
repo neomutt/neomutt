@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1998,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -46,6 +47,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
+#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -71,7 +73,10 @@ struct ImapAccountData *imap_get_adata(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_IMAP))
     return NULL;
-  return m->mdata;
+  struct Account *a = m->account;
+  if (!a)
+    return NULL;
+  return a->adata;
 }
 
 /**
@@ -307,7 +312,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path
     imap_cachepath(adata, path, mbox, sizeof(mbox));
   else
   {
-    if (!adata->ctx || imap_parse_path(adata->ctx->mailbox->path, &mx) < 0)
+    if (!adata->mailbox || imap_parse_path(adata->mailbox->path, &mx) < 0)
       return NULL;
 
     imap_cachepath(adata, mx.mbox, mbox, sizeof(mbox));
@@ -1114,33 +1119,33 @@ int imap_wait_keepalive(pid_t pid)
 
 /**
  * imap_allow_reopen - Allow re-opening a folder upon expunge
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void imap_allow_reopen(struct Context *ctx)
+void imap_allow_reopen(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  struct ImapAccountData *adata = imap_get_adata(m);
   if (!adata)
     return;
 
-  if (adata->ctx == ctx)
+  if (adata->mailbox == m)
     adata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 /**
  * imap_disallow_reopen - Disallow re-opening a folder upon expunge
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void imap_disallow_reopen(struct Context *ctx)
+void imap_disallow_reopen(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  struct ImapAccountData *adata = imap_get_adata(m);
   if (!adata)
     return;
 
-  if (adata->ctx == ctx)
+  if (adata->mailbox == m)
     adata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
