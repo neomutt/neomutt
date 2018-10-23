@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +43,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
+#include "account.h"
 #include "auth.h"
 #include "bcache.h"
 #include "commands.h"
@@ -1142,7 +1144,7 @@ void imap_logout(struct ImapAccountData **adata)
   }
 
   mutt_socket_close((*adata)->conn);
-  imap_adata_free(adata);
+  imap_adata_free((void **) adata);
 }
 
 /**
@@ -2205,6 +2207,75 @@ out:
 }
 
 /**
+ * imap_ac_find - Find a Account that matches a Mailbox path
+ */
+struct Account *imap_ac_find(struct Account *a, const char *path)
+{
+  if (!a || (a->type != MUTT_IMAP) || !path)
+    return NULL;
+
+  struct Url url;
+  char tmp[PATH_MAX];
+  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  url_parse(&url, tmp);
+
+  struct ImapAccountData *adata = a->adata;
+  struct ConnAccount *ac = &adata->conn_account;
+
+  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
+    return NULL;
+
+  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
+    return NULL;
+
+  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
+  //   return a;
+
+  return a;
+}
+
+/**
+ * imap_ac_add - Add a Mailbox to a Account
+ */
+int imap_ac_add(struct Account *a, struct Mailbox *m)
+{
+  if (!a || !m)
+    return -1;
+
+  if (m->magic != MUTT_IMAP)
+    return -1;
+
+  // if (a->type == MUTT_UNKNOWN)
+  if (!a->adata)
+  {
+    struct ImapAccountData *adata = imap_adata_new();
+    a->type = MUTT_IMAP;
+    a->adata = adata;
+    a->free_adata = imap_adata_free;
+
+    struct Url url;
+    char tmp[PATH_MAX];
+    mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
+    url_parse(&url, tmp);
+
+    mutt_str_strfcpy(adata->conn_account.user, url.user,
+                     sizeof(adata->conn_account.user));
+    mutt_str_strfcpy(adata->conn_account.pass, url.pass,
+                     sizeof(adata->conn_account.pass));
+    mutt_str_strfcpy(adata->conn_account.host, url.host,
+                     sizeof(adata->conn_account.host));
+    adata->conn_account.port = url.port;
+  }
+
+  m->account = a;
+
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
+}
+
+/**
  * imap_mbox_open - Implements MxOps::mbox_open()
  */
 static int imap_mbox_open(struct Context *ctx)
@@ -2835,6 +2906,8 @@ int imap_path_parent(char *buf, size_t buflen)
 struct MxOps mx_imap_ops = {
   .magic            = MUTT_IMAP,
   .name             = "imap",
+  .ac_find          = imap_ac_find,
+  .ac_add           = imap_ac_add,
   .mbox_open        = imap_mbox_open,
   .mbox_open_append = imap_mbox_open_append,
   .mbox_check       = imap_mbox_check,

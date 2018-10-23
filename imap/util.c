@@ -730,21 +730,23 @@ struct ImapAccountData *imap_adata_new(void)
 
 /**
  * imap_adata_free - Release and clear storage in an ImapAccountData structure
- * @param adata Imap Account data
+ * @param ptr Imap Account data
  */
-void imap_adata_free(struct ImapAccountData **adata)
+void imap_adata_free(void **ptr)
 {
-  if (!adata)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*adata)->capstr);
-  mutt_list_free(&(*adata)->flags);
-  imap_mboxcache_free(*adata);
-  mutt_buffer_free(&(*adata)->cmdbuf);
-  FREE(&(*adata)->buf);
-  mutt_bcache_close(&(*adata)->bcache);
-  FREE(&(*adata)->cmds);
-  FREE(adata);
+  struct ImapAccountData *adata = *ptr;
+
+  FREE(&adata->capstr);
+  mutt_list_free(&adata->flags);
+  imap_mboxcache_free(adata);
+  mutt_buffer_free(&adata->cmdbuf);
+  FREE(&adata->buf);
+  mutt_bcache_close(&adata->bcache);
+  FREE(&adata->cmds);
+  FREE(ptr);
 }
 
 /**
