@@ -1086,6 +1086,9 @@ int imap_cmd_start(struct ImapAccountData *adata, const char *cmdstr)
  */
 int imap_cmd_step(struct ImapAccountData *adata)
 {
+  if (!adata)
+    return -1;
+
   size_t len = 0;
   int c;
   int rc;
@@ -1313,6 +1316,9 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
  */
 void imap_cmd_finish(struct ImapAccountData *adata)
 {
+  if (!adata)
+    return;
+
   if (adata->status == IMAP_FATAL)
   {
     cmd_handle_fatal(adata);

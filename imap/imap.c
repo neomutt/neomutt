@@ -948,9 +948,9 @@ struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int fl
       else if (adata->state < IMAP_AUTHENTICATED)
         continue;
     }
-    if (flags & MUTT_IMAP_CONN_NOSELECT && adata && adata->state >= IMAP_SELECTED)
+    if ((flags & MUTT_IMAP_CONN_NOSELECT) && adata && (adata->state >= IMAP_SELECTED))
       continue;
-    if (adata && adata->status == IMAP_FATAL)
+    if (adata && (adata->status == IMAP_FATAL))
       continue;
     break;
   }
@@ -981,7 +981,7 @@ struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int fl
     else
       mutt_account_unsetpass(&adata->conn->account);
   }
-  if (new && adata->state == IMAP_AUTHENTICATED)
+  if (new && (adata->state == IMAP_AUTHENTICATED))
   {
     /* capabilities may have changed */
     imap_exec(adata, "CAPABILITY", IMAP_CMD_QUEUE);
@@ -1384,6 +1384,9 @@ int imap_check_mailbox(struct Mailbox *mailbox, bool force)
  */
 int imap_check(struct ImapAccountData *adata, bool force)
 {
+  if (!adata)
+    return -1;
+
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
   int result = 0;
@@ -1488,7 +1491,7 @@ int imap_mailbox_check(bool check_stats)
       continue;
     }
 
-    if (lastdata && adata != lastdata)
+    if (lastdata && (adata != lastdata))
     {
       /* Send commands to previous server. Sorting the mailbox list
        * may prevent some infelicitous interleavings */
