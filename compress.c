@@ -56,25 +56,9 @@
 struct Email;
 
 /**
- * struct CompressInfo - Private data for compress
- *
- * This object gets attached to the Mailbox.
- */
-struct CompressInfo
-{
-  const char *append;            /**< append-hook command */
-  const char *close;             /**< close-hook  command */
-  const char *open;              /**< open-hook   command */
-  long size;                     /**< size of the compressed file */
-  const struct MxOps *child_ops; /**< callbacks of de-compressed file */
-  bool locked;                   /**< if realpath is locked */
-  FILE *lockfp;                  /**< fp used for locking */
-};
-
-/**
  * lock_realpath - Try to lock the ctx->realpath
- * @param mailbox Mailbox to lock
- * @param excl    Lock exclusively?
+ * @param m    Mailbox to lock
+ * @param excl Lock exclusively?
  * @retval true  Success (locked or readonly)
  * @retval false Error (can't lock the file)
  *
@@ -82,12 +66,12 @@ struct CompressInfo
  * mailbox as locked.  If we fail, but we didn't want exclusive rights, then
  * the mailbox will be marked readonly.
  */
-static bool lock_realpath(struct Mailbox *mailbox, bool excl)
+static bool lock_realpath(struct Mailbox *m, bool excl)
 {
-  if (!mailbox)
+  if (!m)
     return false;
 
-  struct CompressInfo *ci = mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
   if (!ci)
     return false;
 
@@ -95,12 +79,12 @@ static bool lock_realpath(struct Mailbox *mailbox, bool excl)
     return true;
 
   if (excl)
-    ci->lockfp = fopen(mailbox->realpath, "a");
+    ci->lockfp = fopen(m->realpath, "a");
   else
-    ci->lockfp = fopen(mailbox->realpath, "r");
+    ci->lockfp = fopen(m->realpath, "r");
   if (!ci->lockfp)
   {
-    mutt_perror(mailbox->realpath);
+    mutt_perror(m->realpath);
     return false;
   }
 
@@ -110,7 +94,7 @@ static bool lock_realpath(struct Mailbox *mailbox, bool excl)
   else if (excl)
   {
     mutt_file_fclose(&ci->lockfp);
-    mailbox->readonly = true;
+    m->readonly = true;
     return true;
   }
 
@@ -119,16 +103,16 @@ static bool lock_realpath(struct Mailbox *mailbox, bool excl)
 
 /**
  * unlock_realpath - Unlock the mailbox->realpath
- * @param mailbox Mailbox to unlock
+ * @param m Mailbox to unlock
  *
  * Unlock a mailbox previously locked by lock_mailbox().
  */
-static void unlock_realpath(struct Mailbox *mailbox)
+static void unlock_realpath(struct Mailbox *m)
 {
-  if (!mailbox)
+  if (!m)
     return;
 
-  struct CompressInfo *ci = mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
   if (!ci)
     return;
 
@@ -143,7 +127,7 @@ static void unlock_realpath(struct Mailbox *mailbox)
 
 /**
  * setup_paths - Set the mailbox paths
- * @param mailbox Mailbox to modify
+ * @param m Mailbox to modify
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -151,21 +135,21 @@ static void unlock_realpath(struct Mailbox *mailbox)
  * Create a temporary filename and put its name in mailbox->path.
  * The temporary file is created to prevent symlink attacks.
  */
-static int setup_paths(struct Mailbox *mailbox)
+static int setup_paths(struct Mailbox *m)
 {
-  if (!mailbox)
+  if (!m)
     return -1;
 
   char tmp[PATH_MAX];
 
   /* Setup the right paths */
-  mutt_str_strfcpy(mailbox->realpath, mailbox->path, sizeof(mailbox->realpath));
+  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmp, sizeof(tmp));
-  mutt_str_strfcpy(mailbox->path, tmp, sizeof(mailbox->path));
+  mutt_str_strfcpy(m->path, tmp, sizeof(m->path));
 
-  FILE *fp = mutt_file_fopen(mailbox->path, "w");
+  FILE *fp = mutt_file_fopen(m->path, "w");
   if (!fp)
     return -1;
 
@@ -175,20 +159,20 @@ static int setup_paths(struct Mailbox *mailbox)
 
 /**
  * store_size - Save the size of the compressed file
- * @param mailbox Mailbox
+ * @param m Mailbox
  *
  * Save the compressed file size in the compress_info struct.
  */
-static void store_size(const struct Mailbox *mailbox)
+static void store_size(const struct Mailbox *m)
 {
-  if (!mailbox)
+  if (!m)
     return;
 
-  struct CompressInfo *ci = mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
   if (!ci)
     return;
 
-  ci->size = mutt_file_get_size(mailbox->realpath);
+  ci->size = mutt_file_get_size(m->realpath);
 }
 
 /**
@@ -221,30 +205,30 @@ static const char *find_hook(int type, const char *path)
 
 /**
  * set_compress_info - Find the compress hooks for a mailbox
- * @param mailbox Mailbox to examine
+ * @param m Mailbox to examine
  * @retval ptr  CompressInfo Hook info for the mailbox's path
  * @retval NULL Error
  *
  * When a mailbox is opened, we check if there are any matching hooks.
  */
-static struct CompressInfo *set_compress_info(struct Mailbox *mailbox)
+static struct CompressInfo *set_compress_info(struct Mailbox *m)
 {
-  if (!mailbox)
+  if (!m)
     return NULL;
 
-  if (mailbox->compress_info)
-    return mailbox->compress_info;
+  if (m->compress_info)
+    return m->compress_info;
 
   /* Open is compulsory */
-  const char *o = find_hook(MUTT_OPEN_HOOK, mailbox->path);
+  const char *o = find_hook(MUTT_OPEN_HOOK, m->path);
   if (!o)
     return NULL;
 
-  const char *c = find_hook(MUTT_CLOSE_HOOK, mailbox->path);
-  const char *a = find_hook(MUTT_APPEND_HOOK, mailbox->path);
+  const char *c = find_hook(MUTT_CLOSE_HOOK, m->path);
+  const char *a = find_hook(MUTT_APPEND_HOOK, m->path);
 
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
-  mailbox->compress_info = ci;
+  m->compress_info = ci;
 
   ci->open = mutt_str_strdup(o);
   ci->close = mutt_str_strdup(c);
@@ -255,21 +239,21 @@ static struct CompressInfo *set_compress_info(struct Mailbox *mailbox)
 
 /**
  * free_compress_info - Frees the compress info members and structure
- * @param mailbox Mailbox to free compress_info for
+ * @param m Mailbox to free compress_info for
  */
-static void free_compress_info(struct Mailbox *mailbox)
+static void free_compress_info(struct Mailbox *m)
 {
-  if (!mailbox || !mailbox->compress_info)
+  if (!m || !m->compress_info)
     return;
 
-  struct CompressInfo *ci = mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
   FREE(&ci->open);
   FREE(&ci->close);
   FREE(&ci->append);
 
-  unlock_realpath(mailbox);
+  unlock_realpath(m);
 
-  FREE(&mailbox->compress_info);
+  FREE(&m->compress_info);
 }
 
 /**
@@ -329,17 +313,17 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   if (!buf || (data == 0))
     return src;
 
-  struct Mailbox *mailbox = (struct Mailbox *) data;
+  struct Mailbox *m = (struct Mailbox *) data;
 
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(mailbox->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(m->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(mailbox->path)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(m->path)));
       break;
   }
   return src;
@@ -347,10 +331,10 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
 
 /**
  * expand_command_str - Expand placeholders in command string
- * @param mailbox Mailbox for paths
- * @param cmd     Template command to be expanded
- * @param buf     Buffer to store the command
- * @param buflen  Size of the buffer
+ * @param m      Mailbox for paths
+ * @param cmd    Template command to be expanded
+ * @param buf    Buffer to store the command
+ * @param buflen Size of the buffer
  *
  * This function takes a hook command and expands the filename placeholders
  * within it.  The function calls mutt_expando_format() to do the replacement
@@ -362,19 +346,18 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
  * Result:
  *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
  */
-static void expand_command_str(const struct Mailbox *mailbox, const char *cmd,
-                               char *buf, int buflen)
+static void expand_command_str(const struct Mailbox *m, const char *cmd, char *buf, int buflen)
 {
-  if (!mailbox || !cmd || !buf)
+  if (!m || !cmd || !buf)
     return;
 
   mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
-                      (unsigned long) mailbox, 0);
+                      (unsigned long) m, 0);
 }
 
 /**
  * execute_command - Run a system command
- * @param mailbox  Mailbox to work with
+ * @param m        Mailbox to work with
  * @param command  Command string to execute
  * @param progress Message to show the user
  * @retval 1 Success
@@ -383,24 +366,24 @@ static void expand_command_str(const struct Mailbox *mailbox, const char *cmd,
  * Run the supplied command, taking care of all the NeoMutt requirements,
  * such as locking files and blocking signals.
  */
-static int execute_command(struct Mailbox *mailbox, const char *command, const char *progress)
+static int execute_command(struct Mailbox *m, const char *command, const char *progress)
 {
   int rc = 1;
   char sys_cmd[HUGE_STRING];
 
-  if (!mailbox || !command || !progress)
+  if (!m || !command || !progress)
     return 0;
 
-  if (!mailbox->quiet)
+  if (!m->quiet)
   {
-    mutt_message(progress, mailbox->realpath);
+    mutt_message(progress, m->realpath);
   }
 
   mutt_sig_block();
   endwin();
   fflush(stdout);
 
-  expand_command_str(mailbox, command, sys_cmd, sizeof(sys_cmd));
+  expand_command_str(m, command, sys_cmd, sizeof(sys_cmd));
 
   if (mutt_system(sys_cmd) != 0)
   {
@@ -416,7 +399,7 @@ static int execute_command(struct Mailbox *mailbox, const char *command, const c
 
 /**
  * mutt_comp_can_append - Can we append to this path?
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @retval true  Yes, we can append to the file
  * @retval false No, appending isn't possible
  *
@@ -425,13 +408,13 @@ static int execute_command(struct Mailbox *mailbox, const char *command, const c
  *
  * A match means it's our responsibility to append to the file.
  */
-bool mutt_comp_can_append(struct Mailbox *mailbox)
+bool mutt_comp_can_append(struct Mailbox *m)
 {
-  if (!mailbox)
+  if (!m)
     return false;
 
   /* If this succeeds, we know there's an open-hook */
-  struct CompressInfo *ci = set_compress_info(mailbox);
+  struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
     return false;
 
@@ -440,8 +423,7 @@ bool mutt_comp_can_append(struct Mailbox *mailbox)
   if (ci->append || ci->close)
     return true;
 
-  mutt_error(_("Cannot append without an append-hook or close-hook : %s"),
-             mailbox->path);
+  mutt_error(_("Cannot append without an append-hook or close-hook : %s"), m->path);
   return false;
 }
 
