@@ -51,8 +51,8 @@ void mutt_email_free(struct Email **e)
   mutt_list_free(&(*e)->chain);
 #endif
   driver_tags_free(&(*e)->tags);
-  if ((*e)->data && (*e)->free_data)
-    (*e)->free_data(&(*e)->data);
+  if ((*e)->edata && (*e)->free_edata)
+    (*e)->free_edata(&(*e)->edata);
   FREE(e);
 }
 

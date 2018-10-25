@@ -987,7 +987,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
   }
 #endif
 
-  savectx = mx_mbox_open(buf, MUTT_APPEND);
+  savectx = mx_mbox_open(NULL, buf, MUTT_APPEND);
   if (savectx)
   {
 #ifdef USE_COMPRESSED
@@ -1026,7 +1026,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 
 #ifdef USE_NOTMUCH
       if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_longrun_init(Context->mailbox, true);
+        nm_db_longrun_init(Context->mailbox, true);
 #endif
       for (int i = 0; i < Context->mailbox->msg_count; i++)
       {
@@ -1051,7 +1051,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
       }
 #ifdef USE_NOTMUCH
       if (Context->mailbox->magic == MUTT_NOTMUCH)
-        nm_longrun_done(Context->mailbox);
+        nm_db_longrun_done(Context->mailbox);
 #endif
       if (rc != 0)
       {

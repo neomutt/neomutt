@@ -225,7 +225,7 @@ static int complete_all_nm_tags(const char *pt)
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
-  nm_longrun_init(Context->mailbox, false);
+  nm_db_longrun_init(Context->mailbox, false);
 
   /* Work out how many tags there are. */
   if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || tag_count_1 == 0)
@@ -247,7 +247,7 @@ static int complete_all_nm_tags(const char *pt)
   {
     FREE(&nm_tags);
     nm_tags = NULL;
-    nm_longrun_done(Context->mailbox);
+    nm_db_longrun_done(Context->mailbox);
     return -1;
   }
 
@@ -261,7 +261,7 @@ static int complete_all_nm_tags(const char *pt)
   Matches[NumMatched++] = UserTyped;
 
 done:
-  nm_longrun_done(Context->mailbox);
+  nm_db_longrun_done(Context->mailbox);
   return 0;
 }
 #endif
@@ -1730,7 +1730,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
     else
     {
-      rc = cs_str_string_set(Config, buf->data, NULL, err);
+      rc = cs_he_string_set(Config, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return -1;
     }

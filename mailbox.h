@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,6 +33,7 @@
 
 struct Buffer;
 struct Context;
+struct Account;
 struct stat;
 
 /* These Config Variables are only used in mailbox.c */
@@ -98,8 +100,6 @@ struct Mailbox
   struct timespec last_visited;       /**< time of last exit from this mailbox */
   struct timespec stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 
-  void *data;                 /**< driver specific data */
-  void (*free_data)(void **); /**< driver-specific data free function */
   const struct MxOps *mx_ops;
 
   bool changed : 1;   /**< mailbox has been modified */
@@ -117,7 +117,12 @@ struct Mailbox
   struct Hash *subj_hash;   /**< hash table by subject */
   struct Hash *label_hash;  /**< hash table for x-labels */
 
+  struct Account *account;
+
   int flags; /**< e.g. #MB_NORMAL */
+
+  void *mdata;                 /**< driver specific data */
+  void (*free_mdata)(void **); /**< driver-specific data free function */
 };
 
 /**
@@ -137,8 +142,8 @@ extern struct MailboxList AllMailboxes;
 void mutt_mailbox_vfolder(char *buf, size_t buflen);
 #endif
 
-struct Mailbox *mailbox_new(const char *path);
-void            mailbox_free(struct Mailbox **mailbox);
+struct Mailbox *mailbox_new(void);
+void            mailbox_free(struct Mailbox **m);
 void            mutt_context_free(struct Context **ctx);
 
 struct Mailbox *mutt_find_mailbox(const char *path);

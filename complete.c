@@ -100,8 +100,7 @@ int mutt_complete(char *buf, size_t buflen)
     {
       struct NntpMboxData *mdata = adata->groups_list[n];
 
-      if (mdata && mdata->subscribed &&
-          (mutt_str_strncmp(mdata->group, filepart, len) == 0))
+      if (mdata && mdata->subscribed && (mutt_str_strncmp(mdata->group, filepart, len) == 0))
       {
         if (init)
         {

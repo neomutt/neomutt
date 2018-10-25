@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1998,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -46,6 +47,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
+#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -65,13 +67,55 @@ char *ImapDelimChars; ///< Config: (imap) Characters that denote separators in I
 short ImapPipelineDepth; ///< Config: (imap) Number of IMAP commands that may be queued up
 
 /**
- * imap_get_adata - Get the Account data for this mailbox
+ * imap_adata_free - Release and clear storage in an ImapAccountData structure
+ * @param ptr Imap Account data
  */
-struct ImapAccountData *imap_get_adata(struct Mailbox *m)
+void imap_adata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ImapAccountData *adata = *ptr;
+
+  FREE(&adata->capstr);
+  mutt_list_free(&adata->flags);
+  imap_mboxcache_free(adata);
+  mutt_buffer_free(&adata->cmdbuf);
+  FREE(&adata->buf);
+  mutt_bcache_close(&adata->bcache);
+  FREE(&adata->cmds);
+  FREE(ptr);
+}
+
+/**
+ * imap_adata_new - Allocate and initialise a new ImapAccountData structure
+ * @retval ptr New ImapAccountData
+ */
+struct ImapAccountData *imap_adata_new(void)
+{
+  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
+
+  adata->cmdbuf = mutt_buffer_new();
+  adata->cmdslots = ImapPipelineDepth + 2;
+  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
+
+  STAILQ_INIT(&adata->flags);
+  STAILQ_INIT(&adata->mboxcache);
+
+  return adata;
+}
+
+/**
+ * imap_adata_get - Get the Account data for this mailbox
+ */
+struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_IMAP))
     return NULL;
-  return m->data;
+  struct Account *a = m->account;
+  if (!a)
+    return NULL;
+  return a->adata;
 }
 
 /**
@@ -241,7 +285,7 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *b, struct ImapAccountDat
     if (msn <= adata->max_msn)
     {
       struct Email *cur_header = adata->msn_index[msn - 1];
-      cur_uid = cur_header ? IMAP_EDATA(cur_header)->uid : 0;
+      cur_uid = cur_header ? imap_edata_get(cur_header)->uid : 0;
       if (!state || (cur_uid && ((cur_uid - 1) == last_uid)))
         match = true;
       last_uid = cur_uid;
@@ -307,7 +351,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path
     imap_cachepath(adata, path, mbox, sizeof(mbox));
   else
   {
-    if (!adata->ctx || imap_parse_path(adata->ctx->mailbox->path, &mx) < 0)
+    if (!adata->mailbox || imap_parse_path(adata->mailbox->path, &mx) < 0)
       return NULL;
 
     imap_cachepath(adata, mx.mbox, mbox, sizeof(mbox));
@@ -384,7 +428,7 @@ int imap_hcache_put(struct ImapAccountData *adata, struct Email *e)
   if (!adata->hcache)
     return -1;
 
-  sprintf(key, "/%u", IMAP_EDATA(e)->uid);
+  sprintf(key, "/%u", imap_edata_get(e)->uid);
   return mutt_hcache_store(adata->hcache, key, imap_hcache_keylen(key), e, adata->uid_validity);
 }
 
@@ -646,7 +690,7 @@ void imap_pretty_mailbox(char *path, const char *folder)
     return;
 
   tlen = mutt_str_strlen(target.mbox);
-  /* check whether we can do '=' substitution */
+  /* check whether we can do '+' substitution */
   if ((imap_path_probe(folder, NULL) == MUTT_IMAP) && !imap_parse_path(folder, &home))
   {
     hlen = mutt_str_strlen(home.mbox);
@@ -665,10 +709,10 @@ void imap_pretty_mailbox(char *path, const char *folder)
     FREE(&home.mbox);
   }
 
-  /* do the '=' substitution */
+  /* do the '+' substitution */
   if (home_match)
   {
-    *path++ = '=';
+    *path++ = '+';
     /* copy remaining path, skipping delimiter */
     if (hlen == 0)
       hlen = -1;
@@ -708,43 +752,6 @@ int imap_continue(const char *msg, const char *resp)
 void imap_error(const char *where, const char *msg)
 {
   mutt_error("%s [%s]\n", where, msg);
-}
-
-/**
- * imap_adata_new - Allocate and initialise a new ImapAccountData structure
- * @retval ptr New ImapAccountData
- */
-struct ImapAccountData *imap_adata_new(void)
-{
-  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
-
-  adata->cmdbuf = mutt_buffer_new();
-  adata->cmdslots = ImapPipelineDepth + 2;
-  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
-
-  STAILQ_INIT(&adata->flags);
-  STAILQ_INIT(&adata->mboxcache);
-
-  return adata;
-}
-
-/**
- * imap_adata_free - Release and clear storage in an ImapAccountData structure
- * @param adata Imap Account data
- */
-void imap_adata_free(struct ImapAccountData **adata)
-{
-  if (!adata)
-    return;
-
-  FREE(&(*adata)->capstr);
-  mutt_list_free(&(*adata)->flags);
-  imap_mboxcache_free(*adata);
-  mutt_buffer_free(&(*adata)->cmdbuf);
-  FREE(&(*adata)->buf);
-  mutt_bcache_close(&(*adata)->bcache);
-  FREE(&(*adata)->cmds);
-  FREE(adata);
 }
 
 /**
@@ -1044,19 +1051,20 @@ void imap_unmunge_mbox_name(struct ImapAccountData *adata, char *s)
  */
 void imap_keepalive(void)
 {
-  struct Connection *conn = NULL;
-  struct ImapAccountData *adata = NULL;
   time_t now = time(NULL);
-
-  TAILQ_FOREACH(conn, mutt_socket_head(), entries)
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (conn->account.type == MUTT_ACCT_TYPE_IMAP)
+    if (np->type != MUTT_IMAP)
+      continue;
+
+    struct ImapAccountData *adata = np->adata;
+    if (!adata)
+      continue;
+
+    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + ImapKeepalive)))
     {
-      adata = conn->data;
-      if (adata->state >= IMAP_AUTHENTICATED && now >= adata->lastread + ImapKeepalive)
-      {
-        imap_check(adata, true);
-      }
+      imap_check(adata, true);
     }
   }
 }
@@ -1112,33 +1120,33 @@ int imap_wait_keepalive(pid_t pid)
 
 /**
  * imap_allow_reopen - Allow re-opening a folder upon expunge
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void imap_allow_reopen(struct Context *ctx)
+void imap_allow_reopen(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata)
     return;
 
-  if (adata->ctx == ctx)
+  if (adata->mailbox == m)
     adata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 /**
  * imap_disallow_reopen - Disallow re-opening a folder upon expunge
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void imap_disallow_reopen(struct Context *ctx)
+void imap_disallow_reopen(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return;
-  struct ImapAccountData *adata = imap_get_adata(ctx->mailbox);
+  struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata)
     return;
 
-  if (adata->ctx == ctx)
+  if (adata->mailbox == m)
     adata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,13 +39,25 @@
 struct Mailbox;
 struct stat;
 
+/**
+ * struct MboxAccountData - Private Account data
+ */
+struct MboxAccountData
+{
+  FILE *fp;              /**< Mailbox file */
+  struct timespec atime; /**< File's last-access time */
+
+  bool locked : 1; /**< is the mailbox locked? */
+  bool append : 1; /**< mailbox is opened in append mode */
+};
+
 extern struct MxOps mx_mbox_ops;
 extern struct MxOps mx_mmdf_ops;
 
 #define MMDF_SEP "\001\001\001\001\n"
 
-void mbox_reset_atime(struct Mailbox *mailbox, struct stat *st);
-int mbox_path_probe(const char *path, const struct stat *st);
+void mbox_reset_atime(struct Mailbox *m, struct stat *st);
+int  mbox_path_probe(const char *path, const struct stat *st);
 bool mbox_test_new_folder(const char *path);
 
 #endif /* MUTT_MBOX_MBOX_H */

@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -85,16 +86,17 @@ struct ImapMbox
 
 /* imap.c */
 int imap_access(const char *path);
-int imap_check_mailbox(struct Mailbox *mailbox, bool force);
-int imap_delete_mailbox(struct Mailbox *mailbox, struct ImapMbox *mx);
+int imap_check_mailbox(struct Mailbox *m, bool force);
+int imap_delete_mailbox(struct Mailbox *m, struct ImapMbox *mx);
 int imap_sync_mailbox(struct Context *ctx, bool expunge);
 int imap_mailbox_check(bool check_stats);
 int imap_status(const char *path, bool queue);
-int imap_search(struct Mailbox *mailbox, const struct Pattern *pat);
+int imap_search(struct Mailbox *m, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
-int imap_fast_trash(struct Mailbox *mailbox, char *dest);
+int imap_fast_trash(struct Mailbox *m, char *dest);
 int imap_path_probe(const char *path, const struct stat *st);
+int imap_path_canon(char *buf, size_t buflen, const char *folder);
 
 extern struct MxOps mx_imap_ops;
 

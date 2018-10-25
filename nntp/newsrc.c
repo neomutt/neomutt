@@ -117,28 +117,11 @@ void nntp_acache_free(struct NntpMboxData *mdata)
 }
 
 /**
- * nntp_data_free - Free NntpMboxData, used to destroy hash elements
- * @param data NNTP data
- */
-void nntp_data_free(void *data)
-{
-  struct NntpMboxData *mdata = data;
-
-  if (!mdata)
-    return;
-  nntp_acache_free(mdata);
-  mutt_bcache_close(&mdata->bcache);
-  FREE(&mdata->newsrc_ent);
-  FREE(&mdata->desc);
-  FREE(&data);
-}
-
-/**
  * nntp_hash_destructor_t - Free our hash table data - Implements ::hash_destructor_t
  */
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 {
-  nntp_data_free(obj);
+  nntp_mdata_free(obj);
 }
 
 /**
@@ -323,7 +306,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
  */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
-  struct NntpMboxData *mdata = ctx->mailbox->data;
+  struct NntpMboxData *mdata = ctx->mailbox->mdata;
   anum_t last = 0, first = 1;
   bool series;
   int save_sort = SORT_ORDER;
@@ -354,7 +337,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = NNTP_EDATA(ctx->mailbox->hdrs[i])->article_num;
+      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
       if (last >= mdata->first_message && !ctx->mailbox->hdrs[i]->deleted &&
           !ctx->mailbox->hdrs[i]->read)
       {
@@ -378,7 +361,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
         first = last + 1;
         series = true;
       }
-      last = NNTP_EDATA(ctx->mailbox->hdrs[i])->article_num;
+      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
     }
   }
 
@@ -995,7 +978,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 
 /**
  * nntp_select_server - Open a connection to an NNTP server
- * @param mailbox    Mailbox
+ * @param m          Mailbox
  * @param server     Server URI
  * @param leave_lock Leave the server locked?
  * @retval ptr  NNTP server
@@ -1006,7 +989,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server, bool leave_lock)
+struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool leave_lock)
 {
   char file[PATH_MAX];
 #ifdef USE_HCACHE
@@ -1015,7 +998,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
   int rc;
   struct ConnAccount acct;
   struct NntpAccountData *adata = NULL;
-  struct NntpMboxData *mdata = NULL;
   struct Connection *conn = NULL;
   struct Url url;
 
@@ -1069,7 +1051,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
       return NULL;
 
     /* check for new newsgroups */
-    if (!leave_lock && nntp_check_new_groups(mailbox, adata) < 0)
+    if (!leave_lock && nntp_check_new_groups(m, adata) < 0)
       rc = -1;
 
     /* .newsrc has been externally modified */
@@ -1081,12 +1063,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
   }
 
   /* new news server */
-  adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
-  adata->conn = conn;
-  adata->groups_hash = mutt_hash_create(1009, 0);
-  mutt_hash_set_destructor(adata->groups_hash, nntp_hash_destructor_t, 0);
-  adata->groups_max = 16;
-  adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(mdata));
+  adata = nntp_adata_new(conn);
 
   rc = nntp_open_connection(adata);
 
@@ -1115,7 +1092,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
   {
     /* try to load list of newsgroups from cache */
     if (adata->cacheable && active_get_cache(adata) == 0)
-      rc = nntp_check_new_groups(mailbox, adata);
+      rc = nntp_check_new_groups(m, adata);
 
     /* load list of newsgroups from server */
     else
@@ -1144,7 +1121,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
         if (strlen(group) < 8 || (strcmp(p, ".hcache") != 0))
           continue;
         *p = '\0';
-        mdata = mutt_hash_find(adata->groups_hash, group);
+        struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
         if (!mdata)
           continue;
 
@@ -1201,7 +1178,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
 
 /**
  * nntp_article_status - Get status of articles from .newsrc
- * @param mailbox Mailbox
+ * @param m       Mailbox
  * @param e       Email
  * @param group   Newsgroup
  * @param anum    Article number
@@ -1211,9 +1188,9 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *mailbox, char *server
  * New = not read and not cached
  * Old = not read but cached
  */
-void nntp_article_status(struct Mailbox *mailbox, struct Email *e, char *group, anum_t anum)
+void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t anum)
 {
-  struct NntpMboxData *mdata = mailbox->data;
+  struct NntpMboxData *mdata = m->mdata;
 
   if (group)
     mdata = mutt_hash_find(mdata->adata->groups_hash, group);
@@ -1322,7 +1299,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
     mdata->newsrc_ent[0].last = mdata->last_message;
   }
   mdata->unread = 0;
-  if (ctx && ctx->mailbox->data == mdata)
+  if (ctx && ctx->mailbox->mdata == mdata)
   {
     for (unsigned int i = 0; i < ctx->mailbox->msg_count; i++)
       mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_READ, 1);
@@ -1357,7 +1334,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = mdata->first_message - 1;
   }
-  if (ctx && ctx->mailbox->data == mdata)
+  if (ctx && ctx->mailbox->mdata == mdata)
   {
     mdata->unread = ctx->mailbox->msg_count;
     for (unsigned int i = 0; i < ctx->mailbox->msg_count; i++)
@@ -1374,13 +1351,13 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
 
 /**
  * nntp_mailbox - Get first newsgroup with new messages
- * @param mailbox Mailbox
+ * @param m       Mailbox
  * @param buf     Buffer for result
  * @param buflen  Length of buffer
  */
-void nntp_mailbox(struct Mailbox *mailbox, char *buf, size_t buflen)
+void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
 {
-  if (!mailbox)
+  if (!m)
     return;
 
   for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
@@ -1390,13 +1367,13 @@ void nntp_mailbox(struct Mailbox *mailbox, char *buf, size_t buflen)
     if (!mdata || !mdata->subscribed || !mdata->unread)
       continue;
 
-    if ((mailbox->magic == MUTT_NNTP) &&
-        (mutt_str_strcmp(mdata->group, ((struct NntpMboxData *) mailbox->data)->group) == 0))
+    if ((m->magic == MUTT_NNTP) &&
+        (mutt_str_strcmp(mdata->group, ((struct NntpMboxData *) m->mdata)->group) == 0))
     {
       unsigned int unread = 0;
 
-      for (unsigned int j = 0; j < mailbox->msg_count; j++)
-        if (!mailbox->hdrs[j]->read && !mailbox->hdrs[j]->deleted)
+      for (unsigned int j = 0; j < m->msg_count; j++)
+        if (!m->hdrs[j]->read && !m->hdrs[j]->deleted)
           unread++;
       if (!unread)
         continue;

@@ -1071,19 +1071,17 @@ void mutt_sb_change_mailbox(int op)
 
 /**
  * mutt_sb_get_highlight - Get the Mailbox that's highlighted in the sidebar
- * @retval ptr Mailbox path
- *
- * Get the path of the mailbox that's highlighted in the sidebar.
+ * @retval ptr Mailbox
  */
-const char *mutt_sb_get_highlight(void)
+struct Mailbox *mutt_sb_get_highlight(void)
 {
   if (!SidebarVisible)
     return NULL;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return NULL;
 
-  return Entries[HilIndex]->mailbox->path;
+  return Entries[HilIndex]->mailbox;
 }
 
 /**

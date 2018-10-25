@@ -1,9 +1,10 @@
 /**
  * @file
- * Representation of the email's header
+ * Representation of a mailbox
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,18 +21,32 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HEADER_H
-#define MUTT_MUTT_HEADER_H
+#ifndef MUTT_ACCOUNT_H
+#define MUTT_ACCOUNT_H
 
-#include <stddef.h>
+#include "mutt/queue.h"
+#include "config/lib.h"
+#include "mailbox.h"
 
-struct Context;
-struct Email;
+struct ConnAccount;
 
-void mutt_edit_headers(const char *editor, const char *body, struct Email *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Mailbox *m, struct Email *e);
-void mutt_label_hash_remove(struct Mailbox *m, struct Email *e);
-int  mutt_label_message(struct Email *e);
-void mutt_make_label_hash(struct Mailbox *m);
+/**
+ * struct Account - XXX
+ */
+struct Account
+{
+  enum MailboxType type;
+  struct MailboxList mailboxes;
+  TAILQ_ENTRY(Account) entries;
+  void *adata;
+  void (*free_adata)(void **);
+};
 
-#endif /* MUTT_MUTT_HEADER_H */
+TAILQ_HEAD(AccountList, Account);
+
+extern struct AccountList AllAccounts;
+
+struct Account *account_create(void);
+void            account_free(struct Account **a);
+
+#endif /* MUTT_ACCOUNT_H */

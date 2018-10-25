@@ -36,6 +36,11 @@
 #include "hook.h"
 #include "mutt_account.h"
 
+/**
+ * mutt_conn_new - Create a new Connection
+ * @param account Credentials to use
+ * @retval ptr New Connection
+ */
 struct Connection *mutt_conn_new(const struct ConnAccount *account)
 {
   enum ConnectionType conn_type;

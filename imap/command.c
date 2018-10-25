@@ -6,6 +6,7 @@
  * Copyright (C) 1996-1998,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2011 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -257,7 +258,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    IMAP_EDATA(e)->msn = 0;
+    imap_edata_get(e)->msn = 0;
   }
 
   /* decrement seqno of those above. */
@@ -265,7 +266,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   {
     e = adata->msn_index[cur];
     if (e)
-      IMAP_EDATA(e)->msn--;
+      imap_edata_get(e)->msn--;
     adata->msn_index[cur - 1] = e;
   }
 
@@ -321,13 +322,13 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     if (!e)
       continue;
 
-    unsigned int exp_msn = IMAP_EDATA(e)->msn;
+    unsigned int exp_msn = imap_edata_get(e)->msn;
 
     /* imap_expunge_mailbox() will rewrite e->index.
      * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    IMAP_EDATA(e)->msn = 0;
+    imap_edata_get(e)->msn = 0;
 
     if ((exp_msn < 1) || (exp_msn > adata->max_msn))
     {
@@ -349,7 +350,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
       {
         e = adata->msn_index[cur];
         if (e)
-          IMAP_EDATA(e)->msn--;
+          imap_edata_get(e)->msn--;
         adata->msn_index[cur - 1] = e;
       }
 
@@ -404,7 +405,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  mutt_debug(2, "Message UID %u updated\n", IMAP_EDATA(e)->uid);
+  mutt_debug(2, "Message UID %u updated\n", imap_edata_get(e)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -453,7 +454,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         mutt_debug(1, "Illegal UID.  Skipping update.\n");
         return;
       }
-      if (uid != IMAP_EDATA(e)->uid)
+      if (uid != imap_edata_get(e)->uid)
       {
         mutt_debug(1, "UID vs MSN mismatch.  Skipping update.\n");
         return;
@@ -680,54 +681,54 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   s = imap_next_word((char *) s);
 
   /* zero out current rights set */
-  memset(adata->ctx->mailbox->rights, 0, sizeof(adata->ctx->mailbox->rights));
+  memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
 
   while (*s && !isspace((unsigned char) *s))
   {
     switch (*s)
     {
       case 'a':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_ADMIN);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_ADMIN);
         break;
       case 'e':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       case 'i':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_INSERT);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_INSERT);
         break;
       case 'k':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
         break;
       case 'l':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_LOOKUP);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_LOOKUP);
         break;
       case 'p':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_POST);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_POST);
         break;
       case 'r':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_READ);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_READ);
         break;
       case 's':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_SEEN);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_SEEN);
         break;
       case 't':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
         break;
       case 'w':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_WRITE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_WRITE);
         break;
       case 'x':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
         break;
 
       /* obsolete rights */
       case 'c':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_CREATE);
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELMX);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELMX);
         break;
       case 'd':
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_DELETE);
-        mutt_bit_set(adata->ctx->mailbox->rights, MUTT_ACL_EXPUNGE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
+        mutt_bit_set(adata->mailbox->rights, MUTT_ACL_EXPUNGE);
         break;
       default:
         mutt_debug(1, "Unknown right: %c\n", *s);
@@ -1086,6 +1087,9 @@ int imap_cmd_start(struct ImapAccountData *adata, const char *cmdstr)
  */
 int imap_cmd_step(struct ImapAccountData *adata)
 {
+  if (!adata)
+    return -1;
+
   size_t len = 0;
   int c;
   int rc;
@@ -1313,13 +1317,16 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
  */
 void imap_cmd_finish(struct ImapAccountData *adata)
 {
+  if (!adata)
+    return;
+
   if (adata->status == IMAP_FATAL)
   {
     cmd_handle_fatal(adata);
     return;
   }
 
-  if (!(adata->state >= IMAP_SELECTED) || adata->ctx->mailbox->closing)
+  if (!(adata->state >= IMAP_SELECTED) || (adata->mailbox && adata->mailbox->closing))
     return;
 
   if (adata->reopen & IMAP_REOPEN_ALLOW)

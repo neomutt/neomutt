@@ -34,6 +34,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "curs_main.h"
+#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "commands.h"
@@ -46,6 +47,7 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -534,6 +536,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 /**
  * main_change_folder - Change to a different mailbox
  * @param menu       Current Menu
+ * @param m          Mailbox
  * @param op         Operation, e.g. OP_MAIN_CHANGE_FOLDER_READONLY
  * @param buf        Folder to change to
  * @param buflen     Length of buffer
@@ -542,8 +545,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
  * @retval  0 Success
  * @retval -1 Error
  */
-static int main_change_folder(struct Menu *menu, int op, char *buf,
-                              size_t buflen, int *oldcount, int *index_hint)
+static int main_change_folder(struct Menu *menu, int op, struct Mailbox *m,
+                              char *buf, size_t buflen, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
   if (OptNews)
@@ -553,7 +556,9 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
   }
   else
 #endif
-    mutt_expand_path(buf, buflen);
+  {
+    mx_path_canon(buf, buflen, Folder, NULL);
+  }
 
   enum MailboxType magic = mx_path_probe(buf, NULL);
   if ((magic == MUTT_MAILBOX_ERROR) || (magic == MUTT_UNKNOWN))
@@ -614,7 +619,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 
   const int flags =
       (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0;
-  Context = mx_mbox_open(buf, flags);
+  Context = mx_mbox_open(m, buf, flags);
   if (Context)
   {
     menu->current = ci_first_message();
@@ -1235,7 +1240,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context->mailbox);
+      nm_db_debug_check(Context->mailbox);
 #endif
 
     switch (op)
@@ -1919,7 +1924,7 @@ int mutt_index_menu(void)
             break;
           }
           else
-            main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+            main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
@@ -1991,7 +1996,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_init(Context->mailbox, true);
+            nm_db_longrun_init(Context->mailbox, true);
 #endif
           for (px = 0, j = 0; j < Context->mailbox->msg_count; j++)
           {
@@ -2015,7 +2020,7 @@ int mutt_index_menu(void)
           }
 #ifdef USE_NOTMUCH
           if (Context->mailbox->magic == MUTT_NOTMUCH)
-            nm_longrun_done(Context->mailbox);
+            nm_db_longrun_done(Context->mailbox);
 #endif
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
         }
@@ -2074,7 +2079,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(NULL, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -2094,7 +2099,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context->mailbox, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting"));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2115,7 +2120,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+          main_change_folder(menu, op, NULL, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
 
@@ -2131,6 +2136,8 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_MAIN_CHANGE_GROUP:
       case OP_MAIN_CHANGE_GROUP_READONLY:
+      {
+        struct Mailbox *m = NULL;
         OptNews = false;
 #endif
         if (attach_msg || ReadOnly ||
@@ -2167,13 +2174,13 @@ int mutt_index_menu(void)
 #ifdef USE_SIDEBAR
         else if (op == OP_SIDEBAR_OPEN)
         {
-          const char *path = mutt_sb_get_highlight();
-          if (!path || !*path)
+          m = mutt_sb_get_highlight();
+          if (!m)
             break;
-          mutt_str_strfcpy(buf, path, sizeof(buf));
+          mutt_str_strfcpy(buf, m->path, sizeof(buf));
 
           /* Mark the selected dir for the neomutt browser */
-          mutt_browser_select_dir(buf);
+          mutt_browser_select_dir(m->path);
         }
 #endif
 #ifdef USE_NOTMUCH
@@ -2203,14 +2210,15 @@ int mutt_index_menu(void)
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
             OptNews = true;
-            CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
+            m = Context ? Context->mailbox : NULL;
+            CurrentNewsSrv = nntp_select_server(m, NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)
               cp = _("Open newsgroup in read-only mode");
             else
               cp = _("Open newsgroup");
-            nntp_mailbox(Context->mailbox, buf, sizeof(buf));
+            nntp_mailbox(m, buf, sizeof(buf));
           }
           else
 #endif
@@ -2241,7 +2249,10 @@ int mutt_index_menu(void)
           }
         }
 
-        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
+        if (!m)
+          m = mx_mbox_find2(buf);
+
+        main_change_folder(menu, op, m, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP
         /* mutt_mailbox_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
@@ -2253,6 +2264,7 @@ int mutt_index_menu(void)
         mutt_sb_set_open_mailbox();
 #endif
         break;
+      }
 
       case OP_DISPLAY_MESSAGE:
       case OP_DISPLAY_HEADERS: /* don't weed the headers */
@@ -3004,7 +3016,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
-          struct NntpMboxData *mdata = Context->mailbox->data;
+          struct NntpMboxData *mdata = Context->mailbox->mdata;
           if (mutt_newsgroup_catchup(Context, mdata->adata, mdata->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
@@ -3316,7 +3328,7 @@ int mutt_index_menu(void)
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->mailbox->magic == MUTT_NNTP &&
-              !((struct NntpMboxData *) Context->mailbox->data)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpMboxData *) Context->mailbox->mdata)->allowed && query_quadoption(PostModerated, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           {
             break;
           }
@@ -3489,7 +3501,7 @@ int mutt_index_menu(void)
 
 #ifdef USE_NOTMUCH
     if (Context)
-      nm_debug_check(Context->mailbox);
+      nm_db_debug_check(Context->mailbox);
 #endif
 
     if (menu->menu == MENU_PAGER)

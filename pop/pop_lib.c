@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,6 +41,7 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "account.h"
 #include "context.h"
 #include "globals.h"
 #include "mailbox.h"
@@ -102,12 +104,12 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
 
 /**
  * pop_error - Copy error message to err_msg buffer
- * @param mdata POP Mailbox data
- * @param msg      Error message to save
+ * @param adata POP Account data
+ * @param msg   Error message to save
  */
-static void pop_error(struct PopMboxData *mdata, char *msg)
+static void pop_error(struct PopAccountData *adata, char *msg)
 {
-  char *t = strchr(mdata->err_msg, '\0');
+  char *t = strchr(adata->err_msg, '\0');
   char *c = msg;
 
   if (mutt_str_strncmp(msg, "-ERR ", 5) == 0)
@@ -118,8 +120,8 @@ static void pop_error(struct PopMboxData *mdata, char *msg)
       c = c2;
   }
 
-  mutt_str_strfcpy(t, c, sizeof(mdata->err_msg) - strlen(mdata->err_msg));
-  mutt_str_remove_trailing_ws(mdata->err_msg);
+  mutt_str_strfcpy(t, c, sizeof(adata->err_msg) - strlen(adata->err_msg));
+  mutt_str_remove_trailing_ws(adata->err_msg);
 }
 
 /**
@@ -130,27 +132,27 @@ static void pop_error(struct PopMboxData *mdata, char *msg)
  */
 static int fetch_capa(char *line, void *data)
 {
-  struct PopMboxData *mdata = data;
+  struct PopAccountData *adata = data;
   char *c = NULL;
 
   if (mutt_str_strncasecmp(line, "SASL", 4) == 0)
   {
-    FREE(&mdata->auth_list);
+    FREE(&adata->auth_list);
     c = mutt_str_skip_email_wsp(line + 4);
-    mdata->auth_list = mutt_str_strdup(c);
+    adata->auth_list = mutt_str_strdup(c);
   }
 
   else if (mutt_str_strncasecmp(line, "STLS", 4) == 0)
-    mdata->cmd_stls = true;
+    adata->cmd_stls = true;
 
   else if (mutt_str_strncasecmp(line, "USER", 4) == 0)
-    mdata->cmd_user = 1;
+    adata->cmd_user = 1;
 
   else if (mutt_str_strncasecmp(line, "UIDL", 4) == 0)
-    mdata->cmd_uidl = 1;
+    adata->cmd_uidl = 1;
 
   else if (mutt_str_strncasecmp(line, "TOP", 3) == 0)
-    mdata->cmd_top = 1;
+    adata->cmd_top = 1;
 
   return 0;
 }
@@ -163,62 +165,62 @@ static int fetch_capa(char *line, void *data)
  */
 static int fetch_auth(char *line, void *data)
 {
-  struct PopMboxData *mdata = data;
+  struct PopAccountData *adata = data;
 
-  if (!mdata->auth_list)
+  if (!adata->auth_list)
   {
-    mdata->auth_list = mutt_mem_malloc(strlen(line) + 1);
-    *mdata->auth_list = '\0';
+    adata->auth_list = mutt_mem_malloc(strlen(line) + 1);
+    *adata->auth_list = '\0';
   }
   else
   {
-    mutt_mem_realloc(&mdata->auth_list, strlen(mdata->auth_list) + strlen(line) + 2);
-    strcat(mdata->auth_list, " ");
+    mutt_mem_realloc(&adata->auth_list, strlen(adata->auth_list) + strlen(line) + 2);
+    strcat(adata->auth_list, " ");
   }
-  strcat(mdata->auth_list, line);
+  strcat(adata->auth_list, line);
 
   return 0;
 }
 
 /**
  * pop_capabilities - Get capabilities from a POP server
- * @param mdata POP Mailbox data
- * @param mode     Initial capabilities
+ * @param adata POP Account data
+ * @param mode  Initial capabilities
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Execution error
 */
-static int pop_capabilities(struct PopMboxData *mdata, int mode)
+static int pop_capabilities(struct PopAccountData *adata, int mode)
 {
   char buf[LONG_STRING];
 
   /* don't check capabilities on reconnect */
-  if (mdata->capabilities)
+  if (adata->capabilities)
     return 0;
 
   /* init capabilities */
   if (mode == 0)
   {
-    mdata->cmd_capa = false;
-    mdata->cmd_stls = false;
-    mdata->cmd_user = 0;
-    mdata->cmd_uidl = 0;
-    mdata->cmd_top = 0;
-    mdata->resp_codes = false;
-    mdata->expire = true;
-    mdata->login_delay = 0;
-    FREE(&mdata->auth_list);
+    adata->cmd_capa = false;
+    adata->cmd_stls = false;
+    adata->cmd_user = 0;
+    adata->cmd_uidl = 0;
+    adata->cmd_top = 0;
+    adata->resp_codes = false;
+    adata->expire = true;
+    adata->login_delay = 0;
+    FREE(&adata->auth_list);
   }
 
   /* Execute CAPA command */
-  if (mode == 0 || mdata->cmd_capa)
+  if (mode == 0 || adata->cmd_capa)
   {
     mutt_str_strfcpy(buf, "CAPA\r\n", sizeof(buf));
-    switch (pop_fetch_data(mdata, buf, NULL, fetch_capa, mdata))
+    switch (pop_fetch_data(adata, buf, NULL, fetch_capa, adata))
     {
       case 0:
       {
-        mdata->cmd_capa = true;
+        adata->cmd_capa = true;
         break;
       }
       case -1:
@@ -227,14 +229,14 @@ static int pop_capabilities(struct PopMboxData *mdata, int mode)
   }
 
   /* CAPA not supported, use defaults */
-  if (mode == 0 && !mdata->cmd_capa)
+  if (mode == 0 && !adata->cmd_capa)
   {
-    mdata->cmd_user = 2;
-    mdata->cmd_uidl = 2;
-    mdata->cmd_top = 2;
+    adata->cmd_user = 2;
+    adata->cmd_uidl = 2;
+    adata->cmd_top = 2;
 
     mutt_str_strfcpy(buf, "AUTH\r\n", sizeof(buf));
-    if (pop_fetch_data(mdata, buf, NULL, fetch_auth, mdata) == -1)
+    if (pop_fetch_data(adata, buf, NULL, fetch_auth, adata) == -1)
       return -1;
   }
 
@@ -243,18 +245,18 @@ static int pop_capabilities(struct PopMboxData *mdata, int mode)
   {
     char *msg = NULL;
 
-    if (!mdata->expire)
+    if (!adata->expire)
       msg = _("Unable to leave messages on server");
-    if (!mdata->cmd_top)
+    if (!adata->cmd_top)
       msg = _("Command TOP is not supported by server");
-    if (!mdata->cmd_uidl)
+    if (!adata->cmd_uidl)
       msg = _("Command UIDL is not supported by server");
-    if (msg && mdata->cmd_capa)
+    if (msg && adata->cmd_capa)
     {
       mutt_error(msg);
       return -2;
     }
-    mdata->capabilities = true;
+    adata->capabilities = true;
   }
 
   return 0;
@@ -262,58 +264,58 @@ static int pop_capabilities(struct PopMboxData *mdata, int mode)
 
 /**
  * pop_connect - Open connection
- * @param mdata POP Mailbox data
+ * @param adata POP Account data
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid response
 */
-int pop_connect(struct PopMboxData *mdata)
+int pop_connect(struct PopAccountData *adata)
 {
   char buf[LONG_STRING];
 
-  mdata->status = POP_NONE;
-  if (mutt_socket_open(mdata->conn) < 0 ||
-      mutt_socket_readln(buf, sizeof(buf), mdata->conn) < 0)
+  adata->status = POP_NONE;
+  if (mutt_socket_open(adata->conn) < 0 ||
+      mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0)
   {
-    mutt_error(_("Error connecting to server: %s"), mdata->conn->account.host);
+    mutt_error(_("Error connecting to server: %s"), adata->conn->account.host);
     return -1;
   }
 
-  mdata->status = POP_CONNECTED;
+  adata->status = POP_CONNECTED;
 
   if (mutt_str_strncmp(buf, "+OK", 3) != 0)
   {
-    *mdata->err_msg = '\0';
-    pop_error(mdata, buf);
-    mutt_error("%s", mdata->err_msg);
+    *adata->err_msg = '\0';
+    pop_error(adata, buf);
+    mutt_error("%s", adata->err_msg);
     return -2;
   }
 
-  pop_apop_timestamp(mdata, buf);
+  pop_apop_timestamp(adata, buf);
 
   return 0;
 }
 
 /**
  * pop_open_connection - Open connection and authenticate
- * @param mdata POP Mailbox data
+ * @param adata POP Account data
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
  * @retval -3 Authentication cancelled
 */
-int pop_open_connection(struct PopMboxData *mdata)
+int pop_open_connection(struct PopAccountData *adata)
 {
   char buf[LONG_STRING];
 
-  int rc = pop_connect(mdata);
+  int rc = pop_connect(adata);
   if (rc < 0)
   {
     mutt_sleep(2);
     return rc;
   }
 
-  rc = pop_capabilities(mdata, 0);
+  rc = pop_capabilities(adata, 0);
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
@@ -324,30 +326,30 @@ int pop_open_connection(struct PopMboxData *mdata)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!mdata->conn->ssf && (mdata->cmd_stls || SslForceTls))
+  if (!adata->conn->ssf && (adata->cmd_stls || SslForceTls))
   {
     if (SslForceTls)
-      mdata->use_stls = 2;
-    if (mdata->use_stls == 0)
+      adata->use_stls = 2;
+    if (adata->use_stls == 0)
     {
       rc = query_quadoption(SslStarttls, _("Secure connection with TLS?"));
       if (rc == MUTT_ABORT)
         return -2;
-      mdata->use_stls = 1;
+      adata->use_stls = 1;
       if (rc == MUTT_YES)
-        mdata->use_stls = 2;
+        adata->use_stls = 2;
     }
-    if (mdata->use_stls == 2)
+    if (adata->use_stls == 2)
     {
       mutt_str_strfcpy(buf, "STLS\r\n", sizeof(buf));
-      rc = pop_query(mdata, buf, sizeof(buf));
+      rc = pop_query(adata, buf, sizeof(buf));
       if (rc == -1)
         goto err_conn;
       if (rc != 0)
       {
-        mutt_error("%s", mdata->err_msg);
+        mutt_error("%s", adata->err_msg);
       }
-      else if (mutt_ssl_starttls(mdata->conn))
+      else if (mutt_ssl_starttls(adata->conn))
       {
         mutt_error(_("Could not negotiate TLS connection"));
         return -2;
@@ -355,7 +357,7 @@ int pop_open_connection(struct PopMboxData *mdata)
       else
       {
         /* recheck capabilities after STLS completes */
-        rc = pop_capabilities(mdata, 1);
+        rc = pop_capabilities(adata, 1);
         if (rc == -1)
           goto err_conn;
         if (rc == -2)
@@ -367,14 +369,14 @@ int pop_open_connection(struct PopMboxData *mdata)
     }
   }
 
-  if (SslForceTls && !mdata->conn->ssf)
+  if (SslForceTls && !adata->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
     return -2;
   }
 #endif
 
-  rc = pop_authenticate(mdata);
+  rc = pop_authenticate(adata);
   if (rc == -1)
     goto err_conn;
   if (rc == -3)
@@ -383,7 +385,7 @@ int pop_open_connection(struct PopMboxData *mdata)
     return rc;
 
   /* recheck capabilities after authentication */
-  rc = pop_capabilities(mdata, 2);
+  rc = pop_capabilities(adata, 2);
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
@@ -394,50 +396,50 @@ int pop_open_connection(struct PopMboxData *mdata)
 
   /* get total size of mailbox */
   mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
-  rc = pop_query(mdata, buf, sizeof(buf));
+  rc = pop_query(adata, buf, sizeof(buf));
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
   {
-    mutt_error("%s", mdata->err_msg);
+    mutt_error("%s", adata->err_msg);
     return rc;
   }
 
   unsigned int n = 0, size = 0;
   sscanf(buf, "+OK %u %u", &n, &size);
-  mdata->size = size;
+  adata->size = size;
   return 0;
 
 err_conn:
-  mdata->status = POP_DISCONNECTED;
+  adata->status = POP_DISCONNECTED;
   mutt_error(_("Server closed connection"));
   return -1;
 }
 
 /**
  * pop_logout - logout from a POP server
- * @param mailbox Mailbox
+ * @param m Mailbox
  */
-void pop_logout(struct Mailbox *mailbox)
+void pop_logout(struct Mailbox *m)
 {
-  struct PopMboxData *mdata = pop_get_mdata(mailbox);
+  struct PopAccountData *adata = pop_get_adata(m);
 
-  if (mdata->status == POP_CONNECTED)
+  if (adata->status == POP_CONNECTED)
   {
     int ret = 0;
     char buf[LONG_STRING];
     mutt_message(_("Closing connection to POP server..."));
 
-    if (mailbox->readonly)
+    if (m->readonly)
     {
       mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
-      ret = pop_query(mdata, buf, sizeof(buf));
+      ret = pop_query(adata, buf, sizeof(buf));
     }
 
     if (ret != -1)
     {
       mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
-      ret = pop_query(mdata, buf, sizeof(buf));
+      ret = pop_query(adata, buf, sizeof(buf));
     }
 
     if (ret < 0)
@@ -446,24 +448,24 @@ void pop_logout(struct Mailbox *mailbox)
     mutt_clear_error();
   }
 
-  mdata->status = POP_DISCONNECTED;
+  adata->status = POP_DISCONNECTED;
 }
 
 /**
  * pop_query_d - Send data from buffer and receive answer to the same buffer
- * @param mdata POP Mailbox data
- * @param buf      Buffer to send/store data
- * @param buflen   Buffer length
- * @param msg      Progress message
+ * @param adata  POP Account data
+ * @param buf    Buffer to send/store data
+ * @param buflen Buffer length
+ * @param msg    Progress message
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
 */
-int pop_query_d(struct PopMboxData *mdata, char *buf, size_t buflen, char *msg)
+int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *msg)
 {
   int dbg = MUTT_SOCK_LOG_CMD;
 
-  if (mdata->status != POP_CONNECTED)
+  if (adata->status != POP_CONNECTED)
     return -1;
 
   /* print msg instead of real command */
@@ -473,28 +475,28 @@ int pop_query_d(struct PopMboxData *mdata, char *buf, size_t buflen, char *msg)
     mutt_debug(MUTT_SOCK_LOG_CMD, "> %s", msg);
   }
 
-  mutt_socket_send_d(mdata->conn, buf, dbg);
+  mutt_socket_send_d(adata->conn, buf, dbg);
 
   char *c = strpbrk(buf, " \r\n");
   if (c)
     *c = '\0';
-  snprintf(mdata->err_msg, sizeof(mdata->err_msg), "%s: ", buf);
+  snprintf(adata->err_msg, sizeof(adata->err_msg), "%s: ", buf);
 
-  if (mutt_socket_readln(buf, buflen, mdata->conn) < 0)
+  if (mutt_socket_readln(buf, buflen, adata->conn) < 0)
   {
-    mdata->status = POP_DISCONNECTED;
+    adata->status = POP_DISCONNECTED;
     return -1;
   }
   if (mutt_str_strncmp(buf, "+OK", 3) == 0)
     return 0;
 
-  pop_error(mdata, buf);
+  pop_error(adata, buf);
   return -2;
 }
 
 /**
  * pop_fetch_data - Read Headers with callback function
- * @param mdata POP Mailbox data
+ * @param adata       POP Account data
  * @param query       POP query to send to server
  * @param progressbar Progress bar
  * @param func        Function called for each header read
@@ -507,7 +509,7 @@ int pop_query_d(struct PopMboxData *mdata, char *buf, size_t buflen, char *msg)
  * This function calls  func(*line, *data)  for each received line,
  * func(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  */
-int pop_fetch_data(struct PopMboxData *mdata, const char *query,
+int pop_fetch_data(struct PopAccountData *adata, const char *query,
                    struct Progress *progressbar, int (*func)(char *, void *), void *data)
 {
   char buf[LONG_STRING];
@@ -515,7 +517,7 @@ int pop_fetch_data(struct PopMboxData *mdata, const char *query,
   size_t lenbuf = 0;
 
   mutt_str_strfcpy(buf, query, sizeof(buf));
-  int ret = pop_query(mdata, buf, sizeof(buf));
+  int ret = pop_query(adata, buf, sizeof(buf));
   if (ret < 0)
     return ret;
 
@@ -523,10 +525,10 @@ int pop_fetch_data(struct PopMboxData *mdata, const char *query,
 
   while (true)
   {
-    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), mdata->conn, MUTT_SOCK_LOG_HDR);
+    const int chunk = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_HDR);
     if (chunk < 0)
     {
-      mdata->status = POP_DISCONNECTED;
+      adata->status = POP_DISCONNECTED;
       ret = -1;
       break;
     }
@@ -585,13 +587,13 @@ static int check_uidl(char *line, void *data)
     endp++;
   memmove(line, endp, strlen(endp) + 1);
 
-  struct Mailbox *mailbox = data;
-  for (int i = 0; i < mailbox->msg_count; i++)
+  struct Mailbox *m = data;
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = mailbox->hdrs[i]->data;
+    struct PopEmailData *edata = m->hdrs[i]->edata;
     if (mutt_str_strcmp(edata->uid, line) == 0)
     {
-      mailbox->hdrs[i]->refno = index;
+      m->hdrs[i]->refno = index;
       break;
     }
   }
@@ -601,43 +603,43 @@ static int check_uidl(char *line, void *data)
 
 /**
  * pop_reconnect - reconnect and verify indexes if connection was lost
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error
  */
-int pop_reconnect(struct Mailbox *mailbox)
+int pop_reconnect(struct Mailbox *m)
 {
-  struct PopMboxData *mdata = pop_get_mdata(mailbox);
+  struct PopAccountData *adata = pop_get_adata(m);
 
-  if (mdata->status == POP_CONNECTED)
+  if (adata->status == POP_CONNECTED)
     return 0;
-  if (mdata->status == POP_BYE)
+  if (adata->status == POP_BYE)
     return -1;
 
   while (true)
   {
-    mutt_socket_close(mdata->conn);
+    mutt_socket_close(adata->conn);
 
-    int ret = pop_open_connection(mdata);
+    int ret = pop_open_connection(adata);
     if (ret == 0)
     {
       struct Progress progressbar;
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
-      for (int i = 0; i < mailbox->msg_count; i++)
-        mailbox->hdrs[i]->refno = -1;
+      for (int i = 0; i < m->msg_count; i++)
+        m->hdrs[i]->refno = -1;
 
-      ret = pop_fetch_data(mdata, "UIDL\r\n", &progressbar, check_uidl, mailbox);
+      ret = pop_fetch_data(adata, "UIDL\r\n", &progressbar, check_uidl, m);
       if (ret == -2)
       {
-        mutt_error("%s", mdata->err_msg);
+        mutt_error("%s", adata->err_msg);
       }
     }
     if (ret == 0)
       return 0;
 
-    pop_logout(mailbox);
+    pop_logout(m);
 
     if (ret < -1)
       return -1;
@@ -651,13 +653,16 @@ int pop_reconnect(struct Mailbox *mailbox)
 }
 
 /**
- * pop_get_mdata - Get the private data for this Mailbox
+ * pop_get_adata - Get the Account data for this mailbox
  * @param m Mailbox
- * @retval ptr PopMboxData
+ * @retval ptr PopAccountData
  */
-struct PopMboxData *pop_get_mdata(struct Mailbox *m)
+struct PopAccountData *pop_get_adata(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_POP))
     return NULL;
-  return m->data;
+  struct Account *a = m->account;
+  if (!a)
+    return NULL;
+  return a->adata;
 }

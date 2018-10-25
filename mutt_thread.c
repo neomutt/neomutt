@@ -576,6 +576,9 @@ static void pseudo_threads(struct Context *ctx)
  */
 void mutt_clear_threads(struct Context *ctx)
 {
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+    return;
+
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     /* mailbox may have been only partially read */
@@ -1391,16 +1394,16 @@ int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
 
 /**
  * mutt_make_id_hash - Create a Hash Table for message-ids
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-struct Hash *mutt_make_id_hash(struct Mailbox *mailbox)
+struct Hash *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct Hash *hash = mutt_hash_create(mailbox->msg_count * 2, 0);
+  struct Hash *hash = mutt_hash_create(m->msg_count * 2, 0);
 
-  for (int i = 0; i < mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = mailbox->hdrs[i];
+    struct Email *e = m->hdrs[i];
     if (e->env->message_id)
       mutt_hash_insert(hash, e->env->message_id, e);
   }

@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,11 +29,11 @@
 #include <stdio.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 
-struct ConnAccount;
 struct Context;
 struct Email;
 struct ImapEmailData;
@@ -210,6 +211,8 @@ enum ImapCommandType
 struct ImapAccountData
 {
   struct Connection *conn;
+  struct ConnAccount conn_account;
+  struct Account *account;
   bool recovering;
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
@@ -249,6 +252,7 @@ struct ImapAccountData
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
   struct Context *ctx;
+  struct Mailbox *mailbox;
   char *mbox_name;
   unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
   unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
@@ -316,7 +320,8 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags);
 int imap_cmd_idle(struct ImapAccountData *adata);
 
 /* message.c */
-void imap_free_emaildata(void **data);
+void imap_edata_free(void **ptr);
+struct ImapEmailData *imap_edata_get(struct Email *e);
 int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
 char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, int *server_changes);
 int imap_cache_del(struct ImapAccountData *adata, struct Email *e);
@@ -328,7 +333,7 @@ int imap_msg_close(struct Context *ctx, struct Message *msg);
 int imap_msg_commit(struct Context *ctx, struct Message *msg);
 
 /* util.c */
-struct ImapAccountData *imap_get_adata(struct Mailbox *m);
+struct ImapAccountData *imap_adata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);
@@ -343,7 +348,7 @@ char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata);
 int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
-void imap_adata_free(struct ImapAccountData **adata);
+void imap_adata_free(void **ptr);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
@@ -364,8 +369,8 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 /* utf7.c */
 void imap_utf_encode(struct ImapAccountData *adata, char **s);
 void imap_utf_decode(struct ImapAccountData *adata, char **s);
-void imap_allow_reopen(struct Context *ctx);
-void imap_disallow_reopen(struct Context *ctx);
+void imap_allow_reopen(struct Mailbox *m);
+void imap_disallow_reopen(struct Mailbox *m);
 
 #ifdef USE_HCACHE
 #define imap_hcache_keylen mutt_str_strlen

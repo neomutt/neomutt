@@ -1730,7 +1730,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
     if ((flags & SEND_NEWS) && ctx && ctx->mailbox->magic == MUTT_NNTP &&
         !msg->env->newsgroups)
       msg->env->newsgroups =
-          mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->data)->group);
+          mutt_str_strdup(((struct NntpMboxData *) ctx->mailbox->mdata)->group);
 #endif
 
     if (!(flags & (SEND_MAILX | SEND_BATCH)) && !(Autoedit && EditHeaders) &&

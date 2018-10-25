@@ -1,9 +1,9 @@
 /**
  * @file
- * Representation of the email's header
+ * Maildir/MH private types
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,18 +20,41 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HEADER_H
-#define MUTT_MUTT_HEADER_H
+#ifndef MUTT_MAILDIR_MAILDIR_PRIVATE_H
+#define MUTT_MAILDIR_MAILDIR_PRIVATE_H
 
-#include <stddef.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <time.h>
 
-struct Context;
-struct Email;
+/**
+ * struct MaildirMboxData - MH-specific mailbox data
+ */
+struct MaildirMboxData
+{
+  struct timespec mtime_cur;
+  mode_t mh_umask;
+};
 
-void mutt_edit_headers(const char *editor, const char *body, struct Email *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Mailbox *m, struct Email *e);
-void mutt_label_hash_remove(struct Mailbox *m, struct Email *e);
-int  mutt_label_message(struct Email *e);
-void mutt_make_label_hash(struct Mailbox *m);
+/**
+ * struct Maildir - A Maildir mailbox
+ */
+struct Maildir
+{
+  struct Email *email;
+  char *canon_fname;
+  bool header_parsed : 1;
+  ino_t inode;
+  struct Maildir *next;
+};
 
-#endif /* MUTT_MUTT_HEADER_H */
+/**
+ * struct MhSequences - Set of MH sequence numbers
+ */
+struct MhSequences
+{
+  int max;
+  short *flags;
+};
+
+#endif /* MUTT_MAILDIR_MAILDIR_PRIVATE_H */

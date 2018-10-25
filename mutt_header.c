@@ -44,19 +44,19 @@
 
 /**
  * label_ref_dec - Decrease the refcount of a label
- * @param mailbox   Mailbox
+ * @param m     Mailbox
  * @param label Label
  */
-static void label_ref_dec(struct Mailbox *mailbox, char *label)
+static void label_ref_dec(struct Mailbox *m, char *label)
 {
-  struct HashElem *elem = mutt_hash_find_elem(mailbox->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(m->label_hash, label);
   if (!elem)
     return;
 
   uintptr_t count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(mailbox->label_hash, label, NULL);
+    mutt_hash_delete(m->label_hash, label, NULL);
     return;
   }
 
@@ -66,18 +66,18 @@ static void label_ref_dec(struct Mailbox *mailbox, char *label)
 
 /**
  * label_ref_inc - Increase the refcount of a label
- * @param mailbox   Mailbox
+ * @param m     Mailbox
  * @param label Label
  */
-static void label_ref_inc(struct Mailbox *mailbox, char *label)
+static void label_ref_inc(struct Mailbox *m, char *label)
 {
   uintptr_t count;
 
-  struct HashElem *elem = mutt_hash_find_elem(mailbox->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(m->label_hash, label);
   if (!elem)
   {
     count = 1;
-    mutt_hash_insert(mailbox->label_hash, label, (void *) count);
+    mutt_hash_insert(m->label_hash, label, (void *) count);
     return;
   }
 
@@ -88,12 +88,12 @@ static void label_ref_inc(struct Mailbox *mailbox, char *label)
 
 /**
  * label_message - add an X-Label: field
- * @param[in]  mailbox Mailbox
- * @param[in]  e Email
+ * @param[in]  m   Mailbox
+ * @param[in]  e   Email
  * @param[out] new Set to true if this is a new label
  * @retval true If the label was added
  */
-static bool label_message(struct Mailbox *mailbox, struct Email *e, char *new)
+static bool label_message(struct Mailbox *m, struct Email *e, char *new)
 {
   if (!e)
     return false;
@@ -101,10 +101,10 @@ static bool label_message(struct Mailbox *mailbox, struct Email *e, char *new)
     return false;
 
   if (e->env->x_label)
-    label_ref_dec(mailbox, e->env->x_label);
+    label_ref_dec(m, e->env->x_label);
   mutt_str_replace(&e->env->x_label, new);
   if (e->env->x_label)
-    label_ref_inc(mailbox, e->env->x_label);
+    label_ref_inc(m, e->env->x_label);
 
   e->changed = true;
   e->xlabel_changed = true;
@@ -365,38 +365,38 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
 
 /**
  * mutt_make_label_hash - Create a Hash Table to store the labels
- * @param mailbox Mailbox
+ * @param m Mailbox
  */
-void mutt_make_label_hash(struct Mailbox *mailbox)
+void mutt_make_label_hash(struct Mailbox *m)
 {
   /* 131 is just a rough prime estimate of how many distinct
-   * labels someone might have in a mailbox.
+   * labels someone might have in a m.
    */
-  mailbox->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  m->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 /**
  * mutt_label_hash_add - Add a message's labels to the Hash Table
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @param e Header of message
  */
-void mutt_label_hash_add(struct Mailbox *mailbox, struct Email *e)
+void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 {
-  if (!mailbox || !mailbox->label_hash)
+  if (!m || !m->label_hash)
     return;
   if (e->env->x_label)
-    label_ref_inc(mailbox, e->env->x_label);
+    label_ref_inc(m, e->env->x_label);
 }
 
 /**
  * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
- * @param mailbox Mailbox
+ * @param m Mailbox
  * @param e Header of message
  */
-void mutt_label_hash_remove(struct Mailbox *mailbox, struct Email *e)
+void mutt_label_hash_remove(struct Mailbox *m, struct Email *e)
 {
-  if (!mailbox || !mailbox->label_hash)
+  if (!m || !m->label_hash)
     return;
   if (e->env->x_label)
-    label_ref_dec(mailbox, e->env->x_label);
+    label_ref_dec(m, e->env->x_label);
 }

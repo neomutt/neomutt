@@ -108,10 +108,10 @@ struct Email
 
   struct TagHead tags; /**< for drivers that support server tagging */
 
-  void *data;                 /**< driver-specific data */
-  void (*free_data)(void **); /**< driver-specific data free function */
-
   char *maildir_flags; /**< unknown maildir flags */
+
+  void *edata;                 /**< driver-specific data */
+  void (*free_edata)(void **); /**< driver-specific data free function */
 };
 
 bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);

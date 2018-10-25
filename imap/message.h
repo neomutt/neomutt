@@ -62,6 +62,4 @@ struct ImapHeader
   long content_length;
 };
 
-#define IMAP_EDATA(email) ((struct ImapEmailData *) ((email)->data))
-
 #endif /* MUTT_IMAP_MESSAGE_H */

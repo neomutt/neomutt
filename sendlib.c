@@ -3176,7 +3176,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
 #ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path);
 #endif
-  struct Context *f = mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET);
+  struct Context *f = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
   if (!f)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);

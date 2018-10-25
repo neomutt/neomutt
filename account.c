@@ -1,9 +1,9 @@
 /**
  * @file
- * Representation of the email's header
+ * Representation of an account
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,18 +20,35 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HEADER_H
-#define MUTT_MUTT_HEADER_H
+#include "config.h"
+#include "mutt/mutt.h"
+#include "account.h"
 
-#include <stddef.h>
+struct AccountList AllAccounts = TAILQ_HEAD_INITIALIZER(AllAccounts);
 
-struct Context;
-struct Email;
+/**
+ * account_create - Create a new Account
+ * @retval ptr New Account
+ */
+struct Account *account_create(void)
+{
+  struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
+  STAILQ_INIT(&a->mailboxes);
 
-void mutt_edit_headers(const char *editor, const char *body, struct Email *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Mailbox *m, struct Email *e);
-void mutt_label_hash_remove(struct Mailbox *m, struct Email *e);
-int  mutt_label_message(struct Email *e);
-void mutt_make_label_hash(struct Mailbox *m);
+  return a;
+}
 
-#endif /* MUTT_MUTT_HEADER_H */
+/**
+ * account_free - Free an Account
+ * @param a Account to free
+ */
+void account_free(struct Account **a)
+{
+  if (!a || !*a)
+    return;
+
+  if ((*a)->adata)
+    (*a)->free_adata((void **) a);
+
+  FREE(a);
+}

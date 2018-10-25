@@ -28,6 +28,8 @@
 #include <sys/types.h>
 #include <time.h>
 
+struct Mailbox;
+
 /**
  * struct Context - The "current" mailbox
  */

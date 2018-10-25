@@ -804,7 +804,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         return -1;
       if (!fgets(buf, sizeof(buf), fp))
         return -1;
-      struct Context *ctx = mx_mbox_open(path, MUTT_APPEND | MUTT_QUIET);
+      struct Context *ctx = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
         return -1;
       msg = mx_msg_open_new(ctx, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
