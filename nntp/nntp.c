@@ -2300,7 +2300,7 @@ static int nntp_mbox_open(struct Context *ctx)
   }
 
   group = url.path;
-  if (group[0] == '/')  /* Skip a leading '/' */
+  if (group[0] == '/') /* Skip a leading '/' */
     group++;
 
   url.path = strchr(url.path, '\0');

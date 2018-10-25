@@ -975,8 +975,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     for (unsigned int i = 0; i < adata->groups_num; i++)
     {
       struct NntpMboxData *mdata = adata->groups_list[i];
-      if (mdata && (mdata->new || (mdata->subscribed &&
-                                           (mdata->unread || !ShowOnlyUnread))))
+      if (mdata && (mdata->new || (mdata->subscribed && (mdata->unread || !ShowOnlyUnread))))
       {
         add_folder(menu, state, mdata->group, NULL, NULL, NULL, mdata);
       }
