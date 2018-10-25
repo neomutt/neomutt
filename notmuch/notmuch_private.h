@@ -27,6 +27,17 @@
 #ifndef MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
 #define MUTT_NOTMUCH_NOTMUCH_PRIVATE_H
 
+#ifdef LIBNOTMUCH_CHECK_VERSION
+#undef LIBNOTMUCH_CHECK_VERSION
+#endif
+
+/* @def The definition in <notmuch.h> is broken */
+#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
+  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
+   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
+   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
+    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
+
 struct Mailbox;
 
 /**

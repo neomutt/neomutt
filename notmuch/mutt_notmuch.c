@@ -83,17 +83,6 @@ char *NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration
 char *NmRecordTags; ///< Config: (notmuch) Tags to apply to the 'record' mailbox (sent mail)
 char *NmUnreadTag; ///< Config: (notmuch) Tag to use for unread messages
 
-#ifdef LIBNOTMUCH_CHECK_VERSION
-#undef LIBNOTMUCH_CHECK_VERSION
-#endif
-
-/* @def The definition in <notmuch.h> is broken */
-#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
-  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
-    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
-
 /**
  * string_to_query_type - Lookup a query type
  * @param str String to lookup
