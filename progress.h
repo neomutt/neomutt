@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_PROGRESS_H
-#define _MUTT_PROGRESS_H
+#ifndef MUTT_PROGRESS_H
+#define MUTT_PROGRESS_H
 
 #include <stdio.h>
 #include "mutt/mutt.h"
@@ -50,4 +50,4 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, size_t size);
 void mutt_progress_update(struct Progress *progress, long pos, int percent);
 
-#endif /* _MUTT_PROGRESS_H */
+#endif /* MUTT_PROGRESS_H */

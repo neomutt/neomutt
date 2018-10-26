@@ -43,6 +43,9 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
+#ifdef USE_INOTIFY
+#include "monitor.h"
+#endif
 
 /**
  * Menus - Menu name lookup table
@@ -275,7 +278,8 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static int km_bind_err(char *s, int menu, int op, char *macro, char *desc, struct Buffer *err)
+static int km_bind_err(const char *s, int menu, int op, char *macro, char *desc,
+                       struct Buffer *err)
 {
   int retval = 0;
   struct Keymap *last = NULL, *next = NULL;
@@ -394,7 +398,7 @@ int km_bind(char *s, int menu, int op, char *macro, char *desc)
  * @retval  0 Success
  * @retval -2 Error
  */
-static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
+static int km_bindkey_err(const char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
@@ -407,7 +411,7 @@ static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
  * @retval  0 Success
  * @retval -2 Error
  */
-static int km_bindkey(char *s, int menu, int op)
+static int km_bindkey(const char *s, int menu, int op)
 {
   return km_bindkey_err(s, menu, op, NULL);
 }
@@ -442,7 +446,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
  *
  * @note This returns a static string.
  */
-static char *get_func(const struct Binding *bindings, int op)
+static const char *get_func(const struct Binding *bindings, int op)
 {
   for (int i = 0; bindings[i].name; i++)
   {
@@ -582,14 +586,18 @@ int km_dokey(int menu)
       {
         while (ImapKeepalive && ImapKeepalive < i)
         {
-          timeout(ImapKeepalive * 1000);
+          mutt_getch_timeout(ImapKeepalive * 1000);
           tmp = mutt_getch();
-          timeout(-1);
+          mutt_getch_timeout(-1);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.
            */
+#ifdef USE_INOTIFY
+          if (tmp.ch != -2 || SigWinch || MonitorFilesChanged)
+#else
           if (tmp.ch != -2 || SigWinch)
+#endif
             goto gotkey;
           i -= ImapKeepalive;
           imap_keepalive();
@@ -598,9 +606,9 @@ int km_dokey(int menu)
     }
 #endif
 
-    timeout(i * 1000);
+    mutt_getch_timeout(i * 1000);
     tmp = mutt_getch();
-    timeout(-1);
+    mutt_getch_timeout(-1);
 
 #ifdef USE_IMAP
   gotkey:
@@ -616,7 +624,7 @@ int km_dokey(int menu)
     /* do we have an op already? */
     if (tmp.op)
     {
-      char *func = NULL;
+      const char *func = NULL;
       const struct Binding *bindings = NULL;
 
       /* is this a valid op for this menu? */
@@ -1074,13 +1082,7 @@ void km_error_key(int menu)
 }
 
 /**
- * mutt_parse_push - Parse the 'push' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_push - Parse the 'push' command - Implements ::command_t
  */
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
@@ -1239,13 +1241,7 @@ const struct Binding *km_get_table(int menu)
 }
 
 /**
- * mutt_parse_bind - Parse the 'bind' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_bind - Parse the 'bind' command - Implements ::command_t
  *
  * bind menu-name `<key_sequence>` function-name
  */
@@ -1302,13 +1298,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_macro - Parse the 'macro' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_macro - Parse the 'macro' command - Implements ::command_t
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
@@ -1326,7 +1316,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
   /* make sure the macro sequence is not an empty string */
   if (!*buf->data)
   {
-    mutt_str_strfcpy(err->data, _("macro: empty key sequence"), err->dsize);
+    mutt_buffer_strcpy(err, _("macro: empty key sequence"));
   }
   else
   {
@@ -1362,13 +1352,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 }
 
 /**
- * mutt_parse_exec - Parse the 'exec' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_exec - Parse the 'exec' command - Implements ::command_t
  */
 int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
@@ -1380,7 +1364,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("exec: no arguments"), err->dsize);
+    mutt_buffer_strcpy(err, _("exec: no arguments"));
     return -1;
   }
 

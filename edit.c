@@ -31,12 +31,13 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "alias.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_header.h"
 #include "mutt_window.h"
@@ -202,7 +203,8 @@ static void be_free_memory(char **buf, int buflen)
 static char **be_include_messages(char *msg, char **buf, int *bufmax,
                                   int *buflen, int pfx, int inc_hdrs)
 {
-  int offset, bytes, n;
+  int n;
+  // int offset, bytes;
   char tmp[LONG_STRING];
 
   if (!msg || !buf || !bufmax || !buflen)
@@ -210,7 +212,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 
   while ((msg = strtok(msg, " ,")))
   {
-    if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
+    if ((mutt_str_atoi(msg, &n) == 0) && (n > 0) && (n <= Context->mailbox->msg_count))
     {
       n--;
 
@@ -218,7 +220,8 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       if (Attribution)
       {
         setlocale(LC_TIME, NONULL(AttributionLocale));
-        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context, Context->hdrs[n]);
+        mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
+                         Context->mailbox->hdrs[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
       }
@@ -227,15 +230,19 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = mutt_str_strdup(tmp);
 
-      bytes = Context->hdrs[n]->content->length;
+#if 0
+      /* This only worked for mbox Mailboxes because they had Context->fp set.
+       * As that no longer exists, the code is now completely broken. */
+      bytes = Context->mailbox->hdrs[n]->content->length;
       if (inc_hdrs)
       {
-        offset = Context->hdrs[n]->offset;
-        bytes += Context->hdrs[n]->content->offset - offset;
+        offset = Context->mailbox->hdrs[n]->offset;
+        bytes += Context->mailbox->hdrs[n]->content->offset - offset;
       }
       else
-        offset = Context->hdrs[n]->content->offset;
+        offset = Context->mailbox->hdrs[n]->content->offset;
       buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
+#endif
 
       if (*bufmax == *buflen)
         mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
@@ -294,7 +301,7 @@ static void be_print_header(struct Envelope *env)
  * @param e     Message headers
  * @param force override the $ask* vars (used for the ~h command)
  */
-static void be_edit_header(struct Envelope *e, int force)
+static void be_edit_header(struct Envelope *e, bool force)
 {
   char tmp[HUGE_STRING];
 
@@ -384,7 +391,7 @@ static void be_edit_header(struct Envelope *e, int force)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
+int mutt_builtin_editor(const char *path, struct Email *msg, struct Email *cur)
 {
   char **buf = NULL;
   int bufmax = 0, buflen = 0;
@@ -395,7 +402,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   scrollok(stdscr, true);
 
-  be_edit_header(msg->env, 0);
+  be_edit_header(msg->env, false);
 
   addstr(_("(End message with a . on a line by itself)\n"));
 
@@ -436,7 +443,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           msg->env->cc = mutt_expand_aliases(msg->env->cc);
           break;
         case 'h':
-          be_edit_header(msg->env, 1);
+          be_edit_header(msg->env, true);
           break;
         case 'F':
         case 'f':
@@ -476,7 +483,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
         case 'r':
           if (*p)
           {
-            strncpy(tmp, p, sizeof(tmp));
+            mutt_str_strfcpy(tmp, p, sizeof(tmp));
             mutt_expand_path(tmp, sizeof(tmp));
             buf = be_snarf_file(tmp, buf, &bufmax, &buflen, true);
           }
@@ -508,7 +515,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
         case 'v':
           if (be_barf_file(path, buf, buflen) == 0)
           {
-            char *tag = NULL, *err = NULL;
+            const char *tag = NULL;
+            char *err = NULL;
             be_free_memory(buf, buflen);
             buf = NULL;
             bufmax = 0;

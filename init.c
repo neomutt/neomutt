@@ -36,7 +36,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "alias.h"
@@ -132,8 +132,8 @@ static void alternates_clean(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
-    Context->hdrs[i]->recip_valid = false;
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
+    Context->mailbox->hdrs[i]->recip_valid = false;
 }
 
 /**
@@ -144,8 +144,8 @@ static void attachments_clean(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
-    Context->hdrs[i]->attach_valid = false;
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
+    Context->mailbox->hdrs[i]->attach_valid = false;
 }
 
 /**
@@ -204,8 +204,8 @@ static void clear_subject_mods(void)
   if (!Context)
     return;
 
-  for (int i = 0; i < Context->msgcount; i++)
-    FREE(&Context->hdrs[i]->env->disp_subj);
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
+    FREE(&Context->mailbox->hdrs[i]->env->disp_subj);
 }
 
 #ifdef USE_NOTMUCH
@@ -225,10 +225,10 @@ static int complete_all_nm_tags(const char *pt)
   memset(Matches, 0, MatchesListsize);
   memset(Completed, 0, sizeof(Completed));
 
-  nm_longrun_init(Context, false);
+  nm_db_longrun_init(Context->mailbox, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
+  if (nm_get_all_tags(Context->mailbox, NULL, &tag_count_1) || tag_count_1 == 0)
     goto done;
 
   /* Free the old list, if any. */
@@ -243,11 +243,11 @@ static int complete_all_nm_tags(const char *pt)
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
-  if (nm_get_all_tags(Context, nm_tags, &tag_count_2) || tag_count_1 != tag_count_2)
+  if (nm_get_all_tags(Context->mailbox, nm_tags, &tag_count_2) || tag_count_1 != tag_count_2)
   {
     FREE(&nm_tags);
     nm_tags = NULL;
-    nm_longrun_done(Context);
+    nm_db_longrun_done(Context->mailbox);
     return -1;
   }
 
@@ -261,7 +261,7 @@ static int complete_all_nm_tags(const char *pt)
   Matches[NumMatched++] = UserTyped;
 
 done:
-  nm_longrun_done(Context);
+  nm_db_longrun_done(Context->mailbox);
   return 0;
 }
 #endif
@@ -541,7 +541,7 @@ static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
   {
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("-group: no group name"), err->dsize);
+      mutt_buffer_strcpy(err, _("-group: no group name"));
       goto bail;
     }
 
@@ -551,7 +551,7 @@ static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
 
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("out of arguments"), err->dsize);
+      mutt_buffer_strcpy(err, _("out of arguments"));
       goto bail;
     }
 
@@ -698,7 +698,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
  * @param name Attached/Inline, 'A', 'I'
  * @retval 0 Always
  */
-static int print_attach_list(struct ListHead *h, char op, char *name)
+static int print_attach_list(struct ListHead *h, const char op, const char *name)
 {
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
@@ -892,7 +892,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("alias: no address"), err->dsize);
+    mutt_buffer_strcpy(err, _("alias: no address"));
     return -1;
   }
 
@@ -1007,7 +1007,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
   {
-    mutt_str_strfcpy(err->data, _("attachments: no disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("attachments: no disposition"));
     return -1;
   }
 
@@ -1048,7 +1048,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("attachments: invalid disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("attachments: invalid disposition"));
     return -1;
   }
 
@@ -1191,14 +1191,13 @@ bail:
 static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  bool res = false;
   struct Buffer token = { 0 };
 
   mutt_extract_token(buf, s, 0);
 
   /* is the item defined as a variable? */
   struct HashElem *he = cs_get_elem(Config, buf->data);
-  res = (he != NULL);
+  bool res = (he != NULL);
 
   /* is the item a compiled-in feature? */
   if (!res)
@@ -1329,7 +1328,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
   {
-    mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
+    mutt_buffer_strcpy(err, _("invalid header field"));
     return -1;
   }
   keylen = p - buf->data + 1;
@@ -1731,7 +1730,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
     else
     {
-      rc = cs_str_string_set(Config, buf->data, NULL, err);
+      rc = cs_he_string_set(Config, he, NULL, err);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return -1;
     }
@@ -1867,9 +1866,9 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
   {
     if (data == MUTT_SPAM)
-      mutt_str_strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+      mutt_buffer_strcpy(err, _("spam: no matching pattern"));
     else
-      mutt_str_strfcpy(err->data, _("nospam: no matching pattern"), err->dsize);
+      mutt_buffer_strcpy(err, _("nospam: no matching pattern"));
     return -1;
   }
 
@@ -1925,7 +1924,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   }
 
   /* This should not happen. */
-  mutt_str_strfcpy(err->data, "This is no good at all.", err->dsize);
+  mutt_buffer_strcpy(err, "This is no good at all.");
   return -1;
 }
 
@@ -2209,7 +2208,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
   {
-    mutt_str_strfcpy(err->data, _("unattachments: no disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("unattachments: no disposition"));
     return -1;
   }
 
@@ -2236,7 +2235,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("unattachments: invalid disposition"), err->dsize);
+    mutt_buffer_strcpy(err, _("unattachments: invalid disposition"));
     return -1;
   }
 
@@ -2871,6 +2870,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   TagFormats = mutt_hash_create(64, 0);
 
   mutt_menu_init();
+  mutt_buffer_pool_init();
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
@@ -3085,9 +3085,9 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
     struct MailboxNode *mp = NULL;
     STAILQ_FOREACH(mp, &AllMailboxes, entries)
     {
-      if (mp->b->magic == MUTT_NOTMUCH)
+      if (mp->m->magic == MUTT_NOTMUCH)
       {
-        cs_str_string_set(Config, "spoolfile", mp->b->path, NULL);
+        cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
         mutt_sb_toggle_virtual();
         break;
       }
@@ -3201,8 +3201,8 @@ int mutt_query_variables(struct ListHead *queries)
     if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
     {
       mutt_buffer_reset(tmp);
-      size_t len = pretty_var(value->data, tmp);
-      mutt_str_strfcpy(value->data, tmp->data, len + 1);
+      pretty_var(value->data, tmp);
+      mutt_buffer_strcpy(value, tmp->data);
     }
 
     dump_config_neo(Config, he, value, NULL, 0);
@@ -3421,7 +3421,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
   char *pt = buf;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  if (!Context || !Context->label_hash)
+  if (!Context || !Context->mailbox->label_hash)
     return 0;
 
   SKIPWS(buf);
@@ -3437,7 +3437,7 @@ int mutt_label_complete(char *buf, size_t buflen, int numtabs)
     mutt_str_strfcpy(UserTyped, buf, sizeof(UserTyped));
     memset(Matches, 0, MatchesListsize);
     memset(Completed, 0, sizeof(Completed));
-    while ((entry = mutt_hash_walk(Context->label_hash, &state)))
+    while ((entry = mutt_hash_walk(Context->mailbox->label_hash, &state)))
       candidate(UserTyped, entry->key.strkey, Completed, sizeof(Completed));
     matches_ensure_morespace(NumMatched);
     qsort(Matches, NumMatched, sizeof(char *), (sort_t *) mutt_str_strcasecmp);
@@ -3688,7 +3688,7 @@ struct ConfigSet *init_config(size_t size)
 }
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ::cs_validator
+ * charset_validator - Validate the "charset" config variable - Implements ::cs_validator()
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -3721,7 +3721,7 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
 #ifdef USE_HCACHE
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable - Implements ::cs_validator
+ * hcache_validator - Validate the "header_cache_backend" config variable - Implements ::cs_validator()
  */
 int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                      intptr_t value, struct Buffer *err)
@@ -3740,7 +3740,7 @@ int hcache_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 #endif
 
 /**
- * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator
+ * pager_validator - Check for config variables that can't be set from the pager - Implements ::cs_validator()
  */
 int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)
@@ -3756,7 +3756,7 @@ int pager_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ::cs_validator
+ * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ::cs_validator()
  */
 int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                         intptr_t value, struct Buffer *err)
@@ -3774,7 +3774,7 @@ int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable - Implements ::cs_validator
+ * reply_validator - Validate the "reply_regex" config variable - Implements ::cs_validator()
  */
 int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                     intptr_t value, struct Buffer *err)

@@ -25,12 +25,13 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "score.h"
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "options.h"
 #include "pattern.h"
@@ -75,23 +76,17 @@ void mutt_check_rescore(struct Context *ctx)
     mutt_menu_set_redraw_full(MENU_MAIN);
     mutt_menu_set_redraw_full(MENU_PAGER);
 
-    for (int i = 0; ctx && i < ctx->msgcount; i++)
+    for (int i = 0; ctx && i < ctx->mailbox->msg_count; i++)
     {
-      mutt_score_message(ctx, ctx->hdrs[i], true);
-      ctx->hdrs[i]->pair = 0;
+      mutt_score_message(ctx, ctx->mailbox->hdrs[i], true);
+      ctx->mailbox->hdrs[i]->pair = 0;
     }
   }
   OptNeedRescore = false;
 }
 
 /**
- * mutt_parse_score - Parse the 'score' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_score - Parse the 'score' command - Implements ::command_t
  */
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
@@ -154,7 +149,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (mutt_str_atoi(pc, &ptr->val) < 0)
   {
     FREE(&pattern);
-    mutt_str_strfcpy(err->data, _("Error: score: invalid number"), err->dsize);
+    mutt_buffer_strcpy(err, _("Error: score: invalid number"));
     return -1;
   }
   OptNeedRescore = true;
@@ -164,46 +159,40 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
 /**
  * mutt_score_message - Apply scoring to an email
  * @param ctx     Mailbox
- * @param hdr     Email header
+ * @param e     Email header
  * @param upd_ctx If true, update the Context too
  */
-void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx)
+void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)
 {
   struct Score *tmp = NULL;
   struct PatternCache cache = { 0 };
 
-  hdr->score = 0; /* in case of re-scoring */
+  e->score = 0; /* in case of re-scoring */
   for (tmp = ScoreList; tmp; tmp = tmp->next)
   {
-    if (mutt_pattern_exec(tmp->pat, MUTT_MATCH_FULL_ADDRESS, NULL, hdr, &cache) > 0)
+    if (mutt_pattern_exec(tmp->pat, MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
     {
       if (tmp->exact || tmp->val == 9999 || tmp->val == -9999)
       {
-        hdr->score = tmp->val;
+        e->score = tmp->val;
         break;
       }
-      hdr->score += tmp->val;
+      e->score += tmp->val;
     }
   }
-  if (hdr->score < 0)
-    hdr->score = 0;
+  if (e->score < 0)
+    e->score = 0;
 
-  if (hdr->score <= ScoreThresholdDelete)
-    mutt_set_flag_update(ctx, hdr, MUTT_DELETE, true, upd_ctx);
-  if (hdr->score <= ScoreThresholdRead)
-    mutt_set_flag_update(ctx, hdr, MUTT_READ, true, upd_ctx);
-  if (hdr->score >= ScoreThresholdFlag)
-    mutt_set_flag_update(ctx, hdr, MUTT_FLAG, true, upd_ctx);
+  if (e->score <= ScoreThresholdDelete)
+    mutt_set_flag_update(ctx, e, MUTT_DELETE, true, upd_ctx);
+  if (e->score <= ScoreThresholdRead)
+    mutt_set_flag_update(ctx, e, MUTT_READ, true, upd_ctx);
+  if (e->score >= ScoreThresholdFlag)
+    mutt_set_flag_update(ctx, e, MUTT_FLAG, true, upd_ctx);
 }
 
 /**
- * mutt_parse_unscore - Parse the 'unscore' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_unscore - Parse the 'unscore' command - Implements ::command_t
  */
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)

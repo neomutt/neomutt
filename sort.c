@@ -25,11 +25,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "sort.h"
 #include "alias.h"
 #include "context.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "options.h"
@@ -63,11 +64,13 @@ int perform_auxsort(int retval, const void *a, const void *b)
     OptAuxSort = true;
     retval = AuxSort(a, b);
     OptAuxSort = false;
+    if (retval != 0)
+      return retval;
   }
   /* If the items still match, use their index positions
    * to maintain a stable sort order */
   if (retval == 0)
-    retval = (*((struct Header **) a))->index - (*((struct Header **) b))->index;
+    retval = (*((struct Email **) a))->index - (*((struct Email **) b))->index;
   return retval;
 }
 
@@ -76,8 +79,8 @@ int perform_auxsort(int retval, const void *a, const void *b)
  */
 static int compare_score(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -88,8 +91,8 @@ static int compare_score(const void *a, const void *b)
  */
 static int compare_size(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->content->length - (*pb)->content->length;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -100,8 +103,8 @@ static int compare_size(const void *a, const void *b)
  */
 static int compare_date_sent(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -112,8 +115,8 @@ static int compare_date_sent(const void *a, const void *b)
  */
 static int compare_subject(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int rc;
 
   if (!(*pa)->env->real_subj)
@@ -163,8 +166,8 @@ const char *mutt_get_name(struct Address *a)
  */
 static int compare_to(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char fa[SHORT_STRING];
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
@@ -179,8 +182,8 @@ static int compare_to(const void *a, const void *b)
  */
 static int compare_from(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char fa[SHORT_STRING];
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
@@ -195,8 +198,8 @@ static int compare_from(const void *a, const void *b)
  */
 static int compare_date_received(const void *a, const void *b)
 {
-  struct Header **pa = (struct Header **) a;
-  struct Header **pb = (struct Header **) b;
+  struct Email **pa = (struct Email **) a;
+  struct Email **pb = (struct Email **) b;
   int result = (*pa)->received - (*pb)->received;
   result = perform_auxsort(result, a, b);
   return SORTCODE(result);
@@ -207,11 +210,11 @@ static int compare_date_received(const void *a, const void *b)
  */
 static int compare_order(const void *a, const void *b)
 {
-  struct Header **ha = (struct Header **) a;
-  struct Header **hb = (struct Header **) b;
+  struct Email **ea = (struct Email **) a;
+  struct Email **eb = (struct Email **) b;
 
   /* no need to auxsort because you will never have equality here */
-  return SORTCODE((*ha)->index - (*hb)->index);
+  return SORTCODE((*ea)->index - (*eb)->index);
 }
 
 /**
@@ -219,8 +222,8 @@ static int compare_order(const void *a, const void *b)
  */
 static int compare_spam(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   char *aptr = NULL, *bptr = NULL;
   int ahas, bhas;
   int result = 0;
@@ -264,10 +267,7 @@ static int compare_spam(const void *a, const void *b)
   if (result == 0)
   {
     result = strcmp(aptr, bptr);
-    if (result == 0)
-    {
-      result = perform_auxsort(result, a, b);
-    }
+    result = perform_auxsort(result, a, b);
   }
 
   return SORTCODE(result);
@@ -278,8 +278,8 @@ static int compare_spam(const void *a, const void *b)
  */
 static int compare_label(const void *a, const void *b)
 {
-  struct Header **ppa = (struct Header **) a;
-  struct Header **ppb = (struct Header **) b;
+  struct Email **ppa = (struct Email **) a;
+  struct Email **ppb = (struct Email **) b;
   int ahas, bhas, result = 0;
 
   /* As with compare_spam, not all messages will have the x-label
@@ -323,7 +323,7 @@ sort_t *mutt_get_sort_func(int method)
       return compare_label;
     case SORT_ORDER:
 #ifdef USE_NNTP
-      if (Context && (Context->magic == MUTT_NNTP))
+      if (Context && (Context->mailbox->magic == MUTT_NNTP))
         return nntp_compare_order;
       else
 #endif
@@ -353,7 +353,7 @@ sort_t *mutt_get_sort_func(int method)
  */
 void mutt_sort_headers(struct Context *ctx, bool init)
 {
-  struct Header *h = NULL;
+  struct Email *e = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
@@ -362,24 +362,25 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (!ctx)
     return;
 
-  if (!ctx->msgcount)
+  if (!ctx->mailbox->msg_count)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.
      */
-    ctx->vcount = 0;
+    ctx->mailbox->vcount = 0;
+    ctx->vsize = 0;
     mutt_clear_threads(ctx);
     return; /* nothing to do! */
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
     mutt_message(_("Sorting mailbox..."));
 
   if (OptNeedRescore && Score)
   {
-    for (int i = 0; i < ctx->msgcount; i++)
-      mutt_score_message(ctx, ctx->hdrs[i], true);
+    for (int i = 0; i < ctx->mailbox->msg_count; i++)
+      mutt_score_message(ctx, ctx->mailbox->hdrs[i], true);
   }
   OptNeedRescore = false;
 
@@ -408,25 +409,25 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     }
     mutt_sort_threads(ctx, init);
   }
-  else if (!(sortfunc = mutt_get_sort_func(Sort)) ||
-           !(AuxSort = mutt_get_sort_func(SortAux)))
+  else if (!(sortfunc = mutt_get_sort_func(Sort)) || !(AuxSort = mutt_get_sort_func(SortAux)))
   {
     mutt_error(_("Could not find sorting function [report this bug]"));
     return;
   }
   else
-    qsort((void *) ctx->hdrs, ctx->msgcount, sizeof(struct Header *), sortfunc);
+    qsort((void *) ctx->mailbox->hdrs, ctx->mailbox->msg_count,
+          sizeof(struct Email *), sortfunc);
 
   /* adjust the virtual message numbers */
-  ctx->vcount = 0;
-  for (int i = 0; i < ctx->msgcount; i++)
+  ctx->mailbox->vcount = 0;
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Header *cur = ctx->hdrs[i];
+    struct Email *cur = ctx->mailbox->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))
     {
-      cur->virtual = ctx->vcount;
-      ctx->v2r[ctx->vcount] = i;
-      ctx->vcount++;
+      cur->virtual = ctx->mailbox->vcount;
+      ctx->mailbox->v2r[ctx->mailbox->vcount] = i;
+      ctx->mailbox->vcount++;
     }
     cur->msgno = i;
   }
@@ -439,15 +440,15 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     {
       while (!thread->message)
         thread = thread->child;
-      h = thread->message;
+      e = thread->message;
 
-      if (h->collapsed)
-        mutt_collapse_thread(ctx, h);
+      if (e->collapsed)
+        mutt_collapse_thread(ctx, e);
       top = top->next;
     }
     mutt_set_virtual(ctx);
   }
 
-  if (!ctx->quiet)
+  if (!ctx->mailbox->quiet)
     mutt_clear_error();
 }

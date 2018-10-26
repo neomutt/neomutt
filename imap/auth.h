@@ -23,10 +23,10 @@
 /* common defs for authenticators. A good place to set up a generic callback
  * system */
 
-#ifndef _IMAP_AUTH_H
-#define _IMAP_AUTH_H
+#ifndef MUTT_IMAP_AUTH_H
+#define MUTT_IMAP_AUTH_H
 
-struct ImapData;
+struct ImapAccountData;
 
 /**
  * enum ImapAuthRes - Results of IMAP Authentication
@@ -44,24 +44,25 @@ enum ImapAuthRes
 struct ImapAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  enum ImapAuthRes (*authenticate)(struct ImapData *idata, const char *method);
+  enum ImapAuthRes (*authenticate)(struct ImapAccountData *adata, const char *method);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
 };
 
 /* external authenticator prototypes */
-enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method);
 #ifndef USE_SASL
-enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method);
-enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *method);
+enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method);
 #endif
-enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *method);
 #ifdef USE_GSS
-enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method);
 #endif
 #ifdef USE_SASL
-enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method);
 #endif
+enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method);
 
-#endif /* _IMAP_AUTH_H */
+#endif /* MUTT_IMAP_AUTH_H */

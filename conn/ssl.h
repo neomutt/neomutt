@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_SSL_H
-#define _CONN_SSL_H
+#ifndef MUTT_CONN_SSL_H
+#define MUTT_CONN_SSL_H
 
 struct Connection;
 
@@ -40,4 +40,4 @@ static inline int mutt_ssl_socket_setup(struct Connection *conn)
 }
 #endif
 
-#endif /* _CONN_SSL_H */
+#endif /* MUTT_CONN_SSL_H */

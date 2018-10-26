@@ -52,8 +52,8 @@
  *       the library, but none depends on source from outside.
  */
 
-#ifndef _MUTT_MUTT_H
-#define _MUTT_MUTT_H
+#ifndef MUTT_LIB_MUTT_H
+#define MUTT_LIB_MUTT_H
 
 #include "base64.h"
 #include "buffer.h"
@@ -78,4 +78,4 @@
 #include "signal2.h"
 #include "string2.h"
 
-#endif /* _MUTT_MUTT_H */
+#endif /* MUTT_LIB_MUTT_H */

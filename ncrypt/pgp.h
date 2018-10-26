@@ -22,15 +22,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGP_H
-#define _NCRYPT_PGP_H
+#ifndef MUTT_NCRYPT_PGP_H
+#define MUTT_NCRYPT_PGP_H
 
 #include <stdbool.h>
 #include <stdio.h>
 
 struct Address;
 struct Body;
-struct Header;
+struct Email;
 struct PgpKeyInfo;
 struct State;
 
@@ -59,6 +59,6 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign);
 struct Body *pgp_class_sign_message(struct Body *a);
 
-int pgp_class_send_menu(struct Header *msg);
+int pgp_class_send_menu(struct Email *msg);
 
-#endif /* _NCRYPT_PGP_H */
+#endif /* MUTT_NCRYPT_PGP_H */

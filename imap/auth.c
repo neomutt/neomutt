@@ -53,18 +53,18 @@ static const struct ImapAuth imap_authenticators[] = {
 #ifndef USE_SASL
   { imap_auth_cram_md5, "cram-md5" },
 #endif
-  { imap_auth_login, "login" },
+  { imap_auth_login, "login" },       { imap_auth_oauth, "oauthbearer" },
 };
 
 /**
  * imap_authenticate - Authenticate to an IMAP server
- * @param idata Server data
+ * @param adata Imap Account data
  * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * Attempt to authenticate using either user-specified authentication method if
  * specified, or any.
  */
-int imap_authenticate(struct ImapData *idata)
+int imap_authenticate(struct ImapAccountData *adata)
 {
   int r = IMAP_AUTH_FAILURE;
 
@@ -91,7 +91,7 @@ int imap_authenticate(struct ImapData *idata)
         const struct ImapAuth *auth = &imap_authenticators[i];
         if (!auth->method || (mutt_str_strcasecmp(auth->method, method) == 0))
         {
-          r = auth->authenticate(idata, method);
+          r = auth->authenticate(adata, method);
           if (r == IMAP_AUTH_SUCCESS)
           {
             FREE(&methods);
@@ -110,7 +110,7 @@ int imap_authenticate(struct ImapData *idata)
 
     for (size_t i = 0; i < mutt_array_size(imap_authenticators); ++i)
     {
-      r = imap_authenticators[i].authenticate(idata, NULL);
+      r = imap_authenticators[i].authenticate(adata, NULL);
       if (r == IMAP_AUTH_SUCCESS)
         return r;
     }

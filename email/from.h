@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_FROM_H
-#define _EMAIL_FROM_H
+#ifndef MUTT_EMAIL_FROM_H
+#define MUTT_EMAIL_FROM_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -29,4 +29,4 @@
 
 bool is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
-#endif /* _EMAIL_FROM_H */
+#endif /* MUTT_EMAIL_FROM_H */

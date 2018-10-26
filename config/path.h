@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_PATH_H
-#define _CONFIG_PATH_H
+#ifndef MUTT_CONFIG_PATH_H
+#define MUTT_CONFIG_PATH_H
 
 struct ConfigSet;
 
 void path_init(struct ConfigSet *cs);
 
-#endif /* _CONFIG_PATH_H */
+#endif /* MUTT_CONFIG_PATH_H */

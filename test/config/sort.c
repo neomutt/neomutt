@@ -27,7 +27,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "config/account.h"
 #include "config/common.h"
 #include "config/lib.h"
 
@@ -80,7 +79,7 @@ static struct ConfigDef Vars2[] = {
 };
 // clang-format on
 
-char *name_list[] = {
+const char *name_list[] = {
   "Damson", "Elderberry", "Fig", "Guava", "Hawthorn", "Ilama",
 };
 
@@ -365,7 +364,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
     }
   }
 
-  char *name = "Kumquat";
+  const char *name = "Kumquat";
   short value = SORT_THREADS;
   VarKumquat = -1;
   mutt_buffer_reset(err);
@@ -438,7 +437,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Lemon";
+  const char *name = "Lemon";
 
   VarLemon = SORT_THREADS;
   mutt_buffer_reset(err);
@@ -458,7 +457,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Mango";
+  const char *name = "Mango";
   VarMango = SORT_SUBJECT;
   mutt_buffer_reset(err);
 
@@ -522,7 +521,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Olive";
+  const char *name = "Olive";
   VarOlive = SORT_SUBJECT;
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "threads", err);
@@ -637,7 +636,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
 
   // set parent
   VarStrawberry = SORT_SUBJECT;
@@ -692,7 +691,7 @@ static bool test_sort_type(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   const char *name = "Raspberry";
-  char *value = "alpha";
+  const char *value = "alpha";
 
   mutt_buffer_reset(err);
   TEST_MSG("Expect error for next test\n");

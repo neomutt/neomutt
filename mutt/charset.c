@@ -703,7 +703,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
  * @param[in,out] ps    String to convert
  * @param[in]     from  Current character set
  * @param[in]     to    Target character set
- * @param[in]     flags Flags, e.g.
+ * @param[in]     flags Flags, e.g. #MUTT_ICONV_HOOK_FROM
  * @retval 0      Success
  * @retval -1     Invalid arguments or failure to open an iconv channel
  * @retval errno  Failure in iconv conversion
@@ -733,7 +733,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
   char *buf = NULL, *ob = NULL;
   size_t ibl, obl;
   const char **inrepls = NULL;
-  char *outrepl = NULL;
+  const char *outrepl = NULL;
 
   if (mutt_ch_is_utf8(to))
     outrepl = "\357\277\275";
@@ -1007,7 +1007,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
 
     s = mutt_str_substr_dup(u, u + ulen);
     const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, 0) :
-                                 mutt_ch_check(s, ulen, fromcode, t);
+                       mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
     {
       FREE(&t);

@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "globals.h"
@@ -435,18 +435,12 @@ static bool lua_init(lua_State **l)
 lua_State *Lua = NULL;
 
 /**
- * mutt_lua_parse - Parse the 'lua' command
- * @param tmp  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_lua_parse - Parse the 'lua' command - Implements ::command_t
  */
-int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_lua_parse(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   lua_init(&Lua);
-  mutt_debug(2, " * mutt_lua_parse(%s)\n", tmp->data);
+  mutt_debug(2, " * mutt_lua_parse(%s)\n", buf->data);
 
   if (luaL_dostring(Lua, s->dptr))
   {
@@ -461,15 +455,9 @@ int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, str
 }
 
 /**
- * mutt_lua_source_file - Parse the 'lua-source' command
- * @param tmp  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_lua_source_file - Parse the 'lua-source' command - Implements ::command_t
  */
-int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
+int mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_lua_source()\n");
@@ -478,7 +466,7 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
 
   char path[PATH_MAX];
 
-  if (mutt_extract_token(tmp, s, 0) != 0)
+  if (mutt_extract_token(buf, s, 0) != 0)
   {
     mutt_buffer_printf(err, _("source: error at %s"), s->dptr);
     return -1;
@@ -488,7 +476,7 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
     mutt_buffer_printf(err, _("%s: too many arguments"), "source");
     return -1;
   }
-  mutt_str_strfcpy(path, tmp->data, sizeof(path));
+  mutt_str_strfcpy(path, buf->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
   if (luaL_dofile(Lua, path))

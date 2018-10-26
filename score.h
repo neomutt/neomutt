@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 struct Buffer;
-struct Header;
+struct Email;
 struct Context;
 
 /* These Config Variables are only used in score.c */
@@ -37,6 +37,6 @@ extern short ScoreThresholdRead;
 void mutt_check_rescore(struct Context *ctx);
 int  mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int  mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
-void mutt_score_message(struct Context *ctx, struct Header *hdr, bool upd_ctx);
+void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx);
 
 #endif /* MUTT_SCORE_H */

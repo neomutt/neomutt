@@ -1,6 +1,6 @@
 /**
  * @file
- * Account object used by POP and IMAP
+ * ConnAccount object used by POP and IMAP
  *
  * @authors
  * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
@@ -21,89 +21,91 @@
  */
 
 /**
- * @page mutt_account Account object used by POP and IMAP
+ * @page mutt_account ConnAccount object used by POP and IMAP
  *
- * Account object used by POP and IMAP
+ * ConnAccount object used by POP and IMAP
  */
 
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt_account.h"
 #include "curs_lib.h"
+#include "filter.h"
 #include "globals.h"
 #include "options.h"
+#include "pop/pop.h"
 
 /* These Config Variables are only used in mutt_account.c */
 char *ImapLogin; ///< Config: (imap) Login name for the IMAP server (defaults to ImapUser)
+char *ImapOauthRefreshCmd; ///< Config: (imap) External command to generate OAUTH refresh token
 char *ImapPass; ///< Config: (imap) Password for the IMAP server
 char *NntpPass; ///< Config: (nntp) Password for the news server
 char *NntpUser; ///< Config: (nntp) Username for the news server
-char *PopPass;  ///< Config: (pop) Password of the POP server
-char *PopUser;  ///< Config: (pop) Username of the POP server
+char *PopOauthRefreshCmd; ///< Config: (pop) External command to generate OAUTH refresh token
+char *PopPass; ///< Config: (pop) Password of the POP server
+char *PopUser; ///< Config: (pop) Username of the POP server
+char *SmtpOauthRefreshCmd; ///< Config: (smtp) External command to generate OAUTH refresh token
 char *SmtpPass; ///< Config: (smtp) Password for the SMTP server
 
 /**
  * mutt_account_match - Compare account info (host/port/user)
- * @param a1 First Account
- * @param a2 Second Account
- * @retval 1 Accounts match
- * @retval 0 Accounts match
+ * @param a1 First ConnAccount
+ * @param a2 Second ConnAccount
+ * @retval true Accounts match
  */
-int mutt_account_match(const struct Account *a1, const struct Account *a2)
+bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
+  if (a1->type != a2->type)
+    return false;
+  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
+    return false;
+  if (a1->port != a2->port)
+    return false;
+  if (a1->flags & a2->flags & MUTT_ACCT_USER)
+    return strcmp(a1->user, a2->user) == 0;
+
+#ifdef USE_NNTP
+  if (a1->type == MUTT_ACCT_TYPE_NNTP)
+    return (a1->flags & MUTT_ACCT_USER) && a1->user[0] ? false : true;
+#endif
+
   const char *user = NONULL(Username);
 
-  if (a1->type != a2->type)
-    return 0;
-  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
-    return 0;
-  if (a1->port != a2->port)
-    return 0;
-
 #ifdef USE_IMAP
-  if (a1->type == MUTT_ACCT_TYPE_IMAP)
-  {
-    if (ImapUser)
-      user = ImapUser;
-  }
+  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
+    user = ImapUser;
 #endif
 
 #ifdef USE_POP
-  if (a1->type == MUTT_ACCT_TYPE_POP && PopUser)
+  if ((a1->type == MUTT_ACCT_TYPE_POP) && PopUser)
     user = PopUser;
 #endif
 
 #ifdef USE_NNTP
-  if (a1->type == MUTT_ACCT_TYPE_NNTP && NntpUser)
+  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
     user = NntpUser;
 #endif
 
-  if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, a2->user) == 0;
-#ifdef USE_NNTP
-  if (a1->type == MUTT_ACCT_TYPE_NNTP)
-    return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
-#endif
   if (a1->flags & MUTT_ACCT_USER)
     return strcmp(a1->user, user) == 0;
   if (a2->flags & MUTT_ACCT_USER)
     return strcmp(a2->user, user) == 0;
 
-  return 1;
+  return true;
 }
 
 /**
- * mutt_account_fromurl - Fill Account with information from url
- * @param account Account to fill
+ * mutt_account_fromurl - Fill ConnAccount with information from url
+ * @param account ConnAccount to fill
  * @param url     Url to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct Account *account, struct Url *url)
+int mutt_account_fromurl(struct ConnAccount *account, struct Url *url)
 {
   /* must be present */
   if (url->host)
@@ -132,14 +134,14 @@ int mutt_account_fromurl(struct Account *account, struct Url *url)
 
 /**
  * mutt_account_tourl - Fill URL with info from account
- * @param account Source Account
+ * @param account Source ConnAccount
  * @param url     Url to fill
  *
  * The URL information is a set of pointers into account - don't free or edit
  * account until you've finished with url (make a copy of account if you need
  * it for a while).
  */
-void mutt_account_tourl(struct Account *account, struct Url *url)
+void mutt_account_tourl(struct ConnAccount *account, struct Url *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;
@@ -197,12 +199,12 @@ void mutt_account_tourl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_getuser - Retrieve username into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getuser - Retrieve username into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getuser(struct Account *account)
+int mutt_account_getuser(struct ConnAccount *account)
 {
   char prompt[STRING];
 
@@ -239,12 +241,12 @@ int mutt_account_getuser(struct Account *account)
 }
 
 /**
- * mutt_account_getlogin - Retrieve login info into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getlogin - Retrieve login info into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getlogin(struct Account *account)
+int mutt_account_getlogin(struct ConnAccount *account)
 {
   /* already set */
   if (account->flags & MUTT_ACCT_LOGIN)
@@ -278,12 +280,12 @@ int mutt_account_getlogin(struct Account *account)
 }
 
 /**
- * mutt_account_getpass - Fetch password into Account, if necessary
- * @param account Account to fill
+ * mutt_account_getpass - Fetch password into ConnAccount, if necessary
+ * @param account ConnAccount to fill
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_account_getpass(struct Account *account)
+int mutt_account_getpass(struct ConnAccount *account)
 {
   char prompt[STRING];
 
@@ -323,10 +325,90 @@ int mutt_account_getpass(struct Account *account)
 }
 
 /**
- * mutt_account_unsetpass - Unset Account's password
- * @param account Account to modify
+ * mutt_account_unsetpass - Unset ConnAccount's password
+ * @param account ConnAccount to modify
  */
-void mutt_account_unsetpass(struct Account *account)
+void mutt_account_unsetpass(struct ConnAccount *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;
+}
+
+/**
+ * mutt_account_getoauthbearer - Get an OAUTHBEARER token
+ * @param account Account to use
+ * @retval ptr  OAuth token
+ * @retval NULL Error
+ *
+ * Run an external command to generate the oauth refresh token for an account,
+ * then create and encode the OAUTHBEARER token based on RFC7628.
+ *
+ * @note Caller should free the token
+ */
+char *mutt_account_getoauthbearer(struct ConnAccount *account)
+{
+  FILE *fp;
+  char *cmd = NULL;
+  char *token = NULL;
+  size_t token_size = 0;
+  char *oauthbearer = NULL;
+  size_t oalen;
+  char *encoded_token = NULL;
+  size_t encoded_len;
+  pid_t pid;
+
+  /* The oauthbearer token includes the login */
+  if (mutt_account_getlogin(account))
+    return NULL;
+
+#ifdef USE_IMAP
+  if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapOauthRefreshCmd)
+    cmd = ImapOauthRefreshCmd;
+#endif
+#ifdef USE_POP
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopOauthRefreshCmd)
+    cmd = PopOauthRefreshCmd;
+#endif
+#ifdef USE_SMTP
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpOauthRefreshCmd)
+    cmd = SmtpOauthRefreshCmd;
+#endif
+
+  if (!cmd)
+  {
+    mutt_error(_("No OAUTH refresh command defined"));
+    return NULL;
+  }
+
+  pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  if (pid < 0)
+  {
+    mutt_perror(_("Unable to run refresh command"));
+    return NULL;
+  }
+
+  token = mutt_file_read_line(NULL, &token_size, fp, NULL, 0);
+  mutt_file_fclose(&fp);
+  mutt_wait_filter(pid);
+
+  if (!token || *token == '\0')
+  {
+    mutt_error(_("Command returned empty string"));
+    FREE(&token);
+    return NULL;
+  }
+
+  /* Determine the length of the keyed message digest, add 50 for overhead. */
+  oalen = strlen(account->login) + strlen(account->host) + strlen(token) + 50;
+  oauthbearer = mutt_mem_malloc(oalen);
+
+  snprintf(oauthbearer, oalen, "n,a=%s,\001host=%s\001port=%d\001auth=Bearer %s\001\001",
+           account->login, account->host, account->port, token);
+
+  FREE(&token);
+
+  encoded_len = strlen(oauthbearer) * 4 / 3 + 10;
+  encoded_token = mutt_mem_malloc(encoded_len);
+  mutt_b64_encode(oauthbearer, strlen(oauthbearer), encoded_token, encoded_len);
+  FREE(&oauthbearer);
+  return encoded_token;
 }

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_SMIME_H
-#define _NCRYPT_SMIME_H
+#ifndef MUTT_NCRYPT_SMIME_H
+#define MUTT_NCRYPT_SMIME_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -30,7 +30,7 @@
 struct Address;
 struct Body;
 struct Envelope;
-struct Header;
+struct Email;
 struct State;
 
 /**
@@ -53,11 +53,11 @@ int          smime_class_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, 
 char *       smime_class_find_keys(struct Address *addrlist, bool oppenc_mode);
 void         smime_class_getkeys(struct Envelope *env);
 void         smime_class_invoke_import(char *infile, char *mailbox);
-int          smime_class_send_menu(struct Header *msg);
+int          smime_class_send_menu(struct Email *msg);
 struct Body *smime_class_sign_message(struct Body *a);
 int          smime_class_valid_passphrase(void);
 int          smime_class_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_class_verify_sender(struct Header *h);
+int          smime_class_verify_sender(struct Email *e);
 void         smime_class_void_passphrase(void);
 
-#endif /* _NCRYPT_SMIME_H */
+#endif /* MUTT_NCRYPT_SMIME_H */

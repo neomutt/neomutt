@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_CRYPT_MOD_H
-#define _NCRYPT_CRYPT_MOD_H
+#ifndef MUTT_NCRYPT_CRYPT_MOD_H
+#define MUTT_NCRYPT_CRYPT_MOD_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -29,7 +29,7 @@
 struct Address;
 struct Body;
 struct Envelope;
-struct Header;
+struct Email;
 struct State;
 
 /**
@@ -113,10 +113,10 @@ struct CryptModuleSpecs
   int          (*verify_one)(struct Body *sigbdy, struct State *s, const char *tempf);
   /**
    * send_menu - Ask the user whether to sign and/or encrypt the email
-   * @param msg Header of the email
+   * @param msg Email
    * @retval num Flags, e.g. #APPLICATION_PGP | #ENCRYPT
    */
-  int          (*send_menu)(struct Header *msg);
+  int          (*send_menu)(struct Email *msg);
   /**
    * set_sender - Set the sender of the email
    * @param sender Email address
@@ -182,11 +182,11 @@ struct CryptModuleSpecs
   void         (*smime_getkeys)(struct Envelope *env);
   /**
    * smime_verify_sender - Does the sender match the certificate?
-   * @param h Header of the email
+   * @param e Email
    * @retval 0 Success
    * @retval 1 Failure
    */
-  int          (*smime_verify_sender)(struct Header *h);
+  int          (*smime_verify_sender)(struct Email *e);
   /**
    * smime_build_smime_entity - Encrypt the email body to all recipients
    * @param a        Body of email
@@ -207,4 +207,4 @@ struct CryptModuleSpecs
 void crypto_module_register(struct CryptModuleSpecs *specs);
 struct CryptModuleSpecs *crypto_module_lookup(int identifier);
 
-#endif /* _NCRYPT_CRYPT_MOD_H */
+#endif /* MUTT_NCRYPT_CRYPT_MOD_H */

@@ -28,7 +28,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "config/account.h"
 #include "config/common.h"
 #include "config/lib.h"
 
@@ -166,7 +165,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
   const char *valid[] = { "-123", "0", "-42", "456" };
   int numbers[] = { -123, 0, -42, 456 };
   const char *invalid[] = { "-32769", "32768", "junk", "", NULL };
-  char *name = "Damson";
+  const char *name = "Damson";
 
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
@@ -265,7 +264,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Guava";
+  const char *name = "Guava";
   short value = 12345;
 
   TEST_MSG("Setting %s to %d\n", name, value);
@@ -341,7 +340,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Ilama";
+  const char *name = "Ilama";
 
   VarIlama = 3456;
   mutt_buffer_reset(err);
@@ -361,7 +360,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Jackfruit";
+  const char *name = "Jackfruit";
   VarJackfruit = 345;
   mutt_buffer_reset(err);
 
@@ -420,7 +419,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Lemon";
+  const char *name = "Lemon";
   VarLemon = 123;
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "456", err);
@@ -540,7 +539,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
 
   // set parent
   VarOlive = 123;

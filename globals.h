@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_GLOBALS_H
-#define _MUTT_GLOBALS_H
+#ifndef MUTT_GLOBALS_H
+#define MUTT_GLOBALS_H
 
 #include <signal.h>
 #include <stdbool.h>
@@ -84,8 +84,6 @@ WHERE struct RegexList UnMailLists INITVAL(STAILQ_HEAD_INITIALIZER(UnMailLists))
 WHERE struct RegexList SubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(SubscribedLists));
 WHERE struct RegexList UnSubscribedLists INITVAL(STAILQ_HEAD_INITIALIZER(UnSubscribedLists));
 WHERE struct ReplaceList SubjectRegexList INITVAL(STAILQ_HEAD_INITIALIZER(SubjectRegexList));
-
-WHERE unsigned short Counter;
 
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
@@ -223,10 +221,12 @@ WHERE bool HeaderCacheCompress;            ///< Config: (hcache) Enable database
 WHERE bool Header;                         ///< Config: Include the message headers in the reply email (Weed applies)
 WHERE bool Help;                           ///< Config: Display a help line with common key bindings
 #ifdef USE_IMAP
-WHERE bool ImapCheckSubscribed;            ///< Config: (imap) Ask the IMAP server for a list of subscribed folders
-WHERE bool ImapListSubscribed;             ///< Config: (imap) Get a list of mailboxes from the server
+WHERE bool ImapCheckSubscribed;            ///< Config: (imap) When opening a mailbox, ask the server for a list of subscribed folders
+WHERE bool ImapCondStore;                  ///< Config: (imap) Enable the CONDSTORE extension
+WHERE bool ImapListSubscribed;             ///< Config: (imap) When browsing a mailbox, only display subscribed folders
 WHERE bool ImapPassive;                    ///< Config: (imap) Reuse an existing IMAP connection to check for new mail
 WHERE bool ImapPeek;                       ///< Config: (imap) Don't mark messages as read when fetching them from the server
+WHERE bool ImapQResync;                    ///< Config: (imap) Enable the QRESYNC extension
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS
@@ -286,4 +286,4 @@ WHERE bool XCommentTo;                     ///< Config: (nntp) Add 'X-Comment-To
 WHERE bool VirtualSpoolfile;               ///< Config: (notmuch) Use the first virtual mailbox as a spool file
 #endif
 
-#endif /* _MUTT_GLOBALS_H */
+#endif /* MUTT_GLOBALS_H */

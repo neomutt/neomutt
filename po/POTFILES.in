@@ -1,3 +1,4 @@
+account.c
 addrbook.c
 alias.c
 bcache.c
@@ -9,6 +10,7 @@ compose.c
 compress.c
 config/address.c
 config/bool.c
+config/cfgaccount.c
 config/command.c
 config/dump.c
 config/long.c
@@ -38,10 +40,10 @@ editmsg.c
 email/address.c
 email/attach.c
 email/body.c
+email/email.c
 email/email_globals.c
 email/envelope.c
 email/from.c
-email/header.c
 email/idna.c
 email/mime.c
 email/parameter.c
@@ -73,6 +75,7 @@ imap/auth_anon.c
 imap/auth_cram.c
 imap/auth_gss.c
 imap/auth_login.c
+imap/auth_oauth.c
 imap/auth_plain.c
 imap/auth_sasl.c
 imap/browse.c
@@ -88,6 +91,7 @@ maildir/mh.c
 main.c
 mbox/mbox.c
 menu.c
+monitor.c
 mutt/base64.c
 mutt/buffer.c
 mutt/charset.c
@@ -144,6 +148,7 @@ nntp/newsrc.c
 nntp/nntp.c
 notmuch/mutt_notmuch.c
 opcodes.h
+notmuch/nm_db.c
 pager.c
 pattern.c
 pgpewrap.c

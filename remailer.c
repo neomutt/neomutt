@@ -27,7 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "curs_lib.h"
 #include "filter.h"
@@ -493,7 +493,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
  */
 static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Remailer **type2_list = (struct Remailer **) menu->data;
+  struct Remailer **type2_list = menu->data;
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
                       NONULL(MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
@@ -590,8 +590,8 @@ void mix_make_chain(struct ListHead *chainhead)
 
   menu = mutt_menu_new(MENU_MIX);
   menu->max = ttll;
-  menu->make_entry = mix_entry;
-  menu->tag = NULL;
+  menu->menu_make_entry = mix_entry;
+  menu->menu_tag = NULL;
   menu->title = _("Select a remailer chain");
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
@@ -762,11 +762,11 @@ void mix_make_chain(struct ListHead *chainhead)
 
 /**
  * mix_check_message - Safety-check the message before passing it to mixmaster
- * @param msg Header of email
+ * @param msg Email
  * @retval  0 Success
  * @retval -1 Error
  */
-int mix_check_message(struct Header *msg)
+int mix_check_message(struct Email *msg)
 {
   const char *fqdn = NULL;
   bool need_hostname = false;
@@ -820,25 +820,24 @@ int mix_check_message(struct Header *msg)
  */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
-  char cmd[HUGE_STRING];
-  char tmp[HUGE_STRING];
   char cd_quoted[STRING];
-  int i;
+  int i = 0;
 
-  snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
+  struct Buffer *cmd = mutt_buffer_pool_get();
+  mutt_buffer_printf(cmd, "cat %s | %s -m ", tempfile, Mixmaster);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
-    mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
+    mutt_buffer_addstr(cmd, i ? "," : " -l ");
     mutt_file_quote_filename(np->data, cd_quoted, sizeof(cd_quoted));
-    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
-             (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
+    mutt_buffer_addstr(cmd, cd_quoted);
+    i = 1;
   }
 
   mutt_endwin();
 
-  i = mutt_system(cmd);
+  i = mutt_system(cmd->data);
   if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
@@ -849,6 +848,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
     }
   }
 
+  mutt_buffer_pool_release(&cmd);
   unlink(tempfile);
   return i;
 }

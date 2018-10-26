@@ -281,7 +281,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
       </para>
       <para>
         Besides an interactive mode, NeoMutt can also be used as a command-line
-        tool only send messages. It also supports
+        tool to send messages. It also supports
         a <literal>mailx(1)</literal>-compatible interface, see
         <xref linkend="tab-commandline-options" /> for a complete list of
         command-line options.
@@ -743,10 +743,17 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%S</entry>
-                    <entry>* †</entry>
+                    <entry>%d</entry>
+                    <entry>* ‡</entry>
                     <entry>
-                      Size of mailbox (total number of messages)
+                      Number of deleted messages
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%D</entry>
+                    <entry></entry>
+                    <entry>
+                      Description of the mailbox
                     </entry>
                   </row>
                   <row>
@@ -757,10 +764,10 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%N</entry>
-                    <entry>* †</entry>
+                    <entry>%L</entry>
+                    <entry>* ‡</entry>
                     <entry>
-                      Number of New messages in the mailbox
+                      Number of messages after limiting
                     </entry>
                   </row>
                   <row>
@@ -772,26 +779,17 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     </entry>
                   </row>
                   <row>
-                    <entry>%!</entry>
-                    <entry></entry>
+                    <entry>%N</entry>
+                    <entry>* †</entry>
                     <entry>
-                      <quote>!</quote>: one flagged message; <quote>!!</quote>:
-                      two flagged messages; <quote>n!</quote>: n flagged
-                      messages (for n &gt; 2). Otherwise prints nothing.
+                      Number of New messages in the mailbox
                     </entry>
                   </row>
                   <row>
-                    <entry>%d</entry>
-                    <entry>* ‡</entry>
+                    <entry>%S</entry>
+                    <entry>* †</entry>
                     <entry>
-                      Number of deleted messages
-                    </entry>
-                  </row>
-                  <row>
-                    <entry>%L</entry>
-                    <entry>* ‡</entry>
-                    <entry>
-                      Number of messages after limiting
+                      Size of mailbox (total number of messages)
                     </entry>
                   </row>
                   <row>
@@ -799,6 +797,15 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry>* ‡</entry>
                     <entry>
                       Number of tagged messages
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>%!</entry>
+                    <entry></entry>
+                    <entry>
+                      <quote>!</quote>: one flagged message; <quote>!!</quote>:
+                      two flagged messages; <quote>n!</quote>: n flagged
+                      messages (for n &gt; 2). Otherwise prints nothing.
                     </entry>
                   </row>
                   <row>
@@ -1795,6 +1802,10 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <row>
                 <entry>L</entry>
                 <entry>message is sent to a subscribed mailing list</entry>
+              </row>
+              <row>
+                <entry>R</entry>
+                <entry>message has your address in the Reply-To field</entry>
               </row>
             </tbody>
           </tgroup>
@@ -3743,12 +3754,21 @@ alternates -group me -group work address3
         the named <emphasis>group</emphasis>.
       </para>
       <para>
-        To remove an alias or aliases (<quote>*</quote> means all aliases):
+        To add an alias:
       </para>
 
 <screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
 alias theguys manny, moe, jack
+</screen>
+
+      <para>
+      To remove an alias or aliases (<quote>*</quote> means all aliases):
+      </para>
+
+<screen>
+unalias muttdude
+unalias *
 </screen>
 
       <para>
@@ -5240,6 +5260,21 @@ unignore posted-to:
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">mailbox</replaceable>
         </arg>
+        <command>named-mailboxes</command>
+        <arg choice="plain">
+          <replaceable class="parameter">description</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">mailbox</replaceable>
+          </arg>
+        </arg>
+        <group choice="req" rep="repeat">
+          <arg choice="plain">
+            <replaceable class="parameter">description</replaceable>
+            <arg choice="plain">
+              <replaceable class="parameter">mailbox</replaceable>
+            </arg>
+          </arg>
+        </group>
         <command>unmailboxes</command>
         <group choice="req">
           <arg choice="plain">
@@ -5272,8 +5307,10 @@ unignore posted-to:
       </para>
       <para>
         The <quote>unmailboxes</quote> command is used to remove a token from
-        the list of folders which receive mail. Use
-        <quote>unmailboxes&#160;*</quote> to remove all tokens.
+        the list of folders which receive mail. <quote>unmailboxes</quote> can
+        be used on the mailbox path, <quote>$folder</quote>-abbreviated path,
+        or description. Use <quote>unmailboxes&#160;*</quote> to remove all
+        tokens.
       </para>
       <note>
         <para>
@@ -8821,6 +8858,35 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
         </para>
       </sect2>
 
+      <sect2 id="new-mail-monitoring">
+        <title>Monitoring New Mail</title>
+        <para>
+          When the <emphasis>Inotify</emphasis>mechanism for monitoring of
+          files is supported (Linux only) and not disabled at compilation time,
+          Mutt immediately notifies about new mail for all folders configured
+          via the <link linkend="mailboxes"><command>mailboxes</command></link>
+          command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
+          also added <emphasis>old</emphasis>mails are tracked (not for Maildir).
+        </para>
+        <para>
+          No configuration variables are available. Trace output is given when
+          debugging is enabled via <link linkend="tab-commandline-options">command line option</link>
+          <literal>-d3</literal>. The lower level 2 only shows errors, the
+          higher level 5 all including raw Inotify events.
+        </para>
+        <note>
+          <para>
+            Getting events about new mail is limited to the capabilities of the
+            underlying mechanism.  <emphasis>inotify</emphasis>only reports
+            local changes, i. e. new mail notification works for mails
+            delivered by an agent on the same machine as mutt, but not when
+            delivered remotely on a network file system as nfs. also the
+            monitoring handles might fail in rare conditions, so you better
+            don't completely rely on this feature.
+          </para>
+        </note>
+      </sect2>
+
       <sect2 id="calc-mailbox-counts">
         <title>Calculating Mailbox Message Counts</title>
         <para>
@@ -11264,7 +11330,7 @@ bind index,pager @ compose-to-sender
             then you can use <literal>.</literal> as the regex.
           </para>
 
-          <sect4 id="compress-open-hook-example">
+          <example id="compress-open-hook-example">
             <title>Example of
             <literal>open-hook</literal></title>
 
@@ -11292,7 +11358,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
                 </para>
               </listitem>
             </itemizedlist>
-          </sect4>
+          </example>
         </sect3>
 
         <sect3 id="close-hook">
@@ -11311,7 +11377,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
             </para>
           </note>
 
-          <sect4 id="compress-close-hook-example">
+          <example id="compress-close-hook-example">
             <title>Example of
             <literal>close-hook</literal></title>
             <screen>close-hook '\.gz$' "gzip --stdout '%t' &gt; '%f'"</screen>
@@ -11341,13 +11407,13 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
                 </para>
               </listitem>
             </itemizedlist>
-            <note>
-              <para>
-                The <literal>close-hook</literal> can also include extra
-                options, e.g. compression level: <literal>--best</literal>
-              </para>
-            </note>
-          </sect4>
+          </example>
+          <note>
+            <para>
+              The <literal>close-hook</literal> can also include extra
+              options, e.g. compression level: <literal>--best</literal>
+            </para>
+          </note>
         </sect3>
 
         <sect3 id="append-hook">
@@ -11381,7 +11447,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
             </para>
           </note>
 
-          <sect4 id="compress-append-hook-example">
+          <example id="compress-append-hook-example">
             <title>Example of
             <literal>append-hook</literal></title>
 
@@ -11416,13 +11482,13 @@ append-hook '\.gz$' "gzip --stdout '%t' &gt;&gt; '%f'"
                 </para>
               </listitem>
             </itemizedlist>
-            <note>
-              <para>
-                The <literal>append-hook</literal> can also include extra
-                options, e.g. compression level: <literal>--best</literal>
-              </para>
-            </note>
-          </sect4>
+          </example>
+          <note>
+            <para>
+              The <literal>append-hook</literal> can also include extra
+              options, e.g. compression level: <literal>--best</literal>
+            </para>
+          </note>
         </sect3>
 
         <sect3 id="compress-empty">
@@ -13577,6 +13643,11 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
             longer known. This is a limitation of NeoMutt. The `%f` expando
             will show the open folder.
           </para>
+          <para>
+            When using Maildir local mailboxes, you must set
+            <link linkend="check-new">$check_new</link> config variable for
+            this feature to work.
+          </para>
         </note>
         <para>
           For example in Linux you can use (most distributions already provide
@@ -14283,14 +14354,14 @@ bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># This variable specifies private notmuch tags which should not be printed</emphasis>
 <emphasis role="comment"># on screen (index, pager).</emphasis>
-set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># modify (notmuch/imap) tags</emphasis>
 bind index,pager \` modify-labels
 <emphasis role="comment"># modify (notmuch/imap) tag non-interactively.</emphasis>
-bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
+macro index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># modify labels and then hide message</emphasis>
 <emphasis role="comment"># bind index,pager ??? modify-labels-then-hide</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
@@ -14322,7 +14393,7 @@ bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'</emphasis>
 
 <emphasis role="comment"># The %G formatting sequence may display all tags including tags hidden by</emphasis>
-<emphasis role="comment"># nm_hidden_tags.</emphasis>
+<emphasis role="comment"># hidden_tags.</emphasis>
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># COLORS – some unpleasant examples are given</emphasis>
@@ -17745,6 +17816,20 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
+              <link linkend="mailboxes">named-mailboxes</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">description</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">mailbox</replaceable>
+            </arg>
+            <group choice="opt" rep="repeat">
+              <arg choice="plain">
+                <replaceable class="parameter">description mailbox</replaceable>
+              </arg>
+            </group>
+            <command>
               <link linkend="mailboxes">unmailboxes</link>
             </command>
             <group choice="req">
@@ -18115,7 +18200,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
-              <link linkend="unsidebar-whitelist">unsidebar_whitelist</link>
+              <link linkend="sidebar-whitelist">unsidebar_whitelist</link>
             </command>
             <group choice="req">
               <arg choice="plain">

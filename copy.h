@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_COPY_H
-#define _MUTT_COPY_H
+#ifndef MUTT_COPY_H
+#define MUTT_COPY_H
 
 #include <stdio.h>
 
-struct Header;
+struct Email;
 struct Context;
 
 /**< flags to mutt_copy_message */
@@ -69,11 +69,11 @@ struct Context;
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
                   int flags, const char *prefix);
 
-int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix);
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix);
 
-int mutt_copy_message_fp (FILE *fpout, FILE *fpin,          struct Header *hdr, int flags, int chflags);
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
+int mutt_copy_message_fp (FILE *fpout, FILE *fpin,          struct Email *e, int flags, int chflags);
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e, int flags, int chflags);
 
-int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags);
+int mutt_append_message(struct Context *dest, struct Context *src, struct Email *e, int cmflags, int chflags);
 
-#endif /* _MUTT_COPY_H */
+#endif /* MUTT_COPY_H */

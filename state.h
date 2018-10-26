@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_STATE_H
-#define _MUTT_STATE_H
+#ifndef MUTT_STATE_H
+#define MUTT_STATE_H
 
 #include <stdio.h>
 
@@ -58,4 +58,4 @@ int state_printf(struct State *s, const char *fmt, ...);
 int state_putws(const wchar_t *ws, struct State *s);
 void state_prefix_put(const char *buf, size_t buflen, struct State *s);
 
-#endif /* _MUTT_STATE_H */
+#endif /* MUTT_STATE_H */

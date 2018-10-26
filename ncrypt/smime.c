@@ -37,7 +37,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "copy.h"
@@ -435,16 +435,12 @@ static char *smime_key_flags(int flags)
 }
 
 /**
- * smime_entry - Format a menu item for the smime key list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * smime_make_entry - Format a menu item for the smime key list - Implements Menu::menu_make_entry()
  */
-static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void smime_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct SmimeKey **Table = (struct SmimeKey **) menu->data;
-  struct SmimeKey *this = Table[num];
+  struct SmimeKey **Table = menu->data;
+  struct SmimeKey *this = Table[line];
   char *truststate = NULL;
   switch (this->trust)
   {
@@ -539,7 +535,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   char buf[LONG_STRING];
   char title[256];
   struct Menu *menu = NULL;
-  char *s = "";
+  const char *s = "";
   bool done = false;
 
   for (table_index = 0, key = keys; key; key = key->next)
@@ -567,7 +563,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   /* Create the menu */
   menu = mutt_menu_new(MENU_SMIME);
   menu->max = table_index;
-  menu->make_entry = smime_entry;
+  menu->menu_make_entry = smime_make_entry;
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;
@@ -1427,7 +1423,7 @@ void smime_class_invoke_import(char *infile, char *mailbox)
 /**
  * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_class_verify_sender(struct Header *h)
+int smime_class_verify_sender(struct Email *e)
 {
   char *mbox = NULL, *certfile = NULL, tempfname[PATH_MAX];
   int retval = 1;
@@ -1440,26 +1436,26 @@ int smime_class_verify_sender(struct Header *h)
     return 1;
   }
 
-  if (h->security & ENCRYPT)
+  if (e->security & ENCRYPT)
   {
-    mutt_copy_message_ctx(fpout, Context, h, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+    mutt_copy_message_ctx(fpout, Context, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message_ctx(fpout, Context, h, 0, 0);
+    mutt_copy_message_ctx(fpout, Context, e, 0, 0);
 
   fflush(fpout);
   mutt_file_fclose(&fpout);
 
-  if (h->env->from)
+  if (e->env->from)
   {
-    h->env->from = mutt_expand_aliases(h->env->from);
-    mbox = h->env->from->mailbox;
+    e->env->from = mutt_expand_aliases(e->env->from);
+    mbox = e->env->from->mailbox;
   }
-  else if (h->env->sender)
+  else if (e->env->sender)
   {
-    h->env->sender = mutt_expand_aliases(h->env->sender);
-    mbox = h->env->sender->mailbox;
+    e->env->sender = mutt_expand_aliases(e->env->sender);
+    mbox = e->env->sender->mailbox;
   }
 
   if (mbox)
@@ -2113,63 +2109,70 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       state_attach_puts(_("[-- The following data is S/MIME signed --]\n"), s);
   }
 
-  if (smimeout)
+  fflush(smimeout);
+  rewind(smimeout);
+
+  if (type & ENCRYPT)
   {
-    fflush(smimeout);
+    /* void the passphrase, even if that wasn't the problem */
+    if (fgetc(smimeout) == EOF)
+    {
+      mutt_error(_("Decryption failed"));
+      smime_class_void_passphrase();
+    }
     rewind(smimeout);
-
-    if (out_file)
-      fpout = out_file;
-    else
-    {
-      fpout = mutt_file_mkstemp();
-      if (!fpout)
-      {
-        mutt_perror(_("Can't create temporary file"));
-        mutt_file_fclose(&smimeout);
-        mutt_file_fclose(&smimeerr);
-        return NULL;
-      }
-    }
-    char buf[HUGE_STRING];
-    while (fgets(buf, sizeof(buf) - 1, smimeout))
-    {
-      const size_t len = mutt_str_strlen(buf);
-      if (len > 1 && buf[len - 2] == '\r')
-      {
-        buf[len - 2] = '\n';
-        buf[len - 1] = '\0';
-      }
-      fputs(buf, fpout);
-    }
-    fflush(fpout);
-    rewind(fpout);
-
-    p = mutt_read_mime_header(fpout, 0);
-    if (p)
-    {
-      fstat(fileno(fpout), &info);
-      p->length = info.st_size - p->offset;
-
-      mutt_parse_part(fpout, p);
-      if (s->fpout)
-      {
-        rewind(fpout);
-        tmpfp_buffer = s->fpin;
-        s->fpin = fpout;
-        mutt_body_handler(p, s);
-        s->fpin = tmpfp_buffer;
-      }
-    }
-    mutt_file_fclose(&smimeout);
-    smimeout = NULL;
-
-    if (!out_file)
-    {
-      mutt_file_fclose(&fpout);
-    }
-    fpout = NULL;
   }
+
+  if (out_file)
+    fpout = out_file;
+  else
+  {
+    fpout = mutt_file_mkstemp();
+    if (!fpout)
+    {
+      mutt_perror(_("Can't create temporary file"));
+      mutt_file_fclose(&smimeout);
+      mutt_file_fclose(&smimeerr);
+      return NULL;
+    }
+  }
+  char buf[HUGE_STRING];
+  while (fgets(buf, sizeof(buf) - 1, smimeout))
+  {
+    const size_t len = mutt_str_strlen(buf);
+    if (len > 1 && buf[len - 2] == '\r')
+    {
+      buf[len - 2] = '\n';
+      buf[len - 1] = '\0';
+    }
+    fputs(buf, fpout);
+  }
+  fflush(fpout);
+  rewind(fpout);
+
+  p = mutt_read_mime_header(fpout, 0);
+  if (p)
+  {
+    fstat(fileno(fpout), &info);
+    p->length = info.st_size - p->offset;
+
+    mutt_parse_part(fpout, p);
+    if (s->fpout)
+    {
+      rewind(fpout);
+      tmpfp_buffer = s->fpin;
+      s->fpin = fpout;
+      mutt_body_handler(p, s);
+      s->fpin = tmpfp_buffer;
+    }
+  }
+  mutt_file_fclose(&smimeout);
+
+  if (!out_file)
+  {
+    mutt_file_fclose(&fpout);
+  }
+  fpout = NULL;
 
   if (s->flags & MUTT_DISPLAY)
   {
@@ -2278,10 +2281,12 @@ int smime_class_application_handler(struct Body *m, struct State *s)
 /**
  * smime_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_class_send_menu(struct Header *msg)
+int smime_class_send_menu(struct Email *msg)
 {
   struct SmimeKey *key = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))

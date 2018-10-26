@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_ENRICHED_H
-#define _MUTT_ENRICHED_H
+#ifndef MUTT_ENRICHED_H
+#define MUTT_ENRICHED_H
 
 struct Body;
 struct State;
 
 int text_enriched_handler(struct Body *a, struct State *s);
 
-#endif /* _MUTT_ENRICHED_H */
+#endif /* MUTT_ENRICHED_H */

@@ -20,18 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HEADER2_H
-#define _MUTT_HEADER2_H
+#ifndef MUTT_MUTT_HEADER_H
+#define MUTT_MUTT_HEADER_H
 
 #include <stddef.h>
 
 struct Context;
-struct Header;
+struct Email;
 
-void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen);
-void mutt_label_hash_add(struct Context *ctx, struct Header *hdr);
-void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr);
-int  mutt_label_message(struct Header *hdr);
-void mutt_make_label_hash(struct Context *ctx);
+void mutt_edit_headers(const char *editor, const char *body, struct Email *msg, char *fcc, size_t fcclen);
+void mutt_label_hash_add(struct Mailbox *m, struct Email *e);
+void mutt_label_hash_remove(struct Mailbox *m, struct Email *e);
+int  mutt_label_message(struct Email *e);
+void mutt_make_label_hash(struct Mailbox *m);
 
-#endif /* _MUTT_HEADER2_H */
+#endif /* MUTT_MUTT_HEADER_H */

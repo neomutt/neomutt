@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_BODY_H
-#define _EMAIL_BODY_H
+#ifndef MUTT_EMAIL_BODY_H
+#define MUTT_EMAIL_BODY_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -56,7 +56,7 @@ struct Body
                                    * is required when sending mail.  */
   struct Body *next;              /**< next attachment in the list */
   struct Body *parts;             /**< parts of a multipart or message/rfc822 */
-  struct Header *hdr;             /**< header information for message/rfc822 */
+  struct Email *email;             /**< header information for message/rfc822 */
 
   struct AttachPtr *aptr;         /**< Menu information, used in recvattach.c */
 
@@ -100,4 +100,4 @@ bool         mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);
 void         mutt_body_free(struct Body **p);
 struct Body *mutt_body_new(void);
 
-#endif /* _EMAIL_BODY_H */
+#endif /* MUTT_EMAIL_BODY_H */

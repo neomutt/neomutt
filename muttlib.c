@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "muttlib.h"
@@ -138,7 +138,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
   char tmp[PATH_MAX];
   char *t = NULL;
 
-  char *tail = "";
+  const char *tail = "";
 
   bool recurse = false;
 
@@ -219,14 +219,14 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
         struct Address *alias = mutt_alias_lookup(buf + 1);
         if (alias)
         {
-          struct Header *h = mutt_header_new();
-          h->env = mutt_env_new();
-          h->env->from = alias;
-          h->env->to = alias;
-          mutt_default_save(p, sizeof(p), h);
-          h->env->from = NULL;
-          h->env->to = NULL;
-          mutt_header_free(&h);
+          struct Email *e = mutt_email_new();
+          e->env = mutt_env_new();
+          e->env->from = alias;
+          e->env->to = alias;
+          mutt_default_save(p, sizeof(p), e);
+          e->env->from = NULL;
+          e->env->to = NULL;
+          mutt_email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
             recurse = true;
@@ -301,7 +301,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf, NULL) == MUTT_IMAP)
-    imap_expand_path(buf, buflen);
+    imap_path_canon(buf, buflen, NULL);
 #endif
 
   return buf;
@@ -1432,6 +1432,100 @@ void mutt_sleep(short s)
     sleep(SleepTime);
   else if (s)
     sleep(s);
+}
+
+/**
+ * mutt_timespec_compare - Compare to time values
+ * @param a First time value
+ * @param b Second time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_timespec_compare(struct timespec *a, struct timespec *b)
+{
+  if (a->tv_sec < b->tv_sec)
+    return -1;
+  if (a->tv_sec > b->tv_sec)
+    return 1;
+
+  if (a->tv_nsec < b->tv_nsec)
+    return -1;
+  if (a->tv_nsec > b->tv_nsec)
+    return 1;
+  return 0;
+}
+
+/**
+ * mutt_get_stat_timespec - Read the stat() time into a time value
+ * @param dest Time value to populate
+ * @param sb   stat info
+ * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
+ */
+void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
+{
+  dest->tv_sec = 0;
+  dest->tv_nsec = 0;
+
+  switch (type)
+  {
+    case MUTT_STAT_ATIME:
+      dest->tv_sec = sb->st_atime;
+#ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
+      dest->tv_nsec = sb->st_atim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_MTIME:
+      dest->tv_sec = sb->st_mtime;
+#ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+      dest->tv_nsec = sb->st_mtim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_CTIME:
+      dest->tv_sec = sb->st_ctime;
+#ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
+      dest->tv_nsec = sb->st_ctim.tv_nsec;
+#endif
+      break;
+  }
+}
+
+/**
+ * mutt_stat_timespec_compare - Compare stat info with a time value
+ * @param sba  stat info
+ * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
+ * @param b    Time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
+{
+  struct timespec a = { 0 };
+
+  mutt_get_stat_timespec(&a, sba, type);
+  return mutt_timespec_compare(&a, b);
+}
+
+/**
+ * mutt_stat_compare - Compare two stat infos
+ * @param sba      First stat info
+ * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
+ * @param sbb      Second stat info
+ * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type,
+                      struct stat *sbb, enum MuttStatType sbb_type)
+{
+  struct timespec a = { 0 };
+  struct timespec b = { 0 };
+
+  mutt_get_stat_timespec(&a, sba, sba_type);
+  mutt_get_stat_timespec(&b, sbb, sbb_type);
+  return mutt_timespec_compare(&a, &b);
 }
 
 /**

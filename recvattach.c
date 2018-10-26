@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "recvattach.h"
 #include "commands.h"
@@ -43,6 +43,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_logging.h"
@@ -64,7 +65,7 @@
 
 /* These Config Variables are only used in recvattach.c */
 char *AttachSep; ///< Config: Separator to add between saved/printed/piped attachments
-bool AttachSplit; ///< Config: Save/print/pipe tagged messages individually
+bool AttachSplit;    ///< Config: Save/print/pipe tagged messages individually
 bool DigestCollapse; ///< Config: Hide the subparts of a multipart/digest
 char *MessageFormat; ///< Config: printf-like format string for listing attached messages
 
@@ -73,7 +74,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
 #define CHECK_READONLY                                                         \
-  if (Context->readonly)                                                       \
+  if (Context->mailbox->readonly)                                              \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -247,11 +248,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
           break;
         }
         if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
-            MessageFormat && aptr->content->hdr)
+            MessageFormat && aptr->content->email)
         {
           char s[SHORT_STRING];
           mutt_make_string_flags(
-              s, sizeof(s), MessageFormat, NULL, aptr->content->hdr,
+              s, sizeof(s), MessageFormat, NULL, aptr->content->email,
               MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
           if (*s)
           {
@@ -267,7 +268,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
       }
       else if (aptr->content->description ||
                (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
-                MessageFormat && aptr->content->hdr))
+                MessageFormat && aptr->content->email))
       {
         break;
       }
@@ -415,35 +416,27 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 }
 
 /**
- * attach_entry - Format a menu item for the attachment list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * attach_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
  */
-static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void attach_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
+  struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * mutt_tag_attach - Tag an attachment
- * @param menu Menu listing attachments
- * @param n    Index number of the attachment
- * @param m    Action: 0 untag, 1 tag, -1 toggle
- * @retval num Net change in number of tagged attachments
+ * attach_tag - Tag an attachment - Implements Menu::menu_tag()
  */
-int mutt_tag_attach(struct Menu *menu, int n, int m)
+int attach_tag(struct Menu *menu, int sel, int act)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
-  struct Body *cur = actx->idx[actx->v2r[n]]->content;
+  struct AttachCtx *actx = menu->data;
+  struct Body *cur = actx->idx[actx->v2r[sel]]->content;
   bool ot = cur->tagged;
 
-  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  cur->tagged = ((act >= 0) ? act : !cur->tagged);
   return cur->tagged - ot;
 }
 
@@ -474,13 +467,12 @@ static void prepend_curdir(char *buf, size_t buflen)
  * query_save_attachment - Ask the user if we should save the attachment
  * @param[in]  fp        File handle to the attachment (OPTIONAL)
  * @param[in]  body      Attachment
- * @param[in]  hdr       Header of the email
+ * @param[in]  e       Email
  * @param[out] directory Where the attachment was saved
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int query_save_attachment(FILE *fp, struct Body *body,
-                                 struct Header *hdr, char **directory)
+static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, char **directory)
 {
   char *prompt = NULL;
   char buf[PATH_MAX], tfile[PATH_MAX];
@@ -491,16 +483,15 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   {
     if (directory && *directory)
     {
-      mutt_path_concat(buf, *directory, mutt_path_basename(body->filename),
-                            sizeof(buf));
+      mutt_path_concat(buf, *directory, mutt_path_basename(body->filename), sizeof(buf));
     }
     else
       mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
-  else if (body->hdr && body->encoding != ENC_BASE64 && body->encoding != ENC_QUOTED_PRINTABLE &&
+  else if (body->email && body->encoding != ENC_BASE64 && body->encoding != ENC_QUOTED_PRINTABLE &&
            mutt_is_message_type(body->type, body->subtype))
   {
-    mutt_default_save(buf, sizeof(buf), body->hdr);
+    mutt_default_save(buf, sizeof(buf), body->email);
   }
   else
     buf[0] = 0;
@@ -519,7 +510,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    const int is_message = (fp && body->hdr && body->encoding != ENC_BASE64 &&
+    const int is_message = (fp && body->email && body->encoding != ENC_BASE64 &&
                             body->encoding != ENC_QUOTED_PRINTABLE &&
                             mutt_is_message_type(body->type, body->subtype));
 
@@ -551,8 +542,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     }
 
     mutt_message(_("Saving..."));
-    if (mutt_save_attachment(fp, body, tfile, append,
-                             (hdr || !is_message) ? hdr : body->hdr) == 0)
+    if (mutt_save_attachment(fp, body, tfile, append, (e || !is_message) ? e : body->email) == 0)
     {
       mutt_message(_("Attachment saved"));
       return 0;
@@ -572,11 +562,11 @@ static int query_save_attachment(FILE *fp, struct Body *body,
  * @param fp   File handle for the attachment (OPTIONAL)
  * @param tag  If true, only save the tagged attachments
  * @param top  First Attachment
- * @param hdr  Header of the email
+ * @param e  Email
  * @param menu Menu listing attachments
  */
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, struct Header *hdr, struct Menu *menu)
+                               struct Body *top, struct Email *e, struct Menu *menu)
 {
   char buf[PATH_MAX], tfile[PATH_MAX];
   char *directory = NULL;
@@ -612,7 +602,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_expand_path(buf, sizeof(buf));
           if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
             return;
-          rc = mutt_save_attachment(fp, top, tfile, append, hdr);
+          rc = mutt_save_attachment(fp, top, tfile, append, e);
           if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
@@ -621,7 +611,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
         else
         {
-          rc = mutt_save_attachment(fp, top, tfile, MUTT_SAVE_APPEND, hdr);
+          rc = mutt_save_attachment(fp, top, tfile, MUTT_SAVE_APPEND, e);
           if ((rc == 0) && AttachSep && (fpout = fopen(tfile, "a")))
           {
             fprintf(fpout, "%s", AttachSep);
@@ -640,7 +630,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           menu_redraw(menu);
         }
-        if (query_save_attachment(fp, top, hdr, &directory) == -1)
+        if (query_save_attachment(fp, top, e, &directory) == -1)
           break;
       }
     }
@@ -1013,12 +1003,12 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
  * recvattach_edit_content_type - Edit the content type of an attachment
  * @param actx Attachment context
  * @param menu Menu listing Attachments
- * @param hdr  Header of the email
+ * @param e  Email
  */
 static void recvattach_edit_content_type(struct AttachCtx *actx,
-                                         struct Menu *menu, struct Header *hdr)
+                                         struct Menu *menu, struct Email *e)
 {
-  if (mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp) != 1)
+  if (mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp) != 1)
     return;
 
   /* The mutt_update_recvattach_menu() will overwrite any changes
@@ -1040,12 +1030,12 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
  * mutt_attach_display_loop - Event loop for the Attachment menu
  * @param menu Menu listing Attachments
  * @param op   Operation, e.g. OP_VIEW_ATTACH
- * @param hdr  Header of the email
+ * @param e  Email
  * @param actx Attachment context
  * @param recv true if these are received attachments (rather than in compose)
  * @retval num Operation performed
  */
-int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
+int mutt_attach_display_loop(struct Menu *menu, int op, struct Email *e,
                              struct AttachCtx *actx, bool recv)
 {
   do
@@ -1057,7 +1047,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
         /* fallthrough */
 
       case OP_VIEW_ATTACH:
-        op = mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_REGULAR, hdr, actx);
+        op = mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_REGULAR, e, actx);
         break;
 
       case OP_NEXT_ENTRY:
@@ -1083,18 +1073,18 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
       case OP_EDIT_TYPE:
         /* when we edit the content-type, we should redisplay the attachment
            immediately */
-        mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp);
+        mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp);
         if (recv)
-          recvattach_edit_content_type(actx, menu, hdr);
+          recvattach_edit_content_type(actx, menu, e);
         else
-          mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp);
+          mutt_edit_content_type(e, CURATTACH->content, CURATTACH->fp);
 
         menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
         break;
       /* functions which are passed through from the pager */
       case OP_CHECK_TRADITIONAL:
-        if (!(WithCrypto & APPLICATION_PGP) || (hdr && hdr->security & PGP_TRADITIONAL_CHECKED))
+        if (!(WithCrypto & APPLICATION_PGP) || (e && e->security & PGP_TRADITIONAL_CHECKED))
         {
           op = OP_NULL;
           break;
@@ -1115,16 +1105,16 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
 /**
  * mutt_generate_recvattach_list - Create a list of attachments
  * @param actx        Attachment context
- * @param hdr         Header of the email
+ * @param e         Email
  * @param m           Body of email
  * @param fp          File to read from
  * @param parent_type Type, e.g. #TYPE_MULTIPART
  * @param level       Attachment depth
  * @param decrypted   True if attachment has been decrypted
  */
-static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header *hdr,
-                                          struct Body *m, FILE *fp,
-                                          int parent_type, int level, int decrypted)
+static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
+                                          struct Body *m, FILE *fp, int parent_type,
+                                          int level, bool decrypted)
 {
   struct AttachPtr *new = NULL;
   struct Body *new_body = NULL;
@@ -1143,8 +1133,8 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       if (!crypt_valid_passphrase(APPLICATION_SMIME))
         goto decrypt_failed;
 
-      if (hdr->env)
-        crypt_smime_getkeys(hdr->env);
+      if (e->env)
+        crypt_smime_getkeys(e->env);
 
       secured = !crypt_smime_decrypt_mime(fp, &new_fp, m, &new_body);
 
@@ -1164,7 +1154,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       }
 
       if (secured)
-        hdr->security |= SMIME_ENCRYPT;
+        e->security |= SMIME_ENCRYPT;
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
@@ -1178,14 +1168,14 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       secured = !crypt_pgp_decrypt_mime(fp, &new_fp, m, &new_body);
 
       if (secured)
-        hdr->security |= PGP_ENCRYPT;
+        e->security |= PGP_ENCRYPT;
     }
 
     if (need_secured && secured)
     {
       mutt_actx_add_fp(actx, new_fp);
       mutt_actx_add_body(actx, new_body);
-      mutt_generate_recvattach_list(actx, hdr, new_body, new_fp, parent_type, level, 1);
+      mutt_generate_recvattach_list(actx, e, new_body, new_fp, parent_type, level, 1);
       continue;
     }
 
@@ -1198,11 +1188,11 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
     if (m->type == TYPE_MULTIPART && m->parts && !need_secured &&
         (parent_type == -1 && mutt_str_strcasecmp("alternative", m->subtype)))
     {
-      mutt_generate_recvattach_list(actx, hdr, m->parts, fp, m->type, level, decrypted);
+      mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level, decrypted);
     }
     else
     {
-      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
 
       new->content = m;
@@ -1213,12 +1203,12 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
       new->decrypted = decrypted;
 
       if (m->type == TYPE_MULTIPART)
-        mutt_generate_recvattach_list(actx, hdr, m->parts, fp, m->type, level + 1, decrypted);
+        mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
       else if (mutt_is_message_type(m->type, m->subtype))
       {
-        mutt_generate_recvattach_list(actx, m->hdr, m->parts, fp, m->type,
+        mutt_generate_recvattach_list(actx, m->email, m->parts, fp, m->type,
                                       level + 1, decrypted);
-        hdr->security |= m->hdr->security;
+        e->security |= m->email->security;
       }
     }
   }
@@ -1232,7 +1222,7 @@ void mutt_attach_init(struct AttachCtx *actx)
 {
   /* Collapse the attachments if '$digest_collapse' is set AND if...
    * the outer container is of type 'multipart/digest' */
-  bool digest = (mutt_str_strcasecmp(actx->hdr->content->subtype, "digest") == 0);
+  bool digest = (mutt_str_strcasecmp(actx->email->content->subtype, "digest") == 0);
 
   for (int i = 0; i < actx->idxlen; i++)
   {
@@ -1257,7 +1247,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 {
   if (init)
   {
-    mutt_generate_recvattach_list(actx, actx->hdr, actx->hdr->content,
+    mutt_generate_recvattach_list(actx, actx->email, actx->email->content,
                                   actx->root_fp, -1, 0, 0);
     mutt_attach_init(actx);
     menu->data = actx;
@@ -1307,9 +1297,9 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
 /**
  * mutt_view_attachments - Show the attachments in a Menu
- * @param hdr Header of the email
+ * @param e Email
  */
-void mutt_view_attachments(struct Header *hdr)
+void mutt_view_attachments(struct Email *e)
 {
   char helpstr[LONG_STRING];
   struct Body *cur = NULL;
@@ -1317,23 +1307,23 @@ void mutt_view_attachments(struct Header *hdr)
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(Context, hdr);
+  mutt_parse_mime_message(Context, e);
 
-  mutt_message_hook(Context, hdr, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
 
-  struct Message *msg = mx_msg_open(Context, hdr->msgno);
+  struct Message *msg = mx_msg_open(Context, e->msgno);
   if (!msg)
     return;
 
   struct Menu *menu = mutt_menu_new(MENU_ATTACH);
   menu->title = _("Attachments");
-  menu->make_entry = attach_entry;
-  menu->tag = mutt_tag_attach;
+  menu->menu_make_entry = attach_make_entry;
+  menu->menu_tag = attach_tag;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
-  actx->hdr = hdr;
+  actx->email = e;
   actx->root_fp = msg->fp;
   mutt_update_recvattach_menu(actx, menu, true);
 
@@ -1346,18 +1336,18 @@ void mutt_view_attachments(struct Header *hdr)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_MAILCAP, hdr, actx);
+        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_MAILCAP, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_ATTACH_VIEW_TEXT:
-        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_AS_TEXT, hdr, actx);
+        mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_AS_TEXT, e, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
-        op = mutt_attach_display_loop(menu, op, hdr, actx, true);
+        op = mutt_attach_display_loop(menu, op, e, actx, true);
         menu->redraw = REDRAW_FULL;
         continue;
 
@@ -1387,7 +1377,7 @@ void mutt_view_attachments(struct Header *hdr)
         if (((WithCrypto & APPLICATION_PGP) != 0) &&
             recvattach_pgp_check_traditional(actx, menu))
         {
-          hdr->security = crypt_query(cur);
+          e->security = crypt_query(cur);
           menu->redraw = REDRAW_FULL;
         }
         break;
@@ -1404,7 +1394,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_SAVE:
         mutt_save_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
-                                  CURATTACH->content, hdr, menu);
+                                  CURATTACH->content, e, menu);
 
         if (!menu->tagprefix && Resolve && menu->current < menu->max - 1)
           menu->current++;
@@ -1416,7 +1406,7 @@ void mutt_view_attachments(struct Header *hdr)
         CHECK_READONLY;
 
 #ifdef USE_POP
-        if (Context->magic == MUTT_POP)
+        if (Context->mailbox->magic == MUTT_POP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from POP server"));
@@ -1425,7 +1415,7 @@ void mutt_view_attachments(struct Header *hdr)
 #endif
 
 #ifdef USE_NNTP
-        if (Context->magic == MUTT_NNTP)
+        if (Context->mailbox->magic == MUTT_NNTP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from news server"));
@@ -1433,13 +1423,13 @@ void mutt_view_attachments(struct Header *hdr)
         }
 #endif
 
-        if ((WithCrypto != 0) && (hdr->security & ENCRYPT))
+        if ((WithCrypto != 0) && (e->security & ENCRYPT))
         {
           mutt_message(_("Deletion of attachments from encrypted messages is "
                          "unsupported"));
           break;
         }
-        if ((WithCrypto != 0) && (hdr->security & (SIGN | PARTSIGN)))
+        if ((WithCrypto != 0) && (e->security & (SIGN | PARTSIGN)))
         {
           mutt_message(_("Deletion of attachments from signed messages may "
                          "invalidate the signature"));
@@ -1526,7 +1516,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, hdr, actx,
+        mutt_attach_forward(CURATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CURATTACH->content, 0);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1534,7 +1524,7 @@ void mutt_view_attachments(struct Header *hdr)
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, hdr, actx,
+        mutt_attach_forward(CURATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CURATTACH->content, SEND_NEWS);
         menu->redraw = REDRAW_FULL;
         break;
@@ -1542,13 +1532,12 @@ void mutt_view_attachments(struct Header *hdr)
       case OP_FOLLOWUP:
         CHECK_ATTACH;
 
-        if (!CURATTACH->content->hdr->env->followup_to ||
-            (mutt_str_strcasecmp(CURATTACH->content->hdr->env->followup_to,
-                                 "poster") != 0) ||
+        if (!CURATTACH->content->email->env->followup_to ||
+            (mutt_str_strcasecmp(CURATTACH->content->email->env->followup_to, "poster") != 0) ||
             (query_quadoption(FollowupToPoster,
                               _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
-          mutt_attach_reply(CURATTACH->fp, hdr, actx,
+          mutt_attach_reply(CURATTACH->fp, e, actx,
                             menu->tagprefix ? NULL : CURATTACH->content,
                             SEND_NEWS | SEND_REPLY);
           menu->redraw = REDRAW_FULL;
@@ -1564,30 +1553,37 @@ void mutt_view_attachments(struct Header *hdr)
 
         flags = SEND_REPLY | (op == OP_GROUP_REPLY ? SEND_GROUP_REPLY : 0) |
                 (op == OP_LIST_REPLY ? SEND_LIST_REPLY : 0);
-        mutt_attach_reply(CURATTACH->fp, hdr, actx,
+        mutt_attach_reply(CURATTACH->fp, e, actx,
                           menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;
         break;
 
+      case OP_COMPOSE_TO_SENDER:
+        CHECK_ATTACH;
+        mutt_attach_mail_sender(CURATTACH->fp, e, actx,
+                                menu->tagprefix ? NULL : CURATTACH->content);
+        menu->redraw = REDRAW_FULL;
+        break;
+
       case OP_EDIT_TYPE:
-        recvattach_edit_content_type(actx, menu, hdr);
+        recvattach_edit_content_type(actx, menu, e);
         menu->redraw |= REDRAW_INDEX;
         break;
 
       case OP_EXIT:
         mx_msg_close(Context, &msg);
 
-        hdr->attach_del = false;
+        e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)
         {
           if (actx->idx[i]->content && actx->idx[i]->content->deleted)
           {
-            hdr->attach_del = true;
+            e->attach_del = true;
             break;
           }
         }
-        if (hdr->attach_del)
-          hdr->changed = true;
+        if (e->attach_del)
+          e->changed = true;
 
         mutt_actx_free(&actx);
 

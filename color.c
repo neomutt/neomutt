@@ -27,12 +27,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "color.h"
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "options.h"
@@ -655,8 +656,8 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   {
     mutt_menu_set_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
-    for (int i = 0; Context && i < Context->msgcount; i++)
-      Context->hdrs[i]->pair = 0;
+    for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
+      Context->mailbox->hdrs[i]->pair = 0;
   }
   return 0;
 }
@@ -664,13 +665,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
 #ifdef HAVE_COLOR
 
 /**
- * mutt_parse_uncolor - Parse the 'uncolor' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_uncolor - Parse the 'uncolor' command - Implements ::command_t
  */
 int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -681,13 +676,7 @@ int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
 #endif
 
 /**
- * mutt_parse_unmono - Parse the 'unmono' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_unmono - Parse the 'unmono' command - Implements ::command_t
  */
 int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
@@ -798,8 +787,8 @@ static int add_pattern(struct ColorLineHead *top, const char *s, bool sensitive,
   /* force re-caching of index colors */
   if (is_index)
   {
-    for (int i = 0; Context && i < Context->msgcount; i++)
-      Context->hdrs[i]->pair = 0;
+    for (int i = 0; Context && i < Context->mailbox->msg_count; i++)
+      Context->mailbox->hdrs[i]->pair = 0;
   }
 
   return 0;
@@ -1043,7 +1032,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
    * a rc file.
    */
   {
-    mutt_str_strfcpy(err->data, _("default colors not supported"), err->dsize);
+    mutt_buffer_strcpy(err, _("default colors not supported"));
     return -1;
   }
 #endif /* HAVE_USE_DEFAULT_COLORS */
@@ -1142,13 +1131,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 #ifdef HAVE_COLOR
 
 /**
- * mutt_parse_color - Parse the 'color' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_color - Parse the 'color' command - Implements ::command_t
  */
 int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
@@ -1164,13 +1147,7 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 #endif
 
 /**
- * mutt_parse_mono - Parse the 'mono' command
- * @param buf  Temporary Buffer space
- * @param s    Buffer containing string to be parsed
- * @param data Flags associated with the command
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Error
+ * mutt_parse_mono - Parse the 'mono' command - Implements ::command_t
  */
 int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)

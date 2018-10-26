@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FORMAT_FLAGS_H
-#define _MUTT_FORMAT_FLAGS_H
+#ifndef MUTT_FORMAT_FLAGS_H
+#define MUTT_FORMAT_FLAGS_H
 
 #include <stddef.h>
 
@@ -37,7 +37,8 @@ enum FormatFlag
   MUTT_FORMAT_STAT_FILE   = (1 << 4), /**< used by attach_format_str */
   MUTT_FORMAT_ARROWCURSOR = (1 << 5), /**< reserve space for arrow_cursor */
   MUTT_FORMAT_INDEX       = (1 << 6), /**< this is a main index entry */
-  MUTT_FORMAT_NOFILTER    = (1 << 7)  /**< do not allow filtering on this pass */
+  MUTT_FORMAT_NOFILTER    = (1 << 7), /**< do not allow filtering on this pass */
+  MUTT_FORMAT_PLAIN       = (1 << 8), /**< do not prepend DISP_TO, DISP_CC ... */
 };
 
 /**
@@ -66,4 +67,4 @@ typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
                              const char *if_str, const char *else_str,
                              unsigned long data, enum FormatFlag flags);
 
-#endif /* _MUTT_FORMAT_FLAGS_H */
+#endif /* MUTT_FORMAT_FLAGS_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONFIG_REGEX_H
-#define _CONFIG_REGEX_H
+#ifndef MUTT_CONFIG_REGEX_H
+#define MUTT_CONFIG_REGEX_H
 
 #include <regex.h>
 #include <stdbool.h>
@@ -33,4 +33,4 @@ void regex_init(struct ConfigSet *cs);
 struct Regex *regex_create(const char *str, int flags, struct Buffer *err);
 void regex_free(struct Regex **regex);
 
-#endif /* _CONFIG_REGEX_H */
+#endif /* MUTT_CONFIG_REGEX_H */

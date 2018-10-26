@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CURSES_H
-#define _MUTT_CURSES_H
+#ifndef MUTT_MUTT_CURSES_H
+#define MUTT_MUTT_CURSES_H
 
 #include <regex.h>
 #include "mutt/mutt.h"
@@ -235,4 +235,4 @@ extern struct ColorLineHead ColorIndexTagList;
 #define NORMAL_COLOR attrset(ColorDefs[MT_COLOR_NORMAL])
 #endif
 
-#endif /* _MUTT_CURSES_H */
+#endif /* MUTT_MUTT_CURSES_H */

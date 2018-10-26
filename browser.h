@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BROWSER_H
-#define _MUTT_BROWSER_H
+#ifndef MUTT_BROWSER_H
+#define MUTT_BROWSER_H
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -72,7 +72,7 @@ struct FolderFile
   bool local : 1; /**< folder is on local filesystem */
   bool tagged : 1;
 #ifdef USE_NNTP
-  struct NntpData *nd;
+  struct NntpMboxData *nd;
 #endif
 };
 
@@ -94,6 +94,6 @@ struct BrowserState
 };
 
 void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int *numfiles);
-void mutt_browser_select_dir(char *f);
+void mutt_browser_select_dir(const char *f);
 
-#endif /* _MUTT_BROWSER_H */
+#endif /* MUTT_BROWSER_H */

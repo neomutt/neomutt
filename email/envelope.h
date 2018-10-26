@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_ENVELOPE_H
-#define _EMAIL_ENVELOPE_H
+#ifndef MUTT_EMAIL_ENVELOPE_H
+#define MUTT_EMAIL_ENVELOPE_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
@@ -68,7 +68,7 @@ bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Env
 void             mutt_env_free(struct Envelope **p);
 void             mutt_env_merge(struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new(void);
-int              mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
+int              mutt_env_to_intl(struct Envelope *env, const char **tag, char **err);
 void             mutt_env_to_local(struct Envelope *e);
 
-#endif /* _EMAIL_ENVELOPE_H */
+#endif /* MUTT_EMAIL_ENVELOPE_H */

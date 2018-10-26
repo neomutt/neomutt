@@ -46,8 +46,8 @@
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
  */
 
-#ifndef _NCRYPT_NCRYPT_H
-#define _NCRYPT_NCRYPT_H
+#ifndef MUTT_NCRYPT_NCRYPT_H
+#define MUTT_NCRYPT_NCRYPT_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -55,7 +55,7 @@
 struct Address;
 struct Body;
 struct Envelope;
-struct Header;
+struct Email;
 struct State;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
@@ -178,10 +178,10 @@ extern char *SmimeVerifyOpaqueCommand;
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void         crypt_extract_keys_from_messages(struct Header *h);
+void         crypt_extract_keys_from_messages(struct Email *e);
 void         crypt_forget_passphrase(void);
-int          crypt_get_keys(struct Header *msg, char **keylist, bool oppenc_mode);
-void         crypt_opportunistic_encrypt(struct Header *msg);
+int          crypt_get_keys(struct Email *msg, char **keylist, bool oppenc_mode);
+void         crypt_opportunistic_encrypt(struct Email *msg);
 int          crypt_query(struct Body *m);
 int          crypt_valid_passphrase(int flags);
 int          mutt_is_application_pgp(struct Body *m);
@@ -190,7 +190,7 @@ int          mutt_is_malformed_multipart_pgp_encrypted(struct Body *b);
 int          mutt_is_multipart_encrypted(struct Body *b);
 int          mutt_is_multipart_signed(struct Body *b);
 int          mutt_is_valid_multipart_pgp_encrypted(struct Body *b);
-int          mutt_protect(struct Header *msg, char *keylist);
+int          mutt_protect(struct Email *msg, char *keylist);
 int          mutt_signed_handler(struct Body *a, struct State *s);
 
 /* cryptglue.c */
@@ -204,14 +204,14 @@ int          crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
 void         crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top);
 void         crypt_pgp_invoke_getkeys(struct Address *addr);
 struct Body *crypt_pgp_make_key_attachment(void);
-int          crypt_pgp_send_menu(struct Header *msg);
+int          crypt_pgp_send_menu(struct Email *msg);
 int          crypt_smime_application_handler(struct Body *m, struct State *s);
 int          crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
 void         crypt_smime_getkeys(struct Envelope *env);
-int          crypt_smime_send_menu(struct Header *msg);
-int          crypt_smime_verify_sender(struct Header *h);
+int          crypt_smime_send_menu(struct Email *msg);
+int          crypt_smime_verify_sender(struct Email *e);
 
 /* crypt_mod.c */
 void crypto_module_free(void);
 
-#endif /* _NCRYPT_NCRYPT_H */
+#endif /* MUTT_NCRYPT_NCRYPT_H */

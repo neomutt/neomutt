@@ -37,15 +37,15 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "tunnel.h"
-#include "account.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "socket.h"
 
 /**
- * struct TunnelData - A network tunnel (pair of sockets)
+ * struct TunnelSockData - A network tunnel (pair of sockets)
  */
-struct TunnelData
+struct TunnelSockData
 {
   pid_t pid;
   int readfd;
@@ -53,16 +53,13 @@ struct TunnelData
 };
 
 /**
- * tunnel_socket_open - Open a tunnel socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
+ * tunnel_socket_open - Open a tunnel socket - Implements Connection::conn_open()
  */
 static int tunnel_socket_open(struct Connection *conn)
 {
   int pin[2], pout[2];
 
-  struct TunnelData *tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
+  struct TunnelSockData *tunnel = mutt_mem_malloc(sizeof(struct TunnelSockData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);
@@ -135,14 +132,62 @@ static int tunnel_socket_open(struct Connection *conn)
 }
 
 /**
- * tunnel_socket_close - Close a tunnel socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
+ * tunnel_socket_read - Read data from a tunnel socket - Implements Connection::conn_read()
+ */
+static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
+{
+  struct TunnelSockData *tunnel = conn->sockdata;
+  int rc;
+
+  rc = read(tunnel->readfd, buf, count);
+  if (rc == -1)
+  {
+    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+  }
+
+  return rc;
+}
+
+/**
+ * tunnel_socket_write - Write data to a tunnel socket - Implements Connection::conn_write()
+ */
+static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t count)
+{
+  struct TunnelSockData *tunnel = conn->sockdata;
+  int rc;
+
+  rc = write(tunnel->writefd, buf, count);
+  if (rc == -1)
+  {
+    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+  }
+
+  return rc;
+}
+
+/**
+ * tunnel_socket_poll - Checks whether tunnel reads would block - Implements Connection::conn_poll()
+ */
+static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
+{
+  struct TunnelSockData *tunnel = conn->sockdata;
+  int ofd;
+  int rc;
+
+  ofd = conn->fd;
+  conn->fd = tunnel->readfd;
+  rc = raw_socket_poll(conn, wait_secs);
+  conn->fd = ofd;
+
+  return rc;
+}
+
+/**
+ * tunnel_socket_close - Close a tunnel socket - Implements Connection::conn_close()
  */
 static int tunnel_socket_close(struct Connection *conn)
 {
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
+  struct TunnelSockData *tunnel = conn->sockdata;
   int status;
 
   close(tunnel->readfd);
@@ -156,72 +201,6 @@ static int tunnel_socket_close(struct Connection *conn)
   FREE(&conn->sockdata);
 
   return 0;
-}
-
-/**
- * tunnel_socket_read - Read data from a tunnel socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
-  int rc;
-
-  rc = read(tunnel->readfd, buf, len);
-  if (rc == -1)
-  {
-    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
-  }
-
-  return rc;
-}
-
-/**
- * tunnel_socket_write - Write data to a tunnel socket
- * @param conn Connection to a server
- * @param buf  Buffer to read into
- * @param len  Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
-  int rc;
-
-  rc = write(tunnel->writefd, buf, len);
-  if (rc == -1)
-  {
-    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
-  }
-
-  return rc;
-}
-
-/**
- * tunnel_socket_poll - Checks whether tunnel reads would block
- * @param conn Connection to a server
- * @param wait_secs How long to wait for a response
- * @retval >0 There is data to read
- * @retval  0 Read would block
- * @retval -1 Connection doesn't support polling
- */
-static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
-{
-  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
-  int ofd;
-  int rc;
-
-  ofd = conn->fd;
-  conn->fd = tunnel->readfd;
-  rc = raw_socket_poll(conn, wait_secs);
-  conn->fd = ofd;
-
-  return rc;
 }
 
 /**

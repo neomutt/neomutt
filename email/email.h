@@ -1,6 +1,6 @@
 /**
  * @file
- * Structs that make up an email
+ * Representation of an email
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,50 +20,102 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page email EMAIL: Structs that make up an email
- *
- * Structs that make up an email
- *
- * | File                   | Description              |
- * | :--------------------- | :----------------------- |
- * | email/address.c        | @subpage email_address   |
- * | email/attach.c         | @subpage email_attach    |
- * | email/body.c           | @subpage email_body      |
- * | email/email_globals.c  | @subpage email_globals   |
- * | email/envelope.c       | @subpage email_envelope  |
- * | email/from.c           | @subpage email_from      |
- * | email/header.c         | @subpage email_header    |
- * | email/idna.c           | @subpage email_idna      |
- * | email/mime.c           | @subpage email_mime      |
- * | email/parameter.c      | @subpage email_parameter |
- * | email/parse.c          | @subpage email_parse     |
- * | email/rfc2047.c        | @subpage email_rfc2047   |
- * | email/rfc2231.c        | @subpage email_rfc2231   |
- * | email/tags.c           | @subpage email_tags      |
- * | email/thread.c         | @subpage email_thread    |
- * | email/url.c            | @subpage email_url       |
- */
+#ifndef MUTT_EMAIL_EMAIL_H
+#define MUTT_EMAIL_EMAIL_H
 
-#ifndef _EMAIL_EMAIL_H
-#define _EMAIL_EMAIL_H
-
-#include "address.h"
-#include "attach.h"
-#include "body.h"
-#include "content.h"
-#include "email_globals.h"
-#include "envelope.h"
-#include "from.h"
-#include "header.h"
-#include "idna2.h"
-#include "mime.h"
-#include "parameter.h"
-#include "parse.h"
-#include "rfc2047.h"
-#include "rfc2231.h"
+#include <stddef.h>
+#include <stdbool.h>
+#include <time.h>
+#include "mutt/mutt.h"
 #include "tags.h"
-#include "thread.h"
-#include "url.h"
 
-#endif /* _EMAIL_EMAIL_H */
+/**
+ * struct Email - The envelope/body of an email
+ */
+struct Email
+{
+  unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.
+                                 see: mutt_crypt.h pgplib.h, smime.h */
+
+  bool mime            : 1; /**< has a MIME-Version email? */
+  bool flagged         : 1; /**< marked important? */
+  bool tagged          : 1;
+  bool deleted         : 1;
+  bool purge           : 1; /**< skip trash folder when deleting */
+  bool quasi_deleted   : 1; /**< deleted from neomutt, but not modified on disk */
+  bool changed         : 1;
+  bool attach_del      : 1; /**< has an attachment marked for deletion */
+  bool old             : 1;
+  bool read            : 1;
+  bool expired         : 1; /**< already expired? */
+  bool superseded      : 1; /**< got superseded? */
+  bool replied         : 1;
+  bool subject_changed : 1; /**< used for threading */
+  bool threaded        : 1; /**< used for threading */
+  bool display_subject : 1; /**< used for threading */
+  bool recip_valid     : 1; /**< is_recipient is valid */
+  bool active          : 1; /**< message is not to be removed */
+  bool trash           : 1; /**< message is marked as trashed on disk.
+                             * This flag is used by the maildir_trash option. */
+  bool xlabel_changed  : 1; /**< editable - used for syncing */
+
+  /* timezone of the sender of this message */
+  unsigned int zhours : 5;
+  unsigned int zminutes : 6;
+  bool zoccident : 1;
+
+  /* bits used for caching when searching */
+  bool searched : 1;
+  bool matched : 1;
+
+  /* tells whether the attachment count is valid */
+  bool attach_valid : 1;
+
+  /* the following are used to support collapsing threads  */
+  bool collapsed : 1; /**< is this message part of a collapsed thread? */
+  bool limited : 1;   /**< is this message in a limited view?  */
+  size_t num_hidden;  /**< number of hidden messages in this view */
+
+  short recipient;    /**< user_is_recipient()'s return value, cached */
+
+  int pair;           /**< color-pair to use when displaying in the index */
+
+  time_t date_sent;   /**< time when the message was sent (UTC) */
+  time_t received;    /**< time when the message was placed in the mailbox */
+  LOFF_T offset;      /**< where in the stream does this message begin? */
+  int lines;          /**< how many lines in the body of this message? */
+  int index;          /**< the absolute (unsorted) message number */
+  int msgno;          /**< number displayed to the user */
+  int virtual;        /**< virtual message number */
+  int score;
+  struct Envelope *env;      /**< envelope information */
+  struct Body *content;      /**< list of MIME parts */
+  char *path;
+
+  char *tree; /**< character string to print thread tree */
+  struct MuttThread *thread;
+
+  /* Number of qualifying attachments in message, if attach_valid */
+  short attach_total;
+
+#ifdef MIXMASTER
+  struct ListHead chain;
+#endif
+
+#ifdef USE_POP
+  int refno; /**< message number on server */
+#endif
+
+  struct TagHead tags; /**< for drivers that support server tagging */
+
+  char *maildir_flags; /**< unknown maildir flags */
+
+  void *edata;                 /**< driver-specific data */
+  void (*free_edata)(void **); /**< driver-specific data free function */
+};
+
+bool          mutt_email_cmp_strict(const struct Email *e1, const struct Email *e2);
+void          mutt_email_free(struct Email **e);
+struct Email *mutt_email_new(void);
+
+#endif /* MUTT_EMAIL_EMAIL_H */

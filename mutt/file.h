@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FILE_H
-#define _MUTT_FILE_H
+#ifndef MUTT_LIB_FILE_H
+#define MUTT_LIB_FILE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -49,7 +49,8 @@ void        mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *f
 int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
-int         mutt_file_lock(int fd, int excl, int timeout);
+long        mutt_file_get_size(const char *path);
+int         mutt_file_lock(int fd, bool excl, bool timeout);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
@@ -69,4 +70,4 @@ void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
 int         mutt_file_unlock(int fd);
 
-#endif /* _MUTT_FILE_H */
+#endif /* MUTT_LIB_FILE_H */

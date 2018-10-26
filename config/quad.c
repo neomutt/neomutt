@@ -48,7 +48,7 @@ const char *quad_values[] = {
 };
 
 /**
- * quad_string_set - Set a Quad-option by string - Implements ::cst_string_set
+ * quad_string_set - Set a Quad-option by string - Implements ::cst_string_set()
  */
 static int quad_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                            const char *value, struct Buffer *err)
@@ -96,7 +96,7 @@ static int quad_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 }
 
 /**
- * quad_string_get - Get a Quad-option as a string - Implements ::cst_string_get
+ * quad_string_get - Get a Quad-option as a string - Implements ::cst_string_get()
  */
 static int quad_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
@@ -122,7 +122,7 @@ static int quad_string_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * quad_native_set - Set a Quad-option config item by int - Implements ::cst_native_set
+ * quad_native_set - Set a Quad-option config item by int - Implements ::cst_native_set()
  */
 static int quad_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
@@ -152,7 +152,7 @@ static int quad_native_set(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * quad_native_get - Get an int object from a Quad-option config item - Implements ::cst_native_get
+ * quad_native_get - Get an int object from a Quad-option config item - Implements ::cst_native_get()
  */
 static intptr_t quad_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
@@ -164,7 +164,7 @@ static intptr_t quad_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * quad_reset - Reset a Quad-option to its initial value - Implements ::cst_reset
+ * quad_reset - Reset a Quad-option to its initial value - Implements ::cst_reset()
  */
 static int quad_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_BODY2_H
-#define _MUTT_BODY2_H
+#ifndef MUTT_MUTT_BODY_H
+#define MUTT_MUTT_BODY_H
 
 #include <stdio.h>
 
@@ -29,4 +29,4 @@ struct Body;
 
 int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src);
 
-#endif /* _MUTT_BODY2_H */
+#endif /* MUTT_MUTT_BODY_H */

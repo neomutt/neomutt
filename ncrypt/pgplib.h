@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_PGPLIB_H
-#define _NCRYPT_PGPLIB_H
+#ifndef MUTT_NCRYPT_PGPLIB_H
+#define MUTT_NCRYPT_PGPLIB_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -70,4 +70,4 @@ struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *
 
 struct PgpKeyInfo *pgp_new_keyinfo(void);
 
-#endif /* _NCRYPT_PGPLIB_H */
+#endif /* MUTT_NCRYPT_PGPLIB_H */

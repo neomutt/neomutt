@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "curs_lib.h"
@@ -105,32 +105,24 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * alias_entry - Format a menu item for the alias list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * alias_make_entry - Format a menu item for the alias list - Implements Menu::menu_make_entry()
  */
-static void alias_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void alias_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
-                      (unsigned long) ((struct Alias **) menu->data)[num],
+                      (unsigned long) ((struct Alias **) menu->data)[line],
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * alias_tag - Tag some aliases
- * @param menu Menu
- * @param n    Current selection
- * @param m    Current number of tagged aliases
- * @retval num How man more aliases are now tagged?
+ * alias_tag - Tag some aliases - Implements Menu::menu_tag()
  */
-static int alias_tag(struct Menu *menu, int n, int m)
+static int alias_tag(struct Menu *menu, int sel, int act)
 {
-  struct Alias *cur = ((struct Alias **) menu->data)[n];
+  struct Alias *cur = ((struct Alias **) menu->data)[sel];
   bool ot = cur->tagged;
 
-  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  cur->tagged = ((act >= 0) ? act : !cur->tagged);
 
   return cur->tagged - ot;
 }
@@ -211,8 +203,8 @@ void mutt_alias_menu(char *buf, size_t buflen, struct AliasList *aliases)
   }
 
   menu = mutt_menu_new(MENU_ALIAS);
-  menu->make_entry = alias_entry;
-  menu->tag = alias_tag;
+  menu->menu_make_entry = alias_make_entry;
+  menu->menu_tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
   mutt_menu_push_current(menu);

@@ -50,7 +50,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "crypt.h"
@@ -1531,12 +1531,15 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
   }
   else
   {
-    state_puts(_("KeyID "), s);
     if (sig->fpr)
+    {
+      state_puts(_("KeyID "), s);
       state_puts(sig->fpr, s);
+    }
     else
-      state_puts(_("Unknown"), s);
-
+    {
+      state_puts(_("no signature fingerprint available"), s);
+    }
     state_puts("\n", s);
   }
 
@@ -2496,8 +2499,8 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc);
-       complete = (strchr(buf, '\n')))
+  for (complete = true, armor_header = true;
+       mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
   {
     if (!complete)
     {
@@ -3147,19 +3150,15 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * crypt_entry - Format a menu item for the key selection list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::menu_make_entry()
  */
-static void crypt_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void crypt_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct CryptKeyInfo **key_table = (struct CryptKeyInfo **) menu->data;
+  struct CryptKeyInfo **key_table = menu->data;
   struct CryptEntry entry;
 
-  entry.key = key_table[num];
-  entry.num = num + 1;
+  entry.key = key_table[line];
+  entry.num = line + 1;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
                       crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
@@ -4354,7 +4353,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   struct Menu *menu = mutt_menu_new(menu_to_use);
   menu->max = i;
-  menu->make_entry = crypt_entry;
+  menu->menu_make_entry = crypt_make_entry;
   menu->help = helpstr;
   menu->data = key_table;
   mutt_menu_push_current(menu);
@@ -4565,9 +4564,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
     if (match)
     {
-      struct CryptKeyInfo *tmp = NULL;
-
-      tmp = crypt_copy_key(k);
+      struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
       matches_endp = &tmp->next;
 
@@ -4657,11 +4654,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
         (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
         mutt_str_stristr(k->uid, p))
     {
-      struct CryptKeyInfo *tmp = NULL;
-
       mutt_debug(5, "match.\n");
 
-      tmp = crypt_copy_key(k);
+      struct CryptKeyInfo *tmp = crypt_copy_key(k);
       *matches_endp = tmp;
       matches_endp = &tmp->next;
     }
@@ -5029,14 +5024,16 @@ void smime_gpgme_init(void)
 
 /**
  * gpgme_send_menu - Show the user the encryption/signing menu
- * @param msg      Header of email
+ * @param msg      Email
  * @param is_smime True if an SMIME message
  * @retval num Flags, e.g. #APPLICATION_SMIME | #ENCRYPT
  */
-static int gpgme_send_menu(struct Header *msg, int is_smime)
+static int gpgme_send_menu(struct Email *msg, int is_smime)
 {
   struct CryptKeyInfo *p = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   int choice;
 
   if (is_smime)
@@ -5192,7 +5189,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
 /**
  * pgp_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_gpgme_send_menu(struct Header *msg)
+int pgp_gpgme_send_menu(struct Email *msg)
 {
   return gpgme_send_menu(msg, 0);
 }
@@ -5200,30 +5197,30 @@ int pgp_gpgme_send_menu(struct Header *msg)
 /**
  * smime_gpgme_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int smime_gpgme_send_menu(struct Header *msg)
+int smime_gpgme_send_menu(struct Email *msg)
 {
   return gpgme_send_menu(msg, 1);
 }
 
 /**
  * verify_sender - Verify the sender of a message
- * @param h Header of the email
+ * @param e Email
  * @retval true If sender is verified
  */
-static bool verify_sender(struct Header *h)
+static bool verify_sender(struct Email *e)
 {
   struct Address *sender = NULL;
   bool rc = true;
 
-  if (h->env->from)
+  if (e->env->from)
   {
-    h->env->from = mutt_expand_aliases(h->env->from);
-    sender = h->env->from;
+    e->env->from = mutt_expand_aliases(e->env->from);
+    sender = e->env->from;
   }
-  else if (h->env->sender)
+  else if (e->env->sender)
   {
-    h->env->sender = mutt_expand_aliases(h->env->sender);
-    sender = h->env->sender;
+    e->env->sender = mutt_expand_aliases(e->env->sender);
+    sender = e->env->sender;
   }
 
   if (sender)
@@ -5287,9 +5284,9 @@ static bool verify_sender(struct Header *h)
 /**
  * smime_gpgme_verify_sender - Implements CryptModuleSpecs::smime_verify_sender()
  */
-int smime_gpgme_verify_sender(struct Header *h)
+int smime_gpgme_verify_sender(struct Email *e)
 {
-  return verify_sender(h);
+  return verify_sender(e);
 }
 
 /**

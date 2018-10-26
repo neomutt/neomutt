@@ -86,4 +86,3 @@ void crypto_module_free(void)
     FREE(&np);
   }
 }
-

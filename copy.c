@@ -33,13 +33,14 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "copy.h"
 #include "context.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
+#include "mailbox.h"
 #include "mutt_window.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -368,7 +369,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 /**
  * mutt_copy_header - Copy email header
  * @param in     FILE pointer to read from
- * @param h      Email Header
+ * @param e      Email Header
  * @param out    FILE pointer to write to
  * @param flags  Flags, see below
  * @param prefix Prefix for quoting headers
@@ -398,15 +399,15 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  * prefix
  * * string to use if CH_PREFIX is set
  */
-int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix)
 {
-  if (h->env)
+  if (e->env)
   {
-    flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0) |
-             (h->env->refs_changed ? CH_UPDATE_REFS : 0);
+    flags |= (e->env->irt_changed ? CH_UPDATE_IRT : 0) |
+             (e->env->refs_changed ? CH_UPDATE_REFS : 0);
   }
 
-  if (mutt_copy_hdr(in, out, h->offset, h->content->offset, flags, prefix) == -1)
+  if (mutt_copy_hdr(in, out, e->offset, e->content->offset, flags, prefix) == -1)
     return -1;
 
   if (flags & CH_TXTPLAIN)
@@ -422,11 +423,11 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&h->env->in_reply_to))
+  if ((flags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&e->env->in_reply_to))
   {
     fputs("In-Reply-To:", out);
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &h->env->in_reply_to, entries)
+    STAILQ_FOREACH(np, &e->env->in_reply_to, entries)
     {
       fputc(' ', out);
       fputs(np->data, out);
@@ -434,31 +435,31 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&h->env->references))
+  if ((flags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references))
   {
     fputs("References:", out);
-    mutt_write_references(&h->env->references, out, 0);
+    mutt_write_references(&e->env->references, out, 0);
     fputc('\n', out);
   }
 
   if ((flags & CH_UPDATE) && (flags & CH_NOSTATUS) == 0)
   {
-    if (h->old || h->read)
+    if (e->old || e->read)
     {
       fputs("Status: ", out);
-      if (h->read)
+      if (e->read)
         fputs("RO", out);
-      else if (h->old)
+      else if (e->old)
         fputc('O', out);
       fputc('\n', out);
     }
 
-    if (h->flagged || h->replied)
+    if (e->flagged || e->replied)
     {
       fputs("X-Status: ", out);
-      if (h->replied)
+      if (e->replied)
         fputc('A', out);
-      if (h->flagged)
+      if (e->flagged)
         fputc('F', out);
       fputc('\n', out);
     }
@@ -466,16 +467,16 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 
   if (flags & CH_UPDATE_LEN && (flags & CH_NOLEN) == 0)
   {
-    fprintf(out, "Content-Length: " OFF_T_FMT "\n", h->content->length);
-    if (h->lines != 0 || h->content->length == 0)
-      fprintf(out, "Lines: %d\n", h->lines);
+    fprintf(out, "Content-Length: " OFF_T_FMT "\n", e->content->length);
+    if (e->lines != 0 || e->content->length == 0)
+      fprintf(out, "Lines: %d\n", e->lines);
   }
 
 #ifdef USE_NOTMUCH
   if (flags & CH_VIRTUAL)
   {
     /* Add some fake headers based on notmuch data */
-    char *folder = nm_header_get_folder(h);
+    char *folder = nm_email_get_folder(e);
     if (folder && !(Weed && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
@@ -488,7 +489,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     }
   }
 #endif
-  char *tags = driver_tags_get(&h->tags);
+  char *tags = driver_tags_get(&e->tags);
   if (tags && !(Weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", out);
@@ -499,9 +500,9 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 
   if (flags & CH_UPDATE_LABEL)
   {
-    h->xlabel_changed = false;
-    if (h->env->x_label)
-      if (fprintf(out, "X-Label: %s\n", h->env->x_label) != 10 + strlen(h->env->x_label))
+    e->xlabel_changed = false;
+    if (e->env->x_label)
+      if (fprintf(out, "X-Label: %s\n", e->env->x_label) != 10 + strlen(e->env->x_label))
         return -1;
   }
 
@@ -561,7 +562,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * mutt_copy_message_fp - make a copy of a message from a FILE pointer
  * @param fpout   Where to write output
  * @param fpin    Where to get input
- * @param hdr     Header of message being copied
+ * @param e     Header of message being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
  * @retval  0 Success
@@ -576,9 +577,9 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
  * * #MUTT_CM_CHARCONV   perform character set conversion
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, int chflags)
 {
-  struct Body *body = hdr->content;
+  struct Body *body = e->content;
   char prefix[SHORT_STRING];
   LOFF_T new_offset = -1;
   int rc = 0;
@@ -588,10 +589,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     if (TextFlowed)
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
+      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, e, 0);
   }
 
-  if (hdr->xlabel_changed)
+  if (e->xlabel_changed)
     chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
@@ -599,7 +600,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     if (flags & MUTT_CM_PREFIX)
       chflags |= CH_PREFIX;
 
-    else if (hdr->attach_del && (chflags & CH_UPDATE_LEN))
+    else if (e->attach_del && (chflags & CH_UPDATE_LEN))
     {
       int new_lines;
       LOFF_T new_length = body->length;
@@ -615,10 +616,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
       /* Count the number of lines and bytes to be deleted */
       fseeko(fpin, body->offset, SEEK_SET);
-      new_lines = hdr->lines - count_delete_lines(fpin, body, &new_length, dlen);
+      new_lines = e->lines - count_delete_lines(fpin, body, &new_length, dlen);
 
       /* Copy the headers */
-      if (mutt_copy_header(fpin, hdr, fpout, chflags | CH_NOLEN | CH_NONEWLINE, NULL))
+      if (mutt_copy_header(fpin, e, fpout, chflags | CH_NOLEN | CH_NONEWLINE, NULL))
         return -1;
       fprintf(fpout, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
@@ -640,21 +641,23 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       LOFF_T fail = ((ftello(fpout) - new_offset) - new_length);
       if (fail)
       {
-        mutt_error(_("The length calculation was wrong by %ld bytes"), fail);
+        mutt_error(ngettext("The length calculation was wrong by %ld byte",
+                            "The length calculation was wrong by %ld bytes", fail),
+                   fail);
         new_length += fail;
       }
 
       /* Update original message if we are sync'ing a mailfolder */
       if (flags & MUTT_CM_UPDATE)
       {
-        hdr->attach_del = false;
-        hdr->lines = new_lines;
+        e->attach_del = false;
+        e->lines = new_lines;
         body->offset = new_offset;
 
         /* update the total size of the mailbox to reflect this deletion */
-        Context->size -= body->length - new_length;
+        Context->mailbox->size -= body->length - new_length;
         /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (Context->v2r[hdr->msgno] != -1)
+        if (Context->mailbox->v2r[e->msgno] != -1)
           Context->vsize -= body->length - new_length;
 
         body->length = new_length;
@@ -664,8 +667,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       return 0;
     }
 
-    if (mutt_copy_header(fpin, hdr, fpout, chflags,
-                         (chflags & CH_PREFIX) ? prefix : NULL) == -1)
+    if (mutt_copy_header(fpin, e, fpout, chflags, (chflags & CH_PREFIX) ? prefix : NULL) == -1)
     {
       return -1;
     }
@@ -697,23 +699,23 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
     rc = mutt_body_handler(body, &s);
   }
-  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
+  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (e->security & ENCRYPT))
   {
     struct Body *cur = NULL;
     FILE *fp = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & MUTT_CM_DECODE_PGP) &&
-        (hdr->security & APPLICATION_PGP) && hdr->content->type == TYPE_MULTIPART)
+        (e->security & APPLICATION_PGP) && e->content->type == TYPE_MULTIPART)
     {
-      if (crypt_pgp_decrypt_mime(fpin, &fp, hdr->content, &cur))
+      if (crypt_pgp_decrypt_mime(fpin, &fp, e->content, &cur))
         return -1;
       fputs("MIME-Version: 1.0\n", fpout);
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (flags & MUTT_CM_DECODE_SMIME) &&
-        (hdr->security & APPLICATION_SMIME) && hdr->content->type == TYPE_APPLICATION)
+        (e->security & APPLICATION_SMIME) && e->content->type == TYPE_APPLICATION)
     {
-      if (crypt_smime_decrypt_mime(fpin, &fp, hdr->content, &cur))
+      if (crypt_smime_decrypt_mime(fpin, &fp, e->content, &cur))
         return -1;
     }
 
@@ -774,7 +776,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
  * mutt_copy_message_ctx - Copy a message from a Context
  * @param fpout   FILE pointer to write to
  * @param src     Source mailbox
- * @param hdr     Email Header
+ * @param e     Email Header
  * @param flags   Flags, see: mutt_copy_message_fp()
  * @param chflags Header flags, see: mutt_copy_header()
  * @retval  0 Success
@@ -783,15 +785,15 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
                           int flags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src, hdr->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
-  if (!hdr->content)
+  if (!e->content)
     return -1;
-  int r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  int r = mutt_copy_message_fp(fpout, msg->fp, e, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "failed to detect EOF!\n");
@@ -806,37 +808,38 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
  * @param dest    destination mailbox
  * @param fpin    where to get input
  * @param src     source mailbox
- * @param hdr     message being copied
+ * @param e     message being copied
  * @param flags   mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success
  * @retval -1 Error
  */
 static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
-                          struct Header *hdr, int flags, int chflags)
+                          struct Email *e, int flags, int chflags)
 {
   char buf[STRING];
   struct Message *msg = NULL;
   int r;
 
-  if (fseeko(fpin, hdr->offset, SEEK_SET) < 0)
+  if (fseeko(fpin, e->offset, SEEK_SET) < 0)
     return -1;
   if (!fgets(buf, sizeof(buf), fpin))
     return -1;
 
-  msg = mx_msg_open_new(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
+  if (dest->mailbox->magic == MUTT_MBOX || dest->mailbox->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-  r = mutt_copy_message_fp(msg->fp, fpin, hdr, flags, chflags);
+  chflags |= (dest->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  r = mutt_copy_message_fp(msg->fp, fpin, e, flags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
-    nm_update_filename(src, NULL, msg->committed_path, hdr);
+  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR &&
+      src->mailbox->magic == MUTT_NOTMUCH)
+    nm_update_filename(src->mailbox, NULL, msg->committed_path, e);
 #endif
 
   mx_msg_close(dest, &msg);
@@ -847,19 +850,19 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
  * mutt_append_message - Append a message
  * @param dest    Destination Mailbox
  * @param src     Source Mailbox
- * @param hdr     Email Header
+ * @param e     Email Header
  * @param cmflags mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success
  * @retval -1 Failure
  */
 int mutt_append_message(struct Context *dest, struct Context *src,
-                        struct Header *hdr, int cmflags, int chflags)
+                        struct Email *e, int cmflags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src, hdr->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
-  int r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
+  int r = append_message(dest, msg->fp, src, e, cmflags, chflags);
   mx_msg_close(src, &msg);
   return r;
 }

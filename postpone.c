@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "context.h"
@@ -46,6 +46,7 @@
 #include "handler.h"
 #include "hdrline.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
@@ -84,7 +85,6 @@ static short UpdateNumPostponed = 0;
 int mutt_num_postponed(bool force)
 {
   struct stat st;
-  struct Context ctx;
 
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
@@ -162,11 +162,13 @@ int mutt_num_postponed(bool force)
     if (optnews)
       OptNews = false;
 #endif
-    if (!mx_mbox_open(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx))
+    struct Context *ctx = mx_mbox_open(NULL, Postponed, MUTT_NOSORT | MUTT_QUIET);
+    if (!ctx)
       PostCount = 0;
     else
-      PostCount = ctx.msgcount;
-    mx_fastclose_mailbox(&ctx);
+      PostCount = ctx->mailbox->msg_count;
+    mx_fastclose_mailbox(ctx);
+    mutt_context_free(&ctx);
 #ifdef USE_NNTP
     if (optnews)
       OptNews = true;
@@ -185,33 +187,29 @@ void mutt_update_num_postponed(void)
 }
 
 /**
- * post_entry - Format a menu item for the email list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * post_make_entry - Format a menu item for the email list - Implements Menu::menu_make_entry()
  */
-static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct Context *ctx = (struct Context *) menu->data;
+  struct Context *ctx = menu->data;
 
-  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->hdrs[num],
-                         MUTT_FORMAT_ARROWCURSOR);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx,
+                         ctx->mailbox->hdrs[line], MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
  * select_msg - Create a Menu to select a postponed message
  * @retval ptr Email Header
  */
-static struct Header *select_msg(void)
+static struct Email *select_msg(void)
 {
   int r = -1;
   bool done = false;
   char helpstr[LONG_STRING];
 
   struct Menu *menu = mutt_menu_new(MENU_POST);
-  menu->make_entry = post_entry;
-  menu->max = PostContext->msgcount;
+  menu->menu_make_entry = post_make_entry;
+  menu->max = PostContext->mailbox->msg_count;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POST, PostponeHelp);
@@ -231,9 +229,9 @@ static struct Header *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
+        mutt_set_flag(PostContext, PostContext->mailbox->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
-        PostCount = PostContext->msgcount - PostContext->deleted;
+        PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
@@ -264,7 +262,7 @@ static struct Header *select_msg(void)
   Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  return r > -1 ? PostContext->hdrs[r] : NULL;
+  return r > -1 ? PostContext->mailbox->hdrs[r] : NULL;
 }
 
 /**
@@ -278,10 +276,10 @@ static struct Header *select_msg(void)
  * @retval 0          Normal exit
  * @retval #SEND_REPLY Recalled message is a reply
  */
-int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
-                       struct Header **cur, char *fcc, size_t fcclen)
+int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
+                       struct Email **cur, char *fcc, size_t fcclen)
 {
-  struct Header *h = NULL;
+  struct Email *e = NULL;
   int code = SEND_POSTPONED;
   const char *p = NULL;
   int opt_delete;
@@ -289,7 +287,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_mbox_open(Postponed, MUTT_NOSORT, NULL);
+  PostContext = mx_mbox_open(NULL, Postponed, MUTT_NOSORT);
   if (!PostContext)
   {
     PostCount = 0;
@@ -297,28 +295,26 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     return -1;
   }
 
-  if (!PostContext->msgcount)
+  if (!PostContext->mailbox->msg_count)
   {
     PostCount = 0;
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     mutt_error(_("No postponed messages"));
     return -1;
   }
 
-  if (PostContext->msgcount == 1)
+  if (PostContext->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    h = PostContext->hdrs[0];
+    e = PostContext->mailbox->hdrs[0];
   }
-  else if (!(h = select_msg()))
+  else if (!(e = select_msg()))
   {
-    mx_mbox_close(PostContext, NULL);
-    FREE(&PostContext);
+    mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, h, false) < 0)
+  if (mutt_prepare_template(NULL, PostContext, hdr, e, false) < 0)
   {
     mx_fastclose_mailbox(PostContext);
     FREE(&PostContext);
@@ -326,19 +322,17 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(PostContext, h, MUTT_DELETE, 1);
-  mutt_set_flag(PostContext, h, MUTT_PURGE, 1);
+  mutt_set_flag(PostContext, e, MUTT_DELETE, 1);
+  mutt_set_flag(PostContext, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
-  PostCount = PostContext->msgcount - PostContext->deleted;
+  PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_mbox_close(PostContext, NULL);
+  mx_mbox_close(&PostContext, NULL);
   Delete = opt_delete;
-
-  FREE(&PostContext);
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
@@ -350,9 +344,9 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
         p = mutt_str_skip_email_wsp(np->data + 18);
-        if (!ctx->id_hash)
-          ctx->id_hash = mutt_make_id_hash(ctx);
-        *cur = mutt_hash_find(ctx->id_hash, p);
+        if (!ctx->mailbox->id_hash)
+          ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
+        *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
       }
       if (*cur)
         code |= SEND_REPLY;
@@ -550,15 +544,15 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @param fp      If not NULL, file containing the template
  * @param ctx     If fp is NULL, the context containing the header with the template
  * @param newhdr  The template is read into this Header
- * @param hdr     The message to recall/resend
- * @param resend  Set if resending (as opposed to recalling a postponed msg).
+ * @param e     The message to recall/resend
+ * @param resend  Set if resending (as opposed to recalling a postponed msg)
  *                Resent messages enable header weeding, and also
- *                discard any existing Message-ID and Mail-Followup-To.
+ *                discard any existing Message-ID and Mail-Followup-To
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
-                          struct Header *hdr, bool resend)
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
+                          struct Email *e, bool resend)
 {
   struct Message *msg = NULL;
   char file[PATH_MAX];
@@ -568,7 +562,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && !(msg = mx_msg_open(ctx, hdr->msgno)))
+  if (!fp && !(msg = mx_msg_open(ctx, e->msgno)))
     return -1;
 
   if (!fp)
@@ -578,11 +572,11 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
   /* parse the message header and MIME structure */
 
-  fseeko(fp, hdr->offset, SEEK_SET);
-  newhdr->offset = hdr->offset;
+  fseeko(fp, e->offset, SEEK_SET);
+  newhdr->offset = e->offset;
   /* enable header weeding for resent messages */
   newhdr->env = mutt_rfc822_read_header(fp, newhdr, true, resend);
-  newhdr->content->length = hdr->content->length;
+  newhdr->content->length = e->content->length;
   mutt_parse_part(fp, newhdr->content);
 
   /* If resending a message, don't keep message_id or mail_followup_to.
@@ -748,8 +742,8 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_stamp_attachment(b);
 
     mutt_body_free(&b->parts);
-    if (b->hdr)
-      b->hdr->content = NULL; /* avoid dangling pointer */
+    if (b->email)
+      b->email->content = NULL; /* avoid dangling pointer */
   }
 
   /* Fix encryption flags. */

@@ -34,7 +34,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "hook.h"
 #include "alias.h"
@@ -71,13 +71,7 @@ static TAILQ_HEAD(, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 static int current_hook_type = 0;
 
 /**
- * mutt_parse_hook - Parse the 'hook' family of commands
- * @param buf  Temporary Buffer
- * @param s    Buffer containing command
- * @param data Data from Command definition
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Failure
+ * mutt_parse_hook - Parse the 'hook' family of commands - Implements ::command_t
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
@@ -137,7 +131,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * common mistake */
     if ((*pattern.data == '^') && (!CurrentFolder))
     {
-      mutt_str_strfcpy(err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
+      mutt_buffer_strcpy(err, _("current mailbox shortcut '^' is unset"));
       goto error;
     }
 
@@ -148,7 +142,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * This is likely a mistake too */
     if (!*path && *pattern.data)
     {
-      mutt_str_strfcpy(err->data, _("mailbox shortcut expanded to empty regex"), err->dsize);
+      mutt_buffer_strcpy(err, _("mailbox shortcut expanded to empty regex"));
       goto error;
     }
 
@@ -161,7 +155,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     if (mutt_comp_valid_command(command.data) == 0)
     {
-      mutt_str_strfcpy(err->data, _("badly formatted command string"), err->dsize);
+      mutt_buffer_strcpy(err, _("badly formatted command string"));
       return -1;
     }
   }
@@ -323,13 +317,7 @@ void mutt_delete_hooks(int type)
 }
 
 /**
- * mutt_parse_unhook - Parse the 'unhook' command
- * @param buf  Temporary Buffer
- * @param s    Buffer containing command
- * @param data Data from Command definition
- * @param err  Buffer for error messages
- * @retval  0 Success
- * @retval -1 Failure
+ * mutt_parse_unhook - Parse the 'unhook' command - Implements ::command_t
  */
 int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
@@ -441,10 +429,10 @@ char *mutt_find_hook(int type, const char *pat)
 /**
  * mutt_message_hook - Perform a message hook
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
  */
-void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
+void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
@@ -463,7 +451,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
           hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
@@ -493,12 +481,12 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
  * @param pathlen Length of buffer
  * @param type    Type e.g. #MUTT_FCC_HOOK
  * @param ctx     Mailbox Context
- * @param hdr     Email Header
+ * @param e     Email Header
  * @retval  0 Success
  * @retval -1 Failure
  */
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
-                     struct Header *hdr)
+                     struct Email *e)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -511,10 +499,10 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
           hook->regex.not)
       {
-        mutt_make_string(path, pathlen, hook->command, ctx, hdr);
+        mutt_make_string_flags(path, pathlen, hook->command, ctx, e, MUTT_FORMAT_PLAIN);
         return 0;
       }
     }
@@ -527,16 +515,16 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
  * mutt_default_save - Find the default save path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of buffer
- * @param hdr     Email Header
+ * @param e       Email Header
  */
-void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
+void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, hdr) == 0)
+  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, e) == 0)
     return;
 
   struct Address *addr = NULL;
-  struct Envelope *env = hdr->env;
+  struct Envelope *env = e->env;
   bool from_me = mutt_addr_is_user(env->from);
 
   if (!from_me && env->reply_to && env->reply_to->mailbox)
@@ -561,13 +549,13 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of the buffer
- * @param hdr     Email Header
+ * @param e       Email Header
  */
-void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
+void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {
-  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, hdr) != 0)
+  if (addr_hook(path, pathlen, MUTT_FCC_HOOK, NULL, e) != 0)
   {
-    struct Envelope *env = hdr->env;
+    struct Envelope *env = e->env;
     if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
       struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);

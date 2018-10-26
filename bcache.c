@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "bcache.h"
 #include "mutt_account.h"
 #include "muttlib.h"
@@ -56,7 +56,7 @@ struct BodyCache
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int bcache_path(struct Account *account, const char *mailbox, char *dst, size_t dstlen)
+static int bcache_path(struct ConnAccount *account, const char *mailbox, char *dst, size_t dstlen)
 {
   char host[STRING];
   struct Url url = { U_UNKNOWN };
@@ -125,7 +125,7 @@ static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char
  * separated by '/' (if it knows of such a concepts like mailboxes or
  * hierarchies)
  */
-struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox)
+struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mailbox)
 {
   struct BodyCache *bcache = NULL;
 

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_LIST_H
-#define _MUTT_LIST_H
+#ifndef MUTT_LIB_LIST_H
+#define MUTT_LIB_LIST_H
 
 #include <stdbool.h>
 #include "queue.h"
@@ -60,4 +60,4 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s);
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
 bool             mutt_list_match(const char *s, struct ListHead *h);
 
-#endif /* _MUTT_LIST_H */
+#endif /* MUTT_LIB_LIST_H */

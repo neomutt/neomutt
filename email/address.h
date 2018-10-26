@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_ADDRESS_H
-#define _EMAIL_ADDRESS_H
+#ifndef MUTT_EMAIL_ADDRESS_H
+#define MUTT_EMAIL_ADDRESS_H
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -84,4 +84,4 @@ void            mutt_addr_write_single(char *buf, size_t buflen, struct Address 
 int             mutt_addrlist_to_intl(struct Address *a, char **err);
 int             mutt_addrlist_to_local(struct Address *a);
 
-#endif /* _EMAIL_ADDRESS_H */
+#endif /* MUTT_EMAIL_ADDRESS_H */

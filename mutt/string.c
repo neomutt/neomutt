@@ -278,6 +278,39 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
 }
 
 /**
+ * mutt_str_atoull - Convert ASCII string to an unsigned long long
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters
+ * @retval  0 Successful conversion
+ * @retval -1 Invalid input
+ *
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoull(const char *str, unsigned long long *dst)
+{
+  unsigned long long r;
+  unsigned long long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoull(str, &e, 10);
+  if ((*res == ULLONG_MAX) && (errno == ERANGE))
+    return -1;
+  if (e && (*e != '\0'))
+    return 1;
+  return 0;
+}
+
+/**
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
@@ -982,4 +1015,70 @@ bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *
   memmove(buf, rstr, rlen);
 
   return true;
+}
+
+/**
+ * mutt_str_remall_strcasestr - Remove all occurrences of substring, ignoring case
+ * @param str     String containing the substring
+ * @param target  Target substring for removal
+ * @retval 0 String contained substring and substring was removed successfully
+ * @retval 1 String did not contain substring
+ */
+int mutt_str_remall_strcasestr(char *str, const char *target)
+{
+  int retval = 1;
+
+  // Look through an ensure all instances of the substring are gone.
+  while ((str = (char *) mutt_str_strcasestr(str, target)))
+  {
+    size_t target_len = mutt_str_strlen(target);
+    memmove(str, str + target_len, 1 + strlen(str + target_len));
+    retval = 0; // If we got here, then a substring existed and has been removed.
+  }
+
+  return retval;
+}
+
+/**
+ * mutt_str_strcasestr - Find a substring within a string without worrying about case
+ * @param haystack String that may or may not contain the substring
+ * @param needle   Substring we're looking for
+ * @retval ptr  Beginning of substring
+ * @retval NULL Substring is not in substring
+ *
+ * This performs a byte-to-byte check so it will return unspecified
+ * results for multibyte locales.
+ */
+const char *mutt_str_strcasestr(const char *haystack, const char *needle)
+{
+  if (!needle)
+    return NULL;
+
+  size_t haystack_len = mutt_str_strlen(haystack);
+  size_t needle_len = mutt_str_strlen(needle);
+
+  // Empty string exists at the front of a string. Check strstr if you don't believe me.
+  if (needle_len == 0)
+    return haystack;
+
+  // Check size conditions. No point wasting CPU cycles.
+  if ((haystack_len == 0) || (haystack_len < needle_len))
+    return NULL;
+
+  // Only check space that needle could fit in.
+  // Conditional has + 1 to handle when the haystack and needle are the same length.
+  for (size_t i = 0; i < (haystack_len - needle_len) + 1; i++)
+  {
+    for (size_t j = 0; j < needle_len; j++)
+    {
+      if (tolower((unsigned char) haystack[i + j]) != tolower((unsigned char) needle[j]))
+        break;
+
+      // If this statement is true, the needle has been found.
+      if (j == (needle_len - 1))
+        return haystack + i;
+    }
+  }
+
+  return NULL;
 }

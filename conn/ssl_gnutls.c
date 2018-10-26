@@ -39,8 +39,8 @@
 #include "mutt/mutt.h"
 #include "config/lib.h"
 #include "mutt.h"
-#include "account.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "keymap.h"
 #include "menu.h"
@@ -60,8 +60,11 @@
 #define CERTERR_HOSTNAME 16
 #define CERTERR_SIGNERNOTCA 32
 #define CERTERR_INSECUREALG 64
+#define CERTERR_OTHER 128
 
 #define CERT_SEP "-----BEGIN"
+
+static int tls_socket_close(struct Connection *conn);
 
 /**
  * struct TlsSockData - TLS socket data
@@ -97,108 +100,7 @@ static int tls_init(void)
 }
 
 /**
- * tls_socket_read - Read data from a TLS socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  struct TlsSockData *data = conn->sockdata;
-  int rc;
-
-  if (!data)
-  {
-    mutt_error(_("Error: no TLS socket open"));
-    return -1;
-  }
-
-  do
-  {
-    rc = gnutls_record_recv(data->state, buf, len);
-    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
-    {
-      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
-      return -1;
-    }
-  } while (rc == GNUTLS_E_AGAIN);
-
-  return rc;
-}
-
-/**
- * tls_socket_write - Write data to a TLS socket
- * @param conn Connection to a server
- * @param buf  Buffer to read into
- * @param len  Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  struct TlsSockData *data = conn->sockdata;
-  size_t sent = 0;
-
-  if (!data)
-  {
-    mutt_error(_("Error: no TLS socket open"));
-    return -1;
-  }
-
-  do
-  {
-    const int ret = gnutls_record_send(data->state, buf + sent, len - sent);
-    if (ret < 0)
-    {
-      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
-      {
-        mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
-        return -1;
-      }
-      return ret;
-    }
-    sent += ret;
-  } while (sent < len);
-
-  return sent;
-}
-
-/**
- * tls_socket_close - Close a TLS socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
- */
-static int tls_socket_close(struct Connection *conn)
-{
-  struct TlsSockData *data = conn->sockdata;
-  if (data)
-  {
-    /* shut down only the write half to avoid hanging waiting for the remote to respond.
-     *
-     * RFC5246 7.2.1. "Closure Alerts"
-     *
-     * It is not required for the initiator of the close to wait for the
-     * responding close_notify alert before closing the read side of the
-     * connection.
-     */
-    gnutls_bye(data->state, GNUTLS_SHUT_WR);
-
-    gnutls_certificate_free_credentials(data->xcred);
-    gnutls_deinit(data->state);
-    FREE(&conn->sockdata);
-  }
-
-  return raw_socket_close(conn);
-}
-
-/**
- * tls_starttls_close - Close a TLS connection
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
+ * tls_starttls_close - Close a TLS connection - Implements Connection::conn_close()
  */
 static int tls_starttls_close(struct Connection *conn)
 {
@@ -257,13 +159,13 @@ static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
  * @param buflen Length of the buffer
  * @param data Certificate
  */
-static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf, size_t buflen,
-                            const gnutls_datum_t *data)
+static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
+                            size_t buflen, const gnutls_datum_t *data)
 {
-  unsigned char md[36];
+  unsigned char md[64];
   size_t n;
 
-  n = 36;
+  n = 64;
 
   if (gnutls_fingerprint(algo, data, (char *) md, &n) < 0)
   {
@@ -445,6 +347,10 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
+  /* Note: tls_negotiate() contains a call to
+   * gnutls_certificate_set_verify_flags() with a flag disabling
+   * GnuTLS checking of the dates.  So certstat shouldn't have the
+   * GNUTLS_CERT_EXPIRED and GNUTLS_CERT_NOT_ACTIVATED bits set. */
   if (SslVerifyDates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
@@ -460,46 +366,25 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     *certerr |= CERTERR_HOSTNAME;
   }
 
+  if (certstat & GNUTLS_CERT_REVOKED)
+  {
+    *certerr |= CERTERR_REVOKED;
+    certstat ^= GNUTLS_CERT_REVOKED;
+  }
+
   /* see whether certificate is in our cache (certificates file) */
   if (tls_compare_certificates(certdata))
   {
     *savedcert = 1;
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INVALID))
+    /* We check above for certs with bad dates or that are revoked.
+     * These must be accepted manually each time.  Otherwise, we
+     * accept saved certificates as valid. */
+    if (*certerr == CERTERR_VALID)
     {
-      /* doesn't matter - have decided is valid because server
-       certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_INVALID;
+      gnutls_x509_crt_deinit(cert);
+      return 0;
     }
-
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
-    {
-      /* doesn't matter that we haven't found the signer, since
-       certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_SIGNER_NOT_FOUND;
-    }
-
-    if (chainidx <= 1 && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
-    {
-      /* Hmm. Not really sure how to handle this, but let's say
-       that we don't care if the CA certificate hasn't got the
-       correct X.509 basic constraints if server or first signer
-       certificate is in our cache. */
-      certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
-    }
-
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
-    {
-      /* doesn't matter that it was signed using an insecure
-         algorithm, since certificate is in our trusted cache */
-      certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
-    }
-  }
-
-  if (certstat & GNUTLS_CERT_REVOKED)
-  {
-    *certerr |= CERTERR_REVOKED;
-    certstat ^= GNUTLS_CERT_REVOKED;
   }
 
   if (certstat & GNUTLS_CERT_INVALID)
@@ -529,12 +414,15 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
   }
 
+  /* we've been zeroing the interesting bits in certstat -
+   * don't return OK if there are any unhandled bits we don't
+   * understand */
+  if (certstat != 0)
+    *certerr |= CERTERR_OTHER;
+
   gnutls_x509_crt_deinit(cert);
 
-  /* we've been zeroing the interesting bits in certstat -
-   don't return OK if there are any unhandled bits we don't
-   understand */
-  if (*certerr == CERTERR_VALID && certstat == 0)
+  if (*certerr == CERTERR_VALID)
     return 0;
 
   return -1;
@@ -578,17 +466,6 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
 
-  /* skip signers if insecure algorithm was used */
-  if (idx && (certerr & CERTERR_INSECUREALG))
-  {
-    if (idx == 1)
-    {
-      mutt_error(_("Warning: Server certificate was signed using an insecure "
-                   "algorithm"));
-    }
-    return 0;
-  }
-
   /* interactive check from user */
   if (gnutls_x509_crt_init(&cert) < 0)
   {
@@ -604,7 +481,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   }
 
   menu = mutt_menu_new(MENU_GENERIC);
-  menu->max = 25;
+  menu->max = 27;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
@@ -728,8 +605,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
   snprintf(menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), fpbuf);
   fpbuf[0] = '\0';
-  tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, sizeof(fpbuf), certdata);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), fpbuf);
+  fpbuf[40] = '\0'; /* Ensure the second printed line is null terminated */
+  tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, sizeof(fpbuf), certdata);
+  fpbuf[39] = '\0'; /* Divide into two lines of output */
+  snprintf(menu->dialog[row++], SHORT_STRING, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
+  snprintf(menu->dialog[row++], SHORT_STRING, "%*s%s",
+           (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", fpbuf + 40);
 
   if (certerr & CERTERR_NOTYETVALID)
   {
@@ -817,10 +698,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
           /* save hostname if necessary */
           if (certerr & CERTERR_HOSTNAME)
           {
+            fpbuf[0] = '\0';
+            tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, sizeof(fpbuf), certdata);
             fprintf(fp, "#H %s %s\n", hostname, fpbuf);
             done = 1;
           }
-          if (certerr & CERTERR_NOTTRUSTED)
+          /* Save the cert for all other errors */
+          if (certerr ^ CERTERR_HOSTNAME)
           {
             done = 0;
             ret = gnutls_pem_base64_encode_alloc("CERTIFICATE", certdata, &pemdata);
@@ -1097,6 +981,12 @@ static int tls_set_priority(struct TlsSockData *data)
     mutt_error(
         _("Explicit ciphersuite selection via $ssl_ciphers not supported"));
   }
+  if (certerr & CERTERR_INSECUREALG)
+  {
+    row++;
+    strfcpy(menu->dialog[row], _("Warning: Server certificate was signed using an insecure algorithm"),
+            SHORT_STRING);
+  }
 
   /* We use default priorities (see gnutls documentation),
      except for protocol version */
@@ -1228,10 +1118,7 @@ fail:
 }
 
 /**
- * tls_socket_open - Open a TLS socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
+ * tls_socket_open - Open a TLS socket - Implements Connection::conn_open()
  */
 static int tls_socket_open(struct Connection *conn)
 {
@@ -1245,6 +1132,91 @@ static int tls_socket_open(struct Connection *conn)
   }
 
   return 0;
+}
+
+/**
+ * tls_socket_read - Read data from a TLS socket - Implements Connection::conn_read()
+ */
+static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
+{
+  struct TlsSockData *data = conn->sockdata;
+  int rc;
+
+  if (!data)
+  {
+    mutt_error(_("Error: no TLS socket open"));
+    return -1;
+  }
+
+  do
+  {
+    rc = gnutls_record_recv(data->state, buf, count);
+    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
+    {
+      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
+      return -1;
+    }
+  } while (rc == GNUTLS_E_AGAIN);
+
+  return rc;
+}
+
+/**
+ * tls_socket_write - Write data to a TLS socket - Implements Connection::conn_write()
+ */
+static int tls_socket_write(struct Connection *conn, const char *buf, size_t count)
+{
+  struct TlsSockData *data = conn->sockdata;
+  size_t sent = 0;
+
+  if (!data)
+  {
+    mutt_error(_("Error: no TLS socket open"));
+    return -1;
+  }
+
+  do
+  {
+    const int ret = gnutls_record_send(data->state, buf + sent, count - sent);
+    if (ret < 0)
+    {
+      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
+      {
+        mutt_error("tls_socket_write (%s)", gnutls_strerror(ret));
+        return -1;
+      }
+      return ret;
+    }
+    sent += ret;
+  } while (sent < count);
+
+  return sent;
+}
+
+/**
+ * tls_socket_close - Close a TLS socket - Implements Connection::conn_close()
+ */
+static int tls_socket_close(struct Connection *conn)
+{
+  struct TlsSockData *data = conn->sockdata;
+  if (data)
+  {
+    /* shut down only the write half to avoid hanging waiting for the remote to respond.
+     *
+     * RFC5246 7.2.1. "Closure Alerts"
+     *
+     * It is not required for the initiator of the close to wait for the
+     * responding close_notify alert before closing the read side of the
+     * connection.
+     */
+    gnutls_bye(data->state, GNUTLS_SHUT_WR);
+
+    gnutls_certificate_free_credentials(data->xcred);
+    gnutls_deinit(data->state);
+    FREE(&conn->sockdata);
+  }
+
+  return raw_socket_close(conn);
 }
 
 /**

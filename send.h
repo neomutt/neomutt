@@ -30,7 +30,7 @@ struct Address;
 struct Body;
 struct Context;
 struct Envelope;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in send.c */
 extern unsigned char AbortNoattach; /* forgotten attachment detector */
@@ -91,23 +91,23 @@ extern bool          UseFrom;
 #define SEND_POSTPONED_FCC  (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
 #define SEND_NO_FREE_HEADER (1 << 10) /**< Used by the -E flag */
 #define SEND_DRAFT_FILE     (1 << 11) /**< Used by the -H flag */
-#define SEND_NEWS           (1 << 12)
+#define SEND_TO_SENDER      (1 << 12)
+#define SEND_NEWS           (1 << 13)
 
-int             ci_send_message(int flags, struct Header *msg, char *tempfile, struct Context *ctx, struct Header *cur);
+int             ci_send_message(int flags, struct Email *msg, char *tempfile, struct Context *ctx, struct Email *cur);
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
-int             mutt_compose_to_sender(struct Header *hdr);
 struct Address *mutt_default_from(void);
 void            mutt_encode_descriptions(struct Body *b, bool recurse);
 int             mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);
 void            mutt_fix_reply_recipients(struct Envelope *env);
-void            mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
-void            mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
-void            mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out);
-void            mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur);
+void            mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp);
+void            mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp);
+void            mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out);
+void            mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Email *cur);
 void            mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv);
-void            mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out);
+void            mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out);
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
-int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur);
+int             mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur);
 void            mutt_set_followup_to(struct Envelope *e);
 
 #endif /* MUTT_SEND_H */

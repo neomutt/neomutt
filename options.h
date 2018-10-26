@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_OPTIONS_H_
-#define _MUTT_OPTIONS_H_
+#ifndef MUTT_OPTIONS_H
+#define MUTT_OPTIONS_H
 
 #include <stdbool.h>
 #include "where.h"
@@ -51,4 +51,4 @@ WHERE bool OptSearchReverse;       /**< (pseudo) used by ci_search_command */
 WHERE bool OptSortSubthreads;      /**< (pseudo) used when $sort_aux changes */
 WHERE bool OptViewAttach;          /**< (pseudo) signals that we are viewing attachments */
 
-#endif /* _MUTT_OPTIONS_H_ */
+#endif /* MUTT_OPTIONS_H */

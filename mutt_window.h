@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_WINDOW_H
-#define _MUTT_WINDOW_H
+#ifndef MUTT_MUTT_WINDOW_H
+#define MUTT_MUTT_WINDOW_H
 
 #include "mutt_curses.h"
 
@@ -59,4 +59,4 @@ void mutt_window_reflow_message_rows(int mw_rows);
 void mutt_window_reflow(void);
 int  mutt_window_wrap_cols(struct MuttWindow *win, short wrap);
 
-#endif /* _MUTT_WINDOW_H */
+#endif /* MUTT_MUTT_WINDOW_H */

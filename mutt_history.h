@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HISTORY2_H
-#define _MUTT_HISTORY2_H
+#ifndef MUTT_MUTT_HISTORY_H
+#define MUTT_MUTT_HISTORY_H
 
 #include <stdio.h>
 #include "mutt/mutt.h"
@@ -29,5 +29,4 @@
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass);
 bool mutt_hist_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 
-#endif /* _MUTT_HISTORY2_H */
-
+#endif /* MUTT_MUTT_HISTORY_H */

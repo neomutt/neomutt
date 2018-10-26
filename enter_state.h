@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_ENTER_STATE_H
-#define _MUTT_ENTER_STATE_H
+#ifndef MUTT_ENTER_STATE_H
+#define MUTT_ENTER_STATE_H
 
 #include <stddef.h>
 
@@ -41,4 +41,4 @@ struct EnterState
 void mutt_enter_state_free(struct EnterState **esp);
 struct EnterState *mutt_enter_state_new(void);
 
-#endif /* _MUTT_ENTER_STATE_H */
+#endif /* MUTT_ENTER_STATE_H */

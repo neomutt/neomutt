@@ -20,12 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SORT_H
-#define _MUTT_SORT_H
+#ifndef MUTT_SORT_H
+#define MUTT_SORT_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
+#include "options.h"
 #include "where.h"
 
 struct Address;
@@ -34,7 +35,7 @@ struct Context;
 /* These Config Variables are only used in sort.c */
 extern bool ReverseAlias;
 
-#define SORTCODE(x) (Sort & SORT_REVERSE) ? -(x) : x
+#define SORTCODE(x) ((OptAuxSort ? SortAux : Sort) & SORT_REVERSE) ? -(x) : x
 
 /**
  * typedef sort_t - Prototype for a function to compare two emails
@@ -62,4 +63,4 @@ WHERE short SortAux; ///< Config: Secondary sort method for the index
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys; ///< Config: Sort order for PGP keys
 
-#endif /* _MUTT_SORT_H */
+#endif /* MUTT_SORT_H */

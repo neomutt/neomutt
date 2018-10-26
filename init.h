@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_INIT_H
-#define _MUTT_INIT_H
+#ifndef MUTT_INIT_H
+#define MUTT_INIT_H
 
 #ifdef _MAKEDOC
 #include "config.h"
@@ -995,6 +995,7 @@ struct ConfigDef MuttVars[] = {
   **             ``@'' to symbolic links and ``*'' to executable files)
   ** .dt %F  .dd File permissions
   ** .dt %g  .dd Group name (or numeric gid, if missing)
+  ** .dt %i  .dd Description of the folder
   ** .dt %l  .dd Number of hard links
   ** .dt %m  .dd Number of messages in the mailbox *
   ** .dt %n  .dd Number of unread messages in the mailbox *
@@ -1421,6 +1422,18 @@ struct ConfigDef MuttVars[] = {
   ** of mailboxes it polls for new mail just as if you had issued individual
   ** ``$mailboxes'' commands.
   */
+  { "imap_condstore",  DT_BOOL, R_NONE, &ImapCondStore, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will use the CONDSTORE extension (RFC 7162)
+  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** used only for initial message fetching and flag updates.
+  ** .pp
+  ** For some IMAP servers, enabling this will slightly speed up
+  ** downloading initial messages.  Unfortunately, Gmail is not one
+  ** those, and displays worse performance when enabled.  Your
+  ** mileage may vary.
+  */
   { "imap_delim_chars",         DT_STRING, R_NONE, &ImapDelimChars, IP "/." },
   /*
   ** .pp
@@ -1476,6 +1489,14 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable defaults to the value of $$imap_user.
   */
+  { "imap_oauth_refresh_command", DT_STRING, R_NONE, &ImapOauthRefreshCmd, 0 },
+  /*
+  ** .pp
+  ** The command to run to generate an OAUTH refresh token for
+  ** authorizing your connection to your IMAP server.  This command will be
+  ** run on every connection attempt that uses the OAUTHBEARER authentication
+  ** mechanism.
+  */
   { "imap_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &ImapPass, 0 },
   /*
   ** .pp
@@ -1492,7 +1513,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, NeoMutt will not open new IMAP connections to check for new
   ** mail.  NeoMutt will only check for new mail over existing IMAP
-  ** connections.  This is useful if you don't want to be prompted to
+  ** connections.  This is useful if you don't want to be prompted for
   ** user/password pairs on NeoMutt invocation, or if opening the connection
   ** is slow.
   */
@@ -1522,6 +1543,17 @@ struct ConfigDef MuttVars[] = {
   ** that NeoMutt will wait for a response when polling IMAP connections
   ** for new mail, before timing out and closing the connection.  Set
   ** to 0 to disable timing out.
+  */
+  { "imap_qresync",  DT_BOOL, R_NONE, &ImapQResync, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will use the QRESYNC extension (RFC 7162)
+  ** if advertised by the server.  Mutt's current implementation is basic,
+  ** used only for initial message fetching and flag updates.
+  ** .pp
+  ** Note: this feature is currently experimental.  If you experience
+  ** strange behavior, such as duplicate or missing messages please
+  ** file a bug report to let us know.
   */
   { "imap_servernoise",         DT_BOOL, R_NONE, &ImapServernoise, true },
   /*
@@ -1597,6 +1629,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %e .dd Current message number in thread
   ** .dt %E .dd Number of messages in current thread
   ** .dt %F .dd Author name, or recipient name if the message is from you
+  ** .dt %Fp .dd Like %F, but plain. No contextual formatting is applied to recipient name
   ** .dt %f .dd Sender (address + real name), either From: or Return-Path:
   ** .dt %g .dd Newsgroup name (if compiled with NNTP support)
   ** .dt %g .dd Message tags (e.g. notmuch tags/imap flags)
@@ -2318,8 +2351,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** If \fIset\fP, mutt will check the status file descriptor output
-  ** of $$pgp_decrypt_command for GnuPG status codes indicating
-  ** successful decryption.  This will check for the presence of
+  ** of $$pgp_decrypt_command and $$pgp_decode_command for GnuPG status codes
+  ** indicating successful decryption.  This will check for the presence of
   ** DECRYPTION_OKAY, absence of DECRYPTION_FAILED, and that all
   ** PLAINTEXT occurs between the BEGIN_DECRYPTION and END_DECRYPTION
   ** status codes.
@@ -2763,6 +2796,14 @@ struct ConfigDef MuttVars[] = {
   ** If this variable is \fIset\fP, NeoMutt will try to use the ``\fCLAST\fP'' POP command
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
+  */
+  { "pop_oauth_refresh_command", DT_STRING, R_NONE, &PopOauthRefreshCmd, 0 },
+  /*
+  ** .pp
+  ** The command to run to generate an OAUTH refresh token for
+  ** authorizing your connection to your POP server.  This command will be
+  ** run on every connection attempt that uses the OAUTHBEARER authentication
+  ** mechanism.
   */
   { "pop_pass",         DT_STRING,  R_NONE|F_SENSITIVE, &PopPass, 0 },
   /*
@@ -3379,6 +3420,7 @@ struct ConfigDef MuttVars[] = {
   ** sequences:
   ** .dl
   ** .dt %B  .dd Name of the mailbox
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
   ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
@@ -3810,6 +3852,14 @@ struct ConfigDef MuttVars[] = {
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
   */
+  { "smtp_oauth_refresh_command", DT_STRING, R_NONE, &SmtpOauthRefreshCmd, 0 },
+  /*
+  ** .pp
+  ** The command to run to generate an OAUTH refresh token for
+  ** authorizing your connection to your SMTP server.  This command will be
+  ** run on every connection attempt that uses the OAUTHBEARER authentication
+  ** mechanism.
+  */
   { "smtp_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &SmtpPass, 0 },
   /*
   ** .pp
@@ -3875,6 +3925,9 @@ struct ConfigDef MuttVars[] = {
   { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, &SortAux, SORT_DATE },
   /*
   ** .pp
+  ** This provides a secondary sort for messages in the ``index'' menu, used
+  ** when the $$sort value is equal for two messages.
+  ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
   ** in relation to other threads, and how the branches of the thread trees
   ** are sorted.  This can be set to any value that $$sort can, except
@@ -3891,8 +3944,8 @@ struct ConfigDef MuttVars[] = {
   ** thread, that thread becomes the last one displayed (or the first, if
   ** you have ``\fCset sort=reverse-threads\fP''.)
   ** .pp
-  ** Note: For reversed $$sort
-  ** order $$sort_aux is reversed again (which is not the right thing to do,
+  ** Note: For reversed-threads $$sort
+  ** order, $$sort_aux is reversed again (which is not the right thing to do,
   ** but kept to not break any existing configuration setting).
   */
   { "sort_browser",     DT_SORT|DT_SORT_BROWSER, R_NONE, &SortBrowser, SORT_ALPHA },
@@ -4106,6 +4159,7 @@ struct ConfigDef MuttVars[] = {
   ** .dl
   ** .dt %b  .dd Number of mailboxes with new mail *
   ** .dt %d  .dd Number of deleted messages *
+  ** .dt %D  .dd Description of the mailbox
   ** .dt %f  .dd The full pathname of the current mailbox
   ** .dt %F  .dd Number of flagged messages *
   ** .dt %h  .dd Local hostname
@@ -4269,7 +4323,7 @@ struct ConfigDef MuttVars[] = {
   ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
   ** used.  Failing that, then ``\fC/tmp\fP'' is used.
   */
-  { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFL" },
+  { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFLR" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.
@@ -4281,6 +4335,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 4 .dd C .dd Your address is specified in the ``Cc:'' header field, but you are not the only recipient.
   ** .dt 5 .dd F .dd Indicates the mail that was sent by \fIyou\fP.
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
+  ** .dt 7 .dd R .dd Your address appears in the ``Reply-To:'' header field but none of the above applies.
   ** .de
   */
   { "trash",            DT_PATH|DT_MAILBOX, R_NONE, &Trash, 0 },
@@ -4632,6 +4687,7 @@ const struct Command Commands[] = {
   { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
+  { "named-mailboxes",     mutt_parse_mailboxes,   MUTT_NAMED },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
 #ifdef USE_COMPRESSED
   { "open-hook",           mutt_parse_hook,        MUTT_OPEN_HOOK },
@@ -4699,4 +4755,4 @@ const struct Command Commands[] = {
 };
 // clang-format on
 
-#endif /* _MUTT_INIT_H */
+#endif /* MUTT_INIT_H */

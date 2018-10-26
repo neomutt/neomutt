@@ -31,12 +31,13 @@
 #include <stdbool.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
@@ -47,65 +48,65 @@
 /**
  * mutt_set_flag_update - Set a flag on an email
  * @param ctx     Mailbox Context
- * @param h       Email Header
+ * @param e       Email Header
  * @param flag    Flag to set, e.g. #MUTT_DELETE
  * @param bf      true: set the flag; false: clear the flag
  * @param upd_ctx true: update the Context
  */
-void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool bf, bool upd_ctx)
+void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool bf, bool upd_ctx)
 {
-  if (!ctx || !h)
+  if (!ctx || !e)
     return;
 
-  bool changed = h->changed;
+  bool changed = e->changed;
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
-  int flagged = ctx->flagged;
+  int mailbox = ctx->mailbox->msg_flagged;
   int update = false;
 
-  if (ctx->readonly && flag != MUTT_TAG)
+  if (ctx->mailbox->readonly && flag != MUTT_TAG)
     return; /* don't modify anything if we are read-only */
 
   switch (flag)
   {
     case MUTT_DELETE:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
       {
-        if (!h->deleted && !ctx->readonly && (!h->flagged || !FlagSafe))
+        if (!e->deleted && !ctx->mailbox->readonly && (!e->flagged || !FlagSafe))
         {
-          h->deleted = true;
+          e->deleted = true;
           update = true;
           if (upd_ctx)
             ctx->deleted++;
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx && ctx->magic == MUTT_IMAP)
+          if (ctx && ctx->mailbox->magic == MUTT_IMAP)
           {
-            h->changed = true;
+            e->changed = true;
             if (upd_ctx)
-              ctx->changed = true;
+              ctx->mailbox->changed = true;
           }
 #endif
         }
       }
-      else if (h->deleted)
+      else if (e->deleted)
       {
-        h->deleted = false;
+        e->deleted = false;
         update = true;
         if (upd_ctx)
           ctx->deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
-        if (ctx->magic == MUTT_IMAP)
+        if (ctx->mailbox->magic == MUTT_IMAP)
         {
-          h->changed = true;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
 #endif
         /* If the user undeletes a message which is marked as
@@ -115,212 +116,212 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
          * is checked in specific code in the maildir folder
          * driver.
          */
-        if (ctx->magic == MUTT_MAILDIR && upd_ctx && h->trash)
-          ctx->changed = true;
+        if (ctx->mailbox->magic == MUTT_MAILDIR && upd_ctx && e->trash)
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_PURGE:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
       {
-        if (!h->purge && !ctx->readonly)
-          h->purge = true;
+        if (!e->purge && !ctx->mailbox->readonly)
+          e->purge = true;
       }
-      else if (h->purge)
-        h->purge = false;
+      else if (e->purge)
+        e->purge = false;
       break;
 
     case MUTT_NEW:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
       {
-        if (h->read || h->old)
+        if (e->read || e->old)
         {
           update = true;
-          h->old = false;
+          e->old = false;
           if (upd_ctx)
             ctx->new ++;
-          if (h->read)
+          if (e->read)
           {
-            h->read = false;
+            e->read = false;
             if (upd_ctx)
-              ctx->unread++;
+              ctx->mailbox->msg_unread++;
           }
-          h->changed = true;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
       }
-      else if (!h->read)
+      else if (!e->read)
       {
         update = true;
-        if (!h->old)
+        if (!e->old)
           if (upd_ctx)
             ctx->new --;
-        h->read = true;
+        e->read = true;
         if (upd_ctx)
-          ctx->unread--;
-        h->changed = true;
+          ctx->mailbox->msg_unread--;
+        e->changed = true;
         if (upd_ctx)
-          ctx->changed = true;
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_OLD:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
       {
-        if (!h->old)
+        if (!e->old)
         {
           update = true;
-          h->old = true;
-          if (!h->read)
+          e->old = true;
+          if (!e->read)
             if (upd_ctx)
               ctx->new --;
-          h->changed = true;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
       }
-      else if (h->old)
+      else if (e->old)
       {
         update = true;
-        h->old = false;
-        if (!h->read)
+        e->old = false;
+        if (!e->read)
           if (upd_ctx)
             ctx->new ++;
-        h->changed = true;
+        e->changed = true;
         if (upd_ctx)
-          ctx->changed = true;
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_READ:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
       {
-        if (!h->read)
+        if (!e->read)
         {
           update = true;
-          h->read = true;
+          e->read = true;
           if (upd_ctx)
-            ctx->unread--;
-          if (!h->old)
+            ctx->mailbox->msg_unread--;
+          if (!e->old)
             if (upd_ctx)
               ctx->new --;
-          h->changed = true;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
       }
-      else if (h->read)
+      else if (e->read)
       {
         update = true;
-        h->read = false;
+        e->read = false;
         if (upd_ctx)
-          ctx->unread++;
-        if (!h->old)
+          ctx->mailbox->msg_unread++;
+        if (!e->old)
           if (upd_ctx)
             ctx->new ++;
-        h->changed = true;
+        e->changed = true;
         if (upd_ctx)
-          ctx->changed = true;
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_REPLIED:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)
       {
-        if (!h->replied)
+        if (!e->replied)
         {
           update = true;
-          h->replied = true;
-          if (!h->read)
+          e->replied = true;
+          if (!e->read)
           {
-            h->read = true;
+            e->read = true;
             if (upd_ctx)
-              ctx->unread--;
-            if (!h->old)
+              ctx->mailbox->msg_unread--;
+            if (!e->old)
               if (upd_ctx)
                 ctx->new --;
           }
-          h->changed = true;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
       }
-      else if (h->replied)
+      else if (e->replied)
       {
         update = true;
-        h->replied = false;
-        h->changed = true;
+        e->replied = false;
+        e->changed = true;
         if (upd_ctx)
-          ctx->changed = true;
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_FLAG:
 
-      if (!mutt_bit_isset(ctx->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)
       {
-        if (!h->flagged)
+        if (!e->flagged)
         {
           update = true;
-          h->flagged = bf;
+          e->flagged = bf;
           if (upd_ctx)
-            ctx->flagged++;
-          h->changed = true;
+            ctx->mailbox->msg_flagged++;
+          e->changed = true;
           if (upd_ctx)
-            ctx->changed = true;
+            ctx->mailbox->changed = true;
         }
       }
-      else if (h->flagged)
+      else if (e->flagged)
       {
         update = true;
-        h->flagged = false;
+        e->flagged = false;
         if (upd_ctx)
-          ctx->flagged--;
-        h->changed = true;
+          ctx->mailbox->msg_flagged--;
+        e->changed = true;
         if (upd_ctx)
-          ctx->changed = true;
+          ctx->mailbox->changed = true;
       }
       break;
 
     case MUTT_TAG:
       if (bf)
       {
-        if (!h->tagged)
+        if (!e->tagged)
         {
           update = true;
-          h->tagged = true;
+          e->tagged = true;
           if (upd_ctx)
             ctx->tagged++;
         }
       }
-      else if (h->tagged)
+      else if (e->tagged)
       {
         update = true;
-        h->tagged = false;
+        e->tagged = false;
         if (upd_ctx)
           ctx->tagged--;
       }
@@ -329,7 +330,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
 
   if (update)
   {
-    mutt_set_header_color(ctx, h);
+    mutt_set_header_color(ctx, e);
 #ifdef USE_SIDEBAR
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
@@ -339,10 +340,10 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
    * search results so that any future search will match the current status
    * of this message and not what it was at the time it was last searched.
    */
-  if (h->searched && (changed != h->changed || deleted != ctx->deleted ||
-                      tagged != ctx->tagged || flagged != ctx->flagged))
+  if (e->searched && (changed != e->changed || deleted != ctx->deleted ||
+                      tagged != ctx->tagged || mailbox != ctx->mailbox->msg_flagged))
   {
-    h->searched = false;
+    e->searched = false;
   }
 }
 
@@ -353,23 +354,23 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, bool 
  */
 void mutt_tag_set_flag(int flag, int bf)
 {
-  for (int i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->mailbox->msg_count; i++)
     if (message_is_tagged(Context, i))
-      mutt_set_flag(Context, Context->hdrs[i], flag, bf);
+      mutt_set_flag(Context, Context->mailbox->hdrs[i], flag, bf);
 }
 
 /**
  * mutt_thread_set_flag - Set a flag on an entire thread
- * @param hdr       Email Header
+ * @param e       Email Header
  * @param flag      Flag to set, e.g. #MUTT_DELETE
  * @param bf        true: set the flag; false: clear the flag
  * @param subthread If true apply to all of the thread
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
+int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread)
 {
-  struct MuttThread *start = NULL, *cur = hdr->thread;
+  struct MuttThread *start = NULL, *cur = e->thread;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -382,7 +383,7 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
       cur = cur->parent;
   start = cur;
 
-  if (cur->message && cur != hdr->thread)
+  if (cur->message && cur != e->thread)
     mutt_set_flag(Context, cur->message, flag, bf);
 
   cur = cur->child;
@@ -391,7 +392,7 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 
   while (true)
   {
-    if (cur->message && cur != hdr->thread)
+    if (cur->message && cur != e->thread)
       mutt_set_flag(Context, cur->message, flag, bf);
 
     if (cur->child)
@@ -410,7 +411,7 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
     }
   }
 done:
-  cur = hdr->thread;
+  cur = e->thread;
   if (cur->message)
     mutt_set_flag(Context, cur->message, flag, bf);
   return 0;
@@ -418,12 +419,12 @@ done:
 
 /**
  * mutt_change_flag - Change the flag on a Message
- * @param h  Email Header
+ * @param e  Email Header
  * @param bf true: set the flag; false: clear the flag
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Header *h, int bf)
+int mutt_change_flag(struct Email *e, int bf)
 {
   int i, flag;
   struct Event event;
@@ -431,8 +432,12 @@ int mutt_change_flag(struct Header *h, int bf)
   mutt_window_mvprintw(MuttMessageWindow, 0, 0,
                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
   mutt_window_clrtoeol(MuttMessageWindow);
+  mutt_refresh();
 
-  event = mutt_getch();
+  do
+  {
+    event = mutt_getch();
+  } while (event.ch == -2);
   i = event.ch;
   if (i < 0)
   {
@@ -448,8 +453,8 @@ int mutt_change_flag(struct Header *h, int bf)
     case 'D':
       if (!bf)
       {
-        if (h)
-          mutt_set_flag(Context, h, MUTT_PURGE, bf);
+        if (e)
+          mutt_set_flag(Context, e, MUTT_PURGE, bf);
         else
           mutt_tag_set_flag(MUTT_PURGE, bf);
       }
@@ -463,8 +468,8 @@ int mutt_change_flag(struct Header *h, int bf)
 
     case 'o':
     case 'O':
-      if (h)
-        mutt_set_flag(Context, h, MUTT_READ, !bf);
+      if (e)
+        mutt_set_flag(Context, e, MUTT_READ, !bf);
       else
         mutt_tag_set_flag(MUTT_READ, !bf);
       flag = MUTT_OLD;
@@ -488,8 +493,8 @@ int mutt_change_flag(struct Header *h, int bf)
       return -1;
   }
 
-  if (h)
-    mutt_set_flag(Context, h, flag, bf);
+  if (e)
+    mutt_set_flag(Context, e, flag, bf);
   else
     mutt_tag_set_flag(flag, bf);
 

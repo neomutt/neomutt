@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in compose.c */
 extern char *        ComposeFormat;
@@ -35,7 +35,6 @@ extern unsigned char Postpone;
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen, struct Header *cur, int flags);
+int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags);
 
 #endif /* MUTT_COMPOSE_H */
-

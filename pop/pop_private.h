@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,14 +21,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _POP_PRIVATE_H
-#define _POP_PRIVATE_H
+#ifndef MUTT_POP_POP_PRIVATE_H
+#define MUTT_POP_POP_PRIVATE_H
 
 #include <stdbool.h>
 #include <time.h>
 
-struct Account;
+struct ConnAccount;
 struct Context;
+struct Mailbox;
 struct Progress;
 
 #define POP_PORT 110
@@ -71,9 +73,9 @@ struct PopCache
 };
 
 /**
- * struct PopData - POP-specific server data
+ * struct PopAccountData - POP data attached to a Account - @extends Account
  */
-struct PopData
+struct PopAccountData
 {
   struct Connection *conn;
   unsigned int status : 2;
@@ -98,30 +100,39 @@ struct PopData
 };
 
 /**
+ * struct PopEmailData - POP data attached to an Email - @extends Email
+ */
+struct PopEmailData
+{
+  const char *uid;
+};
+
+/**
  * struct PopAuth - POP authentication multiplexor
  */
 struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  enum PopAuthRes (*authenticate)(struct PopData *, const char *);
+  enum PopAuthRes (*authenticate)(struct PopAccountData *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
 };
 
 /* pop_auth.c */
-int pop_authenticate(struct PopData *pop_data);
-void pop_apop_timestamp(struct PopData *pop_data, char *buf);
+int pop_authenticate(struct PopAccountData *adata);
+void pop_apop_timestamp(struct PopAccountData *adata, char *buf);
 
 /* pop_lib.c */
 #define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
-int pop_parse_path(const char *path, struct Account *acct);
-int pop_connect(struct PopData *pop_data);
-int pop_open_connection(struct PopData *pop_data);
-int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg);
-int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
+int pop_parse_path(const char *path, struct ConnAccount *acct);
+int pop_connect(struct PopAccountData *adata);
+int pop_open_connection(struct PopAccountData *adata);
+int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *msg);
+int pop_fetch_data(struct PopAccountData *adata, const char *query, struct Progress *progressbar,
                    int (*func)(char *, void *), void *data);
-int pop_reconnect(struct Context *ctx);
-void pop_logout(struct Context *ctx);
+int pop_reconnect(struct Mailbox *m);
+void pop_logout(struct Mailbox *m);
+struct PopAccountData *pop_get_adata(struct Mailbox *m);
 
-#endif /* _POP_PRIVATE_H */
+#endif /* MUTT_POP_POP_PRIVATE_H */

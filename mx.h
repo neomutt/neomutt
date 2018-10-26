@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MX_H
-#define _MUTT_MX_H
+#ifndef MUTT_MX_H
+#define MUTT_MX_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -32,8 +33,9 @@
 #include "hcache/hcache.h"
 #endif
 
-struct Header;
+struct Email;
 struct Context;
+struct Mailbox;
 struct stat;
 
 /* These Config Variables are only used in mx.c */
@@ -92,13 +94,30 @@ struct Message
 /**
  * struct MxOps - The Mailbox API
  *
- * Each backend provides a set of functions through which the mailbox, messages
- * and tags are manipulated.
+ * Each backend provides a set of functions through which the mailbox, messages,
+ * tags and paths are manipulated.
  */
 struct MxOps
 {
-  const int magic;
-  const char *name;
+  const int magic;  ///< Mailbox type, e.g. #MUTT_IMAP
+  const char *name; ///< Mailbox name, e.g. "imap"
+
+  /**
+   * ac_find - Find an Account for a Mailbox path
+   * @param a    Account to search
+   * @param path Path to search for
+   * @retval  0 Success
+   * @retval -1 Error
+   */
+  struct Account *(*ac_find)  (struct Account *a, const char *path);
+  /**
+   * ac_add - Add a Mailbox to an Account
+   * @param a Account to add to
+   * @param m Mailbox to add
+   * @retval  0 Success
+   * @retval -1 Error
+   */
+  int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
    * mbox_open - Open a mailbox
    * @param ctx Mailbox to open
@@ -150,11 +169,11 @@ struct MxOps
    * msg_open_new - Open a new message in a mailbox
    * @param ctx Mailbox
    * @param msg  Message to open
-   * @param hdr Email header
+   * @param e Email header
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Header *hdr);
+  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Email *e);
   /**
    * msg_commit - Save changes to an email
    * @param ctx Mailbox
@@ -172,14 +191,11 @@ struct MxOps
    */
   int (*msg_close)       (struct Context *ctx, struct Message *msg);
   /**
-   * tags_commit - Save the tags to a message
+   * msg_padding_size - Bytes of padding between messages
    * @param ctx Mailbox
-   * @param hdr Email Header
-   * @param buf Buffer containing tags
-   * @retval  0 Success
-   * @retval -1 Failure
+   * @retval num Bytes of padding
    */
-  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*msg_padding_size)(struct Context *ctx);
   /**
    * tags_edit - Prompt and validate new messages tags
    * @param ctx    Mailbox
@@ -190,7 +206,16 @@ struct MxOps
    * @retval  0 No valid user input
    * @retval  1 Buf set
    */
-  int (*tags_commit)     (struct Context *ctx, struct Header *hdr, char *buf);
+  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  /**
+   * tags_commit - Save the tags to a message
+   * @param ctx Mailbox
+   * @param e Email Header
+   * @param buf Buffer containing tags
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*tags_commit)     (struct Context *ctx, struct Email *e, char *buf);
   /**
    * path_probe - Does this mailbox type recognise this path?
    * @param path Path to examine
@@ -206,7 +231,7 @@ struct MxOps
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*path_canon)     (char *buf, size_t buflen, const char *folder);
+  int (*path_canon)      (char *buf, size_t buflen, const char *folder);
   /**
    * path_pretty - Abbreviate a mailbox path
    * @param buf    Path to modify
@@ -227,23 +252,31 @@ struct MxOps
 };
 
 /* Wrappers for the Mailbox API, see MxOps */
-int             mx_mbox_check  (struct Context *ctx, int *index_hint);
-int             mx_mbox_close  (struct Context *ctx, int *index_hint);
-struct Context *mx_mbox_open   (const char *path, int flags, struct Context *pctx);
-int             mx_mbox_sync   (struct Context *ctx, int *index_hint);
-int             mx_msg_close   (struct Context *ctx, struct Message **msg);
-int             mx_msg_commit  (struct Context *ctx, struct Message *msg);
-struct Message *mx_msg_open_new(struct Context *ctx, struct Header *hdr, int flags);
-struct Message *mx_msg_open    (struct Context *ctx, int msgno);
-int             mx_path_canon  (char *buf, size_t buflen, const char *folder);
-int             mx_path_parent (char *buf, size_t buflen);
-int             mx_path_pretty (char *buf, size_t buflen, const char *folder);
-int             mx_path_probe  (const char *path, const struct stat *st);
-int             mx_tags_commit (struct Context *ctx, struct Header *hdr, char *tags);
-int             mx_tags_edit   (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+int             mx_mbox_check      (struct Context *ctx, int *index_hint);
+int             mx_mbox_close      (struct Context **pctx, int *index_hint);
+struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
+int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
+int             mx_msg_close       (struct Context *ctx, struct Message **msg);
+int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
+struct Message *mx_msg_open_new    (struct Context *ctx, struct Email *e, int flags);
+struct Message *mx_msg_open        (struct Context *ctx, int msgno);
+int             mx_msg_padding_size(struct Context *ctx);
+int             mx_path_canon      (char *buf, size_t buflen, const char *folder, int *magic);
+int             mx_path_canon2     (struct Mailbox *m, const char *folder);
+int             mx_path_parent     (char *buf, size_t buflen);
+int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
+int             mx_path_probe      (const char *path, struct stat *st);
+int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
+int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+
+struct Account *mx_ac_find(struct Mailbox *m);
+struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m);
+struct Mailbox *mx_mbox_find2(const char *path);
+int mx_ac_add(struct Account *a, struct Mailbox *m);
+int mx_ac_remove(struct Account *a, struct Mailbox *m);
 
 int                 mx_access(const char *path, int flags);
-void                mx_alloc_memory(struct Context *ctx);
+void                mx_alloc_memory(struct Mailbox *m);
 int                 mx_check_empty(const char *path);
 int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
 void                mx_fastclose_mailbox(struct Context *ctx);
@@ -252,4 +285,4 @@ bool                mx_tags_is_supported(struct Context *ctx);
 void                mx_update_context(struct Context *ctx, int new_messages);
 void                mx_update_tables(struct Context *ctx, bool committing);
 
-#endif /* _MUTT_MX_H */
+#endif /* MUTT_MX_H */

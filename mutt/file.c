@@ -91,11 +91,10 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
 {
   const char *basename = NULL;
   char parent[PATH_MAX];
-  char *p = NULL;
 
   mutt_str_strfcpy(parent, path, sizeof(parent));
 
-  p = strrchr(parent, '/');
+  char *p = strrchr(parent, '/');
   if (p)
   {
     *p = '\0';
@@ -338,12 +337,35 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
 int mutt_file_safe_rename(const char *src, const char *target)
 {
   struct stat ssb, tsb;
+  int link_errno;
 
   if (!src || !target)
     return -1;
 
   if (link(src, target) != 0)
   {
+    link_errno = errno;
+
+    /* It is historically documented that link can return -1 if NFS
+     * dies after creating the link.  In that case, we are supposed
+     * to use stat to check if the link was created.
+     *
+     * Derek Martin notes that some implementations of link() follow a
+     * source symlink.  It might be more correct to use stat() on src.
+     * I am not doing so to minimize changes in behavior: the function
+     * used lstat() further below for 20 years without issue, and I
+     * believe was never intended to be used on a src symlink.
+     */
+    if ((lstat(src, &ssb) == 0) && (lstat(target, &tsb) == 0) &&
+        (compare_stat(&ssb, &tsb) == 0))
+    {
+      mutt_debug(1, "link (%s, %s) reported failure: %s (%d) but actually succeeded\n",
+                 src, target, strerror(errno), errno);
+      goto success;
+    }
+
+    errno = link_errno;
+
     /* Coda does not allow cross-directory links, but tells
      * us it's a cross-filesystem linking attempt.
      *
@@ -380,8 +402,14 @@ int mutt_file_safe_rename(const char *src, const char *target)
     return -1;
   }
 
+  /* Remove the compare_stat() check, because it causes problems with maildir
+   * on filesystems that don't properly support hard links, such as sshfs.  The
+   * filesystem creates the link, but the resulting file is given a different
+   * inode number by the sshfs layer.  This results in an infinite loop
+   * creating links.
+   */
+#if 0
   /* Stat both links and check if they are equal. */
-
   if (lstat(src, &ssb) == -1)
   {
     mutt_debug(1, "#1 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
@@ -402,7 +430,9 @@ int mutt_file_safe_rename(const char *src, const char *target)
     errno = EEXIST;
     return -1;
   }
+#endif
 
+success:
   /* Unlink the original link.
    * Should we really ignore the return value here? XXX */
   if (unlink(src) == -1)
@@ -979,8 +1009,8 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 /**
  * mutt_file_lock - (try to) lock a file using fcntl()
  * @param fd      File descriptor to file
- * @param excl    If set, try to lock exclusively
- * @param timeout Retry after this time
+ * @param excl    If true, try to lock exclusively
+ * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -988,20 +1018,17 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(int fd, int excl, int timeout)
+int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  int count;
-  int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
+  int count = 0;
+  int attempt = 0;
 
   struct flock lck;
-
   memset(&lck, 0, sizeof(struct flock));
   lck.l_type = excl ? F_WRLCK : F_RDLCK;
   lck.l_whence = SEEK_SET;
 
-  count = 0;
-  attempt = 0;
   while (fcntl(fd, F_SETLK, &lck) == -1)
   {
     mutt_debug(1, "fcntl errno %d.\n", errno);
@@ -1054,8 +1081,8 @@ int mutt_file_unlock(int fd)
 /**
  * mutt_file_lock - (try to) lock a file using flock()
  * @param fd      File descriptor to file
- * @param excl    If set, try to lock exclusively
- * @param timeout Retry after this time
+ * @param excl    If true, try to lock exclusively
+ * @param timeout If true, Retry #MAX_LOCK_ATTEMPTS times
  * @retval  0 Success
  * @retval -1 Failure
  *
@@ -1063,21 +1090,19 @@ int mutt_file_unlock(int fd)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(int fd, int excl, int timeout)
+int mutt_file_lock(int fd, bool excl, bool timeout)
 {
-  int count;
-  int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
-  int r = 0;
+  int rc = 0;
+  int count = 0;
+  int attempt = 0;
 
-  count = 0;
-  attempt = 0;
   while (flock(fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
   {
     if (errno != EWOULDBLOCK)
     {
       mutt_perror("flock");
-      r = -1;
+      rc = -1;
       break;
     }
 
@@ -1092,7 +1117,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
     {
       if (timeout)
         mutt_error(_("Timeout exceeded while attempting flock lock"));
-      r = -1;
+      rc = -1;
       break;
     }
 
@@ -1103,12 +1128,12 @@ int mutt_file_lock(int fd, int excl, int timeout)
   }
 
   /* release any other locks obtained in this routine */
-  if (r != 0)
+  if (rc != 0)
   {
     flock(fd, LOCK_UN);
   }
 
-  return r;
+  return rc;
 }
 
 /**
@@ -1138,7 +1163,7 @@ void mutt_file_unlink_empty(const char *path)
   if (fd == -1)
     return;
 
-  if (mutt_file_lock(fd, 1, 1) == -1)
+  if (mutt_file_lock(fd, true, true) == -1)
   {
     close(fd);
     return;
@@ -1308,4 +1333,22 @@ void mutt_file_expand_fmt(char *dest, size_t destlen, const char *fmt, const cha
     mutt_str_strcat(dest, destlen, " ");
     mutt_str_strcat(dest, destlen, src);
   }
+}
+
+/**
+ * mutt_file_get_size - Get the size of a file
+ * @param path File to measure
+ * @retval num Size in bytes
+ * @retval 0   Error
+ */
+long mutt_file_get_size(const char *path)
+{
+  if (!path)
+    return 0;
+
+  struct stat sb;
+  if (stat(path, &sb) != 0)
+    return 0;
+
+  return sb.st_size;
 }

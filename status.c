@@ -69,6 +69,7 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
  * |:--------|:--------------------------------------------------------
  * | \%b     | Number of incoming folders with unread messages
  * | \%d     | Number of deleted messages
+ * | \%D     | Description of the mailbox
  * | \%f     | Full mailbox path
  * | \%F     | Number of flagged messages
  * | \%h     | Hostname
@@ -121,25 +122,38 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         optional = 0;
       break;
 
+    case 'D':
+    {
+      struct Mailbox *mbox = Context ? Context->mailbox : NULL;
+      // If there's a description, use it. Otherwise, fall-through
+      if (mbox && mbox->desc)
+      {
+        mutt_str_strfcpy(tmp, mbox->desc, sizeof(tmp));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, tmp);
+        break;
+      }
+    }
+    /* fallthrough */
     case 'f':
     {
+      struct Mailbox *m = Context ? Context->mailbox : NULL;
 #ifdef USE_NOTMUCH
-      char *p = NULL;
-      if (Context && Context->magic == MUTT_NOTMUCH && (p = nm_get_description(Context)))
-        mutt_str_strfcpy(tmp, p, sizeof(tmp));
+      if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
+        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
       else
 #endif
 #ifdef USE_COMPRESSED
-          if (Context && Context->compress_info && Context->realpath)
+          if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
-        mutt_str_strfcpy(tmp, Context->realpath, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
-          if (Context && Context->path)
+          if (m && (m->path[0] != '\0'))
       {
-        mutt_str_strfcpy(tmp, Context->path, sizeof(tmp));
+        mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
@@ -153,9 +167,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->flagged : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_flagged : 0);
       }
-      else if (!Context || !Context->flagged)
+      else if (!Context || !Context->mailbox->msg_flagged)
         optional = 0;
       break;
 
@@ -168,10 +182,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->mailbox->size : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
-      else if (!Context || !Context->size)
+      else if (!Context || !Context->mailbox->size)
         optional = 0;
       break;
 
@@ -190,9 +204,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->msgcount : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_count : 0);
       }
-      else if (!Context || !Context->msgcount)
+      else if (!Context || !Context->mailbox->msg_count)
         optional = 0;
       break;
 
@@ -200,7 +214,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->vcount : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->vcount : 0);
       }
       else if (!Context || !Context->pattern)
         optional = 0;
@@ -220,9 +234,10 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->unread - Context->new : 0);
+        snprintf(buf, buflen, fmt,
+                 Context ? Context->mailbox->msg_unread - Context->new : 0);
       }
-      else if (!Context || !(Context->unread - Context->new))
+      else if (!Context || !(Context->mailbox->msg_unread - Context->new))
         optional = 0;
       break;
 
@@ -264,14 +279,15 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = OptAttachMsg ? 3 :
-                           ((Context->readonly || Context->dontwrite) ?
-                                2 :
-                                (Context->changed ||
-                                 /* deleted doesn't necessarily mean changed in IMAP */
-                                 (Context->magic != MUTT_IMAP && Context->deleted)) ?
-                                1 :
-                                0);
+        i = OptAttachMsg ?
+                3 :
+                ((Context->mailbox->readonly || Context->dontwrite) ?
+                     2 :
+                     (Context->mailbox->changed ||
+                      /* deleted doesn't necessarily mean changed in IMAP */
+                      (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
+                     1 :
+                     0);
       }
 
       if (!StatusChars || !StatusChars->len)
@@ -285,7 +301,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'R':
     {
-      int read = Context ? Context->msgcount - Context->unread : 0;
+      int read = Context ? Context->mailbox->msg_count - Context->mailbox->msg_unread : 0;
 
       if (!optional)
       {
@@ -321,9 +337,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->unread : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_unread : 0);
       }
-      else if (!Context || !Context->unread)
+      else if (!Context || !Context->mailbox->msg_unread)
         optional = 0;
       break;
 

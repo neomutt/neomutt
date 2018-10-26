@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,6 +35,7 @@
  * | imap/auth_cram.c  | @subpage imap_auth_cram  |
  * | imap/auth_gss.c   | @subpage imap_auth_gss   |
  * | imap/auth_login.c | @subpage imap_auth_login |
+ * | imap/auth_oauth.c | @subpage imap_auth_oauth |
  * | imap/auth_plain.c | @subpage imap_auth_plain |
  * | imap/auth_sasl.c  | @subpage imap_auth_sasl  |
  * | imap/browse.c     | @subpage imap_browse     |
@@ -43,8 +45,8 @@
  * | imap/util.c       | @subpage imap_util       |
  */
 
-#ifndef _IMAP_IMAP_H
-#define _IMAP_IMAP_H
+#ifndef MUTT_IMAP_IMAP_H
+#define MUTT_IMAP_IMAP_H
 
 #include "conn/conn.h"
 #include <stdbool.h>
@@ -54,7 +56,7 @@
 
 struct BrowserState;
 struct Context;
-struct Header;
+struct Email;
 struct Pattern;
 
 /* These Config Variables are only used in imap/auth.c */
@@ -78,22 +80,23 @@ extern short ImapPipelineDepth;
  */
 struct ImapMbox
 {
-  struct Account account;
+  struct ConnAccount account;
   char *mbox;
 };
 
 /* imap.c */
 int imap_access(const char *path);
-int imap_check_mailbox(struct Context *ctx, bool force);
-int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
+int imap_check_mailbox(struct Mailbox *m, bool force);
+int imap_delete_mailbox(struct Mailbox *m, struct ImapMbox *mx);
 int imap_sync_mailbox(struct Context *ctx, bool expunge);
 int imap_mailbox_check(bool check_stats);
-int imap_status(char *path, bool queue);
-int imap_search(struct Context *ctx, const struct Pattern *pat);
+int imap_status(const char *path, bool queue);
+int imap_search(struct Mailbox *m, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
-int imap_fast_trash(struct Context *ctx, char *dest);
+int imap_fast_trash(struct Mailbox *m, char *dest);
 int imap_path_probe(const char *path, const struct stat *st);
+int imap_path_canon(char *buf, size_t buflen, const char *folder);
 
 extern struct MxOps mx_imap_ops;
 
@@ -103,7 +106,7 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *mailbox);
 
 /* message.c */
-int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, bool delete);
+int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete);
 
 /* socket.c */
 void imap_logout_all(void);
@@ -119,4 +122,4 @@ void imap_keepalive(void);
 void imap_get_parent_path(const char *path, char *buf, size_t buflen);
 void imap_clean_path(char *path, size_t plen);
 
-#endif /* _IMAP_IMAP_H */
+#endif /* MUTT_IMAP_IMAP_H */

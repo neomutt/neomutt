@@ -20,15 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_CRYPT_GPGME_H
-#define _NCRYPT_CRYPT_GPGME_H
+#ifndef MUTT_NCRYPT_CRYPT_GPGME_H
+#define MUTT_NCRYPT_CRYPT_GPGME_H
 
 #include <stdbool.h>
 #include <stdio.h>
 
 struct Address;
 struct Body;
-struct Header;
+struct Email;
 struct State;
 
 void         pgp_gpgme_set_sender(const char *sender);
@@ -42,7 +42,7 @@ char *       pgp_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode);
 void         pgp_gpgme_init(void);
 void         pgp_gpgme_invoke_import(const char *fname);
 struct Body *pgp_gpgme_make_key_attachment(void);
-int          pgp_gpgme_send_menu(struct Header *msg);
+int          pgp_gpgme_send_menu(struct Email *msg);
 struct Body *pgp_gpgme_sign_message(struct Body *a);
 int          pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 
@@ -51,11 +51,11 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist);
 int          smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 char *       smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode);
 void         smime_gpgme_init(void);
-int          smime_gpgme_send_menu(struct Header *msg);
+int          smime_gpgme_send_menu(struct Email *msg);
 struct Body *smime_gpgme_sign_message(struct Body *a);
 int          smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-int          smime_gpgme_verify_sender(struct Header *h);
+int          smime_gpgme_verify_sender(struct Email *e);
 
 const char  *mutt_gpgme_print_version(void);
 
-#endif /* _NCRYPT_CRYPT_GPGME_H */
+#endif /* MUTT_NCRYPT_CRYPT_GPGME_H */

@@ -1,6 +1,6 @@
 /**
  * @file
- * Notmuch virtual mailbox type
+ * Notmuch virtual m type
  *
  * @authors
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
@@ -21,24 +21,25 @@
  */
 
 /**
- * @page notmuch NOTMUCH: Virtual mailbox type
+ * @page notmuch NOTMUCH: Virtual m type
  *
- * Notmuch virtual mailbox type
+ * Notmuch virtual m type
  *
  * | File                   | Description         |
  * | :--------------------- | :------------------ |
  * | notmuch/mutt_notmuch.c | @subpage nm_notmuch |
  */
 
-#ifndef _MUTT_NOTMUCH_H
-#define _MUTT_NOTMUCH_H
+#ifndef MUTT_NOTMUCH_MUTT_NOTMUCH_H
+#define MUTT_NOTMUCH_MUTT_NOTMUCH_H
 
 #include <stddef.h>
 #include <stdbool.h>
 #include "mx.h"
 
 struct Context;
-struct Header;
+struct Email;
+struct NmMboxData;
 
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 extern int   NmDbLimit;
@@ -51,34 +52,24 @@ extern char *NmQueryWindowTimebase;
 extern char *NmRecordTags;
 extern char *NmUnreadTag;
 
-int nm_read_entire_thread(struct Context *ctx, struct Header *h);
-
-char *nm_header_get_folder(struct Header *h);
-int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
-bool nm_normalize_uri(const char *uri, char *buf, size_t buflen);
-char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen);
-bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
-
-void nm_query_window_backward(void);
-void nm_query_window_forward(void);
-
-void nm_longrun_init(struct Context *ctx, bool writable);
-void nm_longrun_done(struct Context *ctx);
-
-char *nm_get_description(struct Context *ctx);
-int nm_description_to_path(const char *desc, char *buf, size_t buflen);
-
-int nm_record_message(struct Context *ctx, char *path, struct Header *h);
-
-void nm_debug_check(struct Context *ctx);
-int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
-
-/*
- * functions usable outside notmuch Context
- */
-int nm_nonctx_get_count(char *path, int *all, int *new);
-int nm_path_probe(const char *path, const struct stat *st);
-
 extern struct MxOps mx_notmuch_ops;
 
-#endif /* _MUTT_NOTMUCH_H */
+void  nm_db_debug_check             (struct Mailbox *m);
+int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);
+int   nm_get_all_tags            (struct Mailbox *m, char **tag_list, int *tag_count);
+char *nm_email_get_folder        (struct Email *e);
+void  nm_db_longrun_done            (struct Mailbox *m);
+void  nm_db_longrun_init            (struct Mailbox *m, bool writable);
+bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
+int   nm_nonctx_get_count        (char *path, int *all, int *new);
+bool  nm_normalize_uri           (const char *uri, char *buf, size_t buflen);
+void  nm_parse_type_from_query   (struct NmMboxData *mdata, char *buf);
+int   nm_path_probe              (const char *path, const struct stat *st);
+void  nm_query_window_backward   (void);
+void  nm_query_window_forward    (void);
+int   nm_read_entire_thread      (struct Context *ctx, struct Email *e);
+int   nm_record_message          (struct Mailbox *m, char *path, struct Email *e);
+int   nm_update_filename         (struct Mailbox *m, const char *old, const char *new, struct Email *e);
+char *nm_uri_from_query          (struct Mailbox *m, char *buf, size_t buflen);
+
+#endif /* MUTT_NOTMUCH_MUTT_NOTMUCH_H */

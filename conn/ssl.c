@@ -49,11 +49,11 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "ssl.h"
-#include "account.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
 #include "keymap.h"
@@ -94,6 +94,8 @@ static int SkipModeExDataIndex = -1;
 /* keep a handle on accepted certificates in case we want to
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
+
+static int ssl_socket_close(struct Connection *conn);
 
 /**
  * struct SslSockData - SSL socket data
@@ -339,13 +341,13 @@ static void ssl_dprint_err_stack(void)
  * @param buf      Buffer for the password
  * @param buflen   Length of the buffer
  * @param rwflag   0 if writing, 1 if reading (UNUSED)
- * @param userdata Account whose password is requested
+ * @param userdata ConnAccount whose password is requested
  * @retval >0 Success, number of chars written to buf
  * @retval  0 Error
  */
 static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 {
-  struct Account *account = (struct Account *) userdata;
+  struct ConnAccount *account = userdata;
 
   if (mutt_account_getuser(account) < 0)
     return 0;
@@ -360,39 +362,13 @@ static int ssl_passwd_cb(char *buf, int buflen, int rwflag, void *userdata)
 }
 
 /**
- * ssl_socket_open_err - Error callback for opening an SSL connection
- * @param conn Connection to a server
+ * ssl_socket_open_err - Error callback for opening an SSL connection - Implements Connection::conn_open()
  * @retval -1 Always
  */
 static int ssl_socket_open_err(struct Connection *conn)
 {
   mutt_error(_("SSL disabled due to the lack of entropy"));
   return -1;
-}
-
-/**
- * ssl_socket_close - Close an SSL connection
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
- */
-static int ssl_socket_close(struct Connection *conn)
-{
-  struct SslSockData *data = conn->sockdata;
-
-  if (data)
-  {
-    if (data->isopen)
-      SSL_shutdown(data->ssl);
-
-    /* hold onto this for the life of neomutt, in case we want to reconnect.
-     * The purist in me wants a mutt_exit hook. */
-    SSL_free(data->ssl);
-    SSL_CTX_free(data->ctx);
-    FREE(&conn->sockdata);
-  }
-
-  return raw_socket_close(conn);
 }
 
 /**
@@ -627,59 +603,6 @@ static int ssl_init(void)
 }
 
 /**
- * ssl_socket_read - Read data from an SSL socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  struct SslSockData *data = conn->sockdata;
-  int rc;
-
-  rc = SSL_read(data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
-  {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    data->isopen = 0;
-    ssl_err(data, rc);
-  }
-
-  return rc;
-}
-
-/**
- * ssl_socket_write - Write data to an SSL socket
- * @param conn Connection to a server
- * @param buf  Buffer to read into
- * @param len  Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  struct SslSockData *data = conn->sockdata;
-  int rc;
-
-  rc = SSL_write(data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
-  {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    ssl_err(data, rc);
-  }
-
-  return rc;
-}
-
-/**
  * ssl_get_client_cert - Get the client certificate for an SSL connection
  * @param ssldata SSL socket data
  * @param conn    Connection to a server
@@ -701,10 +624,7 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks - Implements Connection::conn_close()
  */
 static int ssl_socket_close_and_restore(struct Connection *conn)
 {
@@ -960,7 +880,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
 
   mutt_menu_push_current(menu);
 
-  menu->max = mutt_array_size(part) * 2 + 10;
+  menu->max = mutt_array_size(part) * 2 + 11;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
@@ -997,8 +917,12 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
   snprintf(menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), buf);
   buf[0] = '\0';
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_md5);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), buf);
+  buf[40] = '\0'; /* Ensure the second printed line is null terminated */
+  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
+  buf[39] = '\0'; /* Divide into two lines of output */
+  snprintf(menu->dialog[row++], SHORT_STRING, "%s%s", _("SHA256 Fingerprint: "), buf);
+  snprintf(menu->dialog[row++], SHORT_STRING, "%*s%s",
+           (int) mutt_str_strlen(_("SHA256 Fingerprint: ")), "", buf + 40);
 
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
@@ -1393,23 +1317,83 @@ free_sasldata:
 }
 
 /**
- * ssl_socket_open - Open an SSL socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
+ * ssl_socket_open - Open an SSL socket - Implements Connection::conn_open()
  */
 static int ssl_socket_open(struct Connection *conn)
 {
-  int ret;
-
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  ret = ssl_setup(conn);
+  int ret = ssl_setup(conn);
   if (ret)
     raw_socket_close(conn);
 
   return ret;
+}
+
+/**
+ * ssl_socket_read - Read data from an SSL socket - Implements Connection::conn_read()
+ */
+static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
+{
+  struct SslSockData *data = conn->sockdata;
+  int rc;
+
+  rc = SSL_read(data->ssl, buf, count);
+  if (rc <= 0 || errno == EINTR)
+  {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
+    data->isopen = 0;
+    ssl_err(data, rc);
+  }
+
+  return rc;
+}
+
+/**
+ * ssl_socket_write - Write data to an SSL socket - Implements Connection::conn_write()
+ */
+static int ssl_socket_write(struct Connection *conn, const char *buf, size_t count)
+{
+  struct SslSockData *data = conn->sockdata;
+  int rc;
+
+  rc = SSL_write(data->ssl, buf, count);
+  if (rc <= 0 || errno == EINTR)
+  {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
+    ssl_err(data, rc);
+  }
+
+  return rc;
+}
+
+/**
+ * ssl_socket_close - Close an SSL connection - Implements Connection::conn_close()
+ */
+static int ssl_socket_close(struct Connection *conn)
+{
+  struct SslSockData *data = conn->sockdata;
+
+  if (data)
+  {
+    if (data->isopen)
+      SSL_shutdown(data->ssl);
+
+    /* hold onto this for the life of neomutt, in case we want to reconnect.
+     * The purist in me wants a mutt_exit hook. */
+    SSL_free(data->ssl);
+    SSL_CTX_free(data->ctx);
+    FREE(&conn->sockdata);
+  }
+
+  return raw_socket_close(conn);
 }
 
 /**
@@ -1420,12 +1404,10 @@ static int ssl_socket_open(struct Connection *conn)
  */
 int mutt_ssl_starttls(struct Connection *conn)
 {
-  int ret;
-
   if (ssl_init())
     return -1;
 
-  ret = ssl_setup(conn);
+  int ret = ssl_setup(conn);
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->conn_read = ssl_socket_read;
@@ -1452,8 +1434,8 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   conn->conn_open = ssl_socket_open;
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
-  conn->conn_close = ssl_socket_close;
   conn->conn_poll = raw_socket_poll;
+  conn->conn_close = ssl_socket_close;
 
   return 0;
 }

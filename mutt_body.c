@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
 #include "sendlib.h"
@@ -93,8 +93,8 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
    * XXX this may change in the future
    */
 
-  if (b->hdr)
-    b->hdr = NULL;
+  if (b->email)
+    b->email = NULL;
 
   /* copy parameters */
   struct Parameter *np, *new;

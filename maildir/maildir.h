@@ -30,8 +30,8 @@
  * | maildir/mh.c | @subpage maildir_maildir |
  */
 
-#ifndef _MAILDIR_MAILDIR_H
-#define _MAILDIR_MAILDIR_H
+#ifndef MUTT_MAILDIR_MAILDIR_H
+#define MUTT_MAILDIR_MAILDIR_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -42,7 +42,7 @@
 
 struct Mailbox;
 struct Context;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in maildir/mh.c */
 extern bool  CheckNew;
@@ -55,24 +55,24 @@ extern char *MhSeqUnseen;
 extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mh_ops;
 
-int            maildir_check_empty(const char *path);
-void           maildir_flags(char *dest, size_t destlen, struct Header *hdr);
-FILE *         maildir_open_find_message(const char *folder, const char *msg, char **newname);
-void           maildir_parse_flags(struct Header *h, const char *path);
-struct Header *maildir_parse_message(enum MailboxType magic, const char *fname, bool is_old, struct Header *h);
-struct Header *maildir_parse_stream(enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Header *h);
-bool           maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
+int           maildir_check_empty(const char *path);
+void          maildir_gen_flags(char *dest, size_t destlen, struct Email *e);
+FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
+void          maildir_parse_flags(struct Email *e, const char *path);
+struct Email *maildir_parse_message(enum MailboxType magic, const char *fname, bool is_old, struct Email *e);
+struct Email *maildir_parse_stream(enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Email *e);
+bool          maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n);
 
-bool           mh_mailbox(struct Mailbox *mailbox, bool check_stats);
-int            mh_check_empty(const char *path);
+bool          mh_mailbox(struct Mailbox *m, bool check_stats);
+int           mh_check_empty(const char *path);
 
-int            maildir_path_probe(const char *path, const struct stat *st);
-int            mh_path_probe(const char *path, const struct stat *st);
+int           maildir_path_probe(const char *path, const struct stat *st);
+int           mh_path_probe(const char *path, const struct stat *st);
 
 #ifdef USE_HCACHE
-int            mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
+int           mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
 #else
-int            mh_sync_mailbox_message(struct Context *ctx, int msgno);
+int           mh_sync_mailbox_message(struct Context *ctx, int msgno);
 #endif
 
-#endif /* _MAILDIR_MAILDIR_H */
+#endif /* MUTT_MAILDIR_MAILDIR_H */

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_PAGER_H
-#define _MUTT_PAGER_H
+#ifndef MUTT_PAGER_H
+#define MUTT_PAGER_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -63,7 +63,7 @@ extern bool          Tilde;
 struct Pager
 {
   struct Context *ctx;    /**< current mailbox */
-  struct Header *hdr;     /**< current message */
+  struct Email *email;    /**< current message */
   struct Body *bdy;       /**< current attachment */
   FILE *fp;               /**< source stream */
   struct AttachCtx *actx; /**< attachment information */
@@ -73,4 +73,4 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
 void mutt_clear_pager_position(void);
 
-#endif /* _MUTT_PAGER_H */
+#endif /* MUTT_PAGER_H */

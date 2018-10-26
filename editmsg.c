@@ -37,12 +37,13 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
@@ -52,12 +53,12 @@
  * @param edit true if the message should be editable. If false, changes
  *            to the message (in the editor) will be ignored.
  * @param ctx Context
- * @param cur Header of email
+ * @param cur Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
+static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email *cur)
 {
   char tmp[PATH_MAX];
   char buf[STRING];
@@ -70,7 +71,6 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
 
   int of, cf;
 
-  struct Context tmpctx;
   struct Message *msg = NULL;
 
   FILE *fp = NULL;
@@ -83,19 +83,20 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   omagic = MboxType;
   MboxType = MUTT_MBOX;
 
-  rc = mx_mbox_open(tmp, MUTT_NEWFOLDER, &tmpctx) ? 0 : -1;
+  struct Context *tmpctx = mx_mbox_open(NULL, tmp, MUTT_NEWFOLDER);
 
   MboxType = omagic;
 
-  if (rc == -1)
+  if (!tmpctx)
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
     return -1;
   }
 
-  rc = mutt_append_message(
-      &tmpctx, ctx, cur, 0,
-      CH_NOLEN | ((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
+  const int chflags =
+      CH_NOLEN |
+      ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
   oerrno = errno;
 
   mx_mbox_close(&tmpctx, NULL);
@@ -185,7 +186,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  if (!mx_mbox_open(ctx->path, MUTT_APPEND, &tmpctx))
+  tmpctx = mx_mbox_open(NULL, ctx->mailbox->path, MUTT_APPEND);
+  if (!tmpctx)
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
@@ -194,11 +196,13 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   }
 
   of = 0;
-  cf = ((tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  cf = (((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF)) ?
+            0 :
+            CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
-    if (tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF)
+    if ((tmpctx->mailbox->magic == MUTT_MBOX) || (tmpctx->mailbox->magic == MUTT_MMDF))
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else
@@ -211,7 +215,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   o_old = cur->old;
   cur->read = false;
   cur->old = false;
-  msg = mx_msg_open_new(&tmpctx, cur, of);
+  msg = mx_msg_open_new(tmpctx, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
@@ -229,8 +233,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_msg_commit(&tmpctx, msg);
-  mx_msg_close(&tmpctx, &msg);
+  rc = mx_msg_commit(tmpctx, msg);
+  mx_msg_close(tmpctx, &msg);
 
   mx_mbox_close(&tmpctx, NULL);
 
@@ -260,22 +264,22 @@ bail:
  * edit_or_view_message - Edit an email or view it in an external editor
  * @param edit true: Edit the email; false: view the email
  * @param ctx  Mailbox Context
- * @param hdr  Email Header
+ * @param e   Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
+int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
 {
-  if (hdr)
-    return edit_or_view_one_message(edit, ctx, hdr);
+  if (e)
+    return edit_or_view_one_message(edit, ctx, e);
 
-  for (int i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!message_is_tagged(ctx, i))
       continue;
 
-    if (edit_or_view_one_message(edit, ctx, ctx->hdrs[i]) == -1)
+    if (edit_or_view_one_message(edit, ctx, ctx->mailbox->hdrs[i]) == -1)
       return -1;
   }
 
@@ -285,25 +289,25 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
 /**
  * mutt_edit_message - Edit a message
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_edit_message(struct Context *ctx, struct Header *hdr)
+int mutt_edit_message(struct Context *ctx, struct Email *e)
 {
-  return edit_or_view_message(true, ctx, hdr); /* true means edit */
+  return edit_or_view_message(true, ctx, e); /* true means edit */
 }
 
 /**
  * mutt_view_message - Edit a message
  * @param ctx Mailbox Context
- * @param hdr Email Header
+ * @param e Email Header
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_view_message(struct Context *ctx, struct Header *hdr)
+int mutt_view_message(struct Context *ctx, struct Email *e)
 {
-  return edit_or_view_message(false, ctx, hdr); /* false means only view */
+  return edit_or_view_message(false, ctx, e); /* false means only view */
 }

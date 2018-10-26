@@ -91,29 +91,29 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
 
 /**
  * imap_auth_cram_md5 - Authenticate using CRAM-MD5
- * @param idata  Server data
+ * @param adata Imap Account data
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method)
 {
   char ibuf[LONG_STRING * 2], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
   int rc;
 
-  if (!mutt_bit_isset(idata->capabilities, ACRAM_MD5))
+  if (!mutt_bit_isset(adata->capabilities, ACRAM_MD5))
     return IMAP_AUTH_UNAVAIL;
 
   mutt_message(_("Authenticating (CRAM-MD5)..."));
 
   /* get auth info */
-  if (mutt_account_getlogin(&idata->conn->account) < 0)
+  if (mutt_account_getlogin(&adata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account) < 0)
+  if (mutt_account_getpass(&adata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
-  imap_cmd_start(idata, "AUTHENTICATE CRAM-MD5");
+  imap_cmd_start(adata, "AUTHENTICATE CRAM-MD5");
 
   /* From RFC2195:
    * The data encoded in the first ready response contains a presumptively
@@ -122,7 +122,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].
    */
   do
-    rc = imap_cmd_step(idata);
+    rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -131,7 +131,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  len = mutt_b64_decode(idata->buf + 2, obuf, sizeof(obuf));
+  len = mutt_b64_decode(adata->buf + 2, obuf, sizeof(obuf));
   if (len == -1)
   {
     mutt_debug(1, "Error decoding base64 response.\n");
@@ -152,9 +152,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    *   around them when the bug report comes in. Until then, we'll remain
    *   blissfully RFC-compliant.
    */
-  hmac_md5(idata->conn->account.pass, obuf, hmac_response);
+  hmac_md5(adata->conn->account.pass, obuf, hmac_response);
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
-  int off = snprintf(obuf, sizeof(obuf), "%s ", idata->conn->account.user);
+  int off = snprintf(obuf, sizeof(obuf), "%s ", adata->conn->account.user);
   mutt_md5_toascii(hmac_response, obuf + off);
   mutt_debug(2, "CRAM response: %s\n", obuf);
 
@@ -162,10 +162,10 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    * plus the additional debris */
   mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
   mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
-  mutt_socket_send(idata->conn, ibuf);
+  mutt_socket_send(adata->conn, ibuf);
 
   do
-    rc = imap_cmd_step(idata);
+    rc = imap_cmd_step(adata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_OK)
@@ -174,7 +174,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  if (imap_code(idata->buf))
+  if (imap_code(adata->buf))
     return IMAP_AUTH_SUCCESS;
 
 bail:

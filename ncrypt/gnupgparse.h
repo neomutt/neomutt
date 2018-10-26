@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_GNUPGPARSE_H
-#define _NCRYPT_GNUPGPARSE_H
+#ifndef MUTT_NCRYPT_GNUPGPARSE_H
+#define MUTT_NCRYPT_GNUPGPARSE_H
 
 #include "pgpkey.h"
 
@@ -29,4 +29,4 @@ struct ListHead;
 
 struct PgpKeyInfo * pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints);
 
-#endif /* _NCRYPT_GNUPGPARSE_H */
+#endif /* MUTT_NCRYPT_GNUPGPARSE_H */

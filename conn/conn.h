@@ -38,12 +38,12 @@
  * | conn/tunnel.c       | @subpage conn_tunnel     |
  */
 
-#ifndef _CONN_CONN_H
-#define _CONN_CONN_H
+#ifndef MUTT_CONN_CONN_H
+#define MUTT_CONN_CONN_H
 
 #include <stdio.h>
 
-#include "account.h"
+#include "connaccount.h"
 #include "conn_globals.h"
 #include "connection.h"
 #include "sasl_plain.h"
@@ -56,4 +56,4 @@
 
 int getdnsdomainname(char *buf, size_t buflen);
 
-#endif /* _CONN_CONN_H */
+#endif /* MUTT_CONN_CONN_H */

@@ -20,13 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_REMAILER_H
-#define _MUTT_REMAILER_H
+#ifndef MUTT_REMAILER_H
+#define MUTT_REMAILER_H
 
 #include <stddef.h>
 
 struct ListHead;
-struct Header;
+struct Email;
 
 /* These Config Variables are only used in remailer.c */
 extern char *MixEntryFormat;
@@ -58,7 +58,7 @@ struct MixChain
 };
 
 int mix_send_message(struct ListHead *chain, const char *tempfile);
-int mix_check_message(struct Header *msg);
+int mix_check_message(struct Email *msg);
 void mix_make_chain(struct ListHead *chainhead);
 
-#endif /* _MUTT_REMAILER_H */
+#endif /* MUTT_REMAILER_H */

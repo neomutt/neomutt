@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "curs_lib.h"
@@ -198,32 +198,27 @@ static struct Query *run_query(char *s, int quiet)
 }
 
 /**
- * query_search - Search a Address menu item
- * @param m  Current Menu
- * @param re Regex to match
- * @param n  Index of menu item to test
- * @retval  0 Success
- * @retval -1 Error, or no match
+ * query_search - Search a Address menu item - Implements Menu::menu_search()
  *
  * Try to match various Address fields.
  */
-static int query_search(struct Menu *m, regex_t *re, int n)
+static int query_search(struct Menu *menu, regex_t *rx, int line)
 {
-  struct Entry *table = (struct Entry *) m->data;
+  struct Entry *table = menu->data;
 
-  if (table[n].data->name && !regexec(re, table[n].data->name, 0, NULL, 0))
+  if (table[line].data->name && !regexec(rx, table[line].data->name, 0, NULL, 0))
     return 0;
-  if (table[n].data->other && !regexec(re, table[n].data->other, 0, NULL, 0))
+  if (table[line].data->other && !regexec(rx, table[line].data->other, 0, NULL, 0))
     return 0;
-  if (table[n].data->addr)
+  if (table[line].data->addr)
   {
-    if (table[n].data->addr->personal &&
-        !regexec(re, table[n].data->addr->personal, 0, NULL, 0))
+    if (table[line].data->addr->personal &&
+        !regexec(rx, table[line].data->addr->personal, 0, NULL, 0))
     {
       return 0;
     }
-    if (table[n].data->addr->mailbox &&
-        !regexec(re, table[n].data->addr->mailbox, 0, NULL, 0))
+    if (table[line].data->addr->mailbox &&
+        !regexec(rx, table[line].data->addr->mailbox, 0, NULL, 0))
     {
       return 0;
     }
@@ -258,8 +253,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   {
     case 'a':
       mutt_addr_write(tmp, sizeof(tmp), query->addr, true);
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, tmp);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
     case 'c':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -267,16 +261,12 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'e':
       if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(query->other));
-      }
+        mutt_format_s(buf, buflen, prec, NONULL(query->other));
       else if (!query->other || !*query->other)
         optional = 0;
       break;
     case 'n':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, NONULL(query->name));
+      mutt_format_s(buf, buflen, prec, NONULL(query->name));
       break;
     case 't':
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -297,34 +287,26 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * query_entry - Format a menu item for the query list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * query_make_entry - Format a menu item for the query list - Implements Menu::menu_make_entry()
  */
-static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void query_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct Entry *entry = &((struct Entry *) menu->data)[num];
+  struct Entry *entry = &((struct Entry *) menu->data)[line];
 
-  entry->data->num = num;
+  entry->data->num = line;
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
- * query_tag - Tag an entry in the Query Menu
- * @param menu Current Menu
- * @param n    Index of menu entry to tag
- * @param m    If >=0 then multiple tags are allowed
- * @retval num Number of tagged menu items
+ * query_tag - Tag an entry in the Query Menu - Implements Menu::menu_tag()
  */
-static int query_tag(struct Menu *menu, int n, int m)
+static int query_tag(struct Menu *menu, int sel, int act)
 {
-  struct Entry *cur = &((struct Entry *) menu->data)[n];
+  struct Entry *cur = &((struct Entry *) menu->data)[sel];
   bool ot = cur->tagged;
 
-  cur->tagged = m >= 0 ? m : !cur->tagged;
+  cur->tagged = ((act >= 0) ? act : !cur->tagged);
   return cur->tagged - ot;
 }
 
@@ -338,7 +320,7 @@ static int query_tag(struct Menu *menu, int n, int m)
 static void query_menu(char *buf, size_t buflen, struct Query *results, bool retbuf)
 {
   struct Menu *menu = NULL;
-  struct Header *msg = NULL;
+  struct Email *msg = NULL;
   struct Entry *QueryTable = NULL;
   struct Query *queryp = NULL;
   char title[STRING];
@@ -357,9 +339,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
     snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
     menu = mutt_menu_new(MENU_QUERY);
-    menu->make_entry = query_entry;
-    menu->search = query_search;
-    menu->tag = query_tag;
+    menu->menu_make_entry = query_make_entry;
+    menu->menu_search = query_search;
+    menu->menu_tag = query_tag;
     menu->title = title;
     char helpstr[LONG_STRING];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
@@ -412,9 +394,9 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
               mutt_menu_pop_current(menu);
               mutt_menu_destroy(&menu);
               menu = mutt_menu_new(MENU_QUERY);
-              menu->make_entry = query_entry;
-              menu->search = query_search;
-              menu->tag = query_tag;
+              menu->menu_make_entry = query_make_entry;
+              menu->menu_search = query_search;
+              menu->menu_tag = query_tag;
               menu->title = title;
               menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
               mutt_menu_push_current(menu);
@@ -489,7 +471,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, bool ret
           }
         /* fallthrough */
         case OP_MAIL:
-          msg = mutt_header_new();
+          msg = mutt_email_new();
           msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {

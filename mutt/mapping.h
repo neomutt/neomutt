@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MAPPING_H
-#define _MUTT_MAPPING_H
+#ifndef MUTT_LIB_MAPPING_H
+#define MUTT_LIB_MAPPING_H
 
 /**
  * struct Mapping - Mapping between user-readable string and a constant
@@ -35,4 +35,4 @@ struct Mapping
 const char *mutt_map_get_name(int val, const struct Mapping *map);
 int         mutt_map_get_value(const char *name, const struct Mapping *map);
 
-#endif /* _MUTT_MAPPING_H */
+#endif /* MUTT_LIB_MAPPING_H */

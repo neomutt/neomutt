@@ -20,16 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NNTP_PRIVATE_H
-#define _NNTP_PRIVATE_H
+#ifndef MUTT_NNTP_NNTP_PRIVATE_H
+#define MUTT_NNTP_NNTP_PRIVATE_H
 
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 
+struct Connection;
 struct Context;
-struct NntpData;
-struct NntpServer;
+struct Email;
+struct Mailbox;
+struct NntpAccountData;
+struct NntpMboxData;
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563
@@ -44,22 +47,24 @@ enum NntpStatus
   NNTP_BYE
 };
 
-#define NHDR(hdr) ((struct NntpHeaderData *) ((hdr)->data))
-
-void nntp_acache_free(struct NntpData *nntp_data);
-int  nntp_active_save_cache(struct NntpServer *nserv);
+void nntp_acache_free(struct NntpMboxData *mdata);
+int  nntp_active_save_cache(struct NntpAccountData *adata);
+struct NntpAccountData *nntp_adata_new(struct Connection *conn);
 int  nntp_add_group(char *line, void *data);
-void nntp_bcache_update(struct NntpData *nntp_data);
-int  nntp_check_new_groups(struct NntpServer *nserv);
+void nntp_bcache_update(struct NntpMboxData *mdata);
+int  nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata);
 void nntp_data_free(void *data);
-void nntp_delete_group_cache(struct NntpData *nntp_data);
-void nntp_group_unread_stat(struct NntpData *nntp_data);
+void nntp_delete_group_cache(struct NntpMboxData *mdata);
+struct NntpEmailData *nntp_edata_get(struct Email *e);
+void nntp_group_unread_stat(struct NntpMboxData *mdata);
+void nntp_hash_destructor_t(int type, void *obj, intptr_t data);
+void nntp_mdata_free(void *ptr);
 void nntp_newsrc_gen_entries(struct Context *ctx);
-int  nntp_open_connection(struct NntpServer *nserv);
+int  nntp_open_connection(struct NntpAccountData *adata);
 
 #ifdef USE_HCACHE
-header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
-void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc);
+header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata);
+void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc);
 #endif
 
-#endif /* _NNTP_PRIVATE_H */
+#endif /* MUTT_NNTP_NNTP_PRIVATE_H */

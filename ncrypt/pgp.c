@@ -43,7 +43,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -70,8 +70,8 @@
 bool PgpCheckExit; ///< Config: Check the exit code of PGP subprocess
 bool PgpCheckGpgDecryptStatusFd; ///< Config: File descriptor used for status info
 struct Regex *PgpDecryptionOkay; ///< Config: Text indicating a successful decryption
-struct Regex *PgpGoodSign; ///< Config: Text indicating a good signature
-long PgpTimeout; ///< Config: Time in seconds to cache a passphrase
+struct Regex *PgpGoodSign;       ///< Config: Text indicating a good signature
+long PgpTimeout;     ///< Config: Time in seconds to cache a passphrase
 bool PgpUseGpgAgent; ///< Config: Use a PGP agent for caching passwords
 
 char PgpPass[LONG_STRING];
@@ -331,10 +331,10 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fpin)
 /**
  * pgp_check_decryption_okay - Check GPG output for status codes
  * @param fpin File to read from
- * @retval  1 - no patterns were matched (if delegated to decryption_okay_regexp)
- * @retval  0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside.
+ * @retval  1 - no patterns were matched (if delegated to decryption_okay_regex)
+ * @retval  0 - DECRYPTION_OKAY was seen, with no PLAINTEXT outside
  * @retval -1 - No decryption status codes were encountered
- * @retval -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters.
+ * @retval -2 - PLAINTEXT was encountered outside of DECRYPTION delimeters
  * @retval -3 - DECRYPTION_FAILED was encountered
  *
  * Checks GnuPGP status fd output for various status codes indicating
@@ -425,8 +425,8 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
    */
   struct FgetConv *fc = mutt_ch_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc);
-       complete = (strchr(buf, '\n')))
+  for (complete = true, armor_header = true;
+       mutt_ch_fgetconvs(buf, sizeof(buf), fc); complete = (strchr(buf, '\n')))
   {
     if (!complete)
     {
@@ -1808,10 +1808,12 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, int flags, char *
 /**
  * pgp_class_send_menu - Implements CryptModuleSpecs::send_menu()
  */
-int pgp_class_send_menu(struct Header *msg)
+int pgp_class_send_menu(struct Email *msg)
 {
   struct PgpKeyInfo *p = NULL;
-  char *prompt = NULL, *letters = NULL, *choices = NULL;
+  const char *prompt = NULL;
+  const char *letters = NULL;
+  const char *choices = NULL;
   char promptbuf[LONG_STRING];
   int choice;
 

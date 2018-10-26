@@ -36,7 +36,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -524,21 +524,23 @@ pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)
 {
-  char uids[HUGE_STRING];
-  char tmpuids[HUGE_STRING];
   char quoted[HUGE_STRING];
 
-  *uids = '\0';
+  struct Buffer *uids = mutt_buffer_pool_get();
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, hints, entries)
   {
     mutt_file_quote_filename((char *) np->data, quoted, sizeof(quoted));
-    snprintf(tmpuids, sizeof(tmpuids), "%s %s", uids, quoted);
-    strcpy(uids, tmpuids);
+    mutt_buffer_addstr(uids, quoted);
+    if (STAILQ_NEXT(np, entries))
+      mutt_buffer_addch(uids, ' ');
   }
 
-  return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, false,
-                    NULL, NULL, uids,
-                    keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+  pid_t rc = pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 0,
+                        NULL, NULL, mutt_b2s(uids),
+                        keyring == PGP_SECRING ? PgpListSecringCommand : PgpListPubringCommand);
+
+  mutt_buffer_pool_release(&uids);
+  return rc;
 }

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_FUNCTIONS_H
-#define _MUTT_FUNCTIONS_H
+#ifndef MUTT_FUNCTIONS_H
+#define MUTT_FUNCTIONS_H
 
 /*
  * This file contains the structures needed to parse ``bind'' commands, as
@@ -394,6 +394,7 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { "bounce-message",        OP_BOUNCE_MESSAGE,              "b" },
   { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },
   { "collapse-parts",        OP_ATTACH_COLLAPSE,             "v" },
+  { "compose-to-sender",     OP_COMPOSE_TO_SENDER,           NULL },
   { "delete-entry",          OP_DELETE,                      "d" },
   { "display-toggle-weed",   OP_DISPLAY_HEADERS,             "h" },
   { "edit-type",             OP_EDIT_TYPE,                   "\005" },
@@ -615,4 +616,4 @@ const struct Binding OpMix[] = { /* map: mixmaster */
 #endif /* MIXMASTER */
 // clang-format on
 
-#endif /* _MUTT_FUNCTIONS_H */
+#endif /* MUTT_FUNCTIONS_H */

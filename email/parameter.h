@@ -20,14 +20,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_PARAMETER_H
-#define _EMAIL_PARAMETER_H
+#ifndef MUTT_EMAIL_PARAMETER_H
+#define MUTT_EMAIL_PARAMETER_H
 
 #include <stdbool.h>
 #include "mutt/mutt.h"
 
 /**
- * struct ParameterList - List of parameters.
+ * struct ParameterList - List of parameters
  */
 TAILQ_HEAD(ParameterList, Parameter);
 
@@ -49,4 +49,4 @@ char *            mutt_param_get(const struct ParameterList *p, const char *s);
 struct Parameter *mutt_param_new(void);
 void              mutt_param_set(struct ParameterList *p, const char *attribute, const char *value);
 
-#endif /* _EMAIL_PARAMETER_H */
+#endif /* MUTT_EMAIL_PARAMETER_H */

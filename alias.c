@@ -32,7 +32,7 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "addrbook.h"
@@ -318,10 +318,10 @@ void mutt_expand_aliases_env(struct Envelope *env)
  * @param pfxp Prefix for the Address, e.g. "To:"
  * @retval ptr Address in the Envelope
  */
-struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
+struct Address *mutt_get_address(struct Envelope *env, const char **pfxp)
 {
   struct Address *addr = NULL;
-  char *pfx = NULL;
+  const char *pfx = NULL;
 
   if (mutt_addr_is_user(env->from))
   {

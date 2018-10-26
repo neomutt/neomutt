@@ -29,6 +29,7 @@
  */
 
 #define MAIN_C 1
+#define GNULIB_defined_setlocale
 
 #include "config.h"
 #include <errno.h>
@@ -43,12 +44,14 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "account.h"
 #include "alias.h"
 #include "browser.h"
 #include "color.h"
+#include "context.h"
 #include "curs_lib.h"
 #include "curs_main.h"
 #include "globals.h"
@@ -99,7 +102,7 @@ bool ResumeEditedDraftFiles; ///< Config: Resume editing previously saved draft 
  */
 static void test_parse_set(void)
 {
-  char *vars[] = {
+  const char *vars[] = {
     "from",        // ADDRESS
     "beep",        // BOOL
     "ispell",      // COMMAND
@@ -115,14 +118,14 @@ static void test_parse_set(void)
     "my_var",      // MY_VAR
   };
 
-  char *commands[] = {
+  const char *commands[] = {
     "set",
     "toggle",
     "reset",
     "unset",
   };
 
-  char *tests[] = {
+  const char *tests[] = {
     "%s %s",       "%s %s=42",  "%s %s?",     "%s ?%s",    "%s ?%s=42",
     "%s ?%s?",     "%s no%s",   "%s no%s=42", "%s no%s?",  "%s inv%s",
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
@@ -405,7 +408,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
   char *cli_nntp = NULL;
 #endif
-  struct Header *msg = NULL;
+  struct Email *msg = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
   struct ListHead queries = STAILQ_HEAD_INITIALIZER(queries);
@@ -634,7 +637,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
-    msg = mutt_header_new();
+    msg = mutt_email_new();
     msg->env = mutt_env_new();
 
     struct ListNode *np = NULL;
@@ -738,7 +741,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!STAILQ_EMPTY(&queries))
   {
     rc = mutt_query_variables(&queries);
-    mutt_list_free(&queries);
     goto main_curses;
   }
 
@@ -847,7 +849,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_flushinp();
 
     if (!msg)
-      msg = mutt_header_new();
+      msg = mutt_email_new();
     if (!msg->env)
       msg->env = mutt_env_new();
 
@@ -967,7 +969,7 @@ int main(int argc, char *argv[], char *envp[])
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.
          */
-        struct Header *context_hdr = mutt_header_new();
+        struct Email *context_hdr = mutt_email_new();
         context_hdr->offset = 0;
         context_hdr->content = mutt_body_new();
         if (fstat(fileno(fin), &st) != 0)
@@ -981,7 +983,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Cannot parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
-          mutt_header_free(&context_hdr);
+          mutt_email_free(&context_hdr);
           goto main_curses;
         }
 
@@ -1007,7 +1009,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 
         mutt_env_free(&opts_env);
-        mutt_header_free(&context_hdr);
+        mutt_email_free(&context_hdr);
       }
       /* Editing the include_file: pass it directly in.
        * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.
@@ -1103,7 +1105,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_file_fclose(&fout);
       }
 
-      mutt_header_free(&msg);
+      mutt_email_free(&msg);
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */
@@ -1122,6 +1124,10 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_MAILBOX)
     {
+#ifdef USE_IMAP
+      bool passive = ImapPassive;
+      ImapPassive = false;
+#endif
       if (mutt_mailbox_check(0) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
@@ -1129,6 +1135,9 @@ int main(int argc, char *argv[], char *envp[])
       }
       folder[0] = '\0';
       mutt_mailbox(folder, sizeof(folder));
+#ifdef USE_IMAP
+      ImapPassive = passive;
+#endif
     }
     else if (flags & MUTT_SELECT)
     {
@@ -1136,7 +1145,7 @@ int main(int argc, char *argv[], char *envp[])
       if (flags & MUTT_NEWS)
       {
         OptNews = true;
-        CurrentNewsSrv = nntp_select_server(NewsServer, false);
+        CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
@@ -1196,7 +1205,8 @@ int main(int argc, char *argv[], char *envp[])
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
 
     repeat_error = true;
-    Context = mx_mbox_open(folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
+    Context = mx_mbox_open(NULL, folder,
+                           ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0);
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
@@ -1204,7 +1214,7 @@ int main(int argc, char *argv[], char *envp[])
 #endif
       mutt_index_menu();
       if (Context)
-        FREE(&Context);
+        mutt_context_free(&Context);
     }
 #ifdef USE_IMAP
     imap_logout_all();
@@ -1229,8 +1239,10 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();
+  mutt_buffer_pool_free();
   mutt_envlist_free();
   mutt_free_opts();
   mutt_free_keys();

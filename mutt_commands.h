@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_COMMANDS_H
-#define _MUTT_COMMANDS_H
+#ifndef MUTT_MUTT_COMMANDS_H
+#define MUTT_MUTT_COMMANDS_H
 
 struct Buffer;
 
@@ -42,7 +42,7 @@ typedef int (*command_t)(struct Buffer *buf, struct Buffer *s, unsigned long dat
  */
 struct Command
 {
-  char *name;         /**< Name of the command */
+  const char *name;   /**< Name of the command */
   command_t func;     /**< Function to parse the command */
   unsigned long data; /**< Data or flags to pass to the command */
 };
@@ -50,4 +50,4 @@ struct Command
 const struct Command *mutt_command_get(const char *s);
 void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *));
 
-#endif /* _MUTT_COMMANDS_H */
+#endif /* MUTT_MUTT_COMMANDS_H */

@@ -231,7 +231,7 @@ void mutt_env_to_local(struct Envelope *e)
  *
  * Run mutt_addrlist_to_intl() on each of the Address fields in the Envelope.
  */
-int mutt_env_to_intl(struct Envelope *env, char **tag, char **err)
+int mutt_env_to_intl(struct Envelope *env, const char **tag, char **err)
 {
   int e = 0;
   H_TO_INTL(return_path);

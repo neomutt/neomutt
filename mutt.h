@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_H
-#define _MUTT_H
+#ifndef MUTT_MUTT_H
+#define MUTT_MUTT_H
 
 #include <stddef.h>
 #include <limits.h>
@@ -53,6 +53,29 @@ struct Mapping;
 #ifdef HAVE_FGETC_UNLOCKED
 #define fgetc fgetc_unlocked
 #endif
+
+#ifndef HAVE_STRUCT_TIMESPEC
+/**
+ * struct timespec - Time value with nanosecond precision
+ */
+struct timespec
+{
+  time_t tv_sec;
+  long tv_nsec;
+};
+#endif
+
+/**
+ * enum MuttStatType - Flags for mutt_get_stat_timespec
+ *
+ * These represent filesystem timestamps returned by stat()
+ */
+enum MuttStatType
+{
+  MUTT_STAT_ATIME,
+  MUTT_STAT_MTIME,
+  MUTT_STAT_CTIME
+};
 
 /* flags for mutt_enter_string_full() */
 #define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
@@ -205,9 +228,9 @@ struct ConfigSet *init_config(size_t size);
  */
 struct AttachMatch
 {
-  char *major;
+  const char *major;
   int major_int;
-  char *minor;
+  const char *minor;
   regex_t minor_regex;
 };
 
@@ -232,4 +255,4 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
 int mutt_query_variables(struct ListHead *queries);
 void reset_value(const char *name);
 
-#endif /* _MUTT_H */
+#endif /* MUTT_MUTT_H */

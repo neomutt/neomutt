@@ -65,15 +65,11 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * history_entry - Format a menu item for the history list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * history_make_entry - Format a menu item for the history list - Implements Menu::menu_make_entry()
  */
-static void history_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void history_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  char *entry = ((char **) menu->data)[num];
+  char *entry = ((char **) menu->data)[line];
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, "%s", history_format_str,
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
@@ -95,7 +91,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
   struct Menu *menu = mutt_menu_new(MENU_GENERIC);
-  menu->make_entry = history_entry;
+  menu->menu_make_entry = history_make_entry;
   menu->title = title;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, HistoryHelp);
   mutt_menu_push_current(menu);
@@ -142,7 +138,7 @@ void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 }
 
 /**
- * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener
+ * mutt_hist_listener - Listen for config changes affecting the history - Implements ::cs_listener()
  */
 bool mutt_hist_listener(const struct ConfigSet *cs, struct HashElem *he,
                         const char *name, enum ConfigEvent ev)

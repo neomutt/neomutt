@@ -29,9 +29,9 @@ struct Buffer;
 struct ConfigSet;
 
 /**
- * struct Account - Account-local config items
+ * struct CfgAccount - Account-local config items
  */
-struct Account
+struct CfgAccount
 {
   char *name;                 /**< Name of Account */
   const struct ConfigSet *cs; /**< Parent ConfigSet */
@@ -40,10 +40,10 @@ struct Account
   struct HashElem **vars;     /**< Array of the HashElems of local config items */
 };
 
-struct Account *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[]);
-void ac_free(const struct ConfigSet *cs, struct Account **ac);
+struct CfgAccount *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[]);
+void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac);
 
-int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Buffer *err);
-int ac_get_value(const struct Account *ac, size_t vid, struct Buffer *err);
+int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct Buffer *err);
+int ac_get_value(const struct CfgAccount *ac, size_t vid, struct Buffer *result);
 
 #endif /* _CONFIG_ACCOUNT_H */

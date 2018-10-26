@@ -35,6 +35,8 @@ struct Pager;
 /* These Config Variables are only used in curs_lib.c */
 extern bool MetaKey; /**< interpret ALT-x as ESC-x */
 
+extern int MuttGetchTimeout;
+
 /* For mutt_simple_format() justifications */
 #define FMT_LEFT   -1
 #define FMT_CENTER 0
@@ -53,10 +55,11 @@ void         mutt_flush_macro_to_endcond(void);
 void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
+void         mutt_getch_timeout(int delay);
 struct Event mutt_getch(void);
 int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, bool multiple, char ***files, int *numfiles);
 int          mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
-int          mutt_multi_choice(char *prompt, char *letters);
+int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(int n, const char *s);
 void         mutt_perror_debug(const char *s);
@@ -67,7 +70,7 @@ void         mutt_show_error(void);
 void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify, char pad_char, const char *s, size_t n, int arboreal);
 int          mutt_strwidth(const char *s);
 void         mutt_unget_event(int ch, int op);
-void         mutt_unget_string(char *s);
+void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 int          mutt_yesorno(const char *msg, int def);
 

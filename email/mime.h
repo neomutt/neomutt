@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EMAIL_MIME_H
-#define _EMAIL_MIME_H
+#ifndef MUTT_EMAIL_MIME_H
+#define MUTT_EMAIL_MIME_H
 
 /**
  * enum ContentType - Content-Type
@@ -83,4 +83,4 @@ extern const char MimeSpecials[];
   ((X->type == TYPE_OTHER) && X->xtype ? X->xtype : BodyTypes[(X->type)])
 #define ENCODING(X) BodyEncodings[(X)]
 
-#endif /* _EMAIL_MIME_H */
+#endif /* MUTT_EMAIL_MIME_H */

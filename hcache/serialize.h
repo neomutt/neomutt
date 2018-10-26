@@ -23,8 +23,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_HCACHE_SERIALIZE_H
-#define _MUTT_HCACHE_SERIALIZE_H
+#ifndef MUTT_HCACHE_SERIALIZE_H
+#define MUTT_HCACHE_SERIALIZE_H
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -34,7 +34,7 @@ struct Address;
 struct Body;
 struct Buffer;
 struct Envelope;
-struct Header;
+struct Email;
 struct ListHead;
 struct ParameterList;
 
@@ -57,7 +57,7 @@ void           serial_restore_int(unsigned int *i, const unsigned char *d, int *
 void           serial_restore_parameter(struct ParameterList *p, const unsigned char *d, int *off, bool convert);
 void           serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert);
 
-void *         mutt_hcache_dump(header_cache_t *h, const struct Header *header, int *off, unsigned int uidvalidity);
-struct Header *mutt_hcache_restore(const unsigned char *d);
+void *        mutt_hcache_dump(header_cache_t *hc, const struct Email *e, int *off, unsigned int uidvalidity);
+struct Email *mutt_hcache_restore(const unsigned char *d);
 
-#endif /* _MUTT_HCACHE_SERIALIZE_H */
+#endif /* MUTT_HCACHE_SERIALIZE_H */

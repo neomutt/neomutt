@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for the Account object
+ * Test code for the CfgAccount object
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -26,7 +26,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "config/account.h"
 #include "config/common.h"
 #include "config/lib.h"
 
@@ -42,136 +41,6 @@ static struct ConfigDef Vars[] = {
   { NULL },
 };
 // clang-format on
-
-/**
- * ac_create - Create an Account
- * @param cs        Config items
- * @param name      Name of Account
- * @param var_names List of config items (NULL terminated)
- * @retval ptr New Account object
- */
-struct Account *ac_create(const struct ConfigSet *cs, const char *name,
-                          const char *var_names[])
-{
-  if (!cs || !name || !var_names)
-    return NULL; /* LCOV_EXCL_LINE */
-
-  int count = 0;
-  for (; var_names[count]; count++)
-    ;
-
-  struct Account *ac = mutt_mem_calloc(1, sizeof(*ac));
-  ac->name = mutt_str_strdup(name);
-  ac->cs = cs;
-  ac->var_names = var_names;
-  ac->vars = mutt_mem_calloc(count, sizeof(struct HashElem *));
-  ac->num_vars = count;
-
-  bool success = true;
-  char acname[64];
-
-  for (size_t i = 0; i < ac->num_vars; i++)
-  {
-    struct HashElem *parent = cs_get_elem(cs, ac->var_names[i]);
-    if (!parent)
-    {
-      mutt_debug(1, "%s doesn't exist\n", ac->var_names[i]);
-      success = false;
-      break;
-    }
-
-    snprintf(acname, sizeof(acname), "%s:%s", name, ac->var_names[i]);
-    ac->vars[i] = cs_inherit_variable(cs, parent, acname);
-    if (!ac->vars[i])
-    {
-      mutt_debug(1, "failed to create %s\n", acname);
-      success = false;
-      break;
-    }
-  }
-
-  if (success)
-    return ac;
-
-  ac_free(cs, &ac);
-  return NULL;
-}
-
-/**
- * ac_free - Free an Account object
- * @param cs Config items
- * @param ac Account to free
- */
-void ac_free(const struct ConfigSet *cs, struct Account **ac)
-{
-  if (!cs || !ac || !*ac)
-    return; /* LCOV_EXCL_LINE */
-
-  char child[128];
-  struct Buffer err;
-  mutt_buffer_init(&err);
-  err.data = mutt_mem_calloc(1, STRING);
-  err.dsize = STRING;
-
-  for (size_t i = 0; i < (*ac)->num_vars; i++)
-  {
-    snprintf(child, sizeof(child), "%s:%s", (*ac)->name, (*ac)->var_names[i]);
-    mutt_buffer_reset(&err);
-    int result = cs_str_reset(cs, child, &err);
-    if (CSR_RESULT(result) != CSR_SUCCESS)
-      mutt_debug(1, "reset failed for %s: %s\n", child, err.data);
-    mutt_hash_delete(cs->hash, child, NULL);
-  }
-
-  FREE(&err.data);
-  FREE(&(*ac)->name);
-  FREE(&(*ac)->vars);
-  FREE(ac);
-}
-
-/**
- * ac_set_value - Set an Account-specific config item
- * @param ac    Account-specific config items
- * @param vid   Value ID (index into Account's HashElem's)
- * @param value Native pointer/value to set
- * @param err   Buffer for error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- */
-int ac_set_value(const struct Account *ac, size_t vid, intptr_t value, struct Buffer *err)
-{
-  if (!ac)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-  if (vid >= ac->num_vars)
-    return CSR_ERR_UNKNOWN;
-
-  struct HashElem *he = ac->vars[vid];
-  return cs_he_native_set(ac->cs, he, value, err);
-}
-
-/**
- * ac_get_value - Get an Account-specific config item
- * @param ac     Account-specific config items
- * @param vid    Value ID (index into Account's HashElem's)
- * @param result Buffer for results or error messages
- * @retval int Result, e.g. #CSR_SUCCESS
- */
-int ac_get_value(const struct Account *ac, size_t vid, struct Buffer *result)
-{
-  if (!ac)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-  if (vid >= ac->num_vars)
-    return CSR_ERR_UNKNOWN;
-
-  struct HashElem *he = ac->vars[vid];
-
-  if ((he->type & DT_INHERITED) && (DTYPE(he->type) == 0))
-  {
-    struct Inheritance *i = he->data;
-    he = i->parent;
-  }
-
-  return cs_he_string_get(ac->cs, he, result);
-}
 
 void config_account(void)
 {
@@ -199,7 +68,7 @@ void config_account(void)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, BrokenVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, BrokenVarStr);
   if (TEST_CHECK(!ac))
   {
     TEST_MSG("Expected error:\n");
@@ -211,14 +80,14 @@ void config_account(void)
     return;
   }
 
-  const char *AccountVarStr2[] = {
+  const char *CfgAccountVarStr2[] = {
     "Apple",
     "Apple",
     NULL,
   };
 
   TEST_MSG("Expect error for next test\n");
-  ac = ac_create(cs, account, AccountVarStr2);
+  ac = ac_create(cs, account, CfgAccountVarStr2);
   if (!TEST_CHECK(!ac))
   {
     ac_free(cs, &ac);
@@ -227,13 +96,13 @@ void config_account(void)
   }
 
   account = "fruit";
-  const char *AccountVarStr[] = {
+  const char *CfgAccountVarStr[] = {
     "Apple",
     "Cherry",
     NULL,
   };
 
-  ac = ac_create(cs, account, AccountVarStr);
+  ac = ac_create(cs, account, CfgAccountVarStr);
   if (!TEST_CHECK(ac != NULL))
     return;
 
@@ -265,7 +134,7 @@ void config_account(void)
   }
   else
   {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
   }
 
   index++;
@@ -277,7 +146,7 @@ void config_account(void)
   }
   else
   {
-    TEST_MSG("%s = %s\n", AccountVarStr[index], err.data);
+    TEST_MSG("%s = %s\n", CfgAccountVarStr[index], err.data);
   }
 
   mutt_buffer_reset(&err);
@@ -294,8 +163,8 @@ void config_account(void)
 
   const char *name = "fruit:Apple";
   mutt_buffer_reset(&err);
-  int result = cs_str_string_get(cs, name, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_str_string_get(cs, name, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("%s = '%s'\n", name, err.data);
   }
@@ -306,8 +175,8 @@ void config_account(void)
   }
 
   mutt_buffer_reset(&err);
-  result = cs_str_native_set(cs, name, 42, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_str_native_set(cs, name, 42, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }
@@ -322,19 +191,15 @@ void config_account(void)
     return;
 
   mutt_buffer_reset(&err);
-  result = cs_str_initial_set(cs, name, "42", &err);
+  rc = cs_str_initial_set(cs, name, "42", &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error\n");
-  }
-  else
-  {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("%s\n", err.data);
     return;
   }
 
   mutt_buffer_reset(&err);
-  result = cs_str_initial_get(cs, name, &err);
+  rc = cs_str_initial_get(cs, name, &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
     TEST_MSG("Expected error\n");
@@ -351,8 +216,8 @@ void config_account(void)
     return;
 
   mutt_buffer_reset(&err);
-  result = cs_he_native_set(cs, he, 42, &err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  rc = cs_he_native_set(cs, he, 42, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
     TEST_MSG("Set %s\n", name);
   }

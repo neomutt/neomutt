@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_CRYPTGLUE_H
-#define _NCRYPT_CRYPTGLUE_H
+#ifndef MUTT_NCRYPT_CRYPTGLUE_H
+#define MUTT_NCRYPT_CRYPTGLUE_H
 
 #include <stdbool.h>
 
@@ -48,4 +48,4 @@ int          crypt_smime_valid_passphrase(void);
 int          crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
 void         crypt_smime_void_passphrase(void);
 
-#endif /* _NCRYPT_CRYPTGLUE_H */
+#endif /* MUTT_NCRYPT_CRYPTGLUE_H */

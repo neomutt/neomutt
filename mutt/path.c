@@ -469,7 +469,6 @@ size_t mutt_path_realpath(char *buf)
 
 /**
  * mutt_path_parent - Find the parent of a path
- * @param path   Path to use
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @retval true  Success

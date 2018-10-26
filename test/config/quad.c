@@ -28,7 +28,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
-#include "config/account.h"
 #include "config/common.h"
 #include "config/lib.h"
 
@@ -170,7 +169,7 @@ static bool test_string_set(struct ConfigSet *cs, struct Buffer *err)
     "",
     NULL,
   };
-  char *name = "Damson";
+  const char *name = "Damson";
 
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
@@ -243,7 +242,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
   int rc;
   for (unsigned int i = 0; i < mutt_array_size(valid); i++)
   {
-    VarElderberry = i;
+    VarElderberry = valid[i];
     mutt_buffer_reset(err);
     rc = cs_str_string_get(cs, name, err);
     if (CSR_RESULT(rc) != CSR_SUCCESS)
@@ -271,7 +270,7 @@ static bool test_string_get(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Fig";
+  const char *name = "Fig";
   char value = MUTT_YES;
 
   TEST_MSG("Setting %s to %d\n", name, value);
@@ -334,7 +333,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 static bool test_native_get(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
-  char *name = "Guava";
+  const char *name = "Guava";
 
   VarGuava = MUTT_YES;
   mutt_buffer_reset(err);
@@ -354,7 +353,7 @@ static bool test_reset(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Hawthorn";
+  const char *name = "Hawthorn";
   VarHawthorn = MUTT_YES;
   mutt_buffer_reset(err);
 
@@ -413,7 +412,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  char *name = "Jackfruit";
+  const char *name = "Jackfruit";
   VarJackfruit = MUTT_NO;
   mutt_buffer_reset(err);
   int rc = cs_str_string_set(cs, name, "yes", err);
@@ -533,7 +532,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct Account *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
 
   // set parent
   mutt_buffer_reset(err);
@@ -606,7 +605,7 @@ static bool test_toggle(struct ConfigSet *cs, struct Buffer *err)
     { MUTT_ASKYES, MUTT_ASKNO },
   };
 
-  char *name = "Nectarine";
+  const char *name = "Nectarine";
   int rc;
 
   struct HashElem *he = cs_get_elem(cs, name);

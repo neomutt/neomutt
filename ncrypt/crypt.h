@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NCRYPT_CRYPT_H
-#define _NCRYPT_CRYPT_H
+#ifndef MUTT_NCRYPT_CRYPT_H
+#define MUTT_NCRYPT_CRYPT_H
 
 #include <stdbool.h>
 
@@ -29,9 +29,9 @@ struct Body;
 struct State;
 
 void        crypt_convert_to_7bit(struct Body *a);
-void        crypt_current_time(struct State *s, char *app_name);
+void        crypt_current_time(struct State *s, const char *app_name);
 const char *crypt_get_fingerprint_or_id(char *p, const char **pphint, const char **ppl, const char **pps);
 bool        crypt_is_numerical_keyid(const char *s);
 int         crypt_write_signed(struct Body *a, struct State *s, const char *tempfile);
 
-#endif /* _NCRYPT_CRYPT_H */
+#endif /* MUTT_NCRYPT_CRYPT_H */

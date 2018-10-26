@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "config/lib.h"
-#include "email/email.h"
+#include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "compose.h"
@@ -46,6 +46,7 @@
 #include "globals.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mailbox.h"
 #include "menu.h"
 #include "mutt_attach.h"
 #include "mutt_curses.h"
@@ -247,18 +248,14 @@ static void init_header_padding(void)
 }
 
 /**
- * snd_entry - Format a menu item for the attachment list
- * @param[out] buf    Buffer in which to save string
- * @param[in]  buflen Buffer length
- * @param[in]  menu   Menu containing aliases
- * @param[in]  num    Index into the menu
+ * snd_make_entry - Format a menu item for the attachment list - Implements Menu::menu_make_entry()
  */
-static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
+static void snd_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
 {
-  struct AttachCtx *actx = (struct AttachCtx *) menu->data;
+  struct AttachCtx *actx = menu->data;
 
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -266,7 +263,7 @@ static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
  * redraw_crypt_lines - Update the encryption info in the compose window
  * @param msg Header of message
  */
-static void redraw_crypt_lines(struct Header *msg)
+static void redraw_crypt_lines(struct Email *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, "%*s",
@@ -454,7 +451,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
  * @param msg Header of the message
  * @param fcc Fcc field
  */
-static void draw_envelope(struct Header *msg, char *fcc)
+static void draw_envelope(struct Email *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -606,7 +603,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
     }
     else
     {
-      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+      new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
       new->content = m;
       m->aptr = new;
@@ -628,7 +625,7 @@ static void mutt_update_compose_menu(struct AttachCtx *actx, struct Menu *menu, 
 {
   if (init)
   {
-    mutt_gen_compose_attach_list(actx, actx->hdr->content, -1, 0);
+    mutt_gen_compose_attach_list(actx, actx->email->content, -1, 0);
     mutt_attach_init(actx);
     menu->data = actx;
   }
@@ -669,7 +666,7 @@ static void update_idx(struct Menu *menu, struct AttachCtx *actx, struct AttachP
  */
 struct ComposeRedrawData
 {
-  struct Header *msg;
+  struct Email *msg;
   char *fcc;
 };
 
@@ -677,10 +674,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p);
 
 /**
- * compose_menu_redraw - Redraw the compose menu
- * @param menu Current menu
+ * compose_custom_redraw - Redraw the compose menu - Implements Menu::menu_custom_redraw()
  */
-static void compose_menu_redraw(struct Menu *menu)
+static void compose_custom_redraw(struct Menu *menu)
 {
   struct ComposeRedrawData *rd = menu->redraw_data;
 
@@ -886,8 +882,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
-                      struct Header *cur, int flags)
+int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email *cur, int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
@@ -916,20 +911,20 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
   struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
-  menu->make_entry = snd_entry;
-  menu->tag = mutt_tag_attach;
+  menu->menu_make_entry = snd_make_entry;
+  menu->menu_tag = attach_tag;
 #ifdef USE_NNTP
   if (news)
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeNewsHelp);
   else
 #endif
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
-  menu->custom_menu_redraw = compose_menu_redraw;
+  menu->menu_custom_redraw = compose_custom_redraw;
   menu->redraw_data = &rd;
   mutt_menu_push_current(menu);
 
   struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
-  actx->hdr = msg;
+  actx->email = msg;
   mutt_update_compose_menu(actx, menu, true);
 
   while (loop)
@@ -1085,7 +1080,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && EditHeaders)))
         {
-          char *tag = NULL, *err = NULL;
+          const char *tag = NULL;
+          char *err = NULL;
           mutt_env_to_local(msg->env);
           mutt_edit_headers(NONULL(Editor), msg->content->filename, msg, fcc, fcclen);
           if (mutt_env_to_intl(msg->env, &tag, &err))
@@ -1259,9 +1255,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         }
 
         /* traverse to see whether all the parts have Content-Language: set */
-        struct Body *b = msg->content;
         int tagged_with_lang_num = 0;
-        for (i = 0; b; b = b->next)
+        for (struct Body *b = msg->content; b; b = b->next)
           if (b->tagged && b->language && *b->language)
             tagged_with_lang_num++;
 
@@ -1371,8 +1366,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->unowned = 1;
+          new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+          new->unowned = true;
           new->content = mutt_make_file_attach(att);
           if (new->content)
             update_idx(menu, actx, new);
@@ -1406,7 +1401,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         OptNews = false;
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
-          CurrentNewsSrv = nntp_select_server(NewsServer, false);
+          CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
           if (!CurrentNewsSrv)
             break;
 
@@ -1417,10 +1412,10 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         if (Context)
 #ifdef USE_NNTP
-          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
+          if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->mailbox->magic == MUTT_NNTP))
 #endif
           {
-            mutt_str_strfcpy(fname, Context->path, sizeof(fname));
+            mutt_str_strfcpy(fname, Context->mailbox->path, sizeof(fname));
             mutt_pretty_mailbox(fname, sizeof(fname));
           }
 
@@ -1451,17 +1446,16 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         menu->redraw = REDRAW_FULL;
 
-        ctx = mx_mbox_open(fname, MUTT_READONLY, NULL);
+        ctx = mx_mbox_open(NULL, fname, MUTT_READONLY);
         if (!ctx)
         {
           mutt_error(_("Unable to open mailbox %s"), fname);
           break;
         }
 
-        if (!ctx->msgcount)
+        if (!ctx->mailbox->msg_count)
         {
-          mx_mbox_close(ctx, NULL);
-          FREE(&ctx);
+          mx_mbox_close(&ctx, NULL);
           mutt_error(_("No messages in that folder"));
           break;
         }
@@ -1487,13 +1481,14 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
         }
 
-        for (i = 0; i < Context->msgcount; i++)
+        for (i = 0; i < Context->mailbox->msg_count; i++)
         {
           if (!message_is_tagged(Context, i))
             continue;
 
-          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->content = mutt_make_message_attach(Context, Context->hdrs[i], true);
+          new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+          new->content =
+              mutt_make_message_attach(Context, Context->mailbox->hdrs[i], true);
           if (new->content)
             update_idx(menu, actx, new);
           else
@@ -1505,10 +1500,12 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         menu->redraw |= REDRAW_FULL;
 
         if (close == OP_QUIT)
-          mx_mbox_close(Context, NULL);
+          mx_mbox_close(&Context, NULL);
         else
+        {
           mx_fastclose_mailbox(Context);
-        FREE(&Context);
+          mutt_context_free(&Context);
+        }
 
         /* go back to the folder we started from */
         Context = this;
@@ -1787,7 +1784,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;
         }
-        new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
+        new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
         fp = mutt_file_fopen(fname, "w");
         if (!fp)
@@ -1918,7 +1915,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         fname[0] = '\0';
         if (Context)
         {
-          mutt_str_strfcpy(fname, Context->path, sizeof(fname));
+          mutt_str_strfcpy(fname, Context->mailbox->path, sizeof(fname));
           mutt_pretty_mailbox(fname, sizeof(fname));
         }
         if (actx->idxlen)
@@ -1951,8 +1948,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         {
           if (msg->security & (ENCRYPT | SIGN))
           {
-            if (mutt_yesorno(
-                    _("S/MIME already selected. Clear and continue? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("S/MIME already selected. Clear and continue? "),
+                             MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;

@@ -18,11 +18,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CONN_TUNNEL_H
-#define _CONN_TUNNEL_H
+#ifndef MUTT_CONN_TUNNEL_H
+#define MUTT_CONN_TUNNEL_H
 
 struct Connection;
 
 void mutt_tunnel_socket_setup(struct Connection *conn);
 
-#endif /* _CONN_TUNNEL_H */
+#endif /* MUTT_CONN_TUNNEL_H */

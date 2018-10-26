@@ -22,8 +22,8 @@
 
 /* common SASL helper routines */
 
-#ifndef _CONN_SASL_H
-#define _CONN_SASL_H
+#ifndef MUTT_CONN_SASL_H
+#define MUTT_CONN_SASL_H
 
 #include <stddef.h>
 #include <sasl/sasl.h>
@@ -37,9 +37,9 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
 /**
- * struct SaslData - SASL authentication API
+ * struct SaslSockData - SASL authentication API
  */
-struct SaslData
+struct SaslSockData
 {
   sasl_conn_t *saslconn;
   const sasl_ssf_t *ssf;
@@ -52,11 +52,11 @@ struct SaslData
 
   /* underlying socket data */
   void *sockdata;
-  int (*msasl_open)(struct Connection *conn);
+  int (*msasl_open) (struct Connection *conn);
   int (*msasl_close)(struct Connection *conn);
-  int (*msasl_read)(struct Connection *conn, char *buf, size_t len);
+  int (*msasl_read) (struct Connection *conn, char *buf, size_t len);
   int (*msasl_write)(struct Connection *conn, const char *buf, size_t count);
-  int (*msasl_poll)(struct Connection *conn, time_t wait_secs);
+  int (*msasl_poll) (struct Connection *conn, time_t wait_secs);
 };
 
-#endif /* _CONN_SASL_H */
+#endif /* MUTT_CONN_SASL_H */
