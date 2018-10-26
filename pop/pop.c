@@ -1153,7 +1153,7 @@ static int pop_msg_close(struct Context *ctx, struct Message *msg)
 /**
  * pop_path_probe - Is this a POP mailbox? - Implements MxOps::path_probe()
  */
-int pop_path_probe(const char *path, const struct stat *st)
+enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

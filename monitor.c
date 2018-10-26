@@ -71,7 +71,7 @@ struct Monitor
   char *mh_backup_path;
   dev_t st_dev;
   ino_t st_ino;
-  short magic;
+  enum MailboxType magic;
   int desc;
 };
 
@@ -80,7 +80,7 @@ struct Monitor
  */
 struct MonitorInfo
 {
-  short magic;
+  enum MailboxType magic;
   short isdir;
   const char *path;
   dev_t st_dev;

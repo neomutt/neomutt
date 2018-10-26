@@ -753,7 +753,7 @@ void imap_logout_all(void)
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (np->type != MUTT_IMAP)
+    if (np->magic != MUTT_IMAP)
       continue;
 
     struct ImapAccountData *adata = np->adata;
@@ -2271,7 +2271,7 @@ out:
  */
 struct Account *imap_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_IMAP) || !path)
+  if (!a || (a->magic != MUTT_IMAP) || !path)
     return NULL;
 
   struct Url url;
@@ -2309,7 +2309,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   if (!a->adata)
   {
     struct ImapAccountData *adata = imap_adata_new();
-    a->type = MUTT_IMAP;
+    a->magic = MUTT_IMAP;
     a->adata = adata;
     a->free_adata = imap_adata_free;
 
@@ -2358,7 +2358,7 @@ struct ImapAccountData *imap_conn_find2(const struct ConnAccount *account, int f
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (np->type != MUTT_IMAP)
+    if (np->magic != MUTT_IMAP)
       continue;
 
     struct ImapAccountData *tmp_adata = np->adata;
@@ -2985,7 +2985,7 @@ static int imap_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 /**
  * imap_path_probe - Is this an IMAP mailbox? - Implements MxOps::path_probe()
  */
-int imap_path_probe(const char *path, const struct stat *st)
+enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

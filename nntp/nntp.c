@@ -2781,7 +2781,7 @@ static int nntp_msg_close(struct Context *ctx, struct Message *msg)
 /**
  * nntp_path_probe - Is this an NNTP mailbox? - Implements MxOps::path_probe()
  */
-int nntp_path_probe(const char *path, const struct stat *st)
+enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

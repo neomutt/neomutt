@@ -2125,7 +2125,7 @@ done:
  */
 struct Account *nm_ac_find(struct Account *a, const char *path)
 {
-  if (!a || (a->type != MUTT_NOTMUCH) || !path)
+  if (!a || (a->magic != MUTT_NOTMUCH) || !path)
     return NULL;
 
   return a;
@@ -2145,7 +2145,7 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
   if (!a->adata)
   {
     struct NmAccountData *adata = nm_adata_new();
-    a->type = MUTT_NOTMUCH;
+    a->magic = MUTT_NOTMUCH;
     a->adata = adata;
     a->free_adata = nm_adata_free;
   }
@@ -2540,7 +2540,7 @@ done:
 /**
  * nm_path_probe - Is this a Notmuch mailbox? - Implements MxOps::path_probe()
  */
-int nm_path_probe(const char *path, const struct stat *st)
+enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

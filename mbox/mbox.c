@@ -1594,7 +1594,7 @@ static int mbox_msg_padding_size(struct Context *ctx)
 /**
  * mbox_path_probe - Is this an mbox mailbox? - Implements MxOps::path_probe()
  */
-int mbox_path_probe(const char *path, const struct stat *st)
+enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -1622,7 +1622,7 @@ int mbox_path_probe(const char *path, const struct stat *st)
     }
   }
 
-  int magic = MUTT_UNKNOWN;
+  enum MailboxType magic = MUTT_UNKNOWN;
   char tmp[STRING];
   if (fgets(tmp, sizeof(tmp), fp))
   {

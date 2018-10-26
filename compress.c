@@ -544,7 +544,7 @@ static int comp_mbox_open(struct Context *ctx)
     goto cmo_fail;
   }
 
-  ctx->mailbox->account->type = ctx->mailbox->magic;
+  ctx->mailbox->account->magic = ctx->mailbox->magic;
   return ci->child_ops->mbox_open(ctx);
 
 cmo_fail:
@@ -948,7 +948,7 @@ static int comp_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 /**
  * comp_path_probe - Is this a compressed mailbox? - Implements MxOps::path_probe()
  */
-int comp_path_probe(const char *path, const struct stat *st)
+enum MailboxType comp_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;

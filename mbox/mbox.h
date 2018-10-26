@@ -56,8 +56,8 @@ extern struct MxOps mx_mmdf_ops;
 
 #define MMDF_SEP "\001\001\001\001\n"
 
-void mbox_reset_atime(struct Mailbox *m, struct stat *st);
-int  mbox_path_probe(const char *path, const struct stat *st);
-bool mbox_test_new_folder(const char *path);
+void          mbox_reset_atime(struct Mailbox *m, struct stat *st);
+enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
+bool          mbox_test_new_folder(const char *path);
 
 #endif /* MUTT_MBOX_MBOX_H */

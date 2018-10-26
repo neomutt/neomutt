@@ -62,7 +62,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
 {
   char tmp[PATH_MAX];
   char buf[STRING];
-  int omagic;
+  enum MailboxType omagic;
   int oerrno;
   int rc;
 

@@ -130,7 +130,7 @@ static const struct MxOps *mx_ops[] = {
  * @retval ptr  Mailbox function
  * @retval NULL Error
  */
-const struct MxOps *mx_get_ops(int magic)
+const struct MxOps *mx_get_ops(enum MailboxType magic)
 {
   for (const struct MxOps **ops = mx_ops; *ops; ops++)
     if ((*ops)->magic == magic)
@@ -308,7 +308,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if (!ctx->mailbox->account)
   {
     struct Account *a = account_create();
-    a->type = ctx->mailbox->magic;
+    a->magic = ctx->mailbox->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
 
     if (mx_ac_add(a, ctx->mailbox) < 0)
@@ -1363,7 +1363,7 @@ bool mx_tags_is_supported(struct Context *ctx)
  * @param[out] st    stat buffer (OPTIONAL, for local mailboxes)
  * @retval num Type, e.g. #MUTT_IMAP
  */
-int mx_path_probe(const char *path, struct stat *st)
+enum MailboxType mx_path_probe(const char *path, struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -1390,7 +1390,7 @@ int mx_path_probe(const char *path, struct stat *st)
 #endif
   };
 
-  int rc;
+  enum MailboxType rc;
 
   for (size_t i = 0; i < mutt_array_size(no_stat); i++)
   {
@@ -1422,7 +1422,7 @@ int mx_path_probe(const char *path, struct stat *st)
 /**
  * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon
  */
-int mx_path_canon(char *buf, size_t buflen, const char *folder, int *magic)
+int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType *magic)
 {
   if (!buf)
     return -1;
@@ -1495,7 +1495,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, int *magic)
   // if (!folder) //XXX - use inherited version, or pass NULL to backend?
   //   return -1;
 
-  int magic2 = mx_path_probe(buf, NULL);
+  enum MailboxType magic2 = mx_path_probe(buf, NULL);
   if (magic)
     *magic = magic2;
   const struct MxOps *ops = mx_get_ops(magic2);
@@ -1538,7 +1538,7 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
  */
 int mx_path_pretty(char *buf, size_t buflen, const char *folder)
 {
-  int magic = mx_path_probe(buf, NULL);
+  enum MailboxType magic = mx_path_probe(buf, NULL);
   const struct MxOps *ops = mx_get_ops(magic);
   if (!ops)
     return -1;
@@ -1596,7 +1596,7 @@ struct Account *mx_ac_find(struct Mailbox *m)
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (np->type != m->magic)
+    if (np->magic != m->magic)
       continue;
 
     if (m->mx_ops->ac_find(np, m->realpath))

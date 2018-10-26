@@ -35,7 +35,7 @@ struct ConnAccount;
  */
 struct Account
 {
-  enum MailboxType type;
+  enum MailboxType magic;
   struct MailboxList mailboxes;
   TAILQ_ENTRY(Account) entries;
   void *adata;

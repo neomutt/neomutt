@@ -1055,7 +1055,7 @@ void imap_keepalive(void)
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (np->type != MUTT_IMAP)
+    if (np->magic != MUTT_IMAP)
       continue;
 
     struct ImapAccountData *adata = np->adata;

@@ -2669,7 +2669,7 @@ static int maildir_msg_commit(struct Context *ctx, struct Message *msg)
 /**
  * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe()
  */
-int maildir_path_probe(const char *path, const struct stat *st)
+enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
@@ -3044,7 +3044,7 @@ static int mh_msg_close(struct Context *ctx, struct Message *msg)
 /**
  * mh_path_probe - Is this an mh mailbox? - Implements MxOps::path_probe()
  */
-int mh_path_probe(const char *path, const struct stat *st)
+enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 {
   if (!path)
     return MUTT_UNKNOWN;
