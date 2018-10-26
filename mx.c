@@ -1620,7 +1620,7 @@ struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m)
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
     if (mutt_str_strcmp(np->m->realpath, m->realpath) == 0)
-      return m;
+      return np->m;
   }
 
   return NULL;

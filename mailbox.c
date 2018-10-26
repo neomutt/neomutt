@@ -598,11 +598,26 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       new_account = true;
     }
 
-    if (!new_account && mx_mbox_find(a, m))
+    if (!new_account)
     {
-      mutt_error("mailbox exists: %s", m->path);
-      mailbox_free(&m);
-      continue;
+      struct Mailbox *old_m = mx_mbox_find(a, m);
+      if (old_m)
+      {
+        if (old_m->flags == MB_HIDDEN)
+        {
+          old_m->flags = MB_NORMAL;
+          mutt_sb_notify_mailbox(old_m, true);
+          struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
+          mn->m = m;
+          STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
+        }
+        else
+        {
+          // mutt_error("mailbox exists: %s", m->path);
+          mailbox_free(&m);
+        }
+        continue;
+      }
     }
 
     if (mx_ac_add(a, m) < 0)
