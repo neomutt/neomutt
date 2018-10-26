@@ -1192,15 +1192,18 @@ void imap_logout(struct ImapAccountData **adata)
 {
   /* we set status here to let imap_handle_untagged know we _expect_ to
    * receive a bye response (so it doesn't freak out and close the conn) */
-  (*adata)->status = IMAP_BYE;
-  imap_cmd_start(*adata, "LOGOUT");
-  if (ImapPollTimeout <= 0 || mutt_socket_poll((*adata)->conn, ImapPollTimeout) != 0)
+  if ((*adata)->state != IMAP_DISCONNECTED)
   {
-    while (imap_cmd_step(*adata) == IMAP_CMD_CONTINUE)
-      ;
+    (*adata)->status = IMAP_BYE;
+    imap_cmd_start(*adata, "LOGOUT");
+    if (ImapPollTimeout <= 0 || mutt_socket_poll((*adata)->conn, ImapPollTimeout) != 0)
+    {
+      while (imap_cmd_step(*adata) == IMAP_CMD_CONTINUE)
+        ;
+    }
+    mutt_socket_close((*adata)->conn);
   }
 
-  mutt_socket_close((*adata)->conn);
   imap_adata_free((void **) adata);
 }
 
