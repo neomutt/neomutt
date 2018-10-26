@@ -75,7 +75,7 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
   char *c = mutt_str_strdup(path);
   url_parse(&url, c);
 
-  if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host ||
+  if (((url.scheme != U_POP) && (url.scheme != U_POPS)) || !url.host ||
       mutt_account_fromurl(acct, &url) < 0)
   {
     url_free(&url);
@@ -87,14 +87,13 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
   if (url.scheme == U_POPS)
     acct->flags |= MUTT_ACCT_SSL;
 
-  struct servent *service = getservbyname(url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
-  if (!acct->port)
+  struct servent *service = getservbyname((url.scheme == U_POP) ? "pop3" : "pop3s", "tcp");
+  if (acct->port == 0)
   {
     if (service)
       acct->port = ntohs(service->s_port);
     else
-      acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;
-    ;
+      acct->port = (url.scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
   }
 
   url_free(&url);
@@ -213,7 +212,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   }
 
   /* Execute CAPA command */
-  if (mode == 0 || adata->cmd_capa)
+  if ((mode == 0) || adata->cmd_capa)
   {
     mutt_str_strfcpy(buf, "CAPA\r\n", sizeof(buf));
     switch (pop_fetch_data(adata, buf, NULL, fetch_capa, adata))
@@ -229,7 +228,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   }
 
   /* CAPA not supported, use defaults */
-  if (mode == 0 && !adata->cmd_capa)
+  if ((mode == 0) && !adata->cmd_capa)
   {
     adata->cmd_user = 2;
     adata->cmd_uidl = 2;
@@ -553,7 +552,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     {
       if (progressbar)
         mutt_progress_update(progressbar, pos, -1);
-      if (ret == 0 && func(inbuf, data) < 0)
+      if ((ret == 0) && (func(inbuf, data) < 0))
         ret = -3;
       lenbuf = 0;
     }

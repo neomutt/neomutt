@@ -84,7 +84,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     mutt_sasl_interact(interaction);
   }
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug(
         1, "Failure starting authentication exchange. No shared mechanisms?\n");
@@ -125,7 +125,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
      * need to loop at least once more to send the pc/olen returned
      * by sasl_client_start().
      */
-    if (!client_start && rc != SASL_CONTINUE)
+    if (!client_start && (rc != SASL_CONTINUE))
       break;
 
     if ((mutt_str_strncmp(inbuf, "+ ", 2) == 0) &&
@@ -154,7 +154,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     /* Even if sasl_client_step() returns SASL_OK, we should send at
      * least one more line to the server.  See #3862.
      */
-    if (rc != SASL_CONTINUE && rc != SASL_OK)
+    if ((rc != SASL_CONTINUE) && (rc != SASL_OK))
       break;
 
     /* send out response, or line break if none needed */
@@ -453,8 +453,8 @@ int pop_authenticate(struct PopAccountData *adata)
 
           if (ret != POP_A_UNAVAIL)
             attempts++;
-          if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-              (ret == POP_A_FAILURE && !PopAuthTryAll))
+          if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+              ((ret == POP_A_FAILURE) && !PopAuthTryAll))
           {
             comma = NULL;
             break;
@@ -493,7 +493,7 @@ int pop_authenticate(struct PopAccountData *adata)
 
       if (ret != POP_A_UNAVAIL)
         attempts++;
-      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET || (ret == POP_A_FAILURE && !PopAuthTryAll))
+      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) || ((ret == POP_A_FAILURE) && !PopAuthTryAll))
       {
         break;
       }

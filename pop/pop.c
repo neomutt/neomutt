@@ -686,7 +686,7 @@ void pop_fetch_mail(void)
       mx_msg_close(ctx, &msg);
     }
 
-    if (ret == 0 && delanswer == MUTT_YES)
+    if ((ret == 0) && (delanswer == MUTT_YES))
     {
       /* delete the message on the server */
       snprintf(buffer, sizeof(buffer), "DELE %d\r\n", i);
@@ -910,7 +910,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
     hc = pop_hcache_open(adata, ctx->mailbox->path);
 #endif
 
-    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->mailbox->msg_count; i++)
+    for (i = 0, j = 0, ret = 0; (ret == 0) && (i < ctx->mailbox->msg_count); i++)
     {
       struct PopEmailData *edata = ctx->mailbox->hdrs[i]->edata;
       if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->refno != -1)
