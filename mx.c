@@ -1437,6 +1437,11 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, int *magic)
         mutt_str_inline_replace(buf, buflen, 2, LastFolder);
       }
     }
+    else if ((buf[0] == '+') || (buf[0] == '='))
+    {
+      buf[0] = '/';
+      mutt_str_inline_replace(buf, buflen, 0, Folder);
+    }
     else if ((buf[1] == '/') || (buf[1] == '\0'))
     {
       if (buf[0] == '!')
@@ -1463,11 +1468,6 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, int *magic)
       {
         mutt_str_inline_replace(buf, buflen, 1, HomeDir);
       }
-    }
-    else if ((buf[0] == '+') || (buf[0] == '='))
-    {
-      buf[0] = '/';
-      mutt_str_inline_replace(buf, buflen, 0, Folder);
     }
     else if (buf[0] == '@')
     {
