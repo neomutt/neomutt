@@ -1676,7 +1676,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
-  if (a[0] == '=' && b[0] == '=')
+  if (a[0] == '+' && b[0] == '+')
   {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :
