@@ -1602,6 +1602,9 @@ int mbox_path_probe(const char *path, const struct stat *st)
   if (!st || !S_ISREG(st->st_mode))
     return MUTT_UNKNOWN;
 
+  if (st->st_size == 0)
+    return MUTT_MBOX;
+
   FILE *fp = fopen(path, "r");
   if (!fp)
     return MUTT_UNKNOWN;
