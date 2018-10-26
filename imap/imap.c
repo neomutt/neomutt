@@ -1442,7 +1442,7 @@ int imap_check_mailbox(struct Mailbox *m, bool force)
  */
 int imap_check(struct ImapAccountData *adata, bool force)
 {
-  if (!adata)
+  if (!adata || !adata->conn)
     return -1;
 
   /* overload keyboard timeout to avoid many mailbox checks in a row.
