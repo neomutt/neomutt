@@ -270,7 +270,7 @@ int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 struct Account *mx_ac_find(struct Mailbox *m);
-struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m);
+struct Mailbox *mx_mbox_find(struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2(const char *path);
 int mx_ac_add(struct Account *a, struct Mailbox *m);
 int mx_ac_remove(struct Account *a, struct Mailbox *m);

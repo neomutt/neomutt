@@ -48,6 +48,7 @@
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_header.h"
@@ -746,7 +747,27 @@ fail:
  */
 struct Account *pop_ac_find(struct Account *a, const char *path)
 {
-  return NULL;
+  if (!a || (a->magic != MUTT_POP) || !path)
+    return NULL;
+
+  struct Url url;
+  char tmp[PATH_MAX];
+  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  url_parse(&url, tmp);
+
+  struct PopAccountData *adata = a->adata;
+  struct ConnAccount *ac = &adata->conn_account;
+
+  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
+    return NULL;
+
+  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
+    return NULL;
+
+  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
+  //   return a;
+
+  return a;
 }
 
 /**
@@ -759,6 +780,33 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
 
   if (m->magic != MUTT_POP)
     return -1;
+
+  if (!a->adata)
+  {
+    struct PopAccountData *adata = pop_adata_new();
+    a->magic = MUTT_POP;
+    a->adata = adata;
+    a->free_adata = pop_adata_free;
+
+    struct Url url;
+    char tmp[PATH_MAX];
+    mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
+    url_parse(&url, tmp);
+
+    mutt_str_strfcpy(adata->conn_account.user, url.user,
+                     sizeof(adata->conn_account.user));
+    mutt_str_strfcpy(adata->conn_account.pass, url.pass,
+                     sizeof(adata->conn_account.pass));
+    mutt_str_strfcpy(adata->conn_account.host, url.host,
+                     sizeof(adata->conn_account.host));
+    adata->conn_account.port = url.port;
+    adata->conn_account.type = MUTT_ACCT_TYPE_POP;
+
+    if (adata->conn_account.user[0] != '\0')
+      adata->conn_account.flags |= MUTT_ACCT_USER;
+    if (adata->conn_account.pass[0] != '\0')
+      adata->conn_account.flags |= MUTT_ACCT_PASS;
+  }
 
   m->account = a;
 
@@ -776,7 +824,6 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
 static int pop_mbox_open(struct Context *ctx)
 {
   char buf[PATH_MAX];
-  struct Connection *conn = NULL;
   struct ConnAccount acct;
   struct Url url;
 
@@ -789,13 +836,15 @@ static int pop_mbox_open(struct Context *ctx)
   mutt_account_tourl(&acct, &url);
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), 0);
-  conn = mutt_conn_find(NULL, &acct);
-  if (!conn)
-    return -1;
 
   mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
   mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
                    sizeof(ctx->mailbox->realpath));
+
+  mutt_account_hook(ctx->mailbox->realpath);
+  struct Connection *conn = mutt_conn_new(&acct);
+  if (!conn)
+    return -1;
 
   struct PopAccountData *adata = pop_adata_new();
   adata->conn = conn;
@@ -806,7 +855,6 @@ static int pop_mbox_open(struct Context *ctx)
   if (pop_open_connection(adata) < 0)
     return -1;
 
-  conn->data = adata;
   adata->bcache = mutt_bcache_open(&acct, NULL);
 
   /* init (hard-coded) ACL rights */

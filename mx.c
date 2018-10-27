@@ -252,6 +252,8 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   {
     ctx->mailbox = mailbox_new();
     ctx->mailbox->flags = MB_HIDDEN;
+    mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
+    /* int rc = */ mx_path_canon2(ctx->mailbox, Folder);
   }
 
 #if 0
@@ -289,8 +291,8 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   ctx->mailbox->magic = mx_path_probe(path, NULL);
   ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
 
-  if (ctx->mailbox->path[0] == '\0')
-    mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
+  // if (ctx->mailbox->path[0] == '\0')
+  //   mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
 
   if ((ctx->mailbox->magic == MUTT_UNKNOWN) ||
       (ctx->mailbox->magic == MUTT_MAILBOX_ERROR) || !ctx->mailbox->mx_ops)
@@ -1611,15 +1613,15 @@ struct Account *mx_ac_find(struct Mailbox *m)
  *
  * find a mailbox on an account
  */
-struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m)
+struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
 {
-  if (!a || !m)
+  if (!a || !path)
     return NULL;
 
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &a->mailboxes, entries)
   {
-    if (mutt_str_strcmp(np->m->realpath, m->realpath) == 0)
+    if (mutt_str_strcmp(np->m->realpath, path) == 0)
       return np->m;
   }
 
@@ -1640,11 +1642,12 @@ struct Mailbox *mx_mbox_find2(const char *path)
   mutt_str_strfcpy(buf, path, sizeof(buf));
   mx_path_canon(buf, sizeof(buf), Folder, NULL);
 
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  struct Account *np = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
   {
-    if (mutt_str_strcmp(np->m->realpath, buf) == 0)
-      return np->m;
+    struct Mailbox *m = mx_mbox_find(np, buf);
+    if (m)
+      return m;
   }
 
   return NULL;

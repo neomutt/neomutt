@@ -600,7 +600,7 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 
     if (!new_account)
     {
-      struct Mailbox *old_m = mx_mbox_find(a, m);
+      struct Mailbox *old_m = mx_mbox_find(a, m->realpath);
       if (old_m)
       {
         if (old_m->flags == MB_HIDDEN)

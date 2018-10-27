@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "conn/conn.h"
 
 struct ConnAccount;
 struct Context;
@@ -78,6 +79,7 @@ struct PopCache
 struct PopAccountData
 {
   struct Connection *conn;
+  struct ConnAccount conn_account;
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;

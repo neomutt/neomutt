@@ -890,7 +890,17 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
  */
 struct Account *mbox_ac_find(struct Account *a, const char *path)
 {
-  return NULL;
+  if (!a || (a->magic != MUTT_MBOX) || !path)
+    return NULL;
+
+  struct MailboxNode *np = STAILQ_FIRST(&a->mailboxes);
+  if (!np)
+    return NULL;
+
+  if (mutt_str_strcmp(np->m->path, path) != 0)
+    return NULL;
+
+  return a;
 }
 
 /**
