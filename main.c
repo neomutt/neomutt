@@ -59,6 +59,7 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"
@@ -1239,6 +1240,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_unlink_temp_attachments();
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();

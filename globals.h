@@ -69,6 +69,7 @@ WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 #ifdef USE_SIDEBAR
 WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
 #endif
+WHERE struct ListHead TempAttachmentsList INITVAL(STAILQ_HEAD_INITIALIZER(TempAttachmentsList));
 WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
 /* Lists of AttachMatch */

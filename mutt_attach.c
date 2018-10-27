@@ -636,9 +636,8 @@ return_error:
     rfc1524_free_entry(&entry);
   if (fp && tempfile[0])
   {
-    /* Restore write permission so mutt_file_unlink can open the file for writing */
-    mutt_file_chmod_add(tempfile, S_IWUSR);
-    mutt_file_unlink(tempfile);
+    /* add temporary file to TempAttachmentsList to be deleted on exit */
+    mutt_add_temp_attachment(tempfile);
   }
   else if (unlink_tempfile)
     unlink(tempfile);
@@ -1148,4 +1147,29 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_error(_("I don't know how to print that"));
     return 0;
   }
+}
+
+/**
+ * mutt_add_temp_attachment - Add file to list of temporary attachments
+ * @param filename filename with full path
+ */
+void mutt_add_temp_attachment(char *filename)
+{
+  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_strdup(filename));
+}
+
+/**
+ * mutt_unlink_temp_attachments - Delete all temporary attachments
+ */
+void mutt_unlink_temp_attachments(void)
+{
+  struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, &TempAttachmentsList, entries)
+  {
+    mutt_file_chmod_add(np->data, S_IWUSR);
+    mutt_file_unlink(np->data);
+  }
+
+  mutt_list_free(&TempAttachmentsList);
 }
