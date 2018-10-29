@@ -144,6 +144,10 @@ notmuch_database_t *nm_db_get(struct Mailbox *m, bool writable)
   if (!adata)
     return NULL;
 
+  // Use an existing open db if we have one.
+  if (adata->db)
+    return adata->db;
+
   const char *db_filename = nm_db_get_filename(m);
   if (db_filename)
     adata->db = nm_db_do_open(db_filename, writable, true);
