@@ -280,7 +280,7 @@ static int mailbox_mbox_check(struct Mailbox *m, struct stat *sb, bool check_sta
       (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0))
   {
     struct Context *ctx =
-        mx_mbox_open(NULL, m->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+        mx_mbox_open(m, NULL, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
     if (ctx)
     {
       m->msg_count = ctx->mailbox->msg_count;

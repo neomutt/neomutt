@@ -186,7 +186,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
     goto bail;
   }
 
-  tmpctx = mx_mbox_open(NULL, ctx->mailbox->path, MUTT_APPEND);
+  tmpctx = mx_mbox_open(ctx->mailbox, NULL, MUTT_APPEND);
   if (!tmpctx)
   {
     rc = -1;

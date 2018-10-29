@@ -2149,7 +2149,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
                               "Saving changed messages... [%d/%d]", ctx->mailbox->msg_count),
                      i + 1, ctx->mailbox->msg_count);
         if (!appendctx)
-          appendctx = mx_mbox_open(NULL, ctx->mailbox->path, MUTT_APPEND | MUTT_QUIET);
+          appendctx = mx_mbox_open(ctx->mailbox, NULL, MUTT_APPEND | MUTT_QUIET);
         if (!appendctx)
           mutt_debug(1, "Error opening mailbox in append mode\n");
         else
