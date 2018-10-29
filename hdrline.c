@@ -46,6 +46,7 @@
 #include "curs_lib.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -1434,6 +1435,29 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
+
+    case '@':
+    {
+      const char *end = src;
+      static unsigned char recurse = 0;
+
+      while ((*end != '\0') && (*end != '@'))
+        end++;
+      if ((*end == '@') && (recurse < 20))
+      {
+        recurse++;
+        mutt_str_substr_cpy(tmp, src, end, sizeof(tmp));
+        mutt_expando_format(tmp, sizeof(tmp), col, cols,
+                            NONULL(mutt_idxfmt_hook(tmp, m, e)),
+                            index_format_str, data, flags);
+        mutt_format_s_x(buf, buflen, prec, tmp, true);
+        recurse--;
+
+        src = end + 1;
+        break;
+      }
+    }
+      /* fallthrough */
 
     default:
       snprintf(buf, buflen, "%%%s%c", prec, op);

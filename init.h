@@ -1819,6 +1819,8 @@ struct ConfigDef MuttVars[] = {
   ** .dt %zc .dd Message crypto flags
   ** .dt %zs .dd Message status flags
   ** .dt %zt .dd Message tag flags
+  ** .dt %@name@ .dd insert and evaluate format-string from the matching
+  **                 ``$index-format-hook'' command
   ** .dt %{fmt} .dd the date and time of the message is converted to sender's
   **                time zone, and "fmt" is expanded by the library function
   **                \fCstrftime(3)\fP; a leading bang disables locales
@@ -4854,6 +4856,7 @@ const struct Command Commands[] = {
   { "ifdef",               parse_ifdef,            0 },
   { "ifndef",              parse_ifdef,            1 },
   { "ignore",              parse_ignore,           0 },
+  { "index-format-hook",   mutt_parse_idxfmt_hook, MUTT_IDXFMTHOOK },
   { "lists",               parse_lists,            0 },
 #ifdef USE_LUA
   { "lua",                 mutt_lua_parse,         0 },

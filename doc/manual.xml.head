@@ -5813,6 +5813,62 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       </para>
     </sect1>
 
+    <sect1 id="index-format-hook">
+      <title>Dynamically Changing $index_format using Patterns</title>
+      <para>Usage:</para>
+      <cmdsynopsis>
+        <command>index-format-hook</command>
+        <arg choice="plain">
+          <replaceable class="parameter">name</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">[!]pattern</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">format-string</replaceable>
+        </arg>
+      </cmdsynopsis>
+      <para>
+        This command is used to inject format strings dynamically into <link
+        linkend="index-format">$index_format</link>based on pattern matching
+        against the current message.
+      </para>
+      <para>
+        The <link linkend="index-format">$index_format</link>expando
+        <emphasis>%@name@</emphasis>specifies a placeholder for the injection.
+        Index-format-hooks with the same <emphasis>name</emphasis>are matched using
+        <link linkend="patterns"> <emphasis>pattern</emphasis> </link>against the
+        current message. Matching is done in the order specified in the .muttrc,
+        with the first match being used. The hook's
+        <emphasis>format-string</emphasis>is then substituted and evaluated.
+      </para>
+      <para>
+        Because the first match is used, best practice is to put a catch-all
+        <emphasis>~A</emphasis>pattern as the last hook. Here is an example showing
+        how to implement dynamic date formatting:
+      </para>
+<screen>
+set index_format="%4C %-6@date@ %-15.15F %Z (%4c) %s"
+
+index-format-hook  date  "~d&lt;1d"    "%[%H:%M]"
+index-format-hook  date  "~d&lt;1m"    "%[%a %d]"
+index-format-hook  date  "~d&lt;1y"    "%[%b %d]"
+index-format-hook  date  "~A"       "%[%m/%y]"
+</screen>
+      <para>
+        Another example, showing a way to prepend to
+        the subject. Note that without a catch-all ~A
+        pattern, no match results in the expando being
+        replaced with an empty string.
+      </para>
+<screen>
+set index_format="%4C %@subj_flags@%s"
+
+index-format-hook  subj_flags  "~f boss@example.com"    "** BOSS ** "
+index-format-hook  subj_flags  "~f spouse@example.com"  ":-) "
+</screen>
+    </sect1>
+
     <sect1 id="push">
       <title>Adding Key Sequences to the Keyboard Buffer</title>
       <para>
@@ -8400,6 +8456,11 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         </listitem>
         <listitem>
           <para>
+            <link linkend="index-format-hook"><command>index-format-hook</command></link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
             <link linkend="crypt-hook"><command>crypt-hook</command></link>
           </para>
         </listitem>
@@ -8505,7 +8566,8 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
           Hooks that act upon messages (<command>message-hook</command>,
           <command>reply-hook</command>, <command>send-hook</command>,
           <command>send2-hook</command>, <command>save-hook</command>,
-          <command>fcc-hook</command>) are evaluated in a slightly different
+          <command>fcc-hook</command>, <command>index-format-hook</command>)
+          are evaluated in a slightly different
           manner. For the other types of hooks, a
           <link linkend="regex">regular expression</link> is sufficient. But in
           dealing with messages a finer grain of control is needed for matching
@@ -18177,6 +18239,22 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>pattern</replaceable>
               </arg>
             </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="index-format-hook">index-format-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">name</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">[!]pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">format-string</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>

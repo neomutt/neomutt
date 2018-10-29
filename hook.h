@@ -58,10 +58,11 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 #define MUTT_APPEND_HOOK   (1 << 13) ///< append-hook: append to a compressed mailbox
 #define MUTT_CLOSE_HOOK    (1 << 14) ///< close-hook: write to a compressed mailbox
 #endif
-#define MUTT_TIMEOUT_HOOK  (1 << 15) ///< timeout-hook: run a command periodically
-#define MUTT_STARTUP_HOOK  (1 << 16) ///< startup-hook: run when starting NeoMutt
-#define MUTT_SHUTDOWN_HOOK (1 << 17) ///< shutdown-hook: run when leaving NeoMutt
-#define MUTT_GLOBAL_HOOK   (1 << 18) ///< Hooks which don't take a regex
+#define MUTT_IDXFMTHOOK    (1 << 15) ///< index-format-hook: customise the format of the index
+#define MUTT_TIMEOUT_HOOK  (1 << 16) ///< timeout-hook: run a command periodically
+#define MUTT_STARTUP_HOOK  (1 << 17) ///< startup-hook: run when starting NeoMutt
+#define MUTT_SHUTDOWN_HOOK (1 << 18) ///< shutdown-hook: run when leaving NeoMutt
+#define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
 void  mutt_account_hook(const char *url);
 void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
@@ -69,7 +70,9 @@ void  mutt_default_save(char *path, size_t pathlen, struct Email *e);
 void  mutt_delete_hooks(HookFlags type);
 char *mutt_find_hook(HookFlags type, const char *pat);
 void  mutt_folder_hook(const char *path, const char *desc);
+const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e);
 void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
+enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 void  mutt_select_fcc(char *path, size_t pathlen, struct Email *e);

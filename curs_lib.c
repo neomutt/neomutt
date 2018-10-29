@@ -1038,7 +1038,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
 }
 
 /**
- * format_s_x - Format a string like snprintf()
+ * mutt_format_s_x - Format a string like snprintf()
  * @param[out] buf      Buffer in which to save string
  * @param[in]  buflen   Buffer length
  * @param[in]  prec     Field precision, e.g. "-3.4"
@@ -1051,7 +1051,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal)
+void mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal)
 {
   enum FormatJustify justify = JUSTIFY_RIGHT;
   char *p = NULL;
@@ -1090,7 +1090,7 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
  */
 void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, false);
+  mutt_format_s_x(buf, buflen, prec, s, false);
 }
 
 /**
@@ -1102,7 +1102,7 @@ void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
  */
 void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(buf, buflen, prec, s, true);
+  mutt_format_s_x(buf, buflen, prec, s, true);
 }
 
 /**

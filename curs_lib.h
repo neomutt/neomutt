@@ -59,6 +59,7 @@ void         mutt_flush_macro_to_endcond(void);
 void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
+void         mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
 void         mutt_getch_timeout(int delay);
 struct Event mutt_getch(void);
 int          mutt_get_field_full(const char *field, char *buf, size_t buflen, CompletionFlags complete, bool multiple, char ***files, int *numfiles);

@@ -2975,8 +2975,13 @@ void mutt_free_opts(void)
 int mutt_get_hook_type(const char *name)
 {
   for (const struct Command *c = Commands; c->name; c++)
-    if ((c->func == mutt_parse_hook) && (mutt_str_strcasecmp(c->name, name) == 0))
+  {
+    if (((c->func == mutt_parse_hook) || (c->func == mutt_parse_idxfmt_hook)) &&
+        (mutt_str_strcasecmp(c->name, name) == 0))
+    {
       return c->data;
+    }
+  }
   return MUTT_CMD_SUCCESS;
 }
 
