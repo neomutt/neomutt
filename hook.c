@@ -425,7 +425,12 @@ int mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  struct PatternHead *pat = mutt_pattern_comp(pattern->data, MUTT_FULL_MSG, err);
+  /* MUTT_PATTERN_DYNAMIC sets so that date ranges are regenerated during
+   * matching.  This of course is slower, but index-format-hook is commonly
+   * used for date ranges, and they need to be evaluated relative to "now", not
+   * the hook compilation time.  */
+  struct PatternHead *pat =
+      mutt_pattern_comp(pattern->data, MUTT_FULL_MSG | MUTT_PATTERN_DYNAMIC, err);
   if (!pat)
     goto out;
 

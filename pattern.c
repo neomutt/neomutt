@@ -168,7 +168,7 @@ struct PatternFlags
   int tag;   /**< character used to represent this op */
   int op;    /**< operation to perform */
   int class; /**< Pattern class, e.g. #MUTT_FULL_MSG */
-  bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
+  bool (*eat_arg)(struct Pattern *, int flags, struct Buffer *, struct Buffer *); /**< Callback function to parse the argument */
 };
 
 // clang-format off
@@ -192,12 +192,13 @@ static char LastSearchExpn[1024] = { 0 }; /**< expanded version of LastSearch */
 
 /**
  * eat_regex - Parse a regex
- * @param pat  Pattern to match
- * @param s   String to parse
- * @param err Buffer for error messages
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eat_regex(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
 
@@ -230,8 +231,8 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   else
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
-    int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
-    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
+    int case_flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
+    int rc = REG_COMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | case_flags);
     if (rc != 0)
     {
       char errmsg[256];
@@ -264,12 +265,13 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 
 /**
  * eat_query - Parse a query for an external search program
- * @param pat  Pattern to match
- * @param s   String to parse
- * @param err Buffer for error messages
+ * @param pat   Pattern to match
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eat_query(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer cmd_buf;
   struct Buffer tok_buf;
@@ -564,44 +566,25 @@ static void adjust_date_range(struct tm *min, struct tm *max)
 }
 
 /**
- * eat_date - Parse a date pattern
- * @param pat Pattern to store the date in
- * @param s   String to parse
+ * eval_date_minmax - Evaluate a date-range pattern against 'now'
+ * @param pat Pattern to modify
+ * @param s   Pattern string to use
  * @param err Buffer for error messages
- * @retval true If the pattern was read successfully
+ * @retval true  Pattern valid and updated
+ * @retval false Pattern invalid
  */
-static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 {
-  struct Buffer buf;
-  struct tm min, max;
-  char *offset_type = NULL;
-
-  mutt_buffer_init(&buf);
-  char *pexpr = s->dptr;
-  if ((mutt_extract_token(&buf, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0) || !buf.data)
-  {
-    FREE(&buf.data);
-    mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
-    return false;
-  }
-  if (buf.data[0] == '\0')
-  {
-    FREE(&buf.data);
-    mutt_buffer_printf(err, "%s", _("Empty expression"));
-    return false;
-  }
-
-  memset(&min, 0, sizeof(min));
   /* the '0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
    * when doing timezone conversion, we use Jan 2, 1970 UTC as the base here */
+  struct tm min = { 0 };
   min.tm_mday = 2;
   min.tm_year = 70;
-
-  memset(&max, 0, sizeof(max));
 
   /* Arbitrary year in the future.  Don't set this too high or
    * mutt_date_make_time() returns something larger than will fit in a time_t
    * on some systems */
+  struct tm max = { 0 };
   max.tm_year = 130;
   max.tm_mon = 11;
   max.tm_mday = 31;
@@ -609,7 +592,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   max.tm_min = 59;
   max.tm_sec = 59;
 
-  if (strchr("<>=", buf.data[0]))
+  if (strchr("<>=", s[0]))
   {
     /* offset from current time
      *  <3d  less than three days ago
@@ -618,7 +601,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     struct tm *tm = NULL;
     bool exact = false;
 
-    if (buf.data[0] == '<')
+    if (s[0] == '<')
     {
       min = mutt_date_localtime(MUTT_DATE_NOW);
       tm = &min;
@@ -628,13 +611,14 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       max = mutt_date_localtime(MUTT_DATE_NOW);
       tm = &max;
 
-      if (buf.data[0] == '=')
+      if (s[0] == '=')
         exact = true;
     }
 
     /* Reset the HMS unless we are relative matching using one of those
      * offsets. */
-    strtol(buf.data + 1, &offset_type, 0);
+    char *offset_type = NULL;
+    strtol(s + 1, &offset_type, 0);
     if (!(*offset_type && strchr("HMS", *offset_type)))
     {
       tm->tm_hour = 23;
@@ -643,7 +627,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     }
 
     /* force negative offset */
-    get_offset(tm, buf.data + 1, -1);
+    get_offset(tm, s + 1, -1);
 
     if (exact)
     {
@@ -656,7 +640,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else
   {
-    const char *pc = buf.data;
+    const char *pc = s;
 
     bool have_min = false;
     int until_now = false;
@@ -666,7 +650,6 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       pc = get_date(pc, &min, err);
       if (!pc)
       {
-        FREE(&buf.data);
         return false;
       }
       have_min = true;
@@ -701,7 +684,6 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
       if (!parse_date_range(pc, &min, &max, have_min, &base_min, err))
       { /* bail out on any parsing error */
-        FREE(&buf.data);
         return false;
       }
     }
@@ -713,19 +695,18 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   pat->min = mutt_date_make_time(&min, 1);
   pat->max = mutt_date_make_time(&max, 1);
 
-  FREE(&buf.data);
-
   return true;
 }
 
 /**
  * eat_range - Parse a number range
- * @param pat Pattern to store the range in
- * @param s   String to parse
- * @param err Buffer for error messages
+ * @param pat   Pattern to store the range in
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eat_range(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
   bool do_exclusive = false;
@@ -1008,12 +989,14 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
 
 /**
  * eat_message_range - Parse a range of message numbers
- * @param pat Pattern to store the range in
- * @param s   String to parse
- * @param err Buffer for error messages
+ * @param pat   Pattern to store the range in
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
  * @retval true If the pattern was read successfully
  */
-static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eat_message_range(struct Pattern *pat, int flags, struct Buffer *s,
+                              struct Buffer *err)
 {
   bool skip_quote = false;
 
@@ -1051,6 +1034,46 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
     }
   }
   return false;
+}
+
+/**
+ * eat_date - Parse a date pattern
+ * @param pat   Pattern to store the date in
+ * @param flags Flags, e.g. #MUTT_PATTERN_DYNAMIC
+ * @param s     String to parse
+ * @param err   Buffer for error messages
+ * @retval true If the pattern was read successfully
+ */
+static bool eat_date(struct Pattern *pat, int flags, struct Buffer *s, struct Buffer *err)
+{
+  struct Buffer *tmp = mutt_buffer_pool_get();
+  bool rc = false;
+
+  char *pexpr = s->dptr;
+  if (mutt_extract_token(tmp, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0)
+  {
+    snprintf(err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    goto out;
+  }
+
+  if (mutt_buffer_is_empty(tmp))
+  {
+    snprintf(err->data, err->dsize, "%s", _("Empty expression"));
+    goto out;
+  }
+
+  if (flags & MUTT_PATTERN_DYNAMIC)
+  {
+    pat->dynamic = true;
+    pat->p.str = mutt_str_strdup(tmp->data);
+  }
+
+  rc = eval_date_minmax(pat, tmp->data, err);
+
+out:
+  mutt_buffer_pool_release(&tmp);
+
+  return rc;
 }
 
 /**
@@ -1344,7 +1367,7 @@ void mutt_pattern_free(struct PatternHead **pat)
 
     if (np->ismulti)
       mutt_list_free(&np->p.multi_cases);
-    else if (np->stringmatch)
+    else if (np->stringmatch || np->dynamic)
       FREE(&np->p.str);
     else if (np->groupmatch)
       np->p.group = NULL;
@@ -1561,7 +1584,7 @@ struct PatternHead *mutt_pattern_comp(/* const */ char *s, int flags, struct Buf
             mutt_buffer_printf(err, "%s", _("missing parameter"));
             goto cleanup;
           }
-          if (!entry->eat_arg(pat, &ps, err))
+          if (!entry->eat_arg(pat, flags, &ps, err))
           {
             goto cleanup;
           }
@@ -1888,6 +1911,22 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
 }
 
 /**
+ * match_update_dynamic_date - Update a dynamic date pattern
+ * @param pat Pattern to modify
+ * @retval true  Pattern valid and updated
+ * @retval false Pattern invalid
+ */
+static bool match_update_dynamic_date(struct Pattern *pat)
+{
+  struct Buffer *err = mutt_buffer_pool_get();
+
+  bool rc = eval_date_minmax(pat, pat->p.str, err);
+  mutt_buffer_pool_release(&err);
+
+  return rc;
+}
+
+/**
  * match_mime_content_type - Match a Pattern against an email's Content-Type
  * @param pat   Pattern to match
  * @param m   Mailbox
@@ -1993,8 +2032,12 @@ int mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_MESSAGE:
       return pat->not^((EMSG(e) >= pat->min) && (EMSG(e) <= pat->max));
     case MUTT_PAT_DATE:
+      if (pat->dynamic)
+        match_update_dynamic_date(pat);
       return pat->not^(e->date_sent >= pat->min && e->date_sent <= pat->max);
     case MUTT_PAT_DATE_RECEIVED:
+      if (pat->dynamic)
+        match_update_dynamic_date(pat);
       return pat->not^(e->received >= pat->min && e->received <= pat->max);
     case MUTT_PAT_BODY:
     case MUTT_PAT_HEADER:
