@@ -2357,7 +2357,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 
   int rc = 0;
   struct Progress progress;
-  char *uri = ctx->mailbox->path;
+  char *uri = mutt_str_strdup(ctx->mailbox->path);
   bool changed = false;
   char msgbuf[PATH_MAX + 64];
 
@@ -2430,6 +2430,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     ctx->mailbox->mtime.tv_nsec = 0;
   }
 
+  FREE(&uri);
   mutt_debug(1, "nm: .... sync done [rc=%d]\n", rc);
   return rc;
 }
