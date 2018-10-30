@@ -2423,8 +2423,14 @@ static int nntp_mbox_open(struct Context *ctx)
 
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
-  adata = nntp_select_server(ctx->mailbox, server, true);
+  if (ctx->mailbox && ctx->mailbox->account)
+    adata = ctx->mailbox->account->adata;
+
+  if (!adata)
+    adata = nntp_select_server(ctx->mailbox, server, true);
+
   url_free(&url);
+
   if (!adata)
     return -1;
   CurrentNewsSrv = adata;
