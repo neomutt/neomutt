@@ -825,27 +825,17 @@ static void progress_update(struct Mailbox *m, notmuch_query_t *q)
 
   if (!mdata->progress_ready && q)
   {
-    unsigned int count;
     static char msg[STRING];
     snprintf(msg, sizeof(msg), _("Reading messages..."));
 
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-    if (notmuch_query_count_messages(q, &count) != NOTMUCH_STATUS_SUCCESS)
-      count = 0; /* may not be defined on error */
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-    if (notmuch_query_count_messages_st(q, &count) != NOTMUCH_STATUS_SUCCESS)
-      count = 0; /* may not be defined on error */
-#else
-    count = notmuch_query_count_messages(q);
-#endif
-    mutt_progress_init(&mdata->progress, msg, MUTT_PROGRESS_MSG, ReadInc, count);
+    // The total mail count is in oldmsgcount, so use that instead of recounting.
+    mutt_progress_init(&mdata->progress, msg, MUTT_PROGRESS_MSG, ReadInc, mdata->oldmsgcount);
     mdata->progress_ready = true;
   }
 
   if (mdata->progress_ready)
   {
-    mutt_progress_update(&mdata->progress,
-                         m->msg_count + mdata->ignmsgcount - mdata->oldmsgcount, -1);
+    mutt_progress_update(&mdata->progress, m->msg_count + mdata->ignmsgcount, -1);
   }
 }
 
