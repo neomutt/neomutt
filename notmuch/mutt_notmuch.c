@@ -1906,6 +1906,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
+  int limit = NmDbLimit;
   mutt_debug(1, "nm: count\n");
 
   if (url_parse(&url, url_holder) < 0)
@@ -1917,10 +1918,9 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   STAILQ_FOREACH(item, &url.query_strings, entries)
   {
     if (item->value && (strcmp(item->name, "query") == 0))
-    {
       db_query = item->value;
-      break;
-    }
+    else if (item->value && (strcmp(item->name, "limit") == 0))
+      mutt_str_atoi(item->value, &limit); // Try to parse the limit
   }
 
   if (!db_query)
@@ -1948,7 +1948,13 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   /* all emails */
   if (all)
+  {
     *all = count_query(db, db_query);
+
+    // If we have a non-zero limit, we shouldn't exceed it.
+    if (limit > 0 && *all > limit)
+      *all = limit;
+  }
 
   /* new messages */
   if (new)
