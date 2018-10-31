@@ -833,7 +833,7 @@ static int pop_mbox_open(struct Context *ctx)
     return -1;
 
   char buf[PATH_MAX];
-  struct ConnAccount acct = { 0 };
+  struct ConnAccount acct = { { 0 } };
   struct Url url;
 
   if (pop_parse_path(m->path, &acct))

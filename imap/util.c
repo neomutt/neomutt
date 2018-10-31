@@ -119,42 +119,6 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 }
 
 /**
- * imap_expand_path - Canonicalise an IMAP path
- * @param buf Buffer containing path
- * @param buflen  Buffer length
- * @retval  0 Success
- * @retval -1 Error
- *
- * IMAP implementation of mutt_expand_path. Rewrite an IMAP path in canonical
- * and absolute form.  The buffer is rewritten in place with the canonical IMAP
- * path.
- *
- * Function can fail if imap_parse_path() or url_tostring() fail,
- * of if the buffer isn't large enough.
- */
-int imap_expand_path(char *buf, size_t buflen)
-{
-  struct ImapMbox mx;
-  struct ImapAccountData *adata = NULL;
-  struct Url url;
-  char fixedpath[LONG_STRING];
-  int rc;
-
-  if (imap_parse_path(buf, &mx) < 0)
-    return -1;
-
-  adata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
-  mutt_account_tourl(&mx.account, &url);
-  imap_fix_path(adata, mx.mbox, fixedpath, sizeof(fixedpath));
-  url.path = fixedpath;
-
-  rc = url_tostring(&url, buf, buflen, U_DECODE_PASSWD);
-  FREE(&mx.mbox);
-
-  return rc;
-}
-
-/**
  * imap_get_parent - Get an IMAP folder's parent
  * @param mbox   Mailbox whose parent is to be determined
  * @param delim  Path delimiter

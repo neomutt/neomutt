@@ -996,7 +996,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   char *p = NULL;
 #endif
   int rc;
-  struct ConnAccount acct = { 0 };
+  struct ConnAccount acct = { { 0 } };
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
   struct Url url;
