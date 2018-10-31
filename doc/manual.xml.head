@@ -14556,6 +14556,12 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             limit is nm_db_limit.
           </para>
           <para>
+            Due to a limitation with <literal>libnotmuch</literal>, unread and
+            flagged message count may be inaccurate with limit statements.
+            <literal>libnotmuch</literal> cannot return a specific tag count
+            within the first X messages of a query.
+          </para>
+          <para>
             <emphasis role="bold">type=&lt;threads|messages&gt;</emphasis>
           </para>
           <para>

@@ -81,7 +81,8 @@ char *NmQueryType; ///< Config: (notmuch) Default query type: 'threads' or 'mess
 int NmQueryWindowCurrentPosition; ///< Config: (notmuch) Position of current search window
 char *NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration
 char *NmRecordTags; ///< Config: (notmuch) Tags to apply to the 'record' mailbox (sent mail)
-char *NmUnreadTag; ///< Config: (notmuch) Tag to use for unread messages
+char *NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
+char *NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
 
 /**
  * string_to_query_type - Lookup a query type
@@ -1497,11 +1498,12 @@ done:
 
 /**
  * count_query - Count the results of a query
- * @param db   Notmuch database
- * @param qstr Query to execute
- * @retval num Numner of results
+ * @param db    Notmuch database
+ * @param qstr  Query to execute
+ * @param limit Maximum number of results
+ * @retval num Number of results
  */
-static unsigned int count_query(notmuch_database_t *db, const char *qstr)
+static unsigned int count_query(notmuch_database_t *db, const char *qstr, int limit)
 {
   notmuch_query_t *q = notmuch_query_create(db, qstr);
   if (!q)
@@ -1521,6 +1523,9 @@ static unsigned int count_query(notmuch_database_t *db, const char *qstr)
 #endif
   notmuch_query_destroy(q);
   mutt_debug(1, "nm: count '%s', result=%d\n", qstr, res);
+
+  if (limit > 0 && res > limit)
+    res = limit;
 
   return res;
 }
@@ -1882,17 +1887,15 @@ int nm_update_filename(struct Mailbox *m, const char *old, const char *new, stru
 
 /**
  * nm_nonctx_get_count - Perform some queries without an open database
- * @param path Notmuch database path
- * @param all  Count of all emails
- * @param new  Count of new emails
+ * @param m Mailbox to examine
  * @retval  0 Success
  * @retval -1 Failure
  */
-int nm_nonctx_get_count(char *path, int *all, int *new)
+int nm_nonctx_get_count(struct Mailbox *m)
 {
   struct UrlQueryString *item = NULL;
   struct Url url = { U_UNKNOWN };
-  char *url_holder = mutt_str_strdup(path);
+  char *url_holder = mutt_str_strdup(m->path);
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
@@ -1901,7 +1904,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   if (url_parse(&url, url_holder) < 0)
   {
-    mutt_error(_("failed to parse notmuch uri: %s"), path);
+    mutt_error(_("failed to parse notmuch uri: %s"), m->path);
     goto done;
   }
 
@@ -1937,24 +1940,20 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     goto done;
 
   /* all emails */
-  if (all)
-  {
-    *all = count_query(db, db_query);
+  m->msg_count = count_query(db, db_query, limit);
 
-    // If we have a non-zero limit, we shouldn't exceed it.
-    if (limit > 0 && *all > limit)
-      *all = limit;
-  }
+  // holder variable for extending query to unread/flagged
+  char *qstr = NULL;
 
-  /* new messages */
-  if (new)
-  {
-    char *qstr = NULL;
+  // unread messages
+  safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NmUnreadTag);
+  m->msg_unread = count_query(db, qstr, limit);
+  FREE(&qstr);
 
-    safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NmUnreadTag);
-    *new = count_query(db, qstr);
-    FREE(&qstr);
-  }
+  // flagged messages
+  safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NmFlaggedTag);
+  m->msg_flagged = count_query(db, qstr, limit);
+  FREE(&qstr);
 
   rc = 0;
 done:

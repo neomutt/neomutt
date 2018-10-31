@@ -51,6 +51,7 @@ extern int   NmQueryWindowCurrentPosition;
 extern char *NmQueryWindowTimebase;
 extern char *NmRecordTags;
 extern char *NmUnreadTag;
+extern char *NmFlaggedTag;
 
 extern struct MxOps mx_notmuch_ops;
 
@@ -61,7 +62,7 @@ char *nm_email_get_folder        (struct Email *e);
 void  nm_db_longrun_done            (struct Mailbox *m);
 void  nm_db_longrun_init            (struct Mailbox *m, bool writable);
 bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
-int   nm_nonctx_get_count        (char *path, int *all, int *new);
+int   nm_nonctx_get_count        (struct Mailbox *m);
 bool  nm_normalize_uri           (const char *uri, char *buf, size_t buflen);
 void  nm_parse_type_from_query   (struct NmMboxData *mdata, char *buf);
 int   nm_path_probe              (const char *path, const struct stat *st);
