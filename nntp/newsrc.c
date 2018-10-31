@@ -996,7 +996,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   char *p = NULL;
 #endif
   int rc;
-  struct ConnAccount acct;
+  struct ConnAccount acct = { 0 };
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
   struct Url url;
@@ -1038,7 +1038,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   }
 
   /* news server already exists */
-  adata = conn->data;
+  // adata = conn->data;
   if (adata)
   {
     if (adata->status == NNTP_BYE)
@@ -1168,11 +1168,10 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
     FREE(&adata->authenticators);
     FREE(&adata);
     mutt_socket_close(conn);
-    mutt_socket_free(conn);
+    FREE(&conn);
     return NULL;
   }
 
-  conn->data = adata;
   return adata;
 }
 

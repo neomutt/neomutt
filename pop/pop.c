@@ -103,12 +103,14 @@ static const char *cache_id(const char *id)
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
-static void pop_adata_free(void **data)
+static void pop_adata_free(void **ptr)
 {
-  if (!data || !*data)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(data);
+  struct PopAccountData *adata = *ptr;
+  FREE(&adata->conn);
+  FREE(ptr);
 }
 
 /**
@@ -392,6 +394,7 @@ static int pop_fetch_headers(struct Context *ctx)
     /* Allocate some memory to get started */
     ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
     ctx->mailbox->msg_count = 0;
+    ctx->mailbox->msg_unread = 0;
     ctx->mailbox->vcount = 0;
     mx_alloc_memory(ctx->mailbox);
   }
@@ -615,12 +618,10 @@ void pop_fetch_mail(void)
 
   if (pop_open_connection(adata) < 0)
   {
-    mutt_socket_free(adata->conn);
+    //XXX mutt_socket_free(adata->conn);
     pop_adata_free((void **) &adata);
     return;
   }
-
-  conn->data = adata;
 
   mutt_message(_("Checking for new messages..."));
 
@@ -733,6 +734,7 @@ finish:
   if (pop_query(adata, buffer, sizeof(buffer)) == -1)
     goto fail;
   mutt_socket_close(conn);
+  FREE(&conn);
   pop_adata_free((void **) &adata);
   return;
 
@@ -823,13 +825,20 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int pop_mbox_open(struct Context *ctx)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m->account)
+    return -1;
+
   char buf[PATH_MAX];
-  struct ConnAccount acct;
+  struct ConnAccount acct = { 0 };
   struct Url url;
 
-  if (pop_parse_path(ctx->mailbox->path, &acct))
+  if (pop_parse_path(m->path, &acct))
   {
-    mutt_error(_("%s is an invalid POP path"), ctx->mailbox->path);
+    mutt_error(_("%s is an invalid POP path"), m->path);
     return -1;
   }
 
@@ -837,20 +846,28 @@ static int pop_mbox_open(struct Context *ctx)
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), 0);
 
-  mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
-                   sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
+  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
 
-  mutt_account_hook(ctx->mailbox->realpath);
-  struct Connection *conn = mutt_conn_new(&acct);
+  struct PopAccountData *adata = m->account->adata;
+  if (!adata)
+  {
+    adata = pop_adata_new();
+    m->account->adata = adata;
+    m->account->free_adata = pop_adata_free;
+  }
+
+  struct Connection *conn = adata->conn;
   if (!conn)
-    return -1;
+  {
+    adata->conn = mutt_conn_new(&acct);
+    conn = adata->conn;
+    if (!conn)
+      return -1;
+  }
 
-  struct PopAccountData *adata = pop_adata_new();
-  adata->conn = conn;
-
-  ctx->mailbox->account->adata = adata;
-  ctx->mailbox->account->free_adata = pop_adata_free;
+  if (conn->fd < 0)
+    mutt_account_hook(m->realpath);
 
   if (pop_open_connection(adata) < 0)
     return -1;
@@ -858,21 +875,21 @@ static int pop_mbox_open(struct Context *ctx)
   adata->bcache = mutt_bcache_open(&acct, NULL);
 
   /* init (hard-coded) ACL rights */
-  memset(ctx->mailbox->rights, 0, sizeof(ctx->mailbox->rights));
-  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_SEEN);
-  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_DELETE);
+  memset(m->rights, 0, sizeof(m->rights));
+  mutt_bit_set(m->rights, MUTT_ACL_SEEN);
+  mutt_bit_set(m->rights, MUTT_ACL_DELETE);
 #ifdef USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
-  mutt_bit_set(ctx->mailbox->rights, MUTT_ACL_WRITE);
+  mutt_bit_set(m->rights, MUTT_ACL_WRITE);
 #endif
 
   while (true)
   {
-    if (pop_reconnect(ctx->mailbox) < 0)
+    if (pop_reconnect(m) < 0)
       return -1;
 
-    ctx->mailbox->size = adata->size;
+    m->size = adata->size;
 
     mutt_message(_("Fetching list of messages..."));
 
@@ -882,10 +899,7 @@ static int pop_mbox_open(struct Context *ctx)
       return 0;
 
     if (ret < -1)
-    {
-      mutt_sleep(2);
       return -1;
-    }
   }
 }
 
@@ -1023,15 +1037,15 @@ static int pop_mbox_close(struct Context *ctx)
   pop_logout(ctx->mailbox);
 
   if (adata->status != POP_NONE)
+  {
     mutt_socket_close(adata->conn);
+    // FREE(&adata->conn);
+  }
 
   adata->status = POP_NONE;
 
   adata->clear_cache = true;
   pop_clear_cache(adata);
-
-  if (!adata->conn->data)
-    mutt_socket_free(adata->conn);
 
   mutt_bcache_close(&adata->bcache);
 

@@ -46,11 +46,7 @@ struct Connection;
  */
 TAILQ_HEAD(ConnectionList, Connection);
 
-/* stupid hack for imap_logout_all */
-struct ConnectionList *mutt_socket_head(void);
-
 struct Connection *mutt_socket_new(enum ConnectionType type);
-void mutt_socket_free(struct Connection *conn);
 
 int mutt_socket_open(struct Connection *conn);
 int mutt_socket_close(struct Connection *conn);

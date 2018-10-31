@@ -53,18 +53,6 @@
 #include "ssl.h"
 #include "tunnel.h"
 
-/* support for multiple socket connections */
-static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
-
-/**
- * mutt_socket_head - Get the first socket
- * @retval ptr First socket
- */
-struct ConnectionList *mutt_socket_head(void)
-{
-  return &Connections;
-}
-
 /**
  * socket_preconnect - Execute a command before opening a socket
  * @retval 0  Success
@@ -319,26 +307,5 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
     conn->conn_poll = raw_socket_poll;
   }
 
-  if (conn)
-    TAILQ_INSERT_HEAD(&Connections, conn, entries);
-
   return conn;
-}
-
-/**
- * mutt_socket_free - remove connection from connection list and free it
- * @param conn Connection to free
- */
-void mutt_socket_free(struct Connection *conn)
-{
-  struct Connection *np = NULL;
-  TAILQ_FOREACH(np, &Connections, entries)
-  {
-    if (np == conn)
-    {
-      TAILQ_REMOVE(&Connections, np, entries);
-      FREE(&np);
-      return;
-    }
-  }
 }

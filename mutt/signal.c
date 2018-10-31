@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "curs_lib.h"
 #include "message.h"
 #include "signal2.h"
 

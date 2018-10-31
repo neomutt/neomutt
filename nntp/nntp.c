@@ -47,6 +47,7 @@
 #include "context.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -112,6 +113,24 @@ struct ChildCtx
   unsigned int max;
   anum_t *child;
 };
+
+/**
+ * nntp_adata_free - Free data attached to the Mailbox
+ * @param data NNTP data
+ *
+ * The NntpAccountData struct stores global NNTP data, such as the connection to
+ * the database.  This function will close the database, free the resources and
+ * the struct itself.
+ */
+static void nntp_adata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct NntpAccountData *adata = *ptr;
+  FREE(&adata->conn);
+  FREE(ptr);
+}
 
 /**
  * nntp_adata_new - Allocate and initialise a new NntpAccountData structure
@@ -2398,8 +2417,13 @@ int nntp_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int nntp_mbox_open(struct Context *ctx)
 {
-  struct NntpAccountData *adata = NULL;
-  struct NntpMboxData *mdata = NULL;
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m->account)
+    return -1;
+
   char buf[HUGE_STRING];
   char server[LONG_STRING];
   char *group = NULL;
@@ -2408,12 +2432,12 @@ static int nntp_mbox_open(struct Context *ctx)
   anum_t first, last, count = 0;
   struct Url url;
 
-  mutt_str_strfcpy(buf, ctx->mailbox->path, sizeof(buf));
+  mutt_str_strfcpy(buf, m->path, sizeof(buf));
   if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
     url_free(&url);
-    mutt_error(_("%s is an invalid newsgroup specification"), ctx->mailbox->path);
+    mutt_error(_("%s is an invalid newsgroup specification"), m->path);
     return -1;
   }
 
@@ -2423,11 +2447,15 @@ static int nntp_mbox_open(struct Context *ctx)
 
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
-  if (ctx->mailbox && ctx->mailbox->account)
-    adata = ctx->mailbox->account->adata;
 
+  mutt_account_hook(m->realpath);
+  struct NntpAccountData *adata = m->account->adata;
   if (!adata)
-    adata = nntp_select_server(ctx->mailbox, server, true);
+  {
+    adata = nntp_select_server(m, server, true);
+    m->account->adata = adata;
+    m->account->free_adata = nntp_adata_free;
+  }
 
   url_free(&url);
 
@@ -2435,16 +2463,15 @@ static int nntp_mbox_open(struct Context *ctx)
     return -1;
   CurrentNewsSrv = adata;
 
-  ctx->mailbox->account->adata = adata;
-  ctx->mailbox->msg_count = 0;
-  ctx->mailbox->msg_unread = 0;
-  ctx->mailbox->vcount = 0;
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->vcount = 0;
 
   if (group[0] == '/')
     group++;
 
   /* find news group data structure */
-  mdata = mutt_hash_find(adata->groups_hash, group);
+  struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
   if (!mdata)
   {
     nntp_newsrc_close(adata);
@@ -2452,9 +2479,9 @@ static int nntp_mbox_open(struct Context *ctx)
     return -1;
   }
 
-  mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_INSERT);
+  mutt_bit_unset(m->rights, MUTT_ACL_INSERT);
   if (!mdata->newsrc_ent && !mdata->subscribed && !SaveUnsubscribed)
-    ctx->mailbox->readonly = true;
+    m->readonly = true;
 
   /* select newsgroup */
   mutt_message(_("Selecting %s..."), group);
@@ -2510,7 +2537,7 @@ static int nntp_mbox_open(struct Context *ctx)
   }
 
   time(&adata->check_time);
-  ctx->mailbox->mdata = mdata;
+  m->mdata = mdata;
   if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 
@@ -2529,8 +2556,8 @@ static int nntp_mbox_open(struct Context *ctx)
 #endif
   if (!hc)
   {
-    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_WRITE);
-    mutt_bit_unset(ctx->mailbox->rights, MUTT_ACL_DELETE);
+    mutt_bit_unset(m->rights, MUTT_ACL_WRITE);
+    mutt_bit_unset(m->rights, MUTT_ACL_DELETE);
   }
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(ctx, hc, first, mdata->last_message, 0);

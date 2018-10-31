@@ -542,7 +542,7 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
  */
 static int complete_hosts(char *buf, size_t buflen)
 {
-  struct Connection *conn = NULL;
+  // struct Connection *conn = NULL;
   int rc = -1;
   size_t matchlen;
 
@@ -562,6 +562,7 @@ static int complete_hosts(char *buf, size_t buflen)
       longest_common_prefix(buf, np->m->path, matchlen, buflen);
   }
 
+#if 0
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
     struct Url url;
@@ -586,6 +587,7 @@ static int complete_hosts(char *buf, size_t buflen)
         longest_common_prefix(buf, urlstr, matchlen, buflen);
     }
   }
+#endif
 
   return rc;
 }
@@ -764,7 +766,8 @@ void imap_logout_all(void)
     mutt_message(_("Closing connection to %s..."), conn->account.host);
     imap_logout((struct ImapAccountData **) &np->adata);
     mutt_clear_error();
-    mutt_socket_free(conn);
+    //XXX? mutt_socket_close(conn);
+    //not nec? FREE(&adata->conn);
   }
 }
 
@@ -959,6 +962,7 @@ struct Connection *mutt_conn_find2(const struct Connection *start,
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
+#if 0
   struct Connection *conn =
       start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(mutt_socket_head());
   while (conn)
@@ -967,6 +971,7 @@ struct Connection *mutt_conn_find2(const struct Connection *start,
       return conn;
     conn = TAILQ_NEXT(conn, entries);
   }
+#endif
 
   return mutt_conn_new(account);
 }
@@ -995,13 +1000,14 @@ struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int fl
     else
       memcpy(&conn->account, creds, sizeof(struct ConnAccount));
 
-    adata = conn->data;
+    // adata = conn->data;
     if (flags & MUTT_IMAP_CONN_NONEW)
     {
       if (!adata)
       {
         /* This should only happen if we've come to the end of the list */
-        mutt_socket_free(conn);
+        //XXX mutt_socket_free(conn);
+        FREE(&conn);
         return NULL;
       }
       else if (adata->state < IMAP_AUTHENTICATED)
@@ -1020,7 +1026,6 @@ struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int fl
   if (!adata)
   {
     adata = imap_adata_new();
-    conn->data = adata;
     adata->conn = conn;
     new = true;
   }
@@ -2343,40 +2348,14 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
 
 /**
  * imap_conn_find2 - Find an open IMAP connection
- * @param account ConnAccount to search
- * @param flags   Flags, e.g. #MUTT_IMAP_CONN_NONEW
- * @retval ptr  Authenticated connection
- * @retval NULL Failure, or no matching authenticated connections
- *
- * This version of imap_conn_find() is Account-based.
+ * @param adata Imap Account data
+ * @retval  0 Success
+ * @retval -1 Failure
  */
-struct ImapAccountData *imap_conn_find2(const struct ConnAccount *account, int flags)
+int imap_conn_find2(struct ImapAccountData *adata)
 {
-  /* The current connection is a new connection */
-  struct ImapAccountData *adata = NULL;
-
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
-  {
-    if (np->magic != MUTT_IMAP)
-      continue;
-
-    struct ImapAccountData *tmp_adata = np->adata;
-    if (mutt_account_match2(account, &tmp_adata->conn_account))
-    {
-      adata = tmp_adata;
-      break;
-    }
-  }
-
   if (!adata)
-    adata = imap_adata_new();
-
-  if (!adata->conn)
-  {
-    adata->conn = mutt_conn_new(account);
-    adata->conn->data = adata;
-  }
+    return -1;
 
   if (adata->state == IMAP_DISCONNECTED)
     imap_open_connection(adata);
@@ -2419,9 +2398,9 @@ struct ImapAccountData *imap_conn_find2(const struct ConnAccount *account, int f
   }
 
   if (adata->state < IMAP_AUTHENTICATED)
-    return NULL;
+    return -1;
 
-  return adata;
+  return 0;
 }
 
 /**
@@ -2429,7 +2408,13 @@ struct ImapAccountData *imap_conn_find2(const struct ConnAccount *account, int f
  */
 static int imap_mbox_open(struct Context *ctx)
 {
-  struct ImapAccountData *adata = NULL;
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m->account)
+    return -1;
+
   struct ImapStatus *status = NULL;
   char buf[PATH_MAX];
   char bufout[PATH_MAX];
@@ -2438,22 +2423,40 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore = NULL;
 
-  if (imap_parse_path(ctx->mailbox->path, &mx))
+  if (imap_parse_path(m->path, &mx))
   {
-    mutt_error(_("%s is an invalid IMAP path"), ctx->mailbox->path);
+    mutt_error(_("%s is an invalid IMAP path"), m->path);
     return -1;
   }
 
+  struct ImapAccountData *adata = m->account->adata;
+  if (!adata)
+  {
+    adata = imap_adata_new();
+    m->account->adata = adata;
+    m->account->free_adata = imap_adata_free;
+  }
+
+  struct Connection *conn = adata->conn;
+  if (!conn)
+  {
+    adata->conn = mutt_conn_new(&mx.account);
+    conn = adata->conn;
+    if (!conn)
+      return -1;
+  }
+
+  // if (conn->fd < 0)
+  mutt_account_hook(m->realpath);
+
   /* we require a connection which isn't currently in IMAP_SELECTED state */
-  adata = imap_conn_find2(&mx.account, MUTT_IMAP_CONN_NOSELECT);
+  if (imap_conn_find2(adata) < 0)
+    return -1; //XXX goto fail
 
   if (!adata)
     goto fail_noadata;
   if (adata->state < IMAP_AUTHENTICATED)
     goto fail;
-
-  /* once again the context is new */
-  // ctx->mailbox->mdata = adata;
 
   /* Clean up path and replace the one in the mailbox */
   imap_fix_path(adata, mx.mbox, buf, sizeof(buf));
@@ -2463,12 +2466,11 @@ static int imap_mbox_open(struct Context *ctx)
   adata->mbox_name = mutt_str_strdup(buf);
   imap_qualify_path(buf, sizeof(buf), &mx, adata->mbox_name);
 
-  mutt_str_strfcpy(ctx->mailbox->path, buf, sizeof(ctx->mailbox->path));
-  mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
-                   sizeof(ctx->mailbox->realpath));
+  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
+  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
 
   adata->ctx = ctx;
-  adata->mailbox = ctx->mailbox;
+  adata->mailbox = m;
 
   /* clear mailbox status */
   adata->status = 0;
@@ -2517,7 +2519,7 @@ static int imap_mbox_open(struct Context *ctx)
     condstore = "";
 
   snprintf(bufout, sizeof(bufout), "%s %s%s",
-           ctx->mailbox->readonly ? "EXAMINE" : "SELECT", buf, condstore);
+           m->readonly ? "EXAMINE" : "SELECT", buf, condstore);
 
   adata->state = IMAP_SELECTED;
 
@@ -2620,7 +2622,7 @@ static int imap_mbox_open(struct Context *ctx)
       !mutt_bit_isset(adata->capabilities, ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
-    ctx->mailbox->readonly = true;
+    m->readonly = true;
   }
 
   /* dump the mailbox flags we've found */
@@ -2648,13 +2650,13 @@ static int imap_mbox_open(struct Context *ctx)
         mutt_bit_isset(adata->mailbox->rights, MUTT_ACL_WRITE) ||
         mutt_bit_isset(adata->mailbox->rights, MUTT_ACL_INSERT)))
   {
-    ctx->mailbox->readonly = true;
+    m->readonly = true;
   }
 
-  ctx->mailbox->hdrmax = count;
-  ctx->mailbox->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
-  ctx->mailbox->v2r = mutt_mem_calloc(count, sizeof(int));
-  ctx->mailbox->msg_count = 0;
+  m->hdrmax = count;
+  m->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
+  m->v2r = mutt_mem_calloc(count, sizeof(int));
+  m->msg_count = 0;
 
   if (count && (imap_read_headers(adata, 1, count, true) < 0))
   {
@@ -2662,7 +2664,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
   }
 
-  mutt_debug(2, "msg_count is %d\n", ctx->mailbox->msg_count);
+  mutt_debug(2, "msg_count is %d\n", m->msg_count);
   FREE(&mx.mbox);
   return 0;
 

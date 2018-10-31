@@ -493,7 +493,8 @@ int pop_authenticate(struct PopAccountData *adata)
 
       if (ret != POP_A_UNAVAIL)
         attempts++;
-      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) || ((ret == POP_A_FAILURE) && !PopAuthTryAll))
+      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+          ((ret == POP_A_FAILURE) && !PopAuthTryAll))
       {
         break;
       }
