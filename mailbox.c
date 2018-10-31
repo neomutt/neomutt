@@ -382,7 +382,7 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
         m->msg_count = 0;
         m->msg_unread = 0;
         m->msg_flagged = 0;
-        nm_nonctx_get_count(m->path, &m->msg_count, &m->msg_unread);
+        nm_nonctx_get_count(m);
         if (m->msg_unread > 0)
         {
           MailboxCount++;

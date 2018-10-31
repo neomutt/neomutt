@@ -943,7 +943,7 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
   {
     if (nm_path_probe(np->m->path, NULL) == MUTT_NOTMUCH)
     {
-      nm_nonctx_get_count(np->m->path, &np->m->msg_count, &np->m->msg_unread);
+      nm_nonctx_get_count(np->m);
       add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
       continue;
     }

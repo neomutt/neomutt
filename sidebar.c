@@ -876,7 +876,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     {
 #ifdef USE_NOTMUCH
       if (m->magic == MUTT_NOTMUCH)
-        nm_nonctx_get_count(m->realpath, &m->msg_count, &m->msg_unread);
+        nm_nonctx_get_count(m);
       else
 #endif
       {

@@ -2189,6 +2189,13 @@ struct ConfigDef MuttVars[] = {
   ** variable is used to count unread messages in DB only. All other NeoMutt commands
   ** use standard (e.g. maildir) flags.
   */
+  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for flagged messages. The
+  ** variable is used to count flagged messages in DB only. All other NeoMutt commands
+  ** use standard (e.g. maildir) flags.
+  */
 #endif
 #ifdef USE_NNTP
   { "nntp_authenticators", DT_STRING, R_NONE, &NntpAuthenticators, 0 },
