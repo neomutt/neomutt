@@ -1071,7 +1071,7 @@ msgstr "SHA1 pirštų atspaudas: %s"
 
 #: conn/ssl.c:1003 conn/ssl.c:1005 conn/ssl_gnutls.c:734 conn/ssl_gnutls.c:736
 msgid "SHA256 Fingerprint: "
-msgstr "SHA256 pirštų atspaudas: %s"
+msgstr "SHA256 pirštų atspaudas: "
 
 #: conn/ssl.c:1008 conn/ssl_gnutls.c:770
 #, c-format
@@ -3100,7 +3100,7 @@ msgstr "%s@%s slaptažodis: "
 
 #: mutt_account.c:381
 msgid "No OAUTH refresh command defined"
-msgstr "OAUTH atnaujinimo komanda nenurodyta"
+msgstr "OAUTH atnaujinimo komanda nebuvo apibrėžta"
 
 #: mutt_account.c:388
 msgid "Unable to run refresh command"
