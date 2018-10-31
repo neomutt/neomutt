@@ -1683,7 +1683,7 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
   buf[buflen - 1] = '\0';
 
   if (using_default_data)
-    nm_mdata_free((void **) mdata);
+    nm_mdata_free((void **) &mdata);
 
   mutt_debug(1, "nm: uri from query '%s'\n", buf);
   return buf;
