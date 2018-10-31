@@ -347,10 +347,9 @@ void mutt_buffer_pool_init(void)
  */
 void mutt_buffer_pool_free(void)
 {
-  if (BufferPoolCount != BufferPoolLen)
-  {
-    mutt_debug(1, "Buffer pool leak: %zu/%zu\n", BufferPoolCount, BufferPoolLen);
-  }
+  mutt_debug(1, "mutt_buffer_pool_free: %zu of %zu returned to pool\n",
+             BufferPoolCount, BufferPoolLen);
+
   while (BufferPoolCount)
     mutt_buffer_free(&BufferPool[--BufferPoolCount]);
   FREE(&BufferPool);
