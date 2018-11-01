@@ -181,45 +181,50 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   struct stat sb;
 
   ctx->append = true;
-  ctx->mailbox->magic = mx_path_probe(ctx->mailbox->path, NULL);
-  if (ctx->mailbox->magic == MUTT_UNKNOWN)
+  if ((ctx->mailbox->magic == MUTT_UNKNOWN) || (ctx->mailbox->magic == MUTT_MAILBOX_ERROR))
   {
-    if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
-    {
-      ctx->mailbox->magic = MUTT_MAILBOX_ERROR;
-    }
-    else
-    {
-      mutt_error(_("%s is not a mailbox"), ctx->mailbox->path);
-      return -1;
-    }
-  }
+    ctx->mailbox->magic = mx_path_probe(ctx->mailbox->path, NULL);
 
-  if (ctx->mailbox->magic == MUTT_MAILBOX_ERROR)
-  {
-    if (stat(ctx->mailbox->path, &sb) == -1)
+    if (ctx->mailbox->magic == MUTT_UNKNOWN)
     {
-      if (errno == ENOENT)
+      if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
       {
-#ifdef USE_COMPRESSED
-        if (mutt_comp_can_append(ctx->mailbox))
-          ctx->mailbox->magic = MUTT_COMPRESSED;
-        else
-#endif
-          ctx->mailbox->magic = MboxType;
-        flags |= MUTT_APPENDNEW;
+        ctx->mailbox->magic = MUTT_MAILBOX_ERROR;
       }
       else
       {
-        mutt_perror(ctx->mailbox->path);
+        mutt_error(_("%s is not a mailbox"), ctx->mailbox->path);
         return -1;
       }
     }
-    else
-      return -1;
+
+    if (ctx->mailbox->magic == MUTT_MAILBOX_ERROR)
+    {
+      if (stat(ctx->mailbox->path, &sb) == -1)
+      {
+        if (errno == ENOENT)
+        {
+#ifdef USE_COMPRESSED
+          if (mutt_comp_can_append(ctx->mailbox))
+            ctx->mailbox->magic = MUTT_COMPRESSED;
+          else
+#endif
+            ctx->mailbox->magic = MboxType;
+          flags |= MUTT_APPENDNEW;
+        }
+        else
+        {
+          mutt_perror(ctx->mailbox->path);
+          return -1;
+        }
+      }
+      else
+        return -1;
+    }
+
+    ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
   }
 
-  ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
   if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->mbox_open_append)
     return -1;
 
@@ -243,11 +248,14 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
  */
 struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 {
-  if (!path || !path[0])
+  if (!m && (!path || !path[0]))
     return NULL;
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
   ctx->mailbox = m;
+  if (!ctx->mailbox)
+    ctx->mailbox = mx_mbox_find2(path);
+
   if (!ctx->mailbox)
   {
     ctx->mailbox = mailbox_new();

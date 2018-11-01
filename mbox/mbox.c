@@ -385,6 +385,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
     /* Allocate some memory to get started */
     ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
     ctx->mailbox->msg_count = 0;
+    ctx->mailbox->msg_unread = 0;
     ctx->mailbox->vcount = 0;
     mx_alloc_memory(ctx->mailbox);
   }
@@ -1010,6 +1011,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 {
   struct MboxAccountData *adata = mbox_adata_get(ctx->mailbox);
   if (!adata)
+    return -1;
+
+  if (!adata->fp && (mbox_mbox_open(ctx) < 0))
     return -1;
 
   struct stat st;
