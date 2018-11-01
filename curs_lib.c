@@ -59,9 +59,6 @@
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif

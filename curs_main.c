@@ -3469,10 +3469,6 @@ int mutt_index_menu(void)
         bool_str_toggle(Config, "sidebar_visible", NULL);
         mutt_window_reflow();
         break;
-
-      case OP_SIDEBAR_TOGGLE_VIRTUAL:
-        mutt_sb_toggle_virtual();
-        break;
 #endif
       default:
         if (menu->menu == MENU_MAIN)

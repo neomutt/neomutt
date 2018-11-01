@@ -49,9 +49,6 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "sort.h"
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 
 /* These Config Variables are only used in sidebar.c */
 short SidebarComponentDepth; ///< Config: (sidebar) Strip leading path components from sidebar folders
@@ -96,15 +93,6 @@ enum DivType
   SB_DIV_ASCII, /**< An ASCII vertical bar (pipe) */
   SB_DIV_UTF8   /**< A unicode line-drawing character */
 };
-
-/**
- * enum SidebarSrc - Display real or virtual mailboxes in the sidebar
- */
-enum SidebarSrc
-{
-  SB_SRC_INCOMING, /**< Display real mailboxes */
-  SB_SRC_VIRT,     /**< Display virtual mailboxes */
-} sidebar_source = SB_SRC_INCOMING;
 
 /**
  * sidebar_format_str - Format a string for the sidebar - Implements ::format_t
@@ -373,15 +361,6 @@ static void update_entries_visibility(void)
     sbe = Entries[i];
 
     sbe->is_hidden = false;
-
-#ifdef USE_NOTMUCH
-    if (((sbe->mailbox->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((sbe->mailbox->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
-    {
-      sbe->is_hidden = true;
-      continue;
-    }
-#endif
 
     if (!new_only)
       continue;
@@ -874,15 +853,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     if (Context && (Context->mailbox->realpath[0] != '\0') &&
         (mutt_str_strcmp(m->realpath, Context->mailbox->realpath) == 0))
     {
-#ifdef USE_NOTMUCH
-      if (m->magic == MUTT_NOTMUCH)
-        nm_nonctx_get_count(m);
-      else
-#endif
-      {
-        m->msg_unread = Context->mailbox->msg_unread;
-        m->msg_count = Context->mailbox->msg_count;
-      }
+      m->msg_unread = Context->mailbox->msg_unread;
+      m->msg_count = Context->mailbox->msg_count;
       m->msg_flagged = Context->mailbox->msg_flagged;
     }
 
@@ -1176,37 +1148,3 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
   mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }
 
-/**
- * mutt_sb_toggle_virtual - Switch between regular and virtual folders
- */
-void mutt_sb_toggle_virtual(void)
-{
-#ifdef USE_NOTMUCH
-  if (sidebar_source == SB_SRC_INCOMING)
-    sidebar_source = SB_SRC_VIRT;
-  else
-#endif
-    sidebar_source = SB_SRC_INCOMING;
-
-  TopIndex = -1;
-  OpnIndex = -1;
-  HilIndex = -1;
-  BotIndex = -1;
-
-  /* First clear all the sidebar entries */
-  EntryCount = 0;
-  FREE(&Entries);
-  EntryLen = 0;
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    /* and reintroduce the ones that are visible */
-    if (((np->m->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
-        ((np->m->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
-    {
-      mutt_sb_notify_mailbox(np->m, true);
-    }
-  }
-
-  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
-}
