@@ -650,10 +650,6 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t buflen, bool mai
       buf[0] = '\0';
     }
     FREE(&pc);
-#ifdef USE_NOTMUCH
-    if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))
-      nm_description_to_path(buf, buf, buflen);
-#endif
   }
 
   return 0;

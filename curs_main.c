@@ -2151,10 +2151,6 @@ int mutt_index_menu(void)
 
         if (flags)
           cp = _("Open mailbox in read-only mode");
-#ifdef USE_NOTMUCH
-        else if (op == OP_MAIN_CHANGE_VFOLDER)
-          cp = _("Open virtual folder");
-#endif
         else
           cp = _("Open mailbox");
 
@@ -2181,22 +2177,6 @@ int mutt_index_menu(void)
 
           /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(m->path);
-        }
-#endif
-#ifdef USE_NOTMUCH
-        else if (op == OP_MAIN_CHANGE_VFOLDER)
-        {
-          if (Context && (Context->mailbox->magic == MUTT_NOTMUCH))
-          {
-            mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
-            mutt_mailbox_vfolder(buf, sizeof(buf));
-          }
-          mutt_enter_vfolder(cp, buf, sizeof(buf), 1);
-          if (!buf[0])
-          {
-            mutt_window_clearline(MuttMessageWindow, 0);
-            break;
-          }
         }
 #endif
         else
