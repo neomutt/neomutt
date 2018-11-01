@@ -2509,7 +2509,7 @@ msgstr "%sgroup: pozor: chybné IDN „%s“"
 #: init.c:1261
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Chyba: %s"
 
 #: init.c:1332
 msgid "invalid header field"
@@ -2571,19 +2571,19 @@ msgid "%s: unknown command"
 msgstr "Příkaz %s není znám."
 
 #: init.c:3713 init.c:3737 init.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Neplatná hodnota přepínače %s: „%s“"
 
 #: init.c:3750
 #, c-format
 msgid "Option %s may not be set or reset from the pager"
-msgstr ""
+msgstr "Volba %s nemůže být nastavena z pageru"
 
 #: init.c:3788
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be set when in attach-message mode"
-msgstr "V režimu přikládání zpráv není tato funkce povolena."
+msgstr "Volba %s nemůže být nastavena v režimu přikládání zpráv."
 
 #: keymap.c:319 keymap.c:327
 #, c-format
@@ -3204,7 +3204,7 @@ msgid "History '%s'"
 msgstr "Historie „%s“"
 
 #: mutt_logging.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Neplatná hodnota přepínače %s: „%ld“"
 
