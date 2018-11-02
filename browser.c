@@ -63,9 +63,6 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 #ifdef USE_POP
 #include "pop/pop.h"
 #endif
@@ -418,17 +415,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     {
       char *s = NULL;
 
-#ifdef USE_NOTMUCH
-      if (nm_path_probe(folder->ff->name, NULL) == MUTT_NOTMUCH)
-        s = NONULL(folder->ff->desc);
-      else
-#endif
-#ifdef USE_IMAP
-          if (folder->ff->imap)
-        s = NONULL(folder->ff->desc);
-      else
-#endif
-        s = NONULL(folder->ff->name);
+      s = NONULL(folder->ff->name);
 
       snprintf(fn, sizeof(fn), "%s%s", s,
                folder->ff->local ?
@@ -971,42 +958,26 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
-#ifdef USE_IMAP
-      if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
-      {
-        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
-        continue;
+      switch (np->m->magic) {
+        case MUTT_IMAP:
+        case MUTT_POP:
+          add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
+          continue;
+        case MUTT_NOTMUCH:
+        case MUTT_NNTP:
+          add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
+          continue;
+        default: /* Continue */
+          break;
       }
-#endif
-#ifdef USE_POP
-      if (pop_path_probe(np->m->path, NULL) == MUTT_POP)
-      {
-        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
-        continue;
-      }
-#endif
-#ifdef USE_NNTP
-      if (nntp_path_probe(np->m->path, NULL) == MUTT_NNTP)
-      {
-        add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
-        continue;
-      }
-#endif
-#ifdef USE_NOTMUCH
-      if (nm_path_probe(np->m->path, NULL) == MUTT_NOTMUCH)
-      {
-        nm_nonctx_get_count(np->m);
-        add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
-        continue;
-      }
-#endif
+
       if (lstat(np->m->path, &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (maildir_path_probe(np->m->path, NULL) == MUTT_MAILDIR)
+      if (np->m->magic == MUTT_MAILDIR)
       {
         struct stat st2;
         char md[PATH_MAX];
@@ -1606,10 +1577,6 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         }
 #ifdef USE_IMAP
         else if (state.imap_browse)
-          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
-#endif
-#ifdef USE_NOTMUCH
-        else if (nm_path_probe(state.entry[menu->current].name, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
         else
