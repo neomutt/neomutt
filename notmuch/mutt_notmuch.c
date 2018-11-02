@@ -86,6 +86,7 @@ char *NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration
 char *NmRecordTags; ///< Config: (notmuch) Tags to apply to the 'record' mailbox (sent mail)
 char *NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
 char *NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
+char *NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 
 /**
  * string_to_query_type - Lookup a query type
@@ -1249,21 +1250,21 @@ static int update_email_flags(struct Context *ctx, struct Email *e, const char *
     if (*tag == '-')
     {
       tag = tag + 1;
-      if (strcmp(tag, "unread") == 0)
+      if (strcmp(tag, NmUnreadTag) == 0)
         mutt_set_flag(ctx, e, MUTT_READ, 1);
-      else if (strcmp(tag, "replied") == 0)
+      else if (strcmp(tag, NmRepliedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_REPLIED, 0);
-      else if (strcmp(tag, "flagged") == 0)
+      else if (strcmp(tag, NmFlaggedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_FLAG, 0);
     }
     else
     {
       tag = (*tag == '+') ? tag + 1 : tag;
-      if (strcmp(tag, "unread") == 0)
+      if (strcmp(tag, NmUnreadTag) == 0)
         mutt_set_flag(ctx, e, MUTT_READ, 0);
-      else if (strcmp(tag, "replied") == 0)
+      else if (strcmp(tag, NmRepliedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_REPLIED, 1);
-      else if (strcmp(tag, "flagged") == 0)
+      else if (strcmp(tag, NmFlaggedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_FLAG, 1);
     }
     end = NULL;

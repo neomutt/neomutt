@@ -52,6 +52,7 @@ extern char *NmQueryWindowTimebase;
 extern char *NmRecordTags;
 extern char *NmUnreadTag;
 extern char *NmFlaggedTag;
+extern char *NmRepliedTag;
 
 extern struct MxOps mx_notmuch_ops;
 
