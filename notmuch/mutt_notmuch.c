@@ -72,6 +72,9 @@
 #include "progress.h"
 #include "protos.h"
 
+const char NmUriProtocol[] = "notmuch://";
+const int NmUriProtocolLen = sizeof(NmUriProtocol) - 1;
+
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 int NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
 char *NmDefaultUri;  ///< Config: (notmuch) Path to the Notmuch database
@@ -1662,15 +1665,14 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
     if (get_limit(mdata) != NmDbLimit)
     {
-      added = snprintf(uri, sizeof(uri),
-                       "notmuch://%s?type=%s&limit=%d&query=", nm_db_get_filename(m),
+      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
+                       nm_db_get_filename(m),
                        query_type_to_string(mdata->query_type), get_limit(mdata));
     }
     else
     {
-      added = snprintf(uri, sizeof(uri),
-                       "notmuch://%s?type=%s&query=", nm_db_get_filename(m),
-                       query_type_to_string(mdata->query_type));
+      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
+                       nm_db_get_filename(m), query_type_to_string(mdata->query_type));
     }
   }
   else
@@ -1924,8 +1926,8 @@ int nm_nonctx_get_count(struct Mailbox *m)
   {
     if (NmDefaultUri)
     {
-      if (strncmp(NmDefaultUri, "notmuch://", 10) == 0)
-        db_filename = NmDefaultUri + 10;
+      if (nm_path_probe(NmDefaultUri, NULL) == MUTT_NOTMUCH)
+        db_filename = NmDefaultUri + NmUriProtocolLen;
       else
         db_filename = NmDefaultUri;
     }
@@ -2541,7 +2543,7 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, "notmuch://", 10) == 0)
+  if (mutt_str_strncasecmp(path, NmUriProtocol, NmUriProtocolLen) == 0)
     return MUTT_NOTMUCH;
 
   return MUTT_UNKNOWN;

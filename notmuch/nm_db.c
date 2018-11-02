@@ -51,8 +51,8 @@ const char *nm_db_get_filename(struct Mailbox *m)
     db_filename = Folder;
   if (!db_filename)
     return NULL;
-  if (strncmp(db_filename, "notmuch://", 10) == 0)
-    db_filename += 10;
+  if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
+    db_filename += NmUriProtocolLen;
 
   mutt_debug(2, "nm: db filename '%s'\n", db_filename);
   return db_filename;
