@@ -981,7 +981,7 @@ struct ConfigDef MuttVars[] = {
   ** you use ``+'' or ``='' for any other variables since expansion takes place
   ** when handling the ``$mailboxes'' command.
   */
-  { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
+  { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display to your
@@ -4157,7 +4157,7 @@ struct ConfigDef MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``index''
