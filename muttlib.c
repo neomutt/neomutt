@@ -189,21 +189,17 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       case '=':
       case '+':
       {
-#ifdef USE_IMAP
+        enum MailboxType mb_type = mx_path_probe(Folder, NULL);
+
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if ((imap_path_probe(Folder, NULL) == MUTT_IMAP) &&
+        if ((mb_type == MUTT_IMAP) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
           mutt_str_strfcpy(p, Folder, sizeof(p));
         }
-        else
-#endif
-#ifdef USE_NOTMUCH
-            if (nm_path_probe(Folder, NULL) == MUTT_NOTMUCH)
+        else if (mb_type == MUTT_NOTMUCH)
           mutt_str_strfcpy(p, Folder, sizeof(p));
-        else
-#endif
-            if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
+        else if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
           mutt_str_strfcpy(p, Folder, sizeof(p));
         else
           snprintf(p, sizeof(p), "%s/", NONULL(Folder));
@@ -1617,16 +1613,13 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
  */
 void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
-#ifdef USE_IMAP
-  if (imap_path_probe(path, NULL) == MUTT_IMAP)
+  enum MailboxType mb_magic = mx_path_probe(path, NULL);
+
+  if (mb_magic == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
-  else
-#endif
-#ifdef USE_NOTMUCH
-      if (nm_path_probe(path, NULL) == MUTT_NOTMUCH)
+  else if (mb_magic == MUTT_NOTMUCH)
     mutt_str_strfcpy(buf, Folder, buflen);
   else
-#endif
   {
     mutt_str_strfcpy(buf, path, buflen);
     int n = mutt_str_strlen(buf);

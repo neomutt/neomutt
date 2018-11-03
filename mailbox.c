@@ -315,36 +315,28 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
   if (m->magic != MUTT_IMAP)
   {
     m->has_new = false;
-#ifdef USE_POP
-    if (pop_path_probe(m->path, NULL) == MUTT_POP)
+
+    enum MailboxType mb_magic = mx_path_probe(m->path, NULL);
+
+    switch (mb_magic)
     {
-      m->magic = MUTT_POP;
-    }
-    else
-#endif
-#ifdef USE_NNTP
-        if ((m->magic == MUTT_NNTP) || (nntp_path_probe(m->path, NULL) == MUTT_NNTP))
-    {
-      m->magic = MUTT_NNTP;
-    }
-    else
-#endif
-#ifdef USE_NOTMUCH
-        if (nm_path_probe(m->path, NULL) == MUTT_NOTMUCH)
-    {
-      m->magic = MUTT_NOTMUCH;
-    }
-    else
-#endif
+      case MUTT_POP:
+      case MUTT_NNTP:
+      case MUTT_NOTMUCH:
+        m->magic = mb_magic;
+        break;
+      default:
         if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
             ((m->magic == MUTT_UNKNOWN) && (m->magic = mx_path_probe(m->path, NULL)) <= 0))
-    {
-      /* if the mailbox still doesn't exist, set the newly created flag to be
-       * ready for when it does. */
-      m->newly_created = true;
-      m->magic = MUTT_UNKNOWN;
-      m->size = 0;
-      return;
+        {
+          /* if the mailbox still doesn't exist, set the newly created flag to be
+           * ready for when it does. */
+          m->newly_created = true;
+          m->magic = MUTT_UNKNOWN;
+          m->size = 0;
+          return;
+        }
+        break; // kept for consistency.
     }
   }
 
@@ -693,11 +685,11 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
+      enum MailboxType mb_type = mx_path_probe(buf->data, NULL);
+
 #ifdef USE_NOTMUCH
-      if (nm_path_probe(buf->data, NULL) == MUTT_NOTMUCH)
-      {
+      if (mb_type == MUTT_NOTMUCH)
         nm_normalize_uri(buf->data, tmp, sizeof(tmp));
-      }
       else
 #endif
       {
