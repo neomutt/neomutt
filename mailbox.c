@@ -679,17 +679,8 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      enum MailboxType mb_type = mx_path_probe(buf->data, NULL);
-
-#ifdef USE_NOTMUCH
-      if (mb_type == MUTT_NOTMUCH)
-        nm_normalize_uri(buf->data, tmp, sizeof(tmp));
-      else
-#endif
-      {
-        mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
-        mutt_expand_path(tmp, sizeof(tmp));
-      }
+      mutt_str_strfcpy(tmp, buf->data, sizeof(tmp));
+      mutt_expand_path(tmp, sizeof(tmp));
     }
 
     struct MailboxNode *np = NULL;

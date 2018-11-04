@@ -1694,67 +1694,6 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 }
 
 /**
- * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
- * @param uri    Original URI to be parsed
- * @param buf    Buffer for the reformatted URI
- * @param buflen Size of the buffer
- * @retval true if buf contains a normalized version of the query
- * @retval false if uri contains an invalid query
- *
- * This function aims at making notmuch searches URI representations deterministic,
- * so that when comparing two equivalent searches they will be the same. It works
- * by building a notmuch context object from the original search string, and
- * building a new from the notmuch context object.
- *
- * It's aimed to be used by mailbox when parsing the virtual_mailboxes to make the
- * parsed user written search strings comparable to the internally generated ones.
- */
-bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
-{
-  mutt_debug(2, "(%s)\n", uri);
-  char tmp[PATH_MAX];
-  int rc = -1;
-
-  struct Mailbox tmp_mbox = { { 0 } };
-  struct NmMboxData *tmp_mdata = nm_mdata_new(uri);
-
-  if (!tmp_mdata)
-    return false;
-
-  tmp_mbox.magic = MUTT_NOTMUCH;
-  tmp_mbox.mdata = tmp_mdata;
-
-  mutt_debug(2, "#1 () -> db_query: %s\n", tmp_mdata->db_query);
-
-  if (!get_query_string(tmp_mdata, false))
-    goto gone;
-
-  mutt_debug(2, "#2 () -> db_query: %s\n", tmp_mdata->db_query);
-
-  mutt_str_strfcpy(tmp, tmp_mdata->db_query, sizeof(tmp));
-
-  if (!nm_uri_from_query(&tmp_mbox, tmp, sizeof(tmp)))
-    goto gone;
-
-  mutt_str_strfcpy(buf, tmp, buflen);
-
-  mutt_debug(2, "#3 (%s) -> %s\n", uri, buf);
-
-  rc = 0;
-gone:
-  url_free(&tmp_mdata->db_url);
-  FREE(&tmp_mdata->db_url_holder);
-  FREE(&tmp_mdata);
-  if (rc < 0)
-  {
-    mutt_error(_("failed to parse notmuch uri: %s"), uri);
-    mutt_debug(2, "() -> error\n");
-    return false;
-  }
-  return true;
-}
-
-/**
  * nm_query_window_forward - Function to move the current search window forward in time
  *
  * Updates `nm_query_window_current_position` by decrementing it by 1, or does nothing
