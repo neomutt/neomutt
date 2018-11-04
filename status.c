@@ -40,9 +40,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 
 /* These Config Variables are only used in status.c */
 struct MbTable *StatusChars; ///< Config: Indicator characters for the status bar
@@ -138,20 +135,20 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'f':
     {
       struct Mailbox *m = Context ? Context->mailbox : NULL;
-#ifdef USE_NOTMUCH
-      if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
-        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
-      else
-#endif
+
 #ifdef USE_COMPRESSED
-          if (m && m->compress_info && (m->realpath[0] != '\0'))
+      if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, m->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
-          if (m && (m->path[0] != '\0'))
+          if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
+      {
+        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
+      }
+      else if (m && (m->path[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));

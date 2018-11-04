@@ -57,9 +57,6 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 
 /* These Config Variables are only used in muttlib.c */
 struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
@@ -553,18 +550,14 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   scheme = url_check_scheme(buf);
 
-#ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
     imap_pretty_mailbox(buf, Folder);
     return;
   }
-#endif
 
-#ifdef USE_NOTMUCH
   if (scheme == U_NOTMUCH)
     return;
-#endif
 
   /* if buf is an url, only collapse path component */
   if (scheme != U_UNKNOWN)

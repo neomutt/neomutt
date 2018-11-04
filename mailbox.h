@@ -139,10 +139,6 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 
 extern struct MailboxList AllMailboxes;
 
-#ifdef USE_NOTMUCH
-void mutt_mailbox_vfolder(char *buf, size_t buflen);
-#endif
-
 struct Mailbox *mailbox_new(void);
 void            mailbox_free(struct Mailbox **m);
 void            mutt_context_free(struct Context **ctx);

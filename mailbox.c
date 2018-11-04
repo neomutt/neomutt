@@ -342,14 +342,8 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
 
   /* check to see if the folder is the currently selected folder before polling */
   if (!Context || (Context->mailbox->path[0] == '\0') ||
-      ((m->magic == MUTT_IMAP ||
-#ifdef USE_NNTP
-        m->magic == MUTT_NNTP ||
-#endif
-#ifdef USE_NOTMUCH
-        m->magic == MUTT_NOTMUCH ||
-#endif
-        m->magic == MUTT_POP) ?
+      ((m->magic == MUTT_IMAP || m->magic == MUTT_NNTP ||
+        m->magic == MUTT_NOTMUCH || m->magic == MUTT_POP) ?
            (mutt_str_strcmp(m->path, Context->mailbox->path) != 0) :
            (sb.st_dev != ctx_sb->st_dev || sb.st_ino != ctx_sb->st_ino)))
   {
@@ -926,42 +920,6 @@ void mutt_mailbox(char *s, size_t slen)
   /* no folders with new mail */
   *s = '\0';
 }
-
-#ifdef USE_NOTMUCH
-/**
- * mutt_mailbox_vfolder - Find the first virtual folder with new mail
- * @param buf    Buffer for the folder name
- * @param buflen Length of the buffer
- */
-void mutt_mailbox_vfolder(char *buf, size_t buflen)
-{
-  if (mutt_mailbox_check(0))
-  {
-    bool found = false;
-    for (int pass = 0; pass < 2; pass++)
-    {
-      struct MailboxNode *np = NULL;
-      STAILQ_FOREACH(np, &AllMailboxes, entries)
-      {
-        if (np->m->magic != MUTT_NOTMUCH)
-          continue;
-        if ((found || pass) && np->m->has_new)
-        {
-          mutt_str_strfcpy(buf, np->m->desc, buflen);
-          return;
-        }
-        if (mutt_str_strcmp(buf, np->m->path) == 0)
-          found = true;
-      }
-    }
-
-    mutt_mailbox_check(MUTT_MAILBOX_CHECK_FORCE); /* Mailbox was wrong - resync things */
-  }
-
-  /* no folders with new mail */
-  *buf = '\0';
-}
-#endif
 
 /**
  * mutt_context_free - Free a Context
