@@ -116,11 +116,7 @@ void nm_adata_free(void **ptr)
   struct NmAccountData *adata = *ptr;
   if (adata->db)
   {
-#ifdef NOTMUCH_API_3
-    notmuch_database_destroy(adata->db);
-#else
-    notmuch_database_close(adata->db);
-#endif
+    nm_db_free(adata->db);
     adata->db = NULL;
   }
 
@@ -1962,11 +1958,7 @@ int nm_nonctx_get_count(struct Mailbox *m)
 done:
   if (db)
   {
-#ifdef NOTMUCH_API_3
-    notmuch_database_destroy(db);
-#else
-    notmuch_database_close(db);
-#endif
+    nm_db_free(db);
     mutt_debug(1, "nm: count close DB\n");
   }
   url_free(&url);

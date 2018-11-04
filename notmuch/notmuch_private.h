@@ -96,6 +96,7 @@ struct NmEmailData
 
 void                nm_db_debug_check (struct Mailbox *m);
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);
+void                nm_db_free        (notmuch_database_t *db);
 const char *        nm_db_get_filename(struct Mailbox *m);
 int                 nm_db_get_mtime   (struct Mailbox *m, time_t *mtime);
 notmuch_database_t *nm_db_get         (struct Mailbox *m, bool writable);
