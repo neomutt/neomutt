@@ -63,9 +63,6 @@
 #ifdef USE_NNTP
 #include "nntp/nntp.h"
 #endif
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 #ifdef USE_POP
 #include "pop/pop.h"
 #endif
@@ -418,17 +415,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     {
       char *s = NULL;
 
-#ifdef USE_NOTMUCH
-      if (nm_path_probe(folder->ff->name, NULL) == MUTT_NOTMUCH)
-        s = NONULL(folder->ff->desc);
-      else
-#endif
-#ifdef USE_IMAP
-          if (folder->ff->imap)
-        s = NONULL(folder->ff->desc);
-      else
-#endif
-        s = NONULL(folder->ff->name);
+      s = NONULL(folder->ff->name);
 
       snprintf(fn, sizeof(fn), "%s%s", s,
                folder->ff->local ?
@@ -921,39 +908,6 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
   return 0;
 }
 
-#ifdef USE_NOTMUCH
-/**
- * examine_vfolders - Get a list of virtual folders
- * @param menu   Current menu
- * @param state  State of browser
- * @retval  0 Success
- * @retval -1 Error
- */
-static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
-{
-  if (STAILQ_EMPTY(&AllMailboxes))
-    return -1;
-
-  mutt_mailbox_check(0);
-
-  init_state(state, menu);
-
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if (nm_path_probe(np->m->path, NULL) == MUTT_NOTMUCH)
-    {
-      nm_nonctx_get_count(np->m);
-      add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
-      continue;
-    }
-  }
-
-  browser_sort(state);
-  return 0;
-}
-#endif
-
 /**
  * examine_mailboxes - Get list of mailboxes/subscribed newsgroups
  * @param menu  Current menu
@@ -1004,34 +958,26 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
-#ifdef USE_IMAP
-      if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
-      {
-        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
-        continue;
+      switch (np->m->magic) {
+        case MUTT_IMAP:
+        case MUTT_POP:
+          add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
+          continue;
+        case MUTT_NOTMUCH:
+        case MUTT_NNTP:
+          add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
+          continue;
+        default: /* Continue */
+          break;
       }
-#endif
-#ifdef USE_POP
-      if (pop_path_probe(np->m->path, NULL) == MUTT_POP)
-      {
-        add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);
-        continue;
-      }
-#endif
-#ifdef USE_NNTP
-      if (nntp_path_probe(np->m->path, NULL) == MUTT_NNTP)
-      {
-        add_folder(menu, state, np->m->path, np->m->desc, NULL, np->m, NULL);
-        continue;
-      }
-#endif
+
       if (lstat(np->m->path, &s) == -1)
         continue;
 
       if ((!S_ISREG(s.st_mode)) && (!S_ISDIR(s.st_mode)) && (!S_ISLNK(s.st_mode)))
         continue;
 
-      if (maildir_path_probe(np->m->path, NULL) == MUTT_MAILDIR)
+      if (np->m->magic == MUTT_MAILDIR)
       {
         struct stat st2;
         char md[PATH_MAX];
@@ -1065,16 +1011,6 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
   return regexec(rx, ((struct FolderFile *) menu->data)[line].name, 0, NULL, 0);
 }
 
-#ifdef USE_NOTMUCH
-/**
- * select_vfolder_search - Menu search callback for virtual folders - Implements Menu::menu_search()
- */
-static int select_vfolder_search(struct Menu *menu, regex_t *rx, int line)
-{
-  return regexec(rx, ((struct FolderFile *) menu->data)[line].desc, 0, NULL, 0);
-}
-#endif
-
 /**
  * folder_make_entry - Format a menu item for the folder browser - Implements Menu::menu_make_entry()
  */
@@ -1100,22 +1036,6 @@ static void folder_make_entry(char *buf, size_t buflen, struct Menu *menu, int l
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
-
-#ifdef USE_NOTMUCH
-/**
- * vfolder_make_entry - Format a menu item for the virtual folder list - Implements Menu::menu_make_entry()
- */
-static void vfolder_make_entry(char *buf, size_t buflen, struct Menu *menu, int line)
-{
-  struct Folder folder;
-
-  folder.ff = &((struct FolderFile *) menu->data)[line];
-  folder.num = line;
-
-  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
-                      folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
-}
-#endif
 
 /**
  * browser_highlight_default - Decide which browser item should be highlighted
@@ -1381,11 +1301,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
     }
 #endif
   }
-#ifdef USE_NOTMUCH
-  else if (!(flags & MUTT_SEL_VFOLDER))
-#else
   else
-#endif
   {
     if (!folder)
       getcwd(LastDir, sizeof(LastDir));
@@ -1483,15 +1399,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 
   *file = 0;
 
-#ifdef USE_NOTMUCH
-  if (flags & MUTT_SEL_VFOLDER)
-  {
-    if (examine_vfolders(NULL, &state) == -1)
-      goto bail;
-  }
-  else
-#endif
-      if (mailbox)
+  if (mailbox)
   {
     examine_mailboxes(NULL, &state);
   }
@@ -1511,16 +1419,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
   if (multiple)
     menu->menu_tag = file_tag;
 
-#ifdef USE_NOTMUCH
-  if (flags & MUTT_SEL_VFOLDER)
-  {
-    menu->menu_make_entry = vfolder_make_entry;
-    menu->menu_search = select_vfolder_search;
-  }
-  else
-#endif
-    menu->menu_make_entry = folder_make_entry;
-
+  menu->menu_make_entry = folder_make_entry;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_FOLDER,
 #ifdef USE_NNTP
                                  OptNews ? FolderNewsHelp :
@@ -1678,10 +1577,6 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         }
 #ifdef USE_IMAP
         else if (state.imap_browse)
-          mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
-#endif
-#ifdef USE_NOTMUCH
-        else if (nm_path_probe(state.entry[menu->current].name, NULL) == MUTT_NOTMUCH)
           mutt_str_strfcpy(file, state.entry[menu->current].name, filelen);
 #endif
         else

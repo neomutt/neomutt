@@ -3088,7 +3088,6 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
       if (mp->m->magic == MUTT_NOTMUCH)
       {
         cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
-        mutt_sb_toggle_virtual();
         break;
       }
     }
