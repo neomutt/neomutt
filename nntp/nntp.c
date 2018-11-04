@@ -116,7 +116,7 @@ struct ChildCtx
 
 /**
  * nntp_adata_free - Free data attached to the Mailbox
- * @param data NNTP data
+ * @param ptr NNTP data
  *
  * The NntpAccountData struct stores global NNTP data, such as the connection to
  * the database.  This function will close the database, free the resources and
