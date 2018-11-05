@@ -121,7 +121,7 @@ void nntp_acache_free(struct NntpMboxData *mdata)
  */
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 {
-  nntp_mdata_free(obj);
+  nntp_mdata_free(&obj);
 }
 
 /**
