@@ -36,6 +36,7 @@
 #include "curs_lib.h"
 #include "message.h"
 #include "signal2.h"
+#include "mutt_attach.h"
 
 static sigset_t Sigset;
 static sigset_t SigsetSys;
@@ -73,6 +74,7 @@ void mutt_sig_exit_handler(int sig)
 #else
   printf(_("Caught signal %d ...  Exiting.\n"), sig);
 #endif
+  mutt_unlink_temp_attachments();
   exit(0);
 }
 
