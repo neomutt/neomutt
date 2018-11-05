@@ -31,6 +31,7 @@
 #include <signal.h>
 #include "mutt/mutt.h"
 #include "globals.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 
 static int IsEndwin = 0;
@@ -82,7 +83,8 @@ static void curses_signal_handler(int sig)
 static void curses_exit_handler(int sig)
 {
   curs_set(1);
-  endwin();                   /* just to be safe */
+  endwin(); /* just to be safe */
+  mutt_unlink_temp_attachments();
   mutt_sig_exit_handler(sig); /* DOES NOT RETURN */
 }
 
