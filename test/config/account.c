@@ -194,19 +194,23 @@ void config_account(void)
   rc = cs_str_initial_set(cs, name, "42", &err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", err.data);
-    return;
-  }
-
-  mutt_buffer_reset(&err);
-  rc = cs_str_initial_get(cs, name, &err);
-  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
-  {
     TEST_MSG("Expected error\n");
   }
   else
   {
     TEST_MSG("This test should have failed\n");
+    return;
+  }
+
+  mutt_buffer_reset(&err);
+  rc = cs_str_initial_get(cs, name, &err);
+  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+    TEST_MSG("Initial %s\n", err.data);
+  }
+  else
+  {
+    TEST_MSG("%s\n", err.data);
     return;
   }
 

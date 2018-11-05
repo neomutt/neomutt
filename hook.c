@@ -290,6 +290,7 @@ static void delete_hook(struct Hook *h)
   if (h->regex.regex)
   {
     regfree(h->regex.regex);
+    FREE(&h->regex.regex);
   }
   mutt_pattern_free(&h->pattern);
   FREE(&h);

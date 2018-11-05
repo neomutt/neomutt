@@ -62,6 +62,7 @@ void mutt_env_free(struct Envelope **p)
   mutt_addr_free(&(*p)->sender);
   mutt_addr_free(&(*p)->reply_to);
   mutt_addr_free(&(*p)->mail_followup_to);
+  mutt_addr_free(&(*p)->x_original_to);
 
   FREE(&(*p)->list_post);
   FREE(&(*p)->subject);

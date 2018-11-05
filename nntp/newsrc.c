@@ -536,6 +536,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
     mutt_account_tourl(acct, &url);
     url.path = mutt_str_strdup(src);
     url_tostring(&url, file, sizeof(file), U_PATH);
+    FREE(&url.path);
   }
   else
     mutt_str_strfcpy(file, src ? src : "", sizeof(file));

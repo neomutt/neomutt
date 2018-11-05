@@ -1099,6 +1099,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
         m->hdrs[idx]->replied = h.data->replied;
         m->hdrs[idx]->received = h.received;
         m->hdrs[idx]->edata = (void *) (h.data);
+        m->hdrs[idx]->free_edata = imap_edata_free;
         STAILQ_INIT(&m->hdrs[idx]->tags);
         driver_tags_replace(&m->hdrs[idx]->tags, mutt_str_strdup(h.data->flags_remote));
 

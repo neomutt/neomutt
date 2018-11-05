@@ -443,7 +443,7 @@ static bool get_hostname(void)
 #endif
   }
   if (Hostname)
-    cs_str_initial_set(Config, "hostname", mutt_str_strdup(Hostname), NULL);
+    cs_str_initial_set(Config, "hostname", Hostname, NULL);
 
   return true;
 }

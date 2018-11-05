@@ -1209,14 +1209,15 @@ void mx_alloc_memory(struct Mailbox *m)
     mutt_exit(1);
   }
 
+  m->hdrmax += 25;
   if (m->hdrs)
   {
-    mutt_mem_realloc(&m->hdrs, sizeof(struct Email *) * (m->hdrmax += 25));
+    mutt_mem_realloc(&m->hdrs, sizeof(struct Email *) * m->hdrmax);
     mutt_mem_realloc(&m->v2r, sizeof(int) * m->hdrmax);
   }
   else
   {
-    m->hdrs = mutt_mem_calloc((m->hdrmax += 25), sizeof(struct Email *));
+    m->hdrs = mutt_mem_calloc(m->hdrmax, sizeof(struct Email *));
     m->v2r = mutt_mem_calloc(m->hdrmax, sizeof(int));
   }
   for (int i = m->msg_count; i < m->hdrmax; i++)

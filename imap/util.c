@@ -84,6 +84,14 @@ void imap_adata_free(void **ptr)
   FREE(&adata->buf);
   mutt_bcache_close(&adata->bcache);
   FREE(&adata->cmds);
+
+  if (adata->conn)
+  {
+    if (adata->conn->conn_close)
+      adata->conn->conn_close(adata->conn);
+    FREE(&adata->conn);
+  }
+
   FREE(ptr);
 }
 
@@ -187,6 +195,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
   if (!adata)
   {
     mutt_str_strfcpy(buf, path, buflen);
+    FREE(&mx.mbox);
     return;
   }
 
