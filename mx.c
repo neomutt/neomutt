@@ -264,6 +264,18 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     /* int rc = */ mx_path_canon2(ctx->mailbox, Folder);
   }
 
+  if (!ctx->mailbox->account)
+    ctx->mailbox->account = mx_ac_find(ctx->mailbox);
+
+  if (!ctx->mailbox->account)
+  {
+    struct Account *a = account_create();
+    ctx->mailbox->account = a;
+    a->magic = ctx->mailbox->magic;
+    TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+    mx_ac_add(a, ctx->mailbox);
+  }
+
 #if 0
   if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
   {
