@@ -425,6 +425,7 @@ unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool
   nb.parts = NULL;
   nb.email = NULL;
   nb.aptr = NULL;
+  nb.language = NULL;
 
   lazy_realloc(&d, *off + sizeof(struct Body));
   memcpy(d + *off, &nb, sizeof(struct Body));
@@ -454,6 +455,7 @@ void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool 
 {
   memcpy(c, d + *off, sizeof(struct Body));
   *off += sizeof(struct Body);
+  c->language = NULL;
 
   serial_restore_char(&c->xtype, d, off, false);
   serial_restore_char(&c->subtype, d, off, false);
