@@ -272,6 +272,15 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
     case 'd':
       tm->tm_mday += offset;
       break;
+    case 'H':
+      tm->tm_hour += offset;
+      break;
+    case 'M':
+      tm->tm_min += offset;
+      break;
+    case 'S':
+      tm->tm_sec += offset;
+      break;
     default:
       return s;
   }
@@ -471,6 +480,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   struct Buffer buf;
   struct tm min, max;
+  char *offset_type = NULL;
 
   mutt_buffer_init(&buf);
   char *pexpr = s->dptr;
@@ -529,9 +539,16 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       if (buf.data[0] == '=')
         exact++;
     }
-    tm->tm_hour = 23;
-    tm->tm_min = 59;
-    tm->tm_sec = 59;
+
+    /* Reset the HMS unless we are relative matching using one of those
+     * offsets. */
+    strtol(s->data + 1, &offset_type, 0);
+    if (!(*offset_type && strchr("HMS", *offset_type)))
+    {
+      tm->tm_hour = 23;
+      tm->tm_min = 59;
+      tm->tm_sec = 59;
+    }
 
     /* force negative offset */
     get_offset(tm, buf.data + 1, -1);
