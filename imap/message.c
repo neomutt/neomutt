@@ -776,6 +776,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
         /*  mailbox->hdrs[msgno]->received is restored from mutt_hcache_restore */
         m->hdrs[idx]->edata = h.data;
+        m->hdrs[idx]->free_edata = imap_edata_free;
         STAILQ_INIT(&m->hdrs[idx]->tags);
         driver_tags_replace(&m->hdrs[idx]->tags, mutt_str_strdup(h.data->flags_remote));
 
