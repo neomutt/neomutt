@@ -2443,7 +2443,7 @@ static int imap_mbox_open(struct Context *ctx)
     adata->conn = mutt_conn_new(&mx.account);
     conn = adata->conn;
     if (!conn)
-      return -1;
+      goto fail;
   }
 
   // if (conn->fd < 0)
@@ -2451,11 +2451,6 @@ static int imap_mbox_open(struct Context *ctx)
 
   /* we require a connection which isn't currently in IMAP_SELECTED state */
   if (imap_conn_find2(adata) < 0)
-    return -1; //XXX goto fail
-
-  if (!adata)
-    goto fail_noadata;
-  if (adata->state < IMAP_AUTHENTICATED)
     goto fail;
 
   /* Clean up path and replace the one in the mailbox */
@@ -2672,7 +2667,6 @@ static int imap_mbox_open(struct Context *ctx)
 fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
-fail_noadata:
   FREE(&mx.mbox);
   return -1;
 }
