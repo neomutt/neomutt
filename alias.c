@@ -439,6 +439,7 @@ retry_name:
     if (mutt_addrlist_to_intl(new->addr, &err))
     {
       mutt_error(_("Bad IDN: '%s'"), err);
+      FREE(&err);
       continue;
     }
   } while (!new->addr);

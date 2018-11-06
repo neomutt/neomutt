@@ -3055,6 +3055,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
   if (mutt_addrlist_to_intl(from, &err))
   {
     mutt_error(_("Bad IDN %s while preparing resent-from"), err);
+    FREE(&err);
     mutt_addr_free(&from);
     return -1;
   }
