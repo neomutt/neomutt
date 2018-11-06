@@ -2657,6 +2657,7 @@ static int imap_mbox_open(struct Context *ctx)
   m->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(count, sizeof(int));
   m->msg_count = 0;
+  m->vcount = 0;
 
   if (count && (imap_read_headers(adata, 1, count, true) < 0))
   {
