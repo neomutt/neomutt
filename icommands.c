@@ -23,6 +23,7 @@
 #include "config.h"
 #include "mutt/mutt.h"
 #include "icommands.h"
+#include "globals.h"
 #include "muttlib.h"
 #include "pager.h"
 #include "protos.h"
@@ -204,8 +205,6 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
   /* TODo: implement ':set' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  int i;
   char tempfile[PATH_MAX];
   FILE *fpout = NULL;
 
@@ -216,13 +215,17 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_error(_("Could not create temporary file"));
     return 0;
   }
+
+  dump_config(Config, CS_DUMP_STYLE_NEO | CS_DUMP_STYLE_FILE, 0, fpout);
+  fflush(fpout);
+
   struct Pager info = { 0 };
-  i = mutt_pager("set", tempfile, MUTT_PAGER_RETWINCH, &info);
-  if (!i)
+  if (mutt_pager("set", tempfile, 0, &info) == -1)
   {
     mutt_error(_("Could not create temporary file"));
     return 0;
   }
+
   /*  mutt_enter_command(); */
   return 1;
 }

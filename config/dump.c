@@ -145,7 +145,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
 }
 
 /**
- * dump_config_mutt - Dump the config in the style of Mutt
+ * dump_config_mutt - Dump the config in the style of Mutt to stdout
  * @param cs      Config items
  * @param he      HashElem representing config item
  * @param value   Current value of the config item
@@ -155,27 +155,42 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
 void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he,
                       struct Buffer *value, struct Buffer *initial, int flags)
 {
+  dump_config_mutt_file(cs, he, value, initial, flags, stdout);
+}
+
+/**
+ * dump_config_mutt_file - Dump the config in the style of Mutt a file
+ * @param cs      Config items
+ * @param he      HashElem representing config item
+ * @param value   Current value of the config item
+ * @param initial Initial value of the config item
+ * @param flags   Flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param fp      File pointer to write to
+ */
+void dump_config_mutt_file(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
+                           struct Buffer *initial, int flags, FILE *fp)
+{
   const char *name = he->key.strkey;
 
   if (DTYPE(he->type) == DT_BOOL)
   {
     if ((value->data[0] == 'y') || ((value->data[0] == '"') && (value->data[1] == 'y')))
     {
-      printf("%s is set\n", name);
+      fprintf(fp, "%s is set\n", name);
     }
     else
     {
-      printf("%s is unset\n", name);
+      fprintf(fp, "%s is unset\n", name);
     }
   }
   else
   {
-    printf("%s=%s\n", name, value->data);
+    fprintf(fp, "%s=%s\n", name, value->data);
   }
 }
 
 /**
- * dump_config_neo - Dump the config in the style of NeoMutt
+ * dump_config_neo - Dump the config in the style of NeoMutt to stdout
  * @param cs      Config items
  * @param he      HashElem representing config item
  * @param value   Current value of the config item
@@ -184,6 +199,21 @@ void dump_config_mutt(struct ConfigSet *cs, struct HashElem *he,
  */
 void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
                      struct Buffer *value, struct Buffer *initial, int flags)
+{
+  dump_config_neo_file(cs, he, value, initial, flags, stdout);
+}
+
+/**
+ * dump_config_neo_file - Dump the config in the style of NeoMutt to a file
+ * @param cs      Config items
+ * @param he      HashElem representing config item
+ * @param value   Current value of the config item
+ * @param initial Initial value of the config item
+ * @param flags   Flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param fp      File pointer to write to
+ */
+void dump_config_neo_file(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value,
+                          struct Buffer *initial, int flags, FILE *fp)
 {
   const char *name = he->key.strkey;
 
@@ -194,7 +224,7 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
   {
     const struct ConfigDef *cdef = he->data;
     const char *syn = (const char *) cdef->initial;
-    printf("# synonym: %s -> %s\n", name, syn);
+    fprintf(fp, "# synonym: %s -> %s\n", name, syn);
     return;
   }
 
@@ -202,21 +232,21 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
   bool show_value = !(flags & CS_DUMP_HIDE_VALUE);
 
   if (show_name && show_value)
-    printf("set ");
+    fprintf(fp, "set ");
   if (show_name)
-    printf("%s", name);
+    fprintf(fp, "%s", name);
   if (show_name && show_value)
-    printf(" = ");
+    fprintf(fp, " = ");
   if (show_value)
-    printf("%s", value->data);
+    fprintf(fp, "%s", value->data);
   if (show_name || show_value)
-    printf("\n");
+    fprintf(fp, "\n");
 
   if (flags & CS_DUMP_SHOW_DEFAULTS)
   {
     const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
     if (cst)
-      printf("# %s %s %s\n", cst->name, name, value->data);
+      fprintf(fp, "# %s %s %s\n", cst->name, name, value->data);
   }
 }
 
@@ -225,8 +255,9 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he,
  * @param cs    ConfigSet to dump
  * @param style Output style, e.g. #CS_DUMP_STYLE_MUTT
  * @param flags Display flags, e.g. #CS_DUMP_ONLY_CHANGED
+ * @param fp    File to write config to, only honored in combination with #CS_DUMP_STYLE_FILE, else it's written to stdout
  */
-bool dump_config(struct ConfigSet *cs, int style, int flags)
+bool dump_config(struct ConfigSet *cs, int style, int flags, FILE *fp)
 {
   if (!cs)
     return false;
@@ -312,10 +343,20 @@ bool dump_config(struct ConfigSet *cs, int style, int flags)
       }
     }
 
-    if (style == CS_DUMP_STYLE_MUTT)
-      dump_config_mutt(cs, he, value, initial, flags);
+    if (style & CS_DUMP_STYLE_FILE)
+    {
+      if ((style & 1) == CS_DUMP_STYLE_MUTT)
+        dump_config_mutt_file(cs, he, value, initial, flags, fp);
+      else
+        dump_config_neo_file(cs, he, value, initial, flags, fp);
+    }
     else
-      dump_config_neo(cs, he, value, initial, flags);
+    {
+      if ((style & 1) == CS_DUMP_STYLE_MUTT)
+        dump_config_mutt(cs, he, value, initial, flags);
+      else
+        dump_config_neo(cs, he, value, initial, flags);
+    }
   }
 
   FREE(&list);
