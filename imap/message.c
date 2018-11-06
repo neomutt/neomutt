@@ -778,7 +778,11 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         m->hdrs[idx]->edata = h.data;
         m->hdrs[idx]->free_edata = imap_edata_free;
         STAILQ_INIT(&m->hdrs[idx]->tags);
-        driver_tags_replace(&m->hdrs[idx]->tags, mutt_str_strdup(h.data->flags_remote));
+
+        /* We take a copy of the tags so we can split the string */
+        char *tags_copy = mutt_str_strdup(h.data->flags_remote);
+        driver_tags_replace(&m->hdrs[idx]->tags, tags_copy);
+        FREE(&tags_copy);
 
         m->msg_count++;
         m->size += m->hdrs[idx]->content->length;
@@ -1102,7 +1106,11 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
         m->hdrs[idx]->edata = (void *) (h.data);
         m->hdrs[idx]->free_edata = imap_edata_free;
         STAILQ_INIT(&m->hdrs[idx]->tags);
-        driver_tags_replace(&m->hdrs[idx]->tags, mutt_str_strdup(h.data->flags_remote));
+
+        /* We take a copy of the tags so we can split the string */
+        char *tags_copy = mutt_str_strdup(h.data->flags_remote);
+        driver_tags_replace(&m->hdrs[idx]->tags, tags_copy);
+        FREE(&tags_copy);
 
         if (*maxuid < h.data->uid)
           *maxuid = h.data->uid;
@@ -1751,7 +1759,10 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
     return NULL;
 
   /* Update tags system */
-  driver_tags_replace(&e->tags, mutt_str_strdup(edata->flags_remote));
+  /* We take a copy of the tags so we can split the string */
+  char *tags_copy = mutt_str_strdup(edata->flags_remote);
+  driver_tags_replace(&e->tags, tags_copy);
+  FREE(&tags_copy);
 
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of
