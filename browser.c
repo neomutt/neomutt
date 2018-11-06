@@ -1008,7 +1008,10 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
   if (OptNews)
     return regexec(rx, ((struct FolderFile *) menu->data)[line].desc, 0, NULL, 0);
 #endif
-  return regexec(rx, ((struct FolderFile *) menu->data)[line].name, 0, NULL, 0);
+  struct FolderFile current_ff = ((struct FolderFile *) menu->data)[line];
+  char *search_on = current_ff.desc ? current_ff.desc : current_ff.name;
+
+  return regexec(rx, search_on, 0, NULL, 0);
 }
 
 /**
