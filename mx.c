@@ -1462,8 +1462,16 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
     }
     else if ((buf[0] == '+') || (buf[0] == '='))
     {
-      buf[0] = '/';
-      mutt_str_inline_replace(buf, buflen, 0, Folder);
+      size_t folder_len = mutt_str_strlen(Folder);
+      if ((folder_len > 0) && (Folder[folder_len - 1] != '/'))
+      {
+        buf[0] = '/';
+        mutt_str_inline_replace(buf, buflen, 0, Folder);
+      }
+      else
+      {
+        mutt_str_inline_replace(buf, buflen, 1, Folder);
+      }
     }
     else if ((buf[1] == '/') || (buf[1] == '\0'))
     {
