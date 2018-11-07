@@ -636,7 +636,7 @@ return_error:
   {
     if (fp && tempfile[0])
     {
-      /* add temporary file to TempAttachmentsList to be deleted on exit */
+      /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
       mutt_add_temp_attachment(tempfile);
     }
     else if (unlink_tempfile)
