@@ -340,6 +340,11 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
             FREE(&test_command);
           }
         }
+        else if (mutt_str_strncasecmp(field, "x-neomutt-keep", 14) == 0)
+        {
+          if (entry)
+            entry->xneomuttkeep = true;
+        }
       } /* while (ch) */
 
       if (opt == MUTT_AUTOVIEW)
@@ -377,6 +382,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           FREE(&entry->convert);
           entry->needsterminal = false;
           entry->copiousoutput = false;
+          entry->xneomuttkeep = false;
         }
       }
     } /* while (!found && (buf = mutt_file_read_line ())) */
