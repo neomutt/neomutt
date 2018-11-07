@@ -10822,6 +10822,39 @@ set timeout=15
       </para>
     </sect1>
 
+    <sect1 id="oauth">
+      <title>OAUTHBEARER Support</title>
+      <para>
+        Preliminary OAUTH support for IMAP, POP, and SMTP is provided via external scripts.
+      </para>
+      <para>
+        At least for Gmail, you can use the <literal>oauth2.py</literal>script
+        from Google's gmail-oauth2-tools:
+        <ulink url="https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py">https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py</ulink>
+      </para>
+      <para>
+        You'll need to get your own oauth client credentials for Gmail here: 
+        <ulink url="https://console.developers.google.com/apis/credentials">https://console.developers.google.com/apis/credentials</ulink>
+      </para>
+      <para>
+        Then, you'd use <literal>oauth2.py</literal> with
+        <literal>--generate_oauth2_token</literal> to get a refresh token, and
+        configure mutt with:
+      </para>
+
+<screen>
+set imap_authenticators="oauthbearer"
+set imap_oauth_refresh_command="/path/to/oauth2.py --quiet --user=[email_address]\
+    --client_id=[client_id] --client_secret=[client_secret]\
+    --refresh_token=[refresh_token]"
+</screen>
+
+      <para>
+        Substitute pop or smtp for imap in the above example to configure for
+        those.
+      </para>
+    </sect1>
+
     <sect1 id="account-hook">
       <title>Managing Multiple Accounts</title>
       <para>
