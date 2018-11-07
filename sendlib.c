@@ -46,6 +46,7 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_parse.h"
 #include "mutt_window.h"
@@ -3370,8 +3371,8 @@ done:
 #ifdef RECORD_FOLDER_HOOK
   /* We ran a folder hook for the destination mailbox,
    * now we run it for the user's current mailbox */
-  if (Context && Context->path)
-    mutt_folder_hook(Context->path);
+  if (Context && Context->mailbox->path)
+    mutt_folder_hook(Context->mailbox->path);
 #endif
 
   return rc;
