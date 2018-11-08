@@ -407,6 +407,7 @@ int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, siz
   int rc;
   struct ImapMbox mx;
   struct MailboxNode *np = NULL;
+
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (np->m->magic != MUTT_IMAP)
@@ -977,33 +978,6 @@ void imap_expunge_mailbox(struct ImapAccountData *adata)
   mx_update_tables(adata->ctx, false);
   Sort = old_sort;
   mutt_sort_headers(adata->ctx, true);
-}
-
-/**
- * mutt_account_match2 - private copy of mutt_account_match
- */
-bool mutt_account_match2(const struct ConnAccount *a1, const struct ConnAccount *a2)
-{
-  if (a1->type != a2->type)
-    return false;
-  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
-    return false;
-  if ((a1->port != 0) && (a2->port != 0) && (a1->port != a2->port))
-    return false;
-  if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, a2->user) == 0;
-
-  const char *user = NONULL(Username);
-
-  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
-    user = ImapUser;
-
-  if (a1->flags & MUTT_ACCT_USER)
-    return strcmp(a1->user, user) == 0;
-  if (a2->flags & MUTT_ACCT_USER)
-    return strcmp(a2->user, user) == 0;
-
-  return true;
 }
 
 /**
@@ -1899,6 +1873,23 @@ int imap_subscribe(char *path, bool subscribe)
   return 0;
 }
 
+struct ImapAccountData *imap_ac_data_find(struct ImapMbox *mx)
+{
+  struct Account *np = NULL;
+  struct ImapAccountData *adata = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
+  {
+    if (np->magic != MUTT_IMAP)
+      continue;
+
+    adata = np->adata;
+    if (imap_account_match(&adata->conn_account, &mx->account))
+      return adata;
+  }
+  mutt_debug(3, "no ImapAccountData found\n");
+  return NULL;
+}
+
 /**
  * imap_complete - Try to complete an IMAP folder path
  * @param buf Buffer for result
@@ -1929,18 +1920,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
     return complete_hosts(buf, buflen);
   }
 
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if (np->m->magic != MUTT_IMAP)
-      continue;
-
-    adata = np->m->account->adata;
-    if (adata->mbox_name && (imap_mxcmp(path, adata->mbox_name) == 0))
-      break;
-    adata = NULL;
-  }
-
+  adata = imap_ac_data_find(&mx);
   if (!adata)
   {
     FREE(&mx.mbox);

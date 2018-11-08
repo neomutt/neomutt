@@ -213,6 +213,7 @@ int imap_browse(char *path, struct BrowserState *state)
   ImapCheckSubscribed = false;
   mutt_str_strfcpy(list_cmd, ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
 
+  // Pick first mailbox connected to the same server
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
@@ -394,10 +395,10 @@ int imap_mailbox_create(const char *folder)
     return -1;
   }
 
-  adata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  adata = imap_ac_data_find(&mx);
   if (!adata)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", mx.account.host);
+    mutt_debug(1, "Couldn't find open connection to %s\n", folder);
     goto fail;
   }
 
@@ -455,10 +456,10 @@ int imap_mailbox_rename(const char *mailbox)
     return -1;
   }
 
-  adata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  adata = imap_ac_data_find(&mx);
   if (!adata)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", mx.account.host);
+    mutt_debug(1, "Couldn't find open connection to %s\n", mailbox);
     goto fail;
   }
 
