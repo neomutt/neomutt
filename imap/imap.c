@@ -340,7 +340,9 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, const char *path, char *mailbox, size_t mailboxlen, bool run_hook, bool create_new_connection)
+static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
+                                const char *path, char *mailbox, size_t mailboxlen,
+                                bool run_hook, bool create_new_connection)
 {
   if (!m || !m->account)
     return -1;
@@ -1858,21 +1860,12 @@ int imap_subscribe(char *path, bool subscribe)
   char mbox[LONG_STRING];
   char errstr[STRING];
   struct Buffer err, token;
-  struct ImapMbox mx;
   size_t len = 0;
+  int rc;
 
-  if ((imap_path_probe(path, NULL) != MUTT_IMAP) || imap_parse_path(path, &mx) || !mx.mbox)
-  {
-    mutt_error(_("Bad mailbox name"));
+  rc = get_mailbox(path, &adata, buf, sizeof(buf));
+  if (rc < 0)
     return -1;
-  }
-  adata = imap_conn_find(&(mx.account), 0);
-  if (!adata)
-    goto fail;
-
-  imap_fix_path(adata, mx.mbox, buf, sizeof(buf));
-  if (!*buf)
-    mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
 
   if (ImapCheckSubscribed)
   {
@@ -1896,19 +1889,14 @@ int imap_subscribe(char *path, bool subscribe)
   snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mbox);
 
   if (imap_exec(adata, buf, 0) < 0)
-    goto fail;
+    return -1;
 
-  imap_unmunge_mbox_name(adata, mx.mbox);
+  imap_unmunge_mbox_name(adata, mbox);
   if (subscribe)
-    mutt_message(_("Subscribed to %s"), mx.mbox);
+    mutt_message(_("Subscribed to %s"), mbox);
   else
-    mutt_message(_("Unsubscribed from %s"), mx.mbox);
-  FREE(&mx.mbox);
+    mutt_message(_("Unsubscribed from %s"), mbox);
   return 0;
-
-fail:
-  FREE(&mx.mbox);
-  return -1;
 }
 
 /**

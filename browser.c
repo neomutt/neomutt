@@ -1687,7 +1687,8 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           char msg[SHORT_STRING];
           int nentry = menu->current;
 
-          snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), state.entry[nentry].name);
+          snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"),
+                   state.entry[nentry].name);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
             if (imap_delete_mailbox(Context->mailbox, state.entry[nentry].name) == 0)
