@@ -1019,6 +1019,35 @@ static void append_thread(struct Mailbox *m, notmuch_query_t *q,
 }
 
 /**
+ * get_messages - load messages for a query
+ * @param query Notmuch query
+ * @retval msgs Messages matching query
+ * @retval NULL Error occurred
+ *
+ * This helper method is to be the single point for retrieving messages. It
+ * handles version specific calls, which will make maintenance easier.
+ */
+static notmuch_messages_t *get_messages(notmuch_query_t *query)
+{
+  if (!query)
+    return NULL;
+
+  notmuch_messages_t *msgs = NULL;
+
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_messages(query, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return NULL;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+  if (notmuch_query_search_messages_st(query, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return NULL;
+#else
+  msgs = notmuch_query_search_messages(query);
+#endif
+
+  return msgs;
+}
+
+/**
  * read_mesgs_query - Search for matching messages
  * @param m     Mailbox
  * @param q     Notmuch query
@@ -1034,16 +1063,10 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 
   int limit = get_limit(mdata);
 
-  notmuch_messages_t *msgs = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  notmuch_messages_t *msgs = get_messages(q);
+
+  if (!msgs)
     return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#else
-  msgs = notmuch_query_search_messages(q);
-#endif
 
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
@@ -1061,6 +1084,34 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 }
 
 /**
+ * get_threads - load threads for a query
+ * @param query Notmuch query
+ * @retval msgs Threads matching query
+ * @retval NULL Error occurred
+ *
+ * This helper method is to be the single point for retrieving messages. It
+ * handles version specific calls, which will make maintenance easier.
+ */
+static notmuch_threads_t *get_threads(notmuch_query_t *query)
+{
+  if (!query)
+    return NULL;
+
+  notmuch_threads_t *threads = NULL;
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_threads(query, &threads) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+  if (notmuch_query_search_threads_st(query, &threads) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#else
+  threads = notmuch_query_search_threads(query);
+#endif
+
+  return threads;
+}
+
+/**
  * read_threads_query - Perform a query with threads
  * @param m     Mailbox
  * @param q     Query type
@@ -1075,16 +1126,10 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   if (!mdata)
     return false;
 
-  notmuch_threads_t *threads = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#else
-  threads = notmuch_query_search_threads(q);
-#endif
+  notmuch_threads_t *threads = get_threads(q);
+
+  if (!threads)
+    return NULL;
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
@@ -1752,32 +1797,22 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   {
     case NM_QUERY_TYPE_MESGS:
     {
-      notmuch_messages_t *messages = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-      if (notmuch_query_search_messages(q, &messages) != NOTMUCH_STATUS_SUCCESS)
+      notmuch_messages_t *messages = get_messages(q);
+
+      if (!messages)
         return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-      if (notmuch_query_search_messages_st(q, &messages) != NOTMUCH_STATUS_SUCCESS)
-        return false;
-#else
-      messages = notmuch_query_search_messages(q);
-#endif
+
       result = notmuch_messages_valid(messages);
       notmuch_messages_destroy(messages);
       break;
     }
     case NM_QUERY_TYPE_THREADS:
     {
-      notmuch_threads_t *threads = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-      if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
+      notmuch_threads_t *threads = get_threads(q);
+
+      if (!threads)
         return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-      if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-        return false;
-#else
-      threads = notmuch_query_search_threads(q);
-#endif
+
       result = notmuch_threads_valid(threads);
       notmuch_threads_destroy(threads);
       break;
@@ -2188,15 +2223,15 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
 
   int limit = get_limit(mdata);
 
-  notmuch_messages_t *msgs = NULL;
+  notmuch_messages_t *msgs = get_messages(q);
+
+  // TODO: Analyze impact of removing this version guard.
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  if (!msgs)
     return false;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  if (!msgs)
     goto done;
-#else
-  msgs = notmuch_query_search_messages(q);
 #endif
 
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
