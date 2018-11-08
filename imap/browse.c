@@ -33,10 +33,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "imap_private.h"
+#include "imap/imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "account.h"
 #include "browser.h"
 #include "context.h"
 #include "curs_lib.h"
@@ -200,7 +201,7 @@ int imap_browse(char *path, struct BrowserState *state)
   char ctmp;
   bool showparents = false;
   bool save_lsub;
-  struct ImapMbox mx;
+  struct ImapMbox mx, mx_tmp;
 
   if (imap_parse_path(path, &mx))
   {
@@ -212,7 +213,27 @@ int imap_browse(char *path, struct BrowserState *state)
   ImapCheckSubscribed = false;
   mutt_str_strfcpy(list_cmd, ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
 
-  adata = imap_conn_find(&(mx.account), 0);
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (np->m->magic != MUTT_IMAP)
+      continue;
+    if (imap_parse_path(np->m->path, &mx_tmp) < 0)
+      continue;
+
+    // Pick first mailbox connected on the same server
+    if (imap_account_match(&mx.account, &mx_tmp.account))
+    {
+      /* ensure we are connected */
+      int rc = imap_prepare_mailbox(np->m, &mx, path, buf, sizeof(buf), false, true);
+      if (rc < 0)
+        continue;
+
+      adata = np->m->account->adata;
+      break;
+    }
+  }
+  FREE(&mx_tmp.mbox);
   if (!adata)
     goto fail;
 

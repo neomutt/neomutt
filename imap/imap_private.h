@@ -306,6 +306,7 @@ void imap_expunge_mailbox(struct ImapAccountData *adata);
 void imap_logout(struct ImapAccountData **adata);
 int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
+int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, const char *path, char *mailbox, size_t mailboxlen, bool run_hook, bool create_new_connection);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);

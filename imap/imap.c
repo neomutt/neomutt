@@ -340,9 +340,9 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
-                                const char *path, char *mailbox, size_t mailboxlen,
-                                bool run_hook, bool create_new_connection)
+int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
+                         const char *path, char *mailbox, size_t mailboxlen,
+                         bool run_hook, bool create_new_connection)
 {
   if (!m || !m->account)
     return -1;
@@ -402,7 +402,7 @@ static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
  * TODO(sileht): We should drop this method and pass a Context or Mailbox
  * object everywhere instead.
  */
-static int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
+int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
 {
   int rc;
   struct ImapMbox mx;
