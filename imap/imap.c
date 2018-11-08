@@ -329,6 +329,7 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * imap_prepare_mailbox - this method ensure we have a valid Mailbox
  * @param m                     Mailbox
  * @param mx                    Imap Mailbox
+ * @param path                  Mailbox path
  * @param mailbox               Buffer for tidied mailbox path
  * @param mailboxlen            Length of buffer
  * @param run_hook              should we run account hook
@@ -339,15 +340,17 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, char *mailbox,
-                                size_t mailboxlen, bool run_hook, bool create_new_connection)
+static int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, const char *path, char *mailbox, size_t mailboxlen, bool run_hook, bool create_new_connection)
 {
-  if (!m->account)
+  if (!m || !m->account)
     return -1;
 
-  if ((imap_path_probe(m->path, NULL) != MUTT_IMAP) || imap_parse_path(m->path, mx))
+  if (!path)
+    path = m->path;
+
+  if ((imap_path_probe(path, NULL) != MUTT_IMAP) || imap_parse_path(path, mx))
   {
-    mutt_debug(1, "Error parsing %s\n", m->path);
+    mutt_debug(1, "Error parsing %s\n", path);
     mutt_error(_("Bad mailbox name"));
     return -1;
   }
@@ -409,7 +412,7 @@ static int get_mailbox(const char *path, struct ImapAccountData **adata, char *b
 
     if (mutt_str_strcasecmp(path, np->m->path) == 0)
     {
-      rc = imap_prepare_mailbox(np->m, &mx, buf, buflen, false, true);
+      rc = imap_prepare_mailbox(np->m, &mx, path, buf, buflen, false, true);
       if (rc == 0)
         *adata = np->m->account->adata;
       FREE(&mx.mbox);
@@ -772,33 +775,28 @@ int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, cons
 /**
  * imap_delete_mailbox - Delete a mailbox
  * @param m  Mailbox
- * @param im Mailbox to delete
+ * @param path  name of the mailbox to delete
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_delete_mailbox(struct Mailbox *m, struct ImapMbox *im)
+int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
+  struct ImapMbox mx;
   char buf[PATH_MAX], mbox[PATH_MAX];
-  struct ImapAccountData *adata = imap_adata_get(m);
+  int rc;
 
-  if (!m || !adata)
+  rc = imap_prepare_mailbox(m, &mx, path, buf, sizeof(buf), true, !ImapPassive);
+  if (rc < 0)
   {
-    adata = imap_conn_find(&im->account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
-    if (!adata)
-    {
-      FREE(&im->mbox);
-      return -1;
-    }
-  }
-  else
-  {
-    adata = m->mdata;
+    FREE(&mx.mbox);
+    return -1;
   }
 
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), im->mbox);
+  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), mx.mbox);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
+  FREE(&mx.mbox);
 
-  if (imap_exec(adata, buf, 0) != 0)
+  if (imap_exec(m->account->adata, buf, 0) != 0)
     return -1;
 
   return 0;
@@ -2484,7 +2482,7 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore = NULL;
 
-  rc = imap_prepare_mailbox(m, &mx, buf, sizeof(buf), true, true);
+  rc = imap_prepare_mailbox(m, &mx, NULL, buf, sizeof(buf), true, true);
   if (rc < 0)
   {
     FREE(&mx.mbox);
@@ -2731,7 +2729,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  rc = imap_prepare_mailbox(m, &mx, mailbox, sizeof(mailbox), false, !ImapPassive);
+  rc = imap_prepare_mailbox(m, &mx, NULL, mailbox, sizeof(mailbox), false, !ImapPassive);
   FREE(&mx.mbox);
   if (rc < 0)
     return -1;

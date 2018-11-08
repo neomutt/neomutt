@@ -1685,24 +1685,12 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
         else
         {
           char msg[SHORT_STRING];
-          struct ImapMbox mx;
           int nentry = menu->current;
 
-          if (imap_parse_path(state.entry[nentry].name, &mx) < 0)
-          {
-            mutt_debug(1, "imap_parse_path failed\n");
-            mutt_error(_("Mailbox deletion failed"));
-            break;
-          }
-          if (!mx.mbox)
-          {
-            mutt_error(_("Cannot delete root folder"));
-            break;
-          }
-          snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), mx.mbox);
+          snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), state.entry[nentry].name);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (imap_delete_mailbox(Context->mailbox, &mx) == 0)
+            if (imap_delete_mailbox(Context->mailbox, state.entry[nentry].name) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&((state.entry)[nentry].name));
@@ -1723,7 +1711,6 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           }
           else
             mutt_message(_("Mailbox not deleted"));
-          FREE(&mx.mbox);
         }
         break;
 #endif
