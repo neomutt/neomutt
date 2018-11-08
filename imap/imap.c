@@ -379,7 +379,7 @@ int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
     mutt_account_hook(m->realpath);
 
   /* we require a connection which isn't currently in IMAP_SELECTED state */
-  if (imap_conn_find2(adata) < 0)
+  if (imap_login(adata) < 0)
     return -1;
 
   imap_fix_path(adata, mx->mbox, mailbox, mailboxlen);
@@ -2253,12 +2253,15 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
 }
 
 /**
- * imap_conn_find2 - Find an open IMAP connection
+ * imap_login -  Open an IMAP connection
  * @param adata Imap Account data
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * This method ensure ImapAccountData is connected and logged to
+ * the imap server.
  */
-int imap_conn_find2(struct ImapAccountData *adata)
+int imap_login(struct ImapAccountData *adata)
 {
   if (!adata)
     return -1;
