@@ -1929,9 +1929,18 @@ int imap_complete(char *buf, size_t buflen, char *path)
     return complete_hosts(buf, buflen);
   }
 
-  /* don't open a new socket just for completion. Instead complete over
-   * known mailboxes/hooks/etc */
-  adata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NONEW);
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  {
+    if (np->m->magic != MUTT_IMAP)
+      continue;
+
+    adata = np->m->account->adata;
+    if (adata->mbox_name && (imap_mxcmp(path, adata->mbox_name) == 0))
+      break;
+    adata = NULL;
+  }
+
   if (!adata)
   {
     FREE(&mx.mbox);
