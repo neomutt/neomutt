@@ -171,7 +171,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->recovering)
   {
     adata->recovering = true;
-    if (imap_conn_find(&adata->conn->account, 0))
+    if (imap_conn_find2(adata))
       mutt_clear_error();
     adata->recovering = false;
   }
