@@ -128,12 +128,12 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
     }
 
     /* Escape lines that begin with/only contain "the message separator". */
-    if (linelen == 4 && (mutt_str_strncmp("From", line, 4) == 0))
+    if (linelen == 4 && mutt_str_startswith(line, "From", CASE_MATCH))
     {
       mutt_str_strfcpy(line, "=46rom", sizeof(line));
       linelen = 6;
     }
-    else if (linelen == 4 && (mutt_str_strncmp("from", line, 4) == 0))
+    else if (linelen == 4 && mutt_str_startswith(line, "from", CASE_MATCH))
     {
       mutt_str_strfcpy(line, "=66rom", sizeof(line));
       linelen = 6;
@@ -1895,7 +1895,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
     const int w = mutt_mb_width(buf, col, display);
-    const int enc = (mutt_str_strncmp(buf, "=?", 2) == 0);
+    const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
 
     mutt_debug(5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
 
