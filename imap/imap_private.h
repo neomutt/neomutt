@@ -212,7 +212,6 @@ struct ImapAccountData
 {
   struct Connection *conn;
   struct ConnAccount conn_account;
-  struct Account *account;
   bool recovering;
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
