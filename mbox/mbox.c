@@ -452,7 +452,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
            */
           if (fseeko(adata->fp, tmploc, SEEK_SET) != 0 ||
               !fgets(buf, sizeof(buf), adata->fp) ||
-              (mutt_str_strncmp("From ", buf, 5) != 0))
+              !mutt_str_startswith(buf, "From ", CASE_MATCH))
           {
             mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
                        curhdr->index, curhdr->content->length);
@@ -783,7 +783,7 @@ static int fseek_last_message(FILE *f)
     /* 'i' is Index into `buffer' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
-      if (mutt_str_strncmp(buffer + i, "\n\nFrom ", mutt_str_strlen("\n\nFrom ")) == 0)
+      if (mutt_str_startswith(buffer + i, "\n\nFrom ", CASE_MATCH))
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;
@@ -793,7 +793,7 @@ static int fseek_last_message(FILE *f)
   }
 
   /* here we are at the beginning of the file */
-  if (mutt_str_strncmp("From ", buffer, 5) == 0)
+  if (mutt_str_startswith(buffer, "From ", CASE_MATCH))
   {
     fseek(f, 0, SEEK_SET);
     return 0;
@@ -1063,8 +1063,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
         mutt_debug(1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), adata->fp))
       {
-        if ((ctx->mailbox->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buffer, 5) == 0)) ||
-            (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buffer) == 0)))
+        if ((ctx->mailbox->magic == MUTT_MBOX &&
+             mutt_str_startswith(buffer, "From ", CASE_MATCH)) ||
+            (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(buffer, MMDF_SEP) == 0)))
         {
           if (fseeko(adata->fp, ctx->mailbox->size, SEEK_SET) != 0)
             mutt_debug(1, "#2 fseek() failed\n");
@@ -1353,7 +1354,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (fseeko(adata->fp, offset, SEEK_SET) != 0 || /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       !fgets(buf, sizeof(buf), adata->fp) ||
-      (ctx->mailbox->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buf, 5) != 0)) ||
+      (ctx->mailbox->magic == MUTT_MBOX && mutt_str_strncmp("From ", buf, 5) != 0) ||
       (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
     mutt_debug(1, "message not in expected position.\n");
@@ -1640,9 +1641,9 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   char tmp[STRING];
   if (fgets(tmp, sizeof(tmp), fp))
   {
-    if (mutt_str_strncmp("From ", tmp, 5) == 0)
+    if (mutt_str_startswith(tmp, "From ", CASE_MATCH))
       magic = MUTT_MBOX;
-    else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
+    else if (mutt_str_strcmp(tmp, MMDF_SEP) == 0)
       magic = MUTT_MMDF;
   }
   mutt_file_fclose(&fp);
