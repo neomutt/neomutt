@@ -411,38 +411,6 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
 }
 
 /**
- * mailbox_get - Fetch mailbox object for given path, if present
- * @param path Path to the mailbox
- * @retval ptr Mailbox for the path
- */
-static struct Mailbox *mailbox_get(const char *path)
-{
-  if (!path)
-    return NULL;
-
-  char *epath = mutt_str_strdup(path);
-  if (!epath)
-    return NULL;
-
-  mutt_expand_path(epath, mutt_str_strlen(epath));
-
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    /* must be done late because e.g. IMAP delimiter may change */
-    mutt_expand_path(np->m->path, sizeof(np->m->path));
-    if (mutt_str_strcmp(np->m->path, path) == 0)
-    {
-      FREE(&epath);
-      return np->m;
-    }
-  }
-
-  FREE(&epath);
-  return NULL;
-}
-
-/**
  * mutt_mailbox_cleanup - Restore the timestamp of a mailbox
  * @param path Path to the mailbox
  * @param st   Timestamp info from stat()
@@ -897,11 +865,10 @@ bool mutt_mailbox_list(void)
 
 /**
  * mutt_mailbox_setnotified - Note when the user was last notified of new mail
- * @param path Path to the mailbox
+ * @param m Mailbox
  */
-void mutt_mailbox_setnotified(const char *path)
+void mutt_mailbox_setnotified(struct Mailbox *m)
 {
-  struct Mailbox *m = mailbox_get(path);
   if (!m)
     return;
 

@@ -392,7 +392,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
-    mutt_mailbox_setnotified(ctx->mailbox->path);
+    mutt_mailbox_setnotified(ctx->mailbox);
 
   if (ctx->mailbox->mx_ops)
     ctx->mailbox->mx_ops->mbox_close(ctx);

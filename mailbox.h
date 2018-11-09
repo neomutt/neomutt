@@ -152,7 +152,7 @@ void mutt_update_mailbox(struct Mailbox *m);
 void mutt_mailbox_cleanup(const char *path, struct stat *st);
 
 /** mark mailbox just left as already notified */
-void mutt_mailbox_setnotified(const char *path);
+void mutt_mailbox_setnotified(struct Mailbox *m);
 
 /* force flags passed to mutt_mailbox_check() */
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)
