@@ -111,9 +111,10 @@ static void pop_error(struct PopAccountData *adata, char *msg)
   char *t = strchr(adata->err_msg, '\0');
   char *c = msg;
 
-  if (mutt_str_strncmp(msg, "-ERR ", 5) == 0)
+  size_t plen = mutt_str_startswith(msg, "-ERR ", CASE_MATCH);
+  if (plen != 0)
   {
-    char *c2 = mutt_str_skip_email_wsp(msg + 5);
+    char *c2 = mutt_str_skip_email_wsp(msg + plen);
 
     if (*c2)
       c = c2;
@@ -282,7 +283,7 @@ int pop_connect(struct PopAccountData *adata)
 
   adata->status = POP_CONNECTED;
 
-  if (mutt_str_strncmp(buf, "+OK", 3) != 0)
+  if (!mutt_str_startswith(buf, "+OK", CASE_MATCH))
   {
     *adata->err_msg = '\0';
     pop_error(adata, buf);
@@ -486,7 +487,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
     adata->status = POP_DISCONNECTED;
     return -1;
   }
-  if (mutt_str_strncmp(buf, "+OK", 3) == 0)
+  if (mutt_str_startswith(buf, "+OK", CASE_MATCH))
     return 0;
 
   pop_error(adata, buf);
