@@ -149,17 +149,16 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if (mutt_str_strncmp("reverse-", value, 8) == 0)
+  size_t plen = 0;
+  if ((plen = mutt_str_startswith(value, "reverse-", CASE_MATCH)))
   {
     flags |= SORT_REVERSE;
-    value += 8;
   }
-
-  if (mutt_str_strncmp("last-", value, 5) == 0)
+  else if ((plen = mutt_str_startswith(value, "last-", CASE_MATCH)))
   {
     flags |= SORT_LAST;
-    value += 5;
   }
+  value += plen;
 
   switch (cdef->type & DT_SUBTYPE_MASK)
   {
