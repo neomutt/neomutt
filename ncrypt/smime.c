@@ -1133,7 +1133,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     len = mutt_str_strlen(email);
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
-    if (mutt_str_strncasecmp(email, mailbox, mutt_str_strlen(mailbox)) == 0)
+    if (mutt_str_startswith(email, mailbox, CASE_IGNORE))
       rc = 1;
 
     rc = rc < 0 ? 0 : rc;
@@ -1677,7 +1677,7 @@ static char *openssl_md_to_smime_micalg(char *md)
     return 0;
 
   char *micalg = NULL;
-  if (mutt_str_strncasecmp("sha", md, 3) == 0)
+  if (mutt_str_startswith(md, "sha", CASE_IGNORE))
   {
     const size_t l = strlen(md) + 2;
     micalg = mutt_mem_malloc(l);
