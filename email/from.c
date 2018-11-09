@@ -54,7 +54,7 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (path)
     *path = '\0';
 
-  if (mutt_str_strncmp("From ", s, 5) != 0)
+  if (!mutt_str_startswith(s, "From ", CASE_MATCH))
     return false;
 
   s = mutt_str_next_word(s); /* skip over the From part. */
@@ -85,9 +85,10 @@ bool is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       return false;
 
     /* pipermail archives have the return_path obscured such as "me at neomutt.org" */
-    if (mutt_str_strncasecmp(p, " at ", 4) == 0)
+    size_t plen = mutt_str_startswith(p, " at ", CASE_IGNORE);
+    if (plen != 0)
     {
-      p = strchr(p + 4, ' ');
+      p = strchr(p + plen, ' ');
       if (!p)
       {
         mutt_debug(1,
