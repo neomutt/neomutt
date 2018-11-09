@@ -150,15 +150,19 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   }
 
   size_t plen = 0;
-  if ((plen = mutt_str_startswith(value, "reverse-", CASE_MATCH)))
+  plen = mutt_str_startswith(value, "reverse-", CASE_MATCH);
+  if (plen != 0)
   {
     flags |= SORT_REVERSE;
+    value += plen;
   }
-  else if ((plen = mutt_str_startswith(value, "last-", CASE_MATCH)))
+
+  plen = mutt_str_startswith(value, "last-", CASE_MATCH);
+  if (plen != 0)
   {
     flags |= SORT_LAST;
+    value += plen;
   }
-  value += plen;
 
   switch (cdef->type & DT_SUBTYPE_MASK)
   {
