@@ -2820,10 +2820,10 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, "news://", 7) == 0)
+  if (mutt_str_startswith(path, "news://", CASE_IGNORE))
     return MUTT_NNTP;
 
-  if (mutt_str_strncasecmp(path, "snews://", 8) == 0)
+  if (mutt_str_startswith(path, "snews://", CASE_IGNORE))
     return MUTT_NNTP;
 
   return MUTT_UNKNOWN;
