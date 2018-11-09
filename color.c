@@ -446,12 +446,12 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
   char *eptr = NULL;
   int is_alert = 0, is_bright = 0;
 
-  if (mutt_str_strncasecmp(s, "bright", 6) == 0)
+  if (mutt_str_startswith(s, "bright", CASE_IGNORE))
   {
     is_bright = 1;
     s += 6;
   }
-  else if (mutt_str_strncasecmp(s, "alert", 5) == 0)
+  else if (mutt_str_startswith(s, "alert", CASE_IGNORE))
   {
     is_alert = 1;
     is_bright = 1;
@@ -459,7 +459,7 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
   }
 
   /* allow aliases for xterm color resources */
-  if (mutt_str_strncasecmp(s, "color", 5) == 0)
+  if (mutt_str_startswith(s, "color", CASE_IGNORE))
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
@@ -595,9 +595,9 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
     return 0;
   }
 
-  if ((mutt_str_strncmp(buf->data, "body", 4) != 0) &&
-      (mutt_str_strncmp(buf->data, "header", 6) != 0) &&
-      (mutt_str_strncmp(buf->data, "index", 5) != 0))
+  if (!mutt_str_startswith(buf->data, "body", CASE_MATCH) &&
+      !mutt_str_startswith(buf->data, "header", CASE_MATCH) &&
+      !mutt_str_startswith(buf->data, "index", CASE_MATCH))
   {
     mutt_buffer_printf(err, _("%s: command valid only for index, body, header objects"),
                        parse_uncolor ? "uncolor" : "unmono");
@@ -814,7 +814,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   }
 
   mutt_extract_token(buf, s, 0);
-  if (mutt_str_strncmp(buf->data, "quoted", 6) == 0)
+  if (mutt_str_startswith(buf->data, "quoted", CASE_MATCH))
   {
     if (buf->data[6])
     {
