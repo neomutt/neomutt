@@ -1691,7 +1691,7 @@ static int check_mailbox(struct Context *ctx)
 
     ctx->mailbox->vcount = 0;
     ctx->deleted = 0;
-    ctx->new = 0;
+    ctx->mailbox->msg_new = 0;
     ctx->mailbox->msg_unread = 0;
     ctx->mailbox->msg_flagged = 0;
     ctx->mailbox->changed = false;

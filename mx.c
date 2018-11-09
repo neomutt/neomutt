@@ -832,7 +832,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   ctx->vsize = 0;
   ctx->tagged = 0;
   ctx->deleted = 0;
-  ctx->new = 0;
+  ctx->mailbox->msg_new = 0;
   ctx->mailbox->msg_unread = 0;
   ctx->mailbox->changed = false;
   ctx->mailbox->msg_flagged = 0;
@@ -877,7 +877,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       {
         ctx->mailbox->msg_unread++;
         if (!ctx->mailbox->hdrs[j]->old)
-          ctx->new ++;
+          ctx->mailbox->msg_new ++;
       }
 
       j++;
@@ -1294,7 +1294,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       ctx->mailbox->msg_unread++;
       if (!e->old)
-        ctx->new ++;
+        ctx->mailbox->msg_new ++;
     }
   }
 }

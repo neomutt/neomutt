@@ -223,6 +223,7 @@ static int mailbox_maildir_check(struct Mailbox *m, bool check_stats)
     m->msg_count = 0;
     m->msg_unread = 0;
     m->msg_flagged = 0;
+    m->msg_new = 0;
   }
 
   rc = mailbox_maildir_check_dir(m, "new", check_new, check_stats);
