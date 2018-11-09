@@ -80,7 +80,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   if (isparent)
     mutt_str_strfcpy(relpath, "../", sizeof(relpath));
   /* strip current folder from target, to render a relative path */
-  else if (mutt_str_strncmp(mx.mbox, folder, mutt_str_strlen(mx.mbox)) == 0)
+  else if (mutt_str_startswith(folder, mx.mbox, CASE_MATCH))
     mutt_str_strfcpy(relpath, folder + mutt_str_strlen(mx.mbox), sizeof(relpath));
   else
     mutt_str_strfcpy(relpath, folder, sizeof(relpath));
@@ -170,7 +170,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
       if (isparent)
         list.noselect = true;
       /* prune current folder from output */
-      if (isparent || (mutt_str_strncmp(list.name, mx.mbox, strlen(list.name)) != 0))
+      if (isparent || !mutt_str_startswith(mx.mbox, list.name, CASE_MATCH))
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
