@@ -403,7 +403,7 @@ char *mutt_date_make_date(char *buf, size_t buflen)
 int mutt_date_check_month(const char *s)
 {
   for (int i = 0; i < mutt_array_size(Months); i++)
-    if (mutt_str_strncasecmp(s, Months[i], 3) == 0)
+    if (mutt_str_startswith(s, Months[i], CASE_IGNORE))
       return i;
 
   return -1; /* error */
@@ -423,7 +423,7 @@ bool mutt_date_is_day_name(const char *s)
     return false;
 
   for (int i = 0; i < mutt_array_size(Weekdays); i++)
-    if (mutt_str_strncasecmp(s, Weekdays[i], 3) == 0)
+    if (mutt_str_startswith(s, Weekdays[i], CASE_IGNORE))
       return true;
 
   return false;
