@@ -419,7 +419,7 @@ void rfc3676_space_stuff(struct Email *e)
 
   while (fgets(buf, sizeof(buf), in))
   {
-    if ((mutt_str_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
+    if (buf[0] == ' ' || mutt_str_startswith(buf, "From ", CASE_MATCH))
     {
       fputc(' ', out);
       lc++;
