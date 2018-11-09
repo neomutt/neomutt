@@ -231,7 +231,7 @@ static struct Email *select_msg(void)
         /* should deleted draft messages be saved in the trash folder? */
         mutt_set_flag(PostContext, PostContext->mailbox->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
-        PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
+        PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
@@ -326,7 +326,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   mutt_set_flag(PostContext, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
-  PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
+  PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;

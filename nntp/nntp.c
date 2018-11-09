@@ -1690,7 +1690,7 @@ static int check_mailbox(struct Context *ctx)
     mutt_clear_threads(ctx);
 
     ctx->mailbox->vcount = 0;
-    ctx->deleted = 0;
+    ctx->mailbox->msg_deleted = 0;
     ctx->mailbox->msg_new = 0;
     ctx->mailbox->msg_unread = 0;
     ctx->mailbox->msg_flagged = 0;

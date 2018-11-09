@@ -88,6 +88,7 @@ struct Mailbox
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
   int msg_new;               /**< number of new messages */
+  int msg_deleted;           /**< number of deleted messages */
 
   struct Email **hdrs;
   int hdrmax;               /**< number of pointers in hdrs */

@@ -2544,6 +2544,7 @@ static int imap_mbox_open(struct Context *ctx)
   m->msg_unread = 0;
   m->msg_flagged = 0;
   m->msg_new = 0;
+  m->msg_deleted = 0;
   m->size = 0;
   m->vcount = 0;
 
@@ -2649,7 +2650,7 @@ static int imap_mbox_close(struct Context *ctx)
     {
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (!ctx->deleted)
+      if (!ctx->mailbox->msg_deleted)
         imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
       adata->state = IMAP_AUTHENTICATED;
     }

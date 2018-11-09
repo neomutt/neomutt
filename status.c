@@ -113,9 +113,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->deleted : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_deleted : 0);
       }
-      else if (!Context || !Context->deleted)
+      else if (!Context || !Context->mailbox->msg_deleted)
         optional = 0;
       break;
 
@@ -282,7 +282,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                      2 :
                      (Context->mailbox->changed ||
                       /* deleted doesn't necessarily mean changed in IMAP */
-                      (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
+                      (Context->mailbox->magic != MUTT_IMAP && Context->mailbox->msg_deleted)) ?
                      1 :
                      0);
       }

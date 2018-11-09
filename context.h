@@ -43,7 +43,6 @@ struct Context
   struct Hash *thread_hash; /**< hash table for threading */
   int tagged;               /**< how many messages are tagged? */
   int new;                  /**< how many new messages? */
-  int deleted;              /**< how many deleted messages */
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
   struct Menu *menu; /**< needed for pattern compilation */

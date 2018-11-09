@@ -613,7 +613,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   ctx->mailbox->vcount = 0;
   ctx->vsize = 0;
   ctx->tagged = 0;
-  ctx->deleted = 0;
+  ctx->mailbox->msg_deleted = 0;
   ctx->mailbox->msg_new = 0;
   ctx->mailbox->msg_unread = 0;
   ctx->mailbox->msg_flagged = 0;
@@ -1213,7 +1213,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   }
   if (i == ctx->mailbox->msg_count)
   {
-    /* this means ctx->changed or ctx->deleted was set, but no
+    /* this means ctx->changed or ctx->mailbox->msg_deleted was set, but no
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in neomutt.
      */

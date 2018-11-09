@@ -454,8 +454,11 @@ static int trash_append(struct Context *ctx)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!Trash || !ctx->deleted || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+  if (!Trash || !ctx->mailbox->msg_deleted ||
+      (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+  {
     return 0;
+  }
 
   int delmsgcount = 0;
   int first_del = -1;
@@ -628,11 +631,12 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->deleted && !(ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+  if (ctx->mailbox->msg_deleted && !(ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
-             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
-             ctx->deleted);
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?",
+                      ctx->mailbox->msg_deleted),
+             ctx->mailbox->msg_deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
     {
@@ -718,7 +722,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       mx_mbox_close(&f, NULL);
     }
   }
-  else if (!ctx->mailbox->changed && ctx->deleted == 0)
+  else if (!ctx->mailbox->changed && ctx->mailbox->msg_deleted == 0)
   {
     if (!ctx->mailbox->quiet)
       mutt_message(_("Mailbox is unchanged"));
@@ -730,7 +734,8 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
+  if (purge && ctx->mailbox->msg_deleted &&
+      (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
     {
@@ -760,10 +765,10 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
         ctx->mailbox->hdrs[i]->deleted = false;
         ctx->mailbox->hdrs[i]->purge = false;
       }
-      ctx->deleted = 0;
+      ctx->mailbox->msg_deleted = 0;
     }
 
-    if (ctx->mailbox->changed || ctx->deleted)
+    if (ctx->mailbox->changed || ctx->mailbox->msg_deleted)
     {
       int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
@@ -779,14 +784,16 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     if (move_messages)
     {
       mutt_message(_("%d kept, %d moved, %d deleted"),
-                   ctx->mailbox->msg_count - ctx->deleted, read_msgs, ctx->deleted);
+                   ctx->mailbox->msg_count - ctx->mailbox->msg_deleted,
+                   read_msgs, ctx->mailbox->msg_deleted);
     }
     else
       mutt_message(_("%d kept, %d deleted"),
-                   ctx->mailbox->msg_count - ctx->deleted, ctx->deleted);
+                   ctx->mailbox->msg_count - ctx->mailbox->msg_deleted,
+                   ctx->mailbox->msg_deleted);
   }
 
-  if (ctx->mailbox->msg_count == ctx->deleted &&
+  if (ctx->mailbox->msg_count == ctx->mailbox->msg_deleted &&
       (ctx->mailbox->magic == MUTT_MMDF || ctx->mailbox->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
   {
@@ -794,7 +801,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 
 #ifdef USE_SIDEBAR
-  if (purge && ctx->deleted)
+  if (purge && ctx->mailbox->msg_deleted)
   {
     int orig_msgcount = ctx->mailbox->msg_count;
 
@@ -831,7 +838,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   ctx->mailbox->vcount = 0;
   ctx->vsize = 0;
   ctx->tagged = 0;
-  ctx->deleted = 0;
+  ctx->mailbox->msg_deleted = 0;
   ctx->mailbox->msg_new = 0;
   ctx->mailbox->msg_unread = 0;
   ctx->mailbox->changed = false;
@@ -866,7 +873,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       if (!committing || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
       {
         if (ctx->mailbox->hdrs[j]->deleted)
-          ctx->deleted++;
+          ctx->mailbox->msg_deleted++;
       }
 
       if (ctx->mailbox->hdrs[j]->tagged)
@@ -941,20 +948,21 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  if (!ctx->mailbox->changed && !ctx->deleted)
+  if (!ctx->mailbox->changed && !ctx->mailbox->msg_deleted)
   {
     if (!ctx->mailbox->quiet)
       mutt_message(_("Mailbox is unchanged"));
     return 0;
   }
 
-  if (ctx->deleted)
+  if (ctx->mailbox->msg_deleted)
   {
     char buf[SHORT_STRING];
 
     snprintf(buf, sizeof(buf),
-             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
-             ctx->deleted);
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?",
+                      ctx->mailbox->msg_deleted),
+             ctx->mailbox->msg_deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
       return -1;
@@ -970,7 +978,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
           ctx->mailbox->hdrs[i]->deleted = false;
           ctx->mailbox->hdrs[i]->purge = false;
         }
-        ctx->deleted = 0;
+        ctx->mailbox->msg_deleted = 0;
       }
     }
     else if (ctx->last_tag && ctx->last_tag->deleted)
@@ -978,11 +986,12 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
-   * mx_update_tables, so ctx->deleted is 0 when it comes back */
+   * mx_update_tables, so ctx->mailbox->msg_deleted is 0 when it comes back */
   msgcount = ctx->mailbox->msg_count;
-  deleted = ctx->deleted;
+  deleted = ctx->mailbox->msg_deleted;
 
-  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
+  if (purge && ctx->mailbox->msg_deleted &&
+      (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;
@@ -1011,7 +1020,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
     mutt_sleep(0);
 
-    if (ctx->mailbox->msg_count == ctx->deleted &&
+    if (ctx->mailbox->msg_count == ctx->mailbox->msg_deleted &&
         (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
         !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
     {
@@ -1289,7 +1298,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     if (e->flagged)
       ctx->mailbox->msg_flagged++;
     if (e->deleted)
-      ctx->deleted++;
+      ctx->mailbox->msg_deleted++;
     if (!e->read)
     {
       ctx->mailbox->msg_unread++;

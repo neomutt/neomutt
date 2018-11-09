@@ -2977,7 +2977,7 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
 
   /* adjust indices */
 
-  if (ctx->deleted)
+  if (ctx->mailbox->msg_deleted)
   {
     for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
     {
