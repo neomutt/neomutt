@@ -79,9 +79,9 @@
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
-    if (Beep)                                                       \
+    if (Beep)                                                                  \
       beep();                                                                  \
-  } while (0)
+  } while (false)
 
 #if !(defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 #define curs_set(x)
@@ -214,7 +214,7 @@ extern struct ColorLineHead ColorIndexTagList;
       bkgdset(ColorDefs[X] | ' ');                                             \
     else                                                                       \
       bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');                               \
-  } while (0)
+  } while (false)
 #define ATTRSET(X) bkgdset(X | ' ')
 #else
 #define SETCOLOR(X)                                                            \
@@ -224,7 +224,7 @@ extern struct ColorLineHead ColorIndexTagList;
       attrset(ColorDefs[X]);                                                   \
     else                                                                       \
       attrset(ColorDefs[MT_COLOR_NORMAL]);                                     \
-  } while (0)
+  } while (false)
 #define ATTRSET attrset
 #endif
 
