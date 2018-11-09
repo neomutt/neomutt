@@ -992,7 +992,7 @@ int main(int argc, char *argv[], char *envp[])
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
-          if (mutt_str_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
+          if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
           {
             if (ResumeEditedDraftFiles)
               cs_str_native_set(Config, "resume_draft_files", true, NULL);
