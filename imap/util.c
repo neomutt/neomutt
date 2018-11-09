@@ -601,7 +601,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
         mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf(tmp, "/%s", tmp) == 1)
       {
-        if (mutt_str_strncmp(tmp, "ssl", 3) == 0)
+        if (mutt_str_startswith(tmp, "ssl", CASE_MATCH))
           mx->account.flags |= MUTT_ACCT_SSL;
         else
         {
@@ -684,7 +684,7 @@ void imap_pretty_mailbox(char *path, const char *folder)
   {
     hlen = mutt_str_strlen(home.mbox);
     if (tlen && mutt_account_match(&home.account, &target.account) &&
-        (mutt_str_strncmp(home.mbox, target.mbox, hlen) == 0))
+        (hlen == 0 || mutt_str_startswith(target.mbox, home.mbox, CASE_MATCH)))
     {
       if (hlen == 0)
         home_match = true;
