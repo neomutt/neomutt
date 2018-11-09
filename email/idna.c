@@ -80,12 +80,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (mutt_str_strncasecmp(domain, "xn--", 4) == 0)
+  if (mutt_str_startswith(domain, "xn--", CASE_IGNORE))
     return true;
 
   while ((domain = strchr(domain, '.')))
   {
-    if (mutt_str_strncasecmp(++domain, "xn--", 4) == 0)
+    if (mutt_str_startswith(++domain, "xn--", CASE_IGNORE))
       return true;
   }
 
