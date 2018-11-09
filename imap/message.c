@@ -209,12 +209,13 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   struct ImapEmailData *edata = h->data;
 
   /* sanity-check string */
-  if (mutt_str_strncasecmp("FLAGS", s, 5) != 0)
+  size_t plen = mutt_str_startswith(s, "FLAGS", CASE_IGNORE);
+  if (plen == 0)
   {
     mutt_debug(1, "not a FLAGS response: %s\n", s);
     return NULL;
   }
-  s += 5;
+  s += plen;
   SKIPWS(s);
   if (*s != '(')
   {
@@ -235,38 +236,40 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   /* start parsing */
   while (*s && *s != ')')
   {
-    if (mutt_str_strncasecmp("\\deleted", s, 8) == 0)
+    if ((plen = mutt_str_startswith(s, "\\deleted", CASE_IGNORE)))
     {
-      s += 8;
+      s += plen;
       edata->deleted = true;
     }
-    else if (mutt_str_strncasecmp("\\flagged", s, 8) == 0)
+    else if ((plen = mutt_str_startswith(s, "\\flagged", CASE_IGNORE)))
     {
-      s += 8;
+      s += plen;
       edata->flagged = true;
     }
-    else if (mutt_str_strncasecmp("\\answered", s, 9) == 0)
+    else if ((plen = mutt_str_startswith(s, "\\answered", CASE_IGNORE)))
     {
-      s += 9;
+      s += plen;
       edata->replied = true;
     }
-    else if (mutt_str_strncasecmp("\\seen", s, 5) == 0)
+    else if ((plen = mutt_str_startswith(s, "\\seen", CASE_IGNORE)))
     {
-      s += 5;
+      s += plen;
       edata->read = true;
     }
-    else if (mutt_str_strncasecmp("\\recent", s, 7) == 0)
-      s += 7;
-    else if (mutt_str_strncasecmp("old", s, 3) == 0)
+    else if ((plen = mutt_str_startswith(s, "\\recent", CASE_IGNORE)))
     {
-      s += 3;
+      s += plen;
+    }
+    else if ((plen = mutt_str_startswith(s, "old", CASE_IGNORE)))
+    {
+      s += plen;
       edata->old = MarkOld ? true : false;
     }
     else
     {
       char ctmp;
       char *flag_word = s;
-      bool is_system_keyword = (mutt_str_strncasecmp("\\", s, 1) == 0);
+      bool is_system_keyword = mutt_str_startswith(s, "\\", CASE_IGNORE);
 
       while (*s && !ISSPACE(*s) && *s != ')')
         s++;
@@ -310,6 +313,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
   char tmp[SHORT_STRING];
   char *ptmp = NULL;
+  size_t plen = 0;
 
   if (!s)
     return -1;
@@ -318,24 +322,24 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
   {
     SKIPWS(s);
 
-    if (mutt_str_strncasecmp("FLAGS", s, 5) == 0)
+    if (mutt_str_startswith(s, "FLAGS", CASE_IGNORE))
     {
       s = msg_parse_flags(h, s);
       if (!s)
         return -1;
     }
-    else if (mutt_str_strncasecmp("UID", s, 3) == 0)
+    else if ((plen = mutt_str_startswith(s, "UID", CASE_IGNORE)))
     {
-      s += 3;
+      s += plen;
       SKIPWS(s);
       if (mutt_str_atoui(s, &h->data->uid) < 0)
         return -1;
 
       s = imap_next_word(s);
     }
-    else if (mutt_str_strncasecmp("INTERNALDATE", s, 12) == 0)
+    else if ((plen = mutt_str_startswith(s, "INTERNALDATE", CASE_IGNORE)))
     {
-      s += 12;
+      s += plen;
       SKIPWS(s);
       if (*s != '\"')
       {
@@ -352,9 +356,9 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       *ptmp = '\0';
       h->received = mutt_date_parse_imap(tmp);
     }
-    else if (mutt_str_strncasecmp("RFC822.SIZE", s, 11) == 0)
+    else if ((plen = mutt_str_startswith(s, "RFC822.SIZE", CASE_IGNORE)))
     {
-      s += 11;
+      s += plen;
       SKIPWS(s);
       ptmp = tmp;
       while (isdigit((unsigned char) *s) && (ptmp != (tmp + sizeof(tmp) - 1)))
@@ -363,15 +367,15 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       if (mutt_str_atol(tmp, &h->content_length) < 0)
         return -1;
     }
-    else if ((mutt_str_strncasecmp("BODY", s, 4) == 0) ||
-             (mutt_str_strncasecmp("RFC822.HEADER", s, 13) == 0))
+    else if (mutt_str_startswith(s, "BODY", CASE_IGNORE) ||
+             mutt_str_startswith(s, "RFC822.HEADER", CASE_IGNORE))
     {
       /* handle above, in msg_fetch_header */
       return -2;
     }
-    else if (mutt_str_strncasecmp("MODSEQ", s, 6) == 0)
+    else if ((plen = mutt_str_startswith(s, "MODSEQ", CASE_IGNORE)))
     {
-      s += 6;
+      s += plen;
       SKIPWS(s);
       if (*s != '(')
       {
@@ -432,7 +436,7 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
 
   /* find FETCH tag */
   buf = imap_next_word(buf);
-  if (mutt_str_strncasecmp("FETCH", buf, 5) != 0)
+  if (!mutt_str_startswith(buf, "FETCH", CASE_IGNORE))
     return rc;
 
   rc = -2; /* we've got a FETCH response, for better or worse */
@@ -1631,7 +1635,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (mutt_str_strncasecmp(imap_get_qualifier(adata->buf), "[TRYCREATE]", 11) != 0)
+      if (!mutt_str_startswith(imap_get_qualifier(adata->buf), "[TRYCREATE]", CASE_IGNORE))
         break;
       mutt_debug(3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
@@ -1888,14 +1892,14 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
     pc = imap_next_word(pc);
     pc = imap_next_word(pc);
 
-    if (mutt_str_strncasecmp("FETCH", pc, 5) == 0)
+    if (mutt_str_startswith(pc, "FETCH", CASE_IGNORE))
     {
       while (*pc)
       {
         pc = imap_next_word(pc);
         if (pc[0] == '(')
           pc++;
-        if (mutt_str_strncasecmp("UID", pc, 3) == 0)
+        if (mutt_str_startswith(pc, "UID", CASE_IGNORE))
         {
           pc = imap_next_word(pc);
           if (mutt_str_atoui(pc, &uid) < 0)
@@ -1906,8 +1910,8 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
                 "The message index is incorrect. Try reopening the mailbox."));
           }
         }
-        else if ((mutt_str_strncasecmp("RFC822", pc, 6) == 0) ||
-                 (mutt_str_strncasecmp("BODY[]", pc, 6) == 0))
+        else if (mutt_str_startswith(pc, "RFC822", CASE_IGNORE) ||
+                 mutt_str_startswith(pc, "BODY[]", CASE_IGNORE))
         {
           pc = imap_next_word(pc);
           if (imap_get_literal_count(pc, &bytes) < 0)
@@ -1937,7 +1941,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
          * change (eg from \Unseen to \Seen).
          * Uncommitted changes in neomutt take precedence. If we decide to
          * incrementally update flags later, this won't stop us syncing */
-        else if ((mutt_str_strncasecmp("FLAGS", pc, 5) == 0) && !e->changed)
+        else if (mutt_str_startswith(pc, "FLAGS", CASE_IGNORE) && !e->changed)
         {
           pc = imap_set_flags(adata, e, pc, NULL);
           if (!pc)
