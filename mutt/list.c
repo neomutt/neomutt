@@ -172,7 +172,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))
+    if ((*np->data == '*') || mutt_str_startswith(s, np->data, CASE_IGNORE))
       return true;
   }
   return false;
