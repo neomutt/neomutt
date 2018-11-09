@@ -221,9 +221,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->new : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_new : 0);
       }
-      else if (!Context || !Context->new)
+      else if (!Context || !Context->mailbox->msg_new)
         optional = 0;
       break;
 
@@ -232,9 +232,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt,
-                 Context ? Context->mailbox->msg_unread - Context->new : 0);
+                 Context ? Context->mailbox->msg_unread - Context->mailbox->msg_new : 0);
       }
-      else if (!Context || !(Context->mailbox->msg_unread - Context->new))
+      else if (!Context || !(Context->mailbox->msg_unread - Context->mailbox->msg_new))
         optional = 0;
       break;
 
