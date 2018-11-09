@@ -36,7 +36,7 @@
 #define LONG_STRING  1024
 #define HUGE_STRING  8192
 
-#define NONULL(x) x ? x : ""
+#define NONULL(x) (x ? x : "")
 #define ISSPACE(c) isspace((unsigned char) c)
 #define EMAIL_WSP " \t\r\n"
 
