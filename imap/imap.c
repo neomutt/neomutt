@@ -109,12 +109,13 @@ static int check_capabilities(struct ImapAccountData *adata)
 static char *get_flags(struct ListHead *hflags, char *s)
 {
   /* sanity-check string */
-  if (mutt_str_strncasecmp("FLAGS", s, 5) != 0)
+  const size_t plen = mutt_str_startswith(s, "FLAGS", CASE_IGNORE);
+  if (plen == 0)
   {
     mutt_debug(1, "not a FLAGS response: %s\n", s);
     return NULL;
   }
-  s += 5;
+  s += plen;
   SKIPWS(s);
   if (*s != '(')
   {
@@ -583,7 +584,7 @@ static int complete_hosts(char *buf, size_t buflen)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    if (mutt_str_strncmp(buf, np->m->path, matchlen) != 0)
+    if (!mutt_str_startswith(np->m->path, buf, CASE_MATCH))
       continue;
 
     if (rc)
@@ -968,9 +969,9 @@ int imap_open_connection(struct ImapAccountData *adata)
     return -1;
   }
 
-  if (mutt_str_strncasecmp("* OK", adata->buf, 4) == 0)
+  if (mutt_str_startswith(adata->buf, "* OK", CASE_IGNORE))
   {
-    if ((mutt_str_strncasecmp("* OK [CAPABILITY", adata->buf, 16) != 0) &&
+    if (!mutt_str_startswith(adata->buf, "* OK [CAPABILITY", CASE_IGNORE) &&
         check_capabilities(adata))
     {
       goto bail;
@@ -1017,7 +1018,7 @@ int imap_open_connection(struct ImapAccountData *adata)
     }
 #endif
   }
-  else if (mutt_str_strncasecmp("* PREAUTH", adata->buf, 9) == 0)
+  else if (mutt_str_startswith(adata->buf, "* PREAUTH", CASE_IGNORE))
   {
     adata->state = IMAP_AUTHENTICATED;
     if (check_capabilities(adata) != 0)
@@ -1099,10 +1100,10 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, flag_list, entries)
   {
-    if (mutt_str_strncasecmp(np->data, flag, strlen(np->data)) == 0)
+    if (mutt_str_strcasecmp(np->data, flag) == 0)
       return true;
 
-    if (mutt_str_strncmp(np->data, "\\*", strlen(np->data)) == 0)
+    if (mutt_str_strcmp(np->data, "\\*") == 0)
       return true;
   }
 
@@ -1884,7 +1885,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (mutt_str_strncasecmp(imap_get_qualifier(adata->buf), "[TRYCREATE]", 11) != 0)
+      if (!mutt_str_startswith(imap_get_qualifier(adata->buf), "[TRYCREATE]", CASE_IGNORE))
         break;
       mutt_debug(3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
@@ -2358,7 +2359,7 @@ static int imap_mbox_open(struct Context *ctx)
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
-    if (mutt_str_strncasecmp("FLAGS", pc, 5) == 0)
+    if (mutt_str_startswith(pc, "FLAGS", CASE_IGNORE))
     {
       /* don't override PERMANENTFLAGS */
       if (STAILQ_EMPTY(&adata->flags))
@@ -2370,7 +2371,7 @@ static int imap_mbox_open(struct Context *ctx)
       }
     }
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
-    else if (mutt_str_strncasecmp("OK [PERMANENTFLAGS", pc, 18) == 0)
+    else if (mutt_str_startswith(pc, "OK [PERMANENTFLAGS", CASE_IGNORE))
     {
       mutt_debug(3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
@@ -2382,7 +2383,7 @@ static int imap_mbox_open(struct Context *ctx)
         goto fail;
     }
     /* save UIDVALIDITY for the header cache */
-    else if (mutt_str_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
+    else if (mutt_str_startswith(pc, "OK [UIDVALIDITY", CASE_IGNORE))
     {
       mutt_debug(3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
@@ -2391,7 +2392,7 @@ static int imap_mbox_open(struct Context *ctx)
         goto fail;
       status->uidvalidity = adata->uid_validity;
     }
-    else if (mutt_str_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
+    else if (mutt_str_startswith(pc, "OK [UIDNEXT", CASE_IGNORE))
     {
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
@@ -2400,7 +2401,7 @@ static int imap_mbox_open(struct Context *ctx)
         goto fail;
       status->uidnext = adata->uidnext;
     }
-    else if (mutt_str_strncasecmp("OK [HIGHESTMODSEQ", pc, 17) == 0)
+    else if (mutt_str_startswith(pc, "OK [HIGHESTMODSEQ", CASE_IGNORE))
     {
       mutt_debug(3, "Getting mailbox HIGHESTMODSEQ\n");
       pc += 3;
@@ -2409,7 +2410,7 @@ static int imap_mbox_open(struct Context *ctx)
         goto fail;
       status->modseq = adata->modseq;
     }
-    else if (mutt_str_strncasecmp("OK [NOMODSEQ", pc, 12) == 0)
+    else if (mutt_str_startswith(pc, "OK [NOMODSEQ", CASE_IGNORE))
     {
       mutt_debug(3, "Mailbox has NOMODSEQ set\n");
       status->modseq = adata->modseq = 0;
@@ -2417,7 +2418,7 @@ static int imap_mbox_open(struct Context *ctx)
     else
     {
       pc = imap_next_word(pc);
-      if (mutt_str_strncasecmp("EXISTS", pc, 6) == 0)
+      if (mutt_str_startswith(pc, "EXISTS", CASE_IGNORE))
       {
         count = adata->new_mail_count;
         adata->new_mail_count = 0;
@@ -2437,7 +2438,7 @@ static int imap_mbox_open(struct Context *ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if ((mutt_str_strncasecmp(imap_get_qualifier(adata->buf), "[READ-ONLY]", 11) == 0) &&
+  if (mutt_str_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]", CASE_IGNORE) &&
       !mutt_bit_isset(adata->capabilities, ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
@@ -2810,10 +2811,10 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, "imap://", 7) == 0)
+  if (mutt_str_startswith(path, "imap://", CASE_IGNORE))
     return MUTT_IMAP;
 
-  if (mutt_str_strncasecmp(path, "imaps://", 8) == 0)
+  if (mutt_str_startswith(path, "imaps://", CASE_IGNORE))
     return MUTT_IMAP;
 
   return MUTT_UNKNOWN;
