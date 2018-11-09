@@ -2510,7 +2510,7 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, NmUriProtocol, NmUriProtocolLen) == 0)
+  if (mutt_str_startswith(path, NmUriProtocol, CASE_IGNORE))
     return MUTT_NOTMUCH;
 
   return MUTT_UNKNOWN;
