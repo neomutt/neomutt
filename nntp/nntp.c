@@ -250,13 +250,14 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   }
 
   /* no capabilities */
-  if (mutt_str_strncmp("101", buf, 3) != 0)
+  if (!mutt_str_startswith(buf, "101", CASE_MATCH))
     return 1;
   adata->hasCAPABILITIES = true;
 
   /* parse capabilities */
   do
   {
+    size_t plen = 0;
     if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
       return nntp_connect_error(adata);
     if (mutt_str_strcmp("STARTTLS", buf) == 0)
@@ -269,15 +270,15 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       adata->hasLISTGROUP = true;
       adata->hasLISTGROUPrange = true;
     }
-    else if (mutt_str_strncmp("AUTHINFO ", buf, 9) == 0)
+    else if ((plen = mutt_str_startswith(buf, "AUTHINFO ", CASE_MATCH)))
     {
       mutt_str_strcat(buf, sizeof(buf), " ");
-      mutt_str_strfcpy(authinfo, buf + 8, sizeof(authinfo));
+      mutt_str_strfcpy(authinfo, buf + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL
-    else if (mutt_str_strncmp("SASL ", buf, 5) == 0)
+    else if ((plen = mutt_str_startswith(buf, "SASL ", CASE_MATCH)))
     {
-      char *p = buf + 5;
+      char *p = buf + plen;
       while (*p == ' ')
         p++;
       adata->authenticators = mutt_str_strdup(p);
@@ -285,7 +286,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 #endif
     else if (mutt_str_strcmp("OVER", buf) == 0)
       adata->hasOVER = true;
-    else if (mutt_str_strncmp("LIST ", buf, 5) == 0)
+    else if (mutt_str_startswith(buf, "LIST ", CASE_MATCH))
     {
       char *p = strstr(buf, " NEWSGROUPS");
       if (p)
@@ -342,7 +343,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("500", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasDATE = true;
 
     if (mutt_socket_send(conn, "LISTGROUP\r\n") < 0 ||
@@ -350,7 +351,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("500", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasLISTGROUP = true;
 
     if (mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0 ||
@@ -358,9 +359,9 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("500", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasLIST_NEWSGROUPS = true;
-    if (mutt_str_strncmp("215", buf, 3) == 0)
+    if (mutt_str_startswith(buf, "215", CASE_MATCH))
     {
       do
       {
@@ -378,7 +379,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("500", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasXGTITLE = true;
   }
 
@@ -390,7 +391,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("500", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "500", CASE_MATCH))
       adata->hasXOVER = true;
   }
 
@@ -402,7 +403,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("215", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "215", CASE_MATCH))
       adata->overview_fmt = mutt_str_strdup(OverviewFmt);
     else
     {
@@ -554,11 +555,11 @@ static int nntp_auth(struct NntpAccountData *adata)
         }
 
         /* authenticated, password is not required */
-        if (mutt_str_strncmp("281", buf, 3) == 0)
+        if (mutt_str_startswith(buf, "281", CASE_MATCH))
           return 0;
 
         /* username accepted, sending password */
-        if (mutt_str_strncmp("381", buf, 3) == 0)
+        if (mutt_str_startswith(buf, "381", CASE_MATCH))
         {
           if (DebugLevel < MUTT_SOCK_LOG_FULL)
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
@@ -570,7 +571,7 @@ static int nntp_auth(struct NntpAccountData *adata)
           }
 
           /* authenticated */
-          if (mutt_str_strncmp("281", buf, 3) == 0)
+          if (mutt_str_startswith(buf, "281", CASE_MATCH))
             return 0;
         }
 
@@ -661,8 +662,8 @@ static int nntp_auth(struct NntpAccountData *adata)
           {
             break;
           }
-          if ((mutt_str_strncmp(inbuf, "283 ", 4) != 0) &&
-              (mutt_str_strncmp(inbuf, "383 ", 4) != 0))
+          if (!mutt_str_startswith(inbuf, "283 ", CASE_MATCH) &&
+              !mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
           {
             if (DebugLevel < MUTT_SOCK_LOG_FULL)
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d< %s\n", conn->fd, inbuf);
@@ -718,7 +719,7 @@ static int nntp_auth(struct NntpAccountData *adata)
         sasl_dispose(&saslconn);
         if (conn->fd < 0)
           break;
-        if (mutt_str_strncmp(inbuf, "383 ", 4) == 0)
+        if (mutt_str_startswith(inbuf, "383 ", CASE_MATCH))
         {
           if (mutt_socket_send(conn, "*\r\n") < 0 ||
               mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0)
@@ -1392,7 +1393,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
           break;
 
         /* invalid response */
-        if (mutt_str_strncmp("423", buf, 3) != 0)
+        if (!mutt_str_startswith(buf, "423", CASE_MATCH))
         {
           mutt_error("HEAD: %s", buf);
           break;
@@ -1819,9 +1820,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
   if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     return nntp_connect_error(adata);
 
-  if (mutt_str_strncmp("200", buf, 3) == 0)
+  if (mutt_str_startswith(buf, "200", CASE_MATCH))
     posting = true;
-  else if (mutt_str_strncmp("201", buf, 3) != 0)
+  else if (!mutt_str_startswith(buf, "201", CASE_MATCH))
   {
     mutt_socket_close(conn);
     mutt_str_remove_trailing_ws(buf);
@@ -1843,9 +1844,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
       return nntp_connect_error(adata);
     }
 
-    if (mutt_str_strncmp("200", buf, 3) == 0)
+    if (mutt_str_startswith(buf, "200", CASE_MATCH))
       posting = true;
-    else if (mutt_str_strncmp("201", buf, 3) == 0)
+    else if (mutt_str_startswith(buf, "201", CASE_MATCH))
       posting = false;
     /* error if has capabilities, ignore result if no capabilities */
     else if (adata->hasCAPABILITIES)
@@ -1887,7 +1888,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
       {
         return nntp_connect_error(adata);
       }
-      if (mutt_str_strncmp("382", buf, 3) != 0)
+      if (!mutt_str_startswith(buf, "382", CASE_MATCH))
       {
         adata->use_tls = 0;
         mutt_error("STARTTLS: %s", buf);
@@ -1924,7 +1925,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
     {
       return nntp_connect_error(adata);
     }
-    if (mutt_str_strncmp("480", buf, 3) != 0)
+    if (!mutt_str_startswith(buf, "480", CASE_MATCH))
       auth = false;
   }
 
@@ -2241,7 +2242,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
     mutt_file_fclose(&fp);
     if (rc < 0)
       return -1;
-    if (mutt_str_strncmp("430", buf, 3) == 0)
+    if (mutt_str_startswith(buf, "430", CASE_MATCH))
       return 1;
     mutt_error("HEAD: %s", buf);
     return -1;
@@ -2318,7 +2319,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
     FREE(&cc.child);
     if (rc > 0)
     {
-      if (mutt_str_strncmp("500", buf, 3) != 0)
+      if (!mutt_str_startswith(buf, "500", CASE_MATCH))
         mutt_error("XPAT: %s", buf);
       else
       {
@@ -2493,7 +2494,7 @@ static int nntp_mbox_open(struct Context *ctx)
   }
 
   /* newsgroup not found, remove it */
-  if (mutt_str_strncmp("411", buf, 3) == 0)
+  if (mutt_str_startswith(buf, "411", CASE_MATCH))
   {
     mutt_error(_("Newsgroup %s has been removed from the server"), mdata->group);
     if (!mdata->deleted)
@@ -2750,7 +2751,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
       }
       if (rc > 0)
       {
-        if (mutt_str_strncmp(nntp_edata_get(e)->article_num ? "423" : "430", buf, 3) == 0)
+        if (mutt_str_startswith(buf, nntp_edata_get(e)->article_num ? "423" : "430", CASE_MATCH))
         {
           mutt_error(_("Article %d not found on the server"),
                      nntp_edata_get(e)->article_num ? article : e->env->message_id);
