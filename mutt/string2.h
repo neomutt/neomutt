@@ -61,6 +61,12 @@
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
+enum CaseSensitivity
+{
+  CASE_MATCH,
+  CASE_IGNORE
+};
+
 void        mutt_str_adjust(char **p);
 void        mutt_str_append_item(char **str, const char *item, int sep);
 int         mutt_str_atoi(const char *str, int *dst);
@@ -86,6 +92,7 @@ const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, cons
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(char *p);
 int         mutt_str_strcasecmp(const char *a, const char *b);
+size_t      mutt_str_startswith(const char *str, const char *prefix, enum CaseSensitivity cs);
 const char *mutt_str_strcasestr(const char *haystack, const char *needle);
 char *      mutt_str_strcat(char *buf, size_t buflen, const char *s);
 const char *mutt_str_strchrnul(const char *s, char c);
