@@ -318,32 +318,32 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
   int orig_flagged = m->msg_flagged;
 #endif
 
-  if (m->magic != MUTT_IMAP)
+  enum MailboxType mb_magic = mx_path_probe(m->path, NULL);
+
+  switch (mb_magic)
   {
-    m->has_new = false;
+    case MUTT_POP:
+    case MUTT_NNTP:
+    case MUTT_NOTMUCH:
+    case MUTT_IMAP:
+      if (mb_magic != MUTT_IMAP)
+        m->has_new = false;
+      m->magic = mb_magic;
+      break;
+    default:
+      m->has_new = false;
 
-    enum MailboxType mb_magic = mx_path_probe(m->path, NULL);
-
-    switch (mb_magic)
-    {
-      case MUTT_POP:
-      case MUTT_NNTP:
-      case MUTT_NOTMUCH:
-        m->magic = mb_magic;
-        break;
-      default:
-        if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-            ((m->magic == MUTT_UNKNOWN) && (m->magic = mx_path_probe(m->path, NULL)) <= 0))
-        {
-          /* if the mailbox still doesn't exist, set the newly created flag to be
-           * ready for when it does. */
-          m->newly_created = true;
-          m->magic = MUTT_UNKNOWN;
-          m->size = 0;
-          return;
-        }
-        break; // kept for consistency.
-    }
+      if (stat(m->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
+          ((m->magic == MUTT_UNKNOWN) && (m->magic = mx_path_probe(m->path, NULL)) <= 0))
+      {
+        /* if the mailbox still doesn't exist, set the newly created flag to be
+         * ready for when it does. */
+        m->newly_created = true;
+        m->magic = MUTT_UNKNOWN;
+        m->size = 0;
+        return;
+      }
+      break; // kept for consistency.
   }
 
   /* check to see if the folder is the currently selected folder before polling */
@@ -370,6 +370,12 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
         if (mh_mailbox(m, check_stats))
           MailboxCount++;
         break;
+#ifdef USE_IMAP
+      case MUTT_IMAP:
+        if (imap_mailbox_check(m, check_stats) == 0)
+          MailboxCount++;
+        break;
+#endif
 #ifdef USE_NOTMUCH
       case MUTT_NOTMUCH:
         m->msg_count = 0;
@@ -757,10 +763,6 @@ int mutt_mailbox_check(int force)
   MailboxTime = t;
   MailboxCount = 0;
   MailboxNotify = 0;
-
-#ifdef USE_IMAP
-  MailboxCount += imap_mailbox_check(check_stats);
-#endif
 
   /* check device ID and serial number instead of comparing paths */
   if (!Context || !Context->mailbox || (Context->mailbox->magic == MUTT_IMAP) ||
