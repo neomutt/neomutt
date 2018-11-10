@@ -193,11 +193,7 @@ int url_parse(struct Url *u, char *src)
   src += 2;
 
   /* Notmuch and mailto schemes can include a query */
-#ifdef USE_NOTMUCH
   if ((u->scheme == U_NOTMUCH) || (u->scheme == U_MAILTO))
-#else
-  if (u->scheme == U_MAILTO)
-#endif
   {
     t = strrchr(src, '?');
     if (t)

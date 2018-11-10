@@ -2186,15 +2186,22 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies notmuch tag which is used for unread messages. The
-  ** variable is used to count unread messages in DB only. All other NeoMutt commands
-  ** use standard (e.g. maildir) flags.
+  ** variable is used to count unread messages in DB and set the unread flag when
+  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
   */
   { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
   /*
   ** .pp
   ** This variable specifies notmuch tag which is used for flagged messages. The
-  ** variable is used to count flagged messages in DB only. All other NeoMutt commands
-  ** use standard (e.g. maildir) flags.
+  ** variable is used to count flagged messages in DB and set the flagged flag when
+  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+  */
+  { "nm_replied_tag", DT_STRING, R_NONE, &NmRepliedTag, IP "replied" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for replied messages. The
+  ** variable is used to set the replied flag when modifiying tags. All other NeoMutt
+  ** commands use standard (e.g. maildir) flags.
   */
 #endif
 #ifdef USE_NNTP

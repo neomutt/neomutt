@@ -72,6 +72,9 @@
 #include "progress.h"
 #include "protos.h"
 
+const char NmUriProtocol[] = "notmuch://";
+const int NmUriProtocolLen = sizeof(NmUriProtocol) - 1;
+
 /* These Config Variables are only used in notmuch/mutt_notmuch.c */
 int NmDbLimit;       ///< Config: (notmuch) Default limit for Notmuch queries
 char *NmDefaultUri;  ///< Config: (notmuch) Path to the Notmuch database
@@ -83,6 +86,7 @@ char *NmQueryWindowTimebase; ///< Config: (notmuch) Units for the time duration
 char *NmRecordTags; ///< Config: (notmuch) Tags to apply to the 'record' mailbox (sent mail)
 char *NmUnreadTag;  ///< Config: (notmuch) Tag to use for unread messages
 char *NmFlaggedTag; ///< Config: (notmuch) Tag to use for flagged messages
+char *NmRepliedTag; ///< Config: (notmuch) Tag to use for replied messages
 
 /**
  * string_to_query_type - Lookup a query type
@@ -112,11 +116,7 @@ void nm_adata_free(void **ptr)
   struct NmAccountData *adata = *ptr;
   if (adata->db)
   {
-#ifdef NOTMUCH_API_3
-    notmuch_database_destroy(adata->db);
-#else
-    notmuch_database_close(adata->db);
-#endif
+    nm_db_free(adata->db);
     adata->db = NULL;
   }
 
@@ -1019,6 +1019,35 @@ static void append_thread(struct Mailbox *m, notmuch_query_t *q,
 }
 
 /**
+ * get_messages - load messages for a query
+ * @param query Notmuch query
+ * @retval msgs Messages matching query
+ * @retval NULL Error occurred
+ *
+ * This helper method is to be the single point for retrieving messages. It
+ * handles version specific calls, which will make maintenance easier.
+ */
+static notmuch_messages_t *get_messages(notmuch_query_t *query)
+{
+  if (!query)
+    return NULL;
+
+  notmuch_messages_t *msgs = NULL;
+
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_messages(query, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return NULL;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+  if (notmuch_query_search_messages_st(query, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return NULL;
+#else
+  msgs = notmuch_query_search_messages(query);
+#endif
+
+  return msgs;
+}
+
+/**
  * read_mesgs_query - Search for matching messages
  * @param m     Mailbox
  * @param q     Notmuch query
@@ -1034,16 +1063,10 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 
   int limit = get_limit(mdata);
 
-  notmuch_messages_t *msgs = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  notmuch_messages_t *msgs = get_messages(q);
+
+  if (!msgs)
     return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#else
-  msgs = notmuch_query_search_messages(q);
-#endif
 
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (m->msg_count < limit));
        notmuch_messages_move_to_next(msgs))
@@ -1061,6 +1084,34 @@ static bool read_mesgs_query(struct Mailbox *m, notmuch_query_t *q, bool dedup)
 }
 
 /**
+ * get_threads - load threads for a query
+ * @param query Notmuch query
+ * @retval msgs Threads matching query
+ * @retval NULL Error occurred
+ *
+ * This helper method is to be the single point for retrieving messages. It
+ * handles version specific calls, which will make maintenance easier.
+ */
+static notmuch_threads_t *get_threads(notmuch_query_t *query)
+{
+  if (!query)
+    return NULL;
+
+  notmuch_threads_t *threads = NULL;
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_threads(query, &threads) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+  if (notmuch_query_search_threads_st(query, &threads) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#else
+  threads = notmuch_query_search_threads(query);
+#endif
+
+  return threads;
+}
+
+/**
  * read_threads_query - Perform a query with threads
  * @param m     Mailbox
  * @param q     Query type
@@ -1075,16 +1126,10 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
   if (!mdata)
     return false;
 
-  notmuch_threads_t *threads = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
-#else
-  threads = notmuch_query_search_threads(q);
-#endif
+  notmuch_threads_t *threads = get_threads(q);
+
+  if (!threads)
+    return NULL;
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
@@ -1246,21 +1291,21 @@ static int update_email_flags(struct Context *ctx, struct Email *e, const char *
     if (*tag == '-')
     {
       tag = tag + 1;
-      if (strcmp(tag, "unread") == 0)
+      if (strcmp(tag, NmUnreadTag) == 0)
         mutt_set_flag(ctx, e, MUTT_READ, 1);
-      else if (strcmp(tag, "replied") == 0)
+      else if (strcmp(tag, NmRepliedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_REPLIED, 0);
-      else if (strcmp(tag, "flagged") == 0)
+      else if (strcmp(tag, NmFlaggedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_FLAG, 0);
     }
     else
     {
       tag = (*tag == '+') ? tag + 1 : tag;
-      if (strcmp(tag, "unread") == 0)
+      if (strcmp(tag, NmUnreadTag) == 0)
         mutt_set_flag(ctx, e, MUTT_READ, 0);
-      else if (strcmp(tag, "replied") == 0)
+      else if (strcmp(tag, NmRepliedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_REPLIED, 1);
-      else if (strcmp(tag, "flagged") == 0)
+      else if (strcmp(tag, NmFlaggedTag) == 0)
         mutt_set_flag(ctx, e, MUTT_FLAG, 1);
     }
     end = NULL;
@@ -1662,15 +1707,14 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
     if (get_limit(mdata) != NmDbLimit)
     {
-      added = snprintf(uri, sizeof(uri),
-                       "notmuch://%s?type=%s&limit=%d&query=", nm_db_get_filename(m),
+      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
+                       nm_db_get_filename(m),
                        query_type_to_string(mdata->query_type), get_limit(mdata));
     }
     else
     {
-      added = snprintf(uri, sizeof(uri),
-                       "notmuch://%s?type=%s&query=", nm_db_get_filename(m),
-                       query_type_to_string(mdata->query_type));
+      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
+                       nm_db_get_filename(m), query_type_to_string(mdata->query_type));
     }
   }
   else
@@ -1692,67 +1736,6 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   mutt_debug(1, "nm: uri from query '%s'\n", buf);
   return buf;
-}
-
-/**
- * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
- * @param uri    Original URI to be parsed
- * @param buf    Buffer for the reformatted URI
- * @param buflen Size of the buffer
- * @retval true if buf contains a normalized version of the query
- * @retval false if uri contains an invalid query
- *
- * This function aims at making notmuch searches URI representations deterministic,
- * so that when comparing two equivalent searches they will be the same. It works
- * by building a notmuch context object from the original search string, and
- * building a new from the notmuch context object.
- *
- * It's aimed to be used by mailbox when parsing the virtual_mailboxes to make the
- * parsed user written search strings comparable to the internally generated ones.
- */
-bool nm_normalize_uri(const char *uri, char *buf, size_t buflen)
-{
-  mutt_debug(2, "(%s)\n", uri);
-  char tmp[PATH_MAX];
-  int rc = -1;
-
-  struct Mailbox tmp_mbox = { { 0 } };
-  struct NmMboxData *tmp_mdata = nm_mdata_new(uri);
-
-  if (!tmp_mdata)
-    return false;
-
-  tmp_mbox.magic = MUTT_NOTMUCH;
-  tmp_mbox.mdata = tmp_mdata;
-
-  mutt_debug(2, "#1 () -> db_query: %s\n", tmp_mdata->db_query);
-
-  if (!get_query_string(tmp_mdata, false))
-    goto gone;
-
-  mutt_debug(2, "#2 () -> db_query: %s\n", tmp_mdata->db_query);
-
-  mutt_str_strfcpy(tmp, tmp_mdata->db_query, sizeof(tmp));
-
-  if (!nm_uri_from_query(&tmp_mbox, tmp, sizeof(tmp)))
-    goto gone;
-
-  mutt_str_strfcpy(buf, tmp, buflen);
-
-  mutt_debug(2, "#3 (%s) -> %s\n", uri, buf);
-
-  rc = 0;
-gone:
-  url_free(&tmp_mdata->db_url);
-  FREE(&tmp_mdata->db_url_holder);
-  FREE(&tmp_mdata);
-  if (rc < 0)
-  {
-    mutt_error(_("failed to parse notmuch uri: %s"), uri);
-    mutt_debug(2, "() -> error\n");
-    return false;
-  }
-  return true;
 }
 
 /**
@@ -1814,32 +1797,22 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   {
     case NM_QUERY_TYPE_MESGS:
     {
-      notmuch_messages_t *messages = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-      if (notmuch_query_search_messages(q, &messages) != NOTMUCH_STATUS_SUCCESS)
+      notmuch_messages_t *messages = get_messages(q);
+
+      if (!messages)
         return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-      if (notmuch_query_search_messages_st(q, &messages) != NOTMUCH_STATUS_SUCCESS)
-        return false;
-#else
-      messages = notmuch_query_search_messages(q);
-#endif
+
       result = notmuch_messages_valid(messages);
       notmuch_messages_destroy(messages);
       break;
     }
     case NM_QUERY_TYPE_THREADS:
     {
-      notmuch_threads_t *threads = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-      if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
+      notmuch_threads_t *threads = get_threads(q);
+
+      if (!threads)
         return false;
-#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-      if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-        return false;
-#else
-      threads = notmuch_query_search_threads(q);
-#endif
+
       result = notmuch_threads_valid(threads);
       notmuch_threads_destroy(threads);
       break;
@@ -1924,8 +1897,8 @@ int nm_nonctx_get_count(struct Mailbox *m)
   {
     if (NmDefaultUri)
     {
-      if (strncmp(NmDefaultUri, "notmuch://", 10) == 0)
-        db_filename = NmDefaultUri + 10;
+      if (nm_path_probe(NmDefaultUri, NULL) == MUTT_NOTMUCH)
+        db_filename = NmDefaultUri + NmUriProtocolLen;
       else
         db_filename = NmDefaultUri;
     }
@@ -1959,11 +1932,7 @@ int nm_nonctx_get_count(struct Mailbox *m)
 done:
   if (db)
   {
-#ifdef NOTMUCH_API_3
-    notmuch_database_destroy(db);
-#else
-    notmuch_database_close(db);
-#endif
+    nm_db_free(db);
     mutt_debug(1, "nm: count close DB\n");
   }
   url_free(&url);
@@ -2254,15 +2223,15 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
 
   int limit = get_limit(mdata);
 
-  notmuch_messages_t *msgs = NULL;
+  notmuch_messages_t *msgs = get_messages(q);
+
+  // TODO: Analyze impact of removing this version guard.
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
-  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  if (!msgs)
     return false;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-  if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+  if (!msgs)
     goto done;
-#else
-  msgs = notmuch_query_search_messages(q);
 #endif
 
   for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
@@ -2541,7 +2510,7 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, "notmuch://", 10) == 0)
+  if (mutt_str_strncasecmp(path, NmUriProtocol, NmUriProtocolLen) == 0)
     return MUTT_NOTMUCH;
 
   return MUTT_UNKNOWN;

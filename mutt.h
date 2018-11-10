@@ -87,10 +87,8 @@ enum MuttStatType
 #define MUTT_COMMAND  (1 << 6)  /**< do command completion */
 #define MUTT_PATTERN  (1 << 7)  /**< pattern mode - only used for history classes */
 #define MUTT_LABEL    (1 << 8)  /**< do label completion */
-#ifdef USE_NOTMUCH
 #define MUTT_NM_QUERY (1 << 9)  /**< Notmuch query mode. */
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
-#endif
 
 /* flags for mutt_extract_token() */
 #define MUTT_TOKEN_EQUAL         (1<<0)  /**< treat '=' as a special */
