@@ -1699,27 +1699,28 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
   if (!mdata)
   {
     mdata = nm_get_default_data();
+
+    // Failed to get default data.
+    if (!mdata)
+      return NULL;
+
     using_default_data = true;
   }
 
-  if (mdata)
-  {
-    nm_parse_type_from_query(mdata, buf);
+  nm_parse_type_from_query(mdata, buf);
 
-    if (get_limit(mdata) != NmDbLimit)
-    {
-      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
-                       nm_db_get_filename(m),
-                       query_type_to_string(mdata->query_type), get_limit(mdata));
-    }
-    else
-    {
-      added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
-                       nm_db_get_filename(m), query_type_to_string(mdata->query_type));
-    }
+  if (get_limit(mdata) != NmDbLimit)
+  {
+    added = snprintf(uri, sizeof(uri),
+        "%s%s?type=%s&limit=%d&query=", NmUriProtocol, nm_db_get_filename(m),
+        query_type_to_string(mdata->query_type), get_limit(mdata));
   }
   else
-    return NULL;
+  {
+    added = snprintf(uri, sizeof(uri),
+        "%s%s?type=%s&query=", NmUriProtocol, nm_db_get_filename(m),
+        query_type_to_string(mdata->query_type));
+  }
 
   if (added >= sizeof(uri))
   {
@@ -2100,10 +2101,7 @@ struct Account *nm_ac_find(struct Account *a, const char *path)
  */
 int nm_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
-    return -1;
-
-  if (m->magic != MUTT_NOTMUCH)
+  if (!a || !m || m->magic != MUTT_NOTMUCH)
     return -1;
 
   if (!a->adata)
@@ -2518,13 +2516,10 @@ done:
  */
 enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 {
-  if (!path)
+  if (!path || !mutt_str_startswith(path, NmUriProtocol, CASE_IGNORE))
     return MUTT_UNKNOWN;
 
-  if (mutt_str_startswith(path, NmUriProtocol, CASE_IGNORE))
-    return MUTT_NOTMUCH;
-
-  return MUTT_UNKNOWN;
+  return MUTT_NOTMUCH;
 }
 
 /**
