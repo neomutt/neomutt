@@ -1322,12 +1322,18 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
   if (adata->status == IMAP_FATAL)
   {
+    adata->closing = false;
     cmd_handle_fatal(adata);
     return;
   }
 
-  if (!(adata->state >= IMAP_SELECTED) || (adata->mailbox && adata->mailbox->closing))
+  if (!(adata->state >= IMAP_SELECTED) || (adata->mailbox && adata->closing))
+  {
+    adata->closing = false;
     return;
+  }
+
+  adata->closing = false;
 
   if (adata->reopen & IMAP_REOPEN_ALLOW)
   {

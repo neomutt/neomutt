@@ -551,8 +551,6 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
-  ctx->mailbox->closing = true;
-
   if (ctx->mailbox->readonly || ctx->dontwrite || ctx->append)
   {
     mx_fastclose_mailbox(ctx);
@@ -569,10 +567,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     {
       int rc = query_quadoption(CatchupNewsgroup, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
-      {
-        ctx->mailbox->closing = false;
         return -1;
-      }
       else if (rc == MUTT_YES)
         mutt_newsgroup_catchup(Context, mdata->adata, mdata->group);
     }
@@ -621,10 +616,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
                read_msgs, mbox);
       move_messages = query_quadoption(Move, buf);
       if (move_messages == MUTT_ABORT)
-      {
-        ctx->mailbox->closing = false;
         return -1;
-      }
     }
   }
 
@@ -639,10 +631,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
              ctx->mailbox->msg_deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
-    {
-      ctx->mailbox->closing = false;
       return -1;
-    }
   }
 
   if (MarkOld)
@@ -686,19 +675,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     if (i == 0) /* success */
       mutt_clear_error();
     else if (i == -1) /* horrible error, bail */
-    {
-      ctx->mailbox->closing = false;
       return -1;
-    }
     else /* use regular append-copy mode */
 #endif
     {
       struct Context *f = mx_mbox_open(NULL, mbox, MUTT_APPEND);
       if (!f)
-      {
-        ctx->mailbox->closing = false;
         return -1;
-      }
 
       for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
@@ -713,7 +696,6 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
           else
           {
             mx_mbox_close(&f, NULL);
-            ctx->mailbox->closing = false;
             return -1;
           }
         }
@@ -738,22 +720,16 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
-    {
-      ctx->mailbox->closing = false;
       return -1;
-    }
   }
 
 #ifdef USE_IMAP
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->mailbox->magic == MUTT_IMAP)
   {
-    int check = imap_sync_mailbox(ctx, (purge != MUTT_NO));
+    int check = imap_sync_mailbox(ctx, (purge != MUTT_NO), true);
     if (check != 0)
-    {
-      ctx->mailbox->closing = false;
       return check;
-    }
   }
   else
 #endif
@@ -772,10 +748,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     {
       int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
-      {
-        ctx->mailbox->closing = false;
         return check;
-      }
     }
   }
 
@@ -999,7 +972,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
 #ifdef USE_IMAP
   if (ctx->mailbox->magic == MUTT_IMAP)
-    rc = imap_sync_mailbox(ctx, purge);
+    rc = imap_sync_mailbox(ctx, purge, false);
   else
 #endif
     rc = sync_mailbox(ctx, index_hint);

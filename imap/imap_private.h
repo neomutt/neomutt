@@ -213,6 +213,7 @@ struct ImapAccountData
   struct Connection *conn;
   struct ConnAccount conn_account;
   bool recovering;
+  bool closing; /* If true, we are wating for CLOSE completion */
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).

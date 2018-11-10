@@ -88,7 +88,7 @@ struct ImapMbox
 int imap_access(const char *path);
 int imap_check_mailbox(struct Mailbox *m, bool force);
 int imap_delete_mailbox(struct Mailbox *m, char *path);
-int imap_sync_mailbox(struct Context *ctx, bool expunge);
+int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close);
 int imap_mailbox_check(bool check_stats);
 int imap_status(const char *path, bool queue);
 int imap_search(struct Mailbox *m, const struct Pattern *pat);

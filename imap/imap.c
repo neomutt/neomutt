@@ -1976,10 +1976,11 @@ out:
  * imap_sync_mailbox - Sync all the changes to the server
  * @param ctx     Mailbox
  * @param expunge if true do expunge
+ * @param close   if true we move imap state to CLOSE
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_sync_mailbox(struct Context *ctx, bool expunge)
+int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 {
   struct Context *appendctx = NULL;
   struct Email *e = NULL;
@@ -2112,7 +2113,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
 
   if (rc < 0)
   {
-    if (ctx->mailbox->closing)
+    if (close)
     {
       if (mutt_yesorno(_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
       {
@@ -2142,7 +2143,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
   ctx->mailbox->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
-  if (expunge && !(ctx->mailbox->closing) && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
+  if (expunge && !close && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
   {
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
@@ -2157,8 +2158,9 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge)
     adata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
   }
 
-  if (expunge && ctx->mailbox->closing)
+  if (expunge && close)
   {
+    adata->closing = true;
     imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
     adata->state = IMAP_AUTHENTICATED;
   }
@@ -2651,7 +2653,10 @@ static int imap_mbox_close(struct Context *ctx)
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
       if (!ctx->mailbox->msg_deleted)
+      {
+        adata->closing = true;
         imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
+      }
       adata->state = IMAP_AUTHENTICATED;
     }
 
