@@ -385,6 +385,7 @@ int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
   imap_fix_path(adata, mx->mbox, mailbox, mailboxlen);
   if (!*mailbox)
     mutt_str_strfcpy(mailbox, "INBOX", mailboxlen);
+
   return 0;
 }
 
@@ -1415,100 +1416,70 @@ int imap_check(struct ImapAccountData *adata, bool force)
  * Given a list of mailboxes rather than called once for each so that it can
  * batch the commands and save on round trips.
  */
-int imap_mailbox_check(bool check_stats)
+int imap_mailbox_check(struct Mailbox *m, bool check_stats)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapAccountData *lastdata = NULL;
   char name[LONG_STRING];
   char command[LONG_STRING * 2];
   char munged[LONG_STRING];
-  int mbcount = 0;
+  struct ImapMbox mx;
 
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  mutt_account_hook(m->realpath);
+
+  if (imap_parse_path(m->path, &mx) < 0)
+    return -1;
+
+  if (imap_prepare_mailbox(m, &mx, NULL, name, sizeof(name), false, true) < 0)
   {
-    /* Init newly-added mailboxes */
-    if (np->m->magic == MUTT_UNKNOWN)
-    {
-      if (imap_path_probe(np->m->path, NULL) == MUTT_IMAP)
-        np->m->magic = MUTT_IMAP;
-    }
+    m->has_new = false;
+    return -1;
+  }
+  FREE(&mx.mbox);
 
-    if (np->m->magic != MUTT_IMAP)
-      continue;
+  adata = m->account->adata;
 
-    // TODO(sileht): get_mailbox also browse AllMailboxes we could do an
-    // optimization here.
-    mutt_account_hook(np->m->realpath);
-    if (get_mailbox(np->m->path, &adata, name, sizeof(name)) < 0)
-    {
-      np->m->has_new = false;
-      continue;
-    }
-
-    /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
-     * IDLEd elsewhere.
-     * adata->mailbox may be NULL for connections other than the current
-     * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
-    if (adata->mbox_name && (imap_mxcmp(name, adata->mbox_name) == 0))
-    {
-      np->m->has_new = false;
-      continue;
-    }
-
-    if (!mutt_bit_isset(adata->capabilities, IMAP4REV1) &&
-        !mutt_bit_isset(adata->capabilities, STATUS))
-    {
-      mutt_debug(2, "Server doesn't support STATUS\n");
-      continue;
-    }
-
-    if (lastdata && (adata != lastdata))
-    {
-      /* Send commands to previous server. Sorting the mailbox list
-       * may prevent some infelicitous interleavings */
-      if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
-        mutt_debug(1, "#1 Error polling mailboxes\n");
-
-      lastdata = NULL;
-    }
-
-    if (!lastdata)
-      lastdata = adata;
-
-    imap_munge_mbox_name(adata, munged, sizeof(munged), name);
-    if (check_stats)
-    {
-      snprintf(command, sizeof(command),
-               "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
-    }
-    else
-    {
-      snprintf(command, sizeof(command),
-               "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
-    }
-
-    if (imap_exec(adata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) < 0)
-    {
-      mutt_debug(1, "Error queueing command\n");
-      return 0;
-    }
+  /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
+   * IDLEd elsewhere.
+   * adata->mailbox may be NULL for connections other than the current
+   * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
+  if (adata->mbox_name && (imap_mxcmp(name, adata->mbox_name) == 0))
+  {
+    m->has_new = false;
+    return -1;
   }
 
-  if (lastdata && (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1))
+  if (!mutt_bit_isset(adata->capabilities, IMAP4REV1) &&
+      !mutt_bit_isset(adata->capabilities, STATUS))
+  {
+    mutt_debug(2, "Server doesn't support STATUS\n");
+    return -1;
+  }
+
+  imap_munge_mbox_name(adata, munged, sizeof(munged), name);
+  if (check_stats)
+  {
+    snprintf(command, sizeof(command),
+             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
+  }
+  else
+  {
+    snprintf(command, sizeof(command),
+             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
+  }
+
+  if (imap_exec(adata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) < 0)
+  {
+    mutt_debug(1, "Error queueing command\n");
+    return -1;
+  }
+
+  if (imap_exec(adata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
   {
     mutt_debug(1, "#2 Error polling mailboxes\n");
-    return 0;
+    return -1;
   }
 
-  /* collect results */
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
-  {
-    if ((np->m->magic == MUTT_IMAP) && np->m->has_new)
-      mbcount++;
-  }
-
-  return mbcount;
+  return 0;
 }
 
 /**
