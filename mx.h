@@ -273,7 +273,7 @@ struct Account *mx_ac_find(struct Mailbox *m);
 struct Mailbox *mx_mbox_find(struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2(const char *path);
 int mx_ac_add(struct Account *a, struct Mailbox *m);
-int mx_ac_remove(struct Account *a, struct Mailbox *m);
+int mx_ac_remove(struct Mailbox *m);
 
 int                 mx_access(const char *path, int flags);
 void                mx_alloc_memory(struct Mailbox *m);

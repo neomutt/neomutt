@@ -1674,3 +1674,16 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
 
   return m->mx_ops->ac_add(a, m);
 }
+
+/**
+ * mx_ac_remove - Remove a Mailbox from an Account and delete Account if empty
+ * @param m Mailbox to remove
+ */
+int mx_ac_remove(struct Mailbox *m)
+{
+  if (!m || !m->account)
+    return -1;
+
+  account_remove_mailbox(m->account, m);
+  return 0;
+}
