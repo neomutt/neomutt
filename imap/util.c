@@ -191,7 +191,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
     return;
   }
 
-  adata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  adata = imap_ac_data_find(&mx);
   if (!adata)
   {
     mutt_str_strfcpy(buf, path, buflen);
@@ -226,7 +226,7 @@ void imap_clean_path(char *path, size_t plen)
   if (imap_parse_path(path, &mx) < 0)
     return;
 
-  adata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  adata = imap_ac_data_find(&mx);
   if (!adata)
     return;
 
@@ -1131,12 +1131,26 @@ void imap_disallow_reopen(struct Mailbox *m)
  */
 bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2)
 {
-  struct ImapAccountData *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
-  struct ImapAccountData *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
-  const struct ConnAccount *a1_canon = a1_idata ? &a1_idata->conn->account : a1;
-  const struct ConnAccount *a2_canon = a2_idata ? &a2_idata->conn->account : a2;
+  if (a1->type != a2->type)
+    return false;
+  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
+    return false;
+  if ((a1->port != 0) && (a2->port != 0) && (a1->port != a2->port))
+    return false;
+  if (a1->flags & a2->flags & MUTT_ACCT_USER)
+    return strcmp(a1->user, a2->user) == 0;
 
-  return mutt_account_match(a1_canon, a2_canon);
+  const char *user = NONULL(Username);
+
+  if ((a1->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
+    user = ImapUser;
+
+  if (a1->flags & MUTT_ACCT_USER)
+    return strcmp(a1->user, user) == 0;
+  if (a2->flags & MUTT_ACCT_USER)
+    return strcmp(a2->user, user) == 0;
+
+  return true;
 }
 
 /**
