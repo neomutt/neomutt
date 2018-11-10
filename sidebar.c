@@ -1147,4 +1147,3 @@ void mutt_sb_notify_mailbox(struct Mailbox *m, bool created)
 
   mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }
-

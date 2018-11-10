@@ -958,7 +958,8 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (BrowserAbbreviateMailboxes)
         mutt_pretty_mailbox(buffer, sizeof(buffer));
 
-      switch (np->m->magic) {
+      switch (np->m->magic)
+      {
         case MUTT_IMAP:
         case MUTT_POP:
           add_folder(menu, state, buffer, np->m->desc, NULL, np->m, NULL);

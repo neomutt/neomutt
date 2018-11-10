@@ -147,7 +147,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           update = true;
           e->old = false;
           if (upd_ctx)
-            ctx->mailbox->msg_new ++;
+            ctx->mailbox->msg_new++;
           if (e->read)
           {
             e->read = false;
@@ -164,7 +164,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         update = true;
         if (!e->old)
           if (upd_ctx)
-            ctx->mailbox->msg_new --;
+            ctx->mailbox->msg_new--;
         e->read = true;
         if (upd_ctx)
           ctx->mailbox->msg_unread--;
@@ -187,7 +187,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           e->old = true;
           if (!e->read)
             if (upd_ctx)
-              ctx->mailbox->msg_new --;
+              ctx->mailbox->msg_new--;
           e->changed = true;
           if (upd_ctx)
             ctx->mailbox->changed = true;
@@ -199,7 +199,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         e->old = false;
         if (!e->read)
           if (upd_ctx)
-            ctx->mailbox->msg_new ++;
+            ctx->mailbox->msg_new++;
         e->changed = true;
         if (upd_ctx)
           ctx->mailbox->changed = true;
@@ -221,7 +221,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
             ctx->mailbox->msg_unread--;
           if (!e->old)
             if (upd_ctx)
-              ctx->mailbox->msg_new --;
+              ctx->mailbox->msg_new--;
           e->changed = true;
           if (upd_ctx)
             ctx->mailbox->changed = true;
@@ -235,7 +235,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           ctx->mailbox->msg_unread++;
         if (!e->old)
           if (upd_ctx)
-            ctx->mailbox->msg_new ++;
+            ctx->mailbox->msg_new++;
         e->changed = true;
         if (upd_ctx)
           ctx->mailbox->changed = true;
@@ -260,7 +260,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
               ctx->mailbox->msg_unread--;
             if (!e->old)
               if (upd_ctx)
-                ctx->mailbox->msg_new --;
+                ctx->mailbox->msg_new--;
           }
           e->changed = true;
           if (upd_ctx)
