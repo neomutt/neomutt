@@ -46,6 +46,7 @@ struct Rfc1524MailcapEntry
   char *convert;
   bool needsterminal : 1; /**< endwin() and system */
   bool copiousoutput : 1; /**< needs pager, basically */
+  bool xneomuttkeep  : 1; /**< do not remove the file on command exit */
 };
 
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void);

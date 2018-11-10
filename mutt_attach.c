@@ -632,15 +632,21 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
 return_error:
 
+  if (!entry || !entry->xneomuttkeep)
+  {
+    if (fp && tempfile[0])
+    {
+      /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
+      mutt_add_temp_attachment(tempfile);
+    }
+    else if (unlink_tempfile)
+    {
+      unlink(tempfile);
+    }
+  }
+
   if (entry)
     rfc1524_free_entry(&entry);
-  if (fp && tempfile[0])
-  {
-    /* add temporary file to TempAttachmentsList to be deleted on exit */
-    mutt_add_temp_attachment(tempfile);
-  }
-  else if (unlink_tempfile)
-    unlink(tempfile);
 
   if (pagerfile[0])
     mutt_file_unlink(pagerfile);

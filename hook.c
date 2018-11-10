@@ -40,6 +40,7 @@
 #include "alias.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mutt_attach.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -689,6 +690,9 @@ void mutt_timeout_hook(void)
     }
   }
   FREE(&token.data);
+
+  /* Delete temporary attachment files */
+  mutt_unlink_temp_attachments();
 }
 
 /**

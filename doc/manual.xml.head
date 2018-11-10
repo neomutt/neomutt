@@ -9718,6 +9718,22 @@ text/html; lynx %s
                 </para>
               </listitem>
             </varlistentry>
+            <varlistentry>
+              <term>x-neomutt-keep</term>
+              <listitem>
+                <para>
+                  <literal>x-neomutt-keep</literal> tells NeoMutt to
+                  <emphasis>not</emphasis> delete the temporary file after the
+                  program has been run.
+                </para>
+                <para>
+                  Using it allows you to control the lifespan of the temporary
+                  file.  Without this option, the file will be deleted after
+                  <link linkend="timeout">$timeout</link> seconds.
+                </para>
+                <screen>text/html; firefox %s &amp; x-neomutt-keep</screen>
+              </listitem>
+            </varlistentry>
           </variablelist>
         </sect3>
 
@@ -9867,6 +9883,44 @@ video/*;        xanim %s &gt; /dev/null
 image/*;        xv %s &gt; /dev/null
 <emphasis role="comment"># I'm always running firefox (if my computer had more memory, maybe)</emphasis>
 text/html;      firefox -remote 'openURL(%s)'
+</screen>
+
+        <para>
+          These mailcap files shows how to control the lifespan of the temporary file.
+        </para>
+
+<screen>
+<emphasis role="comment"># The `display` program shows an image and doesn't return until the user quits.</emphasis>
+
+<emphasis role="comment"># Display an image, but wait for the user to quit the display program.</emphasis>
+<emphasis role="comment"># When the user quits control will return to NeoMutt.</emphasis>
+image/png; display %s;
+
+<emphasis role="comment"># Display an image and return to NeoMutt immediately.</emphasis>
+image/png; display %s &amp;;
+
+<emphasis role="comment"># The file will be automatically deleted after $timeout seconds.</emphasis>
+</screen>
+
+<screen>
+<emphasis role="comment"># Some graphical programs return immediately if they're already running.</emphasis>
+<emphasis role="comment"># We'll add an ampersand (&amp;), just in case they're not.</emphasis>
+
+<emphasis role="comment"># View the contents of a 'tar' file.</emphasis>
+<emphasis role="comment"># The file will be automatically deleted after $timeout seconds.</emphasis>
+application/x-tar; file-roller %s &amp;;
+
+<emphasis role="comment"># View the contents of a 'tar' file.</emphasis>
+<emphasis role="comment"># The file will <emphasis>not</emphasis> be deleted.</emphasis>
+application/x-tar; file-roller %s &amp;; x-neomutt-keep
+</screen>
+
+<screen>
+<emphasis role="comment"># Some programs watch any files they have open.</emphasis>
+<emphasis role="comment"># If NeoMutt deleted the file, the program would close prematurely.</emphasis>
+
+<emphasis role="comment"># Use a custom script to manage the file's lifespan.</emphasis>
+application/pdf; my-pdf-script.sh %s; x-neomutt-keep
 </screen>
 
         <para>
