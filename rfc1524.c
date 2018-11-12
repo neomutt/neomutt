@@ -342,7 +342,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
             FREE(&test_command);
           }
         }
-        else if (mutt_str_strncasecmp(field, "x-neomutt-keep", 14) == 0)
+        else if (mutt_str_startswith(field, "x-neomutt-keep", CASE_IGNORE))
         {
           if (entry)
             entry->xneomuttkeep = true;
