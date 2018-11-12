@@ -326,59 +326,33 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
 }
 
 /**
- * imap_prepare_mailbox - this method ensure we have a valid Mailbox
+ * imap_prepare_mailbox - Ensure we have a valid Mailbox
  * @param m                     Mailbox
  * @param mx                    Imap Mailbox
- * @param path                  Mailbox path
  * @param mailbox               Buffer for tidied mailbox path
  * @param mailboxlen            Length of buffer
- * @param run_hook              should we run account hook
- * @param create_new_connection should we create a new connection
  * @retval  0 Success
  * @retval -1 Failure
  *
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
-                         const char *path, char *mailbox, size_t mailboxlen,
-                         bool run_hook, bool create_new_connection)
+int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, char *mailbox, size_t mailboxlen)
 {
   if (!m || !m->account)
     return -1;
 
-  if (!path)
-    path = m->path;
-
-  if ((imap_path_probe(path, NULL) != MUTT_IMAP) || imap_parse_path(path, mx))
+  if ((imap_path_probe(m->path, NULL) != MUTT_IMAP) || imap_parse_path(m->path, mx))
   {
-    mutt_debug(1, "Error parsing %s\n", path);
+    mutt_debug(1, "Error parsing %s\n", m->path);
     mutt_error(_("Bad mailbox name"));
     return -1;
   }
 
   struct ImapAccountData *adata = m->account->adata;
-  if (!adata)
-  {
-    if (!create_new_connection)
-      return -1;
-    adata = imap_adata_new();
-    m->account->adata = adata;
-    m->account->free_adata = imap_adata_free;
-  }
 
-  struct Connection *conn = adata->conn;
-  if (!conn)
-  {
-    adata->conn = mutt_conn_new(&mx->account);
-    if (!adata->conn)
-      return -1;
-  }
+  mutt_account_hook(m->realpath);
 
-  if (run_hook)
-    mutt_account_hook(m->realpath);
-
-  /* we require a connection which isn't currently in IMAP_SELECTED state */
   if (imap_login(adata) < 0)
     return -1;
 
@@ -406,10 +380,7 @@ int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, siz
 {
   struct ImapMbox mx;
 
-  if (imap_parse_path(path, &mx) < 0)
-    return -1;
-
-  *adata = imap_ac_data_find(&mx);
+  *adata = imap_adata_find(path, &mx);
   if (!*adata)
   {
     FREE(&mx.mbox);
@@ -785,16 +756,13 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
   struct ImapMbox mx;
   char buf[PATH_MAX], mbox[PATH_MAX];
-  int rc;
 
-  rc = imap_prepare_mailbox(m, &mx, path, buf, sizeof(buf), true, !ImapPassive);
-  if (rc < 0)
-  {
-    FREE(&mx.mbox);
+  if (imap_parse_path(path, &mx) < 0)
     return -1;
-  }
 
-  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), mx.mbox);
+  struct ImapAccountData *adata = imap_adata_get(m);
+
+  imap_munge_mbox_name(adata, mbox, sizeof(mbox), mx.mbox);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
   FREE(&mx.mbox);
 
@@ -1436,9 +1404,6 @@ int imap_mailbox_check(bool check_stats)
     if (np->m->magic != MUTT_IMAP)
       continue;
 
-    // TODO(sileht): get_mailbox also browse AllMailboxes we could do an
-    // optimization here.
-    mutt_account_hook(np->m->realpath);
     if (get_mailbox(np->m->path, &adata, name, sizeof(name)) < 0)
     {
       np->m->has_new = false;
@@ -1742,22 +1707,6 @@ int imap_subscribe(char *path, bool subscribe)
   return 0;
 }
 
-struct ImapAccountData *imap_ac_data_find(struct ImapMbox *mx)
-{
-  struct Account *np = NULL;
-  struct ImapAccountData *adata = NULL;
-  TAILQ_FOREACH(np, &AllAccounts, entries)
-  {
-    if (np->magic != MUTT_IMAP)
-      continue;
-
-    adata = np->adata;
-    if (imap_account_match(&adata->conn_account, &mx->account))
-      return adata;
-  }
-  mutt_debug(3, "no ImapAccountData found\n");
-  return NULL;
-}
 
 /**
  * imap_complete - Try to complete an IMAP folder path
@@ -1783,13 +1732,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   struct ImapMbox mx;
   int rc;
 
-  if (imap_parse_path(path, &mx))
-  {
-    mutt_str_strfcpy(buf, path, buflen);
-    return complete_hosts(buf, buflen);
-  }
-
-  adata = imap_ac_data_find(&mx);
+  adata = imap_adata_find(path, &mx);
   if (!adata)
   {
     FREE(&mx.mbox);
@@ -2221,28 +2164,18 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   if (!a->adata)
   {
     struct ImapAccountData *adata = imap_adata_new();
+    struct ImapMbox mx;
     a->magic = MUTT_IMAP;
     a->adata = adata;
     a->free_adata = imap_adata_free;
 
-    struct Url url;
-    char tmp[PATH_MAX];
-    mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
-    url_parse(&url, tmp);
-
-    mutt_str_strfcpy(adata->conn_account.user, url.user,
-                     sizeof(adata->conn_account.user));
-    mutt_str_strfcpy(adata->conn_account.pass, url.pass,
-                     sizeof(adata->conn_account.pass));
-    mutt_str_strfcpy(adata->conn_account.host, url.host,
-                     sizeof(adata->conn_account.host));
-    adata->conn_account.port = url.port;
-    adata->conn_account.type = MUTT_ACCT_TYPE_IMAP;
-
-    if (adata->conn_account.user[0] != '\0')
-      adata->conn_account.flags |= MUTT_ACCT_USER;
-    if (adata->conn_account.pass[0] != '\0')
-      adata->conn_account.flags |= MUTT_ACCT_PASS;
+    if (imap_parse_path(m->path, &mx) < 0)
+      return -1;
+    FREE(&mx.mbox);
+    adata->conn_account = mx.account;
+    adata->conn = mutt_conn_new(&adata->conn_account);
+    if (!adata->conn)
+      return -1;
   }
 
   m->account = a;
@@ -2333,7 +2266,7 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore = NULL;
 
-  rc = imap_prepare_mailbox(m, &mx, NULL, buf, sizeof(buf), true, true);
+  rc = imap_prepare_mailbox(m, &mx, buf, sizeof(buf));
   if (rc < 0)
   {
     FREE(&mx.mbox);
@@ -2581,7 +2514,7 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  rc = imap_prepare_mailbox(m, &mx, NULL, mailbox, sizeof(mailbox), false, !ImapPassive);
+  rc = imap_prepare_mailbox(m, &mx, mailbox, sizeof(mailbox));
   FREE(&mx.mbox);
   if (rc < 0)
     return -1;
