@@ -35,6 +35,7 @@
 
 // clang-format off
 static enum CommandResult icmd_set(struct      Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static enum CommandResult icmd_version(struct  Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 
 /**
  * ICommandList - All available informational commands
@@ -43,6 +44,7 @@ static enum CommandResult icmd_set(struct      Buffer *, struct Buffer *, unsign
  */
 const struct ICommand ICommandList[] = {
   { "set",      icmd_set,      0 },
+  { "version",  icmd_version,  0 },
   { NULL,       NULL,          0 },
 };
 // clang-format on
@@ -131,6 +133,36 @@ static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
 
   struct Pager info = { 0 };
   if (mutt_pager("set", tempfile, 0, &info) == -1)
+  {
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    return MUTT_CMD_ERROR;
+  }
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * icmd_set - Parse 'version' command - Implements ::icommand_t
+ */
+static enum CommandResult icmd_version(struct Buffer *buf, struct Buffer *s,
+                                       unsigned long data, struct Buffer *err)
+{
+  char tempfile[PATH_MAX];
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fpout = mutt_file_fopen(tempfile, "w");
+  if (!fpout)
+  {
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    return MUTT_CMD_ERROR;
+  }
+
+  print_version(fpout);
+  fflush(fpout);
+  mutt_file_fclose(&fpout);
+
+  struct Pager info = { 0 };
+  if (mutt_pager("version", tempfile, 0, &info) == -1)
   {
     mutt_buffer_addstr(err, _("Could not create temporary file"));
     return MUTT_CMD_ERROR;

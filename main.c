@@ -587,7 +587,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     log_queue_flush(log_disp_terminal);
     if (version == 1)
-      print_version();
+      print_version(stdout);
     else
       print_copyright();
     OptNoCurses = true;

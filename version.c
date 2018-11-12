@@ -291,6 +291,7 @@ static struct CompileOptions comp_opts[] = {
 /**
  * print_compile_options - Print a list of enabled/disabled features
  * @param co Array of compile options
+ * @param fp file to write to
  *
  * Two lists are generated and passed to this function:
  *
@@ -300,37 +301,37 @@ static struct CompileOptions comp_opts[] = {
  * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
-static void print_compile_options(struct CompileOptions *co)
+static void print_compile_options(struct CompileOptions *co, FILE *fp)
 {
   size_t used = 2;
   bool tty = stdout ? isatty(fileno(stdout)) : false;
 
-  printf("  ");
+  fprintf(fp, "  ");
   for (int i = 0; co[i].name; i++)
   {
     const size_t len = strlen(co[i].name) + 2; /* +/- and a space */
     if ((used + len) > SCREEN_WIDTH)
     {
       used = 2;
-      printf("\n  ");
+      fprintf(fp, "\n  ");
     }
     used += len;
     if (co[i].enabled)
     {
       if (tty)
-        printf("\033[1;32m+%s\033[0m ", co[i].name);
+        fprintf(fp, "\033[1;32m+%s\033[0m ", co[i].name);
       else
-        printf("+%s ", co[i].name);
+        fprintf(fp, "+%s ", co[i].name);
     }
     else
     {
       if (tty)
-        printf("\033[1;31m-%s\033[0m ", co[i].name);
+        fprintf(fp, "\033[1;31m-%s\033[0m ", co[i].name);
       else
-        printf("-%s ", co[i].name);
+        fprintf(fp, "-%s ", co[i].name);
     }
   }
-  puts("");
+  fprintf(fp, "\n");
 }
 
 /**
@@ -355,85 +356,86 @@ static char *rstrip_in_place(char *s)
 }
 
 /**
- * print_version - Print system and compile info
+ * print_version - Print system and compile info to a file
+ * @param fp - file to print to
  *
  * Print information about the current system NeoMutt is running on.
  * Also print a list of all the compile-time information.
  */
-void print_version(void)
+void print_version(FILE *fp)
 {
   struct utsname uts;
 
-  puts(mutt_make_version());
-  puts(_(Notice));
+  fprintf(fp, "%s\n", mutt_make_version());
+  fprintf(fp, "%s\n", _(Notice));
 
   uname(&uts);
 
 #ifdef SCO
-  printf("System: SCO %s", uts.release);
+  fprintf(fp, "System: SCO %s", uts.release);
 #else
-  printf("System: %s %s", uts.sysname, uts.release);
+  fprintf(fp, "System: %s %s", uts.sysname, uts.release);
 #endif
 
-  printf(" (%s)", uts.machine);
+  fprintf(fp, " (%s)", uts.machine);
 
 #ifdef NCURSES_VERSION
-  printf("\nncurses: %s (compiled with %s.%d)", curses_version(),
-         NCURSES_VERSION, NCURSES_VERSION_PATCH);
+  fprintf(fp, "\nncurses: %s (compiled with %s.%d)", curses_version(),
+          NCURSES_VERSION, NCURSES_VERSION_PATCH);
 #elif defined(USE_SLANG_CURSES)
-  printf("\nslang: %s", SLANG_VERSION_STRING);
+  fprintf(fp, "\nslang: %s", SLANG_VERSION_STRING);
 #endif
 
 #ifdef _LIBICONV_VERSION
-  printf("\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
+  fprintf(fp, "\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
 #endif
 
 #ifdef HAVE_LIBIDN
-  printf("\n%s", mutt_idna_print_version());
+  fprintf(fp, "\n%s", mutt_idna_print_version());
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  printf("\nGPGme: %s", mutt_gpgme_print_version());
+  fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
 #endif
 
 #ifdef USE_HCACHE
   const char *backends = mutt_hcache_backend_list();
-  printf("\nhcache backends: %s", backends);
+  fprintf(fp, "\nhcache backends: %s", backends);
   FREE(&backends);
 #endif
 
-  puts("\n\nCompiler:");
+  fputs("\n\nCompiler:\n", fp);
   rstrip_in_place((char *) cc_version);
-  puts((char *) cc_version);
+  fprintf(fp, "%s\n", (char *) cc_version);
 
   rstrip_in_place((char *) configure_options);
-  printf("\nConfigure options: %s\n", (char *) configure_options);
+  fprintf(fp, "\nConfigure options: %s\n", (char *) configure_options);
 
   rstrip_in_place((char *) cc_cflags);
-  printf("\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
+  fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
 
-  printf("\n%s\n", _("Default options:"));
-  print_compile_options(comp_opts_default);
+  fprintf(fp, "\n%s\n", _("Default options:"));
+  print_compile_options(comp_opts_default, fp);
 
-  printf("\n%s\n", _("Compile options:"));
-  print_compile_options(comp_opts);
+  fprintf(fp, "\n%s\n", _("Compile options:"));
+  print_compile_options(comp_opts, fp);
 
 #ifdef DOMAIN
-  printf("DOMAIN=\"%s\"\n", DOMAIN);
+  fprintf(fp, "DOMAIN=\"%s\"\n", DOMAIN);
 #endif
 #ifdef ISPELL
-  printf("ISPELL=\"%s\"\n", ISPELL);
+  fprintf(fp, "ISPELL=\"%s\"\n", ISPELL);
 #endif
-  printf("MAILPATH=\"%s\"\n", MAILPATH);
+  fprintf(fp, "MAILPATH=\"%s\"\n", MAILPATH);
 #ifdef MIXMASTER
-  printf("MIXMASTER=\"%s\"\n", MIXMASTER);
+  fprintf(fp, "MIXMASTER=\"%s\"\n", MIXMASTER);
 #endif
-  printf("PKGDATADIR=\"%s\"\n", PKGDATADIR);
-  printf("SENDMAIL=\"%s\"\n", SENDMAIL);
-  printf("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
+  fprintf(fp, "PKGDATADIR=\"%s\"\n", PKGDATADIR);
+  fprintf(fp, "SENDMAIL=\"%s\"\n", SENDMAIL);
+  fprintf(fp, "SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
 
-  puts("");
-  puts(_(ReachingUs));
+  fprintf(fp, "\n");
+  fputs(_(ReachingUs), fp);
 }
 
 /**
