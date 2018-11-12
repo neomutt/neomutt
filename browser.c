@@ -809,7 +809,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (!mdata)
         continue;
-      if (prefix && *prefix && (strncmp(prefix, mdata->group, strlen(prefix)) != 0))
+      if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix, CASE_MATCH))
         continue;
       if (Mask && Mask->regex &&
           !((regexec(Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ Mask->not))
