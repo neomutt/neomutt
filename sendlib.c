@@ -1332,7 +1332,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char send_charset[SHORT_STRING];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
-    if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
+    if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
         info->linemax > 990 || (info->from && EncodeFrom))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
@@ -2011,7 +2011,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
                             const char *start, const char *end, int flags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
-  int is_from = ((end - start) > 5 && (mutt_str_strncasecmp(start, "from ", 5) == 0));
+  int is_from = (end - start) > 5 && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
@@ -2349,7 +2349,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
       }
 
       /* check to see if the user has overridden the user-agent field */
-      if (mutt_str_strncasecmp("user-agent", tmp->data, 10) == 0)
+      if (mutt_str_startswith(tmp->data, "user-agent", CASE_IGNORE))
       {
         has_agent = true;
         if (privacy)
