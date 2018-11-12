@@ -404,27 +404,24 @@ int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx,
  */
 int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
 {
-  int rc;
   struct ImapMbox mx;
-  struct MailboxNode *np = NULL;
 
-  memset(&mx, 0, sizeof(mx));
+  if (imap_parse_path(path, &mx) < 0)
+    return -1;
 
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  *adata = imap_ac_data_find(&mx);
+  if (!*adata)
   {
-    if (np->m->magic != MUTT_IMAP)
-      continue;
-
-    if (mutt_str_strcasecmp(path, np->m->path) == 0)
-    {
-      rc = imap_prepare_mailbox(np->m, &mx, path, buf, buflen, false, true);
-      if (rc == 0)
-        *adata = np->m->account->adata;
-      FREE(&mx.mbox);
-      return rc;
-    }
+    FREE(&mx.mbox);
+    return -1;
   }
-  return -1;
+
+  imap_fix_path(*adata, mx.mbox, buf, buflen);
+  if (!*buf)
+    mutt_str_strfcpy(buf, "INBOX", buflen);
+  FREE(&mx.mbox);
+
+  return 0;
 }
 
 /**
