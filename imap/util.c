@@ -127,6 +127,31 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 }
 
 /**
+ * imap_adata_find - Find the Account data for this path
+ */
+struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
+{
+
+  if (imap_parse_path(path, mx) < 0)
+    return NULL;
+
+  struct Account *np = NULL;
+  struct ImapAccountData *adata = NULL;
+  TAILQ_FOREACH(np, &AllAccounts, entries)
+  {
+    if (np->magic != MUTT_IMAP)
+      continue;
+
+    adata = np->adata;
+    if (imap_account_match(&adata->conn_account, &mx->account))
+      return adata;
+  }
+  mutt_debug(3, "no ImapAccountData found\n");
+  return NULL;
+}
+
+
+/**
  * imap_get_parent - Get an IMAP folder's parent
  * @param mbox   Mailbox whose parent is to be determined
  * @param delim  Path delimiter
@@ -185,13 +210,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
   struct ImapAccountData *adata = NULL;
   char mbox[LONG_STRING] = "";
 
-  if (imap_parse_path(path, &mx) < 0)
-  {
-    mutt_str_strfcpy(buf, path, buflen);
-    return;
-  }
-
-  adata = imap_ac_data_find(&mx);
+  adata = imap_adata_find(path, &mx);
   if (!adata)
   {
     mutt_str_strfcpy(buf, path, buflen);
@@ -223,10 +242,7 @@ void imap_clean_path(char *path, size_t plen)
   struct ImapAccountData *adata = NULL;
   char mbox[LONG_STRING] = "";
 
-  if (imap_parse_path(path, &mx) < 0)
-    return;
-
-  adata = imap_ac_data_find(&mx);
+  adata = imap_adata_find(path, &mx);
   if (!adata)
     return;
 

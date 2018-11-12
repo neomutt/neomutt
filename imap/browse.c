@@ -225,13 +225,9 @@ int imap_browse(char *path, struct BrowserState *state)
     // Pick first mailbox connected on the same server
     if (imap_account_match(&mx.account, &mx_tmp.account))
     {
-      /* ensure we are connected */
-      int rc = imap_prepare_mailbox(np->m, &mx, path, buf, sizeof(buf), false, true);
-      if (rc < 0)
-        continue;
-
-      adata = np->m->account->adata;
-      break;
+      adata = imap_adata_get(np->m);
+      if (adata)
+        break;
     }
   }
   FREE(&mx_tmp.mbox);
@@ -389,13 +385,7 @@ int imap_mailbox_create(const char *folder)
   char buf[PATH_MAX];
   short n;
 
-  if (imap_parse_path(folder, &mx) < 0)
-  {
-    mutt_debug(1, "Bad starting path %s\n", folder);
-    return -1;
-  }
-
-  adata = imap_ac_data_find(&mx);
+  adata = imap_adata_find(folder, &mx);
   if (!adata)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", folder);
@@ -450,13 +440,7 @@ int imap_mailbox_rename(const char *mailbox)
   char buf[PATH_MAX];
   char newname[PATH_MAX];
 
-  if (imap_parse_path(mailbox, &mx) < 0)
-  {
-    mutt_debug(1, "Bad source mailbox %s\n", mailbox);
-    return -1;
-  }
-
-  adata = imap_ac_data_find(&mx);
+  adata = imap_adata_find(mailbox, &mx);
   if (!adata)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", mailbox);
