@@ -28,6 +28,7 @@
 #include "pager.h"
 #include "protos.h"
 #include "summary.h"
+#include "version.h"
 
 /* prototypes for interactive commands */
 static int icmd_test(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
@@ -196,15 +197,6 @@ static int icmd_vars(struct Buffer *buf, struct Buffer *s, unsigned long data,
 static int icmd_version(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  /* TODO: implement ':version' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
-}
-
-static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
-{
-  /* TODo: implement ':set' command as suggested by flatcap in #162 */
   char tempfile[PATH_MAX];
   FILE *fpout = NULL;
 
@@ -213,7 +205,35 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!fpout)
   {
     mutt_error(_("Could not create temporary file"));
-    return 0;
+    return -1;
+  }
+
+  print_version_to_file(fpout);
+  fflush(fpout);
+
+  struct Pager info = { 0 };
+  if (mutt_pager("version", tempfile, 0, &info) == -1)
+  {
+    mutt_error(_("Could not create temporary file"));
+    return -1;
+  }
+
+  /*  mutt_enter_command(); */
+  return 1;
+}
+
+static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                    struct Buffer *err)
+{
+  char tempfile[PATH_MAX];
+  FILE *fpout = NULL;
+
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  fpout = mutt_file_fopen(tempfile, "w");
+  if (!fpout)
+  {
+    mutt_error(_("Could not create temporary file"));
+    return -1;
   }
 
   if (mutt_str_strcmp(s->data, "set all") == 0)
@@ -235,7 +255,7 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (mutt_pager("set", tempfile, 0, &info) == -1)
   {
     mutt_error(_("Could not create temporary file"));
-    return 0;
+    return -1;
   }
 
   /*  mutt_enter_command(); */

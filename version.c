@@ -334,6 +334,52 @@ static void print_compile_options(struct CompileOptions *co)
 }
 
 /**
+ * print_compile_options_to_file - Print a list of enabled/disabled features to file
+ * @param co Array of compile options
+ * @param fp file to write to
+ *
+ * Two lists are generated and passed to this function:
+ *
+ * One list which just uses the configure state of each feature.
+ * One list which just uses feature which are set to on directly in NeoMutt.
+ *
+ * The output is of the form: "+enabled_feature -disabled_feature" and is
+ * wrapped to SCREEN_WIDTH characters.
+ */
+static void print_compile_options_to_file(struct CompileOptions *co, FILE *fp)
+{
+  size_t used = 2;
+  bool tty = stdout ? isatty(fileno(stdout)) : false;
+
+  fprintf(fp, "  ");
+  for (int i = 0; co[i].name; i++)
+  {
+    const size_t len = strlen(co[i].name) + 2; /* +/- and a space */
+    if ((used + len) > SCREEN_WIDTH)
+    {
+      used = 2;
+      fprintf(fp, "\n  ");
+    }
+    used += len;
+    if (co[i].enabled)
+    {
+      if (tty)
+        fprintf(fp, "\033[1;32m+%s\033[0m ", co[i].name);
+      else
+        fprintf(fp, "+%s ", co[i].name);
+    }
+    else
+    {
+      if (tty)
+        fprintf(fp, "\033[1;31m-%s\033[0m ", co[i].name);
+      else
+        fprintf(fp, "-%s ", co[i].name);
+    }
+  }
+  fprintf(fp, "\n");
+}
+
+/**
  * rstrip_in_place - Strip a trailing carriage return
  * @param s  String to be modified
  * @retval ptr The modified string
@@ -434,6 +480,90 @@ void print_version(void)
 
   puts("");
   puts(_(ReachingUs));
+}
+
+/**
+ * print_version_to_file - Print system and compile info to a file
+ *
+ * @param fp - file to print to
+ *
+ * Print information about the current system NeoMutt is running on.
+ * Also print a list of all the compile-time information.
+ */
+void print_version_to_file(FILE *fp)
+{
+  struct utsname uts;
+
+  fputs(mutt_make_version(), fp);
+  fputs(_(Notice), fp);
+
+  uname(&uts);
+
+#ifdef SCO
+  fprintf(fp, "System: SCO %s", uts.release);
+#else
+  fprintf(fp, "System: %s %s", uts.sysname, uts.release);
+#endif
+
+  fprintf(fp, " (%s)", uts.machine);
+
+#ifdef NCURSES_VERSION
+  fprintf(fp, "\nncurses: %s (compiled with %s.%d)", curses_version(),
+          NCURSES_VERSION, NCURSES_VERSION_PATCH);
+#elif defined(USE_SLANG_CURSES)
+  fprintf(fp, "\nslang: %s", SLANG_VERSION_STRING);
+#endif
+
+#ifdef _LIBICONV_VERSION
+  fprintf(fp, "\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
+#endif
+
+#ifdef HAVE_LIBIDN
+  fprintf(fp, "\n%s", mutt_idna_print_version());
+#endif
+
+#ifdef CRYPT_BACKEND_GPGME
+  fprintf(fp, "\nGPGme: %s", mutt_gpgme_print_version());
+#endif
+
+#ifdef USE_HCACHE
+  const char *backends = mutt_hcache_backend_list();
+  fprintf(fp, "\nhcache backends: %s", backends);
+  FREE(&backends);
+#endif
+
+  fputs("\n\nCompiler:\n", fp);
+  rstrip_in_place((char *) cc_version);
+  fprintf(fp, "%s\n", (char *) cc_version);
+
+  rstrip_in_place((char *) configure_options);
+  fprintf(fp, "\nConfigure options: %s\n", (char *) configure_options);
+
+  rstrip_in_place((char *) cc_cflags);
+  fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
+
+  fprintf(fp, "\n%s\n", _("Default options:"));
+  print_compile_options_to_file(comp_opts_default, fp);
+
+  fprintf(fp, "\n%s\n", _("Compile options:"));
+  print_compile_options_to_file(comp_opts, fp);
+
+#ifdef DOMAIN
+  fprintf(fp, "DOMAIN=\"%s\"\n", DOMAIN);
+#endif
+#ifdef ISPELL
+  fprintf(fp, "ISPELL=\"%s\"\n", ISPELL);
+#endif
+  fprintf(fp, "MAILPATH=\"%s\"\n", MAILPATH);
+#ifdef MIXMASTER
+  fprintf(fp, "MIXMASTER=\"%s\"\n", MIXMASTER);
+#endif
+  fprintf(fp, "PKGDATADIR=\"%s\"\n", PKGDATADIR);
+  fprintf(fp, "SENDMAIL=\"%s\"\n", SENDMAIL);
+  fprintf(fp, "SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
+
+  fprintf(fp, "\n");
+  fputs(_(ReachingUs), fp);
 }
 
 /**

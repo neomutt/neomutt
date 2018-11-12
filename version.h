@@ -24,9 +24,12 @@
 #define MUTT_VERSION_H
 
 #include <stdbool.h>
+#include <stdio.h>
 
 void print_version(void);
 void print_copyright(void);
 bool feature_enabled(const char *name);
+
+void print_version_to_file(FILE *fp);
 
 #endif /* MUTT_VERSION_H */
