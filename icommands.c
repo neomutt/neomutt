@@ -216,7 +216,19 @@ static int icmd_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     return 0;
   }
 
-  dump_config(Config, CS_DUMP_STYLE_NEO | CS_DUMP_STYLE_FILE, 0, fpout);
+  if (mutt_str_strcmp(s->data, "set all") == 0)
+  {
+    dump_config(Config, CS_DUMP_STYLE_NEO | CS_DUMP_STYLE_FILE, 0, fpout);
+  }
+  else if (mutt_str_strcmp(s->data, "set") == 0)
+  {
+    dump_config(Config, CS_DUMP_STYLE_NEO | CS_DUMP_STYLE_FILE, CS_DUMP_ONLY_CHANGED, fpout);
+  }
+  else
+  {
+    return 0;
+  }
+
   fflush(fpout);
 
   struct Pager info = { 0 };
