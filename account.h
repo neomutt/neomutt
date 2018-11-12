@@ -47,8 +47,6 @@ TAILQ_HEAD(AccountList, Account);
 extern struct AccountList AllAccounts;
 
 struct Account *account_create(void);
-void            account_free(struct Account **a);
-void            account_remove(struct Account *a);
 void            account_remove_mailbox(struct Account *a, struct Mailbox *m);
 
 #endif /* MUTT_ACCOUNT_H */
