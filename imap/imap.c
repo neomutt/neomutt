@@ -1708,7 +1708,6 @@ int imap_subscribe(char *path, bool subscribe)
   return 0;
 }
 
-
 /**
  * imap_complete - Try to complete an IMAP folder path
  * @param buf Buffer for result
@@ -1925,12 +1924,17 @@ out:
  */
 int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
   struct Email *e = NULL;
   struct Email **emails = NULL;
   int oldsort;
   int rc;
 
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  struct Mailbox *m = ctx->mailbox;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
 
   if (adata->state < IMAP_SELECTED)
   {
@@ -1940,14 +1944,14 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 
   /* This function is only called when the calling code expects the context
    * to be changed. */
-  imap_allow_reopen(ctx->mailbox);
+  imap_allow_reopen(m);
 
   rc = imap_check(adata, false);
   if (rc != 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
-  if (expunge && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
+  if (expunge && mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
   {
     rc = imap_exec_msgset(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
                           MUTT_DELETED, true, false);
@@ -1961,9 +1965,9 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     {
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
-      for (int i = 0; i < ctx->mailbox->msg_count; i++)
-        if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->changed)
-          ctx->mailbox->hdrs[i]->active = false;
+      for (int i = 0; i < m->msg_count; i++)
+        if (m->hdrs[i]->deleted && m->hdrs[i]->changed)
+          m->hdrs[i]->active = false;
       mutt_message(ngettext("Marking %d message deleted...",
                             "Marking %d messages deleted...", rc),
                    rc);
@@ -1975,9 +1979,9 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 #endif
 
   /* save messages with real (non-flag) changes */
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    e = ctx->mailbox->hdrs[i];
+    e = m->hdrs[i];
 
     if (e->deleted)
     {
@@ -2000,8 +2004,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
       {
         /* L10N: The plural is choosen by the last %d, i.e. the total number */
         mutt_message(ngettext("Saving changed message... [%d/%d]",
-                              "Saving changed messages... [%d/%d]", ctx->mailbox->msg_count),
-                     i + 1, ctx->mailbox->msg_count);
+                              "Saving changed messages... [%d/%d]", m->msg_count),
+                     i + 1, m->msg_count);
         mutt_save_message_ctx(e, true, false, false, ctx);
         e->xlabel_changed = false;
       }
@@ -2016,14 +2020,12 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
-    emails = ctx->mailbox->hdrs;
-    ctx->mailbox->hdrs =
-        mutt_mem_malloc(ctx->mailbox->msg_count * sizeof(struct Email *));
-    memcpy(ctx->mailbox->hdrs, emails, ctx->mailbox->msg_count * sizeof(struct Email *));
+    emails = m->hdrs;
+    m->hdrs = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+    memcpy(m->hdrs, emails, m->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
-    qsort(ctx->mailbox->hdrs, ctx->mailbox->msg_count, sizeof(struct Email *),
-          mutt_get_sort_func(SORT_ORDER));
+    qsort(m->hdrs, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
   rc = sync_helper(adata, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
@@ -2039,8 +2041,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   if (oldsort != Sort)
   {
     Sort = oldsort;
-    FREE(&ctx->mailbox->hdrs);
-    ctx->mailbox->hdrs = emails;
+    FREE(&m->hdrs);
+    m->hdrs = emails;
   }
 
   /* Flush the queued flags if any were changed in sync_helper. */
@@ -2066,19 +2068,19 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   /* Update local record of server state to reflect the synchronization just
    * completed.  imap_read_headers always overwrites hcache-origin flags, so
    * there is no need to mutate the hcache after flag-only changes. */
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    imap_edata_get(ctx->mailbox->hdrs[i])->deleted = ctx->mailbox->hdrs[i]->deleted;
-    imap_edata_get(ctx->mailbox->hdrs[i])->flagged = ctx->mailbox->hdrs[i]->flagged;
-    imap_edata_get(ctx->mailbox->hdrs[i])->old = ctx->mailbox->hdrs[i]->old;
-    imap_edata_get(ctx->mailbox->hdrs[i])->read = ctx->mailbox->hdrs[i]->read;
-    imap_edata_get(ctx->mailbox->hdrs[i])->replied = ctx->mailbox->hdrs[i]->replied;
-    ctx->mailbox->hdrs[i]->changed = false;
+    imap_edata_get(m->hdrs[i])->deleted = m->hdrs[i]->deleted;
+    imap_edata_get(m->hdrs[i])->flagged = m->hdrs[i]->flagged;
+    imap_edata_get(m->hdrs[i])->old = m->hdrs[i]->old;
+    imap_edata_get(m->hdrs[i])->read = m->hdrs[i]->read;
+    imap_edata_get(m->hdrs[i])->replied = m->hdrs[i]->replied;
+    m->hdrs[i]->changed = false;
   }
-  ctx->mailbox->changed = false;
+  m->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
-  if (expunge && !close && mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
+  if (expunge && !close && mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
   {
     mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
@@ -2488,12 +2490,15 @@ fail:
  */
 static int imap_mbox_open_append(struct Context *ctx, int flags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!ctx)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m)
     return -1;
 
   char mailbox[PATH_MAX];
   struct ImapMbox mx;
-  struct Mailbox *m = ctx->mailbox;
   int rc;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
@@ -2531,25 +2536,32 @@ static int imap_mbox_open_append(struct Context *ctx, int flags)
  */
 static int imap_mbox_check(struct Context *ctx, int *index_hint)
 {
-  (void) index_hint;
+  if (!ctx || !ctx->mailbox)
+    return -1;
 
-  imap_allow_reopen(ctx->mailbox);
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  struct Mailbox *m = ctx->mailbox;
+
+  imap_allow_reopen(m);
+  struct ImapAccountData *adata = imap_adata_get(m);
   int rc = imap_check(adata, false);
   /* NOTE - ctx might have been changed at this point. In particular,
-   * ctx->mailbox could be NULL. Beware. */
-  imap_disallow_reopen(ctx->mailbox);
+   * m could be NULL. Beware. */
+  imap_disallow_reopen(m);
 
   return rc;
 }
 
 /**
  * imap_mbox_close - Implements MxOps::mbox_close()
- * @retval 0 Always
  */
 static int imap_mbox_close(struct Context *ctx)
 {
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
   /* Check to see if the mailbox is actually open */
   if (!adata)
     return 0;
@@ -2568,7 +2580,7 @@ static int imap_mbox_close(struct Context *ctx)
     {
       /* mx_mbox_close won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (!ctx->mailbox->msg_deleted)
+      if (!m->msg_deleted)
       {
         adata->closing = true;
         imap_exec(adata, "CLOSE", IMAP_CMD_QUEUE);
@@ -2625,9 +2637,16 @@ static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
  */
 static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
+  if (!ctx)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m)
+    return -1;
+
   char *new = NULL;
   char *checker = NULL;
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  struct ImapAccountData *adata = imap_adata_get(m);
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&adata->flags, NULL))
@@ -2711,10 +2730,15 @@ static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size
  */
 static int imap_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
   struct Buffer *cmd = NULL;
   char uid[11];
 
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  struct ImapAccountData *adata = imap_adata_get(m);
 
   if (*buf == '\0')
     buf = NULL;

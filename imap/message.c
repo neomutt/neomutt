@@ -1390,9 +1390,16 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   struct ImapMbox mx;
   int rc;
 
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  if (!ctx)
+    return -1;
 
-  if (imap_parse_path(ctx->mailbox->path, &mx))
+  struct Mailbox *m = ctx->mailbox;
+  if (!m)
+    return -1;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+
+  if (imap_parse_path(m->path, &mx))
     return -1;
 
   imap_fix_path(adata, mx.mbox, mailbox, sizeof(mailbox));
@@ -1515,6 +1522,9 @@ fail:
  */
 int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
   struct Buffer cmd, sync_cmd;
   char mbox[PATH_MAX];
   char mmbox[PATH_MAX];
@@ -1524,7 +1534,9 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   int err_continue = MUTT_NO;
   int triedcreate = 0;
 
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
+  struct Mailbox *m = ctx->mailbox;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
 
   if (imap_parse_path(dest, &mx))
   {
@@ -1535,7 +1547,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(adata->conn->account), &(mx.account)))
   {
-    mutt_debug(3, "%s not same server as %s\n", dest, ctx->mailbox->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, m->path);
     return 1;
   }
 
@@ -1562,21 +1574,20 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
        * remainder. */
-      for (int i = 0; i < ctx->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
         if (!message_is_tagged(ctx, i))
           continue;
 
-        if (ctx->mailbox->hdrs[i]->attach_del)
+        if (m->hdrs[i]->attach_del)
         {
           mutt_debug(3, "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 
-        if (ctx->mailbox->hdrs[i]->active && ctx->mailbox->hdrs[i]->changed)
+        if (m->hdrs[i]->active && m->hdrs[i]->changed)
         {
-          rc = imap_sync_message_for_copy(adata, ctx->mailbox->hdrs[i],
-                                          &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(adata, m->hdrs[i], &sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(1, "#1 could not sync\n");
@@ -1661,15 +1672,15 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   {
     if (!e)
     {
-      for (int i = 0; i < ctx->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
         if (!message_is_tagged(ctx, i))
           continue;
 
-        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_DELETE, 1);
-        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_PURGE, 1);
+        mutt_set_flag(ctx, m->hdrs[i], MUTT_DELETE, 1);
+        mutt_set_flag(ctx, m->hdrs[i], MUTT_PURGE, 1);
         if (DeleteUntag)
-          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_TAG, 0);
+          mutt_set_flag(ctx, m->hdrs[i], MUTT_TAG, 0);
       }
     }
     else
@@ -1804,6 +1815,9 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
  */
 int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
+  if (!ctx || !ctx->mailbox || !msg)
+    return -1;
+
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
   char path[PATH_MAX];
@@ -1822,8 +1836,10 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   bool fetched = false;
   int output_progress;
 
-  struct ImapAccountData *adata = imap_adata_get(ctx->mailbox);
-  struct Email *e = ctx->mailbox->hdrs[msgno];
+  struct Mailbox *m = ctx->mailbox;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct Email *e = m->hdrs[msgno];
 
   msg->fp = msg_cache_get(adata, e);
   if (msg->fp)
