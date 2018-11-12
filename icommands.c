@@ -34,12 +34,15 @@
 #include "version.h"
 
 // clang-format off
+static enum CommandResult icmd_set(struct      Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+
 /**
  * ICommandList - All available informational commands
  *
  * @note These commands take precendence over conventional mutt rc-lines
  */
 const struct ICommand ICommandList[] = {
+  { "set",      icmd_set,      0 },
   { NULL,       NULL,          0 },
 };
 // clang-format on
@@ -91,4 +94,47 @@ finish:
   if (expn.destroy)
     FREE(&expn.data);
   return rc;
+}
+
+/**
+ * icmd_set - Parse 'set' command to display config - Implements ::icommand_t
+ */
+static enum CommandResult icmd_set(struct Buffer *buf, struct Buffer *s,
+                                   unsigned long data, struct Buffer *err)
+{
+  char tempfile[PATH_MAX];
+  mutt_mktemp(tempfile, sizeof(tempfile));
+
+  FILE *fpout = mutt_file_fopen(tempfile, "w");
+  if (!fpout)
+  {
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    return MUTT_CMD_ERROR;
+  }
+
+  if (mutt_str_strcmp(s->data, "set all") == 0)
+  {
+    dump_config(Config, CS_DUMP_STYLE_NEO, 0, fpout);
+  }
+  else if (mutt_str_strcmp(s->data, "set") == 0)
+  {
+    dump_config(Config, CS_DUMP_STYLE_NEO, CS_DUMP_ONLY_CHANGED, fpout);
+  }
+  else
+  {
+    mutt_file_fclose(&fpout);
+    return MUTT_CMD_ERROR;
+  }
+
+  fflush(fpout);
+  mutt_file_fclose(&fpout);
+
+  struct Pager info = { 0 };
+  if (mutt_pager("set", tempfile, 0, &info) == -1)
+  {
+    mutt_buffer_addstr(err, _("Could not create temporary file"));
+    return MUTT_CMD_ERROR;
+  }
+
+  return MUTT_CMD_SUCCESS;
 }
