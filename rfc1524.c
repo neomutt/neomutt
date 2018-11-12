@@ -266,6 +266,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         field = ch;
         ch = get_field(ch);
         mutt_debug(2, "field: %s\n", field);
+        size_t plen;
 
         if (mutt_str_strcasecmp(field, "needsterminal") == 0)
         {
@@ -278,53 +279,54 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           if (entry)
             entry->copiousoutput = true;
         }
-        else if (mutt_str_strncasecmp(field, "composetyped", 12) == 0)
+        else if ((plen = mutt_str_startswith(field, "composetyped", CASE_IGNORE)))
         {
           /* this compare most occur before compose to match correctly */
-          if (get_field_text(field + 12, entry ? &entry->composetypecommand : NULL,
+          if (get_field_text(field + plen, entry ? &entry->composetypecommand : NULL,
                              type, filename, line))
           {
             composecommand = true;
           }
         }
-        else if (mutt_str_strncasecmp(field, "compose", 7) == 0)
+        else if ((plen = mutt_str_startswith(field, "compose", CASE_IGNORE)))
         {
-          if (get_field_text(field + 7, entry ? &entry->composecommand : NULL,
+          if (get_field_text(field + plen, entry ? &entry->composecommand : NULL,
                              type, filename, line))
           {
             composecommand = true;
           }
         }
-        else if (mutt_str_strncasecmp(field, "print", 5) == 0)
+        else if ((plen = mutt_str_startswith(field, "print", CASE_IGNORE)))
         {
-          if (get_field_text(field + 5, entry ? &entry->printcommand : NULL,
+          if (get_field_text(field + plen, entry ? &entry->printcommand : NULL,
                              type, filename, line))
           {
             printcommand = true;
           }
         }
-        else if (mutt_str_strncasecmp(field, "edit", 4) == 0)
+        else if ((plen = mutt_str_startswith(field, "edit", CASE_IGNORE)))
         {
-          if (get_field_text(field + 4, entry ? &entry->editcommand : NULL, type, filename, line))
+          if (get_field_text(field + plen, entry ? &entry->editcommand : NULL,
+                             type, filename, line))
             editcommand = true;
         }
-        else if (mutt_str_strncasecmp(field, "nametemplate", 12) == 0)
+        else if ((plen = mutt_str_startswith(field, "nametemplate", CASE_IGNORE)))
         {
-          get_field_text(field + 12, entry ? &entry->nametemplate : NULL, type,
-                         filename, line);
+          get_field_text(field + plen, entry ? &entry->nametemplate : NULL,
+                         type, filename, line);
         }
-        else if (mutt_str_strncasecmp(field, "x-convert", 9) == 0)
+        else if ((plen = mutt_str_startswith(field, "x-convert", CASE_IGNORE)))
         {
-          get_field_text(field + 9, entry ? &entry->convert : NULL, type, filename, line);
+          get_field_text(field + plen, entry ? &entry->convert : NULL, type, filename, line);
         }
-        else if (mutt_str_strncasecmp(field, "test", 4) == 0)
+        else if ((plen = mutt_str_startswith(field, "test", CASE_IGNORE)))
         {
           /* This routine executes the given test command to determine
            * if this is the right entry.
            */
           char *test_command = NULL;
 
-          if (get_field_text(field + 4, &test_command, type, filename, line) && test_command)
+          if (get_field_text(field + plen, &test_command, type, filename, line) && test_command)
           {
             const size_t len = mutt_str_strlen(test_command) + STRING;
             mutt_mem_realloc(&test_command, len);
