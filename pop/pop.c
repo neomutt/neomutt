@@ -1220,10 +1220,10 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
   if (!path)
     return MUTT_UNKNOWN;
 
-  if (mutt_str_strncasecmp(path, "pop://", 6) == 0)
+  if (mutt_str_startswith(path, "pop://", CASE_IGNORE))
     return MUTT_POP;
 
-  if (mutt_str_strncasecmp(path, "pops://", 7) == 0)
+  if (mutt_str_startswith(path, "pops://", CASE_IGNORE))
     return MUTT_POP;
 
   return MUTT_UNKNOWN;
