@@ -1354,7 +1354,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   if (fseeko(adata->fp, offset, SEEK_SET) != 0 || /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       !fgets(buf, sizeof(buf), adata->fp) ||
-      (ctx->mailbox->magic == MUTT_MBOX && mutt_str_strncmp("From ", buf, 5) != 0) ||
+      (ctx->mailbox->magic == MUTT_MBOX && !mutt_str_startswith(buf, "From ", CASE_MATCH)) ||
       (ctx->mailbox->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
     mutt_debug(1, "message not in expected position.\n");
