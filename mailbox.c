@@ -108,6 +108,8 @@ void mailbox_free(struct Mailbox **m)
   FREE(&(*m)->desc);
   if ((*m)->mdata && (*m)->free_mdata)
     (*m)->free_mdata(&(*m)->mdata);
+  if (Context && Context->mailbox && Context->mailbox == *m)
+    Context = NULL;
   FREE(m);
 }
 
@@ -563,14 +565,10 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
           old_m->flags = MB_NORMAL;
           mutt_sb_notify_mailbox(old_m, true);
           struct MailboxNode *mn = mutt_mem_calloc(1, sizeof(*mn));
-          mn->m = m;
+          mn->m = old_m;
           STAILQ_INSERT_TAIL(&AllMailboxes, mn, entries);
         }
-        else
-        {
-          // mutt_error("mailbox exists: %s", m->path);
-          mailbox_free(&m);
-        }
+        mailbox_free(&m);
         continue;
       }
     }
