@@ -39,38 +39,6 @@ struct Account *account_create(void)
 }
 
 /**
- * account_free - Free an Account
- * @param a Account to free
- */
-void account_free(struct Account **a)
-{
-  if (!a || !*a)
-    return;
-
-  if ((*a)->adata)
-    (*a)->free_adata(&(*a)->adata);
-
-  FREE(a);
-}
-
-/**
- * account_remove - Remove an Account from AllAccounts
- * @param a Account to remove
- */
-void account_remove(struct Account *a)
-{
-    struct Account *np = NULL;
-    TAILQ_FOREACH(np, &AllAccounts, entries)
-    {
-      if (np == a)
-      {
-        TAILQ_REMOVE(&AllAccounts, np, entries);
-        break;
-      }
-    }
-}
-
-/**
  * account_remove_mailbox - Remove a Mailbox from an Account
  * @param a Account
  * @param m Mailbox to remove
@@ -89,7 +57,9 @@ void account_remove_mailbox(struct Account *a, struct Mailbox *m)
 
   if (STAILQ_EMPTY(&a->mailboxes))
   {
-    account_remove(a);
-    account_free(&a);
+    TAILQ_REMOVE(&AllAccounts, a, entries);
+    if (a->adata)
+      a->free_adata(a->adata);
+    FREE(&a);
   }
 }
