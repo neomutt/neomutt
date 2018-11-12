@@ -320,7 +320,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
-    delsp = mutt_str_strlen(t) == 3 && (mutt_str_strncasecmp(t, "yes", 3) == 0);
+    delsp = mutt_str_strcasecmp(t, "yes") == 0;
     t = NULL;
     fst.delsp = 1;
   }
