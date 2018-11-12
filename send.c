@@ -375,9 +375,10 @@ static int edit_envelope(struct Envelope *en, int flags)
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
-      if (mutt_str_strncasecmp("subject:", uh->data, 8) == 0)
+      size_t plen = mutt_str_startswith(uh->data, "subject:", CASE_IGNORE);
+      if (plen)
       {
-        p = mutt_str_skip_email_wsp(uh->data + 8);
+        p = mutt_str_skip_email_wsp(uh->data + plen);
         mutt_str_strfcpy(buf, p, sizeof(buf));
       }
     }
@@ -418,19 +419,20 @@ static void process_user_recips(struct Envelope *env)
   struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
-    if (mutt_str_strncasecmp("to:", uh->data, 3) == 0)
-      env->to = mutt_addr_parse_list(env->to, uh->data + 3);
-    else if (mutt_str_strncasecmp("cc:", uh->data, 3) == 0)
-      env->cc = mutt_addr_parse_list(env->cc, uh->data + 3);
-    else if (mutt_str_strncasecmp("bcc:", uh->data, 4) == 0)
-      env->bcc = mutt_addr_parse_list(env->bcc, uh->data + 4);
+    size_t plen;
+    if ((plen = mutt_str_startswith(uh->data, "to:", CASE_IGNORE)))
+      env->to = mutt_addr_parse_list(env->to, uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "cc:", CASE_IGNORE)))
+      env->cc = mutt_addr_parse_list(env->cc, uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE)))
+      env->bcc = mutt_addr_parse_list(env->bcc, uh->data + plen);
 #ifdef USE_NNTP
-    else if (mutt_str_strncasecmp("newsgroups:", uh->data, 11) == 0)
-      env->newsgroups = nntp_get_header(uh->data + 11);
-    else if (mutt_str_strncasecmp("followup-to:", uh->data, 12) == 0)
-      env->followup_to = nntp_get_header(uh->data + 12);
-    else if (mutt_str_strncasecmp("x-comment-to:", uh->data, 13) == 0)
-      env->x_comment_to = nntp_get_header(uh->data + 13);
+    else if ((plen = mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE)))
+      env->newsgroups = nntp_get_header(uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE)))
+      env->followup_to = nntp_get_header(uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE)))
+      env->x_comment_to = nntp_get_header(uh->data + plen);
 #endif
   }
 }
@@ -444,20 +446,21 @@ static void process_user_header(struct Envelope *env)
   struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
-    if (mutt_str_strncasecmp("from:", uh->data, 5) == 0)
+    size_t plen;
+    if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
     {
       /* User has specified a default From: address.  Remove default address */
       mutt_addr_free(&env->from);
-      env->from = mutt_addr_parse_list(env->from, uh->data + 5);
+      env->from = mutt_addr_parse_list(env->from, uh->data + plen);
     }
-    else if (mutt_str_strncasecmp("reply-to:", uh->data, 9) == 0)
+    else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
     {
       mutt_addr_free(&env->reply_to);
-      env->reply_to = mutt_addr_parse_list(env->reply_to, uh->data + 9);
+      env->reply_to = mutt_addr_parse_list(env->reply_to, uh->data + plen);
     }
-    else if (mutt_str_strncasecmp("message-id:", uh->data, 11) == 0)
+    else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
     {
-      char *tmp = mutt_extract_message_id(uh->data + 11, NULL);
+      char *tmp = mutt_extract_message_id(uh->data + plen, NULL);
       if (mutt_addr_valid_msgid(tmp))
       {
         FREE(&env->message_id);
@@ -466,17 +469,17 @@ static void process_user_header(struct Envelope *env)
       else
         FREE(&tmp);
     }
-    else if ((mutt_str_strncasecmp("to:", uh->data, 3) != 0) &&
-             (mutt_str_strncasecmp("cc:", uh->data, 3) != 0) &&
-             (mutt_str_strncasecmp("bcc:", uh->data, 4) != 0) &&
+    else if (!mutt_str_startswith(uh->data, "to:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "cc:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE) &&
 #ifdef USE_NNTP
-             (mutt_str_strncasecmp("newsgroups:", uh->data, 11) != 0) &&
-             (mutt_str_strncasecmp("followup-to:", uh->data, 12) != 0) &&
-             (mutt_str_strncasecmp("x-comment-to:", uh->data, 13) != 0) &&
+             !mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE) &&
 #endif
-             (mutt_str_strncasecmp("supersedes:", uh->data, 11) != 0) &&
-             (mutt_str_strncasecmp("subject:", uh->data, 8) != 0) &&
-             (mutt_str_strncasecmp("return-path:", uh->data, 12) != 0))
+             !mutt_str_startswith(uh->data, "supersedes:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "subject:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "return-path:", CASE_IGNORE))
     {
       mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(uh->data));
     }
