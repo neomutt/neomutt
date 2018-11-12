@@ -408,6 +408,8 @@ int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, siz
   struct ImapMbox mx;
   struct MailboxNode *np = NULL;
 
+  memset(&mx, 0, sizeof(mx));
+
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
     if (np->m->magic != MUTT_IMAP)
