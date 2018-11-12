@@ -59,7 +59,7 @@ void account_remove_mailbox(struct Account *a, struct Mailbox *m)
   {
     TAILQ_REMOVE(&AllAccounts, a, entries);
     if (a->adata)
-      a->free_adata(a->adata);
+      a->free_adata(&a->adata);
     FREE(&a);
   }
 }
