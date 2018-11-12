@@ -2193,10 +2193,10 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
 #endif /* USE_NNTP */
 #ifdef USE_IMAP
         {
-          if (i == OP_BROWSER_SUBSCRIBE)
-            imap_subscribe(state.entry[menu->current].name, 1);
-          else
-            imap_subscribe(state.entry[menu->current].name, 0);
+          char tmp[STRING];
+          mutt_str_strfcpy(tmp, state.entry[menu->current].name, sizeof(tmp));
+          mutt_expand_path(tmp, sizeof(tmp));
+          imap_subscribe(tmp, i == OP_BROWSER_SUBSCRIBE);
         }
 #endif /* USE_IMAP */
     }
