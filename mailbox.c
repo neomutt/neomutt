@@ -105,11 +105,15 @@ void mailbox_free(struct Mailbox **m)
   if (!m || !*m)
     return;
 
+  if (Context && Context->mailbox && Context->mailbox == *m)
+  {
+    mx_cleanup_context(Context);
+    FREE(&Context);
+  }
+
   FREE(&(*m)->desc);
   if ((*m)->mdata && (*m)->free_mdata)
     (*m)->free_mdata(&(*m)->mdata);
-  if (Context && Context->mailbox && Context->mailbox == *m)
-    Context = NULL;
   FREE(m);
 }
 

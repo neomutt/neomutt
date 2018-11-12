@@ -408,10 +408,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
     FREE(&ctx->mailbox->hdrs);
   }
   FREE(&ctx->mailbox->v2r);
-  FREE(&ctx->pattern);
-  if (ctx->limit_pattern)
-    mutt_pattern_free(&ctx->limit_pattern);
-  memset(ctx, 0, sizeof(struct Context));
+  mx_cleanup_context(ctx);
 }
 
 /**
@@ -1687,3 +1684,17 @@ int mx_ac_remove(struct Mailbox *m)
   account_remove_mailbox(m->account, m);
   return 0;
 }
+
+
+/**
+ * mx_cleanup_context - Release memory and initialize a Context object
+ * @param ctx Context to cleanup
+ */
+void mx_cleanup_context(struct Context *ctx)
+{
+  FREE(&ctx->pattern);
+  if (ctx->limit_pattern)
+    mutt_pattern_free(&ctx->limit_pattern);
+  memset(ctx, 0, sizeof(struct Context));
+}
+
