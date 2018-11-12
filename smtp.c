@@ -123,20 +123,22 @@ static int smtp_get_resp(struct Connection *conn)
       /* read error, or no response code */
       return SMTP_ERR_READ;
     }
+    const char *s = buf + 4; /* Skip the response code and the space/dash */
+    size_t plen;
 
-    if (mutt_str_strncasecmp("8BITMIME", buf + 4, 8) == 0)
+    if (mutt_str_startswith(s, "8BITMIME", CASE_IGNORE))
       mutt_bit_set(Capabilities, EIGHTBITMIME);
-    else if (mutt_str_strncasecmp("AUTH ", buf + 4, 5) == 0)
+    else if ((plen = mutt_str_startswith(s, "AUTH ", CASE_IGNORE)))
     {
       mutt_bit_set(Capabilities, AUTH);
       FREE(&AuthMechs);
-      AuthMechs = mutt_str_strdup(buf + 9);
+      AuthMechs = mutt_str_strdup(s + plen);
     }
-    else if (mutt_str_strncasecmp("DSN", buf + 4, 3) == 0)
+    else if (mutt_str_startswith(s, "DSN", CASE_IGNORE))
       mutt_bit_set(Capabilities, DSN);
-    else if (mutt_str_strncasecmp("STARTTLS", buf + 4, 8) == 0)
+    else if (mutt_str_startswith(s, "STARTTLS", CASE_IGNORE))
       mutt_bit_set(Capabilities, STARTTLS);
-    else if (mutt_str_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
+    else if (mutt_str_startswith(s, "SMTPUTF8", CASE_IGNORE))
       mutt_bit_set(Capabilities, SMTPUTF8);
 
     if (!valid_smtp_code(buf, n, &n))
