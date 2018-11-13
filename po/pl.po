@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180716\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-09-04 02:11+0100\n"
-"PO-Revision-Date: 2018-10-09 17:40+0200\n"
+"PO-Revision-Date: 2018-11-13 10:23+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -163,7 +163,7 @@ msgstr "Zasubskrybowano grupę dyskusyjną"
 #: browser.c:1172
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr "Listy dyskusyjne na serwersze [%s]"
+msgstr "Listy dyskusyjne na serwerze [%s]"
 
 #: browser.c:1182
 #, c-format
@@ -189,7 +189,7 @@ msgstr "Tworzenie skrzynek jest obsługiwane tylko dla skrzynek IMAP"
 
 #: browser.c:1764
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Zmiania nazwy jest obsługiwana tylko dla skrzynek IMAP"
+msgstr "Zmiana nazwy jest obsługiwana tylko dla skrzynek IMAP"
 
 #: browser.c:1785
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1371,7 +1371,7 @@ msgstr "Brak akcji do wykonania"
 
 #: curs_main.c:1317
 msgid "Enter Message-Id: "
-msgstr "Podaj identyfikator wiadmości (Message-Id): "
+msgstr "Podaj identyfikator wiadomości (Message-Id): "
 
 #: curs_main.c:1327
 msgid "Article has no parent reference"
@@ -1678,14 +1678,14 @@ msgstr "Nie zmieniono etykiet"
 #.
 #: curs_main.c:3200
 msgid "Cannot mark messages as read"
-msgstr "Nie można oznaczyć widomości jako przeczytane"
+msgstr "Nie można oznaczyć wiadomości jako przeczytane"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
 #: curs_main.c:3236
 msgid "Enter macro stroke: "
-msgstr "Wprowadż klawicz makra: "
+msgstr "Wprowadź klawisz makra: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
@@ -1732,7 +1732,7 @@ msgid ""
 "~M messages     same as ~m, except include headers\n"
 "~p              print the message\n"
 msgstr ""
-"~~              wstaw linię zaczynającą się pojedyńczym ~\n"
+"~~              wstaw linię zaczynającą się pojedynczym ~\n"
 "~b użytkownicy  dodaj użytkowników do pola Bcc:\n"
 "~c użytkownicy  dodaj użytkowników do pola Cc:\n"
 "~f listy        dołącz listy\n"
@@ -2628,7 +2628,7 @@ msgstr "Wprowadź klucze (^G aby przerwać): "
 #: keymap.c:1438
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Znak = %s, ósemkowo = %o, dziesiętnie = %d"
+msgstr "znak = %s, ósemkowy = %o, dziesiętny = %d"
 
 #: mailbox.c:892
 msgid "New mail in "
@@ -2910,7 +2910,7 @@ msgstr "Oczekiwanie na blokadę typu 'flock'... %d"
 #: mutt/history.c:229 mutt/history.c:271 mutt/history.c:604
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr "Błedny format pliku historii (wiersz %d)"
+msgstr "Błędny format pliku historii (wiersz %d)"
 
 #: mutt/history.c:261 ncrypt/crypt_gpgme.c:698 ncrypt/crypt_gpgme.c:2029
 #: ncrypt/crypt_gpgme.c:2049 ncrypt/crypt_gpgme.c:2102
@@ -3574,7 +3574,7 @@ msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr ""
-"[-- Błąd: odszyfrowanie nie powiodłow się: %s --]\n"
+"[-- Błąd: odszyfrowanie nie powiodło się: %s --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2459
@@ -3801,7 +3801,7 @@ msgstr "Nie znaleziono klucza wydawcy: %s\n"
 
 #: ncrypt/crypt_gpgme.c:4018
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Błąd: łąńcuch certyfikatów zbyt długi - przetwarzanie zatrzymano tutaj\n"
+msgstr "Błąd: łańcuch certyfikatów zbyt długi - przetwarzanie zatrzymano tutaj\n"
 
 #: ncrypt/crypt_gpgme.c:4028 ncrypt/pgpkey.c:734
 #, c-format
@@ -4794,7 +4794,7 @@ msgstr "wyświetl pełny adres nadawcy"
 
 #: opcodes.h:95
 msgid "display message and toggle header weeding"
-msgstr "wyświelt list ze wszystkimi nagłówkami"
+msgstr "wyświetl list ze wszystkimi nagłówkami"
 
 #: opcodes.h:96
 msgid "display a message"
@@ -4818,7 +4818,7 @@ msgstr "przeskocz do początku linii"
 
 #: opcodes.h:101
 msgid "capitalize the word"
-msgstr "zamień piewszą literę słowa na wielką"
+msgstr "zamień pierwszą literę słowa na wielką"
 
 #: opcodes.h:102
 msgid "complete filename or alias"
@@ -5314,7 +5314,7 @@ msgstr "wywołaj polecenie w podpowłoce"
 
 #: opcodes.h:225
 msgid "show log (and debug) messages"
-msgstr "pokaż log (i debug) wiadmości"
+msgstr "pokaż log (i debug) wiadomości"
 
 #: opcodes.h:226
 msgid "sort messages"
@@ -5414,7 +5414,7 @@ msgstr "utwórz rozszyfrowaną kopię"
 
 #: opcodes.h:252
 msgid "make decrypted copy and delete"
-msgstr "utwórz rozszyfrowanaą kopię i usuń oryginał"
+msgstr "utwórz rozszyfrowaną kopię i usuń oryginał"
 
 #: opcodes.h:253
 msgid "extract supported public keys"
@@ -5446,7 +5446,7 @@ msgstr "Usuń remailer z łańcucha"
 
 #: opcodes.h:263
 msgid "insert a remailer into the chain"
-msgstr "wprowadz remailera do łańcucha"
+msgstr "wprowadź remailera do łańcucha"
 
 #: opcodes.h:264
 msgid "accept the chain constructed"
@@ -5927,8 +5927,8 @@ msgstr "Nie wiem jak wydrukować %s załączników"
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Wydrukować %d zaznaczony załącznik?"
-msgstr[1] "Wydrukować %d zaznaczonye załączniki?"
-msgstr[2] "Wydrukować %d zaznaczonye załączniki?"
+msgstr[1] "Wydrukować %d zaznaczone załączniki?"
+msgstr[2] "Wydrukować %d zaznaczonych załączników?"
 
 #: recvattach.c:947
 #, c-format
