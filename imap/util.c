@@ -566,44 +566,50 @@ int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbo
   struct Url url;
   char *c = NULL;
 
-  if (!ImapPort)
+  if (account)
   {
-    service = getservbyname("imap", "tcp");
-    if (service)
-      ImapPort = ntohs(service->s_port);
-    else
-      ImapPort = IMAP_PORT;
-    mutt_debug(3, "Using default IMAP port %d\n", ImapPort);
-  }
-  if (!ImapsPort)
-  {
-    service = getservbyname("imaps", "tcp");
-    if (service)
-      ImapsPort = ntohs(service->s_port);
-    else
-      ImapsPort = IMAP_SSL_PORT;
-    mutt_debug(3, "Using default IMAPS port %d\n", ImapsPort);
-  }
+    if (!ImapPort)
+    {
+      service = getservbyname("imap", "tcp");
+      if (service)
+        ImapPort = ntohs(service->s_port);
+      else
+        ImapPort = IMAP_PORT;
+      mutt_debug(3, "Using default IMAP port %d\n", ImapPort);
+    }
+    if (!ImapsPort)
+    {
+      service = getservbyname("imaps", "tcp");
+      if (service)
+        ImapsPort = ntohs(service->s_port);
+      else
+        ImapsPort = IMAP_SSL_PORT;
+      mutt_debug(3, "Using default IMAPS port %d\n", ImapsPort);
+    }
 
-  /* Defaults */
-  account->port = ImapPort;
-  account->type = MUTT_ACCT_TYPE_IMAP;
+    /* Defaults */
+    account->port = ImapPort;
+    account->type = MUTT_ACCT_TYPE_IMAP;
+  }
 
   c = mutt_str_strdup(path);
   url_parse(&url, c);
+
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
-    if (mutt_account_fromurl(account, &url) < 0 || !*account->host)
+    if (account)
     {
-      url_free(&url);
-      FREE(&c);
-      return -1;
+      if (mutt_account_fromurl(account, &url) < 0 || !*account->host)
+      {
+        url_free(&url);
+        FREE(&c);
+        return -1;
+      }
+      if (url.scheme == U_IMAPS)
+        account->flags |= MUTT_ACCT_SSL;
     }
 
     mutt_str_strfcpy(mailbox, url.path, mailboxlen);
-
-    if (url.scheme == U_IMAPS)
-      account->flags |= MUTT_ACCT_SSL;
 
     url_free(&url);
     FREE(&c);
@@ -626,40 +632,43 @@ int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbo
       mutt_str_strfcpy(mailbox, c + 1, mailboxlen);
     }
 
-    c = strrchr(tmp, '@');
-    if (c)
+    if (account)
     {
-      *c = '\0';
-      mutt_str_strfcpy(account->user, tmp, sizeof(account->user));
-      mutt_str_strfcpy(tmp, c + 1, sizeof(tmp));
-      account->flags |= MUTT_ACCT_USER;
-    }
-
-    const int n = sscanf(tmp, "%127[^:/]%127s", account->host, tmp);
-    if (n < 1)
-    {
-      mutt_debug(1, "NULL host in %s\n", path);
-      return -1;
-    }
-
-    if (n > 1)
-    {
-      if (sscanf(tmp, ":%hu%127s", &(account->port), tmp) >= 1)
-        account->flags |= MUTT_ACCT_PORT;
-      if (sscanf(tmp, "/%s", tmp) == 1)
+      c = strrchr(tmp, '@');
+      if (c)
       {
-        if (mutt_str_startswith(tmp, "ssl", CASE_MATCH))
-          account->flags |= MUTT_ACCT_SSL;
-        else
+        *c = '\0';
+        mutt_str_strfcpy(account->user, tmp, sizeof(account->user));
+        mutt_str_strfcpy(tmp, c + 1, sizeof(tmp));
+        account->flags |= MUTT_ACCT_USER;
+      }
+
+      const int n = sscanf(tmp, "%127[^:/]%127s", account->host, tmp);
+      if (n < 1)
+      {
+        mutt_debug(1, "NULL host in %s\n", path);
+        return -1;
+      }
+
+      if (n > 1)
+      {
+        if (sscanf(tmp, ":%hu%127s", &(account->port), tmp) >= 1)
+          account->flags |= MUTT_ACCT_PORT;
+        if (sscanf(tmp, "/%s", tmp) == 1)
         {
-          mutt_debug(1, "Unknown connection type in %s\n", path);
-          return -1;
+          if (mutt_str_startswith(tmp, "ssl", CASE_MATCH))
+            account->flags |= MUTT_ACCT_SSL;
+          else
+          {
+            mutt_debug(1, "Unknown connection type in %s\n", path);
+            return -1;
+          }
         }
       }
     }
   }
 
-  if ((account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
+  if (account && (account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
     account->port = ImapsPort;
 
   return 0;
