@@ -378,20 +378,20 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
  */
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path)
 {
-  struct ImapMbox mx;
   struct Url url;
   char cachepath[PATH_MAX];
   char mbox[PATH_MAX];
+  char buf[PATH_MAX];
 
   if (path)
     imap_cachepath(adata, path, mbox, sizeof(mbox));
   else
   {
-    if (!adata->mailbox || imap_parse_path(adata->mailbox->path, &mx) < 0)
+    if (!adata->mailbox ||
+        imap_parse_path2(adata->mailbox->path, NULL, buf, sizeof(buf)) < 0)
       return NULL;
 
-    imap_cachepath(adata, mx.mbox, mbox, sizeof(mbox));
-    FREE(&mx.mbox);
+    imap_cachepath(adata, buf, mbox, sizeof(mbox));
   }
 
   if (strstr(mbox, "/../") || (strcmp(mbox, "..") == 0) || (strncmp(mbox, "../", 3) == 0))
