@@ -127,12 +127,12 @@ struct MxOps
   int (*mbox_open)       (struct Context *ctx);
   /**
    * mbox_open_append - Open a mailbox for appending
-   * @param ctx   Mailbox to open
+   * @param m     Mailbox to open
    * @param flags e.g. #MUTT_READONLY
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_open_append)(struct Context *ctx, int flags);
+  int (*mbox_open_append)(struct Mailbox *m, int flags);
   /**
    * mbox_check - Check for new mail
    * @param ctx Mailbox

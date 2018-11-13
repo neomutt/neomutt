@@ -233,7 +233,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   if (!m->mx_ops || !m->mx_ops->mbox_open_append)
     return -1;
 
-  return m->mx_ops->mbox_open_append(ctx, flags);
+  return m->mx_ops->mbox_open_append(ctx->mailbox, flags);
 }
 
 /**

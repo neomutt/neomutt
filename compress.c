@@ -558,12 +558,8 @@ cmo_fail:
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
-static int comp_mbox_open_append(struct Context *ctx, int flags)
+static int comp_mbox_open_append(struct Mailbox *m, int flags)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -618,7 +614,7 @@ static int comp_mbox_open_append(struct Context *ctx, int flags)
     goto cmoa_fail2;
   }
 
-  if (ci->child_ops->mbox_open_append(ctx, flags) != 0)
+  if (ci->child_ops->mbox_open_append(m, flags) != 0)
     goto cmoa_fail2;
 
   return 0;

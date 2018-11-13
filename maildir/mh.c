@@ -2388,12 +2388,8 @@ static int maildir_mbox_open(struct Context *ctx)
 /**
  * maildir_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int maildir_mbox_open_append(struct Context *ctx, int flags)
+static int maildir_mbox_open_append(struct Mailbox *m, int flags)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -2821,12 +2817,8 @@ static int mh_mbox_open(struct Context *ctx)
 /**
  * mh_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int mh_mbox_open_append(struct Context *ctx, int flags)
+static int mh_mbox_open_append(struct Mailbox *m, int flags)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 

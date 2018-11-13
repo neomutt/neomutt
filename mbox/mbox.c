@@ -983,12 +983,8 @@ static int mbox_mbox_open(struct Context *ctx)
 /**
  * mbox_mbox_open_append - Implements MxOps::mbox_open_append()
  */
-static int mbox_mbox_open_append(struct Context *ctx, int flags)
+static int mbox_mbox_open_append(struct Mailbox *m, int flags)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
