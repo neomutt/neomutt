@@ -777,7 +777,8 @@ int mutt_mailbox_check(int force)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &AllMailboxes, entries)
   {
-    mailbox_check(np->m, &contex_sb, check_stats || (!np->m->first_check_stats_done && MailCheckStats));
+    mailbox_check(np->m, &contex_sb,
+                  check_stats || (!np->m->first_check_stats_done && MailCheckStats));
     np->m->first_check_stats_done = true;
   }
 
