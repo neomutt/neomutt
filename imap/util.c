@@ -547,16 +547,18 @@ char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata)
 #endif
 
 /**
- * imap_parse_path - Parse an IMAP mailbox name into name,host,port
- * @param path Mailbox path to parse
- * @param mx   An IMAP mailbox
+ * imap_parse_path2 - Parse an IMAP mailbox name into ConnAccount, name
+ * @param path       Mailbox path to parse
+ * @param account    Account credentials
+ * @param mailbox    Buffer for mailbox name
+ * @param mailboxlen Length of buffer
  * @retval  0 Success
  * @retval -1 Failure
  *
  * Given an IMAP mailbox name, return host, port and a path IMAP servers will
  * recognize.  mx.mbox is malloc'd, caller must free it
  */
-int imap_parse_path(const char *path, struct ImapMbox *mx)
+int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
@@ -584,25 +586,24 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   }
 
   /* Defaults */
-  memset(&mx->account, 0, sizeof(mx->account));
-  mx->account.port = ImapPort;
-  mx->account.type = MUTT_ACCT_TYPE_IMAP;
+  account->port = ImapPort;
+  account->type = MUTT_ACCT_TYPE_IMAP;
 
   c = mutt_str_strdup(path);
   url_parse(&url, c);
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
-    if (mutt_account_fromurl(&mx->account, &url) < 0 || !*mx->account.host)
+    if (mutt_account_fromurl(account, &url) < 0 || !*account->host)
     {
       url_free(&url);
       FREE(&c);
       return -1;
     }
 
-    mx->mbox = mutt_str_strdup(url.path);
+    mutt_str_strfcpy(mailbox, url.path, mailboxlen);
 
     if (url.scheme == U_IMAPS)
-      mx->account.flags |= MUTT_ACCT_SSL;
+      account->flags |= MUTT_ACCT_SSL;
 
     url_free(&url);
     FREE(&c);
@@ -622,48 +623,52 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
     else
     {
       /* walk past closing '}' */
-      mx->mbox = mutt_str_strdup(c + 1);
+      mutt_str_strfcpy(mailbox, c + 1, mailboxlen);
     }
 
     c = strrchr(tmp, '@');
     if (c)
     {
       *c = '\0';
-      mutt_str_strfcpy(mx->account.user, tmp, sizeof(mx->account.user));
+      mutt_str_strfcpy(account->user, tmp, sizeof(account->user));
       mutt_str_strfcpy(tmp, c + 1, sizeof(tmp));
-      mx->account.flags |= MUTT_ACCT_USER;
+      account->flags |= MUTT_ACCT_USER;
     }
 
-    const int n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp);
+    const int n = sscanf(tmp, "%127[^:/]%127s", account->host, tmp);
     if (n < 1)
     {
       mutt_debug(1, "NULL host in %s\n", path);
-      FREE(&mx->mbox);
       return -1;
     }
 
     if (n > 1)
     {
-      if (sscanf(tmp, ":%hu%127s", &(mx->account.port), tmp) >= 1)
-        mx->account.flags |= MUTT_ACCT_PORT;
+      if (sscanf(tmp, ":%hu%127s", &(account->port), tmp) >= 1)
+        account->flags |= MUTT_ACCT_PORT;
       if (sscanf(tmp, "/%s", tmp) == 1)
       {
         if (mutt_str_startswith(tmp, "ssl", CASE_MATCH))
-          mx->account.flags |= MUTT_ACCT_SSL;
+          account->flags |= MUTT_ACCT_SSL;
         else
         {
           mutt_debug(1, "Unknown connection type in %s\n", path);
-          FREE(&mx->mbox);
           return -1;
         }
       }
     }
   }
 
-  if ((mx->account.flags & MUTT_ACCT_SSL) && !(mx->account.flags & MUTT_ACCT_PORT))
-    mx->account.port = ImapsPort;
+  if ((account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
+    account->port = ImapsPort;
 
   return 0;
+}
+int imap_parse_path(const char *path, struct ImapMbox *mx)
+{
+  memset(&mx->account, 0, sizeof(mx->account));
+  mx->mbox = mutt_mem_calloc(1, sizeof(char) * LONG_STRING);
+  return imap_parse_path2(path, &mx->account, mx->mbox, sizeof(char) * LONG_STRING);
 }
 
 /**

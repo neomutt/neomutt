@@ -2061,40 +2061,43 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
 
   // NOTE(sileht): The goal is to use ImapMbox and imap_parse_path() only here
   // So we can remove it at this end.
-  struct ImapMbox mx;
 
-  if (imap_parse_path(m->path, &mx) < 0)
-    return -1;
-
-  // if (a->type == MUTT_UNKNOWN)
-  if (!a->adata)
+  if (!a->adata || !m->mdata)
   {
-    struct ImapAccountData *adata = imap_adata_new();
-    a->magic = MUTT_IMAP;
-    a->adata = adata;
-    a->free_adata = imap_adata_free;
-    adata->conn_account = mx.account;
-    adata->conn = mutt_conn_new(&adata->conn_account);
-    if (!adata->conn)
-    {
-      FREE(&mx.mbox);
+    struct ConnAccount *conn_account = mutt_mem_calloc(1, sizeof(struct ConnAccount));
+    char mailbox[LONG_STRING];
+
+    if (imap_parse_path2(m->path, conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
+
+    if (!a->adata)
+    {
+      struct ImapAccountData *adata = imap_adata_new();
+      adata->conn_account = *conn_account;
+      adata->conn = mutt_conn_new(conn_account);
+      if (!adata->conn)
+      {
+        FREE(&conn_account);
+        return -1;
+      }
+      a->magic = MUTT_IMAP;
+      a->adata = adata;
+      a->free_adata = imap_adata_free;
+    }
+    else
+      FREE(&conn_account);
+
+    if (!m->mdata)
+    {
+      struct ImapMailboxData *mdata = imap_mdata_new(a->adata, mailbox);
+      if (!mdata)
+        return -1;
+      m->mdata = mdata;
+      m->free_mdata = imap_mdata_free;
     }
   }
 
   m->account = a;
-
-  if (!m->mdata)
-  {
-    struct ImapMailboxData *mdata = imap_mdata_new(a->adata, mx.mbox);
-    if (!mdata)
-    {
-      FREE(&mx.mbox);
-      return -1;
-    }
-    m->mdata = mdata;
-    m->free_mdata = imap_mdata_free;
-  }
 
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
   np->m = m;
