@@ -1390,15 +1390,14 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   struct Progress progressbar;
   size_t sent;
   int c, last;
-  struct ImapMbox mx;
   int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
-  if (imap_parse_path(m->path, &mx))
+  if (imap_parse_path2(m->path, NULL, buf, sizeof(buf)))
     return -1;
 
-  imap_fix_path(adata, mx.mbox, mailbox, sizeof(mailbox));
+  imap_fix_path(adata, buf, mailbox, sizeof(mailbox));
   if (!*mailbox)
     mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
 
@@ -1498,11 +1497,9 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     goto fail;
   }
 
-  FREE(&mx.mbox);
   return 0;
 
 fail:
-  FREE(&mx.mbox);
   return -1;
 }
 
