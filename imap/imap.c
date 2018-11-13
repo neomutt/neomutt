@@ -2181,15 +2181,12 @@ static int imap_mbox_open(struct Context *ctx)
   char buf[PATH_MAX];
   char bufout[PATH_MAX];
   int count = 0;
-  struct ImapMbox pmx;
   int rc;
   const char *condstore = NULL;
 
   rc = imap_prepare_mailbox(m, buf, sizeof(buf));
   if (rc < 0)
-  {
     return -1;
-  }
 
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMailboxData *mdata = m->mdata;
@@ -2237,13 +2234,15 @@ static int imap_mbox_open(struct Context *ctx)
     mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
   }
   /* pipeline the postponed count if possible */
-  pmx.mbox = NULL;
-  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) && !imap_parse_path(Postponed, &pmx) &&
-      mutt_account_match(&pmx.account, &adata->conn_account))
+  struct ConnAccount p_conn_account;
+  char p_mailbox[LONG_STRING];
+
+  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) &&
+      !imap_parse_path2(Postponed, &p_conn_account, p_mailbox, sizeof(p_mailbox)) &&
+      mutt_account_match(&p_conn_account, &adata->conn_account))
   {
     imap_status(Postponed, true);
   }
-  FREE(&pmx.mbox);
 
   if (ImapCheckSubscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
