@@ -103,7 +103,7 @@ extern struct MxOps mx_imap_ops;
 /* browse.c */
 int imap_browse(char *path, struct BrowserState *state);
 int imap_mailbox_create(const char *folder);
-int imap_mailbox_rename(const char *mailbox);
+int imap_mailbox_rename(const char *path);
 
 /* message.c */
 int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete);

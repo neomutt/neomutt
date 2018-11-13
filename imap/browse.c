@@ -372,27 +372,27 @@ fail:
 
 /**
  * imap_mailbox_create - Create a new IMAP mailbox
- * @param folder Mailbox to create
+ * @param path Mailbox to create
  * @retval  0 Success
  * @retval -1 Failure
  *
  * Prompt for a new mailbox name, and try to create it
  */
-int imap_mailbox_create(const char *folder)
+int imap_mailbox_create(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMbox mx;
   char buf[PATH_MAX];
+  char name[LONG_STRING];
   short n;
 
-  adata = imap_adata_find(folder, &mx);
+  adata = imap_adata_find(path, name, sizeof(name));
   if (!adata)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", folder);
-    goto fail;
+    mutt_debug(1, "Couldn't find open connection to %s\n", path);
+    return -1;
   }
 
-  mutt_str_strfcpy(buf, mx.mbox, sizeof(buf));
+  mutt_str_strfcpy(buf, name, sizeof(buf));
 
   /* append a delimiter if necessary */
   n = mutt_str_strlen(buf);
@@ -403,83 +403,73 @@ int imap_mailbox_create(const char *folder)
   }
 
   if (mutt_get_field(_("Create mailbox: "), buf, sizeof(buf), MUTT_FILE) < 0)
-    goto fail;
+    return -1;
 
   if (mutt_str_strlen(buf) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
-    goto fail;
+    return -1;
   }
 
   if (imap_create_mailbox(adata, buf) < 0)
-    goto fail;
+    return -1;
 
   mutt_message(_("Mailbox created"));
   mutt_sleep(0);
 
-  FREE(&mx.mbox);
   return 0;
-
-fail:
-  FREE(&mx.mbox);
-  return -1;
 }
 
 /**
  * imap_mailbox_rename - Rename a mailbox
- * @param mailbox Mailbox to rename
+ * @param path Mailbox to rename
  * @retval  0 Success
  * @retval -1 Failure
  *
  * The user will be prompted for a new name.
  */
-int imap_mailbox_rename(const char *mailbox)
+int imap_mailbox_rename(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMbox mx;
   char buf[PATH_MAX];
+  char oldname[LONG_STRING];
   char newname[PATH_MAX];
 
-  adata = imap_adata_find(mailbox, &mx);
+  adata = imap_adata_find(path, oldname, sizeof(oldname));
   if (!adata)
   {
-    mutt_debug(1, "Couldn't find open connection to %s\n", mailbox);
-    goto fail;
+    mutt_debug(1, "Couldn't find open connection to %s\n", path);
+    return -1;
   }
 
-  if (!mx.mbox)
+  if (oldname[0] == '\0')
   {
     mutt_error(_("Cannot rename root folder"));
-    goto fail;
+    return -1;
   }
 
-  snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), mx.mbox);
-  mutt_str_strfcpy(newname, mx.mbox, sizeof(newname));
+  snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), oldname);
+  mutt_str_strfcpy(newname, oldname, sizeof(newname));
 
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
-    goto fail;
+    return -1;
 
   if (mutt_str_strlen(newname) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
-    goto fail;
+    return -1;
   }
 
   imap_fix_path(adata, newname, buf, sizeof(buf));
 
-  if (imap_rename_mailbox(adata, &mx, buf) < 0)
+  if (imap_rename_mailbox(adata, oldname, buf) < 0)
   {
     mutt_error(_("Rename failed: %s"), imap_get_qualifier(adata->buf));
-    goto fail;
+    return -1;
   }
 
   mutt_message(_("Mailbox renamed"));
   mutt_sleep(0);
 
-  FREE(&mx.mbox);
   return 0;
-
-fail:
-  FREE(&mx.mbox);
-  return -1;
 }

@@ -126,9 +126,12 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 /**
  * imap_adata_find - Find the Account data for this path
  */
-struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
+struct ImapAccountData *imap_adata_find(const char *path, char *mailbox, size_t mailboxlen)
 {
-  if (imap_parse_path(path, mx) < 0)
+  // NOTE(sileht): Remove mx when we are able to pass Mailbox or Url there.
+  struct ImapMbox mx;
+
+  if (imap_parse_path(path, &mx) < 0)
     return NULL;
 
   struct Account *np = NULL;
@@ -139,8 +142,12 @@ struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
       continue;
 
     adata = np->adata;
-    if (imap_account_match(&adata->conn_account, &mx->account))
+    if (imap_account_match(&adata->conn_account, &mx.account))
+    {
+      if (mx.mbox)
+        mutt_str_strfcpy(mailbox, mx.mbox, mailboxlen);
       return adata;
+    }
   }
   mutt_debug(3, "no ImapAccountData found\n");
   return NULL;
@@ -250,27 +257,24 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
  */
 void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
-  struct ImapMbox mx;
   struct ImapAccountData *adata = NULL;
-  char mbox[LONG_STRING] = "";
+  char mbox[LONG_STRING], tmp[LONG_STRING];
 
-  adata = imap_adata_find(path, &mx);
-  if (!adata)
+  adata = imap_adata_find(path, tmp, sizeof(tmp));
+  if (!adata || tmp[0] == '\0')
   {
     mutt_str_strfcpy(buf, path, buflen);
-    FREE(&mx.mbox);
     return;
   }
 
   /* Stores a fixed path in mbox */
-  imap_fix_path(adata, mx.mbox, mbox, sizeof(mbox));
+  imap_fix_path(adata, tmp, mbox, sizeof(mbox));
 
   /* Gets the parent mbox in mbox */
   imap_get_parent(mbox, adata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(buf, buflen, &mx, mbox);
-  FREE(&mx.mbox);
+  imap_qualify_path2(buf, buflen, &adata->conn_account, mbox);
 }
 
 /**
@@ -282,19 +286,18 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
  */
 void imap_clean_path(char *path, size_t plen)
 {
-  struct ImapMbox mx;
   struct ImapAccountData *adata = NULL;
-  char mbox[LONG_STRING] = "";
+  char mbox[LONG_STRING], tmp[LONG_STRING];
 
-  adata = imap_adata_find(path, &mx);
-  if (!adata)
+  adata = imap_adata_find(path, tmp, sizeof(tmp));
+  if (!adata || tmp[0] == '\0')
     return;
 
   /* Stores a fixed path in mbox */
-  imap_fix_path(adata, mx.mbox, mbox, sizeof(mbox));
+  imap_fix_path(adata, tmp, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path(path, plen, &mx, mbox);
+  imap_qualify_path2(path, plen, &adata->conn_account, mbox);
 }
 
 #ifdef USE_HCACHE

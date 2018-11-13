@@ -370,20 +370,15 @@ int imap_prepare_mailbox(struct Mailbox *m, char *mailbox, size_t mailboxlen)
  */
 int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
 {
-  struct ImapMbox mx;
+  char tmp[LONG_STRING];
 
-  *adata = imap_adata_find(path, &mx);
+  *adata = imap_adata_find(path, tmp, sizeof(tmp));
   if (!*adata)
-  {
-    FREE(&mx.mbox);
     return -1;
-  }
 
-  imap_fix_path(*adata, mx.mbox, buf, buflen);
+  imap_fix_path(*adata, tmp, buf, buflen);
   if (!*buf)
     mutt_str_strfcpy(buf, "INBOX", buflen);
-  FREE(&mx.mbox);
-
   return 0;
 }
 
@@ -712,18 +707,18 @@ int imap_access(const char *path)
 /**
  * imap_rename_mailbox - Rename a mailbox
  * @param adata Imap Account data
- * @param mx      Existing mailbox
+ * @param oldname Existing mailbox
  * @param newname New name for mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, const char *newname)
+int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname)
 {
   char oldmbox[LONG_STRING];
   char newmbox[LONG_STRING];
   int rc = 0;
 
-  imap_munge_mbox_name(adata, oldmbox, sizeof(oldmbox), mx->mbox);
+  imap_munge_mbox_name(adata, oldmbox, sizeof(oldmbox), oldname);
   imap_munge_mbox_name(adata, newmbox, sizeof(newmbox), newname);
 
   struct Buffer *b = mutt_buffer_pool_get();
@@ -1682,26 +1677,25 @@ int imap_complete(char *buf, size_t buflen, char *path)
   struct ImapAccountData *adata = NULL;
   char list[LONG_STRING];
   char tmp[LONG_STRING * 2];
+  char mailbox[LONG_STRING];
   struct ImapList listresp;
   char completion[LONG_STRING];
   int clen;
   size_t matchlen = 0;
   int completions = 0;
-  struct ImapMbox mx;
   int rc;
 
-  adata = imap_adata_find(path, &mx);
+  adata = imap_adata_find(path, mailbox, sizeof(mailbox));
   if (!adata)
   {
-    FREE(&mx.mbox);
     mutt_str_strfcpy(buf, path, buflen);
     return complete_hosts(buf, buflen);
   }
 
   /* reformat path for IMAP list, and append wildcard */
   /* don't use INBOX in place of "" */
-  if (mx.mbox && mx.mbox[0])
-    imap_fix_path(adata, mx.mbox, list, sizeof(list));
+  if (mailbox[0] != '\0')
+    imap_fix_path(adata, mailbox, list, sizeof(list));
   else
     list[0] = '\0';
 
@@ -1711,7 +1705,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   imap_cmd_start(adata, tmp);
 
   /* and see what the results are */
-  mutt_str_strfcpy(completion, mx.mbox, sizeof(completion));
+  mutt_str_strfcpy(completion, mailbox, sizeof(completion));
   adata->cmdtype = IMAP_CT_LIST;
   adata->cmddata = &listresp;
   do
@@ -1747,10 +1741,8 @@ int imap_complete(char *buf, size_t buflen, char *path)
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path(buf, buflen, &mx, completion);
+    imap_qualify_path2(buf, buflen, &adata->conn_account, completion);
     mutt_pretty_mailbox(buf, buflen);
-
-    FREE(&mx.mbox);
     return 0;
   }
 
