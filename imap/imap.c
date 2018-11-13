@@ -355,34 +355,6 @@ int imap_prepare_mailbox(struct Mailbox *m, char *mailbox, size_t mailboxlen)
 }
 
 /**
- * get_mailbox - Split mailbox URI
- * @param path   Mailbox URI
- * @param adata  Imap Account data
- * @param buf    Buffer to store mailbox name
- * @param buflen Length of buffer
- * @retval  0 Success
- * @retval -1 Failure
- *
- * Split up a mailbox URI.  The connection info is stored in the ImapAccountData and
- * the mailbox name is stored in buf.
- * TODO(sileht): We should drop this method and pass a Context or Mailbox
- * object everywhere instead.
- */
-int get_mailbox(const char *path, struct ImapAccountData **adata, char *buf, size_t buflen)
-{
-  char tmp[LONG_STRING];
-
-  *adata = imap_adata_find(path, tmp, sizeof(tmp));
-  if (!*adata)
-    return -1;
-
-  imap_fix_path(*adata, tmp, buf, buflen);
-  if (!*buf)
-    mutt_str_strfcpy(buf, "INBOX", buflen);
-  return 0;
-}
-
-/**
  * do_search - Perform a search of messages
  * @param search  List of pattern to match
  * @param allpats Must all patterns match?
@@ -694,14 +666,15 @@ int imap_access(const char *path)
 {
   struct ImapAccountData *adata = NULL;
   char mailbox[LONG_STRING];
-  int rc;
 
-  rc = get_mailbox(path, &adata, mailbox, sizeof(mailbox));
-  if (rc < 0)
+  adata = imap_adata_find(path, mailbox, sizeof(mailbox), true);
+  if (!adata)
     return -1;
 
-  rc = imap_access2(adata, mailbox);
-  return rc;
+  if (mailbox[0] == '\0')
+    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
+
+  return imap_access2(adata, mailbox);
 }
 
 /**
@@ -1448,7 +1421,8 @@ int imap_status(const char *path, bool queue)
   char mbox[LONG_STRING];
   struct ImapStatus *status = NULL;
 
-  if (get_mailbox(path, &adata, buf, sizeof(buf)) < 0)
+  adata = imap_adata_find(path, buf, sizeof(buf), true);
+  if (!adata)
     return -1;
 
   /* We are in the folder we're polling - just return the mailbox count.
@@ -1623,10 +1597,9 @@ int imap_subscribe(char *path, bool subscribe)
   char errstr[STRING];
   struct Buffer err, token;
   size_t len = 0;
-  int rc;
 
-  rc = get_mailbox(path, &adata, buf, sizeof(buf));
-  if (rc < 0)
+  adata = imap_adata_find(path, buf, sizeof(buf), false);
+  if (!adata)
     return -1;
 
   if (ImapCheckSubscribed)
@@ -1685,7 +1658,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   int completions = 0;
   int rc;
 
-  adata = imap_adata_find(path, mailbox, sizeof(mailbox));
+  adata = imap_adata_find(path, mailbox, sizeof(mailbox), false);
   if (!adata)
   {
     mutt_str_strfcpy(buf, path, buflen);

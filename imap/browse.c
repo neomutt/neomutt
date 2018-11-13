@@ -385,7 +385,7 @@ int imap_mailbox_create(const char *path)
   char name[LONG_STRING];
   short n;
 
-  adata = imap_adata_find(path, name, sizeof(name));
+  adata = imap_adata_find(path, name, sizeof(name), false);
   if (!adata)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", path);
@@ -435,7 +435,7 @@ int imap_mailbox_rename(const char *path)
   char oldname[LONG_STRING];
   char newname[PATH_MAX];
 
-  adata = imap_adata_find(path, oldname, sizeof(oldname));
+  adata = imap_adata_find(path, oldname, sizeof(oldname), false);
   if (!adata)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", path);
