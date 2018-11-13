@@ -329,7 +329,6 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
 /**
  * imap_prepare_mailbox - Ensure we have a valid Mailbox
  * @param m                     Mailbox
- * @param mx                    Imap Mailbox
  * @param mailbox               Buffer for tidied mailbox path
  * @param mailboxlen            Length of buffer
  * @retval  0 Success
@@ -338,17 +337,10 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, char *mailbox, size_t mailboxlen)
+int imap_prepare_mailbox(struct Mailbox *m, char *mailbox, size_t mailboxlen)
 {
   if (!m || !m->account)
     return -1;
-
-  if ((imap_path_probe(m->path, NULL) != MUTT_IMAP) || imap_parse_path(m->path, mx))
-  {
-    mutt_debug(1, "Error parsing %s\n", m->path);
-    mutt_error(_("Bad mailbox name"));
-    return -1;
-  }
 
   struct ImapAccountData *adata = m->account->adata;
 
@@ -357,9 +349,8 @@ int imap_prepare_mailbox(struct Mailbox *m, struct ImapMbox *mx, char *mailbox, 
   if (imap_login(adata) < 0)
     return -1;
 
-  imap_fix_path(adata, mx->mbox, mailbox, mailboxlen);
-  if (!*mailbox)
-    mutt_str_strfcpy(mailbox, "INBOX", mailboxlen);
+  struct ImapMailboxData *mdata = m->mdata;
+  mutt_str_strfcpy(mailbox, mdata->name, mailboxlen);
   return 0;
 }
 
@@ -1390,14 +1381,12 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
   char name[LONG_STRING];
   char command[LONG_STRING * 2];
   char munged[LONG_STRING];
-  struct ImapMbox mx;
 
-  if (imap_prepare_mailbox(m, &mx, name, sizeof(name)))
+  if (imap_prepare_mailbox(m, name, sizeof(name)))
   {
     m->has_new = false;
     return -1;
   }
-  FREE(&mx.mbox);
 
   adata = m->account->adata;
 
@@ -2234,22 +2223,22 @@ static int imap_mbox_open(struct Context *ctx)
   char buf[PATH_MAX];
   char bufout[PATH_MAX];
   int count = 0;
-  struct ImapMbox mx, pmx;
+  struct ImapMbox pmx;
   int rc;
   const char *condstore = NULL;
 
-  rc = imap_prepare_mailbox(m, &mx, buf, sizeof(buf));
+  rc = imap_prepare_mailbox(m, buf, sizeof(buf));
   if (rc < 0)
   {
-    FREE(&mx.mbox);
     return -1;
   }
 
   struct ImapAccountData *adata = m->account->adata;
+  struct ImapMailboxData *mdata = m->mdata;
 
   FREE(&(adata->mbox_name));
-  adata->mbox_name = mutt_str_strdup(buf);
-  imap_qualify_path(buf, sizeof(buf), &mx, adata->mbox_name);
+  adata->mbox_name = mutt_str_strdup(mdata->name);
+  imap_qualify_path2(buf, sizeof(buf), &adata->conn_account, adata->mbox_name);
 
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
   mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
@@ -2291,8 +2280,8 @@ static int imap_mbox_open(struct Context *ctx)
   }
   /* pipeline the postponed count if possible */
   pmx.mbox = NULL;
-  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) &&
-      !imap_parse_path(Postponed, &pmx) && mutt_account_match(&pmx.account, &mx.account))
+  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) && !imap_parse_path(Postponed, &pmx) &&
+      mutt_account_match(&pmx.account, &adata->conn_account))
   {
     imap_status(Postponed, true);
   }
@@ -2461,13 +2450,11 @@ static int imap_mbox_open(struct Context *ctx)
   }
 
   mutt_debug(2, "msg_count is %d\n", m->msg_count);
-  FREE(&mx.mbox);
   return 0;
 
 fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
-  FREE(&mx.mbox);
   return -1;
 }
 
@@ -2480,13 +2467,11 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
     return -1;
 
   char mailbox[PATH_MAX];
-  struct ImapMbox mx;
   int rc;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  rc = imap_prepare_mailbox(m, &mx, mailbox, sizeof(mailbox));
-  FREE(&mx.mbox);
+  rc = imap_prepare_mailbox(m, mailbox, sizeof(mailbox));
   if (rc < 0)
     return -1;
 

@@ -965,6 +965,21 @@ void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path
 }
 
 /**
+ * imap_qualify_path2 - Make an absolute IMAP folder target
+ * @param buf    Buffer for the result
+ * @param buflen Length of buffer
+ * @param conn_account     ConnAccount of the account
+ * @param path   Path relative to the mailbox
+ */
+void imap_qualify_path2(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path)
+{
+  struct Url url;
+  mutt_account_tourl(conn_account, &url);
+  url.path = path;
+  url_tostring(&url, buf, buflen, 0);
+}
+
+/**
  * imap_quote_string - quote string according to IMAP rules
  * @param dest           Buffer for the result
  * @param dlen           Length of the buffer
