@@ -1491,7 +1491,7 @@ int mutt_index_menu(void)
         {
           struct Email *e = Context->mailbox->hdrs[i - 1];
 
-          if (mutt_messages_in_thread(Context, e, 1) != 1)
+          if (mutt_messages_in_thread(Context, e, 1) > 1)
           {
             mutt_uncollapse_thread(Context, e);
             mutt_set_virtual(Context);
