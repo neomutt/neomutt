@@ -118,12 +118,9 @@ struct ImapAccountData *imap_adata_new(void)
  */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_IMAP))
+  if (!m || (m->magic != MUTT_IMAP) || !m->account)
     return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  return a->adata;
+  return m->account->adata;
 }
 
 /**
@@ -147,6 +144,55 @@ struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
   }
   mutt_debug(3, "no ImapAccountData found\n");
   return NULL;
+}
+
+/**
+ * imap_mdata_new - Allocate and initialise a new ImapMailboxData structure
+ * @retval ptr New ImapMailboxData
+ */
+struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
+{
+  char buf[LONG_STRING];
+  struct ImapMailboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMailboxData));
+
+  mdata->real_name = mutt_str_strdup(name);
+
+  imap_fix_path(adata, name, buf, sizeof(buf));
+  if (!*buf)
+    mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
+  mdata->name = mutt_str_strdup(buf);
+
+  imap_munge_mbox_name(adata, buf, sizeof(buf), mdata->name);
+  mdata->munge_name = mutt_str_strdup(buf);
+
+  return mdata;
+}
+
+/**
+ * imap_mdata_free - Release and clear storage in an ImapMailboxData structure
+ * @param ptr Imap Mailbox data
+ */
+void imap_mdata_free(void **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ImapMailboxData *mdata = *ptr;
+
+  FREE(&mdata->name);
+  FREE(&mdata->real_name);
+  FREE(&mdata->munge_name);
+  FREE(ptr);
+}
+
+/**
+ * imap_mdata_get - Get the Mailbox data for this mailbox
+ */
+struct ImapMailboxData *imap_mdata_get(struct Mailbox *m)
+{
+  if (!m || (m->magic != MUTT_IMAP) || !m->mdata)
+    return NULL;
+  return m->mdata;
 }
 
 /**

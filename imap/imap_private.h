@@ -275,6 +275,18 @@ struct ImapAccountData
 };
 
 /**
+ * struct ImapMailboxData - IMAP-specific Mailbox data
+ *
+ * This data is specific to a Mailbox of an IMAP server
+ */
+struct ImapMailboxData
+{
+  char *name;
+  char *munge_name;
+  char *real_name;
+};
+
+/**
  * struct SeqsetIterator - UID Sequence Set Iterator
  */
 struct SeqsetIterator
@@ -350,6 +362,8 @@ int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);
+struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
+void imap_mdata_free(void **ptr);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);

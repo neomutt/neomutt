@@ -2115,25 +2115,42 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   if (m->magic != MUTT_IMAP)
     return -1;
 
+  // NOTE(sileht): The goal is to use ImapMbox and imap_parse_path() only here
+  // So we can remove it at this end.
+  struct ImapMbox mx;
+
+  if (imap_parse_path(m->path, &mx) < 0)
+    return -1;
+
   // if (a->type == MUTT_UNKNOWN)
   if (!a->adata)
   {
     struct ImapAccountData *adata = imap_adata_new();
-    struct ImapMbox mx;
     a->magic = MUTT_IMAP;
     a->adata = adata;
     a->free_adata = imap_adata_free;
-
-    if (imap_parse_path(m->path, &mx) < 0)
-      return -1;
-    FREE(&mx.mbox);
     adata->conn_account = mx.account;
     adata->conn = mutt_conn_new(&adata->conn_account);
     if (!adata->conn)
+    {
+      FREE(&mx.mbox);
       return -1;
+    }
   }
 
   m->account = a;
+
+  if (!m->mdata)
+  {
+    struct ImapMailboxData *mdata = imap_mdata_new(a->adata, mx.mbox);
+    if (!mdata)
+    {
+      FREE(&mx.mbox);
+      return -1;
+    }
+    m->mdata = mdata;
+    m->free_mdata = imap_mdata_free;
+  }
 
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
   np->m = m;
