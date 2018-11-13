@@ -1014,7 +1014,11 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
       {
         cm->msg_count++;
         if (!e->read)
+        {
           cm->msg_unread++;
+          if (!e->old)
+            cm->msg_new++;
+        }
         if (e->flagged)
           cm->msg_flagged++;
       }
@@ -1043,7 +1047,11 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
           struct Email *e2 = Context->mailbox->hdrs[i];
           cm->msg_count++;
           if (!e2->read)
+          {
             cm->msg_unread++;
+            if (!e2->old)
+              cm->msg_new++;
+          }
           if (e2->flagged)
             cm->msg_flagged++;
         }

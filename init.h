@@ -3305,6 +3305,13 @@ struct ConfigDef MuttVars[] = {
   ** NeoMutt scores are always greater than or equal to zero, the default setting
   ** of this variable will never mark a message read.
   */
+  { "search_command",   DT_COMMAND, R_NONE, &SearchCommand, 0 },
+  /*
+   ** .pp
+   ** If set, contains the name of the external program used by ~I patterns.
+   ** This will usually be a wrapper script around mairix, mu, or similar
+   ** indexers other than notmuch (for which there is optional special support).
+   */
   { "search_context",   DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &SearchContext, 0 },
   /*
   ** .pp

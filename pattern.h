@@ -50,6 +50,7 @@ struct Pattern
   bool groupmatch : 1;
   bool ign_case : 1; /**< ignore case for local stringmatch searches */
   bool isalias : 1;
+  bool is_alternatives : 1; /**< multiple alternatives (only for I pattern now) */
   int min;
   int max;
   struct Pattern *next;
@@ -58,6 +59,7 @@ struct Pattern
     regex_t *regex;
     struct Group *g;
     char *str;
+    struct ListHead alternatives;
   } p;
 };
 

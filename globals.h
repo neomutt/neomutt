@@ -140,6 +140,7 @@ WHERE char *IndentString;                  ///< Config: String used to indent 'r
 WHERE char *PrintCommand;                  ///< Config: External command to print a message
 WHERE char *NewMailCommand;                ///< Config: External command to run when new mail arrives
 WHERE char *Realname;                      ///< Config: Real name of the user
+WHERE char *SearchCommand;                 ///< Config: External command to expand ~I patterns
 WHERE char *Shell;                         ///< Config: External command to run subshells in
 WHERE char *SimpleSearch;                  ///< Config: Pattern to search for when search doesn't contain ~'s
 #ifdef USE_SMTP

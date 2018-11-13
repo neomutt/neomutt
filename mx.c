@@ -773,16 +773,17 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 #ifdef USE_SIDEBAR
   if (purge && ctx->mailbox->msg_deleted)
   {
-    int orig_msgcount = ctx->mailbox->msg_count;
-
     for (i = 0; i < ctx->mailbox->msg_count; i++)
     {
       if (ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->read)
+      {
         ctx->mailbox->msg_unread--;
+        if (!ctx->mailbox->hdrs[i]->old)
+          ctx->mailbox->msg_new--;
+      }
       if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->flagged)
         ctx->mailbox->msg_flagged--;
     }
-    ctx->mailbox->msg_count = orig_msgcount;
   }
 #endif
 
