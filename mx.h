@@ -192,10 +192,10 @@ struct MxOps
   int (*msg_close)       (struct Mailbox *m, struct Message *msg);
   /**
    * msg_padding_size - Bytes of padding between messages
-   * @param ctx Mailbox
+   * @param m Mailbox
    * @retval num Bytes of padding
    */
-  int (*msg_padding_size)(struct Context *ctx);
+  int (*msg_padding_size)(struct Mailbox *m);
   /**
    * tags_edit - Prompt and validate new messages tags
    * @param ctx    Mailbox

@@ -1643,7 +1643,7 @@ int mx_msg_padding_size(struct Context *ctx)
   if (!m->mx_ops || !m->mx_ops->msg_padding_size)
     return 0;
 
-  return m->mx_ops->msg_padding_size(ctx);
+  return m->mx_ops->msg_padding_size(m);
 }
 
 /**

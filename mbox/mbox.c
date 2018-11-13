@@ -1639,10 +1639,10 @@ static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
 
 /**
  * mbox_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval 1 Always
  */
-static int mbox_msg_padding_size(struct Context *ctx)
+static int mbox_msg_padding_size(struct Mailbox *m)
 {
   return 1;
 }
@@ -1788,10 +1788,10 @@ static int mmdf_msg_commit(struct Mailbox *m, struct Message *msg)
 
 /**
  * mmdf_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval 10 Always
  */
-static int mmdf_msg_padding_size(struct Context *ctx)
+static int mmdf_msg_padding_size(struct Mailbox *m)
 {
   return 10;
 }

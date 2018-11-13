@@ -876,15 +876,11 @@ static int comp_msg_close(struct Mailbox *m, struct Message *msg)
 
 /**
  * comp_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval num Number of bytes of padding
  */
-static int comp_msg_padding_size(struct Context *ctx)
+static int comp_msg_padding_size(struct Mailbox *m)
 {
-  if (!ctx)
-    return 0;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -896,7 +892,7 @@ static int comp_msg_padding_size(struct Context *ctx)
   if (!ops || !ops->msg_padding_size)
     return 0;
 
-  return ops->msg_padding_size(ctx);
+  return ops->msg_padding_size(m);
 }
 
 /**
