@@ -1370,13 +1370,16 @@ bail:
 
 /**
  * imap_append_message - Write an email back to the server
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param msg Message to save
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_append_message(struct Context *ctx, struct Message *msg)
+int imap_append_message(struct Mailbox *m, struct Message *msg)
 {
+  if (!m || !msg)
+    return -1;
+
   FILE *fp = NULL;
   char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
@@ -1389,13 +1392,6 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   int c, last;
   struct ImapMbox mx;
   int rc;
-
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-  if (!m)
-    return -1;
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
@@ -2048,13 +2044,13 @@ bail:
  *
  * @note May also return EOF Failure, see errno
  */
-int imap_msg_commit(struct Context *ctx, struct Message *msg)
+int imap_msg_commit(struct Mailbox *m, struct Message *msg)
 {
   int r = mutt_file_fclose(&msg->fp);
   if (r != 0)
     return r;
 
-  return imap_append_message(ctx, msg);
+  return imap_append_message(m, msg);
 }
 
 /**

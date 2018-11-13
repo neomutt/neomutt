@@ -176,12 +176,12 @@ struct MxOps
   int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Email *e);
   /**
    * msg_commit - Save changes to an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to commit
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_commit)      (struct Context *ctx, struct Message *msg);
+  int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
   /**
    * msg_close - Close an email
    * @param m   Mailbox

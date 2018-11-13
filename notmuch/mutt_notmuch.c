@@ -2457,7 +2457,7 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  * nm_msg_commit - Implements MxOps::msg_commit()
  * @retval -1 Always
  */
-static int nm_msg_commit(struct Context *ctx, struct Message *msg)
+static int nm_msg_commit(struct Mailbox *m, struct Message *msg)
 {
   mutt_error(_("Can't write to virtual folder"));
   return -1;

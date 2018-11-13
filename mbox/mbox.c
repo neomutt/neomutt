@@ -1607,7 +1607,7 @@ static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
 /**
  * mbox_msg_commit - Implements MxOps::msg_commit()
  */
-static int mbox_msg_commit(struct Context *ctx, struct Message *msg)
+static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
   if (!msg)
     return -1;
@@ -1772,7 +1772,7 @@ int mbox_path_parent(char *buf, size_t buflen)
 /**
  * mmdf_msg_commit - Implements MxOps::msg_commit()
  */
-static int mmdf_msg_commit(struct Context *ctx, struct Message *msg)
+static int mmdf_msg_commit(struct Mailbox *m, struct Message *msg)
 {
   if (fputs(MMDF_SEP, msg->fp) == EOF)
     return -1;

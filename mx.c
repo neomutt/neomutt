@@ -1167,7 +1167,7 @@ int mx_msg_commit(struct Context *ctx, struct Message *msg)
     return -1;
   }
 
-  return m->mx_ops->msg_commit(ctx, msg);
+  return m->mx_ops->msg_commit(m, msg);
 }
 
 /**

@@ -837,12 +837,8 @@ static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
 /**
  * comp_msg_commit - Implements MxOps::msg_commit()
  */
-static int comp_msg_commit(struct Context *ctx, struct Message *msg)
+static int comp_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -855,7 +851,7 @@ static int comp_msg_commit(struct Context *ctx, struct Message *msg)
     return -1;
 
   /* Delegate */
-  return ops->msg_commit(ctx, msg);
+  return ops->msg_commit(m, msg);
 }
 
 /**

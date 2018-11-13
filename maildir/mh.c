@@ -2715,12 +2715,8 @@ static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct
 /**
  * maildir_msg_commit - Implements MxOps::msg_commit()
  */
-static int maildir_msg_commit(struct Context *ctx, struct Message *msg)
+static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -3109,12 +3105,8 @@ static int mh_msg_open_new(struct Context *ctx, struct Message *msg, struct Emai
 /**
  * mh_msg_commit - Implements MxOps::msg_commit()
  */
-static int mh_msg_commit(struct Context *ctx, struct Message *msg)
+static int mh_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
