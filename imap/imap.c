@@ -1736,29 +1736,20 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
   int rc;
-  struct ImapMbox mx;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-
-  if (imap_parse_path(dest, &mx))
-  {
-    mutt_debug(1, "bad destination %s\n", dest);
-    return -1;
-  }
+  struct ImapAccountData *dest_adata = imap_adata_find(dest, mbox, sizeof(mbox), true);
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match(&(adata->conn->account), &(mx.account)))
+  if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
   {
     mutt_debug(3, "%s not same server as %s\n", dest, m->path);
     return 1;
   }
 
-  imap_fix_path(adata, mx.mbox, mbox, sizeof(mbox));
-  if (!*mbox)
-    mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(adata, mmbox, sizeof(mmbox), mbox);
 
   sync_cmd = mutt_buffer_new();
@@ -1832,7 +1823,6 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
 
 out:
   mutt_buffer_free(&sync_cmd);
-  FREE(&mx.mbox);
 
   return (rc < 0) ? -1 : rc;
 }
