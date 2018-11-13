@@ -839,12 +839,10 @@ static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
  */
 static int comp_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!m)
+  if (!m || !m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
-  if (!ci)
-    return -1;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
@@ -859,12 +857,10 @@ static int comp_msg_commit(struct Mailbox *m, struct Message *msg)
  */
 static int comp_msg_close(struct Mailbox *m, struct Message *msg)
 {
-  if (!m)
+  if (!m || !m->compress_info)
     return -1;
 
   struct CompressInfo *ci = m->compress_info;
-  if (!ci)
-    return -1;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
@@ -876,17 +872,13 @@ static int comp_msg_close(struct Mailbox *m, struct Message *msg)
 
 /**
  * comp_msg_padding_size - Bytes of padding between messages - Implements MxOps::msg_padding_size()
- * @param m Mailbox
- * @retval num Number of bytes of padding
  */
 static int comp_msg_padding_size(struct Mailbox *m)
 {
-  if (!m)
-    return -1;
+  if (!m || !m->compress_info)
+    return 0;
 
   struct CompressInfo *ci = m->compress_info;
-  if (!ci)
-    return 0;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops || !ops->msg_padding_size)
@@ -898,24 +890,18 @@ static int comp_msg_padding_size(struct Mailbox *m)
 /**
  * comp_tags_edit - Implements MxOps::tags_edit()
  */
-static int comp_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!ctx)
+  if (!m || !m->compress_info)
     return 0;
-
-  struct Mailbox *m = ctx->mailbox;
-  if (!m)
-    return -1;
 
   struct CompressInfo *ci = m->compress_info;
-  if (!ci)
-    return 0;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops || !ops->tags_edit)
     return 0;
 
-  return ops->tags_edit(ctx, tags, buf, buflen);
+  return ops->tags_edit(m, tags, buf, buflen);
 }
 
 /**

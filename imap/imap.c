@@ -2631,12 +2631,8 @@ static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
 /**
  * imap_tags_edit - Implements MxOps::tags_edit()
  */
-static int imap_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 

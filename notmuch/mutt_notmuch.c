@@ -2477,7 +2477,7 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 /**
  * nm_tags_edit - Implements MxOps::tags_edit()
  */
-static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
   if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)

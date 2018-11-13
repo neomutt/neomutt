@@ -1362,7 +1362,7 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
   struct Mailbox *m = ctx->mailbox;
 
   if (m->mx_ops->tags_edit)
-    return m->mx_ops->tags_edit(ctx, tags, buf, buflen);
+    return m->mx_ops->tags_edit(m, tags, buf, buflen);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;

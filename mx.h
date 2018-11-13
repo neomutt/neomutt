@@ -198,7 +198,7 @@ struct MxOps
   int (*msg_padding_size)(struct Mailbox *m);
   /**
    * tags_edit - Prompt and validate new messages tags
-   * @param ctx    Mailbox
+   * @param m      Mailbox
    * @param tags   Existing tags
    * @param buf    Buffer to store the tags
    * @param buflen Length of buffer
@@ -206,7 +206,7 @@ struct MxOps
    * @retval  0 No valid user input
    * @retval  1 Buf set
    */
-  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
   /**
    * tags_commit - Save the tags to a message
    * @param ctx Mailbox
