@@ -227,11 +227,10 @@ struct MxOps
    * path_canon - Canonicalise a mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
-   * @param folder Base path for '=' substitution
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*path_canon)      (char *buf, size_t buflen, const char *folder);
+  int (*path_canon)      (char *buf, size_t buflen);
   /**
    * path_pretty - Abbreviate a mailbox path
    * @param buf    Path to modify

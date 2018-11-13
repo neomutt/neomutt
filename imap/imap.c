@@ -2821,29 +2821,10 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 /**
  * imap_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
-int imap_path_canon(char *buf, size_t buflen, const char *folder)
+int imap_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
-
-#if 0
-  if ((buf[0] == '+') || (buf[0] == '='))
-  {
-    if (!folder)
-      return -1;
-
-    size_t flen = mutt_str_strlen(folder);
-    if ((flen > 0) && (folder[flen - 1] != '/'))
-    {
-      buf[0] = '/';
-      mutt_str_inline_replace(buf, buflen, 0, folder);
-    }
-    else
-    {
-      mutt_str_inline_replace(buf, buflen, 1, folder);
-    }
-  }
-#endif
 
   struct Url url;
   char tmp[PATH_MAX];

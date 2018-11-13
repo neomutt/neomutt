@@ -2747,19 +2747,10 @@ enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 /**
  * maildir_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
-int maildir_path_canon(char *buf, size_t buflen, const char *folder)
+int maildir_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
-
-  if ((buf[0] == '+') || (buf[0] == '='))
-  {
-    if (!folder)
-      return -1;
-
-    buf[0] = '/';
-    mutt_str_inline_replace(buf, buflen, 0, folder);
-  }
 
   mutt_path_canon(buf, buflen, HomeDir);
   return 0;
