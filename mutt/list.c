@@ -85,7 +85,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
  * @retval ptr ListNode containing the string
  * @retval NULL if the string isn't found
  */
-struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
+struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
 {
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
