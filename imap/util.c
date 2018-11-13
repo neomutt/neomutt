@@ -129,10 +129,10 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 struct ImapAccountData *imap_adata_find(const char *path, char *mailbox,
                                         size_t mailboxlen, bool fix_path)
 {
-  // NOTE(sileht): Remove mx when we are able to pass Mailbox or Url there.
-  struct ImapMbox mx;
+  struct ConnAccount conn_account;
+  char tmp[LONG_STRING];
 
-  if (imap_parse_path(path, &mx) < 0)
+  if (imap_parse_path2(path, &conn_account, tmp, sizeof(tmp)) < 0)
     return NULL;
 
   struct Account *np = NULL;
@@ -143,14 +143,14 @@ struct ImapAccountData *imap_adata_find(const char *path, char *mailbox,
       continue;
 
     adata = np->adata;
-    if (imap_account_match(&adata->conn_account, &mx.account))
+    if (imap_account_match(&adata->conn_account, &conn_account))
     {
-      if (mx.mbox)
+      if (tmp[0] != '\0')
       {
         if (fix_path)
-          imap_fix_path(adata, mx.mbox, mailbox, mailboxlen);
+          imap_fix_path(adata, tmp, mailbox, mailboxlen);
         else
-          mutt_str_strfcpy(mailbox, mx.mbox, mailboxlen);
+          mutt_str_strfcpy(mailbox, tmp, mailboxlen);
       }
       return adata;
     }
