@@ -2852,7 +2852,7 @@ static int nntp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  *
  * @note May also return EOF Failure, see errno
  */
-static int nntp_msg_close(struct Context *ctx, struct Message *msg)
+static int nntp_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }

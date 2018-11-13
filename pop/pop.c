@@ -1232,7 +1232,7 @@ static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-static int pop_msg_close(struct Context *ctx, struct Message *msg)
+static int pop_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }

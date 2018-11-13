@@ -2062,7 +2062,7 @@ int imap_msg_commit(struct Context *ctx, struct Message *msg)
  *
  * @note May also return EOF Failure, see errno
  */
-int imap_msg_close(struct Context *ctx, struct Message *msg)
+int imap_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }

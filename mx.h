@@ -184,12 +184,12 @@ struct MxOps
   int (*msg_commit)      (struct Context *ctx, struct Message *msg);
   /**
    * msg_close - Close an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to close
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_close)       (struct Context *ctx, struct Message *msg);
+  int (*msg_close)       (struct Mailbox *m, struct Message *msg);
   /**
    * msg_padding_size - Bytes of padding between messages
    * @param ctx Mailbox

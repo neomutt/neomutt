@@ -1187,7 +1187,7 @@ int mx_msg_close(struct Context *ctx, struct Message **msg)
   int r = 0;
 
   if (m->mx_ops && m->mx_ops->msg_close)
-    r = m->mx_ops->msg_close(ctx, *msg);
+    r = m->mx_ops->msg_close(m, *msg);
 
   if ((*msg)->path)
   {

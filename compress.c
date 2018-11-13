@@ -861,12 +861,8 @@ static int comp_msg_commit(struct Context *ctx, struct Message *msg)
 /**
  * comp_msg_close - Implements MxOps::msg_close()
  */
-static int comp_msg_close(struct Context *ctx, struct Message *msg)
+static int comp_msg_close(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
   if (!m)
     return -1;
 
@@ -879,7 +875,7 @@ static int comp_msg_close(struct Context *ctx, struct Message *msg)
     return -1;
 
   /* Delegate */
-  return ops->msg_close(ctx, msg);
+  return ops->msg_close(m, msg);
 }
 
 /**

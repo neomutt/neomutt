@@ -1627,7 +1627,7 @@ static int mbox_msg_commit(struct Context *ctx, struct Message *msg)
 /**
  * mbox_msg_close - Implements MxOps::msg_close()
  */
-static int mbox_msg_close(struct Context *ctx, struct Message *msg)
+static int mbox_msg_close(struct Mailbox *m, struct Message *msg)
 {
   if (!msg)
     return -1;
