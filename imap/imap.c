@@ -1925,7 +1925,6 @@ out:
  */
 int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 {
-  struct Context *appendctx = NULL;
   struct Email *e = NULL;
   struct Email **emails = NULL;
   int oldsort;
@@ -1955,7 +1954,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
-      goto out;
+      return rc;
     }
 
     if (rc > 0)
@@ -2003,12 +2002,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", ctx->mailbox->msg_count),
                      i + 1, ctx->mailbox->msg_count);
-        if (!appendctx)
-          appendctx = mx_mbox_open(ctx->mailbox, NULL, MUTT_APPEND | MUTT_QUIET);
-        if (!appendctx)
-          mutt_debug(1, "Error opening mailbox in append mode\n");
-        else
-          mutt_save_message_ctx(e, true, false, false, appendctx);
+        mutt_save_message_ctx(e, true, false, false, ctx);
         e->xlabel_changed = false;
       }
     }
@@ -2060,15 +2054,13 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     {
       if (mutt_yesorno(_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
       {
-        rc = 0;
         adata->state = IMAP_AUTHENTICATED;
-        goto out;
+        return 0;
       }
     }
     else
       mutt_error(_("Error saving flags"));
-    rc = -1;
-    goto out;
+    return -1;
   }
 
   /* Update local record of server state to reflect the synchronization just
@@ -2095,8 +2087,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     {
       adata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
       imap_error(_("imap_sync_mailbox: EXPUNGE failed"), adata->buf);
-      rc = -1;
-      goto out;
+      return -1;
     }
     adata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
   }
@@ -2111,16 +2102,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   if (MessageCacheClean)
     imap_cache_clean(adata);
 
-  rc = 0;
-
-out:
-  if (appendctx)
-  {
-    if (!close)
-      mx_fastclose_mailbox(appendctx);
-    FREE(&appendctx);
-  }
-  return rc;
+  return 0;
 }
 
 /**
