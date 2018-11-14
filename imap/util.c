@@ -171,7 +171,7 @@ struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char
   mdata->real_name = mutt_str_strdup(name);
 
   imap_fix_path(adata, name, buf, sizeof(buf));
-  if (!*buf)
+  if (buf[0] == '\0')
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
   mdata->name = mutt_str_strdup(buf);
 
