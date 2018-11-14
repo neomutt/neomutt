@@ -64,9 +64,10 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
 {
   char tmp[PATH_MAX];
   char relpath[PATH_MAX];
-  struct ImapMbox mx;
+  struct ConnAccount conn_account;
+  char mailbox[LONG_STRING];
 
-  if (imap_parse_path(state->folder, &mx))
+  if (imap_parse_path2(state->folder, &conn_account, mailbox, sizeof(mailbox)))
     return;
 
   if (state->entrylen + 1 == state->entrymax)
@@ -80,8 +81,8 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   if (isparent)
     mutt_str_strfcpy(relpath, "../", sizeof(relpath));
   /* strip current folder from target, to render a relative path */
-  else if (mutt_str_startswith(folder, mx.mbox, CASE_MATCH))
-    mutt_str_strfcpy(relpath, folder + mutt_str_strlen(mx.mbox), sizeof(relpath));
+  else if (mutt_str_startswith(folder, mailbox, CASE_MATCH))
+    mutt_str_strfcpy(relpath, folder + mutt_str_strlen(mailbox), sizeof(relpath));
   else
     mutt_str_strfcpy(relpath, folder, sizeof(relpath));
 
@@ -89,12 +90,9 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
   if (Mask && Mask->regex && !((regexec(Mask->regex, relpath, 0, NULL, 0) == 0) ^ Mask->not))
-  {
-    FREE(&mx.mbox);
     return;
-  }
 
-  imap_qualify_path(tmp, sizeof(tmp), &mx, folder);
+  imap_qualify_path2(tmp, sizeof(tmp), &conn_account, folder);
   (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
@@ -130,8 +128,6 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   }
 
   (state->entrylen)++;
-
-  FREE(&mx.mbox);
 }
 
 /**
