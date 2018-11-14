@@ -606,56 +606,8 @@ int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbo
     url_free(&url);
     FREE(&c);
   }
-  /* old PINE-compatibility code */
   else
-  {
-    url_free(&url);
-    FREE(&c);
-    char tmp[128];
-    if (sscanf(path, "{%127[^}]}", tmp) != 1)
-      return -1;
-
-    c = strchr(path, '}');
-    if (!c)
-      return -1;
-    else
-    {
-      /* walk past closing '}' */
-      mutt_str_strfcpy(mailbox, c + 1, mailboxlen);
-    }
-
-    c = strrchr(tmp, '@');
-    if (c)
-    {
-      *c = '\0';
-      mutt_str_strfcpy(account->user, tmp, sizeof(account->user));
-      mutt_str_strfcpy(tmp, c + 1, sizeof(tmp));
-      account->flags |= MUTT_ACCT_USER;
-    }
-
-    const int n = sscanf(tmp, "%127[^:/]%127s", account->host, tmp);
-    if (n < 1)
-    {
-      mutt_debug(1, "NULL host in %s\n", path);
-      return -1;
-    }
-
-    if (n > 1)
-    {
-      if (sscanf(tmp, ":%hu%127s", &(account->port), tmp) >= 1)
-        account->flags |= MUTT_ACCT_PORT;
-      if (sscanf(tmp, "/%s", tmp) == 1)
-      {
-        if (mutt_str_startswith(tmp, "ssl", CASE_MATCH))
-          account->flags |= MUTT_ACCT_SSL;
-        else
-        {
-          mutt_debug(1, "Unknown connection type in %s\n", path);
-          return -1;
-        }
-      }
-    }
-  }
+    return -1;
 
   if ((account->flags & MUTT_ACCT_SSL) && !(account->flags & MUTT_ACCT_PORT))
     account->port = ImapsPort;
