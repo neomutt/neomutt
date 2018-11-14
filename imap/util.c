@@ -381,18 +381,16 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path
   struct Url url;
   char cachepath[PATH_MAX];
   char mbox[PATH_MAX];
-  char buf[PATH_MAX];
 
   if (path)
     imap_cachepath(adata, path, mbox, sizeof(mbox));
-  else
+  else if (adata->mailbox)
   {
-    if (!adata->mailbox ||
-        imap_parse_path2(adata->mailbox->path, NULL, buf, sizeof(buf)) < 0)
-      return NULL;
-
-    imap_cachepath(adata, buf, mbox, sizeof(mbox));
+    struct ImapMailboxData *mdata = imap_mdata_get(adata->mailbox);
+    imap_cachepath(adata, mdata->name, mbox, sizeof(mbox));
   }
+  else
+    return NULL;
 
   if (strstr(mbox, "/../") || (strcmp(mbox, "..") == 0) || (strncmp(mbox, "../", 3) == 0))
     return NULL;
