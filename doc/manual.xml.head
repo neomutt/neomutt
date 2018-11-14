@@ -7306,6 +7306,16 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
+                <entry>~I <emphasis>QUERY</emphasis></entry>
+                <entry>
+                  messages whose <quote>Message-ID</quote> field is included in
+                  the results returned from en external search program, when the program
+                  is run with <emphasis>QUERY</emphasis> as its argument.
+                  This is explained in greater detail in the variable reference entry
+                  <xref linkend="external-search-command"/>,
+                </entry>
+              </row>
+              <row>
                 <entry>~k</entry>
                 <entry>
                   messages which contain PGP key material

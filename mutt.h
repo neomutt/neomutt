@@ -144,6 +144,7 @@ enum MuttMisc
   MUTT_UNREFERENCED,    ///< Message is unreferenced in the thread
   MUTT_BROKEN,          ///< Message is part of a broken thread
   MUTT_ID,              ///< Pattern matches email's Message-Id
+  MUTT_ID_EXTERNAL,     ///< Message-Id is among results from an external query
   MUTT_BODY,            ///< Pattern matches email's body
   MUTT_HEADER,          ///< Pattern matches email's header
   MUTT_HORMEL,          ///< Pattern matches email's spam score
