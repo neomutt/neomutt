@@ -347,6 +347,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 
 /* util.c */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m);
+struct ImapMailboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);

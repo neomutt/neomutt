@@ -770,7 +770,6 @@ static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 {
   char *value = NULL;
-  struct ImapMbox mx;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
   unsigned int litlen;
@@ -867,24 +866,11 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     if (np->m->magic != MUTT_IMAP)
       continue;
 
-    if (imap_parse_path(np->m->path, &mx) < 0)
+    struct ImapAccountData *m_adata = imap_adata_get(np->m);
+    if (imap_account_match(&adata->conn_account, &m_adata->conn_account))
     {
-      mutt_debug(1, "Error parsing mailbox %s, skipping\n", np->m->path);
-      continue;
-    }
-
-    if (imap_account_match(&adata->conn->account, &mx.account))
-    {
-      if (mx.mbox)
-      {
-        value = mutt_str_strdup(mx.mbox);
-        imap_fix_path(adata, mx.mbox, value, mutt_str_strlen(value) + 1);
-        FREE(&mx.mbox);
-      }
-      else
-        value = mutt_str_strdup("INBOX");
-
-      if (value && (imap_mxcmp(mailbox, value) == 0))
+      struct ImapMailboxData *mdata = imap_mdata_get(np->m);
+      if (mdata && imap_mxcmp(mailbox, mdata->name) == 0)
       {
         mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
                    mailbox, olduv, oldun, status->unseen);
@@ -925,15 +911,9 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
              opened */
           status->uidnext = oldun;
         }
-
-        FREE(&value);
         return;
       }
-
-      FREE(&value);
     }
-
-    FREE(&mx.mbox);
   }
 }
 
