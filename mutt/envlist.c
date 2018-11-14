@@ -85,15 +85,14 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
 {
   char **envp = EnvList;
   char work[LONG_STRING];
-  int count, len;
-
-  len = mutt_str_strlen(name);
+  int count;
 
   /* Look for current slot to overwrite */
   count = 0;
   while (envp && *envp)
   {
-    if ((mutt_str_strncmp(name, *envp, len) == 0) && (*envp)[len] == '=')
+    size_t len = mutt_str_startswith(*envp, name, CASE_MATCH);
+    if ((len != 0) && (*envp)[len] == '=')
     {
       if (!overwrite)
         return false;
@@ -129,8 +128,7 @@ bool mutt_envlist_set(const char *name, const char *value, bool overwrite)
  */
 bool mutt_envlist_unset(const char *name)
 {
-  int len = mutt_str_strlen(name);
-  if (len == 0)
+  if (!name || !name[0])
     return false;
 
   char **envp = EnvList;
@@ -138,7 +136,8 @@ bool mutt_envlist_unset(const char *name)
   int count = 0;
   while (envp && *envp)
   {
-    if ((mutt_str_strncmp(name, *envp, len) == 0) && (*envp)[len] == '=')
+    size_t len = mutt_str_startswith(*envp, name, CASE_MATCH);
+    if ((len != 0) && (*envp)[len] == '=')
     {
       /* shuffle down */
       char **save = envp++;

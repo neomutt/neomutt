@@ -185,19 +185,15 @@ bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir)
 
   mutt_path_tidy(buf);
 
-  size_t len = mutt_str_strlen(homedir);
-  if ((len == 0) || (len >= buflen))
+  size_t len = mutt_str_startswith(buf, homedir, CASE_MATCH);
+  if (len == 0)
     return false;
 
-  char end = buf[len];
-  if ((end != '/') && (end != '\0'))
-    return false;
-
-  if (mutt_str_strncmp(buf, homedir, len) != 0)
+  if (buf[len] != '/' && buf[len] != '\0')
     return false;
 
   buf[0] = '~';
-  if (end == '\0')
+  if (buf[len] == '\0')
   {
     buf[1] = '\0';
     return true;

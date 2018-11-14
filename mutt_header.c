@@ -294,10 +294,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
     bool keep = true;
+    size_t plen;
 
-    if (fcc && (mutt_str_strncasecmp("fcc:", np->data, 4) == 0))
+    if (fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
     {
-      p = mutt_str_skip_email_wsp(np->data + 4);
+      p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         mutt_str_strfcpy(fcc, p, fcclen);
@@ -305,12 +306,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
       }
       keep = false;
     }
-    else if (mutt_str_strncasecmp("attach:", np->data, 7) == 0)
+    else if ((plen = mutt_str_startswith(np->data, "attach:", CASE_IGNORE)))
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
 
-      p = mutt_str_skip_email_wsp(np->data + 7);
+      p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         size_t l = 0;
@@ -346,9 +347,9 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
       keep = false;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (mutt_str_strncasecmp("pgp:", np->data, 4) == 0))
+             (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
     {
-      msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
+      msg->security = mutt_parse_crypt_hdr(np->data + plen, 0, APPLICATION_PGP);
       if (msg->security)
         msg->security |= APPLICATION_PGP;
       keep = false;

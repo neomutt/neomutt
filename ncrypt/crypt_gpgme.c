@@ -2378,14 +2378,15 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), tfp))
   {
-    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    if (plen != 0)
     {
-      if (MESSAGE(buf + 15))
+      if (MESSAGE(buf + plen))
       {
         enc = true;
         break;
       }
-      else if (SIGNED_MESSAGE(buf + 15))
+      else if (SIGNED_MESSAGE(buf + plen))
       {
         sgn = true;
         break;
@@ -2573,18 +2574,19 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
-    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    if (plen != 0)
     {
       clearsign = false;
 
-      if (MESSAGE(buf + 15))
+      if (MESSAGE(buf + plen))
         needpass = 1;
-      else if (SIGNED_MESSAGE(buf + 15))
+      else if (SIGNED_MESSAGE(buf + plen))
       {
         clearsign = true;
         needpass = 0;
       }
-      else if (PUBLIC_KEY_BLOCK(buf + 15))
+      else if (PUBLIC_KEY_BLOCK(buf + plen))
       {
         needpass = 0;
         pgp_keyblock = true;

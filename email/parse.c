@@ -181,9 +181,9 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   struct ParameterList parms;
   TAILQ_INIT(&parms);
 
-  if (mutt_str_strncasecmp("inline", s, 6) == 0)
+  if (mutt_str_startswith(s, "inline", CASE_IGNORE))
     ct->disposition = DISP_INLINE;
-  else if (mutt_str_strncasecmp("form-data", s, 9) == 0)
+  else if (mutt_str_startswith(s, "form-data", CASE_IGNORE))
     ct->disposition = DISP_FORM_DATA;
   else
     ct->disposition = DISP_ATTACH;
@@ -363,20 +363,20 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
  */
 int mutt_check_encoding(const char *c)
 {
-  if (mutt_str_strncasecmp("7bit", c, sizeof("7bit") - 1) == 0)
+  if (mutt_str_startswith(c, "7bit", CASE_IGNORE))
     return ENC_7BIT;
-  else if (mutt_str_strncasecmp("8bit", c, sizeof("8bit") - 1) == 0)
+  else if (mutt_str_startswith(c, "8bit", CASE_IGNORE))
     return ENC_8BIT;
-  else if (mutt_str_strncasecmp("binary", c, sizeof("binary") - 1) == 0)
+  else if (mutt_str_startswith(c, "binary", CASE_IGNORE))
     return ENC_BINARY;
-  else if (mutt_str_strncasecmp("quoted-printable", c, sizeof("quoted-printable") - 1) == 0)
+  else if (mutt_str_startswith(c, "quoted-printable", CASE_IGNORE))
     return ENC_QUOTED_PRINTABLE;
-  else if (mutt_str_strncasecmp("base64", c, sizeof("base64") - 1) == 0)
+  else if (mutt_str_startswith(c, "base64", CASE_IGNORE))
     return ENC_BASE64;
-  else if (mutt_str_strncasecmp("x-uuencode", c, sizeof("x-uuencode") - 1) == 0)
+  else if (mutt_str_startswith(c, "x-uuencode", CASE_IGNORE))
     return ENC_UUENCODED;
 #ifdef SUN_ATTACHMENT
-  else if (mutt_str_strncasecmp("uuencode", c, sizeof("uuencode") - 1) == 0)
+  else if (mutt_str_startswith(c, "uuencode", CASE_IGNORE))
     return ENC_UUENCODED;
 #endif
   else
@@ -529,50 +529,54 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         env->cc = mutt_addr_parse_list(env->cc, p);
         matched = true;
       }
-      else if (mutt_str_strncasecmp(line + 1, "ontent-", 7) == 0)
+      else
       {
-        if (mutt_str_strcasecmp(line + 8, "type") == 0)
+        size_t plen = mutt_str_startswith(line + 1, "ontent-", CASE_IGNORE);
+        if (plen != 0)
         {
-          if (e)
-            mutt_parse_content_type(p, e->content);
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 8, "language") == 0)
-        {
-          if (e)
-            parse_content_language(p, e->content);
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 8, "transfer-encoding") == 0)
-        {
-          if (e)
-            e->content->encoding = mutt_check_encoding(p);
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 8, "length") == 0)
-        {
-          if (e)
+          if (mutt_str_strcasecmp(line + 1 + plen, "type") == 0)
           {
-            e->content->length = atol(p);
-            if (e->content->length < 0)
-              e->content->length = -1;
+            if (e)
+              mutt_parse_content_type(p, e->content);
+            matched = true;
           }
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 8, "description") == 0)
-        {
-          if (e)
+          else if (mutt_str_strcasecmp(line + 1 + plen, "language") == 0)
           {
-            mutt_str_replace(&e->content->description, p);
-            rfc2047_decode(&e->content->description);
+            if (e)
+              parse_content_language(p, e->content);
+            matched = true;
           }
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 8, "disposition") == 0)
-        {
-          if (e)
-            parse_content_disposition(p, e->content);
-          matched = true;
+          else if (mutt_str_strcasecmp(line + 1 + plen, "transfer-encoding") == 0)
+          {
+            if (e)
+              e->content->encoding = mutt_check_encoding(p);
+            matched = true;
+          }
+          else if (mutt_str_strcasecmp(line + 1 + plen, "length") == 0)
+          {
+            if (e)
+            {
+              e->content->length = atol(p);
+              if (e->content->length < 0)
+                e->content->length = -1;
+            }
+            matched = true;
+          }
+          else if (mutt_str_strcasecmp(line + 1 + plen, "description") == 0)
+          {
+            if (e)
+            {
+              mutt_str_replace(&e->content->description, p);
+              rfc2047_decode(&e->content->description);
+            }
+            matched = true;
+          }
+          else if (mutt_str_strcasecmp(line + 1 + plen, "disposition") == 0)
+          {
+            if (e)
+              parse_content_disposition(p, e->content);
+            matched = true;
+          }
         }
       }
       break;
@@ -686,19 +690,23 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
         env->message_id = mutt_extract_message_id(p, NULL);
         matched = true;
       }
-      else if (mutt_str_strncasecmp(line + 1, "ail-", 4) == 0)
+      else
       {
-        if (mutt_str_strcasecmp(line + 5, "reply-to") == 0)
+        size_t plen = mutt_str_startswith(line + 1, "ail-", CASE_IGNORE);
+        if (plen != 0)
         {
-          /* override the Reply-To: field */
-          mutt_addr_free(&env->reply_to);
-          env->reply_to = mutt_addr_parse_list(env->reply_to, p);
-          matched = true;
-        }
-        else if (mutt_str_strcasecmp(line + 5, "followup-to") == 0)
-        {
-          env->mail_followup_to = mutt_addr_parse_list(env->mail_followup_to, p);
-          matched = true;
+          if (mutt_str_strcasecmp(line + 1 + plen, "reply-to") == 0)
+          {
+            /* override the Reply-To: field */
+            mutt_addr_free(&env->reply_to);
+            env->reply_to = mutt_addr_parse_list(env->reply_to, p);
+            matched = true;
+          }
+          else if (mutt_str_strcasecmp(line + 1 + plen, "followup-to") == 0)
+          {
+            env->mail_followup_to = mutt_addr_parse_list(env->mail_followup_to, p);
+            matched = true;
+          }
         }
       }
       break;
@@ -998,7 +1006,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
       time_t t;
 
       /* some bogus MTAs will quote the original "From " line */
-      if (mutt_str_strncmp(">From ", line, 6) == 0)
+      if (mutt_str_startswith(line, ">From ", CASE_MATCH))
         continue; /* just ignore */
       else if (is_from(line, return_path, sizeof(return_path), &t))
       {
@@ -1151,32 +1159,33 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       break;
     }
 
-    if (mutt_str_strncasecmp("content-", line, 8) == 0)
+    size_t plen = mutt_str_startswith(line, "content-", CASE_IGNORE);
+    if (plen != 0)
     {
-      if (mutt_str_strcasecmp("type", line + 8) == 0)
+      if (mutt_str_strcasecmp("type", line + plen) == 0)
         mutt_parse_content_type(c, p);
-      else if (mutt_str_strcasecmp("language", line + 8) == 0)
+      else if (mutt_str_strcasecmp("language", line + plen) == 0)
         parse_content_language(c, p);
-      else if (mutt_str_strcasecmp("transfer-encoding", line + 8) == 0)
+      else if (mutt_str_strcasecmp("transfer-encoding", line + plen) == 0)
         p->encoding = mutt_check_encoding(c);
-      else if (mutt_str_strcasecmp("disposition", line + 8) == 0)
+      else if (mutt_str_strcasecmp("disposition", line + plen) == 0)
         parse_content_disposition(c, p);
-      else if (mutt_str_strcasecmp("description", line + 8) == 0)
+      else if (mutt_str_strcasecmp("description", line + plen) == 0)
       {
         mutt_str_replace(&p->description, c);
         rfc2047_decode(&p->description);
       }
     }
 #ifdef SUN_ATTACHMENT
-    else if (mutt_str_strncasecmp("x-sun-", line, 6) == 0)
+    else if ((plen = mutt_str_startswith(line, "x-sun-", CASE_IGNORE)))
     {
-      if (mutt_str_strcasecmp("data-type", line + 6) == 0)
+      if (mutt_str_strcasecmp("data-type", line + plen) == 0)
         mutt_parse_content_type(c, p);
-      else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
+      else if (mutt_str_strcasecmp("encoding-info", line + plen) == 0)
         p->encoding = mutt_check_encoding(c);
-      else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
+      else if (mutt_str_strcasecmp("content-lines", line + plen) == 0)
         mutt_param_set(&p->parameter, "content-lines", c);
-      else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
+      else if (mutt_str_strcasecmp("data-description", line + plen) == 0)
       {
         mutt_str_replace(&p->description, c);
         rfc2047_decode(&p->description);
@@ -1290,7 +1299,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
     const size_t crlf = ((len > 1) && (buffer[len - 2] == '\r')) ? 1 : 0;
 
     if ((buffer[0] == '-') && (buffer[1] == '-') &&
-        (mutt_str_strncmp(buffer + 2, boundary, blen) == 0))
+        mutt_str_startswith(buffer + 2, boundary, CASE_MATCH))
     {
       if (last)
       {

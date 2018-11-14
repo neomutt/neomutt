@@ -596,14 +596,12 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
-  len = mutt_str_strlen(Folder);
-  if ((mutt_str_strncmp(buf, Folder, len) == 0) && buf[len] == '/')
+  if ((len = mutt_str_startswith(buf, Folder, CASE_MATCH)) && buf[len] == '/')
   {
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((mutt_str_strncmp(buf, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
-           buf[len] == '/')
+  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && buf[len] == '/')
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);

@@ -110,35 +110,35 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
         ignore = true;
-        if (!from && (mutt_str_strncmp("From ", buf, 5) == 0))
+        if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
         {
           if ((flags & CH_FROM) == 0)
             continue;
           from = true;
         }
-        else if (flags & (CH_NOQFROM) && (mutt_str_strncasecmp(">From ", buf, 6) == 0))
+        else if ((flags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
           continue;
 
         else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
           break; /* end of header */
 
         if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
-             (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+            (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
+             mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
         {
           continue;
         }
         if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
-             (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+            (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
+             mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
         {
           continue;
         }
-        if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
+        if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
           continue;
-        if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
+        if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
           continue;
-        if (flags & CH_UPDATE_LABEL && (mutt_str_strncasecmp("X-Label:", buf, 8) == 0))
+        if (flags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
           continue;
 
         ignore = false;
@@ -218,7 +218,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
       ignore = true;
       this_is_from = false;
-      if (!from && (mutt_str_strncmp("From ", buf, 5) == 0))
+      if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
       {
         if ((flags & CH_FROM) == 0)
           continue;
@@ -234,34 +234,38 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         continue;
       }
-      if ((flags & CH_WEED_DELIVERED) &&
-          (mutt_str_strncasecmp("Delivered-To:", buf, 13) == 0))
+      if ((flags & CH_WEED_DELIVERED) && mutt_str_startswith(buf, "Delivered-To:", CASE_IGNORE))
       {
         continue;
       }
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-          ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
-           (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+          (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
+           mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
       {
         continue;
       }
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-          ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
-           (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+          (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
+           mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
       {
         continue;
       }
-      if ((flags & CH_MIME) &&
-          (((mutt_str_strncasecmp("content-", buf, 8) == 0) &&
-            ((mutt_str_strncasecmp("transfer-encoding:", buf + 8, 18) == 0) ||
-             (mutt_str_strncasecmp("type:", buf + 8, 5) == 0))) ||
-           (mutt_str_strncasecmp("mime-version:", buf, 13) == 0)))
+      if ((flags & CH_MIME))
       {
-        continue;
+        if (mutt_str_startswith(buf, "mime-version:", CASE_IGNORE))
+        {
+          continue;
+        }
+        size_t plen = mutt_str_startswith(buf, "content-", CASE_IGNORE);
+        if ((plen != 0) && (mutt_str_startswith(buf + plen, "transfer-encoding:", CASE_IGNORE) ||
+                            mutt_str_startswith(buf + plen, "type:", CASE_IGNORE)))
+        {
+          continue;
+        }
       }
-      if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
+      if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
         continue;
-      if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
+      if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -272,7 +276,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
           ++x;
-          if (mutt_str_strncasecmp(buf, np->data, mutt_str_strlen(np->data)) == 0)
+          if (mutt_str_startswith(buf, np->data, CASE_IGNORE))
           {
             mutt_debug(2, "Reorder: %s matches %s", np->data, buf);
             break;
@@ -1016,59 +1020,51 @@ static int address_header_decode(char **h)
   {
     case 'b':
     {
-      if (mutt_str_strncasecmp(s, "bcc:", 4) != 0)
+      if (!(l = mutt_str_startswith(s, "bcc:", CASE_IGNORE)))
         return 0;
-      l = 4;
       break;
     }
     case 'c':
     {
-      if (mutt_str_strncasecmp(s, "cc:", 3) != 0)
+      if (!(l = mutt_str_startswith(s, "cc:", CASE_IGNORE)))
         return 0;
-      l = 3;
       break;
     }
     case 'f':
     {
-      if (mutt_str_strncasecmp(s, "from:", 5) != 0)
+      if (!(l = mutt_str_startswith(s, "from:", CASE_IGNORE)))
         return 0;
-      l = 5;
       break;
     }
     case 'm':
     {
-      if (mutt_str_strncasecmp(s, "mail-followup-to:", 17) != 0)
+      if (!(l = mutt_str_startswith(s, "mail-followup-to:", CASE_IGNORE)))
         return 0;
-      l = 17;
       break;
     }
     case 'r':
     {
-      if (mutt_str_strncasecmp(s, "return-path:", 12) == 0)
+      if ((l = mutt_str_startswith(s, "return-path:", CASE_IGNORE)))
       {
-        l = 12;
         rp = true;
         break;
       }
-      else if (mutt_str_strncasecmp(s, "reply-to:", 9) == 0)
+      else if ((l = mutt_str_startswith(s, "reply-to:", CASE_IGNORE)))
       {
-        l = 9;
         break;
       }
       return 0;
     }
     case 's':
     {
-      if (mutt_str_strncasecmp(s, "sender:", 7) != 0)
+      if (!(l = mutt_str_startswith(s, "sender:", CASE_IGNORE)))
         return 0;
-      l = 7;
       break;
     }
     case 't':
     {
-      if (mutt_str_strncasecmp(s, "to:", 3) != 0)
+      if (!(l = mutt_str_startswith(s, "to:", CASE_IGNORE)))
         return 0;
-      l = 3;
       break;
     }
     default:

@@ -486,11 +486,9 @@ static void mh_update_sequences(struct Mailbox *m)
   {
     while ((buf = mutt_file_read_line(buf, &s, ofp, &l, 0)))
     {
-      if (mutt_str_strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0)
-        continue;
-      if (mutt_str_strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0)
-        continue;
-      if (mutt_str_strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0)
+      if (mutt_str_startswith(buf, seq_unseen, CASE_MATCH) ||
+          mutt_str_startswith(buf, seq_flagged, CASE_MATCH) ||
+          mutt_str_startswith(buf, seq_replied, CASE_MATCH))
         continue;
 
       fprintf(nfp, "%s\n", buf);
@@ -1916,7 +1914,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
   e->replied = false;
 
   char *p = strrchr(path, ':');
-  if (p && (mutt_str_strncmp(p + 1, "2,", 2) == 0))
+  if (p && mutt_str_startswith(p + 1, "2,", CASE_MATCH))
   {
     p += 3;
 

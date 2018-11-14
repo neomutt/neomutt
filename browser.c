@@ -809,7 +809,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       struct NntpMboxData *mdata = adata->groups_list[i];
       if (!mdata)
         continue;
-      if (prefix && *prefix && (strncmp(prefix, mdata->group, strlen(prefix)) != 0))
+      if (prefix && *prefix && !mutt_str_startswith(mdata->group, prefix, CASE_MATCH))
         continue;
       if (Mask && Mask->regex &&
           !((regexec(Mask->regex, mdata->group, 0, NULL, 0) == 0) ^ Mask->not))
@@ -866,8 +866,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       if (mutt_str_strcmp(de->d_name, ".") == 0)
         continue; /* we don't need . */
 
-      if (prefix && *prefix &&
-          (mutt_str_strncmp(prefix, de->d_name, mutt_str_strlen(prefix)) != 0))
+      if (prefix && *prefix && !mutt_str_startswith(de->d_name, prefix, CASE_MATCH))
       {
         continue;
       }
@@ -1125,8 +1124,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
    * of OldLastDir (this occurs mostly when one hit "../"). It should also work
    * properly when the user is in examine_mailboxes-mode.
    */
-  int ldlen = mutt_str_strlen(LastDir);
-  if ((ldlen > 0) && (mutt_str_strncmp(LastDir, OldLastDir, ldlen) == 0))
+  if (mutt_str_startswith(OldLastDir, LastDir, CASE_MATCH))
   {
     char TargetDir[PATH_MAX] = "";
 
