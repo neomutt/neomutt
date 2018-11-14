@@ -2073,9 +2073,6 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   if (m->magic != MUTT_IMAP)
     return -1;
 
-  // NOTE(sileht): The goal is to use ImapMbox and imap_parse_path() only here
-  // So we can remove it at this end.
-
   if (!a->adata)
   {
     struct ConnAccount *conn_account = mutt_mem_calloc(1, sizeof(struct ConnAccount));

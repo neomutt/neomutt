@@ -673,12 +673,6 @@ int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbo
 
   return 0;
 }
-int imap_parse_path(const char *path, struct ImapMbox *mx)
-{
-  memset(&mx->account, 0, sizeof(mx->account));
-  mx->mbox = mutt_mem_calloc(1, sizeof(char) * LONG_STRING);
-  return imap_parse_path2(path, &mx->account, mx->mbox, sizeof(char) * LONG_STRING);
-}
 
 /**
  * imap_mxcmp - Compare mailbox names, giving priority to INBOX
@@ -963,25 +957,6 @@ char *imap_next_word(char *s)
 
   SKIPWS(s);
   return s;
-}
-
-/**
- * imap_qualify_path - Make an absolute IMAP folder target
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param mx     Imap mailbox
- * @param path   Path relative to the mailbox
- *
- * given ImapMbox and relative path.
- */
-void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path)
-{
-  struct Url url;
-
-  mutt_account_tourl(&mx->account, &url);
-  url.path = path;
-
-  url_tostring(&url, buf, buflen, 0);
 }
 
 /**
