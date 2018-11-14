@@ -723,15 +723,11 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
  */
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
-  char buf[PATH_MAX], mbox[PATH_MAX];
+  char buf[PATH_MAX];
 
-  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMailboxData *mdata = imap_mdata_get(m);
 
-  if (imap_parse_path2(path, NULL, buf, sizeof(buf)) < 0)
-    return -1;
-
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), buf);
-  snprintf(buf, sizeof(buf), "DELETE %s", mbox);
+  snprintf(buf, sizeof(buf), "DELETE %s", mdata->munge_name);
 
   if (imap_exec(m->account->adata, buf, 0) != 0)
     return -1;
