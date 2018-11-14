@@ -193,6 +193,7 @@ int imap_browse(char *path, struct BrowserState *state)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapList list;
+  struct ConnAccount conn_account;
   char buf[PATH_MAX];
   char mbox[PATH_MAX];
   char munged_mbox[PATH_MAX];
@@ -201,9 +202,8 @@ int imap_browse(char *path, struct BrowserState *state)
   char ctmp;
   bool showparents = false;
   bool save_lsub;
-  struct ImapMbox mx, mx_tmp;
 
-  if (imap_parse_path(path, &mx))
+  if (imap_parse_path2(path, &conn_account, buf, sizeof(buf)))
   {
     mutt_error(_("%s is an invalid IMAP path"), path);
     return -1;
@@ -219,27 +219,22 @@ int imap_browse(char *path, struct BrowserState *state)
   {
     if (np->m->magic != MUTT_IMAP)
       continue;
-    if (imap_parse_path(np->m->path, &mx_tmp) < 0)
-      continue;
 
+    adata = imap_adata_get(np->m);
     // Pick first mailbox connected on the same server
-    if (imap_account_match(&mx.account, &mx_tmp.account))
-    {
-      adata = imap_adata_get(np->m);
-      if (adata)
-        break;
-    }
+    if (imap_account_match(&adata->conn_account, &conn_account))
+      break;
+    adata = NULL;
   }
-  FREE(&mx_tmp.mbox);
   if (!adata)
     goto fail;
 
   mutt_message(_("Getting folder list..."));
 
   /* skip check for parents when at the root */
-  if (mx.mbox && mx.mbox[0] != '\0')
+  if (buf[0] != '\0')
   {
-    imap_fix_path(adata, mx.mbox, mbox, sizeof(mbox));
+    imap_fix_path(adata, buf, mbox, sizeof(mbox));
     n = mutt_str_strlen(mbox);
   }
   else
@@ -280,7 +275,7 @@ int imap_browse(char *path, struct BrowserState *state)
     if (mbox[n - 1] == list.delim)
     {
       showparents = true;
-      imap_qualify_path(buf, sizeof(buf), &mx, mbox);
+      imap_qualify_path2(buf, sizeof(buf), &conn_account, mbox);
       state->folder = mutt_str_strdup(buf);
       n--;
     }
@@ -313,7 +308,7 @@ int imap_browse(char *path, struct BrowserState *state)
         mbox[n++] = ctmp;
         ctmp = mbox[n];
         mbox[n] = '\0';
-        imap_qualify_path(buf, sizeof(buf), &mx, mbox);
+        imap_qualify_path2(buf, sizeof(buf), &conn_account, mbox);
         state->folder = mutt_str_strdup(buf);
       }
       mbox[n] = ctmp;
@@ -328,7 +323,7 @@ int imap_browse(char *path, struct BrowserState *state)
         add_folder(adata->delim, relpath, true, false, state, true);
       if (!state->folder)
       {
-        imap_qualify_path(buf, sizeof(buf), &mx, relpath);
+        imap_qualify_path2(buf, sizeof(buf), &conn_account, relpath);
         state->folder = mutt_str_strdup(buf);
       }
     }
@@ -337,7 +332,7 @@ int imap_browse(char *path, struct BrowserState *state)
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
   {
-    imap_qualify_path(buf, sizeof(buf), &mx, NULL);
+    imap_qualify_path2(buf, sizeof(buf), &conn_account, NULL);
     state->folder = mutt_str_strdup(buf);
   }
 
@@ -360,13 +355,11 @@ int imap_browse(char *path, struct BrowserState *state)
   if (save_lsub)
     ImapCheckSubscribed = true;
 
-  FREE(&mx.mbox);
   return 0;
 
 fail:
   if (save_lsub)
     ImapCheckSubscribed = true;
-  FREE(&mx.mbox);
   return -1;
 }
 
