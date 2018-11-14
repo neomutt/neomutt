@@ -2115,7 +2115,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 out:
   if (appendctx)
   {
-    mx_fastclose_mailbox(appendctx);
+    if (!close)
+      mx_fastclose_mailbox(appendctx);
     FREE(&appendctx);
   }
   return rc;
