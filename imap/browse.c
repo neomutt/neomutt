@@ -35,6 +35,7 @@
 #include <string.h>
 #include "imap/imap_private.h"
 #include "mutt/mutt.h"
+#include "email/url.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "account.h"
@@ -143,14 +144,11 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
                                   struct BrowserState *state, bool isparent)
 {
   struct ImapList list;
-  struct ImapMbox mx;
   int rc;
-
-  if (imap_parse_path(state->folder, &mx))
-  {
-    mutt_debug(2, "current folder %s makes no sense\n", state->folder);
-    return -1;
-  }
+  struct Url url;
+  char tmp[PATH_MAX];
+  mutt_str_strfcpy(tmp, state->folder, sizeof(tmp));
+  url_parse(&url, tmp);
 
   imap_cmd_start(adata, cmd);
   adata->cmdtype = IMAP_CT_LIST;
@@ -166,13 +164,12 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
       if (isparent)
         list.noselect = true;
       /* prune current folder from output */
-      if (isparent || !mutt_str_startswith(mx.mbox, list.name, CASE_MATCH))
+      if (isparent || !mutt_str_startswith(list.name, url.path, CASE_MATCH))
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
   adata->cmddata = NULL;
 
-  FREE(&mx.mbox);
   return (rc == IMAP_CMD_OK) ? 0 : -1;
 }
 
