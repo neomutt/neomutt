@@ -729,34 +729,39 @@ int imap_mxcmp(const char *mx1, const char *mx2)
  */
 void imap_pretty_mailbox(char *path, const char *folder)
 {
-  struct ImapMbox home, target;
+  struct ConnAccount target_conn_account, home_conn_account;
   struct Url url;
   char *delim = NULL;
   int tlen;
   int hlen = 0;
   bool home_match = false;
+  char target_mailbox[LONG_STRING];
+  char home_mailbox[LONG_STRING];
 
-  if (imap_parse_path(path, &target) < 0)
+  if (imap_parse_path2(path, &target_conn_account, target_mailbox, sizeof(target_mailbox)) < 0)
     return;
 
-  tlen = mutt_str_strlen(target.mbox);
+  if (imap_path_probe(folder, NULL) != MUTT_IMAP)
+    goto fallback;
+
+  if (imap_parse_path2(folder, &home_conn_account, home_mailbox, sizeof(home_mailbox)) < 0)
+    goto fallback;
+
+  tlen = mutt_str_strlen(target_mailbox);
+  hlen = mutt_str_strlen(home_mailbox);
+
   /* check whether we can do '+' substitution */
-  if ((imap_path_probe(folder, NULL) == MUTT_IMAP) && !imap_parse_path(folder, &home))
+  if (tlen && mutt_account_match(&home_conn_account, &target_conn_account) &&
+      (mutt_str_strncmp(home_mailbox, target_mailbox, hlen) == 0))
   {
-    hlen = mutt_str_strlen(home.mbox);
-    if (tlen && mutt_account_match(&home.account, &target.account) &&
-        (hlen == 0 || mutt_str_startswith(target.mbox, home.mbox, CASE_MATCH)))
+    if (hlen == 0)
+      home_match = true;
+    else if (ImapDelimChars)
     {
-      if (hlen == 0)
-        home_match = true;
-      else if (ImapDelimChars)
-      {
-        for (delim = ImapDelimChars; *delim != '\0'; delim++)
-          if (target.mbox[hlen] == *delim)
-            home_match = true;
-      }
+      for (delim = ImapDelimChars; *delim != '\0'; delim++)
+        if (target_mailbox[hlen] == *delim)
+          home_match = true;
     }
-    FREE(&home.mbox);
   }
 
   /* do the '+' substitution */
@@ -766,20 +771,18 @@ void imap_pretty_mailbox(char *path, const char *folder)
     /* copy remaining path, skipping delimiter */
     if (hlen == 0)
       hlen = -1;
-    memcpy(path, target.mbox + hlen + 1, tlen - hlen - 1);
+    memcpy(path, target_mailbox + hlen + 1, tlen - hlen - 1);
     path[tlen - hlen - 1] = '\0';
-  }
-  else
-  {
-    mutt_account_tourl(&target.account, &url);
-    url.path = target.mbox;
-    /* FIXME: That hard-coded constant is bogus. But we need the actual
-     *   size of the buffer from mutt_pretty_mailbox. And these pretty
-     *   operations usually shrink the result. Still... */
-    url_tostring(&url, path, 1024, 0);
+    return;
   }
 
-  FREE(&target.mbox);
+fallback:
+  mutt_account_tourl(&target_conn_account, &url);
+  url.path = target_mailbox;
+  /* FIXME: That hard-coded constant is bogus. But we need the actual
+   *   size of the buffer from mutt_pretty_mailbox. And these pretty
+   *   operations usually shrink the result. Still... */
+  url_tostring(&url, path, 1024, 0);
 }
 
 /**
