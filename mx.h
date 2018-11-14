@@ -161,8 +161,8 @@ struct MxOps
    * @param ctx   Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
-   * @retval 0 Success
-   * @retval 1 Error
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*msg_open)        (struct Context *ctx, struct Message *msg, int msgno);
   /**
