@@ -374,7 +374,6 @@ fail:
 int imap_mailbox_create(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  char buf[PATH_MAX];
   char name[LONG_STRING];
   short n;
 
@@ -385,26 +384,24 @@ int imap_mailbox_create(const char *path)
     return -1;
   }
 
-  mutt_str_strfcpy(buf, name, sizeof(buf));
-
   /* append a delimiter if necessary */
-  n = mutt_str_strlen(buf);
-  if (n && (n < sizeof(buf) - 1) && (buf[n - 1] != adata->delim))
+  n = mutt_str_strlen(name);
+  if (n && (n < sizeof(name) - 1) && (name[n - 1] != adata->delim))
   {
-    buf[n++] = adata->delim;
-    buf[n] = '\0';
+    name[n++] = adata->delim;
+    name[n] = '\0';
   }
 
-  if (mutt_get_field(_("Create mailbox: "), buf, sizeof(buf), MUTT_FILE) < 0)
+  if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_FILE) < 0)
     return -1;
 
-  if (mutt_str_strlen(buf) == 0)
+  if (mutt_str_strlen(name) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
     return -1;
   }
 
-  if (imap_create_mailbox(adata, buf) < 0)
+  if (imap_create_mailbox(adata, name) < 0)
     return -1;
 
   mutt_message(_("Mailbox created"));
