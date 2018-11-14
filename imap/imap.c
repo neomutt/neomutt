@@ -329,15 +329,13 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
 /**
  * imap_prepare_mailbox - Ensure we have a valid Mailbox
  * @param m                     Mailbox
- * @param mailbox               Buffer for tidied mailbox path
- * @param mailboxlen            Length of buffer
  * @retval  0 Success
  * @retval -1 Failure
  *
  * This method ensure we have a valid Mailbox object with the ImapAccountData
  * structure setuped and ready to use.
  */
-int imap_prepare_mailbox(struct Mailbox *m, char *mailbox, size_t mailboxlen)
+int imap_prepare_mailbox(struct Mailbox *m)
 {
   if (!m || !m->account)
     return -1;
@@ -357,12 +355,7 @@ int imap_prepare_mailbox(struct Mailbox *m, char *mailbox, size_t mailboxlen)
     mdata = imap_mdata_new(adata, url.path);
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;
-    mutt_str_strfcpy(mailbox, mdata->name, mailboxlen);
   }
-  else
-    mdata = m->mdata;
-
-  mutt_str_strfcpy(mailbox, mdata->name, mailboxlen);
 
   if (imap_login(adata) < 0)
     return -1;
@@ -1360,23 +1353,23 @@ int imap_check(struct ImapAccountData *adata, bool force)
 int imap_mailbox_check(struct Mailbox *m, bool check_stats)
 {
   struct ImapAccountData *adata = NULL;
-  char name[LONG_STRING];
+  struct ImapMailboxData *mdata = NULL;
   char command[LONG_STRING * 2];
-  char munged[LONG_STRING];
 
-  if (imap_prepare_mailbox(m, name, sizeof(name)))
+  if (imap_prepare_mailbox(m))
   {
     m->has_new = false;
     return -1;
   }
 
+  mdata = m->mdata;
   adata = m->account->adata;
 
   /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
    * IDLEd elsewhere.
    * adata->mailbox may be NULL for connections other than the current
    * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
-  if (adata->mbox_name && (imap_mxcmp(name, adata->mbox_name) == 0))
+  if (adata->mbox_name && (imap_mxcmp(mdata->name, adata->mbox_name) == 0))
   {
     m->has_new = false;
     return -1;
@@ -1389,16 +1382,15 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
     return -1;
   }
 
-  imap_munge_mbox_name(adata, munged, sizeof(munged), name);
   if (check_stats)
   {
     snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
+             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", mdata->munge_name);
   }
   else
   {
     snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
+             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", mdata->munge_name);
   }
 
   if (imap_exec(adata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) < 0)
@@ -2185,7 +2177,7 @@ static int imap_mbox_open(struct Context *ctx)
   int rc;
   const char *condstore = NULL;
 
-  rc = imap_prepare_mailbox(m, buf, sizeof(buf));
+  rc = imap_prepare_mailbox(m);
   if (rc < 0)
     return -1;
 
@@ -2194,6 +2186,7 @@ static int imap_mbox_open(struct Context *ctx)
 
   FREE(&(adata->mbox_name));
   adata->mbox_name = mutt_str_strdup(mdata->name);
+  // TODO(sileht): store qualifed path in mdata ?
   imap_qualify_path2(buf, sizeof(buf), &adata->conn_account, adata->mbox_name);
 
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
@@ -2424,29 +2417,29 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
   if (!m)
     return -1;
 
-  char mailbox[PATH_MAX];
   int rc;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  rc = imap_prepare_mailbox(m, mailbox, sizeof(mailbox));
+  rc = imap_prepare_mailbox(m);
   if (rc < 0)
     return -1;
 
   struct ImapAccountData *adata = m->account->adata;
+  struct ImapMailboxData *mdata = m->mdata;
 
-  rc = imap_access2(adata, mailbox);
+  rc = imap_access2(adata, mdata->name);
   if (rc == 0)
     return 0;
   if (rc == -1)
     return -1;
 
   char buf[PATH_MAX + 64];
-  snprintf(buf, sizeof(buf), _("Create %s?"), mailbox);
+  snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   if (Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
     return -1;
 
-  if (imap_create_mailbox(adata, mailbox) < 0)
+  if (imap_create_mailbox(adata, mdata->name) < 0)
     return -1;
 
   return 0;
