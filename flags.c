@@ -55,41 +55,43 @@
  */
 void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool bf, bool upd_ctx)
 {
-  if (!ctx || !e)
+  if (!ctx || !ctx->mailbox || !e)
     return;
 
+  struct Mailbox *m = ctx->mailbox;
+
   bool changed = e->changed;
-  int deleted = ctx->mailbox->msg_deleted;
+  int deleted = m->msg_deleted;
   int tagged = ctx->tagged;
-  int flagged = ctx->mailbox->msg_flagged;
+  int flagged = m->msg_flagged;
   int update = false;
 
-  if (ctx->mailbox->readonly && flag != MUTT_TAG)
+  if (m->readonly && flag != MUTT_TAG)
     return; /* don't modify anything if we are read-only */
 
   switch (flag)
   {
     case MUTT_DELETE:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
       {
-        if (!e->deleted && !ctx->mailbox->readonly && (!e->flagged || !FlagSafe))
+        if (!e->deleted && !m->readonly && (!e->flagged || !FlagSafe))
         {
           e->deleted = true;
           update = true;
           if (upd_ctx)
-            ctx->mailbox->msg_deleted++;
+            m->msg_deleted++;
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx && ctx->mailbox->magic == MUTT_IMAP)
+          if (ctx && m->magic == MUTT_IMAP)
           {
             e->changed = true;
             if (upd_ctx)
-              ctx->mailbox->changed = true;
+              m->changed = true;
           }
 #endif
         }
@@ -99,14 +101,14 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         e->deleted = false;
         update = true;
         if (upd_ctx)
-          ctx->mailbox->msg_deleted--;
+          m->msg_deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
-        if (ctx->mailbox->magic == MUTT_IMAP)
+        if (m->magic == MUTT_IMAP)
         {
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
 #endif
         /* If the user undeletes a message which is marked as
@@ -116,19 +118,19 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
          * is checked in specific code in the maildir folder
          * driver.
          */
-        if (ctx->mailbox->magic == MUTT_MAILDIR && upd_ctx && e->trash)
-          ctx->mailbox->changed = true;
+        if (m->magic == MUTT_MAILDIR && upd_ctx && e->trash)
+          m->changed = true;
       }
       break;
 
     case MUTT_PURGE:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_DELETE))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_DELETE))
         return;
 
       if (bf)
       {
-        if (!e->purge && !ctx->mailbox->readonly)
+        if (!e->purge && !m->readonly)
           e->purge = true;
       }
       else if (e->purge)
@@ -137,7 +139,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
 
     case MUTT_NEW:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -147,16 +149,16 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           update = true;
           e->old = false;
           if (upd_ctx)
-            ctx->mailbox->msg_new++;
+            m->msg_new++;
           if (e->read)
           {
             e->read = false;
             if (upd_ctx)
-              ctx->mailbox->msg_unread++;
+              m->msg_unread++;
           }
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
       }
       else if (!e->read)
@@ -164,19 +166,19 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         update = true;
         if (!e->old)
           if (upd_ctx)
-            ctx->mailbox->msg_new--;
+            m->msg_new--;
         e->read = true;
         if (upd_ctx)
-          ctx->mailbox->msg_unread--;
+          m->msg_unread--;
         e->changed = true;
         if (upd_ctx)
-          ctx->mailbox->changed = true;
+          m->changed = true;
       }
       break;
 
     case MUTT_OLD:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -187,10 +189,10 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           e->old = true;
           if (!e->read)
             if (upd_ctx)
-              ctx->mailbox->msg_new--;
+              m->msg_new--;
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
       }
       else if (e->old)
@@ -199,16 +201,16 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         e->old = false;
         if (!e->read)
           if (upd_ctx)
-            ctx->mailbox->msg_new++;
+            m->msg_new++;
         e->changed = true;
         if (upd_ctx)
-          ctx->mailbox->changed = true;
+          m->changed = true;
       }
       break;
 
     case MUTT_READ:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_SEEN))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_SEEN))
         return;
 
       if (bf)
@@ -218,13 +220,13 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           update = true;
           e->read = true;
           if (upd_ctx)
-            ctx->mailbox->msg_unread--;
+            m->msg_unread--;
           if (!e->old)
             if (upd_ctx)
-              ctx->mailbox->msg_new--;
+              m->msg_new--;
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
       }
       else if (e->read)
@@ -232,19 +234,19 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         update = true;
         e->read = false;
         if (upd_ctx)
-          ctx->mailbox->msg_unread++;
+          m->msg_unread++;
         if (!e->old)
           if (upd_ctx)
-            ctx->mailbox->msg_new++;
+            m->msg_new++;
         e->changed = true;
         if (upd_ctx)
-          ctx->mailbox->changed = true;
+          m->changed = true;
       }
       break;
 
     case MUTT_REPLIED:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)
@@ -257,14 +259,14 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           {
             e->read = true;
             if (upd_ctx)
-              ctx->mailbox->msg_unread--;
+              m->msg_unread--;
             if (!e->old)
               if (upd_ctx)
-                ctx->mailbox->msg_new--;
+                m->msg_new--;
           }
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
       }
       else if (e->replied)
@@ -273,13 +275,13 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         e->replied = false;
         e->changed = true;
         if (upd_ctx)
-          ctx->mailbox->changed = true;
+          m->changed = true;
       }
       break;
 
     case MUTT_FLAG:
 
-      if (!mutt_bit_isset(ctx->mailbox->rights, MUTT_ACL_WRITE))
+      if (!mutt_bit_isset(m->rights, MUTT_ACL_WRITE))
         return;
 
       if (bf)
@@ -289,10 +291,10 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
           update = true;
           e->flagged = bf;
           if (upd_ctx)
-            ctx->mailbox->msg_flagged++;
+            m->msg_flagged++;
           e->changed = true;
           if (upd_ctx)
-            ctx->mailbox->changed = true;
+            m->changed = true;
         }
       }
       else if (e->flagged)
@@ -300,10 +302,10 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
         update = true;
         e->flagged = false;
         if (upd_ctx)
-          ctx->mailbox->msg_flagged--;
+          m->msg_flagged--;
         e->changed = true;
         if (upd_ctx)
-          ctx->mailbox->changed = true;
+          m->changed = true;
       }
       break;
 
@@ -340,8 +342,8 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
    * search results so that any future search will match the current status
    * of this message and not what it was at the time it was last searched.
    */
-  if (e->searched && (changed != e->changed || deleted != ctx->mailbox->msg_deleted ||
-                      tagged != ctx->tagged || flagged != ctx->mailbox->msg_flagged))
+  if (e->searched && (changed != e->changed || deleted != m->msg_deleted ||
+                      tagged != ctx->tagged || flagged != m->msg_flagged))
   {
     e->searched = false;
   }

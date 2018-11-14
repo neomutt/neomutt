@@ -1595,7 +1595,12 @@ char *nm_email_get_folder(struct Email *e)
  */
 int nm_read_entire_thread(struct Context *ctx, struct Email *e)
 {
-  struct NmMboxData *mdata = nm_mdata_get(ctx->mailbox);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return -1;
 
@@ -1604,13 +1609,12 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   notmuch_message_t *msg = NULL;
   int rc = -1;
 
-  if (!(db = nm_db_get(ctx->mailbox, false)) || !(msg = get_nm_message(db, e)))
+  if (!(db = nm_db_get(m, false)) || !(msg = get_nm_message(db, e)))
     goto done;
 
-  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n",
-             ctx->mailbox->msg_count);
+  mutt_debug(1, "nm: reading entire-thread messages...[current count=%d]\n", m->msg_count);
 
-  progress_reset(ctx->mailbox);
+  progress_reset(m);
   const char *id = notmuch_message_get_thread_id(msg);
   if (!id)
     goto done;
@@ -1626,25 +1630,25 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
-  read_threads_query(ctx->mailbox, q, true, 0);
-  ctx->mailbox->mtime.tv_sec = time(NULL);
-  ctx->mailbox->mtime.tv_nsec = 0;
+  read_threads_query(m, q, true, 0);
+  m->mtime.tv_sec = time(NULL);
+  m->mtime.tv_nsec = 0;
   rc = 0;
 
-  if (ctx->mailbox->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx, ctx->mailbox->msg_count - mdata->oldmsgcount);
+  if (m->msg_count > mdata->oldmsgcount)
+    mx_update_context(ctx, m->msg_count - mdata->oldmsgcount);
 done:
   if (q)
     notmuch_query_destroy(q);
-  if (!nm_db_is_longrun(ctx->mailbox))
-    nm_db_release(ctx->mailbox);
+  if (!nm_db_is_longrun(m))
+    nm_db_release(m);
 
-  if (ctx->mailbox->msg_count == mdata->oldmsgcount)
+  if (m->msg_count == mdata->oldmsgcount)
     mutt_message(_("No more messages in the thread"));
 
   mdata->oldmsgcount = 0;
   mutt_debug(1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
-             rc, ctx->mailbox->msg_count);
+             rc, m->msg_count);
   return rc;
 }
 
@@ -2127,57 +2131,61 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
  */
 static int nm_mbox_open(struct Context *ctx)
 {
-  int rc = -1;
-
-  if (init_mailbox(ctx->mailbox) != 0)
+  if (!ctx || !ctx->mailbox)
     return -1;
 
-  struct NmMboxData *mdata = nm_mdata_get(ctx->mailbox);
+  struct Mailbox *m = ctx->mailbox;
+
+  int rc = -1;
+
+  if (init_mailbox(m) != 0)
+    return -1;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return -1;
 
-  mutt_debug(1, "nm: reading messages...[current count=%d]\n", ctx->mailbox->msg_count);
+  mutt_debug(1, "nm: reading messages...[current count=%d]\n", m->msg_count);
 
-  progress_reset(ctx->mailbox);
+  progress_reset(m);
 
-  if (!ctx->mailbox->hdrs)
+  if (!m->hdrs)
   {
     /* Allocate some memory to get started */
-    ctx->mailbox->hdrmax = ctx->mailbox->msg_count;
-    ctx->mailbox->msg_count = 0;
-    ctx->mailbox->vcount = 0;
-    mx_alloc_memory(ctx->mailbox);
+    m->hdrmax = m->msg_count;
+    m->msg_count = 0;
+    m->vcount = 0;
+    mx_alloc_memory(m);
   }
 
-  notmuch_query_t *q = get_query(ctx->mailbox, false);
+  notmuch_query_t *q = get_query(m, false);
   if (q)
   {
     rc = 0;
     switch (mdata->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
-        if (!read_mesgs_query(ctx->mailbox, q, false))
+        if (!read_mesgs_query(m, q, false))
           rc = -2;
         break;
       case NM_QUERY_TYPE_THREADS:
-        if (!read_threads_query(ctx->mailbox, q, false, get_limit(mdata)))
+        if (!read_threads_query(m, q, false, get_limit(mdata)))
           rc = -2;
         break;
     }
     notmuch_query_destroy(q);
   }
 
-  if (!nm_db_is_longrun(ctx->mailbox))
-    nm_db_release(ctx->mailbox);
+  if (!nm_db_is_longrun(m))
+    nm_db_release(m);
 
-  ctx->mailbox->mtime.tv_sec = time(NULL);
-  ctx->mailbox->mtime.tv_nsec = 0;
+  m->mtime.tv_sec = time(NULL);
+  m->mtime.tv_nsec = 0;
 
-  mx_update_context(ctx, ctx->mailbox->msg_count);
+  mx_update_context(ctx, m->msg_count);
   mdata->oldmsgcount = 0;
 
-  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc,
-             ctx->mailbox->msg_count);
+  mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);
   return rc;
 }
 
@@ -2193,33 +2201,37 @@ static int nm_mbox_open(struct Context *ctx)
  */
 static int nm_mbox_check(struct Context *ctx, int *index_hint)
 {
-  struct NmMboxData *mdata = nm_mdata_get(ctx->mailbox);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
-  if (!mdata || (nm_db_get_mtime(ctx->mailbox, &mtime) != 0))
+  if (!mdata || (nm_db_get_mtime(m, &mtime) != 0))
     return -1;
 
   int new_flags = 0;
   bool occult = false;
 
-  if (ctx->mailbox->mtime.tv_sec >= mtime)
+  if (m->mtime.tv_sec >= mtime)
   {
-    mutt_debug(2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime,
-               ctx->mailbox->mtime);
+    mutt_debug(2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime, m->mtime);
     return 0;
   }
 
-  mutt_debug(1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, ctx->mailbox->mtime);
+  mutt_debug(1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, m->mtime);
 
-  notmuch_query_t *q = get_query(ctx->mailbox, false);
+  notmuch_query_t *q = get_query(m, false);
   if (!q)
     goto done;
 
-  mutt_debug(1, "nm: start checking (count=%d)\n", ctx->mailbox->msg_count);
-  mdata->oldmsgcount = ctx->mailbox->msg_count;
+  mutt_debug(1, "nm: start checking (count=%d)\n", m->msg_count);
+  mdata->oldmsgcount = m->msg_count;
   mdata->noprogress = true;
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
-    ctx->mailbox->hdrs[i]->active = false;
+  for (int i = 0; i < m->msg_count; i++)
+    m->hdrs[i]->active = false;
 
   int limit = get_limit(mdata);
 
@@ -2240,14 +2252,14 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
     char old[PATH_MAX];
     const char *new = NULL;
 
-    notmuch_message_t *m = notmuch_messages_get(msgs);
-    struct Email *e = get_mutt_email(ctx->mailbox, m);
+    notmuch_message_t *msg = notmuch_messages_get(msgs);
+    struct Email *e = get_mutt_email(m, msg);
 
     if (!e)
     {
       /* new email */
-      append_message(ctx->mailbox, NULL, m, 0);
-      notmuch_message_destroy(m);
+      append_message(m, NULL, msg, 0);
+      notmuch_message_destroy(msg);
       continue;
     }
 
@@ -2257,7 +2269,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
     /* Check to see if the message has moved to a different subdirectory.
      * If so, update the associated filename.
      */
-    new = get_message_last_filename(m);
+    new = get_message_last_filename(msg);
     email_get_fullpath(e, old, sizeof(old));
 
     if (mutt_str_strcmp(old, new) != 0)
@@ -2274,40 +2286,39 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
       maildir_update_flags(ctx, e, &tmp);
     }
 
-    if (update_email_tags(e, m) == 0)
+    if (update_email_tags(e, msg) == 0)
       new_flags++;
 
-    notmuch_message_destroy(m);
+    notmuch_message_destroy(msg);
   }
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    if (!ctx->mailbox->hdrs[i]->active)
+    if (!m->hdrs[i]->active)
     {
       occult = true;
       break;
     }
   }
 
-  if (ctx->mailbox->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx, ctx->mailbox->msg_count - mdata->oldmsgcount);
+  if (m->msg_count > mdata->oldmsgcount)
+    mx_update_context(ctx, m->msg_count - mdata->oldmsgcount);
 done:
   if (q)
     notmuch_query_destroy(q);
 
-  if (!nm_db_is_longrun(ctx->mailbox))
-    nm_db_release(ctx->mailbox);
+  if (!nm_db_is_longrun(m))
+    nm_db_release(m);
 
-  ctx->mailbox->mtime.tv_sec = time(NULL);
-  ctx->mailbox->mtime.tv_nsec = 0;
+  m->mtime.tv_sec = time(NULL);
+  m->mtime.tv_nsec = 0;
 
   mutt_debug(1, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
-             ctx->mailbox->msg_count, new_flags, occult);
+             m->msg_count, new_flags, occult);
 
   return occult ? MUTT_REOPENED :
-                  (ctx->mailbox->msg_count > mdata->oldmsgcount) ?
-                  MUTT_NEW_MAIL :
-                  new_flags ? MUTT_FLAGS : 0;
+                  (m->msg_count > mdata->oldmsgcount) ? MUTT_NEW_MAIL :
+                                                        new_flags ? MUTT_FLAGS : 0;
 }
 
 /**
@@ -2315,33 +2326,37 @@ done:
  */
 static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 {
-  struct NmMboxData *mdata = nm_mdata_get(ctx->mailbox);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
   if (!mdata)
     return -1;
 
   int rc = 0;
   struct Progress progress;
-  char *uri = mutt_str_strdup(ctx->mailbox->path);
+  char *uri = mutt_str_strdup(m->path);
   bool changed = false;
   char msgbuf[PATH_MAX + 64];
 
   mutt_debug(1, "nm: sync start ...\n");
 
-  if (!ctx->mailbox->quiet)
+  if (!m->quiet)
   {
     /* all is in this function so we don't use data->progress here */
-    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->mailbox->path);
-    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc,
-                       ctx->mailbox->msg_count);
+    snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), m->path);
+    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, m->msg_count);
   }
 
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
     char old[PATH_MAX], new[PATH_MAX];
-    struct Email *e = ctx->mailbox->hdrs[i];
+    struct Email *e = m->hdrs[i];
     struct NmEmailData *edata = e->edata;
 
-    if (!ctx->mailbox->quiet)
+    if (!m->quiet)
       mutt_progress_update(&progress, i, -1);
 
     *old = '\0';
@@ -2356,15 +2371,15 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     else
       email_get_fullpath(e, old, sizeof(old));
 
-    mutt_str_strfcpy(ctx->mailbox->path, edata->folder, sizeof(ctx->mailbox->path));
-    ctx->mailbox->magic = edata->magic;
+    mutt_str_strfcpy(m->path, edata->folder, sizeof(m->path));
+    m->magic = edata->magic;
 #ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);
 #endif
-    mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
-    ctx->mailbox->magic = MUTT_NOTMUCH;
+    mutt_str_strfcpy(m->path, uri, sizeof(m->path));
+    m->magic = MUTT_NOTMUCH;
 
     if (rc)
       break;
@@ -2374,24 +2389,24 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
 
     if (e->deleted || (strcmp(old, new) != 0))
     {
-      if (e->deleted && (remove_filename(ctx->mailbox, old) == 0))
+      if (e->deleted && (remove_filename(m, old) == 0))
         changed = true;
-      else if (*new &&*old && (rename_filename(ctx->mailbox, old, new, e) == 0))
+      else if (*new &&*old && (rename_filename(m, old, new, e) == 0))
         changed = true;
     }
 
     FREE(&edata->oldpath);
   }
 
-  mutt_str_strfcpy(ctx->mailbox->path, uri, sizeof(ctx->mailbox->path));
-  ctx->mailbox->magic = MUTT_NOTMUCH;
+  mutt_str_strfcpy(m->path, uri, sizeof(m->path));
+  m->magic = MUTT_NOTMUCH;
 
-  if (!nm_db_is_longrun(ctx->mailbox))
-    nm_db_release(ctx->mailbox);
+  if (!nm_db_is_longrun(m))
+    nm_db_release(m);
   if (changed)
   {
-    ctx->mailbox->mtime.tv_sec = time(NULL);
-    ctx->mailbox->mtime.tv_nsec = 0;
+    m->mtime.tv_sec = time(NULL);
+    m->mtime.tv_nsec = 0;
   }
 
   FREE(&uri);
@@ -2414,9 +2429,12 @@ static int nm_mbox_close(struct Context *ctx)
  */
 static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 {
-  if (!ctx || !msg)
-    return 1;
-  struct Email *e = ctx->mailbox->hdrs[msgno];
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs || !msg)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct Email *e = m->hdrs[msgno];
   char path[PATH_MAX];
   char *folder = nm_email_get_folder(e);
 
@@ -2424,20 +2442,22 @@ static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) &&
-      ((ctx->mailbox->magic == MUTT_MAILDIR) || (ctx->mailbox->magic == MUTT_NOTMUCH)))
+      ((m->magic == MUTT_MAILDIR) || (m->magic == MUTT_NOTMUCH)))
   {
     msg->fp = maildir_open_find_message(folder, e->path, NULL);
   }
 
-  mutt_debug(1, "%s\n", __func__);
-  return !msg->fp;
+  if (!msg->fp)
+    return -1;
+
+  return 0;
 }
 
 /**
  * nm_msg_commit - Implements MxOps::msg_commit()
  * @retval -1 Always
  */
-static int nm_msg_commit(struct Context *ctx, struct Message *msg)
+static int nm_msg_commit(struct Mailbox *m, struct Message *msg)
 {
   mutt_error(_("Can't write to virtual folder"));
   return -1;
@@ -2446,7 +2466,7 @@ static int nm_msg_commit(struct Context *ctx, struct Message *msg)
 /**
  * nm_msg_close - Implements MxOps::msg_close()
  */
-static int nm_msg_close(struct Context *ctx, struct Message *msg)
+static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 {
   if (!msg)
     return -1;
@@ -2457,7 +2477,7 @@ static int nm_msg_close(struct Context *ctx, struct Message *msg)
 /**
  * nm_tags_edit - Implements MxOps::tags_edit()
  */
-static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
   if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
@@ -2470,7 +2490,12 @@ static int nm_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t
  */
 static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
 {
-  struct NmMboxData *mdata = nm_mdata_get(ctx->mailbox);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
   if (!buf || !*buf || !mdata)
     return -1;
 
@@ -2478,7 +2503,7 @@ static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
   notmuch_message_t *msg = NULL;
   int rc = -1;
 
-  if (!(db = nm_db_get(ctx->mailbox, true)) || !(msg = get_nm_message(db, e)))
+  if (!(db = nm_db_get(m, true)) || !(msg = get_nm_message(db, e)))
     goto done;
 
   mutt_debug(1, "nm: tags modify: '%s'\n", buf);
@@ -2491,12 +2516,12 @@ static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
   rc = 0;
   e->changed = true;
 done:
-  if (!nm_db_is_longrun(ctx->mailbox))
-    nm_db_release(ctx->mailbox);
+  if (!nm_db_is_longrun(m))
+    nm_db_release(m);
   if (e->changed)
   {
-    ctx->mailbox->mtime.tv_sec = time(NULL);
-    ctx->mailbox->mtime.tv_nsec = 0;
+    m->mtime.tv_sec = time(NULL);
+    m->mtime.tv_nsec = 0;
   }
   mutt_debug(1, "nm: tags modify done [rc=%d]\n", rc);
   return rc;
@@ -2519,27 +2544,10 @@ enum MailboxType nm_path_probe(const char *path, const struct stat *st)
 /**
  * nm_path_canon - Canonicalise a mailbox path - Implements MxOps::path_canon()
  */
-int nm_path_canon(char *buf, size_t buflen, const char *folder)
+int nm_path_canon(char *buf, size_t buflen)
 {
   if (!buf)
     return -1;
-
-  if ((buf[0] == '+') || (buf[0] == '='))
-  {
-    if (!folder)
-      return -1;
-
-    size_t flen = mutt_str_strlen(folder);
-    if ((flen > 0) && (folder[flen - 1] != '/'))
-    {
-      buf[0] = '/';
-      mutt_str_inline_replace(buf, buflen, 0, folder);
-    }
-    else
-    {
-      mutt_str_inline_replace(buf, buflen, 1, folder);
-    }
-  }
 
   return 0;
 }

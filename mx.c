@@ -178,43 +178,48 @@ int mx_access(const char *path, int flags)
  */
 static int mx_open_mailbox_append(struct Context *ctx, int flags)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
   struct stat sb;
 
   ctx->append = true;
-  if ((ctx->mailbox->magic == MUTT_UNKNOWN) || (ctx->mailbox->magic == MUTT_MAILBOX_ERROR))
+  if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR))
   {
-    ctx->mailbox->magic = mx_path_probe(ctx->mailbox->path, NULL);
+    m->magic = mx_path_probe(m->path, NULL);
 
-    if (ctx->mailbox->magic == MUTT_UNKNOWN)
+    if (m->magic == MUTT_UNKNOWN)
     {
       if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
       {
-        ctx->mailbox->magic = MUTT_MAILBOX_ERROR;
+        m->magic = MUTT_MAILBOX_ERROR;
       }
       else
       {
-        mutt_error(_("%s is not a mailbox"), ctx->mailbox->path);
+        mutt_error(_("%s is not a mailbox"), m->path);
         return -1;
       }
     }
 
-    if (ctx->mailbox->magic == MUTT_MAILBOX_ERROR)
+    if (m->magic == MUTT_MAILBOX_ERROR)
     {
-      if (stat(ctx->mailbox->path, &sb) == -1)
+      if (stat(m->path, &sb) == -1)
       {
         if (errno == ENOENT)
         {
 #ifdef USE_COMPRESSED
-          if (mutt_comp_can_append(ctx->mailbox))
-            ctx->mailbox->magic = MUTT_COMPRESSED;
+          if (mutt_comp_can_append(m))
+            m->magic = MUTT_COMPRESSED;
           else
 #endif
-            ctx->mailbox->magic = MboxType;
+            m->magic = MboxType;
           flags |= MUTT_APPENDNEW;
         }
         else
         {
-          mutt_perror(ctx->mailbox->path);
+          mutt_perror(m->path);
           return -1;
         }
       }
@@ -222,13 +227,13 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
         return -1;
     }
 
-    ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
+    m->mx_ops = mx_get_ops(m->magic);
   }
 
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->mbox_open_append)
+  if (!m->mx_ops || !m->mx_ops->mbox_open_append)
     return -1;
 
-  return ctx->mailbox->mx_ops->mbox_open_append(ctx, flags);
+  return m->mx_ops->mbox_open_append(ctx->mailbox, flags);
 }
 
 /**
@@ -253,34 +258,38 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   struct Context *ctx = mutt_mem_calloc(1, sizeof(*ctx));
   ctx->mailbox = m;
-  if (!ctx->mailbox)
-    ctx->mailbox = mx_mbox_find2(path);
-
-  if (!ctx->mailbox)
+  if (!m)
   {
-    ctx->mailbox = mailbox_new();
-    ctx->mailbox->flags = MB_HIDDEN;
-    mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
-    /* int rc = */ mx_path_canon2(ctx->mailbox, Folder);
+    m = mx_mbox_find2(path);
+    ctx->mailbox = m;
   }
 
-  if (!ctx->mailbox->account)
-    ctx->mailbox->account = mx_ac_find(ctx->mailbox);
+  if (!m)
+  {
+    m = mailbox_new();
+    ctx->mailbox = m;
+    m->flags = MB_HIDDEN;
+    mutt_str_strfcpy(m->path, path, sizeof(m->path));
+    /* int rc = */ mx_path_canon2(m, Folder);
+  }
 
-  if (!ctx->mailbox->account)
+  if (!m->account)
+    m->account = mx_ac_find(m);
+
+  if (!m->account)
   {
     struct Account *a = account_create();
-    ctx->mailbox->account = a;
-    a->magic = ctx->mailbox->magic;
+    m->account = a;
+    a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
-    mx_ac_add(a, ctx->mailbox);
+    mx_ac_add(a, m);
   }
 
 #if 0
-  if (!realpath(ctx->mailbox->path, ctx->mailbox->realpath))
+  if (!realpath(m->path, m->realpath))
   {
-    mutt_str_strfcpy(ctx->mailbox->realpath, ctx->mailbox->path,
-                     sizeof(ctx->mailbox->realpath));
+    mutt_str_strfcpy(m->realpath, m->path,
+                     sizeof(m->realpath));
   }
 #endif
 
@@ -288,12 +297,12 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   ctx->collapsed = false;
 
   for (int i = 0; i < RIGHTSMAX; i++)
-    mutt_bit_set(ctx->mailbox->rights, i);
+    mutt_bit_set(m->rights, i);
 
   if (flags & MUTT_QUIET)
-    ctx->mailbox->quiet = true;
+    m->quiet = true;
   if (flags & MUTT_READONLY)
-    ctx->mailbox->readonly = true;
+    m->readonly = true;
   if (flags & MUTT_PEEK)
     ctx->peekonly = true;
 
@@ -308,18 +317,20 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     return ctx;
   }
 
-  ctx->mailbox->magic = mx_path_probe(path, NULL);
-  ctx->mailbox->mx_ops = mx_get_ops(ctx->mailbox->magic);
-
-  // if (ctx->mailbox->path[0] == '\0')
-  //   mutt_str_strfcpy(ctx->mailbox->path, path, sizeof(ctx->mailbox->path));
-
-  if ((ctx->mailbox->magic == MUTT_UNKNOWN) ||
-      (ctx->mailbox->magic == MUTT_MAILBOX_ERROR) || !ctx->mailbox->mx_ops)
+  if (!m->magic)
   {
-    if (ctx->mailbox->magic == MUTT_MAILBOX_ERROR)
+    m->magic = mx_path_probe(path, NULL);
+    m->mx_ops = mx_get_ops(m->magic);
+  }
+
+  // if (m->path[0] == '\0')
+  //   mutt_str_strfcpy(m->path, path, sizeof(m->path));
+
+  if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR) || !m->mx_ops)
+  {
+    if (m->magic == MUTT_MAILBOX_ERROR)
       mutt_perror(path);
-    else if (ctx->mailbox->magic == MUTT_UNKNOWN || !ctx->mailbox->mx_ops)
+    else if (m->magic == MUTT_UNKNOWN || !m->mx_ops)
       mutt_error(_("%s is not a mailbox"), path);
 
     mx_fastclose_mailbox(ctx);
@@ -327,21 +338,21 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     return NULL;
   }
 
-  if (!ctx->mailbox->account)
+  if (!m->account)
   {
     struct Account *a = account_create();
-    a->magic = ctx->mailbox->magic;
+    a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
 
-    if (mx_ac_add(a, ctx->mailbox) < 0)
+    if (mx_ac_add(a, m) < 0)
     {
       //error
-      mailbox_free(&ctx->mailbox);
+      mailbox_free(&m);
       return NULL;
     }
   }
 
-  mutt_make_label_hash(ctx->mailbox);
+  mutt_make_label_hash(m);
 
   /* if the user has a `push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
@@ -350,10 +361,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
    */
   OptForceRefresh = true;
 
-  if (!ctx->mailbox->quiet)
-    mutt_message(_("Reading %s..."), ctx->mailbox->path);
+  if (!m->quiet)
+    mutt_message(_("Reading %s..."), m->path);
 
-  int rc = ctx->mailbox->mx_ops->mbox_open(ctx);
+  int rc = m->mx_ops->mbox_open(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -365,10 +376,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
       OptNeedRescore = false;
       mutt_sort_headers(ctx, true);
     }
-    if (!ctx->mailbox->quiet)
+    if (!m->quiet)
       mutt_clear_error();
     if (rc == -2)
-      mutt_error(_("Reading from %s interrupted..."), ctx->mailbox->path);
+      mutt_error(_("Reading from %s interrupted..."), m->path);
   }
   else
   {
@@ -386,28 +397,30 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
  */
 void mx_fastclose_mailbox(struct Context *ctx)
 {
-  if (!ctx)
+  if (!ctx || !ctx->mailbox)
     return;
+
+  struct Mailbox *m = ctx->mailbox;
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
   if (!ctx->peekonly)
-    mutt_mailbox_setnotified(ctx->mailbox);
+    mutt_mailbox_setnotified(m);
 
-  if (ctx->mailbox->mx_ops)
-    ctx->mailbox->mx_ops->mbox_close(ctx);
+  if (m->mx_ops)
+    m->mx_ops->mbox_close(ctx);
 
-  mutt_hash_destroy(&ctx->mailbox->subj_hash);
-  mutt_hash_destroy(&ctx->mailbox->id_hash);
-  mutt_hash_destroy(&ctx->mailbox->label_hash);
-  if (ctx->mailbox->hdrs)
+  mutt_hash_destroy(&m->subj_hash);
+  mutt_hash_destroy(&m->id_hash);
+  mutt_hash_destroy(&m->label_hash);
+  if (m->hdrs)
   {
     mutt_clear_threads(ctx);
-    for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_email_free(&ctx->mailbox->hdrs[i]);
-    FREE(&ctx->mailbox->hdrs);
+    for (int i = 0; i < m->msg_count; i++)
+      mutt_email_free(&m->hdrs[i]);
+    FREE(&m->hdrs);
   }
-  FREE(&ctx->mailbox->v2r);
+  FREE(&m->v2r);
   mx_cleanup_context(ctx);
 }
 
@@ -420,20 +433,22 @@ void mx_fastclose_mailbox(struct Context *ctx)
  */
 static int sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->mbox_sync)
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->mbox_sync)
     return -1;
 
-  if (!ctx->mailbox->quiet)
+  struct Mailbox *m = ctx->mailbox;
+
+  if (!m->quiet)
   {
     /* L10N: Displayed before/as a mailbox is being synced */
-    mutt_message(_("Writing %s..."), ctx->mailbox->path);
+    mutt_message(_("Writing %s..."), m->path);
   }
 
-  int rc = ctx->mailbox->mx_ops->mbox_sync(ctx, index_hint);
-  if ((rc != 0) && !ctx->mailbox->quiet)
+  int rc = m->mx_ops->mbox_sync(ctx, index_hint);
+  if ((rc != 0) && !m->quiet)
   {
     /* L10N: Displayed if a mailbox sync fails */
-    mutt_error(_("Unable to write %s"), ctx->mailbox->path);
+    mutt_error(_("Unable to write %s"), m->path);
   }
 
   return rc;
@@ -447,21 +462,25 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
  */
 static int trash_append(struct Context *ctx)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
   int i;
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!Trash || !ctx->mailbox->msg_deleted ||
-      (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+  if (!Trash || !m->msg_deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))
   {
     return 0;
   }
 
   int delmsgcount = 0;
   int first_del = -1;
-  for (i = 0; i < ctx->mailbox->msg_count; i++)
+  for (i = 0; i < m->msg_count; i++)
   {
-    if (ctx->mailbox->hdrs[i]->deleted && (!ctx->mailbox->hdrs[i]->purge))
+    if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
     {
       if (first_del < 0)
         first_del = i;
@@ -488,7 +507,7 @@ static int trash_append(struct Context *ctx)
     return -1;
   }
 
-  if (lstat(ctx->mailbox->path, &stc) == 0 && stc.st_ino == st.st_ino &&
+  if (lstat(m->path, &stc) == 0 && stc.st_ino == st.st_ino &&
       stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev)
   {
     return 0; /* we are in the trash folder: simple sync */
@@ -506,11 +525,11 @@ static int trash_append(struct Context *ctx)
   if (ctx_trash)
   {
     /* continue from initial scan above */
-    for (i = first_del; i < ctx->mailbox->msg_count; i++)
+    for (i = first_del; i < m->msg_count; i++)
     {
-      if (ctx->mailbox->hdrs[i]->deleted && (!ctx->mailbox->hdrs[i]->purge))
+      if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
       {
-        if (mutt_append_message(ctx_trash, ctx, ctx->mailbox->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash, ctx, m->hdrs[i], 0, 0) == -1)
         {
           mx_mbox_close(&ctx_trash, NULL);
           return -1;
@@ -544,11 +563,16 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     return 0;
 
   struct Context *ctx = *pctx;
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
-  if (ctx->mailbox->readonly || ctx->dontwrite || ctx->append)
+  if (m->readonly || ctx->dontwrite || ctx->append)
   {
     mx_fastclose_mailbox(ctx);
     FREE(pctx);
@@ -556,9 +580,9 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 
 #ifdef USE_NNTP
-  if (ctx->mailbox->msg_unread && ctx->mailbox->magic == MUTT_NNTP)
+  if (m->msg_unread && m->magic == MUTT_NNTP)
   {
-    struct NntpMboxData *mdata = ctx->mailbox->mdata;
+    struct NntpMboxData *mdata = m->mdata;
 
     if (mdata && mdata->adata && mdata->group)
     {
@@ -571,12 +595,11 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   }
 #endif
 
-  for (i = 0; i < ctx->mailbox->msg_count; i++)
+  for (i = 0; i < m->msg_count; i++)
   {
-    if (!ctx->mailbox->hdrs[i])
+    if (!m->hdrs[i])
       break;
-    if (!ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->read &&
-        !(ctx->mailbox->hdrs[i]->flagged && KeepFlagged))
+    if (!m->hdrs[i]->deleted && m->hdrs[i]->read && !(m->hdrs[i]->flagged && KeepFlagged))
     {
       read_msgs++;
     }
@@ -584,14 +607,14 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
 #ifdef USE_NNTP
   /* don't need to move articles from newsgroup */
-  if (ctx->mailbox->magic == MUTT_NNTP)
+  if (m->magic == MUTT_NNTP)
     read_msgs = 0;
 #endif
 
   if (read_msgs && Move != MUTT_NO)
   {
     int is_spool;
-    char *p = mutt_find_hook(MUTT_MBOX_HOOK, ctx->mailbox->path);
+    char *p = mutt_find_hook(MUTT_MBOX_HOOK, m->path);
     if (p)
     {
       is_spool = 1;
@@ -600,7 +623,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     else
     {
       mutt_str_strfcpy(mbox, Mbox, sizeof(mbox));
-      is_spool = mutt_is_spool(ctx->mailbox->path) && !mutt_is_spool(mbox);
+      is_spool = mutt_is_spool(m->path) && !mutt_is_spool(mbox);
     }
 
     if (is_spool && *mbox)
@@ -620,12 +643,11 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   /* There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->mailbox->msg_deleted && !(ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+  if (m->msg_deleted && !(m->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
-             ngettext("Purge %d deleted message?", "Purge %d deleted messages?",
-                      ctx->mailbox->msg_deleted),
-             ctx->mailbox->msg_deleted);
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
+             m->msg_deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
       return -1;
@@ -633,36 +655,34 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
   if (MarkOld)
   {
-    for (i = 0; i < ctx->mailbox->msg_count; i++)
+    for (i = 0; i < m->msg_count; i++)
     {
-      if (!ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->old &&
-          !ctx->mailbox->hdrs[i]->read)
-        mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_OLD, 1);
+      if (!m->hdrs[i]->deleted && !m->hdrs[i]->old && !m->hdrs[i]->read)
+        mutt_set_flag(ctx, m->hdrs[i], MUTT_OLD, 1);
     }
   }
 
   if (move_messages)
   {
-    if (!ctx->mailbox->quiet)
+    if (!m->quiet)
       mutt_message(_("Moving read messages to %s..."), mbox);
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
     i = 1;
 
-    if ((ctx->mailbox->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
+    if ((m->magic == MUTT_IMAP) && (imap_path_probe(mbox, NULL) == MUTT_IMAP))
     {
       /* tag messages for moving, and clear old tags, if any */
-      for (i = 0; i < ctx->mailbox->msg_count; i++)
+      for (i = 0; i < m->msg_count; i++)
       {
-        if (ctx->mailbox->hdrs[i]->read && !ctx->mailbox->hdrs[i]->deleted &&
-            !(ctx->mailbox->hdrs[i]->flagged && KeepFlagged))
+        if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
         {
-          ctx->mailbox->hdrs[i]->tagged = true;
+          m->hdrs[i]->tagged = true;
         }
         else
         {
-          ctx->mailbox->hdrs[i]->tagged = false;
+          m->hdrs[i]->tagged = false;
         }
       }
 
@@ -680,15 +700,14 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       if (!f)
         return -1;
 
-      for (i = 0; i < ctx->mailbox->msg_count; i++)
+      for (i = 0; i < m->msg_count; i++)
       {
-        if (ctx->mailbox->hdrs[i]->read && !ctx->mailbox->hdrs[i]->deleted &&
-            !(ctx->mailbox->hdrs[i]->flagged && KeepFlagged))
+        if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(f, ctx, ctx->mailbox->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f, ctx, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_DELETE, 1);
-            mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_PURGE, 1);
+            mutt_set_flag(ctx, m->hdrs[i], MUTT_DELETE, 1);
+            mutt_set_flag(ctx, m->hdrs[i], MUTT_PURGE, 1);
           }
           else
           {
@@ -701,20 +720,19 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       mx_mbox_close(&f, NULL);
     }
   }
-  else if (!ctx->mailbox->changed && ctx->mailbox->msg_deleted == 0)
+  else if (!m->changed && m->msg_deleted == 0)
   {
-    if (!ctx->mailbox->quiet)
+    if (!m->quiet)
       mutt_message(_("Mailbox is unchanged"));
-    if (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF)
-      mbox_reset_atime(ctx->mailbox, NULL);
+    if (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF)
+      mbox_reset_atime(m, NULL);
     mx_fastclose_mailbox(ctx);
     FREE(pctx);
     return 0;
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->mailbox->msg_deleted &&
-      (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
+  if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;
@@ -722,7 +740,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
 #ifdef USE_IMAP
   /* allow IMAP to preserve the deleted flag across sessions */
-  if (ctx->mailbox->magic == MUTT_IMAP)
+  if (m->magic == MUTT_IMAP)
   {
     int check = imap_sync_mailbox(ctx, (purge != MUTT_NO), true);
     if (check != 0)
@@ -733,15 +751,15 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   {
     if (!purge)
     {
-      for (i = 0; i < ctx->mailbox->msg_count; i++)
+      for (i = 0; i < m->msg_count; i++)
       {
-        ctx->mailbox->hdrs[i]->deleted = false;
-        ctx->mailbox->hdrs[i]->purge = false;
+        m->hdrs[i]->deleted = false;
+        m->hdrs[i]->purge = false;
       }
-      ctx->mailbox->msg_deleted = 0;
+      m->msg_deleted = 0;
     }
 
-    if (ctx->mailbox->changed || ctx->mailbox->msg_deleted)
+    if (m->changed || m->msg_deleted)
     {
       int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
@@ -749,40 +767,36 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     }
   }
 
-  if (!ctx->mailbox->quiet)
+  if (!m->quiet)
   {
     if (move_messages)
     {
       mutt_message(_("%d kept, %d moved, %d deleted"),
-                   ctx->mailbox->msg_count - ctx->mailbox->msg_deleted,
-                   read_msgs, ctx->mailbox->msg_deleted);
+                   m->msg_count - m->msg_deleted, read_msgs, m->msg_deleted);
     }
     else
-      mutt_message(_("%d kept, %d deleted"),
-                   ctx->mailbox->msg_count - ctx->mailbox->msg_deleted,
-                   ctx->mailbox->msg_deleted);
+      mutt_message(_("%d kept, %d deleted"), m->msg_count - m->msg_deleted, m->msg_deleted);
   }
 
-  if (ctx->mailbox->msg_count == ctx->mailbox->msg_deleted &&
-      (ctx->mailbox->magic == MUTT_MMDF || ctx->mailbox->magic == MUTT_MBOX) &&
-      !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
+  if (m->msg_count == m->msg_deleted && (m->magic == MUTT_MMDF || m->magic == MUTT_MBOX) &&
+      !mutt_is_spool(m->path) && !SaveEmpty)
   {
-    mutt_file_unlink_empty(ctx->mailbox->path);
+    mutt_file_unlink_empty(m->path);
   }
 
 #ifdef USE_SIDEBAR
-  if (purge && ctx->mailbox->msg_deleted)
+  if (purge && m->msg_deleted)
   {
-    for (i = 0; i < ctx->mailbox->msg_count; i++)
+    for (i = 0; i < m->msg_count; i++)
     {
-      if (ctx->mailbox->hdrs[i]->deleted && !ctx->mailbox->hdrs[i]->read)
+      if (m->hdrs[i]->deleted && !m->hdrs[i]->read)
       {
-        ctx->mailbox->msg_unread--;
-        if (!ctx->mailbox->hdrs[i]->old)
-          ctx->mailbox->msg_new--;
+        m->msg_unread--;
+        if (!m->hdrs[i]->old)
+          m->msg_new--;
       }
-      if (ctx->mailbox->hdrs[i]->deleted && ctx->mailbox->hdrs[i]->flagged)
-        ctx->mailbox->msg_flagged--;
+      if (m->hdrs[i]->deleted && m->hdrs[i]->flagged)
+        m->msg_flagged--;
     }
   }
 #endif
@@ -800,93 +814,91 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
  */
 void mx_update_tables(struct Context *ctx, bool committing)
 {
-  if (!ctx)
+  if (!ctx || !ctx->mailbox)
     return;
+
+  struct Mailbox *m = ctx->mailbox;
 
   int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
-  ctx->mailbox->vcount = 0;
+  m->vcount = 0;
   ctx->vsize = 0;
   ctx->tagged = 0;
-  ctx->mailbox->msg_deleted = 0;
-  ctx->mailbox->msg_new = 0;
-  ctx->mailbox->msg_unread = 0;
-  ctx->mailbox->changed = false;
-  ctx->mailbox->msg_flagged = 0;
+  m->msg_deleted = 0;
+  m->msg_new = 0;
+  m->msg_unread = 0;
+  m->changed = false;
+  m->msg_flagged = 0;
   padding = mx_msg_padding_size(ctx);
-  for (i = 0, j = 0; i < ctx->mailbox->msg_count; i++)
+  for (i = 0, j = 0; i < m->msg_count; i++)
   {
-    if (!ctx->mailbox->hdrs[i]->quasi_deleted &&
-        ((committing && (!ctx->mailbox->hdrs[i]->deleted ||
-                         (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))) ||
-         (!committing && ctx->mailbox->hdrs[i]->active)))
+    if (!m->hdrs[i]->quasi_deleted &&
+        ((committing && (!m->hdrs[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))) ||
+         (!committing && m->hdrs[i]->active)))
     {
       if (i != j)
       {
-        ctx->mailbox->hdrs[j] = ctx->mailbox->hdrs[i];
-        ctx->mailbox->hdrs[i] = NULL;
+        m->hdrs[j] = m->hdrs[i];
+        m->hdrs[i] = NULL;
       }
-      ctx->mailbox->hdrs[j]->msgno = j;
-      if (ctx->mailbox->hdrs[j]->virtual != -1)
+      m->hdrs[j]->msgno = j;
+      if (m->hdrs[j]->virtual != -1)
       {
-        ctx->mailbox->v2r[ctx->mailbox->vcount] = j;
-        ctx->mailbox->hdrs[j]->virtual = ctx->mailbox->vcount++;
-        struct Body *b = ctx->mailbox->hdrs[j]->content;
+        m->v2r[m->vcount] = j;
+        m->hdrs[j]->virtual = m->vcount++;
+        struct Body *b = m->hdrs[j]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
       if (committing)
-        ctx->mailbox->hdrs[j]->changed = false;
-      else if (ctx->mailbox->hdrs[j]->changed)
-        ctx->mailbox->changed = true;
+        m->hdrs[j]->changed = false;
+      else if (m->hdrs[j]->changed)
+        m->changed = true;
 
-      if (!committing || (ctx->mailbox->magic == MUTT_MAILDIR && MaildirTrash))
+      if (!committing || (m->magic == MUTT_MAILDIR && MaildirTrash))
       {
-        if (ctx->mailbox->hdrs[j]->deleted)
-          ctx->mailbox->msg_deleted++;
+        if (m->hdrs[j]->deleted)
+          m->msg_deleted++;
       }
 
-      if (ctx->mailbox->hdrs[j]->tagged)
+      if (m->hdrs[j]->tagged)
         ctx->tagged++;
-      if (ctx->mailbox->hdrs[j]->flagged)
-        ctx->mailbox->msg_flagged++;
-      if (!ctx->mailbox->hdrs[j]->read)
+      if (m->hdrs[j]->flagged)
+        m->msg_flagged++;
+      if (!m->hdrs[j]->read)
       {
-        ctx->mailbox->msg_unread++;
-        if (!ctx->mailbox->hdrs[j]->old)
-          ctx->mailbox->msg_new++;
+        m->msg_unread++;
+        if (!m->hdrs[j]->old)
+          m->msg_new++;
       }
 
       j++;
     }
     else
     {
-      if (ctx->mailbox->magic == MUTT_MH || ctx->mailbox->magic == MUTT_MAILDIR)
+      if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR)
       {
-        ctx->mailbox->size -= (ctx->mailbox->hdrs[i]->content->length +
-                               ctx->mailbox->hdrs[i]->content->offset -
-                               ctx->mailbox->hdrs[i]->content->hdr_offset);
+        m->size -= (m->hdrs[i]->content->length + m->hdrs[i]->content->offset -
+                    m->hdrs[i]->content->hdr_offset);
       }
       /* remove message from the hash tables */
-      if (ctx->mailbox->subj_hash && ctx->mailbox->hdrs[i]->env->real_subj)
-        mutt_hash_delete(ctx->mailbox->subj_hash, ctx->mailbox->hdrs[i]->env->real_subj,
-                         ctx->mailbox->hdrs[i]);
-      if (ctx->mailbox->id_hash && ctx->mailbox->hdrs[i]->env->message_id)
-        mutt_hash_delete(ctx->mailbox->id_hash, ctx->mailbox->hdrs[i]->env->message_id,
-                         ctx->mailbox->hdrs[i]);
-      mutt_label_hash_remove(ctx->mailbox, ctx->mailbox->hdrs[i]);
+      if (m->subj_hash && m->hdrs[i]->env->real_subj)
+        mutt_hash_delete(m->subj_hash, m->hdrs[i]->env->real_subj, m->hdrs[i]);
+      if (m->id_hash && m->hdrs[i]->env->message_id)
+        mutt_hash_delete(m->id_hash, m->hdrs[i]->env->message_id, m->hdrs[i]);
+      mutt_label_hash_remove(m, m->hdrs[i]);
       /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
        * can occur before a call to mx_mbox_sync(), resulting in
        * last_tag being stale if it's not reset here.
        */
-      if (ctx->last_tag == ctx->mailbox->hdrs[i])
+      if (ctx->last_tag == m->hdrs[i])
         ctx->last_tag = NULL;
-      mutt_email_free(&ctx->mailbox->hdrs[i]);
+      mutt_email_free(&m->hdrs[i]);
     }
   }
-  ctx->mailbox->msg_count = j;
+  m->msg_count = j;
 }
 
 /**
@@ -898,6 +910,11 @@ void mx_update_tables(struct Context *ctx, bool committing)
  */
 int mx_mbox_sync(struct Context *ctx, int *index_hint)
 {
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
   int rc;
   int purge = 1;
   int msgcount, deleted;
@@ -913,43 +930,42 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
   }
-  else if (ctx->mailbox->readonly)
+  else if (m->readonly)
   {
     mutt_error(_("Mailbox is read-only"));
     return -1;
   }
 
-  if (!ctx->mailbox->changed && !ctx->mailbox->msg_deleted)
+  if (!m->changed && !m->msg_deleted)
   {
-    if (!ctx->mailbox->quiet)
+    if (!m->quiet)
       mutt_message(_("Mailbox is unchanged"));
     return 0;
   }
 
-  if (ctx->mailbox->msg_deleted)
+  if (m->msg_deleted)
   {
     char buf[SHORT_STRING];
 
     snprintf(buf, sizeof(buf),
-             ngettext("Purge %d deleted message?", "Purge %d deleted messages?",
-                      ctx->mailbox->msg_deleted),
-             ctx->mailbox->msg_deleted);
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
+             m->msg_deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
       return -1;
     else if (purge == MUTT_NO)
     {
-      if (!ctx->mailbox->changed)
+      if (!m->changed)
         return 0; /* nothing to do! */
       /* let IMAP servers hold on to D flags */
-      if (ctx->mailbox->magic != MUTT_IMAP)
+      if (m->magic != MUTT_IMAP)
       {
-        for (int i = 0; i < ctx->mailbox->msg_count; i++)
+        for (int i = 0; i < m->msg_count; i++)
         {
-          ctx->mailbox->hdrs[i]->deleted = false;
-          ctx->mailbox->hdrs[i]->purge = false;
+          m->hdrs[i]->deleted = false;
+          m->hdrs[i]->purge = false;
         }
-        ctx->mailbox->msg_deleted = 0;
+        m->msg_deleted = 0;
       }
     }
     else if (ctx->last_tag && ctx->last_tag->deleted)
@@ -957,19 +973,18 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
-   * mx_update_tables, so ctx->mailbox->msg_deleted is 0 when it comes back */
-  msgcount = ctx->mailbox->msg_count;
-  deleted = ctx->mailbox->msg_deleted;
+   * mx_update_tables, so m->msg_deleted is 0 when it comes back */
+  msgcount = m->msg_count;
+  deleted = m->msg_deleted;
 
-  if (purge && ctx->mailbox->msg_deleted &&
-      (mutt_str_strcmp(ctx->mailbox->path, Trash) != 0))
+  if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;
   }
 
 #ifdef USE_IMAP
-  if (ctx->mailbox->magic == MUTT_IMAP)
+  if (m->magic == MUTT_IMAP)
     rc = imap_sync_mailbox(ctx, purge, false);
   else
 #endif
@@ -977,25 +992,24 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   if (rc == 0)
   {
 #ifdef USE_IMAP
-    if (ctx->mailbox->magic == MUTT_IMAP && !purge)
+    if (m->magic == MUTT_IMAP && !purge)
     {
-      if (!ctx->mailbox->quiet)
+      if (!m->quiet)
         mutt_message(_("Mailbox checkpointed"));
     }
     else
 #endif
     {
-      if (!ctx->mailbox->quiet)
+      if (!m->quiet)
         mutt_message(_("%d kept, %d deleted"), msgcount - deleted, deleted);
     }
 
     mutt_sleep(0);
 
-    if (ctx->mailbox->msg_count == ctx->mailbox->msg_deleted &&
-        (ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
-        !mutt_is_spool(ctx->mailbox->path) && !SaveEmpty)
+    if (m->msg_count == m->msg_deleted && (m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) &&
+        !mutt_is_spool(m->path) && !SaveEmpty)
     {
-      unlink(ctx->mailbox->path);
+      unlink(m->path);
       mx_fastclose_mailbox(ctx);
       return 0;
     }
@@ -1007,10 +1021,10 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
      * MH and maildir are safe.  mbox-style seems to need re-sorting,
      * at least with the new threading code.
      */
-    if (purge || (ctx->mailbox->magic != MUTT_MAILDIR && ctx->mailbox->magic != MUTT_MH))
+    if (purge || (m->magic != MUTT_MAILDIR && m->magic != MUTT_MH))
     {
       /* IMAP does this automatically after handling EXPUNGE */
-      if (ctx->mailbox->magic != MUTT_IMAP)
+      if (m->magic != MUTT_IMAP)
       {
         mx_update_tables(ctx, true);
         mutt_sort_headers(ctx, true); /* rethread from scratch */
@@ -1030,12 +1044,17 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
  */
 struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
 {
+  if (!ctx || !ctx->mailbox)
+    return NULL;
+
+  struct Mailbox *m = ctx->mailbox;
+
   struct Address *p = NULL;
   struct Message *msg = NULL;
 
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_open_new)
+  if (!m->mx_ops || !m->mx_ops->msg_open_new)
   {
-    mutt_debug(1, "function unimplemented for mailbox type %d.\n", ctx->mailbox->magic);
+    mutt_debug(1, "function unimplemented for mailbox type %d.\n", m->magic);
     return NULL;
   }
 
@@ -1054,13 +1073,12 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
   if (msg->received == 0)
     time(&msg->received);
 
-  if (ctx->mailbox->mx_ops->msg_open_new(ctx, msg, e) == 0)
+  if (m->mx_ops->msg_open_new(ctx, msg, e) == 0)
   {
-    if (ctx->mailbox->magic == MUTT_MMDF)
+    if (m->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
 
-    if ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) &&
-        flags & MUTT_ADD_FROM)
+    if ((m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) && flags & MUTT_ADD_FROM)
     {
       if (e)
       {
@@ -1092,13 +1110,12 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
  */
 int mx_mbox_check(struct Context *ctx, int *index_hint)
 {
-  if (!ctx || !ctx->mailbox->mx_ops)
-  {
-    mutt_debug(1, "null or invalid context.\n");
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops)
     return -1;
-  }
 
-  return ctx->mailbox->mx_ops->mbox_check(ctx, index_hint);
+  struct Mailbox *m = ctx->mailbox;
+
+  return m->mx_ops->mbox_check(ctx, index_hint);
 }
 
 /**
@@ -1110,17 +1127,21 @@ int mx_mbox_check(struct Context *ctx, int *index_hint)
  */
 struct Message *mx_msg_open(struct Context *ctx, int msgno)
 {
+  if (!ctx || !ctx->mailbox)
+    return NULL;
+
+  struct Mailbox *m = ctx->mailbox;
+
   struct Message *msg = NULL;
 
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_open)
+  if (!m->mx_ops || !m->mx_ops->msg_open)
   {
-    mutt_debug(1, "function not implemented for mailbox type %d.\n",
-               ctx->mailbox->magic);
+    mutt_debug(1, "function not implemented for mailbox type %d.\n", m->magic);
     return NULL;
   }
 
   msg = mutt_mem_calloc(1, sizeof(struct Message));
-  if (ctx->mailbox->mx_ops->msg_open(ctx, msg, msgno))
+  if (m->mx_ops->msg_open(ctx, msg, msgno) < 0)
     FREE(&msg);
 
   return msg;
@@ -1135,8 +1156,10 @@ struct Message *mx_msg_open(struct Context *ctx, int msgno)
  */
 int mx_msg_commit(struct Context *ctx, struct Message *msg)
 {
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_commit)
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_commit)
     return -1;
+
+  struct Mailbox *m = ctx->mailbox;
 
   if (!(msg->write && ctx->append))
   {
@@ -1144,7 +1167,7 @@ int mx_msg_commit(struct Context *ctx, struct Message *msg)
     return -1;
   }
 
-  return ctx->mailbox->mx_ops->msg_commit(ctx, msg);
+  return m->mx_ops->msg_commit(m, msg);
 }
 
 /**
@@ -1156,12 +1179,15 @@ int mx_msg_commit(struct Context *ctx, struct Message *msg)
  */
 int mx_msg_close(struct Context *ctx, struct Message **msg)
 {
-  if (!ctx || !msg || !*msg)
+  if (!ctx || !ctx->mailbox || !msg || !*msg)
     return 0;
+
+  struct Mailbox *m = ctx->mailbox;
+
   int r = 0;
 
-  if (ctx->mailbox->mx_ops && ctx->mailbox->mx_ops->msg_close)
-    r = ctx->mailbox->mx_ops->msg_close(ctx, *msg);
+  if (m->mx_ops && m->mx_ops->msg_close)
+    r = m->mx_ops->msg_close(m, *msg);
 
   if ((*msg)->path)
   {
@@ -1217,11 +1243,15 @@ void mx_alloc_memory(struct Mailbox *m)
  */
 void mx_update_context(struct Context *ctx, int new_messages)
 {
+  if (!ctx || !ctx->mailbox)
+    return;
+
+  struct Mailbox *m = ctx->mailbox;
+
   struct Email *e = NULL;
-  for (int msgno = ctx->mailbox->msg_count - new_messages;
-       msgno < ctx->mailbox->msg_count; msgno++)
+  for (int msgno = m->msg_count - new_messages; msgno < m->msg_count; msgno++)
   {
-    e = ctx->mailbox->hdrs[msgno];
+    e = m->hdrs[msgno];
 
     if (WithCrypto)
     {
@@ -1231,8 +1261,8 @@ void mx_update_context(struct Context *ctx, int new_messages)
 
     if (!ctx->pattern)
     {
-      ctx->mailbox->v2r[ctx->mailbox->vcount] = msgno;
-      e->virtual = ctx->mailbox->vcount++;
+      m->v2r[m->vcount] = msgno;
+      e->virtual = m->vcount++;
     }
     else
       e->virtual = -1;
@@ -1242,10 +1272,10 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       struct Email *e2 = NULL;
 
-      if (!ctx->mailbox->id_hash)
-        ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
+      if (!m->id_hash)
+        m->id_hash = mutt_make_id_hash(m);
 
-      e2 = mutt_hash_find(ctx->mailbox->id_hash, e->env->supersedes);
+      e2 = mutt_hash_find(m->id_hash, e->env->supersedes);
       if (e2)
       {
         e2->superseded = true;
@@ -1255,26 +1285,26 @@ void mx_update_context(struct Context *ctx, int new_messages)
     }
 
     /* add this message to the hash tables */
-    if (ctx->mailbox->id_hash && e->env->message_id)
-      mutt_hash_insert(ctx->mailbox->id_hash, e->env->message_id, e);
-    if (ctx->mailbox->subj_hash && e->env->real_subj)
-      mutt_hash_insert(ctx->mailbox->subj_hash, e->env->real_subj, e);
-    mutt_label_hash_add(ctx->mailbox, e);
+    if (m->id_hash && e->env->message_id)
+      mutt_hash_insert(m->id_hash, e->env->message_id, e);
+    if (m->subj_hash && e->env->real_subj)
+      mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
+    mutt_label_hash_add(m, e);
 
     if (Score)
       mutt_score_message(ctx, e, false);
 
     if (e->changed)
-      ctx->mailbox->changed = true;
+      m->changed = true;
     if (e->flagged)
-      ctx->mailbox->msg_flagged++;
+      m->msg_flagged++;
     if (e->deleted)
-      ctx->mailbox->msg_deleted++;
+      m->msg_deleted++;
     if (!e->read)
     {
-      ctx->mailbox->msg_unread++;
+      m->msg_unread++;
       if (!e->old)
-        ctx->mailbox->msg_new++;
+        m->msg_new++;
     }
   }
 }
@@ -1326,8 +1356,13 @@ int mx_check_empty(const char *path)
  */
 int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
-  if (ctx->mailbox->mx_ops->tags_edit)
-    return ctx->mailbox->mx_ops->tags_edit(ctx, tags, buf, buflen);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  if (m->mx_ops->tags_edit)
+    return m->mx_ops->tags_edit(m, tags, buf, buflen);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
@@ -1343,8 +1378,13 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
  */
 int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
 {
-  if (ctx->mailbox->mx_ops->tags_commit)
-    return ctx->mailbox->mx_ops->tags_commit(ctx, e, tags);
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  if (m->mx_ops->tags_commit)
+    return m->mx_ops->tags_commit(ctx, e, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
@@ -1357,7 +1397,12 @@ int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
  */
 bool mx_tags_is_supported(struct Context *ctx)
 {
-  return ctx->mailbox->mx_ops->tags_commit && ctx->mailbox->mx_ops->tags_edit;
+  if (!ctx || !ctx->mailbox)
+    return false;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  return m->mx_ops->tags_commit && m->mx_ops->tags_edit;
 }
 
 /**
@@ -1513,7 +1558,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
   if (!ops || !ops->path_canon)
     return -1;
 
-  if (ops->path_canon(buf, buflen, folder) < 0)
+  if (ops->path_canon(buf, buflen) < 0)
   {
     mutt_path_canon(buf, buflen, HomeDir);
   }
@@ -1557,7 +1602,7 @@ int mx_path_pretty(char *buf, size_t buflen, const char *folder)
   if (!ops->path_canon)
     return -1;
 
-  if (ops->path_canon(buf, buflen, folder) < 0)
+  if (ops->path_canon(buf, buflen) < 0)
     return -1;
 
   if (!ops->path_pretty)
@@ -1590,10 +1635,15 @@ int mx_path_parent(char *buf, size_t buflen)
  */
 int mx_msg_padding_size(struct Context *ctx)
 {
-  if (!ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_padding_size)
+  if (!ctx || !ctx->mailbox)
     return 0;
 
-  return ctx->mailbox->mx_ops->msg_padding_size(ctx);
+  struct Mailbox *m = ctx->mailbox;
+
+  if (!m->mx_ops || !m->mx_ops->msg_padding_size)
+    return 0;
+
+  return m->mx_ops->msg_padding_size(m);
 }
 
 /**
@@ -1686,7 +1736,6 @@ int mx_ac_remove(struct Mailbox *m)
   return 0;
 }
 
-
 /**
  * mx_cleanup_context - Release memory and initialize a Context object
  * @param ctx Context to cleanup
@@ -1698,4 +1747,3 @@ void mx_cleanup_context(struct Context *ctx)
     mutt_pattern_free(&ctx->limit_pattern);
   memset(ctx, 0, sizeof(struct Context));
 }
-

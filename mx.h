@@ -127,12 +127,12 @@ struct MxOps
   int (*mbox_open)       (struct Context *ctx);
   /**
    * mbox_open_append - Open a mailbox for appending
-   * @param ctx   Mailbox to open
+   * @param m     Mailbox to open
    * @param flags e.g. #MUTT_READONLY
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_open_append)(struct Context *ctx, int flags);
+  int (*mbox_open_append)(struct Mailbox *m, int flags);
   /**
    * mbox_check - Check for new mail
    * @param ctx Mailbox
@@ -161,8 +161,8 @@ struct MxOps
    * @param ctx   Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
-   * @retval 0 Success
-   * @retval 1 Error
+   * @retval  0 Success
+   * @retval -1 Error
    */
   int (*msg_open)        (struct Context *ctx, struct Message *msg, int msgno);
   /**
@@ -176,29 +176,29 @@ struct MxOps
   int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Email *e);
   /**
    * msg_commit - Save changes to an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to commit
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_commit)      (struct Context *ctx, struct Message *msg);
+  int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
   /**
    * msg_close - Close an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to close
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_close)       (struct Context *ctx, struct Message *msg);
+  int (*msg_close)       (struct Mailbox *m, struct Message *msg);
   /**
    * msg_padding_size - Bytes of padding between messages
-   * @param ctx Mailbox
+   * @param m Mailbox
    * @retval num Bytes of padding
    */
-  int (*msg_padding_size)(struct Context *ctx);
+  int (*msg_padding_size)(struct Mailbox *m);
   /**
    * tags_edit - Prompt and validate new messages tags
-   * @param ctx    Mailbox
+   * @param m      Mailbox
    * @param tags   Existing tags
    * @param buf    Buffer to store the tags
    * @param buflen Length of buffer
@@ -206,7 +206,7 @@ struct MxOps
    * @retval  0 No valid user input
    * @retval  1 Buf set
    */
-  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
   /**
    * tags_commit - Save the tags to a message
    * @param ctx Mailbox
@@ -227,11 +227,10 @@ struct MxOps
    * path_canon - Canonicalise a mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
-   * @param folder Base path for '=' substitution
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*path_canon)      (char *buf, size_t buflen, const char *folder);
+  int (*path_canon)      (char *buf, size_t buflen);
   /**
    * path_pretty - Abbreviate a mailbox path
    * @param buf    Path to modify

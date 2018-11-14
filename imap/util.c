@@ -131,7 +131,6 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
  */
 struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
 {
-
   if (imap_parse_path(path, mx) < 0)
     return NULL;
 
@@ -149,7 +148,6 @@ struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx)
   mutt_debug(3, "no ImapAccountData found\n");
   return NULL;
 }
-
 
 /**
  * imap_get_parent - Get an IMAP folder's parent
