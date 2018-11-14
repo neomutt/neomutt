@@ -1382,8 +1382,6 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   FILE *fp = NULL;
   char buf[LONG_STRING * 2];
-  char mbox[LONG_STRING];
-  char mailbox[LONG_STRING];
   char internaldate[IMAP_DATELEN];
   char imap_flags[SHORT_STRING];
   size_t len;
@@ -1393,13 +1391,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-
-  if (imap_parse_path2(m->path, NULL, buf, sizeof(buf)))
-    return -1;
-
-  imap_fix_path(adata, buf, mailbox, sizeof(mailbox));
-  if (!*mailbox)
-    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
+  struct ImapMailboxData *mdata = imap_mdata_get(m);
 
   fp = fopen(msg->path, "r");
   if (!fp)
@@ -1426,7 +1418,6 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   mutt_progress_init(&progressbar, _("Uploading message..."),
                      MUTT_PROGRESS_SIZE, NetInc, len);
 
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), mailbox);
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
   imap_flags[0] = 0;
@@ -1441,7 +1432,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   if (msg->flags.draft)
     mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Draft");
 
-  snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mbox,
+  snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mdata->munge_name,
            imap_flags + 1, internaldate, (unsigned long) len);
 
   imap_cmd_start(adata, buf);
