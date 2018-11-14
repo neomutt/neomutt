@@ -126,37 +126,32 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
 /**
  * imap_adata_find - Find the Account data for this path
  */
-struct ImapAccountData *imap_adata_find(const char *path, char *mailbox,
-                                        size_t mailboxlen, bool fix_path)
+int imap_adata_find(const char *path, struct ImapAccountData **adata,
+                    struct ImapMailboxData **mdata)
 {
   struct ConnAccount conn_account;
+  struct ImapAccountData *tmp_adata;
   char tmp[LONG_STRING];
 
   if (imap_parse_path2(path, &conn_account, tmp, sizeof(tmp)) < 0)
-    return NULL;
+    return -1;
 
   struct Account *np = NULL;
-  struct ImapAccountData *adata = NULL;
   TAILQ_FOREACH(np, &AllAccounts, entries)
   {
     if (np->magic != MUTT_IMAP)
       continue;
 
-    adata = np->adata;
-    if (imap_account_match(&adata->conn_account, &conn_account))
+    tmp_adata = np->adata;
+    if (imap_account_match(&tmp_adata->conn_account, &conn_account))
     {
-      if (tmp[0] != '\0')
-      {
-        if (fix_path)
-          imap_fix_path(adata, tmp, mailbox, mailboxlen);
-        else
-          mutt_str_strfcpy(mailbox, tmp, mailboxlen);
-      }
-      return adata;
+      *mdata = imap_mdata_new(tmp_adata, tmp);
+      *adata = tmp_adata;
+      return 0;
     }
   }
   mutt_debug(3, "no ImapAccountData found\n");
-  return NULL;
+  return -1;
 }
 
 /**
@@ -264,20 +259,21 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
 void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   struct ImapAccountData *adata = NULL;
-  char mbox[LONG_STRING], tmp[LONG_STRING];
+  struct ImapMailboxData *mdata = NULL;
+  char mbox[LONG_STRING];
 
-  adata = imap_adata_find(path, tmp, sizeof(tmp), true);
-  if (!adata || tmp[0] == '\0')
+  if (imap_adata_find(path, &adata, &mdata) < 0)
   {
     mutt_str_strfcpy(buf, path, buflen);
     return;
   }
 
   /* Gets the parent mbox in mbox */
-  imap_get_parent(mbox, adata->delim, mbox, sizeof(mbox));
+  imap_get_parent(mdata->name, adata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
   imap_qualify_path2(buf, buflen, &adata->conn_account, mbox);
+  imap_mdata_free((void *) &mdata);
 }
 
 /**
@@ -290,14 +286,15 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 void imap_clean_path(char *path, size_t plen)
 {
   struct ImapAccountData *adata = NULL;
-  char mbox[LONG_STRING], tmp[LONG_STRING];
+  struct ImapMailboxData *mdata = NULL;
 
-  adata = imap_adata_find(path, tmp, sizeof(tmp), true);
-  if (!adata || tmp[0] == '\0')
+  if (imap_adata_find(path, &adata, &mdata) < 0)
     return;
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path2(path, plen, &adata->conn_account, mbox);
+  // TODO(sileht): Put it in mdata directly ?
+  imap_qualify_path2(path, plen, &adata->conn_account, mdata->name);
+  imap_mdata_free((void *) &mdata);
 }
 
 #ifdef USE_HCACHE

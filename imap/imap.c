@@ -674,16 +674,15 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
 int imap_access(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  char mailbox[LONG_STRING];
+  struct ImapMailboxData *mdata = NULL;
+  int rc;
 
-  adata = imap_adata_find(path, mailbox, sizeof(mailbox), true);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
-  if (mailbox[0] == '\0')
-    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
-
-  return imap_access2(adata, mailbox);
+  rc = imap_access2(adata, mdata->name);
+  imap_mdata_free((void *) &mdata);
+  return rc;
 }
 
 /**
@@ -723,12 +722,15 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
  */
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
+  struct Url url;
+  char tmp[PATH_MAX];
   char buf[PATH_MAX];
+  char mbox[PATH_MAX];
+  mutt_str_strfcpy(tmp, path, sizeof(tmp));
+  url_parse(&url, tmp);
 
-  struct ImapMailboxData *mdata = imap_mdata_get(m);
-
-  snprintf(buf, sizeof(buf), "DELETE %s", mdata->munge_name);
-
+  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), url.path);
+  snprintf(buf, sizeof(buf), "DELETE %s", mbox);
   if (imap_exec(m->account->adata, buf, 0) != 0)
     return -1;
 
@@ -1419,26 +1421,24 @@ int imap_status(const char *path, bool queue)
   static int queued = 0;
 
   struct ImapAccountData *adata = NULL;
+  struct ImapMailboxData *mdata = NULL;
   char buf[LONG_STRING * 2];
-  char mbox[LONG_STRING];
   struct ImapStatus *status = NULL;
 
-  adata = imap_adata_find(path, buf, sizeof(buf), true);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
   /* We are in the folder we're polling - just return the mailbox count.
    *
    * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
    * make sure the adata really is open to a folder. */
-  if (adata->mailbox && !imap_mxcmp(buf, adata->mbox_name))
+  if (adata->mailbox && !imap_mxcmp(mdata->name, adata->mbox_name))
     return adata->mailbox->msg_count;
+
   else if (mutt_bit_isset(adata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(adata->capabilities, STATUS))
   {
-    imap_munge_mbox_name(adata, mbox, sizeof(mbox), buf);
-    snprintf(buf, sizeof(buf), "STATUS %s (%s)", mbox, "MESSAGES");
-    imap_unmunge_mbox_name(adata, mbox);
+    snprintf(buf, sizeof(buf), "STATUS %s (%s)", mdata->munge_name, "MESSAGES");
   }
   else
   {
@@ -1457,7 +1457,7 @@ int imap_status(const char *path, bool queue)
     imap_exec(adata, buf, 0);
 
   queued = 0;
-  status = imap_mboxcache_get(adata, mbox, false);
+  status = imap_mboxcache_get(adata, mdata->name, false);
   if (status)
     return status->messages;
 
@@ -1594,14 +1594,14 @@ int imap_search(struct Mailbox *m, const struct Pattern *pat)
 int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
+  struct ImapMailboxData *mdata = NULL;
   char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
   char errstr[STRING];
   struct Buffer err, token;
   size_t len = 0;
 
-  adata = imap_adata_find(path, buf, sizeof(buf), false);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
 
   if (ImapCheckSubscribed)
@@ -1618,21 +1618,23 @@ int imap_subscribe(char *path, bool subscribe)
   }
 
   if (subscribe)
-    mutt_message(_("Subscribing to %s..."), buf);
+    mutt_message(_("Subscribing to %s..."), mdata->name);
   else
-    mutt_message(_("Unsubscribing from %s..."), buf);
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), buf);
+    mutt_message(_("Unsubscribing from %s..."), mdata->name);
 
-  snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mbox);
+  snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mdata->munge_name);
 
   if (imap_exec(adata, buf, 0) < 0)
+  {
+    imap_mdata_free((void *) &mdata);
     return -1;
+  }
 
-  imap_unmunge_mbox_name(adata, mbox);
   if (subscribe)
-    mutt_message(_("Subscribed to %s"), mbox);
+    mutt_message(_("Subscribed to %s"), mdata->name);
   else
-    mutt_message(_("Unsubscribed from %s"), mbox);
+    mutt_message(_("Unsubscribed from %s"), mdata->name);
+  imap_mdata_free((void *) &mdata);
   return 0;
 }
 
@@ -1650,9 +1652,8 @@ int imap_subscribe(char *path, bool subscribe)
 int imap_complete(char *buf, size_t buflen, char *path)
 {
   struct ImapAccountData *adata = NULL;
-  char list[LONG_STRING];
+  struct ImapMailboxData *mdata = NULL;
   char tmp[LONG_STRING * 2];
-  char mailbox[LONG_STRING];
   struct ImapList listresp;
   char completion[LONG_STRING];
   int clen;
@@ -1660,27 +1661,22 @@ int imap_complete(char *buf, size_t buflen, char *path)
   int completions = 0;
   int rc;
 
-  adata = imap_adata_find(path, mailbox, sizeof(mailbox), false);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
   {
     mutt_str_strfcpy(buf, path, buflen);
     return complete_hosts(buf, buflen);
   }
 
-  /* reformat path for IMAP list, and append wildcard */
-  /* don't use INBOX in place of "" */
-  if (mailbox[0] != '\0')
-    imap_fix_path(adata, mailbox, list, sizeof(list));
-  else
-    list[0] = '\0';
-
   /* fire off command */
-  snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"", ImapListSubscribed ? "LSUB" : "LIST", list);
+  snprintf(tmp, sizeof(tmp), "%s \"\" \"%s%%\"",
+           ImapListSubscribed ? "LSUB" : "LIST", mdata->real_name);
 
   imap_cmd_start(adata, tmp);
 
   /* and see what the results are */
-  mutt_str_strfcpy(completion, mailbox, sizeof(completion));
+  mutt_str_strfcpy(completion, mdata->name, sizeof(completion));
+  imap_mdata_free((void *) &mdata);
+
   adata->cmdtype = IMAP_CT_LIST;
   adata->cmddata = &listresp;
   do
@@ -1734,27 +1730,28 @@ int imap_complete(char *buf, size_t buflen, char *path)
  */
 int imap_fast_trash(struct Mailbox *m, char *dest)
 {
-  char mbox[LONG_STRING];
-  char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
-  int rc;
+  int rc = -1;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  struct ImapAccountData *dest_adata = imap_adata_find(dest, mbox, sizeof(mbox), true);
+  struct ImapAccountData *dest_adata = NULL;
+  struct ImapMailboxData *dest_mdata = NULL;
+
+  if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
+    return -1;
+
+  sync_cmd = mutt_buffer_new();
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
   {
     mutt_debug(3, "%s not same server as %s\n", dest, m->path);
-    return 1;
+    goto out;
   }
 
-  imap_munge_mbox_name(adata, mmbox, sizeof(mmbox), mbox);
-
-  sync_cmd = mutt_buffer_new();
   for (int i = 0; i < m->msg_count; i++)
   {
     if (m->hdrs[i]->active && m->hdrs[i]->changed && m->hdrs[i]->deleted &&
@@ -1772,7 +1769,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
   /* loop in case of TRYCREATE */
   do
   {
-    rc = imap_exec_msgset(adata, "UID COPY", mmbox, MUTT_TRASH, false, false);
+    rc = imap_exec_msgset(adata, "UID COPY", dest_mdata->munge_name, MUTT_TRASH, false, false);
     if (!rc)
     {
       mutt_debug(1, "No messages to trash\n");
@@ -1787,7 +1784,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
     else
     {
       mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
-                   rc, mbox);
+                   rc, dest_mdata->name);
     }
 
     /* let's get it on */
@@ -1796,20 +1793,20 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
     {
       if (triedcreate)
       {
-        mutt_debug(1, "Already tried to create mailbox %s\n", mbox);
+        mutt_debug(1, "Already tried to create mailbox %s\n", dest_mdata->name);
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
       if (!mutt_str_startswith(imap_get_qualifier(adata->buf), "[TRYCREATE]", CASE_IGNORE))
         break;
       mutt_debug(3, "server suggests TRYCREATE\n");
-      snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
+      snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
       if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
       }
-      if (imap_create_mailbox(adata, mbox) < 0)
+      if (imap_create_mailbox(adata, dest_mdata->name) < 0)
         break;
       triedcreate = true;
     }
@@ -1825,6 +1822,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
 
 out:
   mutt_buffer_free(&sync_cmd);
+  imap_mdata_free((void *) &dest_mdata);
 
   return (rc < 0) ? -1 : rc;
 }

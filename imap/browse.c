@@ -367,17 +367,18 @@ fail:
 int imap_mailbox_create(const char *path)
 {
   struct ImapAccountData *adata = NULL;
+  struct ImapMailboxData *mdata = NULL;
   char name[LONG_STRING];
   short n;
 
-  adata = imap_adata_find(path, name, sizeof(name), false);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", path);
-    return -1;
+    goto err;
   }
 
   /* append a delimiter if necessary */
+  mutt_str_strfcpy(name, mdata->real_name, sizeof(name));
   n = mutt_str_strlen(name);
   if (n && (n < sizeof(name) - 1) && (name[n - 1] != adata->delim))
   {
@@ -386,21 +387,25 @@ int imap_mailbox_create(const char *path)
   }
 
   if (mutt_get_field(_("Create mailbox: "), name, sizeof(name), MUTT_FILE) < 0)
-    return -1;
+    goto err;
 
   if (mutt_str_strlen(name) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
-    return -1;
+    goto err;
   }
 
   if (imap_create_mailbox(adata, name) < 0)
-    return -1;
+    goto err;
 
+  imap_mdata_free((void *) &mdata);
   mutt_message(_("Mailbox created"));
   mutt_sleep(0);
-
   return 0;
+
+err:
+  imap_mdata_free((void *) &mdata);
+  return -1;
 }
 
 /**
@@ -414,45 +419,47 @@ int imap_mailbox_create(const char *path)
 int imap_mailbox_rename(const char *path)
 {
   struct ImapAccountData *adata = NULL;
+  struct ImapMailboxData *mdata = NULL;
   char buf[PATH_MAX];
-  char oldname[LONG_STRING];
   char newname[PATH_MAX];
 
-  adata = imap_adata_find(path, oldname, sizeof(oldname), false);
-  if (!adata)
+  if (imap_adata_find(path, &adata, &mdata) < 0)
   {
     mutt_debug(1, "Couldn't find open connection to %s\n", path);
     return -1;
   }
 
-  if (oldname[0] == '\0')
+  if (mdata->real_name[0] == '\0')
   {
     mutt_error(_("Cannot rename root folder"));
-    return -1;
+    goto err;
   }
 
-  snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), oldname);
-  mutt_str_strfcpy(newname, oldname, sizeof(newname));
+  snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), mdata->name);
+  mutt_str_strfcpy(newname, mdata->name, sizeof(newname));
 
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
-    return -1;
+    goto err;
 
   if (mutt_str_strlen(newname) == 0)
   {
     mutt_error(_("Mailbox must have a name"));
-    return -1;
+    goto err;
   }
 
   imap_fix_path(adata, newname, buf, sizeof(buf));
 
-  if (imap_rename_mailbox(adata, oldname, buf) < 0)
+  if (imap_rename_mailbox(adata, mdata->name, buf) < 0)
   {
     mutt_error(_("Rename failed: %s"), imap_get_qualifier(adata->buf));
-    return -1;
+    goto err;
   }
 
   mutt_message(_("Mailbox renamed"));
   mutt_sleep(0);
-
   return 0;
+
+err:
+  imap_mdata_free((void *) &mdata);
+  return -1;
 }
