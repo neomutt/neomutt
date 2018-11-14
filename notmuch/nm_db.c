@@ -162,7 +162,7 @@ notmuch_database_t *nm_db_get(struct Mailbox *m, bool writable)
 int nm_db_release(struct Mailbox *m)
 {
   struct NmAccountData *adata = nm_adata_get(m);
-  if (!adata || !adata->db)
+  if (!adata || !adata->db || nm_db_is_longrun(m))
     return -1;
 
   mutt_debug(1, "nm: db close\n");

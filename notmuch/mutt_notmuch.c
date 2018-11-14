@@ -597,8 +597,7 @@ static notmuch_query_t *get_query(struct Mailbox *m, bool writable)
   mutt_debug(2, "nm: query successfully initialized (%s)\n", str);
   return q;
 err:
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
   return NULL;
 }
 
@@ -1637,8 +1636,8 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
 done:
   if (q)
     notmuch_query_destroy(q);
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+
+  nm_db_release(m);
 
   if (m->msg_count == mdata->oldmsgcount)
     mutt_message(_("No more messages in the thread"));
@@ -1853,8 +1852,7 @@ int nm_update_filename(struct Mailbox *m, const char *old, const char *new, stru
 
   int rc = rename_filename(m, old, new, e);
 
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
   return rc;
@@ -2028,8 +2026,8 @@ done:
     notmuch_message_destroy(msg);
   if (trans == 1)
     nm_db_trans_end(m);
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+
+  nm_db_release(m);
   return rc;
 }
 
@@ -2078,8 +2076,7 @@ done:
   if (tags)
     notmuch_tags_destroy(tags);
 
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
 
   mutt_debug(1, "nm: get all tags done [rc=%d tag_count=%u]\n", rc, *tag_count);
   return rc;
@@ -2165,8 +2162,7 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
     notmuch_query_destroy(q);
   }
 
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
 
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
@@ -2295,8 +2291,7 @@ done:
   if (q)
     notmuch_query_destroy(q);
 
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
 
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
@@ -2389,8 +2384,8 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   mutt_str_strfcpy(m->path, uri, sizeof(m->path));
   m->magic = MUTT_NOTMUCH;
 
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
+
   if (changed)
   {
     m->mtime.tv_sec = time(NULL);
@@ -2500,8 +2495,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
   rc = 0;
   e->changed = true;
 done:
-  if (!nm_db_is_longrun(m))
-    nm_db_release(m);
+  nm_db_release(m);
   if (e->changed)
   {
     m->mtime.tv_sec = time(NULL);
