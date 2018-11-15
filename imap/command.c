@@ -869,7 +869,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     struct ImapAccountData *m_adata = imap_adata_get(np->m);
     if (imap_account_match(&adata->conn_account, &m_adata->conn_account))
     {
-      struct ImapMailboxData *mdata = imap_mdata_get(np->m);
+      struct ImapMboxData *mdata = imap_mdata_get(np->m);
       if (mdata && imap_mxcmp(mailbox, mdata->name) == 0)
       {
         mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",

@@ -274,11 +274,11 @@ struct ImapAccountData
 };
 
 /**
- * struct ImapMailboxData - IMAP-specific Mailbox data
+ * struct ImapMboxData - IMAP-specific Mailbox data
  *
  * This data is specific to a Mailbox of an IMAP server
  */
-struct ImapMailboxData
+struct ImapMboxData
 {
   char *name;
   char *munge_name;
@@ -317,7 +317,7 @@ int imap_login(struct ImapAccountData *adata);
 void imap_logout(struct ImapAccountData **adata);
 int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
-int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMailboxData **mdata);
+int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);
@@ -346,7 +346,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 
 /* util.c */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m);
-struct ImapMailboxData *imap_mdata_get(struct Mailbox *m);
+struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);
@@ -362,7 +362,7 @@ int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);
-struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
+struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
 void imap_mdata_free(void **ptr);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);

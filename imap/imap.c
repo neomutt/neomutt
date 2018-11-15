@@ -340,7 +340,7 @@ int imap_prepare_mailbox(struct Mailbox *m)
   if (!m || !m->account)
     return -1;
 
-  struct ImapMailboxData *mdata;
+  struct ImapMboxData *mdata;
   struct ImapAccountData *adata = m->account->adata;
 
   mutt_account_hook(m->realpath);
@@ -674,7 +674,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
 int imap_access(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   int rc;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
@@ -1351,7 +1351,7 @@ int imap_check(struct ImapAccountData *adata, bool force)
 int imap_mailbox_check(struct Mailbox *m, bool check_stats)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char command[LONG_STRING * 2];
 
   if (imap_prepare_mailbox(m))
@@ -1421,7 +1421,7 @@ int imap_status(const char *path, bool queue)
   static int queued = 0;
 
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char buf[LONG_STRING * 2];
   struct ImapStatus *status = NULL;
 
@@ -1594,7 +1594,7 @@ int imap_search(struct Mailbox *m, const struct Pattern *pat)
 int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char buf[LONG_STRING * 2];
   char mbox[LONG_STRING];
   char errstr[STRING];
@@ -1652,7 +1652,7 @@ int imap_subscribe(char *path, bool subscribe)
 int imap_complete(char *buf, size_t buflen, char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char tmp[LONG_STRING * 2];
   struct ImapList listresp;
   char completion[LONG_STRING];
@@ -1738,7 +1738,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapAccountData *dest_adata = NULL;
-  struct ImapMailboxData *dest_mdata = NULL;
+  struct ImapMboxData *dest_mdata = NULL;
 
   if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
     return -1;
@@ -2176,7 +2176,7 @@ static int imap_mbox_open(struct Context *ctx)
     return -1;
 
   struct ImapAccountData *adata = m->account->adata;
-  struct ImapMailboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = m->mdata;
 
   FREE(&(adata->mbox_name));
   adata->mbox_name = mutt_str_strdup(mdata->name);
@@ -2420,7 +2420,7 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
     return -1;
 
   struct ImapAccountData *adata = m->account->adata;
-  struct ImapMailboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = m->mdata;
 
   rc = imap_access2(adata, mdata->name);
   if (rc == 0)

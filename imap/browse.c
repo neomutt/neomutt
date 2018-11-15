@@ -367,7 +367,7 @@ fail:
 int imap_mailbox_create(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char name[LONG_STRING];
   short n;
 
@@ -419,7 +419,7 @@ err:
 int imap_mailbox_rename(const char *path)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char buf[PATH_MAX];
   char newname[PATH_MAX];
 

@@ -127,7 +127,7 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m)
  * imap_adata_find - Find the Account data for this path
  */
 int imap_adata_find(const char *path, struct ImapAccountData **adata,
-                    struct ImapMailboxData **mdata)
+                    struct ImapMboxData **mdata)
 {
   struct ConnAccount conn_account;
   struct ImapAccountData *tmp_adata;
@@ -155,13 +155,13 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
 }
 
 /**
- * imap_mdata_new - Allocate and initialise a new ImapMailboxData structure
- * @retval ptr New ImapMailboxData
+ * imap_mdata_new - Allocate and initialise a new ImapMboxData structure
+ * @retval ptr New ImapMboxData
  */
-struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
+struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
 {
   char buf[LONG_STRING];
-  struct ImapMailboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMailboxData));
+  struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
   mdata->real_name = mutt_str_strdup(name);
 
@@ -177,7 +177,7 @@ struct ImapMailboxData *imap_mdata_new(struct ImapAccountData *adata, const char
 }
 
 /**
- * imap_mdata_free - Release and clear storage in an ImapMailboxData structure
+ * imap_mdata_free - Release and clear storage in an ImapMboxData structure
  * @param ptr Imap Mailbox data
  */
 void imap_mdata_free(void **ptr)
@@ -185,7 +185,7 @@ void imap_mdata_free(void **ptr)
   if (!ptr || !*ptr)
     return;
 
-  struct ImapMailboxData *mdata = *ptr;
+  struct ImapMboxData *mdata = *ptr;
 
   FREE(&mdata->name);
   FREE(&mdata->real_name);
@@ -196,7 +196,7 @@ void imap_mdata_free(void **ptr)
 /**
  * imap_mdata_get - Get the Mailbox data for this mailbox
  */
-struct ImapMailboxData *imap_mdata_get(struct Mailbox *m)
+struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 {
   if (!m || (m->magic != MUTT_IMAP) || !m->mdata)
     return NULL;
@@ -259,7 +259,7 @@ void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen)
 void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
   char mbox[LONG_STRING];
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
@@ -286,7 +286,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
 void imap_clean_path(char *path, size_t plen)
 {
   struct ImapAccountData *adata = NULL;
-  struct ImapMailboxData *mdata = NULL;
+  struct ImapMboxData *mdata = NULL;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return;
@@ -383,7 +383,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path
     imap_cachepath(adata, path, mbox, sizeof(mbox));
   else if (adata->mailbox)
   {
-    struct ImapMailboxData *mdata = imap_mdata_get(adata->mailbox);
+    struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
     imap_cachepath(adata, mdata->name, mbox, sizeof(mbox));
   }
   else
