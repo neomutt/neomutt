@@ -1382,25 +1382,16 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   FILE *fp = NULL;
   char buf[LONG_STRING * 2];
-  char mbox[LONG_STRING];
-  char mailbox[LONG_STRING];
   char internaldate[IMAP_DATELEN];
   char imap_flags[SHORT_STRING];
   size_t len;
   struct Progress progressbar;
   size_t sent;
   int c, last;
-  struct ImapMbox mx;
   int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-
-  if (imap_parse_path(m->path, &mx))
-    return -1;
-
-  imap_fix_path(adata, mx.mbox, mailbox, sizeof(mailbox));
-  if (!*mailbox)
-    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   fp = fopen(msg->path, "r");
   if (!fp)
@@ -1427,7 +1418,6 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   mutt_progress_init(&progressbar, _("Uploading message..."),
                      MUTT_PROGRESS_SIZE, NetInc, len);
 
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), mailbox);
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
   imap_flags[0] = 0;
@@ -1442,7 +1432,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   if (msg->flags.draft)
     mutt_str_strcat(imap_flags, sizeof(imap_flags), " \\Draft");
 
-  snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mbox,
+  snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mdata->munge_name,
            imap_flags + 1, internaldate, (unsigned long) len);
 
   imap_cmd_start(adata, buf);
@@ -1498,11 +1488,9 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     goto fail;
   }
 
-  FREE(&mx.mbox);
   return 0;
 
 fail:
-  FREE(&mx.mbox);
   return -1;
 }
 
@@ -1522,30 +1510,16 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     return -1;
 
   struct Buffer cmd, sync_cmd;
+  char buf[PATH_MAX];
   char mbox[PATH_MAX];
   char mmbox[PATH_MAX];
   char prompt[PATH_MAX + 64];
   int rc;
-  struct ImapMbox mx;
+  struct ConnAccount conn_account;
   int err_continue = MUTT_NO;
   int triedcreate = 0;
 
   struct Mailbox *m = ctx->mailbox;
-
-  struct ImapAccountData *adata = imap_adata_get(m);
-
-  if (imap_parse_path(dest, &mx))
-  {
-    mutt_debug(1, "bad destination %s\n", dest);
-    return -1;
-  }
-
-  /* check that the save-to folder is in the same account */
-  if (!mutt_account_match(&(adata->conn->account), &(mx.account)))
-  {
-    mutt_debug(3, "%s not same server as %s\n", dest, m->path);
-    return 1;
-  }
 
   if (e && e->attach_del)
   {
@@ -1553,7 +1527,22 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     return 1;
   }
 
-  imap_fix_path(adata, mx.mbox, mbox, sizeof(mbox));
+  struct ImapAccountData *adata = imap_adata_get(m);
+
+  if (imap_parse_path(dest, &conn_account, buf, sizeof(buf)))
+  {
+    mutt_debug(1, "bad destination %s\n", dest);
+    return -1;
+  }
+
+  /* check that the save-to folder is in the same account */
+  if (!mutt_account_match(&adata->conn->account, &conn_account))
+  {
+    mutt_debug(3, "%s not same server as %s\n", dest, m->path);
+    return 1;
+  }
+
+  imap_fix_path(adata, buf, mbox, sizeof(mbox));
   if (!*mbox)
     mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(adata, mmbox, sizeof(mmbox), mbox);
@@ -1695,7 +1684,6 @@ out:
     FREE(&cmd.data);
   if (sync_cmd.data)
     FREE(&sync_cmd.data);
-  FREE(&mx.mbox);
 
   return (rc < 0) ? -1 : rc;
 }

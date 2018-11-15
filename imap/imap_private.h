@@ -37,7 +37,6 @@
 struct Context;
 struct Email;
 struct ImapEmailData;
-struct ImapMbox;
 struct Mailbox;
 struct Message;
 struct Progress;
@@ -275,6 +274,18 @@ struct ImapAccountData
 };
 
 /**
+ * struct ImapMboxData - IMAP-specific Mailbox data
+ *
+ * This data is specific to a Mailbox of an IMAP server
+ */
+struct ImapMboxData
+{
+  char *name;
+  char *munge_name;
+  char *real_name;
+};
+
+/**
  * struct SeqsetIterator - UID Sequence Set Iterator
  */
 struct SeqsetIterator
@@ -293,7 +304,7 @@ struct SeqsetIterator
 /* imap.c */
 int imap_check(struct ImapAccountData *adata, bool force);
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
-int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, const char *newname);
+int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
 struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, const char *mbox, bool create);
 void imap_mboxcache_free(struct ImapAccountData *adata);
 int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
@@ -306,7 +317,7 @@ int imap_login(struct ImapAccountData *adata);
 void imap_logout(struct ImapAccountData **adata);
 int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
-struct ImapAccountData *imap_adata_find(const char *path, struct ImapMbox *mx);
+int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);
@@ -335,6 +346,7 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 
 /* util.c */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m);
+struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
 void imap_hcache_close(struct ImapAccountData *adata);
@@ -350,13 +362,15 @@ int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);
+struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
+void imap_mdata_free(void **ptr);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path);
+void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path);
 void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest, size_t dlen, const char *src);
