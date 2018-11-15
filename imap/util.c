@@ -272,7 +272,7 @@ void imap_get_parent_path(const char *path, char *buf, size_t buflen)
   imap_get_parent(mdata->name, adata->delim, mbox, sizeof(mbox));
 
   /* Returns a fully qualified IMAP url */
-  imap_qualify_path2(buf, buflen, &adata->conn_account, mbox);
+  imap_qualify_path(buf, buflen, &adata->conn_account, mbox);
   imap_mdata_free((void *) &mdata);
 }
 
@@ -293,7 +293,7 @@ void imap_clean_path(char *path, size_t plen)
 
   /* Returns a fully qualified IMAP url */
   // TODO(sileht): Put it in mdata directly ?
-  imap_qualify_path2(path, plen, &adata->conn_account, mdata->name);
+  imap_qualify_path(path, plen, &adata->conn_account, mdata->name);
   imap_mdata_free((void *) &mdata);
 }
 
@@ -899,13 +899,13 @@ char *imap_next_word(char *s)
 }
 
 /**
- * imap_qualify_path2 - Make an absolute IMAP folder target
+ * imap_qualify_path - Make an absolute IMAP folder target
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
  * @param conn_account     ConnAccount of the account
  * @param path   Path relative to the mailbox
  */
-void imap_qualify_path2(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path)
+void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path)
 {
   struct Url url;
   mutt_account_tourl(conn_account, &url);

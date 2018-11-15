@@ -1712,7 +1712,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path2(buf, buflen, &adata->conn_account, completion);
+    imap_qualify_path(buf, buflen, &adata->conn_account, completion);
     mutt_pretty_mailbox(buf, buflen);
     return 0;
   }
@@ -2181,7 +2181,7 @@ static int imap_mbox_open(struct Context *ctx)
   FREE(&(adata->mbox_name));
   adata->mbox_name = mutt_str_strdup(mdata->name);
   // TODO(sileht): store qualifed path in mdata ?
-  imap_qualify_path2(buf, sizeof(buf), &adata->conn_account, adata->mbox_name);
+  imap_qualify_path(buf, sizeof(buf), &adata->conn_account, adata->mbox_name);
 
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
   mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));

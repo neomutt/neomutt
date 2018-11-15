@@ -93,7 +93,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   if (Mask && Mask->regex && !((regexec(Mask->regex, relpath, 0, NULL, 0) == 0) ^ Mask->not))
     return;
 
-  imap_qualify_path2(tmp, sizeof(tmp), &conn_account, folder);
+  imap_qualify_path(tmp, sizeof(tmp), &conn_account, folder);
   (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
@@ -268,7 +268,7 @@ int imap_browse(char *path, struct BrowserState *state)
     if (mbox[n - 1] == list.delim)
     {
       showparents = true;
-      imap_qualify_path2(buf, sizeof(buf), &conn_account, mbox);
+      imap_qualify_path(buf, sizeof(buf), &conn_account, mbox);
       state->folder = mutt_str_strdup(buf);
       n--;
     }
@@ -301,7 +301,7 @@ int imap_browse(char *path, struct BrowserState *state)
         mbox[n++] = ctmp;
         ctmp = mbox[n];
         mbox[n] = '\0';
-        imap_qualify_path2(buf, sizeof(buf), &conn_account, mbox);
+        imap_qualify_path(buf, sizeof(buf), &conn_account, mbox);
         state->folder = mutt_str_strdup(buf);
       }
       mbox[n] = ctmp;
@@ -316,7 +316,7 @@ int imap_browse(char *path, struct BrowserState *state)
         add_folder(adata->delim, relpath, true, false, state, true);
       if (!state->folder)
       {
-        imap_qualify_path2(buf, sizeof(buf), &conn_account, relpath);
+        imap_qualify_path(buf, sizeof(buf), &conn_account, relpath);
         state->folder = mutt_str_strdup(buf);
       }
     }
@@ -325,7 +325,7 @@ int imap_browse(char *path, struct BrowserState *state)
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
   {
-    imap_qualify_path2(buf, sizeof(buf), &conn_account, NULL);
+    imap_qualify_path(buf, sizeof(buf), &conn_account, NULL);
     state->folder = mutt_str_strdup(buf);
   }
 
