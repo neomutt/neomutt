@@ -45,7 +45,6 @@ enum UrlScheme
   U_NOTMUCH,
 };
 
-#define U_DECODE_PASSWD (1 << 0)
 #define U_PATH          (1 << 1)
 
 /**

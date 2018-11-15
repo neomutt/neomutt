@@ -339,7 +339,7 @@ void url_pct_encode(char *buf, size_t buflen, const char *src)
  * @param u      Url to turn into a string
  * @param buf    Buffer for the result
  * @param buflen Length of buffer
- * @param flags  Flags, e.g. #U_DECODE_PASSWD
+ * @param flags  Flags, e.g. #U_PATH
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -362,16 +362,7 @@ int url_tostring(struct Url *u, char *buf, size_t buflen, int flags)
     {
       char str[STRING];
       url_pct_encode(str, sizeof(str), u->user);
-
-      if (flags & U_DECODE_PASSWD && u->pass)
-      {
-        char p[STRING];
-        url_pct_encode(p, sizeof(p), u->pass);
-        snprintf(buf, buflen, "%s:%s@", str, p);
-      }
-      else
-        snprintf(buf, buflen, "%s@", str);
-
+      snprintf(buf, buflen, "%s@", str);
       l = strlen(buf);
       buflen -= l;
       buf += l;
