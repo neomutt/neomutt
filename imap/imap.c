@@ -2064,7 +2064,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     struct ConnAccount *conn_account = mutt_mem_calloc(1, sizeof(struct ConnAccount));
     char mailbox[LONG_STRING];
 
-    if (imap_parse_path2(m->path, conn_account, mailbox, sizeof(mailbox)) < 0)
+    if (imap_parse_path(m->path, conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
 
     if (!a->adata)
@@ -2226,7 +2226,7 @@ static int imap_mbox_open(struct Context *ctx)
   char p_mailbox[LONG_STRING];
 
   if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) &&
-      !imap_parse_path2(Postponed, &p_conn_account, p_mailbox, sizeof(p_mailbox)) &&
+      !imap_parse_path(Postponed, &p_conn_account, p_mailbox, sizeof(p_mailbox)) &&
       mutt_account_match(&p_conn_account, &adata->conn_account))
   {
     imap_status(Postponed, true);

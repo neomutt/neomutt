@@ -133,7 +133,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
   struct ImapAccountData *tmp_adata;
   char tmp[LONG_STRING];
 
-  if (imap_parse_path2(path, &conn_account, tmp, sizeof(tmp)) < 0)
+  if (imap_parse_path(path, &conn_account, tmp, sizeof(tmp)) < 0)
     return -1;
 
   struct Account *np = NULL;
@@ -542,7 +542,7 @@ char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata)
 #endif
 
 /**
- * imap_parse_path2 - Parse an IMAP mailbox name into ConnAccount, name
+ * imap_parse_path - Parse an IMAP mailbox name into ConnAccount, name
  * @param path       Mailbox path to parse
  * @param account    Account credentials
  * @param mailbox    Buffer for mailbox name
@@ -553,7 +553,7 @@ char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata)
  * Given an IMAP mailbox name, return host, port and a path IMAP servers will
  * recognize.  mx.mbox is malloc'd, caller must free it
  */
-int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen)
+int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
@@ -671,13 +671,13 @@ void imap_pretty_mailbox(char *path, const char *folder)
   char target_mailbox[LONG_STRING];
   char home_mailbox[LONG_STRING];
 
-  if (imap_parse_path2(path, &target_conn_account, target_mailbox, sizeof(target_mailbox)) < 0)
+  if (imap_parse_path(path, &target_conn_account, target_mailbox, sizeof(target_mailbox)) < 0)
     return;
 
   if (imap_path_probe(folder, NULL) != MUTT_IMAP)
     goto fallback;
 
-  if (imap_parse_path2(folder, &home_conn_account, home_mailbox, sizeof(home_mailbox)) < 0)
+  if (imap_parse_path(folder, &home_conn_account, home_mailbox, sizeof(home_mailbox)) < 0)
     goto fallback;
 
   tlen = mutt_str_strlen(target_mailbox);

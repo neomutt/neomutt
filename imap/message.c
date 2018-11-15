@@ -1529,7 +1529,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
 
   struct ImapAccountData *adata = imap_adata_get(m);
 
-  if (imap_parse_path2(dest, &conn_account, buf, sizeof(buf)))
+  if (imap_parse_path(dest, &conn_account, buf, sizeof(buf)))
   {
     mutt_debug(1, "bad destination %s\n", dest);
     return -1;

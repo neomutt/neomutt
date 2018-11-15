@@ -68,7 +68,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   struct ConnAccount conn_account;
   char mailbox[LONG_STRING];
 
-  if (imap_parse_path2(state->folder, &conn_account, mailbox, sizeof(mailbox)))
+  if (imap_parse_path(state->folder, &conn_account, mailbox, sizeof(mailbox)))
     return;
 
   if (state->entrylen + 1 == state->entrymax)
@@ -196,7 +196,7 @@ int imap_browse(char *path, struct BrowserState *state)
   bool showparents = false;
   bool save_lsub;
 
-  if (imap_parse_path2(path, &conn_account, buf, sizeof(buf)))
+  if (imap_parse_path(path, &conn_account, buf, sizeof(buf)))
   {
     mutt_error(_("%s is an invalid IMAP path"), path);
     return -1;
