@@ -581,6 +581,7 @@ int imap_parse_path2(const char *path, struct ConnAccount *account, char *mailbo
   }
 
   /* Defaults */
+  memset(account, 0, sizeof(struct ConnAccount));
   account->port = ImapPort;
   account->type = MUTT_ACCT_TYPE_IMAP;
 
