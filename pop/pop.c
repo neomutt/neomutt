@@ -757,23 +757,20 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
   if (!a || (a->magic != MUTT_POP) || !path)
     return NULL;
 
-  struct Url url;
-  char tmp[PATH_MAX];
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
-  url_parse(&url, tmp);
+  struct Url *url = url_parse(path);
+  if (!url)
+    return NULL;
 
   struct PopAccountData *adata = a->adata;
   struct ConnAccount *ac = &adata->conn_account;
 
-  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
-    return NULL;
+  if ((mutt_str_strcasecmp(url->host, ac->host) != 0) ||
+      (mutt_str_strcasecmp(url->user, ac->user) != 0))
+  {
+    a = NULL;
+  }
 
-  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
-    return NULL;
-
-  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
-  //   return a;
-
+  url_free(&url);
   return a;
 }
 
@@ -795,24 +792,24 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
     a->adata = adata;
     a->free_adata = pop_adata_free;
 
-    struct Url url;
-    char tmp[PATH_MAX];
-    mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
-    url_parse(&url, tmp);
+    struct Url *url = url_parse(m->path);
+    if (url)
+    {
+      mutt_str_strfcpy(adata->conn_account.user, url->user,
+                       sizeof(adata->conn_account.user));
+      mutt_str_strfcpy(adata->conn_account.pass, url->pass,
+                       sizeof(adata->conn_account.pass));
+      mutt_str_strfcpy(adata->conn_account.host, url->host,
+                       sizeof(adata->conn_account.host));
+      adata->conn_account.port = url->port;
+      adata->conn_account.type = MUTT_ACCT_TYPE_POP;
 
-    mutt_str_strfcpy(adata->conn_account.user, url.user,
-                     sizeof(adata->conn_account.user));
-    mutt_str_strfcpy(adata->conn_account.pass, url.pass,
-                     sizeof(adata->conn_account.pass));
-    mutt_str_strfcpy(adata->conn_account.host, url.host,
-                     sizeof(adata->conn_account.host));
-    adata->conn_account.port = url.port;
-    adata->conn_account.type = MUTT_ACCT_TYPE_POP;
-
-    if (adata->conn_account.user[0] != '\0')
-      adata->conn_account.flags |= MUTT_ACCT_USER;
-    if (adata->conn_account.pass[0] != '\0')
-      adata->conn_account.flags |= MUTT_ACCT_PASS;
+      if (adata->conn_account.user[0] != '\0')
+        adata->conn_account.flags |= MUTT_ACCT_USER;
+      if (adata->conn_account.pass[0] != '\0')
+        adata->conn_account.flags |= MUTT_ACCT_PASS;
+      url_free(&url);
+    }
   }
 
   m->account = a;

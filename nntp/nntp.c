@@ -2456,23 +2456,22 @@ static int nntp_mbox_open(struct Context *ctx)
   int rc;
   void *hc = NULL;
   anum_t first, last, count = 0;
-  struct Url url;
 
-  mutt_str_strfcpy(buf, m->path, sizeof(buf));
-  if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
+  struct Url *url = url_parse(m->path);
+  if (!url || !url->host || !url->path ||
+      !(url->scheme == U_NNTP || url->scheme == U_NNTPS))
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification"), m->path);
     return -1;
   }
 
-  group = url.path;
+  group = url->path;
   if (group[0] == '/') /* Skip a leading '/' */
     group++;
 
-  url.path = strchr(url.path, '\0');
-  url_tostring(&url, server, sizeof(server), 0);
+  url->path = strchr(url->path, '\0');
+  url_tostring(url, server, sizeof(server), 0);
 
   mutt_account_hook(m->realpath);
   struct NntpAccountData *adata = m->account->adata;

@@ -558,8 +558,6 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
-  struct Url url;
-  char *c = NULL;
 
   if (!ImapPort)
   {
@@ -585,24 +583,20 @@ int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox
   account->port = ImapPort;
   account->type = MUTT_ACCT_TYPE_IMAP;
 
-  c = mutt_str_strdup(path);
-  url_parse(&url, c);
-
-  if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
+  struct Url *url = url_parse(path);
+  if (url && (url->scheme == U_IMAP || url->scheme == U_IMAPS))
   {
-    if (mutt_account_fromurl(account, &url) < 0 || !*account->host)
+    if (mutt_account_fromurl(account, url) < 0 || !*account->host)
     {
       url_free(&url);
-      FREE(&c);
       return -1;
     }
-    if (url.scheme == U_IMAPS)
+    if (url->scheme == U_IMAPS)
       account->flags |= MUTT_ACCT_SSL;
 
-    mutt_str_strfcpy(mailbox, url.path, mailboxlen);
+    mutt_str_strfcpy(mailbox, url->path, mailboxlen);
 
     url_free(&url);
-    FREE(&c);
   }
   else
     return -1;

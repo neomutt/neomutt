@@ -72,11 +72,12 @@ struct Url
   unsigned short port;
   char *path;
   STAILQ_HEAD(, UrlQueryString) query_strings;
+  char src[];
 };
 
 enum UrlScheme url_check_scheme(const char *s);
-void           url_free(struct Url *u);
-int            url_parse(struct Url *u, char *src);
+void           url_free(struct Url **u);
+struct Url    *url_parse(const char *src);
 int            url_pct_decode(char *s);
 void           url_pct_encode(char *buf, size_t buflen, const char *src);
 int            url_tostring(struct Url *u, char *buf, size_t buflen, int flags);

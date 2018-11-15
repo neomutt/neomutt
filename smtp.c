@@ -310,26 +310,20 @@ static bool addresses_use_unicode(const struct Address *a)
  */
 static int smtp_fill_account(struct ConnAccount *account)
 {
-  struct Url url;
-
   account->flags = 0;
   account->port = 0;
   account->type = MUTT_ACCT_TYPE_SMTP;
 
-  char *urlstr = mutt_str_strdup(SmtpUrl);
-  url_parse(&url, urlstr);
-  if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) || !url.host ||
-      mutt_account_fromurl(account, &url) < 0)
+  struct Url *url = url_parse(SmtpUrl);
+  if (!url || (url->scheme != U_SMTP && url->scheme != U_SMTPS) || !url->host ||
+      mutt_account_fromurl(account, url) < 0)
   {
     url_free(&url);
-    FREE(&urlstr);
     mutt_error(_("Invalid SMTP URL: %s"), SmtpUrl);
     return -1;
   }
-  url_free(&url);
-  FREE(&urlstr);
 
-  if (url.scheme == U_SMTPS)
+  if (url->scheme == U_SMTPS)
     account->flags |= MUTT_ACCT_SSL;
 
   if (!account->port)
@@ -352,6 +346,7 @@ static int smtp_fill_account(struct ConnAccount *account)
     }
   }
 
+  url_free(&url);
   return 0;
 }
 

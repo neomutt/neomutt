@@ -1004,7 +1004,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   struct ConnAccount acct = { { 0 } };
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
-  struct Url url;
 
   if (!server || !*server)
   {
@@ -1017,15 +1016,16 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   acct.port = NNTP_PORT;
   acct.type = MUTT_ACCT_TYPE_NNTP;
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
-  if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS) || !url.host ||
-      mutt_account_fromurl(&acct, &url) < 0)
+  struct Url *url = url_parse(file);
+  if (!url || (url->path && *url->path) ||
+      !(url->scheme == U_NNTP || url->scheme == U_NNTPS) || !url->host ||
+      mutt_account_fromurl(&acct, url) < 0)
   {
     url_free(&url);
     mutt_error(_("%s is an invalid news server specification"), server);
     return NULL;
   }
-  if (url.scheme == U_NNTPS)
+  if (url->scheme == U_NNTPS)
   {
     acct.flags |= MUTT_ACCT_SSL;
     acct.port = NNTP_SSL_PORT;

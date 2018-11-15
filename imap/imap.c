@@ -347,14 +347,11 @@ int imap_prepare_mailbox(struct Mailbox *m)
 
   if (!m->mdata)
   {
-    struct Url url;
-    char tmp[PATH_MAX];
-    mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
-    url_parse(&url, tmp);
-
-    mdata = imap_mdata_new(adata, url.path);
+    struct Url *url = url_parse(m->path);
+    mdata = imap_mdata_new(adata, url->path);
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;
+    url_free(&url);
   }
 
   if (imap_login(adata) < 0)
@@ -722,14 +719,12 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
  */
 int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
-  struct Url url;
-  char tmp[PATH_MAX];
   char buf[PATH_MAX];
   char mbox[PATH_MAX];
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
-  url_parse(&url, tmp);
+  struct Url *url = url_parse(path);
 
-  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), url.path);
+  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), url->path);
+  url_free(&url);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
   if (imap_exec(m->account->adata, buf, 0) != 0)
     return -1;
@@ -2031,23 +2026,18 @@ struct Account *imap_ac_find(struct Account *a, const char *path)
   if (!a || (a->magic != MUTT_IMAP) || !path)
     return NULL;
 
-  struct Url url;
-  char tmp[PATH_MAX];
-  mutt_str_strfcpy(tmp, path, sizeof(tmp));
-  url_parse(&url, tmp);
+  struct Url *url = url_parse(path);
 
   struct ImapAccountData *adata = a->adata;
   struct ConnAccount *ac = &adata->conn_account;
 
-  if (mutt_str_strcasecmp(url.host, ac->host) != 0)
-    return NULL;
+  if ((mutt_str_strcasecmp(url->host, ac->host) != 0) ||
+      (mutt_str_strcasecmp(url->user, ac->user) != 0))
+  {
+    a = NULL;
+  }
 
-  if (mutt_str_strcasecmp(url.user, ac->user) != 0)
-    return NULL;
-
-  // if (mutt_str_strcmp(path, a->mailbox->realpath) == 0)
-  //   return a;
-
+  url_free(&url);
   return a;
 }
 
@@ -2748,14 +2738,17 @@ int imap_path_canon(char *buf, size_t buflen)
   if (!buf)
     return -1;
 
-  struct Url url;
   char tmp[PATH_MAX];
   char tmp2[PATH_MAX];
-  url_parse(&url, buf);
-  imap_fix_path(NULL, url.path, tmp, sizeof(tmp));
-  url.path = tmp;
-  url_tostring(&url, tmp2, sizeof(tmp2), 0);
-  mutt_str_strfcpy(buf, tmp2, buflen);
+  struct Url *url = url_parse(buf);
+  if (url)
+  {
+    imap_fix_path(NULL, url->path, tmp, sizeof(tmp));
+    url->path = tmp;
+    url_tostring(url, tmp2, sizeof(tmp2), 0);
+    mutt_str_strfcpy(buf, tmp2, buflen);
+    url_free(&url);
+  }
 
   return 0;
 }
