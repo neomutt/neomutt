@@ -46,12 +46,12 @@ static const struct Mapping UrlMap[] = {
 
 /**
  * parse_query_string - Parse a URL query string
- * @param u Url to store the results
+ * @param l List to store the results
  * @param src String to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-static int parse_query_string(struct Url *u, char *src)
+static int parse_query_string(struct UrlQueryStringHead *l, char *src)
 {
   struct UrlQueryString *qs = NULL;
   char *k = NULL, *v = NULL;
@@ -80,7 +80,7 @@ static int parse_query_string(struct Url *u, char *src)
       FREE(&qs);
       return -1;
     }
-    STAILQ_INSERT_TAIL(&u->query_strings, qs, entries);
+    STAILQ_INSERT_TAIL(l, qs, entries);
 
     if (!k)
       break;
@@ -142,8 +142,7 @@ enum UrlScheme url_check_scheme(const char *s)
     return U_UNKNOWN;
 
   mutt_str_strfcpy(sbuf, s, t - s + 1);
-  for (t = sbuf; *t; t++)
-    *t = tolower(*t);
+  mutt_str_strlower(sbuf);
 
   i = mutt_map_get_value(sbuf, UrlMap);
   if (i == -1)
@@ -198,15 +197,17 @@ struct Url *url_parse(const char *src)
 
   it += 2;
 
-  /* Notmuch and mailto schemes can include a query */
-  if ((u->scheme == U_NOTMUCH) || (u->scheme == U_MAILTO))
+  /* We have the length of the string, so let's be fancier than strrchr */
+  for (char *q = u->src + srcsize - 1; q >= it; --q)
   {
-    char *q = strrchr(it, '?');
-    if (q)
+    if (*q == '?')
     {
-      *q++ = '\0';
-      if (parse_query_string(u, q) < 0)
+      *q = '\0';
+      if (parse_query_string(&u->query_strings, q + 1) < 0)
+      {
         goto err;
+      }
+      break;
     }
   }
 

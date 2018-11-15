@@ -59,6 +59,8 @@ struct UrlQueryString
   STAILQ_ENTRY(UrlQueryString) entries;
 };
 
+STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
+
 /**
  * struct Url - A parsed URL `proto://user:password@host:port/path?a=1&b=2`
  */
@@ -70,7 +72,7 @@ struct Url
   char *host;
   unsigned short port;
   char *path;
-  STAILQ_HEAD(, UrlQueryString) query_strings;
+  struct UrlQueryStringHead query_strings;
   char src[];
 };
 
