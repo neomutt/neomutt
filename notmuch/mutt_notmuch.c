@@ -170,7 +170,6 @@ void nm_mdata_free(void **ptr)
   struct NmMboxData *mdata = *ptr;
 
   url_free(&mdata->db_url);
-  FREE(&mdata->db_url_holder);
   FREE(&mdata->db_query);
   FREE(ptr);
 }
@@ -193,9 +192,8 @@ struct NmMboxData *nm_mdata_new(const char *uri)
 
   mdata->db_limit = NmDbLimit;
   mdata->query_type = string_to_query_type(NmQueryType);
-  mdata->db_url_holder = mutt_str_strdup(uri);
-
-  if (url_parse(&mdata->db_url, mdata->db_url_holder) < 0)
+  mdata->db_url = url_parse(uri);
+  if (!mdata->db_url)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), uri);
     FREE(&mdata);
@@ -480,7 +478,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   mdata->query_type = string_to_query_type(NmQueryType); /* user's default */
 
   struct UrlQueryString *item = NULL;
-  STAILQ_FOREACH(item, &mdata->db_url.query_strings, entries)
+  STAILQ_FOREACH(item, &mdata->db_url->query_strings, entries)
   {
     if (!item->value || !item->name)
       continue;
@@ -1871,21 +1869,21 @@ int nm_update_filename(struct Mailbox *m, const char *old, const char *new, stru
 int nm_nonctx_get_count(struct Mailbox *m)
 {
   struct UrlQueryString *item = NULL;
-  struct Url url = { U_UNKNOWN };
-  char *url_holder = mutt_str_strdup(m->path);
+  struct Url *url = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
   int limit = NmDbLimit;
   mutt_debug(1, "nm: count\n");
 
-  if (url_parse(&url, url_holder) < 0)
+  url = url_parse(m->path);
+  if (!url)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), m->path);
     goto done;
   }
 
-  STAILQ_FOREACH(item, &url.query_strings, entries)
+  STAILQ_FOREACH(item, &url->query_strings, entries)
   {
     if (item->value && (strcmp(item->name, "query") == 0))
       db_query = item->value;
@@ -1896,7 +1894,7 @@ int nm_nonctx_get_count(struct Mailbox *m)
   if (!db_query)
     goto done;
 
-  db_filename = url.path;
+  db_filename = url->path;
   if (!db_filename)
   {
     if (NmDefaultUri)
@@ -1940,7 +1938,6 @@ done:
     mutt_debug(1, "nm: count close DB\n");
   }
   url_free(&url);
-  FREE(&url_holder);
 
   mutt_debug(1, "nm: count done [rc=%d]\n", rc);
   return rc;

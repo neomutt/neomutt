@@ -68,9 +68,7 @@ enum NmQueryType
  */
 struct NmMboxData
 {
-  struct Url db_url;   /**< Parsed view url of the Notmuch database */
-  char *db_url_holder; /**< The storage string used by db_url, we keep it
-                        *   to be able to free db_url */
+  struct Url *db_url;  /**< Parsed view url of the Notmuch database */
   char *db_query;      /**< Previous query */
   int db_limit;        /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */

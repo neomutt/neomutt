@@ -46,7 +46,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (!mdata)
     return NULL;
 
-  char *db_filename = mdata->db_url.path ? mdata->db_url.path : NmDefaultUri;
+  char *db_filename = mdata->db_url->path ? mdata->db_url->path : NmDefaultUri;
   if (!db_filename && !Folder)
     return NULL;
 
