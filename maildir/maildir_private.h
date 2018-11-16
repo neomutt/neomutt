@@ -28,7 +28,7 @@
 #include <time.h>
 
 /**
- * struct MaildirMboxData - MH-specific mailbox data
+ * struct MaildirMboxData - Maildir-specific Mailbox data - @extends Mailbox
  */
 struct MaildirMboxData
 {

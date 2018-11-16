@@ -74,7 +74,7 @@ struct PopCache
 };
 
 /**
- * struct PopAccountData - POP data attached to a Account - @extends Account
+ * struct PopAccountData - POP-specific Account data - @extends Account
  */
 struct PopAccountData
 {
@@ -102,7 +102,7 @@ struct PopAccountData
 };
 
 /**
- * struct PopEmailData - POP data attached to an Email - @extends Email
+ * struct PopEmailData - POP-specific Email data - @extends Email
  */
 struct PopEmailData
 {

@@ -203,7 +203,7 @@ enum ImapCommandType
 };
 
 /**
- * struct ImapAccountData - IMAP-specific server data
+ * struct ImapAccountData - IMAP-specific Account data - @extends Account
  *
  * This data is specific to a Connection to an IMAP server
  */
@@ -274,7 +274,7 @@ struct ImapAccountData
 };
 
 /**
- * struct ImapMboxData - IMAP-specific Mailbox data
+ * struct ImapMboxData - IMAP-specific Mailbox data - @extends Mailbox
  *
  * This data is specific to a Mailbox of an IMAP server
  */

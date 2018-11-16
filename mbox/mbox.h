@@ -40,7 +40,7 @@ struct Mailbox;
 struct stat;
 
 /**
- * struct MboxAccountData - Private Account data
+ * struct MboxAccountData - Mbox-specific Account data - @extends Account
  */
 struct MboxAccountData
 {
