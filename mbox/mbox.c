@@ -1085,8 +1085,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
         mutt_debug(1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), adata->fp))
       {
-        if ((m->magic == MUTT_MBOX &&
-             mutt_str_startswith(buffer, "From ", CASE_MATCH)) ||
+        if ((m->magic == MUTT_MBOX && mutt_str_startswith(buffer, "From ", CASE_MATCH)) ||
             (m->magic == MUTT_MMDF && (mutt_str_strcmp(buffer, MMDF_SEP) == 0)))
         {
           if (fseeko(adata->fp, m->size, SEEK_SET) != 0)

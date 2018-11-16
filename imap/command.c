@@ -1324,7 +1324,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     {
       /* read new mail messages */
       mutt_debug(2, "Fetching new mail\n");
-      /* check_status: curs_main uses imap_check_mailbox to detect
+      /* check_status: index uses imap_check_mailbox to detect
        *   whether the index needs updating */
       adata->check_status = IMAP_NEWMAIL_PENDING;
       imap_read_headers(adata, adata->max_msn + 1, count, false);

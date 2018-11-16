@@ -33,7 +33,7 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "curs_main.h"
+#include "index.h"
 #include "account.h"
 #include "alias.h"
 #include "browser.h"
@@ -91,7 +91,7 @@
 #include "monitor.h"
 #endif
 
-/* These Config Variables are only used in curs_main.c */
+/* These Config Variables are only used in index.c */
 bool ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
 bool CollapseAll;      ///< Config: Collapse all threads when entering a folder
 bool CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails

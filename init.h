@@ -41,7 +41,7 @@
 #include "commands.h"
 #include "compose.h"
 #include "curs_lib.h"
-#include "curs_main.h"
+#include "index.h"
 #include "edit.h"
 #include "globals.h"
 #include "group.h"
