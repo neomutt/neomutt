@@ -559,7 +559,7 @@ int mutt_parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     struct Account *a = mx_ac_find(m);
     if (!a)
     {
-      a = account_create();
+      a = account_new();
       a->magic = m->magic;
       TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
       new_account = true;

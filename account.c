@@ -27,10 +27,10 @@
 struct AccountList AllAccounts = TAILQ_HEAD_INITIALIZER(AllAccounts);
 
 /**
- * account_create - Create a new Account
+ * account_new - Create a new Account
  * @retval ptr New Account
  */
-struct Account *account_create(void)
+struct Account *account_new(void)
 {
   struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
   STAILQ_INIT(&a->mailboxes);

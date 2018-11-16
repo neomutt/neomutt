@@ -278,7 +278,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  struct Address *a = address_create("hello@example.com");
+  struct Address *a = address_new("hello@example.com");
   const char *name = "Ilama";
   char *addr = NULL;
   bool result = false;
@@ -419,7 +419,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   char *addr = NULL;
-  struct Address *a = address_create("world@example.com");
+  struct Address *a = address_new("world@example.com");
   bool result = false;
 
   const char *name = "Nectarine";
@@ -546,7 +546,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, AccountVarAddr);
+  struct CfgAccount *ac = ac_new(cs, account, AccountVarAddr);
 
   // set parent
   mutt_buffer_reset(err);
@@ -603,7 +603,7 @@ void config_address(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   address_init(cs);
   dont_fail = true;

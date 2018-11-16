@@ -198,7 +198,7 @@ struct ConfigSet
   cs_listener listeners[8];       /**< Listeners for notifications of changes to config items */
 };
 
-struct ConfigSet *cs_create(size_t size);
+struct ConfigSet *cs_new(size_t size);
 void              cs_init(struct ConfigSet *cs, size_t size);
 void              cs_free(struct ConfigSet **cs);
 

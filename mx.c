@@ -278,7 +278,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (!m->account)
   {
-    struct Account *a = account_create();
+    struct Account *a = account_new();
     m->account = a;
     a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
@@ -345,7 +345,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (!m->account)
   {
-    struct Account *a = account_create();
+    struct Account *a = account_new();
     a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
 

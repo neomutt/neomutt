@@ -2530,7 +2530,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.
    */
-  fnames = mutt_hash_create(count, 0);
+  fnames = mutt_hash_new(count, 0);
 
   for (p = md; p; p = p->next)
   {
@@ -2925,7 +2925,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   mhs_free_sequences(&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = mutt_hash_create(count, 0);
+  fnames = mutt_hash_new(count, 0);
 
   for (p = md; p; p = p->next)
   {

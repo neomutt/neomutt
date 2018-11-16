@@ -218,7 +218,7 @@ static void shrink_histfile(void)
 
   if (HistoryRemoveDups)
     for (hclass = 0; hclass < HC_LAST; hclass++)
-      dup_hashes[hclass] = mutt_hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
+      dup_hashes[hclass] = mutt_hash_new(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)))

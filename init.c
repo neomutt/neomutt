@@ -2861,12 +2861,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   err.data = mutt_mem_malloc(err.dsize);
   err.dptr = err.data;
 
-  Groups = mutt_hash_create(1031, 0);
+  Groups = mutt_hash_new(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = mutt_hash_create(
-      1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-  TagTransforms = mutt_hash_create(64, MUTT_HASH_STRCASECMP);
-  TagFormats = mutt_hash_create(64, 0);
+  ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
+                                           MUTT_HASH_ALLOW_DUPS);
+  TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
+  TagFormats = mutt_hash_new(64, 0);
 
   mutt_menu_init();
   mutt_buffer_pool_init();
@@ -3660,7 +3660,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
  */
 struct ConfigSet *init_config(size_t size)
 {
-  struct ConfigSet *cs = cs_create(size);
+  struct ConfigSet *cs = cs_new(size);
 
   address_init(cs);
   bool_init(cs);

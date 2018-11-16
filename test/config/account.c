@@ -52,7 +52,7 @@ void config_account(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   number_init(cs);
   if (!TEST_CHECK(cs_register_variables(cs, Vars, 0)))
@@ -68,7 +68,7 @@ void config_account(void)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, BrokenVarStr);
+  struct CfgAccount *ac = ac_new(cs, account, BrokenVarStr);
   if (TEST_CHECK(!ac))
   {
     TEST_MSG("Expected error:\n");
@@ -87,7 +87,7 @@ void config_account(void)
   };
 
   TEST_MSG("Expect error for next test\n");
-  ac = ac_create(cs, account, CfgAccountVarStr2);
+  ac = ac_new(cs, account, CfgAccountVarStr2);
   if (!TEST_CHECK(!ac))
   {
     ac_free(cs, &ac);
@@ -102,7 +102,7 @@ void config_account(void)
     NULL,
   };
 
-  ac = ac_create(cs, account, CfgAccountVarStr);
+  ac = ac_new(cs, account, CfgAccountVarStr);
   if (!TEST_CHECK(ac != NULL))
     return;
 

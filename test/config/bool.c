@@ -525,7 +525,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_new(cs, account, AccountVarStr);
 
   // set parent
   VarMango = false;
@@ -719,7 +719,7 @@ void config_bool(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   bool_init(cs);
   quad_init(cs);

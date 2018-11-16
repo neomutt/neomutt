@@ -40,7 +40,7 @@ struct CfgAccount
   struct HashElem **vars;     /**< Array of the HashElems of local config items */
 };
 
-struct CfgAccount *ac_create(const struct ConfigSet *cs, const char *name, const char *var_names[]);
+struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name, const char *var_names[]);
 void ac_free(const struct ConfigSet *cs, struct CfgAccount **ac);
 
 int ac_set_value(const struct CfgAccount *ac, size_t vid, intptr_t value, struct Buffer *err);

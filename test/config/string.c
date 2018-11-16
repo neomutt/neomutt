@@ -573,7 +573,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, AccountVarStr);
+  struct CfgAccount *ac = ac_new(cs, account, AccountVarStr);
 
   // set parent
   mutt_buffer_reset(err);
@@ -630,7 +630,7 @@ void config_string(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   string_init(cs);
   dont_fail = true;

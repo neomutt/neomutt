@@ -41,14 +41,14 @@
 #include "types.h"
 
 /**
- * ac_create - Create an CfgAccount
+ * ac_new - Create an CfgAccount
  * @param cs        Config items
  * @param name      Name of CfgAccount
  * @param var_names List of config items (NULL terminated)
  * @retval ptr New CfgAccount object
  */
-struct CfgAccount *ac_create(const struct ConfigSet *cs, const char *name,
-                             const char *var_names[])
+struct CfgAccount *ac_new(const struct ConfigSet *cs, const char *name,
+                          const char *var_names[])
 {
   if (!cs || !name || !var_names)
     return NULL; /* LCOV_EXCL_LINE */

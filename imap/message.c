@@ -563,7 +563,7 @@ static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
 static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_count)
 {
   if (!adata->uid_hash)
-    adata->uid_hash = mutt_hash_int_create(MAX(6 * msn_count / 5, 30), 0);
+    adata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), 0);
 }
 
 /**

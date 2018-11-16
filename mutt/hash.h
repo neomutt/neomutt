@@ -70,19 +70,19 @@ struct Hash
   intptr_t dest_data;
 };
 
-/* flags for mutt_hash_create() */
+/* flags for mutt_hash_new() */
 #define MUTT_HASH_STRCASECMP  (1 << 0) /**< use strcasecmp() to compare keys */
 #define MUTT_HASH_STRDUP_KEYS (1 << 1) /**< make a copy of the keys */
 #define MUTT_HASH_ALLOW_DUPS  (1 << 2) /**< allow duplicate keys to be inserted */
 
-struct Hash *    mutt_hash_create(size_t nelem, int flags);
+struct Hash *    mutt_hash_new(size_t nelem, int flags);
 void             mutt_hash_delete(struct Hash *table, const char *strkey, const void *data);
 void             mutt_hash_destroy(struct Hash **ptr);
 void *           mutt_hash_find(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data);
-struct Hash *    mutt_hash_int_create(size_t nelem, int flags);
+struct Hash *    mutt_hash_int_new(size_t nelem, int flags);
 void             mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);
 void *           mutt_hash_int_find(const struct Hash *table, unsigned int intkey);
 struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data);

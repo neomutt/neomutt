@@ -505,7 +505,7 @@ static struct Hash *make_subj_hash(struct Context *ctx)
 
   struct Mailbox *m = ctx->mailbox;
 
-  struct Hash *hash = mutt_hash_create(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+  struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -853,7 +853,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   if (init)
   {
-    ctx->thread_hash = mutt_hash_create(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+    ctx->thread_hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
     mutt_hash_set_destructor(ctx->thread_hash, thread_hash_destructor, 0);
   }
 
@@ -1440,7 +1440,7 @@ int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
  */
 struct Hash *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct Hash *hash = mutt_hash_create(m->msg_count * 2, 0);
+  struct Hash *hash = mutt_hash_new(m->msg_count * 2, 0);
 
   for (int i = 0; i < m->msg_count; i++)
   {
