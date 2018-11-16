@@ -2065,7 +2065,10 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     char mailbox[LONG_STRING];
 
     if (imap_parse_path(m->path, conn_account, mailbox, sizeof(mailbox)) < 0)
+    {
+      FREE(&conn_account);
       return -1;
+    }
 
     if (!a->adata)
     {
