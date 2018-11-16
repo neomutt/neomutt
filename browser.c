@@ -1685,6 +1685,15 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           char msg[SHORT_STRING];
           int nentry = menu->current;
 
+          // TODO(sileht): It could be better to select INBOX instead. But I
+          // don't want to manipulate Context/AllMailboxes/mailbox->account here for now.
+          // Let's just protect neomutt against crash for now. #1417
+          if (mutt_str_strcmp(Context->mailbox->path, state.entry[nentry].name) == 0)
+          {
+            mutt_error(_("Can't delete currently selected mailbox"));
+            break;
+          }
+
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"),
                    state.entry[nentry].name);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
