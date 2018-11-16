@@ -43,7 +43,7 @@ const int NmUriProtocolLen;
 struct Mailbox;
 
 /**
- * struct NmAccountData - Account-specific Notmuch data - @extends Account
+ * struct NmAccountData - Notmuch-specific Account data - @extends Account
  */
 struct NmAccountData
 {
@@ -64,7 +64,7 @@ enum NmQueryType
 };
 
 /**
- * struct NmMboxData - Mailbox-specific Notmuch data - @extends Mailbox
+ * struct NmMboxData - Notmuch-specific Mailbox data - @extends Mailbox
  */
 struct NmMboxData
 {
@@ -82,7 +82,7 @@ struct NmMboxData
 };
 
 /**
- * struct NmEmailData - Notmuch data attached to an Email - @extends Email
+ * struct NmEmailData - Notmuch-specific Email data - @extends Email
  */
 struct NmEmailData
 {

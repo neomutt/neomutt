@@ -85,7 +85,7 @@ struct ReplaceListNode
 STAILQ_HEAD(ReplaceList, ReplaceListNode);
 
 struct Regex *mutt_regex_compile(const char *str, int flags);
-struct Regex *mutt_regex_create(const char *str, int flags, struct Buffer *err);
+struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err);
 void          mutt_regex_free(struct Regex **r);
 
 int                   mutt_regexlist_add(struct RegexList *rl, const char *str, int flags, struct Buffer *err);

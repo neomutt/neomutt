@@ -605,7 +605,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   }
   else
   {
-    imap_unmunge_mbox_name(adata, s);
+    imap_unmunge_mbox_name(adata->unicode, s);
     list->name = s;
   }
 
@@ -803,7 +803,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   {
     s = imap_next_word(mailbox);
     *(s - 1) = '\0';
-    imap_unmunge_mbox_name(adata, mailbox);
+    imap_unmunge_mbox_name(adata->unicode, mailbox);
   }
 
   status = imap_mboxcache_get(adata, mailbox, 1);

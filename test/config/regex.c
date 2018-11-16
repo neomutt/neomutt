@@ -301,7 +301,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
 {
   log_line(__func__);
 
-  struct Regex *r = regex_create("hello.*", 0, err);
+  struct Regex *r = regex_new("hello.*", 0, err);
   const char *name = "Ilama";
   char *regex = NULL;
   bool result = false;
@@ -323,7 +323,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(regex), r->pattern);
 
   regex_free(&r);
-  r = regex_create("!world.*", DT_REGEX_ALLOW_NOT, err);
+  r = regex_new("!world.*", DT_REGEX_ALLOW_NOT, err);
   name = "Ilama";
 
   mutt_buffer_reset(err);
@@ -353,7 +353,7 @@ static bool test_native_set(struct ConfigSet *cs, struct Buffer *err)
   TEST_MSG("%s = '%s', set by NULL\n", name, NONULL(regex));
 
   regex_free(&r);
-  r = regex_create("world.*", 0, err);
+  r = regex_new("world.*", 0, err);
   r->pattern[0] = '[';
   r->pattern[1] = 'a';
   r->pattern[2] = '-';
@@ -487,7 +487,7 @@ static bool test_validator(struct ConfigSet *cs, struct Buffer *err)
   log_line(__func__);
 
   char *regex = NULL;
-  struct Regex *r = regex_create("world.*", 0, err);
+  struct Regex *r = regex_new("world.*", 0, err);
   bool result = false;
 
   const char *name = "Papaya";
@@ -614,7 +614,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, AccountVarRegex);
+  struct CfgAccount *ac = ac_new(cs, account, AccountVarRegex);
 
   // set parent
   mutt_buffer_reset(err);
@@ -671,7 +671,7 @@ void config_regex(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   regex_init(cs);
   dont_fail = true;

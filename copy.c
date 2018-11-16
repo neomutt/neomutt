@@ -371,9 +371,9 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 }
 
 /**
- * mutt_copy_header - Copy email header
+ * mutt_copy_header - Copy Email header
  * @param in     FILE pointer to read from
- * @param e      Email Header
+ * @param e      Email
  * @param out    FILE pointer to write to
  * @param flags  Flags, see below
  * @param prefix Prefix for quoting headers
@@ -566,7 +566,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * mutt_copy_message_fp - make a copy of a message from a FILE pointer
  * @param fpout   Where to write output
  * @param fpin    Where to get input
- * @param e     Header of message being copied
+ * @param e       Email being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
  * @retval  0 Success
@@ -780,7 +780,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
  * mutt_copy_message_ctx - Copy a message from a Context
  * @param fpout   FILE pointer to write to
  * @param src     Source mailbox
- * @param e     Email Header
+ * @param e       Email
  * @param flags   Flags, see: mutt_copy_message_fp()
  * @param chflags Header flags, see: mutt_copy_header()
  * @retval  0 Success
@@ -812,7 +812,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
  * @param dest    destination mailbox
  * @param fpin    where to get input
  * @param src     source mailbox
- * @param e     message being copied
+ * @param e       Email being copied
  * @param flags   mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success
@@ -854,7 +854,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
  * mutt_append_message - Append a message
  * @param dest    Destination Mailbox
  * @param src     Source Mailbox
- * @param e     Email Header
+ * @param e       Email
  * @param cmflags mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success

@@ -278,7 +278,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (!m->account)
   {
-    struct Account *a = account_create();
+    struct Account *a = account_new();
     m->account = a;
     a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
@@ -345,7 +345,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (!m->account)
   {
-    struct Account *a = account_create();
+    struct Account *a = account_new();
     a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
 
@@ -1043,7 +1043,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 /**
  * mx_msg_open_new - Open a new message
  * @param ctx   Destination mailbox
- * @param e   Message being copied (required for maildir support, because the filename depends on the message flags)
+ * @param e     Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message
  */
@@ -1376,7 +1376,7 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
 /**
  * mx_tags_commit - save tags to the mailbox
  * @param ctx  Mailbox
- * @param e  Email Header
+ * @param e  Email
  * @param tags Tags to save
  * @retval  0 Success
  * @retval -1 Failure

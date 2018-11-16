@@ -726,8 +726,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
 /**
  * mutt_attach_forward - Forward an Attachment
- * @param fp    Handle to the attachmenT
- * @param e   Header of message
+ * @param fp    Handle to the attachment
+ * @param e     Email
  * @param actx  Attachment Context
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
@@ -879,7 +879,7 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Email *cur)
 /**
  * mutt_attach_reply - Attach a reply
  * @param fp    File handle to reply
- * @param e   Header of message
+ * @param e     Email
  * @param actx  Attachment Context
  * @param cur   Current message
  * @param flags Send mode, e.g. #SEND_RESEND
@@ -1039,7 +1039,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
 /**
  * mutt_attach_mail_sender - Compose an email to the sender in the email attachment
  * @param fp   File containing attachment (UNUSED)
- * @param e  Email (UNUSED)
+ * @param e    Email (UNUSED)
  * @param actx Attachment Context
  * @param cur  Current attachment
  */

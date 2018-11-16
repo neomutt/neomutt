@@ -43,8 +43,6 @@ struct Connection
   int fd;
   int available;
 
-  TAILQ_ENTRY(Connection) entries;
-
   void *sockdata;
 
   /**

@@ -30,7 +30,7 @@ struct Buffer;
 struct ConfigSet;
 
 void regex_init(struct ConfigSet *cs);
-struct Regex *regex_create(const char *str, int flags, struct Buffer *err);
+struct Regex *regex_new(const char *str, int flags, struct Buffer *err);
 void regex_free(struct Regex **regex);
 
 #endif /* MUTT_CONFIG_REGEX_H */

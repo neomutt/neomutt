@@ -65,7 +65,7 @@ extern char *Newsrc;
 #define ANUM "%u"
 
 /**
- * struct NntpAccountData - NNTP-specific server data
+ * struct NntpAccountData - NNTP-specific Account data - @extends Account
  */
 struct NntpAccountData
 {
@@ -98,7 +98,7 @@ struct NntpAccountData
 };
 
 /**
- * struct NntpEmailData - NNTP data attached to an Email - @extends Email
+ * struct NntpEmailData - NNTP-specific Email data - @extends Email
  */
 struct NntpEmailData
 {
@@ -128,7 +128,7 @@ struct NewsrcEntry
 #define NNTP_ACACHE_LEN 10
 
 /**
- * struct NntpMboxData - NNTP server data attached to a Mailbox - @extends Mailbox
+ * struct NntpMboxData - NNTP-specific Mailbox data - @extends Mailbox
  */
 struct NntpMboxData
 {

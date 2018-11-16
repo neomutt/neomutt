@@ -52,7 +52,7 @@ bool ThreadReceived; ///< Config: Sort threaded messages by their received date
 
 /**
  * is_visible - Is the message visible?
- * @param e Header of message
+ * @param e   Email
  * @param ctx Mailbox
  * @retval true If the message is not hidden in some way
  */
@@ -505,7 +505,7 @@ static struct Hash *make_subj_hash(struct Context *ctx)
 
   struct Mailbox *m = ctx->mailbox;
 
-  struct Hash *hash = mutt_hash_create(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+  struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -853,7 +853,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
   if (init)
   {
-    ctx->thread_hash = mutt_hash_create(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
+    ctx->thread_hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
     mutt_hash_set_destructor(ctx->thread_hash, thread_hash_destructor, 0);
   }
 
@@ -1069,7 +1069,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
 /**
  * mutt_aside_thread - Find the next/previous (sub)thread
- * @param e        Search from this message
+ * @param e          Search from this Email
  * @param forwards   Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval num Index into the virtual email table
@@ -1133,7 +1133,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 /**
  * mutt_parent_message - Find the parent of a message
  * @param ctx       Mailbox
- * @param e       Header of current message
+ * @param e         Current Email
  * @param find_root If true, find the root message
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error
@@ -1440,7 +1440,7 @@ int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
  */
 struct Hash *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct Hash *hash = mutt_hash_create(m->msg_count * 2, 0);
+  struct Hash *hash = mutt_hash_new(m->msg_count * 2, 0);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1482,7 +1482,7 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Conte
  *
  * if last is omitted, all the tagged threads will be used.
  */
-int mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx)
+bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox)
     return false;

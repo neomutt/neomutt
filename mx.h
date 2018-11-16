@@ -168,8 +168,8 @@ struct MxOps
   /**
    * msg_open_new - Open a new message in a mailbox
    * @param ctx Mailbox
-   * @param msg  Message to open
-   * @param e Email header
+   * @param msg Message to open
+   * @param e   Email
    * @retval  0 Success
    * @retval -1 Failure
    */
@@ -210,7 +210,7 @@ struct MxOps
   /**
    * tags_commit - Save the tags to a message
    * @param ctx Mailbox
-   * @param e Email Header
+   * @param e Email
    * @param buf Buffer containing tags
    * @retval  0 Success
    * @retval -1 Failure

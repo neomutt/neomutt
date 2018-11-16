@@ -431,7 +431,7 @@ char *mutt_find_hook(int type, const char *pat)
 /**
  * mutt_message_hook - Perform a message hook
  * @param ctx Mailbox Context
- * @param e Email Header
+ * @param e   Email
  * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
  */
 void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
@@ -483,7 +483,7 @@ void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
  * @param pathlen Length of buffer
  * @param type    Type e.g. #MUTT_FCC_HOOK
  * @param ctx     Mailbox Context
- * @param e     Email Header
+ * @param e       Email
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -517,7 +517,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
  * mutt_default_save - Find the default save path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of buffer
- * @param e       Email Header
+ * @param e       Email
  */
 void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
@@ -551,7 +551,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of the buffer
- * @param e       Email Header
+ * @param e       Email
  */
 void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {

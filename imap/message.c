@@ -126,7 +126,7 @@ static struct BodyCache *msg_cache_open(struct ImapAccountData *adata)
 /**
  * msg_cache_get - Get the message cache entry for an email
  * @param adata Imap Account data
- * @param e     Email header
+ * @param e     Email
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
@@ -144,7 +144,7 @@ static FILE *msg_cache_get(struct ImapAccountData *adata, struct Email *e)
 /**
  * msg_cache_put - Put an email into the message cache
  * @param adata Imap Account data
- * @param e     Email header
+ * @param e     Email
  * @retval ptr  Success, handle of cache entry
  * @retval NULL Failure
  */
@@ -162,7 +162,7 @@ static FILE *msg_cache_put(struct ImapAccountData *adata, struct Email *e)
 /**
  * msg_cache_commit - Add to the message cache
  * @param adata Imap Account data
- * @param e     Email header
+ * @param e     Email
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -563,7 +563,7 @@ static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
 static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_count)
 {
   if (!adata->uid_hash)
-    adata->uid_hash = mutt_hash_int_create(MAX(6 * msn_count / 5, 30), 0);
+    adata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), 0);
 }
 
 /**
@@ -632,7 +632,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
 /**
  * set_changed_flag - Have the flags of an email changed
  * @param[in]  ctx            Mailbox
- * @param[in]  e              Email Header
+ * @param[in]  e              Email
  * @param[in]  local_changes  Has the local mailbox been changed?
  * @param[out] server_changes Set to 1 if the flag has changed
  * @param[in]  flag_name      Flag to check, e.g. #MUTT_FLAG
@@ -1545,7 +1545,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   imap_fix_path(adata, buf, mbox, sizeof(mbox));
   if (!*mbox)
     mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
-  imap_munge_mbox_name(adata, mmbox, sizeof(mmbox), mbox);
+  imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);
 
   /* loop in case of TRYCREATE */
   do
@@ -1691,7 +1691,7 @@ out:
 /**
  * imap_cache_del - Delete an email from the body cache
  * @param adata Imap Account data
- * @param e     Email header
+ * @param e     Email
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -1722,7 +1722,7 @@ int imap_cache_clean(struct ImapAccountData *adata)
 /**
  * imap_set_flags - fill the message header according to the server flags
  * @param[in]  adata          Imap Account data
- * @param[in]  e              Email Header
+ * @param[in]  e              Email
  * @param[in]  s              Command string
  * @param[out] server_changes Flags have changed
  * @retval ptr  The end of flags string

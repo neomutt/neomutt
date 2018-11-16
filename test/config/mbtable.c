@@ -562,7 +562,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
     NULL,
   };
 
-  struct CfgAccount *ac = ac_create(cs, account, AccountVarMb);
+  struct CfgAccount *ac = ac_new(cs, account, AccountVarMb);
 
   // set parent
   mutt_buffer_reset(err);
@@ -619,7 +619,7 @@ void config_mbtable(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   mbtable_init(cs);
   dont_fail = true;

@@ -242,7 +242,7 @@ int imap_browse(char *path, struct BrowserState *state)
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
-    imap_munge_mbox_name(adata, munged_mbox, sizeof(munged_mbox), mbox);
+    imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), mbox);
     snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
     imap_cmd_start(adata, buf);
     adata->cmdtype = IMAP_CT_LIST;
@@ -330,7 +330,7 @@ int imap_browse(char *path, struct BrowserState *state)
 
   mutt_debug(3, "Quoting mailbox scan: %s -> ", mbox);
   snprintf(buf, sizeof(buf), "%s%%", mbox);
-  imap_munge_mbox_name(adata, munged_mbox, sizeof(munged_mbox), buf);
+  imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(3, "%s\n", munged_mbox);
   snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
   if (browse_add_list_result(adata, buf, state, false))

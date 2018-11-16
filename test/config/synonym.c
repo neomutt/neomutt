@@ -187,7 +187,7 @@ void config_synonym(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
 
   string_init(cs);
   if (!cs_register_variables(cs, Vars, 0))

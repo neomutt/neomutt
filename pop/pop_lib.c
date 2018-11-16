@@ -72,8 +72,8 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
 
   struct Url *url = url_parse(path);
 
-  if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) || !url->host ||
-      mutt_account_fromurl(acct, url) < 0)
+  if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) ||
+      !url->host || mutt_account_fromurl(acct, url) < 0)
   {
     url_free(&url);
     mutt_error(_("Invalid POP URL: %s"), path);
@@ -83,7 +83,8 @@ int pop_parse_path(const char *path, struct ConnAccount *acct)
   if (url->scheme == U_POPS)
     acct->flags |= MUTT_ACCT_SSL;
 
-  struct servent *service = getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
+  struct servent *service =
+      getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
   if (acct->port == 0)
   {
     if (service)

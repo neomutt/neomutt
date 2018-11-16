@@ -545,7 +545,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @param fp      If not NULL, file containing the template
  * @param ctx     If fp is NULL, the context containing the header with the template
  * @param newhdr  The template is read into this Header
- * @param e     The message to recall/resend
+ * @param e       Email to recall/resend
  * @param resend  Set if resending (as opposed to recalling a postponed msg)
  *                Resent messages enable header weeding, and also
  *                discard any existing Message-ID and Mail-Followup-To

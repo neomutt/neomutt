@@ -172,7 +172,7 @@ static int fetch_message(char *line, void *file)
 /**
  * pop_read_header - Read header
  * @param adata POP Account data
- * @param e     Email header
+ * @param e     Email
  * @retval  0 Success
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error

@@ -373,13 +373,13 @@ void mutt_make_label_hash(struct Mailbox *m)
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a m.
    */
-  m->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  m->label_hash = mutt_hash_new(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 /**
  * mutt_label_hash_add - Add a message's labels to the Hash Table
  * @param m Mailbox
- * @param e Header of message
+ * @param e Email
  */
 void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 {
@@ -392,7 +392,7 @@ void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 /**
  * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
  * @param m Mailbox
- * @param e Header of message
+ * @param e Email
  */
 void mutt_label_hash_remove(struct Mailbox *m, struct Email *e)
 {

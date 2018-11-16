@@ -140,7 +140,7 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn)
 {
   struct NntpAccountData *adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
   adata->conn = conn;
-  adata->groups_hash = mutt_hash_create(1009, 0);
+  adata->groups_hash = mutt_hash_new(1009, 0);
   mutt_hash_set_destructor(adata->groups_hash, nntp_hash_destructor_t, 0);
   adata->groups_max = 16;
   adata->groups_list =
@@ -2458,8 +2458,7 @@ static int nntp_mbox_open(struct Context *ctx)
   anum_t first, last, count = 0;
 
   struct Url *url = url_parse(m->path);
-  if (!url || !url->host || !url->path ||
-      !(url->scheme == U_NNTP || url->scheme == U_NNTPS))
+  if (!url || !url->host || !url->path || !(url->scheme == U_NNTP || url->scheme == U_NNTPS))
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification"), m->path);

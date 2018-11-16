@@ -203,7 +203,7 @@ enum ImapCommandType
 };
 
 /**
- * struct ImapAccountData - IMAP-specific server data
+ * struct ImapAccountData - IMAP-specific Account data - @extends Account
  *
  * This data is specific to a Connection to an IMAP server
  */
@@ -274,7 +274,7 @@ struct ImapAccountData
 };
 
 /**
- * struct ImapMboxData - IMAP-specific Mailbox data
+ * struct ImapMboxData - IMAP-specific Mailbox data - @extends Mailbox
  *
  * This data is specific to a Mailbox of an IMAP server
  */
@@ -373,8 +373,8 @@ char *imap_next_word(char *s);
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path);
 void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
 void imap_unquote_string(char *s);
-void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest, size_t dlen, const char *src);
-void imap_unmunge_mbox_name(struct ImapAccountData *adata, char *s);
+void imap_munge_mbox_name(bool unicode, char *dest, size_t dlen, const char *src);
+void imap_unmunge_mbox_name(bool unicode, char *s);
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset);
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next);
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter);
@@ -382,8 +382,8 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */
-void imap_utf_encode(struct ImapAccountData *adata, char **s);
-void imap_utf_decode(struct ImapAccountData *adata, char **s);
+void imap_utf_encode(bool unicode, char **s);
+void imap_utf_decode(bool unicode, char **s);
 void imap_allow_reopen(struct Mailbox *m);
 void imap_disallow_reopen(struct Mailbox *m);
 

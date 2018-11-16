@@ -958,7 +958,7 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 /**
  * mutt_rfc822_read_header - parses an RFC822 header
  * @param f         Stream to read from
- * @param e         Header structure of current message (optional)
+ * @param e         Current Email (optional)
  * @param user_hdrs If set, store user headers
  *                  Used for recall-message and postpone modes
  * @param weed      If this parameter is set and the user has activated the

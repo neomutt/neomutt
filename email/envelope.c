@@ -193,19 +193,19 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
 
 /**
  * mutt_env_to_local - Convert an Envelope's Address fields to local format
- * @param e Envelope to modify
+ * @param env Envelope to modify
  *
  * Run mutt_addrlist_to_local() on each of the Address fields in the Envelope.
  */
-void mutt_env_to_local(struct Envelope *e)
+void mutt_env_to_local(struct Envelope *env)
 {
-  mutt_addrlist_to_local(e->return_path);
-  mutt_addrlist_to_local(e->from);
-  mutt_addrlist_to_local(e->to);
-  mutt_addrlist_to_local(e->cc);
-  mutt_addrlist_to_local(e->bcc);
-  mutt_addrlist_to_local(e->reply_to);
-  mutt_addrlist_to_local(e->mail_followup_to);
+  mutt_addrlist_to_local(env->return_path);
+  mutt_addrlist_to_local(env->from);
+  mutt_addrlist_to_local(env->to);
+  mutt_addrlist_to_local(env->cc);
+  mutt_addrlist_to_local(env->bcc);
+  mutt_addrlist_to_local(env->reply_to);
+  mutt_addrlist_to_local(env->mail_followup_to);
 }
 
 /* Note that `a' in the `env->a' expression is macro argument, not
