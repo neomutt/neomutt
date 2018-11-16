@@ -113,12 +113,13 @@ struct ImapEmailData *imap_edata_get(struct Email *e)
  */
 static struct BodyCache *msg_cache_open(struct ImapAccountData *adata)
 {
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
   char mailbox[PATH_MAX];
 
-  if (adata->bcache)
-    return adata->bcache;
+  if (mdata->bcache)
+    return mdata->bcache;
 
-  imap_cachepath(adata, adata->mbox_name, mailbox, sizeof(mailbox));
+  imap_cachepath(adata, mdata->name, mailbox, sizeof(mailbox));
 
   return mutt_bcache_open(&adata->conn->account, mailbox);
 }
@@ -135,10 +136,12 @@ static FILE *msg_cache_get(struct ImapAccountData *adata, struct Email *e)
   if (!adata || !e)
     return NULL;
 
-  adata->bcache = msg_cache_open(adata);
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+
+  mdata->bcache = msg_cache_open(adata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", adata->uid_validity, imap_edata_get(e)->uid);
-  return mutt_bcache_get(adata->bcache, id);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  return mutt_bcache_get(mdata->bcache, id);
 }
 
 /**
@@ -153,10 +156,12 @@ static FILE *msg_cache_put(struct ImapAccountData *adata, struct Email *e)
   if (!adata || !e)
     return NULL;
 
-  adata->bcache = msg_cache_open(adata);
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+
+  mdata->bcache = msg_cache_open(adata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", adata->uid_validity, imap_edata_get(e)->uid);
-  return mutt_bcache_put(adata->bcache, id);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  return mutt_bcache_put(mdata->bcache, id);
 }
 
 /**
@@ -171,11 +176,13 @@ static int msg_cache_commit(struct ImapAccountData *adata, struct Email *e)
   if (!adata || !e)
     return -1;
 
-  adata->bcache = msg_cache_open(adata);
-  char id[64];
-  snprintf(id, sizeof(id), "%u-%u", adata->uid_validity, imap_edata_get(e)->uid);
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  return mutt_bcache_commit(adata->bcache, id);
+  mdata->bcache = msg_cache_open(adata);
+  char id[64];
+  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+
+  return mutt_bcache_commit(mdata->bcache, id);
 }
 
 /**
@@ -186,12 +193,13 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
 {
   unsigned int uv, uid;
   struct ImapAccountData *adata = data;
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
 
   if (sscanf(id, "%u-%u", &uv, &uid) != 2)
     return 0;
 
   /* bad UID */
-  if (uv != adata->uid_validity || !mutt_hash_int_find(adata->uid_hash, uid))
+  if (uv != mdata->uid_validity || !mutt_hash_int_find(mdata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
 
   return 0;
@@ -523,9 +531,10 @@ static bool query_abort_header_download(struct ImapAccountData *adata)
  */
 static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
 {
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
   size_t new_size;
 
-  if (msn_count <= adata->msn_index_size)
+  if (msn_count <= mdata->msn_index_size)
     return;
 
   /* This is a conservative check to protect against a malicious imap
@@ -540,16 +549,16 @@ static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
   /* Add a little padding, like mx_allloc_memory() */
   new_size = msn_count + 25;
 
-  if (!adata->msn_index)
-    adata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Email *));
+  if (!mdata->msn_index)
+    mdata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Email *));
   else
   {
-    mutt_mem_realloc(&adata->msn_index, sizeof(struct Email *) * new_size);
-    memset(adata->msn_index + adata->msn_index_size, 0,
-           sizeof(struct Email *) * (new_size - adata->msn_index_size));
+    mutt_mem_realloc(&mdata->msn_index, sizeof(struct Email *) * new_size);
+    memset(mdata->msn_index + mdata->msn_index_size, 0,
+           sizeof(struct Email *) * (new_size - mdata->msn_index_size));
   }
 
-  adata->msn_index_size = new_size;
+  mdata->msn_index_size = new_size;
 }
 
 /**
@@ -562,8 +571,9 @@ static void alloc_msn_index(struct ImapAccountData *adata, size_t msn_count)
  */
 static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_count)
 {
-  if (!adata->uid_hash)
-    adata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), 0);
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata->uid_hash)
+    mdata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), 0);
 }
 
 /**
@@ -583,6 +593,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
 static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adata,
                                   unsigned int msn_begin, unsigned int msn_end)
 {
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
   int chunks = 0;
   int state = 0; /* 1: single msn, 2: range of msn */
   unsigned int range_begin = 0;
@@ -590,7 +601,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
 
   for (unsigned int msn = msn_begin; msn <= (msn_end + 1); msn++)
   {
-    if ((msn <= msn_end) && !adata->msn_index[msn - 1])
+    if ((msn <= msn_end) && !mdata->msn_index[msn - 1])
     {
       switch (state)
       {
@@ -693,6 +704,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   char buf[LONG_STRING];
 
   struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = m->mdata;
   int idx = m->msg_count;
 
   /* L10N:
@@ -743,18 +755,18 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         continue;
       }
 
-      if (adata->msn_index[h.data->msn - 1])
+      if (mdata->msn_index[h.data->msn - 1])
       {
         mutt_debug(2, "skipping hcache FETCH for duplicate message %d\n", h.data->msn);
         continue;
       }
 
-      m->hdrs[idx] = imap_hcache_get(adata, h.data->uid);
+      m->hdrs[idx] = imap_hcache_get(mdata, h.data->uid);
       if (m->hdrs[idx])
       {
-        adata->max_msn = MAX(adata->max_msn, h.data->msn);
-        adata->msn_index[h.data->msn - 1] = m->hdrs[idx];
-        mutt_hash_int_insert(adata->uid_hash, h.data->uid, m->hdrs[idx]);
+        mdata->max_msn = MAX(mdata->max_msn, h.data->msn);
+        mdata->msn_index[h.data->msn - 1] = m->hdrs[idx];
+        mutt_hash_int_insert(mdata->uid_hash, h.data->uid, m->hdrs[idx]);
 
         m->hdrs[idx]->index = idx;
         /* messages which have not been expunged are ACTIVE (borrowed from mh
@@ -794,7 +806,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         /* If this is the first time we are fetching, we need to
          * store the current state of flags back into the header cache */
         if (!eval_condstore && store_flag_updates)
-          imap_hcache_put(adata, m->hdrs[idx]);
+          imap_hcache_put(mdata, m->hdrs[idx]);
 
         h.data = NULL;
         idx++;
@@ -829,6 +841,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
   mutt_debug(2, "Reading uid seqset from header cache\n");
   struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
   unsigned int msn = 1;
 
   struct SeqsetIterator *iter = mutt_seqset_iterator_new(uid_seqset);
@@ -839,14 +852,14 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
   {
     /* The seqset may contain more headers than the fetch request, so
      * we need to watch and reallocate the context and msn_index */
-    if (msn > adata->msn_index_size)
+    if (msn > mdata->msn_index_size)
       alloc_msn_index(adata, msn);
 
-    struct Email *e = imap_hcache_get(adata, uid);
+    struct Email *e = imap_hcache_get(mdata, uid);
     if (e)
     {
-      adata->max_msn = MAX(adata->max_msn, msn);
-      adata->msn_index[msn - 1] = e;
+      mdata->max_msn = MAX(mdata->max_msn, msn);
+      mdata->msn_index[msn - 1] = e;
 
       if (m->msg_count >= m->hdrmax)
         mx_alloc_memory(m);
@@ -866,7 +879,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
       edata->msn = msn;
       edata->uid = uid;
-      mutt_hash_int_insert(adata->uid_hash, uid, e);
+      mutt_hash_int_insert(mdata->uid_hash, uid, e);
 
       m->size += e->content->length;
       m->hdrs[m->msg_count++] = e;
@@ -901,6 +914,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   unsigned int header_msn = 0;
 
   struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = m->mdata;
 
   /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
   mutt_progress_init(&progress, _("Fetching flag updates..."),
@@ -934,27 +948,27 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     if (!isdigit((unsigned char) *fetch_buf) || (mutt_str_atoui(fetch_buf, &header_msn) < 0))
       continue;
 
-    if ((header_msn < 1) || (header_msn > msn_end) || !adata->msn_index[header_msn - 1])
+    if ((header_msn < 1) || (header_msn > msn_end) || !mdata->msn_index[header_msn - 1])
     {
       mutt_debug(1, "skipping CONDSTORE flag update for unknown message number %u\n", header_msn);
       continue;
     }
 
-    imap_hcache_put(adata, adata->msn_index[header_msn - 1]);
+    imap_hcache_put(mdata, mdata->msn_index[header_msn - 1]);
   }
 
   /* The IMAP flag setting as part of cmd_parse_fetch() ends up
    * flipping these on. */
-  adata->check_status &= ~IMAP_FLAGS_PENDING;
+  mdata->check_status &= ~IMAP_FLAGS_PENDING;
   m->changed = false;
 
   /* VANISHED handling: we need to empty out the messages */
-  if (adata->reopen & IMAP_EXPUNGE_PENDING)
+  if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
-    imap_hcache_close(adata);
+    imap_hcache_close(mdata);
     imap_expunge_mailbox(adata);
-    adata->hcache = imap_hcache_open(adata, NULL);
-    adata->reopen &= ~IMAP_EXPUNGE_PENDING;
+    mdata->hcache = imap_hcache_open(adata, mdata);
+    mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
 
   return 0;
@@ -989,6 +1003,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
       "X-ORIGINAL-TO";
 
   struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
   int idx = m->msg_count;
 
   if (mutt_bit_isset(adata->capabilities, IMAP4REV1))
@@ -1083,7 +1098,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
         }
 
         /* May receive FLAGS updates in a separate untagged response (#2935) */
-        if (adata->msn_index[h.data->msn - 1])
+        if (mdata->msn_index[h.data->msn - 1])
         {
           mutt_debug(2, "skipping FETCH response for duplicate message %d\n",
                      h.data->msn);
@@ -1092,9 +1107,9 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
 
         m->hdrs[idx] = mutt_email_new();
 
-        adata->max_msn = MAX(adata->max_msn, h.data->msn);
-        adata->msn_index[h.data->msn - 1] = m->hdrs[idx];
-        mutt_hash_int_insert(adata->uid_hash, h.data->uid, m->hdrs[idx]);
+        mdata->max_msn = MAX(mdata->max_msn, h.data->msn);
+        mdata->msn_index[h.data->msn - 1] = m->hdrs[idx];
+        mutt_hash_int_insert(mdata->uid_hash, h.data->uid, m->hdrs[idx]);
 
         m->hdrs[idx]->index = idx;
         /* messages which have not been expunged are ACTIVE (borrowed from mh
@@ -1128,7 +1143,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
         m->size += h.content_length;
 
 #ifdef USE_HCACHE
-        imap_hcache_put(adata, m->hdrs[idx]);
+        imap_hcache_put(mdata, m->hdrs[idx]);
 #endif /* USE_HCACHE */
 
         m->msg_count++;
@@ -1149,17 +1164,17 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
      * middle of a FETCH.  But just to be cautious, use the current state
      * of max_msn, not fetch_msn_end to set the next start range.
      */
-    if (adata->reopen & IMAP_NEWMAIL_PENDING)
+    if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
       /* update to the last value we actually pulled down */
-      fetch_msn_end = adata->max_msn;
-      msn_begin = adata->max_msn + 1;
-      msn_end = adata->new_mail_count;
+      fetch_msn_end = mdata->max_msn;
+      msn_begin = mdata->max_msn + 1;
+      msn_end = mdata->new_mail_count;
       while (msn_end > m->hdrmax)
         mx_alloc_memory(m);
       alloc_msn_index(adata, msn_end);
-      adata->reopen &= ~IMAP_NEWMAIL_PENDING;
-      adata->new_mail_count = 0;
+      mdata->reopen &= ~IMAP_NEWMAIL_PENDING;
+      mdata->new_mail_count = 0;
     }
   }
 
@@ -1208,6 +1223,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
 #endif /* USE_HCACHE */
 
   struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = m->mdata;
 
   /* make sure context has room to hold the mailbox */
   while (msn_end > m->hdrmax)
@@ -1216,23 +1232,23 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
   imap_alloc_uid_hash(adata, msn_end);
 
   oldmsgcount = m->msg_count;
-  adata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
-  adata->new_mail_count = 0;
+  mdata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
+  mdata->new_mail_count = 0;
 
 #ifdef USE_HCACHE
-  adata->hcache = imap_hcache_open(adata, NULL);
+  mdata->hcache = imap_hcache_open(adata, mdata);
 
-  if (adata->hcache && initial_download)
+  if (mdata->hcache && initial_download)
   {
-    uid_validity = mutt_hcache_fetch_raw(adata->hcache, "/UIDVALIDITY", 12);
-    puidnext = mutt_hcache_fetch_raw(adata->hcache, "/UIDNEXT", 8);
+    uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
+    puidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
     if (puidnext)
     {
       uidnext = *(unsigned int *) puidnext;
-      mutt_hcache_free(adata->hcache, &puidnext);
+      mutt_hcache_free(mdata->hcache, &puidnext);
     }
 
-    if (adata->modseq)
+    if (mdata->modseq)
     {
       if (mutt_bit_isset(adata->capabilities, CONDSTORE) && ImapCondStore)
         has_condstore = true;
@@ -1245,20 +1261,20 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
         has_qresync = true;
     }
 
-    if (uid_validity && uidnext && (*(unsigned int *) uid_validity == adata->uid_validity))
+    if (uid_validity && uidnext && (*(unsigned int *) uid_validity == mdata->uid_validity))
     {
       evalhc = true;
-      pmodseq = mutt_hcache_fetch_raw(adata->hcache, "/MODSEQ", 7);
+      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
-        mutt_hcache_free(adata->hcache, (void **) &pmodseq);
+        mutt_hcache_free(mdata->hcache, (void **) &pmodseq);
       }
       if (hc_modseq)
       {
         if (has_qresync)
         {
-          uid_seqset = imap_hcache_get_uid_seqset(adata);
+          uid_seqset = imap_hcache_get_uid_seqset(mdata);
           if (uid_seqset)
             eval_qresync = true;
         }
@@ -1267,7 +1283,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
           eval_condstore = true;
       }
     }
-    mutt_hcache_free(adata->hcache, &uid_validity);
+    mutt_hcache_free(mdata->hcache, &uid_validity);
   }
   if (evalhc)
   {
@@ -1283,7 +1299,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
         goto bail;
     }
 
-    if ((eval_condstore || eval_qresync) && (hc_modseq != adata->modseq))
+    if ((eval_condstore || eval_qresync) && (hc_modseq != mdata->modseq))
     {
       if (read_headers_condstore_qresync_updates(adata, msn_end, uidnext,
                                                  hc_modseq, eval_qresync) < 0)
@@ -1295,7 +1311,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
     /* Look for the first empty MSN and start there */
     while (msn_begin <= msn_end)
     {
-      if (!adata->msn_index[msn_begin - 1])
+      if (!mdata->msn_index[msn_begin - 1])
         break;
       msn_begin++;
     }
@@ -1305,24 +1321,24 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
   if (read_headers_fetch_new(adata, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
-  if (maxuid && (status = imap_mboxcache_get(adata, adata->mbox_name, 0)) &&
+  if (maxuid && (status = imap_mboxcache_get(adata, mdata, 0)) &&
       (status->uidnext < maxuid + 1))
   {
     status->uidnext = maxuid + 1;
   }
 
 #ifdef USE_HCACHE
-  mutt_hcache_store_raw(adata->hcache, "/UIDVALIDITY", 12, &adata->uid_validity,
-                        sizeof(adata->uid_validity));
-  if (maxuid && adata->uidnext < maxuid + 1)
+  mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
+                        sizeof(mdata->uid_validity));
+  if (maxuid && mdata->uidnext < maxuid + 1)
   {
-    mutt_debug(2, "Overriding UIDNEXT: %u -> %u\n", adata->uidnext, maxuid + 1);
-    adata->uidnext = maxuid + 1;
+    mutt_debug(2, "Overriding UIDNEXT: %u -> %u\n", mdata->uidnext, maxuid + 1);
+    mdata->uidnext = maxuid + 1;
   }
-  if (adata->uidnext > 1)
+  if (mdata->uidnext > 1)
   {
-    mutt_hcache_store_raw(adata->hcache, "/UIDNEXT", 8, &adata->uidnext,
-                          sizeof(adata->uidnext));
+    mutt_hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uidnext,
+                          sizeof(mdata->uidnext));
   }
 
   /* We currently only sync CONDSTORE and QRESYNC on the initial download.
@@ -1334,16 +1350,16 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
   {
     if (has_condstore || has_qresync)
     {
-      mutt_hcache_store_raw(adata->hcache, "/MODSEQ", 7, &adata->modseq,
-                            sizeof(adata->modseq));
+      mutt_hcache_store_raw(mdata->hcache, "/MODSEQ", 7, &mdata->modseq,
+                            sizeof(mdata->modseq));
     }
     else
-      mutt_hcache_delete(adata->hcache, "/MODSEQ", 7);
+      mutt_hcache_delete(mdata->hcache, "/MODSEQ", 7);
 
     if (has_qresync)
-      imap_hcache_store_uid_seqset(adata);
+      imap_hcache_store_uid_seqset(mdata);
     else
-      imap_hcache_clear_uid_seqset(adata);
+      imap_hcache_clear_uid_seqset(mdata);
   }
 #endif /* USE_HCACHE */
 
@@ -1355,13 +1371,13 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
     mx_update_context(adata->ctx, m->msg_count - oldmsgcount);
   }
 
-  adata->reopen |= IMAP_REOPEN_ALLOW;
+  mdata->reopen |= IMAP_REOPEN_ALLOW;
 
   retval = msn_end;
 
 bail:
 #ifdef USE_HCACHE
-  imap_hcache_close(adata);
+  imap_hcache_close(mdata);
   FREE(&uid_seqset);
 #endif /* USE_HCACHE */
 
@@ -1699,11 +1715,12 @@ int imap_cache_del(struct ImapAccountData *adata, struct Email *e)
 {
   if (!adata || !e)
     return -1;
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-  adata->bcache = msg_cache_open(adata);
+  mdata->bcache = msg_cache_open(adata);
   char id[64];
-  snprintf(id, sizeof(id), "%u-%u", adata->uid_validity, imap_edata_get(e)->uid);
-  return mutt_bcache_del(adata->bcache, id);
+  snprintf(id, sizeof(id), "%u-%u", mdata->uid_validity, imap_edata_get(e)->uid);
+  return mutt_bcache_del(mdata->bcache, id);
 }
 
 /**
@@ -1713,8 +1730,9 @@ int imap_cache_del(struct ImapAccountData *adata, struct Email *e)
  */
 int imap_cache_clean(struct ImapAccountData *adata)
 {
-  adata->bcache = msg_cache_open(adata);
-  mutt_bcache_list(adata->bcache, msg_cache_clean_cb, adata);
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  mdata->bcache = msg_cache_open(adata);
+  mutt_bcache_list(mdata->bcache, msg_cache_clean_cb, adata);
 
   return 0;
 }
@@ -1823,6 +1841,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = m->mdata;
   struct Email *e = m->hdrs[msgno];
 
   msg->fp = msg_cache_get(adata, e);
@@ -1837,7 +1856,7 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
   /* we still do some caching even if imap_cachedir is unset */
   /* see if we already have the message in our cache */
   cacheno = imap_edata_get(e)->uid % IMAP_CACHE_LEN;
-  cache = &adata->cache[cacheno];
+  cache = &mdata->cache[cacheno];
 
   if (cache->path)
   {

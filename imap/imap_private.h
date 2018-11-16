@@ -248,29 +248,12 @@ struct ImapAccountData
   /* cache ImapStatus of visited mailboxes */
   struct ListHead mboxcache;
 
-  /* The following data is all specific to the currently SELECTED mbox */
   char delim;
   struct Context *ctx;
-  struct Mailbox *mailbox;
-  char *mbox_name;
-  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
-  unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
-  unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
-  struct ImapCache cache[IMAP_CACHE_LEN];
-  struct Hash *uid_hash;
-  unsigned int uid_validity;
-  unsigned int uidnext;
-  unsigned long long modseq;
-  struct Email **msn_index;   /**< look up headers by (MSN-1) */
-  size_t msn_index_size;       /**< allocation size */
-  unsigned int max_msn;        /**< the largest MSN fetched so far */
-  struct BodyCache *bcache;
+  struct Mailbox *mailbox;     /* Current selected mailbox */
 
   /* all folder flags - system AND custom flags */
   struct ListHead flags;
-#ifdef USE_HCACHE
-  header_cache_t *hcache;
-#endif
 };
 
 /**
@@ -283,6 +266,23 @@ struct ImapMboxData
   char *name;
   char *munge_name;
   char *real_name;
+
+  unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
+  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
+  unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
+  struct ImapCache cache[IMAP_CACHE_LEN];
+  struct Hash *uid_hash;
+  unsigned int uid_validity;
+  unsigned int uidnext;
+  unsigned long long modseq;
+  struct Email **msn_index;   /**< look up headers by (MSN-1) */
+  size_t msn_index_size;       /**< allocation size */
+  unsigned int max_msn;        /**< the largest MSN fetched so far */
+  struct BodyCache *bcache;
+
+#ifdef USE_HCACHE
+  header_cache_t *hcache;
+#endif
 };
 
 /**
@@ -302,10 +302,10 @@ struct SeqsetIterator
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check(struct ImapAccountData *adata, bool force);
+int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool force);
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, const char *mbox, bool create);
+struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create);
 void imap_mboxcache_free(struct ImapAccountData *adata);
 int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
                      int flag, bool changed, bool invert);
@@ -348,14 +348,14 @@ int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 struct ImapAccountData *imap_adata_get(struct Mailbox *m);
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
-header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
-void imap_hcache_close(struct ImapAccountData *adata);
-struct Email *imap_hcache_get(struct ImapAccountData *adata, unsigned int uid);
-int imap_hcache_put(struct ImapAccountData *adata, struct Email *e);
-int imap_hcache_del(struct ImapAccountData *adata, unsigned int uid);
-int imap_hcache_store_uid_seqset(struct ImapAccountData *adata);
-int imap_hcache_clear_uid_seqset(struct ImapAccountData *adata);
-char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata);
+header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
+void imap_hcache_close(struct ImapMboxData *mdata);
+struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
+int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);
+int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid);
+int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata);
+int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata);
+char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 #endif
 
 int imap_continue(const char *msg, const char *resp);
