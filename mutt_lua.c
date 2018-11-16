@@ -86,6 +86,7 @@ static int lua_mutt_call(lua_State *l)
 
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
+  err.data[0] = '\0';
 
   if (lua_gettop(l) == 0)
   {
