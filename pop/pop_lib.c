@@ -65,39 +65,34 @@ unsigned char PopReconnect; ///< Config: (pop) Reconnect to the server is the co
  */
 int pop_parse_path(const char *path, struct ConnAccount *acct)
 {
-  struct Url url;
-
   /* Defaults */
   acct->flags = 0;
   acct->type = MUTT_ACCT_TYPE_POP;
   acct->port = 0;
 
-  char *c = mutt_str_strdup(path);
-  url_parse(&url, c);
+  struct Url *url = url_parse(path);
 
-  if (((url.scheme != U_POP) && (url.scheme != U_POPS)) || !url.host ||
-      mutt_account_fromurl(acct, &url) < 0)
+  if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) || !url->host ||
+      mutt_account_fromurl(acct, url) < 0)
   {
     url_free(&url);
-    FREE(&c);
     mutt_error(_("Invalid POP URL: %s"), path);
     return -1;
   }
 
-  if (url.scheme == U_POPS)
+  if (url->scheme == U_POPS)
     acct->flags |= MUTT_ACCT_SSL;
 
-  struct servent *service = getservbyname((url.scheme == U_POP) ? "pop3" : "pop3s", "tcp");
+  struct servent *service = getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
   if (acct->port == 0)
   {
     if (service)
       acct->port = ntohs(service->s_port);
     else
-      acct->port = (url.scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
+      acct->port = (url->scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
   }
 
   url_free(&url);
-  FREE(&c);
   return 0;
 }
 

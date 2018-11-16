@@ -145,10 +145,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
 {
   struct ImapList list;
   int rc;
-  struct Url url;
-  char tmp[PATH_MAX];
-  mutt_str_strfcpy(tmp, state->folder, sizeof(tmp));
-  url_parse(&url, tmp);
+  struct Url *url = url_parse(state->folder);
 
   imap_cmd_start(adata, cmd);
   adata->cmdtype = IMAP_CT_LIST;
@@ -164,11 +161,13 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
       if (isparent)
         list.noselect = true;
       /* prune current folder from output */
-      if (isparent || !mutt_str_startswith(list.name, url.path, CASE_MATCH))
+      if (isparent || !mutt_str_startswith(list.name, url->path, CASE_MATCH))
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
   adata->cmddata = NULL;
+
+  url_free(&url);
 
   return (rc == IMAP_CMD_OK) ? 0 : -1;
 }

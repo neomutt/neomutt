@@ -45,7 +45,6 @@ enum UrlScheme
   U_NOTMUCH,
 };
 
-#define U_DECODE_PASSWD (1 << 0)
 #define U_PATH          (1 << 1)
 
 /**
@@ -60,6 +59,8 @@ struct UrlQueryString
   STAILQ_ENTRY(UrlQueryString) entries;
 };
 
+STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
+
 /**
  * struct Url - A parsed URL `proto://user:password@host:port/path?a=1&b=2`
  */
@@ -71,12 +72,13 @@ struct Url
   char *host;
   unsigned short port;
   char *path;
-  STAILQ_HEAD(, UrlQueryString) query_strings;
+  struct UrlQueryStringHead query_strings;
+  char *src;
 };
 
 enum UrlScheme url_check_scheme(const char *s);
-void           url_free(struct Url *u);
-int            url_parse(struct Url *u, char *src);
+void           url_free(struct Url **u);
+struct Url    *url_parse(const char *src);
 int            url_pct_decode(char *s);
 void           url_pct_encode(char *buf, size_t buflen, const char *src);
 int            url_tostring(struct Url *u, char *buf, size_t buflen, int flags);

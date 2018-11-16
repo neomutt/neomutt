@@ -1506,15 +1506,14 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
             else if (state.imap_browse)
             {
               int n;
-              struct Url url;
 
               mutt_str_strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               /* tack on delimiter here */
               n = strlen(LastDir) + 1;
 
               /* special case "" needs no delimiter */
-              url_parse(&url, state.entry[menu->current].name);
-              if (url.path && (state.entry[menu->current].delim != '\0') &&
+              struct Url *url = url_parse(state.entry[menu->current].name);
+              if (url->path && (state.entry[menu->current].delim != '\0') &&
                   (n < sizeof(LastDir)))
               {
                 LastDir[n] = '\0';

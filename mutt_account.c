@@ -105,7 +105,7 @@ bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct ConnAccount *account, struct Url *url)
+int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url)
 {
   /* must be present */
   if (url->host)
