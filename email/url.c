@@ -289,6 +289,9 @@ err:
  */
 void url_free(struct Url **u)
 {
+  if (!u || !*u)
+    return;
+
   struct UrlQueryString *np = STAILQ_FIRST(&(*u)->query_strings), *next = NULL;
   while (np)
   {

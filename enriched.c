@@ -573,7 +573,8 @@ int text_enriched_handler(struct Body *a, struct State *s)
         state = DONE;
         break;
 
-      case DONE: /* not reached */
+      case DONE:
+        /* not reached */
         break;
     }
   }

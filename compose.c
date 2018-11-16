@@ -1399,7 +1399,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
 #ifdef USE_NNTP
         OptNews = false;
-        if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
+        if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
           CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
           if (!CurrentNewsSrv)

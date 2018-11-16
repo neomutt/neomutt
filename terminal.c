@@ -91,7 +91,7 @@ bool mutt_ts_capability(void)
       return true;
   }
 
-  /* not supported */
+  /* not reached */
   return false;
 }
 

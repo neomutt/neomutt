@@ -116,10 +116,10 @@ static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
  */
 static int init_mailbox(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_MBOX))
+  if (!m || (m->magic != MUTT_MBOX) || !m->account)
     return -1;
 
-  if (m->account && m->account->adata)
+  if (m->account->adata)
     return 0;
 
   m->account->adata = mbox_adata_new();
