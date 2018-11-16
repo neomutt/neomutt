@@ -1982,11 +1982,12 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
    * there is no need to mutate the hcache after flag-only changes. */
   for (int i = 0; i < m->msg_count; i++)
   {
-    imap_edata_get(m->hdrs[i])->deleted = m->hdrs[i]->deleted;
-    imap_edata_get(m->hdrs[i])->flagged = m->hdrs[i]->flagged;
-    imap_edata_get(m->hdrs[i])->old = m->hdrs[i]->old;
-    imap_edata_get(m->hdrs[i])->read = m->hdrs[i]->read;
-    imap_edata_get(m->hdrs[i])->replied = m->hdrs[i]->replied;
+    struct ImapEmailData *edata = imap_edata_get(m->hdrs[i]);
+    edata->deleted = m->hdrs[i]->deleted;
+    edata->flagged = m->hdrs[i]->flagged;
+    edata->old = m->hdrs[i]->old;
+    edata->read = m->hdrs[i]->read;
+    edata->replied = m->hdrs[i]->replied;
     m->hdrs[i]->changed = false;
   }
   m->changed = false;
