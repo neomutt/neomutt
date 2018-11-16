@@ -337,7 +337,7 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
  */
 int imap_prepare_mailbox(struct Mailbox *m)
 {
-  if (!m || !m->account)
+  if (!m || !m->account || !m->account->adata)
     return -1;
 
   struct ImapMboxData *mdata;

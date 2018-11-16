@@ -282,12 +282,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     m->account = a;
     a->magic = m->magic;
     TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
-    if (mx_ac_add(a, m) < 0)
-    {
-      //error
-      mailbox_free(&m);
-      return NULL;
-    }
+    mx_ac_add(a, m);
   }
 
 #if 0
