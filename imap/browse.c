@@ -161,7 +161,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
       if (isparent)
         list.noselect = true;
       /* prune current folder from output */
-      if (isparent || !mutt_str_startswith(list.name, url->path, CASE_MATCH))
+      if (isparent || !mutt_str_startswith(url->path, list.name, CASE_MATCH))
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
