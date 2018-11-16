@@ -448,7 +448,7 @@ struct Email *imap_hcache_get(struct ImapAccountData *adata, unsigned int uid)
 /**
  * imap_hcache_put - Add an entry to the header cache
  * @param adata Imap Account data
- * @param e     Email Header
+ * @param e     Email
  * @retval  0 Success
  * @retval -1 Failure
  */

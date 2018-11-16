@@ -52,7 +52,7 @@ bool ThreadReceived; ///< Config: Sort threaded messages by their received date
 
 /**
  * is_visible - Is the message visible?
- * @param e Header of message
+ * @param e   Email
  * @param ctx Mailbox
  * @retval true If the message is not hidden in some way
  */
@@ -1069,7 +1069,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
 
 /**
  * mutt_aside_thread - Find the next/previous (sub)thread
- * @param e        Search from this message
+ * @param e          Search from this Email
  * @param forwards   Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval num Index into the virtual email table
@@ -1133,7 +1133,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 /**
  * mutt_parent_message - Find the parent of a message
  * @param ctx       Mailbox
- * @param e       Header of current message
+ * @param e         Current Email
  * @param find_root If true, find the root message
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error

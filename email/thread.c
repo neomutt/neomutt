@@ -212,7 +212,7 @@ void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
 /**
  * mutt_break_thread - Break the email Thread
- * @param e Email Header to break at
+ * @param e Email to break at
  */
 void mutt_break_thread(struct Email *e)
 {

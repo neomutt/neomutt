@@ -360,7 +360,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * @param fp     Source file stream. Can be NULL
  * @param a      The message body containing the attachment
  * @param flag   Option flag for how the attachment should be viewed
- * @param e    Message header for the current message. Can be NULL
+ * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
@@ -778,7 +778,7 @@ static FILE *save_attachment_open(char *path, int flags)
  * @param m     Email Body
  * @param path  Where to save the attachment
  * @param flags Flags, e.g. #MUTT_SAVE_APPEND
- * @param e   Message header for the current message. Can be NULL
+ * @param e     Current Email. Can be NULL
  * @retval  0 Success
  * @retval -1 Error
  */

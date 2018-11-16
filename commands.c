@@ -555,7 +555,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
 
 /**
  * mutt_pipe_message - Pipe a message
- * @param e Header of message to pipe
+ * @param e Email to pipe
  */
 void mutt_pipe_message(struct Email *e)
 {
@@ -827,7 +827,7 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
- * @param e       Header of message
+ * @param e       Email
  * @param delete  If true, delete the original
  * @param decode  If true, decode the message
  * @param decrypt If true, decrypt the message

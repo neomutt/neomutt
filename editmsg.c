@@ -264,7 +264,7 @@ bail:
  * edit_or_view_message - Edit an email or view it in an external editor
  * @param edit true: Edit the email; false: view the email
  * @param ctx  Mailbox Context
- * @param e   Email Header
+ * @param e   Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
@@ -289,7 +289,7 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
 /**
  * mutt_edit_message - Edit a message
  * @param ctx Mailbox Context
- * @param e Email Header
+ * @param e Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
@@ -302,7 +302,7 @@ int mutt_edit_message(struct Context *ctx, struct Email *e)
 /**
  * mutt_view_message - Edit a message
  * @param ctx Mailbox Context
- * @param e Email Header
+ * @param e Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error

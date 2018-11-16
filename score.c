@@ -159,7 +159,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
 /**
  * mutt_score_message - Apply scoring to an email
  * @param ctx     Mailbox
- * @param e     Email header
+ * @param e     Email
  * @param upd_ctx If true, update the Context too
  */
 void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)

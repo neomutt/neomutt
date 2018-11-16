@@ -48,7 +48,7 @@
 /**
  * mutt_set_flag_update - Set a flag on an email
  * @param ctx     Mailbox Context
- * @param e       Email Header
+ * @param e       Email
  * @param flag    Flag to set, e.g. #MUTT_DELETE
  * @param bf      true: set the flag; false: clear the flag
  * @param upd_ctx true: update the Context
@@ -363,7 +363,7 @@ void mutt_tag_set_flag(int flag, int bf)
 
 /**
  * mutt_thread_set_flag - Set a flag on an entire thread
- * @param e       Email Header
+ * @param e         Email
  * @param flag      Flag to set, e.g. #MUTT_DELETE
  * @param bf        true: set the flag; false: clear the flag
  * @param subthread If true apply to all of the thread
@@ -421,7 +421,7 @@ done:
 
 /**
  * mutt_change_flag - Change the flag on a Message
- * @param e  Email Header
+ * @param e  Email
  * @param bf true: set the flag; false: clear the flag
  * @retval  0 Success
  * @retval -1 Failure

@@ -471,46 +471,47 @@ void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool 
 
 /**
  * serial_dump_envelope - Pack an Envelope into a binary blob
- * @param e       Envelope to pack
+ * @param env     Envelope to pack
  * @param d       Binary blob to add to
  * @param off     Offset into the blob
  * @param convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_envelope(struct Envelope *e, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
+                                    int *off, bool convert)
 {
-  d = serial_dump_address(e->return_path, d, off, convert);
-  d = serial_dump_address(e->from, d, off, convert);
-  d = serial_dump_address(e->to, d, off, convert);
-  d = serial_dump_address(e->cc, d, off, convert);
-  d = serial_dump_address(e->bcc, d, off, convert);
-  d = serial_dump_address(e->sender, d, off, convert);
-  d = serial_dump_address(e->reply_to, d, off, convert);
-  d = serial_dump_address(e->mail_followup_to, d, off, convert);
+  d = serial_dump_address(env->return_path, d, off, convert);
+  d = serial_dump_address(env->from, d, off, convert);
+  d = serial_dump_address(env->to, d, off, convert);
+  d = serial_dump_address(env->cc, d, off, convert);
+  d = serial_dump_address(env->bcc, d, off, convert);
+  d = serial_dump_address(env->sender, d, off, convert);
+  d = serial_dump_address(env->reply_to, d, off, convert);
+  d = serial_dump_address(env->mail_followup_to, d, off, convert);
 
-  d = serial_dump_char(e->list_post, d, off, convert);
-  d = serial_dump_char(e->subject, d, off, convert);
+  d = serial_dump_char(env->list_post, d, off, convert);
+  d = serial_dump_char(env->subject, d, off, convert);
 
-  if (e->real_subj)
-    d = serial_dump_int(e->real_subj - e->subject, d, off);
+  if (env->real_subj)
+    d = serial_dump_int(env->real_subj - env->subject, d, off);
   else
     d = serial_dump_int(-1, d, off);
 
-  d = serial_dump_char(e->message_id, d, off, false);
-  d = serial_dump_char(e->supersedes, d, off, false);
-  d = serial_dump_char(e->date, d, off, false);
-  d = serial_dump_char(e->x_label, d, off, convert);
+  d = serial_dump_char(env->message_id, d, off, false);
+  d = serial_dump_char(env->supersedes, d, off, false);
+  d = serial_dump_char(env->date, d, off, false);
+  d = serial_dump_char(env->x_label, d, off, convert);
 
-  d = serial_dump_buffer(e->spam, d, off, convert);
+  d = serial_dump_buffer(env->spam, d, off, convert);
 
-  d = serial_dump_stailq(&e->references, d, off, false);
-  d = serial_dump_stailq(&e->in_reply_to, d, off, false);
-  d = serial_dump_stailq(&e->userhdrs, d, off, convert);
+  d = serial_dump_stailq(&env->references, d, off, false);
+  d = serial_dump_stailq(&env->in_reply_to, d, off, false);
+  d = serial_dump_stailq(&env->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
-  d = serial_dump_char(e->xref, d, off, false);
-  d = serial_dump_char(e->followup_to, d, off, false);
-  d = serial_dump_char(e->x_comment_to, d, off, convert);
+  d = serial_dump_char(env->xref, d, off, false);
+  d = serial_dump_char(env->followup_to, d, off, false);
+  d = serial_dump_char(env->x_comment_to, d, off, convert);
 #endif
 
   return d;
@@ -518,48 +519,48 @@ unsigned char *serial_dump_envelope(struct Envelope *e, unsigned char *d, int *o
 
 /**
  * serial_restore_envelope - Unpack an Envelope from a binary blob
- * @param e       Store the unpacked Envelope here
+ * @param env     Store the unpacked Envelope here
  * @param d       Binary blob to read from
  * @param off     Offset into the blob
  * @param convert If true, the strings will be converted from utf-8
  */
-void serial_restore_envelope(struct Envelope *e, const unsigned char *d, int *off, bool convert)
+void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *off, bool convert)
 {
   int real_subj_off;
 
-  serial_restore_address(&e->return_path, d, off, convert);
-  serial_restore_address(&e->from, d, off, convert);
-  serial_restore_address(&e->to, d, off, convert);
-  serial_restore_address(&e->cc, d, off, convert);
-  serial_restore_address(&e->bcc, d, off, convert);
-  serial_restore_address(&e->sender, d, off, convert);
-  serial_restore_address(&e->reply_to, d, off, convert);
-  serial_restore_address(&e->mail_followup_to, d, off, convert);
+  serial_restore_address(&env->return_path, d, off, convert);
+  serial_restore_address(&env->from, d, off, convert);
+  serial_restore_address(&env->to, d, off, convert);
+  serial_restore_address(&env->cc, d, off, convert);
+  serial_restore_address(&env->bcc, d, off, convert);
+  serial_restore_address(&env->sender, d, off, convert);
+  serial_restore_address(&env->reply_to, d, off, convert);
+  serial_restore_address(&env->mail_followup_to, d, off, convert);
 
-  serial_restore_char(&e->list_post, d, off, convert);
-  serial_restore_char(&e->subject, d, off, convert);
+  serial_restore_char(&env->list_post, d, off, convert);
+  serial_restore_char(&env->subject, d, off, convert);
   serial_restore_int((unsigned int *) (&real_subj_off), d, off);
 
   if (real_subj_off >= 0)
-    e->real_subj = e->subject + real_subj_off;
+    env->real_subj = env->subject + real_subj_off;
   else
-    e->real_subj = NULL;
+    env->real_subj = NULL;
 
-  serial_restore_char(&e->message_id, d, off, false);
-  serial_restore_char(&e->supersedes, d, off, false);
-  serial_restore_char(&e->date, d, off, false);
-  serial_restore_char(&e->x_label, d, off, convert);
+  serial_restore_char(&env->message_id, d, off, false);
+  serial_restore_char(&env->supersedes, d, off, false);
+  serial_restore_char(&env->date, d, off, false);
+  serial_restore_char(&env->x_label, d, off, convert);
 
-  serial_restore_buffer(&e->spam, d, off, convert);
+  serial_restore_buffer(&env->spam, d, off, convert);
 
-  serial_restore_stailq(&e->references, d, off, false);
-  serial_restore_stailq(&e->in_reply_to, d, off, false);
-  serial_restore_stailq(&e->userhdrs, d, off, convert);
+  serial_restore_stailq(&env->references, d, off, false);
+  serial_restore_stailq(&env->in_reply_to, d, off, false);
+  serial_restore_stailq(&env->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
-  serial_restore_char(&e->xref, d, off, false);
-  serial_restore_char(&e->followup_to, d, off, false);
-  serial_restore_char(&e->x_comment_to, d, off, convert);
+  serial_restore_char(&env->xref, d, off, false);
+  serial_restore_char(&env->followup_to, d, off, false);
+  serial_restore_char(&env->x_comment_to, d, off, convert);
 #endif
 }
 

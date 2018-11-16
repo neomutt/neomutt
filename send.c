@@ -786,13 +786,13 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 /**
  * add_references - Add the email's references to a list
  * @param head List of references
- * @param e    Envelope of message
+ * @param env    Envelope of message
  */
-static void add_references(struct ListHead *head, struct Envelope *e)
+static void add_references(struct ListHead *head, struct Envelope *env)
 {
   struct ListNode *np = NULL;
 
-  struct ListHead *src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
+  struct ListHead *src = !STAILQ_EMPTY(&env->references) ? &env->references : &env->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
   {
     mutt_list_insert_tail(head, mutt_str_strdup(np->data));
@@ -802,13 +802,13 @@ static void add_references(struct ListHead *head, struct Envelope *e)
 /**
  * add_message_id - Add the email's message ID to a list
  * @param head List of message IDs
- * @param e    Envelope of message
+ * @param env  Envelope of message
  */
-static void add_message_id(struct ListHead *head, struct Envelope *e)
+static void add_message_id(struct ListHead *head, struct Envelope *env)
 {
-  if (e->message_id)
+  if (env->message_id)
   {
-    mutt_list_insert_head(head, mutt_str_strdup(e->message_id));
+    mutt_list_insert_head(head, mutt_str_strdup(env->message_id));
   }
 }
 
@@ -1145,9 +1145,9 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
 /**
  * mutt_set_followup_to - Set followup-to field
- * @param e Envelope to modify
+ * @param env Envelope to modify
  */
-void mutt_set_followup_to(struct Envelope *e)
+void mutt_set_followup_to(struct Envelope *env)
 {
   struct Address *t = NULL;
   struct Address *from = NULL;
@@ -1161,26 +1161,26 @@ void mutt_set_followup_to(struct Envelope *e)
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    if (!e->followup_to && e->newsgroups && (strrchr(e->newsgroups, ',')))
-      e->followup_to = mutt_str_strdup(e->newsgroups);
+    if (!env->followup_to && env->newsgroups && (strrchr(env->newsgroups, ',')))
+      env->followup_to = mutt_str_strdup(env->newsgroups);
     return;
   }
 #endif
 
-  if (!e->mail_followup_to)
+  if (!env->mail_followup_to)
   {
-    if (mutt_is_list_cc(0, e->to, e->cc))
+    if (mutt_is_list_cc(0, env->to, env->cc))
     {
       /* this message goes to known mailing lists, so create a proper
        * mail-followup-to header
        */
 
-      t = mutt_addr_append(&e->mail_followup_to, e->to, false);
-      mutt_addr_append(&t, e->cc, true);
+      t = mutt_addr_append(&env->mail_followup_to, env->to, false);
+      mutt_addr_append(&t, env->cc, true);
     }
 
     /* remove ourselves from the mail-followup-to header */
-    e->mail_followup_to = remove_user(e->mail_followup_to, false);
+    env->mail_followup_to = remove_user(env->mail_followup_to, false);
 
     /* If we are not subscribed to any of the lists in question,
      * re-add ourselves to the mail-followup-to header.  The
@@ -1188,12 +1188,12 @@ void mutt_set_followup_to(struct Envelope *e)
      * but makes sure list-reply has the desired effect.
      */
 
-    if (e->mail_followup_to && !mutt_is_list_recipient(false, e->to, e->cc))
+    if (env->mail_followup_to && !mutt_is_list_recipient(false, env->to, env->cc))
     {
-      if (e->reply_to)
-        from = mutt_addr_copy_list(e->reply_to, false);
-      else if (e->from)
-        from = mutt_addr_copy_list(e->from, false);
+      if (env->reply_to)
+        from = mutt_addr_copy_list(env->reply_to, false);
+      else if (env->from)
+        from = mutt_addr_copy_list(env->from, false);
       else
         from = mutt_default_from();
 
@@ -1203,12 +1203,12 @@ void mutt_set_followup_to(struct Envelope *e)
         for (t = from; t && t->next; t = t->next)
           ;
 
-        t->next = e->mail_followup_to; /* t cannot be NULL at this point. */
-        e->mail_followup_to = from;
+        t->next = env->mail_followup_to; /* t cannot be NULL at this point. */
+        env->mail_followup_to = from;
       }
     }
 
-    e->mail_followup_to = mutt_addrlist_dedupe(e->mail_followup_to);
+    env->mail_followup_to = mutt_addrlist_dedupe(env->mail_followup_to);
   }
 }
 
