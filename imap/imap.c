@@ -2056,31 +2056,21 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
 
   if (!a->adata)
   {
-    struct ConnAccount *conn_account = mutt_mem_calloc(1, sizeof(struct ConnAccount));
-    char mailbox[LONG_STRING];
+    struct ConnAccount conn_account;
+    char mailbox[PATH_MAX];
 
-    if (imap_parse_path(m->path, conn_account, mailbox, sizeof(mailbox)) < 0)
-    {
-      FREE(&conn_account);
+    if (imap_parse_path(m->path, &conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
-    }
 
-    if (!a->adata)
-    {
-      struct ImapAccountData *adata = imap_adata_new();
-      adata->conn_account = *conn_account;
-      adata->conn = mutt_conn_new(conn_account);
-      if (!adata->conn)
-      {
-        FREE(&conn_account);
-        return -1;
-      }
-      a->magic = MUTT_IMAP;
-      a->adata = adata;
-      a->free_adata = imap_adata_free;
-    }
-    else
-      FREE(&conn_account);
+    struct ImapAccountData *adata = imap_adata_new();
+    adata->conn_account = conn_account;
+    adata->conn = mutt_conn_new(&conn_account);
+    if (!adata->conn)
+      return -1;
+
+    a->magic = MUTT_IMAP;
+    a->adata = adata;
+    a->free_adata = imap_adata_free;
   }
   m->account = a;
 
