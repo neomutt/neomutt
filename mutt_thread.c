@@ -1482,7 +1482,7 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Conte
  *
  * if last is omitted, all the tagged threads will be used.
  */
-int mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx)
+bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox)
     return false;

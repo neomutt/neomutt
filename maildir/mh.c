@@ -1324,7 +1324,7 @@ static int ch_compare(const void *a, const void *b)
  * @retval -1 Failure
  */
 static int maildir_mh_open_message(struct Mailbox *m, struct Message *msg,
-                                   int msgno, int is_maildir)
+                                   int msgno, bool is_maildir)
 {
   struct Email *cur = m->hdrs[msgno];
   char path[PATH_MAX];
@@ -2633,7 +2633,7 @@ static int maildir_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   struct Mailbox *m = ctx->mailbox;
 
-  return maildir_mh_open_message(m, msg, msgno, 1);
+  return maildir_mh_open_message(m, msg, msgno, true);
 }
 
 /**
@@ -3075,7 +3075,7 @@ static int mh_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 
   struct Mailbox *m = ctx->mailbox;
 
-  return maildir_mh_open_message(m, msg, msgno, 0);
+  return maildir_mh_open_message(m, msg, msgno, false);
 }
 
 /**

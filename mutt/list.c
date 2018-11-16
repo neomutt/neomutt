@@ -187,7 +187,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
+bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 {
   struct ListNode *a = STAILQ_FIRST(ah);
   struct ListNode *b = STAILQ_FIRST(bh);
@@ -195,13 +195,13 @@ int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
   while (a && b)
   {
     if (mutt_str_strcmp(a->data, b->data) != 0)
-      return 0;
+      return false;
 
     a = STAILQ_NEXT(a, entries);
     b = STAILQ_NEXT(b, entries);
   }
   if (a || b)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
