@@ -751,6 +751,9 @@ void imap_logout_all(void)
       continue;
 
     struct ImapAccountData *adata = np->adata;
+    if (!adata)
+        continue;
+
     struct Connection *conn = adata->conn;
     if (!conn || (conn->fd < 0))
       continue;
