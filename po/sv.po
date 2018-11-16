@@ -23,12 +23,12 @@ msgstr ""
 msgid "Exit"
 msgstr "Avsluta"
 
-#: addrbook.c:55 curs_main.c:878 curs_main.c:891 pager.c:1823 pager.c:1833
+#: addrbook.c:55 index.c:878 index.c:891 pager.c:1823 pager.c:1833
 #: postpone.c:68
 msgid "Del"
 msgstr "Ta bort"
 
-#: addrbook.c:56 curs_main.c:879 curs_main.c:892 postpone.c:69
+#: addrbook.c:56 index.c:879 index.c:892 postpone.c:69
 msgid "Undel"
 msgstr "Återställ"
 
@@ -37,7 +37,7 @@ msgid "Select"
 msgstr "Välj"
 
 #: addrbook.c:57 browser.c:87 browser.c:99 compose.c:184 compose.c:196
-#: conn/ssl.c:1050 conn/ssl_gnutls.c:801 curs_main.c:884 curs_main.c:897
+#: conn/ssl.c:1050 conn/ssl_gnutls.c:801 index.c:884 index.c:897
 #: mutt_history.c:39 ncrypt/crypt_gpgme.c:4355 ncrypt/pgpkey.c:673
 #: ncrypt/smime.c:564 pager.c:2283 postpone.c:70 query.c:76 recvattach.c:88
 msgid "Help"
@@ -148,7 +148,7 @@ msgstr "Prenumererar på %s..."
 msgid "Unsubscribe"
 msgstr "Avslutar prenumeration på %s"
 
-#: browser.c:97 curs_main.c:896
+#: browser.c:97 index.c:896
 msgid "Catchup"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgid "PGP signature could NOT be verified"
 msgstr "PGP-signaturen kunde INTE verifieras"
 
 #: commands.c:260 compose.c:1911 compress.c:430 curs_lib.c:313 curs_lib.c:581
-#: curs_main.c:1085 curs_main.c:1128 mutt_attach.c:151 mutt_attach.c:284
+#: index.c:1085 index.c:1128 mutt_attach.c:151 mutt_attach.c:284
 #: pager.c:2411 sendlib.c:1562
 #, c-format
 msgid "Error running \"%s\""
@@ -1321,148 +1321,148 @@ msgstr "Tryck på valfri tangent för att fortsätta..."
 msgid " ('?' for list): "
 msgstr " (\"?\" för lista): "
 
-#: curs_main.c:102 curs_main.c:1207
+#: index.c:102 index.c:1207
 msgid "No mailbox is open"
 msgstr "Ingen brevlåda är öppen"
 
-#: curs_main.c:103
+#: index.c:103
 msgid "There are no messages"
 msgstr "Inga meddelanden"
 
-#: curs_main.c:104 mx.c:906 pager.c:98 recvattach.c:74
+#: index.c:104 mx.c:906 pager.c:98 recvattach.c:74
 msgid "Mailbox is read-only"
 msgstr "Brevlådan är skrivskyddad"
 
-#: curs_main.c:106 pager.c:100 recvattach.c:92
+#: index.c:106 pager.c:100 recvattach.c:92
 msgid "Function not permitted in attach-message mode"
 msgstr "Funktionen ej tillåten i \"bifoga-meddelande\"-läge"
 
-#: curs_main.c:107
+#: index.c:107
 msgid "No visible messages"
 msgstr "Inga synliga meddelanden"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: curs_main.c:152 pager.c:135
+#: index.c:152 pager.c:135
 #, fuzzy, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "Kan inte %s: Operation tillåts inte av ACL"
 
-#: curs_main.c:321
+#: index.c:321
 msgid "Cannot toggle write on a readonly mailbox"
 msgstr "Kan inte växla till skrivläge på en skrivskyddad brevlåda"
 
-#: curs_main.c:328
+#: index.c:328
 msgid "Changes to folder will be written on folder exit"
 msgstr "Ändringarna i foldern skrivs när foldern lämnas"
 
-#: curs_main.c:333
+#: index.c:333
 msgid "Changes to folder will not be written"
 msgstr "Ändringarna i foldern kommer inte att skrivas"
 
-#: curs_main.c:560 muttlib.c:1375 mx.c:191 mx.c:294
+#: index.c:560 muttlib.c:1375 mx.c:191 mx.c:294
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s är inte en brevlåda"
 
-#: curs_main.c:877 curs_main.c:890
+#: index.c:877 index.c:890
 msgid "Quit"
 msgstr "Avsluta"
 
-#: curs_main.c:880 curs_main.c:893 recvattach.c:87
+#: index.c:880 index.c:893 recvattach.c:87
 msgid "Save"
 msgstr "Spara"
 
-#: curs_main.c:881 query.c:72
+#: index.c:881 query.c:72
 msgid "Mail"
 msgstr "Brev"
 
-#: curs_main.c:882 pager.c:1824
+#: index.c:882 pager.c:1824
 msgid "Reply"
 msgstr "Svara"
 
-#: curs_main.c:883
+#: index.c:883
 msgid "Group"
 msgstr "Grupp"
 
-#: curs_main.c:894 pager.c:1831
+#: index.c:894 pager.c:1831
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:895 pager.c:1832
+#: index.c:895 pager.c:1832
 #, fuzzy
 msgid "Followup"
 msgstr "Svara till %s%s?"
 
-#: curs_main.c:1069
+#: index.c:1069
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Brevlådan har ändrats externt. Flaggor kan vara felaktiga."
 
-#: curs_main.c:1077 pager.c:2363
+#: index.c:1077 pager.c:2363
 msgid "New mail in this mailbox"
 msgstr "Nya brev i den här brevlådan"
 
-#: curs_main.c:1092
+#: index.c:1092
 msgid "Mailbox was externally modified"
 msgstr "Brevlådan har ändrats externt"
 
-#: curs_main.c:1214
+#: index.c:1214
 msgid "No tagged messages"
 msgstr "Inga märkta meddelanden"
 
-#: curs_main.c:1218 curs_main.c:1487 menu.c:1404
+#: index.c:1218 index.c:1487 menu.c:1404
 msgid "Nothing to do"
 msgstr "Ingenting att göra"
 
-#: curs_main.c:1317
+#: index.c:1317
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Ange nyckel-ID: "
 
-#: curs_main.c:1327
+#: index.c:1327
 msgid "Article has no parent reference"
 msgstr ""
 
-#: curs_main.c:1351
+#: index.c:1351
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:1357
+#: index.c:1357
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Raderar meddelanden från server..."
 
-#: curs_main.c:1367
+#: index.c:1367
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: curs_main.c:1386
+#: index.c:1386
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1390 imap/message.c:984 nntp/nntp.c:1355 pop/pop.c:355
+#: index.c:1390 imap/message.c:984 nntp/nntp.c:1355 pop/pop.c:355
 msgid "Fetching message headers..."
 msgstr "Hämtar meddelandehuvuden..."
 
-#: curs_main.c:1464
+#: index.c:1464
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "radera alla meddelanden i tråd"
 
-#: curs_main.c:1484
+#: index.c:1484
 msgid "Jump to message: "
 msgstr "Hoppa till meddelande: "
 
-#: curs_main.c:1490
+#: index.c:1490
 msgid "Argument must be a message number"
 msgstr "Parametern måste vara ett meddelandenummer"
 
-#: curs_main.c:1492
+#: index.c:1492
 msgid "Invalid message number"
 msgstr "Ogiltigt meddelandenummer"
 
-#: curs_main.c:1494
+#: index.c:1494
 msgid "That message is not visible"
 msgstr "Det meddelandet är inte synligt"
 
@@ -1471,38 +1471,38 @@ msgstr "Det meddelandet är inte synligt"
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1531 curs_main.c:2960 pager.c:2978
+#: index.c:1531 index.c:2960 pager.c:2978
 #, fuzzy
 msgid "Cannot delete messages"
 msgstr "återställ meddelande(n)"
 
-#: curs_main.c:1534
+#: index.c:1534
 msgid "Delete messages matching: "
 msgstr "Radera meddelanden som matchar: "
 
-#: curs_main.c:1575
+#: index.c:1575
 msgid "No limit pattern is in effect"
 msgstr "Inget avgränsande mönster är aktivt"
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1580
+#: index.c:1580
 #, c-format
 msgid "Limit: %s"
 msgstr "Gräns: %s"
 
-#: curs_main.c:1618
+#: index.c:1618
 msgid "Limit to messages matching: "
 msgstr "Visa endast meddelanden som matchar: "
 
-#: curs_main.c:1642
+#: index.c:1642
 msgid "To view all messages, limit to \"all\""
 msgstr "För att visa alla meddelanden, begränsa till \"all\""
 
-#: curs_main.c:1654 pager.c:2465
+#: index.c:1654 pager.c:2465
 msgid "Quit NeoMutt?"
 msgstr "Avsluta NeoMutt?"
 
-#: curs_main.c:1750
+#: index.c:1750
 msgid "Tag messages matching: "
 msgstr "Märk meddelanden som matchar: "
 
@@ -1511,219 +1511,219 @@ msgstr "Märk meddelanden som matchar: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:1764 curs_main.c:3403 pager.c:3313
+#: index.c:1764 index.c:3403 pager.c:3313
 #, fuzzy
 msgid "Cannot undelete messages"
 msgstr "återställ meddelande(n)"
 
-#: curs_main.c:1767
+#: index.c:1767
 msgid "Undelete messages matching: "
 msgstr "Återställ meddelanden som matchar: "
 
-#: curs_main.c:1777
+#: index.c:1777
 msgid "Untag messages matching: "
 msgstr "Avmarkera meddelanden som matchar: "
 
-#: curs_main.c:1813
+#: index.c:1813
 msgid "Logged out of IMAP servers"
 msgstr ""
 
-#: curs_main.c:1911
+#: index.c:1911
 #, fuzzy
 msgid "No virtual folder, aborting"
 msgstr "Inget ämne, avbryter"
 
-#: curs_main.c:1919
+#: index.c:1919
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: curs_main.c:1951 mx.c:1313 mx.c:1330
+#: index.c:1951 mx.c:1313 mx.c:1330
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP-server stöder inte autentisering"
 
-#: curs_main.c:1966
+#: index.c:1966
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Inget ämne, avbryter"
 
-#: curs_main.c:1978
+#: index.c:1978
 #, c-format
 msgid "Update tags..."
 msgstr ""
 
-#: curs_main.c:2015
+#: index.c:2015
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: curs_main.c:2060
+#: index.c:2060
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Inget ämne, avbryter"
 
-#: curs_main.c:2064 curs_main.c:2084 curs_main.c:2103
+#: index.c:2064 index.c:2084 index.c:2103
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: curs_main.c:2073 curs_main.c:2092
+#: index.c:2073 index.c:2092
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: curs_main.c:2078 curs_main.c:2097
+#: index.c:2078 index.c:2097
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: curs_main.c:2135
+#: index.c:2135
 msgid "Open mailbox in read-only mode"
 msgstr "Öppna brevlåda i skrivskyddat läge"
 
-#: curs_main.c:2138
+#: index.c:2138
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "öppna en annan folder"
 
-#: curs_main.c:2141
+#: index.c:2141
 msgid "Open mailbox"
 msgstr "Öppna brevlåda"
 
-#: curs_main.c:2151
+#: index.c:2151
 msgid "No mailboxes have new mail"
 msgstr "Inga brevlådor har nya brev."
 
-#: curs_main.c:2198
+#: index.c:2198
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Öppna brevlåda i skrivskyddat läge"
 
-#: curs_main.c:2200
+#: index.c:2200
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2302
+#: index.c:2302
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Avsluta NeoMutt utan att spara?"
 
-#: curs_main.c:2318
+#: index.c:2318
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "länka trådar"
 
-#: curs_main.c:2321 curs_main.c:2361 curs_main.c:2842 curs_main.c:2874
+#: index.c:2321 index.c:2361 index.c:2842 index.c:2874
 #: flags.c:377 mutt_thread.c:1049 mutt_thread.c:1113 mutt_thread.c:1194
 msgid "Threading is not enabled"
 msgstr "Trådning ej aktiverat"
 
-#: curs_main.c:2334
+#: index.c:2334
 msgid "Thread broken"
 msgstr "Tråd bruten"
 
-#: curs_main.c:2347
+#: index.c:2347
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2358
+#: index.c:2358
 #, fuzzy
 msgid "Cannot link threads"
 msgstr "länka trådar"
 
-#: curs_main.c:2363
+#: index.c:2363
 msgid "No Message-ID: header available to link thread"
 msgstr "Inget Message-ID: huvud tillgängligt för att länka tråd"
 
-#: curs_main.c:2365
+#: index.c:2365
 msgid "First, please tag a message to be linked here"
 msgstr "Var vänlig att först markera ett meddelande som ska länkas här"
 
-#: curs_main.c:2376
+#: index.c:2376
 msgid "Threads linked"
 msgstr "Trådar länkade"
 
-#: curs_main.c:2379
+#: index.c:2379
 msgid "No thread linked"
 msgstr "Ingen tråd länkad"
 
-#: curs_main.c:2415 curs_main.c:2441
+#: index.c:2415 index.c:2441
 msgid "You are on the last message"
 msgstr "Du är på det sista meddelandet"
 
-#: curs_main.c:2423 curs_main.c:2468
+#: index.c:2423 index.c:2468
 msgid "No undeleted messages"
 msgstr "Inga återställda meddelanden"
 
-#: curs_main.c:2460 curs_main.c:2486
+#: index.c:2460 index.c:2486
 msgid "You are on the first message"
 msgstr "Du är på det första meddelandet"
 
-#: curs_main.c:2615
+#: index.c:2615
 #, fuzzy
 msgid "No new messages in this limited view"
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:2617
+#: index.c:2617
 #, fuzzy
 msgid "No new messages"
 msgstr "Inga nya meddelanden"
 
-#: curs_main.c:2622
+#: index.c:2622
 #, fuzzy
 msgid "No unread messages in this limited view"
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:2624
+#: index.c:2624
 #, fuzzy
 msgid "No unread messages"
 msgstr "Inga olästa meddelanden"
 
-#: curs_main.c:2633 menu.c:1191 pager.c:2589 pattern.c:2424
+#: index.c:2633 menu.c:1191 pager.c:2589 pattern.c:2424
 msgid "Search wrapped to top"
 msgstr "Sökning fortsatte från början"
 
-#: curs_main.c:2638 pager.c:2612 pattern.c:2435
+#: index.c:2638 pager.c:2612 pattern.c:2435
 msgid "Search wrapped to bottom"
 msgstr "Sökning fortsatte från slutet"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2656
+#: index.c:2656
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "flagga meddelande"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2697 pager.c:3272
+#: index.c:2697 pager.c:3272
 #, fuzzy
 msgid "Cannot toggle new"
 msgstr "växla ny"
 
-#: curs_main.c:2774
+#: index.c:2774
 msgid "No more threads"
 msgstr "Inga fler trådar"
 
-#: curs_main.c:2776
+#: index.c:2776
 msgid "You are on the first thread"
 msgstr "Du är på den första tråden"
 
-#: curs_main.c:2860
+#: index.c:2860
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Tråden innehåller olästa meddelanden"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2910 pager.c:2940
+#: index.c:2910 pager.c:2940
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "återställ meddelande(n)"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3026
+#: index.c:3026
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "Kan inte skriva meddelande"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:3089 pager.c:3378
+#: index.c:3089 pager.c:3378
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -1733,7 +1733,7 @@ msgstr[1] "Brevlåda är oförändrad"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:3096 pager.c:3382
+#: index.c:3096 pager.c:3382
 #, fuzzy
 msgid "No labels changed"
 msgstr "Brevlåda är oförändrad"
@@ -1743,7 +1743,7 @@ msgstr "Brevlåda är oförändrad"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #.
-#: curs_main.c:3200
+#: index.c:3200
 #, fuzzy
 msgid "Cannot mark messages as read"
 msgstr "markera meddelande(n) som lästa"
@@ -1751,14 +1751,14 @@ msgstr "markera meddelande(n) som lästa"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3236
+#: index.c:3236
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Ange nyckel-ID: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3244
+#: index.c:3244
 #, fuzzy
 msgid "message hotkey"
 msgstr "Meddelande uppskjutet."
@@ -1766,28 +1766,28 @@ msgstr "Meddelande uppskjutet."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3249
+#: index.c:3249
 #, fuzzy, c-format
 msgid "Message bound to %s"
 msgstr "Meddelande återsänt"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3258
+#: index.c:3258
 #, fuzzy
 msgid "No message ID to macro"
 msgstr "Inga meddelanden i den foldern"
 
-#: curs_main.c:3301 pager.c:3122 recvattach.c:1549
+#: index.c:3301 pager.c:3122 recvattach.c:1549
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3304 pager.c:3087 pager.c:3099 pager.c:3125
+#: index.c:3304 pager.c:3087 pager.c:3099 pager.c:3125
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3369 pager.c:3292
+#: index.c:3369 pager.c:3292
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "återställ meddelande(n)"

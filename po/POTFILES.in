@@ -34,7 +34,6 @@ conn/ssl_gnutls.c
 conn/tunnel.c
 copy.c
 curs_lib.c
-curs_main.c
 edit.c
 editmsg.c
 email/address.c
@@ -84,6 +83,7 @@ imap/imap.c
 imap/message.c
 imap/utf7.c
 imap/util.c
+index.c
 init.c
 keymap.c
 mailbox.c
