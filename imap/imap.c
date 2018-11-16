@@ -614,7 +614,7 @@ static int imap_access2(struct ImapAccountData *adata, char *mailbox)
     return 0;
   }
 
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), mailbox);
+  imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
 
   if (mutt_bit_isset(adata->capabilities, IMAP4REV1))
     snprintf(buf, sizeof(buf), "STATUS %s (UIDVALIDITY)", mbox);
@@ -646,7 +646,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
 {
   char buf[LONG_STRING * 2], mbox[LONG_STRING];
 
-  imap_munge_mbox_name(adata, mbox, sizeof(mbox), mailbox);
+  imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
 
   if (imap_exec(adata, buf, 0) != 0)
@@ -696,8 +696,8 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
   char newmbox[LONG_STRING];
   int rc = 0;
 
-  imap_munge_mbox_name(adata, oldmbox, sizeof(oldmbox), oldname);
-  imap_munge_mbox_name(adata, newmbox, sizeof(newmbox), newname);
+  imap_munge_mbox_name(adata->unicode, oldmbox, sizeof(oldmbox), oldname);
+  imap_munge_mbox_name(adata->unicode, newmbox, sizeof(newmbox), newname);
 
   struct Buffer *b = mutt_buffer_pool_get();
   mutt_buffer_printf(b, "RENAME %s %s", oldmbox, newmbox);
@@ -723,7 +723,8 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
   char mbox[PATH_MAX];
   struct Url *url = url_parse(path);
 
-  imap_munge_mbox_name(m->account->adata, mbox, sizeof(mbox), url->path);
+  struct ImapAccountData *adata = imap_adata_get(m);
+  imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
   url_free(&url);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
   if (imap_exec(m->account->adata, buf, 0) != 0)
@@ -2197,7 +2198,7 @@ static int imap_mbox_open(struct Context *ctx)
   adata->max_msn = 0;
 
   mutt_message(_("Selecting %s..."), adata->mbox_name);
-  imap_munge_mbox_name(adata, buf, sizeof(buf), adata->mbox_name);
+  imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), adata->mbox_name);
 
   /* pipeline ACL test */
   if (mutt_bit_isset(adata->capabilities, ACL))

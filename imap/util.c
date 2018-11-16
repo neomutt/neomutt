@@ -170,7 +170,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
   mdata->name = mutt_str_strdup(buf);
 
-  imap_munge_mbox_name(adata, buf, sizeof(buf), mdata->name);
+  imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
   mdata->munge_name = mutt_str_strdup(buf);
 
   return mdata;
@@ -985,16 +985,15 @@ void imap_unquote_string(char *s)
 
 /**
  * imap_munge_mbox_name - Quote awkward characters in a mailbox name
- * @param adata Imap Account data
- * @param dest  Buffer to store safe mailbox name
- * @param dlen  Length of buffer
- * @param src   Mailbox name
+ * @param unicode true if Unicode is allowed
+ * @param dest    Buffer to store safe mailbox name
+ * @param dlen    Length of buffer
+ * @param src     Mailbox name
  */
-void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest,
-                          size_t dlen, const char *src)
+void imap_munge_mbox_name(bool unicode, char *dest, size_t dlen, const char *src)
 {
   char *buf = mutt_str_strdup(src);
-  imap_utf_encode(adata, &buf);
+  imap_utf_encode(unicode, &buf);
 
   imap_quote_string(dest, dlen, buf, false);
 
@@ -1003,19 +1002,19 @@ void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest,
 
 /**
  * imap_unmunge_mbox_name - Remove quoting from a mailbox name
- * @param adata Imap Account data
- * @param s     Mailbox name
+ * @param unicode true if Unicode is allowed
+ * @param s       Mailbox name
  *
  * The string will be altered in-place.
  */
-void imap_unmunge_mbox_name(struct ImapAccountData *adata, char *s)
+void imap_unmunge_mbox_name(bool unicode, char *s)
 {
   imap_unquote_string(s);
 
   char *buf = mutt_str_strdup(s);
   if (buf)
   {
-    imap_utf_decode(adata, &buf);
+    imap_utf_decode(unicode, &buf);
     strncpy(s, buf, strlen(s));
   }
 

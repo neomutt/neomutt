@@ -311,10 +311,10 @@ bail:
 
 /**
  * imap_utf_encode - Encode email from local charset to UTF-8
- * @param adata Imap Account data
- * @param s     Email to convert
+ * @param unicode true if Unicode is allowed
+ * @param s       Email to convert
  */
-void imap_utf_encode(struct ImapAccountData *adata, char **s)
+void imap_utf_encode(bool unicode, char **s)
 {
   if (!Charset || !s)
     return;
@@ -323,7 +323,7 @@ void imap_utf_encode(struct ImapAccountData *adata, char **s)
   if (t && (mutt_ch_convert_string(&t, Charset, "utf-8", 0) == 0))
   {
     FREE(s);
-    if (adata->unicode)
+    if (unicode)
       *s = mutt_str_strdup(t);
     else
       *s = utf8_to_utf7(t, strlen(t), NULL, 0);
@@ -333,17 +333,17 @@ void imap_utf_encode(struct ImapAccountData *adata, char **s)
 
 /**
  * imap_utf_decode - Decode email from UTF-8 to local charset
- * @param[in]  adata Imap Account data
- * @param[out] s     Email to convert
+ * @param[in]  unicode true if Unicode is allowed
+ * @param[out] s       Email to convert
  */
-void imap_utf_decode(struct ImapAccountData *adata, char **s)
+void imap_utf_decode(bool unicode, char **s)
 {
   if (!Charset)
     return;
 
   char *t = NULL;
 
-  if (adata->unicode)
+  if (unicode)
     t = mutt_str_strdup(*s);
   else
     t = utf7_to_utf8(*s, strlen(*s), 0, 0);

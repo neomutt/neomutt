@@ -1545,7 +1545,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
   imap_fix_path(adata, buf, mbox, sizeof(mbox));
   if (!*mbox)
     mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
-  imap_munge_mbox_name(adata, mmbox, sizeof(mmbox), mbox);
+  imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);
 
   /* loop in case of TRYCREATE */
   do
