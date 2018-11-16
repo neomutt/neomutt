@@ -2481,10 +2481,11 @@ static int nntp_mbox_open(struct Context *ctx)
     m->account->free_adata = nntp_adata_free;
   }
 
-  url_free(&url);
-
   if (!adata)
+  {
+    url_free(&url);
     return -1;
+  }
   CurrentNewsSrv = adata;
 
   m->msg_count = 0;
@@ -2500,6 +2501,7 @@ static int nntp_mbox_open(struct Context *ctx)
   {
     nntp_newsrc_close(adata);
     mutt_error(_("Newsgroup %s not found on the server"), group);
+    url_free(&url);
     return -1;
   }
 
@@ -2509,6 +2511,7 @@ static int nntp_mbox_open(struct Context *ctx)
 
   /* select newsgroup */
   mutt_message(_("Selecting %s..."), group);
+  url_free(&url);
   buf[0] = '\0';
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
   {
