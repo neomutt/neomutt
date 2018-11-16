@@ -1432,7 +1432,10 @@ int imap_status(const char *path, bool queue)
    * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
    * make sure the adata really is open to a folder. */
   if (adata->mailbox && !imap_mxcmp(mdata->name, adata->mbox_name))
+  {
+    imap_mdata_free((void **) &mdata);
     return adata->mailbox->msg_count;
+  }
 
   else if (mutt_bit_isset(adata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(adata->capabilities, STATUS))
@@ -1443,6 +1446,7 @@ int imap_status(const char *path, bool queue)
   {
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
+    imap_mdata_free((void **) &mdata);
     return -1;
   }
 
@@ -1450,6 +1454,7 @@ int imap_status(const char *path, bool queue)
   {
     imap_exec(adata, buf, IMAP_CMD_QUEUE);
     queued = 1;
+    imap_mdata_free((void **) &mdata);
     return 0;
   }
   else if (!queued)
@@ -1457,6 +1462,7 @@ int imap_status(const char *path, bool queue)
 
   queued = 0;
   status = imap_mboxcache_get(adata, mdata->name, false);
+  imap_mdata_free((void **) &mdata);
   if (status)
     return status->messages;
 
