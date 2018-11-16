@@ -179,6 +179,7 @@ struct Url *url_parse(const char *src)
   u->port = 0;
   u->path = NULL;
   STAILQ_INIT(&u->query_strings);
+  u->src = (char *)u + sizeof(struct Url);
   mutt_str_strfcpy(u->src, src, srcsize);
 
   char *it = u->src;

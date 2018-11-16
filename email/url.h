@@ -73,7 +73,7 @@ struct Url
   unsigned short port;
   char *path;
   struct UrlQueryStringHead query_strings;
-  char src[];
+  char *src;
 };
 
 enum UrlScheme url_check_scheme(const char *s);

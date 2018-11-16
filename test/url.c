@@ -1,27 +1,50 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 #include "email/url.h"
+#include "mutt/string2.h"
 
-typedef bool (*check_query_string)(const struct UrlQueryStringHead *q);
-
-bool check_query_string_eq(const struct UrlQueryStringHead *q)
+void check_query_string(const char *exp, const struct UrlQueryStringHead *act)
 {
-  const struct UrlQueryString *np = STAILQ_FIRST(q);
-  if (strcmp(np->name, "encoding") != 0)
-    return false;
-  if (strcmp(np->value, "binary") != 0)
-    return false;
-  if (STAILQ_NEXT(np, entries) != NULL)
-    return false;
-  return true;
+  char *next;
+  char tmp[64];
+  const struct UrlQueryString *np = STAILQ_FIRST(act);
+  while (exp && *exp)
+  {
+    next = strchr(exp, '|');
+    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    exp = next + 1;
+    if (!TEST_CHECK(strcmp(tmp, np->name) == 0))
+    {
+      TEST_MSG("Expected: <%s>", tmp);
+      TEST_MSG("Actual  : <%s>", np->name);
+    }
+
+    next = strchr(exp, '|');
+    mutt_str_strfcpy(tmp, exp, next - exp + 1);
+    exp = next + 1;
+    if (!TEST_CHECK(strcmp(tmp, np->value) == 0))
+    {
+      TEST_MSG("Expected: <%s>", tmp);
+      TEST_MSG("Actual  : <%s>", np->value);
+    }
+
+    np = STAILQ_NEXT(np, entries);
+  }
+
+  if (!TEST_CHECK(np == NULL))
+  {
+    TEST_MSG("Expected: NULL");
+    TEST_MSG("Actual  : (%s, %s)", np->name, np->value);
+  }
 }
 
 static struct
 {
-  const char *source;
-  bool valid;
-  check_query_string f;
-  struct Url url;
+  const char *source;   /* source URL to parse                              */ 
+  bool valid;           /* expected validity                                */
+  struct Url url;       /* expected resulting URL                           */
+  const char *qs_elem;  /* expected elements of the query string, separated
+                           and terminated by a pipe '|' character           */
 } test[] = {
   {
     "foobar foobar",
@@ -30,7 +53,6 @@ static struct
   {
     "imaps://foouser:foopass@imap.example.com:456",
     true,
-    NULL,
     {
       U_IMAPS,
       "foouser",
@@ -38,12 +60,12 @@ static struct
       "imap.example.com",
       456,
       NULL
-    }
+    },
+    NULL
   },
   {
     "SmTp://user@example.com", /* scheme is lower-cased */
     true,
-    NULL,
     {
       U_SMTP,
       "user",
@@ -51,12 +73,12 @@ static struct
       "example.com",
       0,
       NULL
-    }
+    },
+    NULL
   },
   {
     "pop://user@example.com@pop.example.com:234/some/where?encoding=binary",
     true,
-    check_query_string_eq,
     {
       U_POP,
       "user@example.com",
@@ -64,7 +86,8 @@ static struct
       "pop.example.com",
       234,
       "some/where",
-    }
+    },
+    "encoding|binary|"
   }
 };
 
@@ -114,10 +137,7 @@ void test_url(void)
       TEST_MSG("Expected: %s", test[i].url.path);
       TEST_MSG("Actual  : %s", url->path);
     }
-    if (test[i].f)
-    {
-      TEST_CHECK(test[i].f(&url->query_strings));
-    }
+    check_query_string(test[i].qs_elem, &url->query_strings);
 
     url_free(&url);
   }
