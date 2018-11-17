@@ -600,22 +600,16 @@ static int complete_hosts(char *buf, size_t buflen)
  */
 static int imap_access2(struct ImapAccountData *adata, struct ImapMboxData *mdata)
 {
-  struct ImapMboxData *selected_mdata = NULL;
   char buf[LONG_STRING * 2];
   int rc;
 
-  if (adata->mailbox)
-    selected_mdata = adata->mailbox->mdata;
-
   /* we may already be in the folder we're checking */
-  if (selected_mdata && mutt_str_strcmp(selected_mdata->name, mdata->name) == 0)
+  if (adata->mailbox && adata->mailbox->mdata == mdata)
     return 0;
 
-  if (imap_mboxcache_get(adata, mdata, false))
-  {
-    mutt_debug(3, "found %s in cache\n", mdata->name);
+  // We already have the information from cache.
+  if (mdata->uid_validity > 0)
     return 0;
-  }
 
   if (mutt_bit_isset(adata->capabilities, IMAP4REV1))
     snprintf(buf, sizeof(buf), "STATUS %s (UIDVALIDITY)", mdata->munge_name);
@@ -671,6 +665,11 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
  */
 int imap_access(const char *path)
 {
+  struct Mailbox *m = mx_mbox_find2(path);
+  if (m)
+    return imap_access2(m->account->adata, m->mdata);
+
+  // FIXME(sileht): Is that case possible ?
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   int rc;
@@ -1354,7 +1353,6 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  struct ImapMboxData *selected_mdata = NULL;
   char command[LONG_STRING * 2];
 
   if (imap_prepare_mailbox(m))
@@ -1366,14 +1364,11 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
   mdata = m->mdata;
   adata = m->account->adata;
 
-  if (adata->mailbox)
-    selected_mdata = adata->mailbox->mdata;
-
   /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
    * IDLEd elsewhere.
    * adata->mailbox may be NULL for connections other than the current
    * mailbox's.. #3216. */
-  if (selected_mdata && mdata == selected_mdata)
+  if (adata->mailbox && adata->mailbox == m)
   {
     m->has_new = false;
     return -1;
@@ -1425,25 +1420,20 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
 int imap_status(const char *path, bool queue)
 {
   static int queued = 0;
-
-  struct ImapAccountData *adata = NULL;
-  struct ImapMboxData *mdata = NULL;
-  struct ImapMboxData *selected_mdata = NULL;
   char buf[LONG_STRING * 2];
-  struct ImapStatus *status = NULL;
 
-  if (imap_adata_find(path, &adata, &mdata) < 0)
+  struct Mailbox *m = mx_mbox_find2(path);
+  if (!m)
     return -1;
 
-  if (adata->mailbox)
-    selected_mdata = adata->mailbox->mdata;
+  if (imap_prepare_mailbox(m) < 0)
+    return -1;
 
+  struct ImapAccountData *adata = m->account->adata;
+  struct ImapMboxData *mdata = m->mdata;
   // We are in the folder we're polling - just return the mailbox count.
-  if (selected_mdata && selected_mdata == mdata)
-  {
-    imap_mdata_free((void **) &mdata);
-    return adata->mailbox->msg_count;
-  }
+  if (adata->mailbox == m)
+    return m->msg_count;
 
   else if (mutt_bit_isset(adata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(adata->capabilities, STATUS))
@@ -1454,7 +1444,6 @@ int imap_status(const char *path, bool queue)
   {
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
-    imap_mdata_free((void **) &mdata);
     return -1;
   }
 
@@ -1462,105 +1451,12 @@ int imap_status(const char *path, bool queue)
   {
     imap_exec(adata, buf, IMAP_CMD_QUEUE);
     queued = 1;
-    imap_mdata_free((void **) &mdata);
     return 0;
   }
   else if (!queued)
     imap_exec(adata, buf, 0);
 
-  queued = 0;
-  status = imap_mboxcache_get(adata, mdata, false);
-  imap_mdata_free((void **) &mdata);
-  if (status)
-    return status->messages;
-
-  return 0;
-}
-
-/**
- * imap_mboxcache_get - Open an hcache for a mailbox
- * @param adata  Imap Account data
- * @param mdata  Imap Mailbox data to cache
- * @param create Should it be created if it doesn't exist?
- * @retval ptr  Stats of cached mailbox
- * @retval ptr  Stats of new cache entry
- * @retval NULL Not in cache and create is false
- *
- * return cached mailbox stats or NULL if create is 0
- */
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata,
-                                      struct ImapMboxData *mdata, bool create)
-{
-  struct ImapStatus *status = NULL;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &adata->mboxcache, entries)
-  {
-    status = (struct ImapStatus *) np->data;
-
-    if (imap_mxcmp(mdata->name, status->name) == 0)
-      return status;
-  }
-  status = NULL;
-
-  /* lame */
-  if (create)
-  {
-    struct ImapStatus *scache = mutt_mem_calloc(1, sizeof(struct ImapStatus));
-    scache->name = mdata->name;
-    mutt_list_insert_tail(&adata->mboxcache, (char *) scache);
-    status = imap_mboxcache_get(adata, mdata, false);
-    status->name = mutt_str_strdup(mdata->name);
-  }
-
-#ifdef USE_HCACHE
-  header_cache_t *hc = imap_hcache_open(adata, mdata);
-  if (hc)
-  {
-    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
-    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
-    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
-    if (uidvalidity)
-    {
-      if (!status)
-      {
-        mutt_hcache_free(hc, &uidvalidity);
-        mutt_hcache_free(hc, &uidnext);
-        mutt_hcache_free(hc, (void **) &modseq);
-        mutt_hcache_close(hc);
-        return imap_mboxcache_get(adata, mdata, true);
-      }
-      status->uidvalidity = *(unsigned int *) uidvalidity;
-      status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
-      status->modseq = modseq ? *modseq : 0;
-      mutt_debug(3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
-                 status->uidvalidity, status->uidnext, status->modseq);
-    }
-    mutt_hcache_free(hc, &uidvalidity);
-    mutt_hcache_free(hc, &uidnext);
-    mutt_hcache_free(hc, (void **) &modseq);
-    mutt_hcache_close(hc);
-  }
-#endif
-
-  return status;
-}
-
-/**
- * imap_mboxcache_free - Free the cached ImapStatus
- * @param adata Imap Account data
- */
-void imap_mboxcache_free(struct ImapAccountData *adata)
-{
-  struct ImapStatus *status = NULL;
-
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &adata->mboxcache, entries)
-  {
-    status = (struct ImapStatus *) np->data;
-    FREE(&status->name);
-  }
-
-  mutt_list_free(&adata->mboxcache);
+  return mdata->messages;
 }
 
 /**
@@ -2167,7 +2063,6 @@ static int imap_mbox_open(struct Context *ctx)
   if (!m->account)
     return -1;
 
-  struct ImapStatus *status = NULL;
   char buf[PATH_MAX];
   int count = 0;
   int rc;
@@ -2196,6 +2091,7 @@ static int imap_mbox_open(struct Context *ctx)
   /* clear mailbox status */
   adata->status = 0;
   memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
+  mdata->new_mail_count = 0;
 
   mutt_message(_("Selecting %s..."), mdata->name);
 
@@ -2245,8 +2141,6 @@ static int imap_mbox_open(struct Context *ctx)
 
   imap_cmd_start(adata, buf);
 
-  status = imap_mboxcache_get(adata, mdata, true);
-
   do
   {
     char *pc = NULL;
@@ -2290,16 +2184,14 @@ static int imap_mbox_open(struct Context *ctx)
       pc = imap_next_word(pc);
       if (mutt_str_atoui(pc, &mdata->uid_validity) < 0)
         goto fail;
-      status->uidvalidity = mdata->uid_validity;
     }
     else if (mutt_str_startswith(pc, "OK [UIDNEXT", CASE_IGNORE))
     {
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
       pc = imap_next_word(pc);
-      if (mutt_str_atoui(pc, &mdata->uidnext) < 0)
+      if (mutt_str_atoui(pc, &mdata->uid_next) < 0)
         goto fail;
-      status->uidnext = mdata->uidnext;
     }
     else if (mutt_str_startswith(pc, "OK [HIGHESTMODSEQ", CASE_IGNORE))
     {
@@ -2308,12 +2200,11 @@ static int imap_mbox_open(struct Context *ctx)
       pc = imap_next_word(pc);
       if (mutt_str_atoull(pc, &mdata->modseq) < 0)
         goto fail;
-      status->modseq = mdata->modseq;
     }
     else if (mutt_str_startswith(pc, "OK [NOMODSEQ", CASE_IGNORE))
     {
       mutt_debug(3, "Mailbox has NOMODSEQ set\n");
-      status->modseq = mdata->modseq = 0;
+      mdata->modseq = 0;
     }
     else
     {
@@ -2501,12 +2392,7 @@ static int imap_mbox_close(struct Context *ctx)
     adata->mailbox = NULL;
     adata->ctx = NULL;
 
-    // TODO(sileht): As this is associated to a Mailbox we could keep it
-    // to not requery everything each time a mailbox is reopen. This need to be
-    // tested and we need to free this somewhere.
-    // For now free it each time we close the mailbox to keep the previous mutt
-    // behavior.
-    imap_mdata_free(&m->mdata);
+    imap_mdata_cache_reset(m->mdata);
   }
 
   return 0;

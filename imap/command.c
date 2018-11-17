@@ -782,7 +782,6 @@ static void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 {
   char *value = NULL;
-  struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
   unsigned int litlen;
   short new = 0;
@@ -818,12 +817,21 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     imap_unmunge_mbox_name(adata->unicode, mailbox);
   }
 
-  struct ImapMboxData *mdata = imap_mdata_new(adata, mailbox);
-  status = imap_mboxcache_get(adata, mdata, true);
-  imap_mdata_free((void *) &mdata);
+  struct Url url;
+  mutt_account_tourl(&adata->conn_account, &url);
+  url.path = mailbox;
+  char path[PATH_MAX];
+  url_tostring(&url, path, sizeof(path), 0);
 
-  olduv = status->uidvalidity;
-  oldun = status->uidnext;
+  struct Mailbox *m = mx_mbox_find2(path);
+  if (!m || !m->mdata)
+  {
+    mutt_debug(3, "Received status for an unexpected mailbox: %s\n", mailbox);
+    return;
+  }
+  struct ImapMboxData *mdata = m->mdata;
+  olduv = mdata->uid_validity;
+  oldun = mdata->uid_next;
 
   if (*s++ != '(')
   {
@@ -845,91 +853,79 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
     if (mutt_str_startswith(s, "MESSAGES", CASE_MATCH))
     {
-      status->messages = count;
+      mdata->messages = count;
       new_msg_count = 1;
     }
     else if (mutt_str_startswith(s, "RECENT", CASE_MATCH))
-      status->recent = count;
+      mdata->recent = count;
     else if (mutt_str_startswith(s, "UIDNEXT", CASE_MATCH))
-      status->uidnext = count;
+      mdata->uid_next = count;
     else if (mutt_str_startswith(s, "UIDVALIDITY", CASE_MATCH))
-      status->uidvalidity = count;
+      mdata->uid_validity = count;
     else if (mutt_str_startswith(s, "UNSEEN", CASE_MATCH))
-      status->unseen = count;
+      mdata->unseen = count;
 
     s = value;
     if (*s && *s != ')')
       s = imap_next_word(s);
   }
   mutt_debug(3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
-             status->name, status->uidvalidity, status->uidnext,
-             status->messages, status->recent, status->unseen);
+             mdata->name, mdata->uid_validity, mdata->uid_next, mdata->messages,
+             mdata->recent, mdata->unseen);
 
+#if 0
+  // NOTE(sileht): I don't get this part, I haven't found where cmddata is reused
+  // after that.
   /* caller is prepared to handle the result herself */
   if (adata->cmddata && adata->cmdtype == IMAP_CT_STATUS)
   {
     memcpy(adata->cmddata, status, sizeof(struct ImapStatus));
     return;
   }
+#endif
 
   mutt_debug(3, "Running default STATUS handler\n");
 
-  /* should perhaps move this code back to imap_mailbox_check */
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &AllMailboxes, entries)
+  mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n", mailbox,
+             olduv, oldun, mdata->unseen);
+
+  if (MailCheckRecent)
   {
-    if (np->m->magic != MUTT_IMAP)
-      continue;
-
-    struct ImapAccountData *m_adata = imap_adata_get(np->m);
-    if (imap_account_match(&adata->conn_account, &m_adata->conn_account))
+    if (olduv && olduv == mdata->uid_validity)
     {
-      struct ImapMboxData *mdata2 = imap_mdata_get(np->m);
-      if (mdata2 && imap_mxcmp(mailbox, mdata2->name) == 0)
-      {
-        mutt_debug(3, "Found %s in mailbox list (OV: %u ON: %u U: %d)\n",
-                   mailbox, olduv, oldun, status->unseen);
-
-        if (MailCheckRecent)
-        {
-          if (olduv && olduv == status->uidvalidity)
-          {
-            if (oldun < status->uidnext)
-              new = (status->unseen > 0);
-          }
-          else if (!olduv && !oldun)
-          {
-            /* first check per session, use recent. might need a flag for this. */
-            new = (status->recent > 0);
-          }
-          else
-            new = (status->unseen > 0);
-        }
-        else
-          new = (status->unseen > 0);
+      if (oldun < mdata->uid_next)
+        new = (mdata->unseen > 0);
+    }
+    else if (!olduv && !oldun)
+    {
+      /* first check per session, use recent. might need a flag for this. */
+      new = (mdata->recent > 0);
+    }
+    else
+      new = (mdata->unseen > 0);
+  }
+  else
+    new = (mdata->unseen > 0);
 
 #ifdef USE_SIDEBAR
-        if ((np->m->has_new != new) || (np->m->msg_count != status->messages) ||
-            (np->m->msg_unread != status->unseen))
-        {
-          mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
-        }
-#endif
-        np->m->has_new = new;
-        if (new_msg_count)
-          np->m->msg_count = status->messages;
-        np->m->msg_unread = status->unseen;
-
-        if (np->m->has_new)
-        {
-          /* force back to keep detecting new mail until the mailbox is
-             opened */
-          status->uidnext = oldun;
-        }
-        return;
-      }
-    }
+  if ((m->has_new != new) || (m->msg_count != mdata->messages) ||
+      (m->msg_unread != mdata->unseen))
+  {
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
   }
+#endif
+  m->has_new = new;
+  if (new_msg_count)
+    m->msg_count = mdata->messages;
+  m->msg_unread = mdata->unseen;
+
+  if (m->has_new)
+  {
+    /* force back to keep detecting new mail until the mailbox is
+       opened */
+    mdata->uid_next = oldun;
+  }
+  return;
 }
 
 /**
