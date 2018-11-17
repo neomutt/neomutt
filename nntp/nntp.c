@@ -92,7 +92,7 @@ const char *OverviewFmt = "Subject:\0"
  */
 struct FetchCtx
 {
-  struct Context *ctx;
+  struct Mailbox *mailbox;
   anum_t first;
   anum_t last;
   int restore;
@@ -1073,11 +1073,9 @@ static int parse_overview_line(char *line, void *data)
     return 0;
 
   struct FetchCtx *fc = data;
-  struct Context *ctx = fc->ctx;
-  if (!ctx || !ctx->mailbox)
+  struct Mailbox *m = fc->mailbox;
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   struct Email *e = NULL;
@@ -1253,7 +1251,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     return 0;
 
   /* init fetch context */
-  fc.ctx = ctx;
+  fc.mailbox = m;
   fc.first = first;
   fc.last = last;
   fc.restore = restore;
