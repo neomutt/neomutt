@@ -40,7 +40,7 @@ void check_query_string(const char *exp, const struct UrlQueryStringHead *act)
 
 static struct
 {
-  const char *source;   /* source URL to parse                              */ 
+  const char *source;   /* source URL to parse                              */
   bool valid;           /* expected validity                                */
   struct Url url;       /* expected resulting URL                           */
   const char *qs_elem;  /* expected elements of the query string, separated
