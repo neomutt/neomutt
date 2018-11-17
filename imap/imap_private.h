@@ -158,21 +158,6 @@ struct ImapCache
 };
 
 /**
- * struct ImapStatus - Status of an IMAP mailbox
- */
-struct ImapStatus
-{
-  char *name;
-
-  unsigned int messages;
-  unsigned int recent;
-  unsigned int uidnext;
-  unsigned int uidvalidity;
-  unsigned int unseen;
-  unsigned long long modseq;  /* Used by CONDSTORE. 1 <= modseq < 2^63 */
-};
-
-/**
  * struct ImapList - Items in an IMAP browser
  */
 struct ImapList
@@ -245,9 +230,6 @@ struct ImapAccountData
   int lastcmd;
   struct Buffer *cmdbuf;
 
-  /* cache ImapStatus of visited mailboxes */
-  struct ListHead mboxcache;
-
   char delim;
   struct Context *ctx;
   struct Mailbox *mailbox;     /* Current selected mailbox */
@@ -270,11 +252,18 @@ struct ImapMboxData
   unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
   unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
+
+  // IMAP STATUS information
+  unsigned int uid_validity;
+  unsigned int uid_next;
+  unsigned long long modseq;
+  unsigned int messages;
+  unsigned int recent;
+  unsigned int unseen;
+
+  // Cached data used only when the mailbox is opened
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
-  unsigned int uid_validity;
-  unsigned int uidnext;
-  unsigned long long modseq;
   struct Email **msn_index;   /**< look up headers by (MSN-1) */
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
@@ -305,8 +294,6 @@ struct SeqsetIterator
 int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool force);
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create);
-void imap_mboxcache_free(struct ImapAccountData *adata);
 int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
                      int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
@@ -364,6 +351,7 @@ struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
 void imap_mdata_free(void **ptr);
+void imap_mdata_cache_reset(struct ImapMboxData *mdata);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);

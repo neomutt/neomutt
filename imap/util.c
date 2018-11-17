@@ -79,7 +79,6 @@ void imap_adata_free(void **ptr)
 
   FREE(&adata->capstr);
   mutt_list_free(&adata->flags);
-  imap_mboxcache_free(adata);
   mutt_buffer_free(&adata->cmdbuf);
   FREE(&adata->buf);
   FREE(&adata->cmds);
@@ -107,7 +106,6 @@ struct ImapAccountData *imap_adata_new(void)
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
 
   STAILQ_INIT(&adata->flags);
-  STAILQ_INIT(&adata->mboxcache);
 
   return adata;
 }
@@ -174,7 +172,52 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
 
   mdata->reopen &= IMAP_REOPEN_ALLOW;
 
+#ifdef USE_HCACHE
+  header_cache_t *hc = imap_hcache_open(adata, mdata);
+  if (hc)
+  {
+    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
+    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
+    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
+    if (uidvalidity)
+    {
+      mdata->uid_validity = *(unsigned int *) uidvalidity;
+      mdata->uid_next = uidnext ? *(unsigned int *) uidnext : 0;
+      mdata->modseq = modseq ? *modseq : 0;
+      mutt_debug(3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
+                 mdata->uid_validity, mdata->uid_next, mdata->modseq);
+    }
+    mutt_hcache_free(hc, &uidvalidity);
+    mutt_hcache_free(hc, &uidnext);
+    mutt_hcache_free(hc, (void **) &modseq);
+    mutt_hcache_close(hc);
+  }
+#endif
+
   return mdata;
+}
+
+/**
+ * imap_mdata_cache_reset - Release and clear cache data of ImapMboxData structure
+ * @param mdata Imap Mailbox data
+ */
+void imap_mdata_cache_reset(struct ImapMboxData *mdata)
+{
+  mutt_hash_destroy(&mdata->uid_hash);
+  FREE(&mdata->msn_index);
+  mdata->msn_index_size = 0;
+  mdata->max_msn = 0;
+
+  for (int i = 0; i < IMAP_CACHE_LEN; i++)
+  {
+    if (mdata->cache[i].path)
+    {
+      unlink(mdata->cache[i].path);
+      FREE(&mdata->cache[i].path);
+    }
+  }
+
+  mutt_bcache_close(&mdata->bcache);
 }
 
 /**
@@ -188,21 +231,10 @@ void imap_mdata_free(void **ptr)
 
   struct ImapMboxData *mdata = *ptr;
 
-  for (int i = 0; i < IMAP_CACHE_LEN; i++)
-  {
-    if (mdata->cache[i].path)
-    {
-      unlink(mdata->cache[i].path);
-      FREE(&mdata->cache[i].path);
-    }
-  }
-
-  mutt_bcache_close(&mdata->bcache);
-  mutt_hash_destroy(&mdata->uid_hash);
+  imap_mdata_cache_reset(mdata);
   FREE(&mdata->name);
   FREE(&mdata->real_name);
   FREE(&mdata->munge_name);
-  FREE(&mdata->msn_index);
   FREE(ptr);
 }
 

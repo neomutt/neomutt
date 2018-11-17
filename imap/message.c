@@ -683,7 +683,7 @@ static void set_changed_flag(struct Context *ctx, struct Email *e,
  * read_headers_normal_eval_cache - Retrieve data from the header cache
  * @param adata              Imap Account data
  * @param msn_end            Last Message Sequence number
- * @param uidnext            UID of next email
+ * @param uid_next           UID of next email
  * @param store_flag_updates if true, save flags to the header cache
  * @param eval_condstore     if true, use CONDSTORE to fetch flags
  * @retval  0 Success
@@ -697,7 +697,7 @@ static void set_changed_flag(struct Context *ctx, struct Email *e,
  * read_headers_condstore_qresync_updates().
  */
 static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
-                                          unsigned int msn_end, unsigned int uidnext,
+                                          unsigned int msn_end, unsigned int uid_next,
                                           bool store_flag_updates, bool eval_condstore)
 {
   struct Progress progress;
@@ -714,7 +714,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   /* If we are using CONDSTORE's "FETCH CHANGEDSINCE", then we keep
    * the flags in the header cache, and update them further below.
    * Otherwise, we fetch the current state of the flags here. */
-  snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID%s)", uidnext - 1,
+  snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID%s)", uid_next - 1,
            eval_condstore ? "" : " FLAGS");
 
   imap_cmd_start(adata, buf);
@@ -897,7 +897,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
  * read_headers_condstore_qresync_updates - Retrieve updates from the server
  * @param adata        Imap Account data
  * @param msn_end      Last Message Sequence number
- * @param uidnext      UID of next email
+ * @param uid_next     UID of next email
  * @param hc_modseq    Timestamp of last Header Cache update
  * @param eval_qresync If true, use QRESYNC
  * @retval  0 Success
@@ -906,7 +906,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
  * CONDSTORE and QRESYNC use FETCH extensions to grab updates.
  */
 static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
-                                                  unsigned int msn_end, unsigned int uidnext,
+                                                  unsigned int msn_end, unsigned int uid_next,
                                                   unsigned long long hc_modseq, bool eval_qresync)
 {
   struct Progress progress;
@@ -921,7 +921,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
                      MUTT_PROGRESS_MSG, ReadInc, msn_end);
 
   snprintf(buf, sizeof(buf), "UID FETCH 1:%u (FLAGS) (CHANGEDSINCE %llu%s)",
-           uidnext - 1, hc_modseq, eval_qresync ? " VANISHED" : "");
+           uid_next - 1, hc_modseq, eval_qresync ? " VANISHED" : "");
 
   imap_cmd_start(adata, buf);
 
@@ -1203,7 +1203,6 @@ bail:
 int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
                       unsigned int msn_end, bool initial_download)
 {
-  struct ImapStatus *status = NULL;
   int oldmsgcount;
   unsigned int maxuid = 0;
   int retval = -1;
@@ -1211,8 +1210,8 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
 
 #ifdef USE_HCACHE
   void *uid_validity = NULL;
-  void *puidnext = NULL;
-  unsigned int uidnext = 0;
+  void *puid_next = NULL;
+  unsigned int uid_next = 0;
   bool has_condstore = false;
   bool has_qresync = false;
   bool eval_condstore = false;
@@ -1241,11 +1240,11 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
   if (mdata->hcache && initial_download)
   {
     uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
-    puidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
-    if (puidnext)
+    puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
+    if (puid_next)
     {
-      uidnext = *(unsigned int *) puidnext;
-      mutt_hcache_free(mdata->hcache, &puidnext);
+      uid_next = *(unsigned int *) puid_next;
+      mutt_hcache_free(mdata->hcache, &puid_next);
     }
 
     if (mdata->modseq)
@@ -1261,7 +1260,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
         has_qresync = true;
     }
 
-    if (uid_validity && uidnext && (*(unsigned int *) uid_validity == mdata->uid_validity))
+    if (uid_validity && uid_next && (*(unsigned int *) uid_validity == mdata->uid_validity))
     {
       evalhc = true;
       pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7);
@@ -1294,14 +1293,14 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
     }
     else
     {
-      if (read_headers_normal_eval_cache(adata, msn_end, uidnext, has_condstore || has_qresync,
+      if (read_headers_normal_eval_cache(adata, msn_end, uid_next, has_condstore || has_qresync,
                                          eval_condstore) < 0)
         goto bail;
     }
 
     if ((eval_condstore || eval_qresync) && (hc_modseq != mdata->modseq))
     {
-      if (read_headers_condstore_qresync_updates(adata, msn_end, uidnext,
+      if (read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
                                                  hc_modseq, eval_qresync) < 0)
       {
         goto bail;
@@ -1321,24 +1320,21 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
   if (read_headers_fetch_new(adata, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
 
-  if (maxuid && (status = imap_mboxcache_get(adata, mdata, 0)) &&
-      (status->uidnext < maxuid + 1))
-  {
-    status->uidnext = maxuid + 1;
-  }
+  if (maxuid && mdata->uid_next < maxuid + 1)
+    mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
   mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
                         sizeof(mdata->uid_validity));
-  if (maxuid && mdata->uidnext < maxuid + 1)
+  if (maxuid && mdata->uid_next < maxuid + 1)
   {
-    mutt_debug(2, "Overriding UIDNEXT: %u -> %u\n", mdata->uidnext, maxuid + 1);
-    mdata->uidnext = maxuid + 1;
+    mutt_debug(2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
+    mdata->uid_next = maxuid + 1;
   }
-  if (mdata->uidnext > 1)
+  if (mdata->uid_next > 1)
   {
-    mutt_hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uidnext,
-                          sizeof(mdata->uidnext));
+    mutt_hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next,
+                          sizeof(mdata->uid_next));
   }
 
   /* We currently only sync CONDSTORE and QRESYNC on the initial download.
