@@ -178,16 +178,6 @@ struct ImapCommand
 };
 
 /**
- * enum ImapCommandType - IMAP command type
- */
-enum ImapCommandType
-{
-  IMAP_CT_NONE = 0,
-  IMAP_CT_LIST,
-  IMAP_CT_STATUS
-};
-
-/**
  * struct ImapAccountData - IMAP-specific Account data - @extends Account
  *
  * This data is specific to a Connection to an IMAP server
@@ -220,8 +210,7 @@ struct ImapAccountData
 
   /* if set, the response parser will store results for complicated commands
    * here. */
-  enum ImapCommandType cmdtype;
-  void *cmddata;
+  struct ImapList *cmdresult;
 
   /* command queue */
   struct ImapCommand *cmds;

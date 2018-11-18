@@ -1586,8 +1586,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
   mutt_str_strfcpy(completion, mdata->name, sizeof(completion));
   imap_mdata_free((void *) &mdata);
 
-  adata->cmdtype = IMAP_CT_LIST;
-  adata->cmddata = &listresp;
+  adata->cmdresult = &listresp;
   do
   {
     listresp.name = NULL;
@@ -1616,7 +1615,7 @@ int imap_complete(char *buf, size_t buflen, char *path)
       completions++;
     }
   } while (rc == IMAP_CMD_CONTINUE);
-  adata->cmddata = NULL;
+  adata->cmdresult = NULL;
 
   if (completions)
   {

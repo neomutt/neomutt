@@ -148,8 +148,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
   struct Url *url = url_parse(state->folder);
 
   imap_cmd_start(adata, cmd);
-  adata->cmdtype = IMAP_CT_LIST;
-  adata->cmddata = &list;
+  adata->cmdresult = &list;
   do
   {
     list.name = NULL;
@@ -165,7 +164,7 @@ static int browse_add_list_result(struct ImapAccountData *adata, const char *cmd
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
-  adata->cmddata = NULL;
+  adata->cmdresult = NULL;
 
   url_free(&url);
 
@@ -245,8 +244,7 @@ int imap_browse(char *path, struct BrowserState *state)
     imap_munge_mbox_name(adata->unicode, munged_mbox, sizeof(munged_mbox), mbox);
     snprintf(buf, sizeof(buf), "%s \"\" %s", list_cmd, munged_mbox);
     imap_cmd_start(adata, buf);
-    adata->cmdtype = IMAP_CT_LIST;
-    adata->cmddata = &list;
+    adata->cmdresult = &list;
     do
     {
       list.name = 0;
@@ -261,7 +259,7 @@ int imap_browse(char *path, struct BrowserState *state)
         }
       }
     } while (rc == IMAP_CMD_CONTINUE);
-    adata->cmddata = NULL;
+    adata->cmdresult = NULL;
 
     /* if we're descending a folder, mark it as current in browser_state */
     if (mbox[n - 1] == list.delim)

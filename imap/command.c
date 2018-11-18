@@ -563,8 +563,8 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   char delimbuf[5]; /* worst case: "\\"\0 */
   unsigned int litlen;
 
-  if (adata->cmddata && adata->cmdtype == IMAP_CT_LIST)
-    list = adata->cmddata;
+  if (adata->cmdresult)
+    list = adata->cmdresult;
   else
     list = &lb;
 
@@ -640,7 +640,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   struct Url url;
   struct ImapList list;
 
-  if (adata->cmddata && adata->cmdtype == IMAP_CT_LIST)
+  if (adata->cmdresult)
   {
     /* caller will handle response itself */
     cmd_parse_list(adata, s);
@@ -650,10 +650,9 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   if (!ImapCheckSubscribed)
     return;
 
-  adata->cmdtype = IMAP_CT_LIST;
-  adata->cmddata = &list;
+  adata->cmdresult = &list;
   cmd_parse_list(adata, s);
-  adata->cmddata = NULL;
+  adata->cmdresult = NULL;
   /* noselect is for a gmail quirk (#3445) */
   if (!list.name || list.noselect)
     return;
@@ -872,17 +871,6 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   mutt_debug(3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
              mdata->name, mdata->uid_validity, mdata->uid_next, mdata->messages,
              mdata->recent, mdata->unseen);
-
-#if 0
-  // NOTE(sileht): I don't get this part, I haven't found where cmddata is reused
-  // after that.
-  /* caller is prepared to handle the result herself */
-  if (adata->cmddata && adata->cmdtype == IMAP_CT_STATUS)
-  {
-    memcpy(adata->cmddata, status, sizeof(struct ImapStatus));
-    return;
-  }
-#endif
 
   mutt_debug(3, "Running default STATUS handler\n");
 
