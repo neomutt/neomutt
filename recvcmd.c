@@ -1049,6 +1049,9 @@ void mutt_attach_mail_sender(FILE *fp, struct Email *e, struct AttachCtx *actx,
 {
   if (!check_all_msg(actx, cur, 0))
   {
+    /* L10N: You will see this error message if you invoke <compose-to-sender>
+       when you are on a normal attachment.
+     */
     mutt_error(_("You may only compose to sender with message/rfc822 parts"));
     return;
   }
