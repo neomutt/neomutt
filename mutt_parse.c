@@ -63,7 +63,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
 
       mx_msg_close(ctx, &msg);
     }
-  } while (0);
+  } while (false);
 
   cur->attach_valid = false;
 }

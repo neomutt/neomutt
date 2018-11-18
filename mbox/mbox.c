@@ -116,10 +116,10 @@ static struct MboxAccountData *mbox_adata_get(struct Mailbox *m)
  */
 static int init_mailbox(struct Mailbox *m)
 {
-  if (!m || (m->magic != MUTT_MBOX))
+  if (!m || (m->magic != MUTT_MBOX) || !m->account)
     return -1;
 
-  if (m->account && m->account->adata)
+  if (m->account->adata)
     return 0;
 
   m->account->adata = mbox_adata_new();
@@ -645,8 +645,10 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       adata->fp = mutt_file_fopen(m->path, "r");
       if (!adata->fp)
         rc = -1;
+      else if (m->magic == MUTT_MBOX)
+        rc = mbox_parse_mailbox(ctx);
       else
-        rc = ((m->magic == MUTT_MBOX) ? mbox_parse_mailbox : mmdf_parse_mailbox)(ctx);
+        rc = mmdf_parse_mailbox(ctx);
       break;
 
     default:

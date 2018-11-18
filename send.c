@@ -497,11 +497,11 @@ void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
   if (!ForwardAttributionIntro || !fp)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, ctx, cur);
   setlocale(LC_TIME, "");
-  fputs(buffer, fp);
+  fputs(buf, fp);
   fputs("\n\n", fp);
 }
 
@@ -516,12 +516,12 @@ void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
   if (!ForwardAttributionTrailer || !fp)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, ctx, cur);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
-  fputs(buffer, fp);
+  fputs(buf, fp);
   fputc('\n', fp);
 }
 
@@ -581,11 +581,11 @@ void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
   if (!Attribution || !out)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), Attribution, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), Attribution, ctx, cur);
   setlocale(LC_TIME, "");
-  fputs(buffer, out);
+  fputs(buf, out);
   fputc('\n', out);
 }
 
@@ -600,9 +600,9 @@ void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
   if (!PostIndentString || !out)
     return;
 
-  char buffer[STRING];
-  mutt_make_string(buffer, sizeof(buffer), PostIndentString, ctx, cur);
-  fputs(buffer, out);
+  char buf[STRING];
+  mutt_make_string(buf, sizeof(buf), PostIndentString, ctx, cur);
+  fputs(buf, out);
   fputc('\n', out);
 }
 
@@ -850,11 +850,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   if (!env)
     return;
 
-  char buffer[STRING];
+  char buf[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buffer, sizeof(buffer), NONULL(ForwardFormat), ctx, cur);
-  mutt_str_replace(&env->subject, buffer);
+  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), ctx, cur);
+  mutt_str_replace(&env->subject, buf);
 }
 
 /**
@@ -1524,7 +1524,7 @@ static bool search_attach_keyword(char *filename)
 int ci_send_message(int flags, struct Email *msg, char *tempfile,
                     struct Context *ctx, struct Email *cur)
 {
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;
@@ -1650,9 +1650,9 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
 
       if (!tempfile)
       {
-        mutt_mktemp(buffer, sizeof(buffer));
-        tempfp = mutt_file_fopen(buffer, "w+");
-        msg->content->filename = mutt_str_strdup(buffer);
+        mutt_mktemp(buf, sizeof(buf));
+        tempfp = mutt_file_fopen(buf, "w+");
+        msg->content->filename = mutt_str_strdup(buf);
       }
       else
       {

@@ -166,17 +166,18 @@ struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
  * nntp_mdata_free - Free NntpMboxData, used to destroy hash elements
  * @param ptr NNTP data
  */
-void nntp_mdata_free(void *ptr)
+void nntp_mdata_free(void **ptr)
 {
-  struct NntpMboxData *mdata = ptr;
-
-  if (!mdata)
+  if (!ptr || !*ptr)
     return;
+
+  struct NntpMboxData *mdata = *ptr;
+
   nntp_acache_free(mdata);
   mutt_bcache_close(&mdata->bcache);
   FREE(&mdata->newsrc_ent);
   FREE(&mdata->desc);
-  FREE(&ptr);
+  FREE(ptr);
 }
 
 /**
@@ -2563,6 +2564,7 @@ static int nntp_mbox_open(struct Context *ctx)
 
   time(&adata->check_time);
   m->mdata = mdata;
+  m->free_mdata = nntp_mdata_free;
   if (!mdata->bcache && (mdata->newsrc_ent || mdata->subscribed || SaveUnsubscribed))
     mdata->bcache = mutt_bcache_open(&adata->conn->account, mdata->group);
 
@@ -2712,7 +2714,7 @@ static int nntp_mbox_close(struct Context *ctx)
 
   tmp_mdata = mutt_hash_find(mdata->adata->groups_hash, mdata->group);
   if (!tmp_mdata || tmp_mdata != mdata)
-    nntp_mdata_free(mdata);
+    nntp_mdata_free((void **) &mdata);
   return 0;
 }
 

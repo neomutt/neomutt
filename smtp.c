@@ -808,7 +808,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     mutt_socket_send(conn, "QUIT\r\n");
 
     rc = 0;
-  } while (0);
+  } while (false);
 
   if (conn)
     mutt_socket_close(conn);

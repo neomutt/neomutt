@@ -836,6 +836,9 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
  */
 void imap_expunge_mailbox(struct ImapAccountData *adata)
 {
+  if (!adata || !adata->mailbox)
+    return;
+
   struct Email *e = NULL;
   int cacheno;
   short old_sort;

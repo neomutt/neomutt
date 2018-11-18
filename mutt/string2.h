@@ -57,7 +57,7 @@
       a[(b)] = 0;                                                              \
     else                                                                       \
       a[(c)] = 0;                                                              \
-  } while (0)
+  } while (false)
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 

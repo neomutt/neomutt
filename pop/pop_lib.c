@@ -306,19 +306,13 @@ int pop_open_connection(struct PopAccountData *adata)
 
   int rc = pop_connect(adata);
   if (rc < 0)
-  {
-    mutt_sleep(2);
     return rc;
-  }
 
   rc = pop_capabilities(adata, 0);
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
-  {
-    mutt_sleep(2);
     return -2;
-  }
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
@@ -357,10 +351,7 @@ int pop_open_connection(struct PopAccountData *adata)
         if (rc == -1)
           goto err_conn;
         if (rc == -2)
-        {
-          mutt_sleep(2);
           return -2;
-        }
       }
     }
   }
@@ -385,10 +376,7 @@ int pop_open_connection(struct PopAccountData *adata)
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
-  {
-    mutt_sleep(2);
     return -2;
-  }
 
   /* get total size of mailbox */
   mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
