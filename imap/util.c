@@ -78,7 +78,6 @@ void imap_adata_free(void **ptr)
   struct ImapAccountData *adata = *ptr;
 
   FREE(&adata->capstr);
-  mutt_list_free(&adata->flags);
   mutt_buffer_free(&adata->cmdbuf);
   FREE(&adata->buf);
   FREE(&adata->cmds);
@@ -104,8 +103,6 @@ struct ImapAccountData *imap_adata_new(void)
   adata->cmdbuf = mutt_buffer_new();
   adata->cmdslots = ImapPipelineDepth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
-
-  STAILQ_INIT(&adata->flags);
 
   return adata;
 }
@@ -172,6 +169,8 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
 
   mdata->reopen &= IMAP_REOPEN_ALLOW;
 
+  STAILQ_INIT(&mdata->flags);
+
 #ifdef USE_HCACHE
   header_cache_t *hc = imap_hcache_open(adata, mdata);
   if (hc)
@@ -232,6 +231,7 @@ void imap_mdata_free(void **ptr)
   struct ImapMboxData *mdata = *ptr;
 
   imap_mdata_cache_reset(mdata);
+  mutt_list_free(&mdata->flags);
   FREE(&mdata->name);
   FREE(&mdata->real_name);
   FREE(&mdata->munge_name);

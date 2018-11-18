@@ -165,7 +165,7 @@ static void set_flag(struct ImapAccountData *adata, int aclbit, int flag,
                      const char *str, char *flags, size_t flsize)
 {
   if (mutt_bit_isset(adata->mailbox->rights, aclbit))
-    if (flag && imap_has_flag(&adata->flags, str))
+    if (flag && imap_has_flag(&imap_mdata_get(adata->mailbox)->flags, str))
       mutt_str_strcat(flags, flsize, str);
 }
 
@@ -308,7 +308,8 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
   if (!mutt_bit_isset(adata->mailbox->rights, right))
     return 0;
 
-  if (right == MUTT_ACL_WRITE && !imap_has_flag(&adata->flags, name))
+  if (right == MUTT_ACL_WRITE &&
+      !imap_has_flag(&imap_mdata_get(adata->mailbox)->flags, name))
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
@@ -2156,10 +2157,10 @@ static int imap_mbox_open(struct Context *ctx)
     if (mutt_str_startswith(pc, "FLAGS", CASE_IGNORE))
     {
       /* don't override PERMANENTFLAGS */
-      if (STAILQ_EMPTY(&adata->flags))
+      if (STAILQ_EMPTY(&mdata->flags))
       {
         mutt_debug(3, "Getting mailbox FLAGS\n");
-        pc = get_flags(&adata->flags, pc);
+        pc = get_flags(&mdata->flags, pc);
         if (!pc)
           goto fail;
       }
@@ -2169,10 +2170,10 @@ static int imap_mbox_open(struct Context *ctx)
     {
       mutt_debug(3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
-      mutt_list_free(&adata->flags);
+      mutt_list_free(&mdata->flags);
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
       pc += 13;
-      pc = get_flags(&(adata->flags), pc);
+      pc = get_flags(&(mdata->flags), pc);
       if (!pc)
         goto fail;
     }
@@ -2239,7 +2240,7 @@ static int imap_mbox_open(struct Context *ctx)
   /* dump the mailbox flags we've found */
   if (DebugLevel > 2)
   {
-    if (STAILQ_EMPTY(&adata->flags))
+    if (STAILQ_EMPTY(&mdata->flags))
       mutt_debug(3, "No folder flags found\n");
     else
     {
@@ -2247,7 +2248,7 @@ static int imap_mbox_open(struct Context *ctx)
       struct Buffer flag_buffer;
       mutt_buffer_init(&flag_buffer);
       mutt_buffer_printf(&flag_buffer, "Mailbox flags: ");
-      STAILQ_FOREACH(np, &adata->flags, entries)
+      STAILQ_FOREACH(np, &mdata->flags, entries)
       {
         mutt_buffer_add_printf(&flag_buffer, "[%s] ", np->data);
       }
@@ -2388,7 +2389,6 @@ static int imap_mbox_close(struct Context *ctx)
       adata->state = IMAP_AUTHENTICATED;
     }
 
-    mutt_list_free(&adata->flags);
     adata->mailbox = NULL;
     adata->ctx = NULL;
 
@@ -2421,15 +2421,15 @@ static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Em
  */
 static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!m)
+  if (!m || !m->mdata)
     return -1;
 
   char *new = NULL;
   char *checker = NULL;
-  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = m->mdata;
 
   /* Check for \* flags capability */
-  if (!imap_has_flag(&adata->flags, NULL))
+  if (!imap_has_flag(&mdata->flags, NULL))
   {
     mutt_error(_("IMAP server doesn't support custom flags"));
     return -1;
