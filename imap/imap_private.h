@@ -222,9 +222,6 @@ struct ImapAccountData
   char delim;
   struct Context *ctx;
   struct Mailbox *mailbox;     /* Current selected mailbox */
-
-  /* all folder flags - system AND custom flags */
-  struct ListHead flags;
 };
 
 /**
@@ -243,6 +240,7 @@ struct ImapMboxData
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
 
   // IMAP STATUS information
+  struct ListHead flags;
   unsigned int uid_validity;
   unsigned int uid_next;
   unsigned long long modseq;
@@ -261,6 +259,7 @@ struct ImapMboxData
 #ifdef USE_HCACHE
   header_cache_t *hcache;
 #endif
+
 };
 
 /**
