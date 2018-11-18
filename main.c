@@ -1235,12 +1235,12 @@ main_ok:
 main_curses:
   mutt_endwin();
   log_queue_flush(log_disp_terminal);
+  mutt_unlink_temp_attachments();
   mutt_log_stop();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
-  mutt_unlink_temp_attachments();
   mutt_list_free(&queries);
   crypto_module_free();
   mutt_window_free();
