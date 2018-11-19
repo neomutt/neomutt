@@ -551,9 +551,9 @@ int mh_sync_message(struct Mailbox *m, int msgno)
 /**
  * mh_mbox_open - Implements MxOps::mbox_open()
  */
-static int mh_mbox_open(struct Context *ctx)
+static int mh_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  return mh_read_dir(ctx, NULL);
+  return mh_read_dir(m, ctx, NULL);
 }
 
 /**
@@ -717,7 +717,7 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
     maildir_update_tables(ctx, index_hint);
 
   /* Incorporate new messages */
-  have_new = maildir_move_to_context(ctx, &md);
+  have_new = maildir_move_to_context(m, ctx, &md);
 
   if (occult)
     return MUTT_REOPENED;

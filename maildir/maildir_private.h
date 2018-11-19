@@ -96,7 +96,7 @@ int                     maildir_check_dir      (struct Mailbox *m, const char *d
 void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress);
 struct MaildirMboxData *maildir_mdata_get      (struct Mailbox *m);
 int                     maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir);
-int                     maildir_move_to_context(struct Context *ctx, struct Maildir **md);
+int                     maildir_move_to_context(struct Mailbox *m, struct Context *ctx, struct Maildir **md);
 int                     maildir_parse_dir      (struct Mailbox *m, struct Maildir ***last, const char *subdir, int *count, struct Progress *progress);
 void                    maildir_parse_flags    (struct Email *e, const char *path);
 struct Email *          maildir_parse_message  (enum MailboxType magic, const char *fname, bool is_old, struct Email *e);
@@ -105,7 +105,7 @@ void                    maildir_update_tables  (struct Context *ctx, int *index_
 int                     md_commit_message      (struct Mailbox *m, struct Message *msg, struct Email *e);
 int                     mh_commit_msg          (struct Mailbox *m, struct Message *msg, struct Email *e, bool updseq);
 int                     mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
-int                     mh_read_dir            (struct Context *ctx, const char *subdir);
+int                     mh_read_dir            (struct Mailbox *m, struct Context *ctx, const char *subdir);
 int                     mh_read_sequences      (struct MhSequences *mhs, const char *path);
 short                   mhs_check              (struct MhSequences *mhs, int i);
 void                    mhs_free_sequences     (struct MhSequences *mhs);

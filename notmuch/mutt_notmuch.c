@@ -2126,15 +2126,8 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nm_mbox_open - Implements MxOps::mbox_open()
  */
-static int nm_mbox_open(struct Context *ctx)
+static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  int rc = -1;
-
   if (init_mailbox(m) != 0)
     return -1;
 
@@ -2154,6 +2147,8 @@ static int nm_mbox_open(struct Context *ctx)
     m->vcount = 0;
     mx_alloc_memory(m);
   }
+
+  int rc = -1;
 
   notmuch_query_t *q = get_query(m, false);
   if (q)

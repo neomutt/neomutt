@@ -152,16 +152,17 @@ cleanup:
 
 /**
  * maildir_read_dir - Read a Maildir style mailbox
+ * @param m   Mailbox
  * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int maildir_read_dir(struct Context *ctx)
+static int maildir_read_dir(struct Mailbox *m, struct Context *ctx)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages
    */
-  if ((mh_read_dir(ctx, "new") == -1) || (mh_read_dir(ctx, "cur") == -1))
+  if ((mh_read_dir(m, ctx, "new") == -1) || (mh_read_dir(m, ctx, "cur") == -1))
     return -1;
 
   return 0;
@@ -298,9 +299,9 @@ cleanup:
 /**
  * maildir_mbox_open - Implements MxOps::mbox_open()
  */
-static int maildir_mbox_open(struct Context *ctx)
+static int maildir_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  return maildir_read_dir(ctx);
+  return maildir_read_dir(m, ctx);
 }
 
 /**
@@ -528,7 +529,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   maildir_delayed_parsing(m, &md, NULL);
 
   /* Incorporate new messages */
-  have_new = maildir_move_to_context(ctx, &md);
+  have_new = maildir_move_to_context(ctx->mailbox, ctx, &md);
 
   mutt_buffer_pool_release(&buf);
 

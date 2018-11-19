@@ -941,13 +941,8 @@ int mbox_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * mbox_mbox_open - Implements MxOps::mbox_open()
  */
-static int mbox_mbox_open(struct Context *ctx)
+static int mbox_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
   if (init_mailbox(m) != 0)
     return -1;
 
@@ -1037,7 +1032,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   if (!adata)
     return -1;
 
-  if (!adata->fp && (mbox_mbox_open(ctx) < 0))
+  if (!adata->fp && (mbox_mbox_open(m, ctx) < 0))
     return -1;
 
   struct stat st;

@@ -825,13 +825,9 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
  *
  * Fetch only headers
  */
-static int pop_mbox_open(struct Context *ctx)
+static int pop_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-  if (!m->account)
+  if (!m || !m->account)
     return -1;
 
   char buf[PATH_MAX];

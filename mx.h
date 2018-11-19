@@ -120,11 +120,12 @@ struct MxOps
   int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
    * mbox_open - Open a mailbox
+   * @param m   Mailbox to open
    * @param ctx Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*mbox_open)       (struct Context *ctx);
+  int (*mbox_open)       (struct Mailbox *m, struct Context *ctx);
   /**
    * mbox_open_append - Open a mailbox for appending
    * @param m     Mailbox to open

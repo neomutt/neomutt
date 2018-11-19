@@ -2440,13 +2440,9 @@ int nntp_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nntp_mbox_open - Implements MxOps::mbox_open()
  */
-static int nntp_mbox_open(struct Context *ctx)
+static int nntp_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-  if (!m->account)
+  if (!m || !m->account)
     return -1;
 
   char buf[HUGE_STRING];
