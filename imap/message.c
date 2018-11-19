@@ -1626,7 +1626,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
         }
       }
       rc = imap_exec(adata, cmd.data, IMAP_CMD_QUEUE);
-      if (rc < 0)
+      if (rc != IMAP_EXEC_SUCCESS)
       {
         mutt_debug(1, "#2 could not queue copy\n");
         goto out;
@@ -1634,8 +1634,8 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     }
 
     /* let's get it on */
-    rc = imap_exec(adata, NULL, IMAP_CMD_FAIL_OK);
-    if (rc == -2)
+    rc = imap_exec(adata, NULL, 0);
+    if (rc == IMAP_EXEC_ERROR)
     {
       if (triedcreate)
       {
@@ -1656,7 +1656,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
         break;
       triedcreate = 1;
     }
-  } while (rc == -2);
+  } while (rc == IMAP_EXEC_ERROR);
 
   if (rc != 0)
   {

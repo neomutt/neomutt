@@ -46,7 +46,6 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
 {
   char q_user[STRING], q_pass[STRING];
   char buf[LONG_STRING];
-  int rc;
 
   if (mutt_bit_isset(adata->capabilities, LOGINDISABLED))
   {
@@ -71,9 +70,7 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
     mutt_debug(2, "Sending LOGIN command for %s...\n", adata->conn->account.user);
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
-  rc = imap_exec(adata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
-
-  if (!rc)
+  if (imap_exec(adata, buf, IMAP_CMD_PASS) != IMAP_EXEC_SUCCESS)
   {
     mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
     return IMAP_AUTH_SUCCESS;
