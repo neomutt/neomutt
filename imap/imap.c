@@ -2053,46 +2053,12 @@ int imap_login(struct ImapAccountData *adata)
   return 0;
 }
 
-/**
- * imap_mbox_open - Implements MxOps::mbox_open()
- */
-static int imap_mbox_open(struct Context *ctx)
+void imap_select_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-  if (!m->account)
-    return -1;
-
-  char buf[PATH_MAX];
-  int count = 0;
-  int rc;
+  char buf[LONG_STRING];
   const char *condstore = NULL;
-
-  rc = imap_prepare_mailbox(m);
-  if (rc < 0)
-    return -1;
-
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMboxData *mdata = m->mdata;
-
-  imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
-  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
-  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
-
-  // NOTE(sileht): looks like we have two not obvious loop here
-  // ctx->mailbox->account->adata->ctx
-  // mailbox->account->adata->mailbox
-  // this is used only by imap_mbox_close() to detect if the
-  // adata/mailbox is a normal or append one, looks a bit dirty
-  adata->ctx = ctx;
-  adata->mailbox = m;
-
-  /* clear mailbox status */
-  adata->status = 0;
-  memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
-  mdata->new_mail_count = 0;
 
   mutt_message(_("Selecting %s..."), mdata->name);
 
@@ -2141,6 +2107,14 @@ static int imap_mbox_open(struct Context *ctx)
   adata->state = IMAP_SELECTED;
 
   imap_cmd_start(adata, buf);
+}
+
+int imap_fetch_mailbox(struct Mailbox *m, bool initial_download)
+{
+  struct ImapAccountData *adata = m->account->adata;
+  struct ImapMboxData *mdata = m->mdata;
+  int rc;
+  int count = 0;
 
   do
   {
@@ -2268,6 +2242,7 @@ static int imap_mbox_open(struct Context *ctx)
   m->hdrmax = count;
   m->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(count, sizeof(int));
+
   m->msg_count = 0;
   m->msg_unread = 0;
   m->msg_flagged = 0;
@@ -2276,7 +2251,7 @@ static int imap_mbox_open(struct Context *ctx)
   m->size = 0;
   m->vcount = 0;
 
-  if (count && (imap_read_headers(adata, 1, count, true) < 0))
+  if (count && (imap_read_headers(adata, 1, count, initial_download) < 0))
   {
     mutt_error(_("Error opening mailbox"));
     goto fail;
@@ -2289,6 +2264,50 @@ fail:
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
   return -1;
+
+}
+
+/**
+ * imap_mbox_open - Implements MxOps::mbox_open()
+ */
+static int imap_mbox_open(struct Context *ctx)
+{
+  if (!ctx || !ctx->mailbox)
+    return -1;
+
+  struct Mailbox *m = ctx->mailbox;
+  if (!m->account)
+    return -1;
+
+  char buf[PATH_MAX];
+  int rc;
+
+  rc = imap_prepare_mailbox(m);
+  if (rc < 0)
+    return -1;
+
+  struct ImapAccountData *adata = m->account->adata;
+  struct ImapMboxData *mdata = m->mdata;
+
+  imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
+  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
+  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+
+  // NOTE(sileht): looks like we have two not obvious loop here
+  // ctx->mailbox->account->adata->ctx
+  // mailbox->account->adata->mailbox
+  // this is used only by imap_mbox_close() to detect if the
+  // adata/mailbox is a normal or append one, looks a bit dirty
+  adata->ctx = ctx;
+  adata->mailbox = m;
+
+  /* clear mailbox status */
+  adata->status = 0;
+  memset(adata->mailbox->rights, 0, sizeof(adata->mailbox->rights));
+  mdata->new_mail_count = 0;
+
+  imap_select_mailbox(m);
+  return imap_fetch_mailbox(m, true);
 }
 
 /**

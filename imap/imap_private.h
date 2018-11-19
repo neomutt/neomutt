@@ -287,6 +287,8 @@ int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char 
                      int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
+void imap_select_mailbox(struct Mailbox *m);
+int imap_fetch_mailbox(struct Mailbox *m, bool initial_download);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapAccountData *adata);
 int imap_login(struct ImapAccountData *adata);

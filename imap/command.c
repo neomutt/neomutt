@@ -162,10 +162,10 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
     return;
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct Mailbox *m = adata->mailbox;
 
   if (adata->state >= IMAP_SELECTED && (mdata->reopen & IMAP_REOPEN_ALLOW))
   {
-    mx_fastclose_mailbox(adata->ctx);
     mutt_socket_close(adata->conn);
     mutt_error(_("Mailbox %s@%s closed"), adata->conn->account.login,
                adata->conn->account.host);
@@ -176,8 +176,13 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->recovering)
   {
     adata->recovering = true;
-    if (imap_login(adata))
+    if (imap_login(adata) == 0) {
+      imap_mdata_cache_reset(mdata);
+      mdata->new_mail_count = 0;
+      imap_select_mailbox(m);
+      imap_fetch_mailbox(m, false);
       mutt_clear_error();
+    }
     adata->recovering = false;
   }
 }
