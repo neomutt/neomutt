@@ -2077,7 +2077,6 @@ static int imap_mbox_open(struct Context *ctx)
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMboxData *mdata = m->mdata;
 
-  // TODO(sileht): store qualifed path in mdata ?
   imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
   mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));

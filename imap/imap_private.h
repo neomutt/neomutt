@@ -234,9 +234,9 @@ struct ImapAccountData
  */
 struct ImapMboxData
 {
-  char *name;
-  char *munge_name;
-  char *real_name;
+  char *name;        /**< Mailbox name */
+  char *munge_name;  /**< Munged version of the mailbox name */
+  char *real_name;   /**< Original Mailbox name, e.g.: INBOX can be just \0 */
 
   unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
   unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
