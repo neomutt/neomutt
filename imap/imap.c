@@ -1345,14 +1345,13 @@ int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool f
 /**
  * imap_mailbox_check - Check for new mail in subscribed folders
  * @param m           Mailbox
- * @param check_stats Check for message stats too
  * @retval num Number of mailboxes with new mail
  * @retval 0   Failure
  *
  * Given a list of mailboxes rather than called once for each so that it can
  * batch the commands and save on round trips.
  */
-int imap_mailbox_check(struct Mailbox *m, bool check_stats)
+int imap_mailbox_check(struct Mailbox *m)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
@@ -1384,16 +1383,8 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
     return -1;
   }
 
-  if (check_stats)
-  {
-    snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", mdata->munge_name);
-  }
-  else
-  {
-    snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", mdata->munge_name);
-  }
+  snprintf(command, sizeof(command),
+           "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", mdata->munge_name);
 
   if (imap_exec(adata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS)
   {
@@ -1450,7 +1441,7 @@ int imap_status(const char *path, bool queue)
   }
 
   imap_exec(adata, buf, queue ? IMAP_CMD_QUEUE : 0);
-  return mdata->messages;
+  return m->msg_count;
 }
 
 /**
