@@ -167,7 +167,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   {
     mx_fastclose_mailbox(adata->ctx);
     mutt_socket_close(adata->conn);
-    mutt_error(_("Mailbox %s@%s closed"), adata->conn->account.login,
+    mutt_error(_("Mailbox %s@%s closed"), adata->conn->account.user,
                adata->conn->account.host);
     adata->state = IMAP_DISCONNECTED;
   }
