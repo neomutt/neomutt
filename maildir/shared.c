@@ -416,14 +416,14 @@ cleanup:
 /**
  * maildir_add_to_context - Add the Maildir list to the Mailbox
  * @param m   Mailbox
- * @param ctx Mailbox
  * @param md  Maildir list to copy
- * @retval true If there's new mail
+ * @retval num Number of new emails
+ * @retval 0   Error
  */
-static bool maildir_add_to_context(struct Mailbox *m, struct Context *ctx, struct Maildir *md)
+static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
 {
   if (!m)
-    return false;
+    return 0;
 
   int oldmsgcount = m->msg_count;
 
@@ -461,24 +461,21 @@ static bool maildir_add_to_context(struct Mailbox *m, struct Context *ctx, struc
   }
 
   if (m->msg_count > oldmsgcount)
-  {
-    mx_update_context(ctx, m->msg_count - oldmsgcount);
-    return true;
-  }
-  return false;
+    return m->msg_count - oldmsgcount;
+
+  return 0;
 }
 
 /**
  * maildir_move_to_context - Copy the Maildir list to the Mailbox
  * @param m   Mailbox
- * @param ctx Mailbox
  * @param md  Maildir list to copy, then free
- * @retval 1 If there's new mail
- * @retval 0 Otherwise
+ * @retval num Number of new emails
+ * @retval 0   Error
  */
-int maildir_move_to_context(struct Mailbox *m, struct Context *ctx, struct Maildir **md)
+int maildir_move_to_context(struct Mailbox *m, struct Maildir **md)
 {
-  int r = maildir_add_to_context(m, ctx, *md);
+  int r = maildir_add_to_context(m, *md);
   maildir_free_maildir(md);
   return r;
 }
@@ -821,14 +818,13 @@ void maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Prog
 
 /**
  * mh_read_dir - Read a MH/maildir style mailbox
- * @param m   Mailbox
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param subdir NULL for MH mailboxes,
  *               otherwise the subdir of the maildir mailbox to read from
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mh_read_dir(struct Mailbox *m, struct Context *ctx, const char *subdir)
+int mh_read_dir(struct Mailbox *m, const char *subdir)
 {
   if (!m)
     return -1;
@@ -879,7 +875,7 @@ int mh_read_dir(struct Mailbox *m, struct Context *ctx, const char *subdir)
     mhs_free_sequences(&mhs);
   }
 
-  maildir_move_to_context(m, ctx, &md);
+  maildir_move_to_context(m, &md);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);

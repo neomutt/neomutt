@@ -369,6 +369,8 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   int rc = m->mx_ops->mbox_open(ctx->mailbox, ctx);
   m->opened++;
+  if (rc == 0)
+    mx_update_context(ctx, ctx->mailbox->msg_count);
 
   if ((rc == 0) || (rc == -2))
   {

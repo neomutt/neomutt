@@ -124,6 +124,7 @@ struct MxOps
    * @param ctx Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
+   * @retval -2 Aborted
    */
   int (*mbox_open)       (struct Mailbox *m, struct Context *ctx);
   /**

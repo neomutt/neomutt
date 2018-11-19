@@ -553,7 +553,7 @@ int mh_sync_message(struct Mailbox *m, int msgno)
  */
 static int mh_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  return mh_read_dir(m, ctx, NULL);
+  return mh_read_dir(m, NULL);
 }
 
 /**
@@ -608,7 +608,8 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   char buf[PATH_MAX];
   struct stat st, st_cur;
-  bool modified = false, have_new = false, occult = false, flags_changed = false;
+  bool modified = false, occult = false, flags_changed = false;
+  int num_new = 0;
   struct Maildir *md = NULL, *p = NULL;
   struct Maildir **last = NULL;
   struct MhSequences mhs = { 0 };
@@ -717,11 +718,13 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
     maildir_update_tables(ctx, index_hint);
 
   /* Incorporate new messages */
-  have_new = maildir_move_to_context(m, ctx, &md);
+  num_new = maildir_move_to_context(m, &md);
+  if (num_new > 0)
+    mx_update_context(ctx, num_new);
 
   if (occult)
     return MUTT_REOPENED;
-  if (have_new)
+  if (num_new > 0)
     return MUTT_NEW_MAIL;
   if (flags_changed)
     return MUTT_FLAGS;

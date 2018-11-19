@@ -1125,9 +1125,8 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
     return false;
 
   notmuch_threads_t *threads = get_threads(q);
-
   if (!threads)
-    return NULL;
+    return false;
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
