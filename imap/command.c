@@ -134,10 +134,10 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, int flag
   {
     mutt_debug(3, "Draining IMAP command pipeline\n");
 
-    const int rc = imap_exec(adata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
+    const int rc = imap_exec(adata, NULL, flags & IMAP_CMD_POLL);
 
-    if (rc < 0 && rc != -2)
-      return rc;
+    if (rc == IMAP_EXEC_ERROR)
+      return IMAP_CMD_BAD;
   }
 
   struct ImapCommand *cmd = cmd_new(adata);
@@ -1233,18 +1233,16 @@ const char *imap_cmd_trailer(struct ImapAccountData *adata)
  * @param adata Imap Account data
  * @param cmdstr Command to execute
  * @param flags  Flags (see below)
- * @retval  0 Success
- * @retval -1 Failure
- * @retval -2 OK Failure
+ * @retval #IMAP_EXEC_SUCCESS Command successful or queued
+ * @retval #IMAP_EXEC_ERROR   Command returned an error
+ * @retval #IMAP_EXEC_FATAL   Imap connection failure
  *
  * Also, handle untagged responses.
  *
  * Flags:
- * * IMAP_CMD_FAIL_OK: the calling procedure can handle failure.
- *       This is used for checking for a mailbox on append and login
- * * IMAP_CMD_PASS: command contains a password. Suppress logging.
- * * IMAP_CMD_QUEUE: only queue command, do not execute.
- * * IMAP_CMD_POLL: poll the socket for a response before running imap_cmd_step.
+ * * #IMAP_CMD_PASS: Command contains a password. Suppress logging.
+ * * #IMAP_CMD_QUEUE: Only queue command, do not execute.
+ * * #IMAP_CMD_POLL: Poll the socket for a response before running imap_cmd_step().
  */
 int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
 {
@@ -1254,18 +1252,18 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
   if (rc < 0)
   {
     cmd_handle_fatal(adata);
-    return -1;
+    return IMAP_EXEC_FATAL;
   }
 
   if (flags & IMAP_CMD_QUEUE)
-    return 0;
+    return IMAP_EXEC_SUCCESS;
 
   if ((flags & IMAP_CMD_POLL) && (ImapPollTimeout > 0) &&
       (mutt_socket_poll(adata->conn, ImapPollTimeout)) == 0)
   {
     mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
     cmd_handle_fatal(adata);
-    return -1;
+    return IMAP_EXEC_FATAL;
   }
 
   /* Allow interruptions, particularly useful if there are network problems. */
@@ -1275,19 +1273,18 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
   while (rc == IMAP_CMD_CONTINUE);
   mutt_sig_allow_interrupt(0);
 
-  if (rc == IMAP_CMD_NO && (flags & IMAP_CMD_FAIL_OK))
-    return -2;
-
-  if (rc != IMAP_CMD_OK)
+  if (rc == IMAP_CMD_NO)
+    return IMAP_EXEC_ERROR;
+  else if (rc != IMAP_CMD_OK)
   {
-    if ((flags & IMAP_CMD_FAIL_OK) && adata->status != IMAP_FATAL)
-      return -2;
+    if (adata->status != IMAP_FATAL)
+      return IMAP_EXEC_ERROR;
 
     mutt_debug(1, "command failed: %s\n", adata->buf);
-    return -1;
+    return IMAP_EXEC_FATAL;
   }
 
-  return 0;
+  return IMAP_EXEC_SUCCESS;
 }
 
 /**

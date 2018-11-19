@@ -73,10 +73,19 @@ struct Progress;
 #define IMAP_FLAGS_PENDING    (1 << 4)
 
 /* imap_exec flags (see imap_exec) */
-#define IMAP_CMD_FAIL_OK (1 << 0)
-#define IMAP_CMD_PASS    (1 << 1)
-#define IMAP_CMD_QUEUE   (1 << 2)
-#define IMAP_CMD_POLL    (1 << 3)
+#define IMAP_CMD_PASS    (1 << 0)  /**< Run the imap command and all previous commands queued */
+#define IMAP_CMD_QUEUE   (1 << 1)  /**< Queue a command */
+#define IMAP_CMD_POLL    (1 << 2)  /**< Poll the tcp connection before running the imap command */
+
+/**
+ * enum ImapExecResult - imap_exec return code
+ */
+enum ImapExecResult
+{
+  IMAP_EXEC_SUCCESS = 0, /**< Imap command executed or queued successfully */
+  IMAP_EXEC_ERROR,       /**< Imap command failure */
+  IMAP_EXEC_FATAL        /**< Imap connection failure */
+};
 
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
