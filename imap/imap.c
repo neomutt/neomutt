@@ -844,10 +844,6 @@ void imap_expunge_mailbox(struct ImapAccountData *adata)
   short old_sort;
   struct ImapMboxData *mdata = adata->mailbox->mdata;
 
-#ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-#endif
-
   old_sort = Sort;
   Sort = SORT_ORDER;
   mutt_sort_headers(adata->ctx, false);
@@ -1798,10 +1794,6 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
                    rc);
     }
   }
-
-#ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-#endif
 
   /* save messages with real (non-flag) changes */
   for (int i = 0; i < m->msg_count; i++)
