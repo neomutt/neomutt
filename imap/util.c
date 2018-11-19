@@ -337,7 +337,6 @@ void imap_clean_path(char *path, size_t plen)
     return;
 
   /* Returns a fully qualified IMAP url */
-  // TODO(sileht): Put it in mdata directly ?
   imap_qualify_path(path, plen, &adata->conn_account, mdata->name);
   imap_mdata_free((void *) &mdata);
 }
