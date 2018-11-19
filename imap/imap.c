@@ -1422,7 +1422,6 @@ int imap_mailbox_check(struct Mailbox *m, bool check_stats)
  */
 int imap_status(const char *path, bool queue)
 {
-  static int queued = 0;
   char buf[LONG_STRING * 2];
 
   struct Mailbox *m = mx_mbox_find2(path);
@@ -1450,15 +1449,7 @@ int imap_status(const char *path, bool queue)
     return -1;
   }
 
-  if (queue)
-  {
-    imap_exec(adata, buf, IMAP_CMD_QUEUE);
-    queued = 1;
-    return 0;
-  }
-  else if (!queued)
-    imap_exec(adata, buf, 0);
-
+  imap_exec(adata, buf, queue ? IMAP_CMD_QUEUE : 0);
   return mdata->messages;
 }
 
