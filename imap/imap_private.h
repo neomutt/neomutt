@@ -298,7 +298,6 @@ void imap_close_connection(struct ImapAccountData *adata);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapAccountData *adata);
 int imap_login(struct ImapAccountData *adata);
-void imap_logout(struct ImapAccountData **adata);
 int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
