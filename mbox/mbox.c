@@ -192,7 +192,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
-  int count = 0, oldmsgcount = m->msg_count;
+  int count = 0;
   int lines;
   time_t t;
   LOFF_T loc, tmploc;
@@ -323,9 +323,6 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       return -1;
     }
   }
-
-  if (m->msg_count > oldmsgcount)
-    mx_update_context(ctx, m->msg_count - oldmsgcount);
 
   if (SigInt == 1)
   {
@@ -543,8 +540,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
     if (!e->lines)
       e->lines = lines ? lines - 1 : 0;
-
-    mx_update_context(ctx, count);
   }
 
   if (SigInt == 1)
@@ -1032,8 +1027,12 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   if (!adata)
     return -1;
 
-  if (!adata->fp && (mbox_mbox_open(m, ctx) < 0))
-    return -1;
+  if (!adata->fp)
+  {
+    if (mbox_mbox_open(m, ctx) < 0)
+      return -1;
+    mx_update_context(ctx, m->msg_count);
+  }
 
   struct stat st;
   bool unlock = false;
@@ -1087,16 +1086,19 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
         {
           if (fseeko(adata->fp, m->size, SEEK_SET) != 0)
             mutt_debug(1, "#2 fseek() failed\n");
+
+          int old_msg_count = m->msg_count;
           if (m->magic == MUTT_MBOX)
             mbox_parse_mailbox(ctx);
           else
             mmdf_parse_mailbox(ctx);
 
+          if (m->msg_count > old_msg_count)
+            mx_update_context(ctx, m->msg_count > old_msg_count);
+
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
-           * mutt_checkpoint_mailbox().
-           */
-
+           * mutt_checkpoint_mailbox().  */
           if (unlock)
           {
             mbox_unlock_mailbox(m);
@@ -1122,6 +1124,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   {
     if (reopen_mailbox(ctx, index_hint) != -1)
     {
+      mx_update_context(ctx, m->msg_count);
       if (unlock)
       {
         mbox_unlock_mailbox(m);
