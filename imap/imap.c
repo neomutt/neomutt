@@ -684,6 +684,27 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
 }
 
 /**
+ * imap_logout - Gracefully log out of server
+ * @param adata Imap Account data
+ */
+static void imap_logout(struct ImapAccountData *adata)
+{
+  /* we set status here to let imap_handle_untagged know we _expect_ to
+   * receive a bye response (so it doesn't freak out and close the conn) */
+  if (adata->state != IMAP_DISCONNECTED)
+  {
+    adata->status = IMAP_BYE;
+    imap_cmd_start(adata, "LOGOUT");
+    if (ImapPollTimeout <= 0 || mutt_socket_poll(adata->conn, ImapPollTimeout) != 0)
+    {
+      while (imap_cmd_step(adata) == IMAP_CMD_CONTINUE)
+        ;
+    }
+    mutt_socket_close(adata->conn);
+  }
+}
+
+/**
  * imap_logout_all - close all open connections
  *
  * Quick and dirty until we can make sure we've got all the context we need.
@@ -705,10 +726,8 @@ void imap_logout_all(void)
       continue;
 
     mutt_message(_("Closing connection to %s..."), conn->account.host);
-    imap_logout((struct ImapAccountData **) &np->adata);
+    imap_logout(np->adata);
     mutt_clear_error();
-    //XXX? mutt_socket_close(conn);
-    //not nec? FREE(&adata->conn);
   }
 }
 
@@ -975,29 +994,6 @@ void imap_close_connection(struct ImapAccountData *adata)
   adata->lastcmd = false;
   adata->status = 0;
   memset(adata->cmds, 0, sizeof(struct ImapCommand) * adata->cmdslots);
-}
-
-/**
- * imap_logout - Gracefully log out of server
- * @param adata Imap Account data
- */
-void imap_logout(struct ImapAccountData **adata)
-{
-  /* we set status here to let imap_handle_untagged know we _expect_ to
-   * receive a bye response (so it doesn't freak out and close the conn) */
-  if ((*adata)->state != IMAP_DISCONNECTED)
-  {
-    (*adata)->status = IMAP_BYE;
-    imap_cmd_start(*adata, "LOGOUT");
-    if (ImapPollTimeout <= 0 || mutt_socket_poll((*adata)->conn, ImapPollTimeout) != 0)
-    {
-      while (imap_cmd_step(*adata) == IMAP_CMD_CONTINUE)
-        ;
-    }
-    mutt_socket_close((*adata)->conn);
-  }
-
-  imap_adata_free((void **) adata);
 }
 
 /**
