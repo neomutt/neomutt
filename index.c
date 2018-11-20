@@ -1197,13 +1197,13 @@ int mutt_index_menu(void)
           continue;
         }
 
-        if (!Context)
+        if (!Context || !Context->mailbox)
         {
           mutt_error(_("No mailbox is open"));
           continue;
         }
 
-        if (!Context->tagged)
+        if (!Context->mailbox->msg_tagged)
         {
           if (op == OP_TAG_PREFIX)
             mutt_error(_("No tagged messages"));
@@ -1219,7 +1219,7 @@ int mutt_index_menu(void)
         tag = true;
         continue;
       }
-      else if (AutoTag && Context && Context->tagged)
+      else if (AutoTag && Context && Context->mailbox && Context->mailbox->msg_tagged)
         tag = true;
 
       mutt_clear_error();
@@ -1991,7 +1991,7 @@ int mutt_index_menu(void)
           {
             char msgbuf[STRING];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
-            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->tagged);
+            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->mailbox->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH

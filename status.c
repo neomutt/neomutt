@@ -324,9 +324,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->tagged : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_tagged : 0);
       }
-      else if (!Context || !Context->tagged)
+      else if (!Context || !Context->mailbox || !Context->mailbox->msg_tagged)
         optional = 0;
       break;
 
