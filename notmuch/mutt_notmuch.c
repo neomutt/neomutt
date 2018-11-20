@@ -2173,7 +2173,6 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
 
-  mx_update_context(ctx, m->msg_count);
   mdata->oldmsgcount = 0;
 
   mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);
