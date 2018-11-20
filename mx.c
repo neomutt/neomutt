@@ -1330,11 +1330,13 @@ int mx_check_empty(const char *path)
 #ifdef USE_IMAP
     case MUTT_IMAP:
     {
-      bool passive = ImapPassive;
-      ImapPassive = false;
-      int rv = imap_status(path, false);
-      ImapPassive = passive;
-      return (rv <= 0);
+      int rc = imap_path_status(path, false);
+      if (rc < 0)
+        return -1;
+      else if (rc == 0)
+        return 1;
+      else
+        return 0;
     }
 #endif
     default:

@@ -784,7 +784,6 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   unsigned int olduv, oldun;
   unsigned int litlen;
   short new = 0;
-  short new_msg_count = 0;
 
   char *mailbox = imap_next_word(s);
 
@@ -851,10 +850,7 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
     const unsigned int count = (unsigned int) ulcount;
 
     if (mutt_str_startswith(s, "MESSAGES", CASE_MATCH))
-    {
       mdata->messages = count;
-      new_msg_count = 1;
-    }
     else if (mutt_str_startswith(s, "RECENT", CASE_MATCH))
       mdata->recent = count;
     else if (mutt_str_startswith(s, "UIDNEXT", CASE_MATCH))
@@ -898,22 +894,16 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 #ifdef USE_SIDEBAR
   if ((m->has_new != new) || (m->msg_count != mdata->messages) ||
       (m->msg_unread != mdata->unseen))
-  {
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
-  }
 #endif
+
   m->has_new = new;
-  if (new_msg_count)
-    m->msg_count = mdata->messages;
+  m->msg_count = mdata->messages;
   m->msg_unread = mdata->unseen;
 
+  // force back to keep detecting new mail until the mailbox is opened
   if (m->has_new)
-  {
-    /* force back to keep detecting new mail until the mailbox is
-       opened */
     mdata->uid_next = oldun;
-  }
-  return;
 }
 
 /**

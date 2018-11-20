@@ -372,7 +372,7 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
         break;
 #ifdef USE_IMAP
       case MUTT_IMAP:
-        if (imap_mailbox_check(m, check_stats) == 0 && m->has_new)
+        if (imap_mailbox_status(m, false) >= 0 && m->has_new)
           MailboxCount++;
         break;
 #endif

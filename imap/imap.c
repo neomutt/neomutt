@@ -592,45 +592,6 @@ static int complete_hosts(char *buf, size_t buflen)
 }
 
 /**
- * imap_access2 - Check permissions on an IMAP mailbox with an existing
- * connection
- * @retval  0 Success
- * @retval <0 Failure
- *
- * TODO: ACL checks. Right now we assume if it exists we can mess with it.
- */
-static int imap_access2(struct ImapAccountData *adata, struct ImapMboxData *mdata)
-{
-  char buf[LONG_STRING * 2];
-  int rc;
-
-  /* we may already be in the folder we're checking */
-  if (adata->mailbox && adata->mailbox->mdata == mdata)
-    return 0;
-
-  // We already have the information from cache.
-  if (mdata->uid_validity > 0)
-    return 0;
-
-  if (mutt_bit_isset(adata->capabilities, IMAP4REV1))
-    snprintf(buf, sizeof(buf), "STATUS %s (UIDVALIDITY)", mdata->munge_name);
-  else if (mutt_bit_isset(adata->capabilities, STATUS))
-    snprintf(buf, sizeof(buf), "STATUS %s (UID-VALIDITY)", mdata->munge_name);
-  else
-  {
-    mutt_debug(2, "STATUS not supported?\n");
-    return -1;
-  }
-
-  rc = imap_exec(adata, buf, IMAP_CMD_POLL);
-  if (rc == IMAP_EXEC_SUCCESS)
-    return 0;
-
-  mutt_debug(1, "Can't check STATUS of %s\n", mdata->name);
-  return -1;
-}
-
-/**
  * imap_create_mailbox - Create a new mailbox
  * @param adata Imap Account data
  * @param mailbox Mailbox to create
@@ -665,21 +626,10 @@ int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox)
  */
 int imap_access(const char *path)
 {
-  struct Mailbox *m = mx_mbox_find2(path);
-  if (m)
-    return imap_access2(m->account->adata, m->mdata);
-
-  // FIXME(sileht): Is that case possible ?
-  struct ImapAccountData *adata = NULL;
-  struct ImapMboxData *mdata = NULL;
-  int rc;
-
-  if (imap_adata_find(path, &adata, &mdata) < 0)
+  if (imap_path_status(path, false) >= 0)
+    return 0;
+  else
     return -1;
-
-  rc = imap_access2(adata, mdata);
-  imap_mdata_free((void *) &mdata);
-  return rc;
 }
 
 /**
@@ -1343,123 +1293,93 @@ int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool f
 }
 
 /**
- * imap_mailbox_check - Check for new mail in subscribed folders
- * @param m           Mailbox
- * @param check_stats Check for message stats too
- * @retval num Number of mailboxes with new mail
- * @retval 0   Failure
- *
- * Given a list of mailboxes rather than called once for each so that it can
- * batch the commands and save on round trips.
+ * imap_status - Refresh the number of total and new messages
+ * @param adata  IMAP Account data
+ * @param mdata  IMAP Mailbox data
+ * @param queue  Queue the STATUS command
+ * @retval num   Total number of messages
  */
-int imap_mailbox_check(struct Mailbox *m, bool check_stats)
+static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool queue)
 {
-  struct ImapAccountData *adata = NULL;
-  struct ImapMboxData *mdata = NULL;
+  char *uid_validity_flag;
   char command[LONG_STRING * 2];
 
-  if (imap_prepare_mailbox(m))
-  {
-    m->has_new = false;
+  if (!adata || !mdata)
     return -1;
-  }
-
-  mdata = m->mdata;
-  adata = m->account->adata;
 
   /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
    * IDLEd elsewhere.
    * adata->mailbox may be NULL for connections other than the current
    * mailbox's.. #3216. */
-  if (adata->mailbox && adata->mailbox == m)
+  if (adata->mailbox && adata->mailbox->mdata == mdata)
   {
-    m->has_new = false;
-    return -1;
+    adata->mailbox->has_new = false;
+    return mdata->messages;
   }
 
-  if (!mutt_bit_isset(adata->capabilities, IMAP4REV1) &&
-      !mutt_bit_isset(adata->capabilities, STATUS))
+  if (mutt_bit_isset(adata->capabilities, IMAP4REV1))
+    uid_validity_flag = "UIDVALIDITY";
+  else if (mutt_bit_isset(adata->capabilities, STATUS))
+    uid_validity_flag = "UID-VALIDITY";
+  else
   {
     mutt_debug(2, "Server doesn't support STATUS\n");
     return -1;
   }
 
-  if (check_stats)
-  {
-    snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", mdata->munge_name);
-  }
-  else
-  {
-    snprintf(command, sizeof(command),
-             "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", mdata->munge_name);
-  }
+  snprintf(command, sizeof(command), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
+           mdata->munge_name, uid_validity_flag);
 
-  if (imap_exec(adata, command, IMAP_CMD_QUEUE | IMAP_CMD_POLL) != IMAP_EXEC_SUCCESS)
+  int rc = imap_exec(adata, command, queue ? IMAP_CMD_QUEUE : 0 | IMAP_CMD_POLL);
+  if (rc < 0 )
   {
     mutt_debug(1, "Error queueing command\n");
-    return -1;
+    return rc;
   }
-
-  if (imap_exec(adata, NULL, IMAP_CMD_POLL) == IMAP_EXEC_FATAL)
-  {
-    mutt_debug(1, "#2 Error polling mailboxes\n");
-    return -1;
-  }
-
-  return 0;
+  return mdata->messages;
 }
 
 /**
- * imap_status - Get the status of a mailbox
- * @param path  Path of mailbox
- * @param queue true if the command should be queued for the next call
- * @retval -1  Error
- * @retval >=0 Count of messages in mailbox
- *
- * If queue is true, the command will be sent now and be expected to have been
- * run on the next call (for pipelining the postponed count).
+ * imap_path_status - Refresh the number of total and new messages
+ * @param path   Mailbox path
+ * @param queue  Queue the STATUS command
+ * @retval num   Total number of messages
  */
-int imap_status(const char *path, bool queue)
+int imap_path_status(const char *path, bool queue)
 {
-  static int queued = 0;
-  char buf[LONG_STRING * 2];
-
   struct Mailbox *m = mx_mbox_find2(path);
+  if (m)
+    return imap_mailbox_status(m, queue);
+
+  // FIXME(sileht): Is that case possible ?
+  struct ImapAccountData *adata = NULL;
+  struct ImapMboxData *mdata = NULL;
+
+  if (imap_adata_find(path, &adata, &mdata) < 0)
+    return -1;
+  int rc = imap_status(adata, mdata, queue);
+  imap_mdata_free((void *) &mdata);
+  return rc;
+}
+
+/**
+ * imap_mailbox_status - Refresh the number of total and new messages
+ * @param m      Mailbox
+ * @param queue  Queue the STATUS command
+ * @retval num   Total number of messages
+ *
+ * Note this prepares the mailbox if we are not connected
+ */
+int imap_mailbox_status(struct Mailbox *m, bool queue)
+{
   if (!m)
     return -1;
-
-  if (imap_prepare_mailbox(m) < 0)
-    return -1;
-
-  struct ImapAccountData *adata = m->account->adata;
-  struct ImapMboxData *mdata = m->mdata;
-  // We are in the folder we're polling - just return the mailbox count.
-  if (adata->mailbox == m)
-    return m->msg_count;
-
-  else if (mutt_bit_isset(adata->capabilities, IMAP4REV1) ||
-           mutt_bit_isset(adata->capabilities, STATUS))
+  if (imap_prepare_mailbox(m))
   {
-    snprintf(buf, sizeof(buf), "STATUS %s (%s)", mdata->munge_name, "MESSAGES");
-  }
-  else
-  {
-    /* Server does not support STATUS, and this is not the current mailbox.
-     * There is no lightweight way to check recent arrivals */
+    m->has_new = false;
     return -1;
   }
-
-  if (queue)
-  {
-    imap_exec(adata, buf, IMAP_CMD_QUEUE);
-    queued = 1;
-    return 0;
-  }
-  else if (!queued)
-    imap_exec(adata, buf, 0);
-
-  return mdata->messages;
+  return imap_status(m->account->adata, m->mdata, queue);
 }
 
 /**
@@ -2114,16 +2034,13 @@ static int imap_mbox_open(struct Context *ctx)
     mutt_bit_set(adata->mailbox->rights, MUTT_ACL_CREATE);
     mutt_bit_set(adata->mailbox->rights, MUTT_ACL_DELETE);
   }
-  /* pipeline the postponed count if possible */
-  struct ConnAccount p_conn_account;
-  char p_mailbox[LONG_STRING];
 
-  if ((imap_path_probe(Postponed, NULL) == MUTT_IMAP) &&
-      !imap_parse_path(Postponed, &p_conn_account, p_mailbox, sizeof(p_mailbox)) &&
-      mutt_account_match(&p_conn_account, &adata->conn_account))
-  {
-    imap_status(Postponed, true);
-  }
+  /* pipeline the postponed count if possible */
+  struct Mailbox *postponed_m = mx_mbox_find2(Postponed);
+  struct ImapAccountData *postponed_adata = imap_adata_get(postponed_m);
+  if (postponed_adata && mutt_account_match(&postponed_adata->conn_account,
+                                            &adata->conn_account))
+    imap_mailbox_status(postponed_m, true);
 
   if (ImapCheckSubscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
@@ -2310,8 +2227,8 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMboxData *mdata = m->mdata;
 
-  rc = imap_access2(adata, mdata);
-  if (rc == 0)
+  rc = imap_mailbox_status(m, false);
+  if (rc >= 0)
     return 0;
   if (rc == -1)
     return -1;
