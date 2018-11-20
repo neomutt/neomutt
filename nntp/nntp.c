@@ -1565,7 +1565,7 @@ static int check_mailbox(struct Context *ctx)
     for (int i = 0; i < m->msg_count; i++)
       mutt_email_free(&m->hdrs[i]);
     m->msg_count = 0;
-    ctx->tagged = 0;
+    m->msg_tagged = 0;
 
     if (mdata->last_message < mdata->last_loaded)
     {

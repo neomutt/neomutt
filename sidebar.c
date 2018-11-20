@@ -209,9 +209,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? Context->tagged : 0);
+        snprintf(buf, buflen, fmt, c ? Context->mailbox->msg_tagged : 0);
       }
-      else if ((c && Context->tagged == 0) || !c)
+      else if ((c && Context->mailbox->msg_tagged == 0) || !c)
         optional = 0;
       break;
 

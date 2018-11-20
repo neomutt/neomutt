@@ -626,7 +626,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   m->msg_count = 0;
   m->vcount = 0;
   ctx->vsize = 0;
-  ctx->tagged = 0;
+  m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
   m->msg_unread = 0;

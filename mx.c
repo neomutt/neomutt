@@ -824,7 +824,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   /* update memory to reflect the new state of the mailbox */
   m->vcount = 0;
   ctx->vsize = 0;
-  ctx->tagged = 0;
+  m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
   m->msg_unread = 0;
@@ -863,7 +863,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       }
 
       if (m->hdrs[j]->tagged)
-        ctx->tagged++;
+        m->msg_tagged++;
       if (m->hdrs[j]->flagged)
         m->msg_flagged++;
       if (!m->hdrs[j]->read)

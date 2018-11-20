@@ -906,7 +906,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 static void make_reference_headers(struct Envelope *curenv,
                                    struct Envelope *env, struct Context *ctx)
 {
-  if (!env || !ctx)
+  if (!env || !ctx || !ctx->mailbox)
     return;
 
   if (!curenv)
@@ -923,7 +923,7 @@ static void make_reference_headers(struct Envelope *curenv,
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RFC2822, sect. 3.6.4 */
-  if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
+  if (ctx->mailbox->msg_tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
     mutt_list_free(&env->references);
@@ -2416,7 +2416,8 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
   {
     if (cur && ctx)
       mutt_set_flag(ctx, cur, MUTT_REPLIED, is_reply(cur, msg));
-    else if (!(flags & SEND_POSTPONED) && ctx && ctx->tagged)
+    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox &&
+             ctx->mailbox->msg_tagged)
     {
       for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
