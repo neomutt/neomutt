@@ -1383,7 +1383,7 @@ static int ssl_socket_close(struct Connection *conn)
 
   if (data)
   {
-    if (data->isopen)
+    if (data->isopen && raw_socket_poll(conn, 0) >= 0)
       SSL_shutdown(data->ssl);
 
     /* hold onto this for the life of neomutt, in case we want to reconnect.
