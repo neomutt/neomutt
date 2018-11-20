@@ -153,10 +153,6 @@ enum ImapCaps
   CAPMAX
 };
 
-/* imap_conn_find flags */
-#define MUTT_IMAP_CONN_NONEW    (1 << 0)
-#define MUTT_IMAP_CONN_NOSELECT (1 << 1)
-
 /**
  * struct ImapCache - IMAP-specific message cache
  */
