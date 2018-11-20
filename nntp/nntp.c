@@ -95,7 +95,7 @@ struct FetchCtx
   struct Mailbox *mailbox;
   anum_t first;
   anum_t last;
-  int restore;
+  bool restore;
   unsigned char *messages;
   struct Progress progress;
 #ifdef USE_HCACHE
@@ -1219,7 +1219,7 @@ static int parse_overview_line(char *line, void *data)
 
 /**
  * nntp_fetch_headers - Fetch headers
- * @param ctx     Mailbox
+ * @param m       Mailbox
  * @param hc      Header cache
  * @param first   Number of first header to fetch
  * @param last    Number of last header to fetch
@@ -1227,20 +1227,17 @@ static int parse_overview_line(char *line, void *data)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
-                              anum_t last, int restore)
+static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first,
+                              anum_t last, bool restore)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NntpMboxData *mdata = m->mdata;
   struct FetchCtx fc;
   struct Email *e = NULL;
   char buf[HUGE_STRING];
   int rc = 0;
-  int oldmsgcount = m->msg_count;
   anum_t current;
   anum_t first_over = first;
 #ifdef USE_HCACHE
@@ -1462,9 +1459,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       mutt_error("%s: %s", cmd, buf);
     }
   }
-
-  if (m->msg_count > oldmsgcount)
-    mx_update_context(ctx, m->msg_count - oldmsgcount);
 
   FREE(&fc.messages);
   if (rc != 0)
@@ -1728,10 +1722,15 @@ static int check_mailbox(struct Context *ctx)
       nntp_hcache_update(mdata, hc);
     }
 #endif
-    rc = nntp_fetch_headers(ctx, hc, mdata->last_loaded + 1, mdata->last_message, 0);
+    int old_msg_count = m->msg_count;
+    rc = nntp_fetch_headers(m, hc, mdata->last_loaded + 1, mdata->last_message, false);
     m->quiet = quiet;
-    if (rc >= 0)
+    if (rc == 0)
+    {
+      if (m->msg_count > old_msg_count)
+        mx_update_context(ctx, m->msg_count > old_msg_count);
       mdata->last_loaded = mdata->last_message;
+    }
     if (ret == 0 && m->msg_count > oldmsgcount)
       ret = MUTT_NEW_MAIL;
   }
@@ -2360,12 +2359,16 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(mdata);
 #endif
+  int old_msg_count = m->msg_count;
   for (int i = 0; i < cc.num; i++)
   {
-    rc = nntp_fetch_headers(ctx, hc, cc.child[i], cc.child[i], 1);
+    rc = nntp_fetch_headers(m, hc, cc.child[i], cc.child[i], true);
     if (rc < 0)
       break;
   }
+  if (m->msg_count > old_msg_count)
+    mx_update_context(ctx, m->msg_count > old_msg_count);
+
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
@@ -2583,7 +2586,7 @@ static int nntp_mbox_open(struct Mailbox *m, struct Context *ctx)
     mutt_bit_unset(m->rights, MUTT_ACL_DELETE);
   }
   nntp_newsrc_close(adata);
-  rc = nntp_fetch_headers(ctx, hc, first, mdata->last_message, 0);
+  rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
