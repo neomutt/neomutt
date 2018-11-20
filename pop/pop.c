@@ -533,9 +533,6 @@ static int pop_fetch_headers(struct Context *ctx)
 
       m->msg_count++;
     }
-
-    if (i > old_count)
-      mx_update_context(ctx, i - old_count);
   }
 
 #ifdef USE_HCACHE
@@ -927,8 +924,11 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
 
   mutt_message(_("Checking for new messages..."));
 
+  int old_msg_count = m->msg_count;
   int ret = pop_fetch_headers(ctx);
   pop_clear_cache(adata);
+  if (m->msg_count > old_msg_count)
+    mx_update_context(ctx, m->msg_count > old_msg_count);
 
   if (ret < 0)
     return -1;
