@@ -103,7 +103,7 @@ struct ImapAccountData *imap_adata_new(void)
   adata->cmdbuf = mutt_buffer_new();
   adata->cmdslots = ImapPipelineDepth + 2;
   adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
-
+  STAILQ_INIT(&adata->mailboxes);
   return adata;
 }
 
