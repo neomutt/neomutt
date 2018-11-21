@@ -268,21 +268,20 @@ enum MailboxType mx_path_probe     (const char *path, struct stat *st);
 int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
 
-struct Account *mx_ac_find(struct Mailbox *m);
-struct Mailbox *mx_mbox_find(struct Account *a, const char *path);
+struct Account *mx_ac_find   (struct Mailbox *m);
+struct Mailbox *mx_mbox_find (struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2(const char *path);
-int mx_ac_add(struct Account *a, struct Mailbox *m);
-int mx_ac_remove(struct Mailbox *m);
+int             mx_ac_add    (struct Account *a, struct Mailbox *m);
+int             mx_ac_remove (struct Mailbox *m);
 
-int                 mx_access(const char *path, int flags);
-void                mx_alloc_memory(struct Mailbox *m);
-int                 mx_check_empty(const char *path);
-int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
+int                 mx_access           (const char *path, int flags);
+void                mx_alloc_memory     (struct Mailbox *m);
+int                 mx_check_empty      (const char *path);
 void                mx_fastclose_mailbox(struct Context *ctx);
-const struct MxOps *mx_get_ops(enum MailboxType magic);
+const struct MxOps *mx_get_ops          (enum MailboxType magic);
 bool                mx_tags_is_supported(struct Mailbox *m);
-void                mx_update_context(struct Context *ctx, int new_messages);
-void                mx_update_tables(struct Context *ctx, bool committing);
-void                mx_cleanup_context(struct Context *ctx);
+void                mx_update_context   (struct Context *ctx, int new_messages);
+void                mx_update_tables    (struct Context *ctx, bool committing);
+void                mx_cleanup_context  (struct Context *ctx);
 
 #endif /* MUTT_MX_H */

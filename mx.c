@@ -1099,7 +1099,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
 }
 
 /**
- * mx_mbox_check - check for new mail
+ * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_NEW_MAIL
