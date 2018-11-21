@@ -1384,17 +1384,12 @@ int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
 
 /**
  * mx_tags_is_supported - return true if mailbox support tagging
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval true Tagging is supported
  */
-bool mx_tags_is_supported(struct Context *ctx)
+bool mx_tags_is_supported(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
-    return false;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  return m->mx_ops->tags_commit && m->mx_ops->tags_edit;
+  return m && m->mx_ops->tags_commit && m->mx_ops->tags_edit;
 }
 
 /**

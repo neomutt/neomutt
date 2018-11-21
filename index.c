@@ -1961,7 +1961,7 @@ int mutt_index_menu(void)
       case OP_MAIN_MODIFY_TAGS:
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {
-        if (!Context || !mx_tags_is_supported(Context))
+        if (!Context || !mx_tags_is_supported(Context->mailbox))
         {
           mutt_message(_("Folder doesn't support tagging, aborting"));
           break;
