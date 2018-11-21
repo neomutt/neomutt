@@ -837,7 +837,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = mutt_copy_message_fp(msg->fp, fpin, e, flags, chflags);
-  if (mx_msg_commit(dest, msg) != 0)
+  if (mx_msg_commit(dest->mailbox, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH

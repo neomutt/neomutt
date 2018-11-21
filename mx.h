@@ -256,7 +256,7 @@ int             mx_mbox_close      (struct Context **pctx, int *index_hint);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
-int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
+int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, int flags);
 struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
 int             mx_msg_padding_size(struct Mailbox *m);

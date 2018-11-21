@@ -1144,18 +1144,16 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
 }
 
 /**
- * mx_msg_commit - commit a message to a folder
+ * mx_msg_commit - Commit a message to a folder - Wrapper for MxOps::msg_commit()
+ * @param m   Mailbox
  * @param msg Message to commit
- * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_msg_commit(struct Context *ctx, struct Message *msg)
+int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_commit)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_commit)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   if (!(msg->write && m->append))
   {

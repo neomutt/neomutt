@@ -822,7 +822,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
-          (mx_msg_commit(ctx, msg) == 0))
+          (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
         r = 0;
       }

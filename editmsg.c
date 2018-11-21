@@ -233,7 +233,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_msg_commit(tmpctx, msg);
+  rc = mx_msg_commit(tmpctx->mailbox, msg);
   mx_msg_close(tmpctx->mailbox, &msg);
 
   mx_mbox_close(&tmpctx, NULL);
