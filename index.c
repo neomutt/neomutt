@@ -1972,7 +1972,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CURHDR->tags);
-        rc = mx_tags_edit(Context, tags, buf, sizeof(buf));
+        rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;

@@ -1342,7 +1342,7 @@ int mx_check_empty(const char *path)
 
 /**
  * mx_tags_edit - start the tag editor of the mailbox
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param tags   Existing tags
  * @param buf    Buffer for the results
  * @param buflen Length of the buffer
@@ -1350,12 +1350,10 @@ int mx_check_empty(const char *path)
  * @retval 0  No valid user input
  * @retval 1  Buffer set
  */
-int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   if (m->mx_ops->tags_edit)
     return m->mx_ops->tags_edit(m, tags, buf, buflen);
