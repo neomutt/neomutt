@@ -231,7 +231,9 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
   if (!m->mx_ops || !m->mx_ops->mbox_open_append)
     return -1;
 
-  return m->mx_ops->mbox_open_append(m, flags);
+  int rc = m->mx_ops->mbox_open_append(m, flags);
+  m->opened++;
+  return rc;
 }
 
 /**
@@ -363,6 +365,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     mutt_message(_("Reading %s..."), m->path);
 
   int rc = m->mx_ops->mbox_open(ctx);
+  m->opened++;
 
   if ((rc == 0) || (rc == -2))
   {
@@ -399,6 +402,10 @@ void mx_fastclose_mailbox(struct Context *ctx)
     return;
 
   struct Mailbox *m = ctx->mailbox;
+
+  m->opened--;
+  if (m->opened != 0)
+    return;
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */

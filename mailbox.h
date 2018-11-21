@@ -124,6 +124,7 @@ struct Mailbox
   struct Hash *label_hash;  /**< hash table for x-labels */
 
   struct Account *account;
+  int opened;              /**< number of times mailbox is opened */
 
   int flags; /**< e.g. #MB_NORMAL */
 
