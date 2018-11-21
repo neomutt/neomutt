@@ -287,7 +287,12 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_mbox_open(NULL, Postponed, MUTT_NOSORT);
+  struct Mailbox *m = mx_mbox_find2(Postponed);
+  if (ctx->mailbox == m)
+    PostContext = ctx;
+  else
+    PostContext = mx_mbox_open(m, Postponed, MUTT_NOSORT);
+
   if (!PostContext)
   {
     PostCount = 0;
@@ -298,7 +303,10 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (!PostContext->mailbox->msg_count)
   {
     PostCount = 0;
-    mx_mbox_close(&PostContext, NULL);
+    if (PostContext == ctx)
+      PostContext = NULL;
+    else
+      mx_mbox_close(&PostContext, NULL);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -310,14 +318,20 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   }
   else if (!(e = select_msg()))
   {
-    mx_mbox_close(&PostContext, NULL);
+    if (PostContext == ctx)
+      PostContext = NULL;
+    else
+      mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
   if (mutt_prepare_template(NULL, PostContext->mailbox, hdr, e, false) < 0)
   {
-    mx_fastclose_mailbox(PostContext);
-    FREE(&PostContext);
+    if (PostContext != ctx)
+    {
+      mx_fastclose_mailbox(PostContext);
+      FREE(&PostContext);
+    }
     return -1;
   }
 
@@ -331,7 +345,10 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_mbox_close(&PostContext, NULL);
+  if (PostContext == ctx)
+    PostContext = NULL;
+  else
+    mx_mbox_close(&PostContext, NULL);
   Delete = opt_delete;
 
   struct ListNode *np, *tmp;
