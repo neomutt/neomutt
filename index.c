@@ -461,7 +461,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
-    int padding = mx_msg_padding_size(ctx);
+    int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
       if (!i)

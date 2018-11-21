@@ -830,7 +830,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   m->msg_unread = 0;
   m->changed = false;
   m->msg_flagged = 0;
-  padding = mx_msg_padding_size(ctx);
+  padding = mx_msg_padding_size(m);
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
     if (!m->hdrs[i]->quasi_deleted &&
@@ -1623,20 +1623,15 @@ int mx_path_parent(char *buf, size_t buflen)
 
 /**
  * mx_msg_padding_size - Bytes of padding between messages - Wrapper for MxOps::msg_padding_size
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval num Number of bytes of padding
  *
  * mmdf and mbox add separators, which leads a small discrepancy when computing
  * vsize for a limited view.
  */
-int mx_msg_padding_size(struct Context *ctx)
+int mx_msg_padding_size(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
-    return 0;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  if (!m->mx_ops || !m->mx_ops->msg_padding_size)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_padding_size)
     return 0;
 
   return m->mx_ops->msg_padding_size(m);

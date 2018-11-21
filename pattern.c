@@ -2255,7 +2255,7 @@ int mutt_pattern_func(int op, char *prompt)
     Context->mailbox->vcount = 0;
     Context->vsize = 0;
     Context->collapsed = false;
-    padding = mx_msg_padding_size(Context);
+    padding = mx_msg_padding_size(Context->mailbox);
 
     for (int i = 0; i < Context->mailbox->msg_count; i++)
     {

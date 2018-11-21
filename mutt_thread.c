@@ -1195,7 +1195,7 @@ void mutt_set_virtual(struct Context *ctx)
 
   m->vcount = 0;
   ctx->vsize = 0;
-  int padding = mx_msg_padding_size(ctx);
+  int padding = mx_msg_padding_size(m);
 
   for (int i = 0; i < m->msg_count; i++)
   {
