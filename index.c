@@ -325,14 +325,14 @@ static int mx_toggle_write(struct Context *ctx)
     return -1;
   }
 
-  if (ctx->dontwrite)
+  if (ctx->mailbox->dontwrite)
   {
-    ctx->dontwrite = false;
+    ctx->mailbox->dontwrite = false;
     mutt_message(_("Changes to folder will be written on folder exit"));
   }
   else
   {
-    ctx->dontwrite = true;
+    ctx->mailbox->dontwrite = true;
     mutt_message(_("Changes to folder will not be written"));
   }
 

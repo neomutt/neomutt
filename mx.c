@@ -185,7 +185,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
 
   struct stat sb;
 
-  ctx->append = true;
+  m->append = true;
   if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR))
   {
     m->magic = mx_path_probe(m->path, NULL);
@@ -304,7 +304,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if (flags & MUTT_READONLY)
     m->readonly = true;
   if (flags & MUTT_PEEK)
-    ctx->peekonly = true;
+    m->peekonly = true;
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
@@ -404,7 +404,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
-  if (!ctx->peekonly)
+  if (!m->peekonly)
     mutt_mailbox_setnotified(m);
 
   if (m->mx_ops)
@@ -572,7 +572,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
-  if (m->readonly || ctx->dontwrite || ctx->append)
+  if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(ctx);
     FREE(pctx);
@@ -919,7 +919,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   int purge = 1;
   int msgcount, deleted;
 
-  if (ctx->dontwrite)
+  if (m->dontwrite)
   {
     char buf[STRING], tmp[STRING];
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
@@ -1157,9 +1157,9 @@ int mx_msg_commit(struct Context *ctx, struct Message *msg)
 
   struct Mailbox *m = ctx->mailbox;
 
-  if (!(msg->write && ctx->append))
+  if (!(msg->write && m->append))
   {
-    mutt_debug(1, "msg->write = %d, ctx->append = %d\n", msg->write, ctx->append);
+    mutt_debug(1, "msg->write = %d, m->append = %d\n", msg->write, m->append);
     return -1;
   }
 

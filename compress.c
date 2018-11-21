@@ -752,7 +752,7 @@ static int comp_mbox_close(struct Context *ctx)
   ops->mbox_close(ctx);
 
   /* sync has already been called, so we only need to delete some files */
-  if (!ctx->append)
+  if (!m->append)
   {
     /* If the file was removed, remove the compressed folder too */
     if ((access(m->path, F_OK) != 0) && !SaveEmpty)
