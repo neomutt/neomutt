@@ -1365,22 +1365,20 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
 }
 
 /**
- * mx_tags_commit - save tags to the mailbox
- * @param ctx  Mailbox
- * @param e  Email
+ * mx_tags_commit - Save tags to the Mailbox - Wrapper for MxOps::tags_commit()
+ * @param m    Mailbox
+ * @param e    Email
  * @param tags Tags to save
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
+int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
-
   if (m->mx_ops->tags_commit)
-    return m->mx_ops->tags_commit(ctx, e, tags);
+    return m->mx_ops->tags_commit(m, e, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;

@@ -2483,12 +2483,10 @@ static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t b
 /**
  * nm_tags_commit - Implements MxOps::tags_commit()
  */
-static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
+static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!buf || !*buf || !mdata)

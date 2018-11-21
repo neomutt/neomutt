@@ -209,13 +209,13 @@ struct MxOps
   int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
   /**
    * tags_commit - Save the tags to a message
-   * @param ctx Mailbox
+   * @param m Mailbox
    * @param e Email
    * @param buf Buffer containing tags
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*tags_commit)     (struct Context *ctx, struct Email *e, char *buf);
+  int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
   /**
    * path_probe - Does this mailbox type recognise this path?
    * @param path Path to examine
@@ -265,7 +265,7 @@ int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
 enum MailboxType mx_path_probe     (const char *path, struct stat *st);
-int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
+int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
 int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
 
 struct Account *mx_ac_find(struct Mailbox *m);

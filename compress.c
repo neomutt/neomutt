@@ -907,18 +907,18 @@ static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 /**
  * comp_tags_commit - Implements MxOps::tags_commit()
  */
-static int comp_tags_commit(struct Context *ctx, struct Email *e, char *buf)
+static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return 0;
 
-  struct CompressInfo *ci = ctx->mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops || !ops->tags_commit)
     return 0;
 
-  return ops->tags_commit(ctx, e, buf);
+  return ops->tags_commit(m, e, buf);
 }
 
 /**

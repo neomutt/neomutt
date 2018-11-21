@@ -2005,7 +2005,7 @@ int mutt_index_menu(void)
 
             if (!Context->mailbox->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context, Context->mailbox->hdrs[j], buf);
+            mx_tags_commit(Context->mailbox, Context->mailbox->hdrs[j], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
@@ -2026,7 +2026,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (mx_tags_commit(Context, CURHDR, buf))
+          if (mx_tags_commit(Context->mailbox, CURHDR, buf))
           {
             mutt_message(_("Failed to modify tags, aborting"));
             break;
