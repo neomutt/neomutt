@@ -1307,7 +1307,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
   if (m && (m->mdata == mdata))
   {
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(ctx, m->hdrs[i], MUTT_READ, 1);
+      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 1);
   }
   return mdata;
 }
@@ -1344,7 +1344,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
   {
     mdata->unread = m->msg_count;
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(ctx, m->hdrs[i], MUTT_READ, 0);
+      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 0);
   }
   else
   {

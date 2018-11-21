@@ -1290,21 +1290,21 @@ static int update_email_flags(struct Context *ctx, struct Email *e, const char *
     {
       tag = tag + 1;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_READ, 1);
+        mutt_set_flag(ctx->mailbox, e, MUTT_READ, 1);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_REPLIED, 0);
+        mutt_set_flag(ctx->mailbox, e, MUTT_REPLIED, 0);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_FLAG, 0);
+        mutt_set_flag(ctx->mailbox, e, MUTT_FLAG, 0);
     }
     else
     {
       tag = (*tag == '+') ? tag + 1 : tag;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_READ, 0);
+        mutt_set_flag(ctx->mailbox, e, MUTT_READ, 0);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_REPLIED, 1);
+        mutt_set_flag(ctx->mailbox, e, MUTT_REPLIED, 1);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(ctx, e, MUTT_FLAG, 1);
+        mutt_set_flag(ctx->mailbox, e, MUTT_FLAG, 1);
     }
     end = NULL;
     tag = NULL;
@@ -2424,12 +2424,10 @@ static int nm_mbox_close(struct Context *ctx)
 /**
  * nm_msg_open - Implements MxOps::msg_open()
  */
-static int nm_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs || !msg)
+  if (!m || !m->hdrs || !msg)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *e = m->hdrs[msgno];
   char path[PATH_MAX];
@@ -2508,7 +2506,7 @@ static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
   update_tags(msg, buf);
   update_email_flags(ctx, e, buf);
   update_email_tags(e, msg);
-  mutt_set_header_color(ctx, e);
+  mutt_set_header_color(m, e);
 
   rc = 0;
   e->changed = true;

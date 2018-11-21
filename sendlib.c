@@ -1482,7 +1482,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  mutt_parse_mime_message(ctx, e);
+  mutt_parse_mime_message(ctx->mailbox, e);
 
   chflags = CH_XMIT;
   cmflags = 0;
@@ -2974,7 +2974,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   }
 
   /* If we failed to open a message, return with error */
-  if (!fp && !(msg = mx_msg_open(Context, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(Context->mailbox, e->msgno)))
     return -1;
 
   if (!fp)
@@ -3018,7 +3018,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   }
 
   if (msg)
-    mx_msg_close(Context, &msg);
+    mx_msg_close(Context->mailbox, &msg);
 
   return rc;
 }
@@ -3206,7 +3206,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_msg_open_new(f, e, onm_flags);
+  msg = mx_msg_open_new(f->mailbox, e, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
@@ -3327,7 +3327,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
       mx_msg_commit(f, msg); /* XXX really? */
-      mx_msg_close(f, &msg);
+      mx_msg_close(f->mailbox, &msg);
       mx_mbox_close(&f, NULL);
       goto done;
     }
@@ -3358,7 +3358,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->committed_path);
-  mx_msg_close(f, &msg);
+  mx_msg_close(f->mailbox, &msg);
   mx_mbox_close(&f, NULL);
 
   if (!post && need_mailbox_cleanup)

@@ -2317,7 +2317,7 @@ static int imap_mbox_close(struct Context *ctx)
 /**
  * imap_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int imap_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
+static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char tmp[PATH_MAX];
 

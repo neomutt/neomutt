@@ -319,7 +319,7 @@ int imap_cache_del(struct ImapAccountData *adata, struct Email *e);
 int imap_cache_clean(struct ImapAccountData *adata);
 int imap_append_message(struct Mailbox *m, struct Message *msg);
 
-int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno);
+int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno);
 int imap_msg_close(struct Mailbox *m, struct Message *msg);
 int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 

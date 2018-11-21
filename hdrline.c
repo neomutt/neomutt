@@ -1222,7 +1222,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'X':
     {
-      int count = mutt_count_body_parts(ctx, e);
+      int count = mutt_count_body_parts(ctx->mailbox, e);
 
       /* The recursion allows messages without depth to return 0. */
       if (optional)

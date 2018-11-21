@@ -184,11 +184,11 @@ void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)
     e->score = 0;
 
   if (e->score <= ScoreThresholdDelete)
-    mutt_set_flag_update(ctx, e, MUTT_DELETE, true, upd_ctx);
+    mutt_set_flag_update(ctx->mailbox, e, MUTT_DELETE, true, upd_ctx);
   if (e->score <= ScoreThresholdRead)
-    mutt_set_flag_update(ctx, e, MUTT_READ, true, upd_ctx);
+    mutt_set_flag_update(ctx->mailbox, e, MUTT_READ, true, upd_ctx);
   if (e->score >= ScoreThresholdFlag)
-    mutt_set_flag_update(ctx, e, MUTT_FLAG, true, upd_ctx);
+    mutt_set_flag_update(ctx->mailbox, e, MUTT_FLAG, true, upd_ctx);
 }
 
 /**
