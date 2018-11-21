@@ -229,7 +229,7 @@ static struct Email *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext, PostContext->mailbox->hdrs[menu->current],
+        mutt_set_flag(PostContext->mailbox, PostContext->mailbox->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
@@ -322,8 +322,8 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(PostContext, e, MUTT_DELETE, 1);
-  mutt_set_flag(PostContext, e, MUTT_PURGE, 1);
+  mutt_set_flag(PostContext->mailbox, e, MUTT_DELETE, 1);
+  mutt_set_flag(PostContext->mailbox, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
   PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
@@ -563,7 +563,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && !(msg = mx_msg_open(ctx, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(ctx->mailbox, e->msgno)))
     return -1;
 
   if (!fp)
@@ -773,7 +773,7 @@ bail:
   if (bfp != fp)
     mutt_file_fclose(&bfp);
   if (msg)
-    mx_msg_close(ctx, &msg);
+    mx_msg_close(ctx->mailbox, &msg);
 
   if (rc == -1)
   {

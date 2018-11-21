@@ -674,7 +674,7 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    struct Message *msg = mx_msg_open_new(ctx, NULL, MUTT_ADD_FROM);
+    struct Message *msg = mx_msg_open_new(ctx->mailbox, NULL, MUTT_ADD_FROM);
     if (!msg)
       ret = -3;
     else
@@ -690,7 +690,7 @@ void pop_fetch_mail(void)
         ret = -3;
       }
 
-      mx_msg_close(ctx, &msg);
+      mx_msg_close(ctx->mailbox, &msg);
     }
 
     if ((ret == 0) && (delanswer == MUTT_YES))
@@ -1072,12 +1072,10 @@ static int pop_mbox_close(struct Context *ctx)
 /**
  * pop_msg_open - Implements MxOps::msg_open()
  */
-static int pop_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   char buf[LONG_STRING];
   char path[PATH_MAX];

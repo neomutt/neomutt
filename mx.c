@@ -658,7 +658,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     for (i = 0; i < m->msg_count; i++)
     {
       if (!m->hdrs[i]->deleted && !m->hdrs[i]->old && !m->hdrs[i]->read)
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_OLD, 1);
+        mutt_set_flag(m, m->hdrs[i], MUTT_OLD, 1);
     }
   }
 
@@ -706,8 +706,8 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
         {
           if (mutt_append_message(f, ctx, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(ctx, m->hdrs[i], MUTT_DELETE, 1);
-            mutt_set_flag(ctx, m->hdrs[i], MUTT_PURGE, 1);
+            mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, 1);
+            mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, 1);
           }
           else
           {
@@ -1042,12 +1042,10 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message
  */
-struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
+struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Address *p = NULL;
   struct Message *msg = NULL;
@@ -1073,7 +1071,7 @@ struct Message *mx_msg_open_new(struct Context *ctx, struct Email *e, int flags)
   if (msg->received == 0)
     time(&msg->received);
 
-  if (m->mx_ops->msg_open_new(ctx, msg, e) == 0)
+  if (m->mx_ops->msg_open_new(m, msg, e) == 0)
   {
     if (m->magic == MUTT_MMDF)
       fputs(MMDF_SEP, msg->fp);
@@ -1120,17 +1118,15 @@ int mx_mbox_check(struct Context *ctx, int *index_hint)
 
 /**
  * mx_msg_open - return a stream pointer for a message
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param msgno Message number
  * @retval ptr  Message
  * @retval NULL Error
  */
-struct Message *mx_msg_open(struct Context *ctx, int msgno)
+struct Message *mx_msg_open(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Message *msg = NULL;
 
@@ -1141,7 +1137,7 @@ struct Message *mx_msg_open(struct Context *ctx, int msgno)
   }
 
   msg = mutt_mem_calloc(1, sizeof(struct Message));
-  if (m->mx_ops->msg_open(ctx, msg, msgno) < 0)
+  if (m->mx_ops->msg_open(m, msg, msgno) < 0)
     FREE(&msg);
 
   return msg;
@@ -1172,17 +1168,15 @@ int mx_msg_commit(struct Context *ctx, struct Message *msg)
 
 /**
  * mx_msg_close - Close a message
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param msg Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_msg_close(struct Context *ctx, struct Message **msg)
+int mx_msg_close(struct Mailbox *m, struct Message **msg)
 {
-  if (!ctx || !ctx->mailbox || !msg || !*msg)
+  if (!m || !msg || !*msg)
     return 0;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int r = 0;
 

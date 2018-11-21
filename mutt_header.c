@@ -146,7 +146,7 @@ int mutt_label_message(struct Email *e)
     if (label_message(Context->mailbox, e, new))
     {
       changed++;
-      mutt_set_header_color(Context, e);
+      mutt_set_header_color(Context->mailbox, e);
     }
   }
   else
@@ -160,7 +160,7 @@ int mutt_label_message(struct Email *e)
       if (label_message(Context->mailbox, e2, new))
       {
         changed++;
-        mutt_set_flag(Context, e2, MUTT_TAG, 0);
+        mutt_set_flag(Context->mailbox, e2, MUTT_TAG, 0);
         /* mutt_set_flag re-evals the header color */
       }
     }

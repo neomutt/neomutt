@@ -792,7 +792,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
 int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
                           int flags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src, e->msgno);
+  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
   if (!msg)
     return -1;
   if (!e->content)
@@ -803,7 +803,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
     mutt_debug(1, "failed to detect EOF!\n");
     r = -1;
   }
-  mx_msg_close(src, &msg);
+  mx_msg_close(src->mailbox, &msg);
   return r;
 }
 
@@ -830,7 +830,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   if (!fgets(buf, sizeof(buf), fpin))
     return -1;
 
-  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest->mailbox, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
   if (dest->mailbox->magic == MUTT_MBOX || dest->mailbox->magic == MUTT_MMDF)
@@ -846,7 +846,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
     nm_update_filename(src->mailbox, NULL, msg->committed_path, e);
 #endif
 
-  mx_msg_close(dest, &msg);
+  mx_msg_close(dest->mailbox, &msg);
   return r;
 }
 
@@ -863,11 +863,11 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 int mutt_append_message(struct Context *dest, struct Context *src,
                         struct Email *e, int cmflags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src, e->msgno);
+  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
   if (!msg)
     return -1;
   int r = append_message(dest, msg->fp, src, e, cmflags, chflags);
-  mx_msg_close(src, &msg);
+  mx_msg_close(src->mailbox, &msg);
   return r;
 }
 

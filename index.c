@@ -404,7 +404,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       else
         e = ctx->mailbox->hdrs[i];
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, e, NULL))
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
         /* virtual will get properly set by mutt_set_virtual(), which
          * is called by mutt_sort_headers() just below. */
@@ -470,7 +470,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->vsize = 0;
       }
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx,
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx->mailbox,
                             ctx->mailbox->hdrs[i], NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
@@ -730,7 +730,7 @@ int index_color(int line)
   if (e && e->pair)
     return e->pair;
 
-  mutt_set_header_color(Context, e);
+  mutt_set_header_color(Context->mailbox, e);
   if (e)
     return e->pair;
 
@@ -1714,12 +1714,12 @@ int mutt_index_menu(void)
         {
           for (j = 0; j < Context->mailbox->msg_count; j++)
             if (message_is_visible(Context, j))
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_TAG, 0);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_TAG, 0);
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_TAG, !CURHDR->tagged);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, !CURHDR->tagged);
 
           Context->last_tag = CURHDR->tagged ?
                                   CURHDR :
@@ -2667,7 +2667,7 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_FLAG,
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_FLAG,
                             !Context->mailbox->hdrs[j]->flagged);
             }
           }
@@ -2676,7 +2676,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_FLAG, !CURHDR->flagged);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_FLAG, !CURHDR->flagged);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2710,18 +2710,18 @@ int mutt_index_menu(void)
               continue;
 
             if (Context->mailbox->hdrs[j]->read || Context->mailbox->hdrs[j]->old)
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_NEW, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_NEW, 1);
             else
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_READ, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_READ, 1);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
           if (CURHDR->read || CURHDR->old)
-            mutt_set_flag(Context, CURHDR, MUTT_NEW, 1);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_NEW, 1);
           else
-            mutt_set_flag(Context, CURHDR, MUTT_READ, 1);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_READ, 1);
 
           if (Resolve)
           {
@@ -2925,10 +2925,10 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_DELETE, 1);
-          mutt_set_flag(Context, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 1);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
           if (DeleteUntag)
-            mutt_set_flag(Context, CURHDR, MUTT_TAG, 0);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, 0);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -3383,8 +3383,8 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_DELETE, 0);
-          mutt_set_flag(Context, CURHDR, MUTT_PURGE, 0);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 0);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, 0);
           if (Resolve && menu->current < Context->mailbox->vcount - 1)
           {
             menu->current++;
@@ -3498,10 +3498,10 @@ int mutt_index_menu(void)
 
 /**
  * mutt_set_header_color - Select a colour for a message
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param curhdr Header of message
  */
-void mutt_set_header_color(struct Context *ctx, struct Email *curhdr)
+void mutt_set_header_color(struct Mailbox *m, struct Email *curhdr)
 {
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };
@@ -3511,7 +3511,7 @@ void mutt_set_header_color(struct Context *ctx, struct Email *curhdr)
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {
-    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, curhdr, &cache))
+    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, m, curhdr, &cache))
     {
       curhdr->pair = color->pair;
       return;

@@ -38,10 +38,10 @@ struct Context;
 
 /**
  * mutt_parse_mime_message - Parse a MIME email
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param cur Email
  */
-void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
+void mutt_parse_mime_message(struct Mailbox *m, struct Email *cur)
 {
   struct Message *msg = NULL;
 
@@ -53,7 +53,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
     if (cur->content->parts)
       break; /* The message was parsed earlier. */
 
-    msg = mx_msg_open(ctx, cur->msgno);
+    msg = mx_msg_open(m, cur->msgno);
     if (msg)
     {
       mutt_parse_part(msg->fp, cur->content);
@@ -61,7 +61,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Email *cur)
       if (WithCrypto)
         cur->security = crypt_query(cur->content);
 
-      mx_msg_close(ctx, &msg);
+      mx_msg_close(m, &msg);
     }
   } while (false);
 
@@ -211,7 +211,7 @@ static int count_body_parts(struct Body *body, int flags)
  * @param e Email
  * @retval num Number of MIME Body parts
  */
-int mutt_count_body_parts(struct Context *ctx, struct Email *e)
+int mutt_count_body_parts(struct Mailbox *m, struct Email *e)
 {
   bool keep_parts = false;
 
@@ -221,7 +221,7 @@ int mutt_count_body_parts(struct Context *ctx, struct Email *e)
   if (e->content->parts)
     keep_parts = true;
   else
-    mutt_parse_mime_message(ctx, e);
+    mutt_parse_mime_message(m, e);
 
   if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
       !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))

@@ -29,6 +29,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "mutt.h"
+#include "context.h"
 #include "alias.h"
 #include "copy.h"
 #include "curs_lib.h"
@@ -1032,7 +1033,7 @@ void mutt_attach_reply(FILE *fp, struct Email *e, struct AttachCtx *actx,
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
                       parent_hdr ? parent_hdr : (cur ? cur->email : NULL)) == 0)
   {
-    mutt_set_flag(Context, e, MUTT_REPLIED, 1);
+    mutt_set_flag(Context->mailbox, e, MUTT_REPLIED, 1);
   }
 }
 

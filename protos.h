@@ -34,6 +34,7 @@ struct Context;
 struct EnterState;
 struct Envelope;
 struct Email;
+struct Mailbox;
 
 /**
  * enum XdgType - XDG variable types
@@ -49,7 +50,7 @@ int mutt_system(const char *cmd);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
-void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool bf, bool upd_ctx);
+void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_ctx);
 #define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, true)
 void mutt_signal_init(void);
 void mutt_tag_set_flag(int flag, int bf);

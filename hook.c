@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "context.h"
 #include "mutt.h"
 #include "hook.h"
 #include "alias.h"
@@ -453,7 +454,7 @@ void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx->mailbox, e, &cache) > 0) ^
           hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
@@ -501,7 +502,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx->mailbox, e, &cache) > 0) ^
           hook->regex.not)
       {
         mutt_make_string_flags(path, pathlen, hook->command, ctx, e, MUTT_FORMAT_PLAIN);

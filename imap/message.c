@@ -655,7 +655,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
  * case of local_changes, if a change to a flag _would_ have been
  * made.
  */
-static void set_changed_flag(struct Context *ctx, struct Email *e,
+static void set_changed_flag(struct Mailbox *m, struct Email *e,
                              int local_changes, int *server_changes, int flag_name,
                              int old_hd_flag, int new_hd_flag, int h_flag)
 {
@@ -675,7 +675,7 @@ static void set_changed_flag(struct Context *ctx, struct Email *e,
 
   /* Local changes have priority */
   if (!local_changes)
-    mutt_set_flag(ctx, e, flag_name, new_hd_flag);
+    mutt_set_flag(m, e, flag_name, new_hd_flag);
 }
 
 #ifdef USE_HCACHE
@@ -1674,18 +1674,18 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
         if (!message_is_tagged(ctx, i))
           continue;
 
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_DELETE, 1);
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_PURGE, 1);
+        mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, 1);
+        mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, 1);
         if (DeleteUntag)
-          mutt_set_flag(ctx, m->hdrs[i], MUTT_TAG, 0);
+          mutt_set_flag(m, m->hdrs[i], MUTT_TAG, 0);
       }
     }
     else
     {
-      mutt_set_flag(ctx, e, MUTT_DELETE, 1);
-      mutt_set_flag(ctx, e, MUTT_PURGE, 1);
+      mutt_set_flag(m, e, MUTT_DELETE, 1);
+      mutt_set_flag(m, e, MUTT_PURGE, 1);
       if (DeleteUntag)
-        mutt_set_flag(ctx, e, MUTT_TAG, 0);
+        mutt_set_flag(m, e, MUTT_TAG, 0);
     }
   }
 
@@ -1787,15 +1787,15 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
   /* This is redundant with the following two checks. Removing:
    * mutt_set_flag (adata->ctx, e, MUTT_NEW, !(edata->read || edata->old));
    */
-  set_changed_flag(adata->ctx, e, local_changes, server_changes, MUTT_OLD,
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD,
                    old_edata.old, edata->old, e->old);
-  set_changed_flag(adata->ctx, e, local_changes, server_changes, MUTT_READ,
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_READ,
                    old_edata.read, edata->read, e->read);
-  set_changed_flag(adata->ctx, e, local_changes, server_changes, MUTT_DELETE,
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_DELETE,
                    old_edata.deleted, edata->deleted, e->deleted);
-  set_changed_flag(adata->ctx, e, local_changes, server_changes, MUTT_FLAG,
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_FLAG,
                    old_edata.flagged, edata->flagged, e->flagged);
-  set_changed_flag(adata->ctx, e, local_changes, server_changes, MUTT_REPLIED,
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_REPLIED,
                    old_edata.replied, edata->replied, e->replied);
 
   /* this message is now definitively *not* changed (mutt_set_flag
@@ -1811,9 +1811,9 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
 /**
  * imap_msg_open - Implements MxOps::msg_open()
  */
-int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !msg)
+  if (!m || !msg)
     return -1;
 
   struct Envelope *newenv = NULL;
@@ -1833,8 +1833,6 @@ int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno)
    * fails. Thanks Sam. */
   bool fetched = false;
   int output_progress;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = m->mdata;
@@ -2003,7 +2001,7 @@ parsemsg:
   if (read != e->read)
   {
     e->read = read;
-    mutt_set_flag(ctx, e, MUTT_NEW, read);
+    mutt_set_flag(m, e, MUTT_NEW, read);
   }
 
   e->lines = 0;

@@ -215,7 +215,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
   o_old = cur->old;
   cur->read = false;
   cur->old = false;
-  msg = mx_msg_open_new(tmpctx, cur, of);
+  msg = mx_msg_open_new(tmpctx->mailbox, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
@@ -234,7 +234,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
   }
 
   rc = mx_msg_commit(tmpctx, msg);
-  mx_msg_close(tmpctx, &msg);
+  mx_msg_close(tmpctx->mailbox, &msg);
 
   mx_mbox_close(&tmpctx, NULL);
 
@@ -247,12 +247,12 @@ bail:
 
   if (rc == 0)
   {
-    mutt_set_flag(Context, cur, MUTT_DELETE, 1);
-    mutt_set_flag(Context, cur, MUTT_PURGE, 1);
-    mutt_set_flag(Context, cur, MUTT_READ, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_DELETE, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_PURGE, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_READ, 1);
 
     if (DeleteUntag)
-      mutt_set_flag(Context, cur, MUTT_TAG, 0);
+      mutt_set_flag(Context->mailbox, cur, MUTT_TAG, 0);
   }
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), tmp);

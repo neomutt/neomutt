@@ -964,16 +964,16 @@ static int patmatch(const struct Pattern *pat, const char *buf)
 
 /**
  * msg_search - Search an email
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param pat   Pattern to find
  * @param msgno Message to search
  * @retval true Pattern found
  * @retval false Error or pattern not found
  */
-static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
+static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 {
   bool match = false;
-  struct Message *msg = mx_msg_open(ctx, msgno);
+  struct Message *msg = mx_msg_open(m, msgno);
   if (!msg)
   {
     return match;
@@ -981,7 +981,7 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   FILE *fp = NULL;
   long lng = 0;
-  struct Email *e = ctx->mailbox->hdrs[msgno];
+  struct Email *e = m->hdrs[msgno];
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
   size_t tempsize;
@@ -1016,11 +1016,11 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     if (pat->op != MUTT_HEADER)
     {
-      mutt_parse_mime_message(ctx, e);
+      mutt_parse_mime_message(m, e);
 
       if ((WithCrypto != 0) && (e->security & ENCRYPT) && !crypt_valid_passphrase(e->security))
       {
-        mx_msg_close(ctx, &msg);
+        mx_msg_close(m, &msg);
         if (s.fpout)
         {
           mutt_file_fclose(&s.fpout);
@@ -1106,7 +1106,7 @@ static bool msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   FREE(&buf);
 
-  mx_msg_close(ctx, &msg);
+  mx_msg_close(m, &msg);
 
   if (ThoroughSearch)
   {
@@ -1497,16 +1497,16 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
  * perform_and - Perform a logical AND on a set of Patterns
  * @param pat   Patterns to test
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param e   Email
  * @param cache Cached Patterns
  * @retval true If ALL of the Patterns evaluates to true
  */
 static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
-                        struct Context *ctx, struct Email *e, struct PatternCache *cache)
+                        struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, ctx, e, cache) <= 0)
+    if (mutt_pattern_exec(pat, flags, m, e, cache) <= 0)
       return false;
   return true;
 }
@@ -1515,16 +1515,16 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
  * perform_or - Perform a logical OR on a set of Patterns
  * @param pat   Patterns to test
  * @param flags Optional flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param e   Email
  * @param cache Cached Patterns
  * @retval true If ONE (or more) of the Patterns evaluates to true
  */
 static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Email *e, struct PatternCache *cache)
+                      struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
-    if (mutt_pattern_exec(pat, flags, ctx, e, cache) > 0)
+    if (mutt_pattern_exec(pat, flags, m, e, cache) > 0)
       return true;
   return false;
 }
@@ -1641,7 +1641,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
  * match_threadcomplete - Match a Pattern against an email thread
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param t     Email thread
  * @param left  Navigate to the previous email
  * @param up    Navigate to the email's parent
@@ -1651,7 +1651,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
  * @retval 0  No match
  */
 static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
-                                struct Context *ctx, struct MuttThread *t,
+                                struct Mailbox *m, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
   int a;
@@ -1661,22 +1661,22 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
     return 0;
   e = t->message;
   if (e)
-    if (mutt_pattern_exec(pat, flags, ctx, e, NULL))
+    if (mutt_pattern_exec(pat, flags, m, e, NULL))
       return 1;
 
-  if (up && (a = match_threadcomplete(pat, flags, ctx, t->parent, 1, 1, 1, 0)))
+  if (up && (a = match_threadcomplete(pat, flags, m, t->parent, 1, 1, 1, 0)))
     return a;
   if (right && t->parent &&
-      (a = match_threadcomplete(pat, flags, ctx, t->next, 0, 0, 1, 1)))
+      (a = match_threadcomplete(pat, flags, m, t->next, 0, 0, 1, 1)))
   {
     return a;
   }
   if (left && t->parent &&
-      (a = match_threadcomplete(pat, flags, ctx, t->prev, 1, 0, 0, 1)))
+      (a = match_threadcomplete(pat, flags, m, t->prev, 1, 0, 0, 1)))
   {
     return a;
   }
-  if (down && (a = match_threadcomplete(pat, flags, ctx, t->child, 1, 0, 1, 1)))
+  if (down && (a = match_threadcomplete(pat, flags, m, t->child, 1, 0, 1, 1)))
     return a;
   return 0;
 }
@@ -1685,39 +1685,39 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
  * match_threadparent - Match Pattern against an email's parent
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param t     Thread of email
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
 static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
-                              struct Context *ctx, struct MuttThread *t)
+                              struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->parent || !t->parent->message)
     return 0;
 
-  return mutt_pattern_exec(pat, flags, ctx, t->parent->message, NULL);
+  return mutt_pattern_exec(pat, flags, m, t->parent->message, NULL);
 }
 
 /**
  * match_threadchildren - Match Pattern against an email's children
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param t     Thread of email
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
  * @retval -1 Error
  */
 static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
-                                struct Context *ctx, struct MuttThread *t)
+                                struct Mailbox *m, struct MuttThread *t)
 {
   if (!t || !t->child)
     return 0;
 
   for (t = t->child; t; t = t->next)
-    if (t->message && mutt_pattern_exec(pat, flags, ctx, t->message, NULL))
+    if (t->message && mutt_pattern_exec(pat, flags, m, t->message, NULL))
       return 1;
 
   return 0;
@@ -1750,15 +1750,15 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
 /**
  * match_mime_content_type - Match a Pattern against an email's Content-Type
  * @param pat   Pattern to match
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param e   Email
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
  */
 static int match_mime_content_type(const struct Pattern *pat,
-                                   struct Context *ctx, struct Email *e)
+                                   struct Mailbox *m, struct Email *e)
 {
-  mutt_parse_mime_message(ctx, e);
+  mutt_parse_mime_message(m, e);
   return match_content_type(pat, e->content);
 }
 
@@ -1799,7 +1799,7 @@ static int is_pattern_cache_set(int cache_entry)
  * mutt_pattern_exec - Match a pattern against an email header
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
- * @param ctx   Mailbox
+ * @param m   Mailbox
  * @param e     Email
  * @param cache Cache for common Patterns
  * @retval  1 Success, pattern matched
@@ -1811,7 +1811,7 @@ static int is_pattern_cache_set(int cache_entry)
  *        store some of the cacheable pattern matches in this structure.
  */
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Email *e, struct PatternCache *cache)
+                      struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   int result;
   int *cache_entry = NULL;
@@ -1819,15 +1819,15 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
   switch (pat->op)
   {
     case MUTT_AND:
-      return pat->not^(perform_and(pat->child, flags, ctx, e, cache) > 0);
+      return pat->not^(perform_and(pat->child, flags, m, e, cache) > 0);
     case MUTT_OR:
-      return pat->not^(perform_or(pat->child, flags, ctx, e, cache) > 0);
+      return pat->not^(perform_or(pat->child, flags, m, e, cache) > 0);
     case MUTT_THREAD:
-      return pat->not^match_threadcomplete(pat->child, flags, ctx, e->thread, 1, 1, 1, 1);
+      return pat->not^match_threadcomplete(pat->child, flags, m, e->thread, 1, 1, 1, 1);
     case MUTT_PARENT:
-      return pat->not^match_threadparent(pat->child, flags, ctx, e->thread);
+      return pat->not^match_threadparent(pat->child, flags, m, e->thread);
     case MUTT_CHILDREN:
-      return pat->not^match_threadchildren(pat->child, flags, ctx, e->thread);
+      return pat->not^match_threadchildren(pat->child, flags, m, e->thread);
     case MUTT_ALL:
       return !pat->not;
     case MUTT_EXPIRED:
@@ -1859,24 +1859,24 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_BODY:
     case MUTT_HEADER:
     case MUTT_WHOLE_MSG:
-      /* ctx can be NULL in certain cases, such as when replying to a message
+      /* m can be NULL in certain cases, such as when replying to a message
        * from the attachment menu and the user has a reply-hook using "~e" (bug
        * #2190).
        * This is also the case when message scoring.
        */
-      if (!ctx)
+      if (!m)
         return 0;
 #ifdef USE_IMAP
       /* IMAP search sets e->matched at search compile time */
-      if (ctx->mailbox->magic == MUTT_IMAP && pat->stringmatch)
+      if (m->magic == MUTT_IMAP && pat->stringmatch)
         return e->matched;
 #endif
-      return pat->not^msg_search(ctx, pat, e->msgno);
+      return pat->not^msg_search(m, pat, e->msgno);
     case MUTT_SERVERSEARCH:
 #ifdef USE_IMAP
-      if (!ctx)
+      if (!m)
         return 0;
-      if (ctx->mailbox->magic == MUTT_IMAP)
+      if (m->magic == MUTT_IMAP)
       {
         if (pat->stringmatch)
           return e->matched;
@@ -2037,17 +2037,17 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_DUPLICATED:
       return pat->not^(e->thread && e->thread->duplicate_thread);
     case MUTT_MIMEATTACH:
-      if (!ctx)
+      if (!m)
         return 0;
       {
-        int count = mutt_count_body_parts(ctx, e);
+        int count = mutt_count_body_parts(m, e);
         return pat->not^(count >= pat->min &&
                          (pat->max == MUTT_MAXRANGE || count <= pat->max));
       }
     case MUTT_MIMETYPE:
-      if (!ctx)
+      if (!m)
         return 0;
-      return pat->not^match_mime_content_type(pat, ctx, e);
+      return pat->not^match_mime_content_type(pat, m, e);
     case MUTT_UNREFERENCED:
       return pat->not^(e->thread && !e->thread->child);
     case MUTT_BROKEN:
@@ -2265,7 +2265,7 @@ int mutt_pattern_func(int op, char *prompt)
       Context->mailbox->hdrs[i]->limited = false;
       Context->mailbox->hdrs[i]->collapsed = false;
       Context->mailbox->hdrs[i]->num_hidden = 0;
-      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context,
+      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
                             Context->mailbox->hdrs[i], NULL))
       {
         Context->mailbox->hdrs[i]->virtual = Context->mailbox->vcount;
@@ -2282,22 +2282,22 @@ int mutt_pattern_func(int op, char *prompt)
     for (int i = 0; i < Context->mailbox->vcount; i++)
     {
       mutt_progress_update(&progress, i, -1);
-      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context,
+      if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
                             Context->mailbox->hdrs[Context->mailbox->v2r[i]], NULL))
       {
         switch (op)
         {
           case MUTT_UNDELETE:
-            mutt_set_flag(Context, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_PURGE, 0);
           /* fallthrough */
           case MUTT_DELETE:
-            mutt_set_flag(Context, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_DELETE, (op == MUTT_DELETE));
             break;
           case MUTT_TAG:
           case MUTT_UNTAG:
-            mutt_set_flag(Context, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_TAG, (op == MUTT_TAG));
             break;
         }
@@ -2460,7 +2460,7 @@ int mutt_search_command(int cur, int op)
       /* remember that we've already searched this message */
       e->searched = true;
       e->matched =
-          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context, e, NULL);
+          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context->mailbox, e, NULL);
       if (e->matched > 0)
       {
         mutt_clear_error();

@@ -720,14 +720,14 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes
            */
-          mutt_set_flag(ctx, m->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
-          mutt_set_flag(ctx, m->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
-          mutt_set_flag(ctx, m->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
-          mutt_set_flag(ctx, m->hdrs[i], MUTT_READ, old_hdrs[j]->read);
+          mutt_set_flag(m, m->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
+          mutt_set_flag(m, m->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
+          mutt_set_flag(m, m->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
+          mutt_set_flag(m, m->hdrs[i], MUTT_READ, old_hdrs[j]->read);
         }
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
-        mutt_set_flag(ctx, m->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
+        mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
+        mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
+        mutt_set_flag(m, m->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
         /* we don't need this header any more */
         mutt_email_free(&(old_hdrs[j]));
@@ -1571,12 +1571,10 @@ static int mbox_mbox_close(struct Context *ctx)
 /**
  * mbox_msg_open - Implements MxOps::msg_open()
  */
-static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int mbox_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1590,12 +1588,10 @@ static int mbox_msg_open(struct Context *ctx, struct Message *msg, int msgno)
 /**
  * mbox_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int mbox_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
+static int mbox_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)

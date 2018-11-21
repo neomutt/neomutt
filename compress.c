@@ -801,37 +801,37 @@ static int comp_mbox_close(struct Context *ctx)
 /**
  * comp_msg_open - Implements MxOps::msg_open()
  */
-static int comp_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int comp_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return -1;
 
-  struct CompressInfo *ci = ctx->mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
   /* Delegate */
-  return ops->msg_open(ctx, msg, msgno);
+  return ops->msg_open(m, msg, msgno);
 }
 
 /**
  * comp_msg_open_new - Implements MxOps::msg_open_new()
  */
-static int comp_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
+static int comp_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return -1;
 
-  struct CompressInfo *ci = ctx->mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
   /* Delegate */
-  return ops->msg_open_new(ctx, msg, e);
+  return ops->msg_open_new(m, msg, e);
 }
 
 /**

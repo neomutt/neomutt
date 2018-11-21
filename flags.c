@@ -47,18 +47,16 @@
 
 /**
  * mutt_set_flag_update - Set a flag on an email
- * @param ctx     Mailbox Context
+ * @param m       Mailbox
  * @param e       Email
  * @param flag    Flag to set, e.g. #MUTT_DELETE
  * @param bf      true: set the flag; false: clear the flag
  * @param upd_ctx true: update the Context
  */
-void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool bf, bool upd_ctx)
+void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_ctx)
 {
-  if (!ctx || !ctx->mailbox || !e)
+  if (!m || !e)
     return;
-
-  struct Mailbox *m = ctx->mailbox;
 
   bool changed = e->changed;
   int deleted = m->msg_deleted;
@@ -87,7 +85,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx && m->magic == MUTT_IMAP)
+          if (m->magic == MUTT_IMAP)
           {
             e->changed = true;
             if (upd_ctx)
@@ -332,7 +330,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Email *e, int flag, bool b
 
   if (update)
   {
-    mutt_set_header_color(ctx, e);
+    mutt_set_header_color(m, e);
 #ifdef USE_SIDEBAR
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
@@ -358,7 +356,7 @@ void mutt_tag_set_flag(int flag, int bf)
 {
   for (int i = 0; i < Context->mailbox->msg_count; i++)
     if (message_is_tagged(Context, i))
-      mutt_set_flag(Context, Context->mailbox->hdrs[i], flag, bf);
+      mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[i], flag, bf);
 }
 
 /**
@@ -386,7 +384,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread)
   start = cur;
 
   if (cur->message && cur != e->thread)
-    mutt_set_flag(Context, cur->message, flag, bf);
+    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
 
   cur = cur->child;
   if (!cur)
@@ -395,7 +393,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread)
   while (true)
   {
     if (cur->message && cur != e->thread)
-      mutt_set_flag(Context, cur->message, flag, bf);
+      mutt_set_flag(Context->mailbox, cur->message, flag, bf);
 
     if (cur->child)
       cur = cur->child;
@@ -415,7 +413,7 @@ int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread)
 done:
   cur = e->thread;
   if (cur->message)
-    mutt_set_flag(Context, cur->message, flag, bf);
+    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
   return 0;
 }
 
@@ -456,7 +454,7 @@ int mutt_change_flag(struct Email *e, int bf)
       if (!bf)
       {
         if (e)
-          mutt_set_flag(Context, e, MUTT_PURGE, bf);
+          mutt_set_flag(Context->mailbox, e, MUTT_PURGE, bf);
         else
           mutt_tag_set_flag(MUTT_PURGE, bf);
       }
@@ -471,7 +469,7 @@ int mutt_change_flag(struct Email *e, int bf)
     case 'o':
     case 'O':
       if (e)
-        mutt_set_flag(Context, e, MUTT_READ, !bf);
+        mutt_set_flag(Context->mailbox, e, MUTT_READ, !bf);
       else
         mutt_tag_set_flag(MUTT_READ, !bf);
       flag = MUTT_OLD;
@@ -496,7 +494,7 @@ int mutt_change_flag(struct Email *e, int bf)
   }
 
   if (e)
-    mutt_set_flag(Context, e, flag, bf);
+    mutt_set_flag(Context->mailbox, e, flag, bf);
   else
     mutt_tag_set_flag(flag, bf);
 

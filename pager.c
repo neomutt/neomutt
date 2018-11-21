@@ -2250,7 +2250,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (Context && IsHeader(extra) && !extra->email->read)
   {
     Context->msgnotreadyet = extra->email->msgno;
-    mutt_set_flag(Context, extra->email, MUTT_READ, 1);
+    mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
   }
 
   rd.max_line = LINES; /* number of lines on screen, from curses */
@@ -2942,10 +2942,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
-        mutt_set_flag(Context, extra->email, MUTT_DELETE, 1);
-        mutt_set_flag(Context, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 1);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (DeleteUntag)
-          mutt_set_flag(Context, extra->email, MUTT_TAG, 0);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, 0);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3050,7 +3050,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
 
-        mutt_set_flag(Context, extra->email, MUTT_FLAG, !extra->email->flagged);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3250,7 +3250,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         if (Context)
         {
-          mutt_set_flag(Context, extra->email, MUTT_TAG, !extra->email->tagged);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, !extra->email->tagged);
 
           Context->last_tag =
               extra->email->tagged ?
@@ -3275,9 +3275,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
 
         if (extra->email->read || extra->email->old)
-          mutt_set_flag(Context, extra->email, MUTT_NEW, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, 1);
         else if (!first)
-          mutt_set_flag(Context, extra->email, MUTT_READ, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
         first = 0;
         Context->msgnotreadyet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3294,8 +3294,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
-        mutt_set_flag(Context, extra->email, MUTT_DELETE, 0);
-        mutt_set_flag(Context, extra->email, MUTT_PURGE, 0);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 0);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, 0);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {

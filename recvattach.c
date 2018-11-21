@@ -1307,11 +1307,11 @@ void mutt_view_attachments(struct Email *e)
   int op = OP_NULL;
 
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(Context, e);
+  mutt_parse_mime_message(Context->mailbox, e);
 
   mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
 
-  struct Message *msg = mx_msg_open(Context, e->msgno);
+  struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
   if (!msg)
     return;
 
@@ -1571,7 +1571,7 @@ void mutt_view_attachments(struct Email *e)
         break;
 
       case OP_EXIT:
-        mx_msg_close(Context, &msg);
+        mx_msg_close(Context->mailbox, &msg);
 
         e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)

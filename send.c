@@ -537,7 +537,7 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
-  mutt_parse_mime_message(ctx, cur);
+  mutt_parse_mime_message(ctx->mailbox, cur);
   mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
 
   if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
@@ -626,7 +626,7 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
       return -1;
   }
 
-  mutt_parse_mime_message(ctx, cur);
+  mutt_parse_mime_message(ctx->mailbox, cur);
   mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(ctx, cur, out);
@@ -2415,7 +2415,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
   if (flags & SEND_REPLY)
   {
     if (cur && ctx)
-      mutt_set_flag(ctx, cur, MUTT_REPLIED, is_reply(cur, msg));
+      mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
     else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox &&
              ctx->mailbox->msg_tagged)
     {
@@ -2423,7 +2423,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
       {
         if (message_is_tagged(ctx, i))
         {
-          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_REPLIED,
+          mutt_set_flag(ctx->mailbox, ctx->mailbox->hdrs[i], MUTT_REPLIED,
                         is_reply(ctx->mailbox->hdrs[i], msg));
         }
       }

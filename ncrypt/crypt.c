@@ -834,7 +834,7 @@ void crypt_extract_keys_from_messages(struct Email *e)
 
       struct Email *ei = Context->mailbox->hdrs[i];
 
-      mutt_parse_mime_message(Context, ei);
+      mutt_parse_mime_message(Context->mailbox, ei);
       if (ei->security & ENCRYPT && !crypt_valid_passphrase(ei->security))
       {
         mutt_file_fclose(&fpout);
@@ -882,7 +882,7 @@ void crypt_extract_keys_from_messages(struct Email *e)
   }
   else
   {
-    mutt_parse_mime_message(Context, e);
+    mutt_parse_mime_message(Context->mailbox, e);
     if (!(e->security & ENCRYPT && !crypt_valid_passphrase(e->security)))
     {
       if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))

@@ -1556,7 +1556,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   long old_body_length = e->content->length;
   long old_hdr_lines = e->lines;
 
-  struct Message *dest = mx_msg_open_new(ctx, e, 0);
+  struct Message *dest = mx_msg_open_new(m, e, 0);
   if (!dest)
     return -1;
 
@@ -1573,7 +1573,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     else
       rc = mh_commit_msg(m, dest, e, false);
 
-    mx_msg_close(ctx, &dest);
+    mx_msg_close(ctx->mailbox, &dest);
 
     if (rc == 0)
     {
@@ -1605,7 +1605,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     }
   }
   else
-    mx_msg_close(ctx, &dest);
+    mx_msg_close(ctx->mailbox, &dest);
 
   if (rc == -1 && restore)
   {
@@ -2205,13 +2205,13 @@ bool maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n)
    * bits are already properly set, but it is still faster not to pass
    * through it */
   if (o->flagged != n->flagged)
-    mutt_set_flag(ctx, o, MUTT_FLAG, n->flagged);
+    mutt_set_flag(m, o, MUTT_FLAG, n->flagged);
   if (o->replied != n->replied)
-    mutt_set_flag(ctx, o, MUTT_REPLIED, n->replied);
+    mutt_set_flag(m, o, MUTT_REPLIED, n->replied);
   if (o->read != n->read)
-    mutt_set_flag(ctx, o, MUTT_READ, n->read);
+    mutt_set_flag(m, o, MUTT_READ, n->read);
   if (o->old != n->old)
-    mutt_set_flag(ctx, o, MUTT_OLD, n->old);
+    mutt_set_flag(m, o, MUTT_OLD, n->old);
 
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
@@ -2626,13 +2626,10 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
 /**
  * maildir_msg_open - Implements MxOps::msg_open()
  */
-static int maildir_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
   return maildir_mh_open_message(m, msg, msgno, true);
 }
 
@@ -2644,12 +2641,10 @@ static int maildir_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  * @note This uses _almost_ the maildir file name format,
  * but with a {cur,new} prefix.
  */
-static int maildir_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
+static int maildir_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int fd;
   char path[PATH_MAX];
@@ -3068,13 +3063,10 @@ static int mh_mbox_close(struct Context *ctx)
 /**
  * mh_msg_open - Implements MxOps::msg_open()
  */
-static int mh_msg_open(struct Context *ctx, struct Message *msg, int msgno)
+static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
   return maildir_mh_open_message(m, msg, msgno, false);
 }
 
@@ -3083,13 +3075,10 @@ static int mh_msg_open(struct Context *ctx, struct Message *msg, int msgno)
  *
  * Open a new (temporary) message in an MH folder.
  */
-static int mh_msg_open_new(struct Context *ctx, struct Message *msg, struct Email *e)
+static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!ctx || !ctx->mailbox || !msg)
+  if (!m|| !msg)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
   return mh_mkstemp(m, &msg->fp, &msg->path);
 }
 
