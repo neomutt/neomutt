@@ -314,7 +314,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, e, false) < 0)
+  if (mutt_prepare_template(NULL, PostContext->mailbox, hdr, e, false) < 0)
   {
     mx_fastclose_mailbox(PostContext);
     FREE(&PostContext);
@@ -543,7 +543,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 /**
  * mutt_prepare_template - Prepare a message template
  * @param fp      If not NULL, file containing the template
- * @param ctx     If fp is NULL, the context containing the header with the template
+ * @param m       If fp is NULL, the Mailbox containing the header with the template
  * @param newhdr  The template is read into this Header
  * @param e       Email to recall/resend
  * @param resend  Set if resending (as opposed to recalling a postponed msg)
@@ -552,7 +552,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
+int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
                           struct Email *e, bool resend)
 {
   struct Message *msg = NULL;
@@ -563,7 +563,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && !(msg = mx_msg_open(ctx->mailbox, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(m, e->msgno)))
     return -1;
 
   if (!fp)
@@ -773,7 +773,7 @@ bail:
   if (bfp != fp)
     mutt_file_fclose(&bfp);
   if (msg)
-    mx_msg_close(ctx->mailbox, &msg);
+    mx_msg_close(m, &msg);
 
   if (rc == -1)
   {

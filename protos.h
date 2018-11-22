@@ -59,7 +59,7 @@ int mutt_change_flag(struct Email *e, int bf);
 int mutt_complete(char *buf, size_t buflen);
 int mutt_edit_message(struct Context *ctx, struct Email *e);
 int mutt_view_message(struct Context *ctx, struct Email *e);
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr, struct Email *e, bool resend);
+int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr, struct Email *e, bool resend);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
                        char ***files, int *numfiles, struct EnterState *state);

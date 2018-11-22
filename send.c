@@ -1425,7 +1425,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 {
   struct Email *msg = mutt_email_new();
 
-  if (mutt_prepare_template(fp, ctx, msg, cur, true) < 0)
+  if (mutt_prepare_template(fp, ctx->mailbox, msg, cur, true) < 0)
   {
     mutt_email_free(&msg);
     return -1;
