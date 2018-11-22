@@ -1380,20 +1380,18 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag)
 
 /**
  * mutt_messages_in_thread - Count the messages in a thread
- * @param ctx  Mailbox
- * @param e  Email
+ * @param m    Mailbox
+ * @param e    Email
  * @param flag Flag, see notes below
  * @retval num Number of message / Our position
  *
  * If flag is 0, we want to know how many messages are in the thread.
  * If flag is 1, we want to know our position in the thread.
  */
-int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
+int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
 {
-  if (!ctx || !ctx->mailbox || !e)
+  if (!m || !e)
     return 1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MuttThread *threads[2];
   int rc;

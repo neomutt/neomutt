@@ -828,16 +828,16 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'e':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx, e, 1));
+      snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx->mailbox, e, 1));
       break;
 
     case 'E':
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx, e, 0));
+        snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx->mailbox, e, 0));
       }
-      else if (mutt_messages_in_thread(ctx, e, 0) <= 1)
+      else if (mutt_messages_in_thread(ctx->mailbox, e, 0) <= 1)
         optional = 0;
       break;
 
