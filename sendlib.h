@@ -28,10 +28,10 @@
 
 struct Address;
 struct Body;
-struct Context;
-struct Envelope;
 struct Email;
+struct Envelope;
 struct ListHead;
+struct Mailbox;
 struct ParameterList;
 
 /* These Config Variables are only used in sendlib.c */
@@ -61,7 +61,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 int             mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Address *cc, struct Address *bcc, const char *msg, int eightbit);
 int             mutt_lookup_mime_type(struct Body *att, const char *path);
 struct Body *   mutt_make_file_attach(const char *path);
-struct Body *   mutt_make_message_attach(struct Context *ctx, struct Email *e, bool attach_msg);
+struct Body *   mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg);
 struct Body *   mutt_make_multipart(struct Body *b);
 void            mutt_message_to_7bit(struct Body *a, FILE *fp);
 void            mutt_prepare_envelope(struct Envelope *env, bool final);

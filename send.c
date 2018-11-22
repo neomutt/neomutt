@@ -1081,7 +1081,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
       if (cur)
       {
-        tmp = mutt_make_message_attach(ctx, cur, false);
+        tmp = mutt_make_message_attach(ctx->mailbox, cur, false);
         if (last)
           last->next = tmp;
         else
@@ -1094,7 +1094,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
           if (!message_is_tagged(ctx, i))
             continue;
 
-          tmp = mutt_make_message_attach(ctx, ctx->mailbox->hdrs[i], false);
+          tmp = mutt_make_message_attach(ctx->mailbox, ctx->mailbox->hdrs[i], false);
           if (last)
           {
             last->next = tmp;
