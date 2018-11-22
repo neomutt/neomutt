@@ -689,6 +689,55 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 }
 
 /**
+ * mutt_file_iter_line - iterate over the lines from an open file pointer
+ * @param iter  State of iteration including ptr to line
+ * @param fp    File pointer to read from
+ * @param flags Same as mutt_file_read_line()
+ * @retval      true iff data read, false on eof
+ *
+ * This is a slightly cleaner interface for mutt_file_read_line() which avoids
+ * the eternal C loop initialization ugliness.  Use like this:
+ *
+ * ```
+ * struct MuttFileIter iter = { 0 };
+ * while (mutt_file_iter_line(&iter, fp, flags))
+ * {
+ *   do_stuff(iter.line, iter.line_num);
+ * }
+ * ```
+ */
+bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
+{
+  char *p = mutt_file_read_line(iter->line, &iter->size, fp, &iter->line_num, flags);
+  if (!p)
+    return false;
+  iter->line = p;
+  return true;
+}
+
+/**
+ * mutt_file_map_lines - Process lines of text read from a file pointer
+ * @param func      Callback function to call for each line, see mutt_file_map_t
+ * @param user_data Arbitrary data passed to ``func''
+ * @param fp        File pointer to read from
+ * @param flags     Same as mutt_file_read_line()
+ * @retval          true iff all data mapped, false if ``func'' returns false
+ */
+bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags)
+{
+  struct MuttFileIter iter = { 0 };
+  while (mutt_file_iter_line(&iter, fp, flags))
+  {
+    if (!(*func)(iter.line, iter.line_num, user_data))
+    {
+      FREE(&iter.line);
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
  * @param filename String to convert
  * @param buf      Buffer for the result

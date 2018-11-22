@@ -5,7 +5,8 @@ TEST_OBJS   = test/main.o \
 	      test/rfc2047.o \
 	      test/string.o \
 	      test/address.o \
-	      test/url.o
+	      test/url.o \
+          test/file.o
 
 CONFIG_OBJS	= test/config/main.o test/config/account.o \
 		  test/config/address.o test/config/bool.o \
