@@ -47,13 +47,13 @@
 
 /**
  * mutt_set_flag_update - Set a flag on an email
- * @param m       Mailbox
- * @param e       Email
- * @param flag    Flag to set, e.g. #MUTT_DELETE
- * @param bf      true: set the flag; false: clear the flag
- * @param upd_ctx true: update the Context
+ * @param m        Mailbox
+ * @param e        Email
+ * @param flag     Flag to set, e.g. #MUTT_DELETE
+ * @param bf       true: set the flag; false: clear the flag
+ * @param upd_mbox true: update the Context
  */
-void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_ctx)
+void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
 {
   if (!m || !e)
     return;
@@ -80,7 +80,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         {
           e->deleted = true;
           update = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_deleted++;
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
@@ -88,7 +88,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           if (m->magic == MUTT_IMAP)
           {
             e->changed = true;
-            if (upd_ctx)
+            if (upd_mbox)
               m->changed = true;
           }
 #endif
@@ -98,14 +98,14 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       {
         e->deleted = false;
         update = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->msg_deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
         if (m->magic == MUTT_IMAP)
         {
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
 #endif
@@ -116,7 +116,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
          * is checked in specific code in the maildir folder
          * driver.
          */
-        if (m->magic == MUTT_MAILDIR && upd_ctx && e->trash)
+        if (m->magic == MUTT_MAILDIR && upd_mbox && e->trash)
           m->changed = true;
       }
       break;
@@ -146,16 +146,16 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         {
           update = true;
           e->old = false;
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_new++;
           if (e->read)
           {
             e->read = false;
-            if (upd_ctx)
+            if (upd_mbox)
               m->msg_unread++;
           }
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
       }
@@ -163,13 +163,13 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       {
         update = true;
         if (!e->old)
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_new--;
         e->read = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->msg_unread--;
         e->changed = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->changed = true;
       }
       break;
@@ -186,10 +186,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           update = true;
           e->old = true;
           if (!e->read)
-            if (upd_ctx)
+            if (upd_mbox)
               m->msg_new--;
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
       }
@@ -198,10 +198,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         update = true;
         e->old = false;
         if (!e->read)
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_new++;
         e->changed = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->changed = true;
       }
       break;
@@ -217,13 +217,13 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         {
           update = true;
           e->read = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_unread--;
           if (!e->old)
-            if (upd_ctx)
+            if (upd_mbox)
               m->msg_new--;
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
       }
@@ -231,13 +231,13 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       {
         update = true;
         e->read = false;
-        if (upd_ctx)
+        if (upd_mbox)
           m->msg_unread++;
         if (!e->old)
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_new++;
         e->changed = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->changed = true;
       }
       break;
@@ -256,14 +256,14 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
           if (!e->read)
           {
             e->read = true;
-            if (upd_ctx)
+            if (upd_mbox)
               m->msg_unread--;
             if (!e->old)
-              if (upd_ctx)
+              if (upd_mbox)
                 m->msg_new--;
           }
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
       }
@@ -272,7 +272,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         update = true;
         e->replied = false;
         e->changed = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->changed = true;
       }
       break;
@@ -288,10 +288,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         {
           update = true;
           e->flagged = bf;
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_flagged++;
           e->changed = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->changed = true;
         }
       }
@@ -299,10 +299,10 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       {
         update = true;
         e->flagged = false;
-        if (upd_ctx)
+        if (upd_mbox)
           m->msg_flagged--;
         e->changed = true;
-        if (upd_ctx)
+        if (upd_mbox)
           m->changed = true;
       }
       break;
@@ -314,7 +314,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
         {
           update = true;
           e->tagged = true;
-          if (upd_ctx)
+          if (upd_mbox)
             m->msg_tagged++;
         }
       }
@@ -322,7 +322,7 @@ void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf,
       {
         update = true;
         e->tagged = false;
-        if (upd_ctx)
+        if (upd_mbox)
           m->msg_tagged--;
       }
       break;
