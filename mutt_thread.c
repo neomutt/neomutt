@@ -493,15 +493,13 @@ static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur
 
 /**
  * make_subj_hash - Create a Hash Table for the email subjects
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-static struct Hash *make_subj_hash(struct Context *ctx)
+static struct Hash *make_subj_hash(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
@@ -533,7 +531,7 @@ static void pseudo_threads(struct Context *ctx)
                     *nextchild = NULL;
 
   if (!m->subj_hash)
-    m->subj_hash = make_subj_hash(ctx);
+    m->subj_hash = make_subj_hash(ctx->mailbox);
 
   while (tree)
   {
