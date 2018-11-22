@@ -308,31 +308,31 @@ static int ci_first_message(void)
 
 /**
  * mx_toggle_write - Toggle the mailbox's readonly flag
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error
  *
  * This should be in mx.c, but it only gets used here.
  */
-static int mx_toggle_write(struct Context *ctx)
+static int mx_toggle_write(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return -1;
 
-  if (ctx->mailbox->readonly)
+  if (m->readonly)
   {
     mutt_error(_("Cannot toggle write on a readonly mailbox"));
     return -1;
   }
 
-  if (ctx->mailbox->dontwrite)
+  if (m->dontwrite)
   {
-    ctx->mailbox->dontwrite = false;
+    m->dontwrite = false;
     mutt_message(_("Changes to folder will be written on folder exit"));
   }
   else
   {
-    ctx->mailbox->dontwrite = true;
+    m->dontwrite = true;
     mutt_message(_("Changes to folder will not be written"));
   }
 
@@ -2743,7 +2743,7 @@ int mutt_index_menu(void)
       case OP_TOGGLE_WRITE:
 
         CHECK_IN_MAILBOX;
-        if (mx_toggle_write(Context) == 0)
+        if (mx_toggle_write(Context->mailbox) == 0)
           menu->redraw |= REDRAW_STATUS;
         break;
 
