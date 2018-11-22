@@ -447,19 +447,17 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
 /**
  * find_subject - Find the best possible match for a parent based on subject
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param cur Email to match
  * @retval ptr Best match for a parent
  *
  * If there are multiple matches, the one which was sent the latest, but before
  * the current message, is used.
  */
-static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *cur)
+static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct HashElem *ptr = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
@@ -541,7 +539,7 @@ static void pseudo_threads(struct Context *ctx)
   {
     cur = tree;
     tree = tree->next;
-    parent = find_subject(ctx, cur);
+    parent = find_subject(ctx->mailbox, cur);
     if (parent)
     {
       cur->fake_thread = true;
