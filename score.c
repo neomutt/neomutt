@@ -59,9 +59,9 @@ static struct Score *ScoreList = NULL;
 
 /**
  * mutt_check_rescore - Do the emails need to have their scores recalculated?
- * @param ctx Mailbox
+ * @param m Mailbox
  */
-void mutt_check_rescore(struct Context *ctx)
+void mutt_check_rescore(struct Mailbox *m)
 {
   if (OptNeedRescore && Score)
   {
@@ -76,10 +76,10 @@ void mutt_check_rescore(struct Context *ctx)
     mutt_menu_set_redraw_full(MENU_MAIN);
     mutt_menu_set_redraw_full(MENU_PAGER);
 
-    for (int i = 0; ctx && i < ctx->mailbox->msg_count; i++)
+    for (int i = 0; m && i < m->msg_count; i++)
     {
-      mutt_score_message(ctx->mailbox, ctx->mailbox->hdrs[i], true);
-      ctx->mailbox->hdrs[i]->pair = 0;
+      mutt_score_message(m, m->hdrs[i], true);
+      m->hdrs[i]->pair = 0;
     }
   }
   OptNeedRescore = false;

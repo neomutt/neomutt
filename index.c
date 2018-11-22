@@ -3013,7 +3013,7 @@ int mutt_index_menu(void)
       case OP_ENTER_COMMAND:
 
         mutt_enter_command();
-        mutt_check_rescore(Context);
+        mutt_check_rescore(Context->mailbox);
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
