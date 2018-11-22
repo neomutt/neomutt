@@ -1750,7 +1750,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
-        mutt_save_message_ctx(e, true, false, false, ctx);
+        mutt_save_message_ctx(e, true, false, false, ctx->mailbox);
         e->xlabel_changed = false;
       }
     }
@@ -2424,12 +2424,10 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
  * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
-static int imap_tags_commit(struct Context *ctx, struct Email *e, char *buf)
+static int imap_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Buffer *cmd = NULL;
   char uid[11];

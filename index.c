@@ -308,31 +308,31 @@ static int ci_first_message(void)
 
 /**
  * mx_toggle_write - Toggle the mailbox's readonly flag
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error
  *
  * This should be in mx.c, but it only gets used here.
  */
-static int mx_toggle_write(struct Context *ctx)
+static int mx_toggle_write(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return -1;
 
-  if (ctx->mailbox->readonly)
+  if (m->readonly)
   {
     mutt_error(_("Cannot toggle write on a readonly mailbox"));
     return -1;
   }
 
-  if (ctx->dontwrite)
+  if (m->dontwrite)
   {
-    ctx->dontwrite = false;
+    m->dontwrite = false;
     mutt_message(_("Changes to folder will be written on folder exit"));
   }
   else
   {
-    ctx->dontwrite = true;
+    m->dontwrite = true;
     mutt_message(_("Changes to folder will not be written"));
   }
 
@@ -461,7 +461,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
-    int padding = mx_msg_padding_size(ctx);
+    int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
       if (!i)
@@ -1491,7 +1491,7 @@ int mutt_index_menu(void)
         {
           struct Email *e = Context->mailbox->hdrs[i - 1];
 
-          if (mutt_messages_in_thread(Context, e, 1) > 1)
+          if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
             mutt_uncollapse_thread(Context, e);
             mutt_set_virtual(Context);
@@ -1961,7 +1961,7 @@ int mutt_index_menu(void)
       case OP_MAIN_MODIFY_TAGS:
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {
-        if (!Context || !mx_tags_is_supported(Context))
+        if (!Context || !mx_tags_is_supported(Context->mailbox))
         {
           mutt_message(_("Folder doesn't support tagging, aborting"));
           break;
@@ -1972,7 +1972,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CURHDR->tags);
-        rc = mx_tags_edit(Context, tags, buf, sizeof(buf));
+        rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;
@@ -2005,7 +2005,7 @@ int mutt_index_menu(void)
 
             if (!Context->mailbox->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context, Context->mailbox->hdrs[j], buf);
+            mx_tags_commit(Context->mailbox, Context->mailbox->hdrs[j], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
@@ -2026,7 +2026,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (mx_tags_commit(Context, CURHDR, buf))
+          if (mx_tags_commit(Context->mailbox, CURHDR, buf))
           {
             mutt_message(_("Failed to modify tags, aborting"));
             break;
@@ -2743,7 +2743,7 @@ int mutt_index_menu(void)
       case OP_TOGGLE_WRITE:
 
         CHECK_IN_MAILBOX;
-        if (mx_toggle_write(Context) == 0)
+        if (mx_toggle_write(Context->mailbox) == 0)
           menu->redraw |= REDRAW_STATUS;
         break;
 
@@ -2997,7 +2997,7 @@ int mutt_index_menu(void)
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
           struct NntpMboxData *mdata = Context->mailbox->mdata;
-          if (mutt_newsgroup_catchup(Context, mdata->adata, mdata->group))
+          if (mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
@@ -3013,7 +3013,7 @@ int mutt_index_menu(void)
       case OP_ENTER_COMMAND:
 
         mutt_enter_command();
-        mutt_check_rescore(Context);
+        mutt_check_rescore(Context->mailbox);
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:

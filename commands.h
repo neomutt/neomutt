@@ -27,9 +27,9 @@
 #include <stdio.h>
 
 struct Body;
-struct Context;
-struct Envelope;
 struct Email;
+struct Envelope;
+struct Mailbox;
 
 /* These Config Variables are only used in commands.c */
 extern unsigned char CryptVerifySig; /* verify PGP signatures */
@@ -50,7 +50,7 @@ int  mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
 void mutt_pipe_message(struct Email *e);
 void mutt_print_message(struct Email *e);
-int  mutt_save_message_ctx(struct Email *e, bool delete, bool decode, bool decrypt, struct Context *ctx);
+int  mutt_save_message_ctx(struct Email *e, bool delete, bool decode, bool decrypt, struct Mailbox *m);
 int  mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt);
 int  mutt_select_sort(int reverse);
 void mutt_shell_escape(void);

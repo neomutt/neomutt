@@ -40,6 +40,7 @@
 #include "email/lib.h"
 #include "mutt.h"
 #include "alias.h"
+#include "context.h"
 #include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
@@ -1438,11 +1439,11 @@ int smime_class_verify_sender(struct Email *e)
 
   if (e->security & ENCRYPT)
   {
-    mutt_copy_message_ctx(fpout, Context, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+    mutt_copy_message_ctx(fpout, Context->mailbox, e, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
                           CH_MIME | CH_WEED | CH_NONEWLINE);
   }
   else
-    mutt_copy_message_ctx(fpout, Context, e, 0, 0);
+    mutt_copy_message_ctx(fpout, Context->mailbox, e, 0, 0);
 
   fflush(fpout);
   mutt_file_fclose(&fpout);

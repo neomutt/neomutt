@@ -1252,7 +1252,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 
 /**
  * update_email_flags - Update the Email's flags
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param e   Email
  * @param tags String of tags (space separated)
  * @retval  0 Success
@@ -1262,7 +1262,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
  * update_email_tags and update_email_flags, which are given an array of
  * tags.
  */
-static int update_email_flags(struct Context *ctx, struct Email *e, const char *tags)
+static int update_email_flags(struct Mailbox *m, struct Email *e, const char *tags)
 {
   char *buf = mutt_str_strdup(tags);
   if (!buf)
@@ -1290,21 +1290,21 @@ static int update_email_flags(struct Context *ctx, struct Email *e, const char *
     {
       tag = tag + 1;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_READ, 1);
+        mutt_set_flag(m, e, MUTT_READ, 1);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_REPLIED, 0);
+        mutt_set_flag(m, e, MUTT_REPLIED, 0);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_FLAG, 0);
+        mutt_set_flag(m, e, MUTT_FLAG, 0);
     }
     else
     {
       tag = (*tag == '+') ? tag + 1 : tag;
       if (strcmp(tag, NmUnreadTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_READ, 0);
+        mutt_set_flag(m, e, MUTT_READ, 0);
       else if (strcmp(tag, NmRepliedTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_REPLIED, 1);
+        mutt_set_flag(m, e, MUTT_REPLIED, 1);
       else if (strcmp(tag, NmFlaggedTag) == 0)
-        mutt_set_flag(ctx->mailbox, e, MUTT_FLAG, 1);
+        mutt_set_flag(m, e, MUTT_FLAG, 1);
     }
     end = NULL;
     tag = NULL;
@@ -2280,7 +2280,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
        */
       struct Email tmp = { 0 };
       maildir_parse_flags(&tmp, new);
-      maildir_update_flags(ctx, e, &tmp);
+      maildir_update_flags(ctx->mailbox, e, &tmp);
     }
 
     if (update_email_tags(e, msg) == 0)
@@ -2483,12 +2483,10 @@ static int nm_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t b
 /**
  * nm_tags_commit - Implements MxOps::tags_commit()
  */
-static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
+static int nm_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct NmMboxData *mdata = nm_mdata_get(m);
   if (!buf || !*buf || !mdata)
@@ -2504,7 +2502,7 @@ static int nm_tags_commit(struct Context *ctx, struct Email *e, char *buf)
   mutt_debug(1, "nm: tags modify: '%s'\n", buf);
 
   update_tags(msg, buf);
-  update_email_flags(ctx, e, buf);
+  update_email_flags(m, e, buf);
   update_email_tags(e, msg);
   mutt_set_header_color(m, e);
 

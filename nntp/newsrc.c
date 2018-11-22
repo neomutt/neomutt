@@ -1277,13 +1277,13 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
 
 /**
  * mutt_newsgroup_catchup - Catchup newsgroup
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
+struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
                                             struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
@@ -1303,7 +1303,6 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
     mdata->newsrc_ent[0].last = mdata->last_message;
   }
   mdata->unread = 0;
-  struct Mailbox *m = ctx ? ctx->mailbox : NULL;
   if (m && (m->mdata == mdata))
   {
     for (unsigned int i = 0; i < m->msg_count; i++)
@@ -1314,13 +1313,13 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
 
 /**
  * mutt_newsgroup_uncatchup - Uncatchup newsgroup
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
+struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
                                               struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
@@ -1339,7 +1338,6 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = mdata->first_message - 1;
   }
-  struct Mailbox *m = ctx ? ctx->mailbox : NULL;
   if (m && m->mdata == mdata)
   {
     mdata->unread = m->msg_count;

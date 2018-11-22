@@ -447,19 +447,17 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
 /**
  * find_subject - Find the best possible match for a parent based on subject
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param cur Email to match
  * @retval ptr Best match for a parent
  *
  * If there are multiple matches, the one which was sent the latest, but before
  * the current message, is used.
  */
-static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *cur)
+static struct MuttThread *find_subject(struct Mailbox *m, struct MuttThread *cur)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct HashElem *ptr = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
@@ -495,15 +493,13 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
 
 /**
  * make_subj_hash - Create a Hash Table for the email subjects
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */
-static struct Hash *make_subj_hash(struct Context *ctx)
+static struct Hash *make_subj_hash(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return NULL;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Hash *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_ALLOW_DUPS);
 
@@ -535,13 +531,13 @@ static void pseudo_threads(struct Context *ctx)
                     *nextchild = NULL;
 
   if (!m->subj_hash)
-    m->subj_hash = make_subj_hash(ctx);
+    m->subj_hash = make_subj_hash(ctx->mailbox);
 
   while (tree)
   {
     cur = tree;
     tree = tree->next;
-    parent = find_subject(ctx, cur);
+    parent = find_subject(ctx->mailbox, cur);
     if (parent)
     {
       cur->fake_thread = true;
@@ -784,12 +780,10 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
  * @param ctx  Mailbox
  * @param init If true, rebuild the thread
  */
-static void check_subjects(struct Context *ctx, bool init)
+static void check_subjects(struct Mailbox *m, bool init)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *cur = NULL;
   struct MuttThread *tmp = NULL;
@@ -1047,7 +1041,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   }
   ctx->tree = top.child;
 
-  check_subjects(ctx, init);
+  check_subjects(ctx->mailbox, init);
 
   if (!StrictThreads)
     pseudo_threads(ctx);
@@ -1195,7 +1189,7 @@ void mutt_set_virtual(struct Context *ctx)
 
   m->vcount = 0;
   ctx->vsize = 0;
-  int padding = mx_msg_padding_size(ctx);
+  int padding = mx_msg_padding_size(m);
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1386,20 +1380,18 @@ int mutt_traverse_thread(struct Context *ctx, struct Email *cur, int flag)
 
 /**
  * mutt_messages_in_thread - Count the messages in a thread
- * @param ctx  Mailbox
- * @param e  Email
+ * @param m    Mailbox
+ * @param e    Email
  * @param flag Flag, see notes below
  * @retval num Number of message / Our position
  *
  * If flag is 0, we want to know how many messages are in the thread.
  * If flag is 1, we want to know our position in the thread.
  */
-int mutt_messages_in_thread(struct Context *ctx, struct Email *e, int flag)
+int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, int flag)
 {
-  if (!ctx || !ctx->mailbox || !e)
+  if (!m || !e)
     return 1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MuttThread *threads[2];
   int rc;
@@ -1456,17 +1448,17 @@ struct Hash *mutt_make_id_hash(struct Mailbox *m)
  * link_threads - Forcibly link messages together
  * @param parent Header of parent message
  * @param child  Header of child message
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @retval true On success
  */
-static bool link_threads(struct Email *parent, struct Email *child, struct Context *ctx)
+static bool link_threads(struct Email *parent, struct Email *child, struct Mailbox *m)
 {
   if (child == parent)
     return false;
 
   mutt_break_thread(child);
   mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
-  mutt_set_flag(ctx->mailbox, child, MUTT_TAG, 0);
+  mutt_set_flag(m, child, MUTT_TAG, 0);
 
   child->env->irt_changed = true;
   child->changed = true;
@@ -1495,10 +1487,10 @@ bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ct
   {
     for (int i = 0; i < m->msg_count; i++)
       if (message_is_tagged(ctx, i))
-        changed |= link_threads(cur, m->hdrs[i], ctx);
+        changed |= link_threads(cur, m->hdrs[i], ctx->mailbox);
   }
   else
-    changed = link_threads(cur, last, ctx);
+    changed = link_threads(cur, last, ctx->mailbox);
 
   return changed;
 }

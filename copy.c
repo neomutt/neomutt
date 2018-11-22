@@ -789,10 +789,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
+int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
                           int flags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
   if (!e->content)
@@ -803,7 +803,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
     mutt_debug(1, "failed to detect EOF!\n");
     r = -1;
   }
-  mx_msg_close(src->mailbox, &msg);
+  mx_msg_close(src, &msg);
   return r;
 }
 
@@ -818,7 +818,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
+static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
                           struct Email *e, int flags, int chflags)
 {
   char buf[STRING];
@@ -830,23 +830,23 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   if (!fgets(buf, sizeof(buf), fpin))
     return -1;
 
-  msg = mx_msg_open_new(dest->mailbox, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if (dest->mailbox->magic == MUTT_MBOX || dest->mailbox->magic == MUTT_MMDF)
+  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = mutt_copy_message_fp(msg->fp, fpin, e, flags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR &&
-      src->mailbox->magic == MUTT_NOTMUCH)
-    nm_update_filename(src->mailbox, NULL, msg->committed_path, e);
+  if (msg->committed_path && dest->magic == MUTT_MAILDIR &&
+      src->magic == MUTT_NOTMUCH)
+    nm_update_filename(src, NULL, msg->committed_path, e);
 #endif
 
-  mx_msg_close(dest->mailbox, &msg);
+  mx_msg_close(dest, &msg);
   return r;
 }
 
@@ -860,14 +860,14 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Context *dest, struct Context *src,
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src,
                         struct Email *e, int cmflags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
   int r = append_message(dest, msg->fp, src, e, cmflags, chflags);
-  mx_msg_close(src->mailbox, &msg);
+  mx_msg_close(src, &msg);
   return r;
 }
 

@@ -565,7 +565,7 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message_ctx(out, ctx, cur, cmflags, chflags);
+  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
   mutt_forward_trailer(ctx, cur, out);
   return 0;
 }
@@ -639,7 +639,7 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_ctx(out, ctx, cur, cmflags, chflags);
+  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
 
   mutt_make_post_indent(ctx, cur, out);
 
@@ -1081,7 +1081,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
       if (cur)
       {
-        tmp = mutt_make_message_attach(ctx, cur, false);
+        tmp = mutt_make_message_attach(ctx->mailbox, cur, false);
         if (last)
           last->next = tmp;
         else
@@ -1094,7 +1094,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
           if (!message_is_tagged(ctx, i))
             continue;
 
-          tmp = mutt_make_message_attach(ctx, ctx->mailbox->hdrs[i], false);
+          tmp = mutt_make_message_attach(ctx->mailbox, ctx->mailbox->hdrs[i], false);
           if (last)
           {
             last->next = tmp;
@@ -1425,7 +1425,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 {
   struct Email *msg = mutt_email_new();
 
-  if (mutt_prepare_template(fp, ctx, msg, cur, true) < 0)
+  if (mutt_prepare_template(fp, ctx->mailbox, msg, cur, true) < 0)
   {
     mutt_email_free(&msg);
     return -1;

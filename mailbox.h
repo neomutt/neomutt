@@ -105,10 +105,13 @@ struct Mailbox
 
   const struct MxOps *mx_ops;
 
-  bool changed : 1;   /**< mailbox has been modified */
-  bool readonly : 1;  /**< don't allow changes to the mailbox */
-  bool quiet : 1;     /**< inhibit status messages? */
+  bool append                 : 1; /**< mailbox is opened in append mode */
+  bool changed                : 1; /**< mailbox has been modified */
+  bool dontwrite              : 1; /**< don't write the mailbox on close */
   bool first_check_stats_done : 1; /**< true when the check have been done at least on time */
+  bool peekonly               : 1; /**< just taking a glance, revert atime */
+  bool quiet                  : 1; /**< inhibit status messages? */
+  bool readonly               : 1; /**< don't allow changes to the mailbox */
 
   unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 

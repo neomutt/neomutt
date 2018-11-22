@@ -171,21 +171,19 @@ int mx_access(const char *path, int flags)
 
 /**
  * mx_open_mailbox_append - Open a mailbox for appending
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param flags Flags, e.g. #MUTT_READONLY
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int mx_open_mailbox_append(struct Context *ctx, int flags)
+static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct stat sb;
 
-  ctx->append = true;
+  m->append = true;
   if ((m->magic == MUTT_UNKNOWN) || (m->magic == MUTT_MAILBOX_ERROR))
   {
     m->magic = mx_path_probe(m->path, NULL);
@@ -233,7 +231,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   if (!m->mx_ops || !m->mx_ops->mbox_open_append)
     return -1;
 
-  return m->mx_ops->mbox_open_append(ctx->mailbox, flags);
+  return m->mx_ops->mbox_open_append(m, flags);
 }
 
 /**
@@ -304,11 +302,11 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if (flags & MUTT_READONLY)
     m->readonly = true;
   if (flags & MUTT_PEEK)
-    ctx->peekonly = true;
+    m->peekonly = true;
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
-    if (mx_open_mailbox_append(ctx, flags) != 0)
+    if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
     {
       mx_fastclose_mailbox(ctx);
       mutt_context_free(&ctx);
@@ -404,7 +402,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * TODO: really belongs in mx_mbox_close, but this is a nice hook point */
-  if (!ctx->peekonly)
+  if (!m->peekonly)
     mutt_mailbox_setnotified(m);
 
   if (m->mx_ops)
@@ -456,16 +454,14 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * trash_append - move deleted mails to the trash folder
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int trash_append(struct Context *ctx)
+static int trash_append(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int i;
   struct stat st, stc;
@@ -529,7 +525,7 @@ static int trash_append(struct Context *ctx)
     {
       if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
       {
-        if (mutt_append_message(ctx_trash, ctx, m->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash->mailbox, m, m->hdrs[i], 0, 0) == -1)
         {
           mx_mbox_close(&ctx_trash, NULL);
           return -1;
@@ -572,7 +568,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   char mbox[PATH_MAX];
   char buf[PATH_MAX + 64];
 
-  if (m->readonly || ctx->dontwrite || ctx->append)
+  if (m->readonly || m->dontwrite || m->append)
   {
     mx_fastclose_mailbox(ctx);
     FREE(pctx);
@@ -590,7 +586,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       if (rc == MUTT_ABORT)
         return -1;
       else if (rc == MUTT_YES)
-        mutt_newsgroup_catchup(Context, mdata->adata, mdata->group);
+        mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group);
     }
   }
 #endif
@@ -704,7 +700,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       {
         if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(f, ctx, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f->mailbox, ctx->mailbox, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, 1);
             mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, 1);
@@ -734,7 +730,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   /* copy mails to the trash before expunging */
   if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
-    if (trash_append(ctx) != 0)
+    if (trash_append(ctx->mailbox) != 0)
       return -1;
   }
 
@@ -830,7 +826,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   m->msg_unread = 0;
   m->changed = false;
   m->msg_flagged = 0;
-  padding = mx_msg_padding_size(ctx);
+  padding = mx_msg_padding_size(m);
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
     if (!m->hdrs[i]->quasi_deleted &&
@@ -919,7 +915,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
   int purge = 1;
   int msgcount, deleted;
 
-  if (ctx->dontwrite)
+  if (m->dontwrite)
   {
     char buf[STRING], tmp[STRING];
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
@@ -979,7 +975,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
-    if (trash_append(ctx) != 0)
+    if (trash_append(ctx->mailbox) != 0)
       return -1;
   }
 
@@ -1099,7 +1095,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, struct Email *e, int flags)
 }
 
 /**
- * mx_mbox_check - check for new mail
+ * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param ctx        Mailbox
  * @param index_hint Current email
  * @retval >0 Success, e.g. #MUTT_NEW_MAIL
@@ -1144,22 +1140,20 @@ struct Message *mx_msg_open(struct Mailbox *m, int msgno)
 }
 
 /**
- * mx_msg_commit - commit a message to a folder
+ * mx_msg_commit - Commit a message to a folder - Wrapper for MxOps::msg_commit()
+ * @param m   Mailbox
  * @param msg Message to commit
- * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_msg_commit(struct Context *ctx, struct Message *msg)
+int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->mx_ops || !ctx->mailbox->mx_ops->msg_commit)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_commit)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
-
-  if (!(msg->write && ctx->append))
+  if (!(msg->write && m->append))
   {
-    mutt_debug(1, "msg->write = %d, ctx->append = %d\n", msg->write, ctx->append);
+    mutt_debug(1, "msg->write = %d, m->append = %d\n", msg->write, m->append);
     return -1;
   }
 
@@ -1274,7 +1268,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       {
         e2->superseded = true;
         if (Score)
-          mutt_score_message(ctx, e2, true);
+          mutt_score_message(ctx->mailbox, e2, true);
       }
     }
 
@@ -1286,7 +1280,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     mutt_label_hash_add(m, e);
 
     if (Score)
-      mutt_score_message(ctx, e, false);
+      mutt_score_message(ctx->mailbox, e, false);
 
     if (e->changed)
       m->changed = true;
@@ -1342,7 +1336,7 @@ int mx_check_empty(const char *path)
 
 /**
  * mx_tags_edit - start the tag editor of the mailbox
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param tags   Existing tags
  * @param buf    Buffer for the results
  * @param buflen Length of the buffer
@@ -1350,12 +1344,10 @@ int mx_check_empty(const char *path)
  * @retval 0  No valid user input
  * @retval 1  Buffer set
  */
-int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+int mx_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   if (m->mx_ops->tags_edit)
     return m->mx_ops->tags_edit(m, tags, buf, buflen);
@@ -1365,22 +1357,20 @@ int mx_tags_edit(struct Context *ctx, const char *tags, char *buf, size_t buflen
 }
 
 /**
- * mx_tags_commit - save tags to the mailbox
- * @param ctx  Mailbox
- * @param e  Email
+ * mx_tags_commit - Save tags to the Mailbox - Wrapper for MxOps::tags_commit()
+ * @param m    Mailbox
+ * @param e    Email
  * @param tags Tags to save
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
+int mx_tags_commit(struct Mailbox *m, struct Email *e, char *tags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
 
-  struct Mailbox *m = ctx->mailbox;
-
   if (m->mx_ops->tags_commit)
-    return m->mx_ops->tags_commit(ctx, e, tags);
+    return m->mx_ops->tags_commit(m, e, tags);
 
   mutt_message(_("Folder doesn't support tagging, aborting"));
   return -1;
@@ -1388,17 +1378,12 @@ int mx_tags_commit(struct Context *ctx, struct Email *e, char *tags)
 
 /**
  * mx_tags_is_supported - return true if mailbox support tagging
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval true Tagging is supported
  */
-bool mx_tags_is_supported(struct Context *ctx)
+bool mx_tags_is_supported(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
-    return false;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  return m->mx_ops->tags_commit && m->mx_ops->tags_edit;
+  return m && m->mx_ops->tags_commit && m->mx_ops->tags_edit;
 }
 
 /**
@@ -1623,20 +1608,15 @@ int mx_path_parent(char *buf, size_t buflen)
 
 /**
  * mx_msg_padding_size - Bytes of padding between messages - Wrapper for MxOps::msg_padding_size
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval num Number of bytes of padding
  *
  * mmdf and mbox add separators, which leads a small discrepancy when computing
  * vsize for a limited view.
  */
-int mx_msg_padding_size(struct Context *ctx)
+int mx_msg_padding_size(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
-    return 0;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  if (!m->mx_ops || !m->mx_ops->msg_padding_size)
+  if (!m || !m->mx_ops || !m->mx_ops->msg_padding_size)
     return 0;
 
   return m->mx_ops->msg_padding_size(m);

@@ -50,7 +50,7 @@ int mutt_system(const char *cmd);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 void mutt_help(int menu);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
-void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_ctx);
+void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox);
 #define mutt_set_flag(a, b, c, d) mutt_set_flag_update(a, b, c, d, true)
 void mutt_signal_init(void);
 void mutt_tag_set_flag(int flag, int bf);
@@ -59,7 +59,7 @@ int mutt_change_flag(struct Email *e, int bf);
 int mutt_complete(char *buf, size_t buflen);
 int mutt_edit_message(struct Context *ctx, struct Email *e);
 int mutt_view_message(struct Context *ctx, struct Email *e);
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr, struct Email *e, bool resend);
+int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr, struct Email *e, bool resend);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool multiple,
                        char ***files, int *numfiles, struct EnterState *state);

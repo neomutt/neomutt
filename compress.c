@@ -752,7 +752,7 @@ static int comp_mbox_close(struct Context *ctx)
   ops->mbox_close(ctx);
 
   /* sync has already been called, so we only need to delete some files */
-  if (!ctx->append)
+  if (!m->append)
   {
     /* If the file was removed, remove the compressed folder too */
     if ((access(m->path, F_OK) != 0) && !SaveEmpty)
@@ -907,18 +907,18 @@ static int comp_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t
 /**
  * comp_tags_commit - Implements MxOps::tags_commit()
  */
-static int comp_tags_commit(struct Context *ctx, struct Email *e, char *buf)
+static int comp_tags_commit(struct Mailbox *m, struct Email *e, char *buf)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->compress_info)
+  if (!m || !m->compress_info)
     return 0;
 
-  struct CompressInfo *ci = ctx->mailbox->compress_info;
+  struct CompressInfo *ci = m->compress_info;
 
   const struct MxOps *ops = ci->child_ops;
   if (!ops || !ops->tags_commit)
     return 0;
 
-  return ops->tags_commit(ctx, e, buf);
+  return ops->tags_commit(m, e, buf);
 }
 
 /**

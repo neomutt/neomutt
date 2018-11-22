@@ -684,7 +684,7 @@ void pop_fetch_mail(void)
       if (ret == -3)
         rset = 1;
 
-      if (ret == 0 && mx_msg_commit(ctx, msg) != 0)
+      if (ret == 0 && mx_msg_commit(ctx->mailbox, msg) != 0)
       {
         rset = 1;
         ret = -3;

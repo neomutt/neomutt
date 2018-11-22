@@ -45,10 +45,7 @@ struct Context
 
   struct Menu *menu; /**< needed for pattern compilation */
 
-  bool dontwrite : 1; /**< don't write the mailbox on close */
-  bool append : 1;    /**< mailbox is opened in append mode */
   bool collapsed : 1; /**< are all threads collapsed? */
-  bool peekonly : 1;  /**< just taking a glance, revert atime */
 
   struct Mailbox *mailbox;
 };

@@ -1445,13 +1445,13 @@ void mutt_update_encoding(struct Body *a)
 
 /**
  * mutt_make_message_attach - Create a message attachment
- * @param ctx        Mailbox
- * @param e        Email
+ * @param m          Mailbox
+ * @param e          Email
  * @param attach_msg true if attaching a message
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool attach_msg)
+struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
 {
   char buf[LONG_STRING];
   struct Body *body = NULL;
@@ -1482,7 +1482,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  mutt_parse_mime_message(ctx->mailbox, e);
+  mutt_parse_mime_message(m, e);
 
   chflags = CH_XMIT;
   cmflags = 0;
@@ -1521,7 +1521,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
     }
   }
 
-  mutt_copy_message_ctx(fp, ctx, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, m, e, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);
@@ -3326,7 +3326,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_msg_commit(f, msg); /* XXX really? */
+      mx_msg_commit(f->mailbox, msg); /* XXX really? */
       mx_msg_close(f->mailbox, &msg);
       mx_mbox_close(&f, NULL);
       goto done;
@@ -3354,7 +3354,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     rc = mutt_write_mime_body(e->content, msg->fp);
   }
 
-  if (mx_msg_commit(f, msg) != 0)
+  if (mx_msg_commit(f->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->committed_path);

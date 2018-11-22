@@ -278,7 +278,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         i = OptAttachMsg ?
                 3 :
-                ((Context->mailbox->readonly || Context->dontwrite) ?
+                ((Context->mailbox->readonly || Context->mailbox->dontwrite) ?
                      2 :
                      (Context->mailbox->changed ||
                       /* deleted doesn't necessarily mean changed in IMAP */
