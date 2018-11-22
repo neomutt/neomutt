@@ -926,6 +926,42 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
       adata->qresync = true;
   }
 }
+/**
+ * cmd_parse_exists - Parse EXISTS message from serer
+ * @param adata  Imap Account data
+ * @param pn     String containing the total number of messages for the selected mailbox
+ */
+static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
+{
+  unsigned int count = 0;
+  mutt_debug(2, "Handling EXISTS\n");
+
+  if (mutt_str_atoui(pn, &count) < 0)
+  {
+    mutt_debug(1, "Malformed EXISTS: '%s'\n", pn);
+    return;
+  }
+
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+
+  /* new mail arrived */
+  if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && count < mdata->max_msn)
+  {
+    /* Notes 6.0.3 has a tendency to report fewer messages exist than
+     * it should. */
+    mutt_debug(1, "Message count is out of sync\n");
+  }
+  /* at least the InterChange server sends EXISTS messages freely,
+   * even when there is no new mail */
+  else if (count == mdata->max_msn)
+    mutt_debug(3, "superfluous EXISTS message.\n");
+  else
+  {
+    mutt_debug(2, "New mail in %s - %d messages total.\n", mdata->name, count);
+    mdata->reopen |= IMAP_NEWMAIL_PENDING;
+    mdata->new_mail_count = count;
+  }
+}
 
 /**
  * cmd_handle_untagged - fallback parser for otherwise unhandled messages
@@ -935,55 +971,18 @@ static void cmd_parse_enabled(struct ImapAccountData *adata, const char *s)
  */
 static int cmd_handle_untagged(struct ImapAccountData *adata)
 {
-  unsigned int count = 0;
   char *s = imap_next_word(adata->buf);
   char *pn = imap_next_word(s);
 
   if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
   {
+    /* pn vs. s: need initial seqno */
     pn = s;
     s = imap_next_word(s);
 
-    /* EXISTS and EXPUNGE are always related to the SELECTED mailbox for the
-     * connection, so update that one.
-     */
+    /* EXISTS, EXPUNGE, FETCH are always related to the SELECTED mailbox */
     if (mutt_str_startswith(s, "EXISTS", CASE_IGNORE))
-    {
-      mutt_debug(2, "Handling EXISTS\n");
-
-      /* new mail arrived */
-      if (mutt_str_atoui(pn, &count) < 0)
-      {
-        mutt_debug(1, "Malformed EXISTS: '%s'\n", pn);
-      }
-
-      if (adata->mailbox)
-      {
-        struct ImapMboxData *mdata = adata->mailbox->mdata;
-
-        if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) && count < mdata->max_msn)
-        {
-          /* Notes 6.0.3 has a tendency to report fewer messages exist than
-           * it should. */
-          mutt_debug(1, "Message count is out of sync\n");
-          return 0;
-        }
-        /* at least the InterChange server sends EXISTS messages freely,
-         * even when there is no new mail */
-        else if (count == mdata->max_msn)
-          mutt_debug(3, "superfluous EXISTS message.\n");
-        else
-        {
-          if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
-          {
-            mutt_debug(2, "New mail in %s - %d messages total.\n", mdata->name, count);
-            mdata->reopen |= IMAP_NEWMAIL_PENDING;
-          }
-          mdata->new_mail_count = count;
-        }
-      }
-    }
-    /* pn vs. s: need initial seqno */
+      cmd_parse_exists(adata, pn);
     else if (mutt_str_startswith(s, "EXPUNGE", CASE_IGNORE))
       cmd_parse_expunge(adata, pn);
     else if (mutt_str_startswith(s, "FETCH", CASE_IGNORE))
@@ -1288,13 +1287,8 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, int flags)
  */
 void imap_cmd_finish(struct ImapAccountData *adata)
 {
-  struct ImapMboxData *mdata = NULL;
-
   if (!adata)
     return;
-
-  if (adata->mailbox)
-    mdata = adata->mailbox->mdata;
 
   if (adata->status == IMAP_FATAL)
   {
@@ -1311,30 +1305,34 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
   adata->closing = false;
 
+  struct ImapMboxData *mdata = adata->mailbox->mdata;
+
   if (mdata && mdata->reopen & IMAP_REOPEN_ALLOW)
   {
-    unsigned int count = mdata->new_mail_count;
-
-    if (!(mdata->reopen & IMAP_EXPUNGE_PENDING) &&
-        (mdata->reopen & IMAP_NEWMAIL_PENDING) && count > mdata->max_msn)
-    {
-      /* read new mail messages */
-      mutt_debug(2, "Fetching new mail\n");
-      /* check_status: index uses imap_check_mailbox to detect
-       *   whether the index needs updating */
-      mdata->check_status = IMAP_NEWMAIL_PENDING;
-      imap_read_headers(adata, mdata->max_msn + 1, count, false);
-    }
-    else if (mdata->reopen & IMAP_EXPUNGE_PENDING)
+    // First remove expunged emails from the msn_index
+    if (mdata->reopen & IMAP_EXPUNGE_PENDING)
     {
       mutt_debug(2, "Expunging mailbox\n");
       imap_expunge_mailbox(adata);
-      /* Detect whether we've gotten unexpected EXPUNGE messages */
-      if ((mdata->reopen & IMAP_EXPUNGE_PENDING) && !(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
-        mdata->check_status = IMAP_EXPUNGE_PENDING;
-      mdata->reopen &=
-          ~(IMAP_EXPUNGE_PENDING | IMAP_NEWMAIL_PENDING | IMAP_EXPUNGE_EXPECTED);
     }
+
+    // Then add new emails to it
+    if (mdata->reopen & IMAP_NEWMAIL_PENDING && mdata->new_mail_count > mdata->max_msn)
+    {
+      if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
+        mdata->check_status = IMAP_NEWMAIL_PENDING;
+
+      mutt_debug(2, "Fetching new mails from %d to %d\n", mdata->max_msn + 1,
+                 mdata->new_mail_count);
+      imap_read_headers(adata, mdata->max_msn + 1, mdata->new_mail_count, false);
+    }
+
+    // And to finish inform about MUTT_REOPEN if needed
+    if (mdata->reopen & IMAP_EXPUNGE_PENDING && !(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
+      mdata->check_status = IMAP_EXPUNGE_PENDING;
+
+    if (mdata->reopen & IMAP_EXPUNGE_PENDING)
+      mdata->reopen &= ~(IMAP_EXPUNGE_PENDING | IMAP_NEWMAIL_PENDING | IMAP_EXPUNGE_EXPECTED);
   }
 
   adata->status = 0;
