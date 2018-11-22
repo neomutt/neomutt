@@ -780,12 +780,10 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
  * @param ctx  Mailbox
  * @param init If true, rebuild the thread
  */
-static void check_subjects(struct Context *ctx, bool init)
+static void check_subjects(struct Mailbox *m, bool init)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *cur = NULL;
   struct MuttThread *tmp = NULL;
@@ -1043,7 +1041,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   }
   ctx->tree = top.child;
 
-  check_subjects(ctx, init);
+  check_subjects(ctx->mailbox, init);
 
   if (!StrictThreads)
     pseudo_threads(ctx);
