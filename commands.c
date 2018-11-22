@@ -846,7 +846,7 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
   if (decode || decrypt)
     mutt_parse_mime_message(Context->mailbox, e);
 
-  rc = mutt_append_message(ctx, Context, e, cmflags, chflags);
+  rc = mutt_append_message(ctx->mailbox, Context->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 

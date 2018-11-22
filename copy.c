@@ -860,14 +860,14 @@ static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Context *dest, struct Context *src,
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src,
                         struct Email *e, int cmflags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
-  int r = append_message(dest->mailbox, msg->fp, src->mailbox, e, cmflags, chflags);
-  mx_msg_close(src->mailbox, &msg);
+  int r = append_message(dest, msg->fp, src, e, cmflags, chflags);
+  mx_msg_close(src, &msg);
   return r;
 }
 

@@ -96,7 +96,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
   const int chflags =
       CH_NOLEN |
       ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
-  rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
+  rc = mutt_append_message(tmpctx->mailbox, ctx->mailbox, cur, 0, chflags);
   oerrno = errno;
 
   mx_mbox_close(&tmpctx, NULL);

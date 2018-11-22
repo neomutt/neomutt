@@ -527,7 +527,7 @@ static int trash_append(struct Context *ctx)
     {
       if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
       {
-        if (mutt_append_message(ctx_trash, ctx, m->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash->mailbox, m, m->hdrs[i], 0, 0) == -1)
         {
           mx_mbox_close(&ctx_trash, NULL);
           return -1;
@@ -702,7 +702,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       {
         if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(f, ctx, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f->mailbox, ctx->mailbox, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, 1);
             mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, 1);
