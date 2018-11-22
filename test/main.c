@@ -4,6 +4,8 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
+  NEOMUTT_TEST_ITEM(test_file_iter_line)                                       \
+  NEOMUTT_TEST_ITEM(test_file_map_lines)                                       \
   NEOMUTT_TEST_ITEM(test_base64_encode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_decode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_lengths)                                       \
