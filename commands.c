@@ -831,12 +831,12 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
  * @param delete  If true, delete the original
  * @param decode  If true, decode the message
  * @param decrypt If true, decrypt the message
- * @param ctx     Mailbox to save to
+ * @param m       Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
 int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
-                          bool decrypt, struct Context *ctx)
+                          bool decrypt, struct Mailbox *m)
 {
   int cmflags, chflags;
   int rc;
@@ -846,7 +846,7 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
   if (decode || decrypt)
     mutt_parse_mime_message(Context->mailbox, e);
 
-  rc = mutt_append_message(ctx->mailbox, Context->mailbox, e, cmflags, chflags);
+  rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
@@ -1004,7 +1004,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 #endif
     if (e)
     {
-      if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx) != 0)
+      if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx->mailbox) != 0)
       {
         mx_mbox_close(&savectx, NULL);
         return -1;
@@ -1038,7 +1038,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
           continue;
 
         mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode, decrypt, savectx);
+        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode, decrypt, savectx->mailbox);
         if (rc != 0)
           break;
 #ifdef USE_COMPRESSED

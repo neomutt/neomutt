@@ -1750,7 +1750,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
         mutt_message(ngettext("Saving changed message... [%d/%d]",
                               "Saving changed messages... [%d/%d]", m->msg_count),
                      i + 1, m->msg_count);
-        mutt_save_message_ctx(e, true, false, false, ctx);
+        mutt_save_message_ctx(e, true, false, false, ctx->mailbox);
         e->xlabel_changed = false;
       }
     }
