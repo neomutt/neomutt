@@ -171,17 +171,15 @@ int mx_access(const char *path, int flags)
 
 /**
  * mx_open_mailbox_append - Open a mailbox for appending
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param flags Flags, e.g. #MUTT_READONLY
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int mx_open_mailbox_append(struct Context *ctx, int flags)
+static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct stat sb;
 
@@ -233,7 +231,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   if (!m->mx_ops || !m->mx_ops->mbox_open_append)
     return -1;
 
-  return m->mx_ops->mbox_open_append(ctx->mailbox, flags);
+  return m->mx_ops->mbox_open_append(m, flags);
 }
 
 /**
@@ -308,7 +306,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
 
   if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
   {
-    if (mx_open_mailbox_append(ctx, flags) != 0)
+    if (mx_open_mailbox_append(ctx->mailbox, flags) != 0)
     {
       mx_fastclose_mailbox(ctx);
       mutt_context_free(&ctx);
