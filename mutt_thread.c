@@ -777,7 +777,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, bool init)
 
 /**
  * check_subjects - Find out which emails' subjects differ from their parent's
- * @param ctx  Mailbox
+ * @param m    Mailbox
  * @param init If true, rebuild the thread
  */
 static void check_subjects(struct Mailbox *m, bool init)

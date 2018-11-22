@@ -642,7 +642,7 @@ static void imap_fetch_msn_seqset(struct Buffer *b, struct ImapAccountData *adat
 
 /**
  * set_changed_flag - Have the flags of an email changed
- * @param[in]  ctx            Mailbox
+ * @param[in]  m              Mailbox
  * @param[in]  e              Email
  * @param[in]  local_changes  Has the local mailbox been changed?
  * @param[out] server_changes Set to 1 if the flag has changed

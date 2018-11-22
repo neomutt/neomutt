@@ -1033,7 +1033,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
 /**
  * mx_msg_open_new - Open a new message
- * @param ctx   Destination mailbox
+ * @param m     Destination mailbox
  * @param e     Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
  * @retval ptr New Message

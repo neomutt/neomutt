@@ -207,7 +207,7 @@ static int count_body_parts(struct Body *body, int flags)
 
 /**
  * mutt_count_body_parts - Count the MIME Body parts
- * @param ctx Mailbox
+ * @param m Mailbox
  * @param e Email
  * @retval num Number of MIME Body parts
  */
