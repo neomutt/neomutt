@@ -454,16 +454,14 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * trash_append - move deleted mails to the trash folder
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int trash_append(struct Context *ctx)
+static int trash_append(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   int i;
   struct stat st, stc;
@@ -732,7 +730,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   /* copy mails to the trash before expunging */
   if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
-    if (trash_append(ctx) != 0)
+    if (trash_append(ctx->mailbox) != 0)
       return -1;
   }
 
@@ -977,7 +975,7 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
 
   if (purge && m->msg_deleted && (mutt_str_strcmp(m->path, Trash) != 0))
   {
-    if (trash_append(ctx) != 0)
+    if (trash_append(ctx->mailbox) != 0)
       return -1;
   }
 
