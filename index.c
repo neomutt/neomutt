@@ -2997,7 +2997,7 @@ int mutt_index_menu(void)
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
           struct NntpMboxData *mdata = Context->mailbox->mdata;
-          if (mutt_newsgroup_catchup(Context, mdata->adata, mdata->group))
+          if (mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;

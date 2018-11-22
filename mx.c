@@ -590,7 +590,7 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       if (rc == MUTT_ABORT)
         return -1;
       else if (rc == MUTT_YES)
-        mutt_newsgroup_catchup(Context, mdata->adata, mdata->group);
+        mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group);
     }
   }
 #endif
