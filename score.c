@@ -78,7 +78,7 @@ void mutt_check_rescore(struct Context *ctx)
 
     for (int i = 0; ctx && i < ctx->mailbox->msg_count; i++)
     {
-      mutt_score_message(ctx, ctx->mailbox->hdrs[i], true);
+      mutt_score_message(ctx->mailbox, ctx->mailbox->hdrs[i], true);
       ctx->mailbox->hdrs[i]->pair = 0;
     }
   }
@@ -158,11 +158,11 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 /**
  * mutt_score_message - Apply scoring to an email
- * @param ctx     Mailbox
- * @param e     Email
- * @param upd_ctx If true, update the Context too
+ * @param m        Mailbox
+ * @param e        Email
+ * @param upd_mbox If true, update the Context too
  */
-void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)
+void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 {
   struct Score *tmp = NULL;
   struct PatternCache cache = { 0 };
@@ -184,11 +184,11 @@ void mutt_score_message(struct Context *ctx, struct Email *e, bool upd_ctx)
     e->score = 0;
 
   if (e->score <= ScoreThresholdDelete)
-    mutt_set_flag_update(ctx->mailbox, e, MUTT_DELETE, true, upd_ctx);
+    mutt_set_flag_update(m, e, MUTT_DELETE, true, upd_mbox);
   if (e->score <= ScoreThresholdRead)
-    mutt_set_flag_update(ctx->mailbox, e, MUTT_READ, true, upd_ctx);
+    mutt_set_flag_update(m, e, MUTT_READ, true, upd_mbox);
   if (e->score >= ScoreThresholdFlag)
-    mutt_set_flag_update(ctx->mailbox, e, MUTT_FLAG, true, upd_ctx);
+    mutt_set_flag_update(m, e, MUTT_FLAG, true, upd_mbox);
 }
 
 /**

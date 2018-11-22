@@ -1270,7 +1270,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       {
         e2->superseded = true;
         if (Score)
-          mutt_score_message(ctx, e2, true);
+          mutt_score_message(ctx->mailbox, e2, true);
       }
     }
 
@@ -1282,7 +1282,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     mutt_label_hash_add(m, e);
 
     if (Score)
-      mutt_score_message(ctx, e, false);
+      mutt_score_message(ctx->mailbox, e, false);
 
     if (e->changed)
       m->changed = true;
