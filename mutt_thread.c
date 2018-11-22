@@ -1448,17 +1448,17 @@ struct Hash *mutt_make_id_hash(struct Mailbox *m)
  * link_threads - Forcibly link messages together
  * @param parent Header of parent message
  * @param child  Header of child message
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @retval true On success
  */
-static bool link_threads(struct Email *parent, struct Email *child, struct Context *ctx)
+static bool link_threads(struct Email *parent, struct Email *child, struct Mailbox *m)
 {
   if (child == parent)
     return false;
 
   mutt_break_thread(child);
   mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
-  mutt_set_flag(ctx->mailbox, child, MUTT_TAG, 0);
+  mutt_set_flag(m, child, MUTT_TAG, 0);
 
   child->env->irt_changed = true;
   child->changed = true;
@@ -1487,10 +1487,10 @@ bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ct
   {
     for (int i = 0; i < m->msg_count; i++)
       if (message_is_tagged(ctx, i))
-        changed |= link_threads(cur, m->hdrs[i], ctx);
+        changed |= link_threads(cur, m->hdrs[i], ctx->mailbox);
   }
   else
-    changed = link_threads(cur, last, ctx);
+    changed = link_threads(cur, last, ctx->mailbox);
 
   return changed;
 }
