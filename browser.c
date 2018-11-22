@@ -2052,7 +2052,7 @@ void mutt_select_file(char *file, size_t filelen, int flags, char ***files, int 
           if (i == OP_CATCHUP)
             mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
           else
-            mdata = mutt_newsgroup_uncatchup(Context, CurrentNewsSrv, ff->name);
+            mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
 
           if (mdata)
           {
