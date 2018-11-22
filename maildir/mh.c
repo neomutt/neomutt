@@ -2181,18 +2181,16 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 
 /**
  * maildir_update_flags - Update the mailbox flags
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @param o   Old email Header
  * @param n   New email Header
  * @retval true  If the flags changed
  * @retval false Otherwise
  */
-bool maildir_update_flags(struct Context *ctx, struct Email *o, struct Email *n)
+bool maildir_update_flags(struct Mailbox *m, struct Email *o, struct Email *n)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   /* save the global state here so we can reset it at the
    * end of list block if required.
@@ -2560,7 +2558,7 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
        * the flags we just detected.
        */
       if (!m->hdrs[i]->changed)
-        if (maildir_update_flags(ctx, m->hdrs[i], p->email))
+        if (maildir_update_flags(ctx->mailbox, m->hdrs[i], p->email))
           flags_changed = true;
 
       if (m->hdrs[i]->deleted == m->hdrs[i]->trash)
@@ -2939,7 +2937,7 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
       m->hdrs[i]->active = true;
       /* found the right message */
       if (!m->hdrs[i]->changed)
-        if (maildir_update_flags(ctx, m->hdrs[i], p->email))
+        if (maildir_update_flags(ctx->mailbox, m->hdrs[i], p->email))
           flags_changed = true;
 
       mutt_email_free(&p->email);

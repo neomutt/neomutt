@@ -2280,7 +2280,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
        */
       struct Email tmp = { 0 };
       maildir_parse_flags(&tmp, new);
-      maildir_update_flags(ctx, e, &tmp);
+      maildir_update_flags(ctx->mailbox, e, &tmp);
     }
 
     if (update_email_tags(e, msg) == 0)
