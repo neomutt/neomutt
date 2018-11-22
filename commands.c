@@ -185,7 +185,7 @@ int mutt_display_message(struct Email *cur)
   if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fpout, Context->mailbox, cur, cmflags, chflags);
 
   if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
@@ -426,7 +426,7 @@ static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
   if (decode)
     mutt_parse_mime_message(Context->mailbox, e);
 
-  mutt_copy_message_ctx(fp, Context, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, Context->mailbox, e, cmflags, chflags);
 }
 
 /**

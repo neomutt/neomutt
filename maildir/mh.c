@@ -1560,7 +1560,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message_ctx(dest->fp, ctx, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  int rc = mutt_copy_message_ctx(dest->fp, ctx->mailbox, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];

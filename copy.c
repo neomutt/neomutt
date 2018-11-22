@@ -789,10 +789,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
+int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
                           int flags, int chflags)
 {
-  struct Message *msg = mx_msg_open(src->mailbox, e->msgno);
+  struct Message *msg = mx_msg_open(src, e->msgno);
   if (!msg)
     return -1;
   if (!e->content)
@@ -803,7 +803,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
     mutt_debug(1, "failed to detect EOF!\n");
     r = -1;
   }
-  mx_msg_close(src->mailbox, &msg);
+  mx_msg_close(src, &msg);
   return r;
 }
 

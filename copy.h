@@ -25,7 +25,6 @@
 
 #include <stdio.h>
 
-struct Context;
 struct Email;
 struct Mailbox;
 
@@ -73,7 +72,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix);
 
 int mutt_copy_message_fp (FILE *fpout, FILE *fpin,          struct Email *e, int flags, int chflags);
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e, int flags, int chflags);
+int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e, int flags, int chflags);
 
 int mutt_append_message(struct Mailbox *dest, struct Mailbox *src, struct Email *e, int cmflags, int chflags);
 

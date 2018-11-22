@@ -1521,7 +1521,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
     }
   }
 
-  mutt_copy_message_ctx(fp, ctx, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, ctx->mailbox, e, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);
