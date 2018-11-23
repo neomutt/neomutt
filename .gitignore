@@ -33,7 +33,7 @@ doc/neomuttrc.5
 # Generated source
 config.h
 conststrings.c
-git_ver.h
+git_ver.c
 hcache/hcversion.h
 
 # Misc

@@ -31,7 +31,6 @@
 
 #ifdef MAIN_C
 /* so that global vars get included */
-#include "git_ver.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "sort.h"
