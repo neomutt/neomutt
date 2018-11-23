@@ -2371,9 +2371,9 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
     mutt_str_strfcpy(m->path, edata->folder, sizeof(m->path));
     m->magic = edata->magic;
 #ifdef USE_HCACHE
-    rc = mh_sync_mailbox_message(ctx, i, NULL);
+    rc = mh_sync_mailbox_message(m, i, NULL);
 #else
-    rc = mh_sync_mailbox_message(ctx, i);
+    rc = mh_sync_mailbox_message(m, i);
 #endif
     mutt_str_strfcpy(m->path, uri, sizeof(m->path));
     m->magic = MUTT_NOTMUCH;

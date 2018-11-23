@@ -1535,19 +1535,17 @@ cleanup:
 
 /**
  * mh_rewrite_message - Sync a message in an MH folder
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgno Index number
  * @retval  0 Success
  * @retval -1 Error
  *
  * This code is also used for attachment deletion in maildir folders.
  */
-static int mh_rewrite_message(struct Context *ctx, int msgno)
+static int mh_rewrite_message(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+  if (!m || !m->hdrs)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *e = m->hdrs[msgno];
   bool restore = true;
@@ -1560,7 +1558,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   if (!dest)
     return -1;
 
-  int rc = mutt_copy_message_ctx(dest->fp, ctx->mailbox, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  int rc = mutt_copy_message_ctx(dest->fp, m, e, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
     char oldpath[PATH_MAX];
@@ -1573,7 +1571,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     else
       rc = mh_commit_msg(m, dest, e, false);
 
-    mx_msg_close(ctx->mailbox, &dest);
+    mx_msg_close(m, &dest);
 
     if (rc == 0)
     {
@@ -1605,7 +1603,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     }
   }
   else
-    mx_msg_close(ctx->mailbox, &dest);
+    mx_msg_close(m, &dest);
 
   if (rc == -1 && restore)
   {
@@ -1620,24 +1618,22 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
 
 /**
  * mh_sync_message - Sync an email to an MH folder
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgno Index number
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mh_sync_message(struct Context *ctx, int msgno)
+static int mh_sync_message(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+  if (!m || !m->hdrs)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *e = m->hdrs[msgno];
 
   if (e->attach_del || e->xlabel_changed ||
       (e->env && (e->env->refs_changed || e->env->irt_changed)))
   {
-    if (mh_rewrite_message(ctx, msgno) != 0)
+    if (mh_rewrite_message(m, msgno) != 0)
       return -1;
   }
 
@@ -1646,17 +1642,15 @@ static int mh_sync_message(struct Context *ctx, int msgno)
 
 /**
  * maildir_sync_message - Sync an email to a Maildir folder
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgno Index number
  * @retval  0 Success
  * @retval -1 Error
  */
-static int maildir_sync_message(struct Context *ctx, int msgno)
+static int maildir_sync_message(struct Mailbox *m, int msgno)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+  if (!m || !m->hdrs)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *e = m->hdrs[msgno];
   struct Buffer *newpath = NULL;
@@ -1670,7 +1664,7 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
       (e->env && (e->env->refs_changed || e->env->irt_changed)))
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
-    if (mh_rewrite_message(ctx, msgno) != 0)
+    if (mh_rewrite_message(m, msgno) != 0)
       return -1;
   }
   else
@@ -2085,22 +2079,20 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 
 /**
  * mh_sync_mailbox_message - Save changes to the mailbox
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param msgno Index number
  * @param hc    Header cache handle
  * @retval  0 Success
  * @retval -1 Error
  */
 #ifdef USE_HCACHE
-int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc)
+int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 #else
-int mh_sync_mailbox_message(struct Context *ctx, int msgno)
+int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
 #endif
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+  if (!m || !m->hdrs)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct Email *e = m->hdrs[msgno];
 
@@ -2147,12 +2139,12 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
   {
     if (m->magic == MUTT_MAILDIR)
     {
-      if (maildir_sync_message(ctx, msgno) == -1)
+      if (maildir_sync_message(m, msgno) == -1)
         return -1;
     }
     else
     {
-      if (mh_sync_message(ctx, msgno) == -1)
+      if (mh_sync_message(m, msgno) == -1)
         return -1;
     }
   }
@@ -3008,10 +3000,10 @@ static int mh_mbox_sync(struct Context *ctx, int *index_hint)
       mutt_progress_update(&progress, i, -1);
 
 #ifdef USE_HCACHE
-    if (mh_sync_mailbox_message(ctx, i, hc) == -1)
+    if (mh_sync_mailbox_message(m, i, hc) == -1)
       goto err;
 #else
-    if (mh_sync_mailbox_message(ctx, i) == -1)
+    if (mh_sync_mailbox_message(m, i) == -1)
       goto err;
 #endif
   }

@@ -41,7 +41,6 @@
 #endif
 
 struct Mailbox;
-struct Context;
 struct Email;
 
 /* These Config Variables are only used in maildir/mh.c */
@@ -72,9 +71,9 @@ int           maildir_path_probe(const char *path, const struct stat *st);
 int           mh_path_probe(const char *path, const struct stat *st);
 
 #ifdef USE_HCACHE
-int           mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
+int           mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc);
 #else
-int           mh_sync_mailbox_message(struct Context *ctx, int msgno);
+int           mh_sync_mailbox_message(struct Mailbox *m, int msgno);
 #endif
 
 #endif /* MUTT_MAILDIR_MAILDIR_H */
