@@ -1784,6 +1784,65 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
   return 10;
 }
 
+/**
+ * mbox_check - Check for new mail for an mbox mailbox
+ * @param m           Mailbox to check
+ * @param sb          stat(2) information about the mailbox
+ * @param check_stats if true, also count total, new, and flagged messages
+ * @retval 1 if the mailbox has new mail
+ */
+int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
+{
+  int rc = 0;
+  bool new_or_changed;
+
+  if (CheckMboxSize)
+    new_or_changed = (sb->st_size > m->size);
+  else
+  {
+    new_or_changed =
+        (mutt_stat_compare(sb, MUTT_STAT_MTIME, sb, MUTT_STAT_ATIME) > 0) ||
+        (m->newly_created &&
+         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_MTIME) == 0) &&
+         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_ATIME) == 0));
+  }
+
+  if (new_or_changed)
+  {
+    if (!MailCheckRecent ||
+        (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
+    {
+      rc = 1;
+      m->has_new = true;
+    }
+  }
+  else if (CheckMboxSize)
+  {
+    /* some other program has deleted mail from the folder */
+    m->size = (off_t) sb->st_size;
+  }
+
+  if (m->newly_created && (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
+    m->newly_created = false;
+
+  if (check_stats &&
+      (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0))
+  {
+    struct Context *ctx =
+        mx_mbox_open(m, NULL, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+    if (ctx)
+    {
+      m->msg_count = ctx->mailbox->msg_count;
+      m->msg_unread = ctx->mailbox->msg_unread;
+      m->msg_flagged = ctx->mailbox->msg_flagged;
+      m->stats_last_checked = ctx->mailbox->mtime;
+      mx_mbox_close(&ctx, NULL);
+    }
+  }
+
+  return rc;
+}
+
 // clang-format off
 /**
  * struct mx_mbox_ops - Mbox mailbox - Implements ::MxOps

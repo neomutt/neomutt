@@ -3144,6 +3144,130 @@ enum MailboxType mh_path_probe(const char *path, const struct stat *st)
   return MUTT_UNKNOWN;
 }
 
+/**
+ * maildir_check_dir - Check for new mail / mail counts
+ * @param m           Mailbox to check
+ * @param dir_name    Path to Mailbox
+ * @param check_new   if true, check for new mail
+ * @param check_stats if true, count total, new, and flagged messages
+ * @retval 1 if the dir has new mail
+ *
+ * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
+ */
+int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
+{
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *p = NULL;
+  int rc = 0;
+  struct stat sb;
+
+  struct Buffer *path = mutt_buffer_pool_get();
+  struct Buffer *msgpath = mutt_buffer_pool_get();
+  mutt_buffer_printf(path, "%s/%s", m->path, dir_name);
+
+  /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
+   * the user last exited the m, then we know there is no recent mail.
+   */
+  if (check_new && MailCheckRecent)
+  {
+    if (stat(mutt_b2s(path), &sb) == 0 &&
+        mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
+    {
+      rc = 0;
+      check_new = false;
+    }
+  }
+
+  if (!(check_new || check_stats))
+    goto cleanup;
+
+  dirp = opendir(mutt_b2s(path));
+  if (!dirp)
+  {
+    m->magic = MUTT_UNKNOWN;
+    rc = 0;
+    goto cleanup;
+  }
+
+  while ((de = readdir(dirp)))
+  {
+    if (*de->d_name == '.')
+      continue;
+
+    p = strstr(de->d_name, ":2,");
+    if (p && strchr(p + 3, 'T'))
+      continue;
+
+    if (check_stats)
+    {
+      m->msg_count++;
+      if (p && strchr(p + 3, 'F'))
+        m->msg_flagged++;
+    }
+    if (!p || !strchr(p + 3, 'S'))
+    {
+      if (check_stats)
+        m->msg_unread++;
+      if (check_new)
+      {
+        if (MailCheckRecent)
+        {
+          mutt_buffer_printf(msgpath, "%s/%s", mutt_b2s(path), de->d_name);
+          /* ensure this message was received since leaving this m */
+          if (stat(mutt_b2s(msgpath), &sb) == 0 &&
+              (mutt_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &m->last_visited) <= 0))
+          {
+            continue;
+          }
+        }
+        m->has_new = true;
+        rc = 1;
+        check_new = false;
+        if (!check_stats)
+          break;
+      }
+    }
+  }
+
+  closedir(dirp);
+
+cleanup:
+  mutt_buffer_pool_release(&path);
+  mutt_buffer_pool_release(&msgpath);
+
+  return rc;
+}
+
+/**
+ * maildir_check - Check for new mail in a maildir mailbox
+ * @param m           Mailbox to check
+ * @param check_stats if true, also count total, new, and flagged messages
+ * @retval 1 if the mailbox has new mail
+ */
+int maildir_check(struct Mailbox *m, bool check_stats)
+{
+  int rc = 1;
+  bool check_new = true;
+
+  if (check_stats)
+  {
+    m->msg_count = 0;
+    m->msg_unread = 0;
+    m->msg_flagged = 0;
+    m->msg_new = 0;
+  }
+
+  rc = maildir_check_dir(m, "new", check_new, check_stats);
+
+  check_new = !rc && MaildirCheckCur;
+  if (check_new || check_stats)
+    if (maildir_check_dir(m, "cur", check_new, check_stats))
+      rc = 1;
+
+  return rc;
+}
+
 // clang-format off
 /**
  * struct mx_maildir_ops - Maildir mailbox - Implements ::MxOps

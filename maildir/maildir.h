@@ -55,6 +55,8 @@ extern char *MhSeqUnseen;
 extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mh_ops;
 
+int           maildir_check(struct Mailbox *m, bool check_stats);
+int           maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats);
 int           maildir_check_empty(const char *path);
 void          maildir_gen_flags(char *dest, size_t destlen, struct Email *e);
 FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
