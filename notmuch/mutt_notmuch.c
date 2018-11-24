@@ -65,7 +65,7 @@
 #include "globals.h"
 #include "index.h"
 #include "mailbox.h"
-#include "maildir/maildir.h"
+#include "maildir/lib.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"

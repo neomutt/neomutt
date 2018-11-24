@@ -51,7 +51,7 @@
 #include "hook.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "maildir/maildir.h"
+#include "maildir/lib.h"
 #include "mbox/mbox.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

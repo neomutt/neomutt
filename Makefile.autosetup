@@ -126,7 +126,7 @@ ALLOBJS+=	$(LIBNOTMUCHOBJS)
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/mh.o
+LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 MUTTLIBS+=	$(LIBMAILDIR)
 ALLOBJS+=	$(LIBMAILDIROBJS)

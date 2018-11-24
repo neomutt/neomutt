@@ -87,7 +87,9 @@ index.c
 init.c
 keymap.c
 mailbox.c
+maildir/maildir.c
 maildir/mh.c
+maildir/shared.c
 main.c
 mbox/mbox.c
 menu.c

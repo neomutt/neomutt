@@ -39,7 +39,7 @@
 #include "account.h"
 #include "context.h"
 #include "globals.h"
-#include "maildir/maildir.h"
+#include "maildir/lib.h"
 #include "mbox/mbox.h"
 #include "menu.h"
 #include "mutt_window.h"
