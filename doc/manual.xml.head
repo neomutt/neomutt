@@ -12501,6 +12501,18 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
             </para>
           </listitem>
         </itemizedlist>
+        <para>
+          The commands are NeoMutt commands. If you want to run an external
+          shell command, you need to run them like this:
+        </para>
+<screen>
+startup-hook 'echo `action.sh ARGS`'
+</screen>
+        <para>
+          The single quotes prevent the
+          backticks from being expanded. The <literal>echo</literal> command
+          prevents and empty command error.
+        </para>
 
         <sect3 id="timeout-hook-intro">
           <title>Timeout Hook</title>
