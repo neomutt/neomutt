@@ -7503,7 +7503,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                   IMAP custom server-side search for
                   <emphasis>STRING</emphasis>. Currently only defined for
                   Gmail. See:
-                  <link linkend="gmail-patterns">GMail Patterns</link>
+                  <link linkend="gmail-patterns">Gmail Patterns</link>
                 </entry>
               </row>
               <row>
@@ -8044,7 +8044,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
       </sect2>
 
       <sect2 id="gmail-patterns">
-        <title>GMail Patterns</title>
+        <title>Gmail Patterns</title>
         <para>
           <literal>=/ "search terms"</literal> invokes server-side search,
           passing along the search terms provided. Search results are
@@ -8055,14 +8055,14 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         </para>
         <para>
           For up-to-date information about searching, see:
-          <ulink url="https://support.google.com/mail/answer/7190?hl=en">GMail's Support Page</ulink>.
+          <ulink url="https://support.google.com/mail/answer/7190?hl=en">Gmail's Support Page</ulink>.
           You will need to (once) use a web-browser to visit Settings/Labels
           and enable "Show in IMAP" for "All Mail". When searching, visit that
           folder in NeoMutt to most closely match Gmail search semantics.
         </para>
 
         <table id="gmail-example-patterns">
-          <title>GMail Example Patterns</title>
+          <title>Gmail Example Patterns</title>
           <tgroup cols="2">
             <thead>
               <row>
