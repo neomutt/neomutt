@@ -7476,10 +7476,10 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 </entry>
               </row>
               <row>
-                <entry>~X [ <emphasis>MIN</emphasis>]-[ <emphasis>MAX</emphasis>]</entry>
+                <entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
                 <entry>
-                  messages with <emphasis>MIN</emphasis>to
-                  <emphasis>MAX</emphasis>attachments&#160;*)&#160;****)
+                  messages with <emphasis>MIN</emphasis> to
+                  <emphasis>MAX</emphasis> attachments&#160;*)&#160;****)
                 </entry>
               </row>
               <row>
