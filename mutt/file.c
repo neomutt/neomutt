@@ -617,49 +617,49 @@ int mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src)
 
 /**
  * mutt_file_read_line - Read a line from a file
- * @param[out] s     Buffer allocated on the head (optional)
- * @param[in]  size  Length of buffer (optional)
- * @param[in]  fp    File to read
- * @param[out] line  Current line number
- * @param[in]  flags Flags, e.g. #MUTT_CONT
- * @retval ptr The allocated string
+ * @param[out] line     Buffer allocated on the head (optional)
+ * @param[in]  size     Length of buffer (optional)
+ * @param[in]  fp       File to read
+ * @param[out] line_num Current line number
+ * @param[in]  flags    Flags, e.g. #MUTT_CONT
+ * @retval ptr          The allocated string
  *
  * Read a line from ``fp'' into the dynamically allocated ``s'', increasing
  * ``s'' if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */
-char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
+char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags)
 {
   size_t offset = 0;
   char *ch = NULL;
 
-  if (!s)
+  if (!line)
   {
-    s = mutt_mem_malloc(STRING);
+    line = mutt_mem_malloc(STRING);
     *size = STRING;
   }
 
   while (true)
   {
-    if (!fgets(s + offset, *size - offset, fp))
+    if (!fgets(line + offset, *size - offset, fp))
     {
-      FREE(&s);
+      FREE(&line);
       return NULL;
     }
-    ch = strchr(s + offset, '\n');
+    ch = strchr(line + offset, '\n');
     if (ch)
     {
-      if (line)
-        (*line)++;
+      if (line_num)
+        (*line_num)++;
       if (flags & MUTT_EOL)
-        return s;
+        return line;
       *ch = '\0';
-      if ((ch > s) && (*(ch - 1) == '\r'))
+      if ((ch > line) && (*(ch - 1) == '\r'))
         *--ch = '\0';
-      if (!(flags & MUTT_CONT) || (ch == s) || (*(ch - 1) != '\\'))
-        return s;
-      offset = ch - s - 1;
+      if (!(flags & MUTT_CONT) || (ch == line) || (*(ch - 1) != '\\'))
+        return line;
+      offset = ch - line - 1;
     }
     else
     {
@@ -672,17 +672,17 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-        if (line)
-          (*line)++;
-        return s;
+        if (line_num)
+          (*line_num)++;
+        return line;
       }
       else
       {
         ungetc(c, fp); /* undo our damage */
-        /* There wasn't room for the line -- increase ``s'' */
+        /* There wasn't room for the line -- increase ``line'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        mutt_mem_realloc(&s, *size);
+        mutt_mem_realloc(&line, *size);
       }
     }
   }
