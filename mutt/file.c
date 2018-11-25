@@ -1352,3 +1352,98 @@ long mutt_file_get_size(const char *path)
 
   return sb.st_size;
 }
+
+/**
+ * mutt_file_timespec_compare - Compare to time values
+ * @param a First time value
+ * @param b Second time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_timespec_compare(struct timespec *a, struct timespec *b)
+{
+  if (a->tv_sec < b->tv_sec)
+    return -1;
+  if (a->tv_sec > b->tv_sec)
+    return 1;
+
+  if (a->tv_nsec < b->tv_nsec)
+    return -1;
+  if (a->tv_nsec > b->tv_nsec)
+    return 1;
+  return 0;
+}
+
+/**
+ * mutt_file_get_stat_timespec - Read the stat() time into a time value
+ * @param dest Time value to populate
+ * @param sb   stat info
+ * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
+ */
+void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
+{
+  dest->tv_sec = 0;
+  dest->tv_nsec = 0;
+
+  switch (type)
+  {
+    case MUTT_STAT_ATIME:
+      dest->tv_sec = sb->st_atime;
+#ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
+      dest->tv_nsec = sb->st_atim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_MTIME:
+      dest->tv_sec = sb->st_mtime;
+#ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+      dest->tv_nsec = sb->st_mtim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_CTIME:
+      dest->tv_sec = sb->st_ctime;
+#ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
+      dest->tv_nsec = sb->st_ctim.tv_nsec;
+#endif
+      break;
+  }
+}
+
+/**
+ * mutt_file_stat_timespec_compare - Compare stat info with a time value
+ * @param sba  stat info
+ * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
+ * @param b    Time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
+{
+  struct timespec a = { 0 };
+
+  mutt_file_get_stat_timespec(&a, sba, type);
+  return mutt_file_timespec_compare(&a, b);
+}
+
+/**
+ * mutt_file_stat_compare - Compare two stat infos
+ * @param sba      First stat info
+ * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
+ * @param sbb      Second stat info
+ * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
+                      struct stat *sbb, enum MuttStatType sbb_type)
+{
+  struct timespec a = { 0 };
+  struct timespec b = { 0 };
+
+  mutt_file_get_stat_timespec(&a, sba, sba_type);
+  mutt_file_get_stat_timespec(&b, sbb, sbb_type);
+  return mutt_file_timespec_compare(&a, &b);
+}
+

@@ -54,29 +54,6 @@ struct Mapping;
 #define fgetc fgetc_unlocked
 #endif
 
-#ifndef HAVE_STRUCT_TIMESPEC
-/**
- * struct timespec - Time value with nanosecond precision
- */
-struct timespec
-{
-  time_t tv_sec;
-  long tv_nsec;
-};
-#endif
-
-/**
- * enum MuttStatType - Flags for mutt_get_stat_timespec
- *
- * These represent filesystem timestamps returned by stat()
- */
-enum MuttStatType
-{
-  MUTT_STAT_ATIME,
-  MUTT_STAT_MTIME,
-  MUTT_STAT_CTIME
-};
-
 /* flags for mutt_enter_string_full() */
 #define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
 #define MUTT_FILE     (1 << 1)  /**< do file completion */

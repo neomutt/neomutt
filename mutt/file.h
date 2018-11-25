@@ -23,6 +23,7 @@
 #ifndef MUTT_LIB_FILE_H
 #define MUTT_LIB_FILE_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -34,6 +35,29 @@ extern char *Tmpdir;
 /* Flags for mutt_file_read_line() */
 #define MUTT_CONT (1 << 0) /**< \-continuation */
 #define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
+
+#ifndef HAVE_STRUCT_TIMESPEC
+/**
+ * struct timespec - Time value with nanosecond precision
+ */
+struct timespec
+{
+  time_t tv_sec;
+  long tv_nsec;
+};
+#endif
+
+/**
+ * enum MuttStatType - Flags for mutt_file_get_stat_timespec
+ *
+ * These represent filesystem timestamps returned by stat()
+ */
+enum MuttStatType
+{
+  MUTT_STAT_ATIME,
+  MUTT_STAT_MTIME,
+  MUTT_STAT_CTIME
+};
 
 int         mutt_file_check_empty(const char *path);
 int         mutt_file_chmod(const char *path, mode_t mode);
@@ -50,6 +74,7 @@ int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
 long        mutt_file_get_size(const char *path);
+void        mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
 int         mutt_file_lock(int fd, bool excl, bool timeout);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
@@ -64,7 +89,10 @@ int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *f, bool slash);
 int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
+int         mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
+int         mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);
+int         mutt_file_timespec_compare(struct timespec *a, struct timespec *b);
 void        mutt_file_touch_atime(int fd);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);

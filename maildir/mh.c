@@ -299,7 +299,7 @@ static int mh_sequences_changed(struct Mailbox *m)
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", m->path) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0);
+    return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) > 0);
   }
   return -1;
 }
@@ -320,7 +320,7 @@ static int mh_already_notified(struct Mailbox *m, int msgno)
   if ((snprintf(path, sizeof(path), "%s/%d", m->path, msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
   {
-    return (mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) <= 0);
+    return (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) <= 0);
   }
   return -1;
 }
@@ -704,20 +704,20 @@ static void maildir_update_mtime(struct Mailbox *m)
   {
     snprintf(buf, sizeof(buf), "%s/%s", m->path, "cur");
     if (stat(buf, &st) == 0)
-      mutt_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
+      mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
     snprintf(buf, sizeof(buf), "%s/%s", m->path, "new");
   }
   else
   {
     snprintf(buf, sizeof(buf), "%s/.mh_sequences", m->path);
     if (stat(buf, &st) == 0)
-      mutt_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
+      mutt_file_get_stat_timespec(&mdata->mtime_cur, &st, MUTT_STAT_MTIME);
 
     mutt_str_strfcpy(buf, m->path, sizeof(buf));
   }
 
   if (stat(buf, &st) == 0)
-    mutt_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
 }
 
 /**
@@ -2479,9 +2479,9 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   }
 
   /* determine which subdirectories need to be scanned */
-  if (mutt_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &m->mtime) > 0)
+  if (mutt_file_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &m->mtime) > 0)
     changed = 1;
-  if (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0)
+  if (mutt_file_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0)
     changed |= 2;
 
   if (!changed)
@@ -2502,8 +2502,8 @@ static int maildir_mbox_check(struct Context *ctx, int *index_hint)
   else
 #endif
   {
-    mutt_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec(&m->mtime, &st_new, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&m->mtime, &st_new, MUTT_STAT_MTIME);
   }
 
   /* do a fast scan of just the filenames in
@@ -2873,8 +2873,8 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   if (i == -1 && stat(buf, &st_cur) == -1)
     modified = true;
 
-  if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) > 0) ||
-      (mutt_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0))
+  if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) > 0) ||
+      (mutt_file_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0))
   {
     modified = true;
   }
@@ -2894,8 +2894,8 @@ static int mh_mbox_check(struct Context *ctx, int *index_hint)
   else
 #endif
   {
-    mutt_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
   }
 
   md = NULL;
@@ -3164,7 +3164,7 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
   if (check_new && MailCheckRecent)
   {
     if (stat(mutt_b2s(path), &sb) == 0 &&
-        mutt_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
+        mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
     {
       rc = 0;
       check_new = false;
@@ -3208,7 +3208,7 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
           mutt_buffer_printf(msgpath, "%s/%s", mutt_b2s(path), de->d_name);
           /* ensure this message was received since leaving this m */
           if (stat(mutt_b2s(msgpath), &sb) == 0 &&
-              (mutt_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &m->last_visited) <= 0))
+              (mutt_file_stat_timespec_compare(&sb, MUTT_STAT_CTIME, &m->last_visited) <= 0))
           {
             continue;
           }

@@ -205,8 +205,8 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     mutt_perror(m->path);
     return -1;
   }
-  mutt_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
-  mutt_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
+  mutt_file_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
   m->size = sb.st_size;
 
   buf[sizeof(buf) - 1] = '\0';
@@ -376,8 +376,8 @@ static int mbox_parse_mailbox(struct Context *ctx)
   }
 
   m->size = sb.st_size;
-  mutt_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
-  mutt_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
+  mutt_file_get_stat_timespec(&m->mtime, &sb, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&adata->atime, &sb, MUTT_STAT_ATIME);
 
   if (!m->readonly)
     m->readonly = access(m->path, W_OK) ? true : false;
@@ -1046,7 +1046,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (stat(m->path, &st) == 0)
   {
-    if ((mutt_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) == 0) &&
+    if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) == 0) &&
         st.st_size == m->size)
     {
       return 0;
@@ -1055,7 +1055,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
     if (st.st_size == m->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
-      mutt_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+      mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
       return 0;
     }
 
@@ -1550,7 +1550,7 @@ static int mbox_mbox_close(struct Context *ctx)
 
   /* fix up the times so mailbox won't get confused */
   if (m->peekonly && (m->path[0] != '\0') &&
-      (mutt_timespec_compare(&m->mtime, &adata->atime) > 0))
+      (mutt_file_timespec_compare(&m->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
@@ -1694,8 +1694,8 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
      */
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
-    mutt_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);
-    mutt_get_stat_timespec(&ts[1], &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);
+    mutt_file_get_stat_timespec(&ts[1], &st, MUTT_STAT_MTIME);
     utimensat(0, path, ts, 0);
 #else
     struct utimbuf times;
@@ -1801,16 +1801,16 @@ int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
   else
   {
     new_or_changed =
-        (mutt_stat_compare(sb, MUTT_STAT_MTIME, sb, MUTT_STAT_ATIME) > 0) ||
+        (mutt_file_stat_compare(sb, MUTT_STAT_MTIME, sb, MUTT_STAT_ATIME) > 0) ||
         (m->newly_created &&
-         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_MTIME) == 0) &&
-         (mutt_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_ATIME) == 0));
+         (mutt_file_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_MTIME) == 0) &&
+         (mutt_file_stat_compare(sb, MUTT_STAT_CTIME, sb, MUTT_STAT_ATIME) == 0));
   }
 
   if (new_or_changed)
   {
     if (!MailCheckRecent ||
-        (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
+        (mutt_file_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {
       rc = 1;
       m->has_new = true;
@@ -1826,7 +1826,7 @@ int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
     m->newly_created = false;
 
   if (check_stats &&
-      (mutt_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0))
+      (mutt_file_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0))
   {
     struct Context *ctx =
         mx_mbox_open(m, NULL, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
