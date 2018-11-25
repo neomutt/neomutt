@@ -7158,7 +7158,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~b <emphasis>EXPR</emphasis></entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis> in the
-                  message body ***)
+                  message body ****)
                 </entry>
               </row>
               <row>
@@ -7173,7 +7173,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~B <emphasis>EXPR</emphasis></entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the whole
-                  message ***)
+                  message ****)
                 </entry>
               </row>
               <row>
@@ -7277,7 +7277,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>~h <emphasis>EXPR</emphasis></entry>
                 <entry>
                   messages which contain <emphasis>EXPR</emphasis>in the
-                  message header ***)
+                  message header ****)
                 </entry>
               </row>
               <row>
