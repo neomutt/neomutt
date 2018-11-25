@@ -2083,6 +2083,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
+        CHECK_IN_MAILBOX;
         mutt_debug(2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
         if (NmQueryWindowDuration <= 0)
         {
@@ -2103,6 +2104,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+      CHECK_IN_MAILBOX;
         if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
@@ -3013,7 +3015,8 @@ int mutt_index_menu(void)
       case OP_ENTER_COMMAND:
 
         mutt_enter_command();
-        mutt_check_rescore(Context->mailbox);
+        if (Context)
+          mutt_check_rescore(Context->mailbox);
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
