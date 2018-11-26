@@ -1787,8 +1787,8 @@ char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, in
   /* This is redundant with the following two checks. Removing:
    * mutt_set_flag (adata->ctx, e, MUTT_NEW, !(edata->read || edata->old));
    */
-  set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD,
-                   old_edata.old, edata->old, e->old);
+  set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD, old_edata.old,
+                   edata->old, e->old);
   set_changed_flag(m, e, local_changes, server_changes, MUTT_READ,
                    old_edata.read, edata->read, e->read);
   set_changed_flag(m, e, local_changes, server_changes, MUTT_DELETE,

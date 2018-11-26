@@ -470,8 +470,8 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->vsize = 0;
       }
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx->mailbox,
-                            ctx->mailbox->hdrs[i], NULL))
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS,
+                            ctx->mailbox, ctx->mailbox->hdrs[i], NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
         ctx->mailbox->hdrs[i]->virtual = ctx->mailbox->vcount;
@@ -1991,7 +1991,8 @@ int mutt_index_menu(void)
           {
             char msgbuf[STRING];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
-            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->mailbox->msg_tagged);
+            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1,
+                               Context->mailbox->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH
@@ -2104,7 +2105,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
-      CHECK_IN_MAILBOX;
+        CHECK_IN_MAILBOX;
         if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
@@ -2669,8 +2670,8 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_FLAG,
-                            !Context->mailbox->hdrs[j]->flagged);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j],
+                            MUTT_FLAG, !Context->mailbox->hdrs[j]->flagged);
             }
           }
 

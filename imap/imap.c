@@ -308,8 +308,7 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
   if (!mutt_bit_isset(adata->mailbox->rights, right))
     return 0;
 
-  if (right == MUTT_ACL_WRITE &&
-      !imap_has_flag(&imap_mdata_get(adata->mailbox)->flags, name))
+  if (right == MUTT_ACL_WRITE && !imap_has_flag(&imap_mdata_get(adata->mailbox)->flags, name))
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
@@ -1191,8 +1190,8 @@ int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
 
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
-  if (*flags && (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS) && err_continue &&
-      (*err_continue != MUTT_YES))
+  if (*flags && (imap_exec(adata, cmd->data, 0) != IMAP_EXEC_SUCCESS) &&
+      err_continue && (*err_continue != MUTT_YES))
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
     if (*err_continue != MUTT_YES)
@@ -1330,7 +1329,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
            mdata->munge_name, uid_validity_flag);
 
   int rc = imap_exec(adata, command, queue ? IMAP_CMD_QUEUE : 0 | IMAP_CMD_POLL);
-  if (rc < 0 )
+  if (rc < 0)
   {
     mutt_debug(1, "Error queueing command\n");
     return rc;
@@ -2037,8 +2036,8 @@ static int imap_mbox_open(struct Context *ctx)
   /* pipeline the postponed count if possible */
   struct Mailbox *postponed_m = mx_mbox_find2(Postponed);
   struct ImapAccountData *postponed_adata = imap_adata_get(postponed_m);
-  if (postponed_adata && mutt_account_match(&postponed_adata->conn_account,
-                                            &adata->conn_account))
+  if (postponed_adata &&
+      mutt_account_match(&postponed_adata->conn_account, &adata->conn_account))
     imap_mailbox_status(postponed_m, true);
 
   if (ImapCheckSubscribed)

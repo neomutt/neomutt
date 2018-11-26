@@ -745,7 +745,7 @@ static int mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
  */
 static int mh_msg_open_new(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!m|| !msg)
+  if (!m || !msg)
     return -1;
   return mh_mkstemp(m, &msg->fp, &msg->path);
 }

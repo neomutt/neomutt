@@ -1467,7 +1467,8 @@ void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum Mu
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
+int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type,
+                                    struct timespec *b)
 {
   struct timespec a = { 0 };
 
@@ -1486,7 +1487,7 @@ int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, st
  * @retval  1 b precedes a
  */
 int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
-                      struct stat *sbb, enum MuttStatType sbb_type)
+                           struct stat *sbb, enum MuttStatType sbb_type)
 {
   struct timespec a = { 0 };
   struct timespec b = { 0 };
@@ -1495,4 +1496,3 @@ int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
   mutt_file_get_stat_timespec(&b, sbb, sbb_type);
   return mutt_file_timespec_compare(&a, &b);
 }
-

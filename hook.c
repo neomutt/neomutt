@@ -35,10 +35,10 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
-#include "context.h"
 #include "mutt.h"
 #include "hook.h"
 #include "alias.h"
+#include "context.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "mutt_attach.h"

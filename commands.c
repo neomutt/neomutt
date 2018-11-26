@@ -1038,7 +1038,8 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
           continue;
 
         mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode, decrypt, savectx->mailbox);
+        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode,
+                                   decrypt, savectx->mailbox);
         if (rc != 0)
           break;
 #ifdef USE_COMPRESSED

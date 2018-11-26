@@ -843,7 +843,8 @@ void crypt_extract_keys_from_messages(struct Email *e)
 
       if (((WithCrypto & APPLICATION_PGP) != 0) && (ei->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context->mailbox, ei, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context->mailbox, ei,
+                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
         mutt_endwin();
@@ -887,7 +888,8 @@ void crypt_extract_keys_from_messages(struct Email *e)
     {
       if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context->mailbox, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context->mailbox, e,
+                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
         mutt_endwin();
         puts(_("Trying to extract PGP keys...\n"));

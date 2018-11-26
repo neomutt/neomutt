@@ -379,8 +379,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
        * even when they aren't needed.
        */
 
-      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) &&
-          (strcmp(buf, tmp) == 0))
+      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) && (strcmp(buf, tmp) == 0))
       {
         snprintf(buf, sizeof(buf), "\"%s\"", tmp);
       }

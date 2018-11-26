@@ -1666,13 +1666,11 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
 
   if (up && (a = match_threadcomplete(pat, flags, m, t->parent, 1, 1, 1, 0)))
     return a;
-  if (right && t->parent &&
-      (a = match_threadcomplete(pat, flags, m, t->next, 0, 0, 1, 1)))
+  if (right && t->parent && (a = match_threadcomplete(pat, flags, m, t->next, 0, 0, 1, 1)))
   {
     return a;
   }
-  if (left && t->parent &&
-      (a = match_threadcomplete(pat, flags, m, t->prev, 1, 0, 0, 1)))
+  if (left && t->parent && (a = match_threadcomplete(pat, flags, m, t->prev, 1, 0, 0, 1)))
   {
     return a;
   }
@@ -1755,8 +1753,8 @@ static int match_content_type(const struct Pattern *pat, struct Body *b)
  * @retval  1 Success, pattern matched
  * @retval  0 Pattern did not match
  */
-static int match_mime_content_type(const struct Pattern *pat,
-                                   struct Mailbox *m, struct Email *e)
+static int match_mime_content_type(const struct Pattern *pat, struct Mailbox *m,
+                                   struct Email *e)
 {
   mutt_parse_mime_message(m, e);
   return match_content_type(pat, e->content);
@@ -2288,16 +2286,19 @@ int mutt_pattern_func(int op, char *prompt)
         switch (op)
         {
           case MUTT_UNDELETE:
-            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox,
+                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_PURGE, 0);
           /* fallthrough */
           case MUTT_DELETE:
-            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox,
+                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_DELETE, (op == MUTT_DELETE));
             break;
           case MUTT_TAG:
           case MUTT_UNTAG:
-            mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+            mutt_set_flag(Context->mailbox,
+                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
                           MUTT_TAG, (op == MUTT_TAG));
             break;
         }
@@ -2459,8 +2460,8 @@ int mutt_search_command(int cur, int op)
     {
       /* remember that we've already searched this message */
       e->searched = true;
-      e->matched =
-          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context->mailbox, e, NULL);
+      e->matched = mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS,
+                                     Context->mailbox, e, NULL);
       if (e->matched > 0)
       {
         mutt_clear_error();

@@ -2416,8 +2416,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
   {
     if (cur && ctx)
       mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
-    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox &&
-             ctx->mailbox->msg_tagged)
+    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox && ctx->mailbox->msg_tagged)
     {
       for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
