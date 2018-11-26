@@ -5564,8 +5564,9 @@ save-hook aol\\.com$ +spam
       <note>
         <para>
           <command>send-hook</command>'s are only executed once after getting the
-          initial list of recipients. Adding a recipient after replying or
-          editing the message will not cause any
+          initial list of recipients. They are not executed when resuming a
+          postponed draft. Adding a recipient after replying or editing the
+          message will not cause any
           <command>send-hook</command> to be executed, similarly if
           <link linkend="autoedit">$autoedit</link> is set (as then the initial
           list of recipients is empty). Also note that
@@ -8024,8 +8025,49 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           </itemizedlist>
           <para>
             <emphasis>offset</emphasis> is specified as a positive number with
-            one of the units from <xref linkend="tab-date-units" />.
+            one of the units from <xref linkend="tab-rel-date-units" />.
           </para>
+          <table id="tab-rel-date-units">
+            <title>Relative date units</title>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Unit</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>y</entry>
+                  <entry>Years</entry>
+                </row>
+                <row>
+                  <entry>m</entry>
+                  <entry>Months</entry>
+                </row>
+                <row>
+                  <entry>w</entry>
+                  <entry>Weeks</entry>
+                </row>
+                <row>
+                  <entry>d</entry>
+                  <entry>Days</entry>
+                </row>
+                <row>
+                  <entry>H</entry>
+                  <entry>Hours</entry>
+                </row>
+                <row>
+                  <entry>M</entry>
+                  <entry>Minutes</entry>
+                </row>
+                <row>
+                  <entry>S</entry>
+                  <entry>Seconds</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
           <para>
             Example: to select messages less than 1 month old, you would use
           </para>
@@ -10777,6 +10819,39 @@ set timeout=15
         <link linkend="smtp-authenticators">$smtp_authenticators</link>
         defaulting to an empty list which makes NeoMutt try all available
         methods from most-secure to least-secure.
+      </para>
+    </sect1>
+
+    <sect1 id="oauth">
+      <title>OAUTHBEARER Support</title>
+      <para>
+        Preliminary OAUTH support for IMAP, POP, and SMTP is provided via external scripts.
+      </para>
+      <para>
+        At least for Gmail, you can use the <literal>oauth2.py</literal>script
+        from Google's gmail-oauth2-tools:
+        <ulink url="https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py">https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py</ulink>
+      </para>
+      <para>
+        You'll need to get your own oauth client credentials for Gmail here: 
+        <ulink url="https://console.developers.google.com/apis/credentials">https://console.developers.google.com/apis/credentials</ulink>
+      </para>
+      <para>
+        Then, you'd use <literal>oauth2.py</literal> with
+        <literal>--generate_oauth2_token</literal> to get a refresh token, and
+        configure mutt with:
+      </para>
+
+<screen>
+set imap_authenticators="oauthbearer"
+set imap_oauth_refresh_command="/path/to/oauth2.py --quiet --user=[email_address]\
+    --client_id=[client_id] --client_secret=[client_secret]\
+    --refresh_token=[refresh_token]"
+</screen>
+
+      <para>
+        Substitute pop or smtp for imap in the above example to configure for
+        those.
       </para>
     </sect1>
 

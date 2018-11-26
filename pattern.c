@@ -199,11 +199,13 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (mutt_extract_token(&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 || !buf.data)
   {
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
+    FREE(&buf.data);
     return false;
   }
   if (!*buf.data)
   {
     mutt_buffer_printf(err, "%s", _("Empty expression"));
+    FREE(&buf.data);
     return false;
   }
 
@@ -269,6 +271,15 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
       break;
     case 'd':
       tm->tm_mday += offset;
+      break;
+    case 'H':
+      tm->tm_hour += offset;
+      break;
+    case 'M':
+      tm->tm_min += offset;
+      break;
+    case 'S':
+      tm->tm_sec += offset;
       break;
     default:
       return s;
@@ -467,19 +478,21 @@ static void adjust_date_range(struct tm *min, struct tm *max)
  */
 static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer buffer;
+  struct Buffer buf;
   struct tm min, max;
+  char *offset_type = NULL;
 
-  mutt_buffer_init(&buffer);
+  mutt_buffer_init(&buf);
   char *pexpr = s->dptr;
-  if (mutt_extract_token(&buffer, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0 ||
-      !buffer.data)
+  if ((mutt_extract_token(&buf, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0) || !buf.data)
   {
+    FREE(&buf.data);
     mutt_buffer_printf(err, _("Error in expression: %s"), pexpr);
     return false;
   }
-  if (!*buffer.data)
+  if (!*buf.data)
   {
+    FREE(&buf.data);
     mutt_buffer_printf(err, "%s", _("Empty expression"));
     return false;
   }
@@ -503,7 +516,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   max.tm_min = 59;
   max.tm_sec = 59;
 
-  if (strchr("<>=", buffer.data[0]))
+  if (strchr("<>=", buf.data[0]))
   {
     /* offset from current time
        <3d      less than three days ago
@@ -513,7 +526,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     struct tm *tm = localtime(&now);
     int exact = 0;
 
-    if (buffer.data[0] == '<')
+    if (buf.data[0] == '<')
     {
       memcpy(&min, tm, sizeof(min));
       tm = &min;
@@ -523,15 +536,22 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       memcpy(&max, tm, sizeof(max));
       tm = &max;
 
-      if (buffer.data[0] == '=')
+      if (buf.data[0] == '=')
         exact++;
     }
-    tm->tm_hour = 23;
-    tm->tm_min = 59;
-    tm->tm_sec = 59;
+
+    /* Reset the HMS unless we are relative matching using one of those
+     * offsets. */
+    strtol(s->data + 1, &offset_type, 0);
+    if (!(*offset_type && strchr("HMS", *offset_type)))
+    {
+      tm->tm_hour = 23;
+      tm->tm_min = 59;
+      tm->tm_sec = 59;
+    }
 
     /* force negative offset */
-    get_offset(tm, buffer.data + 1, -1);
+    get_offset(tm, buf.data + 1, -1);
 
     if (exact)
     {
@@ -544,7 +564,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else
   {
-    const char *pc = buffer.data;
+    const char *pc = buf.data;
 
     bool have_min = false;
     int until_now = false;
@@ -554,7 +574,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       pc = get_date(pc, &min, err);
       if (!pc)
       {
-        FREE(&buffer.data);
+        FREE(&buf.data);
         return false;
       }
       have_min = true;
@@ -591,7 +611,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
       if (!parse_date_range(pc, &min, &max, have_min, &base_min, err))
       { /* bail out on any parsing error */
-        FREE(&buffer.data);
+        FREE(&buf.data);
         return false;
       }
     }
@@ -603,7 +623,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   pat->min = mutt_date_make_time(&min, 1);
   pat->max = mutt_date_make_time(&max, 1);
 
-  FREE(&buffer.data);
+  FREE(&buf.data);
 
   return true;
 }

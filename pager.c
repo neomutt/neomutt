@@ -27,6 +27,7 @@
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -247,6 +248,26 @@ static int check_sig(const char *s, struct Line *info, int n)
 }
 
 /**
+ * comp_syntax_t - Search for a Syntax using bsearch
+ * @param m1 Search key
+ * @param m2 Array member
+ * @retval -1 m1 precedes m2
+ * @retval  0 m1 matches m2
+ * @retval  1 m2 precedes m1
+ */
+static int comp_syntax_t(const void *m1, const void *m2)
+{
+  const int *cnt = (const int *) m1;
+  const struct Syntax *stx = (const struct Syntax *) m2;
+
+  if (*cnt < stx->first)
+    return -1;
+  if (*cnt >= stx->last)
+    return 1;
+  return 0;
+}
+
+/**
  * resolve_color - Set the colour for a line of text
  * @param line_info Line info array
  * @param n         Line Number (index into line_info)
@@ -263,6 +284,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   static int last_color; /* last color set */
   bool search = false;
   int m;
+  struct Syntax *matching_chunk = NULL;
 
   if (!cnt)
     last_color = -1; /* force attrset() */
@@ -308,39 +330,26 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   }
 
   color = def_color;
-  if (flags & MUTT_SHOWCOLOR)
+  if ((flags & MUTT_SHOWCOLOR) && line_info[m].chunks)
   {
-    for (int i = 0; i < line_info[m].chunks; i++)
+    matching_chunk = bsearch(&cnt, line_info[m].syntax, line_info[m].chunks,
+                             sizeof(struct Syntax), comp_syntax_t);
+    if (matching_chunk && (cnt >= matching_chunk->first) &&
+        (cnt < matching_chunk->last))
     {
-      /* we assume the chunks are sorted */
-      if (cnt > (line_info[m].syntax)[i].last)
-        continue;
-      if (cnt < (line_info[m].syntax)[i].first)
-        break;
-      if (cnt != (line_info[m].syntax)[i].last)
-      {
-        color = (line_info[m].syntax)[i].color;
-        break;
-      }
-      /* don't break here, as cnt might be
-       * in the next chunk as well */
+      color = matching_chunk->color;
     }
   }
 
-  if (flags & MUTT_SEARCH)
+  if ((flags & MUTT_SEARCH) && line_info[m].search_cnt)
   {
-    for (int i = 0; i < line_info[m].search_cnt; i++)
+    matching_chunk = bsearch(&cnt, line_info[m].search, line_info[m].search_cnt,
+                             sizeof(struct Syntax), comp_syntax_t);
+    if (matching_chunk && (cnt >= matching_chunk->first) &&
+        (cnt < matching_chunk->last))
     {
-      if (cnt > (line_info[m].search)[i].last)
-        continue;
-      if (cnt < (line_info[m].search)[i].first)
-        break;
-      if (cnt != (line_info[m].search)[i].last)
-      {
-        color = ColorDefs[MT_COLOR_SEARCH];
-        search = true;
-        break;
-      }
+      color = ColorDefs[MT_COLOR_SEARCH];
+      search = 1;
     }
   }
 
@@ -1431,14 +1440,6 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       if (wc == ' ')
       {
         space = ch;
-      }
-      /* no-break space, narrow no-break space */
-      else if (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F))
-      {
-        /* Convert non-breaking space to normal space. The local variable
-         * `space' is not set here so that the caller of this function won't
-         * attempt to wrap at this character. */
-        wc = ' ';
       }
       t = wcwidth(wc);
       if (col + t > wrap_cols)

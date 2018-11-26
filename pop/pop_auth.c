@@ -90,6 +90,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
         1, "Failure starting authentication exchange. No shared mechanisms?\n");
 
     /* SASL doesn't support suggested mechanisms, so fall back */
+    sasl_dispose(&saslconn);
     return POP_A_UNAVAIL;
   }
 

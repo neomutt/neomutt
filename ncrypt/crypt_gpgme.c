@@ -1538,6 +1538,9 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     }
     else
     {
+      /* L10N: You will see this message in place of "KeyID "
+         if the S/MIME key has no ID. This is quite an error.
+       */
       state_puts(_("no signature fingerprint available"), s);
     }
     state_puts("\n", s);
