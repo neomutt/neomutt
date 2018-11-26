@@ -210,6 +210,26 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 }
 
 /**
+ * mutt_buffer_fix_dptr - Move the dptr to end of the Buffer
+ * @param buf Buffer to alter
+ *
+ * Ensure buffer->dptr points to the end of the buffer.
+ */
+void mutt_buffer_fix_dptr(struct Buffer *buf)
+{
+  if (!buf)
+    return;
+
+  buf->dptr = buf->data;
+
+  if (buf->data)
+  {
+    buf->data[buf->dsize - 1] = '\0';
+    buf->dptr = strchr(buf->data, '\0');
+  }
+}
+
+/**
  * mutt_buffer_add_printf - Format a string appending a Buffer
  * @param buf Buffer
  * @param fmt printf-style format string
