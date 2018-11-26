@@ -894,6 +894,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                           bool *force_redraw, bool q_classify)
 {
   struct ColorLine *color_line = NULL;
+  struct ColorLineHead *head = NULL;
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;
@@ -1012,6 +1013,14 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     i = 0;
     offset = 0;
     line_info[n].chunks = 0;
+    if (line_info[n].type == MT_COLOR_HDEFAULT)
+      head = &ColorHdrList;
+    else
+      head = &ColorBodyList;
+    STAILQ_FOREACH(color_line, head, entries)
+    {
+      color_line->stop_matching = false;
+    }
     do
     {
       if (!buf[offset])
@@ -1019,15 +1028,10 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
       found = false;
       null_rx = false;
-      struct ColorLineHead *head = NULL;
-      if (line_info[n].type == MT_COLOR_HDEFAULT)
-        head = &ColorHdrList;
-      else
-        head = &ColorBodyList;
       STAILQ_FOREACH(color_line, head, entries)
       {
-        if (regexec(&color_line->regex, buf + offset, 1, pmatch,
-                    (offset ? REG_NOTBOL : 0)) == 0)
+        if (!color_line->stop_matching && regexec(&color_line->regex, buf + offset, 1, pmatch,
+                                                  (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1062,6 +1066,13 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
           }
           else
             null_rx = true; /* empty regex; don't add it, but keep looking */
+        }
+        else
+        {
+          /* Once a regexp fails to match, don't try matching it again.
+           * On very long lines this can cause a performance issue if there
+           * are other regexps that have many matches. */
+          color_line->stop_matching = true;
         }
       }
 
