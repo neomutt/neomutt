@@ -50,7 +50,8 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (!db_filename && !Folder)
     return NULL;
 
-  db_filename = Folder;
+  if (!db_filename)
+    db_filename = Folder;
 
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
     db_filename += NmUriProtocolLen;
