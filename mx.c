@@ -296,6 +296,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+
   for (int i = 0; i < RIGHTSMAX; i++)
     mutt_bit_set(m->rights, i);
 
