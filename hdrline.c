@@ -58,17 +58,17 @@ struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in
  */
 enum FlagChars
 {
-  FlagCharTagged,
-  FlagCharImportant,
-  FlagCharDeleted,
-  FlagCharDeletedAttach,
-  FlagCharReplied,
-  FlagCharOld,
-  FlagCharNew,
-  FlagCharOldThread,
-  FlagCharNewThread,
-  FlagCharSEmpty,
-  FlagCharZEmpty
+  FLAG_CHAR_TAGGED,
+  FLAG_CHAR_IMPORTANT,
+  FLAG_CHAR_DELETED,
+  FLAG_CHAR_DELETED_ATTACH,
+  FLAG_CHAR_REPLIED,
+  FLAG_CHAR_OLD,
+  FLAG_CHAR_NEW,
+  FLAG_CHAR_OLD_THREAD,
+  FLAG_CHAR_NEW_THREAD,
+  FLAG_CHAR_SEMPTY,
+  FLAG_CHAR_ZEMPTY
 };
 
 /**
@@ -1126,21 +1126,21 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'S':
       if (e->deleted)
-        wch = get_nth_wchar(FlagChars, FlagCharDeleted);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
-        wch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if (e->tagged)
-        wch = get_nth_wchar(FlagChars, FlagCharTagged);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
       else if (e->flagged)
-        wch = get_nth_wchar(FlagChars, FlagCharImportant);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
       else if (e->replied)
-        wch = get_nth_wchar(FlagChars, FlagCharReplied);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
       else if (e->read && (ctx && ctx->msgnotreadyet != e->msgno))
-        wch = get_nth_wchar(FlagChars, FlagCharSEmpty);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_SEMPTY);
       else if (e->old)
-        wch = get_nth_wchar(FlagChars, FlagCharOld);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
       else
-        wch = get_nth_wchar(FlagChars, FlagCharNew);
+        wch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
 
       snprintf(tmp, sizeof(tmp), "%s", wch);
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
@@ -1280,26 +1280,26 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if (e->deleted)
-          ch = get_nth_wchar(FlagChars, FlagCharDeleted);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
         else if (e->attach_del)
-          ch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
         else if (threads && thread_is_new(ctx, e))
-          ch = get_nth_wchar(FlagChars, FlagCharNewThread);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW_THREAD);
         else if (threads && thread_is_old(ctx, e))
-          ch = get_nth_wchar(FlagChars, FlagCharOldThread);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD_THREAD);
         else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
         {
           if (e->replied)
-            ch = get_nth_wchar(FlagChars, FlagCharReplied);
+            ch = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
           else
-            ch = get_nth_wchar(FlagChars, FlagCharZEmpty);
+            ch = get_nth_wchar(FlagChars, FLAG_CHAR_ZEMPTY);
         }
         else
         {
           if (e->old)
-            ch = get_nth_wchar(FlagChars, FlagCharOld);
+            ch = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
           else
-            ch = get_nth_wchar(FlagChars, FlagCharNew);
+            ch = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
         }
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
@@ -1328,9 +1328,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if (e->tagged)
-          ch = get_nth_wchar(FlagChars, FlagCharTagged);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
         else if (e->flagged)
-          ch = get_nth_wchar(FlagChars, FlagCharImportant);
+          ch = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
         else
           ch = get_nth_wchar(ToChars, user_is_recipient(e));
 
@@ -1350,30 +1350,30 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* New/Old for threads; replied; New/Old for messages */
       const char *first = NULL;
       if (threads && thread_is_new(ctx, e))
-        first = get_nth_wchar(FlagChars, FlagCharNewThread);
+        first = get_nth_wchar(FlagChars, FLAG_CHAR_NEW_THREAD);
       else if (threads && thread_is_old(ctx, e))
-        first = get_nth_wchar(FlagChars, FlagCharOldThread);
+        first = get_nth_wchar(FlagChars, FLAG_CHAR_OLD_THREAD);
       else if (e->read && (ctx && (ctx->msgnotreadyet != e->msgno)))
       {
         if (e->replied)
-          first = get_nth_wchar(FlagChars, FlagCharReplied);
+          first = get_nth_wchar(FlagChars, FLAG_CHAR_REPLIED);
         else
-          first = get_nth_wchar(FlagChars, FlagCharZEmpty);
+          first = get_nth_wchar(FlagChars, FLAG_CHAR_ZEMPTY);
       }
       else
       {
         if (e->old)
-          first = get_nth_wchar(FlagChars, FlagCharOld);
+          first = get_nth_wchar(FlagChars, FLAG_CHAR_OLD);
         else
-          first = get_nth_wchar(FlagChars, FlagCharNew);
+          first = get_nth_wchar(FlagChars, FLAG_CHAR_NEW);
       }
 
       /* Marked for deletion; deleted attachments; crypto */
       const char *second = NULL;
       if (e->deleted)
-        second = get_nth_wchar(FlagChars, FlagCharDeleted);
+        second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED);
       else if (e->attach_del)
-        second = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
+        second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if ((WithCrypto != 0) && (e->security & GOODSIGN))
         second = "S";
       else if ((WithCrypto != 0) && (e->security & ENCRYPT))
@@ -1388,9 +1388,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* Tagged, flagged and recipient flag */
       const char *third = NULL;
       if (e->tagged)
-        third = get_nth_wchar(FlagChars, FlagCharTagged);
+        third = get_nth_wchar(FlagChars, FLAG_CHAR_TAGGED);
       else if (e->flagged)
-        third = get_nth_wchar(FlagChars, FlagCharImportant);
+        third = get_nth_wchar(FlagChars, FLAG_CHAR_IMPORTANT);
       else
         third = get_nth_wchar(ToChars, user_is_recipient(e));
 
