@@ -1305,7 +1305,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
   adata->closing = false;
 
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
 
   if (mdata && mdata->reopen & IMAP_REOPEN_ALLOW)
   {
