@@ -239,7 +239,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'p':
-      count = mutt_num_postponed(false);
+      count = mutt_num_postponed(Context ? Context->mailbox : NULL, false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
