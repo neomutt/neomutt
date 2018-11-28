@@ -65,7 +65,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, bool mu
                        char ***files, int *numfiles, struct EnterState *state);
 int mutt_get_postponed(struct Context *ctx, struct Email *e, struct Email **cur, char *fcc, size_t fcclen);
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
-int mutt_num_postponed(bool force);
+int mutt_num_postponed(struct Mailbox *m, bool force);
 int mutt_thread_set_flag(struct Email *e, int flag, int bf, int subthread);
 void mutt_update_num_postponed(void);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);

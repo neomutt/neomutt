@@ -77,12 +77,13 @@ static short UpdateNumPostponed = 0;
 
 /**
  * mutt_num_postponed - Return the number of postponed messages
+ * @param m    currently selected mailbox
  * @param force
  * * false Use a cached value if costly to get a fresh count (IMAP)
  * * true Force check
  * @retval num Postponed messages
  */
-int mutt_num_postponed(bool force)
+int mutt_num_postponed(struct Mailbox *m, bool force)
 {
   struct stat st;
 
@@ -105,6 +106,13 @@ int mutt_num_postponed(bool force)
 
   if (!Postponed)
     return 0;
+
+  // We currently are in the Postponed mailbox so just pick the current status
+  if (m && mutt_str_strcmp(Postponed, m->realpath) == 0)
+  {
+    PostCount = m->msg_count - m->msg_deleted;
+    return PostCount;
+  }
 
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
