@@ -542,7 +542,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
     /* Reset the HMS unless we are relative matching using one of those
      * offsets. */
-    strtol(s->data + 1, &offset_type, 0);
+    strtol(buf.data + 1, &offset_type, 0);
     if (!(*offset_type && strchr("HMS", *offset_type)))
     {
       tm->tm_hour = 23;
