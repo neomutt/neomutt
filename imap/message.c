@@ -1009,7 +1009,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
   FILE *fp = NULL;
   struct ImapHeader h;
   static const char *const want_headers =
-      "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
+      "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
       "X-ORIGINAL-TO";
 
