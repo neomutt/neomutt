@@ -788,8 +788,9 @@ char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *pa
 {
   int i = 0;
   char delim = '\0';
+  bool use_account_delim = (adata && adata->delim != '\0');
 
-  if (adata)
+  if (use_account_delim)
     delim = adata->delim;
 
   while (mailbox && *mailbox && i < plen - 1)
@@ -797,7 +798,7 @@ char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *pa
     if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) || (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!adata)
+      if (!use_account_delim)
         delim = *mailbox;
 
       while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
