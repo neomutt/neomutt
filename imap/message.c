@@ -1364,7 +1364,6 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
     /* TODO: it's not clear to me why we are calling mx_alloc_memory
      *       yet again. */
     mx_alloc_memory(m);
-    mx_update_context(adata->ctx, m->msg_count - oldmsgcount);
   }
 
   mdata->reopen |= IMAP_REOPEN_ALLOW;

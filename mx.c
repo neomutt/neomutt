@@ -296,6 +296,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
 
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+
   for (int i = 0; i < RIGHTSMAX; i++)
     mutt_bit_set(m->rights, i);
 
@@ -364,8 +367,10 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   if (!m->quiet)
     mutt_message(_("Reading %s..."), m->path);
 
-  int rc = m->mx_ops->mbox_open(ctx);
+  int rc = m->mx_ops->mbox_open(ctx->mailbox, ctx);
   m->opened++;
+  if (rc == 0)
+    mx_update_context(ctx, ctx->mailbox->msg_count);
 
   if ((rc == 0) || (rc == -2))
   {

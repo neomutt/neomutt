@@ -495,12 +495,10 @@ int comp_ac_add(struct Account *a, struct Mailbox *m)
  * Then determine the type of the mailbox so we can delegate the handling of
  * messages.
  */
-static int comp_mbox_open(struct Context *ctx)
+static int comp_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox || (ctx->mailbox->magic != MUTT_COMPRESSED))
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct CompressInfo *ci = set_compress_info(m);
   if (!ci)
@@ -541,7 +539,7 @@ static int comp_mbox_open(struct Context *ctx)
   }
 
   m->account->magic = m->magic;
-  return ci->child_ops->mbox_open(ctx);
+  return ci->child_ops->mbox_open(m, ctx);
 
 cmo_fail:
   /* remove the partial uncompressed file */

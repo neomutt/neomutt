@@ -1125,9 +1125,8 @@ static bool read_threads_query(struct Mailbox *m, notmuch_query_t *q, bool dedup
     return false;
 
   notmuch_threads_t *threads = get_threads(q);
-
   if (!threads)
-    return NULL;
+    return false;
 
   for (; notmuch_threads_valid(threads) && ((limit == 0) || (m->msg_count < limit));
        notmuch_threads_move_to_next(threads))
@@ -2126,15 +2125,8 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
 /**
  * nm_mbox_open - Implements MxOps::mbox_open()
  */
-static int nm_mbox_open(struct Context *ctx)
+static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox)
-    return -1;
-
-  struct Mailbox *m = ctx->mailbox;
-
-  int rc = -1;
-
   if (init_mailbox(m) != 0)
     return -1;
 
@@ -2154,6 +2146,8 @@ static int nm_mbox_open(struct Context *ctx)
     m->vcount = 0;
     mx_alloc_memory(m);
   }
+
+  int rc = -1;
 
   notmuch_query_t *q = get_query(m, false);
   if (q)
@@ -2179,7 +2173,6 @@ static int nm_mbox_open(struct Context *ctx)
   m->mtime.tv_sec = time(NULL);
   m->mtime.tv_nsec = 0;
 
-  mx_update_context(ctx, m->msg_count);
   mdata->oldmsgcount = 0;
 
   mutt_debug(1, "nm: reading messages... done [rc=%d, count=%d]\n", rc, m->msg_count);

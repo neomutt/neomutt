@@ -152,16 +152,16 @@ cleanup:
 
 /**
  * maildir_read_dir - Read a Maildir style mailbox
- * @param ctx Mailbox
+ * @param m   Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int maildir_read_dir(struct Context *ctx)
+static int maildir_read_dir(struct Mailbox *m)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages
    */
-  if ((mh_read_dir(ctx, "new") == -1) || (mh_read_dir(ctx, "cur") == -1))
+  if ((mh_read_dir(m, "new") == -1) || (mh_read_dir(m, "cur") == -1))
     return -1;
 
   return 0;
@@ -298,9 +298,9 @@ cleanup:
 /**
  * maildir_mbox_open - Implements MxOps::mbox_open()
  */
-static int maildir_mbox_open(struct Context *ctx)
+static int maildir_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  return maildir_read_dir(ctx);
+  return maildir_read_dir(m);
 }
 
 /**
@@ -378,7 +378,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
   bool occult = false;        /* messages were removed from the mailbox */
-  int have_new = 0;           /* messages were added to the mailbox */
+  int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
   struct Maildir **last = NULL, *p = NULL;
@@ -528,13 +528,15 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   maildir_delayed_parsing(m, &md, NULL);
 
   /* Incorporate new messages */
-  have_new = maildir_move_to_context(ctx, &md);
+  num_new = maildir_move_to_context(m, &md);
+  if (num_new > 0)
+    mx_update_context(ctx, num_new);
 
   mutt_buffer_pool_release(&buf);
 
   if (occult)
     return MUTT_REOPENED;
-  if (have_new)
+  if (num_new > 0)
     return MUTT_NEW_MAIL;
   if (flags_changed)
     return MUTT_FLAGS;
