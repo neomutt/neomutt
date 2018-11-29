@@ -343,8 +343,6 @@ int imap_prepare_mailbox(struct Mailbox *m)
   struct ImapMboxData *mdata;
   struct ImapAccountData *adata = m->account->adata;
 
-  mutt_account_hook(m->realpath);
-
   if (!m->mdata)
   {
     struct Url *url = url_parse(m->path);
@@ -353,9 +351,6 @@ int imap_prepare_mailbox(struct Mailbox *m)
     m->free_mdata = imap_mdata_free;
     url_free(&url);
   }
-
-  if (imap_login(adata) < 0)
-    return -1;
 
   return 0;
 }
@@ -1897,6 +1892,11 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     adata->conn_account = conn_account;
     adata->conn = mutt_conn_new(&conn_account);
     if (!adata->conn)
+      return -1;
+
+    mutt_account_hook(m->realpath);
+
+    if (imap_login(adata) < 0)
       return -1;
 
     a->magic = MUTT_IMAP;
