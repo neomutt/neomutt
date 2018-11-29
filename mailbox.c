@@ -525,9 +525,16 @@ int mutt_parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 #ifdef USE_INOTIFY
         mutt_monitor_remove(np->m);
 #endif
-        mx_ac_remove(np->m);
+        if (Context->mailbox == np->m)
+        {
+          np->m->flags |= MB_HIDDEN;
+        }
+        else
+        {
+          mx_ac_remove(np->m);
+          mailbox_free(&np->m);
+        }
         STAILQ_REMOVE(&AllMailboxes, np, MailboxNode, entries);
-        mailbox_free(&np->m);
         FREE(&np);
         continue;
       }
