@@ -174,17 +174,15 @@ static void mbox_unlock_mailbox(struct Mailbox *m)
 
 /**
  * mmdf_parse_mailbox - Read a mailbox in MMDF format
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Failure
  * @retval -2 Aborted
  */
-static int mmdf_parse_mailbox(struct Context *ctx)
+static int mmdf_parse_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -335,7 +333,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
 /**
  * mbox_parse_mailbox - Read a mailbox from disk
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error
  * @retval -2 Aborted
@@ -346,12 +344,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
  * NOTE: it is assumed that the mailbox being read has been locked before this
  * routine gets called.  Strange things could happen if it's not!
  */
-static int mbox_parse_mailbox(struct Context *ctx)
+static int mbox_parse_mailbox(struct Mailbox *m)
 {
-  if (!ctx || !ctx->mailbox)
+  if (!m)
     return -1;
-
-  struct Mailbox *m = ctx->mailbox;
 
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -641,9 +637,9 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       if (!adata->fp)
         rc = -1;
       else if (m->magic == MUTT_MBOX)
-        rc = mbox_parse_mailbox(ctx);
+        rc = mbox_parse_mailbox(m);
       else
-        rc = mmdf_parse_mailbox(ctx);
+        rc = mmdf_parse_mailbox(m);
       break;
 
     default:
@@ -960,9 +956,9 @@ static int mbox_mbox_open(struct Mailbox *m, struct Context *ctx)
 
   int rc;
   if (m->magic == MUTT_MBOX)
-    rc = mbox_parse_mailbox(ctx);
+    rc = mbox_parse_mailbox(m);
   else if (m->magic == MUTT_MMDF)
-    rc = mmdf_parse_mailbox(ctx);
+    rc = mmdf_parse_mailbox(m);
   else
     rc = -1;
   mutt_file_touch_atime(fileno(adata->fp));
@@ -1029,7 +1025,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
   if (!adata->fp)
   {
-    if (mbox_mbox_open(m, ctx) < 0)
+    if (mbox_mbox_open(m, NULL) < 0)
       return -1;
     mx_update_context(ctx);
   }
@@ -1089,9 +1085,9 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
 
           int old_msg_count = m->msg_count;
           if (m->magic == MUTT_MBOX)
-            mbox_parse_mailbox(ctx);
+            mbox_parse_mailbox(m);
           else
-            mmdf_parse_mailbox(ctx);
+            mmdf_parse_mailbox(m);
 
           if (m->msg_count > old_msg_count)
             mx_update_context(ctx);
