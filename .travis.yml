@@ -1,12 +1,7 @@
 notifications:
-  email:
-    recipients:
-      - rich@flatcap.org
-    on_success: change
-    on_failure: always
+  email: false
 
-sudo: false
-dist: trusty
+dist: xenial
 
 language: c
 compiler: gcc
