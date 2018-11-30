@@ -321,6 +321,11 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
   */
+  { "attach_save_dir",  DT_PATH, R_NONE, &AttachSaveDir, IP "./" },
+  /*
+  ** .pp
+  ** The directory where attachments are saved.
+  */
   { "attach_sep",       DT_STRING,  R_NONE, &AttachSep, IP "\n" },
   /*
   ** .pp

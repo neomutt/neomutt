@@ -64,6 +64,7 @@
 #endif
 
 /* These Config Variables are only used in recvattach.c */
+char *AttachSaveDir; ///< Config: Default directory where attachments are saved
 char *AttachSep; ///< Config: Separator to add between saved/printed/piped attachments
 bool AttachSplit;    ///< Config: Save/print/pipe tagged messages individually
 bool DigestCollapse; ///< Config: Hide the subparts of a multipart/digest
@@ -441,26 +442,34 @@ int attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * prepend_curdir - Add './' to the beginning of a path
- * @param buf    Buffer for the result
+ * prepend_savedir - Add AttachSaveDir to the beginning of a path
+ * @param buf    Buffer for the result, must be valid
  * @param buflen Size of the buffer
  */
-static void prepend_curdir(char *buf, size_t buflen)
+static void prepend_savedir(char *buf, size_t bufsize)
 {
-  if (!buf || !*buf || (*buf == '/') || (buflen < 3) ||
-      /* XXX bad modularization, these are special to mutt_expand_path() */
-      !strchr("~=+@<>!-^", *buf))
+  const char *savedir = AttachSaveDir;
+
+  if (!savedir || !*savedir)
+    savedir = "./";
+
+  size_t savedirlen = strlen(savedir);
+  size_t buflen = strlen(buf);
+  bool addsep = (savedir[savedirlen - 1] != '/');
+  size_t newbuflen = savedirlen + buflen + addsep;
+
+  if (bufsize < newbuflen)
   {
     return;
   }
 
-  buflen -= 3;
-  size_t l = strlen(buf) + 2;
-  l = (l > buflen ? buflen : l);
-  memmove(buf + 2, buf, l);
-  buf[0] = '.';
-  buf[1] = '/';
-  buf[l + 2] = 0;
+  memmove(buf + savedirlen + addsep, buf, buflen);
+  memcpy(buf, savedir, savedirlen);
+  if (addsep)
+  {
+    buf[savedirlen] = '/';
+  }
+  buf[newbuflen] = '\0';
 }
 
 /**
@@ -496,12 +505,12 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   else
     buf[0] = 0;
 
-  prepend_curdir(buf, sizeof(buf));
+  prepend_savedir(buf, sizeof(buf));
 
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 || !buf[0])
+    if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_FILE) != 0 || !buf[0])
     {
       mutt_clear_error();
       return -1;
@@ -592,9 +601,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           int append = 0;
 
           mutt_str_strfcpy(buf, mutt_path_basename(NONULL(top->filename)), sizeof(buf));
-          prepend_curdir(buf, sizeof(buf));
+          prepend_savedir(buf, sizeof(buf));
 
-          if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||
+          if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0 ||
               !buf[0])
           {
             return;
