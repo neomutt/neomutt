@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include "nntp_private.h"
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -1227,8 +1228,7 @@ static int parse_overview_line(char *line, void *data)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first,
-                              anum_t last, bool restore)
+static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t last, bool restore)
 {
   if (!m)
     return -1;

@@ -45,8 +45,9 @@
 #include "mx.h"
 
 struct ConnAccount;
-struct Email;
 struct Context;
+struct Mailbox;
+struct stat;
 
 /* These Config Variables are only used in nntp/nntp.c */
 extern char *NntpAuthenticators;
@@ -59,6 +60,9 @@ extern bool  ShowNewNews;
 /* These Config Variables are only used in nntp/newsrc.c */
 extern char *NewsCacheDir;
 extern char *Newsrc;
+
+extern struct NntpAccountData *CurrentNewsSrv;
+extern struct MxOps mx_nntp_ops;
 
 /* article number type and format */
 #define anum_t uint32_t
@@ -165,18 +169,9 @@ void nntp_newsrc_close(struct NntpAccountData *adata);
 void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen);
 void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
 void nntp_clear_cache(struct NntpAccountData *adata);
-const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                            const char *src, const char *prec, const char *if_str,
-                            const char *else_str, unsigned long data, enum FormatFlag flags);
-
-void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t anum);
-
-extern struct NntpAccountData *CurrentNewsSrv;
-
+const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, enum FormatFlag flags);
 int nntp_compare_order(const void *a, const void *b);
 int nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, unsigned long data, enum FormatFlag flags);
-
-extern struct MxOps mx_nntp_ops;
 
 #endif /* MUTT_NNTP_NNTP_H */
