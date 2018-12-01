@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include "nntp_private.h"
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -53,7 +54,6 @@
 #include "mutt_socket.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "nntp.h"
 #include "protos.h"
 #include "sort.h"
