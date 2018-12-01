@@ -538,7 +538,7 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
   int chflags = CH_DECODE, cmflags = 0;
 
   mutt_parse_mime_message(ctx->mailbox, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
   {
@@ -627,7 +627,7 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
   }
 
   mutt_parse_mime_message(ctx->mailbox, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(ctx, cur, out);
 
@@ -1757,7 +1757,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
     if ((flags & SEND_REPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(ctx, cur, MUTT_REPLY_HOOK);
+      mutt_message_hook(ctx->mailbox, cur, MUTT_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also

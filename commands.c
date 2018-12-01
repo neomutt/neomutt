@@ -104,7 +104,7 @@ int mutt_display_message(struct Email *cur)
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(cur->content), cur->content->subtype);
 
   mutt_parse_mime_message(Context->mailbox, cur);
-  mutt_message_hook(Context, cur, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(Context->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && cur->security)
@@ -445,13 +445,16 @@ static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
 static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
                         bool split, const char *sep)
 {
+  if (!Context)
+    return 1;
+
   int rc = 0;
   pid_t thepid;
   FILE *fpout = NULL;
 
   if (e)
   {
-    mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
 
     if ((WithCrypto != 0) && decode)
     {
@@ -484,7 +487,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         mutt_parse_mime_message(Context->mailbox, Context->mailbox->hdrs[i]);
         if (Context->mailbox->hdrs[i]->security & ENCRYPT &&
             !crypt_valid_passphrase(Context->mailbox->hdrs[i]->security))
@@ -501,7 +504,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -535,7 +538,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         pipe_msg(Context->mailbox->hdrs[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
@@ -905,7 +908,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
       need_passphrase = (e->security & ENCRYPT);
       app = e->security;
     }
-    mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
     mutt_default_save(buf, sizeof(buf), e);
   }
   else
@@ -922,7 +925,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 
     if (e)
     {
-      mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+      mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
       mutt_default_save(buf, sizeof(buf), e);
       if (WithCrypto)
       {
@@ -1037,7 +1040,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode,
                                    decrypt, savectx->mailbox);
         if (rc != 0)

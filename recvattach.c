@@ -74,7 +74,7 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only");
 
 #define CHECK_READONLY                                                         \
-  if (Context->mailbox->readonly)                                              \
+  if (!Context || !Context->mailbox || Context->mailbox->readonly)             \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Mailbox_is_read_only));                                       \
@@ -1306,12 +1306,14 @@ void mutt_view_attachments(struct Email *e)
   int flags = 0;
   int op = OP_NULL;
 
+  struct Mailbox *m = Context ? Context->mailbox : NULL;
+
   /* make sure we have parsed this message */
-  mutt_parse_mime_message(Context->mailbox, e);
+  mutt_parse_mime_message(m, e);
 
-  mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
+  struct Message *msg = mx_msg_open(m, e->msgno);
   if (!msg)
     return;
 
@@ -1406,7 +1408,7 @@ void mutt_view_attachments(struct Email *e)
         CHECK_READONLY;
 
 #ifdef USE_POP
-        if (Context->mailbox->magic == MUTT_POP)
+        if (m->magic == MUTT_POP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from POP server"));
@@ -1415,7 +1417,7 @@ void mutt_view_attachments(struct Email *e)
 #endif
 
 #ifdef USE_NNTP
-        if (Context->mailbox->magic == MUTT_NNTP)
+        if (m->magic == MUTT_NNTP)
         {
           mutt_flushinp();
           mutt_error(_("Can't delete attachment from news server"));
@@ -1571,7 +1573,7 @@ void mutt_view_attachments(struct Email *e)
         break;
 
       case OP_EXIT:
-        mx_msg_close(Context->mailbox, &msg);
+        mx_msg_close(m, &msg);
 
         e->attach_del = false;
         for (int i = 0; i < actx->idxlen; i++)
