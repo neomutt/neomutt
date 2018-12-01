@@ -42,6 +42,15 @@ extern char *VfolderFormat;
 #define MUTT_SEL_FOLDER  (1 << 2)
 
 /**
+ * struct Folder - A folder/dir in the browser
+ */
+struct Folder
+{
+  struct FolderFile *ff;
+  int num;
+};
+
+/**
  * struct FolderFile - Browser entry representing a folder/dir
  */
 struct FolderFile
