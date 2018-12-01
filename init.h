@@ -2118,12 +2118,13 @@ struct ConfigDef MuttVars[] = {
   ** indexes of read articles.  The following printf-style sequence
   ** is understood:
   ** .dl
-  ** .dt %a .dd Account url
-  ** .dt %p .dd Port
-  ** .dt %P .dd Port if specified
-  ** .dt %s .dd News server name
-  ** .dt %S .dd Url schema
-  ** .dt %u .dd Username
+  ** .dt \fBExpando\fP .dd \fBDescription\fP .dd \fBExample\fP
+  ** .dt %a .dd Account url       .dd \fCnews:news.gmane.org\fP
+  ** .dt %p .dd Port              .dd \fC119\fP
+  ** .dt %P .dd Port if specified .dd \fC10119\fP
+  ** .dt %s .dd News server name  .dd \fCnews.gmane.org\fP
+  ** .dt %S .dd Url schema        .dd \fCnews\fP
+  ** .dt %u .dd Username          .dd \fCusername\fP
   ** .de
   */
 #endif
