@@ -111,9 +111,9 @@ bool ThoroughSearch; ///< Config: Decode headers and messages before searching t
  */
 enum EatRangeError
 {
-  RANGE_E_OK,
-  RANGE_E_SYNTAX,
-  RANGE_E_CTX,
+  RANGE_E_OK,     ///< Range is valid
+  RANGE_E_SYNTAX, ///< Range contains syntax error
+  RANGE_E_CTX,    ///< Range requires Context, but none available
 };
 
 /**

@@ -99,13 +99,13 @@ static const char *There_are_no_attachments = N_("There are no attachments");
  */
 enum HeaderField
 {
-  HDR_FROM = 0,
-  HDR_TO,
-  HDR_CC,
-  HDR_BCC,
-  HDR_SUBJECT,
-  HDR_REPLYTO,
-  HDR_FCC,
+  HDR_FROM = 0, ///< Position for From: field
+  HDR_TO,       ///< Position for To: field
+  HDR_CC,       ///< Position for Cc: field
+  HDR_BCC,      ///< Position for Bcc: field
+  HDR_SUBJECT,  ///< Position for Subject: field
+  HDR_REPLYTO,  ///< Position for Reply-To: field
+  HDR_FCC,      ///< Position for Fcc: (save folder) field
 
 #ifdef MIXMASTER
   HDR_MIX,
@@ -120,7 +120,7 @@ enum HeaderField
   HDR_XCOMMENTTO,
 #endif
 
-  HDR_ATTACH = (HDR_FCC + 5) /* where to start printing the attachments */
+  HDR_ATTACH = (HDR_FCC + 5), ///< position to start printing the attachments
 };
 
 int HeaderPadding[HDR_XCOMMENTTO + 1] = { 0 };

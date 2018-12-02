@@ -58,17 +58,17 @@ struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in
  */
 enum FlagChars
 {
-  FLAG_CHAR_TAGGED,
-  FLAG_CHAR_IMPORTANT,
-  FLAG_CHAR_DELETED,
-  FLAG_CHAR_DELETED_ATTACH,
-  FLAG_CHAR_REPLIED,
-  FLAG_CHAR_OLD,
-  FLAG_CHAR_NEW,
-  FLAG_CHAR_OLD_THREAD,
-  FLAG_CHAR_NEW_THREAD,
-  FLAG_CHAR_SEMPTY,
-  FLAG_CHAR_ZEMPTY
+  FLAG_CHAR_TAGGED,         ///< Character denoting a tagged email
+  FLAG_CHAR_IMPORTANT,      ///< Character denoting a important (flagged) email
+  FLAG_CHAR_DELETED,        ///< Character denoting a deleted email
+  FLAG_CHAR_DELETED_ATTACH, ///< Character denoting a deleted attachment
+  FLAG_CHAR_REPLIED,        ///< Character denoting an email that has been replied to
+  FLAG_CHAR_OLD,            ///< Character denoting an email that has been read
+  FLAG_CHAR_NEW,            ///< Character denoting an unread email
+  FLAG_CHAR_OLD_THREAD,     ///< Character denoting a thread of emails that has been read
+  FLAG_CHAR_NEW_THREAD,     ///< Character denoting a thread containing at least one new email
+  FLAG_CHAR_SEMPTY,         ///< Character denoting a read email, $index_format %S expando
+  FLAG_CHAR_ZEMPTY,         ///< Character denoting a read email, $index_format %Z expando
 };
 
 /**

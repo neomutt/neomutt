@@ -45,11 +45,11 @@ extern char *SmtpPass;
  */
 enum AccountType
 {
-  MUTT_ACCT_TYPE_NONE = 0,
-  MUTT_ACCT_TYPE_IMAP,
-  MUTT_ACCT_TYPE_POP,
-  MUTT_ACCT_TYPE_SMTP,
-  MUTT_ACCT_TYPE_NNTP
+  MUTT_ACCT_TYPE_NONE = 0, ///< Account type is unknown
+  MUTT_ACCT_TYPE_IMAP,     ///< Imap Account
+  MUTT_ACCT_TYPE_POP,      ///< Pop Account
+  MUTT_ACCT_TYPE_SMTP,     ///< Smtp Account
+  MUTT_ACCT_TYPE_NNTP,     ///< Nntp (Usenet) Account
 };
 
 /* account flags */

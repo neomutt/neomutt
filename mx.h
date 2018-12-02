@@ -66,10 +66,10 @@ extern char *        Trash;
  */
 enum MxCheckReturns
 {
-  MUTT_NEW_MAIL = 1, /**< new mail received in mailbox */
-  MUTT_LOCKED,       /**< couldn't lock the mailbox */
-  MUTT_REOPENED,     /**< mailbox was reopened */
-  MUTT_FLAGS         /**< nondestructive flags change (IMAP) */
+  MUTT_NEW_MAIL = 1, ///< new mail received in mailbox
+  MUTT_LOCKED,       ///< couldn't lock the mailbox
+  MUTT_REOPENED,     ///< mailbox was reopened
+  MUTT_FLAGS,        ///< nondestructive flags change (IMAP)
 };
 
 /**

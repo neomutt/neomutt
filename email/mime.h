@@ -62,7 +62,7 @@ enum ContentDisposition
   DISP_INLINE,
   DISP_ATTACH,
   DISP_FORM_DATA,
-  DISP_NONE /* no preferred disposition */
+  DISP_NONE, ///< No preferred disposition
 };
 
 /* MIME encoding/decoding global vars */
