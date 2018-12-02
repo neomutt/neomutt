@@ -44,12 +44,12 @@ struct Address
  */
 enum AddressError
 {
-  ADDR_ERR_MEMORY = 1,
-  ADDR_ERR_MISMATCH_PAREN,
-  ADDR_ERR_MISMATCH_QUOTE,
-  ADDR_ERR_BAD_ROUTE,
-  ADDR_ERR_BAD_ROUTE_ADDR,
-  ADDR_ERR_BAD_ADDR_SPEC,
+  ADDR_ERR_MEMORY = 1,     ///< Out of memory
+  ADDR_ERR_MISMATCH_PAREN, ///< Mismatched parentheses
+  ADDR_ERR_MISMATCH_QUOTE, ///< Mismatches quotes
+  ADDR_ERR_BAD_ROUTE,      ///< Bad route
+  ADDR_ERR_BAD_ROUTE_ADDR, ///< Bad route address
+  ADDR_ERR_BAD_ADDR_SPEC,  ///< Bad address specifier
 };
 
 extern int AddressError;

@@ -102,30 +102,30 @@ struct Mapping;
  */
 enum MuttMisc
 {
-  /* modes for mutt_view_attachment() */
-  MUTT_REGULAR = 1,
-  MUTT_MAILCAP,
-  MUTT_AS_TEXT,
+  /* mutt_view_attachment() */
+  MUTT_REGULAR = 1, ///< View using default method
+  MUTT_MAILCAP,     ///< Force viewing using mailcap entry
+  MUTT_AS_TEXT,     ///< Force viewing as text
 
-  /* action codes used by mutt_set_flag() and mutt_pattern_function() */
-  MUTT_ALL,
-  MUTT_NONE,
-  MUTT_NEW,
-  MUTT_OLD,
-  MUTT_REPLIED,
-  MUTT_READ,
-  MUTT_UNREAD,
-  MUTT_DELETE,
-  MUTT_UNDELETE,
-  MUTT_PURGE,
-  MUTT_DELETED,
-  MUTT_FLAG,
-  MUTT_TAG,
-  MUTT_UNTAG,
-  MUTT_LIMIT,
-  MUTT_EXPIRED,
-  MUTT_SUPERSEDED,
-  MUTT_TRASH,
+  /* action codes used by mutt_set_flag() and mutt_pattern_func() */
+  MUTT_ALL,        ///< All messages
+  MUTT_NONE,       ///< No messages
+  MUTT_NEW,        ///< New messages
+  MUTT_OLD,        ///< Old messages
+  MUTT_REPLIED,    ///< Messages that have been replied to
+  MUTT_READ,       ///< Messages that have been read
+  MUTT_UNREAD,     ///< Unread messages
+  MUTT_DELETE,     ///< Messages to be deleted
+  MUTT_UNDELETE,   ///< Messages to be un-deleted
+  MUTT_PURGE,      ///< Messages to be purged (bypass trash)
+  MUTT_DELETED,    ///< Deleted messages
+  MUTT_FLAG,       ///< Flagged messages
+  MUTT_TAG,        ///< Tagged messages
+  MUTT_UNTAG,      ///< Messages to be un-tagged
+  MUTT_LIMIT,      ///< Messages in limited view
+  MUTT_EXPIRED,    ///< Expired messsages
+  MUTT_SUPERSEDED, ///< Superseded messages
+  MUTT_TRASH,      ///< Trashed messages
 
   /* actions for mutt_pattern_comp/mutt_pattern_exec */
   MUTT_AND,
@@ -173,20 +173,13 @@ enum MuttMisc
 #endif
 
   /* Options for Mailcap lookup */
-  MUTT_EDIT,
-  MUTT_COMPOSE,
-  MUTT_PRINT,
-  MUTT_AUTOVIEW,
+  MUTT_EDIT,     ///< Mailcap edit field
+  MUTT_COMPOSE,  ///< Mailcap compose field
+  MUTT_PRINT,    ///< Mailcap print field
+  MUTT_AUTOVIEW, ///< Mailcap autoview field
 
-  /* options for socket code */
-  MUTT_NEW_SOCKET,
-#ifdef USE_SSL_OPENSSL
-  MUTT_NEW_SSL_SOCKET,
-#endif
-
-  /* Options for mutt_save_attachment */
-  MUTT_SAVE_APPEND,
-  MUTT_SAVE_OVERWRITE
+  MUTT_SAVE_APPEND,    ///< Append to existing file - mutt_save_attachment()
+  MUTT_SAVE_OVERWRITE, ///< Overwrite existing file - mutt_save_attachment()
 };
 
 /* flags for parse_spam_list */

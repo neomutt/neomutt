@@ -42,18 +42,18 @@
  */
 enum RichAttribs
 {
-  RICH_PARAM = 0,
-  RICH_BOLD,
-  RICH_UNDERLINE,
-  RICH_ITALIC,
-  RICH_NOFILL,
-  RICH_INDENT,
-  RICH_INDENT_RIGHT,
-  RICH_EXCERPT,
-  RICH_CENTER,
-  RICH_FLUSHLEFT,
-  RICH_FLUSHRIGHT,
-  RICH_COLOR,
+  RICH_PARAM = 0,    ///< Parameter label
+  RICH_BOLD,         ///< Bold text
+  RICH_UNDERLINE,    ///< Underlined text
+  RICH_ITALIC,       ///< Italic text
+  RICH_NOFILL,       ///< Text will not be reformatted
+  RICH_INDENT,       ///< Indented text
+  RICH_INDENT_RIGHT, ///< Right-indented text
+  RICH_EXCERPT,      ///< Excerpt text
+  RICH_CENTER,       ///< Centred text
+  RICH_FLUSHLEFT,    ///< Left-justified text
+  RICH_FLUSHRIGHT,   ///< Right-justified text
+  RICH_COLOR,        ///< Coloured text
   RICH_MAX,
 };
 

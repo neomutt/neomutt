@@ -66,7 +66,7 @@ struct Pattern
  */
 enum PatternExecFlag
 {
-  MUTT_MATCH_FULL_ADDRESS = 1
+  MUTT_MATCH_FULL_ADDRESS = 1, ///< Match the full address
 };
 
 /**

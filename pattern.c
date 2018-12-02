@@ -133,13 +133,13 @@ struct RangeRegex
  */
 enum RangeType
 {
-  RANGE_K_REL,
-  RANGE_K_ABS,
-  RANGE_K_LT,
-  RANGE_K_GT,
-  RANGE_K_BARE,
+  RANGE_K_REL,  ///< Relative range
+  RANGE_K_ABS,  ///< Absolute range
+  RANGE_K_LT,   ///< Less-than range
+  RANGE_K_GT,   ///< Greater-than range
+  RANGE_K_BARE, ///< Single symbol
   /* add new ones HERE */
-  RANGE_K_INVALID
+  RANGE_K_INVALID, ///< Range is invalid
 };
 
 /**

@@ -206,15 +206,17 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
 
 /**
  * enum FieldType - Header types
+ *
+ * Strings for printing headers
  */
 enum FieldType
 {
-  DISP_TO,
-  DISP_CC,
-  DISP_BCC,
-  DISP_FROM,
-  DISP_PLAIN,
-  DISP_NUM
+  DISP_TO,    ///< To: string
+  DISP_CC,    ///< Cc: string
+  DISP_BCC,   ///< Bcc: string
+  DISP_FROM,  ///< From: string
+  DISP_PLAIN, ///< Empty string
+  DISP_MAX,
 };
 
 /**
@@ -250,7 +252,7 @@ static const char *make_from_prefix(enum FieldType disp)
 {
   /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
-  static const char *long_prefixes[DISP_NUM] = {
+  static const char *long_prefixes[DISP_MAX] = {
     [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ",
     [DISP_FROM] = "",  [DISP_PLAIN] = "",
   };

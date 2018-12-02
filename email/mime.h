@@ -28,16 +28,16 @@
  */
 enum ContentType
 {
-  TYPE_OTHER,
-  TYPE_AUDIO,
-  TYPE_APPLICATION,
-  TYPE_IMAGE,
-  TYPE_MESSAGE,
-  TYPE_MODEL,
-  TYPE_MULTIPART,
-  TYPE_TEXT,
-  TYPE_VIDEO,
-  TYPE_ANY
+  TYPE_OTHER,       ///< Unknown Content-Type
+  TYPE_AUDIO,       ///< Type: 'audio/*'
+  TYPE_APPLICATION, ///< Type: 'application/*'
+  TYPE_IMAGE,       ///< Type: 'image/*'
+  TYPE_MESSAGE,     ///< Type: 'message/*'
+  TYPE_MODEL,       ///< Type: 'model/*'
+  TYPE_MULTIPART,   ///< Type: 'multipart/*'
+  TYPE_TEXT,        ///< Type: 'text/*'
+  TYPE_VIDEO,       ///< Type: 'video/*'
+  TYPE_ANY,         ///< Type: '*' or '.*'
 };
 
 /**

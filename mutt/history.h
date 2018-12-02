@@ -35,17 +35,18 @@ extern short SaveHistory;
 
 /**
  * enum HistoryClass - Type to differentiate different histories
+ *
+ * Saved lists of recently-used:
  */
 enum HistoryClass
 {
-  HC_CMD,
-  HC_ALIAS,
-  HC_COMMAND,
-  HC_FILE,
-  HC_PATTERN,
-  HC_OTHER,
-  HC_MBOX,
-  /* insert new items here to keep history file working */
+  HC_CMD,     ///< External commands
+  HC_ALIAS,   ///< Aliases
+  HC_COMMAND, ///< NeoMutt commands
+  HC_FILE,    ///< Files
+  HC_PATTERN, ///< Patterns
+  HC_OTHER,   ///< Miscellaneous strings
+  HC_MBOX,    ///< Mailboxes
   HC_MAX,
 };
 

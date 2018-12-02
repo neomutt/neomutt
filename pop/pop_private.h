@@ -58,10 +58,10 @@ enum PopStatus
  */
 enum PopAuthRes
 {
-  POP_A_SUCCESS = 0,
-  POP_A_SOCKET,
-  POP_A_FAILURE,
-  POP_A_UNAVAIL
+  POP_A_SUCCESS = 0, ///< Authenticated successfully
+  POP_A_SOCKET,      ///< Connection lost
+  POP_A_FAILURE,     ///< Authentication failed
+  POP_A_UNAVAIL,     ///< No valid authentication method
 };
 
 /**
