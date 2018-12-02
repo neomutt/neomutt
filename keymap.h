@@ -80,12 +80,10 @@ enum MenuTypes
   MENU_KEY_SELECT_PGP,   ///< Select a PGP key
   MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
 #endif
-
 #ifdef MIXMASTER
   MENU_MIX, ///< Create/edit a Mixmaster chain
 #endif
-
-  MENU_MAX
+  MENU_MAX,
 };
 
 /* the keymap trees (one for each menu) */

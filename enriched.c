@@ -58,16 +58,16 @@ enum RichAttribs
 };
 
 /**
- * struct etags - Enriched text tags
+ * struct Etags - Enriched text tags
  */
-struct etags
+struct Etags
 {
   const wchar_t *tag_name;
   int index;
 };
 
 // clang-format off
-static const struct etags EnrichedTags[] = {
+static const struct Etags EnrichedTags[] = {
   { L"param",       RICH_PARAM        },
   { L"bold",        RICH_BOLD         },
   { L"italic",      RICH_ITALIC       },

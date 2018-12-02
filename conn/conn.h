@@ -42,9 +42,8 @@
 #define MUTT_CONN_CONN_H
 
 #include <stdio.h>
-
-#include "connaccount.h"
 #include "conn_globals.h"
+#include "connaccount.h"
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"

@@ -308,7 +308,7 @@
   OPS_SMIME(_fmt) \
   OPS_CRYPT(_fmt) \
 
-enum mutt_ops {
+enum MuttOps {
 #define DEFINE_OPS(opcode, help_string) opcode,
   OPS(DEFINE_OPS)
 #undef DEFINE_OPS

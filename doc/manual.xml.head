@@ -10833,7 +10833,7 @@ set timeout=15
         <ulink url="https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py">https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py</ulink>
       </para>
       <para>
-        You'll need to get your own oauth client credentials for Gmail here: 
+        You'll need to get your own oauth client credentials for Gmail here:
         <ulink url="https://console.developers.google.com/apis/credentials">https://console.developers.google.com/apis/credentials</ulink>
       </para>
       <para>
