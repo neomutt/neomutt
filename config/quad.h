@@ -34,11 +34,11 @@ extern const char *quad_values[];
  */
 enum QuadOption
 {
-  MUTT_ABORT = -1,
-  MUTT_NO,
-  MUTT_YES,
-  MUTT_ASKNO,
-  MUTT_ASKYES
+  MUTT_ABORT = -1, ///< User aborted the question (with Ctrl-G)
+  MUTT_NO,         ///< User answered 'No', or assume 'No'
+  MUTT_YES,        ///< User answered 'Yes', or assume 'Yes'
+  MUTT_ASKNO,      ///< Ask the user, defaulting to 'No'
+  MUTT_ASKYES,     ///< Ask the user, defaulting to 'Yes'
 };
 
 void quad_init(struct ConfigSet *cs);

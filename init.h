@@ -97,10 +97,10 @@
  */
 enum MuttSetCommand
 {
-  MUTT_SET_SET,   /**< default is to set all vars */
-  MUTT_SET_INV,   /**< default is to invert all vars */
-  MUTT_SET_UNSET, /**< default is to unset all vars */
-  MUTT_SET_RESET, /**< default is to reset all vars to default */
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
 #define UL (unsigned long)

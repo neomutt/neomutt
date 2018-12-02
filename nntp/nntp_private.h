@@ -43,9 +43,9 @@ struct Mailbox;
  */
 enum NntpStatus
 {
-  NNTP_NONE = 0,
-  NNTP_OK,
-  NNTP_BYE
+  NNTP_NONE = 0, ///< No connection to server
+  NNTP_OK,       ///< Connected to server
+  NNTP_BYE,      ///< Disconnected from server
 };
 
 void nntp_acache_free(struct NntpMboxData *mdata);

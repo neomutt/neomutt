@@ -94,9 +94,9 @@ static char **nm_tags;
  */
 enum GroupState
 {
-  GS_NONE,
-  GS_RX,
-  GS_ADDR
+  GS_NONE, ///< Group is missing an argument
+  GS_RX,   ///< Entry is a regular expression
+  GS_ADDR, ///< Entry is an address
 };
 
 /**

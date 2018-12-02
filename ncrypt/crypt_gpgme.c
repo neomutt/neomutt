@@ -3615,9 +3615,9 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
  */
 enum KeyCap
 {
-  KEY_CAP_CAN_ENCRYPT,
-  KEY_CAP_CAN_SIGN,
-  KEY_CAP_CAN_CERTIFY
+  KEY_CAP_CAN_ENCRYPT, ///< Key can be used for encryption
+  KEY_CAP_CAN_SIGN,    ///< Key can be used for signing
+  KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
 };
 
 /**
@@ -3679,17 +3679,17 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
  */
 enum KeyInfo
 {
-  KIP_NAME = 0,
-  KIP_AKA,
-  KIP_VALID_FROM,
-  KIP_VALID_TO,
-  KIP_KEY_TYPE,
-  KIP_KEY_USAGE,
-  KIP_FINGERPRINT,
-  KIP_SERIAL_NO,
-  KIP_ISSUED_BY,
-  KIP_SUBKEY,
-  KIP_END
+  KIP_NAME = 0,       ///< PGP Key field: Name
+  KIP_AKA,            ///< PGP Key field: aka (Also Known As)
+  KIP_VALID_FROM,     ///< PGP Key field: Valid From date
+  KIP_VALID_TO,       ///< PGP Key field: Valid To date
+  KIP_KEY_TYPE,       ///< PGP Key field: Key Type
+  KIP_KEY_USAGE,      ///< PGP Key field: Key Usage
+  KIP_FINGERPRINT,    ///< PGP Key field: Fingerprint
+  KIP_SERIAL_NO,      ///< PGP Key field: Serial number
+  KIP_ISSUED_BY,      ///< PGP Key field: Issued By
+  KIP_SUBKEY,         ///< PGP Key field: Subkey
+  KIP_MAX,
 };
 
 static const char *const KeyInfoPrompts[] = {
@@ -3702,7 +3702,7 @@ static const char *const KeyInfoPrompts[] = {
   N_("Issued By: "), N_("Subkey: ")
 };
 
-int KeyInfoPadding[KIP_END] = { 0 };
+int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /**
  * print_key_info - Verbose information about a key or certificate to a file
@@ -3724,7 +3724,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
   if (!max_header_width)
   {
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
     {
       KeyInfoPadding[i] = mutt_str_strlen(_(KeyInfoPrompts[i]));
       const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
@@ -3732,7 +3732,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         max_header_width = width;
       KeyInfoPadding[i] -= width;
     }
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
       KeyInfoPadding[i] += max_header_width;
   }
 

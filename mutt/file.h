@@ -54,9 +54,9 @@ struct timespec
  */
 enum MuttStatType
 {
-  MUTT_STAT_ATIME,
-  MUTT_STAT_MTIME,
-  MUTT_STAT_CTIME
+  MUTT_STAT_ATIME, ///< File/dir's atime - last accessed time
+  MUTT_STAT_MTIME, ///< File/dir's mtime - last modified time
+  MUTT_STAT_CTIME, ///< File/dir's ctime - creation time
 };
 
 /**

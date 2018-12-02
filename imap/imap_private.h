@@ -82,9 +82,9 @@ struct Progress;
  */
 enum ImapExecResult
 {
-  IMAP_EXEC_SUCCESS = 0, /**< Imap command executed or queued successfully */
-  IMAP_EXEC_ERROR,       /**< Imap command failure */
-  IMAP_EXEC_FATAL        /**< Imap connection failure */
+  IMAP_EXEC_SUCCESS = 0, ///< Imap command executed or queued successfully
+  IMAP_EXEC_ERROR,       ///< Imap command failure
+  IMAP_EXEC_FATAL,       ///< Imap connection failure
 };
 
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
@@ -95,8 +95,8 @@ enum ImapExecResult
  */
 enum ImapFlags
 {
-  IMAP_FATAL = 1,
-  IMAP_BYE
+  IMAP_FATAL = 1, ///< Unrecoverable error occurred
+  IMAP_BYE,       ///< Logged out from server
 };
 
 /**
@@ -105,23 +105,13 @@ enum ImapFlags
 enum ImapState
 {
   /* States */
-  IMAP_DISCONNECTED = 0,
-  IMAP_CONNECTED,
-  IMAP_AUTHENTICATED,
-  IMAP_SELECTED,
+  IMAP_DISCONNECTED = 0, ///< Disconnected from server
+  IMAP_CONNECTED,        ///< Connected to server
+  IMAP_AUTHENTICATED,    ///< Connection is authenticated
+  IMAP_SELECTED,         ///< Mailbox is selected
 
   /* and pseudo-states */
-  IMAP_IDLE
-};
-
-/**
- * enum ImapNamespace - IMAP namespace types
- */
-enum ImapNamespace
-{
-  IMAP_NS_PERSONAL = 0,
-  IMAP_NS_OTHER,
-  IMAP_NS_SHARED
+  IMAP_IDLE, ///< Connection is idle
 };
 
 /**
@@ -131,26 +121,25 @@ enum ImapNamespace
  */
 enum ImapCaps
 {
-  IMAP4 = 0,
-  IMAP4REV1,
-  STATUS,
-  ACL,                   /**< RFC2086: IMAP4 ACL extension */
-  NAMESPACE,             /**< RFC2342: IMAP4 Namespace */
-  ACRAM_MD5,             /**< RFC2195: CRAM-MD5 authentication */
-  AGSSAPI,               /**< RFC1731: GSSAPI authentication */
-  AUTH_ANON,             /**< AUTH=ANONYMOUS */
-  AUTH_OAUTHBEARER,      /**< RFC7628: AUTH=OAUTHBEARER */
-  STARTTLS,              /**< RFC2595: STARTTLS */
-  LOGINDISABLED,         /**< RFC2595: LOGINDISABLED */
-  IDLE,                  /**< RFC2177: IDLE */
-  SASL_IR,               /**< SASL initial response draft */
-  ENABLE,                /**< RFC5161 */
-  CONDSTORE,             /**< RFC7162 */
-  QRESYNC,               /**< RFC7162 */
-  X_GM_EXT1,             /**< https://developers.google.com/gmail/imap/imap-extensions */
-  X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
-
-  CAPMAX
+  IMAP_CAP_IMAP4 = 0,        ///< Server supports IMAP4
+  IMAP_CAP_IMAP4REV1,        ///< Server supports IMAP4rev1
+  IMAP_CAP_STATUS,           ///< Server supports STATUS command
+  IMAP_CAP_ACL,              ///< RFC2086: IMAP4 ACL extension
+  IMAP_CAP_NAMESPACE,        ///< RFC2342: IMAP4 Namespace
+  IMAP_CAP_ACRAM_MD5,        ///< RFC2195: CRAM-MD5 authentication
+  IMAP_CAP_AGSSAPI,          ///< RFC1731: GSSAPI authentication
+  IMAP_CAP_AUTH_ANON,        ///< AUTH=ANONYMOUS
+  IMAP_CAP_AUTH_OAUTHBEARER, ///< RFC7628: AUTH=OAUTHBEARER
+  IMAP_CAP_STARTTLS,         ///< RFC2595: STARTTLS
+  IMAP_CAP_LOGINDISABLED,    ///< RFC2595: LOGINDISABLED
+  IMAP_CAP_IDLE,             ///< RFC2177: IDLE
+  IMAP_CAP_SASL_IR,          ///< SASL initial response draft
+  IMAP_CAP_ENABLE,           ///< RFC5161
+  IMAP_CAP_CONDSTORE,        ///< RFC7162
+  IMAP_CAP_QRESYNC,          ///< RFC7162
+  IMAP_CAP_X_GM_EXT1,        ///< https://developers.google.com/gmail/imap/imap-extensions
+  IMAP_CAP_X_GM_ALT1 = IMAP_CAP_X_GM_EXT1, ///< Alternative capability string
+  IMAP_CAP_MAX,
 };
 
 /**
@@ -204,7 +193,7 @@ struct ImapAccountData
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char *capstr;
-  unsigned char capabilities[(CAPMAX + 7) / 8];
+  unsigned char capabilities[(IMAP_CAP_MAX + 7) / 8];
   unsigned int seqno; ///< tag sequence number, e.g. 'a0001'
   time_t lastread; /**< last time we read a command for the server */
   char *buf;

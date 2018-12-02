@@ -41,8 +41,8 @@ struct Mailbox;
  */
 enum XdgType
 {
-  XDG_CONFIG_HOME,
-  XDG_CONFIG_DIRS,
+  XDG_CONFIG_HOME, ///< XDG home dir: ~/.config
+  XDG_CONFIG_DIRS, ///< XDG system dir: /etc/xdg
 };
 
 int mutt_system(const char *cmd);

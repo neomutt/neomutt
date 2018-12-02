@@ -44,9 +44,9 @@ const size_t LMDB_DB_SIZE = 2147483648;
  */
 enum MdbTxnMode
 {
-  TXN_UNINITIALIZED,
-  TXN_READ,
-  TXN_WRITE
+  TXN_UNINITIALIZED, ///< Transaction is uninitialised
+  TXN_READ,          ///< Read transaction in progress
+  TXN_WRITE,         ///< Write transaction in progress
 };
 
 /**

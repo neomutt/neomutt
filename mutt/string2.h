@@ -61,10 +61,13 @@
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
+/**
+ * CaseSensitivity - Should a string's case matter when matching?
+ */
 enum CaseSensitivity
 {
-  CASE_MATCH,
-  CASE_IGNORE
+  CASE_MATCH,  ///< Match case when comparing strings
+  CASE_IGNORE, ///< Ignore case when comparing strings
 };
 
 void        mutt_str_adjust(char **p);

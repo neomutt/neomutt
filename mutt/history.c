@@ -104,7 +104,7 @@ struct History
 
 /* global vars used for the string-history routines */
 
-static struct History Histories[HC_LAST];
+static struct History Histories[HC_MAX];
 static int OldSize = 0;
 
 /**
@@ -114,7 +114,7 @@ static int OldSize = 0;
  */
 static struct History *get_history(enum HistoryClass hclass)
 {
-  if (hclass >= HC_LAST)
+  if (hclass >= HC_MAX)
     return NULL;
 
   return &Histories[hclass];
@@ -205,19 +205,19 @@ static int dup_hash_inc(struct Hash *dup_hash, char *str)
 static void shrink_histfile(void)
 {
   FILE *tmpfp = NULL;
-  int n[HC_LAST] = { 0 };
+  int n[HC_MAX] = { 0 };
   int line, hclass, read;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
   bool regen_file = false;
-  struct Hash *dup_hashes[HC_LAST] = { 0 };
+  struct Hash *dup_hashes[HC_MAX] = { 0 };
 
   FILE *f = fopen(HistoryFile, "r");
   if (!f)
     return;
 
   if (HistoryRemoveDups)
-    for (hclass = 0; hclass < HC_LAST; hclass++)
+    for (hclass = 0; hclass < HC_MAX; hclass++)
       dup_hashes[hclass] = mutt_hash_new(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
@@ -230,7 +230,7 @@ static void shrink_histfile(void)
       goto cleanup;
     }
     /* silently ignore too high class (probably newer neomutt) */
-    if (hclass >= HC_LAST)
+    if (hclass >= HC_MAX)
       continue;
     *p = '\0';
     if (HistoryRemoveDups && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
@@ -243,7 +243,7 @@ static void shrink_histfile(void)
 
   if (!regen_file)
   {
-    for (hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+    for (hclass = HC_FIRST; hclass < HC_MAX; hclass++)
     {
       if (n[hclass] > SaveHistory)
       {
@@ -271,7 +271,7 @@ static void shrink_histfile(void)
         mutt_error(_("Bad history file format (line %d)"), line);
         goto cleanup;
       }
-      if (hclass >= HC_LAST)
+      if (hclass >= HC_MAX)
         continue;
       *p = '\0';
       if (HistoryRemoveDups && (dup_hash_dec(dup_hashes[hclass], linebuf + read) > 0))
@@ -298,7 +298,7 @@ cleanup:
     mutt_file_fclose(&tmpfp);
   }
   if (HistoryRemoveDups)
-    for (hclass = 0; hclass < HC_LAST; hclass++)
+    for (hclass = 0; hclass < HC_MAX; hclass++)
       mutt_hash_destroy(&dup_hashes[hclass]);
 }
 
@@ -438,7 +438,7 @@ int mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches)
  */
 void mutt_hist_free(void)
 {
-  for (enum HistoryClass hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+  for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
   {
     struct History *h = &Histories[hclass];
     if (!h->hist)
@@ -464,7 +464,7 @@ void mutt_hist_init(void)
   if (History == OldSize)
     return;
 
-  for (enum HistoryClass hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+  for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
     init_history(&Histories[hclass]);
 
   OldSize = History;
@@ -605,7 +605,7 @@ void mutt_hist_read_file(void)
       break;
     }
     /* silently ignore too high class (probably newer neomutt) */
-    if (hclass >= HC_LAST)
+    if (hclass >= HC_MAX)
       continue;
     *p = '\0';
     p = mutt_str_strdup(linebuf + read);

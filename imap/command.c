@@ -538,7 +538,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
 
   while (*s)
   {
-    for (int i = 0; i < CAPMAX; i++)
+    for (int i = 0; i < IMAP_CAP_MAX; i++)
     {
       if (mutt_str_word_casecmp(Capabilities[i], s) == 0)
       {

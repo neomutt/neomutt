@@ -115,7 +115,7 @@ static const char *parse_comment(const char *s, char *comment, size_t *commentle
   }
   if (level != 0)
   {
-    AddressError = ERR_MISMATCH_PAREN;
+    AddressError = ADDR_ERR_MISMATCH_PAREN;
     return NULL;
   }
   return s;
@@ -149,7 +149,7 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
     (*tokenlen)++;
     s++;
   }
-  AddressError = ERR_MISMATCH_QUOTE;
+  AddressError = ADDR_ERR_MISMATCH_QUOTE;
   return NULL;
 }
 
@@ -313,7 +313,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
     }
     if (!s || (*s != ':'))
     {
-      AddressError = ERR_BAD_ROUTE;
+      AddressError = ADDR_ERR_BAD_ROUTE;
       return NULL; /* invalid route */
     }
 
@@ -329,7 +329,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 
   if (*s != '>')
   {
-    AddressError = ERR_BAD_ROUTE_ADDR;
+    AddressError = ADDR_ERR_BAD_ROUTE_ADDR;
     return NULL;
   }
 
@@ -359,7 +359,7 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
                     commentmax, addr);
   if (s && *s && (*s != ',') && (*s != ';'))
   {
-    AddressError = ERR_BAD_ADDR_SPEC;
+    AddressError = ADDR_ERR_BAD_ADDR_SPEC;
     return NULL;
   }
   return s;

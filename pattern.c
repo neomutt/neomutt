@@ -111,9 +111,9 @@ bool ThoroughSearch; ///< Config: Decode headers and messages before searching t
  */
 enum EatRangeError
 {
-  RANGE_E_OK,
-  RANGE_E_SYNTAX,
-  RANGE_E_CTX,
+  RANGE_E_OK,     ///< Range is valid
+  RANGE_E_SYNTAX, ///< Range contains syntax error
+  RANGE_E_CTX,    ///< Range requires Context, but none available
 };
 
 /**
@@ -133,13 +133,13 @@ struct RangeRegex
  */
 enum RangeType
 {
-  RANGE_K_REL,
-  RANGE_K_ABS,
-  RANGE_K_LT,
-  RANGE_K_GT,
-  RANGE_K_BARE,
+  RANGE_K_REL,  ///< Relative range
+  RANGE_K_ABS,  ///< Absolute range
+  RANGE_K_LT,   ///< Less-than range
+  RANGE_K_GT,   ///< Greater-than range
+  RANGE_K_BARE, ///< Single symbol
   /* add new ones HERE */
-  RANGE_K_INVALID
+  RANGE_K_INVALID, ///< Range is invalid
 };
 
 /**
@@ -147,8 +147,8 @@ enum RangeType
  */
 enum RangeSide
 {
-  RANGE_S_LEFT,
-  RANGE_S_RIGHT
+  RANGE_S_LEFT,  ///< Left side of range
+  RANGE_S_RIGHT, ///< Right side of range
 };
 
 /**

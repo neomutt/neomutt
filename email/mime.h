@@ -28,16 +28,16 @@
  */
 enum ContentType
 {
-  TYPE_OTHER,
-  TYPE_AUDIO,
-  TYPE_APPLICATION,
-  TYPE_IMAGE,
-  TYPE_MESSAGE,
-  TYPE_MODEL,
-  TYPE_MULTIPART,
-  TYPE_TEXT,
-  TYPE_VIDEO,
-  TYPE_ANY
+  TYPE_OTHER,       ///< Unknown Content-Type
+  TYPE_AUDIO,       ///< Type: 'audio/*'
+  TYPE_APPLICATION, ///< Type: 'application/*'
+  TYPE_IMAGE,       ///< Type: 'image/*'
+  TYPE_MESSAGE,     ///< Type: 'message/*'
+  TYPE_MODEL,       ///< Type: 'model/*'
+  TYPE_MULTIPART,   ///< Type: 'multipart/*'
+  TYPE_TEXT,        ///< Type: 'text/*'
+  TYPE_VIDEO,       ///< Type: 'video/*'
+  TYPE_ANY,         ///< Type: '*' or '.*'
 };
 
 /**
@@ -45,13 +45,13 @@ enum ContentType
  */
 enum ContentEncoding
 {
-  ENC_OTHER,
-  ENC_7BIT,
-  ENC_8BIT,
-  ENC_QUOTED_PRINTABLE,
-  ENC_BASE64,
-  ENC_BINARY,
-  ENC_UUENCODED
+  ENC_OTHER,            ///< Encoding unknown
+  ENC_7BIT,             ///< 7-bit text
+  ENC_8BIT,             ///< 8-bit text
+  ENC_QUOTED_PRINTABLE, ///< Quoted-printable text
+  ENC_BASE64,           ///< Base-64 encoded text
+  ENC_BINARY,           ///< Binary
+  ENC_UUENCODED,        ///< UUEncoded text
 };
 
 /**
@@ -59,10 +59,10 @@ enum ContentEncoding
  */
 enum ContentDisposition
 {
-  DISP_INLINE,
-  DISP_ATTACH,
-  DISP_FORM_DATA,
-  DISP_NONE /* no preferred disposition */
+  DISP_INLINE,    ///< Content is inline
+  DISP_ATTACH,    ///< Content is attached
+  DISP_FORM_DATA, ///< Content is form-data
+  DISP_NONE,      ///< No preferred disposition
 };
 
 /* MIME encoding/decoding global vars */

@@ -31,18 +31,18 @@
  */
 enum UrlScheme
 {
-  U_UNKNOWN,
-  U_FILE,
-  U_POP,
-  U_POPS,
-  U_IMAP,
-  U_IMAPS,
-  U_NNTP,
-  U_NNTPS,
-  U_SMTP,
-  U_SMTPS,
-  U_MAILTO,
-  U_NOTMUCH,
+  U_UNKNOWN, ///< Url wasn't recognised
+  U_FILE,    ///< Url is file://
+  U_POP,     ///< Url is pop://
+  U_POPS,    ///< Url is pops://
+  U_IMAP,    ///< Url is imap://
+  U_IMAPS,   ///< Url is imaps://
+  U_NNTP,    ///< Url is nntp://
+  U_NNTPS,   ///< Url is nntps://
+  U_SMTP,    ///< Url is smtp://
+  U_SMTPS,   ///< Url is smtps://
+  U_MAILTO,  ///< Url is mailto://
+  U_NOTMUCH, ///< Url is notmuch://
 };
 
 #define U_PATH          (1 << 1)

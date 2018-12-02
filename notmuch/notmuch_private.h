@@ -59,8 +59,8 @@ struct NmAccountData
  */
 enum NmQueryType
 {
-  NM_QUERY_TYPE_MESGS = 1, /**< Default: Messages only */
-  NM_QUERY_TYPE_THREADS    /**< Whole threads */
+  NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
+  NM_QUERY_TYPE_THREADS,   ///< Whole threads
 };
 
 /**
