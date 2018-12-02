@@ -47,7 +47,7 @@ enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *meth
   char q_user[STRING], q_pass[STRING];
   char buf[LONG_STRING];
 
-  if (mutt_bit_isset(adata->capabilities, LOGINDISABLED))
+  if (mutt_bit_isset(adata->capabilities, IMAP_CAP_LOGINDISABLED))
   {
     mutt_message(_("LOGIN disabled on this server"));
     return IMAP_AUTH_UNAVAIL;

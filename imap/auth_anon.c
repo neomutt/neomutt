@@ -46,7 +46,7 @@ enum ImapAuthRes imap_auth_anon(struct ImapAccountData *adata, const char *metho
 {
   int rc;
 
-  if (!mutt_bit_isset(adata->capabilities, AUTH_ANON))
+  if (!mutt_bit_isset(adata->capabilities, IMAP_CAP_AUTH_ANON))
     return IMAP_AUTH_UNAVAIL;
 
   if (mutt_account_getuser(&adata->conn->account) < 0)
