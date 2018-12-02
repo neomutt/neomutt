@@ -46,7 +46,7 @@ enum HistoryClass
   HC_OTHER,
   HC_MBOX,
   /* insert new items here to keep history file working */
-  HC_LAST
+  HC_MAX,
 };
 
 void  mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);

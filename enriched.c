@@ -54,7 +54,7 @@ enum RichAttribs
   RICH_FLUSHLEFT,
   RICH_FLUSHRIGHT,
   RICH_COLOR,
-  RICH_LAST_TAG
+  RICH_MAX,
 };
 
 /**
@@ -103,7 +103,7 @@ struct EnrichedState
   size_t buf_used;
   size_t param_used;
   size_t param_len;
-  int tag_level[RICH_LAST_TAG];
+  int tag_level[RICH_MAX];
   int wrap_margin;
   struct State *s;
 };

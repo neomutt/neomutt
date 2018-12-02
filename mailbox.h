@@ -67,8 +67,7 @@ enum AclRights
   MUTT_ACL_READ,      ///< read the mailbox
   MUTT_ACL_SEEN,      ///< change the 'seen' status of a message
   MUTT_ACL_WRITE,     ///< write to a message (for flagging, or linking threads)
-
-  RIGHTSMAX
+  MUTT_ACL_MAX,
 };
 
 /**
@@ -113,7 +112,7 @@ struct Mailbox
   bool quiet                  : 1; /**< inhibit status messages? */
   bool readonly               : 1; /**< don't allow changes to the mailbox */
 
-  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
+  unsigned char rights[(MUTT_ACL_MAX + 7) / 8]; /**< ACL bits */
 
 #ifdef USE_COMPRESSED
   void *compress_info; /**< compressed mbox module private data */

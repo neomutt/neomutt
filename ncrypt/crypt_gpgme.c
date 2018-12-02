@@ -3689,7 +3689,7 @@ enum KeyInfo
   KIP_SERIAL_NO,      ///< PGP Key field: Serial number
   KIP_ISSUED_BY,      ///< PGP Key field: Issued By
   KIP_SUBKEY,         ///< PGP Key field: Subkey
-  KIP_END,
+  KIP_MAX,
 };
 
 static const char *const KeyInfoPrompts[] = {
@@ -3702,7 +3702,7 @@ static const char *const KeyInfoPrompts[] = {
   N_("Issued By: "), N_("Subkey: ")
 };
 
-int KeyInfoPadding[KIP_END] = { 0 };
+int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /**
  * print_key_info - Verbose information about a key or certificate to a file
@@ -3724,7 +3724,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
   if (!max_header_width)
   {
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
     {
       KeyInfoPadding[i] = mutt_str_strlen(_(KeyInfoPrompts[i]));
       const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
@@ -3732,7 +3732,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         max_header_width = width;
       KeyInfoPadding[i] -= width;
     }
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
       KeyInfoPadding[i] += max_header_width;
   }
 
