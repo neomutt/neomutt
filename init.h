@@ -4099,36 +4099,38 @@ struct ConfigDef MuttVars[] = {
   { "ssl_use_sslv2", DT_BOOL, R_NONE, &SslUseSslv2, false },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use SSLv2 in the
-  ** SSL authentication process. Note that SSLv2 and SSLv3 are now
-  ** considered fundamentally insecure and are no longer recommended.
+  ** If \fIset\fP , Mutt will use SSLv2 when communicating with servers that
+  ** request it. \fBN.B. As of 2011, SSLv2 is considered insecure, and using
+  ** is inadvisable. See https://tools.ietf.org/html/rfc6176 .\fP
   ** (OpenSSL only)
   */
 #endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, &SslUseSslv3, false },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use SSLv3 in the
-  ** SSL authentication process. Note that SSLv2 and SSLv3 are now
-  ** considered fundamentally insecure and are no longer recommended.
+  ** If \fIset\fP , Mutt will use SSLv3 when communicating with servers that
+  ** request it. \fBN.B. As of 2015, SSLv3 is considered insecure, and using
+  ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1", DT_BOOL, R_NONE, &SslUseTlsv1, false },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use TLSv1.0 in the
-  ** SSL authentication process.
+  ** If \fIset\fP , Mutt will use TLSv1.0 when communicating with servers that
+  ** request it. \fBN.B. As of 2015, TLSv1.0 is considered insecure, and using
+  ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1_1", DT_BOOL, R_NONE, &SslUseTlsv11, false },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use TLSv1.1 in the
-  ** SSL authentication process.
+  ** If \fIset\fP , Mutt will use TLSv1.1 when communicating with servers that
+  ** request it. \fBN.B. As of 2015, TLSv1.1 is considered insecure, and using
+  ** it is inadvisable. See https://tools.ietf.org/html/rfc7525 .\fP
   */
   { "ssl_use_tlsv1_2", DT_BOOL, R_NONE, &SslUseTlsv12, true },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use TLSv1.2 in the
-  ** SSL authentication process.
+  ** If \fIset\fP , Mutt will use TLSv1.2 when communicating with servers that
+  ** request it.
   */
 #ifdef USE_SSL_OPENSSL
   { "ssl_usesystemcerts", DT_BOOL, R_NONE, &SslUsesystemcerts, true },
