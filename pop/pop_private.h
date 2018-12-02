@@ -47,10 +47,9 @@ struct Progress;
  */
 enum PopStatus
 {
-  POP_NONE = 0,
-  POP_CONNECTED,
-  POP_DISCONNECTED,
-  POP_BYE
+  POP_NONE = 0,     ///< No connected to server
+  POP_CONNECTED,    ///< Connected to server
+  POP_DISCONNECTED, ///< Disconnected from server
 };
 
 /**

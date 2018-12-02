@@ -95,8 +95,8 @@ enum ImapExecResult
  */
 enum ImapFlags
 {
-  IMAP_FATAL = 1,
-  IMAP_BYE
+  IMAP_FATAL = 1, ///< Unrecoverable error occurred
+  IMAP_BYE,       ///< Logged out from server
 };
 
 /**
@@ -105,23 +105,13 @@ enum ImapFlags
 enum ImapState
 {
   /* States */
-  IMAP_DISCONNECTED = 0,
-  IMAP_CONNECTED,
-  IMAP_AUTHENTICATED,
-  IMAP_SELECTED,
+  IMAP_DISCONNECTED = 0, ///< Disconnected from server
+  IMAP_CONNECTED,        ///< Connected to server
+  IMAP_AUTHENTICATED,    ///< Connection is authenticated
+  IMAP_SELECTED,         ///< Mailbox is selected
 
   /* and pseudo-states */
-  IMAP_IDLE
-};
-
-/**
- * enum ImapNamespace - IMAP namespace types
- */
-enum ImapNamespace
-{
-  IMAP_NS_PERSONAL = 0,
-  IMAP_NS_OTHER,
-  IMAP_NS_SHARED
+  IMAP_IDLE, ///< Connection is idle
 };
 
 /**

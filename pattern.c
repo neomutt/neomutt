@@ -147,8 +147,8 @@ enum RangeType
  */
 enum RangeSide
 {
-  RANGE_S_LEFT,
-  RANGE_S_RIGHT
+  RANGE_S_LEFT,  ///< Left side of range
+  RANGE_S_RIGHT, ///< Right side of range
 };
 
 /**

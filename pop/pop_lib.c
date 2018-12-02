@@ -597,8 +597,6 @@ int pop_reconnect(struct Mailbox *m)
 
   if (adata->status == POP_CONNECTED)
     return 0;
-  if (adata->status == POP_BYE)
-    return -1;
 
   while (true)
   {
