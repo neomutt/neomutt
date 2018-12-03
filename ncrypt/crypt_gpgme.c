@@ -4907,7 +4907,6 @@ char *smime_gpgme_find_keys(struct Address *addrlist, bool oppenc_mode)
  */
 struct Body *pgp_gpgme_make_key_attachment(void)
 {
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
   gpgme_ctx_t context = NULL;
   gpgme_key_t export_keys[2];
   gpgme_data_t keydata = NULL;
@@ -4963,9 +4962,6 @@ bail:
   gpgme_release(context);
 
   return att;
-#else
-  return NULL;
-#endif
 }
 
 /**

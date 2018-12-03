@@ -154,7 +154,8 @@ if {1} {
   # Get the value of a macro by preprocessing a header file that defines it
   proc check-define-value {incfile macro} {
     set code "#include \"$incfile\"\n$macro"
-    if {[catch {exec [get-define CC] -xc - -E | tail -1 << $code} out]} {
+    if {[catch {exec [get-define CC] {*}[get-define CFLAGS] -xc - -E | tail -1 << $code} out]} {
+      user-notice $out
       set out ""
     }
     set out
@@ -374,7 +375,24 @@ if {[get-define want-gpgme]} {
                             gpgme.h gpgme_new gpgme]} {
       user-error "Unable to find GPGME"
     }
-    cc-check-functions gpgme_op_export_keys
+    set gpg_ver {}
+    foreach path [list [opt-val with-gpgme $prefix] /usr] {
+      set incfile [file join $path include gpgme.h]
+      if {![file exists $incfile]} {
+        continue
+      }
+      set gpg_ver [check-define-value $incfile GPGME_VERSION_NUMBER]
+      if {$gpg_ver eq {}} {
+        user-error "Unable to find GPGME version number"
+      }
+      set req_ver [format "0x%02x%02x%02x" 1 2 0]
+      if {$req_ver > $gpg_ver} {
+        user-error "Found GPGME version $gpg_ver, need $req_ver"
+      }
+    }
+    if {$gpg_ver eq {}} {
+      user-error "Unable to find GPGME"
+    }
   }
   define CRYPT_BACKEND_GPGME
 }
