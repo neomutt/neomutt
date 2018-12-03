@@ -1120,8 +1120,13 @@ int mx_mbox_check(struct Context *ctx, int *index_hint)
     return -1;
 
   struct Mailbox *m = ctx->mailbox;
+  int rc = m->mx_ops->mbox_check(ctx, index_hint);
+  if (rc == MUTT_NEW_MAIL || rc == MUTT_REOPENED)
+  {
+    mx_update_context(ctx);
+  }
 
-  return m->mx_ops->mbox_check(ctx, index_hint);
+  return rc;
 }
 
 /**
