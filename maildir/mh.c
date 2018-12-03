@@ -720,7 +720,7 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
   /* Incorporate new messages */
   num_new = maildir_move_to_context(m, &md);
   if (num_new > 0)
-    mx_update_context(ctx, num_new);
+    mx_update_context(ctx);
 
   if (occult)
     return MUTT_REOPENED;

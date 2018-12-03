@@ -1692,21 +1692,7 @@ static int check_mailbox(struct Context *ctx)
   /* some headers were removed, context must be updated */
   if (ret == MUTT_REOPENED)
   {
-    if (m->subj_hash)
-      mutt_hash_destroy(&m->subj_hash);
-    if (m->id_hash)
-      mutt_hash_destroy(&m->id_hash);
-    mutt_clear_threads(ctx);
-
-    m->vcount = 0;
-    m->msg_deleted = 0;
-    m->msg_new = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-    m->changed = false;
-    m->id_hash = NULL;
-    m->subj_hash = NULL;
-    mx_update_context(ctx, m->msg_count);
+    mx_update_context(ctx);
   }
 
   /* fetch headers of new articles */
@@ -1728,7 +1714,7 @@ static int check_mailbox(struct Context *ctx)
     if (rc == 0)
     {
       if (m->msg_count > old_msg_count)
-        mx_update_context(ctx, m->msg_count > old_msg_count);
+        mx_update_context(ctx);
       mdata->last_loaded = mdata->last_message;
     }
     if (ret == 0 && m->msg_count > oldmsgcount)
@@ -2297,7 +2283,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  mx_update_context(ctx, 1);
+  mx_update_context(ctx);
   return 0;
 }
 
@@ -2367,7 +2353,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
       break;
   }
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx, m->msg_count > old_msg_count);
+    mx_update_context(ctx);
 
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);

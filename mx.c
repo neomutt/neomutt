@@ -370,7 +370,7 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   int rc = m->mx_ops->mbox_open(ctx->mailbox, ctx);
   m->opened++;
   if (rc == 0)
-    mx_update_context(ctx, ctx->mailbox->msg_count);
+    mx_update_context(ctx);
 
   if ((rc == 0) || (rc == -2))
   {
@@ -1236,20 +1236,44 @@ void mx_alloc_memory(struct Mailbox *m)
 /**
  * mx_update_context - Update the Context's message counts
  * @param ctx          Mailbox
- * @param new_messages Number of new messages
  *
- * this routine is called to update the counts in the context structure for the
- * last message header parsed.
+ * this routine is called to update the counts in the context structure
  */
-void mx_update_context(struct Context *ctx, int new_messages)
+void mx_update_context(struct Context *ctx)
 {
   if (!ctx || !ctx->mailbox)
     return;
 
   struct Mailbox *m = ctx->mailbox;
 
+  if (!m)
+    return;
+
+  if (m->subj_hash)
+  {
+    mutt_hash_destroy(&m->subj_hash);
+  }
+  m->subj_hash = NULL;
+
+  if (m->id_hash)
+  {
+    mutt_hash_destroy(&m->id_hash);
+  }
+  m->id_hash = NULL;
+
+  /* reset counters */
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_deleted = 0;
+  m->msg_tagged = 0;
+  m->vcount = 0;
+  m->changed = false;
+
+  mutt_clear_threads(ctx);
+
   struct Email *e = NULL;
-  for (int msgno = m->msg_count - new_messages; msgno < m->msg_count; msgno++)
+  for (int msgno = 0; msgno < m->msg_count; msgno++)
   {
     e = m->hdrs[msgno];
 
@@ -1307,6 +1331,8 @@ void mx_update_context(struct Context *ctx, int new_messages)
         m->msg_new++;
     }
   }
+
+  mutt_sort_headers(ctx, true); /* rethread from scratch */
 }
 
 /**

@@ -1031,7 +1031,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   {
     if (mbox_mbox_open(m, ctx) < 0)
       return -1;
-    mx_update_context(ctx, m->msg_count);
+    mx_update_context(ctx);
   }
 
   struct stat st;
@@ -1094,7 +1094,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
             mmdf_parse_mailbox(ctx);
 
           if (m->msg_count > old_msg_count)
-            mx_update_context(ctx, m->msg_count > old_msg_count);
+            mx_update_context(ctx);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1124,7 +1124,7 @@ static int mbox_mbox_check(struct Context *ctx, int *index_hint)
   {
     if (reopen_mailbox(ctx, index_hint) != -1)
     {
-      mx_update_context(ctx, m->msg_count);
+      mx_update_context(ctx);
       if (unlock)
       {
         mbox_unlock_mailbox(m);

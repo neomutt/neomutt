@@ -1632,7 +1632,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Email *e)
   rc = 0;
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx, m->msg_count - mdata->oldmsgcount);
+    mx_update_context(ctx);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2286,7 +2286,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   }
 
   if (m->msg_count > mdata->oldmsgcount)
-    mx_update_context(ctx, m->msg_count - mdata->oldmsgcount);
+    mx_update_context(ctx);
 done:
   if (q)
     notmuch_query_destroy(q);
