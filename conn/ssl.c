@@ -71,6 +71,14 @@
 #define DEVRANDOM "/dev/urandom"
 #endif
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#define X509_get0_notBefore X509_get_notBefore
+#define X509_get0_notAfter X509_get_notAfter
+#define X509_getm_notBefore X509_get_notBefore
+#define X509_getm_notAfter X509_get_notAfter
+#define X509_STORE_CTX_get0_chain X509_STORE_CTX_get_chain
+#endif
+
 /* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
  * and the code has to support older versions too, this is seemed to
  * be cleaner way compared to having even uglier #ifdefs all around.
@@ -142,8 +150,8 @@ static int ssl_load_certificates(SSL_CTX *ctx)
 
   while (NULL != PEM_read_X509(fp, &cert, NULL, NULL))
   {
-    if ((X509_cmp_current_time(X509_get_notBefore(cert)) >= 0) ||
-        (X509_cmp_current_time(X509_get_notAfter(cert)) <= 0))
+    if ((X509_cmp_current_time(X509_get0_notBefore(cert)) >= 0) ||
+        (X509_cmp_current_time(X509_get0_notAfter(cert)) <= 0))
     {
       mutt_debug(2, "filtering expired cert: %s\n",
                  X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)));
@@ -483,7 +491,7 @@ static bool check_certificate_expiration(X509 *peercert, bool silent)
   if (SslVerifyDates == MUTT_NO)
     return true;
 
-  if (X509_cmp_current_time(X509_get_notBefore(peercert)) >= 0)
+  if (X509_cmp_current_time(X509_get0_notBefore(peercert)) >= 0)
   {
     if (!silent)
     {
@@ -493,7 +501,7 @@ static bool check_certificate_expiration(X509 *peercert, bool silent)
     return false;
   }
 
-  if (X509_cmp_current_time(X509_get_notAfter(peercert)) <= 0)
+  if (X509_cmp_current_time(X509_get0_notAfter(peercert)) <= 0)
   {
     if (!silent)
     {
@@ -594,10 +602,12 @@ static int ssl_init(void)
     }
   }
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
   /* I don't think you can do this just before reading the error. The call
    * itself might clobber the last SSL error. */
   SSL_load_error_strings();
   SSL_library_init();
+#endif
   init_complete = true;
   return 0;
 }
@@ -908,9 +918,9 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   row++;
   snprintf(menu->dialog[row++], SHORT_STRING, "%s", _("This certificate is valid"));
   snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
-           asn1time_to_string(X509_get_notBefore(cert)));
+           asn1time_to_string(X509_getm_notBefore(cert)));
   snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),
-           asn1time_to_string(X509_get_notAfter(cert)));
+           asn1time_to_string(X509_getm_notAfter(cert)));
 
   row++;
   buf[0] = '\0';
@@ -1067,7 +1077,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 
   cert = X509_STORE_CTX_get_current_cert(ctx);
   pos = X509_STORE_CTX_get_error_depth(ctx);
-  len = sk_X509_num(X509_STORE_CTX_get_chain(ctx));
+  len = sk_X509_num(X509_STORE_CTX_get0_chain(ctx));
 
   mutt_debug(1, "checking cert chain entry %s (preverify: %d skipmode: %d)\n",
              X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)),
