@@ -49,6 +49,7 @@
 #include "sort.h"
 
 /* These Config Variables are only used in hdrline.c */
+struct MbTable *CryptoChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
 struct MbTable *FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
 struct MbTable *FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
 struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in the index
@@ -69,6 +70,18 @@ enum FlagChars
   FLAG_CHAR_NEW_THREAD,     ///< Character denoting a thread containing at least one new email
   FLAG_CHAR_SEMPTY,         ///< Character denoting a read email, $index_format %S expando
   FLAG_CHAR_ZEMPTY,         ///< Character denoting a read email, $index_format %Z expando
+};
+
+/**
+ * enum CryptoChars - Index into the CryptoChars variable ($crypto_chars)
+ */
+enum CryptoChars
+{
+  FLAG_CHAR_CRYPTO_GOOD_SIGN, ///< Character denoting a message signed with a verified key
+  FLAG_CHAR_CRYPTO_ENCRYPTED, ///< Character denoting a message is PGP-encrypted
+  FLAG_CHAR_CRYPTO_SIGNED,    ///< Character denoting a message is signed
+  FLAG_CHAR_CRYPTO_CONTAINS_KEY, ///< Character denoting a message contains a PGP key
+  FLAG_CHAR_CRYPTO_NO_CRYPTO, ///< Character denoting a message has no cryptography information
 };
 
 /**
@@ -1311,17 +1324,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if ((WithCrypto != 0) && (e->security & GOODSIGN))
-          ch = "S";
+          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_GOOD_SIGN);
         else if ((WithCrypto != 0) && (e->security & ENCRYPT))
-          ch = "P";
+          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_ENCRYPTED);
         else if ((WithCrypto != 0) && (e->security & SIGN))
-          ch = "s";
+          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_SIGNED);
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
-          ch = "K";
+          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_CONTAINS_KEY);
         }
         else
-          ch = " ";
+          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_NO_CRYPTO);
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
@@ -1377,15 +1390,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (e->attach_del)
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if ((WithCrypto != 0) && (e->security & GOODSIGN))
-        second = "S";
+        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_GOOD_SIGN);
       else if ((WithCrypto != 0) && (e->security & ENCRYPT))
-        second = "P";
+        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_ENCRYPTED);
       else if ((WithCrypto != 0) && (e->security & SIGN))
-        second = "s";
+        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_SIGNED);
       else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
-        second = "K";
+        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_CONTAINS_KEY);
       else
-        second = " ";
+        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_NO_CRYPTO);
 
       /* Tagged, flagged and recipient flag */
       const char *third = NULL;

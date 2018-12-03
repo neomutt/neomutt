@@ -32,6 +32,7 @@ struct Context;
 struct Email;
 
 /* These Config Variables are only used in hdrline.c */
+extern struct MbTable *CryptoChars;
 extern struct MbTable *FlagChars;
 extern struct MbTable *FromChars;
 extern struct MbTable *ToChars;

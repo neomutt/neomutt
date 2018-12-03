@@ -971,6 +971,19 @@ struct ConfigDef MuttVars[] = {
   ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
   ** .de
   */
+  { "crypto_chars",       DT_MBTABLE,    R_BOTH, &CryptoChars, IP "SPsK " },
+  /*
+  ** .pp
+  ** Controls the characters used in cryptography flags.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd S .dd The mail is signed, and the signature is successfully verified.
+  ** .dt 2 .dd P .dd The mail is PGP encrypted.
+  ** .dt 3 .dd s .dd The mail is signed.
+  ** .dt 4 .dd K .dd The mail contains a PGP public key.
+  ** .dt 5 .dd <space> .dd The mail has no crypto info.
+  ** .de
+  */
   { "flag_safe", DT_BOOL, R_NONE, &FlagSafe, false },
   /*
   ** .pp
