@@ -214,8 +214,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
  * To ignore the patchlevel in the comparison add 10 to LEVEL.  To get
  * a reverse sorting order use a negative number.   */
 #if GPGRT_VERSION_NUMBER >= 0x012100 /* gpgme >= 1.33 */
-static int
-cmp_version_strings(const char *a, const char *b, int level)
+static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
 }
@@ -229,8 +228,8 @@ static const char *parse_version_number(const char *s, int *number)
 {
   int val = 0;
 
-  if (*s == '0' && digit(s+1))
-    return NULL;  /* Leading zeros are not allowed.  */
+  if (*s == '0' && digit(s + 1))
+    return NULL; /* Leading zeros are not allowed.  */
   for (; digit(s); s++)
   {
     val *= 10;
@@ -249,8 +248,7 @@ static const char *parse_version_number(const char *s, int *number)
  *
  * On success, the last component, the patch level, will be returned;
  * in failure, NULL will be returned.  */
-static const char *parse_version_string(const char *s, int *major,
-                                        int *minor, int *micro)
+static const char *parse_version_string(const char *s, int *major, int *minor, int *micro)
 {
   s = parse_version_number(s, major);
   if (!s)
@@ -288,8 +286,7 @@ static const char *parse_version_string(const char *s, int *major,
 
 /* Substitute for the gpgrt based implementation.
  * See above for a description.   */
-static int
-cmp_version_strings(const char *a, const char *b, int level)
+static int cmp_version_strings(const char *a, const char *b, int level)
 {
   int a_major, a_minor, a_micro;
   int b_major, b_minor, b_micro;
@@ -313,23 +310,21 @@ cmp_version_strings(const char *a, const char *b, int level)
     level %= 10;
 
   a_major = a_minor = a_micro = 0;
-  a_plvl = parse_version_string(a, &a_major,
-      level > 1 ? &a_minor : NULL,
-      level > 2 ? &a_micro : NULL);
+  a_plvl = parse_version_string(a, &a_major, level > 1 ? &a_minor : NULL,
+                                level > 2 ? &a_micro : NULL);
   if (!a_plvl)
     a_major = a_minor = a_micro = 0; /* Error.  */
 
   b_major = b_minor = b_micro = 0;
-  b_plvl = parse_version_string(b, &b_major,
-      level > 1 ? &b_minor : NULL,
-      level > 2 ? &b_micro : NULL);
+  b_plvl = parse_version_string(b, &b_major, level > 1 ? &b_minor : NULL,
+                                level > 2 ? &b_micro : NULL);
   if (!b_plvl)
     b_major = b_minor = b_micro = 0;
 
   if (!ignore_plvl)
   {
     if (!a_plvl && !b_plvl)
-      return negative;  /* Put invalid strings at the end.  */
+      return negative; /* Put invalid strings at the end.  */
     if (a_plvl && !b_plvl)
       return positive;
     if (!a_plvl && b_plvl)
@@ -358,10 +353,10 @@ cmp_version_strings(const char *a, const char *b, int level)
   {
     if (*a_plvl == '.' && *b_plvl == '.')
     {
-      r = strcmp (a_plvl, b_plvl);
+      r = strcmp(a_plvl, b_plvl);
       if (!r)
         return 0;
-      else if ( r > 0 )
+      else if (r > 0)
         return positive;
       else
         return negative;
@@ -375,12 +370,12 @@ cmp_version_strings(const char *a, const char *b, int level)
   }
   if (*a_plvl == *b_plvl)
     return 0;
-  else if ((*(signed char *)a_plvl - *(signed char *)b_plvl) > 0)
+  else if ((*(signed char *) a_plvl - *(signed char *) b_plvl) > 0)
     return positive;
   else
     return negative;
 }
-#endif /* gpgme >= 1.9.0 */
+#endif                                 /* gpgme >= 1.9.0 */
 
 /*
  * Key management.
@@ -728,7 +723,6 @@ static gpgme_data_t create_gpgme_data(void)
   return data;
 }
 
-
 #if GPGME_VERSION_NUMBER >= 0x010900 /* gpgme >= 1.9.0 */
 /* Return true if the OpenPGP engine's version is at least VERSION. */
 static int have_gpg_version(const char *version)
@@ -751,7 +745,7 @@ static int have_gpg_version(const char *version)
     }
     else
       engine_version = mutt_str_strdup(engineinfo->version);
-    gpgme_release (ctx);
+    gpgme_release(ctx);
   }
 
   return cmp_version_strings(engine_version, version, 3) >= 0;
@@ -2403,11 +2397,10 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
  * pgp_gpgme_extract_keys - Write PGP keys to a file
  * @param[in]  keydata GPGME key data
  * @param[out] fp      Temporary file created with key info
- * @param[in]  dryrun  If true, don't save the key to the user's keyring
  * @retval  0 Success
  * @retval -1 Error
  */
-static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
+static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
 {
   /* Before gpgme 1.9.0 and gpg 2.1.14 there was no side-effect free
    * way to view key data in GPGME, so we import the key into a
@@ -2435,7 +2428,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
 
   tmpctx = create_gpgme_context(false);
 
-  if (dryrun && legacy_api)
+  if (legacy_api)
   {
     snprintf(tmpdir, sizeof(tmpdir), "%s/neomutt-gpgme-XXXXXX", Tmpdir);
     if (!mkdtemp(tmpdir))
@@ -2462,16 +2455,6 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
     }
   }
 
-  if (!dryrun || legacy_api)
-  {
-    err = gpgme_op_import(tmpctx, keydata);
-    if (err != GPG_ERR_NO_ERROR)
-    {
-      mutt_debug(1, "Error importing key\n");
-      goto err_tmpdir;
-    }
-  }
-
   *fp = mutt_file_mkstemp();
   if (!*fp)
   {
@@ -2480,7 +2463,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
   }
 
 #if GPGME_VERSION_NUMBER >= 0x010900 /* 1.9.0 */
-  if (dryrun && !legacy_api)
+  if (!legacy_api)
     err = gpgme_op_keylist_from_data_start(tmpctx, keydata, 0);
   else
 #endif /* gpgme >= 1.9.0 */
@@ -2531,7 +2514,7 @@ err_fp:
   if (rc)
     mutt_file_fclose(fp);
 err_tmpdir:
-  if (dryrun && legacy_api)
+  if (legacy_api)
     mutt_file_rmtree(tmpdir);
 err_ctx:
   gpgme_release(tmpctx);
@@ -2663,35 +2646,96 @@ int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, bool just_one)
  */
 void pgp_gpgme_invoke_import(const char *fname)
 {
-  gpgme_data_t keydata;
-  FILE *out = NULL;
+  gpgme_ctx_t ctx = create_gpgme_context(false);
+  gpgme_data_t keydata = NULL;
+  gpgme_import_result_t impres;
+  gpgme_import_status_t st;
+  int any;
 
   FILE *in = mutt_file_fopen(fname, "r");
   if (!in)
-    return;
+  {
+    mutt_perror(fname);
+    goto leave;
+  }
   /* Note that the stream, "in", needs to be kept open while the keydata
    * is used.
    */
   gpgme_error_t err = gpgme_data_new_from_stream(&keydata, in);
   if (err != GPG_ERR_NO_ERROR)
   {
-    mutt_file_fclose(&in);
     mutt_error(_("error allocating data object: %s"), gpgme_strerror(err));
-    return;
+    goto leave;
   }
 
-  if (pgp_gpgme_extract_keys(keydata, &out, false))
+  err = gpgme_op_import(ctx, keydata);
+  if (err)
   {
-    mutt_error(_("Error extracting key data"));
+    mutt_error(_("Error extracting key: %s"), gpgme_strerror(err));
+    goto leave;
   }
-  else
+
+  /* Print infos about the imported keys to stdout.  */
+  impres = gpgme_op_import_result(ctx);
+  if (!impres)
   {
-    fseek(out, 0, SEEK_SET);
-    mutt_file_copy_stream(out, stdout);
+    goto leave;
   }
+
+  for (st = impres->imports; st; st = st->next)
+  {
+    if (st->result)
+      continue;
+    printf("key %s imported (", NONULL(st->fpr));
+    /* Note that we use the singular even if it is possible that
+     * several uids etc are new.  This simply looks better.  */
+    any = 0;
+    if (st->status & GPGME_IMPORT_SECRET)
+    {
+      printf("secret parts");
+      any = 1;
+    }
+    if ((st->status & GPGME_IMPORT_NEW))
+    {
+      printf("%snew key", any ? ", " : "");
+      any = 1;
+    }
+    if ((st->status & GPGME_IMPORT_UID))
+    {
+      printf("%snew uid", any ? ", " : "");
+      any = 1;
+    }
+    if ((st->status & GPGME_IMPORT_SIG))
+    {
+      printf("%snew sig", any ? ", " : "");
+      any = 1;
+    }
+    if ((st->status & GPGME_IMPORT_SUBKEY))
+    {
+      printf("%snew subkey", any ? ", " : "");
+      any = 1;
+    }
+    printf("%s)\n", any ? "" : "not changed");
+    /* Fixme: Should we lookup each imported key and print more infos? */
+  }
+  /* Now print keys which failed the import.  Unfortunately in most
+   * cases gpg will bail out early and not tell gpgme about.  */
+  /* FIXME: We could instead use the new GPGME_AUDITLOG_DIAG to show
+   * the actual gpg diagnostics.  But I fear that would clutter the
+   * output too much.  Maybe a dedicated prompt or option to do this
+   * would be helpful.  */
+  for (st = impres->imports; st; st = st->next)
+  {
+    if (!st->result)
+      continue;
+    printf("key %s import failed: %s\n", NONULL(st->fpr), gpgme_strerror(st->result));
+  }
+  fflush(stdout);
+
+leave:
+  gpgme_release(ctx);
   gpgme_data_release(keydata);
   mutt_file_fclose(&in);
-  mutt_file_fclose(&out);
 }
 
 /**
@@ -2837,7 +2881,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       /* Invoke PGP if needed */
       if (pgp_keyblock)
       {
-        pgp_gpgme_extract_keys(armored_data, &pgpout, true);
+        pgp_gpgme_extract_keys(armored_data, &pgpout);
       }
       else if (!clearsign || (s->flags & MUTT_VERIFY))
       {
