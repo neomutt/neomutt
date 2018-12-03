@@ -35,7 +35,7 @@ struct ConnAccount;
  */
 struct Account
 {
-  enum MailboxType type;
+  enum MailboxType magic;
   struct MailboxList mailboxes;
   TAILQ_ENTRY(Account) entries;
   void *adata;
@@ -46,7 +46,7 @@ TAILQ_HEAD(AccountList, Account);
 
 extern struct AccountList AllAccounts;
 
-struct Account *account_create(void);
-void            account_free(struct Account **a);
+struct Account *account_new(void);
+void            account_remove_mailbox(struct Account *a, struct Mailbox *m);
 
 #endif /* MUTT_ACCOUNT_H */

@@ -1047,7 +1047,7 @@ T}
 _
 \0=/ \fISTRING\fP|T{
 IMAP custom server-side search for \fISTRING\fP. Currently only defined for
-Gmail. See section \(lq\fBGMail Patterns\fP\(rq in NeoMutt manual.
+Gmail. See section \(lq\fBGmail Patterns\fP\(rq in NeoMutt manual.
 T}
 _
 \0~=|T{

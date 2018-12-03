@@ -28,7 +28,7 @@
 struct ConfigSet;
 
 void address_init(struct ConfigSet *cs);
-struct Address *address_create(const char *addr);
+struct Address *address_new(const char *addr);
 void address_free(struct Address **addr);
 
 #endif /* MUTT_CONFIG_ADDRESS_H */

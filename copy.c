@@ -110,35 +110,35 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
         ignore = true;
-        if (!from && (mutt_str_strncmp("From ", buf, 5) == 0))
+        if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
         {
           if ((flags & CH_FROM) == 0)
             continue;
           from = true;
         }
-        else if (flags & (CH_NOQFROM) && (mutt_str_strncasecmp(">From ", buf, 6) == 0))
+        else if ((flags & CH_NOQFROM) && mutt_str_startswith(buf, ">From ", CASE_IGNORE))
           continue;
 
         else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
           break; /* end of header */
 
         if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
-             (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+            (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
+             mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
         {
           continue;
         }
         if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
-             (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+            (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
+             mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
         {
           continue;
         }
-        if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
+        if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
           continue;
-        if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
+        if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
           continue;
-        if (flags & CH_UPDATE_LABEL && (mutt_str_strncasecmp("X-Label:", buf, 8) == 0))
+        if (flags & CH_UPDATE_LABEL && mutt_str_startswith(buf, "X-Label:", CASE_IGNORE))
           continue;
 
         ignore = false;
@@ -218,7 +218,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
       ignore = true;
       this_is_from = false;
-      if (!from && (mutt_str_strncmp("From ", buf, 5) == 0))
+      if (!from && mutt_str_startswith(buf, "From ", CASE_MATCH))
       {
         if ((flags & CH_FROM) == 0)
           continue;
@@ -234,34 +234,38 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         continue;
       }
-      if ((flags & CH_WEED_DELIVERED) &&
-          (mutt_str_strncasecmp("Delivered-To:", buf, 13) == 0))
+      if ((flags & CH_WEED_DELIVERED) && mutt_str_startswith(buf, "Delivered-To:", CASE_IGNORE))
       {
         continue;
       }
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-          ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
-           (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+          (mutt_str_startswith(buf, "Status:", CASE_IGNORE) ||
+           mutt_str_startswith(buf, "X-Status:", CASE_IGNORE)))
       {
         continue;
       }
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-          ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
-           (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+          (mutt_str_startswith(buf, "Content-Length:", CASE_IGNORE) ||
+           mutt_str_startswith(buf, "Lines:", CASE_IGNORE)))
       {
         continue;
       }
-      if ((flags & CH_MIME) &&
-          (((mutt_str_strncasecmp("content-", buf, 8) == 0) &&
-            ((mutt_str_strncasecmp("transfer-encoding:", buf + 8, 18) == 0) ||
-             (mutt_str_strncasecmp("type:", buf + 8, 5) == 0))) ||
-           (mutt_str_strncasecmp("mime-version:", buf, 13) == 0)))
+      if ((flags & CH_MIME))
       {
-        continue;
+        if (mutt_str_startswith(buf, "mime-version:", CASE_IGNORE))
+        {
+          continue;
+        }
+        size_t plen = mutt_str_startswith(buf, "content-", CASE_IGNORE);
+        if ((plen != 0) && (mutt_str_startswith(buf + plen, "transfer-encoding:", CASE_IGNORE) ||
+                            mutt_str_startswith(buf + plen, "type:", CASE_IGNORE)))
+        {
+          continue;
+        }
       }
-      if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
+      if ((flags & CH_UPDATE_REFS) && mutt_str_startswith(buf, "References:", CASE_IGNORE))
         continue;
-      if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
+      if ((flags & CH_UPDATE_IRT) && mutt_str_startswith(buf, "In-Reply-To:", CASE_IGNORE))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -272,7 +276,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
           ++x;
-          if (mutt_str_strncasecmp(buf, np->data, mutt_str_strlen(np->data)) == 0)
+          if (mutt_str_startswith(buf, np->data, CASE_IGNORE))
           {
             mutt_debug(2, "Reorder: %s matches %s", np->data, buf);
             break;
@@ -367,9 +371,9 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 }
 
 /**
- * mutt_copy_header - Copy email header
+ * mutt_copy_header - Copy Email header
  * @param in     FILE pointer to read from
- * @param e      Email Header
+ * @param e      Email
  * @param out    FILE pointer to write to
  * @param flags  Flags, see below
  * @param prefix Prefix for quoting headers
@@ -562,7 +566,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * mutt_copy_message_fp - make a copy of a message from a FILE pointer
  * @param fpout   Where to write output
  * @param fpin    Where to get input
- * @param e     Header of message being copied
+ * @param e       Email being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
  * @retval  0 Success
@@ -776,7 +780,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
  * mutt_copy_message_ctx - Copy a message from a Context
  * @param fpout   FILE pointer to write to
  * @param src     Source mailbox
- * @param e     Email Header
+ * @param e       Email
  * @param flags   Flags, see: mutt_copy_message_fp()
  * @param chflags Header flags, see: mutt_copy_header()
  * @retval  0 Success
@@ -785,7 +789,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Email *e, int flags, in
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
+int mutt_copy_message_ctx(FILE *fpout, struct Mailbox *src, struct Email *e,
                           int flags, int chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
@@ -808,13 +812,13 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Email *e,
  * @param dest    destination mailbox
  * @param fpin    where to get input
  * @param src     source mailbox
- * @param e     message being copied
+ * @param e       Email being copied
  * @param flags   mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success
  * @retval -1 Error
  */
-static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
+static int append_message(struct Mailbox *dest, FILE *fpin, struct Mailbox *src,
                           struct Email *e, int flags, int chflags)
 {
   char buf[STRING];
@@ -829,17 +833,16 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
   if (!msg)
     return -1;
-  if (dest->mailbox->magic == MUTT_MBOX || dest->mailbox->magic == MUTT_MMDF)
+  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = mutt_copy_message_fp(msg->fp, fpin, e, flags, chflags);
   if (mx_msg_commit(dest, msg) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (msg->committed_path && dest->mailbox->magic == MUTT_MAILDIR &&
-      src->mailbox->magic == MUTT_NOTMUCH)
-    nm_update_filename(src->mailbox, NULL, msg->committed_path, e);
+  if (msg->committed_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+    nm_update_filename(src, NULL, msg->committed_path, e);
 #endif
 
   mx_msg_close(dest, &msg);
@@ -850,13 +853,13 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
  * mutt_append_message - Append a message
  * @param dest    Destination Mailbox
  * @param src     Source Mailbox
- * @param e     Email Header
+ * @param e       Email
  * @param cmflags mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_append_message(struct Context *dest, struct Context *src,
+int mutt_append_message(struct Mailbox *dest, struct Mailbox *src,
                         struct Email *e, int cmflags, int chflags)
 {
   struct Message *msg = mx_msg_open(src, e->msgno);
@@ -1016,59 +1019,51 @@ static int address_header_decode(char **h)
   {
     case 'b':
     {
-      if (mutt_str_strncasecmp(s, "bcc:", 4) != 0)
+      if (!(l = mutt_str_startswith(s, "bcc:", CASE_IGNORE)))
         return 0;
-      l = 4;
       break;
     }
     case 'c':
     {
-      if (mutt_str_strncasecmp(s, "cc:", 3) != 0)
+      if (!(l = mutt_str_startswith(s, "cc:", CASE_IGNORE)))
         return 0;
-      l = 3;
       break;
     }
     case 'f':
     {
-      if (mutt_str_strncasecmp(s, "from:", 5) != 0)
+      if (!(l = mutt_str_startswith(s, "from:", CASE_IGNORE)))
         return 0;
-      l = 5;
       break;
     }
     case 'm':
     {
-      if (mutt_str_strncasecmp(s, "mail-followup-to:", 17) != 0)
+      if (!(l = mutt_str_startswith(s, "mail-followup-to:", CASE_IGNORE)))
         return 0;
-      l = 17;
       break;
     }
     case 'r':
     {
-      if (mutt_str_strncasecmp(s, "return-path:", 12) == 0)
+      if ((l = mutt_str_startswith(s, "return-path:", CASE_IGNORE)))
       {
-        l = 12;
         rp = true;
         break;
       }
-      else if (mutt_str_strncasecmp(s, "reply-to:", 9) == 0)
+      else if ((l = mutt_str_startswith(s, "reply-to:", CASE_IGNORE)))
       {
-        l = 9;
         break;
       }
       return 0;
     }
     case 's':
     {
-      if (mutt_str_strncasecmp(s, "sender:", 7) != 0)
+      if (!(l = mutt_str_startswith(s, "sender:", CASE_IGNORE)))
         return 0;
-      l = 7;
       break;
     }
     case 't':
     {
-      if (mutt_str_strncasecmp(s, "to:", 3) != 0)
+      if (!(l = mutt_str_startswith(s, "to:", CASE_IGNORE)))
         return 0;
-      l = 3;
       break;
     }
     default:

@@ -75,35 +75,26 @@ extern bool ImapServernoise;
 extern char *ImapDelimChars;
 extern short ImapPipelineDepth;
 
-/**
- * struct ImapMbox - An IMAP mailbox
- */
-struct ImapMbox
-{
-  struct ConnAccount account;
-  char *mbox;
-};
-
 /* imap.c */
 int imap_access(const char *path);
 int imap_check_mailbox(struct Mailbox *m, bool force);
-int imap_delete_mailbox(struct Mailbox *m, struct ImapMbox *mx);
-int imap_sync_mailbox(struct Context *ctx, bool expunge);
-int imap_mailbox_check(bool check_stats);
-int imap_status(const char *path, bool queue);
+int imap_delete_mailbox(struct Mailbox *m, char *path);
+int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close);
+int imap_path_status(const char *path, bool queue);
+int imap_mailbox_status(struct Mailbox *m, bool queue);
 int imap_search(struct Mailbox *m, const struct Pattern *pat);
 int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, char *path);
 int imap_fast_trash(struct Mailbox *m, char *dest);
 int imap_path_probe(const char *path, const struct stat *st);
-int imap_path_canon(char *buf, size_t buflen, const char *folder);
+int imap_path_canon(char *buf, size_t buflen);
 
 extern struct MxOps mx_imap_ops;
 
 /* browse.c */
 int imap_browse(char *path, struct BrowserState *state);
 int imap_mailbox_create(const char *folder);
-int imap_mailbox_rename(const char *mailbox);
+int imap_mailbox_rename(const char *path);
 
 /* message.c */
 int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool delete);
@@ -112,8 +103,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(char *buf, size_t buflen);
-int imap_parse_path(const char *path, struct ImapMbox *mx);
+int imap_parse_path(const char *path, struct ConnAccount *account, char *mailbox, size_t mailboxlen);
 void imap_pretty_mailbox(char *path, const char *folder);
 
 int imap_wait_keepalive(pid_t pid);

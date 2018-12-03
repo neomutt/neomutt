@@ -60,14 +60,14 @@ struct Regex *mutt_regex_compile(const char *str, int flags)
 }
 
 /**
- * mutt_regex_create - Create an Regex from a string
+ * mutt_regex_new - Create an Regex from a string
  * @param str   Regular expression
  * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
  * @param err   Buffer for error messages
  * @retval ptr New Regex object
  * @retval NULL Error
  */
-struct Regex *mutt_regex_create(const char *str, int flags, struct Buffer *err)
+struct Regex *mutt_regex_new(const char *str, int flags, struct Buffer *err)
 {
   if (!str)
     return NULL;

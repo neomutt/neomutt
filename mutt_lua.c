@@ -86,6 +86,7 @@ static int lua_mutt_call(lua_State *l)
 
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
+  err.data[0] = '\0';
 
   if (lua_gettop(l) == 0)
   {
@@ -140,7 +141,7 @@ static int lua_mutt_set(lua_State *l)
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * lua_mutt_set(%s)\n", param);
 
-  if (mutt_str_strncmp("my_", param, 3) == 0)
+  if (mutt_str_startswith(param, "my_", CASE_MATCH))
   {
     const char *val = lua_tostring(l, -1);
     myvar_set(param, val);
@@ -214,7 +215,7 @@ static int lua_mutt_get(lua_State *l)
   const char *param = lua_tostring(l, -1);
   mutt_debug(2, " * lua_mutt_get(%s)\n", param);
 
-  if (mutt_str_strncmp("my_", param, 3) == 0)
+  if (mutt_str_startswith(param, "my_", CASE_MATCH))
   {
     const char *mv = myvar_get(param);
     if (!mv)

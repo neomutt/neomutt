@@ -67,8 +67,7 @@ enum AclRights
   MUTT_ACL_READ,      ///< read the mailbox
   MUTT_ACL_SEEN,      ///< change the 'seen' status of a message
   MUTT_ACL_WRITE,     ///< write to a message (for flagging, or linking threads)
-
-  RIGHTSMAX
+  MUTT_ACL_MAX,
 };
 
 /**
@@ -87,6 +86,9 @@ struct Mailbox
   int msg_count;             /**< total number of messages */
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
+  int msg_new;               /**< number of new messages */
+  int msg_deleted;           /**< number of deleted messages */
+  int msg_tagged;            /**< how many messages are tagged? */
 
   struct Email **hdrs;
   int hdrmax;               /**< number of pointers in hdrs */
@@ -102,12 +104,15 @@ struct Mailbox
 
   const struct MxOps *mx_ops;
 
-  bool changed : 1;   /**< mailbox has been modified */
-  bool readonly : 1;  /**< don't allow changes to the mailbox */
-  bool quiet : 1;     /**< inhibit status messages? */
-  bool closing : 1;   /**< mailbox is being closed */
+  bool append                 : 1; /**< mailbox is opened in append mode */
+  bool changed                : 1; /**< mailbox has been modified */
+  bool dontwrite              : 1; /**< don't write the mailbox on close */
+  bool first_check_stats_done : 1; /**< true when the check have been done at least on time */
+  bool peekonly               : 1; /**< just taking a glance, revert atime */
+  bool quiet                  : 1; /**< inhibit status messages? */
+  bool readonly               : 1; /**< don't allow changes to the mailbox */
 
-  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
+  unsigned char rights[(MUTT_ACL_MAX + 7) / 8]; /**< ACL bits */
 
 #ifdef USE_COMPRESSED
   void *compress_info; /**< compressed mbox module private data */
@@ -118,6 +123,7 @@ struct Mailbox
   struct Hash *label_hash;  /**< hash table for x-labels */
 
   struct Account *account;
+  int opened;              /**< number of times mailbox is opened */
 
   int flags; /**< e.g. #MB_NORMAL */
 
@@ -138,10 +144,6 @@ STAILQ_HEAD(MailboxList, MailboxNode);
 
 extern struct MailboxList AllMailboxes;
 
-#ifdef USE_NOTMUCH
-void mutt_mailbox_vfolder(char *buf, size_t buflen);
-#endif
-
 struct Mailbox *mailbox_new(void);
 void            mailbox_free(struct Mailbox **m);
 void            mutt_context_free(struct Context **ctx);
@@ -152,7 +154,7 @@ void mutt_update_mailbox(struct Mailbox *m);
 void mutt_mailbox_cleanup(const char *path, struct stat *st);
 
 /** mark mailbox just left as already notified */
-void mutt_mailbox_setnotified(const char *path);
+void mutt_mailbox_setnotified(struct Mailbox *m);
 
 /* force flags passed to mutt_mailbox_check() */
 #define MUTT_MAILBOX_CHECK_FORCE       (1 << 0)

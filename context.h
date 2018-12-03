@@ -41,17 +41,11 @@ struct Context
   struct Email *last_tag;  /**< last tagged msg. used to link threads */
   struct MuttThread *tree;  /**< top of thread tree */
   struct Hash *thread_hash; /**< hash table for threading */
-  int tagged;               /**< how many messages are tagged? */
-  int new;                  /**< how many new messages? */
-  int deleted;              /**< how many deleted messages */
   int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
   struct Menu *menu; /**< needed for pattern compilation */
 
-  bool dontwrite : 1; /**< don't write the mailbox on close */
-  bool append : 1;    /**< mailbox is opened in append mode */
   bool collapsed : 1; /**< are all threads collapsed? */
-  bool peekonly : 1;  /**< just taking a glance, revert atime */
 
   struct Mailbox *mailbox;
 };

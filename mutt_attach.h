@@ -55,4 +55,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Email *e);
 
+/* small helper functions to handle temporary attachment files */
+void mutt_add_temp_attachment(char *filename);
+void mutt_unlink_temp_attachments(void);
+
 #endif /* MUTT_MUTT_ATTACH_H */

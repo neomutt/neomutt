@@ -46,13 +46,15 @@ const char *nm_db_get_filename(struct Mailbox *m)
   if (!mdata)
     return NULL;
 
-  char *db_filename = mdata->db_url.path ? mdata->db_url.path : NmDefaultUri;
+  char *db_filename = mdata->db_url->path ? mdata->db_url->path : NmDefaultUri;
+  if (!db_filename && !Folder)
+    return NULL;
+
   if (!db_filename)
     db_filename = Folder;
-  if (!db_filename)
-    return NULL;
-  if (strncmp(db_filename, "notmuch://", 10) == 0)
-    db_filename += 10;
+
+  if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
+    db_filename += NmUriProtocolLen;
 
   mutt_debug(2, "nm: db filename '%s'\n", db_filename);
   return db_filename;
@@ -135,14 +137,14 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
  */
 notmuch_database_t *nm_db_get(struct Mailbox *m, bool writable)
 {
-  if (!m || (m->magic != MUTT_NOTMUCH))
-    return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  struct NmAccountData *adata = a->adata;
+  struct NmAccountData *adata = nm_adata_get(m);
+
   if (!adata)
     return NULL;
+
+  // Use an existing open db if we have one.
+  if (adata->db)
+    return adata->db;
 
   const char *db_filename = nm_db_get_filename(m);
   if (db_filename)
@@ -164,14 +166,23 @@ int nm_db_release(struct Mailbox *m)
     return -1;
 
   mutt_debug(1, "nm: db close\n");
-#ifdef NOTMUCH_API_3
-  notmuch_database_destroy(adata->db);
-#else
-  notmuch_database_close(adata->db);
-#endif
+  nm_db_free(adata->db);
   adata->db = NULL;
   adata->longrun = false;
   return 0;
+}
+
+/**
+ * nm_db_free - decoupled way to close a Notmuch database
+ * @param db Notmuch database
+ */
+void nm_db_free(notmuch_database_t *db)
+{
+#ifdef NOTMUCH_API_3
+  notmuch_database_destroy(db);
+#else
+  notmuch_database_close(db);
+#endif
 }
 
 /**

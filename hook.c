@@ -38,8 +38,10 @@
 #include "mutt.h"
 #include "hook.h"
 #include "alias.h"
+#include "context.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mutt_attach.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -290,6 +292,7 @@ static void delete_hook(struct Hook *h)
   if (h->regex.regex)
   {
     regfree(h->regex.regex);
+    FREE(&h->regex.regex);
   }
   mutt_pattern_free(&h->pattern);
   FREE(&h);
@@ -428,11 +431,11 @@ char *mutt_find_hook(int type, const char *pat)
 
 /**
  * mutt_message_hook - Perform a message hook
- * @param ctx Mailbox Context
- * @param e Email Header
+ * @param m   Mailbox Context
+ * @param e   Email
  * @param type Hook type, e.g. #MUTT_MESSAGE_HOOK
  */
-void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
+void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
@@ -451,7 +454,7 @@ void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
+      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^
           hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
@@ -481,7 +484,7 @@ void mutt_message_hook(struct Context *ctx, struct Email *e, int type)
  * @param pathlen Length of buffer
  * @param type    Type e.g. #MUTT_FCC_HOOK
  * @param ctx     Mailbox Context
- * @param e     Email Header
+ * @param e       Email
  * @retval  0 Success
  * @retval -1 Failure
  */
@@ -499,8 +502,8 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, e, &cache) > 0) ^
-          hook->regex.not)
+      struct Mailbox *m = ctx ? ctx->mailbox : NULL;
+      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
       {
         mutt_make_string_flags(path, pathlen, hook->command, ctx, e, MUTT_FORMAT_PLAIN);
         return 0;
@@ -515,7 +518,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
  * mutt_default_save - Find the default save path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of buffer
- * @param e       Email Header
+ * @param e       Email
  */
 void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
@@ -549,7 +552,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
  * mutt_select_fcc - Select the FCC path for an email
  * @param path    Buffer for the path
  * @param pathlen Length of the buffer
- * @param e       Email Header
+ * @param e       Email
  */
 void mutt_select_fcc(char *path, size_t pathlen, struct Email *e)
 {
@@ -688,6 +691,9 @@ void mutt_timeout_hook(void)
     }
   }
   FREE(&token.data);
+
+  /* Delete temporary attachment files */
+  mutt_unlink_temp_attachments();
 }
 
 /**

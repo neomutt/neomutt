@@ -41,7 +41,6 @@
 #include "commands.h"
 #include "compose.h"
 #include "curs_lib.h"
-#include "curs_main.h"
 #include "edit.h"
 #include "globals.h"
 #include "group.h"
@@ -49,9 +48,10 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "imap/imap.h"
+#include "index.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "maildir/maildir.h"
+#include "maildir/lib.h"
 #include "main.h"
 #include "menu.h"
 #include "mutt_account.h"
@@ -97,10 +97,10 @@
  */
 enum MuttSetCommand
 {
-  MUTT_SET_SET,   /**< default is to set all vars */
-  MUTT_SET_INV,   /**< default is to invert all vars */
-  MUTT_SET_UNSET, /**< default is to unset all vars */
-  MUTT_SET_RESET, /**< default is to reset all vars to default */
+  MUTT_SET_SET,   ///< default is to set all vars
+  MUTT_SET_INV,   ///< default is to invert all vars
+  MUTT_SET_UNSET, ///< default is to unset all vars
+  MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
 #define UL (unsigned long)
@@ -981,7 +981,7 @@ struct ConfigDef MuttVars[] = {
   ** you use ``+'' or ``='' for any other variables since expansion takes place
   ** when handling the ``$mailboxes'' command.
   */
-  { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
+  { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display to your
@@ -1495,7 +1495,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your IMAP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.
+  ** mechanism.  See ``$oauth'' for details.
   */
   { "imap_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &ImapPass, 0 },
   /*
@@ -1704,7 +1704,13 @@ struct ConfigDef MuttVars[] = {
   ** rightward text.
   ** .pp
   ** Note that these expandos are supported in
-  ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
+  ** ``$save-hook'', ``$fcc-hook'', ``$fcc-save-hook'', and
+  ** ``$index-format-hook''.
+  ** .pp
+  ** They are also supported in the configuration variables $$attribution,
+  ** $$forward_attribution_intro, $$forward_attribution_trailer,
+  ** $$forward_format, $$indent_string, $$message_format, $$pager_format,
+  ** and $$post_indent_string.
   */
 #ifdef USE_NNTP
   { "inews", DT_COMMAND, R_NONE, &Inews, 0 },
@@ -2112,12 +2118,13 @@ struct ConfigDef MuttVars[] = {
   ** indexes of read articles.  The following printf-style sequence
   ** is understood:
   ** .dl
-  ** .dt %a .dd Account url
-  ** .dt %p .dd Port
-  ** .dt %P .dd Port if specified
-  ** .dt %s .dd News server name
-  ** .dt %S .dd Url schema
-  ** .dt %u .dd Username
+  ** .dt \fBExpando\fP .dd \fBDescription\fP .dd \fBExample\fP
+  ** .dt %a .dd Account url       .dd \fCnews:news.gmane.org\fP
+  ** .dt %p .dd Port              .dd \fC119\fP
+  ** .dt %P .dd Port if specified .dd \fC10119\fP
+  ** .dt %s .dd News server name  .dd \fCnews.gmane.org\fP
+  ** .dt %S .dd Url schema        .dd \fCnews\fP
+  ** .dt %u .dd Username          .dd \fCusername\fP
   ** .de
   */
 #endif
@@ -2186,8 +2193,22 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies notmuch tag which is used for unread messages. The
-  ** variable is used to count unread messages in DB only. All other NeoMutt commands
-  ** use standard (e.g. maildir) flags.
+  ** variable is used to count unread messages in DB and set the unread flag when
+  ** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+  */
+  { "nm_flagged_tag", DT_STRING, R_NONE, &NmFlaggedTag, IP "flagged" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for flagged messages. The
+  ** variable is used to count flagged messages in DB and set the flagged flag when
+  ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+  */
+  { "nm_replied_tag", DT_STRING, R_NONE, &NmRepliedTag, IP "replied" },
+  /*
+  ** .pp
+  ** This variable specifies notmuch tag which is used for replied messages. The
+  ** variable is used to set the replied flag when modifiying tags. All other NeoMutt
+  ** commands use standard (e.g. maildir) flags.
   */
 #endif
 #ifdef USE_NNTP
@@ -2803,7 +2824,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your POP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.
+  ** mechanism.  See ``$oauth'' for details.
   */
   { "pop_pass",         DT_STRING,  R_NONE|F_SENSITIVE, &PopPass, 0 },
   /*
@@ -2834,6 +2855,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Similar to the $$attribution variable, NeoMutt will append this
   ** string after the inclusion of a message which is being replied to.
+  ** For a full listing of defined \fCprintf(3)\fP-like sequences see
+  ** the section on $$index_format.
   */
 #ifdef USE_NNTP
   { "post_moderated",   DT_QUAD, R_NONE, &PostModerated, MUTT_ASKYES },
@@ -3858,7 +3881,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your SMTP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.
+  ** mechanism.  See ``$oauth'' for details.
   */
   { "smtp_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &SmtpPass, 0 },
   /*
@@ -4150,7 +4173,7 @@ struct ConfigDef MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``index''

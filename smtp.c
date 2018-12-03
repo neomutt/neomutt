@@ -70,17 +70,16 @@ char *SmtpAuthenticators; ///< Config: (smtp) List of allowed authentication met
  */
 enum SmtpCapability
 {
-  STARTTLS,
-  AUTH,
-  DSN,
-  EIGHTBITMIME,
-  SMTPUTF8,
-
-  CAPMAX
+  SMTP_CAP_STARTTLS,     ///< Server supports STARTTLS command
+  SMTP_CAP_AUTH,         ///< Server supports AUTH command
+  SMTP_CAP_DSN,          ///< Server supports Delivery Status Notification
+  SMTP_CAP_EIGHTBITMIME, ///< Server supports 8-bit MIME content
+  SMTP_CAP_SMTPUTF8,     ///< Server accepts UTF-8 strings
+  SMTP_CAP_MAX,
 };
 
 static char *AuthMechs = NULL;
-static unsigned char Capabilities[(CAPMAX + 7) / 8];
+static unsigned char Capabilities[(SMTP_CAP_MAX + 7) / 8];
 
 /**
  * valid_smtp_code - Is the is a valid SMTP return code?
@@ -123,21 +122,23 @@ static int smtp_get_resp(struct Connection *conn)
       /* read error, or no response code */
       return SMTP_ERR_READ;
     }
+    const char *s = buf + 4; /* Skip the response code and the space/dash */
+    size_t plen;
 
-    if (mutt_str_strncasecmp("8BITMIME", buf + 4, 8) == 0)
-      mutt_bit_set(Capabilities, EIGHTBITMIME);
-    else if (mutt_str_strncasecmp("AUTH ", buf + 4, 5) == 0)
+    if (mutt_str_startswith(s, "8BITMIME", CASE_IGNORE))
+      mutt_bit_set(Capabilities, SMTP_CAP_EIGHTBITMIME);
+    else if ((plen = mutt_str_startswith(s, "AUTH ", CASE_IGNORE)))
     {
-      mutt_bit_set(Capabilities, AUTH);
+      mutt_bit_set(Capabilities, SMTP_CAP_AUTH);
       FREE(&AuthMechs);
-      AuthMechs = mutt_str_strdup(buf + 9);
+      AuthMechs = mutt_str_strdup(s + plen);
     }
-    else if (mutt_str_strncasecmp("DSN", buf + 4, 3) == 0)
-      mutt_bit_set(Capabilities, DSN);
-    else if (mutt_str_strncasecmp("STARTTLS", buf + 4, 8) == 0)
-      mutt_bit_set(Capabilities, STARTTLS);
-    else if (mutt_str_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
-      mutt_bit_set(Capabilities, SMTPUTF8);
+    else if (mutt_str_startswith(s, "DSN", CASE_IGNORE))
+      mutt_bit_set(Capabilities, SMTP_CAP_DSN);
+    else if (mutt_str_startswith(s, "STARTTLS", CASE_IGNORE))
+      mutt_bit_set(Capabilities, SMTP_CAP_STARTTLS);
+    else if (mutt_str_startswith(s, "SMTPUTF8", CASE_IGNORE))
+      mutt_bit_set(Capabilities, SMTP_CAP_SMTPUTF8);
 
     if (!valid_smtp_code(buf, n, &n))
       return SMTP_ERR_CODE;
@@ -171,7 +172,7 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
       a = a->next;
       continue;
     }
-    if (mutt_bit_isset(Capabilities, DSN) && DsnNotify)
+    if (mutt_bit_isset(Capabilities, SMTP_CAP_DSN) && DsnNotify)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, DsnNotify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
@@ -308,26 +309,20 @@ static bool addresses_use_unicode(const struct Address *a)
  */
 static int smtp_fill_account(struct ConnAccount *account)
 {
-  struct Url url;
-
   account->flags = 0;
   account->port = 0;
   account->type = MUTT_ACCT_TYPE_SMTP;
 
-  char *urlstr = mutt_str_strdup(SmtpUrl);
-  url_parse(&url, urlstr);
-  if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) || !url.host ||
-      mutt_account_fromurl(account, &url) < 0)
+  struct Url *url = url_parse(SmtpUrl);
+  if (!url || (url->scheme != U_SMTP && url->scheme != U_SMTPS) || !url->host ||
+      mutt_account_fromurl(account, url) < 0)
   {
     url_free(&url);
-    FREE(&urlstr);
     mutt_error(_("Invalid SMTP URL: %s"), SmtpUrl);
     return -1;
   }
-  url_free(&url);
-  FREE(&urlstr);
 
-  if (url.scheme == U_SMTPS)
+  if (url->scheme == U_SMTPS)
     account->flags |= MUTT_ACCT_SSL;
 
   if (!account->port)
@@ -350,6 +345,7 @@ static int smtp_fill_account(struct ConnAccount *account)
     }
   }
 
+  url_free(&url);
   return 0;
 }
 
@@ -681,7 +677,7 @@ static int smtp_open(struct Connection *conn, bool esmtp)
     rc = MUTT_NO;
   else if (SslForceTls)
     rc = MUTT_YES;
-  else if (mutt_bit_isset(Capabilities, STARTTLS) &&
+  else if (mutt_bit_isset(Capabilities, SMTP_CAP_STARTTLS) &&
            (rc = query_quadoption(SslStarttls,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
   {
@@ -711,7 +707,7 @@ static int smtp_open(struct Connection *conn, bool esmtp)
 
   if (conn->account.flags & MUTT_ACCT_USER)
   {
-    if (!mutt_bit_isset(Capabilities, AUTH))
+    if (!mutt_bit_isset(Capabilities, SMTP_CAP_AUTH))
     {
       mutt_error(_("SMTP server does not support authentication"));
       return -1;
@@ -773,14 +769,14 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
 
     /* send the sender's address */
     int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
-    if (eightbit && mutt_bit_isset(Capabilities, EIGHTBITMIME))
+    if (eightbit && mutt_bit_isset(Capabilities, SMTP_CAP_EIGHTBITMIME))
     {
       mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       len += 14;
     }
-    if (DsnReturn && mutt_bit_isset(Capabilities, DSN))
+    if (DsnReturn && mutt_bit_isset(Capabilities, SMTP_CAP_DSN))
       len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", DsnReturn);
-    if (mutt_bit_isset(Capabilities, SMTPUTF8) &&
+    if (mutt_bit_isset(Capabilities, SMTP_CAP_SMTPUTF8) &&
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
     {
@@ -811,7 +807,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     mutt_socket_send(conn, "QUIT\r\n");
 
     rc = 0;
-  } while (0);
+  } while (false);
 
   if (conn)
     mutt_socket_close(conn);

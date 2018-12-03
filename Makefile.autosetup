@@ -63,9 +63,9 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o \
 		complete.o compose.o compress.o conststrings.o copy.o \
-		curs_lib.o curs_main.o edit.o editmsg.o enriched.o enter.o \
-		filter.o flags.o group.o handler.o hdrline.o help.o hook.o \
-		init.o keymap.o mailbox.o main.o menu.o muttlib.o \
+		curs_lib.o edit.o editmsg.o enriched.o enter.o \
+		filter.o flags.o git_ver.o group.o handler.o hdrline.o help.o hook.o \
+		index.o init.o keymap.o mailbox.o main.o menu.o muttlib.o \
 		mutt_account.o mutt_attach.o mutt_body.o mutt_header.o \
 		mutt_history.o mutt_logging.o mutt_parse.o mutt_signal.o \
 		mutt_socket.o mutt_thread.o mutt_url.o mutt_window.o mx.o myvar.o \
@@ -100,7 +100,7 @@ ALLOBJS+=	$(LIBPOPOBJS)
 ###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/newsrc.o nntp/nntp.o
+LIBNNTPOBJS=	nntp/browse.o nntp/complete.o nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 MUTTLIBS+=	$(LIBNNTP)
 ALLOBJS+=	$(LIBNNTPOBJS)
@@ -126,7 +126,7 @@ ALLOBJS+=	$(LIBNOTMUCHOBJS)
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/mh.o
+LIBMAILDIROBJS=	maildir/maildir.o maildir/mh.o maildir/shared.o
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 MUTTLIBS+=	$(LIBMAILDIR)
 ALLOBJS+=	$(LIBMAILDIROBJS)
@@ -259,7 +259,7 @@ ALLOBJS+=	$(LIBMUTTOBJS)
 
 ###############################################################################
 # generated
-GENERATED=	git_ver.h hcache/hcversion.h
+GENERATED=	git_ver.c hcache/hcversion.h
 CLEANFILES+=	$(GENERATED)
 
 ##############################################################################
@@ -271,8 +271,7 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $*.Tpo -c -o $@ $<
 	@mv $*.Tpo $*.Po
 
-# make sure git_ver.h is built before any .o files
-$(ALLOBJS):	git_ver.h
+$(ALLOBJS):
 
 # mutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
@@ -368,12 +367,12 @@ $(PGPEWRAP): $(PGPEWRAPOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
 
 # generated
-git_ver.h: $(ALL_FILES)
+git_ver.c: $(ALL_FILES)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | \
 		sed -e 's/^neomutt-[0-9]\{8\}//; s/-g\([a-z0-9]\{6\}\)/-\1/'`; \
-	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
-	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
-	rm -f git_ver.h.tmp
+	echo 'const char *GitVer = "'$$version'";' > $@.tmp; \
+	cmp -s $@.tmp $@ || mv $@.tmp $@; \
+	rm -f $@.tmp
 
 hcache/hcversion.h:	$(SRCDIR)/email/address.h \
 			$(SRCDIR)/email/body.h \

@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include "nntp_private.h"
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
@@ -53,7 +54,6 @@
 #include "mutt_socket.h"
 #include "mutt_window.h"
 #include "muttlib.h"
-#include "mx.h"
 #include "nntp.h"
 #include "protos.h"
 #include "sort.h"
@@ -121,7 +121,7 @@ void nntp_acache_free(struct NntpMboxData *mdata)
  */
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data)
 {
-  nntp_mdata_free(obj);
+  nntp_mdata_free(&obj);
 }
 
 /**
@@ -306,7 +306,12 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
  */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
-  struct NntpMboxData *mdata = ctx->mailbox->mdata;
+  if (!ctx || !ctx->mailbox)
+    return;
+
+  struct Mailbox *m = ctx->mailbox;
+
+  struct NntpMboxData *mdata = m->mdata;
   anum_t last = 0, first = 1;
   bool series;
   int save_sort = SORT_ORDER;
@@ -330,16 +335,15 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
    * first article in our list */
   mdata->newsrc_len = 0;
   series = true;
-  for (int i = 0; i < ctx->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
     /* search for first unread */
     if (series)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
-      if (last >= mdata->first_message && !ctx->mailbox->hdrs[i]->deleted &&
-          !ctx->mailbox->hdrs[i]->read)
+      last = nntp_edata_get(m->hdrs[i])->article_num;
+      if (last >= mdata->first_message && !m->hdrs[i]->deleted && !m->hdrs[i]->read)
       {
         if (mdata->newsrc_len >= entries)
         {
@@ -356,12 +360,12 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     /* search for first read */
     else
     {
-      if (ctx->mailbox->hdrs[i]->deleted || ctx->mailbox->hdrs[i]->read)
+      if (m->hdrs[i]->deleted || m->hdrs[i]->read)
       {
         first = last + 1;
         series = true;
       }
-      last = nntp_edata_get(ctx->mailbox->hdrs[i])->article_num;
+      last = nntp_edata_get(m->hdrs[i])->article_num;
     }
   }
 
@@ -536,6 +540,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *acct, con
     mutt_account_tourl(acct, &url);
     url.path = mutt_str_strdup(src);
     url_tostring(&url, file, sizeof(file), U_PATH);
+    FREE(&url.path);
   }
   else
     mutt_str_strfcpy(file, src ? src : "", sizeof(file));
@@ -996,10 +1001,9 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   char *p = NULL;
 #endif
   int rc;
-  struct ConnAccount acct;
+  struct ConnAccount acct = { { 0 } };
   struct NntpAccountData *adata = NULL;
   struct Connection *conn = NULL;
-  struct Url url;
 
   if (!server || !*server)
   {
@@ -1012,15 +1016,16 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   acct.port = NNTP_PORT;
   acct.type = MUTT_ACCT_TYPE_NNTP;
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
-  if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS) || !url.host ||
-      mutt_account_fromurl(&acct, &url) < 0)
+  struct Url *url = url_parse(file);
+  if (!url || (url->path && *url->path) ||
+      !(url->scheme == U_NNTP || url->scheme == U_NNTPS) || !url->host ||
+      mutt_account_fromurl(&acct, url) < 0)
   {
     url_free(&url);
     mutt_error(_("%s is an invalid news server specification"), server);
     return NULL;
   }
-  if (url.scheme == U_NNTPS)
+  if (url->scheme == U_NNTPS)
   {
     acct.flags |= MUTT_ACCT_SSL;
     acct.port = NNTP_SSL_PORT;
@@ -1038,7 +1043,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
   }
 
   /* news server already exists */
-  adata = conn->data;
+  // adata = conn->data;
   if (adata)
   {
     if (adata->status == NNTP_BYE)
@@ -1168,11 +1173,10 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, char *server, bool
     FREE(&adata->authenticators);
     FREE(&adata);
     mutt_socket_close(conn);
-    mutt_socket_free(conn);
+    FREE(&conn);
     return NULL;
   }
 
-  conn->data = adata;
   return adata;
 }
 
@@ -1273,13 +1277,13 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
 
 /**
  * mutt_newsgroup_catchup - Catchup newsgroup
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
+struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
                                             struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
@@ -1299,23 +1303,23 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Context *ctx,
     mdata->newsrc_ent[0].last = mdata->last_message;
   }
   mdata->unread = 0;
-  if (ctx && ctx->mailbox->mdata == mdata)
+  if (m && (m->mdata == mdata))
   {
-    for (unsigned int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_READ, 1);
+    for (unsigned int i = 0; i < m->msg_count; i++)
+      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 1);
   }
   return mdata;
 }
 
 /**
  * mutt_newsgroup_uncatchup - Uncatchup newsgroup
- * @param ctx   Mailbox
+ * @param m     Mailbox
  * @param adata NNTP server
  * @param group Newsgroup
  * @retval ptr  NNTP data
  * @retval NULL Error
  */
-struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
+struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
                                               struct NntpAccountData *adata, char *group)
 {
   struct NntpMboxData *mdata = NULL;
@@ -1334,11 +1338,11 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Context *ctx,
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = mdata->first_message - 1;
   }
-  if (ctx && ctx->mailbox->mdata == mdata)
+  if (m && m->mdata == mdata)
   {
-    mdata->unread = ctx->mailbox->msg_count;
-    for (unsigned int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_READ, 0);
+    mdata->unread = m->msg_count;
+    for (unsigned int i = 0; i < m->msg_count; i++)
+      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 0);
   }
   else
   {

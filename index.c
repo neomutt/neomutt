@@ -33,7 +33,7 @@
 #include "email/lib.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "curs_main.h"
+#include "index.h"
 #include "account.h"
 #include "alias.h"
 #include "browser.h"
@@ -91,7 +91,7 @@
 #include "monitor.h"
 #endif
 
-/* These Config Variables are only used in curs_main.c */
+/* These Config Variables are only used in index.c */
 bool ChangeFolderNext; ///< Config: Suggest the next folder, rather than the first when using '<change-folder>'
 bool CollapseAll;      ///< Config: Collapse all threads when entering a folder
 bool CollapseFlagged; ///< Config: Prevent the collapse of threads with flagged emails
@@ -308,31 +308,31 @@ static int ci_first_message(void)
 
 /**
  * mx_toggle_write - Toggle the mailbox's readonly flag
- * @param ctx Mailbox
+ * @param m Mailbox
  * @retval  0 Success
  * @retval -1 Error
  *
  * This should be in mx.c, but it only gets used here.
  */
-static int mx_toggle_write(struct Context *ctx)
+static int mx_toggle_write(struct Mailbox *m)
 {
-  if (!ctx)
+  if (!m)
     return -1;
 
-  if (ctx->mailbox->readonly)
+  if (m->readonly)
   {
     mutt_error(_("Cannot toggle write on a readonly mailbox"));
     return -1;
   }
 
-  if (ctx->dontwrite)
+  if (m->dontwrite)
   {
-    ctx->dontwrite = false;
+    m->dontwrite = false;
     mutt_message(_("Changes to folder will be written on folder exit"));
   }
   else
   {
-    ctx->dontwrite = true;
+    m->dontwrite = true;
     mutt_message(_("Changes to folder will not be written"));
   }
 
@@ -404,7 +404,7 @@ static void update_index_threaded(struct Context *ctx, int check, int oldcount)
       else
         e = ctx->mailbox->hdrs[i];
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, e, NULL))
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx->mailbox, e, NULL))
       {
         /* virtual will get properly set by mutt_set_virtual(), which
          * is called by mutt_sort_headers() just below. */
@@ -461,7 +461,7 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
-    int padding = mx_msg_padding_size(ctx);
+    int padding = mx_msg_padding_size(ctx->mailbox);
     for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->mailbox->msg_count; i++)
     {
       if (!i)
@@ -470,8 +470,8 @@ static void update_index_unthreaded(struct Context *ctx, int check, int oldcount
         ctx->vsize = 0;
       }
 
-      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx,
-                            ctx->mailbox->hdrs[i], NULL))
+      if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS,
+                            ctx->mailbox, ctx->mailbox->hdrs[i], NULL))
       {
         assert(ctx->mailbox->vcount < ctx->mailbox->msg_count);
         ctx->mailbox->hdrs[i]->virtual = ctx->mailbox->vcount;
@@ -730,7 +730,7 @@ int index_color(int line)
   if (e && e->pair)
     return e->pair;
 
-  mutt_set_header_color(Context, e);
+  mutt_set_header_color(Context->mailbox, e);
   if (e)
     return e->pair;
 
@@ -1197,13 +1197,13 @@ int mutt_index_menu(void)
           continue;
         }
 
-        if (!Context)
+        if (!Context || !Context->mailbox)
         {
           mutt_error(_("No mailbox is open"));
           continue;
         }
 
-        if (!Context->tagged)
+        if (!Context->mailbox->msg_tagged)
         {
           if (op == OP_TAG_PREFIX)
             mutt_error(_("No tagged messages"));
@@ -1219,7 +1219,7 @@ int mutt_index_menu(void)
         tag = true;
         continue;
       }
-      else if (AutoTag && Context && Context->tagged)
+      else if (AutoTag && Context && Context->mailbox && Context->mailbox->msg_tagged)
         tag = true;
 
       mutt_clear_error();
@@ -1491,7 +1491,7 @@ int mutt_index_menu(void)
         {
           struct Email *e = Context->mailbox->hdrs[i - 1];
 
-          if (mutt_messages_in_thread(Context, e, 1) != 1)
+          if (mutt_messages_in_thread(Context->mailbox, e, 1) > 1)
           {
             mutt_uncollapse_thread(Context, e);
             mutt_set_virtual(Context);
@@ -1714,12 +1714,12 @@ int mutt_index_menu(void)
         {
           for (j = 0; j < Context->mailbox->msg_count; j++)
             if (message_is_visible(Context, j))
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_TAG, 0);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_TAG, 0);
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_TAG, !CURHDR->tagged);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, !CURHDR->tagged);
 
           Context->last_tag = CURHDR->tagged ?
                                   CURHDR :
@@ -1961,7 +1961,7 @@ int mutt_index_menu(void)
       case OP_MAIN_MODIFY_TAGS:
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {
-        if (!Context || !mx_tags_is_supported(Context))
+        if (!Context || !mx_tags_is_supported(Context->mailbox))
         {
           mutt_message(_("Folder doesn't support tagging, aborting"));
           break;
@@ -1972,7 +1972,7 @@ int mutt_index_menu(void)
         char *tags = NULL;
         if (!tag)
           tags = driver_tags_get_with_hidden(&CURHDR->tags);
-        rc = mx_tags_edit(Context, tags, buf, sizeof(buf));
+        rc = mx_tags_edit(Context->mailbox, tags, buf, sizeof(buf));
         FREE(&tags);
         if (rc < 0)
           break;
@@ -1991,7 +1991,8 @@ int mutt_index_menu(void)
           {
             char msgbuf[STRING];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
-            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->tagged);
+            mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1,
+                               Context->mailbox->msg_tagged);
           }
 
 #ifdef USE_NOTMUCH
@@ -2005,7 +2006,7 @@ int mutt_index_menu(void)
 
             if (!Context->mailbox->quiet)
               mutt_progress_update(&progress, ++px, -1);
-            mx_tags_commit(Context, Context->mailbox->hdrs[j], buf);
+            mx_tags_commit(Context->mailbox, Context->mailbox->hdrs[j], buf);
             if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
             {
               bool still_queried = false;
@@ -2026,7 +2027,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (mx_tags_commit(Context, CURHDR, buf))
+          if (mx_tags_commit(Context->mailbox, CURHDR, buf))
           {
             mutt_message(_("Failed to modify tags, aborting"));
             break;
@@ -2083,6 +2084,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
+        CHECK_IN_MAILBOX;
         mutt_debug(2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
         if (NmQueryWindowDuration <= 0)
         {
@@ -2103,6 +2105,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+        CHECK_IN_MAILBOX;
         if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled"));
@@ -2151,10 +2154,6 @@ int mutt_index_menu(void)
 
         if (flags)
           cp = _("Open mailbox in read-only mode");
-#ifdef USE_NOTMUCH
-        else if (op == OP_MAIN_CHANGE_VFOLDER)
-          cp = _("Open virtual folder");
-#endif
         else
           cp = _("Open mailbox");
 
@@ -2181,22 +2180,6 @@ int mutt_index_menu(void)
 
           /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(m->path);
-        }
-#endif
-#ifdef USE_NOTMUCH
-        else if (op == OP_MAIN_CHANGE_VFOLDER)
-        {
-          if (Context && (Context->mailbox->magic == MUTT_NOTMUCH))
-          {
-            mutt_str_strfcpy(buf, Context->mailbox->path, sizeof(buf));
-            mutt_mailbox_vfolder(buf, sizeof(buf));
-          }
-          mutt_enter_vfolder(cp, buf, sizeof(buf), 1);
-          if (!buf[0])
-          {
-            mutt_window_clearline(MuttMessageWindow, 0);
-            break;
-          }
         }
 #endif
         else
@@ -2687,8 +2670,8 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_FLAG,
-                            !Context->mailbox->hdrs[j]->flagged);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j],
+                            MUTT_FLAG, !Context->mailbox->hdrs[j]->flagged);
             }
           }
 
@@ -2696,7 +2679,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_FLAG, !CURHDR->flagged);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_FLAG, !CURHDR->flagged);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -2730,18 +2713,18 @@ int mutt_index_menu(void)
               continue;
 
             if (Context->mailbox->hdrs[j]->read || Context->mailbox->hdrs[j]->old)
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_NEW, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_NEW, 1);
             else
-              mutt_set_flag(Context, Context->mailbox->hdrs[j], MUTT_READ, 1);
+              mutt_set_flag(Context->mailbox, Context->mailbox->hdrs[j], MUTT_READ, 1);
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
           if (CURHDR->read || CURHDR->old)
-            mutt_set_flag(Context, CURHDR, MUTT_NEW, 1);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_NEW, 1);
           else
-            mutt_set_flag(Context, CURHDR, MUTT_READ, 1);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_READ, 1);
 
           if (Resolve)
           {
@@ -2763,7 +2746,7 @@ int mutt_index_menu(void)
       case OP_TOGGLE_WRITE:
 
         CHECK_IN_MAILBOX;
-        if (mx_toggle_write(Context) == 0)
+        if (mx_toggle_write(Context->mailbox) == 0)
           menu->redraw |= REDRAW_STATUS;
         break;
 
@@ -2945,10 +2928,10 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_DELETE, 1);
-          mutt_set_flag(Context, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 1);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
           if (DeleteUntag)
-            mutt_set_flag(Context, CURHDR, MUTT_TAG, 0);
+            mutt_set_flag(Context->mailbox, CURHDR, MUTT_TAG, 0);
           if (Resolve)
           {
             menu->current = ci_next_undeleted(menu->current);
@@ -3017,7 +3000,7 @@ int mutt_index_menu(void)
         if (Context && Context->mailbox->magic == MUTT_NNTP)
         {
           struct NntpMboxData *mdata = Context->mailbox->mdata;
-          if (mutt_newsgroup_catchup(Context, mdata->adata, mdata->group))
+          if (mutt_newsgroup_catchup(Context->mailbox, mdata->adata, mdata->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
@@ -3033,7 +3016,8 @@ int mutt_index_menu(void)
       case OP_ENTER_COMMAND:
 
         mutt_enter_command();
-        mutt_check_rescore(Context);
+        if (Context)
+          mutt_check_rescore(Context->mailbox);
         break;
 
       case OP_EDIT_OR_VIEW_RAW_MESSAGE:
@@ -3403,8 +3387,8 @@ int mutt_index_menu(void)
         }
         else
         {
-          mutt_set_flag(Context, CURHDR, MUTT_DELETE, 0);
-          mutt_set_flag(Context, CURHDR, MUTT_PURGE, 0);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_DELETE, 0);
+          mutt_set_flag(Context->mailbox, CURHDR, MUTT_PURGE, 0);
           if (Resolve && menu->current < Context->mailbox->vcount - 1)
           {
             menu->current++;
@@ -3489,10 +3473,6 @@ int mutt_index_menu(void)
         bool_str_toggle(Config, "sidebar_visible", NULL);
         mutt_window_reflow();
         break;
-
-      case OP_SIDEBAR_TOGGLE_VIRTUAL:
-        mutt_sb_toggle_virtual();
-        break;
 #endif
       default:
         if (menu->menu == MENU_MAIN)
@@ -3522,10 +3502,10 @@ int mutt_index_menu(void)
 
 /**
  * mutt_set_header_color - Select a colour for a message
- * @param ctx    Mailbox
+ * @param m      Mailbox
  * @param curhdr Header of message
  */
-void mutt_set_header_color(struct Context *ctx, struct Email *curhdr)
+void mutt_set_header_color(struct Mailbox *m, struct Email *curhdr)
 {
   struct ColorLine *color = NULL;
   struct PatternCache cache = { 0 };
@@ -3535,7 +3515,7 @@ void mutt_set_header_color(struct Context *ctx, struct Email *curhdr)
 
   STAILQ_FOREACH(color, &ColorIndexList, entries)
   {
-    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, curhdr, &cache))
+    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, m, curhdr, &cache))
     {
       curhdr->pair = color->pair;
       return;

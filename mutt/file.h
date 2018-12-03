@@ -23,6 +23,7 @@
 #ifndef MUTT_LIB_FILE_H
 #define MUTT_LIB_FILE_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -34,6 +35,49 @@ extern char *Tmpdir;
 /* Flags for mutt_file_read_line() */
 #define MUTT_CONT (1 << 0) /**< \-continuation */
 #define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
+
+#ifndef HAVE_STRUCT_TIMESPEC
+/**
+ * struct timespec - Time value with nanosecond precision
+ */
+struct timespec
+{
+  time_t tv_sec;
+  long tv_nsec;
+};
+#endif
+
+/**
+ * enum MuttStatType - Flags for mutt_file_get_stat_timespec
+ *
+ * These represent filesystem timestamps returned by stat()
+ */
+enum MuttStatType
+{
+  MUTT_STAT_ATIME, ///< File/dir's atime - last accessed time
+  MUTT_STAT_MTIME, ///< File/dir's mtime - last modified time
+  MUTT_STAT_CTIME, ///< File/dir's ctime - creation time
+};
+
+/**
+ * struct MuttFileIter - State record for mutt_file_iter_line()
+ */
+struct MuttFileIter
+{
+  char *line;   /**< the line data */
+  size_t size;  /**< allocated size of line data */
+  int line_num; /**< line number */
+};
+
+/**
+ * typedef mutt_file_map_t - Callback function for mutt_file_map_lines()
+ * @param line      Line of text read
+ * @param line_num  Line number
+ * @param user_data Data to pass to the callback function
+ * @retval true  Read was successful
+ * @retval false Abort the reading and free the string
+ */
+typedef bool (*mutt_file_map_t)(char *line, int line_num, void *user_data);
 
 int         mutt_file_check_empty(const char *path);
 int         mutt_file_chmod(const char *path, mode_t mode);
@@ -50,21 +94,27 @@ int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
 long        mutt_file_get_size(const char *path);
+void        mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
+bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags);
 int         mutt_file_lock(int fd, bool excl, bool timeout);
+bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
 #define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 int         mutt_file_open(const char *path, int flags);
 size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
-char *      mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);
+char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags);
 int         mutt_file_rename(char *oldfile, char *newfile);
 int         mutt_file_rmtree(const char *path);
 int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *f, bool slash);
 int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
+int         mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
+int         mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);
+int         mutt_file_timespec_compare(struct timespec *a, struct timespec *b);
 void        mutt_file_touch_atime(int fd);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);

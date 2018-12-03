@@ -38,10 +38,12 @@
    (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
     LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
+const int NmUriProtocolLen;
+
 struct Mailbox;
 
 /**
- * struct NmAccountData - Account-specific Notmuch data - @extends Account
+ * struct NmAccountData - Notmuch-specific Account data - @extends Account
  */
 struct NmAccountData
 {
@@ -57,18 +59,16 @@ struct NmAccountData
  */
 enum NmQueryType
 {
-  NM_QUERY_TYPE_MESGS = 1, /**< Default: Messages only */
-  NM_QUERY_TYPE_THREADS    /**< Whole threads */
+  NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
+  NM_QUERY_TYPE_THREADS,   ///< Whole threads
 };
 
 /**
- * struct NmMboxData - Mailbox-specific Notmuch data - @extends Mailbox
+ * struct NmMboxData - Notmuch-specific Mailbox data - @extends Mailbox
  */
 struct NmMboxData
 {
-  struct Url db_url;   /**< Parsed view url of the Notmuch database */
-  char *db_url_holder; /**< The storage string used by db_url, we keep it
-                        *   to be able to free db_url */
+  struct Url *db_url;  /**< Parsed view url of the Notmuch database */
   char *db_query;      /**< Previous query */
   int db_limit;        /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
@@ -82,7 +82,7 @@ struct NmMboxData
 };
 
 /**
- * struct NmEmailData - Notmuch data attached to an Email - @extends Email
+ * struct NmEmailData - Notmuch-specific Email data - @extends Email
  */
 struct NmEmailData
 {
@@ -94,6 +94,7 @@ struct NmEmailData
 
 void                nm_db_debug_check (struct Mailbox *m);
 notmuch_database_t *nm_db_do_open     (const char *filename, bool writable, bool verbose);
+void                nm_db_free        (notmuch_database_t *db);
 const char *        nm_db_get_filename(struct Mailbox *m);
 int                 nm_db_get_mtime   (struct Mailbox *m, time_t *mtime);
 notmuch_database_t *nm_db_get         (struct Mailbox *m, bool writable);

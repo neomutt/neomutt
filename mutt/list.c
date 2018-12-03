@@ -85,7 +85,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
  * @retval ptr ListNode containing the string
  * @retval NULL if the string isn't found
  */
-struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
+struct ListNode *mutt_list_find(const struct ListHead *h, const char *data)
 {
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
@@ -172,7 +172,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))
+    if ((*np->data == '*') || mutt_str_startswith(s, np->data, CASE_IGNORE))
       return true;
   }
   return false;
@@ -187,7 +187,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
+bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 {
   struct ListNode *a = STAILQ_FIRST(ah);
   struct ListNode *b = STAILQ_FIRST(bh);
@@ -195,13 +195,13 @@ int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
   while (a && b)
   {
     if (mutt_str_strcmp(a->data, b->data) != 0)
-      return 0;
+      return false;
 
     a = STAILQ_NEXT(a, entries);
     b = STAILQ_NEXT(b, entries);
   }
   if (a || b)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }

@@ -54,29 +54,6 @@ struct Mapping;
 #define fgetc fgetc_unlocked
 #endif
 
-#ifndef HAVE_STRUCT_TIMESPEC
-/**
- * struct timespec - Time value with nanosecond precision
- */
-struct timespec
-{
-  time_t tv_sec;
-  long tv_nsec;
-};
-#endif
-
-/**
- * enum MuttStatType - Flags for mutt_get_stat_timespec
- *
- * These represent filesystem timestamps returned by stat()
- */
-enum MuttStatType
-{
-  MUTT_STAT_ATIME,
-  MUTT_STAT_MTIME,
-  MUTT_STAT_CTIME
-};
-
 /* flags for mutt_enter_string_full() */
 #define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
 #define MUTT_FILE     (1 << 1)  /**< do file completion */
@@ -87,10 +64,8 @@ enum MuttStatType
 #define MUTT_COMMAND  (1 << 6)  /**< do command completion */
 #define MUTT_PATTERN  (1 << 7)  /**< pattern mode - only used for history classes */
 #define MUTT_LABEL    (1 << 8)  /**< do label completion */
-#ifdef USE_NOTMUCH
 #define MUTT_NM_QUERY (1 << 9)  /**< Notmuch query mode. */
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
-#endif
 
 /* flags for mutt_extract_token() */
 #define MUTT_TOKEN_EQUAL         (1<<0)  /**< treat '=' as a special */
@@ -127,91 +102,84 @@ enum MuttStatType
  */
 enum MuttMisc
 {
-  /* modes for mutt_view_attachment() */
-  MUTT_REGULAR = 1,
-  MUTT_MAILCAP,
-  MUTT_AS_TEXT,
+  /* mutt_view_attachment() */
+  MUTT_REGULAR = 1, ///< View using default method
+  MUTT_MAILCAP,     ///< Force viewing using mailcap entry
+  MUTT_AS_TEXT,     ///< Force viewing as text
 
-  /* action codes used by mutt_set_flag() and mutt_pattern_function() */
-  MUTT_ALL,
-  MUTT_NONE,
-  MUTT_NEW,
-  MUTT_OLD,
-  MUTT_REPLIED,
-  MUTT_READ,
-  MUTT_UNREAD,
-  MUTT_DELETE,
-  MUTT_UNDELETE,
-  MUTT_PURGE,
-  MUTT_DELETED,
-  MUTT_FLAG,
-  MUTT_TAG,
-  MUTT_UNTAG,
-  MUTT_LIMIT,
-  MUTT_EXPIRED,
-  MUTT_SUPERSEDED,
-  MUTT_TRASH,
+  /* action codes used by mutt_set_flag() and mutt_pattern_func() */
+  MUTT_ALL,        ///< All messages
+  MUTT_NONE,       ///< No messages
+  MUTT_NEW,        ///< New messages
+  MUTT_OLD,        ///< Old messages
+  MUTT_REPLIED,    ///< Messages that have been replied to
+  MUTT_READ,       ///< Messages that have been read
+  MUTT_UNREAD,     ///< Unread messages
+  MUTT_DELETE,     ///< Messages to be deleted
+  MUTT_UNDELETE,   ///< Messages to be un-deleted
+  MUTT_PURGE,      ///< Messages to be purged (bypass trash)
+  MUTT_DELETED,    ///< Deleted messages
+  MUTT_FLAG,       ///< Flagged messages
+  MUTT_TAG,        ///< Tagged messages
+  MUTT_UNTAG,      ///< Messages to be un-tagged
+  MUTT_LIMIT,      ///< Messages in limited view
+  MUTT_EXPIRED,    ///< Expired messsages
+  MUTT_SUPERSEDED, ///< Superseded messages
+  MUTT_TRASH,      ///< Trashed messages
 
   /* actions for mutt_pattern_comp/mutt_pattern_exec */
-  MUTT_AND,
-  MUTT_OR,
-  MUTT_THREAD,
-  MUTT_PARENT,
-  MUTT_CHILDREN,
-  MUTT_TO,
-  MUTT_CC,
-  MUTT_COLLAPSED,
-  MUTT_SUBJECT,
-  MUTT_FROM,
-  MUTT_DATE,
-  MUTT_DATE_RECEIVED,
-  MUTT_DUPLICATED,
-  MUTT_UNREFERENCED,
-  MUTT_BROKEN,
-  MUTT_ID,
-  MUTT_BODY,
-  MUTT_HEADER,
-  MUTT_HORMEL,
-  MUTT_WHOLE_MSG,
-  MUTT_SENDER,
-  MUTT_MESSAGE,
-  MUTT_SCORE,
-  MUTT_SIZE,
-  MUTT_REFERENCE,
-  MUTT_RECIPIENT,
-  MUTT_LIST,
-  MUTT_SUBSCRIBED_LIST,
-  MUTT_PERSONAL_RECIP,
-  MUTT_PERSONAL_FROM,
-  MUTT_ADDRESS,
-  MUTT_CRYPT_SIGN,
-  MUTT_CRYPT_VERIFIED,
-  MUTT_CRYPT_ENCRYPT,
-  MUTT_PGP_KEY,
-  MUTT_XLABEL,
-  MUTT_SERVERSEARCH,
-  MUTT_DRIVER_TAGS,
-  MUTT_MIMEATTACH,
-  MUTT_MIMETYPE,
+  MUTT_AND,             ///< Both patterns must match
+  MUTT_OR,              ///< Either pattern can match
+  MUTT_THREAD,          ///< Pattern matches email thread
+  MUTT_PARENT,          ///< Pattern matches parent
+  MUTT_CHILDREN,        ///< Pattern matches a child email
+  MUTT_TO,              ///< Pattern matches 'To:' field
+  MUTT_CC,              ///< Pattern matches 'Cc:' field
+  MUTT_COLLAPSED,       ///< Thread is collapsed
+  MUTT_SUBJECT,         ///< Pattern matches 'Subject:' field
+  MUTT_FROM,            ///< Pattern matches 'From:' field
+  MUTT_DATE,            ///< Pattern matches 'Date:' field
+  MUTT_DATE_RECEIVED,   ///< Pattern matches date received
+  MUTT_DUPLICATED,      ///< Duplicate message
+  MUTT_UNREFERENCED,    ///< Message is unreferenced in the thread
+  MUTT_BROKEN,          ///< Message is part of a broken thread
+  MUTT_ID,              ///< Pattern matches email's Message-Id
+  MUTT_BODY,            ///< Pattern matches email's body
+  MUTT_HEADER,          ///< Pattern matches email's header
+  MUTT_HORMEL,          ///< Pattern matches email's spam score
+  MUTT_WHOLE_MSG,       ///< Pattern matches raw email text
+  MUTT_SENDER,          ///< Pattern matches sender
+  MUTT_MESSAGE,         ///< Pattern matches message number
+  MUTT_SCORE,           ///< Pattern matches email's score
+  MUTT_SIZE,            ///< Pattern matches email's size
+  MUTT_REFERENCE,       ///< Pattern matches 'References:' or 'In-Reply-To:' field
+  MUTT_RECIPIENT,       ///< User is a recipient of the email
+  MUTT_LIST,            ///< Email is on mailing list
+  MUTT_SUBSCRIBED_LIST, ///< Email is on subscribed mailing list
+  MUTT_PERSONAL_RECIP,  ///< Email is addressed to the user
+  MUTT_PERSONAL_FROM,   ///< Email is from the user
+  MUTT_ADDRESS,         ///< Pattern matches any address field
+  MUTT_CRYPT_SIGN,      ///< Message is signed
+  MUTT_CRYPT_VERIFIED,  ///< Message is crypographically verified
+  MUTT_CRYPT_ENCRYPT,   ///< Message is encrypted
+  MUTT_PGP_KEY,         ///< Message has PGP key
+  MUTT_XLABEL,          ///< Pattern matches keyword/label
+  MUTT_SERVERSEARCH,    ///< Server-side pattern matches
+  MUTT_DRIVER_TAGS,     ///< Pattern matches message tags
+  MUTT_MIMEATTACH,      ///< Pattern matches number of attachments
+  MUTT_MIMETYPE,        ///< Pattern matches MIME type
 #ifdef USE_NNTP
-  MUTT_NEWSGROUPS,
+  MUTT_NEWSGROUPS,      ///< Pattern matches newsgroup
 #endif
 
   /* Options for Mailcap lookup */
-  MUTT_EDIT,
-  MUTT_COMPOSE,
-  MUTT_PRINT,
-  MUTT_AUTOVIEW,
+  MUTT_EDIT,     ///< Mailcap edit field
+  MUTT_COMPOSE,  ///< Mailcap compose field
+  MUTT_PRINT,    ///< Mailcap print field
+  MUTT_AUTOVIEW, ///< Mailcap autoview field
 
-  /* options for socket code */
-  MUTT_NEW_SOCKET,
-#ifdef USE_SSL_OPENSSL
-  MUTT_NEW_SSL_SOCKET,
-#endif
-
-  /* Options for mutt_save_attachment */
-  MUTT_SAVE_APPEND,
-  MUTT_SAVE_OVERWRITE
+  MUTT_SAVE_APPEND,    ///< Append to existing file - mutt_save_attachment()
+  MUTT_SAVE_OVERWRITE, ///< Overwrite existing file - mutt_save_attachment()
 };
 
 /* flags for parse_spam_list */

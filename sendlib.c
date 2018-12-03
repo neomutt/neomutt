@@ -46,6 +46,7 @@
 #include "filter.h"
 #include "globals.h"
 #include "handler.h"
+#include "hook.h"
 #include "mailbox.h"
 #include "mutt_parse.h"
 #include "mutt_window.h"
@@ -128,12 +129,12 @@ static void encode_quoted(struct FgetConv *fc, FILE *fout, bool istext)
     }
 
     /* Escape lines that begin with/only contain "the message separator". */
-    if (linelen == 4 && (mutt_str_strncmp("From", line, 4) == 0))
+    if (linelen == 4 && mutt_str_startswith(line, "From", CASE_MATCH))
     {
       mutt_str_strfcpy(line, "=46rom", sizeof(line));
       linelen = 6;
     }
-    else if (linelen == 4 && (mutt_str_strncmp("from", line, 4) == 0))
+    else if (linelen == 4 && mutt_str_startswith(line, "from", CASE_MATCH))
     {
       mutt_str_strfcpy(line, "=66rom", sizeof(line));
       linelen = 6;
@@ -367,26 +368,25 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       fputc(';', f);
 
-      char buffer[STRING];
-      buffer[0] = 0;
+      char buf[STRING];
+      buf[0] = 0;
       tmp = mutt_str_strdup(np->value);
       const int encode = rfc2231_encode_string(&tmp);
-      mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
+      mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
 
       /* Dirty hack to make messages readable by Outlook Express
        * for the Mac: force quotes around the boundary parameter
        * even when they aren't needed.
        */
 
-      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) &&
-          (strcmp(buffer, tmp) == 0))
+      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) && (strcmp(buf, tmp) == 0))
       {
-        snprintf(buffer, sizeof(buffer), "\"%s\"", tmp);
+        snprintf(buf, sizeof(buf), "\"%s\"", tmp);
       }
 
       FREE(&tmp);
 
-      const int tmplen = mutt_str_strlen(buffer) + mutt_str_strlen(np->attribute) + 1;
+      const int tmplen = mutt_str_strlen(buf) + mutt_str_strlen(np->attribute) + 1;
 
       if (len + tmplen + 2 > 76)
       {
@@ -399,7 +399,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
         len += tmplen + 1;
       }
 
-      fprintf(f, "%s%s=%s", np->attribute, encode ? "*" : "", buffer);
+      fprintf(f, "%s%s=%s", np->attribute, encode ? "*" : "", buf);
     }
   }
 
@@ -436,13 +436,13 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           else
             t = fn;
 
-          char buffer[STRING];
-          buffer[0] = 0;
+          char buf[STRING];
+          buf[0] = 0;
           tmp = mutt_str_strdup(t);
           const int encode = rfc2231_encode_string(&tmp);
-          mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
+          mutt_addr_cat(buf, sizeof(buf), tmp, MimeSpecials);
           FREE(&tmp);
-          fprintf(f, "; filename%s=%s", encode ? "*" : "", buffer);
+          fprintf(f, "; filename%s=%s", encode ? "*" : "", buf);
         }
       }
 
@@ -977,7 +977,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   FILE *fp = NULL;
   char *fromcode = NULL;
   char *tocode = NULL;
-  char buffer[100];
+  char buf[100];
   size_t r;
 
   struct stat sb;
@@ -1031,8 +1031,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   }
 
   rewind(fp);
-  while ((r = fread(buffer, 1, sizeof(buffer), fp)))
-    update_content_info(info, &state, buffer, r);
+  while ((r = fread(buf, 1, sizeof(buf), fp)))
+    update_content_info(info, &state, buf, r);
   update_content_info(info, &state, 0, 0);
 
   mutt_file_fclose(&fp);
@@ -1332,7 +1332,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char send_charset[SHORT_STRING];
     char *chsname = mutt_body_get_charset(b, send_charset, sizeof(send_charset));
-    if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
+    if ((info->lobin && !mutt_str_startswith(chsname, "iso-2022", CASE_IGNORE)) ||
         info->linemax > 990 || (info->from && EncodeFrom))
     {
       b->encoding = ENC_QUOTED_PRINTABLE;
@@ -1444,15 +1444,15 @@ void mutt_update_encoding(struct Body *a)
 
 /**
  * mutt_make_message_attach - Create a message attachment
- * @param ctx        Mailbox
- * @param e        Email
+ * @param m          Mailbox
+ * @param e          Email
  * @param attach_msg true if attaching a message
  * @retval ptr  Newly allocated Body
  * @retval NULL Error
  */
-struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool attach_msg)
+struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e, bool attach_msg)
 {
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   struct Body *body = NULL;
   FILE *fp = NULL;
   int cmflags, chflags;
@@ -1467,21 +1467,21 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
     }
   }
 
-  mutt_mktemp(buffer, sizeof(buffer));
-  fp = mutt_file_fopen(buffer, "w+");
+  mutt_mktemp(buf, sizeof(buf));
+  fp = mutt_file_fopen(buf, "w+");
   if (!fp)
     return NULL;
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_strdup("rfc822");
-  body->filename = mutt_str_strdup(buffer);
+  body->filename = mutt_str_strdup(buf);
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  mutt_parse_mime_message(ctx, e);
+  mutt_parse_mime_message(m, e);
 
   chflags = CH_XMIT;
   cmflags = 0;
@@ -1520,7 +1520,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Email *e, bool
     }
   }
 
-  mutt_copy_message_ctx(fp, ctx, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, m, e, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);
@@ -1895,7 +1895,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
     const int w = mutt_mb_width(buf, col, display);
-    const int enc = (mutt_str_strncmp(buf, "=?", 2) == 0);
+    const int enc = mutt_str_startswith(buf, "=?", CASE_MATCH);
 
     mutt_debug(5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
 
@@ -2011,7 +2011,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
                             const char *start, const char *end, int flags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
-  int is_from = ((end - start) > 5 && (mutt_str_strncasecmp(start, "from ", 5) == 0));
+  int is_from = (end - start) > 5 && mutt_str_startswith(start, "from ", CASE_IGNORE);
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
@@ -2206,28 +2206,28 @@ out:
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, int mode, bool privacy)
 {
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   char *p = NULL, *q = NULL;
   bool has_agent = false; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
-    fputs(mutt_date_make_date(buffer, sizeof(buffer)), fp);
+    fputs(mutt_date_make_date(buf, sizeof(buf)), fp);
 
   /* UseFrom is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command
    */
   if (env->from && !privacy)
   {
-    buffer[0] = 0;
-    mutt_addr_write(buffer, sizeof(buffer), env->from, false);
-    fprintf(fp, "From: %s\n", buffer);
+    buf[0] = 0;
+    mutt_addr_write(buf, sizeof(buf), env->from, false);
+    fprintf(fp, "From: %s\n", buf);
   }
 
   if (env->sender && !privacy)
   {
-    buffer[0] = 0;
-    mutt_addr_write(buffer, sizeof(buffer), env->sender, false);
-    fprintf(fp, "Sender: %s\n", buffer);
+    buf[0] = 0;
+    mutt_addr_write(buf, sizeof(buf), env->sender, false);
+    fprintf(fp, "Sender: %s\n", buf);
   }
 
   if (env->to)
@@ -2349,7 +2349,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
       }
 
       /* check to see if the user has overridden the user-agent field */
-      if (mutt_str_strncasecmp("user-agent", tmp->data, 10) == 0)
+      if (mutt_str_startswith(tmp->data, "user-agent", CASE_IGNORE))
       {
         has_agent = true;
         if (privacy)
@@ -2888,11 +2888,11 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
       env->to->group = 1;
       env->to->next = mutt_addr_new();
 
-      char buffer[LONG_STRING];
-      buffer[0] = 0;
-      mutt_addr_cat(buffer, sizeof(buffer), "undisclosed-recipients", AddressSpecials);
+      char buf[LONG_STRING];
+      buf[0] = 0;
+      mutt_addr_cat(buf, sizeof(buf), "undisclosed-recipients", AddressSpecials);
 
-      env->to->mailbox = mutt_str_strdup(buffer);
+      env->to->mailbox = mutt_str_strdup(buf);
     }
 
     mutt_set_followup_to(env);
@@ -2973,7 +2973,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   }
 
   /* If we failed to open a message, return with error */
-  if (!fp && !(msg = mx_msg_open(Context, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(Context->mailbox, e->msgno)))
     return -1;
 
   if (!fp)
@@ -3017,7 +3017,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
   }
 
   if (msg)
-    mx_msg_close(Context, &msg);
+    mx_msg_close(Context->mailbox, &msg);
 
   return rc;
 }
@@ -3055,6 +3055,7 @@ int mutt_bounce_message(FILE *fp, struct Email *e, struct Address *to)
   if (mutt_addrlist_to_intl(from, &err))
   {
     mutt_error(_("Bad IDN %s while preparing resent-from"), err);
+    FREE(&err);
     mutt_addr_free(&from);
     return -1;
   }
@@ -3205,7 +3206,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  msg = mx_msg_open_new(f, e, onm_flags);
+  msg = mx_msg_open_new(f->mailbox, e, onm_flags);
   if (!msg)
   {
     mutt_file_fclose(&tempfp);
@@ -3325,8 +3326,8 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
       mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
-      mx_msg_commit(f, msg); /* XXX really? */
-      mx_msg_close(f, &msg);
+      mx_msg_commit(f->mailbox, msg); /* XXX really? */
+      mx_msg_close(f->mailbox, &msg);
       mx_mbox_close(&f, NULL);
       goto done;
     }
@@ -3353,11 +3354,11 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid,
     rc = mutt_write_mime_body(e->content, msg->fp);
   }
 
-  if (mx_msg_commit(f, msg) != 0)
+  if (mx_msg_commit(f->mailbox, msg) != 0)
     rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->committed_path);
-  mx_msg_close(f, &msg);
+  mx_msg_close(f->mailbox, &msg);
   mx_mbox_close(&f, NULL);
 
   if (!post && need_mailbox_cleanup)
@@ -3370,8 +3371,8 @@ done:
 #ifdef RECORD_FOLDER_HOOK
   /* We ran a folder hook for the destination mailbox,
    * now we run it for the user's current mailbox */
-  if (Context && Context->path)
-    mutt_folder_hook(Context->path);
+  if (Context && Context->mailbox->path)
+    mutt_folder_hook(Context->mailbox->path);
 #endif
 
   return rc;

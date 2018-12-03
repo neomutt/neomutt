@@ -37,7 +37,6 @@
 struct Context;
 struct Email;
 struct ImapEmailData;
-struct ImapMbox;
 struct Mailbox;
 struct Message;
 struct Progress;
@@ -74,10 +73,19 @@ struct Progress;
 #define IMAP_FLAGS_PENDING    (1 << 4)
 
 /* imap_exec flags (see imap_exec) */
-#define IMAP_CMD_FAIL_OK (1 << 0)
-#define IMAP_CMD_PASS    (1 << 1)
-#define IMAP_CMD_QUEUE   (1 << 2)
-#define IMAP_CMD_POLL    (1 << 3)
+#define IMAP_CMD_PASS    (1 << 0)  /**< Run the imap command and all previous commands queued */
+#define IMAP_CMD_QUEUE   (1 << 1)  /**< Queue a command */
+#define IMAP_CMD_POLL    (1 << 2)  /**< Poll the tcp connection before running the imap command */
+
+/**
+ * enum ImapExecResult - imap_exec return code
+ */
+enum ImapExecResult
+{
+  IMAP_EXEC_SUCCESS = 0, ///< Imap command executed or queued successfully
+  IMAP_EXEC_ERROR,       ///< Imap command failure
+  IMAP_EXEC_FATAL,       ///< Imap connection failure
+};
 
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
@@ -87,8 +95,8 @@ struct Progress;
  */
 enum ImapFlags
 {
-  IMAP_FATAL = 1,
-  IMAP_BYE
+  IMAP_FATAL = 1, ///< Unrecoverable error occurred
+  IMAP_BYE,       ///< Logged out from server
 };
 
 /**
@@ -97,23 +105,13 @@ enum ImapFlags
 enum ImapState
 {
   /* States */
-  IMAP_DISCONNECTED = 0,
-  IMAP_CONNECTED,
-  IMAP_AUTHENTICATED,
-  IMAP_SELECTED,
+  IMAP_DISCONNECTED = 0, ///< Disconnected from server
+  IMAP_CONNECTED,        ///< Connected to server
+  IMAP_AUTHENTICATED,    ///< Connection is authenticated
+  IMAP_SELECTED,         ///< Mailbox is selected
 
   /* and pseudo-states */
-  IMAP_IDLE
-};
-
-/**
- * enum ImapNamespace - IMAP namespace types
- */
-enum ImapNamespace
-{
-  IMAP_NS_PERSONAL = 0,
-  IMAP_NS_OTHER,
-  IMAP_NS_SHARED
+  IMAP_IDLE, ///< Connection is idle
 };
 
 /**
@@ -123,31 +121,26 @@ enum ImapNamespace
  */
 enum ImapCaps
 {
-  IMAP4 = 0,
-  IMAP4REV1,
-  STATUS,
-  ACL,                   /**< RFC2086: IMAP4 ACL extension */
-  NAMESPACE,             /**< RFC2342: IMAP4 Namespace */
-  ACRAM_MD5,             /**< RFC2195: CRAM-MD5 authentication */
-  AGSSAPI,               /**< RFC1731: GSSAPI authentication */
-  AUTH_ANON,             /**< AUTH=ANONYMOUS */
-  AUTH_OAUTHBEARER,      /**< RFC7628: AUTH=OAUTHBEARER */
-  STARTTLS,              /**< RFC2595: STARTTLS */
-  LOGINDISABLED,         /**< RFC2595: LOGINDISABLED */
-  IDLE,                  /**< RFC2177: IDLE */
-  SASL_IR,               /**< SASL initial response draft */
-  ENABLE,                /**< RFC5161 */
-  CONDSTORE,             /**< RFC7162 */
-  QRESYNC,               /**< RFC7162 */
-  X_GM_EXT1,             /**< https://developers.google.com/gmail/imap/imap-extensions */
-  X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
-
-  CAPMAX
+  IMAP_CAP_IMAP4 = 0,        ///< Server supports IMAP4
+  IMAP_CAP_IMAP4REV1,        ///< Server supports IMAP4rev1
+  IMAP_CAP_STATUS,           ///< Server supports STATUS command
+  IMAP_CAP_ACL,              ///< RFC2086: IMAP4 ACL extension
+  IMAP_CAP_NAMESPACE,        ///< RFC2342: IMAP4 Namespace
+  IMAP_CAP_ACRAM_MD5,        ///< RFC2195: CRAM-MD5 authentication
+  IMAP_CAP_AGSSAPI,          ///< RFC1731: GSSAPI authentication
+  IMAP_CAP_AUTH_ANON,        ///< AUTH=ANONYMOUS
+  IMAP_CAP_AUTH_OAUTHBEARER, ///< RFC7628: AUTH=OAUTHBEARER
+  IMAP_CAP_STARTTLS,         ///< RFC2595: STARTTLS
+  IMAP_CAP_LOGINDISABLED,    ///< RFC2595: LOGINDISABLED
+  IMAP_CAP_IDLE,             ///< RFC2177: IDLE
+  IMAP_CAP_SASL_IR,          ///< SASL initial response draft
+  IMAP_CAP_ENABLE,           ///< RFC5161
+  IMAP_CAP_CONDSTORE,        ///< RFC7162
+  IMAP_CAP_QRESYNC,          ///< RFC7162
+  IMAP_CAP_X_GM_EXT1,        ///< https://developers.google.com/gmail/imap/imap-extensions
+  IMAP_CAP_X_GM_ALT1 = IMAP_CAP_X_GM_EXT1, ///< Alternative capability string
+  IMAP_CAP_MAX,
 };
-
-/* imap_conn_find flags */
-#define MUTT_IMAP_CONN_NONEW    (1 << 0)
-#define MUTT_IMAP_CONN_NOSELECT (1 << 1)
 
 /**
  * struct ImapCache - IMAP-specific message cache
@@ -156,21 +149,6 @@ struct ImapCache
 {
   unsigned int uid;
   char *path;
-};
-
-/**
- * struct ImapStatus - Status of an IMAP mailbox
- */
-struct ImapStatus
-{
-  char *name;
-
-  unsigned int messages;
-  unsigned int recent;
-  unsigned int uidnext;
-  unsigned int uidvalidity;
-  unsigned int unseen;
-  unsigned long long modseq;  /* Used by CONDSTORE. 1 <= modseq < 2^63 */
 };
 
 /**
@@ -194,17 +172,7 @@ struct ImapCommand
 };
 
 /**
- * enum ImapCommandType - IMAP command type
- */
-enum ImapCommandType
-{
-  IMAP_CT_NONE = 0,
-  IMAP_CT_LIST,
-  IMAP_CT_STATUS
-};
-
-/**
- * struct ImapAccountData - IMAP-specific server data
+ * struct ImapAccountData - IMAP-specific Account data - @extends Account
  *
  * This data is specific to a Connection to an IMAP server
  */
@@ -212,8 +180,8 @@ struct ImapAccountData
 {
   struct Connection *conn;
   struct ConnAccount conn_account;
-  struct Account *account;
   bool recovering;
+  bool closing; /* If true, we are wating for CLOSE completion */
   unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).
@@ -225,7 +193,7 @@ struct ImapAccountData
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char *capstr;
-  unsigned char capabilities[(CAPMAX + 7) / 8];
+  unsigned char capabilities[(IMAP_CAP_MAX + 7) / 8];
   unsigned int seqno; ///< tag sequence number, e.g. 'a0001'
   time_t lastread; /**< last time we read a command for the server */
   char *buf;
@@ -236,8 +204,7 @@ struct ImapAccountData
 
   /* if set, the response parser will store results for complicated commands
    * here. */
-  enum ImapCommandType cmdtype;
-  void *cmddata;
+  struct ImapList *cmdresult;
 
   /* command queue */
   struct ImapCommand *cmds;
@@ -246,32 +213,47 @@ struct ImapAccountData
   int lastcmd;
   struct Buffer *cmdbuf;
 
-  /* cache ImapStatus of visited mailboxes */
-  struct ListHead mboxcache;
-
-  /* The following data is all specific to the currently SELECTED mbox */
   char delim;
   struct Context *ctx;
-  struct Mailbox *mailbox;
-  char *mbox_name;
-  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
+  struct Mailbox *mailbox;     /* Current selected mailbox */
+};
+
+/**
+ * struct ImapMboxData - IMAP-specific Mailbox data - @extends Mailbox
+ *
+ * This data is specific to a Mailbox of an IMAP server
+ */
+struct ImapMboxData
+{
+  char *name;        /**< Mailbox name */
+  char *munge_name;  /**< Munged version of the mailbox name */
+  char *real_name;   /**< Original Mailbox name, e.g.: INBOX can be just \0 */
+
   unsigned char reopen;        /**< Flags, e.g. #IMAP_REOPEN_ALLOW */
+  unsigned short check_status; /**< Flags, e.g. #IMAP_NEWMAIL_PENDING */
   unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
+
+  // IMAP STATUS information
+  struct ListHead flags;
+  unsigned int uid_validity;
+  unsigned int uid_next;
+  unsigned long long modseq;
+  unsigned int messages;
+  unsigned int recent;
+  unsigned int unseen;
+
+  // Cached data used only when the mailbox is opened
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
-  unsigned int uid_validity;
-  unsigned int uidnext;
-  unsigned long long modseq;
   struct Email **msn_index;   /**< look up headers by (MSN-1) */
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
-  /* all folder flags - system AND custom flags */
-  struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;
 #endif
+
 };
 
 /**
@@ -291,21 +273,19 @@ struct SeqsetIterator
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check(struct ImapAccountData *adata, bool force);
+int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool force);
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
-int imap_rename_mailbox(struct ImapAccountData *adata, struct ImapMbox *mx, const char *newname);
-struct ImapStatus *imap_mboxcache_get(struct ImapAccountData *adata, const char *mbox, bool create);
-void imap_mboxcache_free(struct ImapAccountData *adata);
+int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
 int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
                      int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
-struct ImapAccountData *imap_conn_find(const struct ConnAccount *account, int flags);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapAccountData *adata);
-void imap_logout(struct ImapAccountData **adata);
+int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
+int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);
@@ -326,40 +306,44 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin, uns
 char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, int *server_changes);
 int imap_cache_del(struct ImapAccountData *adata, struct Email *e);
 int imap_cache_clean(struct ImapAccountData *adata);
-int imap_append_message(struct Context *ctx, struct Message *msg);
+int imap_append_message(struct Mailbox *m, struct Message *msg);
 
-int imap_msg_open(struct Context *ctx, struct Message *msg, int msgno);
-int imap_msg_close(struct Context *ctx, struct Message *msg);
-int imap_msg_commit(struct Context *ctx, struct Message *msg);
+int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno);
+int imap_msg_close(struct Mailbox *m, struct Message *msg);
+int imap_msg_commit(struct Mailbox *m, struct Message *msg);
 
 /* util.c */
 struct ImapAccountData *imap_adata_get(struct Mailbox *m);
+struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
-header_cache_t *imap_hcache_open(struct ImapAccountData *adata, const char *path);
-void imap_hcache_close(struct ImapAccountData *adata);
-struct Email *imap_hcache_get(struct ImapAccountData *adata, unsigned int uid);
-int imap_hcache_put(struct ImapAccountData *adata, struct Email *e);
-int imap_hcache_del(struct ImapAccountData *adata, unsigned int uid);
-int imap_hcache_store_uid_seqset(struct ImapAccountData *adata);
-int imap_hcache_clear_uid_seqset(struct ImapAccountData *adata);
-char *imap_hcache_get_uid_seqset(struct ImapAccountData *adata);
+header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
+void imap_hcache_close(struct ImapMboxData *mdata);
+struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
+int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);
+int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid);
+int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata);
+int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata);
+char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 #endif
 
 int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 struct ImapAccountData *imap_adata_new(void);
 void imap_adata_free(void **ptr);
+struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char* name);
+void imap_mdata_free(void **ptr);
+void imap_mdata_cache_reset(struct ImapMboxData *mdata);
 char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-void imap_qualify_path(char *buf, size_t buflen, struct ImapMbox *mx, char *path);
+void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path);
 void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_backtick);
 void imap_unquote_string(char *s);
-void imap_munge_mbox_name(struct ImapAccountData *adata, char *dest, size_t dlen, const char *src);
-void imap_unmunge_mbox_name(struct ImapAccountData *adata, char *s);
+void imap_munge_mbox_name(bool unicode, char *dest, size_t dlen, const char *src);
+void imap_unmunge_mbox_name(bool unicode, char *s);
 struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset);
 int mutt_seqset_iterator_next(struct SeqsetIterator *iter, unsigned int *next);
 void mutt_seqset_iterator_free(struct SeqsetIterator **p_iter);
@@ -367,8 +351,8 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 void imap_get_parent(const char *mbox, char delim, char *buf, size_t buflen);
 
 /* utf7.c */
-void imap_utf_encode(struct ImapAccountData *adata, char **s);
-void imap_utf_decode(struct ImapAccountData *adata, char **s);
+void imap_utf_encode(bool unicode, char **s);
+void imap_utf_decode(bool unicode, char **s);
 void imap_allow_reopen(struct Mailbox *m);
 void imap_disallow_reopen(struct Mailbox *m);
 

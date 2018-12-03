@@ -210,6 +210,26 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 }
 
 /**
+ * mutt_buffer_fix_dptr - Move the dptr to end of the Buffer
+ * @param buf Buffer to alter
+ *
+ * Ensure buffer->dptr points to the end of the buffer.
+ */
+void mutt_buffer_fix_dptr(struct Buffer *buf)
+{
+  if (!buf)
+    return;
+
+  buf->dptr = buf->data;
+
+  if (buf->data)
+  {
+    buf->data[buf->dsize - 1] = '\0';
+    buf->dptr = strchr(buf->data, '\0');
+  }
+}
+
+/**
  * mutt_buffer_add_printf - Format a string appending a Buffer
  * @param buf Buffer
  * @param fmt printf-style format string
@@ -316,6 +336,8 @@ void mutt_buffer_increase_size(struct Buffer *buf, size_t new_size)
   buf->dsize = new_size;
   mutt_mem_realloc(&buf->data, buf->dsize);
   buf->dptr = buf->data + offset;
+  /* This ensures an initially NULL buf->data is now properly terminated. */
+  *buf->dptr = '\0';
 }
 
 /**
@@ -347,10 +369,9 @@ void mutt_buffer_pool_init(void)
  */
 void mutt_buffer_pool_free(void)
 {
-  if (BufferPoolCount != BufferPoolLen)
-  {
-    mutt_debug(1, "Buffer pool leak: %zu/%zu\n", BufferPoolCount, BufferPoolLen);
-  }
+  mutt_debug(1, "mutt_buffer_pool_free: %zu of %zu returned to pool\n",
+             BufferPoolCount, BufferPoolLen);
+
   while (BufferPoolCount)
     mutt_buffer_free(&BufferPool[--BufferPoolCount]);
   FREE(&BufferPool);

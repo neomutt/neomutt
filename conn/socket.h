@@ -26,7 +26,6 @@
 
 #include <stddef.h>
 #include <time.h>
-
 #include "mutt/mutt.h"
 
 /**
@@ -34,9 +33,9 @@
  */
 enum ConnectionType
 {
-  MUTT_CONNECTION_SIMPLE,
-  MUTT_CONNECTION_TUNNEL,
-  MUTT_CONNECTION_SSL,
+  MUTT_CONNECTION_SIMPLE, ///< Simple TCP socket connection
+  MUTT_CONNECTION_TUNNEL, ///< Tunnelled connection
+  MUTT_CONNECTION_SSL,    ///< SSL/TLS-encrypted connection
 };
 
 struct Connection;
@@ -46,11 +45,7 @@ struct Connection;
  */
 TAILQ_HEAD(ConnectionList, Connection);
 
-/* stupid hack for imap_logout_all */
-struct ConnectionList *mutt_socket_head(void);
-
 struct Connection *mutt_socket_new(enum ConnectionType type);
-void mutt_socket_free(struct Connection *conn);
 
 int mutt_socket_open(struct Connection *conn);
 int mutt_socket_close(struct Connection *conn);

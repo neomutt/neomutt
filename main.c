@@ -53,12 +53,13 @@
 #include "color.h"
 #include "context.h"
 #include "curs_lib.h"
-#include "curs_main.h"
 #include "globals.h"
 #include "hook.h"
+#include "index.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
+#include "mutt_attach.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
 #include "mutt_logging.h"
@@ -991,7 +992,7 @@ int main(int argc, char *argv[], char *envp[])
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
-          if (mutt_str_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
+          if (mutt_str_startswith(np->data, "X-Mutt-Resume-Draft:", CASE_IGNORE))
           {
             if (ResumeEditedDraftFiles)
               cs_str_native_set(Config, "resume_draft_files", true, NULL);
@@ -1234,6 +1235,7 @@ main_ok:
 main_curses:
   mutt_endwin();
   log_queue_flush(log_disp_terminal);
+  mutt_unlink_temp_attachments();
   mutt_log_stop();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)

@@ -105,7 +105,7 @@ bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct ConnAccount *account, struct Url *url)
+int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url)
 {
   /* must be present */
   if (url->host)
@@ -375,6 +375,11 @@ char *mutt_account_getoauthbearer(struct ConnAccount *account)
 
   if (!cmd)
   {
+    /* L10N: You will see this error message if (1) you have "oauthbearer" in
+       one of your $*_authenticators and (2) you do not have the corresponding
+       $*_oauth_refresh_command defined. So the message does not mean "None of
+       your $*_oauth_refresh_command's are defined."
+     */
     mutt_error(_("No OAUTH refresh command defined"));
     return NULL;
   }

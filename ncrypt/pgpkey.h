@@ -32,8 +32,8 @@ struct Address;
  */
 enum PgpRing
 {
-  PGP_PUBRING, /**< Public keys */
-  PGP_SECRING, /**< Secret keys */
+  PGP_PUBRING, ///< Public keys
+  PGP_SECRING, ///< Secret keys
 };
 
 struct Body *pgp_class_make_key_attachment(void);

@@ -40,9 +40,6 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 
 /* These Config Variables are only used in status.c */
 struct MbTable *StatusChars; ///< Config: Indicator characters for the status bar
@@ -116,9 +113,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->deleted : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_deleted : 0);
       }
-      else if (!Context || !Context->deleted)
+      else if (!Context || !Context->mailbox->msg_deleted)
         optional = 0;
       break;
 
@@ -138,20 +135,20 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'f':
     {
       struct Mailbox *m = Context ? Context->mailbox : NULL;
-#ifdef USE_NOTMUCH
-      if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
-        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
-      else
-#endif
+
 #ifdef USE_COMPRESSED
-          if (m && m->compress_info && (m->realpath[0] != '\0'))
+      if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, m->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
-          if (m && (m->path[0] != '\0'))
+          if (m && (m->magic == MUTT_NOTMUCH) && m->desc)
+      {
+        mutt_str_strfcpy(tmp, m->desc, sizeof(tmp));
+      }
+      else if (m && (m->path[0] != '\0'))
       {
         mutt_str_strfcpy(tmp, m->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
@@ -224,9 +221,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->new : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_new : 0);
       }
-      else if (!Context || !Context->new)
+      else if (!Context || !Context->mailbox->msg_new)
         optional = 0;
       break;
 
@@ -235,14 +232,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt,
-                 Context ? Context->mailbox->msg_unread - Context->new : 0);
+                 Context ? Context->mailbox->msg_unread - Context->mailbox->msg_new : 0);
       }
-      else if (!Context || !(Context->mailbox->msg_unread - Context->new))
+      else if (!Context || !(Context->mailbox->msg_unread - Context->mailbox->msg_new))
         optional = 0;
       break;
 
     case 'p':
-      count = mutt_num_postponed(false);
+      count = mutt_num_postponed(Context ? Context->mailbox : NULL, false);
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -281,11 +278,11 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       {
         i = OptAttachMsg ?
                 3 :
-                ((Context->mailbox->readonly || Context->dontwrite) ?
+                ((Context->mailbox->readonly || Context->mailbox->dontwrite) ?
                      2 :
                      (Context->mailbox->changed ||
                       /* deleted doesn't necessarily mean changed in IMAP */
-                      (Context->mailbox->magic != MUTT_IMAP && Context->deleted)) ?
+                      (Context->mailbox->magic != MUTT_IMAP && Context->mailbox->msg_deleted)) ?
                      1 :
                      0);
       }
@@ -327,9 +324,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context ? Context->tagged : 0);
+        snprintf(buf, buflen, fmt, Context ? Context->mailbox->msg_tagged : 0);
       }
-      else if (!Context || !Context->tagged)
+      else if (!Context || !Context->mailbox || !Context->mailbox->msg_tagged)
         optional = 0;
       break;
 

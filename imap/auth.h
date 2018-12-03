@@ -33,9 +33,9 @@ struct ImapAccountData;
  */
 enum ImapAuthRes
 {
-  IMAP_AUTH_SUCCESS = 0,
-  IMAP_AUTH_FAILURE,
-  IMAP_AUTH_UNAVAIL
+  IMAP_AUTH_SUCCESS = 0, ///< Authentication successful
+  IMAP_AUTH_FAILURE,     ///< Authentication failed
+  IMAP_AUTH_UNAVAIL,     ///< Authentication method not permitted
 };
 
 /**

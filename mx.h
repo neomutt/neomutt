@@ -66,10 +66,10 @@ extern char *        Trash;
  */
 enum MxCheckReturns
 {
-  MUTT_NEW_MAIL = 1, /**< new mail received in mailbox */
-  MUTT_LOCKED,       /**< couldn't lock the mailbox */
-  MUTT_REOPENED,     /**< mailbox was reopened */
-  MUTT_FLAGS         /**< nondestructive flags change (IMAP) */
+  MUTT_NEW_MAIL = 1, ///< new mail received in mailbox
+  MUTT_LOCKED,       ///< couldn't lock the mailbox
+  MUTT_REOPENED,     ///< mailbox was reopened
+  MUTT_FLAGS,        ///< nondestructive flags change (IMAP)
 };
 
 /**
@@ -99,8 +99,8 @@ struct Message
  */
 struct MxOps
 {
-  const int magic;  ///< Mailbox type, e.g. #MUTT_IMAP
-  const char *name; ///< Mailbox name, e.g. "imap"
+  enum MailboxType magic; ///< Mailbox type, e.g. #MUTT_IMAP
+  const char *name;       ///< Mailbox name, e.g. "imap"
 
   /**
    * ac_find - Find an Account for a Mailbox path
@@ -120,19 +120,21 @@ struct MxOps
   int             (*ac_add)   (struct Account *a, struct Mailbox *m);
   /**
    * mbox_open - Open a mailbox
+   * @param m   Mailbox to open
    * @param ctx Mailbox to open
    * @retval  0 Success
    * @retval -1 Error
+   * @retval -2 Aborted
    */
-  int (*mbox_open)       (struct Context *ctx);
+  int (*mbox_open)       (struct Mailbox *m, struct Context *ctx);
   /**
    * mbox_open_append - Open a mailbox for appending
-   * @param ctx   Mailbox to open
+   * @param m     Mailbox to open
    * @param flags e.g. #MUTT_READONLY
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*mbox_open_append)(struct Context *ctx, int flags);
+  int (*mbox_open_append)(struct Mailbox *m, int flags);
   /**
    * mbox_check - Check for new mail
    * @param ctx Mailbox
@@ -158,47 +160,47 @@ struct MxOps
   int (*mbox_close)      (struct Context *ctx);
   /**
    * msg_open - Open an email message in mailbox
-   * @param ctx   Mailbox
+   * @param m     Mailbox
    * @param msg   Message to open
    * @param msgno Index of message to open
-   * @retval 0 Success
-   * @retval 1 Error
+   * @retval  0 Success
+   * @retval -1 Error
    */
-  int (*msg_open)        (struct Context *ctx, struct Message *msg, int msgno);
+  int (*msg_open)        (struct Mailbox *m, struct Message *msg, int msgno);
   /**
    * msg_open_new - Open a new message in a mailbox
-   * @param ctx Mailbox
-   * @param msg  Message to open
-   * @param e Email header
+   * @param m   Mailbox
+   * @param msg Message to open
+   * @param e   Email
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_open_new)    (struct Context *ctx, struct Message *msg, struct Email *e);
+  int (*msg_open_new)    (struct Mailbox *m, struct Message *msg, struct Email *e);
   /**
    * msg_commit - Save changes to an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to commit
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_commit)      (struct Context *ctx, struct Message *msg);
+  int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
   /**
    * msg_close - Close an email
-   * @param ctx Mailbox
+   * @param m   Mailbox
    * @param msg Message to close
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*msg_close)       (struct Context *ctx, struct Message *msg);
+  int (*msg_close)       (struct Mailbox *m, struct Message *msg);
   /**
    * msg_padding_size - Bytes of padding between messages
-   * @param ctx Mailbox
+   * @param m Mailbox
    * @retval num Bytes of padding
    */
-  int (*msg_padding_size)(struct Context *ctx);
+  int (*msg_padding_size)(struct Mailbox *m);
   /**
    * tags_edit - Prompt and validate new messages tags
-   * @param ctx    Mailbox
+   * @param m      Mailbox
    * @param tags   Existing tags
    * @param buf    Buffer to store the tags
    * @param buflen Length of buffer
@@ -206,32 +208,31 @@ struct MxOps
    * @retval  0 No valid user input
    * @retval  1 Buf set
    */
-  int (*tags_edit)       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*tags_edit)       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
   /**
    * tags_commit - Save the tags to a message
-   * @param ctx Mailbox
-   * @param e Email Header
+   * @param m Mailbox
+   * @param e Email
    * @param buf Buffer containing tags
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*tags_commit)     (struct Context *ctx, struct Email *e, char *buf);
+  int (*tags_commit)     (struct Mailbox *m, struct Email *e, char *buf);
   /**
    * path_probe - Does this mailbox type recognise this path?
    * @param path Path to examine
    * @param st   stat buffer (for local filesystems)
    * @retval num Type, e.g. #MUTT_IMAP
    */
-  int (*path_probe)      (const char *path, const struct stat *st);
+  enum MailboxType (*path_probe)(const char *path, const struct stat *st);
   /**
    * path_canon - Canonicalise a mailbox path
    * @param buf    Path to modify
    * @param buflen Length of buffer
-   * @param folder Base path for '=' substitution
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*path_canon)      (char *buf, size_t buflen, const char *folder);
+  int (*path_canon)      (char *buf, size_t buflen);
   /**
    * path_pretty - Abbreviate a mailbox path
    * @param buf    Path to modify
@@ -256,33 +257,33 @@ int             mx_mbox_check      (struct Context *ctx, int *index_hint);
 int             mx_mbox_close      (struct Context **pctx, int *index_hint);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);
-int             mx_msg_close       (struct Context *ctx, struct Message **msg);
-int             mx_msg_commit      (struct Context *ctx, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Context *ctx, struct Email *e, int flags);
-struct Message *mx_msg_open        (struct Context *ctx, int msgno);
-int             mx_msg_padding_size(struct Context *ctx);
+int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
+int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
+struct Message *mx_msg_open_new    (struct Mailbox *m, struct Email *e, int flags);
+struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
+int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, int *magic);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
 int             mx_path_parent     (char *buf, size_t buflen);
 int             mx_path_pretty     (char *buf, size_t buflen, const char *folder);
-int             mx_path_probe      (const char *path, struct stat *st);
-int             mx_tags_commit     (struct Context *ctx, struct Email *e, char *tags);
-int             mx_tags_edit       (struct Context *ctx, const char *tags, char *buf, size_t buflen);
+enum MailboxType mx_path_probe     (const char *path, struct stat *st);
+int             mx_tags_commit     (struct Mailbox *m, struct Email *e, char *tags);
+int             mx_tags_edit       (struct Mailbox *m, const char *tags, char *buf, size_t buflen);
 
-struct Account *mx_ac_find(struct Mailbox *m);
-struct Mailbox *mx_mbox_find(struct Account *a, struct Mailbox *m);
+struct Account *mx_ac_find   (struct Mailbox *m);
+struct Mailbox *mx_mbox_find (struct Account *a, const char *path);
 struct Mailbox *mx_mbox_find2(const char *path);
-int mx_ac_add(struct Account *a, struct Mailbox *m);
-int mx_ac_remove(struct Account *a, struct Mailbox *m);
+int             mx_ac_add    (struct Account *a, struct Mailbox *m);
+int             mx_ac_remove (struct Mailbox *m);
 
-int                 mx_access(const char *path, int flags);
-void                mx_alloc_memory(struct Mailbox *m);
-int                 mx_check_empty(const char *path);
-int                 mx_check_mailbox(struct Context *ctx, int *index_hint);
+int                 mx_access           (const char *path, int flags);
+void                mx_alloc_memory     (struct Mailbox *m);
+int                 mx_check_empty      (const char *path);
 void                mx_fastclose_mailbox(struct Context *ctx);
-const struct MxOps *mx_get_ops(enum MailboxType magic);
-bool                mx_tags_is_supported(struct Context *ctx);
-void                mx_update_context(struct Context *ctx, int new_messages);
-void                mx_update_tables(struct Context *ctx, bool committing);
+const struct MxOps *mx_get_ops          (enum MailboxType magic);
+bool                mx_tags_is_supported(struct Mailbox *m);
+void                mx_update_context   (struct Context *ctx, int new_messages);
+void                mx_update_tables    (struct Context *ctx, bool committing);
+void                mx_cleanup_context  (struct Context *ctx);
 
 #endif /* MUTT_MX_H */

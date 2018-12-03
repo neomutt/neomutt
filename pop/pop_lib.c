@@ -65,40 +65,35 @@ unsigned char PopReconnect; ///< Config: (pop) Reconnect to the server is the co
  */
 int pop_parse_path(const char *path, struct ConnAccount *acct)
 {
-  struct Url url;
-
   /* Defaults */
   acct->flags = 0;
   acct->type = MUTT_ACCT_TYPE_POP;
   acct->port = 0;
 
-  char *c = mutt_str_strdup(path);
-  url_parse(&url, c);
+  struct Url *url = url_parse(path);
 
-  if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host ||
-      mutt_account_fromurl(acct, &url) < 0)
+  if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) ||
+      !url->host || mutt_account_fromurl(acct, url) < 0)
   {
     url_free(&url);
-    FREE(&c);
     mutt_error(_("Invalid POP URL: %s"), path);
     return -1;
   }
 
-  if (url.scheme == U_POPS)
+  if (url->scheme == U_POPS)
     acct->flags |= MUTT_ACCT_SSL;
 
-  struct servent *service = getservbyname(url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
-  if (!acct->port)
+  struct servent *service =
+      getservbyname((url->scheme == U_POP) ? "pop3" : "pop3s", "tcp");
+  if (acct->port == 0)
   {
     if (service)
       acct->port = ntohs(service->s_port);
     else
-      acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;
-    ;
+      acct->port = (url->scheme == U_POP) ? POP_PORT : POP_SSL_PORT;
   }
 
   url_free(&url);
-  FREE(&c);
   return 0;
 }
 
@@ -112,9 +107,10 @@ static void pop_error(struct PopAccountData *adata, char *msg)
   char *t = strchr(adata->err_msg, '\0');
   char *c = msg;
 
-  if (mutt_str_strncmp(msg, "-ERR ", 5) == 0)
+  size_t plen = mutt_str_startswith(msg, "-ERR ", CASE_MATCH);
+  if (plen != 0)
   {
-    char *c2 = mutt_str_skip_email_wsp(msg + 5);
+    char *c2 = mutt_str_skip_email_wsp(msg + plen);
 
     if (*c2)
       c = c2;
@@ -135,23 +131,23 @@ static int fetch_capa(char *line, void *data)
   struct PopAccountData *adata = data;
   char *c = NULL;
 
-  if (mutt_str_strncasecmp(line, "SASL", 4) == 0)
+  if (mutt_str_startswith(line, "SASL", CASE_IGNORE))
   {
     FREE(&adata->auth_list);
     c = mutt_str_skip_email_wsp(line + 4);
     adata->auth_list = mutt_str_strdup(c);
   }
 
-  else if (mutt_str_strncasecmp(line, "STLS", 4) == 0)
+  else if (mutt_str_startswith(line, "STLS", CASE_IGNORE))
     adata->cmd_stls = true;
 
-  else if (mutt_str_strncasecmp(line, "USER", 4) == 0)
+  else if (mutt_str_startswith(line, "USER", CASE_IGNORE))
     adata->cmd_user = 1;
 
-  else if (mutt_str_strncasecmp(line, "UIDL", 4) == 0)
+  else if (mutt_str_startswith(line, "UIDL", CASE_IGNORE))
     adata->cmd_uidl = 1;
 
-  else if (mutt_str_strncasecmp(line, "TOP", 3) == 0)
+  else if (mutt_str_startswith(line, "TOP", CASE_IGNORE))
     adata->cmd_top = 1;
 
   return 0;
@@ -213,7 +209,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   }
 
   /* Execute CAPA command */
-  if (mode == 0 || adata->cmd_capa)
+  if ((mode == 0) || adata->cmd_capa)
   {
     mutt_str_strfcpy(buf, "CAPA\r\n", sizeof(buf));
     switch (pop_fetch_data(adata, buf, NULL, fetch_capa, adata))
@@ -229,7 +225,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
   }
 
   /* CAPA not supported, use defaults */
-  if (mode == 0 && !adata->cmd_capa)
+  if ((mode == 0) && !adata->cmd_capa)
   {
     adata->cmd_user = 2;
     adata->cmd_uidl = 2;
@@ -283,7 +279,7 @@ int pop_connect(struct PopAccountData *adata)
 
   adata->status = POP_CONNECTED;
 
-  if (mutt_str_strncmp(buf, "+OK", 3) != 0)
+  if (!mutt_str_startswith(buf, "+OK", CASE_MATCH))
   {
     *adata->err_msg = '\0';
     pop_error(adata, buf);
@@ -310,19 +306,13 @@ int pop_open_connection(struct PopAccountData *adata)
 
   int rc = pop_connect(adata);
   if (rc < 0)
-  {
-    mutt_sleep(2);
     return rc;
-  }
 
   rc = pop_capabilities(adata, 0);
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
-  {
-    mutt_sleep(2);
     return -2;
-  }
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
@@ -361,10 +351,7 @@ int pop_open_connection(struct PopAccountData *adata)
         if (rc == -1)
           goto err_conn;
         if (rc == -2)
-        {
-          mutt_sleep(2);
           return -2;
-        }
       }
     }
   }
@@ -389,10 +376,7 @@ int pop_open_connection(struct PopAccountData *adata)
   if (rc == -1)
     goto err_conn;
   if (rc == -2)
-  {
-    mutt_sleep(2);
     return -2;
-  }
 
   /* get total size of mailbox */
   mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
@@ -487,7 +471,7 @@ int pop_query_d(struct PopAccountData *adata, char *buf, size_t buflen, char *ms
     adata->status = POP_DISCONNECTED;
     return -1;
   }
-  if (mutt_str_strncmp(buf, "+OK", 3) == 0)
+  if (mutt_str_startswith(buf, "+OK", CASE_MATCH))
     return 0;
 
   pop_error(adata, buf);
@@ -553,7 +537,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     {
       if (progressbar)
         mutt_progress_update(progressbar, pos, -1);
-      if (ret == 0 && func(inbuf, data) < 0)
+      if ((ret == 0) && (func(inbuf, data) < 0))
         ret = -3;
       lenbuf = 0;
     }
@@ -613,8 +597,6 @@ int pop_reconnect(struct Mailbox *m)
 
   if (adata->status == POP_CONNECTED)
     return 0;
-  if (adata->status == POP_BYE)
-    return -1;
 
   while (true)
   {

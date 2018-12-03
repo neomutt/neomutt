@@ -617,49 +617,49 @@ int mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src)
 
 /**
  * mutt_file_read_line - Read a line from a file
- * @param[out] s     Buffer allocated on the head (optional)
- * @param[in]  size  Length of buffer (optional)
- * @param[in]  fp    File to read
- * @param[out] line  Current line number
- * @param[in]  flags Flags, e.g. #MUTT_CONT
- * @retval ptr The allocated string
+ * @param[out] line     Buffer allocated on the head (optional)
+ * @param[in]  size     Length of buffer (optional)
+ * @param[in]  fp       File to read
+ * @param[out] line_num Current line number
+ * @param[in]  flags    Flags, e.g. #MUTT_CONT
+ * @retval ptr          The allocated string
  *
  * Read a line from ``fp'' into the dynamically allocated ``s'', increasing
  * ``s'' if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */
-char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
+char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int flags)
 {
   size_t offset = 0;
   char *ch = NULL;
 
-  if (!s)
+  if (!line)
   {
-    s = mutt_mem_malloc(STRING);
+    line = mutt_mem_malloc(STRING);
     *size = STRING;
   }
 
   while (true)
   {
-    if (!fgets(s + offset, *size - offset, fp))
+    if (!fgets(line + offset, *size - offset, fp))
     {
-      FREE(&s);
+      FREE(&line);
       return NULL;
     }
-    ch = strchr(s + offset, '\n');
+    ch = strchr(line + offset, '\n');
     if (ch)
     {
-      if (line)
-        (*line)++;
+      if (line_num)
+        (*line_num)++;
       if (flags & MUTT_EOL)
-        return s;
+        return line;
       *ch = '\0';
-      if ((ch > s) && (*(ch - 1) == '\r'))
+      if ((ch > line) && (*(ch - 1) == '\r'))
         *--ch = '\0';
-      if (!(flags & MUTT_CONT) || (ch == s) || (*(ch - 1) != '\\'))
-        return s;
-      offset = ch - s - 1;
+      if (!(flags & MUTT_CONT) || (ch == line) || (*(ch - 1) != '\\'))
+        return line;
+      offset = ch - line - 1;
     }
     else
     {
@@ -672,20 +672,69 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-        if (line)
-          (*line)++;
-        return s;
+        if (line_num)
+          (*line_num)++;
+        return line;
       }
       else
       {
         ungetc(c, fp); /* undo our damage */
-        /* There wasn't room for the line -- increase ``s'' */
+        /* There wasn't room for the line -- increase ``line'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        mutt_mem_realloc(&s, *size);
+        mutt_mem_realloc(&line, *size);
       }
     }
   }
+}
+
+/**
+ * mutt_file_iter_line - iterate over the lines from an open file pointer
+ * @param iter  State of iteration including ptr to line
+ * @param fp    File pointer to read from
+ * @param flags Same as mutt_file_read_line()
+ * @retval      true iff data read, false on eof
+ *
+ * This is a slightly cleaner interface for mutt_file_read_line() which avoids
+ * the eternal C loop initialization ugliness.  Use like this:
+ *
+ * ```
+ * struct MuttFileIter iter = { 0 };
+ * while (mutt_file_iter_line(&iter, fp, flags))
+ * {
+ *   do_stuff(iter.line, iter.line_num);
+ * }
+ * ```
+ */
+bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
+{
+  char *p = mutt_file_read_line(iter->line, &iter->size, fp, &iter->line_num, flags);
+  if (!p)
+    return false;
+  iter->line = p;
+  return true;
+}
+
+/**
+ * mutt_file_map_lines - Process lines of text read from a file pointer
+ * @param func      Callback function to call for each line, see mutt_file_map_t
+ * @param user_data Arbitrary data passed to ``func''
+ * @param fp        File pointer to read from
+ * @param flags     Same as mutt_file_read_line()
+ * @retval          true iff all data mapped, false if ``func'' returns false
+ */
+bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags)
+{
+  struct MuttFileIter iter = { 0 };
+  while (mutt_file_iter_line(&iter, fp, flags))
+  {
+    if (!(*func)(iter.line, iter.line_num, user_data))
+    {
+      FREE(&iter.line);
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -1351,4 +1400,99 @@ long mutt_file_get_size(const char *path)
     return 0;
 
   return sb.st_size;
+}
+
+/**
+ * mutt_file_timespec_compare - Compare to time values
+ * @param a First time value
+ * @param b Second time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_timespec_compare(struct timespec *a, struct timespec *b)
+{
+  if (a->tv_sec < b->tv_sec)
+    return -1;
+  if (a->tv_sec > b->tv_sec)
+    return 1;
+
+  if (a->tv_nsec < b->tv_nsec)
+    return -1;
+  if (a->tv_nsec > b->tv_nsec)
+    return 1;
+  return 0;
+}
+
+/**
+ * mutt_file_get_stat_timespec - Read the stat() time into a time value
+ * @param dest Time value to populate
+ * @param sb   stat info
+ * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
+ */
+void mutt_file_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
+{
+  dest->tv_sec = 0;
+  dest->tv_nsec = 0;
+
+  switch (type)
+  {
+    case MUTT_STAT_ATIME:
+      dest->tv_sec = sb->st_atime;
+#ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
+      dest->tv_nsec = sb->st_atim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_MTIME:
+      dest->tv_sec = sb->st_mtime;
+#ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+      dest->tv_nsec = sb->st_mtim.tv_nsec;
+#endif
+      break;
+    case MUTT_STAT_CTIME:
+      dest->tv_sec = sb->st_ctime;
+#ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
+      dest->tv_nsec = sb->st_ctim.tv_nsec;
+#endif
+      break;
+  }
+}
+
+/**
+ * mutt_file_stat_timespec_compare - Compare stat info with a time value
+ * @param sba  stat info
+ * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
+ * @param b    Time value
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_stat_timespec_compare(struct stat *sba, enum MuttStatType type,
+                                    struct timespec *b)
+{
+  struct timespec a = { 0 };
+
+  mutt_file_get_stat_timespec(&a, sba, type);
+  return mutt_file_timespec_compare(&a, b);
+}
+
+/**
+ * mutt_file_stat_compare - Compare two stat infos
+ * @param sba      First stat info
+ * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
+ * @param sbb      Second stat info
+ * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
+int mutt_file_stat_compare(struct stat *sba, enum MuttStatType sba_type,
+                           struct stat *sbb, enum MuttStatType sbb_type)
+{
+  struct timespec a = { 0 };
+  struct timespec b = { 0 };
+
+  mutt_file_get_stat_timespec(&a, sba, sba_type);
+  mutt_file_get_stat_timespec(&b, sbb, sbb_type);
+  return mutt_file_timespec_compare(&a, &b);
 }

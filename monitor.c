@@ -71,7 +71,7 @@ struct Monitor
   char *mh_backup_path;
   dev_t st_dev;
   ino_t st_ino;
-  short magic;
+  enum MailboxType magic;
   int desc;
 };
 
@@ -80,7 +80,7 @@ struct Monitor
  */
 struct MonitorInfo
 {
-  short magic;
+  enum MailboxType magic;
   short isdir;
   const char *path;
   dev_t st_dev;
@@ -171,12 +171,12 @@ static void monitor_check_free(void)
 }
 
 /**
- * monitor_create - Create a new file monitor
+ * monitor_new - Create a new file monitor
  * @param info       Details of file to monitor
  * @param descriptor Watch descriptor
  * @retval ptr Newly allocated Monitor
  */
-static struct Monitor *monitor_create(struct MonitorInfo *info, int descriptor)
+static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 {
   struct Monitor *monitor = mutt_mem_calloc(1, sizeof(struct Monitor));
   monitor->magic = info->magic;
@@ -456,7 +456,7 @@ int mutt_monitor_add(struct Mailbox *m)
   if (!m)
     MonitorContextDescriptor = desc;
 
-  monitor_create(&info, desc);
+  monitor_new(&info, desc);
   return 0;
 }
 

@@ -84,12 +84,13 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     mutt_sasl_interact(interaction);
   }
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug(
         1, "Failure starting authentication exchange. No shared mechanisms?\n");
 
     /* SASL doesn't support suggested mechanisms, so fall back */
+    sasl_dispose(&saslconn);
     return POP_A_UNAVAIL;
   }
 
@@ -125,10 +126,10 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
      * need to loop at least once more to send the pc/olen returned
      * by sasl_client_start().
      */
-    if (!client_start && rc != SASL_CONTINUE)
+    if (!client_start && (rc != SASL_CONTINUE))
       break;
 
-    if ((mutt_str_strncmp(inbuf, "+ ", 2) == 0) &&
+    if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH) &&
         sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK)
     {
       mutt_debug(1, "error base64-decoding server response.\n");
@@ -154,7 +155,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
     /* Even if sasl_client_step() returns SASL_OK, we should send at
      * least one more line to the server.  See #3862.
      */
-    if (rc != SASL_CONTINUE && rc != SASL_OK)
+    if ((rc != SASL_CONTINUE) && (rc != SASL_OK))
       break;
 
     /* send out response, or line break if none needed */
@@ -176,7 +177,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   if (rc != SASL_OK)
     goto bail;
 
-  if (mutt_str_strncmp(inbuf, "+OK", 3) == 0)
+  if (mutt_str_startswith(inbuf, "+OK", CASE_MATCH))
   {
     mutt_sasl_setup_conn(adata->conn, saslconn);
     FREE(&buf);
@@ -187,7 +188,7 @@ bail:
   sasl_dispose(&saslconn);
 
   /* terminate SASL session if the last response is not +OK nor -ERR */
-  if (mutt_str_strncmp(inbuf, "+ ", 2) == 0)
+  if (mutt_str_startswith(inbuf, "+ ", CASE_MATCH))
   {
     snprintf(buf, bufsize, "*\r\n");
     if (pop_query(adata, buf, bufsize) == -1)
@@ -230,7 +231,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
  */
 static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *method)
 {
-  struct Md5Ctx ctx;
+  struct Md5Ctx mctx;
   unsigned char digest[16];
   char hash[33];
   char buf[LONG_STRING];
@@ -250,10 +251,10 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
   mutt_message(_("Authenticating (APOP)..."));
 
   /* Compute the authentication hash to send to the server */
-  mutt_md5_init_ctx(&ctx);
-  mutt_md5_process(adata->timestamp, &ctx);
-  mutt_md5_process(adata->conn->account.pass, &ctx);
-  mutt_md5_finish_ctx(&ctx, digest);
+  mutt_md5_init_ctx(&mctx);
+  mutt_md5_process(adata->timestamp, &mctx);
+  mutt_md5_process(adata->conn->account.pass, &mctx);
+  mutt_md5_finish_ctx(&mctx, digest);
   mutt_md5_toascii(digest, hash);
 
   /* Send APOP command to server */
@@ -453,8 +454,8 @@ int pop_authenticate(struct PopAccountData *adata)
 
           if (ret != POP_A_UNAVAIL)
             attempts++;
-          if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-              (ret == POP_A_FAILURE && !PopAuthTryAll))
+          if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+              ((ret == POP_A_FAILURE) && !PopAuthTryAll))
           {
             comma = NULL;
             break;
@@ -493,7 +494,8 @@ int pop_authenticate(struct PopAccountData *adata)
 
       if (ret != POP_A_UNAVAIL)
         attempts++;
-      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET || (ret == POP_A_FAILURE && !PopAuthTryAll))
+      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+          ((ret == POP_A_FAILURE) && !PopAuthTryAll))
       {
         break;
       }

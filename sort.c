@@ -380,7 +380,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (OptNeedRescore && Score)
   {
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_score_message(ctx, ctx->mailbox->hdrs[i], true);
+      mutt_score_message(ctx->mailbox, ctx->mailbox->hdrs[i], true);
   }
   OptNeedRescore = false;
 

@@ -77,12 +77,13 @@ static short UpdateNumPostponed = 0;
 
 /**
  * mutt_num_postponed - Return the number of postponed messages
+ * @param m    currently selected mailbox
  * @param force
  * * false Use a cached value if costly to get a fresh count (IMAP)
  * * true Force check
  * @retval num Postponed messages
  */
-int mutt_num_postponed(bool force)
+int mutt_num_postponed(struct Mailbox *m, bool force)
 {
   struct stat st;
 
@@ -106,6 +107,13 @@ int mutt_num_postponed(bool force)
   if (!Postponed)
     return 0;
 
+  // We currently are in the Postponed mailbox so just pick the current status
+  if (m && mutt_str_strcmp(Postponed, m->realpath) == 0)
+  {
+    PostCount = m->msg_count - m->msg_deleted;
+    return PostCount;
+  }
+
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
   if (imap_path_probe(Postponed, NULL) == MUTT_IMAP)
@@ -114,7 +122,7 @@ int mutt_num_postponed(bool force)
     {
       short newpc;
 
-      newpc = imap_status(Postponed, false);
+      newpc = imap_path_status(Postponed, false);
       if (newpc >= 0)
       {
         PostCount = newpc;
@@ -229,9 +237,9 @@ static struct Email *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext, PostContext->mailbox->hdrs[menu->current],
+        mutt_set_flag(PostContext->mailbox, PostContext->mailbox->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
-        PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
+        PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
@@ -287,7 +295,12 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (!Postponed)
     return -1;
 
-  PostContext = mx_mbox_open(NULL, Postponed, MUTT_NOSORT);
+  struct Mailbox *m = mx_mbox_find2(Postponed);
+  if (ctx->mailbox == m)
+    PostContext = ctx;
+  else
+    PostContext = mx_mbox_open(m, Postponed, MUTT_NOSORT);
+
   if (!PostContext)
   {
     PostCount = 0;
@@ -298,7 +311,10 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (!PostContext->mailbox->msg_count)
   {
     PostCount = 0;
-    mx_mbox_close(&PostContext, NULL);
+    if (PostContext == ctx)
+      PostContext = NULL;
+    else
+      mx_mbox_close(&PostContext, NULL);
     mutt_error(_("No postponed messages"));
     return -1;
   }
@@ -310,40 +326,50 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   }
   else if (!(e = select_msg()))
   {
-    mx_mbox_close(&PostContext, NULL);
+    if (PostContext == ctx)
+      PostContext = NULL;
+    else
+      mx_mbox_close(&PostContext, NULL);
     return -1;
   }
 
-  if (mutt_prepare_template(NULL, PostContext, hdr, e, false) < 0)
+  if (mutt_prepare_template(NULL, PostContext->mailbox, hdr, e, false) < 0)
   {
-    mx_fastclose_mailbox(PostContext);
-    FREE(&PostContext);
+    if (PostContext != ctx)
+    {
+      mx_fastclose_mailbox(PostContext);
+      FREE(&PostContext);
+    }
     return -1;
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(PostContext, e, MUTT_DELETE, 1);
-  mutt_set_flag(PostContext, e, MUTT_PURGE, 1);
+  mutt_set_flag(PostContext->mailbox, e, MUTT_DELETE, 1);
+  mutt_set_flag(PostContext->mailbox, e, MUTT_PURGE, 1);
 
   /* update the count for the status display */
-  PostCount = PostContext->mailbox->msg_count - PostContext->deleted;
+  PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = Delete;
   Delete = MUTT_YES;
-  mx_mbox_close(&PostContext, NULL);
+  if (PostContext == ctx)
+    PostContext = NULL;
+  else
+    mx_mbox_close(&PostContext, NULL);
   Delete = opt_delete;
 
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
-    if (mutt_str_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
+    size_t plen = mutt_str_startswith(np->data, "X-Mutt-References:", CASE_IGNORE);
+    if (plen)
     {
       if (ctx)
       {
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
-        p = mutt_str_skip_email_wsp(np->data + 18);
+        p = mutt_str_skip_email_wsp(np->data + plen);
         if (!ctx->mailbox->id_hash)
           ctx->mailbox->id_hash = mutt_make_id_hash(ctx->mailbox);
         *cur = mutt_hash_find(ctx->mailbox->id_hash, p);
@@ -351,9 +377,9 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       if (*cur)
         code |= SEND_REPLY;
     }
-    else if (mutt_str_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
+    else if ((plen = mutt_str_startswith(np->data, "X-Mutt-Fcc:", CASE_IGNORE)))
     {
-      p = mutt_str_skip_email_wsp(np->data + 11);
+      p = mutt_str_skip_email_wsp(np->data + plen);
       mutt_str_strfcpy(fcc, p, fcclen);
       mutt_pretty_mailbox(fcc, fcclen);
 
@@ -365,23 +391,23 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
       code |= SEND_POSTPONED_FCC;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             ((mutt_str_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
-                                                        * by old neomutt versions
-                                                        */
-              || (mutt_str_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
+             /* this is generated by old neomutt versions */
+             (mutt_str_startswith(np->data, "Pgp:", CASE_MATCH) ||
+              /* this is the new way */
+              mutt_str_startswith(np->data, "X-Mutt-PGP:", CASE_MATCH)))
     {
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             (mutt_str_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
+             mutt_str_startswith(np->data, "X-Mutt-SMIME:", CASE_MATCH))
     {
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
 
 #ifdef MIXMASTER
-    else if (mutt_str_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
+    else if (mutt_str_startswith(np->data, "X-Mutt-Mix:", CASE_MATCH))
     {
       mutt_list_free(&hdr->chain);
 
@@ -542,16 +568,16 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 /**
  * mutt_prepare_template - Prepare a message template
  * @param fp      If not NULL, file containing the template
- * @param ctx     If fp is NULL, the context containing the header with the template
+ * @param m       If fp is NULL, the Mailbox containing the header with the template
  * @param newhdr  The template is read into this Header
- * @param e     The message to recall/resend
+ * @param e       Email to recall/resend
  * @param resend  Set if resending (as opposed to recalling a postponed msg)
  *                Resent messages enable header weeding, and also
  *                discard any existing Message-ID and Mail-Followup-To
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
+int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *newhdr,
                           struct Email *e, bool resend)
 {
   struct Message *msg = NULL;
@@ -562,7 +588,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Email *newhdr,
   struct State s = { 0 };
   int sec_type;
 
-  if (!fp && !(msg = mx_msg_open(ctx, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(m, e->msgno)))
     return -1;
 
   if (!fp)
@@ -772,7 +798,7 @@ bail:
   if (bfp != fp)
     mutt_file_fclose(&bfp);
   if (msg)
-    mx_msg_close(ctx, &msg);
+    mx_msg_close(m, &msg);
 
   if (rc == -1)
   {

@@ -40,11 +40,11 @@
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
-#include "curs_main.h"
 #include "edit.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hook.h"
+#include "index.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
@@ -96,31 +96,29 @@ static const char *There_are_no_attachments = N_("There are no attachments");
 
 /**
  * enum HeaderField - Ordered list of headers for the compose screen
+ *
+ * The position of various fields on the compose screen.
  */
 enum HeaderField
 {
-  HDR_FROM = 0,
-  HDR_TO,
-  HDR_CC,
-  HDR_BCC,
-  HDR_SUBJECT,
-  HDR_REPLYTO,
-  HDR_FCC,
-
+  HDR_FROM = 0, ///< "From:" field
+  HDR_TO,       ///< "To:" field
+  HDR_CC,       ///< "Cc:" field
+  HDR_BCC,      ///< "Bcc:" field
+  HDR_SUBJECT,  ///< "Subject:" field
+  HDR_REPLYTO,  ///< "Reply-To:" field
+  HDR_FCC,      ///< "Fcc:" (save folder) field
 #ifdef MIXMASTER
-  HDR_MIX,
+  HDR_MIX, ///< "Mix:" field (Mixmaster chain)
 #endif
-
-  HDR_CRYPT,
-  HDR_CRYPTINFO,
-
+  HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
+  HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
 #ifdef USE_NNTP
-  HDR_NEWSGROUPS,
-  HDR_FOLLOWUPTO,
-  HDR_XCOMMENTTO,
+  HDR_NEWSGROUPS, ///< "Newsgroups:" field
+  HDR_FOLLOWUPTO, ///< "Followup-To:" field
+  HDR_XCOMMENTTO, ///< "X-Comment-To:" field
 #endif
-
-  HDR_ATTACH = (HDR_FCC + 5) /* where to start printing the attachments */
+  HDR_ATTACH = (HDR_FCC + 5), ///< Position to start printing the attachments
 };
 
 int HeaderPadding[HDR_XCOMMENTTO + 1] = { 0 };
@@ -1399,7 +1397,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
 #ifdef USE_NNTP
         OptNews = false;
-        if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
+        if (Context && (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE))
         {
           CurrentNewsSrv = nntp_select_server(Context->mailbox, NewsServer, false);
           if (!CurrentNewsSrv)
@@ -1487,8 +1485,8 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
             continue;
 
           new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-          new->content =
-              mutt_make_message_attach(Context, Context->mailbox->hdrs[i], true);
+          new->content = mutt_make_message_attach(Context->mailbox,
+                                                  Context->mailbox->hdrs[i], true);
           if (new->content)
             update_idx(menu, actx, new);
           else

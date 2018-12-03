@@ -42,6 +42,8 @@ extern struct Regex *GecosMask;
 #define MUTT_RANDTAG_LEN 16
 
 void        mutt_adv_mktemp(char *s, size_t l);
+void        mutt_buffer_adv_mktemp (struct Buffer *buf);
+void        mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 int         mutt_check_overwrite(const char *attname, const char *path, char *fname, size_t flen, int *append, char **directory);
 void        mutt_encode_path(char *dest, size_t dlen, const char *src);
 void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t *callback, unsigned long data, enum FormatFlag flags);
@@ -66,12 +68,10 @@ int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, struct Address *a);
 void        mutt_sleep(short s);
 
-int mutt_timespec_compare(struct timespec *a, struct timespec *b);
-void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type);
-int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b);
-int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type, struct stat *sbb, enum MuttStatType sbb_type);
-
 #define mutt_mktemp(a, b)               mutt_mktemp_pfx_sfx(a, b, "neomutt", NULL)
 #define mutt_mktemp_pfx_sfx(a, b, c, d) mutt_mktemp_full(a, b, c, d, __FILE__, __LINE__)
+
+#define mutt_buffer_mktemp(a)               mutt_buffer_mktemp_pfx_sfx(a, "neomutt", NULL)
+#define mutt_buffer_mktemp_pfx_sfx(a, b, c) mutt_buffer_mktemp_full(a, b, c, __FILE__, __LINE__)
 
 #endif /* MUTT_MUTTLIB_H */

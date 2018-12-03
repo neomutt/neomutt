@@ -76,6 +76,7 @@ void mutt_body_free(struct Body **p)
     FREE(&b->content);
     FREE(&b->xtype);
     FREE(&b->subtype);
+    FREE(&b->language);
     FREE(&b->description);
     FREE(&b->form_name);
 

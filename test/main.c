@@ -4,6 +4,8 @@
  * Add your test cases to this list.
  *****************************************************************************/
 #define NEOMUTT_TEST_LIST                                                      \
+  NEOMUTT_TEST_ITEM(test_file_iter_line)                                       \
+  NEOMUTT_TEST_ITEM(test_file_map_lines)                                       \
   NEOMUTT_TEST_ITEM(test_base64_encode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_decode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_lengths)                                       \
@@ -17,7 +19,8 @@
   NEOMUTT_TEST_ITEM(test_addr_mbox_to_udomain)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_slash)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_path_tidy)
+  NEOMUTT_TEST_ITEM(test_mutt_path_tidy)                                       \
+  NEOMUTT_TEST_ITEM(test_url)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

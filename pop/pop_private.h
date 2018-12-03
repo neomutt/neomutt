@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "conn/conn.h"
 
 struct ConnAccount;
 struct Context;
@@ -46,10 +47,9 @@ struct Progress;
  */
 enum PopStatus
 {
-  POP_NONE = 0,
-  POP_CONNECTED,
-  POP_DISCONNECTED,
-  POP_BYE
+  POP_NONE = 0,     ///< No connected to server
+  POP_CONNECTED,    ///< Connected to server
+  POP_DISCONNECTED, ///< Disconnected from server
 };
 
 /**
@@ -57,10 +57,10 @@ enum PopStatus
  */
 enum PopAuthRes
 {
-  POP_A_SUCCESS = 0,
-  POP_A_SOCKET,
-  POP_A_FAILURE,
-  POP_A_UNAVAIL
+  POP_A_SUCCESS = 0, ///< Authenticated successfully
+  POP_A_SOCKET,      ///< Connection lost
+  POP_A_FAILURE,     ///< Authentication failed
+  POP_A_UNAVAIL,     ///< No valid authentication method
 };
 
 /**
@@ -73,11 +73,12 @@ struct PopCache
 };
 
 /**
- * struct PopAccountData - POP data attached to a Account - @extends Account
+ * struct PopAccountData - POP-specific Account data - @extends Account
  */
 struct PopAccountData
 {
   struct Connection *conn;
+  struct ConnAccount conn_account;
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;
@@ -100,7 +101,7 @@ struct PopAccountData
 };
 
 /**
- * struct PopEmailData - POP data attached to an Email - @extends Email
+ * struct PopEmailData - POP-specific Email data - @extends Email
  */
 struct PopEmailData
 {

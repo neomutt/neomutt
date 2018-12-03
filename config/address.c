@@ -214,7 +214,7 @@ static int address_reset(const struct ConfigSet *cs, void *var,
   const char *initial = (const char *) cdef->initial;
 
   if (initial)
-    a = address_create(initial);
+    a = address_new(initial);
 
   int rc = CSR_SUCCESS;
 
@@ -253,11 +253,11 @@ void address_init(struct ConfigSet *cs)
 }
 
 /**
- * address_create - Create an Address from a string
+ * address_new - Create an Address from a string
  * @param addr Email address to parse
  * @retval ptr New Address object
  */
-struct Address *address_create(const char *addr)
+struct Address *address_new(const char *addr)
 {
   struct Address *a = mutt_mem_calloc(1, sizeof(*a));
   // a->personal = mutt_str_strdup(addr);

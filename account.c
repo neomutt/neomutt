@@ -27,10 +27,10 @@
 struct AccountList AllAccounts = TAILQ_HEAD_INITIALIZER(AllAccounts);
 
 /**
- * account_create - Create a new Account
+ * account_new - Create a new Account
  * @retval ptr New Account
  */
-struct Account *account_create(void)
+struct Account *account_new(void)
 {
   struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
   STAILQ_INIT(&a->mailboxes);
@@ -39,16 +39,27 @@ struct Account *account_create(void)
 }
 
 /**
- * account_free - Free an Account
- * @param a Account to free
+ * account_remove_mailbox - Remove a Mailbox from an Account
+ * @param a Account
+ * @param m Mailbox to remove
  */
-void account_free(struct Account **a)
+void account_remove_mailbox(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !*a)
-    return;
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &a->mailboxes, entries)
+  {
+    if (np->m == m)
+    {
+      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+      break;
+    }
+  }
 
-  if ((*a)->adata)
-    (*a)->free_adata((void **) a);
-
-  FREE(a);
+  if (STAILQ_EMPTY(&a->mailboxes))
+  {
+    TAILQ_REMOVE(&AllAccounts, a, entries);
+    if (a->adata)
+      a->free_adata(&a->adata);
+    FREE(&a);
+  }
 }

@@ -42,32 +42,32 @@
  */
 enum RichAttribs
 {
-  RICH_PARAM = 0,
-  RICH_BOLD,
-  RICH_UNDERLINE,
-  RICH_ITALIC,
-  RICH_NOFILL,
-  RICH_INDENT,
-  RICH_INDENT_RIGHT,
-  RICH_EXCERPT,
-  RICH_CENTER,
-  RICH_FLUSHLEFT,
-  RICH_FLUSHRIGHT,
-  RICH_COLOR,
-  RICH_LAST_TAG
+  RICH_PARAM = 0,    ///< Parameter label
+  RICH_BOLD,         ///< Bold text
+  RICH_UNDERLINE,    ///< Underlined text
+  RICH_ITALIC,       ///< Italic text
+  RICH_NOFILL,       ///< Text will not be reformatted
+  RICH_INDENT,       ///< Indented text
+  RICH_INDENT_RIGHT, ///< Right-indented text
+  RICH_EXCERPT,      ///< Excerpt text
+  RICH_CENTER,       ///< Centred text
+  RICH_FLUSHLEFT,    ///< Left-justified text
+  RICH_FLUSHRIGHT,   ///< Right-justified text
+  RICH_COLOR,        ///< Coloured text
+  RICH_MAX,
 };
 
 /**
- * struct etags - Enriched text tags
+ * struct Etags - Enriched text tags
  */
-struct etags
+struct Etags
 {
   const wchar_t *tag_name;
   int index;
 };
 
 // clang-format off
-static const struct etags EnrichedTags[] = {
+static const struct Etags EnrichedTags[] = {
   { L"param",       RICH_PARAM        },
   { L"bold",        RICH_BOLD         },
   { L"italic",      RICH_ITALIC       },
@@ -103,7 +103,7 @@ struct EnrichedState
   size_t buf_used;
   size_t param_used;
   size_t param_len;
-  int tag_level[RICH_LAST_TAG];
+  int tag_level[RICH_MAX];
   int wrap_margin;
   struct State *s;
 };
@@ -573,7 +573,8 @@ int text_enriched_handler(struct Body *a, struct State *s)
         state = DONE;
         break;
 
-      case DONE: /* not reached */
+      case DONE:
+        /* not reached */
         break;
     }
   }

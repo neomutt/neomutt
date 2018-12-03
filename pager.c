@@ -27,6 +27,7 @@
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -41,11 +42,11 @@
 #include "commands.h"
 #include "context.h"
 #include "curs_lib.h"
-#include "curs_main.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
+#include "index.h"
 #include "keymap.h"
 #include "mailbox.h"
 #include "menu.h"
@@ -247,6 +248,26 @@ static int check_sig(const char *s, struct Line *info, int n)
 }
 
 /**
+ * comp_syntax_t - Search for a Syntax using bsearch
+ * @param m1 Search key
+ * @param m2 Array member
+ * @retval -1 m1 precedes m2
+ * @retval  0 m1 matches m2
+ * @retval  1 m2 precedes m1
+ */
+static int comp_syntax_t(const void *m1, const void *m2)
+{
+  const int *cnt = (const int *) m1;
+  const struct Syntax *stx = (const struct Syntax *) m2;
+
+  if (*cnt < stx->first)
+    return -1;
+  if (*cnt >= stx->last)
+    return 1;
+  return 0;
+}
+
+/**
  * resolve_color - Set the colour for a line of text
  * @param line_info Line info array
  * @param n         Line Number (index into line_info)
@@ -263,6 +284,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   static int last_color; /* last color set */
   bool search = false;
   int m;
+  struct Syntax *matching_chunk = NULL;
 
   if (!cnt)
     last_color = -1; /* force attrset() */
@@ -308,39 +330,26 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   }
 
   color = def_color;
-  if (flags & MUTT_SHOWCOLOR)
+  if ((flags & MUTT_SHOWCOLOR) && line_info[m].chunks)
   {
-    for (int i = 0; i < line_info[m].chunks; i++)
+    matching_chunk = bsearch(&cnt, line_info[m].syntax, line_info[m].chunks,
+                             sizeof(struct Syntax), comp_syntax_t);
+    if (matching_chunk && (cnt >= matching_chunk->first) &&
+        (cnt < matching_chunk->last))
     {
-      /* we assume the chunks are sorted */
-      if (cnt > (line_info[m].syntax)[i].last)
-        continue;
-      if (cnt < (line_info[m].syntax)[i].first)
-        break;
-      if (cnt != (line_info[m].syntax)[i].last)
-      {
-        color = (line_info[m].syntax)[i].color;
-        break;
-      }
-      /* don't break here, as cnt might be
-       * in the next chunk as well */
+      color = matching_chunk->color;
     }
   }
 
-  if (flags & MUTT_SEARCH)
+  if ((flags & MUTT_SEARCH) && line_info[m].search_cnt)
   {
-    for (int i = 0; i < line_info[m].search_cnt; i++)
+    matching_chunk = bsearch(&cnt, line_info[m].search, line_info[m].search_cnt,
+                             sizeof(struct Syntax), comp_syntax_t);
+    if (matching_chunk && (cnt >= matching_chunk->first) &&
+        (cnt < matching_chunk->last))
     {
-      if (cnt > (line_info[m].search)[i].last)
-        continue;
-      if (cnt < (line_info[m].search)[i].first)
-        break;
-      if (cnt != (line_info[m].search)[i].last)
-      {
-        color = ColorDefs[MT_COLOR_SEARCH];
-        search = true;
-        break;
-      }
+      color = ColorDefs[MT_COLOR_SEARCH];
+      search = 1;
     }
   }
 
@@ -944,7 +953,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_str_strncmp("\033[0m", raw, 4) == 0) /* a little hack... */
+  else if (mutt_str_startswith(raw, "\033[0m", CASE_MATCH)) /* a little hack... */
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
@@ -1431,14 +1440,6 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       if (wc == ' ')
       {
         space = ch;
-      }
-      /* no-break space, narrow no-break space */
-      else if (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F))
-      {
-        /* Convert non-breaking space to normal space. The local variable
-         * `space' is not set here so that the caller of this function won't
-         * attempt to wrap at this character. */
-        wc = ' ';
       }
       t = wcwidth(wc);
       if (col + t > wrap_cols)
@@ -2250,7 +2251,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (Context && IsHeader(extra) && !extra->email->read)
   {
     Context->msgnotreadyet = extra->email->msgno;
-    mutt_set_flag(Context, extra->email, MUTT_READ, 1);
+    mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
   }
 
   rd.max_line = LINES; /* number of lines on screen, from curses */
@@ -2942,10 +2943,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
-        mutt_set_flag(Context, extra->email, MUTT_DELETE, 1);
-        mutt_set_flag(Context, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 1);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (DeleteUntag)
-          mutt_set_flag(Context, extra->email, MUTT_TAG, 0);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, 0);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3050,7 +3051,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
 
-        mutt_set_flag(Context, extra->email, MUTT_FLAG, !extra->email->flagged);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_FLAG, !extra->email->flagged);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {
@@ -3250,7 +3251,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra));
         if (Context)
         {
-          mutt_set_flag(Context, extra->email, MUTT_TAG, !extra->email->tagged);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_TAG, !extra->email->tagged);
 
           Context->last_tag =
               extra->email->tagged ?
@@ -3275,9 +3276,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
 
         if (extra->email->read || extra->email->old)
-          mutt_set_flag(Context, extra->email, MUTT_NEW, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_NEW, 1);
         else if (!first)
-          mutt_set_flag(Context, extra->email, MUTT_READ, 1);
+          mutt_set_flag(Context->mailbox, extra->email, MUTT_READ, 1);
         first = 0;
         Context->msgnotreadyet = -1;
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
@@ -3294,8 +3295,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
-        mutt_set_flag(Context, extra->email, MUTT_DELETE, 0);
-        mutt_set_flag(Context, extra->email, MUTT_PURGE, 0);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_DELETE, 0);
+        mutt_set_flag(Context->mailbox, extra->email, MUTT_PURGE, 0);
         pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (Resolve)
         {

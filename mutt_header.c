@@ -33,8 +33,8 @@
 #include "alias.h"
 #include "context.h"
 #include "curs_lib.h"
-#include "curs_main.h"
 #include "globals.h"
+#include "index.h"
 #include "mailbox.h"
 #include "muttlib.h"
 #include "ncrypt/ncrypt.h"
@@ -146,7 +146,7 @@ int mutt_label_message(struct Email *e)
     if (label_message(Context->mailbox, e, new))
     {
       changed++;
-      mutt_set_header_color(Context, e);
+      mutt_set_header_color(Context->mailbox, e);
     }
   }
   else
@@ -160,7 +160,7 @@ int mutt_label_message(struct Email *e)
       if (label_message(Context->mailbox, e2, new))
       {
         changed++;
-        mutt_set_flag(Context, e2, MUTT_TAG, 0);
+        mutt_set_flag(Context->mailbox, e2, MUTT_TAG, 0);
         /* mutt_set_flag re-evals the header color */
       }
     }
@@ -294,10 +294,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
     bool keep = true;
+    size_t plen;
 
-    if (fcc && (mutt_str_strncasecmp("fcc:", np->data, 4) == 0))
+    if (fcc && (plen = mutt_str_startswith(np->data, "fcc:", CASE_IGNORE)))
     {
-      p = mutt_str_skip_email_wsp(np->data + 4);
+      p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         mutt_str_strfcpy(fcc, p, fcclen);
@@ -305,12 +306,12 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
       }
       keep = false;
     }
-    else if (mutt_str_strncasecmp("attach:", np->data, 7) == 0)
+    else if ((plen = mutt_str_startswith(np->data, "attach:", CASE_IGNORE)))
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
 
-      p = mutt_str_skip_email_wsp(np->data + 7);
+      p = mutt_str_skip_email_wsp(np->data + plen);
       if (*p)
       {
         size_t l = 0;
@@ -346,9 +347,9 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *msg,
       keep = false;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (mutt_str_strncasecmp("pgp:", np->data, 4) == 0))
+             (plen = mutt_str_startswith(np->data, "pgp:", CASE_IGNORE)))
     {
-      msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
+      msg->security = mutt_parse_crypt_hdr(np->data + plen, 0, APPLICATION_PGP);
       if (msg->security)
         msg->security |= APPLICATION_PGP;
       keep = false;
@@ -372,13 +373,13 @@ void mutt_make_label_hash(struct Mailbox *m)
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a m.
    */
-  m->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  m->label_hash = mutt_hash_new(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 /**
  * mutt_label_hash_add - Add a message's labels to the Hash Table
  * @param m Mailbox
- * @param e Header of message
+ * @param e Email
  */
 void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 {
@@ -391,7 +392,7 @@ void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
 /**
  * mutt_label_hash_remove - Rmove a message's labels from the Hash Table
  * @param m Mailbox
- * @param e Header of message
+ * @param e Email
  */
 void mutt_label_hash_remove(struct Mailbox *m, struct Email *e)
 {

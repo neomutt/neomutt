@@ -545,13 +545,13 @@ int mutt_is_application_pgp(struct Body *m)
     if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
          (p = mutt_param_get(&m->parameter, "x-action")) ||
          (p = mutt_param_get(&m->parameter, "action"))) &&
-        (mutt_str_strncasecmp("pgp-sign", p, 8) == 0))
+        mutt_str_startswith(p, "pgp-sign", CASE_IGNORE))
     {
       t |= PGP_SIGN;
     }
-    else if (p && (mutt_str_strncasecmp("pgp-encrypt", p, 11) == 0))
+    else if (p && mutt_str_startswith(p, "pgp-encrypt", CASE_IGNORE))
       t |= PGP_ENCRYPT;
-    else if (p && (mutt_str_strncasecmp("pgp-keys", p, 7) == 0))
+    else if (p && mutt_str_startswith(p, "pgp-keys", CASE_IGNORE))
       t |= PGP_KEY;
   }
   if (t)
@@ -834,7 +834,7 @@ void crypt_extract_keys_from_messages(struct Email *e)
 
       struct Email *ei = Context->mailbox->hdrs[i];
 
-      mutt_parse_mime_message(Context, ei);
+      mutt_parse_mime_message(Context->mailbox, ei);
       if (ei->security & ENCRYPT && !crypt_valid_passphrase(ei->security))
       {
         mutt_file_fclose(&fpout);
@@ -843,7 +843,8 @@ void crypt_extract_keys_from_messages(struct Email *e)
 
       if (((WithCrypto & APPLICATION_PGP) != 0) && (ei->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context, ei, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context->mailbox, ei,
+                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
         mutt_endwin();
@@ -855,12 +856,12 @@ void crypt_extract_keys_from_messages(struct Email *e)
       {
         if (ei->security & ENCRYPT)
         {
-          mutt_copy_message_ctx(fpout, Context, ei,
+          mutt_copy_message_ctx(fpout, Context->mailbox, ei,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
         }
         else
-          mutt_copy_message_ctx(fpout, Context, ei, 0, 0);
+          mutt_copy_message_ctx(fpout, Context->mailbox, ei, 0, 0);
         fflush(fpout);
 
         if (ei->env->from)
@@ -882,12 +883,13 @@ void crypt_extract_keys_from_messages(struct Email *e)
   }
   else
   {
-    mutt_parse_mime_message(Context, e);
+    mutt_parse_mime_message(Context->mailbox, e);
     if (!(e->security & ENCRYPT && !crypt_valid_passphrase(e->security)))
     {
       if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
       {
-        mutt_copy_message_ctx(fpout, Context, e, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message_ctx(fpout, Context->mailbox, e,
+                              MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
         mutt_endwin();
         puts(_("Trying to extract PGP keys...\n"));
@@ -898,12 +900,12 @@ void crypt_extract_keys_from_messages(struct Email *e)
       {
         if (e->security & ENCRYPT)
         {
-          mutt_copy_message_ctx(fpout, Context, e,
+          mutt_copy_message_ctx(fpout, Context->mailbox, e,
                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                                 0);
         }
         else
-          mutt_copy_message_ctx(fpout, Context, e, 0, 0);
+          mutt_copy_message_ctx(fpout, Context->mailbox, e, 0, 0);
 
         fflush(fpout);
         if (e->env->from)
@@ -1226,7 +1228,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
    * condition of the caller. */
 
   char *pf = mutt_str_skip_whitespace(p);
-  if (mutt_str_strncasecmp(pf, "0x", 2) == 0)
+  if (mutt_str_startswith(pf, "0x", CASE_IGNORE))
     pf += 2;
 
   /* Check if a fingerprint is given, must be hex digits only, blanks

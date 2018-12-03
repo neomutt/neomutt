@@ -36,15 +36,12 @@ struct Connection
 {
   struct ConnAccount account;
   unsigned int ssf; /**< security strength factor, in bits */
-  void *data; /** mostly Mailbox ptr, else NNTP Server */
 
   char inbuf[LONG_STRING];
   int bufpos;
 
   int fd;
   int available;
-
-  TAILQ_ENTRY(Connection) entries;
 
   void *sockdata;
 

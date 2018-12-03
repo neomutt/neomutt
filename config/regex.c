@@ -81,7 +81,7 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
 
     if (value)
     {
-      r = regex_create(value, cdef->type, err);
+      r = regex_new(value, cdef->type, err);
       if (!r)
         return CSR_ERR_INVALID;
     }
@@ -171,7 +171,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
   if (orig && orig->pattern)
   {
     const int flags = orig->not? DT_REGEX_ALLOW_NOT : 0;
-    r = regex_create(orig->pattern, flags, err);
+    r = regex_new(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;
   }
@@ -227,7 +227,7 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 
   if (initial)
   {
-    r = regex_create(initial, cdef->type, err);
+    r = regex_new(initial, cdef->type, err);
     if (!r)
       return CSR_ERR_CODE;
   }
@@ -266,14 +266,14 @@ void regex_init(struct ConfigSet *cs)
 }
 
 /**
- * regex_create - Create an Regex from a string
+ * regex_new - Create an Regex from a string
  * @param str   Regular expression
  * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
  * @param err   Buffer for error messages
  * @retval ptr New Regex object
  * @retval NULL Error
  */
-struct Regex *regex_create(const char *str, int flags, struct Buffer *err)
+struct Regex *regex_new(const char *str, int flags, struct Buffer *err)
 {
   if (!str)
     return NULL; /* LCOV_EXCL_LINE */

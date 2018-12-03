@@ -36,9 +36,9 @@ struct ConfigDef;
  */
 enum ConfigEvent
 {
-  CE_SET = 1,   /**< Config item has been set */
-  CE_RESET, /**< Config item has been reset to initial, or parent, value */
-  CE_INITIAL_SET, /**< Config item's initial value has been set */
+  CE_SET = 1,     ///< Config item has been set
+  CE_RESET,       ///< Config item has been reset to initial, or parent, value
+  CE_INITIAL_SET, ///< Config item's initial value has been set
 };
 
 /* Config Set Results */
@@ -65,8 +65,8 @@ enum ConfigEvent
  */
 enum CsListenerAction
 {
-  CSLA_CONTINUE = 1, /**< Continue notifying listeners */
-  CSLA_STOP,         /**< Stop notifying listeners */
+  CSLA_CONTINUE = 1, ///< Continue notifying listeners
+  CSLA_STOP,         ///< Stop notifying listeners
 };
 
 /**
@@ -198,7 +198,7 @@ struct ConfigSet
   cs_listener listeners[8];       /**< Listeners for notifications of changes to config items */
 };
 
-struct ConfigSet *cs_create(size_t size);
+struct ConfigSet *cs_new(size_t size);
 void              cs_init(struct ConfigSet *cs, size_t size);
 void              cs_free(struct ConfigSet **cs);
 

@@ -23,6 +23,9 @@
 #ifndef MUTT_NNTP_NNTP_PRIVATE_H
 #define MUTT_NNTP_NNTP_PRIVATE_H
 
+#include <inttypes.h>
+#include <stdint.h>
+#include "nntp.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
@@ -31,8 +34,6 @@ struct Connection;
 struct Context;
 struct Email;
 struct Mailbox;
-struct NntpAccountData;
-struct NntpMboxData;
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563
@@ -42,9 +43,9 @@ struct NntpMboxData;
  */
 enum NntpStatus
 {
-  NNTP_NONE = 0,
-  NNTP_OK,
-  NNTP_BYE
+  NNTP_NONE = 0, ///< No connection to server
+  NNTP_OK,       ///< Connected to server
+  NNTP_BYE,      ///< Disconnected from server
 };
 
 void nntp_acache_free(struct NntpMboxData *mdata);
@@ -53,14 +54,14 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn);
 int  nntp_add_group(char *line, void *data);
 void nntp_bcache_update(struct NntpMboxData *mdata);
 int  nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata);
-void nntp_data_free(void *data);
 void nntp_delete_group_cache(struct NntpMboxData *mdata);
 struct NntpEmailData *nntp_edata_get(struct Email *e);
 void nntp_group_unread_stat(struct NntpMboxData *mdata);
 void nntp_hash_destructor_t(int type, void *obj, intptr_t data);
-void nntp_mdata_free(void *ptr);
+void nntp_mdata_free(void **ptr);
 void nntp_newsrc_gen_entries(struct Context *ctx);
 int  nntp_open_connection(struct NntpAccountData *adata);
+void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t anum);
 
 #ifdef USE_HCACHE
 header_cache_t *nntp_hcache_open(struct NntpMboxData *mdata);

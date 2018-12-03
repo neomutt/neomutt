@@ -86,7 +86,7 @@ void config_set(void)
   err.dsize = STRING;
   mutt_buffer_reset(&err);
 
-  struct ConfigSet *cs = cs_create(30);
+  struct ConfigSet *cs = cs_new(30);
   if (!TEST_CHECK(cs != NULL))
     return;
 

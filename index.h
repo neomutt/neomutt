@@ -20,17 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CURS_MAIN_H
-#define MUTT_CURS_MAIN_H
+#ifndef MUTT_INDEX_H
+#define MUTT_INDEX_H
 
 #include <stdbool.h>
 #include <stdio.h>
 
 struct Context;
 struct Email;
+struct Mailbox;
 struct Menu;
 
-/* These Config Variables are only used in curs_main.c */
+/* These Config Variables are only used in index.c */
 extern bool  ChangeFolderNext;
 extern bool  CollapseAll;
 extern bool  CollapseFlagged;
@@ -44,7 +45,7 @@ int  index_color(int line);
 void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int line);
 void mutt_draw_statusline(int cols, const char *buf, size_t buflen);
 int  mutt_index_menu(void);
-void mutt_set_header_color(struct Context *ctx, struct Email *curhdr);
+void mutt_set_header_color(struct Mailbox *m, struct Email *curhdr);
 void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint);
 
-#endif /* MUTT_CURS_MAIN_H */
+#endif /* MUTT_INDEX_H */

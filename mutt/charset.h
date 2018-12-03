@@ -74,8 +74,8 @@ struct MimeNames
  */
 enum LookupType
 {
-  MUTT_LOOKUP_CHARSET,
-  MUTT_LOOKUP_ICONV
+  MUTT_LOOKUP_CHARSET, ///< Alias for another character set
+  MUTT_LOOKUP_ICONV,   ///< Character set conversion
 };
 
 #define MUTT_ICONV_HOOK_FROM 1 /**< apply charset-hooks to fromcode */

@@ -375,9 +375,10 @@ static int edit_envelope(struct Envelope *en, int flags)
     struct ListNode *uh = NULL;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
-      if (mutt_str_strncasecmp("subject:", uh->data, 8) == 0)
+      size_t plen = mutt_str_startswith(uh->data, "subject:", CASE_IGNORE);
+      if (plen)
       {
-        p = mutt_str_skip_email_wsp(uh->data + 8);
+        p = mutt_str_skip_email_wsp(uh->data + plen);
         mutt_str_strfcpy(buf, p, sizeof(buf));
       }
     }
@@ -418,19 +419,20 @@ static void process_user_recips(struct Envelope *env)
   struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
-    if (mutt_str_strncasecmp("to:", uh->data, 3) == 0)
-      env->to = mutt_addr_parse_list(env->to, uh->data + 3);
-    else if (mutt_str_strncasecmp("cc:", uh->data, 3) == 0)
-      env->cc = mutt_addr_parse_list(env->cc, uh->data + 3);
-    else if (mutt_str_strncasecmp("bcc:", uh->data, 4) == 0)
-      env->bcc = mutt_addr_parse_list(env->bcc, uh->data + 4);
+    size_t plen;
+    if ((plen = mutt_str_startswith(uh->data, "to:", CASE_IGNORE)))
+      env->to = mutt_addr_parse_list(env->to, uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "cc:", CASE_IGNORE)))
+      env->cc = mutt_addr_parse_list(env->cc, uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE)))
+      env->bcc = mutt_addr_parse_list(env->bcc, uh->data + plen);
 #ifdef USE_NNTP
-    else if (mutt_str_strncasecmp("newsgroups:", uh->data, 11) == 0)
-      env->newsgroups = nntp_get_header(uh->data + 11);
-    else if (mutt_str_strncasecmp("followup-to:", uh->data, 12) == 0)
-      env->followup_to = nntp_get_header(uh->data + 12);
-    else if (mutt_str_strncasecmp("x-comment-to:", uh->data, 13) == 0)
-      env->x_comment_to = nntp_get_header(uh->data + 13);
+    else if ((plen = mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE)))
+      env->newsgroups = nntp_get_header(uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE)))
+      env->followup_to = nntp_get_header(uh->data + plen);
+    else if ((plen = mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE)))
+      env->x_comment_to = nntp_get_header(uh->data + plen);
 #endif
   }
 }
@@ -444,20 +446,21 @@ static void process_user_header(struct Envelope *env)
   struct ListNode *uh = NULL;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
-    if (mutt_str_strncasecmp("from:", uh->data, 5) == 0)
+    size_t plen;
+    if ((plen = mutt_str_startswith(uh->data, "from:", CASE_IGNORE)))
     {
       /* User has specified a default From: address.  Remove default address */
       mutt_addr_free(&env->from);
-      env->from = mutt_addr_parse_list(env->from, uh->data + 5);
+      env->from = mutt_addr_parse_list(env->from, uh->data + plen);
     }
-    else if (mutt_str_strncasecmp("reply-to:", uh->data, 9) == 0)
+    else if ((plen = mutt_str_startswith(uh->data, "reply-to:", CASE_IGNORE)))
     {
       mutt_addr_free(&env->reply_to);
-      env->reply_to = mutt_addr_parse_list(env->reply_to, uh->data + 9);
+      env->reply_to = mutt_addr_parse_list(env->reply_to, uh->data + plen);
     }
-    else if (mutt_str_strncasecmp("message-id:", uh->data, 11) == 0)
+    else if ((plen = mutt_str_startswith(uh->data, "message-id:", CASE_IGNORE)))
     {
-      char *tmp = mutt_extract_message_id(uh->data + 11, NULL);
+      char *tmp = mutt_extract_message_id(uh->data + plen, NULL);
       if (mutt_addr_valid_msgid(tmp))
       {
         FREE(&env->message_id);
@@ -466,17 +469,17 @@ static void process_user_header(struct Envelope *env)
       else
         FREE(&tmp);
     }
-    else if ((mutt_str_strncasecmp("to:", uh->data, 3) != 0) &&
-             (mutt_str_strncasecmp("cc:", uh->data, 3) != 0) &&
-             (mutt_str_strncasecmp("bcc:", uh->data, 4) != 0) &&
+    else if (!mutt_str_startswith(uh->data, "to:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "cc:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "bcc:", CASE_IGNORE) &&
 #ifdef USE_NNTP
-             (mutt_str_strncasecmp("newsgroups:", uh->data, 11) != 0) &&
-             (mutt_str_strncasecmp("followup-to:", uh->data, 12) != 0) &&
-             (mutt_str_strncasecmp("x-comment-to:", uh->data, 13) != 0) &&
+             !mutt_str_startswith(uh->data, "newsgroups:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "followup-to:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "x-comment-to:", CASE_IGNORE) &&
 #endif
-             (mutt_str_strncasecmp("supersedes:", uh->data, 11) != 0) &&
-             (mutt_str_strncasecmp("subject:", uh->data, 8) != 0) &&
-             (mutt_str_strncasecmp("return-path:", uh->data, 12) != 0))
+             !mutt_str_startswith(uh->data, "supersedes:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "subject:", CASE_IGNORE) &&
+             !mutt_str_startswith(uh->data, "return-path:", CASE_IGNORE))
     {
       mutt_list_insert_tail(&env->userhdrs, mutt_str_strdup(uh->data));
     }
@@ -494,11 +497,11 @@ void mutt_forward_intro(struct Context *ctx, struct Email *cur, FILE *fp)
   if (!ForwardAttributionIntro || !fp)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionIntro, ctx, cur);
   setlocale(LC_TIME, "");
-  fputs(buffer, fp);
+  fputs(buf, fp);
   fputs("\n\n", fp);
 }
 
@@ -513,12 +516,12 @@ void mutt_forward_trailer(struct Context *ctx, struct Email *cur, FILE *fp)
   if (!ForwardAttributionTrailer || !fp)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), ForwardAttributionTrailer, ctx, cur);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
-  fputs(buffer, fp);
+  fputs(buf, fp);
   fputc('\n', fp);
 }
 
@@ -534,8 +537,8 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
-  mutt_parse_mime_message(ctx, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(ctx->mailbox, cur);
+  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
   {
@@ -562,7 +565,7 @@ static int include_forward(struct Context *ctx, struct Email *cur, FILE *out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message_ctx(out, ctx, cur, cmflags, chflags);
+  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
   mutt_forward_trailer(ctx, cur, out);
   return 0;
 }
@@ -578,11 +581,11 @@ void mutt_make_attribution(struct Context *ctx, struct Email *cur, FILE *out)
   if (!Attribution || !out)
     return;
 
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   setlocale(LC_TIME, NONULL(AttributionLocale));
-  mutt_make_string(buffer, sizeof(buffer), Attribution, ctx, cur);
+  mutt_make_string(buf, sizeof(buf), Attribution, ctx, cur);
   setlocale(LC_TIME, "");
-  fputs(buffer, out);
+  fputs(buf, out);
   fputc('\n', out);
 }
 
@@ -597,9 +600,9 @@ void mutt_make_post_indent(struct Context *ctx, struct Email *cur, FILE *out)
   if (!PostIndentString || !out)
     return;
 
-  char buffer[STRING];
-  mutt_make_string(buffer, sizeof(buffer), PostIndentString, ctx, cur);
-  fputs(buffer, out);
+  char buf[STRING];
+  mutt_make_string(buf, sizeof(buf), PostIndentString, ctx, cur);
+  fputs(buf, out);
   fputc('\n', out);
 }
 
@@ -623,8 +626,8 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
       return -1;
   }
 
-  mutt_parse_mime_message(ctx, cur);
-  mutt_message_hook(ctx, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(ctx->mailbox, cur);
+  mutt_message_hook(ctx->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   mutt_make_attribution(ctx, cur, out);
 
@@ -636,7 +639,7 @@ static int include_reply(struct Context *ctx, struct Email *cur, FILE *out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message_ctx(out, ctx, cur, cmflags, chflags);
+  mutt_copy_message_ctx(out, ctx->mailbox, cur, cmflags, chflags);
 
   mutt_make_post_indent(ctx, cur, out);
 
@@ -783,13 +786,13 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 /**
  * add_references - Add the email's references to a list
  * @param head List of references
- * @param e    Envelope of message
+ * @param env    Envelope of message
  */
-static void add_references(struct ListHead *head, struct Envelope *e)
+static void add_references(struct ListHead *head, struct Envelope *env)
 {
   struct ListNode *np = NULL;
 
-  struct ListHead *src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
+  struct ListHead *src = !STAILQ_EMPTY(&env->references) ? &env->references : &env->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
   {
     mutt_list_insert_tail(head, mutt_str_strdup(np->data));
@@ -799,13 +802,13 @@ static void add_references(struct ListHead *head, struct Envelope *e)
 /**
  * add_message_id - Add the email's message ID to a list
  * @param head List of message IDs
- * @param e    Envelope of message
+ * @param env  Envelope of message
  */
-static void add_message_id(struct ListHead *head, struct Envelope *e)
+static void add_message_id(struct ListHead *head, struct Envelope *env)
 {
-  if (e->message_id)
+  if (env->message_id)
   {
-    mutt_list_insert_head(head, mutt_str_strdup(e->message_id));
+    mutt_list_insert_head(head, mutt_str_strdup(env->message_id));
   }
 }
 
@@ -847,11 +850,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   if (!env)
     return;
 
-  char buffer[STRING];
+  char buf[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buffer, sizeof(buffer), NONULL(ForwardFormat), ctx, cur);
-  mutt_str_replace(&env->subject, buffer);
+  mutt_make_string(buf, sizeof(buf), NONULL(ForwardFormat), ctx, cur);
+  mutt_str_replace(&env->subject, buf);
 }
 
 /**
@@ -903,7 +906,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 static void make_reference_headers(struct Envelope *curenv,
                                    struct Envelope *env, struct Context *ctx)
 {
-  if (!env || !ctx)
+  if (!env || !ctx || !ctx->mailbox)
     return;
 
   if (!curenv)
@@ -920,7 +923,7 @@ static void make_reference_headers(struct Envelope *curenv,
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RFC2822, sect. 3.6.4 */
-  if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
+  if (ctx->mailbox->msg_tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
     mutt_list_free(&env->references);
@@ -1078,7 +1081,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
       if (cur)
       {
-        tmp = mutt_make_message_attach(ctx, cur, false);
+        tmp = mutt_make_message_attach(ctx->mailbox, cur, false);
         if (last)
           last->next = tmp;
         else
@@ -1091,7 +1094,7 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
           if (!message_is_tagged(ctx, i))
             continue;
 
-          tmp = mutt_make_message_attach(ctx, ctx->mailbox->hdrs[i], false);
+          tmp = mutt_make_message_attach(ctx->mailbox, ctx->mailbox->hdrs[i], false);
           if (last)
           {
             last->next = tmp;
@@ -1142,9 +1145,9 @@ static int generate_body(FILE *tempfp, struct Email *msg, int flags,
 
 /**
  * mutt_set_followup_to - Set followup-to field
- * @param e Envelope to modify
+ * @param env Envelope to modify
  */
-void mutt_set_followup_to(struct Envelope *e)
+void mutt_set_followup_to(struct Envelope *env)
 {
   struct Address *t = NULL;
   struct Address *from = NULL;
@@ -1158,26 +1161,26 @@ void mutt_set_followup_to(struct Envelope *e)
 #ifdef USE_NNTP
   if (OptNewsSend)
   {
-    if (!e->followup_to && e->newsgroups && (strrchr(e->newsgroups, ',')))
-      e->followup_to = mutt_str_strdup(e->newsgroups);
+    if (!env->followup_to && env->newsgroups && (strrchr(env->newsgroups, ',')))
+      env->followup_to = mutt_str_strdup(env->newsgroups);
     return;
   }
 #endif
 
-  if (!e->mail_followup_to)
+  if (!env->mail_followup_to)
   {
-    if (mutt_is_list_cc(0, e->to, e->cc))
+    if (mutt_is_list_cc(0, env->to, env->cc))
     {
       /* this message goes to known mailing lists, so create a proper
        * mail-followup-to header
        */
 
-      t = mutt_addr_append(&e->mail_followup_to, e->to, false);
-      mutt_addr_append(&t, e->cc, true);
+      t = mutt_addr_append(&env->mail_followup_to, env->to, false);
+      mutt_addr_append(&t, env->cc, true);
     }
 
     /* remove ourselves from the mail-followup-to header */
-    e->mail_followup_to = remove_user(e->mail_followup_to, false);
+    env->mail_followup_to = remove_user(env->mail_followup_to, false);
 
     /* If we are not subscribed to any of the lists in question,
      * re-add ourselves to the mail-followup-to header.  The
@@ -1185,12 +1188,12 @@ void mutt_set_followup_to(struct Envelope *e)
      * but makes sure list-reply has the desired effect.
      */
 
-    if (e->mail_followup_to && !mutt_is_list_recipient(false, e->to, e->cc))
+    if (env->mail_followup_to && !mutt_is_list_recipient(false, env->to, env->cc))
     {
-      if (e->reply_to)
-        from = mutt_addr_copy_list(e->reply_to, false);
-      else if (e->from)
-        from = mutt_addr_copy_list(e->from, false);
+      if (env->reply_to)
+        from = mutt_addr_copy_list(env->reply_to, false);
+      else if (env->from)
+        from = mutt_addr_copy_list(env->from, false);
       else
         from = mutt_default_from();
 
@@ -1200,12 +1203,12 @@ void mutt_set_followup_to(struct Envelope *e)
         for (t = from; t && t->next; t = t->next)
           ;
 
-        t->next = e->mail_followup_to; /* t cannot be NULL at this point. */
-        e->mail_followup_to = from;
+        t->next = env->mail_followup_to; /* t cannot be NULL at this point. */
+        env->mail_followup_to = from;
       }
     }
 
-    e->mail_followup_to = mutt_addrlist_dedupe(e->mail_followup_to);
+    env->mail_followup_to = mutt_addrlist_dedupe(env->mail_followup_to);
   }
 }
 
@@ -1422,7 +1425,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Email *cur)
 {
   struct Email *msg = mutt_email_new();
 
-  if (mutt_prepare_template(fp, ctx, msg, cur, true) < 0)
+  if (mutt_prepare_template(fp, ctx->mailbox, msg, cur, true) < 0)
   {
     mutt_email_free(&msg);
     return -1;
@@ -1521,7 +1524,7 @@ static bool search_attach_keyword(char *filename)
 int ci_send_message(int flags, struct Email *msg, char *tempfile,
                     struct Context *ctx, struct Email *cur)
 {
-  char buffer[LONG_STRING];
+  char buf[LONG_STRING];
   char fcc[PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;
@@ -1550,7 +1553,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
     OptNewsSend = false;
 #endif
 
-  if (!flags && !msg && Recall != MUTT_NO && mutt_num_postponed(true))
+  if (!flags && !msg && Recall != MUTT_NO && mutt_num_postponed(ctx ? ctx->mailbox: NULL, true))
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
@@ -1647,9 +1650,9 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
 
       if (!tempfile)
       {
-        mutt_mktemp(buffer, sizeof(buffer));
-        tempfp = mutt_file_fopen(buffer, "w+");
-        msg->content->filename = mutt_str_strdup(buffer);
+        mutt_mktemp(buf, sizeof(buf));
+        tempfp = mutt_file_fopen(buf, "w+");
+        msg->content->filename = mutt_str_strdup(buf);
       }
       else
       {
@@ -1754,7 +1757,7 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
     if ((flags & SEND_REPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(ctx, cur, MUTT_REPLY_HOOK);
+      mutt_message_hook(ctx->mailbox, cur, MUTT_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
@@ -2412,14 +2415,14 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
   if (flags & SEND_REPLY)
   {
     if (cur && ctx)
-      mutt_set_flag(ctx, cur, MUTT_REPLIED, is_reply(cur, msg));
-    else if (!(flags & SEND_POSTPONED) && ctx && ctx->tagged)
+      mutt_set_flag(ctx->mailbox, cur, MUTT_REPLIED, is_reply(cur, msg));
+    else if (!(flags & SEND_POSTPONED) && ctx && ctx->mailbox && ctx->mailbox->msg_tagged)
     {
       for (i = 0; i < ctx->mailbox->msg_count; i++)
       {
         if (message_is_tagged(ctx, i))
         {
-          mutt_set_flag(ctx, ctx->mailbox->hdrs[i], MUTT_REPLIED,
+          mutt_set_flag(ctx->mailbox, ctx->mailbox->hdrs[i], MUTT_REPLIED,
                         is_reply(ctx->mailbox->hdrs[i], msg));
         }
       }

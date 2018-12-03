@@ -30,7 +30,7 @@
 struct Address;
 struct Buffer;
 struct Email;
-struct Context;
+struct Mailbox;
 
 /* These Config Variables are only used in pattern.c */
 extern bool ThoroughSearch;
@@ -66,7 +66,7 @@ struct Pattern
  */
 enum PatternExecFlag
 {
-  MUTT_MATCH_FULL_ADDRESS = 1
+  MUTT_MATCH_FULL_ADDRESS = 1, ///< Match the full address
 };
 
 /**
@@ -91,7 +91,7 @@ struct PatternCache
 
 struct Pattern *mutt_pattern_new(void);
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
-                      struct Context *ctx, struct Email *e, struct PatternCache *cache);
+                      struct Mailbox *m, struct Email *e, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(struct Pattern **pat);

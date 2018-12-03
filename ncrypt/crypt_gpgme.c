@@ -1538,6 +1538,9 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     }
     else
     {
+      /* L10N: You will see this message in place of "KeyID "
+         if the S/MIME key has no ID. This is quite an error.
+       */
       state_puts(_("no signature fingerprint available"), s);
     }
     state_puts("\n", s);
@@ -2378,14 +2381,15 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), tfp))
   {
-    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    if (plen != 0)
     {
-      if (MESSAGE(buf + 15))
+      if (MESSAGE(buf + plen))
       {
         enc = true;
         break;
       }
-      else if (SIGNED_MESSAGE(buf + 15))
+      else if (SIGNED_MESSAGE(buf + plen))
       {
         sgn = true;
         break;
@@ -2573,18 +2577,19 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
     bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
-    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    size_t plen = mutt_str_startswith(buf, "-----BEGIN PGP ", CASE_MATCH);
+    if (plen != 0)
     {
       clearsign = false;
 
-      if (MESSAGE(buf + 15))
+      if (MESSAGE(buf + plen))
         needpass = 1;
-      else if (SIGNED_MESSAGE(buf + 15))
+      else if (SIGNED_MESSAGE(buf + plen))
       {
         clearsign = true;
         needpass = 0;
       }
-      else if (PUBLIC_KEY_BLOCK(buf + 15))
+      else if (PUBLIC_KEY_BLOCK(buf + plen))
       {
         needpass = 0;
         pgp_keyblock = true;
@@ -3610,9 +3615,9 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
  */
 enum KeyCap
 {
-  KEY_CAP_CAN_ENCRYPT,
-  KEY_CAP_CAN_SIGN,
-  KEY_CAP_CAN_CERTIFY
+  KEY_CAP_CAN_ENCRYPT, ///< Key can be used for encryption
+  KEY_CAP_CAN_SIGN,    ///< Key can be used for signing
+  KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
 };
 
 /**
@@ -3674,17 +3679,17 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
  */
 enum KeyInfo
 {
-  KIP_NAME = 0,
-  KIP_AKA,
-  KIP_VALID_FROM,
-  KIP_VALID_TO,
-  KIP_KEY_TYPE,
-  KIP_KEY_USAGE,
-  KIP_FINGERPRINT,
-  KIP_SERIAL_NO,
-  KIP_ISSUED_BY,
-  KIP_SUBKEY,
-  KIP_END
+  KIP_NAME = 0,       ///< PGP Key field: Name
+  KIP_AKA,            ///< PGP Key field: aka (Also Known As)
+  KIP_VALID_FROM,     ///< PGP Key field: Valid From date
+  KIP_VALID_TO,       ///< PGP Key field: Valid To date
+  KIP_KEY_TYPE,       ///< PGP Key field: Key Type
+  KIP_KEY_USAGE,      ///< PGP Key field: Key Usage
+  KIP_FINGERPRINT,    ///< PGP Key field: Fingerprint
+  KIP_SERIAL_NO,      ///< PGP Key field: Serial number
+  KIP_ISSUED_BY,      ///< PGP Key field: Issued By
+  KIP_SUBKEY,         ///< PGP Key field: Subkey
+  KIP_MAX,
 };
 
 static const char *const KeyInfoPrompts[] = {
@@ -3697,7 +3702,7 @@ static const char *const KeyInfoPrompts[] = {
   N_("Issued By: "), N_("Subkey: ")
 };
 
-int KeyInfoPadding[KIP_END] = { 0 };
+int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /**
  * print_key_info - Verbose information about a key or certificate to a file
@@ -3719,7 +3724,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
   if (!max_header_width)
   {
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
     {
       KeyInfoPadding[i] = mutt_str_strlen(_(KeyInfoPrompts[i]));
       const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
@@ -3727,7 +3732,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         max_header_width = width;
       KeyInfoPadding[i] -= width;
     }
-    for (int i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_MAX; i++)
       KeyInfoPadding[i] += max_header_width;
   }
 

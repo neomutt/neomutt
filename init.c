@@ -94,9 +94,9 @@ static char **nm_tags;
  */
 enum GroupState
 {
-  GS_NONE,
-  GS_RX,
-  GS_ADDR
+  GS_NONE, ///< Group is missing an argument
+  GS_RX,   ///< Entry is a regular expression
+  GS_ADDR, ///< Entry is an address
 };
 
 /**
@@ -443,7 +443,7 @@ static bool get_hostname(void)
 #endif
   }
   if (Hostname)
-    cs_str_initial_set(Config, "hostname", mutt_str_strdup(Hostname), NULL);
+    cs_str_initial_set(Config, "hostname", Hostname, NULL);
 
   return true;
 }
@@ -1032,14 +1032,14 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     category--;
   }
-  if (mutt_str_strncasecmp(category, "attachment", strlen(category)) == 0)
+  if (mutt_str_startswith("attachment", category, CASE_IGNORE))
   {
     if (op == '+')
       head = &AttachAllow;
     else
       head = &AttachExclude;
   }
-  else if (mutt_str_strncasecmp(category, "inline", strlen(category)) == 0)
+  else if (mutt_str_startswith("inline", category, CASE_IGNORE))
   {
     if (op == '+')
       head = &InlineAllow;
@@ -1434,13 +1434,13 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
       query = true;
       s->dptr++;
     }
-    else if (mutt_str_strncmp("no", s->dptr, 2) == 0)
+    else if (mutt_str_startswith(s->dptr, "no", CASE_MATCH))
     {
       prefix = true;
       unset = !unset;
       s->dptr += 2;
     }
-    else if (mutt_str_strncmp("inv", s->dptr, 3) == 0)
+    else if (mutt_str_startswith(s->dptr, "inv", CASE_MATCH))
     {
       prefix = true;
       inv = !inv;
@@ -1467,7 +1467,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     bool equals = false;
 
     struct HashElem *he = NULL;
-    bool my = (mutt_str_strncmp("my_", buf->data, 3) == 0);
+    bool my = mutt_str_startswith(buf->data, "my_", CASE_MATCH);
     if (!my)
     {
       he = cs_get_elem(Config, buf->data);
@@ -1764,7 +1764,6 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   /* get variable name */
   mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL);
-  int len = strlen(buf->data);
 
   if (query)
   {
@@ -1772,7 +1771,7 @@ static int parse_setenv(struct Buffer *buf, struct Buffer *s,
     while (envp && *envp)
     {
       /* This will display all matches for "^QUERY" */
-      if (mutt_str_strncmp(buf->data, *envp, len) == 0)
+      if (mutt_str_startswith(*envp, buf->data, CASE_MATCH))
       {
         if (!found)
         {
@@ -2022,7 +2021,7 @@ static int parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
     if (buf->data && *buf->data)
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), 1) != 0)
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) != 0)
       {
         mutt_buffer_printf(err, _("Could not subscribe to %s"), buf->data);
         return -1;
@@ -2219,14 +2218,14 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     p--;
   }
-  if (mutt_str_strncasecmp(p, "attachment", strlen(p)) == 0)
+  if (mutt_str_startswith("attachment", p, CASE_IGNORE))
   {
     if (op == '+')
       head = &AttachAllow;
     else
       head = &AttachExclude;
   }
-  else if (mutt_str_strncasecmp(p, "inline", strlen(p)) == 0)
+  else if (mutt_str_startswith("inline", p, CASE_IGNORE))
   {
     if (op == '+')
       head = &InlineAllow;
@@ -2404,7 +2403,7 @@ static int parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
     if (buf->data && *buf->data)
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), 0) != 0)
+      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) != 0)
       {
         mutt_buffer_printf(err, _("Could not unsubscribe from %s"), buf->data);
         return -1;
@@ -2862,12 +2861,12 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
   err.data = mutt_mem_malloc(err.dsize);
   err.dptr = err.data;
 
-  Groups = mutt_hash_create(1031, 0);
+  Groups = mutt_hash_new(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = mutt_hash_create(
-      1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-  TagTransforms = mutt_hash_create(64, MUTT_HASH_STRCASECMP);
-  TagFormats = mutt_hash_create(64, 0);
+  ReverseAliases = mutt_hash_new(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
+                                           MUTT_HASH_ALLOW_DUPS);
+  TagTransforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP);
+  TagFormats = mutt_hash_new(64, 0);
 
   mutt_menu_init();
   mutt_buffer_pool_init();
@@ -3023,7 +3022,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
         break;
 
       snprintf(buffer, sizeof(buffer), "%s/Muttrc", PKGDATADIR);
-    } while (0);
+    } while (false);
 
     if (access(buffer, F_OK) == 0)
     {
@@ -3088,7 +3087,6 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
       if (mp->m->magic == MUTT_NOTMUCH)
       {
         cs_str_string_set(Config, "spoolfile", mp->m->path, NULL);
-        mutt_sb_toggle_virtual();
         break;
       }
     }
@@ -3296,20 +3294,20 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
     /* return the completed command */
     strncpy(buf, Completed, buflen - spaces);
   }
-  else if ((mutt_str_strncmp(buf, "set", 3) == 0) ||
-           (mutt_str_strncmp(buf, "unset", 5) == 0) ||
-           (mutt_str_strncmp(buf, "reset", 5) == 0) ||
-           (mutt_str_strncmp(buf, "toggle", 6) == 0))
+  else if (mutt_str_startswith(buf, "set", CASE_MATCH) ||
+           mutt_str_startswith(buf, "unset", CASE_MATCH) ||
+           mutt_str_startswith(buf, "reset", CASE_MATCH) ||
+           mutt_str_startswith(buf, "toggle", CASE_MATCH))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_strncmp(buf, "set", 3) == 0)
+    if (mutt_str_startswith(buf, "set", CASE_MATCH))
     {
       for (num = 0; prefixes[num]; num++)
       {
-        if (mutt_str_strncmp(pt, prefixes[num], mutt_str_strlen(prefixes[num])) == 0)
+        if (mutt_str_startswith(pt, prefixes[num], CASE_MATCH))
         {
           pt += mutt_str_strlen(prefixes[num]);
           break;
@@ -3354,7 +3352,7 @@ int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
 
     strncpy(pt, Completed, buf + buflen - pt - spaces);
   }
-  else if (mutt_str_strncmp(buf, "exec", 4) == 0)
+  else if (mutt_str_startswith(buf, "exec", CASE_MATCH))
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
@@ -3609,7 +3607,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_strncmp(buf, "set", 3) == 0)
+  if (mutt_str_startswith(buf, "set", CASE_MATCH))
   {
     const char *myvarval = NULL;
     char var[STRING];
@@ -3662,7 +3660,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
  */
 struct ConfigSet *init_config(size_t size)
 {
-  struct ConfigSet *cs = cs_create(size);
+  struct ConfigSet *cs = cs_new(size);
 
   address_init(cs);
   bool_init(cs);

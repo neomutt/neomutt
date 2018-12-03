@@ -45,11 +45,11 @@ extern char *SmtpPass;
  */
 enum AccountType
 {
-  MUTT_ACCT_TYPE_NONE = 0,
-  MUTT_ACCT_TYPE_IMAP,
-  MUTT_ACCT_TYPE_POP,
-  MUTT_ACCT_TYPE_SMTP,
-  MUTT_ACCT_TYPE_NNTP
+  MUTT_ACCT_TYPE_NONE = 0, ///< Account type is unknown
+  MUTT_ACCT_TYPE_IMAP,     ///< Imap Account
+  MUTT_ACCT_TYPE_POP,      ///< Pop Account
+  MUTT_ACCT_TYPE_SMTP,     ///< Smtp Account
+  MUTT_ACCT_TYPE_NNTP,     ///< Nntp (Usenet) Account
 };
 
 /* account flags */
@@ -60,7 +60,7 @@ enum AccountType
 #define MUTT_ACCT_SSL   (1 << 4)
 
 bool mutt_account_match(const struct ConnAccount *a1, const struct ConnAccount *a2);
-int mutt_account_fromurl(struct ConnAccount *account, struct Url *url);
+int mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);
 void mutt_account_tourl(struct ConnAccount *account, struct Url *url);
 int mutt_account_getuser(struct ConnAccount *account);
 int mutt_account_getlogin(struct ConnAccount *account);

@@ -49,15 +49,15 @@ extern log_dispatcher_t MuttLogger;
  */
 enum LogLevel
 {
-  LL_PERROR  = -3,
-  LL_ERROR   = -2,
-  LL_WARNING = -1,
-  LL_MESSAGE =  0,
-  LL_DEBUG1  =  1,
-  LL_DEBUG2  =  2,
-  LL_DEBUG3  =  3,
-  LL_DEBUG4  =  4,
-  LL_DEBUG5  =  5,
+  LL_PERROR  = -3, ///< Log perror (using errno)
+  LL_ERROR   = -2, ///< Log error
+  LL_WARNING = -1, ///< Log warning
+  LL_MESSAGE =  0, ///< Log informational message
+  LL_DEBUG1  =  1, ///< Log at debug level 1
+  LL_DEBUG2  =  2, ///< Log at debug level 2
+  LL_DEBUG3  =  3, ///< Log at debug level 3
+  LL_DEBUG4  =  4, ///< Log at debug level 4
+  LL_DEBUG5  =  5, ///< Log at debug level 5
 };
 
 /**

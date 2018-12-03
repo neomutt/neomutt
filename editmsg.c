@@ -52,17 +52,17 @@
  * edit_or_view_one_message - Edit an email or view it in an external editor
  * @param edit true if the message should be editable. If false, changes
  *            to the message (in the editor) will be ignored.
- * @param ctx Context
+ * @param m   Mailbox
  * @param cur Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email *cur)
+static int edit_or_view_one_message(bool edit, struct Mailbox *m, struct Email *cur)
 {
   char tmp[PATH_MAX];
   char buf[STRING];
-  int omagic;
+  enum MailboxType omagic;
   int oerrno;
   int rc;
 
@@ -94,9 +94,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
   }
 
   const int chflags =
-      CH_NOLEN |
-      ((ctx->mailbox->magic == MUTT_MBOX || ctx->mailbox->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
-  rc = mutt_append_message(tmpctx, ctx, cur, 0, chflags);
+      CH_NOLEN | ((m->magic == MUTT_MBOX || m->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
+  rc = mutt_append_message(tmpctx->mailbox, m, cur, 0, chflags);
   oerrno = errno;
 
   mx_mbox_close(&tmpctx, NULL);
@@ -186,7 +185,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
     goto bail;
   }
 
-  tmpctx = mx_mbox_open(NULL, ctx->mailbox->path, MUTT_APPEND);
+  tmpctx = mx_mbox_open(m, NULL, MUTT_APPEND);
   if (!tmpctx)
   {
     rc = -1;
@@ -215,7 +214,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
   o_old = cur->old;
   cur->read = false;
   cur->old = false;
-  msg = mx_msg_open_new(tmpctx, cur, of);
+  msg = mx_msg_open_new(tmpctx->mailbox, cur, of);
   cur->read = o_read;
   cur->old = o_old;
 
@@ -233,8 +232,8 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Email
     mutt_file_copy_stream(fp, msg->fp);
   }
 
-  rc = mx_msg_commit(tmpctx, msg);
-  mx_msg_close(tmpctx, &msg);
+  rc = mx_msg_commit(tmpctx->mailbox, msg);
+  mx_msg_close(tmpctx->mailbox, &msg);
 
   mx_mbox_close(&tmpctx, NULL);
 
@@ -247,12 +246,12 @@ bail:
 
   if (rc == 0)
   {
-    mutt_set_flag(Context, cur, MUTT_DELETE, 1);
-    mutt_set_flag(Context, cur, MUTT_PURGE, 1);
-    mutt_set_flag(Context, cur, MUTT_READ, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_DELETE, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_PURGE, 1);
+    mutt_set_flag(Context->mailbox, cur, MUTT_READ, 1);
 
     if (DeleteUntag)
-      mutt_set_flag(Context, cur, MUTT_TAG, 0);
+      mutt_set_flag(Context->mailbox, cur, MUTT_TAG, 0);
   }
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), tmp);
@@ -264,7 +263,7 @@ bail:
  * edit_or_view_message - Edit an email or view it in an external editor
  * @param edit true: Edit the email; false: view the email
  * @param ctx  Mailbox Context
- * @param e   Email Header
+ * @param e   Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
@@ -272,14 +271,14 @@ bail:
 int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
 {
   if (e)
-    return edit_or_view_one_message(edit, ctx, e);
+    return edit_or_view_one_message(edit, ctx->mailbox, e);
 
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
     if (!message_is_tagged(ctx, i))
       continue;
 
-    if (edit_or_view_one_message(edit, ctx, ctx->mailbox->hdrs[i]) == -1)
+    if (edit_or_view_one_message(edit, ctx->mailbox, ctx->mailbox->hdrs[i]) == -1)
       return -1;
   }
 
@@ -289,7 +288,7 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Email *e)
 /**
  * mutt_edit_message - Edit a message
  * @param ctx Mailbox Context
- * @param e Email Header
+ * @param e Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
@@ -302,7 +301,7 @@ int mutt_edit_message(struct Context *ctx, struct Email *e)
 /**
  * mutt_view_message - Edit a message
  * @param ctx Mailbox Context
- * @param e Email Header
+ * @param e Email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error

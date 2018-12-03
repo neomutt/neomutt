@@ -57,9 +57,6 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#ifdef USE_NOTMUCH
-#include "notmuch/mutt_notmuch.h"
-#endif
 
 /* These Config Variables are only used in muttlib.c */
 struct Regex *GecosMask; ///< Config: Regex for parsing GECOS field of /etc/passwd
@@ -73,6 +70,40 @@ static const char *xdg_defaults[] = {
   [XDG_CONFIG_HOME] = "~/.config",
   [XDG_CONFIG_DIRS] = "/etc/xdg",
 };
+
+/**
+ * mutt_buffer_adv_mktemp - Create a temporary file
+ * @param buf Buffer for the name
+ */
+void mutt_buffer_adv_mktemp(struct Buffer *buf)
+{
+  if (!(buf->data && buf->data[0]))
+  {
+    mutt_buffer_mktemp(buf);
+  }
+  else
+  {
+    struct Buffer *prefix = mutt_buffer_pool_get();
+    mutt_buffer_strcpy(prefix, buf->data);
+    mutt_file_sanitize_filename(prefix->data, 1);
+    mutt_buffer_printf(buf, "%s/%s", NONULL(Tmpdir), mutt_b2s(prefix));
+
+    struct stat sb;
+    if (lstat(mutt_b2s(buf), &sb) == -1 && errno == ENOENT)
+      goto out;
+
+    char *suffix = strrchr(prefix->data, '.');
+    if (suffix)
+    {
+      *suffix = 0;
+      suffix++;
+    }
+    mutt_buffer_mktemp_pfx_sfx(buf, mutt_b2s(prefix), suffix);
+
+  out:
+    mutt_buffer_pool_release(&prefix);
+  }
+}
 
 /**
  * mutt_adv_mktemp - Advanced mktemp(3)
@@ -189,21 +220,17 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
       case '=':
       case '+':
       {
-#ifdef USE_IMAP
+        enum MailboxType mb_type = mx_path_probe(Folder, NULL);
+
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if ((imap_path_probe(Folder, NULL) == MUTT_IMAP) &&
+        if ((mb_type == MUTT_IMAP) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
         {
           mutt_str_strfcpy(p, Folder, sizeof(p));
         }
-        else
-#endif
-#ifdef USE_NOTMUCH
-            if (nm_path_probe(Folder, NULL) == MUTT_NOTMUCH)
+        else if (mb_type == MUTT_NOTMUCH)
           mutt_str_strfcpy(p, Folder, sizeof(p));
-        else
-#endif
-            if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
+        else if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
           mutt_str_strfcpy(p, Folder, sizeof(p));
         else
           snprintf(p, sizeof(p), "%s/", NONULL(Folder));
@@ -301,7 +328,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf, NULL) == MUTT_IMAP)
-    imap_path_canon(buf, buflen, NULL);
+    imap_path_canon(buf, buflen);
 #endif
 
   return buf;
@@ -510,6 +537,28 @@ uint64_t mutt_rand64(void)
 }
 
 /**
+ * mutt_buffer_mktemp_full - Create a temporary file
+ * @param buf    Buffer for result
+ * @param prefix Prefix for filename
+ * @param suffix Suffix for filename
+ * @param src    Source file of caller
+ * @param line   Source line number of caller
+ */
+void mutt_buffer_mktemp_full(struct Buffer *buf, const char *prefix,
+                             const char *suffix, const char *src, int line)
+{
+  mutt_buffer_printf(buf, "%s/%s-%s-%d-%d-%ld%ld%s%s", NONULL(Tmpdir), NONULL(prefix),
+                     NONULL(Hostname), (int) getuid(), (int) getpid(), random(),
+                     random(), suffix ? "." : "", NONULL(suffix));
+  mutt_debug(3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, mutt_b2s(buf));
+  if (unlink(mutt_b2s(buf)) && errno != ENOENT)
+  {
+    mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line,
+               mutt_b2s(buf), strerror(errno), errno);
+  }
+}
+
+/**
  * mutt_mktemp_full - Create a temporary filename
  * @param buf    Buffer for result
  * @param buflen Length of buffer
@@ -557,18 +606,14 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   scheme = url_check_scheme(buf);
 
-#ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
     imap_pretty_mailbox(buf, Folder);
     return;
   }
-#endif
 
-#ifdef USE_NOTMUCH
   if (scheme == U_NOTMUCH)
     return;
-#endif
 
   /* if buf is an url, only collapse path component */
   if (scheme != U_UNKNOWN)
@@ -607,14 +652,12 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - buf));
 
-  len = mutt_str_strlen(Folder);
-  if ((mutt_str_strncmp(buf, Folder, len) == 0) && buf[len] == '/')
+  if ((len = mutt_str_startswith(buf, Folder, CASE_MATCH)) && buf[len] == '/')
   {
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((mutt_str_strncmp(buf, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
-           buf[len] == '/')
+  else if ((len = mutt_str_startswith(buf, HomeDir, CASE_MATCH)) && buf[len] == '/')
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
@@ -1435,100 +1478,6 @@ void mutt_sleep(short s)
 }
 
 /**
- * mutt_timespec_compare - Compare to time values
- * @param a First time value
- * @param b Second time value
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-int mutt_timespec_compare(struct timespec *a, struct timespec *b)
-{
-  if (a->tv_sec < b->tv_sec)
-    return -1;
-  if (a->tv_sec > b->tv_sec)
-    return 1;
-
-  if (a->tv_nsec < b->tv_nsec)
-    return -1;
-  if (a->tv_nsec > b->tv_nsec)
-    return 1;
-  return 0;
-}
-
-/**
- * mutt_get_stat_timespec - Read the stat() time into a time value
- * @param dest Time value to populate
- * @param sb   stat info
- * @param type Type of stat info to read, e.g. #MUTT_STAT_ATIME
- */
-void mutt_get_stat_timespec(struct timespec *dest, struct stat *sb, enum MuttStatType type)
-{
-  dest->tv_sec = 0;
-  dest->tv_nsec = 0;
-
-  switch (type)
-  {
-    case MUTT_STAT_ATIME:
-      dest->tv_sec = sb->st_atime;
-#ifdef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
-      dest->tv_nsec = sb->st_atim.tv_nsec;
-#endif
-      break;
-    case MUTT_STAT_MTIME:
-      dest->tv_sec = sb->st_mtime;
-#ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
-      dest->tv_nsec = sb->st_mtim.tv_nsec;
-#endif
-      break;
-    case MUTT_STAT_CTIME:
-      dest->tv_sec = sb->st_ctime;
-#ifdef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
-      dest->tv_nsec = sb->st_ctim.tv_nsec;
-#endif
-      break;
-  }
-}
-
-/**
- * mutt_stat_timespec_compare - Compare stat info with a time value
- * @param sba  stat info
- * @param type Type of stat info, e.g. #MUTT_STAT_ATIME
- * @param b    Time value
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-int mutt_stat_timespec_compare(struct stat *sba, enum MuttStatType type, struct timespec *b)
-{
-  struct timespec a = { 0 };
-
-  mutt_get_stat_timespec(&a, sba, type);
-  return mutt_timespec_compare(&a, b);
-}
-
-/**
- * mutt_stat_compare - Compare two stat infos
- * @param sba      First stat info
- * @param sba_type Type of first stat info, e.g. #MUTT_STAT_ATIME
- * @param sbb      Second stat info
- * @param sbb_type Type of second stat info, e.g. #MUTT_STAT_ATIME
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-int mutt_stat_compare(struct stat *sba, enum MuttStatType sba_type,
-                      struct stat *sbb, enum MuttStatType sbb_type)
-{
-  struct timespec a = { 0 };
-  struct timespec b = { 0 };
-
-  mutt_get_stat_timespec(&a, sba, sba_type);
-  mutt_get_stat_timespec(&b, sbb, sbb_type);
-  return mutt_timespec_compare(&a, &b);
-}
-
-/**
  * mutt_make_version - Generate the NeoMutt version string
  * @retval ptr Version string
  *
@@ -1617,16 +1566,13 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
  */
 void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 {
-#ifdef USE_IMAP
-  if (imap_path_probe(path, NULL) == MUTT_IMAP)
+  enum MailboxType mb_magic = mx_path_probe(path, NULL);
+
+  if (mb_magic == MUTT_IMAP)
     imap_get_parent_path(path, buf, buflen);
-  else
-#endif
-#ifdef USE_NOTMUCH
-      if (nm_path_probe(path, NULL) == MUTT_NOTMUCH)
+  else if (mb_magic == MUTT_NOTMUCH)
     mutt_str_strfcpy(buf, Folder, buflen);
   else
-#endif
   {
     mutt_str_strfcpy(buf, path, buflen);
     int n = mutt_str_strlen(buf);
@@ -1676,7 +1622,7 @@ void mutt_get_parent_path(char *path, char *buf, size_t buflen)
 int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
-  if (a[0] == '=' && b[0] == '=')
+  if (a[0] == '+' && b[0] == '+')
   {
     return (mutt_str_strcasecmp(a + 1, "inbox") == 0) ?
                -1 :

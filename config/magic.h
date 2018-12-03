@@ -32,17 +32,17 @@ extern const char *magic_values[];
  */
 enum MailboxType
 {
-  MUTT_MAILBOX_ERROR = -1,
-  MUTT_UNKNOWN = 0,
-  MUTT_MBOX,
-  MUTT_MMDF,
-  MUTT_MH,
-  MUTT_MAILDIR,
-  MUTT_NNTP,
-  MUTT_IMAP,
-  MUTT_NOTMUCH,
-  MUTT_POP,
-  MUTT_COMPRESSED,
+  MUTT_MAILBOX_ERROR = -1, ///< Error occurred examining mailbox
+  MUTT_UNKNOWN = 0,        ///< Mailbox wasn't recognised
+  MUTT_MBOX,               ///< 'mbox' Mailbox type
+  MUTT_MMDF,               ///< 'mmdf' Mailbox type
+  MUTT_MH,                 ///< 'MH' Mailbox type
+  MUTT_MAILDIR,            ///< 'Maildir' Mailbox type
+  MUTT_NNTP,               ///< 'NNTP' (Usenet) Mailbox type
+  MUTT_IMAP,               ///< 'IMAP' Mailbox type
+  MUTT_NOTMUCH,            ///< 'Notmuch' (virtual) Mailbox type
+  MUTT_POP,                ///< 'POP3' Mailbox type
+  MUTT_COMPRESSED,         ///< Compressed file Mailbox type
 };
 
 void magic_init(struct ConfigSet *cs);

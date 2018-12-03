@@ -294,7 +294,10 @@ int log_queue_add(struct LogLine *ll)
 
   if ((LogQueueMax > 0) && (LogQueueCount >= LogQueueMax))
   {
+    ll = STAILQ_FIRST(&LogQueue);
     STAILQ_REMOVE_HEAD(&LogQueue, entries);
+    FREE(&ll->message);
+    FREE(&ll);
   }
   else
   {

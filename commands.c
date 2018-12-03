@@ -103,8 +103,8 @@ int mutt_display_message(struct Email *cur)
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(cur->content), cur->content->subtype);
 
-  mutt_parse_mime_message(Context, cur);
-  mutt_message_hook(Context, cur, MUTT_MESSAGE_HOOK);
+  mutt_parse_mime_message(Context->mailbox, cur);
+  mutt_message_hook(Context->mailbox, cur, MUTT_MESSAGE_HOOK);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && cur->security)
@@ -185,7 +185,7 @@ int mutt_display_message(struct Email *cur)
   if (Context->mailbox->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fpout, Context->mailbox, cur, cmflags, chflags);
 
   if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
@@ -262,7 +262,7 @@ int mutt_display_message(struct Email *cur)
     if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
-      mutt_set_flag(Context, cur, MUTT_READ, 1);
+      mutt_set_flag(Context->mailbox, cur, MUTT_READ, 1);
     if (r != -1 && PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
@@ -424,9 +424,9 @@ static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
   }
 
   if (decode)
-    mutt_parse_mime_message(Context, e);
+    mutt_parse_mime_message(Context->mailbox, e);
 
-  mutt_copy_message_ctx(fp, Context, e, cmflags, chflags);
+  mutt_copy_message_ctx(fp, Context->mailbox, e, cmflags, chflags);
 }
 
 /**
@@ -445,17 +445,20 @@ static void pipe_msg(struct Email *e, FILE *fp, bool decode, bool print)
 static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
                         bool split, const char *sep)
 {
+  if (!Context)
+    return 1;
+
   int rc = 0;
   pid_t thepid;
   FILE *fpout = NULL;
 
   if (e)
   {
-    mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
 
     if ((WithCrypto != 0) && decode)
     {
-      mutt_parse_mime_message(Context, e);
+      mutt_parse_mime_message(Context->mailbox, e);
       if (e->security & ENCRYPT && !crypt_valid_passphrase(e->security))
         return 1;
     }
@@ -484,8 +487,8 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        mutt_parse_mime_message(Context, Context->mailbox->hdrs[i]);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_parse_mime_message(Context->mailbox, Context->mailbox->hdrs[i]);
         if (Context->mailbox->hdrs[i]->security & ENCRYPT &&
             !crypt_valid_passphrase(Context->mailbox->hdrs[i]->security))
         {
@@ -501,7 +504,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -535,7 +538,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
         pipe_msg(Context->mailbox->hdrs[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
@@ -555,7 +558,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
 
 /**
  * mutt_pipe_message - Pipe a message
- * @param e Header of message to pipe
+ * @param e Email to pipe
  */
 void mutt_pipe_message(struct Email *e)
 {
@@ -827,16 +830,16 @@ static void set_copy_flags(struct Email *e, bool decode, bool decrypt,
 
 /**
  * mutt_save_message_ctx - Save a message to a given mailbox
- * @param e       Header of message
+ * @param e       Email
  * @param delete  If true, delete the original
  * @param decode  If true, decode the message
  * @param decrypt If true, decrypt the message
- * @param ctx     Mailbox to save to
+ * @param m       Mailbox to save to
  * @retval  0 Success
  * @retval -1 Error
  */
 int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
-                          bool decrypt, struct Context *ctx)
+                          bool decrypt, struct Mailbox *m)
 {
   int cmflags, chflags;
   int rc;
@@ -844,18 +847,18 @@ int mutt_save_message_ctx(struct Email *e, bool delete, bool decode,
   set_copy_flags(e, decode, decrypt, &cmflags, &chflags);
 
   if (decode || decrypt)
-    mutt_parse_mime_message(Context, e);
+    mutt_parse_mime_message(Context->mailbox, e);
 
-  rc = mutt_append_message(ctx, Context, e, cmflags, chflags);
+  rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
   if (delete)
   {
-    mutt_set_flag(Context, e, MUTT_DELETE, 1);
-    mutt_set_flag(Context, e, MUTT_PURGE, 1);
+    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, 1);
+    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, 1);
     if (DeleteUntag)
-      mutt_set_flag(Context, e, MUTT_TAG, 0);
+      mutt_set_flag(Context->mailbox, e, MUTT_TAG, 0);
   }
 
   return 0;
@@ -905,7 +908,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
       need_passphrase = (e->security & ENCRYPT);
       app = e->security;
     }
-    mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
     mutt_default_save(buf, sizeof(buf), e);
   }
   else
@@ -922,7 +925,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 
     if (e)
     {
-      mutt_message_hook(Context, e, MUTT_MESSAGE_HOOK);
+      mutt_message_hook(Context->mailbox, e, MUTT_MESSAGE_HOOK);
       mutt_default_save(buf, sizeof(buf), e);
       if (WithCrypto)
       {
@@ -1004,7 +1007,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
 #endif
     if (e)
     {
-      if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx) != 0)
+      if (mutt_save_message_ctx(e, delete, decode, decrypt, savectx->mailbox) != 0)
       {
         mx_mbox_close(&savectx, NULL);
         return -1;
@@ -1014,7 +1017,11 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
       {
         cm->msg_count++;
         if (!e->read)
+        {
           cm->msg_unread++;
+          if (!e->old)
+            cm->msg_new++;
+        }
         if (e->flagged)
           cm->msg_flagged++;
       }
@@ -1033,8 +1040,9 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode, decrypt, savectx);
+        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode,
+                                   decrypt, savectx->mailbox);
         if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
@@ -1043,7 +1051,11 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
           struct Email *e2 = Context->mailbox->hdrs[i];
           cm->msg_count++;
           if (!e2->read)
+          {
             cm->msg_unread++;
+            if (!e2->old)
+              cm->msg_new++;
+          }
           if (e2->flagged)
             cm->msg_flagged++;
         }
@@ -1195,8 +1207,8 @@ static bool check_traditional_pgp(struct Email *e, int *redraw)
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  mutt_parse_mime_message(Context, e);
-  struct Message *msg = mx_msg_open(Context, e->msgno);
+  mutt_parse_mime_message(Context->mailbox, e);
+  struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
   if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, e->content, false))
@@ -1207,7 +1219,7 @@ static bool check_traditional_pgp(struct Email *e, int *redraw)
   }
 
   e->security |= PGP_TRADITIONAL_CHECKED;
-  mx_msg_close(Context, &msg);
+  mx_msg_close(Context->mailbox, &msg);
   return rc;
 }
 

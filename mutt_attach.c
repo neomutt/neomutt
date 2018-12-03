@@ -360,7 +360,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * @param fp     Source file stream. Can be NULL
  * @param a      The message body containing the attachment
  * @param flag   Option flag for how the attachment should be viewed
- * @param e    Message header for the current message. Can be NULL
+ * @param e      Current Email. Can be NULL
  * @param actx   Attachment context
  * @retval 0   If the viewer is run and exited successfully
  * @retval -1  Error
@@ -632,16 +632,21 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Email *e,
 
 return_error:
 
+  if (!entry || !entry->xneomuttkeep)
+  {
+    if (fp && tempfile[0])
+    {
+      /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
+      mutt_add_temp_attachment(tempfile);
+    }
+    else if (unlink_tempfile)
+    {
+      unlink(tempfile);
+    }
+  }
+
   if (entry)
     rfc1524_free_entry(&entry);
-  if (fp && tempfile[0])
-  {
-    /* Restore write permission so mutt_file_unlink can open the file for writing */
-    mutt_file_chmod_add(tempfile, S_IWUSR);
-    mutt_file_unlink(tempfile);
-  }
-  else if (unlink_tempfile)
-    unlink(tempfile);
 
   if (pagerfile[0])
     mutt_file_unlink(pagerfile);
@@ -773,7 +778,7 @@ static FILE *save_attachment_open(char *path, int flags)
  * @param m     Email Body
  * @param path  Where to save the attachment
  * @param flags Flags, e.g. #MUTT_SAVE_APPEND
- * @param e   Message header for the current message. Can be NULL
+ * @param e     Current Email. Can be NULL
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -807,7 +812,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       struct Context *ctx = mx_mbox_open(NULL, path, MUTT_APPEND | MUTT_QUIET);
       if (!ctx)
         return -1;
-      msg = mx_msg_open_new(ctx, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(ctx->mailbox, en, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
       if (!msg)
       {
         mx_mbox_close(&ctx, NULL);
@@ -817,7 +822,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx->mailbox->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if ((mutt_copy_message_fp(msg->fp, fp, en, 0, chflags) == 0) &&
-          (mx_msg_commit(ctx, msg) == 0))
+          (mx_msg_commit(ctx->mailbox, msg) == 0))
       {
         r = 0;
       }
@@ -826,7 +831,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         r = -1;
       }
 
-      mx_msg_close(ctx, &msg);
+      mx_msg_close(ctx->mailbox, &msg);
       mx_mbox_close(&ctx, NULL);
       return r;
     }
@@ -1148,4 +1153,29 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_error(_("I don't know how to print that"));
     return 0;
   }
+}
+
+/**
+ * mutt_add_temp_attachment - Add file to list of temporary attachments
+ * @param filename filename with full path
+ */
+void mutt_add_temp_attachment(char *filename)
+{
+  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_strdup(filename));
+}
+
+/**
+ * mutt_unlink_temp_attachments - Delete all temporary attachments
+ */
+void mutt_unlink_temp_attachments(void)
+{
+  struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, &TempAttachmentsList, entries)
+  {
+    mutt_file_chmod_add(np->data, S_IWUSR);
+    mutt_file_unlink(np->data);
+  }
+
+  mutt_list_free(&TempAttachmentsList);
 }

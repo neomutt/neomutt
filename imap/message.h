@@ -29,9 +29,7 @@
 #include "email/lib.h"
 
 /**
- * struct ImapEmailData - IMAP-specific header data
- *
- * IMAP-specific header data, stored as Header->data
+ * struct ImapEmailData - IMAP-specific Email data - @extends Email
  */
 struct ImapEmailData
 {
