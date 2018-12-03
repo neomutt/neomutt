@@ -700,7 +700,7 @@ void rfc2047_decode(char **pd)
         }
         else
         {
-          mutt_buffer_add(&buf, s, holelen);
+          mutt_buffer_addstr_n(&buf, s, holelen);
         }
       }
       s += holelen;

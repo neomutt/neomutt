@@ -106,7 +106,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
 }
 
 /**
- * mutt_buffer_add - Add a string to a Buffer, expanding it if necessary
+ * mutt_buffer_addstr_n - Add a string to a Buffer, expanding it if necessary
  * @param buf Buffer to add to
  * @param s   String to add
  * @param len Length of the string
@@ -116,7 +116,7 @@ struct Buffer *mutt_buffer_from(const char *seed)
  * Always one byte bigger than necessary for the null terminator, and the
  * buffer is always NUL-terminated
  */
-size_t mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
+size_t mutt_buffer_addstr_n(struct Buffer *buf, const char *s, size_t len)
 {
   if (!buf || !s)
     return 0;
@@ -259,7 +259,7 @@ size_t mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
   if (!buf || !s)
     return 0;
-  return mutt_buffer_add(buf, s, mutt_str_strlen(s));
+  return mutt_buffer_addstr_n(buf, s, mutt_str_strlen(s));
 }
 
 /**
@@ -274,7 +274,7 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
 {
   if (!buf)
     return 0;
-  return mutt_buffer_add(buf, &c, 1);
+  return mutt_buffer_addstr_n(buf, &c, 1);
 }
 
 /**
