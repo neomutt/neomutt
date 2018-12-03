@@ -772,58 +772,50 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
   gpgme_key_t key = NULL;
   gpgme_ctx_t context = NULL;
 
-  err = gpgme_new(&context);
-  if (!err)
-    err = gpgme_set_protocol(context, protocol);
-
-  if (!err)
+  context = create_gpgme_context((protocol == GPGME_PROTOCOL_CMS));
+  s = keylist;
+  do
   {
-    s = keylist;
-    do
+    while (*s == ' ')
+      s++;
+    int i;
+    for (i = 0; *s && *s != ' ' && i < sizeof(buf) - 1;)
+      buf[i++] = *s++;
+    buf[i] = 0;
+    if (*buf)
     {
-      while (*s == ' ')
-        s++;
-      int i;
-      for (i = 0; *s && *s != ' ' && i < sizeof(buf) - 1;)
-        buf[i++] = *s++;
-      buf[i] = 0;
-      if (*buf)
+      if (i > 1 && buf[i - 1] == '!')
       {
-        if (i > 1 && buf[i - 1] == '!')
-        {
-          /* The user selected to override the validity of that
-                   key. */
-          buf[i - 1] = 0;
+        /* The user selected to override the validity of that
+           key. */
+        buf[i - 1] = 0;
 
-          err = gpgme_get_key(context, buf, &key, 0);
-          if (!err)
-            key->uids->validity = GPGME_VALIDITY_FULL;
-          buf[i - 1] = '!';
-        }
-        else
-          err = gpgme_get_key(context, buf, &key, 0);
-
-        mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+        err = gpgme_get_key(context, buf, &key, 0);
         if (!err)
-          rset[rset_n++] = key;
-        else
-        {
-          mutt_error(_("error adding recipient '%s': %s"), buf, gpgme_strerror(err));
-          rset[rset_n] = NULL;
-          free_recipient_set(&rset);
-          gpgme_release(context);
-          return NULL;
-        }
+          key->uids->validity = GPGME_VALIDITY_FULL;
+        buf[i - 1] = '!';
       }
-    } while (*s);
-  }
+      else
+        err = gpgme_get_key(context, buf, &key, 0);
+      mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+      if (!err)
+        rset[rset_n++] = key;
+      else
+      {
+        mutt_error(_("error adding recipient `%s': %s\n"), buf, gpgme_strerror(err));
+        rset[rset_n] = NULL;
+        free_recipient_set(&rset);
+        gpgme_release(context);
+        return NULL;
+      }
+    }
+  } while (*s);
 
   /* NULL terminate.  */
   mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
   rset[rset_n++] = NULL;
 
-  if (context)
-    gpgme_release(context);
+  gpgme_release(context);
 
   return rset;
 }
@@ -2216,12 +2208,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, bool dryrun)
   int rc = -1;
   time_t tt;
 
-  err = gpgme_new(&tmpctx);
-  if (err != GPG_ERR_NO_ERROR)
-  {
-    mutt_debug(1, "Error creating GPGME context\n");
-    return rc;
-  }
+  tmpctx = create_gpgme_context(false);
 
   if (dryrun)
   {
@@ -3986,14 +3973,7 @@ static void verify_key(struct CryptKeyInfo *key)
 
   print_key_info(key->kobj, fp);
 
-  err = gpgme_new(&listctx);
-  if (err)
-  {
-    fprintf(fp, "Internal error: can't create gpgme context: %s\n", gpgme_strerror(err));
-    goto leave;
-  }
-  if ((key->flags & KEYFLAG_ISX509))
-    gpgme_set_protocol(listctx, GPGME_PROTOCOL_CMS);
+  listctx = create_gpgme_context(key->flags & KEYFLAG_ISX509);
 
   k = key->kobj;
   gpgme_key_ref(k);
@@ -4115,14 +4095,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
   if (!pattern)
     return NULL;
 
-  err = gpgme_new(&ctx);
-  if (err)
-  {
-    mutt_error(_("gpgme_new failed: %s"), gpgme_strerror(err));
-    FREE(&pattern);
-    return NULL;
-  }
-
+  ctx = create_gpgme_context(0);
   db = NULL;
   kend = &db;
 

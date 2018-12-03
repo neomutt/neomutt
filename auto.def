@@ -385,7 +385,7 @@ if {[get-define want-gpgme]} {
       if {$gpg_ver eq {}} {
         user-error "Unable to find GPGME version number"
       }
-      set req_ver [format "0x%02x%02x%02x" 1 2 0]
+      set req_ver [format "0x%02x%02x%02x" 1 4 0]
       if {$req_ver > $gpg_ver} {
         user-error "Found GPGME version $gpg_ver, need $req_ver"
       }
