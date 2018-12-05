@@ -1924,14 +1924,12 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
    * 2) pgp: header field was present during message editing with $edit_headers (msg->security != 0)
    * 3) we are resending a message
    * 4) we are recalling a postponed message (don't override the user's saved settings)
-   * 5) we are in mailx mode
-   * 6) we are in batch mode
    *
    * This is done after allowing the user to edit the message so that security
    * settings can be configured with send2-hook and $edit_headers.
    */
   if ((WithCrypto != 0) && (msg->security == 0) &&
-      !(flags & (SEND_BATCH | SEND_MAILX | SEND_POSTPONED | SEND_RESEND)))
+      !(flags & (SEND_POSTPONED | SEND_RESEND)))
   {
     if (CryptAutosign)
       msg->security |= SIGN;
