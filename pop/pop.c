@@ -928,7 +928,7 @@ static int pop_mbox_check(struct Context *ctx, int *index_hint)
   int ret = pop_fetch_headers(ctx);
   pop_clear_cache(adata);
   if (m->msg_count > old_msg_count)
-    mx_update_context(ctx, m->msg_count > old_msg_count);
+    mx_update_context(ctx);
 
   if (ret < 0)
     return -1;

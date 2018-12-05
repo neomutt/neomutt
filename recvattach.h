@@ -32,6 +32,7 @@ struct AttachCtx;
 struct Email;
 
 /* These Config Variables are only used in recvattach.c */
+extern char *AttachSaveDir;
 extern char *AttachSep;
 extern bool  AttachSplit;
 extern bool  DigestCollapse;

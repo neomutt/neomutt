@@ -162,7 +162,7 @@ notmuch_database_t *nm_db_get(struct Mailbox *m, bool writable)
 int nm_db_release(struct Mailbox *m)
 {
   struct NmAccountData *adata = nm_adata_get(m);
-  if (!adata || !adata->db)
+  if (!adata || !adata->db || nm_db_is_longrun(m))
     return -1;
 
   mutt_debug(1, "nm: db close\n");
@@ -281,11 +281,11 @@ void nm_db_longrun_init(struct Mailbox *m, bool writable)
 {
   struct NmAccountData *adata = nm_adata_get(m);
 
-  if (adata && nm_db_get(m, writable))
-  {
-    adata->longrun = true;
-    mutt_debug(2, "nm: long run initialized\n");
-  }
+  if (!(adata && nm_db_get(m, writable)))
+    return;
+
+  adata->longrun = true;
+  mutt_debug(2, "nm: long run initialized\n");
 }
 
 /**
@@ -310,9 +310,6 @@ void nm_db_debug_check(struct Mailbox *m)
   if (!adata || !adata->db)
     return;
 
-  if (adata->db)
-  {
-    mutt_debug(1, "nm: ERROR: db is open, closing\n");
-    nm_db_release(m);
-  }
+  mutt_debug(1, "nm: ERROR: db is open, closing\n");
+  nm_db_release(m);
 }
