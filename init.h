@@ -971,7 +971,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
   ** .de
   */
-  { "crypto_chars",       DT_MBTABLE,    R_BOTH, &CryptoChars, IP "SPsK " },
+  { "crypt_chars",       DT_MBTABLE,    R_BOTH, &CryptChars, IP "SPsK " },
   /*
   ** .pp
   ** Controls the characters used in cryptography flags.

@@ -49,7 +49,7 @@
 #include "sort.h"
 
 /* These Config Variables are only used in hdrline.c */
-struct MbTable *CryptoChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
+struct MbTable *CryptChars; ///< Config: User-configurable crypto flags: signed, encrypted etc.
 struct MbTable *FlagChars; ///< Config: User-configurable index flags: tagged, new, etc
 struct MbTable *FromChars; ///< Config: User-configurable index flags: to address, cc address, etc
 struct MbTable *ToChars; ///< Config: Indicator characters for the 'To' field in the index
@@ -73,15 +73,15 @@ enum FlagChars
 };
 
 /**
- * enum CryptoChars - Index into the CryptoChars variable ($crypto_chars)
+ * enum CryptChars - Index into the CryptChars variable ($crypt_chars)
  */
-enum CryptoChars
+enum CryptChars
 {
-  FLAG_CHAR_CRYPTO_GOOD_SIGN, ///< Character denoting a message signed with a verified key
-  FLAG_CHAR_CRYPTO_ENCRYPTED, ///< Character denoting a message is PGP-encrypted
-  FLAG_CHAR_CRYPTO_SIGNED,    ///< Character denoting a message is signed
-  FLAG_CHAR_CRYPTO_CONTAINS_KEY, ///< Character denoting a message contains a PGP key
-  FLAG_CHAR_CRYPTO_NO_CRYPTO, ///< Character denoting a message has no cryptography information
+  FLAG_CHAR_CRYPT_GOOD_SIGN, ///< Character denoting a message signed with a verified key
+  FLAG_CHAR_CRYPT_ENCRYPTED, ///< Character denoting a message is PGP-encrypted
+  FLAG_CHAR_CRYPT_SIGNED,    ///< Character denoting a message is signed
+  FLAG_CHAR_CRYPT_CONTAINS_KEY, ///< Character denoting a message contains a PGP key
+  FLAG_CHAR_CRYPT_NO_CRYPTO, ///< Character denoting a message has no cryptography information
 };
 
 /**
@@ -1324,17 +1324,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if ((WithCrypto != 0) && (e->security & GOODSIGN))
-          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_GOOD_SIGN);
+          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
         else if ((WithCrypto != 0) && (e->security & ENCRYPT))
-          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_ENCRYPTED);
+          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
         else if ((WithCrypto != 0) && (e->security & SIGN))
-          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_SIGNED);
+          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
-          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_CONTAINS_KEY);
+          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
         }
         else
-          ch = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_NO_CRYPTO);
+          ch = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
         snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
@@ -1390,15 +1390,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       else if (e->attach_del)
         second = get_nth_wchar(FlagChars, FLAG_CHAR_DELETED_ATTACH);
       else if ((WithCrypto != 0) && (e->security & GOODSIGN))
-        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_GOOD_SIGN);
+        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_GOOD_SIGN);
       else if ((WithCrypto != 0) && (e->security & ENCRYPT))
-        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_ENCRYPTED);
+        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_ENCRYPTED);
       else if ((WithCrypto != 0) && (e->security & SIGN))
-        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_SIGNED);
+        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_SIGNED);
       else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
-        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_CONTAINS_KEY);
+        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
       else
-        second = get_nth_wchar(CryptoChars, FLAG_CHAR_CRYPTO_NO_CRYPTO);
+        second = get_nth_wchar(CryptChars, FLAG_CHAR_CRYPT_NO_CRYPTO);
 
       /* Tagged, flagged and recipient flag */
       const char *third = NULL;
