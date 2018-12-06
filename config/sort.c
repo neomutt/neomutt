@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-sort Type: Sorting
+ * @page config_sort Type: Sorting
  *
  * Type representing a sort option.
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-address Type: Email address
+ * @page config_address Type: Email address
  *
  * Type representing an email address.
  */

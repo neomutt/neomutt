@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-string Type: String
+ * @page config_string Type: String
  *
  * Type representing a string.
  */

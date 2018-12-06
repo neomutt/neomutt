@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-set Config Set
+ * @page config_set Config Set
  *
  * A collection of config items.
  */

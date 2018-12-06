@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-quad Type: Quad-option
+ * @page config_quad Type: Quad-option
  *
  * Type representing a quad-option.
  */

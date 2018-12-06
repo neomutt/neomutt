@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-number Type: Number
+ * @page config_number Type: Number
  *
  * Type representing a number.
  */
