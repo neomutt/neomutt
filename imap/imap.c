@@ -1338,6 +1338,12 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
  */
 int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
+  if (imap_prepare_mailbox(m))
+  {
+    m->has_new = false;
+    return -1;
+  }
+
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 

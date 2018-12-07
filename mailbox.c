@@ -172,9 +172,6 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
     switch (m->magic)
     {
       case MUTT_IMAP:
-        if (!m->has_new)
-          break;
-        /* fallthrough */
       case MUTT_MBOX:
       case MUTT_MMDF:
       case MUTT_MAILDIR:
