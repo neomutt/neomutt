@@ -177,7 +177,7 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
       case MUTT_MAILDIR:
       case MUTT_MH:
       case MUTT_NOTMUCH:
-        if (mx_mbox_check_stats(m, 0))
+        if (mx_mbox_check_stats(m, 0) == 0)
           MailboxCount++;
         break;
       default:; /* do nothing */
