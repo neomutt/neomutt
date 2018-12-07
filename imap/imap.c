@@ -327,35 +327,6 @@ static int sync_helper(struct ImapAccountData *adata, int right, int flag, const
 }
 
 /**
- * imap_prepare_mailbox - Ensure we have a valid Mailbox
- * @param m                     Mailbox
- * @retval  0 Success
- * @retval -1 Failure
- *
- * This method ensure we have a valid Mailbox object with the ImapAccountData
- * structure setuped and ready to use.
- */
-int imap_prepare_mailbox(struct Mailbox *m)
-{
-  if (!m || !m->account || !m->account->adata)
-    return -1;
-
-  struct ImapMboxData *mdata;
-  struct ImapAccountData *adata = m->account->adata;
-
-  if (!m->mdata)
-  {
-    struct Url *url = url_parse(m->path);
-    mdata = imap_mdata_new(adata, url->path);
-    m->mdata = mdata;
-    m->free_mdata = imap_mdata_free;
-    url_free(&url);
-  }
-
-  return 0;
-}
-
-/**
  * do_search - Perform a search of messages
  * @param search  List of pattern to match
  * @param allpats Must all patterns match?
@@ -1338,12 +1309,6 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
  */
 int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  if (imap_prepare_mailbox(m))
-  {
-    m->has_new = false;
-    return -1;
-  }
-
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
@@ -1388,11 +1353,6 @@ int imap_mailbox_status(struct Mailbox *m, bool queue)
 {
   if (!m)
     return -1;
-  if (imap_prepare_mailbox(m))
-  {
-    m->has_new = false;
-    return -1;
-  }
   return imap_status(m->account->adata, m->mdata, queue);
 }
 
@@ -1901,7 +1861,9 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   if (m->magic != MUTT_IMAP)
     return -1;
 
-  if (!a->adata)
+  struct ImapAccountData *adata = a->adata;
+
+  if (!adata)
   {
     struct ConnAccount conn_account;
     char mailbox[PATH_MAX];
@@ -1909,7 +1871,7 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     if (imap_parse_path(m->path, &conn_account, mailbox, sizeof(mailbox)) < 0)
       return -1;
 
-    struct ImapAccountData *adata = imap_adata_new();
+    adata = imap_adata_new();
     adata->conn_account = conn_account;
     adata->conn = mutt_conn_new(&conn_account);
     if (!adata->conn)
@@ -1924,7 +1886,17 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     a->adata = adata;
     a->free_adata = imap_adata_free;
   }
+
   m->account = a;
+
+  if (!m->mdata)
+  {
+    struct Url *url = url_parse(m->path);
+    struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
+    m->mdata = mdata;
+    m->free_mdata = imap_mdata_free;
+    url_free(&url);
+  }
 
   struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
   np->m = m;
@@ -2004,10 +1976,6 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   int count = 0;
   int rc;
   const char *condstore = NULL;
-
-  rc = imap_prepare_mailbox(m);
-  if (rc < 0)
-    return -1;
 
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMboxData *mdata = m->mdata;
@@ -2235,10 +2203,6 @@ static int imap_mbox_open_append(struct Mailbox *m, int flags)
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  rc = imap_prepare_mailbox(m);
-  if (rc < 0)
-    return -1;
-
   struct ImapAccountData *adata = m->account->adata;
   struct ImapMboxData *mdata = m->mdata;
 
