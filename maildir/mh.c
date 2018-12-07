@@ -416,12 +416,9 @@ bool mh_valid_message(const char *s)
 }
 
 /**
- * mh_mailbox - Check for new mail for a mh mailbox
- * @param m           Mailbox to check
- * @param check_stats Also count total, new, and flagged messages
- * @retval true if the mailbox has new mail
+ * mh_mbox_check_stats - Implements MxOps::check_stats
  */
-bool mh_mailbox(struct Mailbox *m, bool check_stats)
+static int mh_mbox_check_stats(struct Mailbox *m, int flags)
 {
   struct MhSequences mhs = { 0 };
   bool check_new = true;
@@ -437,27 +434,23 @@ bool mh_mailbox(struct Mailbox *m, bool check_stats)
     check_new = false;
   }
 
-  if (!(check_new || check_stats))
-    return rc;
+  if (!check_new)
+    return 0;
 
   if (mh_read_sequences(&mhs, m->path) < 0)
     return false;
 
-  if (check_stats)
-  {
-    m->msg_count = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-  }
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
 
   for (int i = mhs.max; i > 0; i--)
   {
-    if (check_stats && (mhs_check(&mhs, i) & MH_SEQ_FLAGGED))
+    if ((mhs_check(&mhs, i) & MH_SEQ_FLAGGED))
       m->msg_flagged++;
     if (mhs_check(&mhs, i) & MH_SEQ_UNSEEN)
     {
-      if (check_stats)
-        m->msg_unread++;
+      m->msg_unread++;
       if (check_new)
       {
         /* if the first unseen message we encounter was in the m during the
@@ -471,27 +464,23 @@ bool mh_mailbox(struct Mailbox *m, bool check_stats)
          * checking for new mail after the first unseen message.
          * Whether it resulted in "new mail" or not. */
         check_new = false;
-        if (!check_stats)
-          break;
       }
     }
   }
+
   mhs_free_sequences(&mhs);
 
-  if (check_stats)
+  dirp = opendir(m->path);
+  if (dirp)
   {
-    dirp = opendir(m->path);
-    if (dirp)
+    while ((de = readdir(dirp)))
     {
-      while ((de = readdir(dirp)))
-      {
-        if (*de->d_name == '.')
-          continue;
-        if (mh_valid_message(de->d_name))
-          m->msg_count++;
-      }
-      closedir(dirp);
+      if (*de->d_name == '.')
+        continue;
+      if (mh_valid_message(de->d_name))
+        m->msg_count++;
     }
+    closedir(dirp);
   }
 
   return rc;
@@ -819,6 +808,7 @@ struct MxOps mx_mh_ops = {
   .mbox_open        = mh_mbox_open,
   .mbox_open_append = mh_mbox_open_append,
   .mbox_check       = mh_mbox_check,
+  .mbox_check_stats = mh_mbox_check_stats,
   .mbox_sync        = mh_mbox_sync,
   .mbox_close       = mh_mbox_close,
   .msg_open         = mh_msg_open,

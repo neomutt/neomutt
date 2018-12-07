@@ -171,21 +171,14 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
   {
     switch (m->magic)
     {
-      case MUTT_MAILDIR:
-        if (maildir_check(m, check_stats) > 0)
-          MailboxCount++;
-        break;
-
-      case MUTT_MH:
-        if (mh_mailbox(m, check_stats))
-          MailboxCount++;
-        break;
       case MUTT_IMAP:
         if (!m->has_new)
           break;
         /* fallthrough */
       case MUTT_MBOX:
       case MUTT_MMDF:
+      case MUTT_MAILDIR:
+      case MUTT_MH:
       case MUTT_NOTMUCH:
         if (mx_mbox_check_stats(m, 0))
           MailboxCount++;
