@@ -92,7 +92,6 @@ int             mh_msg_close       (struct Mailbox *m, struct Message *msg);
 
 /* Maildir/MH shared functions */
 void                    maildir_canon_filename (struct Buffer *dest, const char *src);
-int                     maildir_check_dir      (struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats);
 void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress);
 struct MaildirMboxData *maildir_mdata_get      (struct Mailbox *m);
 int                     maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir);

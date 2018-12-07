@@ -1766,3 +1766,14 @@ void mx_cleanup_context(struct Context *ctx)
     mutt_pattern_free(&ctx->limit_pattern);
   memset(ctx, 0, sizeof(struct Context));
 }
+
+/**
+ * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats
+ */
+int mx_mbox_check_stats(struct Mailbox *m, int flags)
+{
+  if (!m)
+    return -1;
+
+  return m->mx_ops->mbox_check_stats(m, flags);
+}

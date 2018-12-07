@@ -63,7 +63,6 @@ char *nm_email_get_folder        (struct Email *e);
 void  nm_db_longrun_done            (struct Mailbox *m);
 void  nm_db_longrun_init            (struct Mailbox *m, bool writable);
 bool  nm_message_is_still_queried(struct Mailbox *m, struct Email *e);
-int   nm_nonctx_get_count        (struct Mailbox *m);
 void  nm_parse_type_from_query   (struct NmMboxData *mdata, char *buf);
 int   nm_path_probe              (const char *path, const struct stat *st);
 void  nm_query_window_backward   (void);

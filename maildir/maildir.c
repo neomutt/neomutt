@@ -61,16 +61,14 @@
  * @param dir_name    Path to Mailbox
  * @param check_new   if true, check for new mail
  * @param check_stats if true, count total, new, and flagged messages
- * @retval 1 if the dir has new mail
  *
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
-int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
+static void maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
-  int rc = 0;
   struct stat sb;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -85,7 +83,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
     if (stat(mutt_b2s(path), &sb) == 0 &&
         mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
     {
-      rc = 0;
       check_new = false;
     }
   }
@@ -97,7 +94,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
   if (!dirp)
   {
     m->magic = MUTT_UNKNOWN;
-    rc = 0;
     goto cleanup;
   }
 
@@ -133,7 +129,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
           }
         }
         m->has_new = true;
-        rc = 1;
         check_new = false;
         if (!check_stats)
           break;
@@ -146,8 +141,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
 cleanup:
   mutt_buffer_pool_release(&path);
   mutt_buffer_pool_release(&msgpath);
-
-  return rc;
 }
 
 /**
@@ -544,6 +537,31 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
 }
 
 /**
+ * maildir_mbox_check_stats - Implements MxOps::mbox_check_stats
+ */
+static int maildir_mbox_check_stats(struct Mailbox *m, int flags)
+{
+  if (!m)
+    return -1;
+
+  bool check_stats = true;
+  bool check_new = true;
+
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+
+  maildir_check_dir(m, "new", check_new, check_stats);
+
+  check_new = !m->has_new && MaildirCheckCur;
+  if (check_new || check_stats)
+    maildir_check_dir(m, "cur", check_new, check_stats);
+
+  return 0;
+}
+
+/**
  * maildir_msg_open - Implements MxOps::msg_open()
  */
 static int maildir_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
@@ -671,6 +689,7 @@ struct MxOps mx_maildir_ops = {
   .mbox_open        = maildir_mbox_open,
   .mbox_open_append = maildir_mbox_open_append,
   .mbox_check       = maildir_mbox_check,
+  .mbox_check_stats = maildir_mbox_check_stats,
   .mbox_sync        = mh_mbox_sync,
   .mbox_close       = mh_mbox_close,
   .msg_open         = maildir_msg_open,

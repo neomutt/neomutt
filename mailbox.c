@@ -171,40 +171,18 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
   {
     switch (m->magic)
     {
+      case MUTT_IMAP:
+        if (!m->has_new)
+          break;
+        /* fallthrough */
       case MUTT_MBOX:
       case MUTT_MMDF:
-        if (mbox_check(m, &sb, check_stats) > 0)
-          MailboxCount++;
-        break;
-
       case MUTT_MAILDIR:
-        if (maildir_check(m, check_stats) > 0)
-          MailboxCount++;
-        break;
-
       case MUTT_MH:
-        if (mh_mailbox(m, check_stats))
-          MailboxCount++;
-        break;
-#ifdef USE_IMAP
-      case MUTT_IMAP:
-        if (imap_mailbox_status(m, false) >= 0 && m->has_new)
-          MailboxCount++;
-        break;
-#endif
-#ifdef USE_NOTMUCH
       case MUTT_NOTMUCH:
-        m->msg_count = 0;
-        m->msg_unread = 0;
-        m->msg_flagged = 0;
-        nm_nonctx_get_count(m);
-        if (m->msg_unread > 0)
-        {
+        if (mx_mbox_check_stats(m, 0))
           MailboxCount++;
-          m->has_new = true;
-        }
         break;
-#endif
       default:; /* do nothing */
     }
   }

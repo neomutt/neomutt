@@ -1779,15 +1779,13 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_check - Check for new mail for an mbox mailbox
- * @param m           Mailbox to check
- * @param sb          stat(2) information about the mailbox
- * @param check_stats if true, also count total, new, and flagged messages
- * @retval 1 if the mailbox has new mail
+ * mbox_mbox_check_stats - Implements MxOps::mbox_check_stats()
  */
-int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
+static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  int rc = 0;
+  struct stat *sb = { 0 };
+  stat(m->path, sb);
+
   bool new_or_changed;
 
   if (CheckMboxSize)
@@ -1806,7 +1804,6 @@ int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
     if (!MailCheckRecent ||
         (mutt_file_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->last_visited) > 0))
     {
-      rc = 1;
       m->has_new = true;
     }
   }
@@ -1819,8 +1816,7 @@ int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
   if (m->newly_created && (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
     m->newly_created = false;
 
-  if (check_stats &&
-      (mutt_file_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0))
+  if (mutt_file_stat_timespec_compare(sb, MUTT_STAT_MTIME, &m->stats_last_checked) > 0)
   {
     struct Context *ctx =
         mx_mbox_open(m, NULL, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
@@ -1834,7 +1830,7 @@ int mbox_check(struct Mailbox *m, struct stat *sb, bool check_stats)
     }
   }
 
-  return rc;
+  return 0;
 }
 
 // clang-format off
@@ -1849,6 +1845,7 @@ struct MxOps mx_mbox_ops = {
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
+  .mbox_check_stats = mbox_mbox_check_stats,
   .mbox_sync        = mbox_mbox_sync,
   .mbox_close       = mbox_mbox_close,
   .msg_open         = mbox_msg_open,
@@ -1875,6 +1872,7 @@ struct MxOps mx_mmdf_ops = {
   .mbox_open        = mbox_mbox_open,
   .mbox_open_append = mbox_mbox_open_append,
   .mbox_check       = mbox_mbox_check,
+  .mbox_check_stats = mbox_mbox_check_stats,
   .mbox_sync        = mbox_mbox_sync,
   .mbox_close       = mbox_mbox_close,
   .msg_open         = mbox_msg_open,

@@ -144,6 +144,14 @@ struct MxOps
    */
   int (*mbox_check)      (struct Context *ctx, int *index_hint);
   /**
+   * mbox_check_stats - Check the mailbox statistics
+   * @param m     Mailbox to check
+   * @param flags Function flags
+   * @retval  0 Success
+   * @retval -1 Failure
+   */
+  int (*mbox_check_stats)(struct Mailbox *m, int flags);
+  /**
    * mbox_sync - Save changes to the mailbox
    * @param ctx        Mailbox to sync
    * @param index_hint Remember our place in the index
@@ -254,6 +262,7 @@ struct MxOps
 
 /* Wrappers for the Mailbox API, see MxOps */
 int             mx_mbox_check      (struct Context *ctx, int *index_hint);
+int             mx_mbox_check_stats(struct Mailbox *m, int flags);
 int             mx_mbox_close      (struct Context **pctx, int *index_hint);
 struct Context *mx_mbox_open       (struct Mailbox *m, const char *path, int flags);
 int             mx_mbox_sync       (struct Context *ctx, int *index_hint);

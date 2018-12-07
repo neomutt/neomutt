@@ -58,7 +58,6 @@ extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mh_ops;
 
 int           maildir_check_empty      (const char *path);
-int           maildir_check            (struct Mailbox *m, bool check_stats);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
 FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
 void          maildir_parse_flags      (struct Email *e, const char *path);
@@ -66,7 +65,6 @@ struct Email *maildir_parse_message    (enum MailboxType magic, const char *fnam
 struct Email *maildir_parse_stream     (enum MailboxType magic, FILE *f, const char *fname, bool is_old, struct Email *e);
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *o, struct Email *n);
 int           mh_check_empty           (const char *path);
-bool          mh_mailbox               (struct Mailbox *m, bool check_stats);
 #ifdef USE_HCACHE
 int           mh_sync_mailbox_message  (struct Mailbox *m, int msgno, header_cache_t *hc);
 #else

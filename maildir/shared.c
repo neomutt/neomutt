@@ -1864,32 +1864,3 @@ int mh_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
-
-/**
- * maildir_check - Check for new mail in a maildir mailbox
- * @param m           Mailbox to check
- * @param check_stats if true, also count total, new, and flagged messages
- * @retval 1 if the mailbox has new mail
- */
-int maildir_check(struct Mailbox *m, bool check_stats)
-{
-  int rc = 1;
-  bool check_new = true;
-
-  if (check_stats)
-  {
-    m->msg_count = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-    m->msg_new = 0;
-  }
-
-  rc = maildir_check_dir(m, "new", check_new, check_stats);
-
-  check_new = !rc && MaildirCheckCur;
-  if (check_new || check_stats)
-    if (maildir_check_dir(m, "cur", check_new, check_stats))
-      rc = 1;
-
-  return rc;
-}
