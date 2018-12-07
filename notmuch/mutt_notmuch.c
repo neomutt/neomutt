@@ -1859,12 +1859,9 @@ int nm_update_filename(struct Mailbox *m, const char *old, const char *new, stru
 }
 
 /**
- * nm_nonctx_get_count - Perform some queries without an open database
- * @param m Mailbox to examine
- * @retval  0 Success
- * @retval -1 Failure
+ * nm_mbox_check_stats - Implements MxOps::check_stats()
  */
-int nm_nonctx_get_count(struct Mailbox *m)
+static int nm_mbox_check_stats(struct Mailbox *m, int flags)
 {
   struct UrlQueryString *item = NULL;
   struct Url *url = NULL;
@@ -2557,6 +2554,7 @@ struct MxOps mx_notmuch_ops = {
   .mbox_open        = nm_mbox_open,
   .mbox_open_append = NULL,
   .mbox_check       = nm_mbox_check,
+  .mbox_check_stats = nm_mbox_check_stats,
   .mbox_sync        = nm_mbox_sync,
   .mbox_close       = nm_mbox_close,
   .msg_open         = nm_msg_open,
