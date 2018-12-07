@@ -1334,6 +1334,20 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 }
 
 /**
+ * imap_mbox_check_stats - Implements MxOps::mbox_check_stats()
+ */
+int imap_mbox_check_stats(struct Mailbox *m, int flags)
+{
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+
+  int rc = imap_status(adata, mdata, true);
+  if (rc > 0)
+    rc = 0;
+  return rc;
+}
+
+/**
  * imap_path_status - Refresh the number of total and new messages
  * @param path   Mailbox path
  * @param queue  Queue the STATUS command
@@ -2575,6 +2589,7 @@ struct MxOps mx_imap_ops = {
   .mbox_open        = imap_mbox_open,
   .mbox_open_append = imap_mbox_open_append,
   .mbox_check       = imap_mbox_check,
+  .mbox_check_stats = imap_mbox_check_stats,
   .mbox_sync        = NULL, /* imap syncing is handled by imap_sync_mailbox */
   .mbox_close       = imap_mbox_close,
   .msg_open         = imap_msg_open,

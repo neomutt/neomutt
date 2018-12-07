@@ -186,12 +186,6 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
         if (mh_mailbox(m, check_stats))
           MailboxCount++;
         break;
-#ifdef USE_IMAP
-      case MUTT_IMAP:
-        if (imap_mailbox_status(m, false) >= 0 && m->has_new)
-          MailboxCount++;
-        break;
-#endif
 #ifdef USE_NOTMUCH
       case MUTT_NOTMUCH:
         m->msg_count = 0;
@@ -205,6 +199,13 @@ static void mailbox_check(struct Mailbox *m, struct stat *ctx_sb, bool check_sta
         }
         break;
 #endif
+      case MUTT_IMAP:
+        if (!m->has_new)
+          break;
+        /* fallthrough */
+        if (mx_mbox_check_stats(m, 0))
+          MailboxCount++;
+        break;
       default:; /* do nothing */
     }
   }
