@@ -1190,22 +1190,11 @@ int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
  */
 int imap_check_mailbox(struct Mailbox *m, bool force)
 {
-  struct ImapAccountData *adata = imap_adata_get(m);
-  return imap_check(adata, m->mdata, force);
-}
-
-/**
- * imap_check - Check for new mail
- * @param adata Imap Account data
- * @param mdata Imap Mailbox data
- * @param force Force a refresh
- * @retval >0 Success, e.g. #MUTT_REOPENED
- * @retval -1 Failure
- */
-int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool force)
-{
-  if (!adata || !adata->conn || !mdata)
+  if (!m || !m->account)
     return -1;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
@@ -1653,7 +1642,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   struct Mailbox *m = ctx->mailbox;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   if (adata->state < IMAP_SELECTED)
   {
@@ -1665,7 +1654,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
    * to be changed. */
   imap_allow_reopen(m);
 
-  rc = imap_check(adata, mdata, false);
+  rc = imap_check_mailbox(m, false);
   if (rc != 0)
     return rc;
 
@@ -2238,8 +2227,7 @@ static int imap_mbox_check(struct Context *ctx, int *index_hint)
   struct Mailbox *m = ctx->mailbox;
 
   imap_allow_reopen(m);
-  struct ImapAccountData *adata = imap_adata_get(m);
-  int rc = imap_check(adata, m->mdata, false);
+  int rc = imap_check_mailbox(m, false);
   /* NOTE - ctx might have been changed at this point. In particular,
    * m could be NULL. Beware. */
   imap_disallow_reopen(m);

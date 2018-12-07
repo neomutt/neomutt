@@ -1074,10 +1074,7 @@ void imap_keepalive(void)
       continue;
 
     if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + ImapKeepalive)))
-    {
-      struct ImapMboxData *mdata = adata->mailbox->mdata;
-      imap_check(adata, mdata, true);
-    }
+      imap_check_mailbox(adata->mailbox, true);
   }
 }
 
