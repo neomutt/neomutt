@@ -61,16 +61,14 @@
  * @param dir_name    Path to Mailbox
  * @param check_new   if true, check for new mail
  * @param check_stats if true, count total, new, and flagged messages
- * @retval 1 if the dir has new mail
  *
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
-int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
+static void maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
-  int rc = 0;
   struct stat sb;
 
   struct Buffer *path = mutt_buffer_pool_get();
@@ -85,7 +83,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
     if (stat(mutt_b2s(path), &sb) == 0 &&
         mutt_file_stat_timespec_compare(&sb, MUTT_STAT_MTIME, &m->last_visited) < 0)
     {
-      rc = 0;
       check_new = false;
     }
   }
@@ -97,7 +94,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
   if (!dirp)
   {
     m->magic = MUTT_UNKNOWN;
-    rc = 0;
     goto cleanup;
   }
 
@@ -133,7 +129,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
           }
         }
         m->has_new = true;
-        rc = 1;
         check_new = false;
         if (!check_stats)
           break;
@@ -146,8 +141,6 @@ int maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, b
 cleanup:
   mutt_buffer_pool_release(&path);
   mutt_buffer_pool_release(&msgpath);
-
-  return rc;
 }
 
 /**
