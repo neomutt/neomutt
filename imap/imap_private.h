@@ -273,7 +273,6 @@ struct SeqsetIterator
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool force);
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
 int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
