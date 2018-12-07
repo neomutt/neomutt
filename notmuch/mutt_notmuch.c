@@ -2136,6 +2136,7 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
     m->hdrmax = m->msg_count;
     m->msg_count = 0;
     m->vcount = 0;
+    m->size = 0;
     mx_alloc_memory(m);
   }
 
