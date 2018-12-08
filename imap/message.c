@@ -1606,7 +1606,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
 
         if (m->hdrs[i]->active && m->hdrs[i]->changed)
         {
-          rc = imap_sync_message_for_copy(adata, m->hdrs[i], &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(m, m->hdrs[i], &sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(1, "#1 could not sync\n");
@@ -1640,7 +1640,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
 
       if (e->active && e->changed)
       {
-        rc = imap_sync_message_for_copy(adata, e, &sync_cmd, &err_continue);
+        rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
         if (rc < 0)
         {
           mutt_debug(1, "#2 could not sync\n");

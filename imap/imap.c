@@ -154,18 +154,18 @@ static char *get_flags(struct ListHead *hflags, char *s)
 
 /**
  * set_flag - append str to flags if we currently have permission according to aclbit
- * @param[in]  adata  Imap Account data
+ * @param[in]  m      Selected Imap Mailbox
  * @param[in]  aclbit Permissions, e.g. #MUTT_ACL_WRITE
  * @param[in]  flag   Does the email have the flag set?
  * @param[in]  str    Server flag name
  * @param[out] flags  Buffer for server command
  * @param[in]  flsize Length of buffer
  */
-static void set_flag(struct ImapAccountData *adata, int aclbit, int flag,
-                     const char *str, char *flags, size_t flsize)
+static void set_flag(struct Mailbox *m, int aclbit, int flag, const char *str,
+                     char *flags, size_t flsize)
 {
-  if (mutt_bit_isset(adata->mailbox->rights, aclbit))
-    if (flag && imap_has_flag(&imap_mdata_get(adata->mailbox)->flags, str))
+  if (mutt_bit_isset(m->rights, aclbit))
+    if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
       mutt_str_strcat(flags, flsize, str);
 }
 
@@ -1070,7 +1070,7 @@ out:
 
 /**
  * imap_sync_message_for_copy - Update server to reflect the flags of a single message
- * @param[in]  adata        Imap Account data
+ * @param[in]  adata        Imap Mailbox
  * @param[in]  e            Email
  * @param[in]  cmd          Buffer for the command string
  * @param[out] err_continue Did the user force a continue?
@@ -1083,9 +1083,13 @@ out:
  * @note This does not sync the "deleted" flag state, because it is not
  *       desirable to propagate that flag into the copy.
  */
-int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
+int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
                                struct Buffer *cmd, int *err_continue)
 {
+  struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata || adata->mailbox != m)
+    return -1;
+
   char flags[LONG_STRING];
   char *tags = NULL;
   char uid[11];
@@ -1104,14 +1108,14 @@ int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
 
   flags[0] = '\0';
 
-  set_flag(adata, MUTT_ACL_SEEN, e->read, "\\Seen ", flags, sizeof(flags));
-  set_flag(adata, MUTT_ACL_WRITE, e->old, "Old ", flags, sizeof(flags));
-  set_flag(adata, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags, sizeof(flags));
-  set_flag(adata, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags, sizeof(flags));
-  set_flag(adata, MUTT_ACL_DELETE, imap_edata_get(e)->deleted, "\\Deleted ",
-           flags, sizeof(flags));
+  set_flag(m, MUTT_ACL_SEEN, e->read, "\\Seen ", flags, sizeof(flags));
+  set_flag(m, MUTT_ACL_WRITE, e->old, "Old ", flags, sizeof(flags));
+  set_flag(m, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags, sizeof(flags));
+  set_flag(m, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags, sizeof(flags));
+  set_flag(m, MUTT_ACL_DELETE, imap_edata_get(e)->deleted, "\\Deleted ", flags,
+           sizeof(flags));
 
-  if (mutt_bit_isset(adata->mailbox->rights, MUTT_ACL_WRITE))
+  if (mutt_bit_isset(m->rights, MUTT_ACL_WRITE))
   {
     /* restore system flags */
     if (imap_edata_get(e)->flags_system)
@@ -1131,16 +1135,15 @@ int imap_sync_message_for_copy(struct ImapAccountData *adata, struct Email *e,
    * explicitly revoke all system flags (if we have permission) */
   if (!*flags)
   {
-    set_flag(adata, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
-    set_flag(adata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
-    set_flag(adata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
-    set_flag(adata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    set_flag(adata, MUTT_ACL_DELETE, !imap_edata_get(e)->deleted, "\\Deleted ",
+    set_flag(m, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_DELETE, !imap_edata_get(e)->deleted, "\\Deleted ",
              flags, sizeof(flags));
 
     /* erase custom flags */
-    if (mutt_bit_isset(adata->mailbox->rights, MUTT_ACL_WRITE) &&
-        imap_edata_get(e)->flags_remote)
+    if (mutt_bit_isset(m->rights, MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
       mutt_str_strcat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
@@ -1552,7 +1555,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
     if (m->hdrs[i]->active && m->hdrs[i]->changed && m->hdrs[i]->deleted &&
         !m->hdrs[i]->purge)
     {
-      rc = imap_sync_message_for_copy(adata, m->hdrs[i], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, m->hdrs[i], sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(1, "could not sync\n");
