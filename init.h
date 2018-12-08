@@ -359,6 +359,15 @@ struct ConfigDef MuttVars[] = {
   ** will use your locale environment, so there is no need to set
   ** this except to override that default.
   */
+  { "auto_subscribe",   DT_BOOL, R_NONE, &AutoSubscribe, false },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt assumes the presence of a List-Post header
+  ** means the recipient is subscribed to the list.  Unless the mailing list
+  ** is in the ``unsubscribe'' or ``unlist'' lists, it will be added
+  ** to the ``$subscribe'' list.  Parsing and checking these things slows
+  ** header reading down, so this option is disabled by default.
+  */
   { "auto_tag",         DT_BOOL, R_NONE, &AutoTag, false },
   /*
   ** .pp

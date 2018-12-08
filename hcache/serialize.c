@@ -37,6 +37,8 @@
 #include <sys/types.h>
 #include "mutt/mutt.h"
 #include "email/lib.h"
+#include "email/parse.h"
+#include "globals.h"
 #include "hcache.h"
 
 /**
@@ -538,6 +540,10 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_address(&env->mail_followup_to, d, off, convert);
 
   serial_restore_char(&env->list_post, d, off, convert);
+
+  if (AutoSubscribe)
+    mutt_auto_subscribe(env->list_post);
+
   serial_restore_char(&env->subject, d, off, convert);
   serial_restore_int((unsigned int *) (&real_subj_off), d, off);
 
