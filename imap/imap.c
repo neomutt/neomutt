@@ -790,16 +790,16 @@ void imap_expunge_mailbox(struct Mailbox *m)
   Sort = SORT_ORDER;
   mutt_sort_headers(adata->ctx, false);
 
-  for (int i = 0; i < adata->mailbox->msg_count; i++)
+  for (int i = 0; i < m->msg_count; i++)
   {
-    e = adata->mailbox->hdrs[i];
+    e = m->hdrs[i];
 
     if (e->index == INT_MAX)
     {
       mutt_debug(2, "Expunging message UID %u.\n", imap_edata_get(e)->uid);
 
       e->active = false;
-      adata->mailbox->size -= e->content->length;
+      m->size -= e->content->length;
 
       imap_cache_del(adata, e);
 #ifdef USE_HCACHE
