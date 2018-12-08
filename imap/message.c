@@ -704,7 +704,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   char buf[LONG_STRING];
 
   struct Mailbox *m = adata->mailbox;
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
   int idx = m->msg_count;
 
   /* L10N:
@@ -914,7 +914,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   unsigned int header_msn = 0;
 
   struct Mailbox *m = adata->mailbox;
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
   mutt_progress_init(&progress, _("Fetching flag updates..."),
@@ -1222,7 +1222,7 @@ int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin,
 #endif /* USE_HCACHE */
 
   struct Mailbox *m = adata->mailbox;
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   /* make sure context has room to hold the mailbox */
   while (msn_end > m->hdrmax)
@@ -1834,7 +1834,7 @@ int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   int output_progress;
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
   struct Email *e = m->hdrs[msgno];
 
   msg->fp = msg_cache_get(adata, e);

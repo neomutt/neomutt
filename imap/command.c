@@ -393,7 +393,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   int uid_checked = 0;
   int server_changes = 0;
 
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
 
   mutt_debug(3, "Handling FETCH\n");
 
@@ -822,12 +822,12 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
   url_tostring(&url, path, sizeof(path), 0);
 
   struct Mailbox *m = mx_mbox_find2(path);
-  if (!m || !m->mdata)
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata)
   {
     mutt_debug(3, "Received status for an unexpected mailbox: %s\n", mailbox);
     return;
   }
-  struct ImapMboxData *mdata = m->mdata;
   olduv = mdata->uid_validity;
   oldun = mdata->uid_next;
 
