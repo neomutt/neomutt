@@ -771,15 +771,17 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
  * while something has a handle on any headers (eg inside pager or editor).
  * That is, check IMAP_REOPEN_ALLOW.
  */
-void imap_expunge_mailbox(struct ImapAccountData *adata)
+void imap_expunge_mailbox(struct Mailbox *m)
 {
-  if (!adata || !adata->mailbox)
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
     return;
 
   struct Email *e = NULL;
   int cacheno;
   short old_sort;
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+
 
 #ifdef USE_HCACHE
   mdata->hcache = imap_hcache_open(adata, mdata);

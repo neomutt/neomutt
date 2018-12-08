@@ -1313,7 +1313,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
     {
       mutt_debug(2, "Expunging mailbox\n");
-      imap_expunge_mailbox(adata);
+      imap_expunge_mailbox(adata->mailbox);
     }
 
     // Then add new emails to it
