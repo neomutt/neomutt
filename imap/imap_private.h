@@ -301,10 +301,10 @@ int imap_cmd_idle(struct ImapAccountData *adata);
 /* message.c */
 void imap_edata_free(void **ptr);
 struct ImapEmailData *imap_edata_get(struct Email *e);
-int imap_read_headers(struct ImapAccountData *adata, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
-char *imap_set_flags(struct ImapAccountData *adata, struct Email *e, char *s, int *server_changes);
-int imap_cache_del(struct ImapAccountData *adata, struct Email *e);
-int imap_cache_clean(struct ImapAccountData *adata);
+int imap_read_headers(struct Mailbox *m, unsigned int msn_begin, unsigned int msn_end, bool initial_download);
+char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, int *server_changes);
+int imap_cache_del(struct Mailbox *m, struct Email *e);
+int imap_cache_clean(struct Mailbox *m);
 int imap_append_message(struct Mailbox *m, struct Message *msg);
 
 int imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno);

@@ -801,7 +801,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
       e->active = false;
       m->size -= e->content->length;
 
-      imap_cache_del(adata, e);
+      imap_cache_del(m, e);
 #ifdef USE_HCACHE
       imap_hcache_del(mdata, imap_edata_get(e)->uid);
 #endif
@@ -1694,7 +1694,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
 
     if (e->deleted)
     {
-      imap_cache_del(adata, e);
+      imap_cache_del(m, e);
 #ifdef USE_HCACHE
       imap_hcache_del(mdata, imap_edata_get(e)->uid);
 #endif
@@ -1812,7 +1812,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   }
 
   if (MessageCacheClean)
-    imap_cache_clean(adata);
+    imap_cache_clean(m);
 
   return 0;
 }
@@ -2162,7 +2162,7 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   m->size = 0;
   m->vcount = 0;
 
-  if (count && (imap_read_headers(adata, 1, count, true) < 0))
+  if (count && (imap_read_headers(m, 1, count, true) < 0))
   {
     mutt_error(_("Error opening mailbox"));
     goto fail;

@@ -506,7 +506,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
 
   if (flags)
   {
-    imap_set_flags(adata, e, flags, &server_changes);
+    imap_set_flags(adata->mailbox, e, flags, &server_changes);
     if (server_changes)
     {
       /* If server flags could conflict with mutt's flags, reopen the mailbox. */
@@ -1324,7 +1324,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
       mutt_debug(2, "Fetching new mails from %d to %d\n", mdata->max_msn + 1,
                  mdata->new_mail_count);
-      imap_read_headers(adata, mdata->max_msn + 1, mdata->new_mail_count, false);
+      imap_read_headers(adata->mailbox, mdata->max_msn + 1, mdata->new_mail_count, false);
     }
 
     // And to finish inform about MUTT_REOPEN if needed
