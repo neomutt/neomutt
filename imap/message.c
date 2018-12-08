@@ -124,7 +124,7 @@ static struct BodyCache *msg_cache_open(struct Mailbox *m)
   if (mdata->bcache)
     return mdata->bcache;
 
-  imap_cachepath(adata, mdata->name, mailbox, sizeof(mailbox));
+  imap_cachepath(adata->delim, mdata->name, mailbox, sizeof(mailbox));
 
   return mutt_bcache_open(&adata->conn->account, mailbox);
 }
@@ -1576,7 +1576,7 @@ int imap_copy_messages(struct Context *ctx, struct Email *e, char *dest, bool de
     return 1;
   }
 
-  imap_fix_path(adata, buf, mbox, sizeof(mbox));
+  imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
   if (!*mbox)
     mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);
