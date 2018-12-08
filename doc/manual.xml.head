@@ -8640,7 +8640,10 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         through the use of the
         <link linkend="lists"><command>lists</command></link> and
         <link linkend="lists"><command>subscribe</command></link> commands in
-        your <literal>.neomuttrc</literal>.
+        your <literal>.neomuttrc</literal>. Alternatively or additionally, you
+        can set <link linkend="auto-subscribe">$auto_subscribe</link> to 
+        automatically subscribe addresses found in a <literal>List-Post</literal>
+        header.
       </para>
       <para>
         Now that NeoMutt knows what your mailing lists are, it can do several
@@ -14563,7 +14566,6 @@ color index_tags green default
 </screen>
 
       </sect2>
-
       <sect2 id="custom-tags-credits">
         <title>Credits</title>
         <itemizedlist>

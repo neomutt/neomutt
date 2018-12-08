@@ -54,8 +54,9 @@ WHERE char *LastFolder;    ///< Previously selected mailbox
 
 extern const char *GitVer;
 
-WHERE struct Hash *ReverseAliases; ///< Hash table of aliases (email address -> alias)
-WHERE struct Hash *TagFormats;     ///< Hash table of tag-formats (tag -> format string)
+WHERE struct Hash *ReverseAliases;     ///< Hash table of aliases (email address -> alias)
+WHERE struct Hash *TagFormats;         ///< Hash table of tag-formats (tag -> format string)
+WHERE struct Hash *AutoSubscribeCache; ///< Hash table of auto-subscribed mailing lists
 
 /* Lists of strings */
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList)); ///< List of preferred mime types to display
@@ -201,6 +202,7 @@ WHERE bool AsciiChars;                     ///< Config: Use plain ASCII characte
 WHERE bool Askbcc;                         ///< Config: Ask the user for the blind-carbon-copy recipients
 WHERE bool Askcc;                          ///< Config: Ask the user for the carbon-copy recipients
 WHERE bool Autoedit;                       ///< Config: Skip the initial compose menu and edit the email
+WHERE bool AutoSubscribe;                  ///< Config: Automatically check if the user is subscribed to a mailing list
 WHERE bool AutoTag;                        ///< Config: Automatically apply actions to all tagged messages
 WHERE bool Beep;                           ///< Config: Make a noise when an error occurs
 WHERE bool BeepNew;                        ///< Config: Make a noise when new mail arrives

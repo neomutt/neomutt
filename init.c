@@ -2269,6 +2269,7 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
 static int parse_unlists(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
+  mutt_hash_free(&AutoSubscribeCache);
   do
   {
     mutt_extract_token(buf, s, 0);
@@ -2363,6 +2364,7 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
 static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
+  mutt_hash_free(&AutoSubscribeCache);
   do
   {
     mutt_extract_token(buf, s, 0);

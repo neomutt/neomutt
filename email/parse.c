@@ -34,6 +34,7 @@
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "mutt/regex3.h"
 #include "parse.h"
 #include "address.h"
 #include "body.h"
@@ -41,11 +42,51 @@
 #include "email_globals.h"
 #include "envelope.h"
 #include "from.h"
+#include "globals.h"
 #include "mime.h"
 #include "parameter.h"
+#include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
+
+/**
+ * mutt_auto_subscribe - Check if user is subscribed to mailing list
+ * @param mailto URI of mailing list subscribe
+ */
+void mutt_auto_subscribe (const char *mailto)
+{
+  struct Envelope *lpenv;
+
+  if (!AutoSubscribeCache)
+    AutoSubscribeCache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+
+  if (!mailto || mutt_hash_find(AutoSubscribeCache, mailto))
+    return;
+
+  mutt_hash_insert(AutoSubscribeCache, mailto, AutoSubscribeCache);
+
+  lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
+
+  if ((url_parse_mailto (lpenv, NULL, mailto) != -1) &&
+      lpenv->to && lpenv->to->mailbox &&
+      !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox) &&
+      !mutt_regexlist_match(&UnMailLists, lpenv->to->mailbox) &&
+      !mutt_regexlist_match(&UnSubscribedLists, lpenv->to->mailbox))
+  {
+    struct Buffer err;
+    char errbuf[STRING];
+    memset (&err, 0, sizeof(err));
+    err.data = errbuf;
+    err.dsize = sizeof(errbuf);
+    /* mutt_regexlist_add() detects duplicates, so it is safe to
+     * try to add here without any checks. */
+    mutt_regexlist_add (&MailLists, lpenv->to->mailbox, REG_ICASE, &err);
+    mutt_regexlist_add (&SubscribedLists, lpenv->to->mailbox, REG_ICASE, &err);
+  }
+
+  mutt_env_free(&lpenv);
+}
 
 /**
  * parse_parameters - Parse a list of Parameters
@@ -668,6 +709,9 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
             {
               FREE(&env->list_post);
               env->list_post = mutt_str_substr_dup(beg, end);
+              if (AutoSubscribe)
+                mutt_auto_subscribe(env->list_post);
+
               break;
             }
           }
