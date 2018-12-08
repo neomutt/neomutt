@@ -1133,13 +1133,10 @@ int imap_wait_keepalive(pid_t pid)
  */
 void imap_allow_reopen(struct Mailbox *m)
 {
-  if (!m)
-    return;
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || !adata->mailbox || adata->mailbox != m)
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !adata->mailbox || adata->mailbox != m || !mdata)
     return;
-
-  struct ImapMboxData *mdata = m->mdata;
   mdata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
@@ -1149,13 +1146,10 @@ void imap_allow_reopen(struct Mailbox *m)
  */
 void imap_disallow_reopen(struct Mailbox *m)
 {
-  if (!m)
-    return;
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || !adata->mailbox || adata->mailbox != m)
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !adata->mailbox || adata->mailbox != m || !mdata)
     return;
-
-  struct ImapMboxData *mdata = m->mdata;
   mdata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 

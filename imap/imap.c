@@ -1966,8 +1966,8 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   int rc;
   const char *condstore = NULL;
 
-  struct ImapAccountData *adata = m->account->adata;
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
   mutt_str_strfcpy(m->path, buf, sizeof(m->path));
@@ -2185,15 +2185,15 @@ fail:
  */
 static int imap_mbox_open_append(struct Mailbox *m, int flags)
 {
-  if (!m)
+  if (!m || !m->account)
     return -1;
 
   int rc;
 
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
-  struct ImapAccountData *adata = m->account->adata;
-  struct ImapMboxData *mdata = m->mdata;
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
 
   rc = imap_mailbox_status(m, false);
   if (rc >= 0)
@@ -2305,12 +2305,12 @@ static int imap_msg_open_new(struct Mailbox *m, struct Message *msg, struct Emai
  */
 static int imap_tags_edit(struct Mailbox *m, const char *tags, char *buf, size_t buflen)
 {
-  if (!m || !m->mdata)
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata)
     return -1;
 
   char *new = NULL;
   char *checker = NULL;
-  struct ImapMboxData *mdata = m->mdata;
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&mdata->flags, NULL))
