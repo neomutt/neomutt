@@ -275,7 +275,7 @@ struct SeqsetIterator
 /* imap.c */
 int imap_create_mailbox(struct ImapAccountData *adata, char *mailbox);
 int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char *newname);
-int imap_exec_msgset(struct ImapAccountData *adata, const char *pre, const char *post,
+int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
                      int flag, bool changed, bool invert);
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
