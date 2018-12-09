@@ -46,6 +46,9 @@
 #endif
 
 // clang-format off
+/**
+ * OpGeneric - Key bindings for the generic menu
+ */
 const struct Binding OpGeneric[] = { /* map: generic */
   /*
   ** <para>
@@ -92,6 +95,9 @@ const struct Binding OpGeneric[] = { /* map: generic */
   { NULL,              0,                       NULL },
 };
 
+/**
+ * OpMain - Key bindings for the index menu
+ */
 const struct Binding OpMain[] = { /* map: index */
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },
@@ -242,6 +248,9 @@ const struct Binding OpMain[] = { /* map: index */
   { NULL,                        0,                                 NULL },
 };
 
+/**
+ * OpPager - Key bindings for the pager menu
+ */
 const struct Binding OpPager[] = { /* map: pager */
   { "bottom",                    OP_PAGER_BOTTOM,                 NULL },
   { "bounce-message",            OP_BOUNCE_MESSAGE,               "b" },
@@ -390,6 +399,9 @@ const struct Binding OpPager[] = { /* map: pager */
   { NULL,                        0,                               NULL },
 };
 
+/**
+ * OpAttach - Key bindings for the attachment menu
+ */
 const struct Binding OpAttach[] = { /* map: attachment */
   { "bounce-message",        OP_BOUNCE_MESSAGE,              "b" },
   { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },
@@ -422,6 +434,9 @@ const struct Binding OpAttach[] = { /* map: attachment */
   { NULL,                    0,                              NULL },
 };
 
+/**
+ * OpCompose - Key bindings for the compose menu
+ */
 const struct Binding OpCompose[] = { /* map: compose */
   { "attach-file",           OP_COMPOSE_ATTACH_FILE,         "a" },
   { "attach-key",            OP_COMPOSE_ATTACH_KEY,          "\033k" },
@@ -486,19 +501,27 @@ const struct Binding OpCompose[] = { /* map: compose */
   { NULL,                    0,                              NULL },
 };
 
+/**
+ * OpPost - Key bindings for the postpone menu
+ */
 const struct Binding OpPost[] = { /* map: postpone */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
   { NULL,                    0,                              NULL },
 };
 
+/**
+ * OpAlias - Key bindings for the alias menu
+ */
 const struct Binding OpAlias[] = { /* map: alias */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
   { NULL,                    0,                              NULL },
 };
 
-/* The file browser */
+/**
+ * OpBrowser - Key bindings for the file browser menu
+ */
 const struct Binding OpBrowser[] = { /* map: browser */
 #ifdef USE_NNTP
   { "catchup",               OP_CATCHUP,                     NULL },
@@ -548,7 +571,9 @@ const struct Binding OpBrowser[] = { /* map: browser */
   { NULL,                    0,                              NULL },
 };
 
-/* External Query Menu */
+/**
+ * OpQuery - Key bindings for the external query menu
+ */
 const struct Binding OpQuery[] = { /* map: query */
   { "create-alias",          OP_CREATE_ALIAS,                "a" },
   { "mail",                  OP_MAIL,                        "m" },
@@ -557,6 +582,9 @@ const struct Binding OpQuery[] = { /* map: query */
   { NULL,                    0,                              NULL },
 };
 
+/**
+ * OpEditor - Key bindings for the editor menu
+ */
 const struct Binding OpEditor[] = { /* map: editor */
   { "backspace",             OP_EDITOR_BACKSPACE,            "\010" },
   { "backward-char",         OP_EDITOR_BACKWARD_CHAR,        "\002" },
@@ -586,14 +614,18 @@ const struct Binding OpEditor[] = { /* map: editor */
   { NULL,                    0,                              NULL },
 };
 
+/**
+ * OpPgp - Key bindings for the pgp menu
+ */
 const struct Binding OpPgp[] = { /* map: pgp */
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
   { "view-name",             OP_VIEW_ID,                     "%" },
   { NULL,                    0,                              NULL },
 };
 
-/* When using the GPGME based backend we have some useful functions
-   for the SMIME menu. */
+/**
+ * OpSmime - Key bindings for the smime menu
+ */
 const struct Binding OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
@@ -603,6 +635,9 @@ const struct Binding OpSmime[] = { /* map: smime */
 };
 
 #ifdef MIXMASTER
+/**
+ * OpMix - Key bindings for the mixmaster menu
+ */
 const struct Binding OpMix[] = { /* map: mixmaster */
   { "accept",                OP_MIX_USE,                     "\n" },
   { "accept",                OP_MIX_USE,                     "\r" },
