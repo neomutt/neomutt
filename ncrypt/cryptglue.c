@@ -53,16 +53,16 @@ struct State;
 bool CryptUseGpgme; ///< Config: Use GPGME crypto backend
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-extern struct CryptModuleSpecs crypt_mod_pgp_classic;
+extern struct CryptModuleSpecs CryptModPgpClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-extern struct CryptModuleSpecs crypt_mod_smime_classic;
+extern struct CryptModuleSpecs CryptModSmimeClassic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-extern struct CryptModuleSpecs crypt_mod_pgp_gpgme;
-extern struct CryptModuleSpecs crypt_mod_smime_gpgme;
+extern struct CryptModuleSpecs CryptModPgpGpgme;
+extern struct CryptModuleSpecs CryptModSmimeGpgme;
 #endif
 
 /* If the crypto module identifier by IDENTIFIER has been registered,
@@ -92,7 +92,7 @@ void crypt_init(void)
       1
 #endif
   )
-    crypto_module_register(&crypt_mod_pgp_classic);
+    crypto_module_register(&CryptModPgpClassic);
 #endif
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
@@ -103,14 +103,14 @@ void crypt_init(void)
       1
 #endif
   )
-    crypto_module_register(&crypt_mod_smime_classic);
+    crypto_module_register(&CryptModSmimeClassic);
 #endif
 
   if (CryptUseGpgme)
   {
 #ifdef CRYPT_BACKEND_GPGME
-    crypto_module_register(&crypt_mod_pgp_gpgme);
-    crypto_module_register(&crypt_mod_smime_gpgme);
+    crypto_module_register(&CryptModPgpGpgme);
+    crypto_module_register(&CryptModSmimeGpgme);
 #else
     mutt_message(_("\"crypt_use_gpgme\" set"
                    " but not built with GPGME support"));
