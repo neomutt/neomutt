@@ -51,7 +51,7 @@ extern bool  PopAuthTryAll;
 /* These Config Variables are only used in pop/pop_lib.c */
 extern unsigned char PopReconnect;
 
-extern struct MxOps mx_pop_ops;
+extern struct MxOps MxPopOps;
 
 void pop_fetch_mail(void);
 int pop_path_probe(const char *path, const struct stat *st);

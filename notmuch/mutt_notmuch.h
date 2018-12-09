@@ -54,7 +54,7 @@ extern char *NmUnreadTag;
 extern char *NmFlaggedTag;
 extern char *NmRepliedTag;
 
-extern struct MxOps mx_notmuch_ops;
+extern struct MxOps MxNotmuchOps;
 
 void  nm_db_debug_check             (struct Mailbox *m);
 int   nm_description_to_path     (const char *desc, char *buf, size_t buflen);

@@ -62,7 +62,7 @@ extern char *NewsCacheDir;
 extern char *Newsrc;
 
 extern struct NntpAccountData *CurrentNewsSrv;
-extern struct MxOps mx_nntp_ops;
+extern struct MxOps MxNntpOps;
 
 /* article number type and format */
 #define anum_t uint32_t

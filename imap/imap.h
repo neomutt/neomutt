@@ -89,7 +89,7 @@ int imap_fast_trash(struct Mailbox *m, char *dest);
 int imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(char *buf, size_t buflen);
 
-extern struct MxOps mx_imap_ops;
+extern struct MxOps MxImapOps;
 
 /* browse.c */
 int imap_browse(char *path, struct BrowserState *state);

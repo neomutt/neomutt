@@ -1276,9 +1276,9 @@ int pop_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * mx_pop_ops - POP mailbox - Implements ::MxOps
+ * MxPopOps - POP mailbox - Implements ::MxOps
  */
-struct MxOps mx_pop_ops = {
+struct MxOps MxPopOps = {
   .magic            = MUTT_POP,
   .name             = "pop",
   .ac_find          = pop_ac_find,

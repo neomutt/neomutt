@@ -987,12 +987,12 @@ int comp_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_comp_ops - Compressed mailbox - Implements ::MxOps
+ * MxCompOps - Compressed mailbox - Implements ::MxOps
  *
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.
  */
-struct MxOps mx_comp_ops = {
+struct MxOps MxCompOps = {
   .magic            = MUTT_COMPRESSED,
   .name             = "compressed",
   .ac_find          = comp_ac_find,

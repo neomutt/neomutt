@@ -679,9 +679,9 @@ enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
 
 // clang-format off
 /**
- * struct mx_maildir_ops - Maildir mailbox - Implements ::MxOps
+ * MxMaildirOps - Maildir mailbox - Implements ::MxOps
  */
-struct MxOps mx_maildir_ops = {
+struct MxOps MxMaildirOps = {
   .magic            = MUTT_MAILDIR,
   .name             = "maildir",
   .ac_find          = maildir_ac_find,
