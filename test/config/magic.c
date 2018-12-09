@@ -147,7 +147,7 @@ static bool test_initial_values(struct ConfigSet *cs, struct Buffer *err)
     return false;
   }
 
-  TEST_MSG("Cherry = %s\n", magic_values[VarCherry]);
+  TEST_MSG("Cherry = %s\n", MagicValues[VarCherry]);
   TEST_MSG("Cherry's initial value is %s\n", value.data);
 
   FREE(&value.data);

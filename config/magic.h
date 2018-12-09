@@ -25,7 +25,7 @@
 
 struct ConfigSet;
 
-extern const char *magic_values[];
+extern const char *MagicValues[];
 
 /**
  * enum MailboxType - Supported mailbox formats
