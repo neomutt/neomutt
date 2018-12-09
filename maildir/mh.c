@@ -48,6 +48,7 @@
 #include "context.h"
 #include "errno.h"
 #include "globals.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "monitor.h"
 #include "muttlib.h"
