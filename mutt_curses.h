@@ -189,18 +189,18 @@ struct ColorLine
 };
 STAILQ_HEAD(ColorLineHead, ColorLine);
 
-extern int *ColorQuote;
-extern int ColorQuoteUsed;
-extern int ColorDefs[];
-extern struct ColorLineHead ColorHdrList;
-extern struct ColorLineHead ColorBodyList;
-extern struct ColorLineHead ColorAttachList;
-extern struct ColorLineHead ColorStatusList;
-extern struct ColorLineHead ColorIndexList;
-extern struct ColorLineHead ColorIndexAuthorList;
-extern struct ColorLineHead ColorIndexFlagsList;
-extern struct ColorLineHead ColorIndexSubjectList;
-extern struct ColorLineHead ColorIndexTagList;
+extern int *ColorQuote;                            ///< Array of colours for quoted email text
+extern int ColorQuoteUsed;                         ///< Number of colours for quoted email text
+extern int ColorDefs[];                            ///< Array of all fixed colours, see enum ColorId
+extern struct ColorLineHead ColorHdrList;          ///< List of colours applied to the email headers
+extern struct ColorLineHead ColorBodyList;         ///< List of colours applied to the email body
+extern struct ColorLineHead ColorAttachList;       ///< List of colours applied to the attachment headers
+extern struct ColorLineHead ColorStatusList;       ///< List of colours applied to the status bar
+extern struct ColorLineHead ColorIndexList;        ///< List of default colours applied to the index
+extern struct ColorLineHead ColorIndexAuthorList;  ///< List of colours applied to the author in the index
+extern struct ColorLineHead ColorIndexFlagsList;   ///< List of colours applied to the flags in the index
+extern struct ColorLineHead ColorIndexSubjectList; ///< List of colours applied to the subject in the index
+extern struct ColorLineHead ColorIndexTagList;     ///< List of colours applied to tags in the index
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the

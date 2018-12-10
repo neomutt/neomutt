@@ -36,7 +36,7 @@ struct MyVar
 };
 TAILQ_HEAD(MyVarHead, MyVar);
 
-extern struct MyVarHead MyVars;
+extern struct MyVarHead MyVars; ///< List of all the user's custom config variables
 
 void        myvar_del(const char *var);
 const char *myvar_get(const char *var);

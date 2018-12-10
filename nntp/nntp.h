@@ -61,7 +61,7 @@ extern bool  ShowNewNews;
 extern char *NewsCacheDir;
 extern char *Newsrc;
 
-extern struct NntpAccountData *CurrentNewsSrv;
+extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern struct MxOps MxNntpOps;
 
 /* article number type and format */

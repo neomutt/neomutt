@@ -44,7 +44,7 @@ struct Account
 
 TAILQ_HEAD(AccountList, Account);
 
-extern struct AccountList AllAccounts;
+extern struct AccountList AllAccounts; ///< List of all Accounts
 
 struct Account *account_new(void);
 void            account_remove_mailbox(struct Account *a, struct Mailbox *m);

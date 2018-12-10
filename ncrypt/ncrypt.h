@@ -60,12 +60,12 @@ struct State;
 
 /* These Config Variables are only used in ncrypt/crypt.c */
 extern bool          CryptTimestamp;
-extern unsigned char PgpEncryptSelf;
-extern unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+extern unsigned char PgpEncryptSelf; ///< Deprecated, see PgpSelfEncrypt
+extern unsigned char PgpMimeAuto;
 extern bool          PgpRetainableSigs;
 extern bool          PgpSelfEncrypt;
 extern bool          PgpStrictEnc;
-extern unsigned char SmimeEncryptSelf;
+extern unsigned char SmimeEncryptSelf; ///< Deprecated, see SmimeSelfEncrypt
 extern bool          SmimeSelfEncrypt;
 
 /* These Config Variables are only used in ncrypt/cryptglue.c */

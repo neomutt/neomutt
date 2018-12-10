@@ -86,11 +86,9 @@ enum MenuTypes
   MENU_MAX,
 };
 
-/* the keymap trees (one for each menu) */
-extern struct Keymap *Keymaps[];
+extern struct Keymap *Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 
-/* dokey() records the last real key pressed  */
-extern int LastKey;
+extern int LastKey; ///< Last real key pressed, recorded by dokey()
 
 extern const struct Mapping Menus[];
 
