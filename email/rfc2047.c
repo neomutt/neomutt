@@ -36,6 +36,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "email/lib.h"
 #include "rfc2047.h"
 #include "address.h"
 #include "email_globals.h"
@@ -777,4 +778,22 @@ void rfc2047_decode_addrlist(struct Address *a)
       rfc2047_decode(&a->mailbox);
     a = a->next;
   }
+}
+
+/**
+ * rfc2047_decode_envelope - Decode the fields of an Envelope
+ * @param env Envelope
+ */
+void rfc2047_decode_envelope(struct Envelope *env)
+{
+  rfc2047_decode_addrlist(env->from);
+  rfc2047_decode_addrlist(env->to);
+  rfc2047_decode_addrlist(env->cc);
+  rfc2047_decode_addrlist(env->bcc);
+  rfc2047_decode_addrlist(env->reply_to);
+  rfc2047_decode_addrlist(env->mail_followup_to);
+  rfc2047_decode_addrlist(env->return_path);
+  rfc2047_decode_addrlist(env->sender);
+  rfc2047_decode(&env->x_label);
+  rfc2047_decode(&env->subject);
 }

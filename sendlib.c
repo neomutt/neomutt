@@ -2942,12 +2942,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   mutt_addr_free(&env->mail_followup_to);
 
   /* back conversions */
-  rfc2047_decode_addrlist(env->to);
-  rfc2047_decode_addrlist(env->cc);
-  rfc2047_decode_addrlist(env->bcc);
-  rfc2047_decode_addrlist(env->from);
-  rfc2047_decode_addrlist(env->reply_to);
-  rfc2047_decode(&env->subject);
+  rfc2047_decode_envelope(env);
 }
 
 /**

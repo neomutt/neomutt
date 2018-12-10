@@ -1120,22 +1120,11 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
     e->content->hdr_offset = e->offset;
     e->content->offset = ftello(f);
 
-    /* do RFC2047 decoding */
-    rfc2047_decode_addrlist(env->from);
-    rfc2047_decode_addrlist(env->to);
-    rfc2047_decode_addrlist(env->cc);
-    rfc2047_decode_addrlist(env->bcc);
-    rfc2047_decode_addrlist(env->reply_to);
-    rfc2047_decode_addrlist(env->mail_followup_to);
-    rfc2047_decode_addrlist(env->return_path);
-    rfc2047_decode_addrlist(env->sender);
-    rfc2047_decode_addrlist(env->x_original_to);
+    rfc2047_decode_envelope(env);
 
     if (env->subject)
     {
       regmatch_t pmatch[1];
-
-      rfc2047_decode(&env->subject);
 
       if (ReplyRegex && ReplyRegex->regex &&
           (regexec(ReplyRegex->regex, env->subject, 1, pmatch, 0) == 0))
