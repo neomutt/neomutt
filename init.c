@@ -3702,6 +3702,13 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   const char *str = (const char *) value;
 
+  if ((strcmp(cdef->name, "charset") == 0) && strchr(str, ':'))
+  {
+    mutt_buffer_printf(err,
+                       _("'charset' must contain exactly one character set name"));
+    return CSR_ERR_INVALID;
+  }
+
   int rc = CSR_SUCCESS;
   bool strict = (strcmp(cdef->name, "send_charset") == 0);
   char *q = NULL;
