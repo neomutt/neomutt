@@ -52,7 +52,10 @@ static int smime_gpgme_valid_passphrase(void)
 }
 
 // clang-format off
-struct CryptModuleSpecs crypt_mod_smime_gpgme = {
+/**
+ * CryptModSmimeGpgme - GPGME SMIME - Implements ::CryptModuleSpecs
+ */
+struct CryptModuleSpecs CryptModSmimeGpgme = {
   APPLICATION_SMIME,
 
   smime_gpgme_init,

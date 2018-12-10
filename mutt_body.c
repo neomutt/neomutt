@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_body Representation of the body of an email
+ *
+ * Representation of the body of an email
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

@@ -1835,9 +1835,9 @@ static int mbox_mbox_check_stats(struct Mailbox *m, int flags)
 
 // clang-format off
 /**
- * struct mx_mbox_ops - Mbox mailbox - Implements ::MxOps
+ * MxMboxOps - Mbox mailbox - Implements ::MxOps
  */
-struct MxOps mx_mbox_ops = {
+struct MxOps MxMboxOps = {
   .magic            = MUTT_MBOX,
   .name             = "mbox",
   .ac_find          = mbox_ac_find,
@@ -1862,9 +1862,9 @@ struct MxOps mx_mbox_ops = {
 };
 
 /**
- * struct mx_mmdf_ops - MMDF mailbox - Implements ::MxOps
+ * MxMmdfOps - MMDF mailbox - Implements ::MxOps
  */
-struct MxOps mx_mmdf_ops = {
+struct MxOps MxMmdfOps = {
   .magic            = MUTT_MMDF,
   .name             = "mmdf",
   .ac_find          = mbox_ac_find,

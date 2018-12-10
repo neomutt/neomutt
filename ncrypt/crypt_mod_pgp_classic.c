@@ -37,7 +37,10 @@
 #endif
 
 // clang-format off
-struct CryptModuleSpecs crypt_mod_pgp_classic = {
+/**
+ * CryptModPgpClassic - CLI PGP - Implements ::CryptModuleSpecs
+ */
+struct CryptModuleSpecs CryptModPgpClassic = {
   APPLICATION_PGP,
 
   NULL, /* init */

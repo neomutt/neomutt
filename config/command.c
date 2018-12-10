@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-command Type: Command
+ * @page config_command Type: Command
  *
  * Type representing a command.
  */

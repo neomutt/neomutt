@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page curs_lib GUI miscellaneous curses (window drawing) routines
+ *
+ * GUI miscellaneous curses (window drawing) routines
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>

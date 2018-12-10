@@ -99,27 +99,27 @@ char *Trash;        ///< Config: Folder to put deleted emails
 static const struct MxOps *mx_ops[] = {
 /* These mailboxes can be recognised by their Url scheme */
 #ifdef USE_IMAP
-  &mx_imap_ops,
+  &MxImapOps,
 #endif
 #ifdef USE_NOTMUCH
-  &mx_notmuch_ops,
+  &MxNotmuchOps,
 #endif
 #ifdef USE_POP
-  &mx_pop_ops,
+  &MxPopOps,
 #endif
 #ifdef USE_NNTP
-  &mx_nntp_ops,
+  &MxNntpOps,
 #endif
 
   /* Local mailboxes */
-  &mx_maildir_ops,
-  &mx_mbox_ops,
-  &mx_mh_ops,
-  &mx_mmdf_ops,
+  &MxMaildirOps,
+  &MxMboxOps,
+  &MxMhOps,
+  &MxMmdfOps,
 
 /* If everything else fails... */
 #ifdef USE_COMPRESSED
-  &mx_comp_ops,
+  &MxCompOps,
 #endif
   NULL,
 };
@@ -1442,23 +1442,23 @@ enum MailboxType mx_path_probe(const char *path, struct stat *st)
 
   static const struct MxOps *no_stat[] = {
 #ifdef USE_IMAP
-    &mx_imap_ops,
+    &MxImapOps,
 #endif
 #ifdef USE_NOTMUCH
-    &mx_notmuch_ops,
+    &MxNotmuchOps,
 #endif
 #ifdef USE_POP
-    &mx_pop_ops,
+    &MxPopOps,
 #endif
 #ifdef USE_NNTP
-    &mx_nntp_ops,
+    &MxNntpOps,
 #endif
   };
 
   static const struct MxOps *with_stat[] = {
-    &mx_maildir_ops, &mx_mbox_ops, &mx_mh_ops, &mx_mmdf_ops,
+    &MxMaildirOps, &MxMboxOps, &MxMhOps, &MxMmdfOps,
 #ifdef USE_COMPRESSED
-    &mx_comp_ops,
+    &MxCompOps,
 #endif
   };
 

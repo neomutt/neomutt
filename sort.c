@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page sort Assorted sorting methods
+ *
+ * Assorted sorting methods
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>

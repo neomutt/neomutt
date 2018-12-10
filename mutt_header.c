@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_header Manipulate an email's header
+ *
+ * Manipulate an email's header
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

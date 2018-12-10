@@ -34,9 +34,9 @@ extern char *              SpamSeparator;
 extern bool                Weed;
 
 /* Global variables */
-extern struct ListHead    Ignore;
-extern struct RegexList   NoSpamList;
-extern struct ReplaceList SpamList;
-extern struct ListHead    UnIgnore;
+extern struct ListHead Ignore;      ///< List of header patterns to ignore
+extern struct RegexList NoSpamList; ///< List of regexes to whitelist non-spam emails
+extern struct ReplaceList SpamList; ///< List of regexes and patterns to match spam emails
+extern struct ListHead UnIgnore;    ///< List of header patterns to unignore (see)
 
 #endif /* MUTT_EMAIL_EMAIL_GLOBALS_H */

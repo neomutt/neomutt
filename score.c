@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page score Routines for adding user scores to emails
+ *
+ * Routines for adding user scores to emails
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>

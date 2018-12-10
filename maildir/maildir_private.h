@@ -37,13 +37,6 @@ struct Mailbox;
 struct Message;
 struct Progress;
 
-extern bool CheckNew;
-extern bool MaildirHeaderCacheVerify;
-extern bool MhPurge;
-extern char *MhSeqFlagged;
-extern char *MhSeqReplied;
-extern char *MhSeqUnseen;
-
 /**
  * struct MaildirMboxData - Maildir-specific Mailbox data - @extends Mailbox
  */

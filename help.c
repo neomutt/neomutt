@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page help Generate the help-line and help-page and GUI display them
+ *
+ * Generate the help-line and help-page and GUI display them
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <limits.h>

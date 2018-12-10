@@ -765,7 +765,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
 /**
  * imap_expunge_mailbox - Purge messages from the server
- * @param adata Imap Account data
+ * @param m Mailbox
  *
  * Purge IMAP portion of expunged messages from the context. Must not be done
  * while something has a handle on any headers (eg inside pager or editor).
@@ -2539,9 +2539,9 @@ int imap_path_parent(char *buf, size_t buflen)
 
 // clang-format off
 /**
- * struct mx_imap_ops - IMAP mailbox - Implements ::MxOps
+ * MxImapOps - IMAP mailbox - Implements ::MxOps
  */
-struct MxOps mx_imap_ops = {
+struct MxOps MxImapOps = {
   .magic            = MUTT_IMAP,
   .name             = "imap",
   .ac_find          = imap_ac_find,

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-long Type: Long
+ * @page config_long Type: Long
  *
  * Type representing a long.
  */

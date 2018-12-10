@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page keymap Manage keymappings
+ *
+ * Manage keymappings
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <limits.h>

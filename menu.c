@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page menu GUI present the user with a selectable list
+ *
+ * GUI present the user with a selectable list
+ */
+
 #include "config.h"
 #include <regex.h>
 #include <stdbool.h>

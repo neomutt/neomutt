@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-mbtable Type: Multi-byte character table
+ * @page config_mbtable Type: Multi-byte character table
  *
  * Type representing a multibyte character table.
  */

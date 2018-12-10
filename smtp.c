@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page smtp Send email to an SMTP server
+ *
+ * Send email to an SMTP server
+ */
+
 /* This file contains code for direct SMTP delivery of email messages. */
 
 #include "config.h"

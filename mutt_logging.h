@@ -29,7 +29,6 @@
 
 extern short DebugLevel;
 extern char *DebugFile;
-extern bool LogAllowDebugSet;
 
 int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
 

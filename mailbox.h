@@ -142,7 +142,7 @@ struct MailboxNode
 
 STAILQ_HEAD(MailboxList, MailboxNode);
 
-extern struct MailboxList AllMailboxes;
+extern struct MailboxList AllMailboxes; ///< List of all Mailboxes
 
 struct Mailbox *mailbox_new(void);
 void            mailbox_free(struct Mailbox **m);

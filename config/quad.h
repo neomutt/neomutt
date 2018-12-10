@@ -27,7 +27,7 @@ struct Buffer;
 struct ConfigSet;
 struct HashElem;
 
-extern const char *quad_values[];
+extern const char *QuadValues[];
 
 /**
  * enum QuadOption - Possible values for a quad-option

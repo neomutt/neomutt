@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page send Prepare and send an email
+ *
+ * Prepare and send an email
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>

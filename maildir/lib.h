@@ -54,8 +54,8 @@ extern char *MhSeqFlagged;
 extern char *MhSeqReplied;
 extern char *MhSeqUnseen;
 
-extern struct MxOps mx_maildir_ops;
-extern struct MxOps mx_mh_ops;
+extern struct MxOps MxMaildirOps;
+extern struct MxOps MxMhOps;
 
 int           maildir_check_empty      (const char *path);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);

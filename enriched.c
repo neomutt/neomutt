@@ -21,6 +21,12 @@
  */
 
 /**
+ * @page enriched Rich text handler
+ *
+ * Rich text handler
+ */
+
+/**
  * A (not so) minimal implementation of RFC1563.
  */
 

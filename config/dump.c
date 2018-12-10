@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-dump Dump all the config
+ * @page config_dump Dump all the config
  *
  * Dump all the config items in various formats.
  */

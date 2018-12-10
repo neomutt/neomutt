@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page pager GUI display a file/email/help in a viewport with paging
+ *
+ * GUI display a file/email/help in a viewport with paging
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-cfgaccount Account-specific config items
+ * @page config_cfgaccount Account-specific config items
  *
  * A collection of account-specific config items.
  */

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page browser GUI component for displaying/selecting items from a list
+ *
+ * GUI component for displaying/selecting items from a list
+ */
+
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>

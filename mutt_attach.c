@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_attach Handling of email attachments
+ *
+ * Handling of email attachments
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>

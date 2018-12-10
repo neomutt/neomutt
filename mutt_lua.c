@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_lua Integrated Lua scripting
+ *
+ * Integrated Lua scripting
+ */
+
 #include "config.h"
 #include <lauxlib.h>
 #include <limits.h>

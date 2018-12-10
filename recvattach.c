@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page recvattach Routines for managing attachments
+ *
+ * Routines for managing attachments
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -443,8 +449,8 @@ int attach_tag(struct Menu *menu, int sel, int act)
 
 /**
  * prepend_savedir - Add AttachSaveDir to the beginning of a path
- * @param buf    Buffer for the result, must be valid
- * @param buflen Size of the buffer
+ * @param buf     Buffer for the result, must be valid
+ * @param bufsize Size of the buffer
  */
 static void prepend_savedir(char *buf, size_t bufsize)
 {

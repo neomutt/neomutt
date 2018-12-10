@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page bcache Body Caching - local copies of email bodies
+ *
+ * Body Caching - local copies of email bodies
+ */
+
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>

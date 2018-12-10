@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page index2 GUI manage the main index (list of emails)
+ *
+ * GUI manage the main index (list of emails)
+ */
+
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>

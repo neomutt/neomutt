@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config-quad Type: Quad-option
+ * @page config_quad Type: Quad-option
  *
  * Type representing a quad-option.
  */
@@ -39,11 +39,11 @@
 #include "types.h"
 
 /**
- * quad_values - Valid strings for creating a QuadValue
+ * QuadValues - Valid strings for creating a QuadValue
  *
  * These strings are case-insensitive.
  */
-const char *quad_values[] = {
+const char *QuadValues[] = {
   "no", "yes", "ask-no", "ask-yes", NULL,
 };
 
@@ -57,9 +57,9 @@ static int quad_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int num = -1;
-  for (size_t i = 0; quad_values[i]; i++)
+  for (size_t i = 0; QuadValues[i]; i++)
   {
-    if (mutt_str_strcasecmp(quad_values[i], value) == 0)
+    if (mutt_str_strcasecmp(QuadValues[i], value) == 0)
     {
       num = i;
       break;
@@ -111,13 +111,13 @@ static int quad_string_get(const struct ConfigSet *cs, void *var,
   else
     value = (int) cdef->initial;
 
-  if (value >= (mutt_array_size(quad_values) - 1))
+  if (value >= (mutt_array_size(QuadValues) - 1))
   {
     mutt_debug(1, "Variable has an invalid value: %d\n", value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  mutt_buffer_addstr(result, quad_values[value]);
+  mutt_buffer_addstr(result, QuadValues[value]);
   return CSR_SUCCESS;
 }
 
@@ -130,7 +130,7 @@ static int quad_native_set(const struct ConfigSet *cs, void *var,
   if (!cs || !var || !cdef)
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
-  if ((value < 0) || (value >= (mutt_array_size(quad_values) - 1)))
+  if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
     mutt_buffer_printf(err, "Invalid quad value: %ld", value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -238,7 +238,7 @@ int quad_he_toggle(struct ConfigSet *cs, struct HashElem *he, struct Buffer *err
   char *var = cdef->var;
 
   char value = *var;
-  if ((value < 0) || (value >= (mutt_array_size(quad_values) - 1)))
+  if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
     mutt_buffer_printf(err, "Invalid quad value: %ld", value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;

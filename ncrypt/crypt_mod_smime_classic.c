@@ -35,7 +35,10 @@
 #endif
 
 // clang-format off
-struct CryptModuleSpecs crypt_mod_smime_classic = {
+/**
+ * CryptModSmimeClassic - CLI SMIME - Implements ::CryptModuleSpecs
+ */
+struct CryptModuleSpecs CryptModSmimeClassic = {
   APPLICATION_SMIME,
 
   NULL, /* init */

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page nm_db Notmuch database handling
+ *
+ * Notmuch database handling
+ */
+
 #include "config.h"
 #include <notmuch.h>
 #include <string.h>
