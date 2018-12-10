@@ -32,6 +32,7 @@
 #include "mutt/mutt.h"
 #include "body.h"
 #include "email.h"
+#include "envelope.h"
 #include "mime.h"
 #include "parameter.h"
 
@@ -90,6 +91,7 @@ void mutt_body_free(struct Body **p)
       mutt_email_free(&b->email);
     }
 
+    mutt_env_free(&b->mime_headers);
     mutt_body_free(&b->parts);
     FREE(&b);
   }

@@ -1161,6 +1161,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Email *e, bool user_hdr
 struct Body *mutt_read_mime_header(FILE *fp, bool digest)
 {
   struct Body *p = mutt_body_new();
+  struct Envelope *env = mutt_env_new();
   char *c = NULL;
   char *line = mutt_mem_malloc(LONG_STRING);
   size_t linelen = LONG_STRING;
@@ -1224,6 +1225,11 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       }
     }
 #endif
+    else
+    {
+      if (mutt_rfc822_parse_line(env, NULL, line, c, false, false, false))
+        p->mime_headers = env;
+    }
   }
   p->offset = ftello(fp); /* Mark the start of the real data */
   if (p->type == TYPE_TEXT && !p->subtype)
@@ -1232,6 +1238,11 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     p->subtype = mutt_str_strdup("rfc822");
 
   FREE(&line);
+
+  if (p->mime_headers)
+    rfc2047_decode_envelope(p->mime_headers);
+  else
+    mutt_env_free(&env);
 
   return p;
 }
