@@ -35,7 +35,7 @@ int              mutt_check_mime_type(const char *s);
 char *           mutt_extract_message_id(const char *s, const char **saveptr);
 bool             mutt_is_message_type(int type, const char *subtype);
 bool             mutt_matches_ignore(const char *s);
-void             mutt_parse_content_type(char *s, struct Body *ct);
+void             mutt_parse_content_type(const char *s, struct Body *ct);
 struct Body *    mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
 void             mutt_parse_part(FILE *fp, struct Body *b);
 struct Body *    mutt_read_mime_header(FILE *fp, bool digest);

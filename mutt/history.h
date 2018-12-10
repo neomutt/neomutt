@@ -59,6 +59,6 @@ char *mutt_hist_prev(enum HistoryClass hclass);
 void  mutt_hist_read_file(void);
 void  mutt_hist_reset_state(enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-int   mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches);
+int   mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
 
 #endif /* MUTT_LIB_HISTORY_H */

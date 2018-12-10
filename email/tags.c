@@ -49,7 +49,7 @@ struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
  * Return a new allocated string containing tags separated by space
  */
 static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
-                                bool show_transformed, char *filter)
+                                bool show_transformed, const char *filter)
 {
   if (!head)
     return NULL;
@@ -174,7 +174,7 @@ char *driver_tags_get_with_hidden(struct TagHead *head)
  * Return a new allocated string containing all tags separated by space even
  * the hiddens.
  */
-char *driver_tags_get_transformed_for(char *name, struct TagHead *head)
+char *driver_tags_get_transformed_for(const char *name, struct TagHead *head)
 {
   return driver_tags_getter(head, true, true, name);
 }

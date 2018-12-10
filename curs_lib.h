@@ -58,7 +58,7 @@ void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, cons
 void         mutt_getch_timeout(int delay);
 struct Event mutt_getch(void);
 int          mutt_get_field_full(const char *field, char *buf, size_t buflen, int complete, bool multiple, char ***files, int *numfiles);
-int          mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
+int          mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, int flags);
 int          mutt_multi_choice(const char *prompt, const char *letters);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(int n, const char *s);

@@ -636,7 +636,7 @@ int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
  * @retval num Unix time
  * @retval 0   Error
  */
-time_t mutt_date_parse_imap(char *s)
+time_t mutt_date_parse_imap(const char *s)
 {
   struct tm t;
   time_t tz;

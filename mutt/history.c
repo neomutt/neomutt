@@ -410,7 +410,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  * @param[out] matches    All the matching lines
  * @retval num Matches found
  */
-int mutt_hist_search(char *search_buf, enum HistoryClass hclass, char **matches)
+int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches)
 {
   struct History *h = get_history(hclass);
   int match_count = 0, cur;

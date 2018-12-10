@@ -289,7 +289,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
  * @retval 0  Selection made
  * @retval -1 Aborted
  */
-int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
+int mutt_get_field_unbuffered(const char *msg, char *buf, size_t buflen, int flags)
 {
   int rc;
 

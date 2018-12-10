@@ -226,7 +226,7 @@ static void parse_references(struct ListHead *head, char *s)
  * @param s  Language string
  * @param ct Body of the email
  */
-static void parse_content_language(char *s, struct Body *ct)
+static void parse_content_language(const char *s, struct Body *ct)
 {
   if (!s || !ct)
     return;
@@ -390,7 +390,7 @@ int mutt_check_encoding(const char *c)
  *
  * e.g. parse a string "inline" and set #DISP_INLINE.
  */
-void mutt_parse_content_type(char *s, struct Body *ct)
+void mutt_parse_content_type(const char *s, struct Body *ct)
 {
   FREE(&ct->subtype);
   mutt_param_free(&ct->parameter);

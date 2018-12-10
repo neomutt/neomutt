@@ -1237,7 +1237,7 @@ void mutt_file_unlink_empty(const char *path)
  * @note on access(2) use No dangling symlink problems here due to
  * mutt_file_fopen().
  */
-int mutt_file_rename(char *oldfile, char *newfile)
+int mutt_file_rename(const char *oldfile, const char *newfile)
 {
   FILE *ofp = NULL, *nfp = NULL;
 

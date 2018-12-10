@@ -69,7 +69,7 @@ bool MailcapSanitize; ///< Config: Restrict the possible characters in mailcap e
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  */
-int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *command, int clen)
+int rfc1524_expand_command(struct Body *a, const char *filename, const char *type, char *command, int clen)
 {
   int x = 0, y = 0;
   int needspipe = true;
@@ -501,7 +501,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
  * for a "%s". If none is found, the nametemplate is used as the template for
  * newfile.  The first path component of the nametemplate and oldfile are ignored.
  */
-int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
+int rfc1524_expand_filename(const char *nametemplate, const char *oldfile, char *newfile, size_t nflen)
 {
   int i, j, k, ps;
   char *s = NULL;

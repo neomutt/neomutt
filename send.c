@@ -1527,7 +1527,7 @@ static bool search_attach_keyword(char *filename)
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
-int ci_send_message(int flags, struct Email *msg, char *tempfile,
+int ci_send_message(int flags, struct Email *msg, const char *tempfile,
                     struct Context *ctx, struct Email *cur)
 {
   char buf[LONG_STRING];

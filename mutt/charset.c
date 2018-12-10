@@ -984,7 +984,7 @@ void mutt_ch_set_charset(const char *charset)
  * @retval ptr  Best performing charset
  * @retval NULL None could be found
  */
-char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
+char *mutt_ch_choose(const char *fromcode, const char *charsets, const char *u,
                      size_t ulen, char **d, size_t *dlen)
 {
   char *e = NULL, *tocode = NULL;
