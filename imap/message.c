@@ -967,6 +967,17 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   {
     imap_hcache_close(mdata);
     imap_expunge_mailbox(m);
+
+    /* undo expunge count updates.
+     * mx_update_context() will do this at the end of the header fetch. */
+    m->vcount = 0;
+    m->msg_tagged = 0;
+    m->msg_deleted = 0;
+    m->msg_new = 0;
+    m->msg_unread = 0;
+    m->msg_flagged = 0;
+    m->changed = 0;
+
     mdata->hcache = imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
@@ -998,7 +1009,7 @@ static int read_headers_fetch_new(struct ImapAccountData *adata, unsigned int ms
   FILE *fp = NULL;
   struct ImapHeader h;
   static const char *const want_headers =
-      "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
+      "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
       "X-ORIGINAL-TO";
 

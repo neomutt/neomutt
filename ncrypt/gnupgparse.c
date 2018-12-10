@@ -137,7 +137,6 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   int trust = 0;
   int flags = 0;
   struct PgpKeyInfo tmp;
-  char tstr[11];
 
   *is_subkey = 0;
   if (!*buf)
@@ -259,36 +258,46 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       }
       case 6: /* timestamp (1998-02-28) */
       {
-        struct tm time;
-
         mutt_debug(2, "time stamp: %s\n", p);
 
-        if (!p)
-          break;
-        time.tm_sec = 0;
-        time.tm_min = 0;
-        time.tm_hour = 12;
-        mutt_str_strfcpy(tstr, p, sizeof(tstr));
-        tstr[4] = '\0';
-        tstr[7] = '\0';
-        if (mutt_str_atoi(tstr, &time.tm_year) < 0)
+        if (strchr(p, '-')) /* gpg pre-2.0.10 used format (yyyy-mm-dd) */
         {
-          p = tstr;
-          goto bail;
+          char tstr[11];
+          struct tm time;
+
+          time.tm_sec = 0;
+          time.tm_min = 0;
+          time.tm_hour = 12;
+          strncpy(tstr, p, 11);
+          tstr[4] = '\0';
+          tstr[7] = '\0';
+          if (mutt_str_atoi(tstr, &time.tm_year) < 0)
+          {
+            p = tstr;
+            goto bail;
+          }
+          time.tm_year -= 1900;
+          if (mutt_str_atoi(tstr + 5, &time.tm_mon) < 0)
+          {
+            p = tstr + 5;
+            goto bail;
+          }
+          time.tm_mon -= 1;
+          if (mutt_str_atoi(tstr + 8, &time.tm_mday) < 0)
+          {
+            p = tstr + 8;
+            goto bail;
+          }
+          tmp.gen_time = mutt_date_make_time(&time, 0);
         }
-        time.tm_year -= 1900;
-        if (mutt_str_atoi(tstr + 5, &time.tm_mon) < 0)
+        else /* gpg 2.0.10+ uses seconds since 1970-01-01 */
         {
-          p = tstr + 5;
-          goto bail;
+          unsigned long long secs;
+
+          if (mutt_str_atoull(p, &secs) < 0)
+            goto bail;
+          tmp.gen_time = (time_t) secs;
         }
-        time.tm_mon -= 1;
-        if (mutt_str_atoi(tstr + 8, &time.tm_mday) < 0)
-        {
-          p = tstr + 8;
-          goto bail;
-        }
-        tmp.gen_time = mutt_date_make_time(&time, 0);
         break;
       }
       case 7: /* valid for n days */

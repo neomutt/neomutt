@@ -186,6 +186,8 @@ struct ColorLine
   short bg;
   int pair;
   STAILQ_ENTRY(ColorLine) entries;
+
+  bool stop_matching : 1; ///< used by the pager for body patterns, to prevent the color from being retried once it fails
 };
 STAILQ_HEAD(ColorLineHead, ColorLine);
 

@@ -213,7 +213,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
  *   3 - format is "<major>.<minor>.<micro><patchlevel>".
  * To ignore the patchlevel in the comparison add 10 to LEVEL.  To get
  * a reverse sorting order use a negative number.   */
-#if GPGRT_VERSION_NUMBER >= 0x012100 /* gpgme >= 1.33 */
+#if GPGRT_VERSION_NUMBER >= 0x012100 /* libgpg-error >= 1.33 */
 static int cmp_version_strings(const char *a, const char *b, int level)
 {
   return gpgrt_cmp_version(a, b, level);
