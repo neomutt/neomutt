@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page compose GUI editor for an email's headers
+ *
+ * GUI editor for an email's headers
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>

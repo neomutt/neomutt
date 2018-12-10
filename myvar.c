@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page myvar Handling of personal config ('my' variables)
+ *
+ * Handling of personal config ('my' variables)
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include "mutt/mutt.h"

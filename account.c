@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page account Representation of an account
+ *
+ * Representation of an account
+ */
+
 #include "config.h"
 #include "mutt/mutt.h"
 #include "account.h"

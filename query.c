@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page query Routines for querying and external address book
+ *
+ * Routines for querying and external address book
+ */
+
 #include "config.h"
 #include <regex.h>
 #include <stdbool.h>

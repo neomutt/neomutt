@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_thread Create/manipulate threading in emails
+ *
+ * Create/manipulate threading in emails
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mailbox Representation of a mailbox
+ *
+ * Representation of a mailbox
+ */
+
 #include "config.h"
 #include <dirent.h>
 #include <limits.h>

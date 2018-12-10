@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page monitor Monitor files for changes
+ *
+ * Monitor files for changes
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>

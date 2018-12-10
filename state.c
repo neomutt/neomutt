@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page state Keep track when processing files
+ *
+ * Keep track when processing files
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdarg.h>

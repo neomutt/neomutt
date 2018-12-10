@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page sendlib Miscellaneous functions for sending an email
+ *
+ * Miscellaneous functions for sending an email
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>

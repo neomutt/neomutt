@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page alias Representation of a single alias to an email address
+ *
+ * Representation of a single alias to an email address
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>

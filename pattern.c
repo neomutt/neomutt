@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page pattern Match patterns to emails
+ *
+ * Match patterns to emails
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>

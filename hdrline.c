@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hdrline String processing routines to generate the mail index
+ *
+ * String processing routines to generate the mail index
+ */
+
 #include "config.h"
 #include <locale.h>
 #include <stdbool.h>

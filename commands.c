@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page commands Manage where the email is piped to external commands
+ *
+ * Manage where the email is piped to external commands
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>

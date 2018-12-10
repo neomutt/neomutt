@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page edit GUI basic built-in text editor
+ *
+ * GUI basic built-in text editor
+ */
+
 /* Close approximation of the mailx(1) builtin editor for sending mail. */
 
 #include "config.h"

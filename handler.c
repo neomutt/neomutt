@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page handler Decide how to display email content
+ *
+ * Decide how to display email content
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>

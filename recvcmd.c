@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page recvcmd Send/reply with an attachment
+ *
+ * Send/reply with an attachment
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

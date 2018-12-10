@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page init Config/command parsing
+ *
+ * Config/command parsing
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>

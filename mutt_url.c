@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_url Parse and identify different URL schemes
+ *
+ * Parse and identify different URL schemes
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>

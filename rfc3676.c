@@ -23,6 +23,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page rfc3676 RFC3676 Format Flowed routines
+ *
+ * RFC3676 Format Flowed routines
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

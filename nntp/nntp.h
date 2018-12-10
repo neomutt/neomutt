@@ -27,10 +27,12 @@
  *
  * Usenet network mailbox type; talk to an NNTP server
  *
- * | File          | Description          |
- * | :------------ | :------------------- |
- * | nntp/newsrc.c | @subpage nntp_newsrc |
- * | nntp/nntp.c   | @subpage nntp_nntp   |
+ * | File            | Description            |
+ * | :-------------- | :--------------------- |
+ * | nntp/browse.c   | @subpage nntp_browse   |
+ * | nntp/complete.c | @subpage nntp_complete |
+ * | nntp/newsrc.c   | @subpage nntp_newsrc   |
+ * | nntp/nntp.c     | @subpage nntp_nntp     |
  */
 
 #ifndef MUTT_NNTP_NNTP_H

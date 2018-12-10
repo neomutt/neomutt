@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_history Read/write command history from/to a file
+ *
+ * Read/write command history from/to a file
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include "mutt/mutt.h"

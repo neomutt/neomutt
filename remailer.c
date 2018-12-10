@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page remailer Support of Mixmaster anonymous remailer
+ *
+ * Support of Mixmaster anonymous remailer
+ */
+
 #include "config.h"
 #include <fcntl.h>
 #include <stdbool.h>

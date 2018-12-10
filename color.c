@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page color Color and attribute parsing
+ *
+ * Color and attribute parsing
+ */
+
 #include "config.h"
 #include <regex.h>
 #include <stdbool.h>

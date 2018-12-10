@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page recvattach Routines for managing attachments
+ *
+ * Routines for managing attachments
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

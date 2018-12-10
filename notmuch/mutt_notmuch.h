@@ -28,6 +28,7 @@
  * | File                   | Description         |
  * | :--------------------- | :------------------ |
  * | notmuch/mutt_notmuch.c | @subpage nm_notmuch |
+ * | notmuch/nm_db.c        | @subpage nm_db      |
  */
 
 #ifndef MUTT_NOTMUCH_MUTT_NOTMUCH_H

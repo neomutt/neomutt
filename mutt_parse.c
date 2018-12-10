@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_parse Miscellaneous email parsing routines
+ *
+ * Miscellaneous email parsing routines
+ */
+
 #include "config.h"
 #include <regex.h>
 #include <stdbool.h>

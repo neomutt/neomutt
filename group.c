@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page group Handling for email address groups
+ *
+ * Handling for email address groups
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
