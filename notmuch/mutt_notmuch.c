@@ -1710,15 +1710,14 @@ char *nm_uri_from_query(struct Mailbox *m, char *buf, size_t buflen)
 
   if (get_limit(mdata) != NmDbLimit)
   {
-    added = snprintf(uri, sizeof(uri),
-        "%s%s?type=%s&limit=%d&query=", NmUriProtocol, nm_db_get_filename(m),
-        query_type_to_string(mdata->query_type), get_limit(mdata));
+    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&limit=%d&query=", NmUriProtocol,
+                     nm_db_get_filename(m),
+                     query_type_to_string(mdata->query_type), get_limit(mdata));
   }
   else
   {
-    added = snprintf(uri, sizeof(uri),
-        "%s%s?type=%s&query=", NmUriProtocol, nm_db_get_filename(m),
-        query_type_to_string(mdata->query_type));
+    added = snprintf(uri, sizeof(uri), "%s%s?type=%s&query=", NmUriProtocol,
+                     nm_db_get_filename(m), query_type_to_string(mdata->query_type));
   }
 
   if (added >= sizeof(uri))

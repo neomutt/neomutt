@@ -782,7 +782,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
   int cacheno;
   short old_sort;
 
-
 #ifdef USE_HCACHE
   mdata->hcache = imap_hcache_open(adata, mdata);
 #endif

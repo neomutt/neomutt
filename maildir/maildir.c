@@ -64,7 +64,8 @@
  *
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
-static void maildir_check_dir(struct Mailbox *m, const char *dir_name, bool check_new, bool check_stats)
+static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
+                              bool check_new, bool check_stats)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;

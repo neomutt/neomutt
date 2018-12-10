@@ -454,8 +454,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, int type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^
-          hook->regex.not)
+      if ((mutt_pattern_exec(hook->pattern, 0, m, e, &cache) > 0) ^ hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
         {

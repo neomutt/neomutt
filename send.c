@@ -1559,7 +1559,8 @@ int ci_send_message(int flags, struct Email *msg, char *tempfile,
     OptNewsSend = false;
 #endif
 
-  if (!flags && !msg && Recall != MUTT_NO && mutt_num_postponed(ctx ? ctx->mailbox: NULL, true))
+  if (!flags && !msg && Recall != MUTT_NO &&
+      mutt_num_postponed(ctx ? ctx->mailbox : NULL, true))
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
