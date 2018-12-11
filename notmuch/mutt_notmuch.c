@@ -2100,16 +2100,10 @@ int nm_ac_add(struct Account *a, struct Mailbox *m)
   if (!a->adata)
   {
     struct NmAccountData *adata = nm_adata_new();
-    a->magic = MUTT_NOTMUCH;
     a->adata = adata;
     a->free_adata = nm_adata_free;
   }
 
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

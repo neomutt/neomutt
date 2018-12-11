@@ -1872,12 +1872,9 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     if (imap_login(adata) < 0)
       return -1;
 
-    a->magic = MUTT_IMAP;
     a->adata = adata;
     a->free_adata = imap_adata_free;
   }
-
-  m->account = a;
 
   if (!m->mdata)
   {
@@ -1887,10 +1884,6 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
     m->free_mdata = imap_mdata_free;
     url_free(&url);
   }
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 
