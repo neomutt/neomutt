@@ -2276,7 +2276,14 @@ bail:
  */
 int smime_class_application_handler(struct Body *m, struct State *s)
 {
-  return smime_handle_entity(m, s, NULL) ? 0 : -1;
+  int rv = -1;
+  struct Body *tattach = smime_handle_entity (m, s, NULL);
+  if (tattach)
+  {
+    rv = 0;
+    mutt_body_free (&tattach);
+  }
+  return rv;
 }
 
 /**
