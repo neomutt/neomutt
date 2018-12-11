@@ -274,15 +274,19 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
   }
 
   if (!m->account)
-    m->account = mx_ac_find(m);
-
-  if (!m->account)
   {
-    struct Account *a = account_new();
-    m->account = a;
-    a->magic = m->magic;
-    TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
-    mx_ac_add(a, m);
+    struct Account *a = mx_ac_find(m);
+    if (!a)
+    {
+      a = account_new();
+      a->magic = m->magic;
+      TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
+    }
+    if (mx_ac_add(a, m) < 0)
+    {
+      mailbox_free(&m);
+      return NULL;
+    }
   }
 
 #if 0
@@ -339,20 +343,6 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     mx_fastclose_mailbox(ctx);
     mutt_context_free(&ctx);
     return NULL;
-  }
-
-  if (!m->account)
-  {
-    struct Account *a = account_new();
-    a->magic = m->magic;
-    TAILQ_INSERT_TAIL(&AllAccounts, a, entries);
-
-    if (mx_ac_add(a, m) < 0)
-    {
-      //error
-      mailbox_free(&m);
-      return NULL;
-    }
   }
 
   mutt_make_label_hash(m);
