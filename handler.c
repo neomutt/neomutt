@@ -1409,8 +1409,20 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   struct Body *octetstream = b->parts->next;
+
+  /* clear out any mime headers before the handler, so they can't be spoofed. */
+  mutt_env_free(&b->mime_headers);
+  mutt_env_free(&octetstream->mime_headers);
+
   int rc = crypt_pgp_encrypted_handler(octetstream, s);
   b->goodsig |= octetstream->goodsig;
+
+  /* Relocate protected headers onto the multipart/encrypted part */
+  if (!rc && octetstream->mime_headers)
+  {
+    b->mime_headers = octetstream->mime_headers;
+    octetstream->mime_headers = NULL;
+  }
 
   return rc;
 }
@@ -1421,9 +1433,21 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   struct Body *octetstream = b->parts->next->next;
+
+  /* clear out any mime headers before the handler, so they can't be spoofed. */
+  mutt_env_free(&b->mime_headers);
+  mutt_env_free(&octetstream->mime_headers);
+
   /* exchange encodes the octet-stream, so re-run it through the decoder */
   int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, false);
   b->goodsig |= octetstream->goodsig;
+
+  /* Relocate protected headers onto the multipart/encrypted part */
+  if (!rc && octetstream->mime_headers)
+  {
+    b->mime_headers = octetstream->mime_headers;
+    octetstream->mime_headers = NULL;
+  }
 
   return rc;
 }

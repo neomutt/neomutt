@@ -271,6 +271,7 @@ WHERE bool CryptUsePka;                    ///< Config: Use GPGME to use PKA (lo
 
 WHERE bool CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
 WHERE bool CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
+WHERE bool CryptProtectedHeadersRead;      ///< Config: Display protected headers (Memory Hole) in the pager
 WHERE bool SmimeIsDefault;                 ///< Config: Use SMIME rather than PGP by default
 WHERE bool PgpIgnoreSubkeys;               ///< Config: Only use the principal PGP key
 WHERE bool PgpLongIds;                     ///< Config: Display long PGP key IDs to the user

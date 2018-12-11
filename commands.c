@@ -91,6 +91,74 @@ static const char *ExtPagerProgress = "all";
 static char LastSaveFolder[PATH_MAX] = "";
 
 /**
+ * update_protected_headers - Get the protected header and update the index
+ * @param cur Email to update
+ */
+static void update_protected_headers(struct Email *cur)
+{
+  struct Envelope *prot_headers = NULL;
+  regmatch_t pmatch[1];
+
+  if (!CryptProtectedHeadersRead)
+    return;
+
+  /* Grab protected headers to update in the index */
+  if (cur->security & SIGN)
+  {
+    /* Don't update on a bad signature.
+     *
+     * This is a simplification.  It's possible the headers are in the
+     * encrypted part of a nested encrypt/signed.  But properly handling that
+     * case would require more complexity in the decryption handlers, which
+     * I'm not sure is worth it. */
+    if (!(cur->security & GOODSIGN))
+      return;
+
+    if (mutt_is_multipart_signed(cur->content) && cur->content->parts)
+    {
+      prot_headers = cur->content->parts->mime_headers;
+    }
+    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(cur->content))
+    {
+      prot_headers = cur->content->mime_headers;
+    }
+  }
+  if (!prot_headers && (cur->security & ENCRYPT))
+  {
+    if ((WithCrypto & APPLICATION_PGP) &&
+        (mutt_is_valid_multipart_pgp_encrypted(cur->content) ||
+         mutt_is_malformed_multipart_pgp_encrypted(cur->content)))
+    {
+      prot_headers = cur->content->mime_headers;
+    }
+    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(cur->content))
+    {
+      prot_headers = cur->content->mime_headers;
+    }
+  }
+
+  /* Update protected headers in the index and header cache. */
+  if (prot_headers && prot_headers->subject &&
+      mutt_str_strcmp(cur->env->subject, prot_headers->subject))
+  {
+    if (Context->mailbox->subj_hash && cur->env->real_subj)
+      mutt_hash_delete(Context->mailbox->subj_hash, cur->env->real_subj, cur);
+
+    mutt_str_replace(&cur->env->subject, prot_headers->subject);
+    FREE(&cur->env->disp_subj);
+    if (regexec(ReplyRegex->regex, cur->env->subject, 1, pmatch, 0) == 0)
+      cur->env->real_subj = cur->env->subject + pmatch[0].rm_eo;
+    else
+      cur->env->real_subj = cur->env->subject;
+
+    if (Context->mailbox->subj_hash)
+      mutt_hash_insert(Context->mailbox->subj_hash, cur->env->real_subj, cur);
+
+    mx_save_hcache(Context->mailbox, cur);
+  }
+}
+
+/**
  * mutt_display_message - Display a message in the pager
  * @param cur Header of current message
  * @retval  0 Success
@@ -220,6 +288,9 @@ int mutt_display_message(struct Email *cur)
     /* Remove color cache for this message, in case there
        are color patterns for both ~g and ~V */
     cur->pair = 0;
+
+    /* Grab protected headers and update the header and index */
+    update_protected_headers(cur);
   }
 
   if (builtin)

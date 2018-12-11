@@ -52,6 +52,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_parse.h"
+#include "mutt_window.h"
 #include "muttlib.h"
 #include "ncrypt.h"
 #include "options.h"
@@ -1066,6 +1067,25 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 }
 
 /**
+ * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t
+ */
+int mutt_protected_headers_handler(struct Body *a, struct State *s)
+{
+  if (CryptProtectedHeadersRead && a->mime_headers)
+  {
+    if (a->mime_headers->subject)
+    {
+      mutt_write_one_header(s->fpout, "Subject", a->mime_headers->subject,
+                            s->prefix, mutt_window_wrap_cols(MuttIndexWindow, Wrap),
+                            (s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0);
+      state_puts("\n", s);
+    }
+  }
+
+  return 0;
+}
+
+/**
  * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
@@ -1182,6 +1202,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
       /* Now display the signed body */
       state_attach_puts(_("[-- The following data is signed --]\n\n"), s);
+
+      mutt_protected_headers_handler(a, s);
 
       FREE(&signatures);
     }
