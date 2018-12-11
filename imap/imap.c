@@ -776,7 +776,11 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
  * while something has a handle on any headers (eg inside pager or editor).
  * That is, check IMAP_REOPEN_ALLOW.
  */
+#ifdef USE_HCACHE
+void imap_expunge_mailbox(struct Mailbox *m, header_cache_t *hcache)
+#else
 void imap_expunge_mailbox(struct Mailbox *m)
+#endif
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -786,10 +790,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
   struct Email *e = NULL;
   int cacheno;
   short old_sort;
-
-#ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-#endif
 
   old_sort = Sort;
   Sort = SORT_ORDER;
@@ -808,7 +808,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
       imap_cache_del(m, e);
 #ifdef USE_HCACHE
-      imap_hcache_del(mdata, imap_edata_get(e)->uid);
+      imap_hcache_del(hcache, imap_edata_get(e)->uid);
 #endif
 
       /* free cached body from disk, if necessary */
@@ -846,10 +846,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
       e->active = true;
     }
   }
-
-#ifdef USE_HCACHE
-  imap_hcache_close(mdata);
-#endif
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
@@ -1694,7 +1690,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   }
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
+  header_cache_t *hcache = imap_hcache_open(adata, mdata);
 #endif
 
   /* save messages with real (non-flag) changes */
@@ -1706,14 +1702,14 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     {
       imap_cache_del(m, e);
 #ifdef USE_HCACHE
-      imap_hcache_del(mdata, imap_edata_get(e)->uid);
+      imap_hcache_del(hcache, imap_edata_get(e)->uid);
 #endif
     }
 
     if (e->active && e->changed)
     {
 #ifdef USE_HCACHE
-      imap_hcache_put(mdata, e);
+      imap_hcache_put(hcache, mdata->uid_validity, e);
 #endif
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
@@ -1732,7 +1728,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   }
 
 #ifdef USE_HCACHE
-  imap_hcache_close(mdata);
+  mutt_hcache_close(hcache);
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */

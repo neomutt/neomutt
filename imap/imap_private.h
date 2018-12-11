@@ -249,11 +249,6 @@ struct ImapMboxData
   size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
-
-#ifdef USE_HCACHE
-  header_cache_t *hcache;
-#endif
-
 };
 
 /**
@@ -280,7 +275,11 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *pbar);
+#ifdef USE_HCACHE
+void imap_expunge_mailbox(struct Mailbox *m, header_cache_t *hcache);
+#else
 void imap_expunge_mailbox(struct Mailbox *m);
+#endif
 int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
@@ -316,13 +315,12 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m);
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
-void imap_hcache_close(struct ImapMboxData *mdata);
-struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
-int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);
-int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid);
-int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata);
-int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata);
-char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
+struct Email *imap_hcache_get(header_cache_t *hcache, unsigned int uid_validity, unsigned int uid);
+int imap_hcache_put(header_cache_t *hcache, unsigned int uid_validity, struct Email *e);
+int imap_hcache_del(header_cache_t *hcache, unsigned int uid);
+int imap_hcache_store_uid_seqset(header_cache_t *hcache, struct ImapMboxData *mdata);
+int imap_hcache_clear_uid_seqset(header_cache_t *hcache);
+char *imap_hcache_get_uid_seqset(header_cache_t *hcache);
 #endif
 
 int imap_continue(const char *msg, const char *resp);

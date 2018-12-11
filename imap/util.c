@@ -439,43 +439,31 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
 }
 
 /**
- * imap_hcache_close - Close the header cache
- * @param mdata Imap Mailbox data
- */
-void imap_hcache_close(struct ImapMboxData *mdata)
-{
-  if (!mdata->hcache)
-    return;
-
-  mutt_hcache_close(mdata->hcache);
-  mdata->hcache = NULL;
-}
-
-/**
  * imap_hcache_get - Get a header cache entry by its UID
- * @param mdata Imap Mailbox data
- * @param uid   UID to find
+ * @param hcache        HeaderCache
+ * @param uid_validity  UID validity
+ * @param uid           UID to find
  * @retval ptr Email Header
  * @retval NULL Failure
  */
-struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
+struct Email *imap_hcache_get(header_cache_t *hcache, unsigned int uid_validity, unsigned int uid)
 {
   char key[16];
   void *uv = NULL;
   struct Email *e = NULL;
 
-  if (!mdata->hcache)
+  if (!hcache)
     return NULL;
 
   sprintf(key, "/%u", uid);
-  uv = mutt_hcache_fetch(mdata->hcache, key, imap_hcache_keylen(key));
+  uv = mutt_hcache_fetch(hcache, key, imap_hcache_keylen(key));
   if (uv)
   {
-    if (*(unsigned int *) uv == mdata->uid_validity)
+    if (*(unsigned int *) uv == uid_validity)
       e = mutt_hcache_restore(uv);
     else
       mutt_debug(3, "hcache uidvalidity mismatch: %u\n", *(unsigned int *) uv);
-    mutt_hcache_free(mdata->hcache, &uv);
+    mutt_hcache_free(hcache, &uv);
   }
 
   return e;
@@ -483,49 +471,51 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 
 /**
  * imap_hcache_put - Add an entry to the header cache
- * @param mdata Imap Mailbox data
- * @param e     Email
+ * @param hcache        HeaderCache
+ * @param uid_validity  UID validity
+ * @param e             Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
+int imap_hcache_put(header_cache_t *hcache, unsigned int uid_validity, struct Email *e)
 {
   char key[16];
 
-  if (!mdata->hcache)
+  if (!hcache)
     return -1;
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
-  return mutt_hcache_store(mdata->hcache, key, imap_hcache_keylen(key), e, mdata->uid_validity);
+  return mutt_hcache_store(hcache, key, imap_hcache_keylen(key), e, uid_validity);
 }
 
 /**
  * imap_hcache_del - Delete an item from the header cache
- * @param mdata Imap Mailbox data
+ * @param hcache        HeaderCache
  * @param uid   UID of entry to delete
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
+int imap_hcache_del(header_cache_t *hcache, unsigned int uid)
 {
   char key[16];
 
-  if (!mdata->hcache)
+  if (!hcache)
     return -1;
 
   sprintf(key, "/%u", uid);
-  return mutt_hcache_delete(mdata->hcache, key, imap_hcache_keylen(key));
+  return mutt_hcache_delete(hcache, key, imap_hcache_keylen(key));
 }
 
 /**
  * imap_hcache_store_uid_seqset - Store a UID Sequence Set in the header cache
- * @param mdata Imap Mailbox data
+ * @param hcache  HeaderCache
+ * @param mdata   Imap Mailbox data
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
+int imap_hcache_store_uid_seqset(header_cache_t *hcache, struct ImapMboxData *mdata)
 {
-  if (!mdata->hcache)
+  if (!hcache)
     return -1;
 
   struct Buffer *b = mutt_buffer_new();
@@ -537,7 +527,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   if (seqset_size == 0)
     b->data[0] = '\0';
 
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
+  int rc = mutt_hcache_store_raw(hcache, "/UIDSEQSET", 10, b->data, seqset_size + 1);
   mutt_debug(5, "Stored /UIDSEQSET %s\n", b->data);
   mutt_buffer_free(&b);
   return rc;
@@ -545,32 +535,32 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
 
 /**
  * imap_hcache_clear_uid_seqset - Delete a UID Sequence Set from the header cache
- * @param mdata Imap Mailbox data
+ * @param hcache  HeaderCache
  * @retval  0 Success
  * @retval -1 Error
  */
-int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata)
+int imap_hcache_clear_uid_seqset(header_cache_t *hcache)
 {
-  if (!mdata->hcache)
+  if (!hcache)
     return -1;
 
-  return mutt_hcache_delete(mdata->hcache, "/UIDSEQSET", 10);
+  return mutt_hcache_delete(hcache, "/UIDSEQSET", 10);
 }
 
 /**
  * imap_hcache_get_uid_seqset - Get a UID Sequence Set from the header cache
- * @param mdata Imap Mailbox data
+ * @param hcache  HeaderCache
  * @retval ptr  UID Sequence Set
  * @retval NULL Error
  */
-char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
+char *imap_hcache_get_uid_seqset(header_cache_t *hcache)
 {
-  if (!mdata->hcache)
+  if (!hcache)
     return NULL;
 
-  char *hc_seqset = mutt_hcache_fetch_raw(mdata->hcache, "/UIDSEQSET", 10);
+  char *hc_seqset = mutt_hcache_fetch_raw(hcache, "/UIDSEQSET", 10);
   char *seqset = mutt_str_strdup(hc_seqset);
-  mutt_hcache_free(mdata->hcache, (void **) &hc_seqset);
+  mutt_hcache_free(hcache, (void **) &hc_seqset);
   mutt_debug(5, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;

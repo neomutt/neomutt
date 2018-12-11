@@ -703,7 +703,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e,
  * their MSN.  The current flag state will be queried in
  * read_headers_condstore_qresync_updates().
  */
-static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
+static int read_headers_normal_eval_cache(struct ImapAccountData *adata, header_cache_t *hcache,
                                           unsigned int msn_end, unsigned int uid_next,
                                           bool store_flag_updates, bool eval_condstore)
 {
@@ -768,7 +768,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         continue;
       }
 
-      m->hdrs[idx] = imap_hcache_get(mdata, h.data->uid);
+      m->hdrs[idx] = imap_hcache_get(hcache, mdata->uid_validity, h.data->uid);
       if (m->hdrs[idx])
       {
         mdata->max_msn = MAX(mdata->max_msn, h.data->msn);
@@ -813,7 +813,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         /* If this is the first time we are fetching, we need to
          * store the current state of flags back into the header cache */
         if (!eval_condstore && store_flag_updates)
-          imap_hcache_put(mdata, m->hdrs[idx]);
+          imap_hcache_put(hcache, mdata->uid_validity, m->hdrs[idx]);
 
         h.data = NULL;
         idx++;
@@ -841,7 +841,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
  * In read_headers_condstore_qresync_updates().  We will update change flags
  * using CHANGEDSINCE and find out what UIDs have been expunged using VANISHED.
  */
-static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *uid_seqset)
+static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, header_cache_t *hcache, char *uid_seqset)
 {
   int rc;
   unsigned int uid = 0;
@@ -862,7 +862,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
     if (msn > mdata->msn_index_size)
       alloc_msn_index(adata, msn);
 
-    struct Email *e = imap_hcache_get(mdata, uid);
+    struct Email *e = imap_hcache_get(hcache, mdata->uid_validity, uid);
     if (e)
     {
       mdata->max_msn = MAX(mdata->max_msn, msn);
@@ -913,6 +913,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
  * CONDSTORE and QRESYNC use FETCH extensions to grab updates.
  */
 static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
+                                                  header_cache_t *hcache,
                                                   unsigned int msn_end, unsigned int uid_next,
                                                   unsigned long long hc_modseq, bool eval_qresync)
 {
@@ -961,7 +962,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
       continue;
     }
 
-    imap_hcache_put(mdata, mdata->msn_index[header_msn - 1]);
+    imap_hcache_put(hcache, mdata->uid_validity, mdata->msn_index[header_msn - 1]);
   }
 
   /* The IMAP flag setting as part of cmd_parse_fetch() ends up
@@ -972,8 +973,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   /* VANISHED handling: we need to empty out the messages */
   if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
-    imap_hcache_close(mdata);
-    imap_expunge_mailbox(m);
+    imap_expunge_mailbox(m, hcache);
 
     /* undo expunge count updates.
      * mx_update_context() will do this at the end of the header fetch. */
@@ -985,7 +985,6 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     m->msg_flagged = 0;
     m->changed = 0;
 
-    mdata->hcache = imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
 
@@ -1004,9 +1003,18 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
+#ifdef USE_HCACHE
+static int read_headers_fetch_new(struct Mailbox *m,
+                                  header_cache_t *hcache,
+                                  unsigned int msn_begin,
                                   unsigned int msn_end, bool evalhc,
                                   unsigned int *maxuid, bool initial_download)
+#else
+static int read_headers_fetch_new(struct Mailbox *m,
+                                  unsigned int msn_begin,
+                                  unsigned int msn_end, bool evalhc,
+                                  unsigned int *maxuid, bool initial_download)
+#endif /* USE_HCACHE */
 {
   int rc, mfhrc = 0, retval = -1;
   unsigned int fetch_msn_end = 0;
@@ -1164,7 +1172,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         m->size += h.content_length;
 
 #ifdef USE_HCACHE
-        imap_hcache_put(mdata, m->hdrs[idx]);
+        imap_hcache_put(hcache, mdata->uid_validity, m->hdrs[idx]);
 #endif /* USE_HCACHE */
 
         m->msg_count++;
@@ -1258,16 +1266,16 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   mdata->new_mail_count = 0;
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
+  header_cache_t *hcache = imap_hcache_open(adata, mdata);
 
-  if (mdata->hcache && initial_download)
+  if (hcache && initial_download)
   {
-    uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
-    puid_next = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
+    uid_validity = mutt_hcache_fetch_raw(hcache, "/UIDVALIDITY", 12);
+    puid_next = mutt_hcache_fetch_raw(hcache, "/UIDNEXT", 8);
     if (puid_next)
     {
       uid_next = *(unsigned int *) puid_next;
-      mutt_hcache_free(mdata->hcache, &puid_next);
+      mutt_hcache_free(hcache, &puid_next);
     }
 
     if (mdata->modseq)
@@ -1286,17 +1294,17 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
     if (uid_validity && uid_next && (*(unsigned int *) uid_validity == mdata->uid_validity))
     {
       evalhc = true;
-      pmodseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7);
+      pmodseq = mutt_hcache_fetch_raw(hcache, "/MODSEQ", 7);
       if (pmodseq)
       {
         hc_modseq = *pmodseq;
-        mutt_hcache_free(mdata->hcache, (void **) &pmodseq);
+        mutt_hcache_free(hcache, (void **) &pmodseq);
       }
       if (hc_modseq)
       {
         if (has_qresync)
         {
-          uid_seqset = imap_hcache_get_uid_seqset(mdata);
+          uid_seqset = imap_hcache_get_uid_seqset(hcache);
           if (uid_seqset)
             eval_qresync = true;
         }
@@ -1305,25 +1313,27 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
           eval_condstore = true;
       }
     }
-    mutt_hcache_free(mdata->hcache, &uid_validity);
+    mutt_hcache_free(hcache, &uid_validity);
   }
   if (evalhc)
   {
     if (eval_qresync)
     {
-      if (read_headers_qresync_eval_cache(adata, uid_seqset) < 0)
+      if (read_headers_qresync_eval_cache(adata, hcache, uid_seqset) < 0)
         goto bail;
     }
     else
     {
-      if (read_headers_normal_eval_cache(adata, msn_end, uid_next, has_condstore || has_qresync,
+      if (read_headers_normal_eval_cache(adata, hcache, msn_end, uid_next,
+                                         has_condstore || has_qresync,
                                          eval_condstore) < 0)
         goto bail;
     }
 
     if ((eval_condstore || eval_qresync) && (hc_modseq != mdata->modseq))
     {
-      if (read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
+      if (read_headers_condstore_qresync_updates(adata, hcache,
+                                                 msn_end, uid_next,
                                                  hc_modseq, eval_qresync) < 0)
       {
         goto bail;
@@ -1338,16 +1348,19 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
       msn_begin++;
     }
   }
-#endif /* USE_HCACHE */
 
+  if (read_headers_fetch_new(m, hcache, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
+    goto bail;
+#else
   if (read_headers_fetch_new(m, msn_begin, msn_end, evalhc, &maxuid, initial_download) < 0)
     goto bail;
+#endif /* USE_HCACHE */
 
   if (maxuid && mdata->uid_next < maxuid + 1)
     mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
-  mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
+  mutt_hcache_store_raw(hcache, "/UIDVALIDITY", 12, &mdata->uid_validity,
                         sizeof(mdata->uid_validity));
   if (maxuid && mdata->uid_next < maxuid + 1)
   {
@@ -1356,7 +1369,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   }
   if (mdata->uid_next > 1)
   {
-    mutt_hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next,
+    mutt_hcache_store_raw(hcache, "/UIDNEXT", 8, &mdata->uid_next,
                           sizeof(mdata->uid_next));
   }
 
@@ -1368,17 +1381,14 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   if (initial_download)
   {
     if (has_condstore || has_qresync)
-    {
-      mutt_hcache_store_raw(mdata->hcache, "/MODSEQ", 7, &mdata->modseq,
-                            sizeof(mdata->modseq));
-    }
+      mutt_hcache_store_raw(hcache, "/MODSEQ", 7, &mdata->modseq, sizeof(mdata->modseq));
     else
-      mutt_hcache_delete(mdata->hcache, "/MODSEQ", 7);
+      mutt_hcache_delete(hcache, "/MODSEQ", 7);
 
     if (has_qresync)
-      imap_hcache_store_uid_seqset(mdata);
+      imap_hcache_store_uid_seqset(hcache, mdata);
     else
-      imap_hcache_clear_uid_seqset(mdata);
+      imap_hcache_clear_uid_seqset(hcache);
   }
 #endif /* USE_HCACHE */
 
@@ -1395,7 +1405,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
 bail:
 #ifdef USE_HCACHE
-  imap_hcache_close(mdata);
+  mutt_hcache_close(hcache);
   FREE(&uid_seqset);
 #endif /* USE_HCACHE */
 
