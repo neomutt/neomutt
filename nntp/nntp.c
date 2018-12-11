@@ -2412,17 +2412,8 @@ struct Account *nntp_ac_find(struct Account *a, const char *path)
  */
 int nntp_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
+  if (!a || !m || m->magic != MUTT_NNTP)
     return -1;
-
-  if (m->magic != MUTT_NNTP)
-    return -1;
-
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

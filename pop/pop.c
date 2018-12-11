@@ -776,16 +776,12 @@ struct Account *pop_ac_find(struct Account *a, const char *path)
  */
 int pop_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
-    return -1;
-
-  if (m->magic != MUTT_POP)
+  if (!a || !m || m->magic != MUTT_POP)
     return -1;
 
   if (!a->adata)
   {
     struct PopAccountData *adata = pop_adata_new();
-    a->magic = MUTT_POP;
     a->adata = adata;
     a->free_adata = pop_adata_free;
 
@@ -809,11 +805,6 @@ int pop_ac_add(struct Account *a, struct Mailbox *m)
     }
   }
 
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 

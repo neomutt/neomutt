@@ -1729,7 +1729,14 @@ int mx_ac_add(struct Account *a, struct Mailbox *m)
   if (!a || !m || !m->mx_ops || !m->mx_ops->ac_add)
     return -1;
 
-  return m->mx_ops->ac_add(a, m);
+  if (m->mx_ops->ac_add(a, m) < 0)
+    return -1;
+
+  m->account = a;
+  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  np->m = m;
+  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  return 0;
 }
 
 /**

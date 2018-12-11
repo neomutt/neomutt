@@ -1700,17 +1700,8 @@ struct Account *maildir_ac_find(struct Account *a, const char *path)
  */
 int maildir_ac_add(struct Account *a, struct Mailbox *m)
 {
-  if (!a || !m)
+  if (!a || !m || (m->magic != MUTT_MAILDIR && m->magic != MUTT_MH))
     return -1;
-
-  if (m->magic != MUTT_MAILDIR)
-    return -1;
-
-  m->account = a;
-
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
-  np->m = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   return 0;
 }
 
