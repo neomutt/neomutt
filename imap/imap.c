@@ -1883,6 +1883,13 @@ int imap_ac_add(struct Account *a, struct Mailbox *m)
   {
     struct Url *url = url_parse(m->path);
     struct ImapMboxData *mdata = imap_mdata_new(adata, url->path);
+
+    /* fixup path and realpath, mainly to replace / by /INBOX */
+    char buf[LONG_STRING];
+    imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
+    mutt_str_strfcpy(m->path, buf, sizeof(m->path));
+    mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
+
     m->mdata = mdata;
     m->free_mdata = imap_mdata_free;
     url_free(&url);
@@ -1959,7 +1966,7 @@ int imap_login(struct ImapAccountData *adata)
  */
 static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
 {
-  if (!m || !m->account)
+  if (!m || !m->account || !m->mdata)
     return -1;
 
   char buf[PATH_MAX];
@@ -1969,10 +1976,6 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
-
-  imap_qualify_path(buf, sizeof(buf), &adata->conn_account, mdata->name);
-  mutt_str_strfcpy(m->path, buf, sizeof(m->path));
-  mutt_str_strfcpy(m->realpath, m->path, sizeof(m->realpath));
 
   // NOTE(sileht): looks like we have two not obvious loop here
   // ctx->mailbox->account->adata->ctx
