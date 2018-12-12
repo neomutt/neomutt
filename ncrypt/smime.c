@@ -2196,7 +2196,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
       m->goodsig = true;
     FREE(&line);
   }
-  else
+  else if (p)
   {
     m->goodsig = p->goodsig;
     m->badsig = p->badsig;
