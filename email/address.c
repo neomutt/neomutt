@@ -1314,6 +1314,51 @@ struct Address *mutt_addrlist_dedupe(struct Address *addr)
       addr = addr->next;
     }
   }
+  return top;
+}
 
+/**
+ * mutt_addr_remove_xrefs - Remove cross-references
+ * @param a Reference list of Addresses
+ * @param b Address list to trim
+ * @retval ptr Updated Address list
+ *
+ * Remove addresses from "b" which are contained in "a"
+ */
+struct Address *mutt_addr_remove_xrefs(struct Address *a, struct Address *b)
+{
+  struct Address *p = NULL, *prev = NULL;
+
+  struct Address *top = b;
+  while (b)
+  {
+    for (p = a; p; p = p->next)
+    {
+      if (mutt_addr_cmp(p, b))
+        break;
+    }
+    if (p)
+    {
+      if (prev)
+      {
+        prev->next = b->next;
+        b->next = NULL;
+        mutt_addr_free(&b);
+        b = prev;
+      }
+      else
+      {
+        top = top->next;
+        b->next = NULL;
+        mutt_addr_free(&b);
+        b = top;
+      }
+    }
+    else
+    {
+      prev = b;
+      b = b->next;
+    }
+  }
   return top;
 }

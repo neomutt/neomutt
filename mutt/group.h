@@ -25,9 +25,12 @@
 #define MUTT_GROUP_H
 
 #include <stdbool.h>
+#include "queue.h"
+#include "regex3.h"
 
 struct Address;
 struct Buffer;
+struct Hash;
 
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
@@ -43,25 +46,31 @@ struct Group
 };
 
 /**
- * struct GroupContext - A set of Groups
+ * struct GroupNode - A node in a GroupNode
  */
-struct GroupContext
+struct GroupNode
 {
   struct Group *g;
-  struct GroupContext *next;
+  STAILQ_ENTRY(GroupNode) entries;
 };
 
-void mutt_group_context_add(struct GroupContext **ctx, struct Group *group);
-void mutt_group_context_destroy(struct GroupContext **ctx);
-void mutt_group_context_add_addrlist(struct GroupContext *ctx, struct Address *a);
-int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err);
+/**
+ * struct GroupList - A list of GroupNodes
+ */
+STAILQ_HEAD(GroupList, GroupNode);
+
+void mutt_grouplist_init(void);
+void mutt_grouplist_free(void);
+void mutt_grouplist_add(struct GroupList *head, struct Group *group);
+void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
+int  mutt_grouplist_add_regex(struct GroupList *head, const char *s,
+                              int flags, struct Buffer *err);
+void mutt_grouplist_destroy(struct GroupList *head);
+void mutt_grouplist_clear(struct GroupList *head);
+int  mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
+int  mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a);
 
 bool mutt_group_match(struct Group *g, const char *s);
-
-int mutt_group_context_clear(struct GroupContext **ctx);
-int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s);
-int mutt_group_context_remove_addrlist(struct GroupContext *ctx, struct Address *a);
-
 struct Group *mutt_pattern_group(const char *k);
 
 #endif /* MUTT_GROUP_H */
