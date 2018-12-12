@@ -159,7 +159,7 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
 
   mdata->real_name = mutt_str_strdup(name);
 
-  imap_fix_path(adata, name, buf, sizeof(buf));
+  imap_fix_path(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
   mdata->name = mutt_str_strdup(buf);
@@ -423,7 +423,7 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
   char cachepath[PATH_MAX];
   char mbox[PATH_MAX];
 
-  imap_cachepath(adata, mdata->name, mbox, sizeof(mbox));
+  imap_cachepath(adata->delim, mdata->name, mbox, sizeof(mbox));
 
   if (strstr(mbox, "/../") || (strcmp(mbox, "..") == 0) || (strncmp(mbox, "../", 3) == 0))
     return NULL;
@@ -673,8 +673,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
   b1 = mutt_mem_malloc(strlen(mx1) + 1);
   b2 = mutt_mem_malloc(strlen(mx2) + 1);
 
-  imap_fix_path(NULL, mx1, b1, strlen(mx1) + 1);
-  imap_fix_path(NULL, mx2, b2, strlen(mx2) + 1);
+  imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
+  imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
 
   rc = mutt_str_strcmp(b1, b2);
   FREE(&b1);
@@ -772,11 +772,11 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param adata   Imap Account data
- * @param mailbox Mailbox path
- * @param path    Buffer for the result
- * @param plen    Length of buffer
- * @retval ptr Fixed-up path
+ * @param server_delim  Imap Server Delim
+ * @param mailbox       Mailbox path
+ * @param path          Buffer for the result
+ * @param plen          Length of buffer
+ * @retval ptr          Fixed-up path
  *
  * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
@@ -784,20 +784,17 @@ void imap_error(const char *where, const char *msg)
  * to "/".  IMAP servers are not required to do this.
  * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
-char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *path, size_t plen)
+char *imap_fix_path(char server_delim, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
-  char delim = '\0';
-
-  if (adata)
-    delim = adata->delim;
+  char delim = server_delim;
 
   while (mailbox && *mailbox && i < plen - 1)
   {
     if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) || (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!adata)
+      if (server_delim == '\0')
         delim = *mailbox;
 
       while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
@@ -823,19 +820,19 @@ char *imap_fix_path(struct ImapAccountData *adata, const char *mailbox, char *pa
 
 /**
  * imap_cachepath - Generate a cache path for a mailbox
- * @param adata   Imap Account data
+ * @param delim   Imap server delimiter
  * @param mailbox Mailbox name
  * @param dest    Buffer to store cache path
  * @param dlen    Length of buffer
  */
-void imap_cachepath(struct ImapAccountData *adata, const char *mailbox, char *dest, size_t dlen)
+void imap_cachepath(char delim, const char *mailbox, char *dest, size_t dlen)
 {
   char *s = NULL;
   const char *p = mailbox;
 
   for (s = dest; p && *p && dlen; dlen--)
   {
-    if (*p == adata->delim)
+    if (*p == delim)
     {
       *s = '/';
       /* simple way to avoid collisions with UIDs */

@@ -225,7 +225,7 @@ int imap_browse(char *path, struct BrowserState *state)
   /* skip check for parents when at the root */
   if (buf[0] != '\0')
   {
-    imap_fix_path(adata, buf, mbox, sizeof(mbox));
+    imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
     n = mutt_str_strlen(mbox);
   }
   else
@@ -444,7 +444,7 @@ int imap_mailbox_rename(const char *path)
     goto err;
   }
 
-  imap_fix_path(adata, newname, buf, sizeof(buf));
+  imap_fix_path(adata->delim, newname, buf, sizeof(buf));
 
   if (imap_rename_mailbox(adata, mdata->name, buf) < 0)
   {
