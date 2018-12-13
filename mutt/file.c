@@ -624,8 +624,8 @@ int mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src)
  * @param[in]  flags    Flags, e.g. #MUTT_CONT
  * @retval ptr          The allocated string
  *
- * Read a line from ``fp'' into the dynamically allocated ``s'', increasing
- * ``s'' if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
+ * Read a line from "fp" into the dynamically allocated "s", increasing
+ * "s" if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */
@@ -679,7 +679,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, int
       else
       {
         ungetc(c, fp); /* undo our damage */
-        /* There wasn't room for the line -- increase ``line'' */
+        /* There wasn't room for the line -- increase "line" */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
         mutt_mem_realloc(&line, *size);
@@ -718,10 +718,10 @@ bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, int flags)
 /**
  * mutt_file_map_lines - Process lines of text read from a file pointer
  * @param func      Callback function to call for each line, see mutt_file_map_t
- * @param user_data Arbitrary data passed to ``func''
+ * @param user_data Arbitrary data passed to "func"
  * @param fp        File pointer to read from
  * @param flags     Same as mutt_file_read_line()
- * @retval          true iff all data mapped, false if ``func'' returns false
+ * @retval          true iff all data mapped, false if "func" returns false
  */
 bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, int flags)
 {

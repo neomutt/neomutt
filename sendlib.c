@@ -1060,7 +1060,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * @retval num MIME type, e.g. #TYPE_IMAGE
  *
  * Given a file at `path`, see if there is a registered MIME type.
- * Returns the major MIME type, and copies the subtype to ``d''.  First look
+ * Returns the major MIME type, and copies the subtype to "d".  First look
  * in a system mime.types if we can find one, then look for ~/.mime.types.
  * The longest match is used so that we can match `ps.gz' when `gz' also
  * exists.

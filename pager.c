@@ -2207,7 +2207,7 @@ static void pager_custom_redraw(struct Menu *pager_menu)
  *
  * This pager is actually not so simple as it once was.  It now operates in two
  * modes: one for viewing messages and the other for viewing help.  These can
- * be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg is
+ * be distinguished by whether or not "hdr" is NULL.  The "hdr" arg is
  * there so that we can do operations on the current message without the need
  * to pop back out to the main-menu.
  */

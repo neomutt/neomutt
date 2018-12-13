@@ -232,7 +232,7 @@ time_t mutt_date_local_tz(time_t t)
  * @retval num Time in Unix format
  *
  * Convert a struct tm to time_t, but don't take the local timezone into
- * account unless ``local'' is nonzero
+ * account unless "local" is nonzero
  */
 time_t mutt_date_make_time(struct tm *t, int local)
 {

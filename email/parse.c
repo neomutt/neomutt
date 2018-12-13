@@ -894,7 +894,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e, char *line,
  * @retval ptr Line read from file
  *
  * Reads an arbitrarily long header field, and looks ahead for continuation
- * lines.  ``line'' must point to a dynamically allocated string; it is
+ * lines.  "line" must point to a dynamically allocated string; it is
  * increased if more space is required to fit the whole line.
  */
 char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)

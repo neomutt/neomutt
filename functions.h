@@ -24,7 +24,7 @@
 #define MUTT_FUNCTIONS_H
 
 /*
- * This file contains the structures needed to parse ``bind'' commands, as
+ * This file contains the structures needed to parse "bind" commands, as
  * well as the default bindings for each menu.
  *
  * Notes:

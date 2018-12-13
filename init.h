@@ -172,20 +172,20 @@ struct ConfigDef MuttVars[] = {
   ** is \fIset\fP or the current character set otherwise.
   ** .pp
   ** \fBNote:\fP NeoMutt will not automatically source this file; you must
-  ** explicitly use the ``$source'' command for it to be executed in case
+  ** explicitly use the "$source" command for it to be executed in case
   ** this option points to a dedicated alias file.
   ** .pp
   ** The default for this option is the currently used neomuttrc file, or
-  ** ``~/.neomuttrc'' if no user neomuttrc was found.
+  ** "~/.neomuttrc" if no user neomuttrc was found.
   */
   { "alias_format",     DT_STRING|DT_NOT_EMPTY,  R_NONE, &AliasFormat, IP "%4n %2f %t %-10a   %r" },
   /*
   ** .pp
-  ** Specifies the format of the data displayed for the ``$alias'' menu.  The
+  ** Specifies the format of the data displayed for the "$alias" menu.  The
   ** following \fCprintf(3)\fP-style sequences are available:
   ** .dl
   ** .dt %a .dd Alias name
-  ** .dt %f .dd Flags - currently, a ``d'' for an alias marked for deletion
+  ** .dt %f .dd Flags - currently, a "d" for an alias marked for deletion
   ** .dt %n .dd Index number
   ** .dt %r .dd Address which alias expands to
   ** .dt %t .dd Character which indicates if the alias is tagged for inclusion
@@ -216,7 +216,7 @@ struct ConfigDef MuttVars[] = {
   { "arrow_cursor",     DT_BOOL, R_MENU, &ArrowCursor, false },
   /*
   ** .pp
-  ** When \fIset\fP, an arrow (``->'') will be used to indicate the current entry
+  ** When \fIset\fP, an arrow ("->") will be used to indicate the current entry
   ** in menus instead of highlighting the whole line.  On slow network or modem
   ** links this will make response faster because there is less that has to
   ** be redrawn on the screen when moving to the next or previous entries
@@ -262,7 +262,7 @@ struct ConfigDef MuttVars[] = {
   ** Header field values and message body content without character encoding
   ** indication would be assumed that they are written in one of this list.
   ** By default, all the header fields and message body without any charset
-  ** indication are assumed to be in ``us-ascii''.
+  ** indication are assumed to be in "us-ascii".
   ** .pp
   ** For example, Japanese users might prefer this:
   ** .ts
@@ -286,39 +286,39 @@ struct ConfigDef MuttVars[] = {
   ** set attach_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
   ** .te
   ** .pp
-  ** Note: for Japanese users, ``iso-2022-*'' must be put at the head
+  ** Note: for Japanese users, "iso-2022-*" must be put at the head
   ** of the value as shown above if included.
   */
   { "attach_format",    DT_STRING|DT_NOT_EMPTY,  R_NONE, &AttachFormat, IP "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
   /*
   ** .pp
-  ** This variable describes the format of the ``attachment'' menu.  The
+  ** This variable describes the format of the "attachment" menu.  The
   ** following \fCprintf(3)\fP-style sequences are understood:
   ** .dl
   ** .dt %C  .dd Charset
-  ** .dt %c  .dd Requires charset conversion (``n'' or ``c'')
+  ** .dt %c  .dd Requires charset conversion ("n" or "c")
   ** .dt %D  .dd Deleted flag
   ** .dt %d  .dd Description (if none, falls back to %F)
   ** .dt %e  .dd MIME content-transfer-encoding
   ** .dt %f  .dd Filename
   ** .dt %F  .dd Filename in content-disposition header (if none, falls back to %f)
-  ** .dt %I  .dd Disposition (``I'' for inline, ``A'' for attachment)
+  ** .dt %I  .dd Disposition ("I" for inline, "A" for attachment)
   ** .dt %m  .dd Major MIME type
   ** .dt %M  .dd MIME subtype
   ** .dt %n  .dd Attachment number
-  ** .dt %Q  .dd ``Q'', if MIME part qualifies for attachment counting
+  ** .dt %Q  .dd "Q", if MIME part qualifies for attachment counting
   ** .dt %s  .dd Size
   ** .dt %T  .dd Graphic tree characters
   ** .dt %t  .dd Tagged flag
   ** .dt %u  .dd Unlink (=to delete) flag
   ** .dt %X  .dd Number of qualifying MIME parts in this part and its children
-  **             (please see the ``$attachments'' section for possible speed effects)
-  ** .dt %>X .dd Right justify the rest of the string and pad with character ``X''
-  ** .dt %|X .dd Pad to the end of the line with character ``X''
-  ** .dt %*X .dd Soft-fill with character ``X'' as pad
+  **             (please see the "$attachments" section for possible speed effects)
+  ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd Pad to the end of the line with character "X"
+  ** .dt %*X .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** For an explanation of "soft-fill", see the $$index_format documentation.
   */
   { "attach_save_dir",  DT_PATH, R_NONE, &AttachSaveDir, IP "./" },
   /*
@@ -364,7 +364,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** When \fIset\fP, functions in the \fIindex\fP menu which affect a message
   ** will be applied to all tagged messages (if there are any).  When
-  ** unset, you must first use the \fC<tag-prefix>\fP function (bound to ``;''
+  ** unset, you must first use the \fC<tag-prefix>\fP function (bound to ";"
   ** by default) to make the next function apply to all tagged messages.
   */
   { "autoedit",         DT_BOOL, R_NONE, &Autoedit, false },
@@ -462,7 +462,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When this variable is \fIset\fP, the \fC<change-folder>\fP function
-  ** mailbox suggestion will start at the next folder in your ``$mailboxes''
+  ** mailbox suggestion will start at the next folder in your "$mailboxes"
   ** list, instead of starting at the first folder in the list.
   */
   { "charset", DT_STRING|DT_NOT_EMPTY, R_NONE, &Charset, 0, charset_validator },
@@ -486,7 +486,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable is \fIunset\fP by default and should only be enabled when
   ** new mail detection for these folder types is unreliable or doesn't work.
   ** .pp
-  ** Note that enabling this variable should happen before any ``$mailboxes''
+  ** Note that enabling this variable should happen before any "$mailboxes"
   ** directives occur in configuration files regarding mbox or mmdf folders
   ** because NeoMutt needs to determine the initial new mail status of such a
   ** mailbox by performing a fast mailbox scan when it is defined.
@@ -525,7 +525,7 @@ struct ConfigDef MuttVars[] = {
   { "compose_format",   DT_STRING|DT_NOT_EMPTY,  R_MENU, &ComposeFormat, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
   ** .pp
-  ** Controls the format of the status line displayed in the ``compose''
+  ** Controls the format of the status line displayed in the "compose"
   ** menu.  This string is similar to $$status_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
@@ -581,14 +581,14 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable controls whether or not copies of your outgoing messages
   ** will be saved for later references.  Also see $$record,
-  ** $$save_name, $$force_name and ``$fcc-hook''.
+  ** $$save_name, $$force_name and "$fcc-hook".
   */
   { "crypt_autoencrypt",        DT_BOOL, R_NONE, &CryptAutoencrypt, false },
   /*
   ** .pp
   ** Setting this variable will cause NeoMutt to always attempt to PGP
   ** encrypt outgoing messages.  This is probably only useful in
-  ** connection to the ``$send-hook'' command.  It can be overridden
+  ** connection to the "$send-hook" command.  It can be overridden
   ** by use of the pgp menu, when encryption is not required or
   ** signing is requested as well.  If $$smime_is_default is \fIset\fP,
   ** then OpenSSL is used instead to create S/MIME messages and
@@ -710,19 +710,19 @@ struct ConfigDef MuttVars[] = {
   { "crypt_verify_sig", DT_QUAD, R_NONE, &CryptVerifySig, MUTT_YES },
   /*
   ** .pp
-  ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
-  ** If \fI``ask-*''\fP, ask whether or not to verify the signature.
-  ** If \fI``no''\fP, never attempt to verify cryptographic signatures.
+  ** If \fI"yes"\fP, always attempt to verify PGP or S/MIME signatures.
+  ** If \fI"ask-*"\fP, ask whether or not to verify the signature.
+  ** If \fI"no"\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
   { "date_format",      DT_STRING|DT_NOT_EMPTY,  R_MENU, &DateFormat, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
   ** .pp
-  ** This variable controls the format of the date printed by the ``%d''
+  ** This variable controls the format of the date printed by the "%d"
   ** sequence in $$index_format.  This is passed to the \fCstrftime(3)\fP
   ** function to process the date, see the man page for the proper syntax.
   ** .pp
-  ** Unless the first character in the string is a bang (``!''), the month
+  ** Unless the first character in the string is a bang ("!"), the month
   ** and week day names are expanded according to the locale.
   ** If the first character in the string is a
   ** bang, the bang is discarded, and the month and week day names in the
@@ -733,11 +733,11 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
-  ** \fC$$debug_file\fP specifies the root of the filename.  NeoMutt will add ``0'' to the end.
+  ** \fC$$debug_file\fP specifies the root of the filename.  NeoMutt will add "0" to the end.
   ** Each time NeoMutt is run with logging enabled, the log files are rotated.
   ** A maximum of five log files are kept, numbered 0 (most recent) to 4 (oldest).
   ** .pp
-  ** This option can be enabled on the command line, ``neomutt -l mylog''
+  ** This option can be enabled on the command line, "neomutt -l mylog"
   ** .pp
   ** See also: \fC$$debug_level\fP
   */
@@ -753,15 +753,15 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Warning: Logging at high levels may save private information to the file.
   ** .pp
-  ** This option can be enabled on the command line, ``neomutt -d 2''
+  ** This option can be enabled on the command line, "neomutt -d 2"
   ** .pp
   ** See also: \fC$$debug_file\fP
   */
   { "default_hook",     DT_STRING,  R_NONE, &DefaultHook, IP "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp
-  ** This variable controls how ``$message-hook'', ``$reply-hook'', ``$send-hook'',
-  ** ``$send2-hook'', ``$save-hook'', and ``$fcc-hook'' will
+  ** This variable controls how "$message-hook", "$reply-hook", "$send-hook",
+  ** "$send2-hook", "$save-hook", and "$fcc-hook" will
   ** be interpreted if they are specified with only a simple regex,
   ** instead of a matching pattern.  The hooks are expanded when they are
   ** declared, so a hook will be interpreted according to the value of this
@@ -770,7 +770,7 @@ struct ConfigDef MuttVars[] = {
   ** The default value matches
   ** if the message is either from a user matching the regular expression
   ** given, or if it is from you (if the from address matches
-  ** ``$alternates'') and is to or cc'ed to a user matching the given
+  ** "$alternates") and is to or cc'ed to a user matching the given
   ** regular expression.
   */
   { "delete",           DT_QUAD, R_NONE, &Delete, MUTT_ASKYES },
@@ -792,7 +792,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** If this option is \fIset\fP, NeoMutt's received-attachments menu will not show the subparts of
-  ** individual messages in a multipart/digest.  To see these subparts, press ``v'' on that menu.
+  ** individual messages in a multipart/digest.  To see these subparts, press "v" on that menu.
   */
   { "display_filter", DT_COMMAND, R_PAGER, &DisplayFilter, 0 },
   /*
@@ -869,7 +869,7 @@ struct ConfigDef MuttVars[] = {
   ** labels passed to your editor will be standard RFC2822 headers,
   ** (e.g. To:, Cc:, Subject:).  Headers added in your editor must
   ** also be RFC2822 headers, or one of the pseudo headers listed in
-  ** ``$edit-header''.  NeoMutt will not understand localized header
+  ** "$edit-header".  NeoMutt will not understand localized header
   ** labels, just as it would not when parsing an actual email.
   ** .pp
   ** \fBNote\fP that changes made to the References: and Date: headers are
@@ -880,7 +880,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable specifies which editor is used by NeoMutt.
   ** It defaults to the value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment
-  ** variable, or to the string ``vi'' if neither of those are set.
+  ** variable, or to the string "vi" if neither of those are set.
   ** .pp
   ** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be replaced by the name
   ** of the file to be edited.  If the \fI%s\fP escape does not appear in \fC$$editor\fP, a
@@ -903,7 +903,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will quoted-printable encode messages when
-  ** they contain the string ``From '' (note the trailing space) in the beginning of a line.
+  ** they contain the string "From " (note the trailing space) in the beginning of a line.
   ** This is useful to avoid the tampering certain mail delivery and transport
   ** agents tend to do with messages (in order to prevent tools from
   ** misinterpreting the line as a mbox message separator).
@@ -930,22 +930,22 @@ struct ConfigDef MuttVars[] = {
   { "external_search_command",   DT_COMMAND, R_NONE, &SearchCommand, 0 },
   /*
    ** .pp
-   ** If set, contains the name of the external program used by ``~I'' patterns.
+   ** If set, contains the name of the external program used by "~I" patterns.
    ** This will usually be a wrapper script around mairix, mu, or similar
    ** indexers other than notmuch (for which there is optional special support).
    ** .pp
    ** Here is an example how it works.  Let's assume $$external_search_command
-   ** is set to ``mairix_filter'', and mairix_filter is a script which
+   ** is set to "mairix_filter", and mairix_filter is a script which
    ** runs the old but well loved mairix indexer with the arguments
-   ** given to mairix_filter, in the ``raw'' mode of mairix, producing
+   ** given to mairix_filter, in the "raw" mode of mairix, producing
    ** on the standard output a list of Message-IDs, one per line.
    ** (This can be the type of clean and simple script called a \fIone-liner\fP.)
    ** .pp
    ** Now if NeoMutt gets a limit or tag command followed by the pattern
-   ** ``~I "-t s:bleeping="'', mairix_filter runs mairix with the
+   ** "~I '-t s:bleeping='", mairix_filter runs mairix with the
    ** arguments from inside the quotes (the quotes are needed because
-   ** of the space after ``-t''), mairix finds all messages with
-   ** ``bleeping'' in the Subject plus all messages sharing threads
+   ** of the space after "-t"), mairix finds all messages with
+   ** "bleeping" in the Subject plus all messages sharing threads
    ** with these and outputs their file names, and mairix_filter
    ** translates the file names into Message-IDs.  Finally, NeoMutt
    ** reads the Message-IDs and targets the matching messages with the
@@ -1019,12 +1019,12 @@ struct ConfigDef MuttVars[] = {
   { "folder",           DT_PATH|DT_MAILBOX, R_NONE, &Folder, IP "~/Mail" },
   /*
   ** .pp
-  ** Specifies the default location of your mailboxes.  A ``+'' or ``='' at the
+  ** Specifies the default location of your mailboxes.  A "+" or "=" at the
   ** beginning of a pathname will be expanded to the value of this
   ** variable.  Note that if you change this variable (from the default)
   ** value you need to make sure that the assignment occurs \fIbefore\fP
-  ** you use ``+'' or ``='' for any other variables since expansion takes place
-  ** when handling the ``$mailboxes'' command.
+  ** you use "+" or "=" for any other variables since expansion takes place
+  ** when handling the "$mailboxes" command.
   */
   { "folder_format",    DT_STRING|DT_NOT_EMPTY,  R_MENU, &FolderFormat, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i" },
   /*
@@ -1036,24 +1036,24 @@ struct ConfigDef MuttVars[] = {
   ** .dt %C  .dd Current file number
   ** .dt %d  .dd Date/time folder was last modified
   ** .dt %D  .dd Date/time folder was last modified using $$date_format.
-  ** .dt %f  .dd Filename (``/'' is appended to directory names,
-  **             ``@'' to symbolic links and ``*'' to executable files)
+  ** .dt %f  .dd Filename ("/" is appended to directory names,
+  **             "@" to symbolic links and "*" to executable files)
   ** .dt %F  .dd File permissions
   ** .dt %g  .dd Group name (or numeric gid, if missing)
   ** .dt %i  .dd Description of the folder
   ** .dt %l  .dd Number of hard links
   ** .dt %m  .dd Number of messages in the mailbox *
   ** .dt %n  .dd Number of unread messages in the mailbox *
-  ** .dt %N  .dd ``N'' if mailbox has new mail, blank otherwise
+  ** .dt %N  .dd "N" if mailbox has new mail, blank otherwise
   ** .dt %s  .dd Size in bytes
-  ** .dt %t  .dd ``*'' if the file is tagged, blank otherwise
+  ** .dt %t  .dd "*" if the file is tagged, blank otherwise
   ** .dt %u  .dd Owner name (or numeric uid, if missing)
-  ** .dt %>X .dd Right justify the rest of the string and pad with character ``X''
-  ** .dt %|X .dd Pad to the end of the line with character ``X''
-  ** .dt %*X .dd Soft-fill with character ``X'' as pad
+  ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd Pad to the end of the line with character "X"
+  ** .dt %*X .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** For an explanation of "soft-fill", see the $$index_format documentation.
   ** .pp
   ** * = can be optionally printed if nonzero
   ** .pp
@@ -1064,10 +1064,10 @@ struct ConfigDef MuttVars[] = {
   { "followup_to",      DT_BOOL, R_NONE, &FollowupTo, true },
   /*
   ** .pp
-  ** Controls whether or not the ``Mail-Followup-To:'' header field is
+  ** Controls whether or not the "Mail-Followup-To:" header field is
   ** generated when sending mail.  When \fIset\fP, NeoMutt will generate this
   ** field when you are replying to a known mailing list, specified with
-  ** the ``$subscribe'' or ``$lists'' commands.
+  ** the "$subscribe" or "$lists" commands.
   ** .pp
   ** This field has two purposes.  First, preventing you from
   ** receiving duplicate copies of replies to messages which you send
@@ -1139,7 +1139,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This quadoption controls whether or not the user is automatically
   ** placed in the editor when forwarding messages.  For those who always want
-  ** to forward with no modification, use a setting of ``no''.
+  ** to forward with no modification, use a setting of "no".
   */
   { "forward_format",   DT_STRING|DT_NOT_EMPTY,  R_NONE, &ForwardFormat, IP "[%a: %s]" },
   /*
@@ -1157,16 +1157,16 @@ struct ConfigDef MuttVars[] = {
   { "forward_references", DT_BOOL, R_NONE, &ForwardReferences, false },
   /*
   ** .pp
-  ** When \fIset\fP, forwarded messages set the ``In-Reply-To:'' and
-  ** ``References:'' headers in the same way as normal replies would. Hence the
+  ** When \fIset\fP, forwarded messages set the "In-Reply-To:" and
+  ** "References:" headers in the same way as normal replies would. Hence the
   ** forwarded message becomes part of the original thread instead of starting
   ** a new one.
   */
   { "from",             DT_ADDRESS, R_NONE, &From, 0 },
   /*
   ** .pp
-  ** When \fIset\fP, this variable contains a default ``from'' address.  It
-  ** can be overridden using ``$my_hdr'' (including from a ``$send-hook'') and
+  ** When \fIset\fP, this variable contains a default "from" address.  It
+  ** can be overridden using "$my_hdr" (including from a "$send-hook") and
   ** $$reverse_name.  This variable is ignored if $$use_from is \fIunset\fP.
   ** .pp
   ** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
@@ -1200,22 +1200,22 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** A regular expression used by NeoMutt to parse the GECOS field of a password
   ** entry when expanding the alias.  The default value
-  ** will return the string up to the first ``,'' encountered.
-  ** If the GECOS field contains a string like ``lastname, firstname'' then you
-  ** should set it to ``\fC.*\fP''.
+  ** will return the string up to the first "," encountered.
+  ** If the GECOS field contains a string like "lastname, firstname" then you
+  ** should set it to "\fC.*\fP".
   ** .pp
   ** This can be useful if you see the following behavior: you address an e-mail
-  ** to user ID ``stevef'' whose full name is ``Steve Franklin''.  If NeoMutt expands
-  ** ``stevef'' to ``"Franklin" stevef@foo.bar'' then you should set the $$gecos_mask to
+  ** to user ID "stevef" whose full name is "Steve Franklin".  If NeoMutt expands
+  ** "stevef" to '"Franklin" stevef@foo.bar' then you should set the $$gecos_mask to
   ** a regular expression that will match the whole name so NeoMutt will expand
-  ** ``Franklin'' to ``Franklin, Steve''.
+  ** "Franklin" to "Franklin, Steve".
   */
 #ifdef USE_NNTP
   { "group_index_format", DT_STRING|DT_NOT_EMPTY, R_BOTH, &GroupIndexFormat, IP "%4C %M%N %5s  %-45.45f %d" },
   /*
   ** .pp
   ** This variable allows you to customize the newsgroup browser display to
-  ** your personal taste.  This string is similar to ``$index_format'', but
+  ** your personal taste.  This string is similar to "$index_format", but
   ** has its own set of printf()-like sequences:
   ** .dl
   ** .dt %C  .dd Current newsgroup number
@@ -1233,7 +1233,7 @@ struct ConfigDef MuttVars[] = {
   { "hdrs",             DT_BOOL, R_NONE, &Hdrs, true },
   /*
   ** .pp
-  ** When \fIunset\fP, the header fields normally added by the ``$my_hdr''
+  ** When \fIunset\fP, the header fields normally added by the "$my_hdr"
   ** command are not created.  This variable \fImust\fP be unset before
   ** composing a new message or replying in order to take effect.  If \fIset\fP,
   ** the user defined header fields are added to every new message.
@@ -1256,7 +1256,7 @@ struct ConfigDef MuttVars[] = {
   ** caching will be used.
   ** .pp
   ** Header caching can greatly improve speed when opening POP, IMAP
-  ** MH or Maildir folders, see ``$caching'' for details.
+  ** MH or Maildir folders, see "$caching" for details.
   */
   { "header_cache_backend", DT_STRING, R_NONE, &HeaderCacheBackend, 0, hcache_validator },
   /*
@@ -1296,7 +1296,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** One use of this option might be to apply color to just the header labels.
   ** .pp
-  ** See ``$color'' for more details.
+  ** See "$color" for more details.
   */
   { "help",             DT_BOOL, R_REFLOW, &Help, true },
   /*
@@ -1382,7 +1382,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will not display attachments with a
-  ** disposition of ``attachment'' inline even if it could
+  ** disposition of "attachment" inline even if it could
   ** render the part to plain text. These MIME parts can only
   ** be viewed from the attachment menu.
   ** .pp
@@ -1400,7 +1400,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Specifies the fully-qualified hostname of the system NeoMutt is running on
   ** containing the host's name and the DNS domain it belongs to. It is used
-  ** as the domain part (after ``@'') for local email addresses as well as
+  ** as the domain part (after "@") for local email addresses as well as
   ** Message-Id headers.
   ** .pp
   ** If not specified in a config file, then NeoMutt will try to determine the hostname itself.
@@ -1429,10 +1429,10 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Affects the behavior of the \fC<reply>\fP function when replying to
-  ** messages from mailing lists (as defined by the ``$subscribe'' or
-  ** ``$lists'' commands).  When \fIset\fP, if the ``Reply-To:'' field is
-  ** set to the same value as the ``To:'' field, NeoMutt assumes that the
-  ** ``Reply-To:'' field was set by the mailing list to automate responses
+  ** messages from mailing lists (as defined by the "$subscribe" or
+  ** "$lists" commands).  When \fIset\fP, if the "Reply-To:" field is
+  ** set to the same value as the "To:" field, NeoMutt assumes that the
+  ** "Reply-To:" field was set by the mailing list to automate responses
   ** to the list, and will ignore this field.  To direct a response to the
   ** mailing list when this option is \fIset\fP, use the \fC$<list-reply>\fP
   ** function; \fC<group-reply>\fP will reply to both the sender and the
@@ -1444,9 +1444,9 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
   ** attempt to use to log in to an IMAP server, in the order NeoMutt should
-  ** try them.  Authentication methods are either ``login'' or the right
-  ** side of an IMAP ``AUTH=xxx'' capability string, e.g. ``digest-md5'', ``gssapi''
-  ** or ``cram-md5''. This option is case-insensitive. If it's
+  ** try them.  Authentication methods are either "login" or the right
+  ** side of an IMAP "AUTH=xxx" capability string, e.g. "digest-md5", "gssapi"
+  ** or "cram-md5". This option is case-insensitive. If it's
   ** \fIunset\fP (the default) NeoMutt will try all available methods,
   ** in order from most-secure to least-secure.
   ** .pp
@@ -1465,7 +1465,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIset\fP, NeoMutt will fetch the set of subscribed folders from
   ** your server whenever a mailbox is \fBselected\fP, and add them to the set
   ** of mailboxes it polls for new mail just as if you had issued individual
-  ** ``$mailboxes'' commands.
+  ** "$mailboxes" commands.
   */
   { "imap_condstore",  DT_BOOL, R_NONE, &ImapCondStore, 0 },
   /*
@@ -1484,21 +1484,21 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This contains the list of characters which you would like to treat
   ** as folder separators for displaying IMAP paths. In particular it
-  ** helps in using the ``='' shortcut for your \fIfolder\fP variable.
+  ** helps in using the "=" shortcut for your \fIfolder\fP variable.
   */
   { "imap_headers",     DT_STRING, R_INDEX, &ImapHeaders, 0 },
   /*
   ** .pp
   ** NeoMutt requests these header fields in addition to the default headers
-  ** (``Date:'', ``From:'', ``Sender:'', ``Subject:'', ``To:'', ``Cc:'', ``Message-Id:'',
-  ** ``References:'', ``Content-Type:'', ``Content-Description:'', ``In-Reply-To:'',
-  ** ``Reply-To:'', ``Lines:'', ``List-Post:'', ``X-Label:'') from IMAP
+  ** ("Date:", "From:", "Sender:", "Subject:", "To:", "Cc:", "Message-Id:",
+  ** "References:", "Content-Type:", "Content-Description:", "In-Reply-To:",
+  ** "Reply-To:", "Lines:", "List-Post:", "X-Label:") from IMAP
   ** servers before displaying the index menu. You may want to add more
   ** headers for spam detection.
   ** .pp
   ** \fBNote:\fP This is a space separated list, items should be uppercase
-  ** and not contain the colon, e.g. ``X-BOGOSITY X-SPAM-STATUS'' for the
-  ** ``X-Bogosity:'' and ``X-Spam-Status:'' header fields.
+  ** and not contain the colon, e.g. "X-BOGOSITY X-SPAM-STATUS" for the
+  ** "X-Bogosity:" and "X-Spam-Status:" header fields.
   */
   { "imap_idle",                DT_BOOL, R_NONE, &ImapIdle, false },
   /*
@@ -1540,7 +1540,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your IMAP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.  See ``$oauth'' for details.
+  ** mechanism.  See "$oauth" for details.
   */
   { "imap_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &ImapPass, 0 },
   /*
@@ -1621,8 +1621,8 @@ struct ConfigDef MuttVars[] = {
   { "implicit_autoview", DT_BOOL,R_NONE, &ImplicitAutoview, false },
   /*
   ** .pp
-  ** If set to ``yes'', NeoMutt will look for a mailcap entry with the
-  ** ``\fCcopiousoutput\fP'' flag set for \fIevery\fP MIME attachment it doesn't have
+  ** If set to "yes", NeoMutt will look for a mailcap entry with the
+  ** "\fCcopiousoutput\fP" flag set for \fIevery\fP MIME attachment it doesn't have
   ** an internal viewer defined for.  If such an entry is found, NeoMutt will
   ** use the viewer defined in that entry to convert the body part to text
   ** form.
@@ -1658,7 +1658,7 @@ struct ConfigDef MuttVars[] = {
   ** This variable allows you to customize the message index display to
   ** your personal taste.
   ** .pp
-  ** ``Format strings'' are similar to the strings used in the C
+  ** "Format strings" are similar to the strings used in the C
   ** function \fCprintf(3)\fP to format output (see the man page for more details).
   ** For an explanation of the %? construct, see the $status_format description.
   ** The following sequences are defined in NeoMutt:
@@ -1684,8 +1684,8 @@ struct ConfigDef MuttVars[] = {
   ** .dt %i .dd Message-id of the current message
   ** .dt %J .dd Message tags (if present, tree unfolded, and != parent's tags)
   ** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
-  ** .dt %L .dd If an address in the ``To:'' or ``Cc:'' header field matches an address
-  **            Defined by the users ``$subscribe'' command, this displays
+  ** .dt %L .dd If an address in the "To:" or "Cc:" header field matches an address
+  **            Defined by the users "$subscribe" command, this displays
   **            "To <list-name>", otherwise the same as %F
   ** .dt %l .dd Number of lines in the message (does not work with maildir,
   **            Mh, and possibly IMAP folders)
@@ -1698,50 +1698,50 @@ struct ConfigDef MuttVars[] = {
   **            If not sent to a list
   ** .dt %P .dd Progress indicator for the built-in pager (how much of the file has been displayed)
   ** .dt %q .dd Newsgroup name (if compiled with NNTP support)
-  ** .dt %R .dd Comma separated list of ``Cc:'' recipients
-  ** .dt %r .dd Comma separated list of ``To:'' recipients
-  ** .dt %S .dd Single character status of the message (``N''/``O''/``D''/``d''/``!''/``r''/``\(as'')
+  ** .dt %R .dd Comma separated list of "Cc:" recipients
+  ** .dt %r .dd Comma separated list of "To:" recipients
+  ** .dt %S .dd Single character status of the message ("N"/"O"/"D"/"d"/"!"/"r"/"\(as")
   ** .dt %s .dd Subject of the message
   ** .dt %T .dd The appropriate character from the $$to_chars string
-  ** .dt %t .dd ``To:'' field (recipients)
+  ** .dt %t .dd "To:" field (recipients)
   ** .dt %u .dd User (login) name of the author
   ** .dt %v .dd First name of the author, or the recipient if the message is from you
-  ** .dt %W .dd Name of organization of author (``Organization:'' field)
-  ** .dt %x .dd ``X-Comment-To:'' field (if present and compiled with NNTP support)
+  ** .dt %W .dd Name of organization of author ("Organization:" field)
+  ** .dt %x .dd "X-Comment-To:" field (if present and compiled with NNTP support)
   ** .dt %X .dd Number of MIME attachments
-  **            (please see the ``$attachments'' section for possible speed effects)
-  ** .dt %Y .dd ``X-Label:'' field, if present, and \fI(1)\fP not at part of a thread tree,
-  **            \fI(2)\fP at the top of a thread, or \fI(3)\fP ``X-Label:'' is different from
-  **            Preceding message's ``X-Label:''
-  ** .dt %y .dd ``X-Label:'' field, if present
+  **            (please see the "$attachments" section for possible speed effects)
+  ** .dt %Y .dd "X-Label:" field, if present, and \fI(1)\fP not at part of a thread tree,
+  **            \fI(2)\fP at the top of a thread, or \fI(3)\fP "X-Label:" is different from
+  **            Preceding message's "X-Label:"
+  ** .dt %y .dd "X-Label:" field, if present
   ** .dt %Z .dd A three character set of message status flags.
-  **            The first character is new/read/replied flags (``n''/``o''/``r''/``O''/``N'').
-  **            The second is deleted or encryption flags (``D''/``d''/``S''/``P''/``s''/``K'').
-  **            The third is either tagged/flagged (``\(as''/``!''), or one of the characters
+  **            The first character is new/read/replied flags ("n"/"o"/"r"/"O"/"N").
+  **            The second is deleted or encryption flags ("D"/"d"/"S"/"P"/"s"/"K").
+  **            The third is either tagged/flagged ("\(as"/"!"), or one of the characters
   **            Listed in $$to_chars.
   ** .dt %zc .dd Message crypto flags
   ** .dt %zs .dd Message status flags
   ** .dt %zt .dd Message tag flags
   ** .dt %{fmt} .dd the date and time of the message is converted to sender's
-  **                time zone, and ``fmt'' is expanded by the library function
+  **                time zone, and "fmt" is expanded by the library function
   **                \fCstrftime(3)\fP; a leading bang disables locales
   ** .dt %[fmt] .dd the date and time of the message is converted to the local
-  **                time zone, and ``fmt'' is expanded by the library function
+  **                time zone, and "fmt" is expanded by the library function
   **                \fCstrftime(3)\fP; a leading bang disables locales
   ** .dt %(fmt) .dd the local date and time when the message was received.
-  **                ``fmt'' is expanded by the library function \fCstrftime(3)\fP;
+  **                "fmt" is expanded by the library function \fCstrftime(3)\fP;
   **                a leading bang disables locales
-  ** .dt %>X    .dd right justify the rest of the string and pad with character ``X''
-  ** .dt %|X    .dd pad to the end of the line with character ``X''
-  ** .dt %*X    .dd soft-fill with character ``X'' as pad
+  ** .dt %>X    .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X    .dd pad to the end of the line with character "X"
+  ** .dt %*X    .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** Date format expressions can be constructed based on relative dates. Using
   ** the date formatting operators along with nested conditionals, the date
   ** format can be modified based on how old a message is.  See the section on
-  ** ``Conditional Dates'' for an explanation and examples
-  ** ``Soft-fill'' deserves some explanation: Normal right-justification
-  ** will print everything to the left of the ``%>'', displaying padding and
+  ** "Conditional Dates" for an explanation and examples
+  ** "Soft-fill" deserves some explanation: Normal right-justification
+  ** will print everything to the left of the "%>", displaying padding and
   ** whatever lies to the right only if there's room. By contrast,
   ** soft-fill gives priority to the right-hand side, guaranteeing space
   ** to display it and showing padding only if there's still room. If
@@ -1749,8 +1749,8 @@ struct ConfigDef MuttVars[] = {
   ** rightward text.
   ** .pp
   ** Note that these expandos are supported in
-  ** ``$save-hook'', ``$fcc-hook'', ``$fcc-save-hook'', and
-  ** ``$index-format-hook''.
+  ** "$save-hook", "$fcc-hook", "$fcc-save-hook", and
+  ** "$index-format-hook".
   ** .pp
   ** They are also supported in the configuration variables $$attribution,
   ** $$forward_attribution_intro, $$forward_attribution_trailer,
@@ -1789,7 +1789,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If \fIset\fP, read messages marked as flagged will not be moved
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
-  ** a ``$mbox-hook'' command.
+  ** a "$mbox-hook" command.
   */
   { "mail_check",       DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &MailCheck, 5 },
   /*
@@ -1888,14 +1888,14 @@ struct ConfigDef MuttVars[] = {
   ** Controls whether or not NeoMutt marks \fInew\fP \fBunread\fP
   ** messages as \fIold\fP if you exit a mailbox without reading them.
   ** With this option \fIset\fP, the next time you start NeoMutt, the messages
-  ** will show up with an ``O'' next to them in the index menu,
+  ** will show up with an "O" next to them in the index menu,
   ** indicating that they are old.
   */
   { "markers",          DT_BOOL, R_PAGER_FLOW, &Markers, true },
   /*
   ** .pp
   ** Controls the display of wrapped lines in the internal pager. If set, a
-  ** ``+'' marker is displayed at the beginning of wrapped lines.
+  ** "+" marker is displayed at the beginning of wrapped lines.
   ** .pp
   ** Also see the $$smart_wrap variable.
   */
@@ -1903,7 +1903,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** A regular expression used in the file browser, optionally preceded by
-  ** the \fInot\fP operator ``!''.  Only files whose names match this mask
+  ** the \fInot\fP operator "!".  Only files whose names match this mask
   ** will be shown. The match is always case-sensitive.
   */
   { "mbox",             DT_PATH|DT_MAILBOX, R_BOTH, &Mbox, IP "~/mbox" },
@@ -1918,7 +1918,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' or ``Maildir''.
+  ** "mbox", "MMDF", "MH" or "Maildir".
   ** .pp
   ** This can also be set using the \fC-m\fP command-line option.
   */
@@ -1969,7 +1969,7 @@ struct ConfigDef MuttVars[] = {
   { "message_format",   DT_STRING|DT_NOT_EMPTY,  R_NONE, &MessageFormat, IP "%s" },
   /*
   ** .pp
-  ** This is the string displayed in the ``attachment'' menu for
+  ** This is the string displayed in the "attachment" menu for
   ** attachments of type \fCmessage/rfc822\fP.  For a full listing of defined
   ** \fCprintf(3)\fP-like sequences see the section on $$index_format.
   */
@@ -1980,14 +1980,14 @@ struct ConfigDef MuttVars[] = {
   ** set as if the user had pressed the Esc key and whatever key remains
   ** after having the high bit removed.  For example, if the key pressed
   ** has an ASCII value of \fC0xf8\fP, then this is treated as if the user had
-  ** pressed Esc then ``x''.  This is because the result of removing the
+  ** pressed Esc then "x".  This is because the result of removing the
   ** high bit from \fC0xf8\fP is \fC0x78\fP, which is the ASCII character
-  ** ``x''.
+  ** "x".
   */
   { "metoo",            DT_BOOL, R_NONE, &Metoo, false },
   /*
   ** .pp
-  ** If \fIunset\fP, NeoMutt will remove your address (see the ``$alternates''
+  ** If \fIunset\fP, NeoMutt will remove your address (see the "$alternates"
   ** command) from the list of recipients when replying to a message.
   */
   { "mh_purge",         DT_BOOL, R_NONE, &MhPurge, false },
@@ -2024,7 +2024,7 @@ struct ConfigDef MuttVars[] = {
   ** message.  This is useful for forwarding MIME messages so the receiver
   ** can properly view the message as it was delivered to you. If you like
   ** to switch between MIME and not MIME from mail to mail, set this
-  ** variable to ``ask-no'' or ``ask-yes''.
+  ** variable to "ask-no" or "ask-yes".
   ** .pp
   ** Also see $$forward_decode and $$mime_forward_decode.
   */
@@ -2046,7 +2046,7 @@ struct ConfigDef MuttVars[] = {
   { "mime_subject",     DT_BOOL, R_NONE, &MimeSubject, true },
   /*
   ** .pp
-  ** If \fIunset\fP, 8-bit ``subject:'' line in article header will not be
+  ** If \fIunset\fP, 8-bit "subject:" line in article header will not be
   ** encoded according to RFC2047 to base64.  This is useful when message
   ** is Usenet article, because MIME for news is nonstandard feature.
   */
@@ -2059,17 +2059,17 @@ struct ConfigDef MuttVars[] = {
   ** $$mime_type_query_first is set, this will only be run if the
   ** attachment's extension is not found in the mime.types file.
   ** .pp
-  ** The string may contain a ``%s'', which will be substituted with the
+  ** The string may contain a "%s", which will be substituted with the
   ** attachment filename.  NeoMutt will add quotes around the string substituted
-  ** for ``%s'' automatically according to shell quoting rules, so you should
-  ** avoid adding your own.  If no ``%s'' is found in the string, NeoMutt will
+  ** for "%s" automatically according to shell quoting rules, so you should
+  ** avoid adding your own.  If no "%s" is found in the string, NeoMutt will
   ** append the attachment filename to the end of the string.
   ** .pp
   ** The command should output a single line containing the
   ** attachment's mime type.
   ** .pp
-  ** Suggested values are ``xdg-mime query filetype'' or
-  ** ``file -bi''.
+  ** Suggested values are "xdg-mime query filetype" or
+  ** "file -bi".
   */
   { "mime_type_query_first", DT_BOOL, R_NONE, &MimeTypeQueryFirst, false },
   /*
@@ -2105,7 +2105,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** Controls whether or not NeoMutt will move read messages
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
-  ** a ``$mbox-hook'' command.
+  ** a "$mbox-hook" command.
   */
   { "narrow_tree",      DT_BOOL, R_TREE|R_INDEX, &NarrowTree, false },
   /*
@@ -2147,9 +2147,9 @@ struct ConfigDef MuttVars[] = {
   ** You can also specify username and an alternative port for each news server,
   ** e.g. \fC[[s]news://][username[:password]@]server[:port]\fP
   ** .pp
-  ** This option can also be set using the command line option ``-g'', the
+  ** This option can also be set using the command line option "-g", the
   ** environment variable \fC$$$NNTPSERVER\fP, or putting the server name in the
-  ** file ``/etc/nntpserver''.
+  ** file "/etc/nntpserver".
   */
   { "newsgroups_charset", DT_STRING, R_NONE, &NewsgroupsCharset, IP "utf-8", charset_validator },
   /*
@@ -2262,8 +2262,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
   ** attempt to use to log in to a news server, in the order NeoMutt should
-  ** try them.  Authentication methods are either ``user'' or any
-  ** SASL mechanism, e.g. ``digest-md5'', ``gssapi'' or ``cram-md5''.
+  ** try them.  Authentication methods are either "user" or any
+  ** SASL mechanism, e.g. "digest-md5", "gssapi" or "cram-md5".
   ** This option is case-insensitive.  If it's \fIunset\fP (the default)
   ** NeoMutt will try all available methods, in order from most-secure to
   ** least-secure.
@@ -2323,7 +2323,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies which pager you would like to use to view
-  ** messages. The value ``builtin'' means to use the built-in pager, otherwise this
+  ** messages. The value "builtin" means to use the built-in pager, otherwise this
   ** variable should specify the pathname of the external pager you would
   ** like to use.
   ** .pp
@@ -2347,7 +2347,7 @@ struct ConfigDef MuttVars[] = {
   { "pager_format",     DT_STRING|DT_NOT_EMPTY,  R_PAGER, &PagerFormat, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
   ** .pp
-  ** This variable controls the format of the one-line message ``status''
+  ** This variable controls the format of the one-line message "status"
   ** displayed before each message in either the internal or an external
   ** pager.  The valid sequences are listed in the $$index_format
   ** section.
@@ -2430,7 +2430,7 @@ struct ConfigDef MuttVars[] = {
   { "pgp_clearsign_command", DT_COMMAND, R_NONE, &PgpClearsignCommand, 0 },
   /*
   ** .pp
-  ** This format is used to create an old-style ``clearsigned'' PGP
+  ** This format is used to create an old-style "clearsigned" PGP
   ** message.  Note that the use of this format is \fBstrongly\fP
   ** \fBdeprecated\fP.
   ** .pp
@@ -2698,7 +2698,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** If \fIset\fP, NeoMutt will display non-usable keys on the PGP key selection
   ** menu.  This includes keys which have been revoked, have expired, or
-  ** have been marked as ``disabled'' by the user.
+  ** have been marked as "disabled" by the user.
   ** (PGP only)
   */
   { "pgp_sign_as",      DT_STRING,  R_NONE, &PgpSignAs, 0 },
@@ -2735,7 +2735,7 @@ struct ConfigDef MuttVars[] = {
   ** .de
   ** .pp
   ** If you prefer reverse order of the above values, prefix it with
-  ** ``reverse-''.
+  ** "reverse-".
   ** (PGP only)
   */
   { "pgp_strict_enc",   DT_BOOL, R_NONE, &PgpStrictEnc, true },
@@ -2821,8 +2821,8 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
   ** attempt to use to log in to an POP server, in the order NeoMutt should
-  ** try them.  Authentication methods are either ``user'', ``apop'' or any
-  ** SASL mechanism, e.g. ``digest-md5'', ``gssapi'' or ``cram-md5''.
+  ** try them.  Authentication methods are either "user", "apop" or any
+  ** SASL mechanism, e.g. "digest-md5", "gssapi" or "cram-md5".
   ** This option is case-insensitive. If this option is \fIunset\fP
   ** (the default) NeoMutt will try all available methods, in order from
   ** most-secure to least-secure.
@@ -2854,12 +2854,12 @@ struct ConfigDef MuttVars[] = {
   ** [pop[s]://][username[:password]@]popserver[:port]
   ** .te
   ** .pp
-  ** where ``[...]'' denotes an optional part.
+  ** where "[...]" denotes an optional part.
   */
   { "pop_last",         DT_BOOL, R_NONE, &PopLast, false },
   /*
   ** .pp
-  ** If this variable is \fIset\fP, NeoMutt will try to use the ``\fCLAST\fP'' POP command
+  ** If this variable is \fIset\fP, NeoMutt will try to use the "\fCLAST\fP" POP command
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
@@ -2869,7 +2869,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your POP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.  See ``$oauth'' for details.
+  ** mechanism.  See "$oauth" for details.
   */
   { "pop_pass",         DT_STRING,  R_NONE|F_SENSITIVE, &PopPass, 0 },
   /*
@@ -2940,7 +2940,7 @@ struct ConfigDef MuttVars[] = {
   { "postponed",        DT_PATH|DT_MAILBOX, R_INDEX, &Postponed, IP "~/postponed" },
   /*
   ** .pp
-  ** NeoMutt allows you to indefinitely ``$postpone sending a message'' which
+  ** NeoMutt allows you to indefinitely "$postpone sending a message" which
   ** you are editing.  When you choose to postpone a message, NeoMutt saves it
   ** in the mailbox specified by this variable.
   ** .pp
@@ -2959,8 +2959,8 @@ struct ConfigDef MuttVars[] = {
   ** sleep 20 < /dev/null > /dev/null"
   ** .te
   ** .pp
-  ** Mailbox ``foo'' on ``mailhost.net'' can now be reached
-  ** as ``{localhost:1234}foo''.
+  ** Mailbox "foo" on "mailhost.net" can now be reached
+  ** as "{localhost:1234}foo".
   ** .pp
   ** Note: For this example to work, you must be able to log in to the
   ** remote machine without having to enter a password.
@@ -2976,8 +2976,8 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not NeoMutt really prints messages.
-  ** This is set to ``ask-no'' by default, because some people
-  ** accidentally hit ``p'' often.
+  ** This is set to "ask-no" by default, because some people
+  ** accidentally hit "p" often.
   */
   { "print_command", DT_COMMAND, R_NONE, &PrintCommand, IP "lpr" },
   /*
@@ -3020,37 +3020,37 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This specifies the command NeoMutt will use to make external address
-  ** queries.  The string may contain a ``%s'', which will be substituted
+  ** queries.  The string may contain a "%s", which will be substituted
   ** with the query string the user types.  NeoMutt will add quotes around the
-  ** string substituted for ``%s'' automatically according to shell quoting
-  ** rules, so you should avoid adding your own.  If no ``%s'' is found in
+  ** string substituted for "%s" automatically according to shell quoting
+  ** rules, so you should avoid adding your own.  If no "%s" is found in
   ** the string, NeoMutt will append the user's query to the end of the string.
-  ** See ``$query'' for more information.
+  ** See "$query" for more information.
   */
   { "query_format",     DT_STRING|DT_NOT_EMPTY, R_NONE, &QueryFormat, IP "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
   /*
   ** .pp
-  ** This variable describes the format of the ``query'' menu. The
+  ** This variable describes the format of the "query" menu. The
   ** following \fCprintf(3)\fP-style sequences are understood:
   ** .dl
   ** .dt %a  .dd Destination address
   ** .dt %c  .dd Current entry number
   ** .dt %e  .dd Extra information *
   ** .dt %n  .dd Destination name
-  ** .dt %t  .dd ``*'' if current entry is tagged, a space otherwise
-  ** .dt %>X .dd Right justify the rest of the string and pad with ``X''
-  ** .dt %|X .dd Pad to the end of the line with ``X''
-  ** .dt %*X .dd Soft-fill with character ``X'' as pad
+  ** .dt %t  .dd "*" if current entry is tagged, a space otherwise
+  ** .dt %>X .dd Right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd Pad to the end of the line with "X"
+  ** .dt %*X .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** For an explanation of "soft-fill", see the $$index_format documentation.
   ** .pp
   ** * = can be optionally printed if nonzero, see the $$status_format documentation.
   */
   { "quit",             DT_QUAD, R_NONE, &Quit, MUTT_YES },
   /*
   ** .pp
-  ** This variable controls whether ``quit'' and ``exit'' actually quit
+  ** This variable controls whether "quit" and "exit" actually quit
   ** from NeoMutt.  If this option is \fIset\fP, they do quit, if it is \fIunset\fP, they
   ** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
   ** prompted for confirmation when you try to quit.
@@ -3061,10 +3061,10 @@ struct ConfigDef MuttVars[] = {
   ** A regular expression used in the internal pager to determine quoted
   ** sections of text in the body of a message. Quoted text may be filtered
   ** out using the \fC<toggle-quoted>\fP command, or colored according to the
-  ** ``color quoted'' family of directives.
+  ** "color quoted" family of directives.
   ** .pp
-  ** Higher levels of quoting may be colored differently (``color quoted1'',
-  ** ``color quoted2'', etc.). The quoting level is determined by removing
+  ** Higher levels of quoting may be colored differently ("color quoted1",
+  ** "color quoted2", etc.). The quoting level is determined by removing
   ** the last character from the matched text and recursively reapplying
   ** the regular expression until it fails to produce a match.
   ** .pp
@@ -3084,7 +3084,7 @@ struct ConfigDef MuttVars[] = {
   ** the mailbox.
   ** .pp
   ** Also see the $$write_inc, $$net_inc and $$time_inc variables and the
-  ** ``$tuning'' section of the manual for performance considerations.
+  ** "$tuning" section of the manual for performance considerations.
   */
   { "read_only",        DT_BOOL, R_NONE, &ReadOnly, false },
   /*
@@ -3094,11 +3094,11 @@ struct ConfigDef MuttVars[] = {
   { "realname",         DT_STRING,  R_BOTH, &Realname, 0 },
   /*
   ** .pp
-  ** This variable specifies what ``real'' or ``personal'' name should be used
+  ** This variable specifies what "real" or "personal" name should be used
   ** when sending messages.
   ** .pp
-  ** If not specified, then the user's ``real name'' will be read from \fC/etc/passwd\fP.
-  ** This option will not be used, if ``$$from'' is set.
+  ** If not specified, then the user's "real name" will be read from \fC/etc/passwd\fP.
+  ** This option will not be used, if "$$from" is set.
   */
   { "recall",           DT_QUAD, R_NONE, &Recall, MUTT_ASKYES },
   /*
@@ -3117,11 +3117,11 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This specifies the file into which your outgoing messages should be
   ** appended.  (This is meant as the primary method for saving a copy of
-  ** your messages, but another way to do this is using the ``$my_hdr''
-  ** command to create a ``Bcc:'' field with your email address in it.)
+  ** your messages, but another way to do this is using the "$my_hdr"
+  ** command to create a "Bcc:" field with your email address in it.)
   ** .pp
   ** The value of \fI$$record\fP is overridden by the $$force_name and
-  ** $$save_name variables, and the ``$fcc-hook'' command.  Also see $$copy.
+  ** $$save_name variables, and the "$fcc-hook" command.  Also see $$copy.
   */
   { "reflow_space_quotes",      DT_BOOL, R_NONE, &ReflowSpaceQuotes, true },
   /*
@@ -3169,7 +3169,7 @@ struct ConfigDef MuttVars[] = {
   ** assume that you want to reply to the recipients of that message rather
   ** than to yourself.
   ** .pp
-  ** Also see the ``$alternates'' command.
+  ** Also see the "$alternates" command.
   */
   { "reply_to",         DT_QUAD, R_NONE, &ReplyTo, MUTT_ASKYES },
   /*
@@ -3186,7 +3186,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This variable provides a toggle. When active, the From: header will be
   ** extracted from the current mail's `X-Original-To:' header. This setting
-  ** does not have precedence over ``$reverse_realname''.
+  ** does not have precedence over "$reverse_realname".
   ** .pp
   ** Assuming `fast_reply' is disabled, this option will prompt the user with a
   ** prefilled From: header.
@@ -3226,7 +3226,7 @@ struct ConfigDef MuttVars[] = {
   { "reverse_alias",    DT_BOOL, R_BOTH, &ReverseAlias, false },
   /*
   ** .pp
-  ** This variable controls whether or not NeoMutt will display the ``personal''
+  ** This variable controls whether or not NeoMutt will display the "personal"
   ** name from your aliases in the index menu if it finds an alias that
   ** matches the message's sender.  For example, if you have the following
   ** alias:
@@ -3239,8 +3239,8 @@ struct ConfigDef MuttVars[] = {
   ** From: abd30425@somewhere.net
   ** .te
   ** .pp
-  ** It would be displayed in the index menu as ``Joe User'' instead of
-  ** ``abd30425@somewhere.net.''  This is useful when the person's e-mail
+  ** It would be displayed in the index menu as "Joe User" instead of
+  ** "abd30425@somewhere.net."  This is useful when the person's e-mail
   ** address is not human friendly.
   */
   { "reverse_name",     DT_BOOL, R_BOTH, &ReverseName, false },
@@ -3251,11 +3251,11 @@ struct ConfigDef MuttVars[] = {
   ** from there.  If this variable is \fIset\fP, the default \fIFrom:\fP line of
   ** the reply messages is built using the address where you received the
   ** messages you are replying to \fBif\fP that address matches your
-  ** ``$alternates''.  If the variable is \fIunset\fP, or the address that would be
-  ** used doesn't match your ``$alternates'', the \fIFrom:\fP line will use
+  ** "$alternates".  If the variable is \fIunset\fP, or the address that would be
+  ** used doesn't match your "$alternates", the \fIFrom:\fP line will use
   ** your address on the current machine.
   ** .pp
-  ** Also see the ``$alternates'' command.
+  ** Also see the "$alternates" command.
   */
   { "reverse_realname", DT_BOOL, R_BOTH, &ReverseRealname, true },
   /*
@@ -3327,7 +3327,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, info about unsubscribed newsgroups will be saved into
-  ** ``newsrc'' file and into cache.
+  ** "newsrc" file and into cache.
   */
 #endif
   { "score",            DT_BOOL, R_NONE, &Score, true },
@@ -3370,11 +3370,11 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** A colon-delimited list of character sets for outgoing messages. NeoMutt will use the
   ** first character set into which the text can be converted exactly.
-  ** If your $$charset is not ``iso-8859-1'' and recipients may not
-  ** understand ``UTF-8'', it is advisable to include in the list an
+  ** If your $$charset is not "iso-8859-1" and recipients may not
+  ** understand "UTF-8", it is advisable to include in the list an
   ** appropriate widely used standard character set (such as
-  ** ``iso-8859-2'', ``koi8-r'' or ``iso-2022-jp'') either instead of or after
-  ** ``iso-8859-1''.
+  ** "iso-8859-2", "koi8-r" or "iso-2022-jp") either instead of or after
+  ** "iso-8859-1".
   ** .pp
   ** In case the text cannot be converted into one of these exactly,
   ** NeoMutt uses $$charset as a fallback.
@@ -3493,16 +3493,16 @@ struct ConfigDef MuttVars[] = {
   ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
-  ** .dt %!  .dd ``!'' : one flagged message;
-  **             ``!!'' : two flagged messages;
-  **             ``n!'' : n flagged messages (for n > 2).
+  ** .dt %!  .dd "!" : one flagged message;
+  **             "!!" : two flagged messages;
+  **             "n!" : n flagged messages (for n > 2).
   **             Otherwise prints nothing.
   ** .dt %d  .dd * @ Number of deleted messages
   ** .dt %L  .dd * @ Number of messages after limiting
   ** .dt %t  .dd * @ Number of tagged messages
-  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
-  ** .dt %|X .dd pad to the end of the line with ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .dt %>X .dd right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd pad to the end of the line with "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
   ** * = Can be optionally printed if nonzero
@@ -3574,8 +3574,8 @@ struct ConfigDef MuttVars[] = {
   ** .dd unsorted
   ** .ie
   ** .pp
-  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
-  ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  ** You may optionally use the "reverse-" prefix to specify reverse sorting
+  ** order (example: "\fCset sort_browser=reverse-date\fP").
   */
   { "sidebar_visible", DT_BOOL, R_REFLOW, &SidebarVisible, false },
   /*
@@ -3596,10 +3596,10 @@ struct ConfigDef MuttVars[] = {
   { "sig_dashes",       DT_BOOL, R_NONE, &SigDashes, true },
   /*
   ** .pp
-  ** If \fIset\fP, a line containing ``-- '' (note the trailing space) will be inserted before your
+  ** If \fIset\fP, a line containing "-- " (note the trailing space) will be inserted before your
   ** $$signature.  It is \fBstrongly\fP recommended that you not \fIunset\fP
   ** this variable unless your signature contains just your name.  The
-  ** reason for this is because many software packages use ``-- \n'' to
+  ** reason for this is because many software packages use "-- \n" to
   ** detect your signature.  For example, NeoMutt has the ability to highlight
   ** the signature in a different color in the built-in pager.
   */
@@ -3615,7 +3615,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Specifies the filename of your signature, which is appended to all
-  ** outgoing messages.   If the filename ends with a pipe (``|''), it is
+  ** outgoing messages.   If the filename ends with a pipe ("|"), it is
   ** assumed that filename is a shell command and input should be read from
   ** its standard output.
   */
@@ -3623,19 +3623,19 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Specifies how NeoMutt should expand a simple search into a real search
-  ** pattern.  A simple search is one that does not contain any of the ``~'' pattern
-  ** operators.  See ``$patterns'' for more information on search patterns.
+  ** pattern.  A simple search is one that does not contain any of the "~" pattern
+  ** operators.  See "$patterns" for more information on search patterns.
   ** .pp
-  ** For example, if you simply type ``joe'' at a search or limit prompt, NeoMutt
+  ** For example, if you simply type "joe" at a search or limit prompt, NeoMutt
   ** will automatically expand it to the value specified by this variable by
-  ** replacing ``%s'' with the supplied string.
-  ** For the default value, ``joe'' would be expanded to: ``~f joe | ~s joe''.
+  ** replacing "%s" with the supplied string.
+  ** For the default value, "joe" would be expanded to: "~f joe | ~s joe".
   */
   { "skip_quoted_offset", DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &SkipQuotedOffset, 0 },
   /*
   ** .pp
   ** Lines of quoted text that are displayed before the unquoted text after
-  ** ``skip to quoted'' command (S)
+  ** "skip to quoted" command (S)
   */
   { "sleep_time",       DT_NUMBER|DT_NOT_NEGATIVE, R_NONE, &SleepTime, 1 },
   /*
@@ -3708,7 +3708,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
   ** .          points to a directory or file, this expands to
-  ** .          ``-CApath $$smime_ca_location'' or ``-CAfile $$smime_ca_location''.
+  ** .          "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
   ** .de
   ** .pp
   ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
@@ -3763,7 +3763,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This sets the algorithm that should be used for encryption.
-  ** Valid choices are ``aes128'', ``aes192'', ``aes256'', ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
+  ** Valid choices are "aes128", "aes192", "aes256", "des", "des3", "rc2-40", "rc2-64", "rc2-128".
   ** (S/MIME only)
   */
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
@@ -3792,7 +3792,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This command is used to extract only the signers X509 certificate from a S/MIME
   ** signature, so that the certificate's owner may get compared to the
-  ** email's ``From:'' field.
+  ** email's "From:" field.
   ** .pp
   ** This is a format string, see the $$smime_decrypt_command command for
   ** possible \fCprintf(3)\fP-like sequences.
@@ -3871,7 +3871,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** This sets the algorithm that should be used for the signature message digest.
-  ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
+  ** Valid choices are "md5", "sha1", "sha224", "sha256", "sha384", "sha512".
   ** (S/MIME only)
   */
   { "smime_timeout",            DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &SmimeTimeout, 300 },
@@ -3907,11 +3907,11 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** This is a colon-delimited list of authentication methods NeoMutt may
   ** attempt to use to log in to an SMTP server, in the order NeoMutt should
-  ** try them.  Authentication methods are any SASL mechanism, e.g. ``plain'',
-  ** ``digest-md5'', ``gssapi'' or ``cram-md5''.
-  ** This option is case-insensitive. If it is ``unset''
+  ** try them.  Authentication methods are any SASL mechanism, e.g. "plain",
+  ** "digest-md5", "gssapi" or "cram-md5".
+  ** This option is case-insensitive. If it is "unset"
   ** (the default) NeoMutt will try all available methods, in order from
-  ** most-secure to least-secure. Support for the ``plain'' mechanism is
+  ** most-secure to least-secure. Support for the "plain" mechanism is
   ** bundled; other mechanisms are provided by an external SASL library (look
   ** for +USE_SASL in the output of neomutt -v).
   ** .pp
@@ -3926,7 +3926,7 @@ struct ConfigDef MuttVars[] = {
   ** The command to run to generate an OAUTH refresh token for
   ** authorizing your connection to your SMTP server.  This command will be
   ** run on every connection attempt that uses the OAUTHBEARER authentication
-  ** mechanism.  See ``$oauth'' for details.
+  ** mechanism.  See "$oauth" for details.
   */
   { "smtp_pass",        DT_STRING,  R_NONE|F_SENSITIVE, &SmtpPass, 0 },
   /*
@@ -3948,7 +3948,7 @@ struct ConfigDef MuttVars[] = {
   ** smtp[s]://[user[:pass]@]host[:port]
   ** .te
   ** .pp
-  ** where ``[...]'' denotes an optional part.
+  ** where "[...]" denotes an optional part.
   ** Setting this variable overrides the value of the $$sendmail
   ** variable.
   */
@@ -3956,7 +3956,7 @@ struct ConfigDef MuttVars[] = {
   { "sort",             DT_SORT, R_INDEX|R_RESORT, &Sort, SORT_DATE, pager_validator },
   /*
   ** .pp
-  ** Specifies how to sort messages in the ``index'' menu.  Valid values
+  ** Specifies how to sort messages in the "index" menu.  Valid values
   ** are:
   ** .il
   ** .dd date or date-sent
@@ -3971,7 +3971,7 @@ struct ConfigDef MuttVars[] = {
   ** .dd to
   ** .ie
   ** .pp
-  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
+  ** You may optionally use the "reverse-" prefix to specify reverse sorting
   ** order.
   ** .pp
   ** Example:
@@ -3982,7 +3982,7 @@ struct ConfigDef MuttVars[] = {
   { "sort_alias",       DT_SORT|DT_SORT_ALIAS,  R_NONE, &SortAlias, SORT_ALIAS },
   /*
   ** .pp
-  ** Specifies how the entries in the ``alias'' menu are sorted.  The
+  ** Specifies how the entries in the "alias" menu are sorted.  The
   ** following are legal values:
   ** .il
   ** .dd address (sort alphabetically by email address)
@@ -3993,15 +3993,15 @@ struct ConfigDef MuttVars[] = {
   { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, &SortAux, SORT_DATE },
   /*
   ** .pp
-  ** This provides a secondary sort for messages in the ``index'' menu, used
+  ** This provides a secondary sort for messages in the "index" menu, used
   ** when the $$sort value is equal for two messages.
   ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
   ** in relation to other threads, and how the branches of the thread trees
   ** are sorted.  This can be set to any value that $$sort can, except
-  ** ``threads'' (in that case, NeoMutt will just use ``date-sent'').  You can also
-  ** specify the ``last-'' prefix in addition to the ``reverse-'' prefix, but ``last-''
-  ** must come after ``reverse-''.  The ``last-'' prefix causes messages to be
+  ** "threads" (in that case, NeoMutt will just use "date-sent").  You can also
+  ** specify the "last-" prefix in addition to the "reverse-" prefix, but "last-"
+  ** must come after "reverse-".  The "last-" prefix causes messages to be
   ** sorted against its siblings by which has the last descendant, using
   ** the rest of $$sort_aux as an ordering.  For instance,
   ** .ts
@@ -4010,7 +4010,7 @@ struct ConfigDef MuttVars[] = {
   ** .pp
   ** would mean that if a new message is received in a
   ** thread, that thread becomes the last one displayed (or the first, if
-  ** you have ``\fCset sort=reverse-threads\fP''.)
+  ** you have "\fCset sort=reverse-threads\fP".)
   ** .pp
   ** Note: For reversed-threads $$sort
   ** order, $$sort_aux is reversed again (which is not the right thing to do,
@@ -4031,8 +4031,8 @@ struct ConfigDef MuttVars[] = {
   ** .dd unsorted
   ** .ie
   ** .pp
-  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
-  ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  ** You may optionally use the "reverse-" prefix to specify reverse sorting
+  ** order (example: "\fCset sort_browser=reverse-date\fP").
   */
   { "sort_re",          DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, &SortRe, true, pager_validator },
   /*
@@ -4206,7 +4206,7 @@ struct ConfigDef MuttVars[] = {
   { "status_chars",     DT_MBTABLE, R_BOTH, &StatusChars, IP "-*%A" },
   /*
   ** .pp
-  ** Controls the characters used by the ``%r'' indicator in $$status_format.
+  ** Controls the characters used by the "%r" indicator in $$status_format.
   ** .dl
   ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
   ** .dt 1 .dd - .dd Mailbox is unchanged
@@ -4214,7 +4214,7 @@ struct ConfigDef MuttVars[] = {
   ** .dt 3 .dd % .dd Mailbox is read-only, or will not be written when exiting.
   **                 (You can toggle whether to write changes to a mailbox
   **                 with the \fC<toggle-write>\fP operation, bound by default
-  **                 to ``%'')
+  **                 to "%")
   ** .dt 4 .dd A .dd Folder opened in attach-message mode.
   **                 (Certain operations like composing a new mail, replying,
   **                 forwarding, etc. are not permitted in this mode)
@@ -4223,7 +4223,7 @@ struct ConfigDef MuttVars[] = {
   { "status_format",    DT_STRING|DT_NOT_EMPTY,  R_BOTH, &StatusFormat, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
-  ** Controls the format of the status line displayed in the ``index''
+  ** Controls the format of the status line displayed in the "index"
   ** menu.  This string is similar to $$index_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
@@ -4251,12 +4251,12 @@ struct ConfigDef MuttVars[] = {
   ** .dt %u  .dd Number of unread messages *
   ** .dt %v  .dd NeoMutt version string
   ** .dt %V  .dd Currently active limit pattern, if any *
-  ** .dt %>X .dd Right justify the rest of the string and pad with ``X''
-  ** .dt %|X .dd Pad to the end of the line with ``X''
-  ** .dt %*X .dd Soft-fill with character ``X'' as pad
+  ** .dt %>X .dd Right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd Pad to the end of the line with "X"
+  ** .dt %*X .dd Soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** For an explanation of "soft-fill", see the $$index_format documentation.
   ** .pp
   ** * = can be optionally printed if nonzero
   ** .pp
@@ -4287,30 +4287,30 @@ struct ConfigDef MuttVars[] = {
   ** be expanded, otherwise \fIelse_string\fP will be expanded.
   ** .pp
   ** You can force the result of any \fCprintf(3)\fP-like sequence to be lowercase
-  ** by prefixing the sequence character with an underscore (``_'') sign.
+  ** by prefixing the sequence character with an underscore ("_") sign.
   ** For example, if you want to display the local hostname in lowercase,
-  ** you would use: ``\fC%_h\fP''.
+  ** you would use: "\fC%_h\fP".
   ** .pp
-  ** If you prefix the sequence character with a colon (``:'') character, NeoMutt
+  ** If you prefix the sequence character with a colon (":") character, NeoMutt
   ** will replace any dots in the expansion by underscores. This might be helpful
   ** with IMAP folders that don't like dots in folder names.
   */
   { "status_on_top",    DT_BOOL, R_REFLOW, &StatusOnTop, false },
   /*
   ** .pp
-  ** Setting this variable causes the ``status bar'' to be displayed on
+  ** Setting this variable causes the "status bar" to be displayed on
   ** the first line of the screen rather than near the bottom. If $$help
   ** is \fIset\fP, too it'll be placed at the bottom.
   */
   { "strict_threads",   DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, &StrictThreads, false, pager_validator },
   /*
   ** .pp
-  ** If \fIset\fP, threading will only make use of the ``In-Reply-To'' and
-  ** ``References:'' fields when you $$sort by message threads.  By
+  ** If \fIset\fP, threading will only make use of the "In-Reply-To" and
+  ** "References:" fields when you $$sort by message threads.  By
   ** default, messages with the same subject are grouped together in
-  ** ``pseudo threads.''. This may not always be desirable, such as in a
+  ** "pseudo threads.". This may not always be desirable, such as in a
   ** personal mailbox where you might have several unrelated messages with
-  ** the subjects like ``hi'' which will get grouped together. See also
+  ** the subjects like "hi" which will get grouped together. See also
   ** $$sort_re for a less drastic way of controlling this
   ** behavior.
   */
@@ -4318,14 +4318,14 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIunset\fP, NeoMutt won't stop when the user presses the terminal's
-  ** \fIsusp\fP key, usually ``^Z''. This is useful if you run NeoMutt
-  ** inside an xterm using a command like ``\fCxterm -e neomutt\fP''.
+  ** \fIsusp\fP key, usually "^Z". This is useful if you run NeoMutt
+  ** inside an xterm using a command like "\fCxterm -e neomutt\fP".
   */
   { "text_flowed",      DT_BOOL, R_NONE, &TextFlowed,  false },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will generate ``format=flowed'' bodies with a content type
-  ** of ``\fCtext/plain; format=flowed\fP''.
+  ** When \fIset\fP, NeoMutt will generate "format=flowed" bodies with a content type
+  ** of "\fCtext/plain; format=flowed\fP".
   ** This format is easier to handle for some mailing software, and generally
   ** just looks like ordinary text.  To actually make use of this format's
   ** features, you'll need support in your editor.
@@ -4336,7 +4336,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** Affects the \fC~b\fP and \fC~h\fP search operations described in
-  ** section ``$patterns''.  If \fIset\fP, the headers and body/attachments of
+  ** section "$patterns".  If \fIset\fP, the headers and body/attachments of
   ** messages to be searched are decoded before searching. If \fIunset\fP,
   ** messages are searched as they appear in the folder.
   ** .pp
@@ -4356,7 +4356,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, the internal-pager will pad blank lines to the bottom of the
-  ** screen with a tilde (``~'').
+  ** screen with a tilde ("~").
   */
   { "time_inc",         DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &TimeInc, 0 },
   /*
@@ -4367,7 +4367,7 @@ struct ConfigDef MuttVars[] = {
   ** apart. This can improve throughput on systems with slow terminals,
   ** or when running NeoMutt on a remote system.
   ** .pp
-  ** Also see the ``$tuning'' section of the manual for performance considerations.
+  ** Also see the "$tuning" section of the manual for performance considerations.
   */
   { "timeout",          DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &Timeout, 600 },
   /*
@@ -4391,7 +4391,7 @@ struct ConfigDef MuttVars[] = {
   ** temporary files needed for displaying and composing messages.
   ** .pp
   ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
-  ** used.  Failing that, then ``\fC/tmp\fP'' is used.
+  ** used.  Failing that, then "\fC/tmp\fP" is used.
   */
   { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFLR" },
   /*
@@ -4401,11 +4401,11 @@ struct ConfigDef MuttVars[] = {
   ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
   ** .dt 1 .dd <space> .dd The mail is \fInot\fP addressed to your address.
   ** .dt 2 .dd + .dd You are the only recipient of the message.
-  ** .dt 3 .dd T .dd Your address appears in the ``To:'' header field, but you are not the only recipient of the message.
-  ** .dt 4 .dd C .dd Your address is specified in the ``Cc:'' header field, but you are not the only recipient.
+  ** .dt 3 .dd T .dd Your address appears in the "To:" header field, but you are not the only recipient of the message.
+  ** .dt 4 .dd C .dd Your address is specified in the "Cc:" header field, but you are not the only recipient.
   ** .dt 5 .dd F .dd Indicates the mail that was sent by \fIyou\fP.
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
-  ** .dt 7 .dd R .dd Your address appears in the ``Reply-To:'' header field but none of the above applies.
+  ** .dt 7 .dd R .dd Your address appears in the "Reply-To:" header field but none of the above applies.
   ** .de
   */
   { "trash",            DT_PATH|DT_MAILBOX, R_NONE, &Trash, 0 },
@@ -4428,16 +4428,16 @@ struct ConfigDef MuttVars[] = {
   { "ts_icon_format",    DT_STRING,  R_BOTH, &TsIconFormat, IP "M%?n?AIL&ail?" },
   /*
   ** .pp
-  ** Controls the format of the icon title, as long as ``$$ts_enabled'' is set.
+  ** Controls the format of the icon title, as long as "$$ts_enabled" is set.
   ** This string is identical in formatting to the one used by
-  ** ``$$status_format''.
+  ** "$$status_format".
   */
   { "ts_status_format",  DT_STRING,   R_BOTH, &TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
   /*
   ** .pp
   ** Controls the format of the terminal status line (or window title),
-  ** provided that ``$$ts_enabled'' has been set. This string is identical in
-  ** formatting to the one used by ``$$status_format''.
+  ** provided that "$$ts_enabled" has been set. This string is identical in
+  ** formatting to the one used by "$$status_format".
   */
 #ifdef USE_SOCKET
   { "tunnel",            DT_STRING, R_NONE, &Tunnel, 0 },
@@ -4454,7 +4454,7 @@ struct ConfigDef MuttVars[] = {
   ** machine without having to enter a password.
   ** .pp
   ** When set, NeoMutt uses the tunnel for all remote connections.
-  ** Please see ``$account-hook'' in the manual for how to use different
+  ** Please see "$account-hook" in the manual for how to use different
   ** tunnel commands per connection.
   */
 #endif
@@ -4486,7 +4486,7 @@ struct ConfigDef MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, NeoMutt will qualify all local addresses (ones without the
-  ** ``@host'' portion) with the value of $$hostname.  If \fIunset\fP, no
+  ** "@host" portion) with the value of $$hostname.  If \fIunset\fP, no
   ** addresses will be qualified.
   */
   { "use_envelope_from",        DT_BOOL, R_NONE, &UseEnvelopeFrom, false },
@@ -4495,7 +4495,7 @@ struct ConfigDef MuttVars[] = {
   ** When \fIset\fP, NeoMutt will set the \fIenvelope\fP sender of the message.
   ** If $$envelope_from_address is \fIset\fP, it will be used as the sender
   ** address. If \fIunset\fP, NeoMutt will attempt to derive the sender from the
-  ** ``From:'' header.
+  ** "From:" header.
   ** .pp
   ** Note that this information is passed to sendmail command using the
   ** \fC-f\fP command line switch. Therefore setting this option is not useful
@@ -4505,9 +4505,9 @@ struct ConfigDef MuttVars[] = {
   { "use_from",         DT_BOOL, R_NONE, &UseFrom, true },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will generate the ``From:'' header field when
-  ** sending messages.  If \fIunset\fP, no ``From:'' header field will be
-  ** generated unless the user explicitly sets one using the ``$my_hdr''
+  ** When \fIset\fP, NeoMutt will generate the "From:" header field when
+  ** sending messages.  If \fIunset\fP, no "From:" header field will be
+  ** generated unless the user explicitly sets one using the "$my_hdr"
   ** command.
   */
 #ifdef HAVE_GETADDRINFO
@@ -4522,7 +4522,7 @@ struct ConfigDef MuttVars[] = {
   { "user_agent",       DT_BOOL, R_NONE, &UserAgent, true },
   /*
   ** .pp
-  ** When \fIset\fP, NeoMutt will add a ``User-Agent:'' header to outgoing
+  ** When \fIset\fP, NeoMutt will add a "User-Agent:" header to outgoing
   ** messages, indicating which version of NeoMutt was used for composing
   ** them.
   */
@@ -4544,7 +4544,7 @@ struct ConfigDef MuttVars[] = {
   { "visual", DT_COMMAND, R_NONE, &Visual, IP "vi" },
   /*
   ** .pp
-  ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
+  ** Specifies the visual editor to invoke when the "\fC~v\fP" command is
   ** given in the built-in editor.
   ** .pp
   ** $$visual is overridden by the environment variable \fC$$$VISUAL\fP or \fC$$$EDITOR\fP.
@@ -4557,7 +4557,7 @@ struct ConfigDef MuttVars[] = {
   ** \fC<pipe-message>\fP, \fC<pipe-entry>\fP, \fC<print-message>\fP,
   ** and \fC<print-entry>\fP commands.
   ** .pp
-  ** It is also used when viewing attachments with ``$auto_view'', provided
+  ** It is also used when viewing attachments with "$auto_view", provided
   ** that the corresponding mailcap entry has a \fIneedsterminal\fP flag,
   ** and the external program is interactive.
   ** .pp
@@ -4602,10 +4602,10 @@ struct ConfigDef MuttVars[] = {
   { "write_bcc",        DT_BOOL, R_NONE, &WriteBcc, true },
   /*
   ** .pp
-  ** Controls whether NeoMutt writes out the ``Bcc:'' header when preparing
+  ** Controls whether NeoMutt writes out the "Bcc:" header when preparing
   ** messages to be sent.  Exim users may wish to unset this. If NeoMutt
   ** is set to deliver directly via SMTP (see $$smtp_url), this
-  ** option does nothing: NeoMutt will never write out the ``Bcc:'' header
+  ** option does nothing: NeoMutt will never write out the "Bcc:" header
   ** in this case.
   */
   { "write_inc",        DT_NUMBER|DT_NOT_NEGATIVE,  R_NONE, &WriteInc, 10 },
@@ -4616,13 +4616,13 @@ struct ConfigDef MuttVars[] = {
   ** single message will be displayed before writing a mailbox.
   ** .pp
   ** Also see the $$read_inc, $$net_inc and $$time_inc variables and the
-  ** ``$tuning'' section of the manual for performance considerations.
+  ** "$tuning" section of the manual for performance considerations.
   */
 #ifdef USE_NNTP
   { "x_comment_to",     DT_BOOL, R_NONE, &XCommentTo, false },
   /*
   ** .pp
-  ** If \fIset\fP, NeoMutt will add ``X-Comment-To:'' field (that contains full
+  ** If \fIset\fP, NeoMutt will add "X-Comment-To:" field (that contains full
   ** name of original article author) to article that followuped to newsgroup.
   */
 #endif
