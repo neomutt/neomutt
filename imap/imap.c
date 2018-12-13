@@ -1309,10 +1309,7 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
  */
 int imap_mbox_check_stats(struct Mailbox *m, int flags)
 {
-  struct ImapAccountData *adata = imap_adata_get(m);
-  struct ImapMboxData *mdata = imap_mdata_get(m);
-
-  int rc = imap_status(adata, mdata, true);
+  int rc = imap_mailbox_status(m, true);
   if (rc > 0)
     rc = 0;
   return rc;
@@ -1351,9 +1348,11 @@ int imap_path_status(const char *path, bool queue)
  */
 int imap_mailbox_status(struct Mailbox *m, bool queue)
 {
-  if (!m)
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
     return -1;
-  return imap_status(m->account->adata, m->mdata, queue);
+  return imap_status(adata, mdata, queue);
 }
 
 /**
