@@ -1475,7 +1475,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
  * @retval  0 No change
  * @retval -1 Lost connection
  */
-static int nntp_group_poll(struct NntpMboxData *mdata, int update_stat)
+static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
   char buf[LONG_STRING] = "";
   anum_t count, first, last;
@@ -1544,7 +1544,7 @@ static int check_mailbox(struct Context *ctx)
     return -1;
 
   adata->check_time = now;
-  rc = nntp_group_poll(mdata, 0);
+  rc = nntp_group_poll(mdata, false);
   if (rc < 0)
   {
     nntp_newsrc_close(adata);
@@ -2133,7 +2133,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
 
       if (mdata && mdata->subscribed)
       {
-        rc = nntp_group_poll(mdata, 1);
+        rc = nntp_group_poll(mdata, true);
         if (rc < 0)
           return -1;
         if (rc > 0)

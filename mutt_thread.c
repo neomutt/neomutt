@@ -73,7 +73,7 @@ static bool is_visible(struct Email *e, struct Context *ctx)
  * @param e Email
  * @retval true If the subject should be displayed
  */
-bool need_display_subject(struct Context *ctx, struct Email *e)
+static bool need_display_subject(struct Context *ctx, struct Email *e)
 {
   struct MuttThread *tmp = NULL, *tree = e->thread;
 

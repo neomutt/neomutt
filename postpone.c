@@ -73,7 +73,7 @@ static const struct Mapping PostponeHelp[] = {
 
 static short PostCount = 0;
 static struct Context *PostContext = NULL;
-static short UpdateNumPostponed = 0;
+static bool UpdateNumPostponed = false;
 
 /**
  * mutt_num_postponed - Return the number of postponed messages
@@ -92,7 +92,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
   if (UpdateNumPostponed)
   {
-    UpdateNumPostponed = 0;
+    UpdateNumPostponed = false;
     force = true;
   }
 
@@ -191,7 +191,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
  */
 void mutt_update_num_postponed(void)
 {
-  UpdateNumPostponed = 1;
+  UpdateNumPostponed = true;
 }
 
 /**

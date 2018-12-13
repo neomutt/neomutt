@@ -598,7 +598,7 @@ msgstr "Bcc: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142 compose.c:1042 send.c:387
 msgid "Subject: "
-msgstr "Subjet: "
+msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
