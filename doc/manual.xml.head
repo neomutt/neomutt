@@ -9062,7 +9062,9 @@ macro pager \cb |urlview\n
       </para>
 
 <screen>
-echo "Sourcing muttrc file" unset confirmappend macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
+echo "Sourcing muttrc file"
+unset confirmappend
+macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
 </screen>
 
     </sect1>
