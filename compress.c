@@ -252,47 +252,6 @@ static void free_compress_info(struct Mailbox *m)
 }
 
 /**
- * escape_path - Escapes single quotes in a path for a command string
- * @param src the path to escape
- * @retval ptr The escaped string
- */
-static char *escape_path(char *src)
-{
-  static char dest[HUGE_STRING];
-  char *destp = dest;
-  int destsize = 0;
-
-  if (!src)
-    return NULL;
-
-  while (*src && (destsize < sizeof(dest) - 1))
-  {
-    if (*src != '\'')
-    {
-      *destp++ = *src++;
-      destsize++;
-    }
-    else
-    {
-      /* convert ' into '\'' */
-      if (destsize + 4 < sizeof(dest))
-      {
-        *destp++ = *src++;
-        *destp++ = '\\';
-        *destp++ = '\'';
-        *destp++ = '\'';
-        destsize += 4;
-      }
-      else
-        break;
-    }
-  }
-  *destp = '\0';
-
-  return dest;
-}
-
-/**
  * compress_format_str - Expand the filenames in a command string - Implements ::format_t
  *
  * | Expando | Description
@@ -314,11 +273,11 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
   {
     case 'f':
       /* Compressed file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(m->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(mutt_path_escape(m->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(buf, buflen, "%s", NONULL(escape_path(m->path)));
+      snprintf(buf, buflen, "%s", NONULL(mutt_path_escape(m->path)));
       break;
   }
   return src;

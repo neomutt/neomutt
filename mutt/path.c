@@ -526,3 +526,44 @@ bool mutt_path_abbr_folder(char *buf, size_t buflen, const char *folder)
   memmove(buf + 1, buf + flen + 1, rlen + 1);
   return true;
 }
+
+/**
+ * mutt_escape_path - Escapes single quotes in a path for a command string
+ * @param src the path to escape
+ * @retval ptr The escaped string
+ */
+char *mutt_path_escape(const char *src)
+{
+  static char dest[HUGE_STRING];
+  char *destp = dest;
+  int destsize = 0;
+
+  if (!src)
+    return NULL;
+
+  while (*src && (destsize < sizeof(dest) - 1))
+  {
+    if (*src != '\'')
+    {
+      *destp++ = *src++;
+      destsize++;
+    }
+    else
+    {
+      /* convert ' into '\'' */
+      if (destsize + 4 < sizeof(dest))
+      {
+        *destp++ = *src++;
+        *destp++ = '\\';
+        *destp++ = '\'';
+        *destp++ = '\'';
+        destsize += 4;
+      }
+      else
+        break;
+    }
+  }
+  *destp = '\0';
+
+  return dest;
+}
