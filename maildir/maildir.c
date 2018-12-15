@@ -656,6 +656,22 @@ static int maildir_msg_commit(struct Mailbox *m, struct Message *msg)
 }
 
 /**
+ * maildir_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ */
+static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  int rc = 0;
+#ifdef USE_HCACHE
+  header_cache_t *hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+  char *key = e->path + 3;
+  int keylen = maildir_hcache_keylen(key);
+  rc = mutt_hcache_store(hc, key, keylen, e, 0);
+  mutt_hcache_close(hc);
+#endif
+  return rc;
+}
+
+/**
  * maildir_path_probe - Is this a Maildir mailbox? - Implements MxOps::path_probe()
  */
 enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
@@ -696,6 +712,7 @@ struct MxOps MxMaildirOps = {
   .msg_commit       = maildir_msg_commit,
   .msg_close        = mh_msg_close,
   .msg_padding_size = NULL,
+  .msg_save_hcache  = maildir_msg_save_hcache,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = maildir_path_probe,

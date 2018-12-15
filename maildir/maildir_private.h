@@ -82,10 +82,12 @@ int             mh_mbox_check      (struct Mailbox *m, int *index_hint);
 int             mh_mbox_close      (struct Mailbox *m);
 int             mh_mbox_sync       (struct Mailbox *m, int *index_hint);
 int             mh_msg_close       (struct Mailbox *m, struct Message *msg);
+int             mh_msg_save_hcache (struct Mailbox *m, struct Email *e);
 
 /* Maildir/MH shared functions */
 void                    maildir_canon_filename (struct Buffer *dest, const char *src);
 void                    maildir_delayed_parsing(struct Mailbox *m, struct Maildir **md, struct Progress *progress);
+size_t                  maildir_hcache_keylen  (const char *fn);
 struct MaildirMboxData *maildir_mdata_get      (struct Mailbox *m);
 int                     maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir);
 int                     maildir_move_to_context(struct Mailbox *m, struct Maildir **md);

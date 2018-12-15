@@ -2057,3 +2057,24 @@ int imap_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
+
+/**
+ * imap_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ */
+int imap_msg_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  int rc = 0;
+#ifdef USE_HCACHE
+  bool close_hc = true;
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (mdata->hcache)
+    close_hc = false;
+  else
+    mdata->hcache = imap_hcache_open(adata, NULL);
+  rc = imap_hcache_put(mdata, e);
+  if (close_hc)
+    imap_hcache_close(mdata);
+#endif
+  return rc;
+}

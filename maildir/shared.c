@@ -488,7 +488,7 @@ int maildir_move_to_context(struct Mailbox *m, struct Maildir **md)
  *
  * @note This length excludes the flags, which will vary
  */
-static size_t maildir_hcache_keylen(const char *fn)
+size_t maildir_hcache_keylen(const char *fn)
 {
   const char *p = strrchr(fn, ':');
   return p ? (size_t)(p - fn) : mutt_str_strlen(fn);
@@ -1852,4 +1852,18 @@ int mh_mbox_close(struct Mailbox *m)
 int mh_msg_close(struct Mailbox *m, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
+}
+
+/**
+ * mh_msg_save_hcache - Save message to the header cache - Implements MxOps::msg_save_hcache()
+ */
+int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  int rc = 0;
+#ifdef USE_HCACHE
+  header_cache_t *hc = mutt_hcache_open(HeaderCache, m->path, NULL);
+  rc = mutt_hcache_store(hc, e->path, strlen(e->path), e, 0);
+  mutt_hcache_close(hc);
+#endif
+  return rc;
 }

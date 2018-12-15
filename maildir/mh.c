@@ -815,6 +815,7 @@ struct MxOps MxMhOps = {
   .msg_commit       = mh_msg_commit,
   .msg_close        = mh_msg_close,
   .msg_padding_size = NULL,
+  .msg_save_hcache  = mh_msg_save_hcache,
   .tags_edit        = NULL,
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,

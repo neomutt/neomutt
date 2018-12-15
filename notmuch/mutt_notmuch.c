@@ -2552,6 +2552,7 @@ struct MxOps MxNotmuchOps = {
   .msg_commit       = nm_msg_commit,
   .msg_close        = nm_msg_close,
   .msg_padding_size = NULL,
+  .msg_save_hcache  = NULL,
   .tags_edit        = nm_tags_edit,
   .tags_commit      = nm_tags_commit,
   .path_probe       = nm_path_probe,
