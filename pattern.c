@@ -297,6 +297,19 @@ static bool eat_query(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   mutt_buffer_init(&cmd_buf);
   mutt_buffer_addstr(&cmd_buf, SearchCommand);
   mutt_buffer_addch(&cmd_buf, ' ');
+  if (!Context || !Context->mailbox)
+  {
+    mutt_buffer_addch(&cmd_buf, '/');
+  }
+  else
+  {
+    char *escaped_folder = mutt_path_escape(Context->mailbox->path);
+    mutt_debug(2, "escaped folder path: %s\n", escaped_folder);
+    mutt_buffer_addch(&cmd_buf, '\'');
+    mutt_buffer_addstr(&cmd_buf, escaped_folder);
+    mutt_buffer_addch(&cmd_buf, '\'');
+  }
+  mutt_buffer_addch(&cmd_buf, ' ');
   mutt_buffer_addstr(&cmd_buf, tok_buf.data);
   FREE(&tok_buf.data);
 

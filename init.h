@@ -939,6 +939,11 @@ struct ConfigDef MuttVars[] = {
    ** runs the old but well loved mairix indexer with the arguments
    ** given to mairix_filter, in the "raw" mode of mairix, producing
    ** on the standard output a list of Message-IDs, one per line.
+   ** .pp
+   ** If possible, it also filters down the results coming from mairix
+   ** such that only messages in the current folder remain.  It can do
+   ** this because it gets a hidden first argument which is the path
+   ** to the folder.
    ** (This can be the type of clean and simple script called a \fIone-liner\fP.)
    ** .pp
    ** Now if NeoMutt gets a limit or tag command followed by the pattern
