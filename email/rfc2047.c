@@ -797,3 +797,20 @@ void rfc2047_decode_envelope(struct Envelope *env)
   rfc2047_decode(&env->x_label);
   rfc2047_decode(&env->subject);
 }
+
+/**
+ * rfc2047_encode_envelope - Encode the fields of an Envelope
+ * @param env Envelope
+ */
+void rfc2047_encode_envelope(struct Envelope *env)
+{
+  rfc2047_encode_addrlist(env->from, "From");
+  rfc2047_encode_addrlist(env->to, "To");
+  rfc2047_encode_addrlist(env->cc, "Cc");
+  rfc2047_encode_addrlist(env->bcc, "Bcc");
+  rfc2047_encode_addrlist(env->reply_to, "Reply-To");
+  rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
+  rfc2047_encode_addrlist(env->sender, "Sender");
+  rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), SendCharset);
+  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
+}

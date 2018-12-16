@@ -2907,20 +2907,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final)
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
-  rfc2047_encode_addrlist(env->to, "To");
-  rfc2047_encode_addrlist(env->cc, "Cc");
-  rfc2047_encode_addrlist(env->bcc, "Bcc");
-  rfc2047_encode_addrlist(env->from, "From");
-  rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
-  rfc2047_encode_addrlist(env->reply_to, "Reply-To");
-
-  if (env->subject)
-#ifdef USE_NNTP
-    if (!OptNewsSend || MimeSubject)
-#endif
-    {
-      rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
-    }
+  rfc2047_encode_envelope(env);
   encode_headers(&env->userhdrs);
 }
 

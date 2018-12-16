@@ -34,5 +34,6 @@ void rfc2047_encode(char **pd, const char *specials, int col, const char *charse
 void rfc2047_decode_addrlist(struct Address *a);
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
 void rfc2047_decode_envelope(struct Envelope *env);
+void rfc2047_encode_envelope(struct Envelope *env);
 
 #endif /* MUTT_EMAIL_RFC2047_H */
