@@ -104,6 +104,7 @@ WHERE char *Attribution;                   ///< Config: Message to start a reply
 WHERE char *AttributionLocale;             ///< Config: Locale for dates in the attribution message
 WHERE char *AttachFormat;                  ///< Config: printf-like format string for the attachment menu
 WHERE char *ConfigCharset;                 ///< Config: Character set that the config files are in
+WHERE char *CryptProtectedHeadersSubject;  ///< Config: Use this as the subject for encrypted emails
 WHERE char *DateFormat;                    ///< Config: strftime format string for the `%d` expando
 WHERE char *DsnNotify;                     ///< Config: Request notification for message delivery or delay
 WHERE char *DsnReturn;                     ///< Config: What to send as a notification of message delivery or delay
@@ -272,6 +273,7 @@ WHERE bool CryptUsePka;                    ///< Config: Use GPGME to use PKA (lo
 WHERE bool CryptConfirmhook;               ///< Config: Prompt the user to confirm keys before use
 WHERE bool CryptOpportunisticEncrypt;      ///< Config: Enable encryption when the recipient's key is available
 WHERE bool CryptProtectedHeadersRead;      ///< Config: Display protected headers (Memory Hole) in the pager
+WHERE bool CryptProtectedHeadersWrite;     ///< Config: Generate protected header (Memory Hole) for signed and encrypted emails
 WHERE bool SmimeIsDefault;                 ///< Config: Use SMIME rather than PGP by default
 WHERE bool PgpIgnoreSubkeys;               ///< Config: Only use the principal PGP key
 WHERE bool PgpLongIds;                     ///< Config: Display long PGP key IDs to the user

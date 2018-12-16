@@ -669,8 +669,38 @@ struct ConfigDef MuttVars[] = {
   ** Protected headers are stored inside the encrypted or signed part of an
   ** an email, to prevent disclosure or tampering.
   ** For more information see https://github.com/autocrypt/memoryhole.
+  ** Currently Mutt only supports the Subject header.
+  ** .pp
+  ** Encrypted messages using protected headers often substitute the exposed
+  ** Subject header with a dummy value (see $$crypt_protected_headers_subject).
+  ** Mutt will update its concept of the correct subject \fBafter\fP the
+  ** message is opened, i.e. via the \fC<display-message>\fP function.
+  ** If you reply to a message before opening it, Mutt will end up using
+  ** the dummy Subject header, so be sure to open such a message first.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_write", DT_BOOL, R_NONE, &CryptProtectedHeadersWrite, false },
+  /*
+  ** .pp
+  ** When set, Mutt will generate protected headers ("Memory Hole") for
+  ** signed and encrypted emails.
+  **
+  ** Protected headers are stored inside the encrypted or signed part of an
+  ** an email, to prevent disclosure or tampering.
+  ** For more information see https://github.com/autocrypt/memoryhole.
   **
   ** Currently Mutt only supports the Subject header.
+  ** (Crypto only)
+  */
+  { "crypt_protected_headers_subject", DT_STRING, R_NONE, &CryptProtectedHeadersSubject, IP "Encrypted subject" },
+  /*
+  ** .pp
+  ** When $$crypt_protected_headers_write is set, and the message is marked
+  ** for encryption, this will be substituted into the Subject field in the
+  ** message headers.
+  **
+  ** To prevent a subject from being substituted, unset this variable, or set it
+  ** to the empty string.
   ** (Crypto only)
   */
   { "crypt_replyencrypt",       DT_BOOL, R_NONE, &CryptReplyencrypt, true },
