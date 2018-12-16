@@ -268,18 +268,20 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
     return src;
 
   struct Mailbox *m = (struct Mailbox *) data;
+  const char *stuffing = NULL;
 
   switch (op)
   {
     case 'f':
       /* Compressed file */
-      snprintf(buf, buflen, "%s", NONULL(mutt_path_escape(m->realpath)));
+      stuffing = mutt_path_escape(m->realpath);
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(buf, buflen, "%s", NONULL(mutt_path_escape(m->path)));
+      stuffing = mutt_path_escape(m->path);
       break;
   }
+  snprintf(buf, buflen, "%s", NONULL(stuffing));
   return src;
 }
 
