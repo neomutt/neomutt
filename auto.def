@@ -389,6 +389,15 @@ if {[get-define want-gpgme]} {
       if {$req_ver > $gpg_ver} {
         user-error "Found GPGME version $gpg_ver, need $req_ver"
       }
+
+      # If libgpg-error's version is at least 1.33.0, we use gpgrt_cmp_version
+      # from it, so we need to add it to our link line.
+      # See https://github.com/neomutt/neomutt/issues/1493.
+      set gpgrt_ver [check-define-value $incfile GPGRT_VERSION_NUMBER]
+      set gpgrt_req_ver [format "0x%02x%02x%02x" 1 33 0]
+      if {$gpgrt_ver ne {} && $gpgrt_ver >= $gpgrt_req_ver} {
+        define-append LIBS -lgpg-error
+      }
     }
     if {$gpg_ver eq {}} {
       user-error "Unable to find GPGME"
