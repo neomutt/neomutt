@@ -779,7 +779,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, header_cache_t *hc)
   {
     snprintf(buf, sizeof(buf), "%u %u", mdata->first_message, mdata->last_message);
     mutt_debug(2, "mutt_hcache_store index: %s\n", buf);
-    mutt_hcache_store_raw(hc, "index", 5, buf, strlen(buf));
+    mutt_hcache_store_raw(hc, "index", 5, buf, strlen(buf) + 1);
   }
 }
 #endif
