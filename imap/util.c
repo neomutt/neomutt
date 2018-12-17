@@ -172,12 +172,12 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   STAILQ_INIT(&mdata->flags);
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = imap_hcache_open(adata, mdata);
-  if (hc)
+  mdata->hcache = imap_hcache_open(adata, mdata);
+  if (mdata->hcache)
   {
-    void *uidvalidity = mutt_hcache_fetch_raw(hc, "/UIDVALIDITY", 12);
-    void *uidnext = mutt_hcache_fetch_raw(hc, "/UIDNEXT", 8);
-    unsigned long long *modseq = mutt_hcache_fetch_raw(hc, "/MODSEQ", 7);
+    void *uidvalidity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
+    void *uidnext = mutt_hcache_fetch_raw(mdata->hcache, "/UIDNEXT", 8);
+    unsigned long long *modseq = mutt_hcache_fetch_raw(mdata->hcache, "/MODSEQ", 7);
     if (uidvalidity)
     {
       mdata->uid_validity = *(unsigned int *) uidvalidity;
@@ -186,10 +186,9 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
       mutt_debug(3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uid_validity, mdata->uid_next, mdata->modseq);
     }
-    mutt_hcache_free(hc, &uidvalidity);
-    mutt_hcache_free(hc, &uidnext);
-    mutt_hcache_free(hc, (void **) &modseq);
-    mutt_hcache_close(hc);
+    mutt_hcache_free(mdata->hcache, &uidvalidity);
+    mutt_hcache_free(mdata->hcache, &uidnext);
+    mutt_hcache_free(mdata->hcache, (void **) &modseq);
   }
 #endif
 
@@ -231,6 +230,7 @@ void imap_mdata_free(void **ptr)
   struct ImapMboxData *mdata = *ptr;
 
   imap_mdata_cache_reset(mdata);
+  mutt_hcache_close(mdata->hcache);
   mutt_list_free(&mdata->flags);
   FREE(&mdata->name);
   FREE(&mdata->real_name);
@@ -436,19 +436,6 @@ header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxD
   url_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
 
   return mutt_hcache_open(HeaderCache, cachepath, imap_hcache_namer);
-}
-
-/**
- * imap_hcache_close - Close the header cache
- * @param mdata Imap Mailbox data
- */
-void imap_hcache_close(struct ImapMboxData *mdata)
-{
-  if (!mdata->hcache)
-    return;
-
-  mutt_hcache_close(mdata->hcache);
-  mdata->hcache = NULL;
 }
 
 /**

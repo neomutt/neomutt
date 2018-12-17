@@ -316,7 +316,6 @@ struct ImapAccountData *imap_adata_get(struct Mailbox *m);
 struct ImapMboxData *imap_mdata_get(struct Mailbox *m);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
-void imap_hcache_close(struct ImapMboxData *mdata);
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
 int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);
 int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid);

@@ -972,7 +972,6 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   /* VANISHED handling: we need to empty out the messages */
   if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
-    imap_hcache_close(mdata);
     imap_expunge_mailbox(m);
 
     /* undo expunge count updates.
@@ -985,7 +984,6 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     m->msg_flagged = 0;
     m->changed = 0;
 
-    mdata->hcache = imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
 
@@ -1258,8 +1256,6 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
   mdata->new_mail_count = 0;
 
 #ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-
   if (mdata->hcache && initial_download)
   {
     uid_validity = mutt_hcache_fetch_raw(mdata->hcache, "/UIDVALIDITY", 12);
@@ -1395,7 +1391,6 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
 
 bail:
 #ifdef USE_HCACHE
-  imap_hcache_close(mdata);
   FREE(&uid_seqset);
 #endif /* USE_HCACHE */
 

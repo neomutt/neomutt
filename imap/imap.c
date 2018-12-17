@@ -787,10 +787,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
   int cacheno;
   short old_sort;
 
-#ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-#endif
-
   old_sort = Sort;
   Sort = SORT_ORDER;
   mutt_sort_headers(adata->ctx, false);
@@ -846,10 +842,6 @@ void imap_expunge_mailbox(struct Mailbox *m)
       e->active = true;
     }
   }
-
-#ifdef USE_HCACHE
-  imap_hcache_close(mdata);
-#endif
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
@@ -1692,10 +1684,6 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
     }
   }
 
-#ifdef USE_HCACHE
-  mdata->hcache = imap_hcache_open(adata, mdata);
-#endif
-
   /* save messages with real (non-flag) changes */
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -1729,10 +1717,6 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
       }
     }
   }
-
-#ifdef USE_HCACHE
-  imap_hcache_close(mdata);
-#endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */
   oldsort = Sort;
