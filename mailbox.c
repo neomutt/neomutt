@@ -766,3 +766,16 @@ void mutt_context_free(struct Context **ctx)
   mailbox_free(&(*ctx)->mailbox);
   FREE(ctx);
 }
+
+/**
+ * mutt_mailbox_changed - Notify listeners of a change to a Mailbox
+ * @param m      Mailbox
+ * @param action Change to Mailbox
+ */
+void mutt_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
+{
+  if (!m || !m->notify)
+    return;
+
+  m->notify(m, action);
+}

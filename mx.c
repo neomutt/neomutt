@@ -237,6 +237,35 @@ static int mx_open_mailbox_append(struct Mailbox *m, int flags)
 }
 
 /**
+ * mx_mailbox_changed - Act on a Mailbox change notification
+ * @param m      Mailbox
+ * @param action Event occurring
+ * @param ndata  Private notification data
+ */
+void mx_mailbox_changed(struct Mailbox *m, enum MailboxNotification action)
+{
+  if (!m || !m->ndata)
+    return;
+
+  struct Context *ctx = m->ndata;
+
+  switch (action)
+  {
+    case MBN_CLOSED:
+      mutt_clear_threads(ctx);
+      mx_cleanup_context(ctx);
+      break;
+    case MBN_INVALID:
+      mx_update_context(ctx);
+      break;
+    case MBN_RESORT:
+      mx_update_tables(ctx, false);
+      mutt_sort_headers(ctx, true);
+      break;
+  }
+}
+
+/**
  * mx_mbox_open - Open a mailbox and parse it
  * @param m     Mailbox to open
  * @param path  Path to the mailbox
@@ -272,6 +301,9 @@ struct Context *mx_mbox_open(struct Mailbox *m, const char *path, int flags)
     mutt_str_strfcpy(m->path, path, sizeof(m->path));
     /* int rc = */ mx_path_canon2(m, Folder);
   }
+
+  m->notify = mx_mailbox_changed;
+  m->ndata = ctx;
 
   if ((m->magic == MUTT_UNKNOWN) && (flags & MUTT_NEWFOLDER))
   {
