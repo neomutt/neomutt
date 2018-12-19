@@ -1616,7 +1616,6 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   struct Body *pbody = NULL;
   int i;
   bool killfrom = false;
-  bool fcc_error = false;
   bool free_clear_content = false;
 
   struct Body *clear_content = NULL;
@@ -2137,7 +2136,6 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
   {
   main_loop:
 
-    fcc_error = false; /* reset value since we may have failed before */
     mutt_pretty_mailbox(fcc, sizeof(fcc));
     i = mutt_compose_menu(msg, fcc, sizeof(fcc), cur,
                           ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0));
@@ -2340,14 +2338,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
 
   mutt_prepare_envelope(msg->env, true);
 
-  fcc_error = (save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags,
-                        &finalpath) < 0);
-
-  /* Don't attempt to send the message if the FCC failed.  Just pretend
-   * the send failed as well so we give the user a chance to fix the
-   * error.
-   */
-  if (fcc_error || (i = send_message(msg)) < 0)
+  i = send_message(msg);
+  if (i < 0)
   {
     if (!(flags & SEND_BATCH))
     {
@@ -2387,6 +2379,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
       nm_record_message(ctx->mailbox, finalpath, cur);
 #endif
   }
+
+  save_fcc(msg, fcc, sizeof(fcc), clear_content, pgpkeylist, flags, &finalpath);
 
   if ((WithCrypto != 0) && (msg->security & ENCRYPT))
     FREE(&pgpkeylist);
