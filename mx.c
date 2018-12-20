@@ -448,18 +448,19 @@ void mx_fastclose_mailbox(struct Context *ctx)
   if (m->mx_ops)
     m->mx_ops->mbox_close(m);
 
+  mutt_mailbox_changed(m, MBN_CLOSED);
+
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->label_hash);
+
   if (m->emails)
   {
-    mutt_clear_threads(ctx);
     for (int i = 0; i < m->msg_count; i++)
       mutt_email_free(&m->emails[i]);
     FREE(&m->emails);
   }
   FREE(&m->v2r);
-  mx_cleanup_context(ctx);
 }
 
 /**
