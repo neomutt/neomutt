@@ -2277,11 +2277,11 @@ bail:
 int smime_class_application_handler(struct Body *m, struct State *s)
 {
   int rv = -1;
-  struct Body *tattach = smime_handle_entity (m, s, NULL);
+  struct Body *tattach = smime_handle_entity(m, s, NULL);
   if (tattach)
   {
     rv = 0;
-    mutt_body_free (&tattach);
+    mutt_body_free(&tattach);
   }
   return rv;
 }

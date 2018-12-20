@@ -281,8 +281,8 @@ int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_add_regex(struct GroupList *head, const char *s,
-                                 int flags, struct Buffer *err)
+int mutt_grouplist_add_regex(struct GroupList *head, const char *s, int flags,
+                             struct Buffer *err)
 {
   int rc = 0;
 

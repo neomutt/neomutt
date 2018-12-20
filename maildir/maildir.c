@@ -211,10 +211,10 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  */
 int maildir_sync_message(struct Mailbox *m, int msgno)
 {
-  if (!m || !m->hdrs)
+  if (!m || !m->emails)
     return -1;
 
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
   struct Buffer *newpath = NULL;
   struct Buffer *partpath = NULL;
   struct Buffer *fullpath = NULL;
@@ -454,36 +454,36 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
   /* check for modifications and adjust flags */
   for (int i = 0; i < m->msg_count; i++)
   {
-    m->hdrs[i]->active = false;
-    maildir_canon_filename(buf, m->hdrs[i]->path);
+    m->emails[i]->active = false;
+    maildir_canon_filename(buf, m->emails[i]->path);
     p = mutt_hash_find(fnames, mutt_b2s(buf));
     if (p && p->email)
     {
       /* message already exists, merge flags */
-      m->hdrs[i]->active = true;
+      m->emails[i]->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.
        */
-      if (mutt_str_strcmp(m->hdrs[i]->path, p->email->path) != 0)
-        mutt_str_replace(&m->hdrs[i]->path, p->email->path);
+      if (mutt_str_strcmp(m->emails[i]->path, p->email->path) != 0)
+        mutt_str_replace(&m->emails[i]->path, p->email->path);
 
       /* if the user hasn't modified the flags on this message, update
        * the flags we just detected.
        */
-      if (!m->hdrs[i]->changed)
-        if (maildir_update_flags(ctx->mailbox, m->hdrs[i], p->email))
+      if (!m->emails[i]->changed)
+        if (maildir_update_flags(ctx->mailbox, m->emails[i], p->email))
           flags_changed = true;
 
-      if (m->hdrs[i]->deleted == m->hdrs[i]->trash)
+      if (m->emails[i]->deleted == m->emails[i]->trash)
       {
-        if (m->hdrs[i]->deleted != p->email->deleted)
+        if (m->emails[i]->deleted != p->email->deleted)
         {
-          m->hdrs[i]->deleted = p->email->deleted;
+          m->emails[i]->deleted = p->email->deleted;
           flags_changed = true;
         }
       }
-      m->hdrs[i]->trash = p->email->trash;
+      m->emails[i]->trash = p->email->trash;
 
       /* this is a duplicate of an existing header, so remove it */
       mutt_email_free(&p->email);
@@ -492,8 +492,8 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
      * Check to see if we have enough information to know if the
      * message has disappeared out from underneath us.
      */
-    else if (((changed & 1) && (strncmp(m->hdrs[i]->path, "new/", 4) == 0)) ||
-             ((changed & 2) && (strncmp(m->hdrs[i]->path, "cur/", 4) == 0)))
+    else if (((changed & 1) && (strncmp(m->emails[i]->path, "new/", 4) == 0)) ||
+             ((changed & 2) && (strncmp(m->emails[i]->path, "cur/", 4) == 0)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
@@ -507,7 +507,7 @@ int maildir_mbox_check(struct Context *ctx, int *index_hint)
        * modified, so we assume that it is still present and
        * unchanged.
        */
-      m->hdrs[i]->active = true;
+      m->emails[i]->active = true;
     }
   }
 

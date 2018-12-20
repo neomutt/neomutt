@@ -227,7 +227,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       {
         setlocale(LC_TIME, NONULL(AttributionLocale));
         mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context,
-                         Context->mailbox->hdrs[n]);
+                         Context->mailbox->emails[n]);
         setlocale(LC_TIME, "");
         strcat(tmp, "\n");
       }
@@ -239,14 +239,14 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
 #if 0
       /* This only worked for mbox Mailboxes because they had Context->fp set.
        * As that no longer exists, the code is now completely broken. */
-      bytes = Context->mailbox->hdrs[n]->content->length;
+      bytes = Context->mailbox->emails[n]->content->length;
       if (inc_hdrs)
       {
-        offset = Context->mailbox->hdrs[n]->offset;
-        bytes += Context->mailbox->hdrs[n]->content->offset - offset;
+        offset = Context->mailbox->emails[n]->offset;
+        bytes += Context->mailbox->emails[n]->content->offset - offset;
       }
       else
-        offset = Context->mailbox->hdrs[n]->content->offset;
+        offset = Context->mailbox->emails[n]->content->offset;
       buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
 #endif
 

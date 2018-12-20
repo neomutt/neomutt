@@ -413,12 +413,12 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&m->subj_hash);
   mutt_hash_destroy(&m->id_hash);
   mutt_hash_destroy(&m->label_hash);
-  if (m->hdrs)
+  if (m->emails)
   {
     mutt_clear_threads(ctx);
     for (int i = 0; i < m->msg_count; i++)
-      mutt_email_free(&m->hdrs[i]);
-    FREE(&m->hdrs);
+      mutt_email_free(&m->emails[i]);
+    FREE(&m->emails);
   }
   FREE(&m->v2r);
   mx_cleanup_context(ctx);
@@ -478,7 +478,7 @@ static int trash_append(struct Mailbox *m)
   int first_del = -1;
   for (i = 0; i < m->msg_count; i++)
   {
-    if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
+    if (m->emails[i]->deleted && (!m->emails[i]->purge))
     {
       if (first_del < 0)
         first_del = i;
@@ -525,9 +525,9 @@ static int trash_append(struct Mailbox *m)
     /* continue from initial scan above */
     for (i = first_del; i < m->msg_count; i++)
     {
-      if (m->hdrs[i]->deleted && (!m->hdrs[i]->purge))
+      if (m->emails[i]->deleted && (!m->emails[i]->purge))
       {
-        if (mutt_append_message(ctx_trash->mailbox, m, m->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message(ctx_trash->mailbox, m, m->emails[i], 0, 0) == -1)
         {
           mx_mbox_close(&ctx_trash, NULL);
           return -1;
@@ -595,9 +595,9 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
   for (i = 0; i < m->msg_count; i++)
   {
-    if (!m->hdrs[i])
+    if (!m->emails[i])
       break;
-    if (!m->hdrs[i]->deleted && m->hdrs[i]->read && !(m->hdrs[i]->flagged && KeepFlagged))
+    if (!m->emails[i]->deleted && m->emails[i]->read && !(m->emails[i]->flagged && KeepFlagged))
     {
       read_msgs++;
     }
@@ -655,8 +655,8 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   {
     for (i = 0; i < m->msg_count; i++)
     {
-      if (!m->hdrs[i]->deleted && !m->hdrs[i]->old && !m->hdrs[i]->read)
-        mutt_set_flag(m, m->hdrs[i], MUTT_OLD, 1);
+      if (!m->emails[i]->deleted && !m->emails[i]->old && !m->emails[i]->read)
+        mutt_set_flag(m, m->emails[i], MUTT_OLD, 1);
     }
   }
 
@@ -674,13 +674,14 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < m->msg_count; i++)
       {
-        if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
+        if (m->emails[i]->read && !m->emails[i]->deleted &&
+            !(m->emails[i]->flagged && KeepFlagged))
         {
-          m->hdrs[i]->tagged = true;
+          m->emails[i]->tagged = true;
         }
         else
         {
-          m->hdrs[i]->tagged = false;
+          m->emails[i]->tagged = false;
         }
       }
 
@@ -700,12 +701,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
 
       for (i = 0; i < m->msg_count; i++)
       {
-        if (m->hdrs[i]->read && !m->hdrs[i]->deleted && !(m->hdrs[i]->flagged && KeepFlagged))
+        if (m->emails[i]->read && !m->emails[i]->deleted &&
+            !(m->emails[i]->flagged && KeepFlagged))
         {
-          if (mutt_append_message(f->mailbox, ctx->mailbox, m->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(f->mailbox, ctx->mailbox, m->emails[i], 0, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, 1);
-            mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, 1);
+            mutt_set_flag(m, m->emails[i], MUTT_DELETE, 1);
+            mutt_set_flag(m, m->emails[i], MUTT_PURGE, 1);
           }
           else
           {
@@ -751,8 +753,8 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
     {
       for (i = 0; i < m->msg_count; i++)
       {
-        m->hdrs[i]->deleted = false;
-        m->hdrs[i]->purge = false;
+        m->emails[i]->deleted = false;
+        m->emails[i]->purge = false;
       }
       m->msg_deleted = 0;
     }
@@ -787,13 +789,13 @@ int mx_mbox_close(struct Context **pctx, int *index_hint)
   {
     for (i = 0; i < m->msg_count; i++)
     {
-      if (m->hdrs[i]->deleted && !m->hdrs[i]->read)
+      if (m->emails[i]->deleted && !m->emails[i]->read)
       {
         m->msg_unread--;
-        if (!m->hdrs[i]->old)
+        if (!m->emails[i]->old)
           m->msg_new--;
       }
-      if (m->hdrs[i]->deleted && m->hdrs[i]->flagged)
+      if (m->emails[i]->deleted && m->emails[i]->flagged)
         m->msg_flagged--;
     }
   }
@@ -831,43 +833,43 @@ void mx_update_tables(struct Context *ctx, bool committing)
   padding = mx_msg_padding_size(m);
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
-    if (!m->hdrs[i]->quasi_deleted &&
-        ((committing && (!m->hdrs[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))) ||
-         (!committing && m->hdrs[i]->active)))
+    if (!m->emails[i]->quasi_deleted &&
+        ((committing && (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))) ||
+         (!committing && m->emails[i]->active)))
     {
       if (i != j)
       {
-        m->hdrs[j] = m->hdrs[i];
-        m->hdrs[i] = NULL;
+        m->emails[j] = m->emails[i];
+        m->emails[i] = NULL;
       }
-      m->hdrs[j]->msgno = j;
-      if (m->hdrs[j]->virtual != -1)
+      m->emails[j]->msgno = j;
+      if (m->emails[j]->virtual != -1)
       {
         m->v2r[m->vcount] = j;
-        m->hdrs[j]->virtual = m->vcount++;
-        struct Body *b = m->hdrs[j]->content;
+        m->emails[j]->virtual = m->vcount++;
+        struct Body *b = m->emails[j]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
 
       if (committing)
-        m->hdrs[j]->changed = false;
-      else if (m->hdrs[j]->changed)
+        m->emails[j]->changed = false;
+      else if (m->emails[j]->changed)
         m->changed = true;
 
       if (!committing || (m->magic == MUTT_MAILDIR && MaildirTrash))
       {
-        if (m->hdrs[j]->deleted)
+        if (m->emails[j]->deleted)
           m->msg_deleted++;
       }
 
-      if (m->hdrs[j]->tagged)
+      if (m->emails[j]->tagged)
         m->msg_tagged++;
-      if (m->hdrs[j]->flagged)
+      if (m->emails[j]->flagged)
         m->msg_flagged++;
-      if (!m->hdrs[j]->read)
+      if (!m->emails[j]->read)
       {
         m->msg_unread++;
-        if (!m->hdrs[j]->old)
+        if (!m->emails[j]->old)
           m->msg_new++;
       }
 
@@ -877,23 +879,23 @@ void mx_update_tables(struct Context *ctx, bool committing)
     {
       if (m->magic == MUTT_MH || m->magic == MUTT_MAILDIR)
       {
-        m->size -= (m->hdrs[i]->content->length + m->hdrs[i]->content->offset -
-                    m->hdrs[i]->content->hdr_offset);
+        m->size -= (m->emails[i]->content->length + m->emails[i]->content->offset -
+                    m->emails[i]->content->hdr_offset);
       }
       /* remove message from the hash tables */
-      if (m->subj_hash && m->hdrs[i]->env->real_subj)
-        mutt_hash_delete(m->subj_hash, m->hdrs[i]->env->real_subj, m->hdrs[i]);
-      if (m->id_hash && m->hdrs[i]->env->message_id)
-        mutt_hash_delete(m->id_hash, m->hdrs[i]->env->message_id, m->hdrs[i]);
-      mutt_label_hash_remove(m, m->hdrs[i]);
+      if (m->subj_hash && m->emails[i]->env->real_subj)
+        mutt_hash_delete(m->subj_hash, m->emails[i]->env->real_subj, m->emails[i]);
+      if (m->id_hash && m->emails[i]->env->message_id)
+        mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
+      mutt_label_hash_remove(m, m->emails[i]);
       /* The path mx_mbox_check() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
        * can occur before a call to mx_mbox_sync(), resulting in
        * last_tag being stale if it's not reset here.
        */
-      if (ctx->last_tag == m->hdrs[i])
+      if (ctx->last_tag == m->emails[i])
         ctx->last_tag = NULL;
-      mutt_email_free(&m->hdrs[i]);
+      mutt_email_free(&m->emails[i]);
     }
   }
   m->msg_count = j;
@@ -960,8 +962,8 @@ int mx_mbox_sync(struct Context *ctx, int *index_hint)
       {
         for (int i = 0; i < m->msg_count; i++)
         {
-          m->hdrs[i]->deleted = false;
-          m->hdrs[i]->purge = false;
+          m->emails[i]->deleted = false;
+          m->emails[i]->purge = false;
         }
         m->msg_deleted = 0;
       }
@@ -1211,19 +1213,19 @@ void mx_alloc_memory(struct Mailbox *m)
   }
 
   m->hdrmax += 25;
-  if (m->hdrs)
+  if (m->emails)
   {
-    mutt_mem_realloc(&m->hdrs, sizeof(struct Email *) * m->hdrmax);
+    mutt_mem_realloc(&m->emails, sizeof(struct Email *) * m->hdrmax);
     mutt_mem_realloc(&m->v2r, sizeof(int) * m->hdrmax);
   }
   else
   {
-    m->hdrs = mutt_mem_calloc(m->hdrmax, sizeof(struct Email *));
+    m->emails = mutt_mem_calloc(m->hdrmax, sizeof(struct Email *));
     m->v2r = mutt_mem_calloc(m->hdrmax, sizeof(int));
   }
   for (int i = m->msg_count; i < m->hdrmax; i++)
   {
-    m->hdrs[i] = NULL;
+    m->emails[i] = NULL;
     m->v2r[i] = -1;
   }
 }
@@ -1270,7 +1272,7 @@ void mx_update_context(struct Context *ctx)
   struct Email *e = NULL;
   for (int msgno = 0; msgno < m->msg_count; msgno++)
   {
-    e = m->hdrs[msgno];
+    e = m->emails[msgno];
 
     if (WithCrypto)
     {

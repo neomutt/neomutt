@@ -194,7 +194,7 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf, int flag,
   if (!adata || adata->mailbox != m)
     return -1;
 
-  struct Email **emails = m->hdrs;
+  struct Email **emails = m->emails;
 
   for (n = *pos; n < m->msg_count && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
   {
@@ -797,7 +797,7 @@ void imap_expunge_mailbox(struct Mailbox *m)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    e = m->hdrs[i];
+    e = m->emails[i];
 
     if (e->index == INT_MAX)
     {
@@ -1034,12 +1034,12 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
-    emails = m->hdrs;
-    m->hdrs = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-    memcpy(m->hdrs, emails, m->msg_count * sizeof(struct Email *));
+    emails = m->emails;
+    m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+    memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
-    qsort(m->hdrs, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
+    qsort(m->emails, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
   pos = 0;
@@ -1068,8 +1068,8 @@ out:
   if (oldsort != Sort)
   {
     Sort = oldsort;
-    FREE(&m->hdrs);
-    m->hdrs = emails;
+    FREE(&m->emails);
+    m->emails = emails;
   }
 
   return rc;
@@ -1367,7 +1367,7 @@ int imap_search(struct Mailbox *m, const struct Pattern *pat)
   struct Buffer buf;
   struct ImapAccountData *adata = imap_adata_get(m);
   for (int i = 0; i < m->msg_count; i++)
-    m->hdrs[i]->matched = false;
+    m->emails[i]->matched = false;
 
   if (do_search(pat, 1) == 0)
     return 0;
@@ -1558,10 +1558,10 @@ int imap_fast_trash(struct Mailbox *m, char *dest)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (m->hdrs[i]->active && m->hdrs[i]->changed && m->hdrs[i]->deleted &&
-        !m->hdrs[i]->purge)
+    if (m->emails[i]->active && m->emails[i]->changed &&
+        m->emails[i]->deleted && !m->emails[i]->purge)
     {
-      rc = imap_sync_message_for_copy(m, m->hdrs[i], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, m->emails[i], sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(1, "could not sync\n");
@@ -1684,8 +1684,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
       for (int i = 0; i < m->msg_count; i++)
-        if (m->hdrs[i]->deleted && m->hdrs[i]->changed)
-          m->hdrs[i]->active = false;
+        if (m->emails[i]->deleted && m->emails[i]->changed)
+          m->emails[i]->active = false;
       mutt_message(ngettext("Marking %d message deleted...",
                             "Marking %d messages deleted...", rc),
                    rc);
@@ -1699,7 +1699,7 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   /* save messages with real (non-flag) changes */
   for (int i = 0; i < m->msg_count; i++)
   {
-    e = m->hdrs[i];
+    e = m->emails[i];
 
     if (e->deleted)
     {
@@ -1738,12 +1738,12 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
-    emails = m->hdrs;
-    m->hdrs = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-    memcpy(m->hdrs, emails, m->msg_count * sizeof(struct Email *));
+    emails = m->emails;
+    m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+    memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
     Sort = SORT_ORDER;
-    qsort(m->hdrs, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
+    qsort(m->emails, m->msg_count, sizeof(struct Email *), mutt_get_sort_func(SORT_ORDER));
   }
 
   rc = sync_helper(m, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
@@ -1759,8 +1759,8 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
   if (oldsort != Sort)
   {
     Sort = oldsort;
-    FREE(&m->hdrs);
-    m->hdrs = emails;
+    FREE(&m->emails);
+    m->emails = emails;
   }
 
   /* Flush the queued flags if any were changed in sync_helper. */
@@ -1788,13 +1788,13 @@ int imap_sync_mailbox(struct Context *ctx, bool expunge, bool close)
    * there is no need to mutate the hcache after flag-only changes. */
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct ImapEmailData *edata = imap_edata_get(m->hdrs[i]);
-    edata->deleted = m->hdrs[i]->deleted;
-    edata->flagged = m->hdrs[i]->flagged;
-    edata->old = m->hdrs[i]->old;
-    edata->read = m->hdrs[i]->read;
-    edata->replied = m->hdrs[i]->replied;
-    m->hdrs[i]->changed = false;
+    struct ImapEmailData *edata = imap_edata_get(m->emails[i]);
+    edata->deleted = m->emails[i]->deleted;
+    edata->flagged = m->emails[i]->flagged;
+    edata->old = m->emails[i]->old;
+    edata->read = m->emails[i]->read;
+    edata->replied = m->emails[i]->replied;
+    m->emails[i]->changed = false;
   }
   m->changed = false;
 
@@ -2160,7 +2160,7 @@ static int imap_mbox_open(struct Mailbox *m, struct Context *ctx)
   }
 
   m->hdrmax = count;
-  m->hdrs = mutt_mem_calloc(count, sizeof(struct Email *));
+  m->emails = mutt_mem_calloc(count, sizeof(struct Email *));
   m->v2r = mutt_mem_calloc(count, sizeof(int));
   m->msg_count = 0;
   m->msg_unread = 0;

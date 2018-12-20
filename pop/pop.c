@@ -279,7 +279,7 @@ static int fetch_uidl(char *line, void *data)
   int i;
   for (i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->hdrs[i]->edata;
+    struct PopEmailData *edata = m->emails[i]->edata;
     if (mutt_str_strcmp(line, edata->uid) == 0)
       break;
   }
@@ -292,16 +292,16 @@ static int fetch_uidl(char *line, void *data)
       mx_alloc_memory(m);
 
     m->msg_count++;
-    m->hdrs[i] = mutt_email_new();
+    m->emails[i] = mutt_email_new();
 
-    m->hdrs[i]->edata = pop_edata_new(line);
-    m->hdrs[i]->free_edata = pop_edata_free;
+    m->emails[i]->edata = pop_edata_new(line);
+    m->emails[i]->free_edata = pop_edata_free;
   }
-  else if (m->hdrs[i]->index != index - 1)
+  else if (m->emails[i]->index != index - 1)
     adata->clear_cache = true;
 
-  m->hdrs[i]->refno = index;
-  m->hdrs[i]->index = index - 1;
+  m->emails[i]->refno = index;
+  m->emails[i]->index = index - 1;
 
   return 0;
 }
@@ -327,7 +327,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->hdrs[i]->edata;
+    struct PopEmailData *edata = m->emails[i]->edata;
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (edata->uid && (mutt_str_strcmp(edata->uid, id) == 0))
       return 0;
@@ -394,7 +394,7 @@ static int pop_fetch_headers(struct Context *ctx)
   time(&adata->check_time);
   adata->clear_cache = false;
 
-  if (!m->hdrs)
+  if (!m->emails)
   {
     /* Allocate some memory to get started */
     m->hdrmax = m->msg_count;
@@ -405,7 +405,7 @@ static int pop_fetch_headers(struct Context *ctx)
   }
 
   for (int i = 0; i < m->msg_count; i++)
-    m->hdrs[i]->refno = -1;
+    m->emails[i]->refno = -1;
 
   const int old_count = m->msg_count;
   int ret = pop_fetch_data(adata, "UIDL\r\n", NULL, fetch_uidl, m);
@@ -442,9 +442,9 @@ static int pop_fetch_headers(struct Context *ctx)
     int i, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
     {
-      if (m->hdrs[i]->refno == -1)
+      if (m->emails[i]->refno == -1)
       {
-        m->hdrs[i]->deleted = true;
+        m->emails[i]->deleted = true;
         deleted++;
       }
     }
@@ -461,16 +461,16 @@ static int pop_fetch_headers(struct Context *ctx)
     {
       if (!m->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
-      struct PopEmailData *edata = m->hdrs[i]->edata;
+      struct PopEmailData *edata = m->emails[i]->edata;
 #ifdef USE_HCACHE
       void *data = mutt_hcache_fetch(hc, edata->uid, strlen(edata->uid));
       if (data)
       {
         /* Detach the private data */
-        m->hdrs[i]->edata = NULL;
+        m->emails[i]->edata = NULL;
 
-        int refno = m->hdrs[i]->refno;
-        int index = m->hdrs[i]->index;
+        int refno = m->emails[i]->refno;
+        int index = m->emails[i]->index;
         /* - POP dynamically numbers headers and relies on e->refno
          *   to map messages; so restore header and overwrite restored
          *   refno with current refno, same for index
@@ -481,25 +481,25 @@ static int pop_fetch_headers(struct Context *ctx)
          */
         struct Email *e = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
-        mutt_email_free(&m->hdrs[i]);
-        m->hdrs[i] = e;
-        m->hdrs[i]->refno = refno;
-        m->hdrs[i]->index = index;
+        mutt_email_free(&m->emails[i]);
+        m->emails[i] = e;
+        m->emails[i]->refno = refno;
+        m->emails[i]->index = index;
 
         /* Reattach the private data */
-        m->hdrs[i]->edata = edata;
-        m->hdrs[i]->free_edata = pop_edata_free;
+        m->emails[i]->edata = edata;
+        m->emails[i]->free_edata = pop_edata_free;
         ret = 0;
         hcached = true;
       }
       else
 #endif
-          if ((ret = pop_read_header(adata, m->hdrs[i])) < 0)
+          if ((ret = pop_read_header(adata, m->emails[i])) < 0)
         break;
 #ifdef USE_HCACHE
       else
       {
-        mutt_hcache_store(hc, edata->uid, strlen(edata->uid), m->hdrs[i], 0);
+        mutt_hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
 
@@ -516,19 +516,19 @@ static int pop_fetch_headers(struct Context *ctx)
        */
       const bool bcached =
           (mutt_bcache_exists(adata->bcache, cache_id(edata->uid)) == 0);
-      m->hdrs[i]->old = false;
-      m->hdrs[i]->read = false;
+      m->emails[i]->old = false;
+      m->emails[i]->read = false;
       if (hcached)
       {
         if (bcached)
-          m->hdrs[i]->read = true;
+          m->emails[i]->read = true;
         else if (MarkOld)
-          m->hdrs[i]->old = true;
+          m->emails[i]->old = true;
       }
       else
       {
         if (bcached)
-          m->hdrs[i]->read = true;
+          m->emails[i]->read = true;
       }
 
       m->msg_count++;
@@ -542,7 +542,7 @@ static int pop_fetch_headers(struct Context *ctx)
   if (ret < 0)
   {
     for (int i = m->msg_count; i < new_count; i++)
-      mutt_email_free(&m->hdrs[i]);
+      mutt_email_free(&m->emails[i]);
     return ret;
   }
 
@@ -955,7 +955,7 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
   int num_deleted = 0;
   for (i = 0; i < m->msg_count; i++)
   {
-    if (m->hdrs[i]->deleted)
+    if (m->emails[i]->deleted)
       num_deleted++;
   }
 
@@ -973,13 +973,13 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
 
     for (i = 0, j = 0, ret = 0; (ret == 0) && (i < m->msg_count); i++)
     {
-      struct PopEmailData *edata = m->hdrs[i]->edata;
-      if (m->hdrs[i]->deleted && m->hdrs[i]->refno != -1)
+      struct PopEmailData *edata = m->emails[i]->edata;
+      if (m->emails[i]->deleted && m->emails[i]->refno != -1)
       {
         j++;
         if (!m->quiet)
           mutt_progress_update(&progress, j, -1);
-        snprintf(buf, sizeof(buf), "DELE %d\r\n", m->hdrs[i]->refno);
+        snprintf(buf, sizeof(buf), "DELE %d\r\n", m->emails[i]->refno);
         ret = pop_query(adata, buf, sizeof(buf));
         if (ret == 0)
         {
@@ -991,9 +991,9 @@ static int pop_mbox_sync(struct Context *ctx, int *index_hint)
       }
 
 #ifdef USE_HCACHE
-      if (m->hdrs[i]->changed)
+      if (m->emails[i]->changed)
       {
-        mutt_hcache_store(hc, edata->uid, strlen(edata->uid), m->hdrs[i], 0);
+        mutt_hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
     }
@@ -1066,7 +1066,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   char path[PATH_MAX];
   struct Progress progressbar;
   struct PopAccountData *adata = pop_get_adata(m);
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = e->edata;
   bool bcache = true;
 
@@ -1191,7 +1191,7 @@ static int pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   fgets(buf, sizeof(buf), msg->fp);
   while (!feof(msg->fp))
   {
-    m->hdrs[msgno]->lines++;
+    m->emails[msgno]->lines++;
     fgets(buf, sizeof(buf), msg->fp);
   }
 

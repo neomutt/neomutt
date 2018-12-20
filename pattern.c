@@ -91,7 +91,7 @@ bool ThoroughSearch; ///< Config: Decode headers and messages before searching t
 #define KILO 1024
 #define MEGA 1048576
 #define HMSG(h) (((h)->msgno) + 1)
-#define CTX_MSGNO(c) (HMSG((c)->mailbox->hdrs[(c)->mailbox->v2r[(c)->menu->current]]))
+#define CTX_MSGNO(c) (HMSG((c)->mailbox->emails[(c)->mailbox->v2r[(c)->menu->current]]))
 
 #define MUTT_MAXRANGE -1
 
@@ -1095,7 +1095,7 @@ static bool msg_search(struct Mailbox *m, struct Pattern *pat, int msgno)
 
   FILE *fp = NULL;
   long lng = 0;
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
   size_t tempsize;
@@ -2302,17 +2302,17 @@ bool mutt_limit_current_thread(struct Email *e)
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
   {
-    Context->mailbox->hdrs[i]->virtual = -1;
-    Context->mailbox->hdrs[i]->limited = false;
-    Context->mailbox->hdrs[i]->collapsed = false;
-    Context->mailbox->hdrs[i]->num_hidden = 0;
+    Context->mailbox->emails[i]->virtual = -1;
+    Context->mailbox->emails[i]->limited = false;
+    Context->mailbox->emails[i]->collapsed = false;
+    Context->mailbox->emails[i]->num_hidden = 0;
 
-    if (top_of_thread(Context->mailbox->hdrs[i]) == me)
+    if (top_of_thread(Context->mailbox->emails[i]) == me)
     {
-      struct Body *body = Context->mailbox->hdrs[i]->content;
+      struct Body *body = Context->mailbox->emails[i]->content;
 
-      Context->mailbox->hdrs[i]->virtual = Context->mailbox->vcount;
-      Context->mailbox->hdrs[i]->limited = true;
+      Context->mailbox->emails[i]->virtual = Context->mailbox->vcount;
+      Context->mailbox->emails[i]->limited = true;
       Context->mailbox->v2r[Context->mailbox->vcount] = i;
       Context->mailbox->vcount++;
       Context->vsize += (body->length + body->offset - body->hdr_offset);
@@ -2377,18 +2377,18 @@ int mutt_pattern_func(int op, char *prompt)
     {
       mutt_progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
-      Context->mailbox->hdrs[i]->virtual = -1;
-      Context->mailbox->hdrs[i]->limited = false;
-      Context->mailbox->hdrs[i]->collapsed = false;
-      Context->mailbox->hdrs[i]->num_hidden = 0;
+      Context->mailbox->emails[i]->virtual = -1;
+      Context->mailbox->emails[i]->limited = false;
+      Context->mailbox->emails[i]->collapsed = false;
+      Context->mailbox->emails[i]->num_hidden = 0;
       if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
-                            Context->mailbox->hdrs[i], NULL))
+                            Context->mailbox->emails[i], NULL))
       {
-        Context->mailbox->hdrs[i]->virtual = Context->mailbox->vcount;
-        Context->mailbox->hdrs[i]->limited = true;
+        Context->mailbox->emails[i]->virtual = Context->mailbox->vcount;
+        Context->mailbox->emails[i]->limited = true;
         Context->mailbox->v2r[Context->mailbox->vcount] = i;
         Context->mailbox->vcount++;
-        struct Body *b = Context->mailbox->hdrs[i]->content;
+        struct Body *b = Context->mailbox->emails[i]->content;
         Context->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
@@ -2399,24 +2399,24 @@ int mutt_pattern_func(int op, char *prompt)
     {
       mutt_progress_update(&progress, i, -1);
       if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context->mailbox,
-                            Context->mailbox->hdrs[Context->mailbox->v2r[i]], NULL))
+                            Context->mailbox->emails[Context->mailbox->v2r[i]], NULL))
       {
         switch (op)
         {
           case MUTT_UNDELETE:
             mutt_set_flag(Context->mailbox,
-                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+                          Context->mailbox->emails[Context->mailbox->v2r[i]],
                           MUTT_PURGE, 0);
           /* fallthrough */
           case MUTT_DELETE:
             mutt_set_flag(Context->mailbox,
-                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+                          Context->mailbox->emails[Context->mailbox->v2r[i]],
                           MUTT_DELETE, (op == MUTT_DELETE));
             break;
           case MUTT_TAG:
           case MUTT_UNTAG:
             mutt_set_flag(Context->mailbox,
-                          Context->mailbox->hdrs[Context->mailbox->v2r[i]],
+                          Context->mailbox->emails[Context->mailbox->v2r[i]],
                           MUTT_TAG, (op == MUTT_TAG));
             break;
         }
@@ -2519,7 +2519,7 @@ int mutt_search_command(int cur, int op)
   if (OptSearchInvalid)
   {
     for (int i = 0; i < Context->mailbox->msg_count; i++)
-      Context->mailbox->hdrs[i]->searched = false;
+      Context->mailbox->emails[i]->searched = false;
 #ifdef USE_IMAP
     if (Context->mailbox->magic == MUTT_IMAP &&
         imap_search(Context->mailbox, SearchPattern) < 0)
@@ -2562,7 +2562,7 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    struct Email *e = Context->mailbox->hdrs[Context->mailbox->v2r[i]];
+    struct Email *e = Context->mailbox->emails[Context->mailbox->v2r[i]];
     if (e->searched)
     {
       /* if we've already evaluated this message, use the cached value */

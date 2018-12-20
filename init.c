@@ -138,7 +138,7 @@ static void alternates_clean(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->mailbox->hdrs[i]->recip_valid = false;
+    Context->mailbox->emails[i]->recip_valid = false;
 }
 
 /**
@@ -150,7 +150,7 @@ static void attachments_clean(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    Context->mailbox->hdrs[i]->attach_valid = false;
+    Context->mailbox->emails[i]->attach_valid = false;
 }
 
 /**
@@ -210,7 +210,7 @@ static void clear_subject_mods(void)
     return;
 
   for (int i = 0; i < Context->mailbox->msg_count; i++)
-    FREE(&Context->mailbox->hdrs[i]->env->disp_subj);
+    FREE(&Context->mailbox->emails[i]->env->disp_subj);
 }
 
 #ifdef USE_NOTMUCH
@@ -1140,8 +1140,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           {
             goto bail;
           }
-          else if (data == MUTT_UNGROUP &&
-                   mutt_grouplist_remove_regex(&gc, buf->data) < 0)
+          else if (data == MUTT_UNGROUP && mutt_grouplist_remove_regex(&gc, buf->data) < 0)
           {
             goto bail;
           }
@@ -3701,8 +3700,8 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   if ((strcmp(cdef->name, "charset") == 0) && strchr(str, ':'))
   {
-    mutt_buffer_printf(err,
-                       _("'charset' must contain exactly one character set name"));
+    mutt_buffer_printf(
+        err, _("'charset' must contain exactly one character set name"));
     return CSR_ERR_INVALID;
   }
 

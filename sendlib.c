@@ -2974,7 +2974,7 @@ static int bounce_message(FILE *fp, struct Email *e, struct Address *to,
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->mailbox->msg_count; i++)
       if (message_is_tagged(Context, i))
-        rc |= bounce_message(fp, Context->mailbox->hdrs[i], to, resent_from, env_from);
+        rc |= bounce_message(fp, Context->mailbox->emails[i], to, resent_from, env_from);
     return rc;
   }
 

@@ -427,7 +427,7 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
 
   int oldmsgcount = m->msg_count;
 
-  if (!m->hdrs)
+  if (!m->emails)
   {
     /* Allocate some memory to get started */
     m->hdrmax = m->msg_count;
@@ -449,8 +449,8 @@ static int maildir_add_to_context(struct Mailbox *m, struct Maildir *md)
       if (m->msg_count == m->hdrmax)
         mx_alloc_memory(m);
 
-      m->hdrs[m->msg_count] = md->email;
-      m->hdrs[m->msg_count]->index = m->msg_count;
+      m->emails[m->msg_count] = md->email;
+      m->emails[m->msg_count]->index = m->msg_count;
       m->size += md->email->content->length + md->email->content->offset -
                  md->email->content->hdr_offset;
 
@@ -894,7 +894,7 @@ int mh_read_dir(struct Mailbox *m, const char *subdir)
  */
 int maildir_mh_open_message(struct Mailbox *m, struct Message *msg, int msgno, bool is_maildir)
 {
-  struct Email *cur = m->hdrs[msgno];
+  struct Email *cur = m->emails[msgno];
   char path[PATH_MAX];
 
   snprintf(path, sizeof(path), "%s/%s", m->path, cur->path);
@@ -1112,10 +1112,10 @@ cleanup:
  */
 int mh_rewrite_message(struct Mailbox *m, int msgno)
 {
-  if (!m || !m->hdrs)
+  if (!m || !m->emails)
     return -1;
 
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
   bool restore = true;
 
   long old_body_offset = e->content->offset;
@@ -1227,11 +1227,11 @@ void maildir_update_tables(struct Context *ctx, int *index_hint)
   const int old_count = m->msg_count;
   for (int i = 0, j = 0; i < old_count; i++)
   {
-    if (m->hdrs[i]->active && index_hint && *index_hint == i)
+    if (m->emails[i]->active && index_hint && *index_hint == i)
       *index_hint = j;
 
-    if (m->hdrs[i]->active)
-      m->hdrs[i]->index = j++;
+    if (m->emails[i]->active)
+      m->emails[i]->index = j++;
   }
 
   mx_update_tables(ctx, false);
@@ -1438,10 +1438,10 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, header_cache_t *hc)
 int mh_sync_mailbox_message(struct Mailbox *m, int msgno)
 #endif
 {
-  if (!m || !m->hdrs)
+  if (!m || !m->emails)
     return -1;
 
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
 
   if (e->deleted && (m->magic != MUTT_MAILDIR || !MaildirTrash))
   {
@@ -1822,8 +1822,8 @@ int mh_mbox_sync(struct Context *ctx, int *index_hint)
   {
     for (i = 0, j = 0; i < m->msg_count; i++)
     {
-      if (!m->hdrs[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))
-        m->hdrs[i]->index = j++;
+      if (!m->emails[i]->deleted || (m->magic == MUTT_MAILDIR && MaildirTrash))
+        m->emails[i]->index = j++;
     }
   }
 

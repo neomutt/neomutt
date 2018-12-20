@@ -162,7 +162,7 @@ int mutt_label_message(struct Email *e)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Email *e2 = Context->mailbox->hdrs[i];
+      struct Email *e2 = Context->mailbox->emails[i];
       if (label_message(Context->mailbox, e2, new))
       {
         changed++;

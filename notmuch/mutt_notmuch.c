@@ -946,7 +946,7 @@ static void append_message(struct Mailbox *m, notmuch_query_t *q,
   e->active = true;
   e->index = m->msg_count;
   m->size += e->content->length + e->content->offset - e->content->hdr_offset;
-  m->hdrs[m->msg_count] = e;
+  m->emails[m->msg_count] = e;
   m->msg_count++;
 
   if (newpath)
@@ -2123,7 +2123,7 @@ static int nm_mbox_open(struct Mailbox *m, struct Context *ctx)
 
   progress_reset(m);
 
-  if (!m->hdrs)
+  if (!m->emails)
   {
     /* Allocate some memory to get started */
     m->hdrmax = m->msg_count;
@@ -2206,7 +2206,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
   mdata->noprogress = true;
 
   for (int i = 0; i < m->msg_count; i++)
-    m->hdrs[i]->active = false;
+    m->emails[i]->active = false;
 
   int limit = get_limit(mdata);
 
@@ -2269,7 +2269,7 @@ static int nm_mbox_check(struct Context *ctx, int *index_hint)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (!m->hdrs[i]->active)
+    if (!m->emails[i]->active)
     {
       occult = true;
       break;
@@ -2327,7 +2327,7 @@ static int nm_mbox_sync(struct Context *ctx, int *index_hint)
   for (int i = 0; i < m->msg_count; i++)
   {
     char old[PATH_MAX], new[PATH_MAX];
-    struct Email *e = m->hdrs[i];
+    struct Email *e = m->emails[i];
     struct NmEmailData *edata = e->edata;
 
     if (!m->quiet)
@@ -2403,10 +2403,10 @@ static int nm_mbox_close(struct Mailbox *m)
  */
 static int nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
 {
-  if (!m || !m->hdrs || !msg)
+  if (!m || !m->emails || !msg)
     return -1;
 
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
   char path[PATH_MAX];
   char *folder = nm_email_get_folder(e);
 

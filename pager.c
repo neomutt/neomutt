@@ -2373,7 +2373,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           for (i = oldcount; i < Context->mailbox->msg_count; i++)
           {
-            struct Email *e = Context->mailbox->hdrs[i];
+            struct Email *e = Context->mailbox->emails[i];
 
             if (e && !e->read)
             {
@@ -2392,8 +2392,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
              * rd.index->current might be invalid */
             rd.index->current =
                 MIN(rd.index->current, (Context->mailbox->msg_count - 1));
-            index_hint =
-                Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]]->index;
+            index_hint = Context->mailbox
+                             ->emails[Context->mailbox->v2r[rd.index->current]]
+                             ->index;
 
             bool q = Context->mailbox->quiet;
             Context->mailbox->quiet = true;
@@ -2407,10 +2408,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
              * This have a unpleasant behaviour to close the pager even the
              * deleted message is not the opened one, but at least it's safe. */
             if (extra->email !=
-                Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]])
+                Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]])
             {
               extra->email =
-                  Context->mailbox->hdrs[Context->mailbox->v2r[rd.index->current]];
+                  Context->mailbox->emails[Context->mailbox->v2r[rd.index->current]];
               break;
             }
           }

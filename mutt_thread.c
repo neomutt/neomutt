@@ -129,7 +129,7 @@ static void linearize_tree(struct Context *ctx)
   struct Mailbox *m = ctx->mailbox;
 
   struct MuttThread *tree = ctx->tree;
-  struct Email **array = m->hdrs + ((Sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
+  struct Email **array = m->emails + ((Sort & SORT_REVERSE) ? m->msg_count - 1 : 0);
 
   while (tree)
   {
@@ -511,7 +511,7 @@ static struct Hash *make_subj_hash(struct Mailbox *m)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->hdrs[i];
+    struct Email *e = m->emails[i];
     if (e->env->real_subj)
       mutt_hash_insert(hash, e->env->real_subj, e);
   }
@@ -597,7 +597,7 @@ static void pseudo_threads(struct Context *ctx)
  */
 void mutt_clear_threads(struct Context *ctx)
 {
-  if (!ctx || !ctx->mailbox || !ctx->mailbox->hdrs)
+  if (!ctx || !ctx->mailbox || !ctx->mailbox->emails)
     return;
 
   struct Mailbox *m = ctx->mailbox;
@@ -605,10 +605,10 @@ void mutt_clear_threads(struct Context *ctx)
   for (int i = 0; i < m->msg_count; i++)
   {
     /* mailbox may have been only partially read */
-    if (m->hdrs[i])
+    if (m->emails[i])
     {
-      m->hdrs[i]->thread = NULL;
-      m->hdrs[i]->threaded = false;
+      m->emails[i]->thread = NULL;
+      m->emails[i]->threaded = false;
     }
   }
   ctx->tree = NULL;
@@ -795,7 +795,7 @@ static void check_subjects(struct Mailbox *m, bool init)
   struct MuttThread *tmp = NULL;
   for (int i = 0; i < m->msg_count; i++)
   {
-    cur = m->hdrs[i];
+    cur = m->emails[i];
     if (cur->thread->check_subject)
       cur->thread->check_subject = false;
     else if (!init)
@@ -874,7 +874,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
    * MuttThread, make a new one for it. */
   for (i = 0; i < m->msg_count; i++)
   {
-    cur = m->hdrs[i];
+    cur = m->emails[i];
 
     if (!cur->thread)
     {
@@ -966,7 +966,7 @@ void mutt_sort_threads(struct Context *ctx, bool init)
   /* thread by references */
   for (i = 0; i < m->msg_count; i++)
   {
-    cur = m->hdrs[i];
+    cur = m->emails[i];
     if (cur->threaded)
       continue;
     cur->threaded = true;
@@ -1199,7 +1199,7 @@ void mutt_set_virtual(struct Context *ctx)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    cur = m->hdrs[i];
+    cur = m->emails[i];
     if (cur->virtual >= 0)
     {
       cur->virtual = m->vcount;
@@ -1442,7 +1442,7 @@ struct Hash *mutt_make_id_hash(struct Mailbox *m)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = m->hdrs[i];
+    struct Email *e = m->emails[i];
     if (e->env->message_id)
       mutt_hash_insert(hash, e->env->message_id, e);
   }
@@ -1493,7 +1493,7 @@ bool mutt_link_threads(struct Email *cur, struct Email *last, struct Context *ct
   {
     for (int i = 0; i < m->msg_count; i++)
       if (message_is_tagged(ctx, i))
-        changed |= link_threads(cur, m->hdrs[i], ctx->mailbox);
+        changed |= link_threads(cur, m->emails[i], ctx->mailbox);
   }
   else
     changed = link_threads(cur, last, ctx->mailbox);

@@ -1492,7 +1492,7 @@ int mutt_compose_menu(struct Email *msg, char *fcc, size_t fcclen, struct Email 
 
           new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context->mailbox,
-                                                  Context->mailbox->hdrs[i], true);
+                                                  Context->mailbox->emails[i], true);
           if (new->content)
             update_idx(menu, actx, new);
           else

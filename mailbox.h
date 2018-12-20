@@ -90,8 +90,8 @@ struct Mailbox
   int msg_deleted;           /**< number of deleted messages */
   int msg_tagged;            /**< how many messages are tagged? */
 
-  struct Email **hdrs;
-  int hdrmax;               /**< number of pointers in hdrs */
+  struct Email **emails;
+  int hdrmax;               /**< number of pointers in emails */
   int *v2r;                 /**< mapping from virtual to real msgno */
   int vcount;               /**< the number of virtual messages */
 

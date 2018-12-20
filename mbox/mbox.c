@@ -237,7 +237,7 @@ static int mmdf_parse_mailbox(struct Mailbox *m)
       if (m->msg_count == m->hdrmax)
         mx_alloc_memory(m);
       e = mutt_email_new();
-      m->hdrs[m->msg_count] = e;
+      m->emails[m->msg_count] = e;
       e->offset = loc;
       e->index = m->msg_count;
 
@@ -382,7 +382,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  if (!m->hdrs)
+  if (!m->emails)
   {
     /* Allocate some memory to get started */
     m->hdrmax = m->msg_count;
@@ -400,7 +400,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-        struct Email *e = m->hdrs[m->msg_count - 1];
+        struct Email *e = m->emails[m->msg_count - 1];
         if (e->content->length < 0)
         {
           e->content->length = loc - e->content->offset - 1;
@@ -422,8 +422,8 @@ static int mbox_parse_mailbox(struct Mailbox *m)
       if (m->msg_count == m->hdrmax)
         mx_alloc_memory(m);
 
-      m->hdrs[m->msg_count] = mutt_email_new();
-      curhdr = m->hdrs[m->msg_count];
+      m->emails[m->msg_count] = mutt_email_new();
+      curhdr = m->emails[m->msg_count];
       curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
       curhdr->index = m->msg_count;
@@ -526,7 +526,7 @@ static int mbox_parse_mailbox(struct Mailbox *m)
    */
   if (count > 0)
   {
-    struct Email *e = m->hdrs[m->msg_count - 1];
+    struct Email *e = m->emails[m->msg_count - 1];
     if (e->content->length < 0)
     {
       e->content->length = ftello(adata->fp) - e->content->offset - 1;
@@ -602,15 +602,15 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   if (m->readonly)
   {
     for (i = 0; i < m->msg_count; i++)
-      mutt_email_free(&(m->hdrs[i])); /* nothing to do! */
-    FREE(&m->hdrs);
+      mutt_email_free(&(m->emails[i])); /* nothing to do! */
+    FREE(&m->emails);
   }
   else
   {
     /* save the old headers */
     old_msgcount = m->msg_count;
-    old_hdrs = m->hdrs;
-    m->hdrs = NULL;
+    old_hdrs = m->emails;
+    m->emails = NULL;
   }
 
   m->hdrmax = 0; /* force allocation of new headers */
@@ -679,7 +679,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       {
         if (!old_hdrs[j])
           continue;
-        if (cmp_headers(m->hdrs[i], old_hdrs[j]))
+        if (cmp_headers(m->emails[i], old_hdrs[j]))
         {
           found = true;
           break;
@@ -691,7 +691,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
         {
           if (!old_hdrs[j])
             continue;
-          if (cmp_headers(m->hdrs[i], old_hdrs[j]))
+          if (cmp_headers(m->emails[i], old_hdrs[j]))
           {
             found = true;
             break;
@@ -711,14 +711,14 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes
            */
-          mutt_set_flag(m, m->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
-          mutt_set_flag(m, m->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
-          mutt_set_flag(m, m->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
-          mutt_set_flag(m, m->hdrs[i], MUTT_READ, old_hdrs[j]->read);
+          mutt_set_flag(m, m->emails[i], MUTT_FLAG, old_hdrs[j]->flagged);
+          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, old_hdrs[j]->replied);
+          mutt_set_flag(m, m->emails[i], MUTT_OLD, old_hdrs[j]->old);
+          mutt_set_flag(m, m->emails[i], MUTT_READ, old_hdrs[j]->read);
         }
-        mutt_set_flag(m, m->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
-        mutt_set_flag(m, m->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
-        mutt_set_flag(m, m->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
+        mutt_set_flag(m, m->emails[i], MUTT_DELETE, old_hdrs[j]->deleted);
+        mutt_set_flag(m, m->emails[i], MUTT_PURGE, old_hdrs[j]->purge);
+        mutt_set_flag(m, m->emails[i], MUTT_TAG, old_hdrs[j]->tagged);
 
         /* we don't need this header any more */
         mutt_email_free(&(old_hdrs[j]));
@@ -751,7 +751,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 static bool mbox_has_new(struct Mailbox *m)
 {
   for (int i = 0; i < m->msg_count; i++)
-    if (!m->hdrs[i]->deleted && !m->hdrs[i]->read && !m->hdrs[i]->old)
+    if (!m->emails[i]->deleted && !m->emails[i]->read && !m->emails[i]->old)
       return true;
   return false;
 }
@@ -1220,8 +1220,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* find the first deleted/changed message.  we save a lot of time by only
    * rewriting the mailbox from the point where it has actually changed.
    */
-  for (i = 0; (i < m->msg_count) && !m->hdrs[i]->deleted &&
-              !m->hdrs[i]->changed && !m->hdrs[i]->attach_del;
+  for (i = 0; (i < m->msg_count) && !m->emails[i]->deleted &&
+              !m->emails[i]->changed && !m->emails[i]->attach_del;
        i++)
   {
   }
@@ -1241,7 +1241,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* save the index of the first changed/deleted message */
   first = i;
   /* where to start overwriting */
-  offset = m->hdrs[i]->offset;
+  offset = m->emails[i]->offset;
 
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location
@@ -1268,12 +1268,12 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
      */
 
     old_offset[i - first].valid = true;
-    old_offset[i - first].hdr = m->hdrs[i]->offset;
-    old_offset[i - first].body = m->hdrs[i]->content->offset;
-    old_offset[i - first].lines = m->hdrs[i]->lines;
-    old_offset[i - first].length = m->hdrs[i]->content->length;
+    old_offset[i - first].hdr = m->emails[i]->offset;
+    old_offset[i - first].body = m->emails[i]->content->offset;
+    old_offset[i - first].lines = m->emails[i]->lines;
+    old_offset[i - first].length = m->emails[i]->content->length;
 
-    if (!m->hdrs[i]->deleted)
+    if (!m->emails[i]->deleted)
     {
       j++;
 
@@ -1293,7 +1293,7 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_copy_message_ctx(fp, ctx->mailbox, m->hdrs[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message_ctx(fp, ctx->mailbox, m->emails[i], MUTT_CM_UPDATE,
                                 CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
@@ -1307,8 +1307,8 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
        * we just flush the in memory cache so that the message will be reparsed
        * if the user accesses it later.
        */
-      new_offset[i - first].body = ftello(fp) - m->hdrs[i]->content->length + offset;
-      mutt_body_free(&m->hdrs[i]->content->parts);
+      new_offset[i - first].body = ftello(fp) - m->emails[i]->content->length + offset;
+      mutt_body_free(&m->emails[i]->content->parts);
 
       switch (m->magic)
       {
@@ -1444,12 +1444,12 @@ static int mbox_mbox_sync(struct Context *ctx, int *index_hint)
   /* update the offsets of the rewritten messages */
   for (i = first, j = first; i < m->msg_count; i++)
   {
-    if (!m->hdrs[i]->deleted)
+    if (!m->emails[i]->deleted)
     {
-      m->hdrs[i]->offset = new_offset[i - first].hdr;
-      m->hdrs[i]->content->hdr_offset = new_offset[i - first].hdr;
-      m->hdrs[i]->content->offset = new_offset[i - first].body;
-      m->hdrs[i]->index = j++;
+      m->emails[i]->offset = new_offset[i - first].hdr;
+      m->emails[i]->content->hdr_offset = new_offset[i - first].hdr;
+      m->emails[i]->content->offset = new_offset[i - first].body;
+      m->emails[i]->index = j++;
     }
   }
   FREE(&new_offset);
@@ -1475,11 +1475,11 @@ bail: /* Come here in case of disaster */
   {
     for (i = first; (i < m->msg_count) && old_offset[i - first].valid; i++)
     {
-      m->hdrs[i]->offset = old_offset[i - first].hdr;
-      m->hdrs[i]->content->hdr_offset = old_offset[i - first].hdr;
-      m->hdrs[i]->content->offset = old_offset[i - first].body;
-      m->hdrs[i]->lines = old_offset[i - first].lines;
-      m->hdrs[i]->content->length = old_offset[i - first].length;
+      m->emails[i]->offset = old_offset[i - first].hdr;
+      m->emails[i]->content->hdr_offset = old_offset[i - first].hdr;
+      m->emails[i]->content->offset = old_offset[i - first].body;
+      m->emails[i]->lines = old_offset[i - first].lines;
+      m->emails[i]->content->length = old_offset[i - first].length;
     }
   }
 

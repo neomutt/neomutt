@@ -574,10 +574,10 @@ static int check_uidl(char *line, void *data)
   struct Mailbox *m = data;
   for (int i = 0; i < m->msg_count; i++)
   {
-    struct PopEmailData *edata = m->hdrs[i]->edata;
+    struct PopEmailData *edata = m->emails[i]->edata;
     if (mutt_str_strcmp(edata->uid, line) == 0)
     {
-      m->hdrs[i]->refno = index;
+      m->emails[i]->refno = index;
       break;
     }
   }
@@ -610,7 +610,7 @@ int pop_reconnect(struct Mailbox *m)
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
       for (int i = 0; i < m->msg_count; i++)
-        m->hdrs[i]->refno = -1;
+        m->emails[i]->refno = -1;
 
       ret = pop_fetch_data(adata, "UIDL\r\n", &progressbar, check_uidl, m);
       if (ret == -2)

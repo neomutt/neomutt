@@ -310,10 +310,10 @@ void ci_bounce_message(struct Email *e)
     msgcount = 0; // count the precise number of messages.
     for (rc = 0; rc < Context->mailbox->msg_count; rc++)
     {
-      if (message_is_tagged(Context, rc) && !Context->mailbox->hdrs[rc]->env->from)
+      if (message_is_tagged(Context, rc) && !Context->mailbox->emails[rc]->env->from)
       {
         msgcount++;
-        if (!Context->mailbox->hdrs[rc]->env->from)
+        if (!Context->mailbox->emails[rc]->env->from)
         {
           mutt_error(_("Warning: message contains no From: header"));
           break;
@@ -493,10 +493,10 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        mutt_parse_mime_message(Context->mailbox, Context->mailbox->hdrs[i]);
-        if (Context->mailbox->hdrs[i]->security & ENCRYPT &&
-            !crypt_valid_passphrase(Context->mailbox->hdrs[i]->security))
+        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
+        mutt_parse_mime_message(Context->mailbox, Context->mailbox->emails[i]);
+        if (Context->mailbox->emails[i]->security & ENCRYPT &&
+            !crypt_valid_passphrase(Context->mailbox->emails[i]->security))
         {
           return 1;
         }
@@ -510,7 +510,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
+        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
         mutt_endwin();
         thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
         if (thepid < 0)
@@ -519,7 +519,7 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
           return 1;
         }
         OptKeepQuiet = true;
-        pipe_msg(Context->mailbox->hdrs[i], fpout, decode, print);
+        pipe_msg(Context->mailbox->emails[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -544,8 +544,8 @@ static int pipe_message(struct Email *e, char *cmd, bool decode, bool print,
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        pipe_msg(Context->mailbox->hdrs[i], fpout, decode, print);
+        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
+        pipe_msg(Context->mailbox->emails[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
@@ -924,7 +924,7 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
     {
       if (message_is_tagged(Context, i))
       {
-        e = Context->mailbox->hdrs[i];
+        e = Context->mailbox->emails[i];
         break;
       }
     }
@@ -1046,15 +1046,15 @@ int mutt_save_message(struct Email *e, bool delete, bool decode, bool decrypt)
         if (!message_is_tagged(Context, i))
           continue;
 
-        mutt_message_hook(Context->mailbox, Context->mailbox->hdrs[i], MUTT_MESSAGE_HOOK);
-        rc = mutt_save_message_ctx(Context->mailbox->hdrs[i], delete, decode,
+        mutt_message_hook(Context->mailbox, Context->mailbox->emails[i], MUTT_MESSAGE_HOOK);
+        rc = mutt_save_message_ctx(Context->mailbox->emails[i], delete, decode,
                                    decrypt, savectx->mailbox);
         if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
         if (cm)
         {
-          struct Email *e2 = Context->mailbox->hdrs[i];
+          struct Email *e2 = Context->mailbox->emails[i];
           cm->msg_count++;
           if (!e2->read)
           {
@@ -1245,9 +1245,9 @@ bool mutt_check_traditional_pgp(struct Email *e, int *redraw)
     for (int i = 0; i < Context->mailbox->msg_count; i++)
     {
       if (message_is_tagged(Context, i) &&
-          !(Context->mailbox->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
+          !(Context->mailbox->emails[i]->security & PGP_TRADITIONAL_CHECKED))
       {
-        rc = check_traditional_pgp(Context->mailbox->hdrs[i], redraw) || rc;
+        rc = check_traditional_pgp(Context->mailbox->emails[i], redraw) || rc;
       }
     }
   }

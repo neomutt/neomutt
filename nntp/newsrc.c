@@ -342,8 +342,9 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
-      last = nntp_edata_get(m->hdrs[i])->article_num;
-      if (last >= mdata->first_message && !m->hdrs[i]->deleted && !m->hdrs[i]->read)
+      last = nntp_edata_get(m->emails[i])->article_num;
+      if (last >= mdata->first_message && !m->emails[i]->deleted &&
+          !m->emails[i]->read)
       {
         if (mdata->newsrc_len >= entries)
         {
@@ -360,12 +361,12 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     /* search for first read */
     else
     {
-      if (m->hdrs[i]->deleted || m->hdrs[i]->read)
+      if (m->emails[i]->deleted || m->emails[i]->read)
       {
         first = last + 1;
         series = true;
       }
-      last = nntp_edata_get(m->hdrs[i])->article_num;
+      last = nntp_edata_get(m->emails[i])->article_num;
     }
   }
 
@@ -1306,7 +1307,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
   if (m && (m->mdata == mdata))
   {
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 1);
+      mutt_set_flag(m, m->emails[i], MUTT_READ, 1);
   }
   return mdata;
 }
@@ -1342,7 +1343,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
   {
     mdata->unread = m->msg_count;
     for (unsigned int i = 0; i < m->msg_count; i++)
-      mutt_set_flag(m, m->hdrs[i], MUTT_READ, 0);
+      mutt_set_flag(m, m->emails[i], MUTT_READ, 0);
   }
   else
   {
@@ -1377,7 +1378,7 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
       unsigned int unread = 0;
 
       for (unsigned int j = 0; j < m->msg_count; j++)
-        if (!m->hdrs[j]->read && !m->hdrs[j]->deleted)
+        if (!m->emails[j]->read && !m->emails[j]->deleted)
           unread++;
       if (!unread)
         continue;

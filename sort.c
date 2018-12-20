@@ -386,7 +386,7 @@ void mutt_sort_headers(struct Context *ctx, bool init)
   if (OptNeedRescore && Score)
   {
     for (int i = 0; i < ctx->mailbox->msg_count; i++)
-      mutt_score_message(ctx->mailbox, ctx->mailbox->hdrs[i], true);
+      mutt_score_message(ctx->mailbox, ctx->mailbox->emails[i], true);
   }
   OptNeedRescore = false;
 
@@ -421,14 +421,14 @@ void mutt_sort_headers(struct Context *ctx, bool init)
     return;
   }
   else
-    qsort((void *) ctx->mailbox->hdrs, ctx->mailbox->msg_count,
+    qsort((void *) ctx->mailbox->emails, ctx->mailbox->msg_count,
           sizeof(struct Email *), sortfunc);
 
   /* adjust the virtual message numbers */
   ctx->mailbox->vcount = 0;
   for (int i = 0; i < ctx->mailbox->msg_count; i++)
   {
-    struct Email *cur = ctx->mailbox->hdrs[i];
+    struct Email *cur = ctx->mailbox->emails[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))
     {
       cur->virtual = ctx->mailbox->vcount;

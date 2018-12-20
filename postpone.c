@@ -202,7 +202,7 @@ static void post_make_entry(char *buf, size_t buflen, struct Menu *menu, int lin
   struct Context *ctx = menu->data;
 
   mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx,
-                         ctx->mailbox->hdrs[line], MUTT_FORMAT_ARROWCURSOR);
+                         ctx->mailbox->emails[line], MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -237,7 +237,7 @@ static struct Email *select_msg(void)
       case OP_DELETE:
       case OP_UNDELETE:
         /* should deleted draft messages be saved in the trash folder? */
-        mutt_set_flag(PostContext->mailbox, PostContext->mailbox->hdrs[menu->current],
+        mutt_set_flag(PostContext->mailbox, PostContext->mailbox->emails[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->mailbox->msg_count - PostContext->mailbox->msg_deleted;
         if (Resolve && menu->current < menu->max - 1)
@@ -270,7 +270,7 @@ static struct Email *select_msg(void)
   Sort = orig_sort;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
-  return r > -1 ? PostContext->mailbox->hdrs[r] : NULL;
+  return r > -1 ? PostContext->mailbox->emails[r] : NULL;
 }
 
 /**
@@ -322,7 +322,7 @@ int mutt_get_postponed(struct Context *ctx, struct Email *hdr,
   if (PostContext->mailbox->msg_count == 1)
   {
     /* only one message, so just use that one. */
-    e = PostContext->mailbox->hdrs[0];
+    e = PostContext->mailbox->emails[0];
   }
   else if (!(e = select_msg()))
   {

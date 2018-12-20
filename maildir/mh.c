@@ -218,29 +218,29 @@ void mh_update_sequences(struct Mailbox *m)
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < m->msg_count; l++)
   {
-    if (m->hdrs[l]->deleted)
+    if (m->emails[l]->deleted)
       continue;
 
-    p = strrchr(m->hdrs[l]->path, '/');
+    p = strrchr(m->emails[l]->path, '/');
     if (p)
       p++;
     else
-      p = m->hdrs[l]->path;
+      p = m->emails[l]->path;
 
     if (mutt_str_atoi(p, &i) < 0)
       continue;
 
-    if (!m->hdrs[l]->read)
+    if (!m->emails[l]->read)
     {
       mhs_set(&mhs, i, MH_SEQ_UNSEEN);
       unseen++;
     }
-    if (m->hdrs[l]->flagged)
+    if (m->emails[l]->flagged)
     {
       mhs_set(&mhs, i, MH_SEQ_FLAGGED);
       flagged++;
     }
-    if (m->hdrs[l]->replied)
+    if (m->emails[l]->replied)
     {
       mhs_set(&mhs, i, MH_SEQ_REPLIED);
       replied++;
@@ -523,10 +523,10 @@ void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
  */
 int mh_sync_message(struct Mailbox *m, int msgno)
 {
-  if (!m || !m->hdrs)
+  if (!m || !m->emails)
     return -1;
 
-  struct Email *e = m->hdrs[msgno];
+  struct Email *e = m->emails[msgno];
 
   if (e->attach_del || e->xlabel_changed ||
       (e->env && (e->env->refs_changed || e->env->irt_changed)))
@@ -682,15 +682,15 @@ int mh_mbox_check(struct Context *ctx, int *index_hint)
 
   for (i = 0; i < m->msg_count; i++)
   {
-    m->hdrs[i]->active = false;
+    m->emails[i]->active = false;
 
-    p = mutt_hash_find(fnames, m->hdrs[i]->path);
-    if (p && p->email && mutt_email_cmp_strict(m->hdrs[i], p->email))
+    p = mutt_hash_find(fnames, m->emails[i]->path);
+    if (p && p->email && mutt_email_cmp_strict(m->emails[i], p->email))
     {
-      m->hdrs[i]->active = true;
+      m->emails[i]->active = true;
       /* found the right message */
-      if (!m->hdrs[i]->changed)
-        if (maildir_update_flags(ctx->mailbox, m->hdrs[i], p->email))
+      if (!m->emails[i]->changed)
+        if (maildir_update_flags(ctx->mailbox, m->emails[i], p->email))
           flags_changed = true;
 
       mutt_email_free(&p->email);
