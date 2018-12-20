@@ -1635,6 +1635,83 @@ full_fcc:
 }
 
 /**
+ * postpone_message - Save an Email for another day
+ * @param msg   Email to postpone
+ * @param cur   Current Email in the index
+ * @param fcc   Folder for 'sent mail'
+ * @param flags Send mode, e.g. #SEND_RESEND
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int postpone_message(struct Email *msg, struct Email *cur, char *fcc, int flags)
+{
+  char *pgpkeylist = NULL;
+  char *encrypt_as = NULL;
+  int is_signed;
+
+  if (!Postponed)
+    return -1;
+
+  /* postpone the message until later. */
+  if (msg->content->next)
+    msg->content = mutt_make_multipart(msg->content);
+
+  if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & ENCRYPT))
+  {
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
+      encrypt_as = PgpDefaultKey;
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
+      encrypt_as = SmimeDefaultKey;
+    if (!(encrypt_as && *encrypt_as))
+      encrypt_as = PostponeEncryptAs;
+
+    if (encrypt_as && *encrypt_as)
+    {
+      is_signed = msg->security & SIGN;
+      if (is_signed)
+        msg->security &= ~SIGN;
+
+      pgpkeylist = mutt_str_strdup(encrypt_as);
+      if (mutt_protect(msg, pgpkeylist) == -1)
+      {
+        if (is_signed)
+          msg->security |= SIGN;
+        FREE(&pgpkeylist);
+        msg->content = mutt_remove_multipart(msg->content);
+        return -1;
+      }
+
+      if (is_signed)
+        msg->security |= SIGN;
+      FREE(&pgpkeylist);
+    }
+  }
+
+  /* make sure the message is written to the right part of a maildir
+   * postponed folder.
+   */
+  msg->read = false;
+  msg->old = false;
+
+  mutt_encode_descriptions(msg->content, true);
+  mutt_prepare_envelope(msg->env, false);
+  mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
+
+  if (mutt_write_fcc(NONULL(Postponed), msg,
+                     (cur && (flags & SEND_REPLY)) ? cur->env->message_id : NULL,
+                     true, fcc, NULL) < 0)
+  {
+    msg->content = mutt_remove_multipart(msg->content);
+    decode_descriptions(msg->content);
+    mutt_unprepare_envelope(msg->env);
+    return -1;
+  }
+  mutt_update_num_postponed();
+
+  return 0;
+}
+
+/**
  * ci_send_message - Send an email
  * @param flags    send mode, e.g. #SEND_RESEND
  * @param msg      template to use for new message
@@ -2190,63 +2267,8 @@ int ci_send_message(int flags, struct Email *msg, const char *tempfile,
     }
     else if (i == 1)
     {
-      /* postpone the message until later. */
-      if (msg->content->next)
-        msg->content = mutt_make_multipart(msg->content);
-
-      if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & ENCRYPT))
-      {
-        char *encrypt_as = NULL;
-
-        if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
-          encrypt_as = PgpDefaultKey;
-        else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
-          encrypt_as = SmimeDefaultKey;
-        if (!(encrypt_as && *encrypt_as))
-          encrypt_as = PostponeEncryptAs;
-
-        if (encrypt_as && *encrypt_as)
-        {
-          int is_signed = msg->security & SIGN;
-          if (is_signed)
-            msg->security &= ~SIGN;
-
-          pgpkeylist = mutt_str_strdup(encrypt_as);
-          if (mutt_protect(msg, pgpkeylist) == -1)
-          {
-            if (is_signed)
-              msg->security |= SIGN;
-            FREE(&pgpkeylist);
-            msg->content = mutt_remove_multipart(msg->content);
-            goto main_loop;
-          }
-
-          if (is_signed)
-            msg->security |= SIGN;
-          FREE(&pgpkeylist);
-        }
-      }
-
-      /* make sure the message is written to the right part of a maildir
-       * postponed folder.
-       */
-      msg->read = false;
-      msg->old = false;
-
-      mutt_encode_descriptions(msg->content, true);
-      mutt_prepare_envelope(msg->env, false);
-      mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
-
-      if (!Postponed || mutt_write_fcc(NONULL(Postponed), msg,
-                                       (cur && (flags & SEND_REPLY)) ? cur->env->message_id : NULL,
-                                       true, fcc, NULL) < 0)
-      {
-        msg->content = mutt_remove_multipart(msg->content);
-        decode_descriptions(msg->content);
-        mutt_unprepare_envelope(msg->env);
+      if (postpone_message(msg, cur, fcc, flags) != 0)
         goto main_loop;
-      }
-      mutt_update_num_postponed();
       mutt_message(_("Message postponed"));
       rc = 1;
       goto cleanup;
