@@ -2265,7 +2265,7 @@ static int imap_mbox_close(struct Context *ctx)
    * mailbox and should clean up adata.  Otherwise, we don't want to
    * touch adata - it's still being used.
    */
-  if (ctx == mdata->ctx)
+  if (m == adata->mailbox)
   {
     if (adata->status != IMAP_FATAL && adata->state >= IMAP_SELECTED)
     {
